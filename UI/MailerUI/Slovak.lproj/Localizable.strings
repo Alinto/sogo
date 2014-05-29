@@ -79,7 +79,7 @@
 "Remove this folder" = "Zmazať adresár";
 "Erase mails from this folder" = "Zmazať správy z adresára";
 "Expunge this folder" = "Vyprázdniť adresár";
-"Archive This Folder" = "Archivovať adresár";
+"Export This Folder" = "Exportovať tento adresár";
 "Modify the acl of this folder" = "Uprav ACL tejto zložky";
 
 "Saved Messages.zip" = "Uložené Správy.zip";
@@ -102,7 +102,7 @@
 "Attach Web Page..." = "Prilož WWW stránku...";
 "file" = "súbor";
 "files" = "súbory";
-"Save all" = "Save all";
+"Save all" = "Uložiť všetko";
 
 "to"            = "Pre";
 "cc"            = "Kópia";

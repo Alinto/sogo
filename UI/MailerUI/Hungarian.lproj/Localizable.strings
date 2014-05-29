@@ -79,7 +79,7 @@
 "Remove this folder" = "Mappa törlése";
 "Erase mails from this folder" = "Üzenetek törlése a mappából";
 "Expunge this folder" = "Mappa megjelölése töröltként";
-"Archive This Folder" = "Mappa archiválása";
+"Export This Folder" = "Aktuális mappa exportálása";
 "Modify the acl of this folder" = "Mappa jogosultságainak szerkesztése";
 
 "Saved Messages.zip" = "Messages.zip elmentve";

@@ -1,8 +1,6 @@
-/* SOGoMAPIDBObject.m - this file is part of SOGo
+/* SOGoCacheGCSObject.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,37 +41,19 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 
-#import "GCSSpecialQueries+OpenChange.h"
-#import "MAPIStoreTypes.h"
-#import "SOGoMAPIDBFolder.h"
+#import "GCSSpecialQueries+SOGoCacheObject.h"
+#import "SOGoCacheGCSFolder.h"
 #import "BSONCodec.h"
 
-#import "SOGoMAPIDBObject.h"
-
-//
-// This defines the storage for internal properly list, stored in the
-// database. Possible values are:
-//
-// NSPropertyListGNUstepFormat       = 1000
-// NSPropertyListGNUstepBinaryFormat = 1001
-// NSPropertyListOpenStepFormat      = 1
-// NSPropertyListXMLFormat_v1_0      = 100
-// NSPropertyListBinaryFormat_v1_0   = 200
-//
-static NSPropertyListFormat plistFormat;
+#import "SOGoCacheGCSObject.h"
 
 static EOAttribute *textColumn = nil;
 
-@implementation SOGoMAPIDBObject
+@implementation SOGoCacheGCSObject 
 
 + (void) initialize
 {
   NSDictionary *description;
-
-  plistFormat = [[NSUserDefaults standardUserDefaults] integerForKey: @"SOGoPropertyListFormat"];
-
-  if (!plistFormat)
-    plistFormat = NSPropertyListGNUstepBinaryFormat;
 
   if (!textColumn)
     {
@@ -92,19 +72,14 @@ static EOAttribute *textColumn = nil;
 /*
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR(255) PRIMARY KEY,"
-       @" c_type VARCHAR(20) NOT NULL,"
+       @" c_parent_path VARCHAR(255),"
+       @" c_type SMALLINT NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastmodified INT4 NOT NULL,"
        @" c_version INT4 NOT NULL DEFAULT 0,"
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
+       @" c_content TEXT)");
 */
-
-/* indexes:
-   c_path (primary key)
-   c_counter
-   c_path, c_type
-   c_path, c_creationdate */
-
 - (id) init
 {
   if ((self = [super init]))
@@ -137,7 +112,7 @@ static EOAttribute *textColumn = nil;
       tableUrl = [container tableUrl];
       [tableUrl retain];
       if (!tableUrl)
-        [NSException raise: @"MAPIStoreIOException"
+        [NSException raise: @"SOGoCacheIOException"
                     format: @"table url is not set for object '%@'", self];
     }
 
@@ -157,9 +132,8 @@ static EOAttribute *textColumn = nil;
 - (void) setupFromRecord: (NSDictionary *) record
 {
   NSInteger intValue;
-  NSString *propsValue;//, *error;
+  NSString *propsValue;
   NSDictionary *newValues;
-  //NSPropertyListFormat format;
 
   objectType = [[record objectForKey: @"c_type"] intValue];
   intValue = [[record objectForKey: @"c_creationdate"] intValue];
@@ -195,7 +169,7 @@ static EOAttribute *textColumn = nil;
     path = [NSMutableString stringWithFormat: @"/%@", nameInContainer];
 
   if ([path rangeOfString: @"//"].location != NSNotFound)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"object path has not been properly set for"
                  " folder '%@' (%@)",
                  self, path];
@@ -203,12 +177,12 @@ static EOAttribute *textColumn = nil;
   return path;
 }
 
-- (void) setObjectType: (MAPIDBObjectType) newObjectType
+- (void) setObjectType: (SOGoCacheObjectType) newObjectType
 {
   objectType = newObjectType;
 }
 
-- (MAPIDBObjectType) objectType /* message, fai, folder */
+- (SOGoCacheObjectType) objectType /* message, fai, folder */
 {
   return objectType;
 }
@@ -216,7 +190,7 @@ static EOAttribute *textColumn = nil;
 - (NSCalendarDate *) creationDate
 {
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   return creationDate;
@@ -225,7 +199,7 @@ static EOAttribute *textColumn = nil;
 - (NSCalendarDate *) lastModified
 {
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   return lastModified;
@@ -234,43 +208,6 @@ static EOAttribute *textColumn = nil;
 - (BOOL) deleted
 {
   return deleted;
-}
-
-- (Class) mapistoreMessageClass
-{
-  NSString *className, *mapiMsgClass;
-
-  switch (objectType)
-    {
-    case MAPIDBObjectTypeMessage:
-      mapiMsgClass = [properties
-                       objectForKey: MAPIPropertyKey (PidTagMessageClass)];
-      if (mapiMsgClass)
-        {
-          if ([mapiMsgClass isEqualToString: @"IPM.StickyNote"])
-            className = @"MAPIStoreNotesMessage";
-          else
-            className = @"MAPIStoreDBMessage";
-          //[self logWithFormat: @"PidTagMessageClass = '%@', returning '%@'",
-          //      mapiMsgClass, className];
-        }
-      else
-        {
-          //[self warnWithFormat: @"PidTagMessageClass is not set, falling back"
-          //      @" to 'MAPIStoreDBMessage'"];
-          className = @"MAPIStoreDBMessage";
-        }
-      break;
-    case MAPIDBObjectTypeFAI:
-      className = @"MAPIStoreFAIMessage";
-      break;
-    default:
-      [NSException raise: @"MAPIStoreIOException"
-                  format: @"message class should not be queried for objects"
-                   @" of type '%d'", objectType];
-    }
-
-  return NSClassFromString (className);
 }
 
 /* actions */
@@ -413,7 +350,7 @@ static EOAttribute *textColumn = nil;
   EOAdaptor *adaptor;
 
   if ([path hasSuffix: @"/"])
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"path ends with a slash: %@", path];
 
   tableName = [self tableName];
@@ -437,6 +374,47 @@ static EOAttribute *textColumn = nil;
 
   return record;
 }
+
+// get a list of all folders
+- (NSArray *) folderList: (NSString *) deviceId
+        newerThanVersion: (NSInteger) startVersion
+{
+  NSMutableArray *recordsOut;
+  NSArray *records;
+  NSString *tableName, *pathValue;
+  NSMutableString *sql;
+  EOAdaptor *adaptor;
+  NSUInteger count, max;
+
+  if ([deviceId hasSuffix: @"/"])
+    [NSException raise: @"SOGoCacheIOException"
+                format: @"path ends with a slash: %@", deviceId];
+
+  tableName = [self tableName];
+  adaptor = [self tableChannelAdaptor];
+  pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@+folder%", deviceId]
+                      forAttribute: textColumn];
+
+  /* query */
+  sql = [NSMutableString stringWithFormat:
+                           @"SELECT * FROM %@ WHERE c_path LIKE %@ AND c_deleted <> 1",
+                         tableName, pathValue];
+  if (startVersion > -1)
+    [sql appendFormat: @" AND c_version > %d", startVersion];
+
+  /* execution */
+  records = [self performSQLQuery: sql];
+
+  max = [records count];
+  recordsOut = [[NSMutableArray alloc] init];
+  for (count = 0; count < max; count++)
+    {
+      [recordsOut addObject: [[records objectAtIndex: count] objectForKey: @"c_path"]];
+    }
+
+  return recordsOut;
+}
+
 
 - (void) reloadIfNeeded
 {
@@ -491,7 +469,7 @@ static EOAttribute *textColumn = nil;
   NSException *result;
 
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   cm = [GCSChannelManager defaultChannelManager];
@@ -503,12 +481,6 @@ static EOAttribute *textColumn = nil;
   now = [NSCalendarDate date];
   ASSIGN (lastModified, now);
 
-  /*
-- (NSException *)insertRowX:(NSDictionary *)_row forEntity:(EOEntity *)_entity;
-- (NSException *)updateRowX:(NSDictionary*)aRow
-  describedByQualifier:(EOSQLQualifier*)aQualifier;
-  */
-
   adaptor = [[channel adaptorContext] adaptor];
   pathValue = [adaptor formatValue: [self path]
                       forAttribute: textColumn];
@@ -516,7 +488,7 @@ static EOAttribute *textColumn = nil;
   lastModifiedValue = (NSInteger) [lastModified timeIntervalSince1970];
   
   if (objectType == -1)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"object type has not been set for object '%@'",
                  self];
 
@@ -567,12 +539,6 @@ static EOAttribute *textColumn = nil;
   if (result)
     [self errorWithFormat: @"could not insert/update record for record %@"
                  @" in %@: %@", pathValue, tableName, result];
-  // @" c_path VARCHAR(255) PRIMARY KEY,"
-  // @" c_type SMALLINT NOT NULL,"
-  // @" c_creationdate INT4 NOT NULL,"
-  // @" c_lastmodified INT4 NOT NULL,"
-  // @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
-  // @" c_content BLOB");
 
   [cm releaseChannel: channel];
 }

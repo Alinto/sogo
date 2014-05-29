@@ -74,7 +74,7 @@ static Class NSNumberK;
   ASSIGN (versionsMessage,
           [SOGoMAPIDBMessage objectWithName: @"versions.plist"
                                 inContainer: dbFolder]);
-  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
+  [versionsMessage setObjectType: MAPIInternalCacheObject];
 }
 
 - (void) dealloc

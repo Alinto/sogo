@@ -1,8 +1,6 @@
-/* SOGoMAPIDBFolder.m - this file is part of SOGo
+/* SOGoCacheGCSFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,34 +31,32 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
-// #import <GDLContentStore/EOQualifier+GCS.m>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import "EOQualifier+MAPI.h"
-#import "GCSSpecialQueries+OpenChange.h"
-#import "SOGoMAPIDBMessage.h"
+#import "EOQualifier+SOGoCacheObject.h"
+#import "GCSSpecialQueries+SOGoCacheObject.h"
 
-#import "SOGoMAPIDBFolder.h"
+#import "SOGoCacheGCSFolder.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <talloc.h>
-#include <util/time.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <libmapiproxy.h>
-#include <param.h>
+//#include <stdbool.h>
+//#include <talloc.h>
+//#include <util/time.h>
+//#include <mapistore/mapistore.h>
+//#include <mapistore/mapistore_errors.h>
+//#include <libmapiproxy.h>
+//#include <param.h>
 
-Class SOGoMAPIDBObjectK = Nil;
+Class SOGoCacheGCSObjectK = Nil;
 
-@implementation SOGoMAPIDBFolder
+@implementation SOGoCacheGCSFolder
 
 + (void) initialize
 {
-  SOGoMAPIDBObjectK = [SOGoMAPIDBObject class];
+  SOGoCacheGCSObjectK = [SOGoCacheGCSObject class];
 }
 
 - (id) init
@@ -77,10 +73,10 @@ Class SOGoMAPIDBObjectK = Nil;
 {
   if ((self = [super initWithName: name inContainer: newContainer]))
     {
-      objectType = MAPIDBObjectTypeFolder;
-      aclMessage = [SOGoMAPIDBObject objectWithName: @"permissions"
+      objectType = MAPIFolderCacheObject;
+      aclMessage = [SOGoCacheGCSObject objectWithName: @"permissions"
                                         inContainer: self];
-      [aclMessage setObjectType: MAPIDBObjectTypeInternal];
+      [aclMessage setObjectType: MAPIInternalCacheObject];
       [aclMessage retain];
     }
 
@@ -135,7 +131,7 @@ Class SOGoMAPIDBObjectK = Nil;
 //   return [SOGoMAPIDBMessage objectWithName: filename inContainer: self];
 // }
 
-- (NSArray *) childKeysOfType: (MAPIDBObjectType) type
+- (NSArray *) childKeysOfType: (SOGoCacheObjectType) type
                includeDeleted: (BOOL) includeDeleted
             matchingQualifier: (EOQualifier *) qualifier
              andSortOrderings: (NSArray *) sortOrderings
@@ -148,7 +144,7 @@ Class SOGoMAPIDBObjectK = Nil;
   NSArray *records;
   NSDictionary *record;
   NSUInteger childPathPrefixLen, count, max;
-  SOGoMAPIDBObject *currentChild;
+  SOGoCacheGCSObject *currentChild;
 
   /* query construction */
   sql = [NSMutableString stringWithCapacity: 256];
@@ -182,7 +178,7 @@ Class SOGoMAPIDBObjectK = Nil;
             {
               if (qualifier)
                 {
-                  currentChild = [SOGoMAPIDBObject objectWithName: childKey
+                  currentChild = [SOGoCacheGCSObject objectWithName: childKey
                                                       inContainer: self];
                   [currentChild setupFromRecord: record];
                   if ([qualifier evaluateSOGoMAPIDBObject: currentChild])
@@ -201,7 +197,7 @@ Class SOGoMAPIDBObjectK = Nil;
 
 - (NSArray *) toManyRelationshipKeys
 {
-  return [self childKeysOfType: MAPIDBObjectTypeFolder
+  return [self childKeysOfType: MAPIFolderCacheObject
                 includeDeleted: NO
              matchingQualifier: nil
               andSortOrderings: nil];
@@ -209,7 +205,7 @@ Class SOGoMAPIDBObjectK = Nil;
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [self childKeysOfType: MAPIDBObjectTypeMessage
+  return [self childKeysOfType: MAPIMessageCacheObject
                 includeDeleted: NO
              matchingQualifier: nil
               andSortOrderings: nil];
@@ -359,10 +355,10 @@ Class SOGoMAPIDBObjectK = Nil;
   record = [self lookupRecord: childPath newerThanVersion: -1];
   if (record)
     {
-      if ([[record objectForKey: @"c_type"] intValue] == MAPIDBObjectTypeFolder)
+      if ([[record objectForKey: @"c_type"] intValue] == MAPIFolderCacheObject)
         objectClass = isa;
       else
-        objectClass = SOGoMAPIDBObjectK;
+        objectClass = SOGoCacheGCSObjectK;
 
       object = [objectClass objectWithName: childName
                                inContainer: self];
@@ -379,7 +375,7 @@ Class SOGoMAPIDBObjectK = Nil;
 {
   id object;
 
-  object = [SOGoMAPIDBFolder objectWithName: folderName
+  object = [SOGoCacheGCSFolder objectWithName: folderName
                                 inContainer: self];
   [object reloadIfNeeded];
 

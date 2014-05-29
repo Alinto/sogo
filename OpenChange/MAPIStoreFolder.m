@@ -1,8 +1,6 @@
 /* MAPIStoreFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +49,9 @@
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
+#import "SOGoCacheGCSObject+MAPIStore.h"
 
 #include <gen_ndr/exchange.h>
 
@@ -120,7 +119,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [userContext ensureFolderTableExists];
 
   ASSIGN (dbFolder,
-          [SOGoMAPIDBFolder objectWithName: folderName
+          [SOGoCacheGCSFolder objectWithName: folderName
                                inContainer: [container dbFolder]]);
   [dbFolder setTableUrl: [userContext folderTableURL]];
   if (!container && [path length] > 0)
@@ -138,7 +137,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   // ASSIGN (propsMessage,
   //         [SOGoMAPIDBMessage objectWithName: @"properties.plist"
   //                               inContainer: dbFolder]);
-  // [propsMessage setObjectType: MAPIDBObjectTypeInternal];
+  // [propsMessage setObjectType: MAPIInternalCacheObject];
   // [propsMessage reloadIfNeeded];
   [properties release];
   properties = [dbFolder properties];
@@ -192,7 +191,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [super dealloc];
 }
 
-- (SOGoMAPIDBFolder *) dbFolder
+- (SOGoCacheGCSFolder *) dbFolder
 {
   return dbFolder;
 }
@@ -1221,7 +1220,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {
-  return [dbFolder childKeysOfType: MAPIDBObjectTypeFAI
+  return [dbFolder childKeysOfType: MAPIFAICacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
                   andSortOrderings: sortOrderings];
@@ -1531,7 +1530,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
   dbObject = [SOGoMAPIDBMessage objectWithName: newKey inContainer: dbFolder];
-  [dbObject setObjectType: MAPIDBObjectTypeFAI];
+  [dbObject setObjectType: MAPIFAICacheObject];
   [dbObject setIsNew: YES];
   newMessage = [MAPIStoreFAIMessageK mapiStoreObjectWithSOGoObject: dbObject
                                                        inContainer: self];

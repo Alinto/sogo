@@ -42,6 +42,7 @@
 - (BOOL) trustProxyAuthentication;
 - (NSString *) encryptionKey;
 - (BOOL) useRelativeURLs;
+- (NSString *) sieveFolderEncoding;
 
 - (BOOL) isWebAccessEnabled;
 - (BOOL) isCalendarDAVAccessEnabled;
@@ -95,6 +96,7 @@
 - (int) maximumPingInterval;
 - (int) maximumSyncInterval;
 - (int) internalSyncInterval;
+- (int) maximumSyncWindowSize;
 
 @end
 

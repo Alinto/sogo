@@ -14,6 +14,7 @@
     SOGoZipPath = "/usr/bin/zip";
 
     SOGoEncryptionKey = "MySOGoEncryptionKey";
+    SOGoSieveFolderEncoding = "UTF-7";
 
     WOUseRelativeURLs = YES;
     WOMessageUseUTF8 = YES;
@@ -53,6 +54,7 @@
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
+    SOGoSelectedAddressBook = "collected";
     SOGoMailMessageCheck = "manually";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
@@ -83,4 +85,6 @@
         $label4 = ("To Do", "#3333FF");
         $label5 = ("Later", "#993399");
     };
+    
+    SOGoSubscriptionFolderFormat = "%{FolderName} (%{UserName} <%{Email}>)";
 }

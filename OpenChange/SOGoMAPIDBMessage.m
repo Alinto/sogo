@@ -30,7 +30,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 
 #import "SOGoMAPIDBMessage.h"
 

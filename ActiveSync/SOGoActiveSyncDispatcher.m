@@ -77,6 +77,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoCacheGCSObject.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
@@ -85,6 +86,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -115,23 +118,75 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
 
+#import <GDLContentStore/GCSChannelManager.h>
+
 #include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher
 
+- (id) init
+{
+  [super init];
+
+  folderTableURL = nil;
+  return self;
+}
+
+- (void) dealloc
+{
+  RELEASE(folderTableURL);
+  [super dealloc];
+}
+
 - (void) _setFolderSyncKey: (NSString *) theSyncKey
 {
-  NSMutableDictionary *metadata;
-  
-  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
-  
-  [metadata setObject: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"SyncKey"]  forKey: @"FolderSync"];
+  SOGoCacheGCSObject *o;
 
-  [[[context activeUser] userSettings] setMicrosoftActiveSyncMetadata: metadata
-                                                               forDevice: [context objectForKey: @"DeviceId"]];
-
-  [[[context activeUser] userSettings] synchronize];
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  [[o properties] removeAllObjects];
+  [[o properties] addEntriesFromDictionary: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"FolderSyncKey"]];
+  [o save];
 }
+
+- (NSMutableDictionary *) _globalMetadataForDevice
+{
+  SOGoCacheGCSObject *o;
+
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  return [o properties];
+}
+
+- (id) globallyUniqueIDToIMAPFolderName: (NSString *) theIdToTranslate
+                                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType
+{
+  if (theFolderType == ActiveSyncMailFolder)
+    {
+      SOGoMailAccounts *accountsFolder;
+      SOGoMailAccount *accountFolder;
+      SOGoUserFolder *userFolder;
+      NSDictionary *imapGUIDs;
+
+      userFolder = [[context activeUser] homeFolderInContext: context];
+      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
+      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+      
+      // Get the GUID of the IMAP folder
+      imapGUIDs = [accountFolder imapFolderGUIDs];
+      
+      return [[imapGUIDs allKeysForObject: theIdToTranslate] objectAtIndex: 0];
+    }
+  
+  return theIdToTranslate;
+}
+
 
 //
 //
@@ -166,7 +221,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         userFolder = [[context activeUser] homeFolderInContext: context];
         accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
         currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-        
+                
         collection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", theCollectionId]
                                      inContext: context
                                        acquire: NO];
@@ -212,20 +267,52 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
         currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-        
-        newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", [displayName stringByEncodingImap4FolderName]]
-                                    inContext: context
-                                      acquire: NO];
+
+        // If the parrent is 0 -> ok ; otherwise need to build the foldername based on parentId + displayName
+        if ([parentId isEqualToString: @"0"])
+          newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", [displayName stringByEncodingImap4FolderName]]
+                                      inContext: context
+                                        acquire: NO];
+        else
+          {
+            parentId = [self globallyUniqueIDToIMAPFolderName: [[parentId stringByUnescapingURL] substringFromIndex: 5]  type: ActiveSyncMailFolder];
+            newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@/%@", [parentId stringByEncodingImap4FolderName],
+                                                             [displayName stringByEncodingImap4FolderName]]
+                                        inContext: context
+                                          acquire: NO];
+          }
         
         // FIXME
         // handle exists (status == 2)
         // handle right synckey
         if ([newFolder create])
           {
+            SOGoMailAccount *accountFolder;
+            NSDictionary *imapGUIDs;
+            SOGoCacheGCSObject *o;
+            NSString *key;
+
             nameInContainer = [newFolder nameInContainer];
             
             // We strip the "folder" prefix
             nameInContainer = [nameInContainer substringFromIndex: 6];
+
+            // save new guid into cache
+            accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+            // update GUID in cache
+            imapGUIDs = [accountFolder imapFolderGUIDs];
+
+            key = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], nameInContainer ];
+            o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+            [o setObjectType: ActiveSyncFolderCacheObject];
+            [o setTableUrl: [self folderTableURL]];
+            [o reloadIfNeeded];
+            nameInContainer =[imapGUIDs objectForKey: nameInContainer];
+
+            [[o properties ] setObject: nameInContainer  forKey: @"GUID"];
+            [o save];
+
             nameInContainer = [[NSString stringWithFormat: @"mail/%@", nameInContainer] stringByEscapingURL];
           }
         else
@@ -306,9 +393,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString *serverId;
       
   SOGoMicrosoftActiveSyncFolderType folderType;
-
   
   serverId = [[[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
+  serverId = [self globallyUniqueIDToIMAPFolderName: serverId  type: folderType];
 
   userFolder = [[context activeUser] homeFolderInContext: context];
   accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -369,6 +456,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   int status;
   
   serverId = [[[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
+  serverId = [self globallyUniqueIDToIMAPFolderName: serverId  type: folderType];
   parentId = [[(id)[theDocumentElement getElementsByTagName: @"ParentId"] lastObject] textValue];
   displayName = [[(id)[theDocumentElement getElementsByTagName: @"DisplayName"] lastObject] textValue];
 
@@ -380,7 +468,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                    inContext: context
                                      acquire: NO];
 
-  error = [folderToUpdate renameTo: displayName];
+  // If parent is 0 or displayname is not changed it is either a rename of a folder in 0 or a move to 0
+  if ([parentId isEqualToString: @"0"] ||
+      ([serverId hasSuffix: [NSString stringWithFormat: @"/%@", displayName]] && [parentId isEqualToString: @"0"]))
+    {
+      error = [folderToUpdate renameTo: [NSString stringWithFormat: @"/%@", [displayName stringByEncodingImap4FolderName]]];
+    }
+  else
+    {
+      parentId = [self globallyUniqueIDToIMAPFolderName: [[parentId stringByUnescapingURL] substringFromIndex: 5]  type: folderType];
+      error = [folderToUpdate renameTo: [NSString stringWithFormat: @"%@/%@", [parentId stringByEncodingImap4FolderName],
+                                                  [displayName stringByEncodingImap4FolderName]]];
+    }
 
   // Handle new name exist
   if (!error)
@@ -396,9 +495,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       // See http://msdn.microsoft.com/en-us/library/gg675615(v=exchg.80).aspx
       // we return '9' - we force a FolderSync
-      status = 9;
+      status = 1;
 
       [self _setFolderSyncKey: syncKey];
+
+      // FIXME - TODO: We *MUST* update the path in our cache! See -changePathTo in SOGoCacheGCSObject
 
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
@@ -430,15 +531,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processFolderSync: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
+
   NSMutableDictionary *metadata;
   NSMutableString *s;
   NSString *syncKey;
   NSData *d;
-  
+ 
   BOOL first_sync;
   int status;
 
-  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
+  metadata = [self _globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
 
@@ -450,7 +552,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       first_sync = YES;
       syncKey = @"1";
     }
-  else if (![syncKey isEqualToString: [[metadata objectForKey: @"FolderSync"] objectForKey: @"SyncKey"]])
+  else if (![syncKey isEqualToString: [metadata objectForKey: @"FolderSyncKey"]])
     {
       // Synchronization key mismatch or invalid synchronization key
       status = 9;
@@ -461,84 +563,213 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendFormat: @"<FolderSync xmlns=\"FolderHierarchy:\"><Status>%d</Status><SyncKey>%@</SyncKey><Changes>", status, syncKey];
-  
-  // Initial sync, let's return the complete folder list
-  if (first_sync)
+ 
+  if (status == 1)
     {
       SOGoMailAccounts *accountsFolder;
       SOGoMailAccount *accountFolder;
       SOGoUserFolder *userFolder;
       id currentFolder;
 
-      NSDictionary *folderMetadata;
-      NSArray *allFoldersMetadata;
-      NSString *name, *serverId, *parentId;
+      NSString *key, *cKey, *nkey, *name, *serverId, *parentId;
+      NSDictionary *folderMetadata, *imapGUIDs;
+      NSArray *allFoldersMetadata, *allKeys;
+      NSMutableDictionary *cachedGUIDs;
+      NSMutableString *commands;
+      SOGoCacheGCSObject *o;
 
-      int i, type;
-      
+      int i, type, command_count;
+
       userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
+      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
 
       allFoldersMetadata = [accountFolder allFoldersMetadata];
+  
+      // Get GUIDs of folder (IMAP)
+      // e.g. {INBOX = "sogo_73c_192bd57b_d8"
+      imapGUIDs = [accountFolder imapFolderGUIDs];
 
-      // See 2.2.3.170.3 Type (FolderSync) - http://msdn.microsoft.com/en-us/library/gg650877(v=exchg.80).aspx
-      [s appendFormat: @"<Count>%d</Count>", [allFoldersMetadata count]+3];
+      cachedGUIDs = [NSMutableDictionary dictionary];
+     
+      // No need to read cached folder infos during first sync. Otherwise, pull it from the database.
+      // e.g. {"sogo_73c_192bd57b_d8" = INBOX} - guid = foldername for easy reverse lookup with imapGUIDs
+      if (!first_sync)
+        {
+          NSArray *foldersInCache;
+          NSString *folderName;
+           
+          // get the list of folder stored in cache 
+          key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], @"0"];
+          o = [SOGoCacheGCSObject objectWithName: key inContainer: nil];
+          [o setObjectType: ActiveSyncFolderCacheObject];
+          [o setTableUrl: [self folderTableURL]];
+          [o reloadIfNeeded];
+          foldersInCache = [o folderList: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+          
+          // get guids of folders stored in cache
+          for (i = 0; i < [foldersInCache count]; i++)
+            {
+              folderName = [foldersInCache objectAtIndex: i];
+              key = [folderName substringFromIndex: 1];
+              
+              o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+              [o setObjectType: ActiveSyncFolderCacheObject];
+              [o setTableUrl: [self folderTableURL]];
+              [o reloadIfNeeded];
+              
+              if ([[o properties ] objectForKey: @"GUID"])
+                [cachedGUIDs setObject: [key substringFromIndex: [key rangeOfString: @"+"].location+7]
+                                forKey: [[o properties] objectForKey: @"GUID"]];
+            }
+        }
+      
+      // Handle folders that have been deleted over IMAP
+      command_count = 0;
+      commands = [NSMutableString string];
+      allKeys = [cachedGUIDs allKeys];
 
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          cKey = [allKeys objectAtIndex: i];
+
+          if (![imapGUIDs allKeysForObject: cKey])
+            {
+              // Delete folders cache content to avoid stale data if a new folder gets created with the same name
+              key =  [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [cachedGUIDs objectForKey: cKey]];
+              o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+              [o setObjectType: ActiveSyncFolderCacheObject];
+              [o setTableUrl: [self folderTableURL]];
+              [o reloadIfNeeded];
+              
+              // Only send a delete command if GUID is found
+              if ([[o properties] objectForKey: @"GUID"])
+                {
+                  [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [[NSString stringWithFormat: @"mail/%@", [[o properties ] objectForKey: @"GUID"]] stringByEscapingURL] ];
+                  command_count++;
+                }
+              
+              [[o properties] removeAllObjects];
+              [o save];
+            }
+        }
+      
+      // Handle addition and changes
       for (i = 0; i < [allFoldersMetadata count]; i++)
         {
           folderMetadata = [allFoldersMetadata objectAtIndex: i];
-          serverId = [NSString stringWithFormat: @"mail%@", [folderMetadata objectForKey: @"path"]];
+          
+          // No GUID -> no sync
+          if (!([imapGUIDs objectForKey: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]))
+            continue;
+          
+          serverId = [NSString stringWithFormat: @"mail/%@", [imapGUIDs objectForKey: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]];
           name = [folderMetadata objectForKey: @"displayName"];
           
           if ([name hasPrefix: @"/"])
             name = [name substringFromIndex: 1];
           
           if ([name hasSuffix: @"/"])
-            name = [name substringToIndex: [name length]-2];
-
+            name = [name substringToIndex: [name length]-1];
+          
           type = [[folderMetadata objectForKey: @"type"] activeSyncFolderType];
-
           parentId = @"0";
-
+          
           if ([folderMetadata objectForKey: @"parent"])
             {
-              parentId = [NSString stringWithFormat: @"mail%@", [folderMetadata objectForKey: @"parent"]];
+              parentId = [NSString stringWithFormat: @"mail/%@", [imapGUIDs objectForKey: [[folderMetadata objectForKey: @"parent"] substringFromIndex: 1]]];
               name = [[name pathComponents] lastObject];
             }
-
-          [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>",
-             [serverId stringByEscapingURL],
-             [parentId stringByEscapingURL],
-             type,
-             [name activeSyncRepresentationInContext: context]];
+          
+          // Decide between add and change
+          if ([cachedGUIDs objectForKey: [imapGUIDs objectForKey: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]])
+            {
+              // Search GUID to check name change in cache (diff between IMAP and cache)
+              if ((![[[folderMetadata objectForKey: @"path"] substringFromIndex: 1] isEqualToString: [imapGUIDs objectForKey: [cachedGUIDs objectForKey: 
+                                                                                                                                             [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]]]))
+                {
+                  key = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [cachedGUIDs objectForKey: 
+                                                                                                                        [imapGUIDs objectForKey: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]]];
+                  nkey = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [[folderMetadata objectForKey: @"path"] substringFromIndex: 1] ];
+                  
+                  if (![key isEqualToString: nkey])
+                    {
+                      [commands appendFormat: @"<Update><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Update>",
+                                [serverId stringByEscapingURL],
+                                [parentId stringByEscapingURL],
+                                type,
+                                [name activeSyncRepresentationInContext: context]];
+                      
+                      
+                      // Change path in cache
+                      o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+                      [o setObjectType: ActiveSyncFolderCacheObject];
+                      [o setTableUrl: [self folderTableURL]];
+                      [o reloadIfNeeded];
+                      [o changePathTo: [NSString stringWithFormat: @"/%@", nkey]]; // ?? why is '/' prefix needed - problem in changePathTo?
+                      
+                      command_count++;
+                    }
+                }
+            }
+          else
+            {
+              [commands appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>",
+                        [serverId stringByEscapingURL],
+                        [parentId stringByEscapingURL],
+                        type,
+                        [name activeSyncRepresentationInContext: context]];
+              
+              // Store folder's GUID in cache
+              key = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]];
+              o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+              [o setObjectType: ActiveSyncFolderCacheObject];
+              [o setTableUrl: [self folderTableURL]];
+              [o reloadIfNeeded];
+              
+              [[o properties ]  setObject: [imapGUIDs objectForKey: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]]  forKey: @"GUID"];
+              [o save];
+              
+              command_count++;
+            }
         }
-
-      // We add the personal calendar - events
-      // FIXME: add all calendars
-      currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
-      name = [NSString stringWithFormat: @"vevent/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
-
-      // We add the personal calendar - tasks
-      // FIXME: add all calendars
-      currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
-      name = [NSString stringWithFormat: @"vtodo/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
       
-      // We add the personal address book
-      // FIXME: add all address books
-      currentFolder = [[context activeUser] personalContactsFolderInContext: context];
-      name = [NSString stringWithFormat: @"vcard/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
+      if (first_sync)
+        [s appendFormat: @"<Count>%d</Count>", command_count+3];
+      else
+        [s appendFormat: @"<Count>%d</Count>", command_count];
+      
+      if (command_count > 0)
+        [s appendFormat: @"%@", commands];
+      
+      if (first_sync)
+        {
+          // We add the personal calendar - events
+          // FIXME: add all calendars
+          currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
+          name = [NSString stringWithFormat: @"vevent/%@", [currentFolder nameInContainer]];
+          [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
+
+          // We add the personal calendar - tasks
+          // FIXME: add all calendars
+          currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
+          name = [NSString stringWithFormat: @"vtodo/%@", [currentFolder nameInContainer]];
+          [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
+          
+          // We add the personal address book
+          // FIXME: add all address books
+          currentFolder = [[context activeUser] personalContactsFolderInContext: context];
+          name = [NSString stringWithFormat: @"vcard/%@", [currentFolder nameInContainer]];
+          [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
+        }
     }
-
+  
   [s appendString: @"</Changes></FolderSync>"];
-
+  
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-
+  
   [theResponse setContent: d];
-}
+} 
 
 //
 // From: http://msdn.microsoft.com/en-us/library/ee157980(v=exchg.80).aspx :
@@ -585,6 +816,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   currentCollection = [self collectionFromId: realCollectionId  type: folderType];
   
   //
@@ -659,6 +891,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   fileReference = [[[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
 
   realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   
   if (folderType == ActiveSyncMailFolder)
     {
@@ -752,6 +985,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   status = 1;
 
   realCollectionId = [[[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   userResponse = [[[(id)[theDocumentElement getElementsByTagName: @"UserResponse"] lastObject] textValue] intValue];
   requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];  
   appointmentObject = nil;
@@ -902,6 +1136,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           NSDictionary *response;
           NSString *v;
           
+          srcFolderId = [self globallyUniqueIDToIMAPFolderName: srcFolderId  type: srcFolderType];
+          dstFolderId = [self globallyUniqueIDToIMAPFolderName: dstFolderId  type: dstFolderType];
+
           currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
           
           client = [[currentCollection imap4Connection] client];
@@ -1031,6 +1268,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   [s appendString: @"</Ping>"];
+  
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+  
+  [theResponse setContent: d];
+}
+
+//
+// We ignore everything for now.
+//
+- (void) processProvision: (id <DOMElement>) theDocumentElement
+               inResponse: (WOResponse *) theResponse
+{
+  NSMutableString *s;
+  NSData *d;
+  
+  s = [NSMutableString string];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<Provision xmlns=\"Provision:\">"];
+  [s appendString: @"</Provision>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
@@ -1420,11 +1677,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  id value;
 
   folderId = [[(id)[theDocumentElement getElementsByTagName: @"FolderId"] lastObject] textValue];
   itemId = [[(id)[theDocumentElement getElementsByTagName: @"ItemId"] lastObject] textValue];
   realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
+  value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
+
+  // ReplaceMime isn't specified so we must NOT use the server copy
+  // but rather take the data as-is from the client.
+  if (![value count])
+    {
+      [self processSendMail: theDocumentElement
+                 inResponse: theResponse];
+      return;
+    }
+  
   if (folderType == ActiveSyncMailFolder)
     {
       SOGoMailAccounts *accountsFolder;
@@ -1559,6 +1829,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   cmdName = [[theRequest uri] command];
 
+  // We make sure our cache table exists
+  [self ensureFolderTableExists];
+
   //
   // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
   // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
@@ -1628,6 +1901,74 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    RELEASE(context);
 
   return nil;
+}
+
+- (NSURL *) folderTableURL
+{
+  NSString *urlString, *ocFSTableName;
+  NSMutableArray *parts;
+  SOGoUser *user;
+
+  if (!folderTableURL)
+    {
+      user = [context activeUser];
+
+      if (![user loginInDomain])
+        return nil;
+
+      urlString = [[user domainDefaults] folderInfoURL];
+      parts = [[urlString componentsSeparatedByString: @"/"]
+                mutableCopy];
+      [parts autorelease];
+      if ([parts count] == 5)
+        {
+          /* If "OCSFolderInfoURL" is properly configured, we must have 5
+             parts in this url. */
+          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
+                                    [[user loginInDomain] asCSSIdentifier]];
+          [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
+          folderTableURL
+            = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];
+          [folderTableURL retain];
+        }
+      else
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"'OCSFolderInfoURL' is not set"];
+    }
+
+  return folderTableURL;
+}
+
+- (void) ensureFolderTableExists
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *channel;
+  NSString *tableName, *query;
+  GCSSpecialQueries *queries;
+
+  [self folderTableURL];
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: folderTableURL];
+  
+  /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
+  tableName = [[folderTableURL path] lastPathComponent];
+  if (tableName &&
+      [channel evaluateExpressionX:
+                 [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+                           tableName]])
+    {
+      queries = [channel specialQueries];
+      query = [queries createSOGoCacheGCSFolderTableWithName: tableName];
+      if ([channel evaluateExpressionX: query])
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"could not create special table '%@'", tableName];
+    }
+  else
+    [channel cancelFetch];
+
+
+  [cm releaseChannel: channel]; 
 }
 
 @end

@@ -87,6 +87,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) language;
 
 /* mail */
+- (void) setMailAddOutgoingAddresses: (BOOL) newValue;
+- (BOOL) mailAddOutgoingAddresses;
+
 - (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue;
 - (BOOL) mailShowSubscribedFoldersOnly;
 
@@ -110,6 +113,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (void) setMailListViewColumnsOrder: (NSArray *) newValue;
 - (NSArray *) mailListViewColumnsOrder;
+
+- (void) setSelectedAddressBook: (NSString *) newValue;
+- (NSString *) selectedAddressBook;
 
 - (void) setMailMessageCheck: (NSString *) newValue;
 - (NSString *) mailMessageCheck;

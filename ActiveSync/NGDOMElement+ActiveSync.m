@@ -37,6 +37,28 @@ static NSArray *asElementArray = nil;
 
 @implementation NGDOMElement (ActiveSync)
 
+- (BOOL) isTextNode
+{
+  id <DOMNodeList> children;
+  id <DOMElement> element;
+  int i;
+
+  if ([self nodeType] == DOM_TEXT_NODE)
+    return YES;
+  
+  children = [self childNodes];
+
+  for (i = 0; i < [children length]; i++)
+    {
+      element = [children objectAtIndex: i];
+
+      if ([element nodeType] != DOM_TEXT_NODE)
+        return NO;
+    }
+  
+  return YES;
+}
+
 //
 // We must handle "inner data" like this:
 // 
@@ -79,7 +101,7 @@ static NSArray *asElementArray = nil;
   int i, count;
   
   if (!asElementArray)
-    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", nil];
+    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", nil];
 
   data = [NSMutableDictionary dictionary];
 
@@ -96,9 +118,17 @@ static NSArray *asElementArray = nil;
           
           tag = [element tagName];
           count = [(NSArray *)[element childNodes] count];
-
+          
+          // We check if the node is a text one or if all its
+          // children are text nodes. This is important to avoid side-effects
+          // in SOPE where "foo & bar" would result into 3 childnodes instead
+          // of just one.
+          if ([(id)element isTextNode])
+            {
+              value = [(id)element textValue];
+            }
           // Handle inner data - see above for samples
-          if (count > 2)
+          else
             {
               NSMutableArray *innerElements;
               id <DOMElement> innerElement;
@@ -123,7 +153,10 @@ static NSArray *asElementArray = nil;
 
                       if ([innerTag isEqualToString: [innerElement tagName]])
                         {
-                          [innerElements addObject: [(NGDOMElement *)innerElement applicationData]];
+                          if ([(id)innerElement isTextNode])
+                            [innerElements addObject: [(NGDOMElement *)innerElement textValue]];
+                          else
+                            [innerElements addObject: [(NGDOMElement *)innerElement applicationData]];
                         }
                       else
                         {
@@ -144,12 +177,11 @@ static NSArray *asElementArray = nil;
                     value = nil;
                 }
             }
-          else
-            value = [[element firstChild] textValue];
           
           if (value && tag)
             [data setObject: value  forKey: tag];
-        }
+          
+        } // if ([element nodeType] == DOM_ELEMENT_NODE)
     }
   
   return data;

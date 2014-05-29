@@ -1,8 +1,6 @@
-/* EOBitmaskQualifier.h - this file is part of SOGo
+/* EOQualifier+SOGoCacheObject.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,26 +18,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef EOBITMASKQUALIFIER_H
-#define EOBITMASKQUALIFIER_H
+#ifndef EOQUALIFIER_SOGOCACHEOBJECT_H
+#define EOQUALIFIER_SOGOCACHEOBJECT_H
 
 #import <EOControl/EOQualifier.h>
 
-@interface EOBitmaskQualifier : EOQualifier
-{
-  NSString *key;
-  uint32_t mask;
-  BOOL isZero;
-}
+@class SOGoCacheGCSObject;
 
-- (id) initWithKey: (NSString *) newKey
-	      mask: (uint32_t) newMask
-	    isZero: (BOOL) newIsZero;
+@interface EOQualifier (SOGoCacheObjectRestrictions)
 
-- (NSString *) key;
-- (uint32_t ) mask;
-- (BOOL) isZero;
+- (BOOL) evaluateSOGoMAPIDBObject: (SOGoCacheGCSObject *) object;
 
 @end
 
-#endif /* EOBITMASKQUALIFIER_H */
+#endif /* EOQUALIFIER_CACHEOBJECT_H */

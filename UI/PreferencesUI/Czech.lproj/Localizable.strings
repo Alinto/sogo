@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Čas mimo pracovní dobu zobrazovat jako obsazený";
 "First week of year :" = "První týden roku :";
 "Enable reminders for Calendar items" = "Povolit upozornění pro události v kalendáři";
-"Play a sound when a reminder comes due"
-= "Při upozornění přehrát zvuk";
+"Play a sound when a reminder comes due" = "Při upozornění přehrát zvuk";
 "Default reminder :" = "Výchozí upozornění :";
 
 "firstWeekOfYear_January1" = "Začíná 1. ledna";
@@ -130,6 +129,7 @@
 "Label" = "Označkovat";
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
+"When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
 "Check for new mail:" = "Zkontrolovat novou poštu:";
 "messagecheck_manually" = "Manuálně";
 "messagecheck_every_minute" = "Každou minutu";
@@ -156,6 +156,10 @@
 "Display remote inline images" = "Zobrazit vzdálené inline obrázky";
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
+
+/* Contact */
+"Personal Address Book" = "Osobní kontakty";
+"Collected Address Book" = "Sebrané kontakty";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nový poštovní účet";
@@ -204,6 +208,7 @@
 "Mail" = "Pošta";
 "Last" = "Naposledy použitý";
 "Default module :" = "Výchozí modul :";
+"SOGo version:" = "SOGo verze:";
 
 "Language :" = "Jazyk :";
 "choose" = "Vybrat ...";
@@ -248,6 +253,8 @@
 "Active" = "Aktivní";
 "Move Up" = "Posunout nahoru";
 "Move Down" = "Posunout dolů";
+"Connection error" = "Chyba spojení";
+"Service temporarily unavailable" = "Služba dočasně nedostupná";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Jméno filtru:";

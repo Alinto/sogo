@@ -72,6 +72,28 @@
 
 static NSString *defaultUserID =  @"anyone";
 
+static NSComparisonResult
+_compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
+{
+  static NSNumber *zeroNumber = nil;
+  NSNumber *modseq1, *modseq2;
+
+  if (!zeroNumber)
+    {
+      zeroNumber = [NSNumber numberWithUnsignedLongLong: 0];
+      [zeroNumber retain];
+    }
+
+  modseq1 = [entry1 objectForKey: @"modseq"];
+  if (!modseq1)
+    modseq1 = zeroNumber;
+  modseq2 = [entry2 objectForKey: @"modseq"];
+  if (!modseq2)
+    modseq2 = zeroNumber;
+
+  return [modseq1 compare: modseq2];
+}
+
 @interface NGImap4Connection (PrivateMethods)
 
 - (NSString *) imap4FolderNameForURL: (NSURL *) url;
@@ -291,10 +313,18 @@ static NSString *defaultUserID =  @"anyone";
           path = [[imap4URL path] stringByDeletingLastPathComponent];
           if (![path hasSuffix: @"/"])
             path = [path stringByAppendingString: @"/"];
-          destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
-                                             host: [imap4URL host]
-                                             path: [NSString stringWithFormat: @"%@%@",
-                                                             path, [newName stringByEncodingImap4FolderName]]];
+
+	  // If new name contains the path - dont't need to add
+          if ([newName rangeOfString: @"/"].location == NSNotFound)
+            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                               host: [imap4URL host]
+                                               path: [NSString stringWithFormat: @"%@%@",
+                                                               path, [newName stringByEncodingImap4FolderName]]];
+          else
+            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                               host: [imap4URL host]
+                                               path: [NSString stringWithFormat: @"%@",
+                                                               [newName stringByEncodingImap4FolderName]]];
           [destURL autorelease];
           error = [imap4 moveMailboxAtURL: imap4URL
                                     toURL: destURL];
@@ -652,8 +682,12 @@ static NSString *defaultUserID =  @"anyone";
               // Destination folder is in a different account
               SOGoMailAccounts *accounts;
               SOGoMailAccount *account;
-              accounts = [[self container] container];
+              SOGoUserFolder *userFolder;
+              
+              userFolder = [[context activeUser] homeFolderInContext: context];
+              accounts = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
               account = [accounts lookupName: [folders objectAtIndex: 1] inContext: localContext acquire: NO];
+
               if ([account isKindOfClass: [NSException class]])
                 {
                   result = [NSException exceptionWithHTTPStatus: 500
@@ -796,8 +830,9 @@ static NSString *defaultUserID =  @"anyone";
 - (NSArray *) fetchUIDs: (NSArray *) _uids
 		  parts: (NSArray *) _parts
 {
-  return [[self imap4Connection] fetchUIDs: _uids inURL: [self imap4URL]
-				 parts: _parts];
+  return [[self imap4Connection] fetchUIDs: _uids
+                                     inURL: [self imap4URL]
+                                     parts: _parts];
 }
 
 - (NSArray *) fetchUIDsOfVanishedItems: (uint64_t) modseq
@@ -823,7 +858,7 @@ static NSString *defaultUserID =  @"anyone";
                                 toFolderURL: [self imap4URL]];
   
   return [NSException exceptionWithHTTPStatus: 502 /* Bad Gateway */
-		      reason: [NSString stringWithFormat: @"%@ is not an IMAP4 folder", [self relativeImap4Name]]];
+                                       reason: [NSString stringWithFormat: @"%@ is not an IMAP4 folder", [self relativeImap4Name]]];
 }
 
 - (NSException *) expunge
@@ -2001,16 +2036,45 @@ static NSString *defaultUserID =  @"anyone";
 //
 // Check updated items
 //
+// . UID FETCH 1:* (UID) (CHANGEDSINCE 1)
+// * 1 FETCH (UID 542 MODSEQ (7))
+// * 2 FETCH (UID 553 MODSEQ (14))
+// * 3 FETCH (UID 554 MODSEQ (16))
+// * 4 FETCH (UID 555 MODSEQ (15))
+// * 5 FETCH (UID 559 MODSEQ (17))
+// * 6 FETCH (UID 560 MODSEQ (18))
+// * 7 FETCH (UID 561 MODSEQ (19))
 //
-// . uid fetch 1:* (UID) (changedsince 171)
+// SORT + MODSEQ:  http://www.watersprings.org/pub/id/draft-melnikov-condstore-sort-00.txt
+// With date, not modseq
+// . UID SORT (DATE) UTF-8 (NOT DELETED) (SINCE "15-Mar-2014")
+// * SORT 553 542 555 554 601 559 560 561 565 602 603 605 611 610 612 613 614 615 616 617 618 621 619 620 622 623
 //
+// . UID SORT (DATE) UTF-8 ((MODSEQ 64) (NOT DELETED)) (SINCE "15-Mar-2014")
+// * SORT 623 624 (MODSEQ 65)
+// . OK Completed (2 msgs in 0.000 secs)
+//
+// ".. the server MUST also append (to the end of the untagged SORT response) the highest mod-sequence for all messages being returned."
+//                                                    
 // To get the modseq of a specific message:
 //
-// . uid fetch 124569:124569 uid (changedsince 1)
+// . UID FETCH 124569:124569 (UID MODSEQ)
+// * 4900 FETCH (UID 124569 MODSEQ (2))
 //
 //
-// Deleted:  "UID FETCH 1:* (UID) (CHANGEDSINCE 171 VANISHED)"
+// To get deleted messages
+//
+// . UID FETCH 1:* (UID) (CHANGEDSINCE 1 VANISHED)
+// * VANISHED (EARLIER) 1:541,543:552,556:558,562:564,566:600,604,606:609
+// * 1 FETCH (UID 542 MODSEQ (7))
+// * 2 FETCH (UID 553 MODSEQ (14))
+// * 3 FETCH (UID 554 MODSEQ (16))
+// * 4 FETCH (UID 555 MODSEQ (15))
+// * 5 FETCH (UID 559 MODSEQ (17))
+// * 6 FETCH (UID 560 MODSEQ (18))
+// * 7 FETCH (UID 561 MODSEQ (19))
 
+//
 // fetchUIDsOfVanishedItems ..
 //
 // . uid fetch 1:* (FLAGS) (changedsince 176 vanished)
@@ -2027,6 +2091,7 @@ static NSString *defaultUserID =  @"anyone";
   NSMutableArray *allTokens;
   NSArray *a, *uids;
   NSDictionary *d;
+  id fetchResults;
 
   int uidnext, highestmodseq, i; 
 
@@ -2053,7 +2118,7 @@ static NSString *defaultUserID =  @"anyone";
       EOKeyValueQualifier *kvQualifier;
       NSNumber *nextModseq;
 
-      nextModseq = [NSNumber numberWithUnsignedLongLong: highestmodseq + 1];
+      nextModseq = [NSNumber numberWithUnsignedLongLong: highestmodseq];
       kvQualifier = [[EOKeyValueQualifier alloc]
                                 initWithKey: @"modseq"
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
@@ -2071,9 +2136,10 @@ static NSString *defaultUserID =  @"anyone";
 
   if (theStartDate)
     {
-      EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                                       @"(DATE >= %@)", theStartDate];
+      EOQualifier *sinceDateQualifier;
       
+      sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                          @"(DATE >= %@)", theStartDate];
       searchQualifier = [[EOAndQualifier alloc] initWithQualifiers: searchQualifier, sinceDateQualifier,
                                                 nil];
       [searchQualifier autorelease];
@@ -2084,24 +2150,28 @@ static NSString *defaultUserID =  @"anyone";
   uids = [self fetchUIDsMatchingQualifier: searchQualifier
                              sortOrdering: nil];
 
-  for (i = 0; i < [uids count]; i++)
-    {
-      // New messages
-      if ([[uids objectAtIndex: i] intValue] >= uidnext)
-        {
-          d = [NSDictionary dictionaryWithObject: @"added"  forKey: [uids objectAtIndex: i]];
-        }
-      // Changed messages
-      else
-        {
-          d = [NSDictionary dictionaryWithObject: @"changed"  forKey: [uids objectAtIndex: i]];
-        }
+  fetchResults = [(NSDictionary *)[self fetchUIDs: uids
+                                            parts: [NSArray arrayWithObject: @"modseq"]]
+                     objectForKey: @"fetch"];
+  
+  /* NOTE: we sort items manually because Cyrus does not properly sort
+     entries with a MODSEQ of 0 */
+  fetchResults
+    = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
+                                     context: NULL];
 
+  for (i = 0; i < [fetchResults count]; i++)
+    { 
+      d = [NSDictionary dictionaryWithObject: [[fetchResults objectAtIndex: i] objectForKey: @"modseq"]
+                                      forKey: [[[fetchResults objectAtIndex: i] objectForKey: @"uid"] stringValue]];
       [allTokens addObject: d];
     }
   
 
   // We fetch deleted ones
+  if (highestmodseq == 0)
+    highestmodseq = 1;
+
   if (highestmodseq > 0)
     {
       id uid;
@@ -2110,8 +2180,8 @@ static NSString *defaultUserID =  @"anyone";
       
       for (i = 0; i < [uids count]; i++)
         {
-          uid = [uids objectAtIndex: i];
-          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: uid];
+          uid = [[uids objectAtIndex: i] stringValue];
+          d = [NSDictionary dictionaryWithObject: [NSNull null]  forKey: uid];
           [allTokens addObject: d];
         }
     }

@@ -1,0 +1,63 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:uix="OGo:uix"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPageFrame"
+               const:toolbar="none"
+               const:popup="YES"
+               title="title">
+
+  <div class="tabsContainer" id="propertiesTabs">
+    <ul>
+      <li target="properties">
+      <span><var:string label:value="Properties" /></span></li>
+      <li target="LinksView">
+      <span><var:string label:value="Links to this Address Book" /></span></li>
+    </ul>
+
+    <div class="tabs">
+      <!-- First Tab -->
+      <div id="properties" class="tab">
+        <fieldset>
+          <legend><var:string label:value="Properties"/></legend>
+          <div>
+            <var:string label:value="Address Book Name:" />
+            <input type="text" name="addressBookName" id="addressBookName" class="textField" var:value="addressBookName" />
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Second Tab -->
+      <div id="LinksView" class="tab">
+        <fieldset id="authenticatedLinks">
+          <legend><var:string label:value="Authenticated User Access"/></legend>
+          <div>
+            <var:string label:value="CardDAV URL: "/>
+            <var:string value="cardDavURL" />
+          </div>
+        </fieldset>
+        <var:if condition="isPublicAccessEnabled">
+          <fieldset id="publicLinks">
+            <legend><var:string label:value="Public Access"/></legend>
+            <div>
+              <var:string label:value="CardDAV URL: "/>
+              <var:string value="publicCardDavURL" />
+            </div>
+          </fieldset>
+        </var:if>
+      </div>
+
+      <!-- Buttons -->
+      <div id="buttons">
+        <a href="#" class="button actionButton" id="okButton" name="okButton">
+        <span><var:string label:value="OK"/></span></a>
+        <a href="#" class="button" id="cancelButton" name="cancelButton">
+        <span><var:string label:value="Cancel"/></span></a>
+      </div>
+    </div>
+  </div>
+</var:component>

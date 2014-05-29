@@ -42,5 +42,5 @@ ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
 include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
-check ::
+check :: $(TEST_TOOL)
 	./obj/sogo-tests

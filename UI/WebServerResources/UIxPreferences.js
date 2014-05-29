@@ -3,88 +3,111 @@ var mailAccounts = null;
 var dialogs = {};
 
 function savePreferences(sender) {
-    var sendForm = true;
-
-    var sigList = $("signaturePlacementList");
-    if (sigList)
-        sigList.disabled = false;
-
-    if ($("calendarCategoriesListWrapper")) {
-        serializeCalendarCategories();
+  var sendForm = true;
+  
+  var sigList = $("signaturePlacementList");
+  if (sigList)
+    sigList.disabled = false;
+  
+  if ($("calendarCategoriesListWrapper"))
+    serializeCalendarCategories();
+  
+  if ($("contactsCategoriesListWrapper"))
+    serializeContactsCategories();
+  
+  if ($("mailLabelsListWrapper"))
+    serializeMailLabels();
+  
+  if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
+    showAlertDialog(_("Please specify a valid sender address."));
+    sendForm = false;
+  }
+  
+  if ($("replyTo")) {
+    var replyTo = $("replyTo").value;
+    if (!replyTo.blank() && !emailRE.test(replyTo)) {
+      showAlertDialog(_("Please specify a valid reply-to address."));
+      sendForm = false;
     }
-    if ($("contactsCategoriesListWrapper")) {
-        serializeContactsCategories();
+  }
+  
+  if ($("dayStartTime")) {
+    var start = $("dayStartTime");
+    var selectedStart = parseInt(start.options[start.selectedIndex].value);
+    var end = $("dayEndTime");
+    var selectedEnd = parseInt(end.options[end.selectedIndex].value);
+    
+    if (selectedStart >= selectedEnd) {
+      showAlertDialog (_("Day start time must be prior to day end time."));
+      sendForm = false;
     }
-
-    if ($("mailLabelsListWrapper")) {
-        serializeMailLabels();
+  }
+  
+  if ($("enableVacation") && $("enableVacation").checked) {
+    if ($("autoReplyText").value.strip().length == 0 || $("autoReplyEmailAddresses").value.strip().length == 0) {
+      showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
+      sendForm = false;
     }
-
-    if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
-        showAlertDialog(_("Please specify a valid sender address."));
-        sendForm = false;
-    }
-
-    if ($("replyTo")) {
-        var replyTo = $("replyTo").value;
-        if (!replyTo.blank() && !emailRE.test(replyTo)) {
-            showAlertDialog(_("Please specify a valid reply-to address."));
-            sendForm = false;
-        }
-    }
-
-    if ($("dayStartTime")) {
-        var start = $("dayStartTime");
-        var selectedStart = parseInt(start.options[start.selectedIndex].value);
-        var end = $("dayEndTime");
-        var selectedEnd = parseInt(end.options[end.selectedIndex].value);
-        if (selectedStart >= selectedEnd) {
-            showAlertDialog (_("Day start time must be prior to day end time."));
-            sendForm = false;
-        }
-    }
-
-    if ($("enableVacation") && $("enableVacation").checked) {
-        if ($("autoReplyText").value.strip().length == 0
-            || $("autoReplyEmailAddresses").value.strip().length == 0) {
-            showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
-            sendForm = false;
-        }
-	if ($("autoReplyText").value.strip().endsWith('\n.')) {
-	    showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+    
+    if ($("autoReplyText").value.strip().endsWith('\n.')) {
+      showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
 	    sendForm = false;
-	}
-        if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
-            var e = $("vacationEndDate_date");
-            var endDate = e.inputAsDate();
-            var now = new Date();
-            if (isNaN(endDate.getTime()) || endDate.getTime() < now.getTime()) {
-                showAlertDialog(_("End date of your auto reply must be in the future."));
-                sendForm = false;
-            }
+    }
+    
+    if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
+      var e = $("vacationEndDate_date");
+      var endDate = e.inputAsDate();
+      var now = new Date();
+      if (isNaN(endDate.getTime()) || endDate.getTime() < now.getTime()) {
+        showAlertDialog(_("End date of your auto reply must be in the future."));
+        sendForm = false;
+      }
+    }
+  }
+  
+  if ($("enableForward") && $("enableForward").checked) {
+    var addresses = $("forwardAddress").value.split(",");
+    for (var i = 0; i < addresses.length && sendForm; i++)
+      if (!emailRE.test(addresses[i].strip())) {
+        showAlertDialog(_("Please specify an address to which you want to forward your messages."));
+        sendForm = false;
+      }
+  }
+  
+  if (typeof sieveCapabilities != "undefined") {
+    var jsonFilters = prototypeIfyFilters();
+    $("sieveFilters").setValue(Object.toJSON(jsonFilters));
+  }
+  
+  if (sendForm) {
+    saveMailAccounts();
+    
+    triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
+      if (http.readyState == 4) {
+        var response = http.responseText.evalJSON(true);
+        if (http.status == 503) {
+          showAlertDialog(_(response.textStatus));
         }
-    }
-
-    if ($("enableForward") && $("enableForward").checked) {
-        var addresses = $("forwardAddress").value.split(",");
-        for (var i = 0; i < addresses.length && sendForm; i++)
-            if (!emailRE.test(addresses[i].strip())) {
-                showAlertDialog(_("Please specify an address to which you want to forward your messages."));
-                sendForm = false;
-            }
-    }
-
-    if (typeof sieveCapabilities != "undefined") {
-        var jsonFilters = prototypeIfyFilters();
-        $("sieveFilters").setValue(Object.toJSON(jsonFilters));
-    }
-
-    if (sendForm) {
-        saveMailAccounts();
-        $("mainForm").submit();
-    }
-
-    return false;
+        else if (http.status == 200) {
+          if (response.hasChanged == 1) {
+            window.opener.location.reload();
+            window.close();
+          }
+          else {
+            window.close();
+          }
+        }
+        else {
+          showAlertDialog(_(response.textStatus));
+        }
+      }
+    },
+    null,
+    Form.serialize($("mainForm")), // excludes the file input
+    { "Content-type": "application/x-www-form-urlencoded"}
+    );
+	}
+  return false;
 }
 
 function prototypeIfyFilters() {
@@ -328,7 +351,7 @@ function updateSieveFilterRow(filterTable, number, filter) {
 }
 
 function _editFilter(filterId) {
-    var urlstr = ApplicationBaseURL + "editFilter?filter=" + filterId;
+    var urlstr = ApplicationBaseURL + "/editFilter?filter=" + filterId;
     var win = window.open(urlstr, "sieve_filter_" + filterId,
                           "width=560,height=380,resizable=0");
     if (win)
@@ -860,7 +883,8 @@ function saveMailAccounts() {
 
     // Could be null if ModuleConstraints disables email access
     if (editor)
-    	editor.parentNode.removeChild(editor);
+    	//Instead of removing the modules, we disable it. This will prevent the window to crash if we have a connection error.
+      editor.select('input, select').each(function(i) { i.disable(); })
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");

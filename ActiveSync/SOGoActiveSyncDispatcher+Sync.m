@@ -32,9 +32,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoApplication.h>
@@ -72,6 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoCacheGCSObject.h>
 
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -101,10 +104,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSString+ActiveSync.h"
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
+#include "SOGoSyncCacheObject.h"
 
 #include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher (Sync)
+
+- (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata
+                     forKey: (NSString *) theFolderKey
+{
+  SOGoCacheGCSObject *o;
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theFolderKey];
+
+  o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+  [o setObjectType: ActiveSyncFolderCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  [[o properties] removeObjectForKey: @"SyncCache"];
+  [[o properties] removeObjectForKey: @"DateCache"];
+
+  [[o properties] addEntriesFromDictionary: theFolderMetadata];
+  [o save];
+}
+
+- (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey
+{
+  SOGoCacheGCSObject *o;
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theFolderKey];
+
+  o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+  [o setObjectType: ActiveSyncFolderCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  return [o properties];
+}
+
 
 //
 // <?xml version="1.0"?>
@@ -423,7 +463,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theBuffer appendString: @"</Fetch>"];
 }
 
-
 //
 // The method handles <GetChanges/>
 //
@@ -450,6 +489,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return;
   
   s = [NSMutableString string];
+  
   more_available = NO;
 
   switch (theFolderType)
@@ -567,106 +607,189 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     case ActiveSyncMailFolder:
     default:
       {
-        NSMutableArray *addedOrChangedMessages;
-        NSString *uid, *command, *key;
+        NSMutableDictionary *syncCache, *dateCache, *folderMetadata;
+        SOGoSyncCacheObject *lastCacheObject, *aCacheObject;
+        NSMutableArray *allCacheObjects, *sortedBySequence;
+
         SOGoMailObject *mailObject;
-        NSDictionary *aMessage;
         NSArray *allMessages;
-        int deleted_count;
+
+        int j, k, return_count;
+        BOOL found_in_cache;
+
 
         allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
-        addedOrChangedMessages = [NSMutableArray array];
-        deleted_count = 0;
-
-        // Check for the WindowSize.
-        // FIXME: we should eventually check for modseq and slice the maximum
-        //        amount of messages returned to ensure we don't have the same
-        //        modseq accross contiguous boundaries
         max = [allMessages count];
         
-        // We first check the number of deleted messages we have
-        // We do NOT honor the window size here as it seems to be
-        // impossible to get the modseq of an expunged message so
-        // we can't iterate in the list of deleted messages.
-        for (i = 0; i < max; i++)
-          {
-            aMessage = [allMessages objectAtIndex: i];
-            
-            uid = [[[aMessage allKeys] lastObject] stringValue];
-            command = [[aMessage allValues] lastObject];
-            
-            if ([command isEqualToString: @"deleted"])
-              {
-                [s appendString: @"<Delete xmlns=\"AirSync:\">"];
-                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [s appendString: @"</Delete>"];
-                deleted_count++;
-              }
-            else
-              {
-                [addedOrChangedMessages addObject: aMessage];
-              }
-          }
-
-        // We then "pad" with our added/changed messages. We ALWAYS
-        // at least return one if available
-        max = [addedOrChangedMessages count];
+        allCacheObjects = [NSMutableArray array];
         
         for (i = 0; i < max; i++)
           {
-            aMessage = [addedOrChangedMessages objectAtIndex: i];
-            
-            uid = [[[aMessage allKeys] lastObject] stringValue];
-            command = [[aMessage allValues] lastObject];          
-            
-            // We check for Outlook stupidity to avoid creating duplicates - see the comment
-            // in SOGoActiveSyncDispatcher.m: -processMoveItems:inResponse: for more details.
-            key = [NSString stringWithFormat: @"%@+%@+%@+%@",
-                            [[context activeUser] login],
-                       [context objectForKey: @"DeviceType"],
-                            [theCollection displayName],
-                            uid];
-            
-            if ([[SOGoCache sharedCache] valueForKey: key])
+            [allCacheObjects addObject: [SOGoSyncCacheObject syncCacheObjectWithUID: [[[allMessages objectAtIndex: i] allKeys] lastObject]
+                                                                            sequence: [[[allMessages objectAtIndex: i] allValues] lastObject]]];
+          }
+        
+        // If it's a new Sync operation, DateCache and SyncCache need to be deleted
+        // but GUID stored by folderSync shouldn't be touched
+        folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
+        if ([theSyncKey isEqualToString: @"-1"])
+          {
+            [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
+            [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
+          }
+        // Check whether GUID in cache is equal to the GUID from imap - this is to avoid cache corruptions if a folder has been renamed and a new folder
+        // with the same name has been created but folderSync has not yet updated the cache
+        if (!([[theCollection nameInContainer] isEqualToString: 
+                                    [NSString stringWithFormat: @"folder%@", [self globallyUniqueIDToIMAPFolderName: [folderMetadata objectForKey: @"GUID"]  type: theFolderType]]]))
+          {
+            NSLog(@"GUID mismatch don't sync now!");
+            return;
+          }
+        
+        syncCache = [folderMetadata objectForKey: @"SyncCache"];
+        dateCache = [folderMetadata objectForKey: @"DateCache"];
+
+        sortedBySequence = [[NSMutableArray alloc] initWithDictionary: syncCache];
+        [sortedBySequence sortUsingSelector: @selector(compareSequence:)];
+        [sortedBySequence autorelease];
+
+        [allCacheObjects sortUsingSelector: @selector(compareSequence:)];
+
+        //NSLog(@"sortedBySequence (%d) - lastObject: %@", [sortedBySequence count], [sortedBySequence lastObject]);
+        //NSLog(@"allCacheObjects (%d) - lastObject: %@", [allCacheObjects count], [allCacheObjects lastObject]);
+              
+        lastCacheObject = [sortedBySequence lastObject];
+        
+        if ([folderMetadata objectForKey: @"MoreAvailable"] && lastCacheObject)
+          {
+            for (j = 0; j < [allCacheObjects count]; j++)
               {
-                [[SOGoCache sharedCache] removeValueForKey: key];
-                command = @"changed";
+                if ([[lastCacheObject uid] isEqual: [[allCacheObjects objectAtIndex: j] uid]])
+                  {
+                    // Found out where we're at, let's continue from there...
+                    found_in_cache = YES;
+                    break;
+                  }
               }
-            
-            if ([command isEqualToString: @"added"])
-              [s appendString: @"<Add xmlns=\"AirSync:\">"];
-            else
-              [s appendString: @"<Change xmlns=\"AirSync:\">"];
-            
-            mailObject = [theCollection lookupName: uid
-                                         inContext: context
-                                           acquire: 0];
-            
-            [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-            [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-            [s appendString: [mailObject activeSyncRepresentationInContext: context]];
-            [s appendString: @"</ApplicationData>"];
-            
-            if ([command isEqualToString: @"added"])
-              [s appendString: @"</Add>"];
-            else
-              [s appendString: @"</Change>"];
-            
-            
-            // We check if we must stop padding
-            if (i+1+deleted_count > theWindowSize)
+          }
+        else
+          found_in_cache = NO;
+
+        
+        if (found_in_cache)
+          k = j+1;
+        else
+          {
+            k = 0;
+            j = 0;
+          }
+        
+        //NSLog(@"found in cache: %d  k = %d", found_in_cache, k);
+        
+        return_count = 0;
+        
+        for (; k < [allCacheObjects count]; k++)
+          {
+            // Check for the WindowSize and slice accordingly
+            if (return_count >= theWindowSize)
               {
+                NSString *lastSequence;
                 more_available = YES;
+                
+                lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? @"1" : [aCacheObject sequence]);
+                *theLastServerKey = [NSString stringWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
+                //NSLog(@"Reached windowSize - lastUID will be: %@", *theLastServerKey);
                 break;
               }
+            
+            aCacheObject = [allCacheObjects objectAtIndex: k];
+
+            // If found in cache, it's either a Change or a Delete
+            if ([syncCache objectForKey: [aCacheObject uid]])
+              {
+                if ([[aCacheObject sequence] isEqual: [NSNull null]])
+                  {
+                    // Deleted
+                    [s appendString: @"<Delete xmlns=\"AirSync:\">"];
+                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
+                    [s appendString: @"</Delete>"];
+                    
+                    [syncCache removeObjectForKey: [aCacheObject uid]];
+                    [dateCache removeObjectForKey: [aCacheObject uid]];
+                  }
+                else
+                  {
+                    // Changed
+                  outlook_hack:
+                    mailObject = [theCollection lookupName: [aCacheObject uid]
+                                                 inContext: context
+                                                   acquire: 0];
+                    
+                    [s appendString: @"<Change xmlns=\"AirSync:\">"];
+                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
+                    [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+                    [s appendString: [mailObject activeSyncRepresentationInContext: context]];
+                    [s appendString: @"</ApplicationData>"];
+                    [s appendString: @"</Change>"];
+                    
+                    [syncCache setObject: [aCacheObject sequence]  forKey: [aCacheObject uid]];
+                  }
+                
+                return_count++;
+              }
+            else
+              {
+                // Added
+                if (![[aCacheObject sequence] isEqual: [NSNull null]])
+                  {
+                    NSString *key;
+
+                    // We check for Outlook stupidity to avoid creating duplicates - see the comment
+                    // in SOGoActiveSyncDispatcher.m: -processMoveItems:inResponse: for more details.
+                    key = [NSString stringWithFormat: @"%@+%@+%@+%@",
+                                    [[context activeUser] login],
+                               [context objectForKey: @"DeviceType"],
+                                    [theCollection displayName],
+                                    [aCacheObject uid]];
+                    
+                    if ([[SOGoCache sharedCache] valueForKey: key])
+                      {
+                        [[SOGoCache sharedCache] removeValueForKey: key];
+                        goto outlook_hack;
+                      }
+
+                    mailObject = [theCollection lookupName: [aCacheObject uid]
+                                                 inContext: context
+                                                   acquire: 0];
+                    
+                    [s appendString: @"<Add xmlns=\"AirSync:\">"];
+                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
+                    [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+                    [s appendString: [mailObject activeSyncRepresentationInContext: context]];
+                    [s appendString: @"</ApplicationData>"];
+                    [s appendString: @"</Add>"];
+                    
+                    [syncCache setObject: [aCacheObject sequence]  forKey: [aCacheObject uid]];
+                    [dateCache setObject: [NSCalendarDate date]  forKey: [aCacheObject uid]];
+                    return_count++;
+                  }
+                else
+                  {
+                    //NSLog(@"skipping old deleted UID: %@",  [aCacheObject uid]);
+                  }
+              }
+
           }
-      
-        //
+
         if (more_available)
-          {
-            *theLastServerKey = uid;
-          }
-      }
+          [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+        else
+          [folderMetadata removeObjectForKey: @"MoreAvailable"];
+        
+
+        [self _setFolderMetadata: folderMetadata
+                          forKey: [theCollection nameInContainer]];
+      } // default:
       break;
     } // switch (folderType) ...
   
@@ -767,13 +890,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
-  unsigned int windowSize;
+  unsigned int windowSize, v;
   
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
   
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   collection = [self collectionFromId: realCollectionId  type: folderType];
   
   syncKey = davCollectionTag = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
@@ -783,6 +907,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if (windowSize == 0 || windowSize > 512)
     windowSize = 100;
+  
+  // We check if we must overwrite the windowSize with a system preference. This can be useful
+  // if the user population has large mailboxes and slow connectivity
+  if ((v = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncWindowSize]))
+    windowSize = v;
 
   lastServerKey = nil;
   
@@ -855,12 +984,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([changeBuffer length] || [commandsBuffer length])
     {
       if (lastServerKey)
-        davCollectionTag = [collection davCollectionTagFromId: lastServerKey];
-      else
+        davCollectionTag = lastServerKey;
+      else if (![[self _folderMetadataForKey: [collection nameInContainer]] objectForKey: @"MoreAvailable"])
         davCollectionTag = [collection davCollectionTag];
      
       *changeDetected = YES;
     }
+  else
+    {
+      if (folderType == ActiveSyncMailFolder && [syncKey isEqualToString: @"-1"])
+        davCollectionTag = [collection davCollectionTag];
+    }
+
 
   // Generate the response buffer
   [theBuffer appendString: @"<Collection>"];

@@ -1,0 +1,40 @@
+DIV
+{ clear: both; }
+
+FIELDSET
+{ margin-bottom: 5px;
+  border: 1px solid #FFFFFF;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090; }
+
+FIELDSET DIV
+{ margin-left: 20px;
+  margin-right: 10px; }
+
+SPAN.label
+{ cursor: default;
+  width: 55px;
+  text-align: right;
+  line-height: 2em;
+  float: left;
+  display: block; }
+
+SPAN.content
+{ line-height: 1.5em;
+  vertical-align: middle;
+  margin-left: 4px; }
+
+SPAN.content INPUT.textField
+{ width: 160px; }
+
+DIV#buttons
+{ position: absolute; 
+  bottom: 5px;
+  right: 5px;
+  padding: 10px;
+  padding-top: 5px;
+  text-align: right; }
+
+
+LABEL
+{ white-space: nowrap; }

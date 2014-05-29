@@ -10,39 +10,47 @@
   title="name"
   const:userDefaultsKeys="SOGoContactsCategories"
   const:popup="YES"
-  >
+  const:cssFiles="datepicker.css"
+  const:jsFiles="datepicker.js">
+
   <div class="menu" id="categoriesMenu">
   </div>
 
   <form var:href="saveURL" name="editform" id="mainForm">
-    <var:if condition="isNew"><div id="addressBookSelector">
+    <var:if condition="isNew">
+      <div id="addressBookSelector">
         <style type="text/css">DIV#editorTabs { top: 30px; };</style>
-        <var:string label:value="Add to:" />
+        <var:string label:value="Add to:"/>
         <var:popup const:id="addressBooksList"
           list="addressBooksList" item="addressBookItem"
           string="addressBookDisplayName"
-          var:selection="componentAddressBook"
-          />
-      </div></var:if>
+          var:selection="componentAddressBook"/>
+      </div>
+    </var:if>
 
     <div class="tabsContainer" id="editorTabs">
       <ul>
         <li target="baseInfos">
           <span><var:string label:value="Contact" /></span>
         </li>
-        <var:if condition="supportCategories"
-          ><li target="categoryInfos">
-            <span><var:string label:value="Categories" /></span></li
-            ></var:if>
+        <var:if condition="supportCategories">
+          <li target="categoryInfos">
+            <span><var:string label:value="Categories" /></span>
+          </li>
+        </var:if>
         <li target="addressesInfos">
-          <span><var:string label:value="Address" /></span></li>
-        <var:if condition="supportPhotos"
-          ><li target="photos">
-            <span><var:string label:value="Photos" /></span></li
-            ></var:if>
+          <span><var:string label:value="Address" /></span>
+        </li>
+        <var:if condition="supportPhotos">
+          <li target="photos">
+            <span><var:string label:value="Photos" /></span>
+          </li>
+        </var:if>
         <li target="otherInfos">
-          <span><var:string label:value="Other" /></span></li>
+          <span><var:string label:value="Other" /></span>
+        </li>
       </ul>
+      
       <div class="tabs">
         <div id="baseInfos" class="tab">
           <span class="caption"><var:string label:value="Name" /></span>
@@ -171,18 +179,18 @@
             </tr>
           </table>
         </div>
-
-        <var:if condition="supportCategories"
-          ><div id="categoryInfos" class="tab">
-            <div id="categoryContainer">
-            </div>
-            <var:if condition="canCreateOrModify"
-              ><input type="text" class="textField" id="emptyCategory"
-                const:readonly="readonly"
-                const:name="emptyCategory"
-              const:value="" /></var:if>
+        
+        <var:if condition="supportCategories">
+          <div id="categoryInfos" class="tab">
+            <div id="categoryContainer"><!-- spacer --></div>
+            <var:if condition="canCreateOrModify">
+              <input type="text" class="textField" id="emptyCategory"
+              const:readonly="readonly"
+              const:name="emptyCategory"
+              const:value="" />
+            </var:if>
             <script type="text/javascript">
-              var gCategories = <var:string value="contactCategoriesList" const:escapeHTML="NO"/>;
+              var gCategories = <var:string value="contactCategoriesList" const:escapeHTML="NO" />;
             </script>
           <input type="hidden" id="jsonContactCategories"
               const:name="jsonContactCategories"
@@ -190,7 +198,7 @@
           </div></var:if>
 
         <div id="addressesInfos" class="tab">
-          <span class="caption"><var:string label:value="Home" /></span>
+          <span class="caption"><var:string label:value="Home"/></span>
           <table class="frame">
             <tr>
               <td colspan="2">
@@ -339,42 +347,40 @@
               <td colspan="2">
                 <label><var:string label:value="Web Page:" />
                   <input type="text" class="textField" name="mozillaworkurl"
-                    var:value="ldifRecord.mozillaworkurl"
-                    /></label>
+                    var:value="ldifRecord.mozillaworkurl"/>
+                </label>
               </td>
             </tr>
           </table>
         </div>
 
-        <var:if condition="supportPhotos"
-          ><div id="photos" class="tab">
-            <var:if condition="hasPhoto"
-              ><img var:src="photoURL" class="contactPhoto"
-                /></var:if>
-          </div
-            ></var:if>
-
+        <var:if condition="supportPhotos">
+          <div id="photos" class="tab">
+            <var:if condition="hasPhoto">
+              <img var:src="photoURL" class="contactPhoto"/>
+            </var:if>
+          </div>
+        </var:if>
+        
         <div id="otherInfos" class="tab">
           <table class="framenocaption">
             <tr>
               <td>
-                <label><var:string label:value="Birthday (yyyy-mm-dd):"/>
-                  <input type="text" class="textField" name="birthyear" id="birthyear"
-                    var:value="ldifRecord.birthyear"
-                    /></label>
-                  -
-                  <input type="text" class="textField" name="birthmonth" id="birthmonth"
-                    var:value="ldifRecord.birthmonth" />
-                  -
-                  <input type="text" class="textField" name="birthday" id="birthday"
-                    var:value="ldifRecord.birthday"/>
+                <div>
+                  <label id="birthdayLabel"><var:string label:value="Birthday (yyyy-mm-dd):"/></label>
+                  <var:component className="UIxDatePicker"
+                    const:dateID="birthdayDate"
+                    day="ldifRecord.birthday"
+                    month="ldifRecord.birthmonth"
+                    year="ldifRecord.birthyear"
+                    label:label="browse birthday"/>
+                </div>
               </td>
             </tr>
-            <tr>
+           <tr>
               <td>
-                <label><var:string label:value="Note:" />
-                  <textarea rows="25" var:value="ldifRecord.description" name="note" id="note"></textarea>
-                </label>
+                <label><var:string label:value="Note:" /></label>
+                <textarea rows="23" var:value="ldifRecord.description" name="note" id="note"></textarea>
               </td>
             </tr>
           </table>
@@ -382,8 +388,8 @@
       </div>
     </div>
     <div id="buttons">
-      <var:if condition="canCreateOrModify"
-        ><a class="button actionButton" name="submit" id="submitButton"> 
+      <var:if condition="canCreateOrModify">
+        <a class="button" name="submit" id="submitButton">
           <span><var:string label:value="Save" /></span>
         </a></var:if>
       <a id="cancelButton" class="button" name="cancel">

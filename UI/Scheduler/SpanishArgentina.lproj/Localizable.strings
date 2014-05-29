@@ -5,6 +5,7 @@
 "Create a new event" = "Crear un nuevo evento";
 "Create a new task" = "Crear una nueva tarea";
 "Edit this event or task" = "Modificar éste evento o tarea";
+"Print the current calendar view" = "Imprimir la vista actual del calendario";
 "Delete this event or task" = "Borrar éste evento o tarea";
 "Go to today" = "Ir a hoy";
 "Switch to day view" = "Cambiar a vista diaria";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Nombre del calendario";
 
 "new" = "Nuevo";
-"printview" = "Vista previa";
+"Print view" = "Imprimir esta vista";
 "edit" = "Modificar";
 "delete" = "Borrar";
 "proposal" = "Propuesta";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Ocultar eventos ya confirmados o rechazados";
 "Show already accepted and rejected appointments" = "Mostrar eventos ya confirmados o rechazados";
 
+/* Print view */
+
+"LIST" = "Lista";
+"Print Settings" = "Opciones de impresión";
+"Title:" = "Título:";
+"Layout:" = "Disposición:";
+"What to Print" = "Qué imprimir";
+"Options" = "Opciones";
+"Tasks with no due date" = "Tareas sin fecha de vencimiento";
+"Completed tasks" = "Tareas completadas";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Todos los eventos futuros";
 "view_selectedday" = "Día seleccionado";
 
+"view_not_started" = "Tareas que no han comenzado";
+"view_overdue" = "Tareas que han vencido";
+"view_incomplete" = "Tareas incompletas";
+
 "View:" = "Ver:";
-"Title or Description" = "Título o descripción";
+"Title, category or location" = "Título, categoría o lugar";
+"Entire content" = "Contenido completo";
 
 "Search" = "Buscar";
 "Search attendees" = "Buscar asistentes";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Tarea confidencial)";
 
 "Links to this Calendar" = "Vínculos a éste calendario";
 "Authenticated User Access" = "Acceso a usuario autenticado";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "URL CalDAV:";
 "WebDAV ICS URL" = "URL ICS WebDAV";
 "WebDAV XML URL" = "URL XML WebDAV";
 

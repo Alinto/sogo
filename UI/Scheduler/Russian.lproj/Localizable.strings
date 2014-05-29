@@ -5,6 +5,7 @@
 "Create a new event" = "Создать новое событие";
 "Create a new task" = "Создать новую задачу";
 "Edit this event or task" = "Редактировать это событие или задачу";
+"Print the current calendar view" = "Напечатать календарь в этом виде";
 "Delete this event or task" = "Удалить это событие или задачу";
 "Go to today" = "Перейти на сегодня";
 "Switch to day view" = "Перейти к обзору дня";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Название календаря";
 
 "new" = "Новый";
-"printview" = "Печатать";
+"Print view" = "Печать видимой области";
 "edit" = "Изменить";
 "delete" = "Удалить";
 "proposal" = "Предложение";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Скрыть согласившихся и отказавшихся.";
 "Show already accepted and rejected appointments" = "Показать согласившихся и отказавшихся.";
 
+/* Print view */
+
+"LIST" = "Список";
+"Print Settings" = "Настройки печати";
+"Title:" = "Заголовок:";
+"Layout:" = "Разметка:";
+"What to Print" = "Что печатать";
+"Options" = "Опции";
+"Tasks with no due date" = "Задачи без указания времени окончания";
+"Completed tasks" = "Выполненные задачи";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Все будущие мероприятия";
 "view_selectedday" = "Выбранный день";
 
+"view_not_started" = "Не начатые задачи";
+"view_overdue" = "Просроченные задачи";
+"view_incomplete" = "Незаконченные задачи";
+
 "View:" = "Вид:";
-"Title or Description" = "Заголовок или описание";
+"Title, category or location" = "Заголовок, категория или место";
+"Entire content" = "Всё содержимое";
 
 "Search" = "Поиск";
 "Search attendees" = "Поиск участников";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
 "Authenticated User Access" = "Доступ авторизированных пользователей";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV URL: ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

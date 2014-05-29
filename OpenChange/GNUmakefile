@@ -46,11 +46,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreSamDBUtils.m \
 	MAPIStoreUserContext.m \
 	\
-	SOGoMAPIObject.m \
-	\
-	SOGoMAPIDBObject.m \
 	SOGoMAPIDBMessage.m \
-	SOGoMAPIDBFolder.m \
+	SOGoCacheGCSObject+MAPIStore.m \
 	\
 	MAPIStoreAppointmentWrapper.m \
 	MAPIStoreAttachment.m \
@@ -123,13 +120,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	iCalEvent+MAPIStore.m \
 	iCalTimeZone+MAPIStore.m \
 	\
-	GCSSpecialQueries+OpenChange.m\
-	\
-	EOQualifier+MAPI.m \
-	\
-	EOBitmaskQualifier.m \
-	\
-	BSONCodec.m \
 	RTFHandler.m
 
 

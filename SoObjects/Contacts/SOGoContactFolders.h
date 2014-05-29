@@ -25,11 +25,18 @@
 
 @interface SOGoContactFolders : SOGoParentFolder
 
+- (NSString *) defaultFolderName;
+- (NSString *) collectedFolderName;
+
 - (NSException *) renameLDAPAddressBook: (NSString *) sourceID
                         withDisplayName: (NSString *) newDisplayName;
 - (NSException *) removeLDAPAddressBook: (NSString *) sourceID;
 
 - (NSDictionary *) systemSources;
+
+- (NSArray *) allContactsFromFilter: (NSString *) theFilter
+                      excludeGroups: (BOOL) excludeGroups
+                       excludeLists: (BOOL) excludeLists;
 
 @end
 

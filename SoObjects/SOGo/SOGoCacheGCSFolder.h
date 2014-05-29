@@ -1,8 +1,6 @@
-/* SOGoMAPIDBFolder.h - this file is part of SOGo
+/* SOGoCacheGCSFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIDBFOLDER_H
-#define SOGOMAPIDBFOLDER_H
+#ifndef SOGOCACHEGCSFOLDER_H
+#define SOGOCACHEGCSFOLDER_H
 
-#import "SOGoMAPIDBObject.h"
+#import "SOGoCacheGCSObject.h"
 
 @class NSArray;
 @class NSMutableString;
@@ -32,12 +30,10 @@
 
 @class EOQualifier;
 
-@class SOGoMAPIDBMessage;
-
-@interface SOGoMAPIDBFolder : SOGoMAPIDBObject
+@interface SOGoCacheGCSFolder : SOGoCacheGCSObject
 {
   NSString *pathPrefix; /* for root folders */
-  SOGoMAPIDBObject *aclMessage;
+  SOGoCacheGCSObject *aclMessage;
 }
 
 - (void) setPathPrefix: (NSString *) newPathPrefix;
@@ -47,7 +43,7 @@
 - (NSArray *) toOneRelationshipKeys;
 - (NSArray *) toManyRelationshipKeys;
 
-- (NSArray *) childKeysOfType: (MAPIDBObjectType) type
+- (NSArray *) childKeysOfType: (SOGoCacheObjectType) type
                includeDeleted: (BOOL) includeDeleted
             matchingQualifier: (EOQualifier *) qualifier
              andSortOrderings: (NSArray *) sortOrderings;
@@ -56,4 +52,4 @@
 
 @end
 
-#endif /* SOGOMAPIDBFOLDER_H */
+#endif /* SOGOCACHEGCSFOLDER_H */

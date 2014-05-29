@@ -54,8 +54,8 @@
   <div class="menu" id="eventsListMenu">
     <ul>
       <li><var:string label:value="New Event..."/></li>
-      <li><!-- separator --></li>
       <li><var:string label:value="New Task..."/></li>
+      <li><!-- separator --></li>
       <li><var:string label:value="Edit Selected Event..."/></li>
       <li><var:string label:value="Delete Selected Event"/></li>
       <li><!-- separator --></li>
@@ -165,6 +165,7 @@
                 <td id="eventStartHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
                 <td id="eventEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
                 <td id="eventLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+                <td id="eventCategoryHeader" class="headerCell headerCategory sortableTableHeader"><var:string label:value="Category"/></td>
                 <td id="eventCalendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
               </tr>
             </thead>
@@ -175,7 +176,9 @@
           <div class="filterPanel" data-search="tasks">
             <div class="menu" id="taskSearchMenu">
               <ul class="choiceMenu">
-                <li data-option="title"><var:string label:value="Title or Description"/></li>
+                <li data-option="title"><var:string label:value="Title"/></li>
+                <li data-option="title_Category_Location"><var:string label:value="Title, category or location"/></li>
+                <li data-option="entireContent"><var:string label:value="Entire content"/></li>
               </ul>
             </div>
             <span class="searchBox" style="float: right">
@@ -184,7 +187,19 @@
                      autocomplete="off" type="text"
                      menuid="taskSearchMenu" />
             </span>
-            <input id="showHideCompletedTasks" type="checkbox" class="checkBox" var:checked="showCompletedTasks"/><var:string label:value="Show completed tasks"/>
+            <span>
+              <var:string label:value="View:" />
+              <var:popup list="tasksFilters"
+                const:id="tasksFilterpopup"
+                item="taskFilter" string="tasksFilterLabel" value="taskFilter"
+                selection="selectedTasksFilter"
+                const:name="tasksFilterpopup"
+                const:onchange="return onTasksListFilterChange();" />
+            </span>
+            <span>
+              <input id="showHideCompletedTasks" type="checkbox" class="checkBox" var:checked="showCompletedTasks"/>
+              <var:string label:value="Show completed tasks" />
+            </span>
           </div>
           <table id="tasksList" cellspacing="0">
             <thead>
@@ -194,7 +209,7 @@
                 <td id="taskTitleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
                 <td id="taskEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Due Date"/></td>
                 <td id="taskLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-                <td id="taskCategoryHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Category"/></td>
+                <td id="taskCategoryHeader" class="headerCell headerCategory sortableTableHeader"><var:string label:value="Category"/></td>
                 <td id="taskCalendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
               </tr>
             </thead>

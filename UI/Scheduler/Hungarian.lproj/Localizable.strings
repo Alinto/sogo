@@ -5,6 +5,7 @@
 "Create a new event" = "Új esemény hozzáadása";
 "Create a new task" = "Új feladat hozzáadása";
 "Edit this event or task" = "Esemény vagy feladat szerkesztése";
+"Print the current calendar view" = "Aktuális naptár nézet nyomtatása";
 "Delete this event or task" = "Esemény vagy feladat törlése";
 "Go to today" = "Ugrás a mai napra";
 "Switch to day view" = "Napi nézetre váltás";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "A naptár neve:";
 
 "new" = "Új";
-"printview" = "Nyomtatási nézet";
+"Print view" = "Nyomtatási nézet";
 "edit" = "Szerkesztés";
 "delete" = "Törlés";
 "proposal" = "Javaslat";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók elrejtése.";
 "Show already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók megmutatása";
 
+/* Print view */
+
+"LIST" = "Lista";
+"Print Settings" = "Nyomtatási beállítások";
+"Title:" = "Cím:";
+"Layout:" = "Elrendezés:";
+"What to Print" = "Mi kerüljön nyomtatásra";
+"Options" = "Beállítások";
+"Tasks with no due date" = "Befejező dátum nélküli feladatok";
+"Completed tasks" = "Befejezett feladatok";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Összes jövőbeni esemény";
 "view_selectedday" = "Kijelölt nap";
 
+"view_not_started" = "Nem megkezdett feladatok";
+"view_overdue" = "Lejárt feladatok";
+"view_incomplete" = "Befejezetlen feladat";
+
 "View:" = "Nézet:";
-"Title or Description" = "Cím vagy leírás";
+"Title, category or location" = "Cím, kategória vagy helyszin";
+"Entire content" = "Teljes tartalom";
 
 "Search" = "Keresés";
 "Search attendees" = "Résztvevők keresése";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 
 "Links to this Calendar" = "Hivatkozások ehhez a naptárhoz";
 "Authenticated User Access" = "Belépett felhasználók";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

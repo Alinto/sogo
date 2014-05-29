@@ -36,7 +36,6 @@
 "delete" = "удалить";
 "edit" = "редактировать";
 "invalidemailwarn" = "The specified email is invalid";
-"invaliddatewarn" = "Указанная дата является неверной.";
 "new" = "новый";
 "Preferred Phone" = "Preferred Phone";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Новый контакт";
 "New List" = "Новый список";
+"Edit" = "Изменить";
 "Properties" = "Свойства";
 "Sharing..." = "Общий доступ...";
 "Write" = "Записать";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Вы не можете удалить запись \"%{0}\".";
 
-"Address Book Name" = "Название адресной книги";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Вы не можете подписаться на папку, которой владеете.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Всего %{0} записей было импортировано в адресную книгу.";
 
 "Reload" = "Перезагрузить";
+
+/* Properties window */
+"Address Book Name:" = "Название адресной книги:";
+"Links to this Address Book" = "Ссылки на эту адресную книгу";
+"Authenticated User Access" = "Доступ авторизированных пользователей";
+"CardDAV URL: " = "CardDAV URL: ";
+

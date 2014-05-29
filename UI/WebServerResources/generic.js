@@ -91,6 +91,7 @@ function createElement(tagName, id, classes, attributes, htmlAttributes, parentN
 function URLForFolderID(folderID) {
     var folderInfos = folderID.split(":");
     var url;
+                  
     if (folderInfos.length > 1) {
         url = UserFolderURL + "../" + encodeURI(folderInfos[0]);
         if (!(folderInfos[0].endsWith('/')
@@ -100,9 +101,8 @@ function URLForFolderID(folderID) {
     }
     else {
         var folderInfo = folderInfos[0];
-        if (ApplicationBaseURL.endsWith('/')
-            && folderInfo.startsWith('/'))
-            folderInfo = folderInfo.substr(1);
+        if (!(folderInfo.startsWith('/')))
+            folderInfo = "/" + folderInfo;
         url = ApplicationBaseURL + encodeURI(folderInfo);
     }
 
@@ -173,9 +173,7 @@ function sanitizeWindowName(dirtyWindowName) {
 
 function openUserFolderSelector(callback, type) {
     var urlstr = ApplicationBaseURL;
-    if (! urlstr.endsWith('/'))
-        urlstr += '/';
-    urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
+    urlstr += ("/../../" + UserLogin + "/Contacts/userFolders");
 
     var div = $("popupFrame");
     if (div) {
@@ -266,11 +264,11 @@ function openContactWindow(url, wId) {
         else
             wId = sanitizeWindowName(wId);
 
-        var w = window.open(url, wId,
-                            "width=450,height=530,resizable=0,location=0");
-        w.focus();
-
-        return w;
+        $(function() {
+            var w = window.open(url, wId,
+                                "width=460,height=560,resizable=0,location=0");
+            w.focus();
+        }).delay(0.1);
     }
 }
 
@@ -327,9 +325,11 @@ function openMailTo(senderMailTo) {
     }
 
     if (sanitizedAddresses.length > 0)
-        openMailComposeWindow(ApplicationBaseURL
-                              + "../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
-                              + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
+        $(function() {
+            openMailComposeWindow(ApplicationBaseURL
+                                  + "/../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
+                                  + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
+        }).delay(0.1);
 
     return false; /* stop following the link */
 }
@@ -850,13 +850,13 @@ function hideMenu(menuNode) {
     Event.fire(menuNode, "contextmenu:hide");
 }
 
-function onMenuEntryClick(event) {
-    var node = event.target;
-
-    id = getParentMenu(node).menuTarget;
-
-    return false;
-}
+//function onMenuEntryClick(event) {
+//    var node = event.target;
+//
+//    id = getParentMenu(node).menuTarget;
+//
+//    return false;
+//}
 
 /* query string */
 
@@ -1545,14 +1545,14 @@ function openExternalLink(anchor) {
 }
 
 function openAclWindow(url) {
-    var w = window.open(url, "aclWindow",
-                        "width=420,height=300,resizable=1,scrollbars=1,toolbar=0,"
-                        + "location=0,directories=0,status=0,menubar=0"
-                        + ",copyhistory=0");
-    w.opener = window;
-    w.focus();
-
-    return w;
+    $(function () {
+        var w = window.open(url, "aclWindow",
+                            "width=420,height=300,resizable=1,scrollbars=1,toolbar=0,"
+                            + "location=0,directories=0,status=0,menubar=0"
+                            + ",copyhistory=0");
+        w.opener = window;
+        w.focus();
+    }).delay(0.1);
 }
 
 function getUsersRightsWindowHeight() {
@@ -1743,7 +1743,7 @@ function onPreferencesClick(event) {
     }
     else {
         var w = window.open(urlstr, "SOGoPreferences",
-                            "width=580,height=476,resizable=1,scrollbars=0,location=0");
+                            "width=615,height=520,resizable=1,scrollbars=0,location=0");
         w.opener = window;
         w.focus();
     }
@@ -1803,12 +1803,7 @@ function CurrentModule() {
     if (ApplicationBaseURL) {
         var parts = ApplicationBaseURL.split("/");
         var last = parts.length - 1;
-        while (last > -1 && parts[last] == "") {
-            last--;
-        }
-        if (last > -1) {
-            module = parts[last];
-        }
+        module = parts[last];
     }
 
     return module;

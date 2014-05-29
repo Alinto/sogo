@@ -160,7 +160,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           attendee = [attendees objectAtIndex: i];
           [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [attendee rfc822Email]];
-          [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [attendee cn]];
+          [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [[attendee cn] activeSyncRepresentationInContext: context]];
           
           attendee_status = [self _attendeeStatus: attendee];
             

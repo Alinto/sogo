@@ -124,6 +124,8 @@
       <div class="tabs">
         <div id="generalView" class="tab">
           <dl class="dl-horizontal">
+            <dt><var:string label:value="SOGo version:"/></dt>
+            <dd><var:string value="sogoVersion"/></dd>
             <dt><var:string label:value="Language :"/></dt>
             <dd><var:popup list="languages" item="item"
                   const:id="language"
@@ -294,6 +296,16 @@
                     const:id="sortByThreads"
                     var:checked="sortByThreads" />
                   <var:string label:value="Sort messages by threads"/></dd>
+              <dd><input type="checkbox"
+                    const:name="addOutgoingAddresses"
+                    const:id="addOutgoingAddresses"
+                    var:checked="addOutgoingAddresses" />
+                    <var:string label:value="When sending mail, add unknown recipients to my"/><br/>
+                    <var:popup list="addressBookList" item="item"
+                         const:id="addressBookList"
+                         const:name="addressBookList"
+                         string="itemAddressBookText" selection="userAddressBook"/></dd>
+              <dt></dt>
               <dt><var:string label:value="Check for new mail:"/></dt>
               <dd><var:popup list="messageCheckList" item="item"
                     const:id="messageCheck"

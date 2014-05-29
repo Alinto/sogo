@@ -42,7 +42,7 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
-#import "GCSSpecialQueries+OpenChange.h"
+#import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
@@ -295,7 +295,7 @@ static NSMapTable *contextsTable = nil;
         {
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. */
-          ocFSTableName = [NSString stringWithFormat: @"socfs_%@",
+          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
                                     [username asCSSIdentifier]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
@@ -329,7 +329,7 @@ static NSMapTable *contextsTable = nil;
                   tableName]])
     {
       queries = [channel specialQueries];
-      query = [queries createOpenChangeFSTableWithName: tableName];
+      query = [queries createSOGoCacheGCSFolderTableWithName: tableName];
       if ([channel evaluateExpressionX: query])
         [NSException raise: @"MAPIStoreIOException"
                     format: @"could not create special table '%@'", tableName];

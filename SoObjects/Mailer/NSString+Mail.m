@@ -417,7 +417,15 @@
 {
   if (!ignoreContent)
     {
-      [result appendString: [NSString stringWithCharacters: characters  length: length]];
+      // Append a text node
+      if (ignoreContentTags)
+        // We are converting a HTML message to plain text (htmlToTextContentHandler):
+        // include the HTML tags in the text
+        [result appendString: [NSString stringWithCharacters: characters  length: length]];
+      else
+        // We are sanitizing an HTML message (sanitizerContentHandler):
+        // escape the HTML entitites so they are visible
+        [result appendString: [[NSString stringWithCharacters: characters  length: length] stringByEscapingHTMLString]];
     }
 }
 

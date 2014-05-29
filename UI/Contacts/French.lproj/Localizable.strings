@@ -36,7 +36,6 @@
 "delete" = "Effacer";
 "edit" = "Éditer";
 "invalidemailwarn" = "Le champ de l'adresse électronique est invalide";
-"invaliddatewarn" = "La date spécifiée est invalide.";
 "new" = "Nouveau";
 "Preferred Phone" = "Numéro préféré";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Nouvelle fiche";
 "New List" = "Nouvelle liste";
+"Edit" = "Éditer";
 "Properties" = "Modifier";
 "Sharing..." = "Partage...";
 "Write" = "Écrire";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Vous ne pouvez pas supprimer la fiche de \"%{0}\".";
 
-"Address Book Name" = "Nom du carnet d'adresses";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contacts ont été importés dans le carnet.";
 
 "Reload" = "Actualiser";
+
+/* Properties window */
+"Address Book Name:" = "Nom :";
+"Links to this Address Book" = "Liens vers ce carnet";
+"Authenticated User Access" = "Accès aux utilisateurs authentifiés";
+"CardDAV URL: " = "Accès en CardDAV :";
+

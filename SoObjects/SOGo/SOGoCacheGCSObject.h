@@ -1,8 +1,6 @@
-/* SOGoMAPIDBObject.h - this file is part of SOGo
+/* SOGoCacheGCSObject.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIDBOBJECT_H
-#define SOGOMAPIDBOBJECT_H
+#ifndef SOGOCACHEGCSOBJECT_H
+#define SOGOCACHEGCSOBJECT_H
 
-#import "SOGoMAPIObject.h"
+#import "SOGoCacheObject.h"
 
 @class NSArray;
 @class NSMutableDictionary;
@@ -34,18 +32,20 @@
 @class EOAdaptor;
 
 typedef enum {
-  MAPIDBObjectTypeFolder = 1,
-  MAPIDBObjectTypeMessage = 2,
-  MAPIDBObjectTypeFAI = 3,
-  MAPIDBObjectTypeInternal = 99 /* object = property list */
-} MAPIDBObjectType;
+  MAPIFolderCacheObject = 1,
+  MAPIMessageCacheObject = 2,
+  MAPIFAICacheObject = 3,
+  MAPIInternalCacheObject = 99, /* object = property list */
+  ActiveSyncGlobalCacheObject = 200,
+  ActiveSyncFolderCacheObject = 201
+} SOGoCacheObjectType;
 
-@interface SOGoMAPIDBObject : SOGoMAPIObject
+@interface SOGoCacheGCSObject : SOGoCacheObject 
 {
   NSURL *tableUrl;
 
   BOOL initialized; /* safe guard */
-  MAPIDBObjectType objectType;
+  SOGoCacheObjectType objectType;
   NSInteger version;
   BOOL deleted;
 }
@@ -67,8 +67,11 @@ typedef enum {
 - (NSDictionary *) lookupRecord: (NSString *) path
                newerThanVersion: (NSInteger) startVersion;
 
-- (void) setObjectType: (MAPIDBObjectType) newObjectType;
-- (MAPIDBObjectType) objectType; /* message, fai, folder */
+- (NSArray *) folderList: (NSString *) deviceId
+        newerThanVersion: (NSInteger) startVersion;
+
+- (void) setObjectType: (SOGoCacheObjectType) newObjectType;
+- (SOGoCacheObjectType) objectType; /* message, fai, folder */
 
 /* automatically set from actions */
 - (BOOL) deleted;
@@ -82,4 +85,4 @@ typedef enum {
 
 @end
 
-#endif /* SOGOMAPIDBOBJECT_H */
+#endif /* SOGOCACHEGCSOBJECT_H */

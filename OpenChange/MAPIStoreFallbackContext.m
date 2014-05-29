@@ -1,8 +1,6 @@
 /* MAPIStoreFallbackContext.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +24,7 @@
 
 #import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 
 #import "MAPIStoreFallbackContext.h"
 
@@ -51,7 +49,7 @@
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  SOGoMAPIDBFolder *root;
+  SOGoCacheGCSFolder *root;
   NSArray *names;
   NSUInteger count, max;
   NSString *baseURL, *url, *name;
@@ -70,7 +68,7 @@
 
   /* Maybe emsmdbp_provisioning should be fixed in order to only take the uri
      returned above to avoid deleting its entries... */
-  root = [SOGoMAPIDBFolder objectWithName: [self MAPIModuleName]
+  root = [SOGoCacheGCSFolder objectWithName: [self MAPIModuleName]
                               inContainer: nil];
   [root setOwner: userName];
   userContext = [MAPIStoreUserContext userContextWithUsername: userName

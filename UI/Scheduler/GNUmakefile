@@ -23,6 +23,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalFolderActions.m		\
 					\
 	UIxCalView.m			\
+  	UIxCalViewPrint.m 		\
 	UIxCalDayView.m			\
 	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\

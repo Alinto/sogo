@@ -5,6 +5,7 @@
 "Create a new event" = "Vytvoriť novú udalosť";
 "Create a new task" = "Vytvoriť novú úlohu";
 "Edit this event or task" = "Upraviť túto udalosť alebo úlohu";
+"Print the current calendar view" = "Vytlačiť aktuálny náhľad kalendára";
 "Delete this event or task" = "Odstrániť túto udalosť alebo úlohu";
 "Go to today" = "Prejsť na dnešný deň";
 "Switch to day view" = "Prepnúť na denné zobrazenie";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Názov kalendára";
 
 "new" = "Nový";
-"printview" = "Náhľad tlače";
+"Print view" = "Náhľad tlače";
 "edit" = "Upraviť";
 "delete" = "Odstrániť";
 "proposal" = "Návrh";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Skryť prijaté a odmietnuté schôdzky";
 "Show already accepted and rejected appointments" = "Zobraziť prijaté a odmietnuté schôdzky";
 
+/* Print view */
+
+"LIST" = "Zoznam";
+"Print Settings" = "Nastavenia tlače";
+"Title:" = "Názov:";
+"Layout:" = "Zobrazenie:";
+"What to Print" = "Čo chcete tlačiť";
+"Options" = "Možnosti";
+"Tasks with no due date" = "Úlohy bez časového obmedzenia";
+"Completed tasks" = "Dokončené úlohy";
 
 /* Appointments */
 
@@ -179,6 +190,8 @@
 "Reminder:" = "Pripomenutie:";
 "General:" = "Hlavný:";
 "Reply:" = "Odpoveď:";
+"Created by:" = "Vytvorené:";
+
 
 "Target:" = "Cieľ:";
 
@@ -223,8 +236,13 @@
 "view_future" = "Všetky budúce udalosti";
 "view_selectedday" = "Zvolený deň";
 
+"view_not_started" = "Nezačaté úlohy";
+"view_overdue" = "Vypršané úlohy";
+"view_incomplete" = "Nedokončené úlohy";
+
 "View:" = "Zobraziť:";
-"Title or Description" = "Názov alebo popis";
+"Title, category or location" = "Názov, kategória alebo miesto";
+"Entire content" = "Celý obsah";
 
 "Search" = "Vyhľadať";
 "Search attendees" = "Vyhľadať účastníkov";
@@ -414,8 +432,8 @@ validate_endbeforestart    = "Zadaný dátum konca je pred začiatkom udalosti."
 "Workweek days only" = "Len pracovné dni";
 "Tasks in View" = "Zobrazené úlohy";
 
-"eventDeleteConfirmation" = "Nasledujúca udalosť(i) bude odstránená:";
-"taskDeleteConfirmation" = "Odstránenie nasledujúcej úlohy(oh) je nevratné.";
+"eventDeleteConfirmation" = "Táto udalosť(i) bude odstránená:";
+"taskDeleteConfirmation" = "Táto udalosť(i) bude odstránená:";
 "Would you like to continue?" = "Chcete pokračovať?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
@@ -504,7 +522,7 @@ vtodo_class2 = "(Dôverná úloha)";
 
 "Links to this Calendar" = "Odkazy na tento kalendár";
 "Authenticated User Access" = "Prístup pre overeného užívateľa";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV url:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

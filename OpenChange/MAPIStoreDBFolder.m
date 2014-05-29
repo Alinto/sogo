@@ -32,7 +32,7 @@
 #import <EOControl/EOQualifier.h>
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoUser.h>
-#import "EOQualifier+MAPI.h"
+#import <SOGo/EOQualifier+SOGoCacheObject.h>
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDBFolderTable.h"
 #import "MAPIStoreDBMessage.h"
@@ -40,7 +40,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
 
 #import "MAPIStoreDBFolder.h"
@@ -49,7 +49,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class EOKeyValueQualifierK, SOGoMAPIDBFolderK, MAPIStoreDBFolderK;
+static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 
 static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
 static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
@@ -66,7 +66,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
-  SOGoMAPIDBFolderK = [SOGoMAPIDBFolder class];
+  SOGoCacheGCSFolderK = [SOGoCacheGCSFolder class];
   MAPIStoreDBFolderK = [MAPIStoreDBFolder class];
 }
 
@@ -92,7 +92,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 {
   enum mapistore_error rc;
   NSString *folderName, *nameInContainer;
-  SOGoMAPIDBFolder *newFolder;
+  SOGoCacheGCSFolder *newFolder;
   struct SPropValue *value;
 
   value = get_SPropValue_SRow (aRow, PidTagDisplayName);
@@ -111,7 +111,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
     {
       nameInContainer = [NSString stringWithFormat: @"0x%.16"PRIx64,
                                   (unsigned long long) newFID];
-      newFolder = [SOGoMAPIDBFolderK objectWithName: nameInContainer
+      newFolder = [SOGoCacheGCSFolderK objectWithName: nameInContainer
                                         inContainer: sogoObject];
       [newFolder reloadIfNeeded];
       [[newFolder properties] setObject: folderName
@@ -181,7 +181,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                      [SOGoObject globallyUniqueObjectId]];
   fsObject = [SOGoMAPIDBMessage objectWithName: newKey
                                    inContainer: sogoObject];
-  [fsObject setObjectType: MAPIDBObjectTypeMessage];
+  [fsObject setObjectType: MAPIMessageCacheObject];
   [fsObject reloadIfNeeded];
   newMessage = [MAPIStoreDBMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
@@ -198,7 +198,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
-    keys = [(SOGoMAPIDBFolder *) sogoObject childKeysOfType: MAPIDBObjectTypeMessage
+    keys = [(SOGoCacheGCSFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
                                              includeDeleted: NO
                                           matchingQualifier: qualifier
                                            andSortOrderings: sortOrderings];
@@ -211,7 +211,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
-  return [dbFolder childKeysOfType: MAPIDBObjectTypeFolder
+  return [dbFolder childKeysOfType: MAPIFolderCacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
                   andSortOrderings: sortOrderings];

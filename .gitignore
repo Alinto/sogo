@@ -1,6 +1,8 @@
 config.make
 tags
+*._*
 */obj/
+*._*
 */*/obj/
 */*/*/obj/
 */*/*.SOGo/
@@ -11,3 +13,4 @@ SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
 Tests/*/config.py
 *.pyc
+._*

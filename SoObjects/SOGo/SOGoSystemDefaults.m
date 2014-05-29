@@ -356,6 +356,12 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"WOUseRelativeURLs"];
 }
 
+- (NSString *) sieveFolderEncoding
+{
+  return [self stringForKey: @"SOGoSieveFolderEncoding"];
+}
+
+
 - (BOOL) isWebAccessEnabled
 {
   return [self boolForKey: @"SOGoWebAccessEnabled"];
@@ -613,6 +619,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
     v = 10;
 
   return v;
+}
+
+- (int) maximumSyncWindowSize
+{
+  return [self integerForKey: @"SOGoMaximumSyncWindowSize"];
 }
 
 @end

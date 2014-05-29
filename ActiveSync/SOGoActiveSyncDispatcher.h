@@ -32,17 +32,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 
 @class NSException;
+@class NSURL;
 
 @interface SOGoActiveSyncDispatcher : NSObject
 {
+  NSURL *folderTableURL;
   id context;
 }
 
 - (id) collectionFromId: (NSString *) theCollectionId
                    type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
 
+- (id) globallyUniqueIDToIMAPFolderName: (NSString *) theIdToTranslate
+                                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
+
 - (NSException *) dispatchRequest: (id) theRequest
                        inResponse: (id) theResponse
                           context: (id) theContext;
+
+- (NSURL *) folderTableURL;
+- (void) ensureFolderTableExists;
 
 @end

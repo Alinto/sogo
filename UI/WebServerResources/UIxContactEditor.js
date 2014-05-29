@@ -1,25 +1,25 @@
 /* -*- Mode: js2-mode; tab-width: 4; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
-	Copyright (C) 2005 SKYRIX Software AG
-	Copyright (C) 2006-2011 Inverse
+  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2006-2011 Inverse
 
-	This file is part of OpenGroupware.org.
+  This file is part of OpenGroupware.org.
 
-	OGo is free software; you can redistribute it and/or modify it under
-	the terms of the GNU Lesser General Public License as published by the
-	Free Software Foundation; either version 2, or (at your option) any
-	later version.
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
 
-	OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-	WARRANTY; without even the implied warranty of MERCHANTABILITY or
-	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-	License for more details.
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with OGo; see the file COPYING.  If not, write to the
-	Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-	02111-1307, USA.
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
 */
 
 var dateRegex = /^(([0-9]{2})?[0-9])?[0-9]-[0-9]?[0-9]-[0-9]?[0-9]$/;
@@ -36,10 +36,9 @@ function unescapeCallbackParameter(s) {
     return s;
 }
 
-function copyContact(type, email, uid, sn,
-                     displayname, givenname, telephonenumber, facsimiletelephonenumber,
-		             mobile, postalAddress, homePostalAddress,
-		             departmentnumber, l)
+function copyContact(type, email, uid, sn, displayname,
+                     givenname, telephonenumber, facsimiletelephonenumber,
+                     mobile, postalAddress, homePostalAddress, departmentnumber, l)
 {
     //  var type = arguments[0];
     //  var email = arguments[1];
@@ -94,17 +93,19 @@ function validateContactEditor() {
         alert(_("invalidemailwarn"));
         rc = false;
     }
+    return rc
+}
 
-    var byear = $('birthyear');
-    var bmonth = $('birthmonth');
-    var bday = $('birthday');
-    var bdayValue = byear.value + "-" + bmonth.value + "-" + bday.value;
-    if (bdayValue != "--" && !dateRegex.test(bdayValue)) {
-        alert(_("invaliddatewarn"));
-        rc = false;
-    }
+function initTimeWidget(input) {
+    var firstDay = new Date();
+    firstDay.setFullYear(1900,0,1);
+    var lastDay = new Date();
 
-    return rc;
+    jQuery(input).closest('.date').datepicker({autoclose: true,
+                                               endDate: lastDay,
+                                               startDate: firstDay,
+                                               setStartDate: lastDay,
+                                               startView: 2})
 }
 
 function onDisplaynameKeyDown() {
@@ -298,6 +299,8 @@ function initEditorForm() {
         emptyCategory.tabIndex = 10000;
         emptyCategory.observe("click", onEmptyCategoryClick);
     }
+
+    initTimeWidget($("birthdayDate"));
 }
 
 document.observe("dom:loaded", initEditorForm);

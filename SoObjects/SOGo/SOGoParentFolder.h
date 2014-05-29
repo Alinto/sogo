@@ -1,6 +1,6 @@
 /* SOGoParentFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@
 #define SOGOPARENTFOLDERS_H
 
 #import "SOGoFolder.h"
+#import "SOGoConstants.h"
 
+@class EOAdaptorChannel;
 @class NSMutableDictionary;
 @class NSString;
 @class WOResponse;
@@ -39,6 +41,7 @@
 + (Class) subFolderClass;
 
 - (NSString *) defaultFolderName;
+- (NSString *) collectedFolderName;
 
 - (NSException *) appendPersonalSources;
 - (void) removeSubFolder: (NSString *) subfolderName;
@@ -57,6 +60,10 @@
 
 - (id) lookupPersonalFolder: (NSString *) name
              ignoringRights: (BOOL) ignoreRights;
+
+- (NSException *) fetchSpecialFolders: (NSString *) sql
+                          withChannel: (EOAdaptorChannel *) fc
+                        andFolderType: (SOGoFolderType) folderType;
 
 @end
 

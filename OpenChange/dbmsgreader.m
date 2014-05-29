@@ -34,7 +34,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import "MAPIStoreUserContext.h"
-#import "SOGoMAPIDBObject.h"
+#import <SOGo/SOGoCacheGCSObject.h>
 
 #import "NSObject+PropertyList.m"
 

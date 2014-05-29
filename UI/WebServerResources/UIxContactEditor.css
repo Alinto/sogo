@@ -7,27 +7,32 @@ DIV#addressBookSelector SELECT
 SELECT
 { width: 8em; }
 
-DIV#buttons
-{ color: #535D6D;
-  visibility: visible;
-  position: absolute;
-  right: 1em;
-  bottom: 1em; }
-
 TR
 { width: 100% !important;
   border: 2px solid #0ff; }
+  
+/********** Frame of the current tab **********/
 
 DIV#editorTabs
 { position: absolute;
-  top: 5px;
   left: 5px;
   right: 5px;
-  bottom: 40px; }
+  top: 5px;
+  bottom: 5px;
+}
 
 DIV#editorTabs DIV.tab TD.titleCell
 { text-align: left;
   font-weight: bold; }
+
+DIV#buttons
+{ color: #535D6D;
+  visibility: visible;
+  position: absolute;
+  bottom: 12px;
+  right: 10px; }
+
+/********** Contact **********/
 
 INPUT.textField
 { width: 60%; }
@@ -35,17 +40,12 @@ INPUT.textField
 TD#htmlMailFormat
 { text-align: left !important; }
 
-TABLE#emailInfos TD
-{ width: 90%; }
-
 TABLE#emailInfos TD.preferred
 { width: 10% !important;
   overflow: visible;
   text-align: center; }
 
-DIV.tab TD.firstColumn INPUT.textField,
-DIV.tab TD.secondColumn INPUT.textField
-{ width: 35%; }
+/********** Categories **********/
 
 #categoryContainer
 { max-height: 400px;
@@ -67,11 +67,34 @@ INPUT.comboBoxField, #emptyCategory
   margin-bottom: 0px;
   margin-top: 0px; }
 
-#otherInfos TEXTAREA
-{ width: 70%; }
+/********** Address **********/
 
-#birthday, #birthmonth
-{ width: 18px; }
+DIV.tab TD.firstColumn INPUT.textField,
+DIV.tab TD.secondColumn INPUT.textField
+{ width: 35%; }
 
-#birthyear
-{ width: 36px; }
+/********** Photos **********/
+
+
+
+/********** OTHER **********/
+
+#birthdayDate
+{ width: auto;
+  vertical-align: 8px;
+}
+
+#birthdayLabel
+{
+  vertical-align: 8px;
+}
+
+#otherInfos table td
+{ text-align: left;
+  padding-bottom: 8px;
+}
+
+#otherInfos textarea
+{ width: 100%;
+  height: 100%;
+}

@@ -25,7 +25,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 
-#import "EOBitmaskQualifier.h"
+#import <SOGo/EOBitmaskQualifier.h>
 #import "MAPIStoreActiveTables.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTypes.h"

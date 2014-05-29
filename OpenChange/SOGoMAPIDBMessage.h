@@ -1,8 +1,6 @@
 /* SOGoMAPIDBMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +21,12 @@
 #ifndef SOGOMAPIDBMESSAGE_H
 #define SOGOMAPIDBMESSAGE_H
 
-#import "SOGoMAPIDBObject.h"
+#import <SOGo/SOGoCacheGCSObject.h>
 
 @class NSDate;
 @class NSString;
 
-@interface SOGoMAPIDBMessage : SOGoMAPIDBObject
+@interface SOGoMAPIDBMessage : SOGoCacheGCSObject
 @end
 
 #endif /* SOGOMAPIDBMESSAGE_H */

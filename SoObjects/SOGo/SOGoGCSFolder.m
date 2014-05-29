@@ -1,9 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -198,6 +196,7 @@ static NSArray *childRecordFields = nil;
       ocsPath = nil;
       ocsFolder = nil;
       childRecords = [NSMutableDictionary new];
+      folderSubscriptionValues = nil;
       userCanAccessAllObjects = NO;
     }
 
@@ -209,6 +208,7 @@ static NSArray *childRecordFields = nil;
   [ocsFolder release];
   [ocsPath release];
   [childRecords release];
+  [folderSubscriptionValues release];
   [super dealloc];
 }
 
@@ -277,29 +277,38 @@ static NSArray *childRecordFields = nil;
 {
   NSString *primaryDN;
   NSDictionary *ownerIdentity;
-
+  NSString *subjectFormat;
+  SOGoDomainDefaults *dd;
+  
   primaryDN = [row objectForKey: @"c_foldername"];
   if ([primaryDN length])
+  {
+    displayName = [NSMutableString new];
+    if ([primaryDN isEqualToString: [container defaultFolderName]])
+      [displayName appendString: [self labelForKey: primaryDN
+                                         inContext: context]];
+    else
+      [displayName appendString: primaryDN];
+    
+    if (!activeUserIsOwner)
     {
-      displayName = [NSMutableString new];
-      if ([primaryDN isEqualToString: [container defaultFolderName]])
-	[displayName appendString: [self labelForKey: primaryDN
-                                           inContext: context]];
-      else
-	[displayName appendString: primaryDN];
+      // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
+      // as it'll load user defaults and user settings which is _very costly_
+      // since it involves JSON parsing and database requests
+      ownerIdentity = [[SOGoUserManager sharedUserManager]
+                       contactInfosForUserWithUIDorEmail: owner];
 
-      if (!activeUserIsOwner)
-	{
-	  // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
-	  // as it'll load user defaults and user settings which is _very costly_
-	  // since it involves JSON parsing and database requests
-	  ownerIdentity = [[SOGoUserManager sharedUserManager]
-			    contactInfosForUserWithUIDorEmail: owner];
-
-	  [displayName appendFormat: @" (%@ <%@>)", [ownerIdentity objectForKey: @"cn"],
-		       [ownerIdentity objectForKey: @"c_email"]];
-	}
+      folderSubscriptionValues = [[NSMutableDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
+                                                                   [ownerIdentity objectForKey: @"cn"], @"UserName",
+                                                                   [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+      
+      dd = [[context activeUser] domainDefaults];
+      subjectFormat = [dd subscriptionFolderFormat];
+      
+      displayName = [folderSubscriptionValues keysWithFormat: subjectFormat];
+      [displayName retain];
     }
+  }
 }
 
 /* This method fetches the display name defined by the owner, but is also the
@@ -1358,11 +1367,15 @@ static NSArray *childRecordFields = nil;
     }
 
   NSZoneFree (NULL, selectors);
-
+  
+  /* If we haven't gotten any result to return, let's use the previously
+     supplied sync-token */
+  if (max == 0)
+    newToken = syncToken;
   /* If the most recent c_lastmodified is "now", we need to return "now - 1"
      in order to make sure during the next sync that every records that might
      get added at the same moment are not lost. */
-  if (!newToken || newToken == now)
+  else if (!newToken || newToken == now)
     newToken = now - 1;
 
   newTokenStr = [NSString stringWithFormat: @"%d", newToken];

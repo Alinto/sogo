@@ -53,6 +53,7 @@
   NSString *ocsPath;
   GCSFolder *ocsFolder;
   NSMutableDictionary *childRecords;
+  NSMutableDictionary *folderSubscriptionValues;
   BOOL userCanAccessAllObjects; /* i.e. user obtains 'Access Object' on
                                    subobjects */
 }

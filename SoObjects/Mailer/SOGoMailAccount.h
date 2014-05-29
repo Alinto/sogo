@@ -84,6 +84,8 @@ typedef enum {
 - (NSArray *) allFolderPaths;
 - (NSArray *) allFoldersMetadata;
 
+- (NSDictionary *) imapFolderGUIDs;
+
 - (BOOL) isInDraftsFolder;
 
 /* special folders */

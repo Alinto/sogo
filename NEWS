@@ -1,3 +1,48 @@
+2.2.4 (2014-05-29)
+------------------
+
+New features
+ - new print option in Calendar module
+ - now able to save unknown recipient emails to address book on send (#1496)
+
+Enhancements
+ - Sieve folder encoding is now configurable (#2622)
+ - SOGo version is now displayed in preferences window (#2612)
+ - report Sieve error when saving preferences (#1046)
+ - added the SOGoMaximumSyncWindowSize system default to overwrite the
+   maximum number of items returned during an ActiveSync sync operation
+ - updated datepicker
+ - addressbooks properties are now accessible from a popup window
+ - extended events and tasks searches
+ - updated Czech, French, Hungarian, Polish, Russian, Slovak, Spanish (Argentina), and Spanish (Spain) translations
+ - added more sycned contact properties when using ActiveSync (#2775)
+ - now possible to configure the default subscribed resource name using SOGoSubscriptionFolderFormat
+ - now handle server-side folder updates using ActiveSync (#2688)
+ - updated CKEditor to version 4.4.1
+
+Bug fixes
+ - fixed saved HTML content of draft when attaching a file
+ - fixed text nodes of HTML content handler by encoding HTML entities
+ - fixed iCal7 delegation issue with the "inbox" folder (#2489)
+ - fixed birth date validity checks (#1636)
+ - fixed URL handling (#2616)
+ - improved folder rename operations using ActiveSync (#2700)
+ - fixed SmartReply/Forward when ReplaceMime was omitted (#2680)
+ - fixed wrong generation of weekly repetitive events with ActiveSync (#2654)
+ - fixed incorrect XML data conversion with ActiveSync (#2695)
+ - fixed display of events having a category with HTML entities (#2703)
+ - fixed display of images in CSS background (#2437)
+ - fixed limitation of Sieve script size (#2745)
+ - fixed sync-token generation when no change was returned (#2492)
+ - fixed the IMAP copy/move operation between subfolders in different accounts
+ - fixed synchronization of seen/unseen status of msgs in Webmail (#2715)
+ - fixed focus of popup windows open through a contextual menu with Firefox on Windows 7
+ - fixed missing characters in shared folder names over ActiveSync (#2709)
+ - fixed reply and forward mail templates for Brazilian Portuguese (#2738)
+ - fixed newline in signature when forwarding a message as attachment in HTML mode (#2787)
+ - fixed restoration of options (priority & return receipt) when editing a draft (#193)
+ - fixed update of participation status via CalDAV (#2786)
+
 2.2.3 (2014-04-03)
 ------------------
 

@@ -73,7 +73,7 @@ var SOGoResizableTableInterface = {
     saveColumnsState: function() {
         this.computeColumnsWidths();
         if (!$(document.body).hasClassName("popup")) {
-            var url =  ApplicationBaseURL + "saveColumnsState";
+            var url =  ApplicationBaseURL + "/saveColumnsState";
             var data = this.ratios;
             var columns = data.keys();
             var params = "columns=" + columns.join(",")

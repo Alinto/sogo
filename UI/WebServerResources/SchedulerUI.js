@@ -1,4 +1,5 @@
-var listFilter = 'view_today';
+var eventListFilter = 'view_today';
+var taskListFilter = 'view_today';
 
 var listOfSelection = null;
 var selectedCalendarCell = null;
@@ -32,6 +33,13 @@ var categoriesStyleSheet = null;
 
 var clipboard = null;
 var eventsToCopy = [];
+
+function printView() {
+  
+  window.open("printView","","width=660,height=470");
+  
+  return false; /* stop following the link */
+}
 
 function newEvent(type, day, hour, duration) {
     var folder = null;
@@ -74,7 +82,7 @@ function newEventFromWidget(sender, type) {
     var day = $(sender).readAttribute("day");
     var hour = sender.readAttribute("hour");
 
-    return newEvent(type, day, hour);
+    newEvent.delay(0.1, type, day, hour);
 }
 
 function minutesToHM(minutes) {
@@ -112,7 +120,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
             _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
         else {
             var urlstr = (ApplicationBaseURL
-                          + eventCell.calendar + "/" + eventCell.cname);
+                          + "/" + eventCell.calendar + "/" + eventCell.cname);
             if (eventCell.recurrenceTime)
                 urlstr += "/occurence" + eventCell.recurrenceTime;
             urlstr += ("/adjust?" + params);
@@ -123,7 +131,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
 }
 
 function performEventAdjustment(folder, event, recurrence, params) {
-    var urlstr = ApplicationBaseURL + folder + "/" + event;
+    var urlstr = ApplicationBaseURL + "/" + folder + "/" + event;
     if (recurrence)
         urlstr += "/" + recurrence;
     urlstr += "/adjust" + generateQueryString(params);
@@ -156,21 +164,31 @@ function getSelectedFolder() {
 
 function onMenuNewEventClick(event) {
     var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "event");
+    if (target) {
+        if (/(minutes\d{2}|dayHeader)/.test(target.className))
+            target = target.parentNode;
+        newEventFromWidget(target, "event");
+    }
+    else {
+        newEvent('event');
+    }
 }
 
 function onMenuNewTaskClick(event) {
     var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "task");
+    if (target) {
+        if (/(minutes\d{2}|dayHeader)/.test(target.className))
+            target = target.parentNode;
+        newEventFromWidget(target, "task");
+    }
+    else {
+        newEvent('task');
+    }
 }
 
 function _editEventId(id, calendar, recurrence) {
     var targetname = "SOGo_edit_" + id;
-    var urlstr = ApplicationBaseURL + calendar + "/" + id;
+    var urlstr = ApplicationBaseURL + "/" + calendar + "/" + id;
     if (recurrence) {
         urlstr += "/" + recurrence;
         targetname += recurrence;
@@ -192,14 +210,18 @@ function editEvent() {
         }
 
         for (var i = 0; i < nodes.length; i++)
-            _editEventId(nodes[i].cname,
-                         nodes[i].calendar);
+            _editEventId.delay(0.1,
+                               nodes[i].cname,
+                               nodes[i].calendar);
     } else if (selectedCalendarCell) {
         if (selectedCalendarCell[0].recurrenceTime && !selectedCalendarCell[0].isException)
-            _editRecurrenceDialog(selectedCalendarCell[0], "confirmEditing");
+            _editRecurrenceDialog.delay(0.1,
+                                        selectedCalendarCell[0],
+                                        "confirmEditing");
         else
-            _editEventId(selectedCalendarCell[0].cname,
-                         selectedCalendarCell[0].calendar);
+            _editEventId.delay(0.1,
+                               selectedCalendarCell[0].cname,
+                               selectedCalendarCell[0].calendar);
     } else {
         showAlertDialog(_("Please select an event or a task."));
     }
@@ -211,7 +233,7 @@ function _batchDeleteEvents() {
     // Delete the events of the next calendar
     var calendar = calendarsOfEventsToDelete.shift();
     var events = eventsToDelete.shift();
-    var urlstr = (ApplicationBaseURL + calendar
+    var urlstr = (ApplicationBaseURL + "/" + calendar
                   + "/batchDelete?ids=" + events.join(','));
     document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                          deleteEventCallback,
@@ -439,7 +461,7 @@ function copyEventToPersonalCalendar(event) {
 
 function copyEvents() {
     var path = eventsToCopy.shift();
-    var urlstr = ApplicationBaseURL + path; log (urlstr);
+    var urlstr = ApplicationBaseURL + "/" + path; log (urlstr);
     triggerAjaxRequest(urlstr,
                        copyEventCallback);
 }
@@ -469,8 +491,8 @@ function onMenuRawEvent(event) {
     var calendar = selectedCalendarCell[0].calendar;
     var cname = selectedCalendarCell[0].cname;
 
-    var url = ApplicationBaseURL + calendar + "/" + cname + "/raw";
-    openGenericWindow(url);
+    var url = ApplicationBaseURL + "/" + calendar + "/" + cname + "/raw";
+    openGenericWindow.delay(0.1, url);
 }
 
 function modifyEvent(sender, modification, parameters) {
@@ -706,7 +728,7 @@ function getEventById(cname, owner) {
 
 function _editRecurrenceDialog(eventCell, method, params) {
     var targetname = "SOGo_edit_" + eventCell.cname + eventCell.recurrenceTime;
-    var urlstr = (ApplicationBaseURL + eventCell.calendar + "/" + eventCell.cname
+    var urlstr = (ApplicationBaseURL + "/" + eventCell.calendar + "/" + eventCell.cname
                   + "/occurence" + eventCell.recurrenceTime + "/" + method);
     if (params && params.length) {
         urlstr += "?" + params;
@@ -719,7 +741,7 @@ function _editRecurrenceDialog(eventCell, method, params) {
 
 function onViewEvent(event) {
     if (event.detail == 2) return;
-    var url = ApplicationBaseURL + this.calendar + "/" + this.cname;
+    var url = ApplicationBaseURL + "/" + this.calendar + "/" + this.cname;
 
     if (typeof this.recurrenceTime != "undefined")
         url += "/occurence" + this.recurrenceTime;
@@ -846,7 +868,7 @@ function performEventDeletion(folder, event, recurrence) {
             // Only one recurrence
             var occurenceTime = recurrence.substring(9);
             var nodes = _eventBlocksMatching(folder, event, occurenceTime);
-            var urlstr = ApplicationBaseURL + folder + "/" + event  + "/" + recurrence + "/delete";
+            var urlstr = ApplicationBaseURL + "/" + folder + "/" + event  + "/" + recurrence + "/delete";
 
             if (nodes)
                 document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
@@ -885,7 +907,7 @@ function performDeleteEventCallback(http) {
 /* in dateselector */
 function onDaySelect(node) {
     var day = node.getAttribute('day');
-    var needRefresh = (listFilter == 'view_selectedday'
+    var needRefresh = (eventListFilter == 'view_selectedday'
                        && day != currentDay);
 
     var td = $(node).getParentWithTagName("td");
@@ -918,7 +940,7 @@ function onDateSelectorGotoMonth(event) {
 
 function onCalendarGotoDay(node) {
     var day = node.getAttribute("date");
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
+    var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
 
     changeDateSelectorDisplay(day);
     changeCalendarDisplay( { "day": day } );
@@ -1027,6 +1049,12 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 if (data[i][7])
                     td.update(data[i][7]); // location
+
+                td = createElement("td");
+                row.appendChild(td);
+                td.observe("mousedown", listRowMouseDownHandler, true);
+                if (data[i][10])
+                  td.update(data[i][10]); // category
 
                 td = createElement("td");
                 row.appendChild(td);
@@ -1224,7 +1252,7 @@ function loadNextView(event) {
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
-    var url = ApplicationBaseURL + "dateselector";
+    var url = ApplicationBaseURL + "/dateselector";
     if (day) {
         if (day.length < 8)
             day += "01";
@@ -1254,7 +1282,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 
 function changeCalendarDisplay(data, newView) {
     newView = ((newView) ? newView : currentView);
-    var url = ApplicationBaseURL + newView;
+    var url = ApplicationBaseURL + "/" + newView;
     var day = null;
     var scrollEvent = null;
     if (data) {
@@ -1591,7 +1619,7 @@ function refreshCalendarEvents(scrollEvent) {
         document.refreshCalendarEventsAjaxRequest.aborted = true;
         document.refreshCalendarEventsAjaxRequest.abort();
     }
-    var url = (ApplicationBaseURL + "eventsblocks?sd=" + sd + "&ed=" + ed
+    var url = (ApplicationBaseURL + "/eventsblocks?sd=" + sd + "&ed=" + ed
                + "&view=" + currentView);
     document.refreshCalendarEventsAjaxRequest
         = triggerAjaxRequest(url, refreshCalendarEventsCallback,
@@ -1794,10 +1822,11 @@ function newBaseEventDIV(eventRep, event, eventText) {
         createElement("img", null, null, {src: ResourcesURL + "/alarm.png"}, null, iconSpan);
 
     if (event[10] != null) {
-        var categoryStyle = categoriesStyles.get(event[10]);
+        var category = event[10].decodeEntities();
+        var categoryStyle = categoriesStyles.get(category);
         if (!categoryStyle) {
             categoryStyle = 'category_' + categoriesStyles.keys().length;
-            categoriesStyles.set([event[10]], categoryStyle);
+            categoriesStyles.set([category], categoryStyle);
         }
         innerDiv.addClassName(categoryStyle);
     }
@@ -2156,7 +2185,7 @@ function _loadEventHref(href) {
         document.eventsListAjaxRequest.aborted = true;
         document.eventsListAjaxRequest.abort();
     }
-    var url = ApplicationBaseURL + href;
+    var url = ApplicationBaseURL + "/" + href;
     document.eventsListAjaxRequest
         = triggerAjaxRequest(url, eventsListCallback, href);
 
@@ -2168,7 +2197,7 @@ function _loadTasksHref(href) {
         document.tasksListAjaxRequest.aborted = true;
         document.tasksListAjaxRequest.abort();
     }
-    url = ApplicationBaseURL + href;
+    url = ApplicationBaseURL + "/" + href;
 
     var tasksList = $("tasksList");
     var selectedIds;
@@ -2227,41 +2256,44 @@ function refreshCurrentFolder(id) {
 
 /* refreshes the "unifinder" list */
 function refreshEvents() {
-    var titleSearch;
+    var specificSearch;
     var value = search["events"]["value"];
 
     if (value && value.length)
-        titleSearch = "&search=" + escape(value.utf8encode());
+        specificSearch = ("&search=" + search["events"]["criteria"]
+                          + "&value=" + escape(value.utf8encode()));
     else
-        titleSearch = "";
+        specificSearch = "";
 
     refreshAlarms();
 
     return _loadEventHref("eventslist?asc=" + sorting["event-ascending"]
                           + "&sort=" + sorting["event-attribute"]
                           + "&day=" + currentDay
-                          + titleSearch
-                          + "&filterpopup=" + listFilter);
+                          + specificSearch
+                          + "&filterpopup=" + eventListFilter);
 }
 
 function refreshTasks(setUserDefault) {
-    var titleSearch;
+    var specificSearch;
     var value = search["tasks"]["value"];
 
     if (value && value.length)
-        titleSearch = "&search=" + escape(value.utf8encode());
+        specificSearch = ("&search=" + search["tasks"]["criteria"]
+                          + "&value=" + escape(value.utf8encode()));
     else
-        titleSearch = "";
+        specificSearch = "";
 
     if (setUserDefault == 1)
-      titleSearch += "&setud=1";
+        specificSearch += "&setud=1";
 
     refreshAlarms();
 
     return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
                           + "&asc=" + sorting["task-ascending"]
                           + "&sort=" + sorting["task-attribute"]
-                          + titleSearch);
+                          + specificSearch
+                          + "&filterpopup=" + taskListFilter);
 }
 
 function refreshEventsAndDisplay() {
@@ -2269,13 +2301,24 @@ function refreshEventsAndDisplay() {
     changeCalendarDisplay();
 }
 
-function onListFilterChange() {
+function onEventsListFilterChange() {
     var node = $("filterpopup");
 
-    listFilter = node.value;
-//    log ("listFilter = " + listFilter);
+    eventListFilter = node.value;
 
     return refreshEvents();
+}
+
+function onTasksListFilterChange() {
+  var node = $("tasksFilterpopup");
+
+  taskListFilter = node.value;
+
+  $("showHideCompletedTasks").disabled = taskListFilter == "view_overdue"     ||
+                                         taskListFilter == "view_incomplete"  ||
+                                         taskListFilter == "view_not_started";
+
+  return refreshTasks();
 }
 
 function selectMonthInMenu(menu, month) {
@@ -2472,7 +2515,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
 
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
+    var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
 
     setSelectedDayDate(day);
     changeDateSelectorDisplay(day);
@@ -2746,8 +2789,8 @@ function getMenus() {
         dateMenu.push(onYearMenuItemClick);
     menus["yearListMenu"] = dateMenu;
 
-    menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
-                                        onMenuNewTaskClick,
+    menus["eventsListMenu"] = new Array(onMenuNewEventClick,
+                                        onMenuNewTaskClick, "-",
                                         editEvent, deleteEvent, "-",
                                         onSelectAll, "-",
                                         null, null);
@@ -2756,12 +2799,12 @@ function getMenus() {
                                        onCalendarNew, onCalendarRemove,
                                        "-", onCalendarExport, onCalendarImport,
                                        null, "-", null, "-", onMenuSharing);
-    menus["eventSearchMenu"] = new Array(setSearchCriteria);
+    menus["eventSearchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
 
     menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
                                         marksTasksAsCompleted, deleteEvent, "-",
 					onMenuRawTask);
-    menus["taskSearchMenu"] = new Array(setSearchCriteria);
+    menus["taskSearchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
 
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
@@ -2775,7 +2818,7 @@ function getMenus() {
 }
 
 function newTask () {
-    return newEventFromWidget(this, 'task');
+    newEventFromWidget.delay(0.1, this, 'task');
 }
 
 function marksTasksAsCompleted () {
@@ -2788,7 +2831,7 @@ function marksTasksAsCompleted () {
 }
 
 function _updateTaskCompletion (task, value) {
-    url = (ApplicationBaseURL + task.calendar
+    url = (ApplicationBaseURL + "/" + task.calendar
            + "/" + task.cname + "/changeStatus?status=" + value);
 
     triggerAjaxRequest(url, refreshTasks, null);
@@ -2802,8 +2845,8 @@ function onMenuRawTask(event) {
       return;
     }
 
-    var url = ApplicationBaseURL + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
-    openGenericWindow(url);
+    var url = ApplicationBaseURL + "/" + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
+    openGenericWindow.delay(0.1, url);
 }
 
 
@@ -2919,9 +2962,11 @@ function onCalendarModify(event) {
         height -= 26;
     }
 
-    var properties = window.open(url, windowID,
-                                 "width="+width+",height="+height+",resizable=0");
-    properties.focus();
+    $(function() {
+        var properties = window.open(url, windowID,
+                                     "width="+width+",height="+height+",resizable=0");
+        properties.focus();
+    }).delay(0.1);
 }
 
 function updateCalendarProperties(calendarID, calendarName, calendarColor) {
@@ -3266,6 +3311,7 @@ function configureLists() {
 
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
+
     if (showCompletedTasks)
       input.checked = true;
 
@@ -3366,7 +3412,7 @@ function onListCollapse(event, element) {
         });
     }
 
-    var url =  ApplicationBaseURL + "saveListState";
+    var url =  ApplicationBaseURL + "/saveListState";
     var params = "state=" + state;
     triggerAjaxRequest(url, null, null, params,
                        { "Content-type": "application/x-www-form-urlencoded" });
@@ -3396,7 +3442,7 @@ function onDocumentKeydown(event) {
                  && keyCode == "A".charCodeAt(0)) {  // Ctrl-A
             onSelectAll(event);
             Event.stop(event);
-         }
+        }
         else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
                  && keyCode == "C".charCodeAt(0)) {  // Ctrl-C
             copyEventToClipboard();
@@ -3411,7 +3457,7 @@ function onDocumentKeydown(event) {
 function saveTabState(event) {
     var tab = $(event).memo;
 
-    var url =  ApplicationBaseURL + "saveSelectedList";
+    var url =  ApplicationBaseURL + "/saveSelectedList";
     var params = "list=" + tab;
     triggerAjaxRequest(url, null, null, params,
                        { "Content-type": "application/x-www-form-urlencoded" });
@@ -3427,7 +3473,7 @@ function initScheduler() {
 
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
-        listFilter = node.value;
+        eventListFilter = node.value;
 
         var tabsContainer = $("schedulerTabs");
         var controller = new SOGoTabsController();
@@ -3440,6 +3486,7 @@ function initScheduler() {
         else {
             showCompletedTasks = 0;
         }
+
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();

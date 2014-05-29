@@ -1,8 +1,6 @@
-/* EOQualifier+MAPI.m - this file is part of SOGo
+/* EOQualifier+SOGoCacheObject.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +27,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "EOBitmaskQualifier.h"
-#import "SOGoMAPIDBObject.h"
+#import "SOGoCacheGCSObject.h"
 
-#import "EOQualifier+MAPI.h"
+#import "EOQualifier+SOGoCacheObject.h"
 
-@implementation EOQualifier (MAPIStoreRestrictions)
+@implementation EOQualifier (SOGoCacheObjectRestrictions)
 
 - (BOOL) _evaluateSOGoMAPIDBObject: (NSDictionary *) properties
 {
@@ -41,7 +39,7 @@
   return NO;
 }
 
-- (BOOL) evaluateSOGoMAPIDBObject: (SOGoMAPIDBObject *) object
+- (BOOL) evaluateSOGoMAPIDBObject: (SOGoCacheGCSObject *) object
 {
   NSDictionary *properties;
   BOOL rc;
@@ -58,7 +56,7 @@
 
 @end
 
-@implementation EOAndQualifier (MAPIStoreRestrictionsPrivate)
+@implementation EOAndQualifier (SOGoCacheRestrictionsPrivate)
 
 - (BOOL) _evaluateSOGoMAPIDBObject: (NSDictionary *) properties
 {
@@ -76,7 +74,7 @@
 
 @end
 
-@implementation EOOrQualifier (MAPIStoreRestrictionsPrivate)
+@implementation EOOrQualifier (SOGoCacheObjectRestrictionsPrivate)
 
 - (BOOL) _evaluateSOGoMAPIDBObject: (NSDictionary *) properties
 {
@@ -94,7 +92,7 @@
 
 @end
 
-@implementation EONotQualifier (MAPIStoreRestrictionsPrivate)
+@implementation EONotQualifier (SOGoCacheObjectRestrictionsPrivate)
 
 - (BOOL) _evaluateSOGoMAPIDBObject: (NSDictionary *) properties
 {
@@ -103,7 +101,7 @@
 
 @end
 
-@implementation EOKeyValueQualifier (MAPIStoreRestrictionsPrivate)
+@implementation EOKeyValueQualifier (SOGoCacheObjectRestrictionsPrivate)
 
 typedef BOOL (*EOComparator) (id, SEL, id);
 
@@ -134,7 +132,7 @@ typedef BOOL (*EOComparator) (id, SEL, id);
 
 @end
 
-@implementation EOBitmaskQualifier (MAPIStoreRestrictionsPrivate)
+@implementation EOBitmaskQualifier (SOGoCacheObjectRestrictionsPrivate)
 
 - (BOOL) _evaluateSOGoMAPIDBObject: (NSDictionary *) properties
 {
