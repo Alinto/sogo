@@ -79,7 +79,7 @@
 "Remove this folder" = "Odebrat tuto složku";
 "Erase mails from this folder" = "Vymazat maily v této složce";
 "Expunge this folder" = "Vyškrtnout tuto složku";
-"Archive This Folder" = "Archivovat složku";
+"Export This Folder" = "Exportovat složku";
 "Modify the acl of this folder" = "Upravit acl této složky";
 
 "Saved Messages.zip" = "zpravy.zip";

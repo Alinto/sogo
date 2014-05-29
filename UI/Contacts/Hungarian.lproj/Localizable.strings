@@ -36,7 +36,6 @@
 "delete" = "Töröl";
 "edit" = "Szerkeszt";
 "invalidemailwarn" = "A megadott email cím érvénytelen";
-"invaliddatewarn" = "A megadott dátum érvénytelen.";
 "new" = "új";
 "Preferred Phone" = "Preferált telefon";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Új névjegy";
 "New List" = "Új csoportlista";
+"Edit" = "Szerkesztés";
 "Properties" = "Tulajdonságok";
 "Sharing..." = "Megosztás...";
 "Write" = "Üzenet írása";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Az alábbi névjegy nem törölhető:  \"%{0}\".";
 
-"Address Book Name" = "Címjegyzék neve";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Saját tulajdonú mappára nem lehet feliratkozni.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Az összes %{0} névjegy importálástra került a címjegyzékbe.";
 
 "Reload" = "Újratöltés";
+
+/* Properties window */
+"Address Book Name:" = "Címjegyzék neve:";
+"Links to this Address Book" = "Hivatkozások erre a címjegyzékre";
+"Authenticated User Access" = "Bejelentkezett felhasználó hozzáférése";
+"CardDAV URL: " = "CardDAV URL:";
+

@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Mostrar el tiempo fuera de las horas de trabajo como ocupado";
 "First week of year :" = "Primera semana del año: ";
 "Enable reminders for Calendar items" = "Habilitar recordatorios para los elementos del calendario";
-"Play a sound when a reminder comes due"
-= "Señal acústica para los recordatorios";
+"Play a sound when a reminder comes due" = "Señal acústica para los recordatorios";
 "Default reminder :" = "Recordatorio por defecto: ";
 
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
@@ -111,21 +110,26 @@
 "personalCalendar" = "Calendario personal";
 "firstCalendar" = "Primer calendario habilitado";
 
+"reminder_NONE" = "No recordar";
 "reminder_5_MINUTES_BEFORE" = "5 minutos";
 "reminder_10_MINUTES_BEFORE" = "10 minutos";
 "reminder_15_MINUTES_BEFORE" = "15 minutos";
 "reminder_30_MINUTES_BEFORE" = "30 minutos";
+"reminder_45_MINUTES_BEFORE" = "45 minutos antes";
 "reminder_1_HOUR_BEFORE" = "1 hora";
 "reminder_2_HOURS_BEFORE" = "2 horas";
-"reminder_5_HOURS_BEFORE"= "5 horas";
-"reminder_15_HOURS_BEFORE"= "15 horas";
+"reminder_5_HOURS_BEFORE" = "5 horas";
+"reminder_15_HOURS_BEFORE" = "15 horas";
 "reminder_1_DAY_BEFORE" = "1 día";
 "reminder_2_DAYS_BEFORE" = "2 días";
+"reminder_1_WEEK_BEFORE" = "1 semana antes";
 
 /* Mailer */
+"Labels" = "Etiquetas";
 "Label" = "Etiquetar";
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
 "Sort messages by threads" = "Ordenar mensajes por conversaciones";
+"When sending mail, add unknown recipients to my" = "Al enviar correos, agregar destinatarios desconocidos a mi";
 "Check for new mail:" = "Comprobar si hay nuevos correos: ";
 "messagecheck_manually" = "Manualmente";
 "messagecheck_every_minute" = "Cada minuto";
@@ -152,6 +156,10 @@
 "Display remote inline images" = "Mostrar las imágenes remotas";
 "displayremoteinlineimages_never" = "Nunca";
 "displayremoteinlineimages_always" = "Siempre";
+
+/* Contact */
+"Personal Address Book" = "Libreta de direcciones personal";
+"Collected Address Book" = "Libreta de direcciones recopiladas";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nueva Cuenta de Correo";
@@ -200,6 +208,7 @@
 "Mail" = "Correo";
 "Last" = "Ultimo usado";
 "Default module :" = "Módulo por defecto :";
+"SOGo version:" = "Versión de SOGo:";
 
 "Language :" = "Idioma :";
 "choose" = "Elija ...";
@@ -244,6 +253,8 @@
 "Active" = "Activo";
 "Move Up" = "Subir";
 "Move Down" = "Bajar";
+"Connection error" = "Error de conexión";
+"Service temporarily unavailable" = "Servicio temporalmente no disponible";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Nombre del filtro:";
@@ -261,6 +272,7 @@
 "To or Cc" = "Para o Cc";
 "Size (Kb)" = "Tamaño (Kb)";
 "Header" = "Cabecera";
+"Body" = "Cuerpo";
 "Flag the message with:" = "Marcar el mensaje con:";
 "Discard the message" = "Descartar el mensaje";
 "File the message in:" = "Archivar el mensaje en:";
@@ -287,12 +299,8 @@
 "Flagged" = "Marcado";
 "Junk" = "Spam";
 "Not Junk" = "No es Spam";
-"Label 1" = "Etiqueta 1";
-"Label 2" = "Etiqueta 2";
-"Label 3" = "Etiqueta 3";
-"Label 4" = "Etiqueta 4";
-"Label 5" = "Etiqueta 5";
 
+/* Password policy */
 "The password was changed successfully." = "El cambio de clave fue exitoso";
 "Password must not be empty." = "La contraseña no puede estar en blanco";
 "The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor intente de nuevo";

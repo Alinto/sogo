@@ -5,6 +5,7 @@
 "Create a new event" = "Vytvořit novou událost";
 "Create a new task" = "Vytvořit nový úkol";
 "Edit this event or task" = "Upravit tuto událost nebo úkol";
+"Print the current calendar view" = "Aktuální pohled";
 "Delete this event or task" = "Smazat tuto událost nebo úkol";
 "Go to today" = "Přejde na dnešní den";
 "Switch to day view" = "Přepnout na denní zobrazení";
@@ -53,7 +54,7 @@
 
 "New Calendar..." = "Nový kalendář...";
 "Delete Calendar" = "Smazat kalendář";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
+"Unsubscribe Calendar" = "Odhlásit odebírání kalendáře";
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
 "Import Events..." = "Importovat události...";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Název kalendáře";
 
 "new" = "Nový";
-"printview" = "Náhled tisku";
+"Print view" = "Tisk";
 "edit" = "Upravit";
 "delete" = "Smazat";
 "proposal" = "Návrh";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Skrýt již přijaté a odmítnuté schůzky";
 "Show already accepted and rejected appointments" = "Zobrazit již přijaté a odmítnuté  schůzky";
 
+/* Print view */
+
+"LIST" = "Seznam";
+"Print Settings" = "Nastavení tisku";
+"Title:" = "Název:";
+"Layout:" = "Vzhled:";
+"What to Print" = "Rozsah tisku";
+"Options" = "Možnosti";
+"Tasks with no due date" = "Úkoly bez termínu";
+"Completed tasks" = "Dokončené úkoly";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Všechny budoucí události";
 "view_selectedday" = "Zvolený den";
 
+"view_not_started" = "Nezapočaté úkoly";
+"view_overdue" = "Nesplněné úkoly";
+"view_incomplete" = "Nedokončené úkoly";
+
 "View:" = "Zobrazit:";
-"Title or Description" = "Název nebo popis";
+"Title, category or location" = "Název, kategorie nebo místo";
+"Entire content" = "Celý obsah";
 
 "Search" = "Vyhledat";
 "Search attendees" = "Vyhledat účastníky";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

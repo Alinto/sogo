@@ -29,7 +29,7 @@
 "Add..." = "Hozzáadás...";
 "Remove" = "Törlés";
 
-"Subscribe User" = "Felíratkozott felhasználók";
+"Subscribe User" = "Felhasználót felirathat";
 
 "Any Authenticated User" = "Bejelentkezett felhasználók";
 "Public Access" = "Nyilvános hozzáférés";
@@ -103,9 +103,7 @@
 "Location:" = "Hely:";
 
 /* mail labels */
-/* Mail labels */
 "Important" = "Fontos";
-"Work" = "Hivatalos";
 "Work" = "Hivatalos";
 "Personal" = "Személyes";
 "To Do" = "Teendő";

@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "No es posible crear una lista en una libreta de direcciones compartida.";
 "Warning" = "Atención";
+"Can't contact server" = "Ha ocurrido un error mientras se contactaba al servidor. Por favor intente de nuevo";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "No esta permitido el acceso a este módulo o éste sistema. Por favor contacte con su administrador de sistemas.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Vencimiento:";
 "Location:" = "Lugar:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Importante";
-"Work" = "Trabajo";
 "Work" = "Trabajo";
 "Personal" = "Personal";
 "To Do" = "Por hacer";

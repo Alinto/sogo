@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Mostrar tiempo ocupado fuera del horario laboral";
 "First week of year :" = "Primera semana del año: ";
 "Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
-"Play a sound when a reminder comes due"
-= "Señal acústica para los recordatorios";
+"Play a sound when a reminder comes due" = "Señal acústica para los recordatorios";
 "Default reminder :" = "Recordatorio por defecto: ";
 
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
@@ -130,6 +129,7 @@
 "Label" = "Etiquetar";
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
 "Sort messages by threads" = "Ordenar mensajes por temas";
+"When sending mail, add unknown recipients to my" = "Cuando se envía correo, añade destinatarios desconocidos a mi";
 "Check for new mail:" = "Comprobar correo nuevo: ";
 "messagecheck_manually" = "Manualmente";
 "messagecheck_every_minute" = "Cada minuto";
@@ -156,6 +156,10 @@
 "Display remote inline images" = "Enseña imágenes remotas de forma integrada";
 "displayremoteinlineimages_never" = "Nunca";
 "displayremoteinlineimages_always" = "Siempre";
+
+/* Contact */
+"Personal Address Book" = "Libreta de direcciones personal";
+"Collected Address Book" = "Libreta de direcciones recogidas";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nueva Cuenta de Correo";
@@ -204,6 +208,7 @@
 "Mail" = "Correo";
 "Last" = "Ultimo usado";
 "Default module :" = "Módulo por defecto :";
+"SOGo version:" = "Versión de SOGo:";
 
 "Language :" = "Idioma :";
 "choose" = "Elija ...";
@@ -248,6 +253,8 @@
 "Active" = "Activo";
 "Move Up" = "Subir";
 "Move Down" = "Bajar";
+"Connection error" = "Error al conectar";
+"Service temporarily unavailable" = "Servicio temporalmente no disponible";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Nombre del filtro:";

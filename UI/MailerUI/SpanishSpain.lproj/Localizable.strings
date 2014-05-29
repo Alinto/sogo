@@ -79,7 +79,7 @@
 "Remove this folder" = "Borrar esta carpeta";
 "Erase mails from this folder" = "Borrar los correos de esta carpeta";
 "Expunge this folder" = "Compactar esta carpeta";
-"Archive This Folder" = "Archivar esta carpeta";
+"Export This Folder" = "Exportar Esta Carpeta";
 "Modify the acl of this folder" = "Modificar la lista de permisos de esta carpeta";
 
 "Saved Messages.zip" = "Guardar Mensaje.zip";

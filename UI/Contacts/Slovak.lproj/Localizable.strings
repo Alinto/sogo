@@ -36,7 +36,6 @@
 "delete" = "zmazať";
 "edit" = "editovať";
 "invalidemailwarn" = "Zvolený email je neplatný";
-"invaliddatewarn" = "Zvolený dátum je neplatný";
 "new" = "nový";
 "Preferred Phone" = "Preferovaný telefón";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Nová vizitka";
 "New List" = "Nový zoznam";
+"Edit" = "Upraviť";
 "Properties" = "Možnosti";
 "Sharing..." = "Zdielanie...";
 "Write" = "Napíš";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Nemôžete odstrániť vizitku \"%{0}\".";
 
-"Address Book Name" = "Meno adresára";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Nemôžete sa prihlásiť na odber svojej vlastnej zložky.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Dokopy bolo do adresára importovaných %{0} vizitiek.";
 
 "Reload" = "Znovu načítaj";
+
+/* Properties window */
+"Address Book Name:" = "Meno adresára";
+"Links to this Address Book" = "Odkazy k tomuto adresáru";
+"Authenticated User Access" = "Prístup pre overeného užívateľa";
+"CardDAV URL: " = "CardDAV url:";
+

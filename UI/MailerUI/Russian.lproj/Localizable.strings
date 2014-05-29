@@ -79,7 +79,7 @@
 "Remove this folder" = "Удалять эту папку";
 "Erase mails from this folder" = "Удалять сообщения из этой папки";
 "Expunge this folder" = "Помечать письма как удаленные";
-"Archive This Folder" = "Archive This Folder";
+"Export This Folder" = "Экспортировать эту папку";
 "Modify the acl of this folder" = "Управлять правами доступа к этой папке";
 
 "Saved Messages.zip" = "Saved Messages.zip";

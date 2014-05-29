@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "A munkaidőn túli időszakokra foglaltság jelzése";
 "First week of year :" = "Év első hete:";
 "Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
-"Play a sound when a reminder comes due"
-= "Hang lejátszása az emlékeztetőhöz";
+"Play a sound when a reminder comes due" = "Hang lejátszása az emlékeztetőhöz";
 "Default reminder :" = "Alapértelmezett emlékeztető:";
 
 "firstWeekOfYear_January1" = "Január 1-jétől";
@@ -130,6 +129,7 @@
 "Label" = "Címke";
 "Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
+"When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Check for new mail:" = "Új üzenetek letöltése:";
 "messagecheck_manually" = "Kézi";
 "messagecheck_every_minute" = "Percenként";
@@ -156,6 +156,10 @@
 "Display remote inline images" = "Távoli beágyazott képek megjelenítése";
 "displayremoteinlineimages_never" = "Soha";
 "displayremoteinlineimages_always" = "Mindig";
+
+/* Contact */
+"Personal Address Book" = "Személyes címjegyzék";
+"Collected Address Book" = "Összegyűjtöt címek jegyzéke";
 
 /* IMAP Accounts */
 "New Mail Account" = "Új email fiók";
@@ -204,6 +208,7 @@
 "Mail" = "Levél";
 "Last" = "Utoljára használt";
 "Default module :" = "Alapértelmezett modul";
+"SOGo version:" = "SOGo verzió:";
 
 "Language :" = "Nyelv :";
 "choose" = "Válasszon ...";
@@ -248,6 +253,8 @@
 "Active" = "Aktív";
 "Move Up" = "Mozgatás fel";
 "Move Down" = "Mozgatás le";
+"Connection error" = "Kapcsolódási hiba";
+"Service temporarily unavailable" = "A szolgáltatás átmenetileg nem érhető el";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Szűrő neve:";

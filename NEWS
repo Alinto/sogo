@@ -14,7 +14,7 @@ Enhancements
  - updated datepicker
  - addressbooks properties are now accessible from a popup window
  - extended events and tasks searches
- - updated French translation
+ - updated Czech, French, Hungarian, Polish, Russian, Slovak, Spanish (Argentina), and Spanish (Spain) translations
  - added more sycned contact properties when using ActiveSync (#2775)
  - now possible to configure the default subscribed resource name using SOGoSubscriptionFolderFormat
  - now handle server-side folder updates using ActiveSync (#2688)

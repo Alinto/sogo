@@ -12,6 +12,8 @@ publish_info_text = "El remitente le informa del evento adjunto.";
 cancel_info_text = "Su invitación o el evento ha sido cancelado.";
 request_info_no_attendee = "ha propuesto un evento a los participantes. Usted recibe este correo como notificación. Nota: Usted no está registrado como participante";
 Appointment = "Cita";
+"Status Update" = "Actualización del estado";
+was = "era";
 
 Organizer = "Organizador";
 Time = "Hora";
