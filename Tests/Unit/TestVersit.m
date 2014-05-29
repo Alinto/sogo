@@ -37,6 +37,7 @@
   CardElement *element;
   CardVersitRenderer *renderer;
   NSString *result;
+  NSString *error;
 
   renderer = [CardVersitRenderer new];
   [renderer autorelease];
@@ -78,7 +79,11 @@
   [element setSingleValue: @"1,2,3" forKey: @"named2"];
   [element setSingleValue: @"text1;text2" forKey: @"named3"];
   result = [renderer render: element];
-  testEquals(result, @"ELEM:NAMED1=1,2,3;NAMED2=1\\,2\\,3;NAMED3=text1\\;text2\r\n");
+  error = [NSString stringWithFormat: @"string '%@' elements not the same as in 'ELEM:NAMED1=1,2,3;NAMED2=1\\,2\\,3;NAMED3=text1\\;text2'",
+                    result];
+  testWithMessage([result isEqual: @"ELEM:NAMED1=1,2,3;NAMED2=1\\,2\\,3;NAMED3=text1\\;text2\r\n"]
+                  || [result isEqual: @"ELEM:NAMED3=text1\\;text2;NAMED1=1,2,3;NAMED2=1\\,2\\,3\r\n"],
+                  error);
 
   /* 6. values with 1 ordered value with a whitespace starting subvalues */
   element = [CardElement elementWithTag: @"elem"];
