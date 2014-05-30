@@ -636,15 +636,15 @@ static NSArray *infoKeys = nil;
 
 - (NSArray *) attachmentAttrs
 {
-  NSArray *a;
   SOGoDraftObject *co;
   SOGoMailObject *mail;
+  NSArray *a;
 
   co = [self clientObject];
   if (!attachmentAttrs || ![co imap4URL])
   {
       [co fetchInfo];
-      if ([co IMAP4ID] > -1)
+      if (![co inReplyTo] && [co IMAP4ID] > -1)
         {
           mail = [[[SOGoMailObject alloc] initWithImap4URL: [co imap4URL] inContainer: [co container]] autorelease];
           a = [mail fetchFileAttachmentKeys];

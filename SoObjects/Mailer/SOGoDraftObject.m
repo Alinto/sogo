@@ -396,6 +396,11 @@ static NSString    *userAgent      = nil;
   return isHTML;
 }
 
+- (NSString *) inReplyTo
+{
+  return inReplyTo;
+}
+
 - (void) setInReplyTo: (NSString *) newInReplyTo
 {
   ASSIGN (inReplyTo, newInReplyTo);
