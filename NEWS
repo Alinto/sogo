@@ -1,3 +1,13 @@
+2.2.5 (2014-XX-XX)
+------------------
+
+New features
+
+Enhancements
+
+Bug fixes
+ - avoid crashing when we forward an email with no Subject header
+
 2.2.4 (2014-05-29)
 ------------------
 

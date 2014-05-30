@@ -1602,10 +1602,11 @@ static NSString    *userAgent      = nil;
   /* add subject */
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
     [map setObject: [s asQPSubjectString: @"utf-8"]
-	 forKey: @"subject"];
-
-  [map setObject: [headers objectForKey: @"message-id"]
-       forKey: @"message-id"];
+            forKey: @"subject"];
+  
+  if ([(s = [headers objectForKey: @"message-id"]) length] > 0)
+    [map setObject: s
+            forKey: @"message-id"];
 
   /* add standard headers */
   dateString = [[NSCalendarDate date] rfc822DateString];
