@@ -561,7 +561,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
         bccLimit = MAPI_BCC;
       else
         bccLimit = MAPI_CC;
-      bccLimit++;
+
       for (type = MAPI_TO; type <= bccLimit; type++)
 	{
 	  recId = recTypes[type];
