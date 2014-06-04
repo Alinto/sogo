@@ -9,6 +9,7 @@ Bug fixes
  - avoid crashing when we forward an email with no Subject header
  - we no longer try to include attachments when replying to a mail
  - fixed ActiveSync repetitive events issues with "Weekly" and "Monthly" ones 
+ - fixed ActiveSync text/plain parts re-encoding issues for Outlook
 
 2.2.4 (2014-05-29)
 ------------------
