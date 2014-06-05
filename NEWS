@@ -4,6 +4,7 @@
 New features
 
 Enhancements
+ - new meta tag to tell IE to use the highest mode available
 
 Bug fixes
  - avoid crashing when we forward an email with no Subject header
