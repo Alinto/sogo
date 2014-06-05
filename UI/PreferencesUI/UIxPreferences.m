@@ -1264,6 +1264,8 @@ static NSArray *reminderValues = nil;
           account = [folder lookupName: @"0" inContext: context acquire: NO];
 
           if ([account updateFilters])
+            // If Sieve is not enabled, the SOGoSieveManager will immediatly return a positive answer
+            // See [SOGoSieveManager updateFiltersForAccount:withUsername:andPassword:]
             results = [self responseWithStatus: 200
                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
 

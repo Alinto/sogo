@@ -926,7 +926,7 @@ static NSString    *userAgent      = nil;
 
   sourceEnvelope = [sourceMail envelope];
   [self _fillInReplyAddresses: info replyToAll: toAll
-	envelope: sourceEnvelope];
+                     envelope: sourceEnvelope];
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
@@ -982,7 +982,7 @@ static NSString    *userAgent      = nil;
 				 @"message/rfc822", @"mimetype",
 				 nil];
       [self saveAttachment: [sourceMail content]
-	    withMetadata: attachment];
+              withMetadata: attachment];
     }
 
   [self storeInfo];
