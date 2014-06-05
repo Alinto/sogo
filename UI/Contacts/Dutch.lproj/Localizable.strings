@@ -36,7 +36,6 @@
 "delete" = "Verwijderen";
 "edit" = "Bewerken";
 "invalidemailwarn" = "Het ingevoerde e-mailadres is ongeldig.";
-"invaliddatewarn" = "De ingevoerde datum is ongeldig.";
 "new" = "Nieuw";
 "Preferred Phone" = "Voorkeurstelefoon";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Nieuw contactpersoon";
 "New List" = "Nieuwe lijst";
+"Edit" = "Bewerken";
 "Properties" = "Eigenschappen";
 "Sharing..." = "Delen...";
 "Write" = "Bericht opstellen...";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "U kunt da kaart van \"%{0}\" niet verwijderen.";
 
-"Address Book Name" = "Naam van het adresboek";
+
 
 "You cannot subscribe to a folder that you own!"
 = "U kunt uzelf niet abonneren op uw eigen mappen!";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
 
 "Reload" = "Herlaad";
+
+/* Properties window */
+"Address Book Name:" = "Naam van het adresboek";
+"Links to this Address Book" = "Koppeling naar adresboek";
+"Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
+"CardDAV URL: " = "CardDAV-URL:";
+

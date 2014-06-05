@@ -94,7 +94,7 @@
 "Day start time :" = "Początek dnia :";
 "Day end time :" = "Koniec dnia :";
 "Day start time must be prior to day end time." = "Początek dnia musi wypadać wcześniej niż koniec dnia.";
-"Show time as busy outside working hours" = "Oznacz termin jako zajęty poza godzinami pracy";
+"Show time as busy outside working hours" = "Pokaż czas poza godzinami pracy jako zajęty";
 "First week of year :" = "Pierwszy tydzień roku :";
 "Enable reminders for Calendar items" = "Włącz przypomnienia pozycji kalendarza";
 "Play a sound when a reminder comes due" = "Odtwórz dźwięk w momencie przypomnienia";
@@ -158,8 +158,8 @@
 "displayremoteinlineimages_always" = "Zawsze";
 
 /* Contact */
-"Personal Address Book" = "Prywatna Książka Adresowa";
-"Collected Address Book" = "Zbierana Książka Adresowa";
+"Personal Address Book" = "Osobista książka adresowa";
+"Collected Address Book" = "Książka zebranych adresów";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nowe konto";

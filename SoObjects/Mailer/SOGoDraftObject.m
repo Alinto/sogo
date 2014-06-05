@@ -396,6 +396,11 @@ static NSString    *userAgent      = nil;
   return isHTML;
 }
 
+- (NSString *) inReplyTo
+{
+  return inReplyTo;
+}
+
 - (void) setInReplyTo: (NSString *) newInReplyTo
 {
   ASSIGN (inReplyTo, newInReplyTo);
@@ -921,7 +926,7 @@ static NSString    *userAgent      = nil;
 
   sourceEnvelope = [sourceMail envelope];
   [self _fillInReplyAddresses: info replyToAll: toAll
-	envelope: sourceEnvelope];
+                     envelope: sourceEnvelope];
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
@@ -977,7 +982,7 @@ static NSString    *userAgent      = nil;
 				 @"message/rfc822", @"mimetype",
 				 nil];
       [self saveAttachment: [sourceMail content]
-	    withMetadata: attachment];
+              withMetadata: attachment];
     }
 
   [self storeInfo];
@@ -1602,10 +1607,11 @@ static NSString    *userAgent      = nil;
   /* add subject */
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
     [map setObject: [s asQPSubjectString: @"utf-8"]
-	 forKey: @"subject"];
-
-  [map setObject: [headers objectForKey: @"message-id"]
-       forKey: @"message-id"];
+            forKey: @"subject"];
+  
+  if ([(s = [headers objectForKey: @"message-id"]) length] > 0)
+    [map setObject: s
+            forKey: @"message-id"];
 
   /* add standard headers */
   dateString = [[NSCalendarDate date] rfc822DateString];

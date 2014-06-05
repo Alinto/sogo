@@ -1057,8 +1057,7 @@ _computeBlocksPosition (NSArray *blocks)
   [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
   events = [self _fetchFields: eventsFields
            forComponentOfType: @"vevent"];
-  eventsBlocks
-  = [NSArray arrayWithObjects: events, allDayBlocks, blocks, nil];
+  eventsBlocks = [NSArray arrayWithObjects: events, allDayBlocks, blocks, nil];
   max = [events count];
   for (count = 0; count < max; count++)
   {

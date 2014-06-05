@@ -39,15 +39,15 @@
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Jeder Benutzer mit einem Account auf diesem System wird in der Lage sein auf Ihren E-Mail-Ordner \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen trauen?";
+     = "Jeder Benutzer mit einem Konto auf diesem System wird in der Lage sein auf Ihren E-Mail-Ordner \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Jeder Benutzer mit einem Account auf diesem System wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
+     = "Jeder Benutzer mit einem Konto auf diesem System wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Jeder aus dem Internet wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen, selbst wenn jene Personen keinen Account auf diesem System haben. Sind diese Informationen für das öffentliche Internet gedacht?";
+     = "Jeder aus dem Internet wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen, selbst wenn jene Personen kein Konto auf diesem System haben. Sind diese Informationen für das öffentliche Internet gedacht?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Jeder Benutzer mit einem Account auf diesem System wird auf Ihr Adressbuch \"%{0}\" zugreifen können. Sind Sie sicher, dass Sie allen trauen?";
+     = "Jeder Benutzer mit einem Konto auf diesem System wird auf Ihr Adressbuch \"%{0}\" zugreifen können. Sind Sie sicher, dass Sie allen vertrauen?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Jeder im Internet wird in der Lage sein auf Ihr Adressbuch \"%{0}\" zuzugreifen, selbst wenn diese keinen Account auf diesem System haben. Ist diese Information passend für das öffentliche Internet?";
+     = "Jeder im Internet wird in der Lage sein auf Ihr Adressbuch \"%{0}\" zuzugreifen, selbst wenn diese kein Konto auf diesem System haben. Ist diese Information passend für das öffentliche Internet?";
 "Give Access" = "Allen Zugriff gewähren";
 "Keep Private" = "Privat halten";
 
@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Sie können keine Liste in einem gemeinsamen Adressbuch erstellen.";
 "Warning" = "Warnung";
+"Can't contact server" = "Beim Verbindungsaufbau mit dem Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Sie sind nicht berechtigt auf dieses Modul oder System zuzugreifen. Bitte kontaktieren Sie ihren Systemadministrator.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Fällig:";
 "Location:" = "Ort:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Wichtig";
-"Work" = "Geschäftlich";
 "Work" = "Geschäftlich";
 "Personal" = "Persönlich";
 "To Do" = "To-Do";

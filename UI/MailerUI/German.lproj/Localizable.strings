@@ -79,7 +79,7 @@
 "Remove this folder" = "Diesen Ordner löschen";
 "Erase mails from this folder" = "E-Mails in diesem Ordner löschen";
 "Expunge this folder" = "Diesen Ordner komprimieren";
-"Archive This Folder" = "Diesen Ordner archivieren";
+"Export This Folder" = "Diesen Ordner exportieren";
 "Modify the acl of this folder" = "Benutzerrechte dieses Ordners verändern";
 
 "Saved Messages.zip" = "Gespeicherte Nachrichten.zip";

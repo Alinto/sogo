@@ -22,7 +22,7 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
-"Auto reply message :" = "Folgende Nachricht wird automatisch einmal an jeden Absender gesendet:";
+"Auto reply message :" = "Folgende Nachricht wird automatisch an jeden Absender gesendet:";
 "Email addresses (separated by commas) :" = "E-Mail-Adressen (getrennt durch Kommata):";
 "Add default email addresses" = "Standardadresse hinzufügen";
 "Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten:";
@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Zeiten außerhalb der Arbeitszeit als belegt anzeigen";
 "First week of year :" = "Erste Woche des Jahres:";
 "Enable reminders for Calendar items" = "Termin- und Aufgabenerinnerungen aktivieren";
-"Play a sound when a reminder comes due"
-= "Akustisches Signal zur Terminerinnerung";
+"Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
 "Default reminder :" = "Standard Terminerinnerung:";
 
 "firstWeekOfYear_January1" = "Beginnt am 1. Januar";
@@ -130,6 +129,7 @@
 "Label" = "Schlagwort";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
+"When sending mail, add unknown recipients to my" = "Wenn ich E-Mails sende, füge die unbekannten Empfänger zu meinem";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
 "messagecheck_manually" = "Manuell";
 "messagecheck_every_minute" = "Minütlich";
@@ -156,6 +156,10 @@
 "Display remote inline images" = "Entfernte eingebettete Bilder anzeigen";
 "displayremoteinlineimages_never" = "Niemals";
 "displayremoteinlineimages_always" = "Immer";
+
+/* Contact */
+"Personal Address Book" = "Persönliches Adressbuch";
+"Collected Address Book" = "Gesammelte Adressen";
 
 /* IMAP Accounts */
 "New Mail Account" = "Neues E-Mail-Konto";
@@ -204,8 +208,9 @@
 "Mail" = "E-Mail";
 "Last" = "Zuletzt benutztes";
 "Default module :" = "Standard Modul:";
+"SOGo version:" = "SOGo Version:";
 
-"Language :" = "Sprache :";
+"Language :" = "Sprache:";
 "choose" = "Auswählen ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";
@@ -248,6 +253,8 @@
 "Active" = "Aktiv";
 "Move Up" = "Nach oben";
 "Move Down" = "Nach unten";
+"Connection error" = "Verbindungsfehler";
+"Service temporarily unavailable" = "Dienst vorübergehend nicht verfügbar";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Filtername:";

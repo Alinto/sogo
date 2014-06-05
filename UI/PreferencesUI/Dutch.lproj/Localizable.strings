@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
 "First week of year :" = "Eerste week van het jaar:";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
-"Play a sound when a reminder comes due"
-= "Geluid afspelen bij herinnering";
+"Play a sound when a reminder comes due" = "Geluid afspelen bij herinnering";
 "Default reminder :" = "Standaardherinnering:";
 
 "firstWeekOfYear_January1" = "Begint op 1 januari";
@@ -130,6 +129,7 @@
 "Label" = "Labelen";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Sort messages by threads" = "Berichten sorteren op threads";
+"When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
 "Check for new mail:" = "Controleren op nieuwe mail:";
 "messagecheck_manually" = "Handmatig";
 "messagecheck_every_minute" = "Iedere minuut";
@@ -156,6 +156,10 @@
 "Display remote inline images" = "Externe afbeeldingen tonen";
 "displayremoteinlineimages_never" = "Nooit";
 "displayremoteinlineimages_always" = "Altijd";
+
+/* Contact */
+"Personal Address Book" = "Persoonlijk adresboek";
+"Collected Address Book" = "Verzameld adresboek";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nieuw mailaccount";
@@ -204,6 +208,7 @@
 "Mail" = "Mail";
 "Last" = "Laatst gebruikt";
 "Default module :" = "Standaardmodule:";
+"SOGo version:" = "SOGo versie:";
 
 "Language :" = "Taal:";
 "choose" = "Kies...";
@@ -248,6 +253,8 @@
 "Active" = "Actief";
 "Move Up" = "Omhoog";
 "Move Down" = "Omlaag";
+"Connection error" = "Verbindingsfout";
+"Service temporarily unavailable" = "Dienst tijdelijk niet beschikbaar";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Filternaam:";

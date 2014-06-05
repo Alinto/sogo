@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalByDayMask.h>
 
 #import "NSCalendarDate+ActiveSync.h"
@@ -77,10 +78,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       occurrences = [[self byDayMask] weekDayOccurrences];
       v = 0;
 
-      for (i = 0; i < 7; i++)
+      if (occurrences)
         {
-          if (occurrences[0][i])
-            v += (1 << i);
+          for (i = 0; i < 7; i++)
+            {
+              if (occurrences[0][i])
+                v += (1 << i);
+            }
+        }
+      else
+        {
+          // No byDayMask, we take the event's start date to compute the DayOfWeek
+          // 0 == Sunday, 6 == Saturday
+          v = (1 << [[[self parent] startDate] dayOfWeek]);
         }
 
       [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", v];
@@ -124,6 +134,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               // Unsupported rule in ActiveSync/Outlook. Rule that says "Repeat on the 7th and 8th of each month".
               // FIXME
             }
+        }
+      else
+        {
+          // Simple reccurrence rule of type "Monthly"
+          type = 2;
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>",
+             [[[self parent] startDate] dayOfMonth]];
         }
     }
   else if ([self frequency] == iCalRecurrenceFrequenceYearly)

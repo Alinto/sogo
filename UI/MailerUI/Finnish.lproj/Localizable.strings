@@ -79,7 +79,7 @@
 "Remove this folder" = "Poista tämä kansio";
 "Erase mails from this folder" = "Poista viestit tästä kansiosta";
 "Expunge this folder" = "Poista tämä kansio";
-"Archive This Folder" = "Arkistoi tämä kansio";
+"Export This Folder" = "Vie tämä kansio";
 "Modify the acl of this folder" = "Muokkaa kansion käyttäjäoikeuksia";
 
 "Saved Messages.zip" = "TallennetutViestit.zip";

@@ -112,9 +112,9 @@
 
 "reminder_NONE" = "Nincs emlékeztető";
 "reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
-"reminder_10_MINUTES_BEFORE" = "10 perc";
+"reminder_10_MINUTES_BEFORE" = "10 perccel előtte";
 "reminder_15_MINUTES_BEFORE" = "15 perccel előtte";
-"reminder_30_MINUTES_BEFORE" = "30 perc";
+"reminder_30_MINUTES_BEFORE" = "30 perccel előtte";
 "reminder_45_MINUTES_BEFORE" = "45 perccel előtte";
 "reminder_1_HOUR_BEFORE" = "1 órával előtte";
 "reminder_2_HOURS_BEFORE" = "2 órával előtte";

@@ -12,7 +12,7 @@ Name:         sogo
 Version:      %{sogo_version}
 Release:      %{dist_suffix}%{?dist}
 Vendor:       http://www.inverse.ca/
-Packager:     Wolfgang Sourdeau <support@inverse.ca>
+Packager:     Inverse inc. <info@inverse.ca>
 License:      GPL
 URL:          http://www.inverse.ca/contributions/sogo.html
 Group:        Productivity/Groupware

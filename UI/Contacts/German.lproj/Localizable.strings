@@ -36,7 +36,6 @@
 "delete" = "Löschen";
 "edit" = "Bearbeiten";
 "invalidemailwarn" = "Das Format der angegebenen E-Mail-Adresse ist ungültig.";
-"invaliddatewarn" = "Das angegebene Datum ist ungültig.";
 "new" = "Neu";
 "Preferred Phone" = "Bevorzugte Telefonnummer";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Neue Adresskarte";
 "New List" = "Neue Liste";
+"Edit" = "Ändern";
 "Properties" = "Eigenschaften";
 "Sharing..." = "Benutzerrechte...";
 "Write" = "Verfassen";
@@ -94,17 +94,17 @@
 "Work:" = "Dienstlich:";
 "Home:" = "Privat:";
 "Fax:" = "Fax:";
-"Mobile:" = "Mobil:";
+"Mobile:" = "Handy:";
 "Pager:" = "Pager:";
 
 /* categories */
-"contacts_category_labels" = "Familienmitglied, Freund, Geschäftspartner, Kollegin, Konkurrent, Kunde, Lieferant, Presse, VIP";
+"contacts_category_labels" = "Anbieter, Familienmitglied, Freund, Geschäftspartner, Kollegin, Konkurrent, Kunde, Lieferant, Presse, VIP";
 "Categories" = "Kategorien";
 "New category" = "Neue Kategorie";
 
 /* adresses */
 "Title:" = "Titel:";
-"Service:" = "Service:";
+"Service:" = "Dienst:";
 "Company:" = "Firma:";
 "Department:" = "Abteilung:";
 "Organization:" = "Organisation:";
@@ -127,7 +127,7 @@
 "Add as..." = "Hinzufügen als ...";
 "Recipient" = "Empfänger";
 "Carbon Copy" = "Kopie";
-"Blind Carbon Copy" = "Blindkopie";
+"Blind Carbon Copy" = "Blindkopie (BCC)";
 
 "New Addressbook..." = "Neues Adressbuch...";
 "Subscribe to an Addressbook..." = "Ein Adressbuch abonnieren...";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Sie können die Adresskarte von \"%{0}\" nicht löschen.";
 
-"Address Book Name" = "Adressbuchname";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Sie können ihre eigenen Ordner nicht abonnieren.";
@@ -197,7 +197,7 @@
 "Export Address Book..." = "Adressbuch exportieren...";
 "View Raw Source" = "Rohen Quelltext anzeigen";
 "Import Cards" = "Adresskarten importieren";
-"Select a vCard or LDIF file." = "Bitte wählen Sie eine vCard oder eine LDIF-Datei.";
+"Select a vCard or LDIF file." = "Bitte wählen Sie eine vCard- oder eine LDIF-Datei.";
 "Upload" = "Hochladen";
 "Uploading" = "Hochladen";
 "Done" = "Abgeschlossen";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "%{0} Adresskarten wurden in das Adressbuch importiert.";
 
 "Reload" = "Neu laden";
+
+/* Properties window */
+"Address Book Name:" = "Adressbuchname:";
+"Links to this Address Book" = "Links zu diesem Adressbuch";
+"Authenticated User Access" = "Zugriff für authentifizierte Benutzer";
+"CardDAV URL: " = "CardDAV-URL:";
+

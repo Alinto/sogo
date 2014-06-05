@@ -285,20 +285,31 @@ struct GlobalObjectId {
           [self _sanitizedMIMEPart: body
                          performed: b];
         }
-      else if ([body isKindOfClass: [NSData class]] &&
+      else if (([body isKindOfClass: [NSData class]] || [body isKindOfClass: [NSString class]]) &&
                [[[thePart contentType] type] isEqualToString: @"text"] &&
                ([[[thePart contentType] subType] isEqualToString: @"plain"] || [[[thePart contentType] subType] isEqualToString: @"html"]))
         {
           // We make sure everything is encoded in UTF-8
-          NSString *charset, *s;
           NGMimeType *mimeType;
-          int encoding;
+          NSString *s;
 
-          charset = [[thePart contentType] valueOfParameter: @"charset"];
-          encoding = [NGMimeType stringEncodingForCharset: charset];
+          if ([body isKindOfClass: [NSData class]])
+            {
+              NSString *charset;
+              int encoding;
 
-          s = [[NSString alloc] initWithData: body  encoding: encoding];
-          AUTORELEASE(s);
+              charset = [[thePart contentType] valueOfParameter: @"charset"];
+              encoding = [NGMimeType stringEncodingForCharset: charset];
+              
+              s = [[NSString alloc] initWithData: body  encoding: encoding];
+              AUTORELEASE(s);
+            }
+          else
+            {
+              // Handle situations when SOPE stupidly returns us a NSString
+              // This can happen for Content-Type: text/plain, Content-Transfer-Encoding: 8bit
+              s = body;
+            }
 
           if (s)
             {
