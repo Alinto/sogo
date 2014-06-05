@@ -5,6 +5,7 @@
 "Create a new event" = "Maak een nieuwe gebeurtenis";
 "Create a new task" = "Maak een nieuwe taak";
 "Edit this event or task" = "Bewerk deze gebeurtenis of taak";
+"Print the current calendar view" = "Print de huidige agendaweergave";
 "Delete this event or task" = "Verwijder deze gebeurtenis of taak";
 "Go to today" = "Naar vandaag gaan";
 "Switch to day view" = "Overschakelen naar dagweergave";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Naam van de agenda";
 
 "new" = "Nieuw";
-"printview" = "Afdrukvoorbeeld";
+"Print view" = "Print weergave";
 "edit" = "Aanpassen";
 "delete" = "Verwijderen";
 "proposal" = "Voorstel";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken verbergen";
 "Show already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken weergeven";
 
+/* Print view */
+
+"LIST" = "Lijst";
+"Print Settings" = "Print instellingen";
+"Title:" = "Titel:";
+"Layout:" = "Opmaak:";
+"What to Print" = "Wat moet afgedrukt worden";
+"Options" = "Opties:";
+"Tasks with no due date" = "Taken zonder verloopdatum";
+"Completed tasks" = "Afgeronde taken";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Alle toekomstige afspraken";
 "view_selectedday" = "Afspraken op de geselecteerde dag";
 
+"view_not_started" = "Niet begonnen taken";
+"view_overdue" = "Achterstallige taken";
+"view_incomplete" = "Onvolledige taken";
+
 "View:" = "Bekijken:";
-"Title or Description" = "Titel of omschrijving";
+"Title, category or location" = "Titel, categorie of plaats";
+"Entire content" = "Volledige inhoud";
 
 "Search" = "Zoeken";
 "Search attendees" = "Deelnemers zoeken";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 
 "Links to this Calendar" = "Koppelingen naar deze agenda";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV-URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

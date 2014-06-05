@@ -5,6 +5,7 @@
 "Create a new event" = "Luo uusi tapahtuma";
 "Create a new task" = "Luo uusi tehtävä";
 "Edit this event or task" = "Muokkaa tapahtumaa tai tehtävää";
+"Print the current calendar view" = "Tulosta nykyinen kalenterinäkymä";
 "Delete this event or task" = "Poista tapahtuma tai tehtävä";
 "Go to today" = "Siirry tähän päivään";
 "Switch to day view" = "Siirry päivänäkymään";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Kalenterin nimi";
 
 "new" = "Uusi";
-"printview" = "Tulostusnäkymä";
+"Print view" = "Tulostusnäkymä";
 "edit" = "Muokkaa";
 "delete" = "Poista";
 "proposal" = "Ehdotus";
@@ -145,6 +146,16 @@
 "Hide already accepted and rejected appointments" = "Piilota hyväksytyt ja hylätyt tapaamiset";
 "Show already accepted and rejected appointments" = "Näytä hyväksytyt ja hylätyt tapaamiset";
 
+/* Print view */
+
+"LIST" = "Lista";
+"Print Settings" = "Tulostusasetukset";
+"Title:" = "Otsikko:";
+"Layout:" = "Ulkoasu";
+"What to Print" = "Tulostusvalinnat";
+"Options" = "Asetukset";
+"Tasks with no due date" = "Tehtävät ilman määräpäivää";
+"Completed tasks" = "Valmistuneet tehtävät";
 
 /* Appointments */
 
@@ -225,8 +236,13 @@
 "view_future" = "Kaikki tulevat tapahtumat";
 "view_selectedday" = "Valittu päivä";
 
+"view_not_started" = "Aloittamattomat tehtävät";
+"view_overdue" = "Myöhästyneet tehtävät";
+"view_incomplete" = "Keskeneräiset tehtävät";
+
 "View:" = "Näytä:";
-"Title or Description" = "Otsikko tai kuvaus";
+"Title, category or location" = "Otsikko, luokka tai sijainti";
+"Entire content" = "Koko sisältö";
 
 "Search" = "Etsi";
 "Search attendees" = "Etsi osallistujia";
@@ -506,7 +522,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 
 "Links to this Calendar" = "Linkit tähän kalenteriin";
 "Authenticated User Access" = "Kirjautuneiden käyttäjien pääsy";
-"CalDAV URL" = "CalDAV URL";
+"CalDAV URL" = "CalDAV URL: ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

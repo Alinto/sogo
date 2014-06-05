@@ -1,10 +1,9 @@
-2.2.5 (2014-XX-XX)
+2.2.5 (2014-06-05)
 ------------------
-
-New features
 
 Enhancements
  - new meta tag to tell IE to use the highest mode available
+ - updated Dutch, Finnish, German, and Polish translations
 
 Bug fixes
  - avoid crashing when we forward an email with no Subject header
