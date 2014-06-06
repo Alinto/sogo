@@ -769,7 +769,7 @@ static iCalEvent *iCalEventK = nil;
  * @param theRecord a dictionnary with the attributes of the event.
  * @return a copy of theRecord with adjusted dates.
  */
-- (NSMutableDictionary *) fixupRecord: (NSDictionary *) theRecord
++ (NSMutableDictionary *) fixupRecord: (NSDictionary *) theRecord
 {
   NSMutableDictionary *record;
   static NSString *fields[] = { @"c_startdate", @"startDate",
@@ -819,21 +819,21 @@ static iCalEvent *iCalEventK = nil;
   NSMutableArray *ma;
   unsigned count, max;
   id row; // TODO: what is the type of the record?
-
+  
   if (theRecords)
+  {
+    max = [theRecords count];
+    ma = [NSMutableArray arrayWithCapacity: max];
+    for (count = 0; count < max; count++)
     {
-      max = [theRecords count];
-      ma = [NSMutableArray arrayWithCapacity: max];
-      for (count = 0; count < max; count++)
-	{
-	  row = [self fixupRecord: [theRecords objectAtIndex: count]];
-	  if (row)
-	    [ma addObject: row];
-	}
+      row = [SOGoAppointmentFolder fixupRecord: [theRecords objectAtIndex: count]];
+      if (row)
+        [ma addObject: row];
     }
+  }
   else
     ma = nil;
-
+  
   return ma;
 }
 
@@ -848,10 +848,10 @@ static iCalEvent *iCalEventK = nil;
  * @see fixupRecord:
  * @return a copy of theRecord with adjusted dates.
  */
-- (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) theRecord
++ (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) theRecord
                                 cycleRange: (NGCalendarDateRange *) theCycle
-	    firstInstanceCalendarDateRange: (NGCalendarDateRange *) theFirstCycle
-			 withEventTimeZone: (iCalTimeZone *) theEventTimeZone
+            firstInstanceCalendarDateRange: (NGCalendarDateRange *) theFirstCycle
+                         withEventTimeZone: (iCalTimeZone *) theEventTimeZone
 {
   NSMutableDictionary *record;
   NSNumber *dateSecs;
@@ -900,7 +900,7 @@ static iCalEvent *iCalEventK = nil;
   return record;
 }
 
-- (int) _indexOfRecordMatchingDate: (NSCalendarDate *) matchDate
++ (int) indexOfRecordMatchingDate: (NSCalendarDate *) matchDate
 			   inArray: (NSArray *) recordArray
 {
   int count, max, recordIndex;
@@ -922,7 +922,7 @@ static iCalEvent *iCalEventK = nil;
   return recordIndex;
 }
 
-- (void) _fixExceptionRecord: (NSMutableDictionary *) recRecord
++ (void) fixExceptionRecord: (NSMutableDictionary *) recRecord
 		     fromRow: (NSDictionary *) row
 {
   NSArray *objects;
@@ -938,7 +938,7 @@ static iCalEvent *iCalEventK = nil;
   [recRecord setObjects: objects forKeys: fields];
 }
 
-- (void) _appendCycleException: (iCalRepeatableEntityObject *) component
++ (void) appendCycleException: (iCalRepeatableEntityObject *) component
 firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       fromRow: (NSDictionary *) row
 		      forRange: (NGCalendarDateRange *) dateRange
@@ -978,12 +978,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       // The recurrence exception intersects with the date range;
       // find the occurence and replace it with the new record
-      recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
+      recordIndex = [SOGoAppointmentFolder indexOfRecordMatchingDate: recurrenceId inArray: ma];
       if (recordIndex > -1)
 	{
           if ([dateRange containsDate: [component startDate]])
             {
-              newRecord = [self fixupRecord: [component quickRecord]];
+              newRecord = [SOGoAppointmentFolder fixupRecord: [component quickRecord]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
             }
           else
@@ -999,7 +999,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       // The recurrence id of the exception is outside the date range;
       // simply add the exception to the records array
-      newRecord = [self fixupRecord: [component quickRecord]];
+      newRecord = [SOGoAppointmentFolder fixupRecord: [component quickRecord]];
       newRecordRange = [NGCalendarDateRange 
 			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
 			 endDate: [newRecord objectForKey: @"endDate"]];
@@ -1022,42 +1022,45 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       // We identified the record as an exception.
       [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isException"];
 
-      [self _fixExceptionRecord: newRecord fromRow: row];
+      [SOGoAppointmentFolder fixExceptionRecord: newRecord fromRow: row];
     }
 }
 
 //
 //
 //
-- (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
-        firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
-			      forRange: (NGCalendarDateRange *) dateRange
-                          withTimeZone: (NSTimeZone *) tz
-			       toArray: (NSMutableArray *) ma
++ (void) appendCycleExceptionsFromRow: (NSDictionary *) row
+       firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
+                             forRange: (NGCalendarDateRange *) dateRange
+                         withTimeZone: (NSTimeZone *) tz
+                              toArray: (NSMutableArray *) ma
 {
   NSArray *elements, *components;
   unsigned int count, max;
   NSString *content;
-
+  
   content = [row objectForKey: @"c_content"];
   if ([content length])
-    {
-      // TODO : c_content could have already been parsed.
-      // @see _flattenCycleRecord:forRange:intoArray:
+  {
+    // TODO : c_content could have already been parsed.
+    // @see flattenCycleRecord:forRange:intoArray:
+    if ([row objectForKey:@"c_fromiCalEvent"])
+      elements = [row objectForKey: @"c_content"];
+    else
       elements = [iCalCalendar parseFromSource: content];
-      if ([elements count])
-	{
-	  components = [[elements objectAtIndex: 0] allObjects];
-	  max = [components count];
-	  for (count = 1; count < max; count++) // skip master event
-	    [self _appendCycleException: [components objectAtIndex: count]
-		  firstInstanceCalendarDateRange: fir
-				fromRow: row
-			       forRange: dateRange
-                           withTimeZone: tz
-				toArray: ma];
-	}
+    if ([elements count])
+    {
+      components = [[elements objectAtIndex: 0] allObjects];
+      max = [components count];
+      for (count = 1; count < max; count++) // skip master event
+        [SOGoAppointmentFolder appendCycleException: [components objectAtIndex: count]
+                     firstInstanceCalendarDateRange: fir
+                                            fromRow: row
+                                           forRange: dateRange
+                                       withTimeZone: tz
+                                            toArray: ma];
     }
+  }
 }
 
 /**
@@ -1068,9 +1071,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
  * @param theRecords the array into which are copied the resulting occurrences.
  * @see [iCalRepeatableEntityObject+SOGo doesOccurOnDate:]
  */
-- (void) _flattenCycleRecord: (NSDictionary *) theRecord
-                    forRange: (NGCalendarDateRange *) theRange
-                   intoArray: (NSMutableArray *) theRecords
++ (void) flattenCycleRecord: (NSDictionary *) theRecord
+                   forRange: (NGCalendarDateRange *) theRange
+                  intoArray: (NSMutableArray *) theRecords
 {
   NSMutableDictionary *row, *fixedRow;
   NSMutableArray *records;
@@ -1086,119 +1089,124 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
   id tz;
-
+  
   content = [theRecord objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
-    {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    theRecord];
-      return;
-    }
-
+  {
+    [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+     theRecord];
+    return;
+  }
+  
   cycleinfo = [content propertyList];
   if (!cycleinfo)
-    {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    theRecord];
-      return;
-    }
+  {
+    [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+     theRecord];
+    return;
+  }
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
   exDates = [cycleinfo objectForKey: @"exDates"];
   eventTimeZone = nil;
   allDayTimeZone = nil;
   tz = nil;
-
-  row = [self fixupRecord: theRecord];
+  
+  row = [SOGoAppointmentFolder fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
-
+  
   content = [theRecord objectForKey: @"c_content"];
   if ([content isNotNull])
-    {
+  {
+    if ([theRecord objectForKey:@"c_fromiCalEvent"])
+      elements = content;
+      // So here I wanna set the start and end date of the
+    else
       elements = [iCalCalendar parseFromSource: content];
-      if ([elements count])
-	{
-	  components = [[elements objectAtIndex: 0] events];
-	  if ([components count])
+    
+    if ([elements count])
+    {
+      components = [[elements objectAtIndex: 0] events];
+      if ([components count])
 	    {
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
-              dtstart = (iCalDateTime *) [component uniqueChildWithTag: @"dtstart"];
-              firstRange = [component firstOccurenceRange]; // ignores timezone
-
-              eventTimeZone = [dtstart timeZone];
-              if (eventTimeZone)
-                {
-                  // Adjust the range to check with respect to the event timezone (extracted from the start date)
-                  checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
-                  checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
-                  recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
-                                                                                endDate: checkEndDate];
-                  
-                }
-              else 
-                {
-                  recurrenceRange = theRange;
-                  if ([[theRecord objectForKey: @"c_isallday"] boolValue])
-                    {
-                      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
-                      // to the user's timezone
-                      allDayTimeZone = timeZone;
-                      offset = [allDayTimeZone secondsFromGMTForDate: [firstRange startDate]];
-                      firstStartDate = [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                                         seconds:-offset];
-                      firstEndDate = [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                                     seconds:-offset];
-                      [firstStartDate setTimeZone: allDayTimeZone];
-                      [firstEndDate setTimeZone: allDayTimeZone];
-                      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
-                                                                               endDate: firstEndDate];
-                    }
-                }
-
-#warning this code is ugly: we should not mix objects with different types as\
-  it reduces readability
-              tz = eventTimeZone ? eventTimeZone : allDayTimeZone;
-              if (tz)
-                {
-                  // Adjust the exception dates
-                  exDates = [component exceptionDatesWithTimeZone: tz];
-                  
-                  // Adjust the recurrence rules "until" dates
-                  rules = [component recurrenceRulesWithTimeZone: tz];
-                  exRules = [component exceptionRulesWithTimeZone: tz];
-                }
-
-              // Calculate the occurrences for the given range
-              records = [NSMutableArray array];
-              ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
-                                                          firstInstanceCalendarDateRange: firstRange
-									 recurrenceRules: rules
-                                                                          exceptionRules: exRules
-                                                                          exceptionDates: exDates];
-              max = [ranges count];
-              for (count = 0; count < max; count++)
-                {
-                  oneRange = [ranges objectAtIndex: count];
-                  fixedRow = [self fixupCycleRecord: row
-                                         cycleRange: oneRange
-                                   firstInstanceCalendarDateRange: firstRange
-                                  withEventTimeZone: eventTimeZone];
-                  if (fixedRow)
-                    [records addObject: fixedRow];
-                }
-              
-              [self _appendCycleExceptionsFromRow: row
-                   firstInstanceCalendarDateRange: firstRange
-                                         forRange: theRange
-                                     withTimeZone: allDayTimeZone
-                                          toArray: records];
-              
-              [theRecords addObjectsFromArray: records];
-            }
+        dtstart = (iCalDateTime *) [component uniqueChildWithTag: @"dtstart"];
+        firstRange = [component firstOccurenceRange]; // ignores timezone
+        
+        eventTimeZone = [dtstart timeZone];
+        if (eventTimeZone)
+        {
+          // Adjust the range to check with respect to the event timezone (extracted from the start date)
+          checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
+          checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
+          recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
+                                                                        endDate: checkEndDate];
+          
         }
+        else
+        {
+          recurrenceRange = theRange;
+          if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+          {
+            // The event lasts all-day and has no timezone (floating); we convert the range of the first event
+            // to the user's timezone
+            allDayTimeZone = timeZone;
+            offset = [allDayTimeZone secondsFromGMTForDate: [firstRange startDate]];
+            firstStartDate = [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                               seconds:-offset];
+            firstEndDate = [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                           seconds:-offset];
+            [firstStartDate setTimeZone: allDayTimeZone];
+            [firstEndDate setTimeZone: allDayTimeZone];
+            firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+                                                                     endDate: firstEndDate];
+          }
+        }
+        
+#warning this code is ugly: we should not mix objects with different types as\
+it reduces readability
+        tz = eventTimeZone ? eventTimeZone : allDayTimeZone;
+        if (tz)
+        {
+          // Adjust the exception dates
+          exDates = [component exceptionDatesWithTimeZone: tz];
+          
+          // Adjust the recurrence rules "until" dates
+          rules = [component recurrenceRulesWithTimeZone: tz];
+          exRules = [component exceptionRulesWithTimeZone: tz];
+        }
+        
+        // Calculate the occurrences for the given range
+        records = [NSMutableArray array];
+        ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
+                                                    firstInstanceCalendarDateRange: firstRange
+                                                                   recurrenceRules: rules
+                                                                    exceptionRules: exRules
+                                                                    exceptionDates: exDates];
+        max = [ranges count];
+        for (count = 0; count < max; count++)
+        {
+          oneRange = [ranges objectAtIndex: count];
+          fixedRow = [SOGoAppointmentFolder fixupCycleRecord: row
+                                                  cycleRange: oneRange
+                              firstInstanceCalendarDateRange: firstRange
+                                           withEventTimeZone: eventTimeZone];
+          if (fixedRow)
+            [records addObject: fixedRow];
+        }
+        
+        [SOGoAppointmentFolder appendCycleExceptionsFromRow: row
+                             firstInstanceCalendarDateRange: firstRange
+                                                   forRange: theRange
+                                               withTimeZone: allDayTimeZone
+                                                    toArray: records];
+        
+        [theRecords addObjectsFromArray: records];
+      }
     }
+  }
   else
     [self errorWithFormat:@"cyclic record doesn't have content -> %@", theRecord];
 }
@@ -1219,12 +1227,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   // recurrences of all-day events.
   rangeEndDate = [[_r endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:1];
   _r = [NGCalendarDateRange calendarDateRangeWithStartDate: [_r startDate]
-						   endDate: rangeEndDate];
+                                                   endDate: rangeEndDate];
 
   for (count = 0; count < max; count++)
     {
       row = [_records objectAtIndex: count];
-      [self _flattenCycleRecord: row forRange: _r intoArray: ma];
+      [SOGoAppointmentFolder flattenCycleRecord: row forRange: _r intoArray: ma];
     }
 
   return ma;

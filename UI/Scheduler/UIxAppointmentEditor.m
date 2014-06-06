@@ -493,28 +493,42 @@
       [componentCalendar retain];
     }
   
-  if ([event hasAlarms] && ![event hasRecurrenceRules])
+  if ([event hasAlarms])
+  {
+    iCalAlarm *anAlarm;
+    resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+    snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
+    if (resetAlarm)
     {
-      iCalAlarm *anAlarm;
-      resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
-      snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
-      if (resetAlarm)
+      iCalTrigger *aTrigger;
+      
+      anAlarm = [[event alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+
+      if ([event isRecurrent])
+      {
+        if ([event isStillRelevant])
         {
-          iCalTrigger *aTrigger;
-          
-          anAlarm = [[event alarms] objectAtIndex: 0];
-          aTrigger = [anAlarm trigger];
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"active"];
+        }
+        else
+        {
           [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
-          
-          [co saveComponent: event];
         }
-      else if (snoozeAlarm)
-        {
-          anAlarm = [[event alarms] objectAtIndex: 0];
-          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
-            [co snoozeAlarm: snoozeAlarm];
-        }
+      }
+      else
+      {
+        [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+      }
+      [co saveComponent: event];
     }
+    else if (snoozeAlarm)
+    {
+      anAlarm = [[event alarms] objectAtIndex: 0];
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+        [co snoozeAlarm: snoozeAlarm];
+    }
+  }
 
   created_by = [event createdBy];
 
@@ -525,7 +539,7 @@
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
                        [dateFormatter formattedDate: eventEndDate], @"endDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
-                     //([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
+                       ([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
                        ([event isAllDay] ? @"1": @"0"), @"isAllDay",
                        [[event summary] stringByEscapingHTMLString], @"summary",
                        [[event location] stringByEscapingHTMLString], @"location",

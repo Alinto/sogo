@@ -522,7 +522,6 @@ static NSArray *tasksFields = nil;
 // - for ALL subscribed and ACTIVE calendars
 //  - returns alarms that will occur in the next 48 hours or the non-triggered alarms
 //    for non-completed events
-//  - recurring events are currently ignored
 //
 - (WOResponse *) alarmsListAction
 {
@@ -555,16 +554,12 @@ static NSArray *tasksFields = nil;
       for (i = 0; i < [alarms count]; i++)
 	    {
 	      entry = [alarms objectAtIndex: i];
-	      isCycle = [[entry objectForKey: @"c_iscycle"] boolValue];
-	      
-	      if (!isCycle)
-        {
-          [allAlarms addObject: [NSArray arrayWithObjects:
-                                 [currentFolder nameInContainer],
-                                 [entry objectForKey: @"c_name"],
-                                 [entry objectForKey: @"c_nextalarm"],
-                                 nil]];
-        }
+        [allAlarms addObject: [NSArray arrayWithObjects:
+                               [currentFolder nameInContainer],
+                               [entry objectForKey: @"c_name"],
+                               [entry objectForKey: @"c_nextalarm"],
+                               nil]];
+        
 	    }
     }
   }

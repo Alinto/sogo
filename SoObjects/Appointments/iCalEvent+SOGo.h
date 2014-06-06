@@ -27,6 +27,7 @@
 #import <NGCards/iCalEvent.h>
 
 @class NSMutableDictionary;
+@class NGCalendarDateRange;
 
 @interface iCalEvent (SOGoExtensions)
 
