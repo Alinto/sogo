@@ -3,6 +3,7 @@
 
 Enhancements
  - contacts photos are now synchronized using ActiveSync (#2807)
+ - implemented the GetAttachment ActiveSync command (#2808)
 
 Bug fixes
 

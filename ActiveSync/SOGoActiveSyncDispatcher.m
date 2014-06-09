@@ -781,7 +781,51 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processGetAttachment: (id <DOMElement>) theDocumentElement
                    inResponse: (WOResponse *) theResponse
 {
+  NSString *fileReference, *realCollectionId;
 
+  SOGoMicrosoftActiveSyncFolderType folderType;
+
+  fileReference = [context objectForKey: @"AttachmentName"];
+
+  realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
+
+  if (folderType == ActiveSyncMailFolder)
+    {
+      id currentFolder, currentCollection, currentBodyPart;
+      NSString *folderName, *messageName, *pathToPart;
+      SOGoMailAccounts *accountsFolder;
+      SOGoUserFolder *userFolder;
+      SOGoMailObject *mailObject;
+
+      NSRange r1, r2;
+
+      r1 = [realCollectionId rangeOfString: @"/"];
+      r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
+
+      folderName = [realCollectionId substringToIndex: r1.location];
+      messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
+      pathToPart = [realCollectionId substringFromIndex: r2.location+1];
+
+      userFolder = [[context activeUser] homeFolderInContext: context];
+      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
+                                          inContext: context
+                                            acquire: NO];
+
+      mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
+      currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
+
+      [theResponse setHeader: [NSString stringWithFormat: @"%@/%@", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]]
+                 forKey: @"Content-Type"];
+
+      [theResponse setContent: [currentBodyPart fetchBLOB] ];
+    }
+  else
+    {
+      [theResponse setStatus: 500];
+    }
 }
 
 //
@@ -891,7 +935,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   fileReference = [[[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
 
   realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
-  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   
   if (folderType == ActiveSyncMailFolder)
     {
@@ -1826,6 +1869,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
+  [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
+
 
   cmdName = [[theRequest uri] command];
 
@@ -1869,7 +1914,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
-      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame)
+      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame)
         return [NSException exceptionWithHTTPStatus: 500];
     }
 
