@@ -288,6 +288,25 @@
   return [self uniqueChildWithTag: @"n"];
 }
 
+- (NSString *) photo
+{
+  NGVCardPhoto *photo;
+
+  photo = (NGVCardPhoto *)[self uniqueChildWithTag: @"photo"];
+
+  return [[photo valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
+}
+
+- (void) setPhoto: (NSString *) _value
+{
+  CardElement *photo;
+  photo = [self uniqueChildWithTag: @"photo"];
+  [photo setValue: 0 ofAttribute: @"encoding" to: @"BASE64"];
+
+  [photo setSingleValue: _value forKey: @""];
+}
+
+
 - (void) setOrg: (NSString *) anOrg
           units: (NSArray *) someUnits
 {

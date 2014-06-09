@@ -40,6 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Contacts/NGVCard+SOGo.h>
 
+#import <SOGo/NSString+Utilities.h>
+
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 
@@ -199,6 +201,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendFormat: @"<Data>%@</Data>", o];
       [s appendString: @"</Body>"];
     }
+
+  if ((o = [self photo]))
+    [s appendFormat: @"<Picture xmlns=\"Contacts:\">%@</Picture>", o];
   
   return s;
 }
@@ -285,13 +290,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"Email1Address"]))
     {
       element = [self elementWithTag: @"email" ofType: @"work"];
-      [element setSingleValue: o forKey: @""];
+      [element setSingleValue: [o pureEMailAddress] forKey: @""];
     }
   
   if ((o = [theValues objectForKey: @"Email2Address"]))
     {
       element = [self elementWithTag: @"email" ofType: @"home"];
-      [element setSingleValue: o  forKey: @""];
+      [element setSingleValue: [o pureEMailAddress] forKey: @""];
     }
   
   // SOGo currently only supports 2 email addresses ... but AS clients might send 3
@@ -299,7 +304,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"Email3Address"]))
     {
       element = [self elementWithTag: @"email" ofType: @"three"];
-      [element setSingleValue: o  forKey: @""];
+      [element setSingleValue: [o pureEMailAddress] forKey: @""];
     }
   
   // Formatted name
@@ -346,6 +351,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if ((o = [theValues objectForKey: @"NickName"]))
     [self setNickname: o];
+
+  if ((o = [theValues objectForKey: @"Picture"]))
+    [self setPhoto: o];
+
 }
 
 @end
