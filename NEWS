@@ -6,7 +6,7 @@ Enhancements
  - implemented the GetAttachment ActiveSync command (#2808)
 
 Bug fixes
-
+ - better handling of empty "Flag" messages over ActiveSync (#2806)
 
 2.2.5 (2014-06-05)
 ------------------

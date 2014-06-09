@@ -761,7 +761,7 @@ struct GlobalObjectId {
   
   // Flags
   [s appendString: @"<Flag xmlns=\"Email:\">"];
-  [s appendFormat: @"<FlagStatus>%d</FlagStatus>", 0];
+  [s appendFormat: @"<FlagStatus>%d</FlagStatus>", ([self flagged] ? 2 : 0)];
   [s appendString: @"</Flag>"];
   
   // FIXME - support these in the future
@@ -799,10 +799,21 @@ struct GlobalObjectId {
 
   if ((o = [theValues objectForKey: @"Flag"]))
     {
-      o = [o objectForKey: @"FlagStatus"];
-      
-      if ([o intValue])
-        [self addFlags: @"\\Flagged"];
+      // We must handle empty flags -> {Flag = ""; } - some ActiveSync clients, like the HTC Desire
+      // will send an empty Flag message when "unflagging" a mail.
+      if (([o isKindOfClass: [NSMutableDictionary class]]))
+        {
+          if ((o = [o objectForKey: @"FlagStatus"]))
+            {
+              // 0 = The flag is cleared.
+              // 1 = The status is set to complete.
+              // 2 = The status is set to active.
+              if (([o isEqualToString: @"2"]))
+                [self addFlags: @"\\Flagged"];
+              else
+                [self removeFlags: @"\\Flagged"];
+            }
+        }
       else
         [self removeFlags: @"\\Flagged"]; 
     }

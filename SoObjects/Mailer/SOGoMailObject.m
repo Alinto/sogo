@@ -1464,6 +1464,11 @@ static BOOL debugSoParts       = NO;
   return [self _hasFlag: @"seen"];
 }
 
+- (BOOL) flagged
+{
+  return [self _hasFlag: @"flagged"];
+}
+
 - (BOOL) replied
 {
   return [self _hasFlag: @"answered"];

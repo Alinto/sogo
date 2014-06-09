@@ -114,6 +114,7 @@ NSArray *SOGoMailCoreInfoKeys;
 - (NSException *) removeFlags:(id)_f;
 
 - (BOOL) isNewMail;  /* \Recent */
+- (BOOL) flagged;    /* \Flagged */
 - (BOOL) read;       /* \Unseen */
 - (BOOL) replied;    /* \Answered */
 - (BOOL) forwarded;  /* $forwarded */
