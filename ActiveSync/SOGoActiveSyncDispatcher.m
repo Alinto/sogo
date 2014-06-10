@@ -513,7 +513,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [o setTableUrl: [self folderTableURL]];
       [o reloadIfNeeded];
       
-      key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [folderToUpdate nameInContainer]];
+      key = [NSString stringWithFormat: @"/%@+%@", [context objectForKey: @"DeviceId"], [folderToUpdate nameInContainer]];
       [o changePathTo: key];
 
       //
@@ -526,8 +526,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       status = 1;
 
       [self _setFolderSyncKey: syncKey];
-
-      // FIXME - TODO: We *MUST* update the path in our cache! See -changePathTo in SOGoCacheGCSObject
 
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
