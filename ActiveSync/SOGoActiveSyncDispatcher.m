@@ -415,10 +415,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if (!error)
     {
+      NSString *syncKey, *key;
+      SOGoCacheGCSObject *o;
       NSMutableString *s;
-      NSString *syncKey;
       NSData *d;
-      
+
+      //
+      // We mark the cache object as deleted
+      //
+      key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [folderToDelete nameInContainer]];
+      o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+      [o delete];
+
       //
       // We update the FolderSync's synckey
       // 
@@ -490,10 +500,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Handle new name exist
   if (!error)
     {
+      NSString *syncKey, *key;
+      SOGoCacheGCSObject *o;
       NSMutableString *s;
-      NSString *syncKey;
       NSData *d;
       
+      //
+      // We update our cache
+      //
+      key = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], serverId];
+      o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+      
+      key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [folderToUpdate nameInContainer]];
+      [o changePathTo: key];
+
       //
       // We update the FolderSync's synckey
       // 
