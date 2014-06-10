@@ -364,8 +364,7 @@
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
-  allUsers = [users
-	       sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
+  allUsers = [users sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
 
   max = [allUsers count];
   jsonResponse = [NSMutableArray arrayWithCapacity: max];
@@ -462,9 +461,8 @@
 
   folderType = [self queryParameterForKey: @"type"];
   userFolder = [self clientObject];
-  folders
-    = [userFolder foldersOfType: folderType
-			 forUID: [userFolder ownerInContext: context]];
+  folders = [userFolder foldersOfType: folderType
+                               forUID: [userFolder ownerInContext: context]];
   result = [self _foldersResponseForResults: folders];
   
   return result;

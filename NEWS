@@ -9,6 +9,7 @@ Enhancements
 Bug fixes
  - better handling of empty "Flag" messages over ActiveSync (#2806)
  - fixed Chinese charset handling (#2809)
+ - fixed folder name (calendars and contacts) of new subscriptions (#2801)
 
 2.2.5 (2014-06-05)
 ------------------
