@@ -257,44 +257,37 @@
   else if ([self isRecurrent])
   {
     id *obj_content;
-    BOOL hasOccurrenceAlarms = NO;
+    BOOL hasAnotherOccurrenceAlarm = NO, hasAnotherRecord = NO;
     int max, occurrenceCountAlarms = 0;
     NSArray *content;
     NSMutableDictionary *theRecord;
     NSCalendarDate *_rangeStartDate, *_rangeEndDate,
-                   *_vEventStartDate, *_vEventEndDate,
-                   *_startDate, *_endDate, *theRange, *today;
-    NSNumber *masterEvent, *occurrenceEvent, *todaySecs;
+    *_vEventStartDate, *_vEventEndDate,
+    *_startDate, *_endDate, *_nextStartDate, *_nextEndDate, *theRange, *today;
     NSMutableArray *theRecords;
-    iCalEvent *vevent;
-    iCalAlarm *anAlarm;
-    NSString *webstatus, *rowStartDate, *rowEndDate;
+    NSArray *vEventDates;
+    iCalEvent *vEvent, *vNextEvent;
+    iCalAlarm *anAlarm, *anotherAlarm;
+    NSString *webstatus, *rowStartDate, *rowEndDate, *rowNextStartDate, *rowNextEndDate;
+    NSNumber *masterEvent, *occurrenceEvent, *intToday;
+    int intervalStartDate, intervalEndDate, intervalNextStartDate, intervalNextEndDate;
     
-    obj_content = [self parent]; // Contains the VCALENDAR and all the VEVENT
-    max = [[obj_content events] count] - 1;
+    obj_content = [self parent];            // Contains the VCALENDAR and all the VEVENT
+    max = [[obj_content events] count] - 1; // Number of occurrences (Substract one; the master event)
     
-    if ([[obj_content events] count] >= 1) { // Is there any occurrence(s) other than the master event ?
-      for (i = max; i > 0; i--) {            // If so, is there alarms associated with it ?
-        if ([[[obj_content events] objectAtIndex:i] hasAlarms])
-        {
-          hasOccurrenceAlarms = YES;
-          occurrenceCountAlarms ++;
-        }
-        else
-          [[obj_content events] removeObjectAtIndex:i];
-      }
-    }
+    // Is there any occurrence(s) other than the master event ? If so, is there alarms associated with it ?
+    for (i = max; i > 0; i--)
+      if ([[[obj_content events] objectAtIndex:i] hasAlarms])
+        occurrenceCountAlarms ++;
     
-    
-    if ([[[[self parent] events] objectAtIndex:0] hasAlarms] || hasOccurrenceAlarms)
-    // The master event or occurrence(s) have alarms
+    if ([[[[self parent] events] objectAtIndex:0] hasAlarms] || occurrenceCountAlarms > 0)
+      // The master event or occurrence(s) have alarms
     {
       content = [NSArray arrayWithObject:obj_content];
-      theRecord = [NSMutableDictionary dictionaryWithDictionary:row];
-      [theRecord setObject:content forKey:@"c_content"];  // Add the "c_content" column
-      [theRecord setObject:@"YES" forKey:@"c_fromiCalEvent"]; // Gives information for the flattenCycleRecord
+      theRecord = [NSMutableDictionary dictionaryWithDictionary:row]; // Make a copy of row inside theRecord
+      [theRecord setObject:content forKey:@"c_content"];              // Add the "c_content" column
+      [theRecord setObject:@"YES" forKey:@"c_fromiCalEvent"];         // Gives information for the flattenCycleRecord
       
-      // Range from today + 1 year
       today = [NSCalendarDate date];
       _rangeStartDate = today;
       _rangeEndDate = [_rangeStartDate addYear:1 month:0 day: 0 hour: 0 minute: 0 second:0];
@@ -304,68 +297,221 @@
       // Return all the reccurences of the current event in an array. Each cell contains a dictionnary
       theRecords = [[NSMutableArray alloc] init];
       [SOGoAppointmentFolder flattenCycleRecord:theRecord forRange:theRange intoArray:theRecords];
-
-      if ([[[[self parent] events] objectAtIndex:0] hasAlarms] && hasOccurrenceAlarms)
+      
+      if ([[[[self parent] events] objectAtIndex:0] hasAlarms] && occurrenceCountAlarms > 0)
+        // Case 1 : Both the master event and occurrences event(s) have alarms;
       {
-        masterEvent = [NSNumber numberWithInt: [[[theRecords objectAtIndex:0] objectForKey:@"startDate"] timeIntervalSince1970]];
-        todaySecs = [NSNumber numberWithInt:[today timeIntervalSince1970]];
-        for (i=1; i <= occurrenceCountAlarms; i++) {
-          occurrenceEvent = [NSNumber numberWithInt:
-                             [[[[[[[theRecords objectAtIndex:i] objectForKey:@"c_content"] objectAtIndex:0] events] objectAtIndex:i] startDate] timeIntervalSince1970]];
-          if (([occurrenceEvent intValue] < [masterEvent intValue]) && [occurrenceEvent intValue] > [todaySecs intValue]){
-            vevent = [[[[[theRecords objectAtIndex:i] objectForKey:@"c_content"] objectAtIndex:0] events] objectAtIndex:i];
-            // Set the value of the quicktable to the current occurrence so the alert display the associated date
-            rowStartDate = [NSString stringWithFormat:@"%f",[[vevent startDate] timeIntervalSince1970]];
-            rowEndDate = [NSString stringWithFormat:@"%f",[[vevent endDate] timeIntervalSince1970]];
+        masterEvent = [NSNumber numberWithInt:[[[theRecords objectAtIndex:0] objectForKey:@"startDate"] timeIntervalSince1970]];
+        intToday = [NSNumber numberWithInt:[today timeIntervalSince1970]];
+        for (i=1; i <= occurrenceCountAlarms; i++)
+        {
+          occurrenceEvent = [NSNumber numberWithInt:[[[[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] objectAtIndex:i] startDate] timeIntervalSince1970]];
+          if (([occurrenceEvent intValue] < [masterEvent intValue]) && ([occurrenceEvent intValue] > [intToday intValue]))
+            // The next alarm is inside an occurrence
+          {
+            if ([vEvent isNotNull])
+            {
+              if ([occurrenceEvent intValue] < [[vEvent startDate] timeIntervalSince1970]) {
+                vNextEvent = vEvent;
+                vEvent = [[[[[theRecords objectAtIndex:i] objectForKey:@"c_content"] objectAtIndex:0] events] objectAtIndex:i];
+              }
+            }
+            else
+            {
+              vEvent = [[[[[theRecords objectAtIndex:i] objectForKey:@"c_content"] objectAtIndex:0] events] objectAtIndex:i];
+            }
+          }
+        }
+        if ([vEvent isNotNull]) {
+          if ([vNextEvent isNotNull]) {
+            // Start the alarm code
           }
           else
           {
-            vevent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
-            _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
-            _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
-            [vevent setStartDate:_startDate];
-            [vevent setEndDate:_endDate];
-            // Set the value of the quicktable to the current occurrence so the alert display the associated date
-            rowStartDate = [NSString stringWithFormat:@"%f",[_startDate timeIntervalSince1970]];
-            rowEndDate = [NSString stringWithFormat:@"%f",[_endDate timeIntervalSince1970]];
+            if ([theRecords count] > 1) {
+              _nextStartDate = [[theRecords objectAtIndex:1] objectForKey:@"startDate"];
+              _nextEndDate = [[theRecords objectAtIndex:1] objectForKey:@"endDate"];
+              intervalNextStartDate = [_nextStartDate timeIntervalSince1970];
+              intervalNextEndDate = [_nextEndDate timeIntervalSince1970];
+              rowNextStartDate = [NSString stringWithFormat:@"%d", intervalNextStartDate];
+              rowNextEndDate = [NSString stringWithFormat:@"%d", intervalNextEndDate];
+              hasAnotherRecord = YES;
+            }
+            anAlarm = [[vEvent alarms] lastObject];
+            if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+            {
+              webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+              if ([webstatus caseInsensitiveCompare: @"ACTIVE"] == NSOrderedSame){
+                if (hasAnotherRecord)
+                {
+                  [vEvent setStartDate:_nextStartDate];
+                  [vEvent setEndDate:_nextEndDate];
+                  [row setObject:rowNextStartDate forKey:@"c_enddate"];
+                  [row setObject:rowNextEndDate forKey:@"c_startdate"];
+                  nextAlarmDate = [anAlarm nextAlarmDate];
+                }
+              }
+              else if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)){
+                [vEvent setStartDate:_startDate];
+                [vEvent setEndDate:_endDate];
+                [row setObject:rowStartDate forKey:@"c_enddate"];
+                [row setObject:rowEndDate forKey:@"c_startdate"];
+                nextAlarmDate = [anAlarm nextAlarmDate];
+              }
+            }
+
           }
-          [row setObject:rowStartDate forKey:@"c_enddate"];
-          [row setObject:rowEndDate forKey:@"c_startdate"];
+        }
+        else
+          // The next alarm is inside the master event
+        {
+          vEvent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
+          _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
+          _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
+          intervalStartDate = [[vEvent startDate] timeIntervalSince1970];
+          intervalEndDate = [[vEvent endDate] timeIntervalSince1970];
+          rowStartDate = [NSString stringWithFormat:@"%d", intervalStartDate];
+          rowEndDate = [NSString stringWithFormat:@"%d", intervalEndDate];
+          [vEvent setStartDate:_startDate];
+          [vEvent setEndDate:_endDate];
+          
+          if ([theRecords count] > 1) {
+            vNextEvent = [[[[[theRecords objectAtIndex:1] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
+            _nextStartDate = [[theRecords objectAtIndex:1] objectForKey:@"startDate"];
+            _nextEndDate = [[theRecords objectAtIndex:1] objectForKey:@"endDate"];
+            intervalNextStartDate = [_nextStartDate timeIntervalSince1970];
+            intervalNextEndDate = [_nextEndDate timeIntervalSince1970];
+            rowNextStartDate = [NSString stringWithFormat:@"%d", intervalStartDate];
+            rowNextEndDate = [NSString stringWithFormat:@"%d", intervalEndDate];
+            anotherAlarm = [[vNextEvent alarms] lastObject];
+            if ([[anotherAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+            {
+              webstatus = [[anotherAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+              if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame))
+                hasAnotherRecord = YES;
+            }
+          }
+          anAlarm = [[vEvent alarms] lastObject];
+          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+          {
+            webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+            if ([webstatus caseInsensitiveCompare: @"ACTIVE"] == NSOrderedSame){
+              if (hasAnotherRecord)
+              {
+                [vEvent setStartDate:_nextStartDate];
+                [vEvent setEndDate:_nextEndDate];
+                [row setObject:rowNextStartDate forKey:@"c_enddate"];
+                [row setObject:rowNextEndDate forKey:@"c_startdate"];
+                nextAlarmDate = [anAlarm nextAlarmDate];
+              }
+            }
+            else if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)){
+              [vEvent setStartDate:_startDate];
+              [vEvent setEndDate:_endDate];
+              [row setObject:rowStartDate forKey:@"c_enddate"];
+              [row setObject:rowEndDate forKey:@"c_startdate"];
+              nextAlarmDate = [anAlarm nextAlarmDate];
+            }
+          }
+          
+        }
+      }
+      else if (occurrenceCountAlarms > 0)
+        // Case 2: Alarms on occurences events only;
+        // Since there is no alarms on the master, the array(theRecords) only contains occurrences with alarms
+      {
+        if (occurrenceCountAlarms > 1) {
+          vNextEvent = [[[[[theRecords objectAtIndex:1] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
+          _nextStartDate = [[theRecords objectAtIndex:1] objectForKey:@"startDate"];
+          _nextEndDate = [[theRecords objectAtIndex:1] objectForKey:@"endDate"];
+          intervalNextStartDate = [_nextStartDate timeIntervalSince1970];
+          intervalNextEndDate = [_nextEndDate timeIntervalSince1970];
+          rowNextStartDate = [NSString stringWithFormat:@"%d", intervalStartDate];
+          rowNextEndDate = [NSString stringWithFormat:@"%d", intervalEndDate];
+          anotherAlarm = [[vNextEvent alarms] lastObject];
+          if ([[anotherAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+          {
+            webstatus = [[anotherAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+            if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame))
+              hasAnotherOccurrenceAlarm = YES;
+          }
+        }
+        vEvent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
+        _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
+        _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
+        intervalStartDate = [_startDate timeIntervalSince1970];
+        intervalEndDate = [_endDate timeIntervalSince1970];
+        rowStartDate = [NSString stringWithFormat:@"%d", intervalStartDate];
+        rowEndDate = [NSString stringWithFormat:@"%d", intervalEndDate];
+        
+        anAlarm = [[vEvent alarms] lastObject];
+        if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+        {
+          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+          if ([webstatus caseInsensitiveCompare: @"ACTIVE"] == NSOrderedSame){
+            if (hasAnotherOccurrenceAlarm) {
+              [row setObject:rowNextStartDate forKey:@"c_enddate"];
+              [row setObject:rowNextEndDate forKey:@"c_startdate"];
+              nextAlarmDate = [anAlarm nextAlarmDate];
+            }
+          }
+          else if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)){
+            [row setObject:rowStartDate forKey:@"c_enddate"];
+            [row setObject:rowEndDate forKey:@"c_startdate"];
+            nextAlarmDate = [anAlarm nextAlarmDate];
+          }
         }
       }
       else
-      {
-        if (hasOccurrenceAlarms)
-        // The startDate and endDate inside the occurrence are good for the computation of the next alarm
-        {
-          vevent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
-          // Set the value of the quicktable to the current occurrence so the alert display the associated date
-          rowStartDate = [NSString stringWithFormat:@"%f",[[vevent startDate] timeIntervalSince1970]];
-          rowEndDate = [NSString stringWithFormat:@"%f",[[vevent endDate] timeIntervalSince1970]];
-          
-        }
-        else
+        // Case 3 : Alarms on master event only;
         // Need to reajust the dates since the vevent is recurrent and there is only one entry in the quickTable
-        {
-          vevent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
-          _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
-          _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
-          [vevent setStartDate:_startDate];
-          [vevent setEndDate:_endDate];
-          // Set the value of the quicktable to the current occurrence so the alert display the associated date
-          rowStartDate = [NSString stringWithFormat:@"%f",[_startDate timeIntervalSince1970]];
-          rowEndDate = [NSString stringWithFormat:@"%f",[_endDate timeIntervalSince1970]];
-        }
-        [row setObject:rowStartDate forKey:@"c_enddate"];
-        [row setObject:rowEndDate forKey:@"c_startdate"];
-      }
-      
-      anAlarm = [[vevent alarms] lastObject];
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
       {
-        webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
-        if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame))
-          nextAlarmDate = [anAlarm nextAlarmDate];
+        vEvent = [[[[[theRecords objectAtIndex:0] objectForKey:@"c_content"] objectAtIndex:0] events] lastObject];
+        
+        // Get the StartDate, EndDate in both local time and epoch time
+        // 1- startDate, 2- endDate, 3- epoch startDate, 4- epoch endDate
+        vEventDates = [self _vEventDates:[theRecords objectAtIndex:0]]
+        _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
+        _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
+        
+        // Set the value of the quicktable to the current occurrence so the alert display the associated date
+        intervalStartDate = [_startDate timeIntervalSince1970];
+        intervalEndDate = [_endDate timeIntervalSince1970];
+        rowStartDate = [NSString stringWithFormat:@"%d", intervalStartDate];
+        rowEndDate = [NSString stringWithFormat:@"%d", intervalEndDate];
+        
+        if ([theRecords count] > 1)
+        {
+          _nextStartDate = [[theRecords objectAtIndex:1] objectForKey:@"startDate"];
+          _nextEndDate = [[theRecords objectAtIndex:1] objectForKey:@"endDate"];
+          intervalNextStartDate = [_nextStartDate timeIntervalSince1970];
+          intervalNextEndDate = [_nextEndDate timeIntervalSince1970];
+          rowNextStartDate = [NSString stringWithFormat:@"%d", intervalNextStartDate];
+          rowNextEndDate = [NSString stringWithFormat:@"%d", intervalNextEndDate];
+          hasAnotherRecord = YES;
+        }
+        
+        anAlarm = [[vEvent alarms] lastObject];
+        if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+        {
+          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+          if (([webstatus caseInsensitiveCompare: @"ACTIVE"] == NSOrderedSame) && hasAnotherRecord)
+          {
+            [vEvent setStartDate:_nextStartDate];
+            [vEvent setEndDate:_nextEndDate];
+            [row setObject:rowNextStartDate forKey:@"c_enddate"];
+            [row setObject:rowNextEndDate forKey:@"c_startdate"];
+            nextAlarmDate = [anAlarm nextAlarmDate];
+          }
+          else if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame))
+          {
+            [vEvent setStartDate:_startDate];
+            [vEvent setEndDate:_endDate];
+            [row setObject:rowStartDate forKey:@"c_enddate"];
+            [row setObject:rowEndDate forKey:@"c_startdate"];
+            nextAlarmDate = [anAlarm nextAlarmDate];
+          }
+        }
       }
       [theRecords release];
     }
@@ -383,6 +529,11 @@
     [row setObject: [NSNull null] forKey: @"c_category"];
   
   return row;
+}
+
+- (NSArray *) _vEventDates
+{
+  // TO BE CONTINUED
 }
 
 /**

@@ -501,7 +501,7 @@
     if (resetAlarm)
     {
       iCalTrigger *aTrigger;
-      
+      NSCalendarDate *today = [NSCalendarDate date];
       anAlarm = [[event alarms] objectAtIndex: 0];
       aTrigger = [anAlarm trigger];
 
@@ -509,7 +509,12 @@
       {
         if ([event isStillRelevant])
         {
-          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"active"];
+          if ([[event startDate] dayOfYear] ==  [today dayOfYear]) {
+            [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"active"];
+          }
+          else {
+            [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"waiting"];
+          }
         }
         else
         {
