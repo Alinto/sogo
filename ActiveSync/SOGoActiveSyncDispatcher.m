@@ -122,6 +122,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 
+@interface SOGoActiveSyncDispatcher (Sync)
+
+- (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
+
+@end
+
 @implementation SOGoActiveSyncDispatcher
 
 - (id) init
@@ -1261,30 +1267,73 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
-// Ping requests make a little sense because the request
-// doesn't contain the SyncKey on the client. So we can't 
-// really know if something has changed on the server. What we
-// do for now is simply return Status=5 with the HeartbeatInterval
-// set at 60 seconds or we wait 60 seconds before responding with
-// Status=1
+// <?xml version="1.0"?>
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <Ping xmlns="Ping:">
+//  <HeartbeatInterval>3540</HeartbeatInterval>
+//  <Folders>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_0</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vevent/personal</Id>
+//    <Class>Calendar</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vcard/personal</Id>
+//    <Class>Contacts</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_1</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_2</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vtodo/personal</Id>
+//    <Class>Tasks</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_753e_193511a1_0</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_753e_193511a1_1</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//  </Folders>
+// </Ping>
 //
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  NSString *collectionId, *realCollectionId, *syncKey;
+  NSMutableArray *foldersWithChanges, *allFoldersID;
+  SOGoMicrosoftActiveSyncFolderType folderType;
+  NSMutableDictionary *folderMetadata;
   SOGoSystemDefaults *defaults;
+  id <DOMElement> aCollection;
+  NSArray *allCollections;
+
   NSMutableString *s;
+  id collection;
   NSData *d;
   
-  int heartbeatInterval, defaultInterval, status;
+
+  int i, j, heartbeatInterval, defaultInterval, internalInterval, status;
   
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
+  internalInterval = [defaults internalSyncInterval];
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
   else
     heartbeatInterval = defaultInterval;
-
+  
   if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
     {
       heartbeatInterval = defaultInterval;
@@ -1295,15 +1344,116 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       status = 1;
     }
 
-  NSLog(@"Got Ping request with valid interval - sleeping for %d seconds.", heartbeatInterval);
-  sleep(heartbeatInterval);
+  // We build the list of folders to "ping". When the payload is empty, we use the list
+  // of "cached" folders.
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Folders"];
+  allFoldersID = [NSMutableArray array];
 
+  if (![allCollections count])
+    {
+      SOGoMailAccounts *accountsFolder;
+      SOGoMailAccount *accountFolder;
+      SOGoUserFolder *userFolder;
+      NSArray *allValues;
+
+      userFolder = [[context activeUser] homeFolderInContext: context];
+      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
+      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+
+      allValues = [[accountFolder imapFolderGUIDs] allValues];
+      
+      for (i = 0; i < [allValues count]; i++)
+        [allFoldersID addObject: [NSString stringWithFormat: @"mail/%@", [allValues objectAtIndex: i]]];
+
+      
+      // FIXME: handle multiple GCS collecitons
+      [allFoldersID addObject: @"vcard/personal"];
+      [allFoldersID addObject: @"vevent/personal"];
+      [allFoldersID addObject: @"vtodo/personal"];
+    }
+  else
+    {      
+      for (i = 0; i < [allCollections count]; i++)
+        {
+          aCollection = [allCollections objectAtIndex: i];
+          collectionId = [[(id) [aCollection getElementsByTagName: @"Id"] lastObject] textValue];
+          [allFoldersID addObject: collectionId];
+        }
+    }
+
+  foldersWithChanges = [NSMutableArray array];
+
+  // We enter our loop detection change
+  for (i = 0; i < (heartbeatInterval/internalInterval); i++)
+    {
+      for (j = 0; j < [allFoldersID count]; j++)
+        {
+          collectionId = [allFoldersID objectAtIndex: j];
+          realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+          realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
+          collection = [self collectionFromId: realCollectionId  type: folderType];
+          
+          switch (folderType)
+            {
+            case ActiveSyncContactFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vcard/%@", [collection nameInContainer]]];
+              break;
+            case ActiveSyncEventFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vevent/%@", [collection nameInContainer]]];
+              break;
+            case ActiveSyncTaskFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vtodo/%@", [collection nameInContainer]]];
+              break;
+            default:
+              folderMetadata = [self _folderMetadataForKey: [collection nameInContainer]];
+            }
+          
+          syncKey = [folderMetadata objectForKey: @"SyncKey"];
+      
+          if (![syncKey isEqualToString: [collection davCollectionTag]])
+            {
+              [foldersWithChanges addObject: collectionId];
+            }
+        }
+      
+      if ([foldersWithChanges count])
+        {
+          NSLog(@"Change detected, we push the content.");
+          status = 2;
+          break;
+        }
+      else
+        {
+          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          sleep(internalInterval);
+        }
+    }
+  
   // We generate our response
   s = [NSMutableString string];
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Ping xmlns=\"Ping:\">"];
   [s appendFormat: @"<Status>%d</Status>", status];
+  
+  if ([foldersWithChanges count])
+    {
+      [s appendString: @"<Folders>"];
+
+      for (i = 0; i < [foldersWithChanges count]; i++)
+        {
+          // A bit tricky here because we must call stringByEscapingURL on mail folders, but not on GCS ones.
+          // We do the same thing in -processFolderSync
+          collectionId = [foldersWithChanges objectAtIndex: i];
+
+          if ([collectionId hasPrefix: @"mail/"])
+            collectionId = [collectionId stringByEscapingURL];
+
+          [s appendFormat: @"<Folder>%@</Folder>", collectionId];
+        }
+
+      [s appendString: @"</Folders>"];
+    }
 
   if (status == 5)
     {

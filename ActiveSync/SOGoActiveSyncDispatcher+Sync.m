@@ -123,6 +123,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
   
+  [[o properties] removeObjectForKey: @"SyncKey"];
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
 
@@ -476,6 +477,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                  lastServerKey: (NSString **) theLastServerKey
 
 {
+  NSMutableDictionary *folderMetadata;
   NSMutableString *s;
   
   BOOL more_available;
@@ -602,12 +604,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Add>"];
               }
           } // for ...
+
+        folderMetadata = [NSDictionary dictionaryWithObject: [theCollection davCollectionTag]
+                                                     forKey: @"SyncKey"];
+        [self _setFolderMetadata: folderMetadata
+                          forKey: [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]]];
       }
       break;
     case ActiveSyncMailFolder:
     default:
       {
-        NSMutableDictionary *syncCache, *dateCache, *folderMetadata;
+        NSMutableDictionary *syncCache, *dateCache;
         SOGoSyncCacheObject *lastCacheObject, *aCacheObject;
         NSMutableArray *allCacheObjects, *sortedBySequence;
 
@@ -782,11 +789,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
 
         if (more_available)
-          [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+          {
+            [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+            [folderMetadata setObject: *theLastServerKey  forKey: @"SyncKey"];
+          }
         else
-          [folderMetadata removeObjectForKey: @"MoreAvailable"];
+          {
+            [folderMetadata removeObjectForKey: @"MoreAvailable"];
+            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+          }
         
-
         [self _setFolderMetadata: folderMetadata
                           forKey: [theCollection nameInContainer]];
       } // default:
