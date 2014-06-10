@@ -80,6 +80,8 @@ typedef enum {
 
 - (NSArray *) calendarUIDs;
 
+- (NSString *) activeTasks;
+
 /* vevent UID handling */
 
 - (NSString *) resourceNameForEventUID: (NSString *) _uid;

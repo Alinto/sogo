@@ -92,38 +92,42 @@ _intValueFromHex (NSString *hexString)
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *calendar;
   unsigned int count, max;
-  NSString *folderName, *fDisplayName;
+  NSString *folderName, *fDisplayName, *fActiveTasks;
   NSNumber *isActive;
-
+  
   if (!calendars)
+  {
+    co = [self clientObject];
+    folders = [co subFolders];
+    max = [folders count];
+    calendars = [[NSMutableArray alloc] initWithCapacity: max];
+    for (count = 0; count < max; count++)
     {
-      co = [self clientObject];
-      folders = [co subFolders];
-      max = [folders count];
-      calendars = [[NSMutableArray alloc] initWithCapacity: max];
-      for (count = 0; count < max; count++)
-	{
-	  folder = [folders objectAtIndex: count];
-	  calendar = [NSMutableDictionary dictionary];
-	  folderName = [folder nameInContainer];
-	  fDisplayName = [folder displayName];
-          if (fDisplayName == nil)
-            fDisplayName = @"";
-	  if ([fDisplayName isEqualToString: [co defaultFolderName]])
-	    fDisplayName = [self labelForKey: fDisplayName];
-	  [calendar setObject: [NSString stringWithFormat: @"/%@", folderName]
-		    forKey: @"id"];
-	  [calendar setObject: fDisplayName forKey: @"displayName"];
-	  [calendar setObject: folderName forKey: @"folder"];
-	  [calendar setObject: [folder calendarColor] forKey: @"color"];
-	  isActive = [NSNumber numberWithBool: [folder isActive]];
-	  [calendar setObject: isActive forKey: @"active"];
-	  [calendar setObject: [folder ownerInContext: context]
-		    forKey: @"owner"];
-	  [calendars addObject: calendar];
-	}
+      folder = [folders objectAtIndex: count];
+      calendar = [NSMutableDictionary dictionary];
+      folderName = [folder nameInContainer];
+      fDisplayName = [folder displayName];
+      if (fDisplayName == nil)
+        fDisplayName = @"";
+      if ([fDisplayName isEqualToString: [co defaultFolderName]])
+        fDisplayName = [self labelForKey: fDisplayName];
+      [calendar setObject: [NSString stringWithFormat: @"/%@", folderName]
+                   forKey: @"id"];
+      [calendar setObject: fDisplayName forKey: @"displayName"];
+      [calendar setObject: folderName forKey: @"folder"];
+      [calendar setObject: [folder calendarColor] forKey: @"color"];
+      isActive = [NSNumber numberWithBool: [folder isActive]];
+      [calendar setObject: isActive forKey: @"active"];
+      [calendar setObject: [folder ownerInContext: context]
+                   forKey: @"owner"];
+      fActiveTasks = [folder activeTasks];
+      if (fActiveTasks == nil)
+        fActiveTasks = @"";
+      [calendar setObject:fActiveTasks forKey:@"activeTasks" ];
+      [calendars addObject: calendar];
     }
-
+  }
+  
   return calendars;
 }
 

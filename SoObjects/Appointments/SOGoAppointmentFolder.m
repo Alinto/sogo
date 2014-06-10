@@ -522,7 +522,6 @@ static iCalEvent *iCalEventK = nil;
 {
   /* this is used for group calendars (this folder just returns itself) */
   NSString *s;
-  
   s = [[self container] nameInContainer];
 //   [self logWithFormat:@"CAL UID: %@", s];
   return [s isNotNull] ? [NSArray arrayWithObjects:&s count:1] : nil;
@@ -3269,5 +3268,26 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   return users;
 }
+
+- (NSString *) activeTasks
+{
+  NSArray *tasksList;
+  NSString *activeTasks;
+  NSMutableArray *fields;
+  
+  fields = [NSMutableArray arrayWithObjects: @"c_component", @"c_status", nil];
+  
+  tasksList = [self bareFetchFields: fields
+                               from: nil
+                                 to: nil
+                              title: nil
+                          component: @"vtodo"
+                  additionalFilters: @"c_status != 2 AND c_status != 3"];
+  
+  activeTasks = [NSString stringWithFormat:@"(%d)", [tasksList count]];
+  
+  return activeTasks;
+}
+
 
 @end /* SOGoAppointmentFolder */
