@@ -3282,7 +3282,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                  to: nil
                               title: nil
                           component: @"vtodo"
-                  additionalFilters: @"c_status != 2 AND c_status != 3"];
+                  additionalFilters: @"c_status != 1 AND c_status != 3"];
   
   activeTasks = [NSNumber numberWithInt:[tasksList count]];
 
