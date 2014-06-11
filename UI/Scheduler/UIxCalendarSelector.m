@@ -92,8 +92,8 @@ _intValueFromHex (NSString *hexString)
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *calendar;
   unsigned int count, max;
-  NSString *folderName, *fDisplayName, *fActiveTasks;
-  NSNumber *isActive;
+  NSString *folderName, *fDisplayName;
+  NSNumber *isActive, *fActiveTasks;
   
   if (!calendars)
   {
@@ -122,7 +122,7 @@ _intValueFromHex (NSString *hexString)
                    forKey: @"owner"];
       fActiveTasks = [folder activeTasks];
       if (fActiveTasks == nil)
-        fActiveTasks = @"";
+        fActiveTasks = 0;
       [calendar setObject:fActiveTasks forKey:@"activeTasks" ];
       [calendars addObject: calendar];
     }

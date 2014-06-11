@@ -3269,11 +3269,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return users;
 }
 
-- (NSString *) activeTasks
+- (NSNumber *) activeTasks
 {
   NSArray *tasksList;
-  NSString *activeTasks;
   NSMutableArray *fields;
+  NSNumber *activeTasks;
   
   fields = [NSMutableArray arrayWithObjects: @"c_component", @"c_status", nil];
   
@@ -3284,8 +3284,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                           component: @"vtodo"
                   additionalFilters: @"c_status != 2 AND c_status != 3"];
   
-  activeTasks = [NSString stringWithFormat:@"(%d)", [tasksList count]];
-  
+  activeTasks = [NSNumber numberWithInt:[tasksList count]];
+
   return activeTasks;
 }
 
