@@ -1214,20 +1214,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-/*
-private static function parseDescriptionOc2Rc($description)
-{
-    $description = ltrim($description, ')');
-
-    if (strpos($description, "\r\n\n") !== false) {
-        $exploded = explode("\r\n\n", $description, -1);
-        $description = join($exploded, "\n");
-    }
-
-    return $description;
-}
-*/
-
 - (int) getPidTagBody: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
