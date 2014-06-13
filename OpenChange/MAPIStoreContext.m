@@ -373,13 +373,13 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
       if ([objectURL hasPrefix: url])
         {
           *path = [[objectURL substringFromIndex: 7] asUnicodeInMemCtx: memCtx];
-          [self logWithFormat: @"found path '%s' for fmid %"PRIu64, *path, fmid];
+	      [self logWithFormat: @"found path '%s' for fmid 0x%.16"PRIx64"", *path, fmid];
           rc = MAPISTORE_SUCCESS;
         }
       else
         {
-          [self logWithFormat: @"context (%@, %@) does not contain "
-                               @"found fmid: %"PRIu64, objectURL, url, fmid];
+	      [self logWithFormat: @"context (%@, %@) does not contain "
+		                       @"found fmid: 0x%.16"PRIx64"", objectURL, url, fmid];
           *path = NULL;
           rc = MAPISTORE_SUCCESS;
         }
