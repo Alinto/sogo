@@ -217,14 +217,22 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   bool rc;
 
   oldURL = [self urlFromID: idNbr];
-  oldIdNbr = [self idFromURL: urlString];
-  if (oldURL != NULL || oldIdNbr != NSNotFound)
+  if (oldURL != NULL)
     {
       [self errorWithFormat:
-              @"attempt to double register an entry ('%@', %lld,"
-            @" 0x%.16"PRIx64")",
-            urlString, idNbr, idNbr];
-      rc = NO;
+	     @"url with idNbr already registered: (oldUrl='%@', newUrl='%@', id=x%.16"PRIx64")",
+	     oldURL, urlString, idNbr];
+      return NO;
+    }
+
+  oldIdNbr = [self idFromURL: urlString];
+  if (oldIdNbr != NSNotFound)
+    {
+      [self errorWithFormat:
+              @"attempt to double register an entry with idNbr ('%@', %lld,"
+            @" 0x%.16"PRIx64", oldid=0x%.16"PRIx64")",
+            urlString, idNbr, idNbr, oldIdNbr];
+      return NO;
     }
   else
     {
