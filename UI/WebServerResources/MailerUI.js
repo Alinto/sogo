@@ -1749,7 +1749,7 @@ function download(url) {
     setTimeout(function () {
         form.remove();
         div.remove();
-    }, 2000);
+    }, 20000);
 }
 
 function saveAttachment(event) {

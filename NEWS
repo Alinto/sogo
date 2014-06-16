@@ -12,6 +12,7 @@ Bug fixes
  - fixed folder name (calendars and contacts) of new subscriptions (#2801)
  - fixed the reply/forward operation over ActiveSync (#2805)
  - fixed regression when attaching files to a reply
+ - wait 20 seconds (instead of 2) before deleting temporary download forms (#2811)
 
 2.2.5 (2014-06-05)
 ------------------
