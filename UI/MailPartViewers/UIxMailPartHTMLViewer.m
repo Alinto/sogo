@@ -419,9 +419,9 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) _appendStyle: (unichar *) _chars
-               length: (int) _len
+               length: (NSUInteger) _len
 {
-  unsigned int count, length;
+  NSUInteger count, length;
   unichar *start, *currentChar;
 
   start = _chars;
@@ -688,7 +688,7 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) characters: (unichar *) _chars
-             length: (int) _len
+             length: (NSUInteger) _len
 {
   showWhoWeAre();
   if (!ignoredContent)
@@ -712,7 +712,7 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) ignorableWhitespace: (unichar *) _chars
-                      length: (int) _len
+                      length: (NSUInteger) _len
 {
   showWhoWeAre();
 }
@@ -735,7 +735,7 @@ static NSData* _sanitizeContent(NSData *theData)
 
 /* SaxLexicalHandler */
 - (void) comment: (unichar *) _chars
-          length: (int) _len
+          length: (NSUInteger) _len
 {
   showWhoWeAre();
   if (inStyle)
