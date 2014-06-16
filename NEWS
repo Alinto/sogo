@@ -13,6 +13,7 @@ Bug fixes
  - fixed the reply/forward operation over ActiveSync (#2805)
  - fixed regression when attaching files to a reply
  - wait 20 seconds (instead of 2) before deleting temporary download forms (#2811)
+ - avoid raising exceptions when the db is down and we try to access the preferences module (#2813)
 
 2.2.5 (2014-06-05)
 ------------------

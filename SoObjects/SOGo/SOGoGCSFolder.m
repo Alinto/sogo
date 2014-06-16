@@ -329,17 +329,24 @@ static NSArray *childRecordFields = nil;
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if (fc)
     {
-      sql
-	= [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
-				       @" WHERE c_path = '%@'"),
-		    [folderLocation gcsTableName], ocsPath];
-      [fc evaluateExpressionX: sql];
-      attrs = [fc describeResults: NO];
-      row = [fc fetchAttributes: attrs withZone: NULL];
-      if (row)
-	[self _setDisplayNameFromRow: row];
-      [fc cancelFetch];
-      [cm releaseChannel: fc];
+      // We use an exception handler here in case the database is down when
+      // performing the query. This could have unexpected results.
+      NS_DURING
+        {
+          sql
+            = [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
+                                           @" WHERE c_path = '%@'"),
+                        [folderLocation gcsTableName], ocsPath];
+          [fc evaluateExpressionX: sql];
+          attrs = [fc describeResults: NO];
+          row = [fc fetchAttributes: attrs withZone: NULL];
+          if (row)
+            [self _setDisplayNameFromRow: row];
+          [fc cancelFetch];
+          [cm releaseChannel: fc];
+        }
+      NS_HANDLER;
+      NS_ENDHANDLER;
     }
 }
 
