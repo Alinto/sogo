@@ -1,8 +1,6 @@
 /* UIxListView.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +25,7 @@
 #import <NGCards/NGVCardReference.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 
 #import "UIxListView.h"
 
@@ -139,6 +138,54 @@
                                        reason: @"could not locate contact"];
 
   return rc;
+}
+
+- (id <WOActionResults>) dataAction
+{
+  id <WOActionResults> result;
+  NSMutableDictionary *data;
+  NSMutableArray *cards;
+  NGVCardReference *card;
+  int i, count;
+
+  co = [self clientObject];
+  list = [co vList];
+
+  if (list)
+    {
+      [self checkListReferences];
+    }
+  else
+    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                                       reason: @"could not locate contact"];
+
+  count = [[list cardReferences] count];
+  cards = [NSMutableArray arrayWithCapacity: count];
+  for (i = 0; i < count; i++)
+    {
+      card = [[list cardReferences] objectAtIndex: i];
+      [cards addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [card reference], @"reference",
+                                        [card fn], @"fn",
+                                      [card email], @"email",
+                                      nil]];
+    }
+
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [[co container] nameInContainer], @"pid",
+                              [co nameInContainer], @"id",
+                              [list tag], @"tag",
+                              [list fn], @"fn",
+                              [list description], @"description",
+                              cards, @"refs",
+                              nil];
+
+  // [list cardReferences]
+
+  result = [self responseWithStatus: 200
+                          andString: [data jsonRepresentation]];
+  
+  return result;  
 }
 
 - (WOResponse *) propertiesAction

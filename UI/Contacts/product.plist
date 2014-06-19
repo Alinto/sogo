@@ -74,6 +74,11 @@
           actionClass = "UIxContactsListActions";
           actionName  = "contactsList";
         };
+        // contacts = {
+        //   protectedBy = "View";
+        //   actionClass = "UIxContactsListActions";
+        //   actionName  = "contactsList";
+        // };
         contactSearch = {
           protectedBy = "<public>";
           actionClass = "UIxContactsListActions";
@@ -108,6 +113,11 @@
           protectedBy = "Add Documents, Images, and Files";
           actionClass = "UIxContactFolderActions";
           actionName  = "import";
+        };
+        save = {
+          protectedBy = "Change Permissions";
+          actionClass = "UIxContactFolderActions";
+          actionName  = "save";
         };
         userRights = {
           protectedBy = "ReadAcls";
@@ -171,6 +181,7 @@
         view = {
           protectedBy = "Access Contents Information";
           pageName    = "UIxContactView";
+          actionName  = "data";
         };
         edit = {
           protectedBy = "Access Contents Information";
@@ -218,6 +229,7 @@
         view = {
           protectedBy = "Access Contents Information";
           pageName    = "UIxListView";
+          actionName  = "data";
         };
         properties = {
           protectedBy = "Access Contents Information";

@@ -128,6 +128,7 @@
 {
   id <WOActionResults> result;
   id currentInfo;
+  NSDictionary *data;
   NSArray *contactsList;
   NSEnumerator *contactsListEnumerator, *keysEnumerator;
   NSMutableArray *newContactsList;
@@ -151,8 +152,13 @@
       [newContactsList addObject: currentContactDictionary];
     }
 
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         [[self clientObject] nameInContainer], @"id",
+                       newContactsList, @"contacts",
+                       nil];
+
   result = [self responseWithStatus: 200
-			  andString: [newContactsList jsonRepresentation]];
+                          andString: [data jsonRepresentation]];
 
   return result;
 }
