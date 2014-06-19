@@ -230,6 +230,8 @@ static iCalEvent *iCalEventK = nil;
                      abstract: NO
                withEquivalent: SoPerm_AddDocumentsImagesAndFiles
                     asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+
+      /* read-acl and write-acl are defined in RFC3744 */
       [aclManager registerDAVPermission: davElement (@"admin", nsI)
                                abstract: YES
                          withEquivalent: nil
@@ -241,6 +243,72 @@ static iCalEvent *iCalEventK = nil;
       [aclManager registerDAVPermission: davElement (@"write-acl", XMLNS_WEBDAV)
                                abstract: YES
                          withEquivalent: SoPerm_ChangePermissions
+                              asChildOf: davElement (@"admin", nsI)];
+
+      /* Default permissions for calendars. These are very important so that DAV client can
+         detect permission changes on calendars and reload all items, if necessary */
+
+      /* Public ones */
+      [aclManager registerDAVPermission: davElement (@"viewwhole-public-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewWholePublicRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"viewdant-public-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewDAndTOfPublicRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"modify-public-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ModifyPublicRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"respondto-public-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_RespondToPublicRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      /* Private ones */
+      [aclManager registerDAVPermission: davElement (@"viewwhole-private-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewWholePrivateRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"viewdant-private-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewDAndTOfPrivateRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"modify-private-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ModifyPrivateRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"respondto-private-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_RespondToPrivateRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      /* Condifential ones */
+      [aclManager registerDAVPermission: davElement (@"viewwhole-confidential-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewWholeConfidentialRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"viewdant-confidential-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ViewDAndTOfConfidentialRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"modify-confidential-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_ModifyConfidentialRecords
+                              asChildOf: davElement (@"admin", nsI)];
+
+      [aclManager registerDAVPermission: davElement (@"respondto-confidential-records", nsI)
+                               abstract: YES
+                         withEquivalent: SOGoCalendarPerm_RespondToConfidentialRecords
                               asChildOf: davElement (@"admin", nsI)];
     }
 
