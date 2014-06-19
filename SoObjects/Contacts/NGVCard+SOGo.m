@@ -642,6 +642,237 @@ convention:
   return ldifRecord;
 }
 
+- (void) setAttributes: (NSDictionary *) attributes
+{
+  NSInteger year, yearOfToday, month, day;
+  CardElement *element;
+  NSCalendarDate *now;
+  NSArray *elements, *values;
+  NSMutableArray *addresses, *units, *categories;
+  NSString *ou;
+  id o;
+  unsigned int i;
+
+  NSLog(@"setAttributes: %@", attributes);
+
+  [self setNWithFamily: [attributes objectForKey: @"sn"]
+                 given: [attributes objectForKey: @"givenname"]
+            additional: nil prefixes: nil suffixes: nil];
+  [self setNickname: [attributes objectForKey: @"nickname"]];
+  [self setFn: [attributes objectForKey: @"fn"]];
+  [self setTitle: [attributes objectForKey: @"title"]];
+
+  // element = [self elementWithTag: @"adr" ofType: @"home"];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet2"]
+  //                 atIndex: 1 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet"]
+  //                 atIndex: 2 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomelocalityname"]
+  //                 atIndex: 3 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestate"]
+  //                 atIndex: 4 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomepostalcode"]
+  //                 atIndex: 5 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillahomecountryname"]
+  //                 atIndex: 6 forKey: @""];
+
+  // element = [self elementWithTag: @"adr" ofType: @"work"];
+  // [element setSingleValue: [ldifRecord objectForKey: @"mozillaworkstreet2"]
+  //                 atIndex: 1 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"street"]
+  //                 atIndex: 2 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"l"]
+  //                 atIndex: 3 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"st"]
+  //                 atIndex: 4 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"postalcode"]
+  //                 atIndex: 5 forKey: @""];
+  // [element setSingleValue: [ldifRecord objectForKey: @"c"]
+  //                 atIndex: 6 forKey: @""];
+  if ([[attributes objectForKey: @"addresses"] isKindOfClass: [NSArray class]])
+    {
+      elements = [self childrenWithTag: @"adr"];
+      [self removeChildren: elements];
+      values = [attributes objectForKey: @"addresses"];
+      addresses = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              element = [self elementWithTag: @"adr" ofType: [o objectForKey: @"type"]];
+              [element setSingleValue: [o objectForKey: @"postoffice"]
+                              atIndex: 0 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"street2"]
+                              atIndex: 1 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"street"]
+                              atIndex: 2 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"locality"]
+                              atIndex: 3 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"region"]
+                              atIndex: 4 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"postalcode"]
+                              atIndex: 5 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"country"]
+                              atIndex: 6 forKey: @""];
+            }
+        }
+    }
+
+  // ou = [ldifRecord objectForKey: @"ou"];
+  // if (ou)
+  //   units = [NSArray arrayWithObject: ou];
+  // else
+  //   units = nil;
+  // [self setOrg: [ldifRecord objectForKey: @"o"]
+  //        units: units];
+  if ([[attributes objectForKey: @"orgUnits"] isKindOfClass: [NSArray class]])
+    {
+      elements = [self childrenWithTag: @"org"];
+      [self removeChildren: elements];
+      values = [attributes objectForKey: @"orgUnits"];
+      units = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              [units addObject: [o objectForKey: @"value"]];
+            }
+        }
+    }
+  else
+    {
+      units = nil;
+    }
+  [self setOrg: [attributes objectForKey: @"org"]
+         units: units];
+
+  // [self _setPhoneValues: ldifRecord];
+
+  elements = [self childrenWithTag: @"tel"];
+  [self removeChildren: elements];
+  values = [attributes objectForKey: @"phones"];
+  if ([values isKindOfClass: [NSArray class]])
+    {
+      NSEnumerator *list = [values objectEnumerator];
+      id attrs;
+      while ((attrs = [list nextObject]))
+        {
+          if ([attrs isKindOfClass: [NSDictionary class]])
+            {
+              element = [self elementWithTag: @"tel" ofType: [attrs objectForKey: @"type"]];
+              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+            }
+        }
+  }
+
+  // [self _setEmails: ldifRecord];
+  if ([[attributes objectForKey: @"emails"] isKindOfClass: [NSArray class]])
+    {
+      elements = [self childrenWithTag: @"email"];
+      [self removeChildren: elements];
+      values = [attributes objectForKey: @"emails"];
+      if (values)
+        {
+          NSEnumerator *list = [values objectEnumerator];
+          //NSDictionary *attrs;
+          while ((o = [list nextObject]))
+            {
+              if ([o isKindOfClass: [NSDictionary class]])
+                {
+                  element = [self elementWithTag: @"email" ofType: [o objectForKey: @"type"]];
+                  [element setSingleValue: [o objectForKey: @"value"] forKey: @""];
+                }
+            }
+        }
+    }
+
+  // [[self elementWithTag: @"url" ofType: @"home"]
+  //   setSingleValue: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
+  // [[self elementWithTag: @"url" ofType: @"work"]
+  //   setSingleValue: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
+  
+  elements = [self childrenWithTag: @"url"];
+  [self removeChildren: elements];
+  values = [attributes objectForKey: @"urls"];
+  if ([values isKindOfClass: [NSArray class]])
+    {
+      NSEnumerator *list = [values objectEnumerator];
+      id attrs;
+      while ((attrs = [list nextObject]))
+        {
+          if ([attrs isKindOfClass: [NSDictionary class]])
+            {
+              element = [self elementWithTag: @"url" ofType: [attrs objectForKey: @"type"]];
+              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+            }
+        }
+  }
+
+  // [[self uniqueChildWithTag: @"x-aim"]
+  //   setSingleValue: [ldifRecord objectForKey: @"nsaimid"]
+  //           forKey: @""];
+
+  // now = [NSCalendarDate date];
+  // year = [[ldifRecord objectForKey: @"birthyear"] intValue];
+  // if (year < 100)
+  //   {
+  //     yearOfToday = [now yearOfCommonEra];
+  //     if (year == 0)
+  //       year = yearOfToday;
+  //     else if (yearOfToday < (year + 2000))
+  //       year += 1900;
+  //     else
+  //       year += 2000;
+  //   }
+  // month = [[ldifRecord objectForKey: @"birthmonth"] intValue];
+  // day = [[ldifRecord objectForKey: @"birthday"] intValue];
+
+  // if (year && month && day)
+  //   [self setBday: [NSString stringWithFormat: @"%.4d-%.2d-%.2d",
+  //                            year, month, day]];
+  // else
+  //   [self setBday: @""];
+
+  // /* hack to carry SOGoLDAPContactInfo to vcards */
+  // [[self uniqueChildWithTag: @"x-sogo-contactinfo"]
+  //   setSingleValue: [ldifRecord objectForKey: @"c_info"]
+  //           forKey: @""];
+
+  [self setNote: [attributes objectForKey: @"note"]];
+
+  // o = [ldifRecord objectForKey: @"vcardcategories"];
+
+  if ([[attributes objectForKey: @"categories"] isKindOfClass: [NSArray class]])
+    {
+      elements = [self childrenWithTag: @"categories"];
+      [self removeChildren: elements];
+      values = [attributes objectForKey: @"categories"];
+      categories = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              [categories addObject: [o objectForKey: @"value"]];
+            }
+        }
+      [self setCategories: categories];
+    }
+
+  // We can either have an array (from SOGo's web gui) or a 
+  // string (from a LDIF import) as the value here.
+  // if ([o isKindOfClass: [NSArray class]])
+  //   [self setCategories: o];
+  // else
+  //   [self setCategories: [o componentsSeparatedByString: @","]];
+
+  [self cleanupEmptyChildren];
+
+  NSLog(@"%@", [self versitString]);
+}
+
 - (NSString *) workCompany
 {
   CardElement *org;

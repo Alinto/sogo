@@ -34,6 +34,9 @@
 - (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
 - (NSMutableDictionary *) asLDIFRecord;
 
+- (void) setAttributes: (NSDictionary *) attributes;
+//- (NSDictionary *) attributes;
+
 - (NSString *) workCompany;
 - (NSString *) fullName;
 - (NSArray *) secondaryEmails;

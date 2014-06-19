@@ -37,6 +37,8 @@
 - (NSDictionary *) ldifRecord;
 - (NSDictionary *) simplifiedLDIFRecord;
 
+- (void) setAttributes: (NSDictionary *) newAttributes;
+
 - (NSException *) save;
 - (NSException *) delete;
 

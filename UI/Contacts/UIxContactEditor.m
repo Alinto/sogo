@@ -303,15 +303,15 @@ static Class SOGoContactGCSEntryK = Nil;
 
 /* actions */
 
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-                           inContext: (WOContext*) context
-{
-  NSString *actionName;
-
-  actionName = [[request requestHandlerPath] lastPathComponent];
-
-  return ([actionName hasPrefix: @"save"]);
-}
+// - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+//                            inContext: (WOContext*) context
+// {
+//   NSString *actionName;
+// 
+//   actionName = [[request requestHandlerPath] lastPathComponent];
+// 
+//   return ([actionName hasPrefix: @"save"]);
+// }
 
 - (NSString *) viewActionName
 {
@@ -347,44 +347,80 @@ static Class SOGoContactGCSEntryK = Nil;
 - (id <WOActionResults>) saveAction
 {
   SOGoObject <SOGoContactObject> *contact;
-  id result;
-  NSString *jsRefreshMethod;
+  WORequest *request;
+  WOResponse *response;
+  //id result;
+  NSDictionary *params;
+  //NSString *jsRefreshMethod;
   SoSecurityManager *sm;
 
   contact = [self clientObject];
-  [contact setLDIFRecord: ldifRecord];
-  [self _fetchAndCombineCategoriesList];
+  request = [context request];
+  NSLog(@"%@", [request contentAsString]);
+  params = [[request contentAsString] objectFromJSONString];
+
+  // LDIF                     NSDictionary (vCard)
+  // ---------------------------------------------
+  // sn                       familyname
+  // givenname                givenname
+  // mozillanickname          nickname
+  // displayname              fullname
+  // title                    title
+  // o                        organization
+  // ou[]                     units[]
+  // telephonenumber          tel;work
+  // homephone                tel;home
+  // mobile                   tel;cell
+  // facsimiletelephonenumber tel;fax
+  // pager                    tel;pager
+  // mail                     email;work
+  // mozillasecondemail       email;home
+  // mozillausehtmlmail       x-mozilla-html
+  // mozillahomeurl           url;home
+  // mozillaworkurl           url;work
+  // nsaimid                  x-aim
+  // birth(year/month/day)    bday
+  // c_info                   x-sogo-contactinfo
+  // description              note
+  // vcardcategories          categories
+
+  [contact setAttributes: params];
+
+  response = [self responseWithStatus: 204];
+
+  //[contact setLDIFRecord: ldifRecord];
+  //[self _fetchAndCombineCategoriesList];
   [contact save];
 
-  if (componentAddressBook && componentAddressBook != [self componentAddressBook])
-    {
-      if ([contact isKindOfClass: SOGoContactGCSEntryK])
-        {
-          sm = [SoSecurityManager sharedSecurityManager];
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                             onObject: componentAddressBook
-                            inContext: context]
-              && ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                onObject: componentAddressBook
-                               inContext: context])
-            [(SOGoContactGCSEntry *) contact
-               moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO:
-                                                                     // handle
-                                                                     // exception
-        }
-    }
+//   if (componentAddressBook && componentAddressBook != [self componentAddressBook])
+//     {
+//       if ([contact isKindOfClass: SOGoContactGCSEntryK])
+//         {
+//           sm = [SoSecurityManager sharedSecurityManager];
+//           if (![sm validatePermission: SoPerm_DeleteObjects
+//                              onObject: componentAddressBook
+//                             inContext: context]
+//               && ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+//                                 onObject: componentAddressBook
+//                                inContext: context])
+//             [(SOGoContactGCSEntry *) contact
+//                moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO:
+//                                                                      // handle
+//                                                                      // exception
+//         }
+//     }
       
-  if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-    result = [self redirectToLocation: [self modulePath]];
-  else
-    {
-      jsRefreshMethod
-        = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
-                    [contact nameInContainer]];
-      result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
-    }
+  // if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
+  //   result = [self redirectToLocation: [self modulePath]];
+  // else
+  //   {
+  //     jsRefreshMethod
+  //       = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
+  //                   [contact nameInContainer]];
+  //     result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
+  //   }
 
-  return result;
+  return response;
 }
 
 - (id) writeAction

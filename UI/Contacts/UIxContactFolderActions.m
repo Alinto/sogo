@@ -36,6 +36,7 @@
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/NSDictionary+LDIF.h>
 
 #import <SoObjects/Contacts/NGVCard+SOGo.h>
@@ -45,6 +46,8 @@
 #import <SoObjects/Contacts/SOGoContactGCSList.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
 #import <GDLContentStore/GCSFolder.h>
+
+#import <SOGo/NSString+Utilities.h>
 
 #import "UIxContactFolderActions.h"
 
@@ -276,6 +279,7 @@
       uid = [folder globallyUniqueObjectId];
 
       [card setUid: uid];
+      // TODO: shall we add .vcf as in [SOGoContactGCSEntry copyToFolder:]
       contact = [SOGoContactGCSEntry objectWithName: uid
                                         inContainer: folder];
       [contact setIsNew: YES];
@@ -286,6 +290,35 @@
     }
 
   return rc;
+}
+
+- (id <WOActionResults>) saveAction
+{
+  SOGoContactGCSFolder *folder;
+  WORequest *request;
+  WOResponse *response;
+  NSDictionary *params, *message;
+  NSString *folderName;
+
+  request = [context request];
+  NSLog(@"%@", [request contentAsString]);
+  params = [[request contentAsString] objectFromJSONString];
+
+  folderName = [params objectForKey: @"name"];
+  if ([folderName length] > 0)
+    {
+      folder = [self clientObject];
+      [folder renameTo: folderName];
+      response = [self responseWith204];
+    }
+  else
+    {
+      message = [NSDictionary dictionaryWithObject: @"Missing name parameter" forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [message jsonRepresentation]];
+   }
+
+  return response;
 }
 
 @end /* UIxContactFolderActions */
