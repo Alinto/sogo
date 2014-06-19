@@ -184,6 +184,8 @@ sogo_backend_init (void)
 
   [pool release];
 
+  DEBUG(0, ("[SOGo: %s:%d] backend init SUCCESS. Current thread: %p, pid: %d\n", __FUNCTION__, __LINE__, GSCurrentThread(), getpid()));
+
   return MAPISTORE_SUCCESS;
 }
 
