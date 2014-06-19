@@ -140,7 +140,13 @@ sogo_backend_init (void)
   Class MAPIApplicationK;
   NSUserDefaults *ud;
   SoProductRegistry *registry;
+  static BOOL moduleInitialized = NO;
   char *argv[] = { SAMBA_PREFIX "/sbin/samba", NULL };
+
+  if (moduleInitialized) {
+      DEBUG(0, ("SOGo backend already initialized.\n"));
+      return MAPISTORE_SUCCESS;
+  }
 
   GSRegisterCurrentThread ();
   pool = [NSAutoreleasePool new];
@@ -185,6 +191,7 @@ sogo_backend_init (void)
   [pool release];
 
   DEBUG(0, ("[SOGo: %s:%d] backend init SUCCESS. Current thread: %p, pid: %d\n", __FUNCTION__, __LINE__, GSCurrentThread(), getpid()));
+  moduleInitialized = YES;
 
   return MAPISTORE_SUCCESS;
 }
