@@ -1,0 +1,30 @@
+@import "settings";
+@import "foundation/components/grid";
+@import "foundation/components/forms";
+
+$total-columns: 12;
+
+#pageContent {
+
+    #login {
+        @include grid-row();
+        @media #{$medium-up} {
+            padding-top: rem-calc(48);
+        }
+        #logo {
+            text-align: center;
+            @include grid-column(12);
+            @media #{$medium-up} {
+                text-align: right;
+                @include grid-column($columns:4, $offset:2);
+            }
+        }
+        form {
+            @include grid-column(12);
+            @media #{$medium-up} {
+                @include grid-column($columns:3);
+            }
+        }
+    }
+
+}
