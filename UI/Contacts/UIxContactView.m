@@ -21,6 +21,7 @@
 */
 
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
@@ -31,9 +32,13 @@
 #import <NGExtensions/NSString+Ext.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SOGo/CardElement+SOGo.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <Contacts/NGVCard+SOGo.h>
 #import <Contacts/SOGoContactObject.h>
@@ -123,6 +128,45 @@
 - (NSString *) fullName
 {
   return [card fullName];
+}
+
+- (NSArray *) _languageContactsCategories
+{
+  NSArray *categoryLabels;
+
+  categoryLabels = [[self labelForKey: @"contacts_category_labels"] componentsSeparatedByString: @","];
+  if (!categoryLabels)
+    categoryLabels = [NSArray array];
+  
+  return [categoryLabels trimmedComponents];
+}
+
+- (NSArray *) _fetchAndCombineCategoriesList
+{
+  NSString *ownerLogin;
+  SOGoUserDefaults *ud;
+  NSArray *cats, *newCats, *contactCategories;
+
+  ownerLogin = [[self clientObject] ownerInContext: context];
+  ud = [[SOGoUser userWithLogin: ownerLogin] userDefaults];
+  cats = [ud contactsCategories];
+  if (!cats)
+    cats = [self _languageContactsCategories];
+
+  contactCategories = [card categories];
+  if (contactCategories)
+    {
+      newCats = [cats mergedArrayWithArray: contactCategories];
+      if ([newCats count] != [cats count])
+        {
+          cats = [newCats sortedArrayUsingSelector:
+                            @selector (localizedCaseInsensitiveCompare:)];
+          [ud setContactsCategories: cats];
+          [ud synchronize];
+        }
+    }
+
+  return cats;
 }
 
 - (NSString *) primaryEmail
@@ -218,14 +262,14 @@
   return @"";
 }
 
-- (NSString *) categories
-{
-  NSString *categories;
+// - (NSString *) categories
+// {
+//   NSString *categories;
 
-  categories = [[card categories] componentsJoinedByString: @", "];
-  return [self _cardStringWithLabel: @"Categories:"
-               value: categories];
-}
+//   categories = [[card categories] componentsJoinedByString: @", "];
+//   return [self _cardStringWithLabel: @"Categories:"
+//                value: categories];
+// }
 
 - (BOOL) hasTelephones
 {
@@ -460,6 +504,101 @@
   return [self _cardStringWithLabel: nil value: [card title]];
 }
 
+- (NSArray *) orgUnits
+{
+  NSMutableArray *orgUnits;
+  NSArray *values;
+  CardElement *org;
+  NSString *service;
+  NSUInteger count, max;
+
+  org = [card org];
+  values = [org valuesForKey: @""];
+  max = [values count];
+  if (max > 1)
+    {
+      orgUnits = [NSMutableArray arrayWithCapacity: max];
+      for (count = 1; count < max; count++)
+        {
+          service = [org flattenedValueAtIndex: count forKey: @""];
+          if ([service length] > 0)
+            [orgUnits addObject: [NSDictionary dictionaryWithObject: service forKey: @"value"]];
+        }
+    }
+  else
+    orgUnits = nil;
+
+  return orgUnits;
+}
+
+- (NSArray *) categories
+{
+  NSMutableArray *categories;
+  NSArray *values;
+  NSString *category;
+  NSUInteger count, max;
+
+  values = [card categories];
+  max = [values count];
+  if (max > 0)
+    {
+      categories = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          category = [values objectAtIndex: count];
+          if ([category length] > 0)
+            [categories addObject: [NSDictionary dictionaryWithObject: category forKey: @"value"]];
+        }
+    }
+  else
+    categories = nil;
+
+  return categories;
+}
+
+- (NSArray *) deliveryAddresses
+{
+  NSMutableArray *addresses;
+  NSMutableDictionary *address;
+  NSArray *elements;
+  NSString *type, *postoffice, *street, *street2, *locality, *region, *postalcode, *country;
+  CardElement *adr;
+  NSUInteger count, max;
+
+  elements = [card childrenWithTag: @"adr"];
+  //values = [org valuesForKey: @""];
+  max = [elements count];
+  if (max > 0)
+    {
+      addresses = [NSMutableArray arrayWithCapacity: max];
+      for (count = 1; count < max; count++)
+        {
+          adr = [elements objectAtIndex: count];
+          type = [adr value: 0 ofAttribute: @"type"];
+          postoffice = [adr flattenedValueAtIndex: 0 forKey: @""];
+          street2    = [adr flattenedValueAtIndex: 1 forKey: @""];
+          street     = [adr flattenedValueAtIndex: 2 forKey: @""];
+          locality   = [adr flattenedValueAtIndex: 3 forKey: @""];
+          region     = [adr flattenedValueAtIndex: 4 forKey: @""];
+          postalcode = [adr flattenedValueAtIndex: 5 forKey: @""];
+          country    = [adr flattenedValueAtIndex: 6 forKey: @""];
+          address = [NSMutableDictionary dictionaryWithObject: type forKey: @"type"];
+          if (postoffice) [address setObject: postoffice forKey: @"postoffice"];
+          if (street2)    [address setObject: street2 forKey: @"street2"];
+          if (street)     [address setObject: street forKey: @"street"];
+          if (locality)   [address setObject: locality forKey: @"locality"];
+          if (region)     [address setObject: region forKey: @"region"];
+          if (postalcode) [address setObject: postalcode forKey: @"postalcode"];
+          if (country)    [address setObject: country forKey: @"country"];
+          if ([[address allKeys] count] > 1) [addresses addObject: address];
+        }
+    }
+  else
+    addresses = nil;
+
+  return addresses;
+}
+
 - (NSString *) workService
 {
   NSMutableArray *orgServices;
@@ -576,13 +715,14 @@
       bday = [dateFormatter formattedDate: date];
     }
 
-  return [self _cardStringWithLabel: @"Birthday:" value: bday];
+  return bday;
+  //return [self _cardStringWithLabel: @"Birthday:" value: bday];
 }
 
-- (NSString *) tz
-{
-  return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
-}
+// - (NSString *) tz
+// {
+//   return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
+// }
 
 - (NSString *) note
 {
@@ -597,7 +737,8 @@
                    withString: @"<br />"];
     }
 
-  return [self _cardStringWithLabel: @"Note:" value: note];
+  return note;
+  //return [self _cardStringWithLabel: @"Note:" value: note];
 }
 
 /* hrefs */
@@ -643,6 +784,111 @@
                         reason: @"could not locate contact"];
 
   return self;
+}
+
+- (id <WOActionResults>) dataAction
+{
+  id <WOActionResults> result;
+  id o;
+  SOGoObject <SOGoContactObject> *contact;
+  // NSMutableArray *description;
+  NSMutableDictionary *data;
+
+  contact = [self clientObject];
+  card = [contact vCard];
+  if (card)
+    {
+      [card retain];
+      phones = nil;
+      homeAdr = nil;
+      workAdr = nil;
+      NSLog(@"%@", [card versitString]);
+    }
+  else
+    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                                         reason: @"could not locate contact"];
+
+  // description = [NSMutableArray array];
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [[contact container] nameInContainer], @"pid",
+                              [contact nameInContainer], @"id",
+                              [card tag], @"tag",
+                              nil];
+  o = [card fn];
+  if (o) [data setObject: o forKey: @"fn"];
+  o = [card n];
+  if (o)
+    {
+      NSString *lastName = [o flattenedValueAtIndex: 0 forKey: @""];
+      NSString *firstName = [o flattenedValueAtIndex: 1 forKey: @""];
+      if ([lastName length] > 0)
+        [data setObject: lastName forKey: @"sn"];
+      if ([firstName length] > 0)
+        [data setObject: firstName forKey: @"givenname"];
+    }
+  o = [card nickname];
+  if (o) [data setObject: o forKey: @"nickname"];
+  // o = [card fullName];
+  // if (o) [data setObject: o forKey: @"fullname"];
+  o = [card title];
+  if ([o length] > 0)
+    {
+      [data setObject: o forKey: @"title"];
+      // [description addObject: o];
+    }
+  o = [card role];
+  if ([o length] > 0)
+    {
+      [data setObject: o forKey: @"role"];
+      // [description addObject: o];
+    }
+  o = [self orgUnits];
+  if ([o count] > 0)
+    {
+      [data setObject: o forKey: @"orgUnits"];
+      // [description addObjectsFromArray: o];
+    }
+  o = [card workCompany];
+  if ([o length] > 0)
+    {
+      [data setObject: o forKey: @"org"];
+      // [description addObject: o];
+    }
+  // if ([description count]) [data setObject: description forKey: @"description"];
+
+  o = [card birthday];
+  if (o)
+    {
+      NSNumber *time = [NSNumber numberWithInt: [o timeIntervalSince1970]];
+      [data setObject: time forKey: @"birthday"];
+    }
+  // o = [card source];
+  // if (o) [data setObject: o forKey: @"source"];
+  o = [card tz];
+  if (o) [data setObject: o forKey: @"tz"];
+
+  o = [card childrenWithTag: @"email"];
+  if ([o count]) [data setObject: o forKey: @"emails"];
+  o = [card childrenWithTag: @"tel"];
+  if ([o count]) [data setObject: o forKey: @"phones"];
+  o = [self categories];
+  if ([o count]) [data setObject: o forKey: @"categories"];
+  o = [self deliveryAddresses];
+  if ([o count] > 0) [data setObject: o forKey: @"addresses"];
+  o = [card childrenWithTag: @"url"];
+  if ([o count]) [data setObject: o forKey: @"urls"];
+
+  o = [self note];
+  if (o) [data setObject: o forKey: @"note"];
+  o = [self _fetchAndCombineCategoriesList];
+  if (o) [data setObject: o forKey: @"allCategories"];
+  if ([contact hasPhoto])
+    [data setObject: [self photoURL] forKey: @"photoURL"];
+
+  result = [self responseWithStatus: 200
+                          andString: [data jsonRepresentation]];
+  
+  return result;
 }
 
 - (BOOL) hasPhoto

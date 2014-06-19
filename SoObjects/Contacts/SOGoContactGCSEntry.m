@@ -84,6 +84,11 @@
   return [self ldifRecord];
 }
 
+- (void) setAttributes: (NSDictionary *) newAttributes
+{
+  [[self vCard] setAttributes: newAttributes];
+}
+
 - (BOOL) hasPhoto
 {
   return ([[self vCard] firstChildWithTag: @"photo"] != nil);
