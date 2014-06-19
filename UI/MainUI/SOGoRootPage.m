@@ -80,10 +80,10 @@
 
 /* accessors */
 
-- (NSString *) connectURL
-{
-  return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
-}
+//- (NSString *) connectURL
+//{
+//  return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
+//}
 
 - (NSString *) cookieUsername
 {
@@ -185,6 +185,7 @@
   SOGoUserDefaults *ud;
   SOGoSystemDefaults *sd;
   SOGoUser *loggedInUser;
+  NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
   NSArray *supportedLanguages;
   
@@ -195,14 +196,15 @@
   err = PolicyNoError;
   expire = grace = -1;
   
-  auth = [[WOApplication application]
-	    authenticatorInContext: context];
+  auth = [[WOApplication application] authenticatorInContext: context];
   request = [context request];
-  username = [request formValueForKey: @"userName"];
-  password = [request formValueForKey: @"password"];
-  language = [request formValueForKey: @"language"];
-  rememberLogin = [[request formValueForKey: @"rememberLogin"] boolValue];
-  domain = [request formValueForKey: @"domain"];
+  params = [[request contentAsString] objectFromJSONString];
+
+  username = [params objectForKey: @"userName"];
+  password = [params objectForKey: @"password"];
+  language = [params objectForKey: @"language"];
+  rememberLogin = [[params objectForKey: @"rememberLogin"] boolValue];
+  domain = [params objectForKey: @"domain"];
   /* this will always be set to something more or less useful by
    * [WOHttpTransaction applyAdaptorHeadersWithHttpRequest] */
   remoteHost = [request headerForKey:@"x-webobjects-remote-host"];
