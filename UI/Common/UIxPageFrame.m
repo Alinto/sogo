@@ -202,7 +202,7 @@
 
   return (siteFavicon
           ? siteFavicon
-          : [self urlForResourceFilename: @"sogo.ico"]);
+          : [self urlForResourceFilename: @"img/sogo.ico"]);
 }
 
 /* page based JavaScript */
@@ -256,8 +256,7 @@
   if (isPopup)
     rc = @"";
   else
-    rc = [NSString stringWithFormat: @"var clabels = %@;",
-          [self _stringsForFramework: nil]];
+    rc = [NSString stringWithFormat: @"var clabels = %@;", [self _stringsForFramework: nil]];
 
   return rc;
 }
@@ -268,32 +267,31 @@
 
   frameworkName = [[context page] frameworkName];
 
-  return [NSString stringWithFormat: @"var labels = %@;",
-		   [self _stringsForFramework: frameworkName]];
+  return [NSString stringWithFormat: @"var labels = %@;", [self _stringsForFramework: frameworkName]];
 }
 
 - (NSString *) pageJavaScriptURL
 {
   WOComponent *page;
-  NSString *pageJSFilename;
+  NSString *filename;
   
-  page     = [context page];
-  pageJSFilename = [NSString stringWithFormat: @"%@.js",
-			     NSStringFromClass([page class])];
+  page = [context page];
+  filename = [NSString stringWithFormat: @"js/%@.js", NSStringFromClass([page class])];
+  NSLog(@"pageJavaScript => %@", filename);
 
-  return [self urlForResourceFilename: pageJSFilename];
+  return [self urlForResourceFilename: filename];
 }
 
 - (NSString *) productJavaScriptURL
 {
   WOComponent *page;
-  NSString *fwJSFilename;
+  NSString *filename;
 
   page = [context page];
-  fwJSFilename = [NSString stringWithFormat: @"%@.js",
-			   [page frameworkName]];
+  filename = [NSString stringWithFormat: @"js/%@.js", [page frameworkName]];
+  NSLog(@"productJavaScript => %@", filename);
   
-  return [self urlForResourceFilename: fwJSFilename];
+  return [self urlForResourceFilename: filename];
 }
 
 - (BOOL) hasPageSpecificJavaScript
@@ -314,12 +312,10 @@
   [additionalCSSFiles release];
   additionalCSSFiles = [NSMutableArray new];
 
-  cssFiles
-    = [[newCSSFiles componentsSeparatedByString: @","] objectEnumerator];
+  cssFiles = [[newCSSFiles componentsSeparatedByString: @","] objectEnumerator];
   while ((currentFile = [cssFiles nextObject]))
     {
-      filename = [self urlForResourceFilename:
-			 [currentFile stringByTrimmingSpaces]];
+      filename = [self urlForResourceFilename: [NSString stringWithFormat: @"css/%@", [currentFile stringByTrimmingSpaces]]];
       [additionalCSSFiles addObject: filename];
     }
 }
@@ -340,8 +336,7 @@
   jsFiles = [[newJSFiles componentsSeparatedByString: @","] objectEnumerator];
   while ((currentFile = [jsFiles nextObject]))
     {
-      filename = [self urlForResourceFilename:
-			 [currentFile stringByTrimmingSpaces]];
+      filename = [self urlForResourceFilename: [NSString stringWithFormat: @"js/%@", [currentFile stringByTrimmingSpaces]]];
       [additionalJSFiles addObject: filename];
     }
 }
@@ -367,8 +362,7 @@
       for (count = 0; count < max; count++)
         {
           currentFile = [prefsJSFiles objectAtIndex: count];
-          filename = [self urlForResourceFilename:
-                             [currentFile stringByTrimmingSpaces]];
+          filename = [self urlForResourceFilename: [currentFile stringByTrimmingSpaces]];
           [systemAdditionalJSFiles addObject: filename];
         }
     }
@@ -379,25 +373,25 @@
 - (NSString *) pageCSSURL
 {
   WOComponent *page;
-  NSString *pageJSFilename;
+  NSString *filename;
 
   page = [context page];
-  pageJSFilename = [NSString stringWithFormat: @"%@.css",
-			     NSStringFromClass([page class])];
+  filename = [NSString stringWithFormat: @"css/%@.css",
+                       NSStringFromClass([page class])];
 
-  return [self urlForResourceFilename: pageJSFilename];
+  return [self urlForResourceFilename: filename];
 }
 
 - (NSString *) productCSSURL
 {
   WOComponent *page;
-  NSString *fwJSFilename;
+  NSString *filename;
 
   page = [context page];
-  fwJSFilename = [NSString stringWithFormat: @"%@.css",
-			   [page frameworkName]];
+  filename = [NSString stringWithFormat: @"css/%@.css",
+                       [page frameworkName]];
   
-  return [self urlForResourceFilename: fwJSFilename];
+  return [self urlForResourceFilename: filename];
 }
 
 - (NSString *) thisPageURL
@@ -619,5 +613,15 @@
 {
   return [[[context activeUser] domainDefaults] searchMinimumWordLength];
 }
+
+- (id) contentMediaComponent
+{
+  //NSString *name = [self->pageName stringValueInComponent: [context component]];
+  NSString *name = [[[self->context component] parent] name];
+  NSLog(@"************ loading %@", name);
+
+  return [self pageWithName: @"UIxContactFoldersView"];
+}
+
 
 @end /* UIxPageFrame */
