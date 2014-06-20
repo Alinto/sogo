@@ -59,6 +59,9 @@ function printView() {
 
 function newEvent(type, day, hour, duration) {
     var folder = null;
+   /* if (currentView == "multicolumndayview") {
+    	Need to find where the click register is saved
+    }*/
     if (UserDefaults['SOGoDefaultCalendar'] == 'personal')
         folder = $("calendarList").down("li");
     else if (UserDefaults['SOGoDefaultCalendar'] == 'first') {
@@ -2113,6 +2116,7 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                         parentDiv.appendChild(eventCell);
                     }
                 }
+              } 	
             }
         }
     }
@@ -2212,7 +2216,6 @@ function adjustCalendarHeaderDIV() {
 }
 
 function adjustMultiColumnCalendarHeaderDIV() {
-
     var ch = $("calendarHeader");
     var calendarLabels = ch.getElementsByClassName("calendarLabels")[0];
     var calendarsToDisplay = calendarLabels.getElementsByClassName("calendarsToDisplay");
@@ -2270,6 +2273,9 @@ function calendarDisplayCallback(http) {
             currentView = http.callbackData["view"];
         if (http.callbackData["day"])
             currentDay = http.callbackData["day"];
+        
+        if (currentView == "multicolumndayview")
+        	adjustMultiColumnCalendarHeaderDIV();
 
         if (currentView == "multicolumndayview")
             adjustMultiColumnCalendarHeaderDIV();
@@ -2488,9 +2494,9 @@ function onHeaderClick(event) {
 
 function refreshCurrentFolder(id) {
     if (id == 'tasks')
-        refreshTasks();
+      refreshTasks();
     else
-        refreshEvents();
+      refreshEvents();
 }
 
 /* refreshes the "unifinder" list */
