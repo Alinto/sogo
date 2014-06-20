@@ -79,8 +79,6 @@
   [weekDays release];
   [daysToDisplay release];
   [calendarsToDisplay release];
-  [currentView release];
-  [currentCalendar release];
   [hoursToDisplay release];
   [dateFormatter release];
   [timeFormat release];
