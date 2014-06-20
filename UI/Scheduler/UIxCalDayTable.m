@@ -191,8 +191,8 @@
     NSMutableDictionary *calendar;
     unsigned int count, foldersCount;
     NSString *folderName, *fDisplayName;
-    BOOL *isActive;
-    
+    NSNumber *isActive;
+
     co = [self clientObject];
     folders = [co subFolders];
     foldersCount = [folders count];
