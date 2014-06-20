@@ -542,6 +542,12 @@ vtodo_class2 = "(Confidential task)";
 "tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
 "EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"Please select at least one calendar" = "Please select at least one calendar";
+"notice:" = "notice:";
+"error:" = "error:";
+"success:" = "success:";
+"warning:" = "warning:";
+
 
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";

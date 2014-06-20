@@ -7,51 +7,105 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
   <div id="calendarHeader" var:class="daysViewClasses">
-    <div class="dayLabels"
-      ><var:foreach list="daysToDisplay" item="currentTableDay"
-	><div var:class="dayClasses"
-	  ><var:string value="labelForDate"/><br
-	    /><span class="dayOfWeek"><var:string value="labelForDay"/></span
-	    ></div
-	  ></var:foreach>
-    </div>
-    <div class="days"
-      ><var:foreach list="daysToDisplay" item="currentTableDay"
-	><div var:class="dayClasses"
-	  var:day="currentTableDay.shortDateString"
-          var:id="currentAllDayId"
-	  hour="allday"
-	  ><!-- space --></div
-	  ></var:foreach
-	></div>
+
+<!-- MultiColumnView -->
+    <!-- Display the name of the calendar -->
+    <var:if condition="isMultiColumnView">
+      <div class="calendarLabels">
+        <var:foreach list="calendarsToDisplay" item="currentCalendar">
+          <div class="calendarsToDisplay">
+            <var:string value="labelForCalendar"/>
+          </div>
+        </var:foreach>
+      </div>
+      
+      <!-- Display today abreviation and date -->
+      <div class="dayLabels">
+        <var:foreach list="daysToDisplay" item="currentTableDay">
+          <div var:class="dayClasses">
+            <var:string value="labelForDate"/><br/>
+            <span class="dayOfWeek"><var:string value="labelForDay"/></span>
+          </div>
+        </var:foreach>
+      </div>
+      
+      <!-- All day cells -->
+      <div class="days">
+        <var:foreach list="calendarsToDisplay" item="currentCalendar">
+          <var:foreach list="daysToDisplay" item="currentTableDay">
+            <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" hour="allday"><!-- space --></div>
+          </var:foreach>
+        </var:foreach>
+      </div>
+    </var:if>
+
+<!-- DayView or WeekView -->
+    <var:if condition="isNotMultiColumnView">
+      <!-- Display today abreviation and date -->
+      <div class="dayLabels">
+        <var:foreach list="daysToDisplay" item="currentTableDay">
+          <div var:class="dayClasses">
+            <var:string value="labelForDate"/><br/>
+            <span class="dayOfWeek"><var:string value="labelForDay"/></span>
+          </div>
+        </var:foreach>
+      </div>
+    
+      <!-- All day cells -->
+      <div class="days">
+        <var:foreach list="daysToDisplay" item="currentTableDay">
+          <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" hour="allday"><!-- space --></div>
+        </var:foreach>
+      </div>
+    </var:if>
   </div>
-
+  
+  
+  <!-- The hours cells -->
   <div id="daysView" var:class="daysViewClasses">
-    <div class="hours"
-      ><var:foreach list="hoursToDisplay" item="currentTableHour"
-        ><div class="hour" var:id="currentHourId"
-          ><var:string value="currentTableHour"/></div
-          ></var:foreach>
-    </div>
-
-    <div class="days">
-      <var:foreach list="daysToDisplay" item="currentTableDay"
-        ><div var:class="dayClasses"
-          var:id="currentDayId"
-          var:day-number="currentDayNumber"
-          var:day="currentTableDay.shortDateString">
-          <div class="hourCells">
-            <var:foreach list="hoursToDisplay" item="currentTableHour"
-              ><div var:class="clickableHourCellClass"
-        	var:day="currentTableDay.shortDateString"
-        	var:hour="currentAppointmentHour">
-              <span class="minutes15"><!-- space --></span>
-              <span class="minutes30"><!-- space --></span>
-              <span class="minutes45"><!-- space --></span>
-            </div></var:foreach></div>
-          <div class="events"><!-- space --></div>
+    <div class="hours">
+      <var:foreach list="hoursToDisplay" item="currentTableHour">
+        <div class="hour" var:id="currentHourId">
+          <var:string value="currentTableHour"/>
         </div>
       </var:foreach>
+    </div>
+    <div class="days">
+      <!-- MultiColumnView -->
+      <var:if condition="isMultiColumnView">
+        <var:foreach list="calendarsToDisplay" item="currentCalendar">
+          <var:foreach list="daysToDisplay" item="currentTableDay">
+            <div var:class="dayClasses" var:id="currentDayId" var:day-number="currentDayNumber" var:day="currentTableDay.shortDateString">
+              <div class="hourCells">
+                <var:foreach list="hoursToDisplay" item="currentTableHour">
+                  <div var:class="clickableHourCellClass" var:day="currentTableDay.shortDateString" var:hour="currentAppointmentHour">
+                    <span class="minutes15"><!-- space --></span>
+                    <span class="minutes30"><!-- space --></span>
+                    <span class="minutes45"><!-- space --></span>
+                  </div>
+                </var:foreach>
+              </div>
+              <div class="events"><!-- space --></div>
+            </div>
+          </var:foreach>
+        </var:foreach>
+      </var:if>
+      <var:if condition="isNotMultiColumnView">
+        <var:foreach list="daysToDisplay" item="currentTableDay">
+          <div var:class="dayClasses" var:id="currentDayId" var:day-number="currentDayNumber" var:day="currentTableDay.shortDateString">
+            <div class="hourCells">
+              <var:foreach list="hoursToDisplay" item="currentTableHour">
+                <div var:class="clickableHourCellClass" var:day="currentTableDay.shortDateString" var:hour="currentAppointmentHour">
+                  <span class="minutes15"><!-- space --></span>
+                  <span class="minutes30"><!-- space --></span>
+                  <span class="minutes45"><!-- space --></span>
+                </div>
+              </var:foreach>
+            </div>
+            <div class="events"><!-- space --></div>
+          </div>
+        </var:foreach>
+      </var:if>
     </div>
   </div>
 </container>

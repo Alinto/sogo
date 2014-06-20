@@ -40,6 +40,7 @@
           className="UIxCalDayTable"
           startDate="startDate"
           const:CSSClass="weekOverview"
-          const:numberOfDays="7" />
+          const:numberOfDays="7"
+          const:currentView="weekview"/>
     </div>
   </container>
