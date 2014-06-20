@@ -367,8 +367,9 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSString *objectURL, *url;
   // TDB_DATA key, dbuf;
 
-  url = [[contextUrl absoluteString]
-            stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  url = [contextUrl absoluteString];
+  // FIXME transform percent escapes but not for user part of the url
+  //stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
   objectURL = [[userContext mapping] urlFromID: fmid];
   if (objectURL)
     {
