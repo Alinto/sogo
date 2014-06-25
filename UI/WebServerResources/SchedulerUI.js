@@ -37,10 +37,22 @@ var eventsToCopy = [];
 
 // This should probably go in the generic.js
 function printView() {
+  var flag = false;
+  var calendarsList = $("calendarList").children;
+  for (var i = 0; i < calendarsList.length; i++) {
+    if (calendarsList[i].down("input").checked) {
+      flag = true;
+      break;
+    }
+  }
+  if (flag)
+    window.open("printView","","width=660,height=470");
+
+  else
+    showAlertDialog("Please select at least one calendar");
   
-  window.open("printView","","width=660,height=470");
   
-  return false; /* stop following the link */
+  return false;
 }
 
 function newEvent(type, day, hour, duration) {
@@ -3479,57 +3491,61 @@ function onWindowResize(event) {
 }
 
 function drawNowLine() {
-    var d = new Date();
-    var hours = d.getHours();
-    var minutes = d.getMinutes();
-
-    if (currentView == "dayview") {
-        var today = new Date();
-        var m = parseInt(today.getMonth()) + 1;
-        var d = today.getDate();
-        if (m < 10)
-            m = "0" + m;
-        if (d < 10)
-            d = "0" + d;
-        var day = today.getFullYear() + "" + m + "" + d;
-        var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
-                         + "] DIV.hourCells");
-    }
-    else if (currentView == "multicolumndayview") {
-      var targets = $$("DIV#daysView DIV.hourCells");
-    }
-    else if (currentView == "weekview")
-        var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.hourCells");
-
-    if (targets[0]) {
-    	if (currentView == "multicolumndayview") {
-    	  var nbCalendars = targets.length;
-    	  for(var i = 0; i < nbCalendars; i++){
-    	    var target = targets[i].getElementsByClassName("clickableHourCell")[hours];
-
-            if (target) {
-              var div = targets[i].getElementsByClassName("nowLineDisplay")[0];
-              if (!div)
-                div = new Element("div", {'class': 'nowLineDisplay'});
-
-                div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
-                target.insertBefore(div, target.firstChild);
-        	}
-    	  }
-    	}
-    	else {
-    	  var target = targets[0].getElementsByClassName("clickableHourCell")[hours];
-          if (target) {
-            var div = targets[0].getElementsByClassName("nowLineDisplay")[0];
-            if (!div)
-              div = new Element("div", {'class': 'nowLineDisplay'});
-
-              div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
-              target.insertBefore(div, target.firstChild);
-    	  }
+  var d = new Date();
+  var hours = d.getHours();
+  var minutes = d.getMinutes();
+  
+  if (currentView == "dayview") {
+    var today = new Date();
+    var m = parseInt(today.getMonth()) + 1;
+    var d = today.getDate();
+    if (m < 10)
+      m = "0" + m;
+    if (d < 10)
+      d = "0" + d;
+    var day = today.getFullYear() + "" + m + "" + d;
+    var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
+                     + "] DIV.hourCells");
+  }
+  else if (currentView == "multicolumndayview") {
+    var targets = $$("DIV#daysView DIV.hourCells");
+  }
+  else if (currentView == "weekview")
+    var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.hourCells");
+  
+  else {
+    var targets = [];
+  }
+  
+  if (targets[0] != undefined) {
+    if (currentView == "multicolumndayview") {
+      var nbCalendars = targets.length;
+      for(var i = 0; i < nbCalendars; i++){
+        var target = targets[i].getElementsByClassName("clickableHourCell")[hours];
+        
+        if (target) {
+          var div = targets[i].getElementsByClassName("nowLineDisplay")[0];
+          if (!div)
+            div = new Element("div", {'class': 'nowLineDisplay'});
+          
+          div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+          target.insertBefore(div, target.firstChild);
         }
-    	setTimeout("drawNowLine ();", 60000); // 1 min.
+      }
     }
+    else {
+      var target = targets[0].getElementsByClassName("clickableHourCell")[hours];
+      if (target) {
+        var div = targets[0].getElementsByClassName("nowLineDisplay")[0];
+        if (!div)
+          div = new Element("div", {'class': 'nowLineDisplay'});
+        
+        div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+        target.insertBefore(div, target.firstChild);
+      }
+    }
+    setTimeout("drawNowLine ();", 60000); // 1 min.
+  }
 }
 
 function onListCollapse(event, element) {

@@ -84,6 +84,16 @@
       <tr>
         <td>
           <label>
+            <input type="checkbox" name="printWorkingHours" id="printHours" checked="true" onChange="onPrintWorkingHoursCheck(this);" />
+            <var:string label:value="Display working hours only" /></label></td></tr>
+      <tr>
+        <td>
+          <label>
+            <hr /></label></td></tr>
+      
+      <tr>
+        <td>
+          <label>
             <input type="checkbox" name="printOptions" id="selectNoDueDateTasks" checked="true" onChange="onPrintNoDueDateTasksCheck(this);" />
             <var:string label:value="Tasks with no due date" /></label></td></tr>
       <tr>

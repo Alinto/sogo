@@ -155,6 +155,7 @@
 "What to Print" = "What to Print";
 "Options" = "Options";
 "Tasks with no due date" = "Tasks with no due date";
+"Display working hours only" = "Display working hours only";
 "Completed tasks" = "Completed Tasks";
 
 /* Appointments */
@@ -313,6 +314,7 @@
 
 "Repeat" = "Repeat";
 "Daily" = "Daily";
+"Multi-Columns" = "Multi-Columns";
 "Weekly" = "Weekly";
 "Monthly" = "Monthly";
 "Yearly" = "Yearly";

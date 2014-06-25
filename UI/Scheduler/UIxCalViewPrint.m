@@ -32,21 +32,22 @@ static NSArray *layoutItems = nil;
 {
   if (!layoutItems)
   {
-    layoutItems = [NSArray arrayWithObjects: @"LIST", @"Daily", @"Weekly", nil];
+    layoutItems = [NSArray arrayWithObjects: @"LIST", @"Daily", @"Multi-Columns", @"Weekly", nil];
     [layoutItems retain];
   }
 
 }
+
 - (id) init
 {
   item = nil;
-  return [super init];
+  
+  return self;
 }
 
 - (void) dealloc
 {
   [item release];
-  [super dealloc];
 }
 
 /****************************************************************/
