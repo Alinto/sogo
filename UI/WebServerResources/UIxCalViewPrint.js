@@ -137,6 +137,19 @@ function addCalendarsColor () {
     }
 }
 
+function addCalendarsColor () {
+  var activeCalendarsId = [];
+  var allCalendars = window.parent$("calendarList");
+  var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];
+  for (var i = 0; i < allCalendars.children.length; i++) {
+    if (allCalendars.children[i].down("input").checked){
+      folderName = allCalendars.children[i].getAttribute("id").substr(1);
+      color = allColors["sogo1:Calendar/" + folderName];
+      appendStyleElement(folderName, color);
+    }
+  }
+}
+
 function refreshEvents() {
     var todayDate = new Date();
 
@@ -532,6 +545,15 @@ function appendStyleElement(folderPath, color) {
     }
 }
 
+function appendStyleElement(folderPath, color) {
+  if (document.styleSheets) {
+    var fgColor = getContrastingTextColor(color);
+    var styleElement = document.styleSheets[3];
+    
+    styleElement.addRule(".calendarFolder" + folderPath, "background-color: " + color + " !important;" + " color: " + fgColor + " !important;", 1);
+  }
+}
+
 function _parseEvent(event) {
     // Localized strings :
     var start = _("Start:");
@@ -695,6 +717,29 @@ function _computeOffset(hoursCells) {
     offset.push((hourCell2 / 100 * 4) - (count * 4));
 
     return offset;
+}
+
+function _computeOffset(hoursCells) {
+  var outOfDayCells = hoursCells.getElementsByClassName("outOfDay");
+  var count = 1;
+  var offset = [];
+  var buffer;
+  var j = 1;
+  for (var i = 0; i < outOfDayCells.length; i++) {
+    hourCell1 = parseInt(outOfDayCells[i].getAttribute("hour")) + 100;
+    hourCell2 = parseInt(outOfDayCells[j].getAttribute("hour"));
+    if (hourCell1 == hourCell2) {
+      count += 1;
+    }
+    else {
+      break;
+    }
+    j ++;
+  }
+  offset.push(count * 4);
+  offset.push((hourCell2 / 100 * 4) - (count * 4));
+  
+  return offset;
 }
 
 /************************************** Preview Navigation *****************************************/
