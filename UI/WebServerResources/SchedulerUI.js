@@ -3807,6 +3807,19 @@ function drawNowLine() {
         }
         setTimeout("drawNowLine ();", 60000); // 1 min.
     }
+    else {
+      var target = targets[0].getElementsByClassName("clickableHourCell")[hours];
+      if (target) {
+        var div = targets[0].getElementsByClassName("nowLineDisplay")[0];
+        if (!div)
+          div = new Element("div", {'class': 'nowLineDisplay'});
+        
+        div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+        target.insertBefore(div, target.firstChild);
+      }
+    }
+    setTimeout("drawNowLine ();", 60000); // 1 min.
+  }
 }
 
 function onListCollapse(event, element) {
