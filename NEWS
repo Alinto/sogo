@@ -17,6 +17,7 @@ Bug fixes
  - avoid raising exceptions when the db is down and we try to access the preferences module (#2813)
  - we now ignore the SCHEDULE-AGENT property when Thunderbird/Ligthning sends it to avoid
    not-generating invitation responses for externally received IMIP messages
+ - improved charset handling over ActiveSync (#2810)
 
 2.2.5 (2014-06-05)
 ------------------
