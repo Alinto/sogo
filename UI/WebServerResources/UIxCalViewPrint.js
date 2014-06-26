@@ -240,10 +240,21 @@ function refreshTasksListCallback(http) {
 function _drawEventsCells(eventsBlocks) {
   var events = _("Events");
   $("rightFrameEvents").insert("<h3>"+events+"</h3>");
-  for(var i=0; i < eventsBlocks[0].length; i++)
-  {
-    var event = _parseEvent(eventsBlocks[0][i]);
-    $("rightFrameEvents").insert(event);
+  if (currentPreview == "multicolumndayview") {
+    for(var i=0; i < eventsBlocks.length; i++) // calendars
+    {
+      for (var j = 0; j < eventsBlocks[i][0].length; j++) {
+        var event = _parseEvent(eventsBlocks[i][0][j]);
+        $("rightFrameEvents").insert(event);
+      }
+    }
+  }
+  else {
+    for(var i=0; i < eventsBlocks[0].length; i++)
+    {
+      var event = _parseEvent(eventsBlocks[0][i]);
+      $("rightFrameEvents").insert(event);
+    }
   }
 }
 
@@ -491,7 +502,9 @@ function appendStyleElement(folderPath, color) {
     var fgColor = getContrastingTextColor(color);
     var styleElement = document.styleSheets[3];
     
-    styleElement.addRule(".calendarFolder" + folderPath, "background-color: " + color + " !important;" + " color: " + fgColor + " !important;", 1);
+    styleElement.insertRule(".calendarFolder" + folderPath +
+                            "{background-color: " + color + " !important;" +
+                            " color: " + fgColor + " !important;}", styleElement.cssRules.length);
   }
 }
 
