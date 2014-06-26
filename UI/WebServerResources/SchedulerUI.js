@@ -2915,7 +2915,13 @@ function initCalendarSelector() {
     var input = items[i].childNodesWithTag("input")[0];
     var activeTasks = items[i].childNodesWithTag("span")[0];
     $(input).observe("click", clickEventWrapper(updateCalendarStatus));
-    $(activeTasks).innerHTML = "(" + activeTasks.innerText + ")";
+    if (activeTasks.textContent == "0") {
+      activeTasks.innerHTML = "";
+    }
+    else {
+      activeTasks.innerHTML = "(" + activeTasks.innerText + ")";
+    }
+    
   }
   
   var links = $("calendarSelectorButtons").childNodesWithTag("a");

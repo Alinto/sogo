@@ -121,8 +121,6 @@ _intValueFromHex (NSString *hexString)
       [calendar setObject: [folder ownerInContext: context]
                    forKey: @"owner"];
       fActiveTasks = [folder activeTasks];
-      if (fActiveTasks == nil)
-        fActiveTasks = 0;
       [calendar setObject:fActiveTasks forKey:@"activeTasks" ];
       [calendars addObject: calendar];
     }
