@@ -1761,26 +1761,26 @@ static NSString    *userAgent      = nil;
 {
   SOGoUserDefaults *ud;
   ud = [[context activeUser] userDefaults];
-
+  
   if ([ud mailAddOutgoingAddresses])
   {
+    Class contactGCSEntry;
     SOGoContactFolders *contactFolders;
-    NGMailAddressParser *parser;
-    id parsedRecipient;
     SOGoContactFolder *folder;
     SOGoContactGCSEntry *newContact;
     NGVCard *card;
-    Class contactGCSEntry;
+    NGMailAddressParser *parser;
+    NSArray *matchingContacts;
     NSMutableArray *recipients;
     NSString *recipient, *emailAddress, *addressBook, *uid;
-    NSArray *matchingContacts;
+    id parsedRecipient;
     int i;
-
+    
     // Get all the addressbooks
     contactFolders = [[[context activeUser] homeFolderInContext: context]
-                                                     lookupName: @"Contacts"
-                                                      inContext: context
-                                                      acquire: NO];
+                      lookupName: @"Contacts"
+                      inContext: context
+                      acquire: NO];
     // Get all the recipients from the current email
     recipients = [self allRecipients];
     for (i = 0; i < [recipients count]; i++)
@@ -1790,7 +1790,7 @@ static NSString    *userAgent      = nil;
       parser = [NGMailAddressParser mailAddressParserWithString: recipient];
       parsedRecipient = [parser parse];
       emailAddress = [parsedRecipient address];
-
+      
       matchingContacts = [contactFolders allContactsFromFilter: emailAddress
                                                  excludeGroups: YES
                                                   excludeLists: YES];

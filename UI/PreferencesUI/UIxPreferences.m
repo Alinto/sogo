@@ -699,47 +699,49 @@ static NSArray *reminderValues = nil;
   /* We want all the SourceIDS */
   NSMutableArray *folders, *availableAddressBooksID, *availableAddressBooksName;
   SOGoParentFolder *contactFolders;
-
+  
   int i, count;
   BOOL collectedAlreadyExist;
-
+  
   contactFolders = [[[context activeUser] homeFolderInContext: context]
                     lookupName: @"Contacts"
                     inContext: context
                     acquire: NO];
   folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
   count = [folders count]-1;
-
+  
   // Inside this loop we remove all the public or shared addressbooks
   for (; count >= 0; count--)
   {
     if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
-      [folders removeObjectAtIndex: count];
+    [folders removeObjectAtIndex: count];
   }
-
+  
   // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
   availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
   availableAddressBooksName = [NSMutableArray arrayWithCapacity: [folders count]];
   count = [folders count]-1;
   collectedAlreadyExist = NO;
-
+  
   for (i = 0; i <= count ; i++) {
     [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
     [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
-
+    
     if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
-      collectedAlreadyExist = YES;
+    collectedAlreadyExist = YES;
   }
   // Create the dictionary for the next function : itemAddressBookText.
   if (!addressBooksIDWithDisplayName)
+  {
     addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
                                                                          forKeys:availableAddressBooksID];
-    if (!collectedAlreadyExist)
-    {
-      [availableAddressBooksID addObject: @"collected"];
-      [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"] forKey: @"collected"];
-    }
-
+  }
+  if (!collectedAlreadyExist)
+  {
+    [availableAddressBooksID addObject: @"collected"];
+    [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"] forKey: @"collected"];
+  }
+  
   return availableAddressBooksID;
 }
 - (NSString *) itemAddressBookText
