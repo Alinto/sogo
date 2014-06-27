@@ -120,7 +120,7 @@ DIV#rightSide {
     DIV#rightFrame TD.label {
         color: #666;
         text-align: right;
-        width: 30%;
+        min-width:52px;
     }
 
 /********** Overriding SchedulerUI.css **********/
