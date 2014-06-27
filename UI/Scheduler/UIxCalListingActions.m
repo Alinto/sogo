@@ -480,7 +480,7 @@ static NSArray *tasksFields = nil;
   return infos;
 }
 
-- (WOResponse *) _responseWithData: (NSArray *) data
+- (WOResponse *) _responseWithData: (id) data
 {
   WOResponse *response;
   
@@ -1206,6 +1206,28 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks reverseArray];
   
   return [self _responseWithData: filteredTasks];
+}
+
+- (WOResponse *) activeTasksAction
+{
+  SOGoAppointmentFolders *co;
+  SOGoAppointmentFolder *folder;
+  NSArray *folders;
+  NSNumber *tasksCount, *foldersCount;
+  NSString *calendarID;
+  NSMutableDictionary *activeTasksByCalendars;
+  
+  co = [self clientObject];
+  folders = [co subFolders];
+  foldersCount = [folders count];
+  activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity:foldersCount];
+  for (folder in folders) {
+    tasksCount = [folder activeTasks];
+    calendarID = [folder nameInContainer];
+    [activeTasksByCalendars setObject:tasksCount forKey:calendarID];
+  }
+  
+  return [self _responseWithData: activeTasksByCalendars];
 }
 
 @end

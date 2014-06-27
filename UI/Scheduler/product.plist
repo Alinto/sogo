@@ -94,6 +94,11 @@
           actionClass = "UIxCalListingActions";
           actionName = "tasksList";
         };
+        activeTasks = {
+          protectedBy = "View";
+          actionClass = "UIxCalListingActions";
+          actionName = "activeTasks";
+        };
         dayview = {
           protectedBy = "View";
           pageName    = "UIxCalDayView"; 

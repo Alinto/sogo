@@ -1085,142 +1085,166 @@ function eventsListCallback(http) {
         log ("eventsListCallback Ajax error");
 }
 
-function tasksListCallback(http) {
-    if (http.readyState == 4
-        && http.status == 200) {
-        var div = $("tasksListView");
-        document.tasksListAjaxRequest = null;
-        var table = $("tasksList");
-        lastClickedRow = -1; // from generic.js
-
-        var rows = table.select("TBODY TR");
-        rows.each(function(e) {
-            e.remove();
-        });
-
-        if (http.responseText.length > 0) {
-            var data = http.responseText.evalJSON(true);
-
-            // [0] Task ID
-            // [1] Calendar ID
-            // [2] Calendar name
-            // [3] Status (0, 1 = completed, 2)
-            // [4] Title
-            // [5] Due date (int)
-            // [6] Classification (0 = public, 1, = private, 2 = confidential)
-            // [7] Location
-            // [8] Category
-            // [9] Editable?
-            // [10] Erasable?
-            // [11] Priority (0, 1 = important, 9 = low)
-            // [12] Status CSS class (duelater, completed, etc)
-            // (13) Due date (formatted)
-
-            for (var i = 0; i < data.length; i++) {
-                var row = createElement("tr");
-                table.tBodies[0].appendChild(row);
-
-                row.on("dblclick", editDoubleClickedEvent);
-
-                var calendar = escape(data[i][1]);
-                var cname = escape(data[i][0]);
-                row.setAttribute("id", calendar + "-" + cname);
-                //listItem.addClassName(data[i][5]); // Classification
-                row.addClassName(data[i][12]); // status
-                row.calendar = calendar;
-                row.cname = cname;
-                row.erasable = data[i][10] || IsSuperUser;
-                if (parseInt(data[i][11]) == 1) {
-                  row.addClassName("important");
-                }
-                else if (parseInt(data[i][11]) == 9) {
-                  row.addClassName("low");
-                }
-
-                var cell = createElement("td");
-                row.appendChild(cell);
-                var input = createElement("input");
-                input.setAttribute("type", "checkbox");
-                cell.appendChild(input);
-                input.setAttribute("value", "1");
-                if (parseInt(data[i][9]) == 0) // editable?
-                    input.setAttribute("disabled", true);
-                input.addClassName("checkBox");
-                if (parseInt(data[i][3]) == 1) // completed?
-                    input.setAttribute("checked", "checked");
-                input.observe("click", updateTaskStatus, true);
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                if (data[i][11] != null) {
-                    cell.update(_("prio_" + data[i][11])); // Priority
-                }
-                else {
-                    cell.update(""); // Priority
-                }
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
-                cell.appendChild(colorDiv);
-                colorDiv.update('&nbsp;');
-                var t = new Element ("span");
-                cell.appendChild(t);
-                t.update(data[i][4]); // title
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                if (data[i][13])
-                    cell.update(data[i][13]); // end date
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                cell.update(data[i][7]); // location
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                cell.update(data[i][8]); // category
-
-                cell = createElement("td");
-                row.appendChild(cell);
-                cell.update(data[i][2]); // calendar name
-            }
-
-            table.scrollTop = table.previousScroll;
-
-            if (sorting["task-attribute"] && sorting["task-attribute"].length > 0) {
-                var sortHeader = $(sorting["task-header"]);
-
-                if (sortHeader) {
-                    var sortImages = $(table.tHead).select(".sortImage");
-                    $(sortImages).each(function(item) {
-                            item.remove();
-                        });
-
-                    var sortImage = createElement("img", "messageSortImage", "sortImage");
-                    sortHeader.insertBefore(sortImage, sortHeader.firstChild);
-                    if (sorting["task-ascending"])
-                        sortImage.src = ResourcesURL + "/arrow-up.png";
-                    else
-                        sortImage.src = ResourcesURL + "/arrow-down.png";
-                }
-            }
-            if (http.callbackData) {
-                var selectedNodesId = http.callbackData;
-                for (var i = 0; i < selectedNodesId.length; i++) {
-                    // 	log(selectedNodesId[i] + " (" + i + ") is selected");
-                    var node = $(selectedNodesId[i]);
-                    if (node) {
-                        node.selectElement();
-                    }
-                }
-            }
-            else
-                log ("tasksListCallback: no data");
+function activeTasksCallback(http) {
+  if (http.readyState == 4 && http.status == 200) {
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
+      var list = $("calendarList");
+      
+      var items = list.childNodesWithTag("li");
+      for (var i = 0; i < items.length; i++) {
+        var id = items[i].getAttribute("id").substr(1);
+        var number = data[id];
+        var input = items[i].childNodesWithTag("input")[0];
+        var activeTasks = items[i].childNodesWithTag("span")[0];
+        $(input).observe("click", clickEventWrapper(updateCalendarStatus));
+        if (number == "0") {
+          activeTasks.innerHTML = "";
         }
+        else {
+          activeTasks.innerHTML = "(" + number + ")";
+        }
+      }
     }
-    else
-        log ("tasksListCallback Ajax error");
+  }
+}
+
+function tasksListCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    var div = $("tasksListView");
+    document.tasksListAjaxRequest = null;
+    var table = $("tasksList");
+    lastClickedRow = -1; // from generic.js
+    
+    var rows = table.select("TBODY TR");
+    rows.each(function(e) {
+              e.remove();
+              });
+    
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
+      
+      // [0] Task ID
+      // [1] Calendar ID
+      // [2] Calendar name
+      // [3] Status (0, 1 = completed, 2)
+      // [4] Title
+      // [5] Due date (int)
+      // [6] Classification (0 = public, 1, = private, 2 = confidential)
+      // [7] Location
+      // [8] Category
+      // [9] Editable?
+      // [10] Erasable?
+      // [11] Priority (0, 1 = important, 9 = low)
+      // [12] Status CSS class (duelater, completed, etc)
+      // (13) Due date (formatted)
+      
+      for (var i = 0; i < data.length; i++) {
+        var row = createElement("tr");
+        table.tBodies[0].appendChild(row);
+        
+        row.on("dblclick", editDoubleClickedEvent);
+        
+        var calendar = escape(data[i][1]);
+        var cname = escape(data[i][0]);
+        row.setAttribute("id", calendar + "-" + cname);
+        //listItem.addClassName(data[i][5]); // Classification
+        row.addClassName(data[i][12]); // status
+        row.calendar = calendar;
+        row.cname = cname;
+        row.erasable = data[i][10] || IsSuperUser;
+        if (parseInt(data[i][11]) == 1) {
+          row.addClassName("important");
+        }
+        else if (parseInt(data[i][11]) == 9) {
+          row.addClassName("low");
+        }
+        
+        var cell = createElement("td");
+        row.appendChild(cell);
+        var input = createElement("input");
+        input.setAttribute("type", "checkbox");
+        cell.appendChild(input);
+        input.setAttribute("value", "1");
+        if (parseInt(data[i][9]) == 0) // editable?
+          input.setAttribute("disabled", true);
+        input.addClassName("checkBox");
+        if (parseInt(data[i][3]) == 1) // completed?
+          input.setAttribute("checked", "checked");
+        input.observe("click", updateTaskStatus, true);
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        if (data[i][11] != null) {
+          cell.update(_("prio_" + data[i][11])); // Priority
+        }
+        else {
+          cell.update(""); // Priority
+        }
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
+        cell.appendChild(colorDiv);
+        colorDiv.update('&nbsp;');
+        var t = new Element ("span");
+        cell.appendChild(t);
+        t.update(data[i][4]); // title
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        if (data[i][13])
+          cell.update(data[i][13]); // end date
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        cell.update(data[i][7]); // location
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        cell.update(data[i][8]); // category
+        
+        cell = createElement("td");
+        row.appendChild(cell);
+        cell.update(data[i][2]); // calendar name
+      }
+      
+      table.scrollTop = table.previousScroll;
+      
+      if (sorting["task-attribute"] && sorting["task-attribute"].length > 0) {
+        var sortHeader = $(sorting["task-header"]);
+        
+        if (sortHeader) {
+          var sortImages = $(table.tHead).select(".sortImage");
+          $(sortImages).each(function(item) {
+                             item.remove();
+                             });
+          
+          var sortImage = createElement("img", "messageSortImage", "sortImage");
+          sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+          if (sorting["task-ascending"])
+            sortImage.src = ResourcesURL + "/arrow-up.png";
+          else
+            sortImage.src = ResourcesURL + "/arrow-down.png";
+        }
+      }
+      if (http.callbackData) {
+        var selectedNodesId = http.callbackData;
+        for (var i = 0; i < selectedNodesId.length; i++) {
+          // 	log(selectedNodesId[i] + " (" + i + ") is selected");
+          var node = $(selectedNodesId[i]);
+          if (node) {
+            node.selectElement();
+          }
+        }
+      }
+      else
+        log ("tasksListCallback: no data");
+    }
+  }
+  else
+    log ("tasksListCallback Ajax error");
 }
 
 /* in dateselector */
@@ -2193,22 +2217,25 @@ function _loadEventHref(href) {
 }
 
 function _loadTasksHref(href) {
-    if (document.tasksListAjaxRequest) {
-        document.tasksListAjaxRequest.aborted = true;
-        document.tasksListAjaxRequest.abort();
-    }
-    url = ApplicationBaseURL + "/" + href;
-
-    var tasksList = $("tasksList");
-    var selectedIds;
-    if (tasksList)
-        selectedIds = tasksList.getSelectedNodesId();
-    else
-        selectedIds = null;
-    document.tasksListAjaxRequest
-        = triggerAjaxRequest(url, tasksListCallback, selectedIds);
-
-    return true;
+  if (document.tasksListAjaxRequest) {
+    document.tasksListAjaxRequest.aborted = true;
+    document.tasksListAjaxRequest.abort();
+  }
+  url = ApplicationBaseURL + "/" + href;
+  urlActiveTasks = ApplicationBaseURL + "/activeTasks";
+  
+  var tasksList = $("tasksList");
+  var selectedIds;
+  if (tasksList)
+    selectedIds = tasksList.getSelectedNodesId();
+  else
+    selectedIds = null;
+  
+  document.tasksListAjaxRequest = triggerAjaxRequest(url, tasksListCallback, selectedIds);
+  
+  triggerAjaxRequest(urlActiveTasks, activeTasksCallback);
+  
+  return true;
 }
 
 function onHeaderClick(event) {
