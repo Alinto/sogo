@@ -1048,7 +1048,8 @@ _computeBlocksPosition (NSArray *blocks)
   /* ... _computeBlocksMultiplier() ... */
 }
 
-- (NSArray *) _selectedCalendars {
+- (NSArray *) _selectedCalendars
+{
   SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
   NSMutableArray *selectedCalendars;

@@ -79,6 +79,7 @@
   [weekDays release];
   [daysToDisplay release];
   [calendarsToDisplay release];
+  [currentView release];
   [hoursToDisplay release];
   [dateFormatter release];
   [timeFormat release];
@@ -125,7 +126,7 @@
 
 - (void) setCurrentView: (NSString *) aView
 {
-  currentView = [NSString stringWithString:aView];
+  ASSIGN(currentView, aView);
 }
 
 - (NSString *) currentView
@@ -181,7 +182,8 @@
 
 - (NSArray *) calendarsToDisplay
 {
-  if (!calendarsToDisplay) {
+  if (!calendarsToDisplay)
+  {
     int max=0, i;
     NSArray *folders;
     SOGoAppointmentFolders *co;
@@ -190,7 +192,7 @@
     unsigned int count, foldersCount;
     NSString *folderName, *fDisplayName;
     NSNumber *isActive;
-
+    
     co = [self clientObject];
     folders = [co subFolders];
     foldersCount = [folders count];
@@ -235,7 +237,7 @@
 
 - (void) setCurrentCalendar: (NSMutableArray *) aCalendar
 {
-  currentCalendar = aCalendar;
+  ASSIGN(currentCalendar, aCalendar);
 }
 
 - (NSMutableArray *) currentCalendar
@@ -297,12 +299,12 @@
 
 - (NSString *) labelForCalendar
 {
-  return [NSString stringWithFormat:[currentCalendar objectForKey:@"displayName"]];
+  return [currentCalendar objectForKey: @"displayName"];
 }
 
 - (NSString *) colorForCalendar
 {
-  return [NSString stringWithFormat:[currentCalendar objectForKey:@"color"]];
+  return [currentCalendar objectForKey:@"color"];
 }
 
 // - (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment
@@ -416,7 +418,6 @@
   classes = [NSMutableString string];
   if ([currentView isEqualToString:@"multicolumndayview"])
     [classes appendFormat:@"day dayColumn"];
-
   else {
     currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
     realDayOfWeek = [currentTableDay dayOfWeek];
@@ -453,22 +454,18 @@
 
 - (BOOL) isMultiColumnView
 {
-  BOOL flag = NO;
-  
   if ([currentView isEqualToString:@"multicolumndayview"])
-    flag = YES;
+    return YES;
   
-  return flag;
+  return NO;
 }
 
 - (BOOL) isNotMultiColumnView
 {
-  BOOL flag = NO;
-  
   if ([currentView isEqualToString:@"dayview"] || [currentView isEqualToString:@"weekview"])
-    flag = YES;
+    return YES;
   
-  return flag;
+  return NO;
 }
 
 @end
