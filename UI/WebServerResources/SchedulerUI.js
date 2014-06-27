@@ -2900,27 +2900,35 @@ function configureDragHandles() {
 }
 
 function initCalendarSelector() {
-    var selector = $("calendarSelector");
-    updateCalendarStatus(); // triggers the initial events refresh
-    selector.changeNotification = updateCalendarsList;
-
-    var list = $("calendarList");
-    list.on("mousedown", onCalendarSelectionChange);
-    list.on("dblclick", onCalendarModify);
-    list.on("selectstart", listRowMouseDownHandler);
-    list.attachMenu("calendarsMenu");
-
-    var items = list.childNodesWithTag("li");
-    for (var i = 0; i < items.length; i++) {
-        var input = items[i].childNodesWithTag("input")[0];
-        $(input).observe("click", clickEventWrapper(updateCalendarStatus));
+  var selector = $("calendarSelector");
+  updateCalendarStatus(); // triggers the initial events refresh
+  selector.changeNotification = updateCalendarsList;
+  
+  var list = $("calendarList");
+  list.on("mousedown", onCalendarSelectionChange);
+  list.on("dblclick", onCalendarModify);
+  list.on("selectstart", listRowMouseDownHandler);
+  list.attachMenu("calendarsMenu");
+  
+  var items = list.childNodesWithTag("li");
+  for (var i = 0; i < items.length; i++) {
+    var input = items[i].childNodesWithTag("input")[0];
+    var activeTasks = items[i].childNodesWithTag("span")[0];
+    $(input).observe("click", clickEventWrapper(updateCalendarStatus));
+    if (activeTasks.textContent == "0") {
+      activeTasks.innerHTML = "";
     }
-
-    var links = $("calendarSelectorButtons").childNodesWithTag("a");
-    $(links[0]).observe("click", clickEventWrapper(onCalendarNew));
-    $(links[1]).observe("click", clickEventWrapper(onCalendarWebAdd));
-    $(links[2]).observe("click", clickEventWrapper(onCalendarAdd));
-    $(links[3]).observe("click", clickEventWrapper(onCalendarRemove));
+    else {
+      activeTasks.innerHTML = "(" + activeTasks.innerText + ")";
+    }
+    
+  }
+  
+  var links = $("calendarSelectorButtons").childNodesWithTag("a");
+  $(links[0]).observe("click", clickEventWrapper(onCalendarNew));
+  $(links[1]).observe("click", clickEventWrapper(onCalendarWebAdd));
+  $(links[2]).observe("click", clickEventWrapper(onCalendarAdd));
+  $(links[3]).observe("click", clickEventWrapper(onCalendarRemove));
 }
 
 function onCalendarSelectionChange(event) {
