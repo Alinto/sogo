@@ -1305,8 +1305,9 @@ function tasksListCallback(http) {
         }
         configureTasksDraggables();
     }
-    else
-        log ("tasksListCallback Ajax error");
+  }
+  else
+    log ("tasksListCallback Ajax error");
 }
 
 /* in dateselector */
