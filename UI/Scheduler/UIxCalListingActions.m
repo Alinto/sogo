@@ -1,9 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1210,21 +1207,23 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (WOResponse *) activeTasksAction
 {
-  SOGoAppointmentFolders *co;
-  SOGoAppointmentFolder *folder;
-  NSArray *folders;
-  NSNumber *tasksCount, *foldersCount;
-  NSString *calendarID;
   NSMutableDictionary *activeTasksByCalendars;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolders *co;
+  NSArray *folders;
+  
+  int i;
   
   co = [self clientObject];
   folders = [co subFolders];
-  foldersCount = [folders count];
-  activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity:foldersCount];
-  for (folder in folders) {
-    tasksCount = [folder activeTasks];
-    calendarID = [folder nameInContainer];
-    [activeTasksByCalendars setObject:tasksCount forKey:calendarID];
+  activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity: [folders count]];
+
+  for (i = 0; i < [folders count]; i++)
+    {
+      folder = [folders objectAtIndex: i];
+      
+      [activeTasksByCalendars setObject: [folder activeTasks]
+                                 forKey: [folder nameInContainer]];
   }
   
   return [self _responseWithData: activeTasksByCalendars];
