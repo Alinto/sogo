@@ -130,6 +130,9 @@ function addCalendarsColor () {
     if (allCalendars.children[i].down("input").checked){
       folderName = allCalendars.children[i].getAttribute("id").substr(1);
       color = allColors["sogo1:Calendar/" + folderName];
+      if (!color) {
+        color = "#AAAAAA";
+      }
       appendStyleElement(folderName, color);
     }
   }
@@ -210,11 +213,11 @@ function refreshEventsCallback(http) {
       $("rightFrameEvents").innerHTML = "";
       if ($("printLayoutList").value == "0" && eventsBlocks.length > 0) {
         _drawEventsCells(eventsBlocks);
-        adjustFrames();
       }
       else {
         updateDisplayView(null, currentPreview);
       }
+      adjustFrames();
     }
   }
   else

@@ -24,6 +24,7 @@
 @interface UIxCalViewPrint : UIxComponent
 {
   id item;
+  SOGoUserSettings *us;
 }
 
 @end

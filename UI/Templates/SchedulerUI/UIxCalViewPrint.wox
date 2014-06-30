@@ -25,10 +25,10 @@
         <td>
           <var:popup list="printLayoutList" item="item"
           const:id="printLayoutList"
-          string="itemPrintLayoutText" /></td>
+          string="itemPrintLayoutText" selection="parentPrintLayout" /></td>
       </tr>
     </table>
-    
+  
     <!-- What to print -->
     <span class="caption"><var:string label:value="What to Print" /></span>
     <table class="frame">
