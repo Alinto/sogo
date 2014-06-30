@@ -1106,6 +1106,7 @@ function eventsListCallback(http) {
 function activeTasksCallback(http) {
   if (http.readyState == 4 && http.status == 200) {
     if (http.responseText.length > 0) {
+      document.activeTasksAjaxRequest = null;
       var data = http.responseText.evalJSON(true);
       var list = $("calendarList");
       
@@ -1115,7 +1116,6 @@ function activeTasksCallback(http) {
         var number = data[id];
         var input = items[i].childNodesWithTag("input")[0];
         var activeTasks = items[i].childNodesWithTag("span")[0];
-        $(input).observe("click", clickEventWrapper(updateCalendarStatus));
         if (number == "0") {
           activeTasks.innerHTML = "";
         }
@@ -2360,6 +2360,10 @@ function _loadTasksHref(href) {
     document.tasksListAjaxRequest.aborted = true;
     document.tasksListAjaxRequest.abort();
   }
+  if (document.activeTasksAjaxRequest) {
+    document.activeTasksAjaxRequest.aborted = true;
+    document.activeTasksAjaxRequest.abort();
+  }
   url = ApplicationBaseURL + "/" + href;
   urlActiveTasks = ApplicationBaseURL + "/activeTasks";
   
@@ -2372,7 +2376,7 @@ function _loadTasksHref(href) {
   
   document.tasksListAjaxRequest = triggerAjaxRequest(url, tasksListCallback, selectedIds);
   
-  triggerAjaxRequest(urlActiveTasks, activeTasksCallback);
+  document.activeTasksAjaxRequest = triggerAjaxRequest(urlActiveTasks, activeTasksCallback);
   
   return true;
 }
