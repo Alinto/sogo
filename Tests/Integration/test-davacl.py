@@ -401,7 +401,17 @@ class DAVCalendarAclTest(DAVAclTest):
         else:
             expStatus = 207
         privileges = self._currentUserPrivilegeSet(self.resource, expStatus)
-        self._comparePrivilegeSets(expectedPrivileges, privileges)
+
+        # When comparing privileges on DAV collection, we remove all 'default'
+        # privileges on the collection.
+        privileges_set = set(privileges);
+        for x in ("public", "private", "confidential"):
+            privileges_set.discard("{urn:inverse:params:xml:ns:inverse-dav}viewwhole-%s-records" % x)
+            privileges_set.discard("{urn:inverse:params:xml:ns:inverse-dav}viewdant-%s-records" % x)
+            privileges_set.discard("{urn:inverse:params:xml:ns:inverse-dav}modify-%s-records" % x)
+            privileges_set.discard("{urn:inverse:params:xml:ns:inverse-dav}respondto-%s-records" %x)
+
+        self._comparePrivilegeSets(expectedPrivileges, list(privileges_set))
 
     def _testEventDAVAcl(self, event_class, right, error_code):
         icsClass = self.classToICSClass[event_class].lower()

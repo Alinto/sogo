@@ -93,8 +93,8 @@ _intValueFromHex (NSString *hexString)
   NSMutableDictionary *calendar;
   unsigned int count, max;
   NSString *folderName, *fDisplayName;
-  NSNumber *isActive;
-
+  NSNumber *isActive, *fActiveTasks;
+  
   if (!calendars)
   {
     co = [self clientObject];
@@ -120,6 +120,8 @@ _intValueFromHex (NSString *hexString)
       [calendar setObject: isActive forKey: @"active"];
       [calendar setObject: [folder ownerInContext: context]
                    forKey: @"owner"];
+      fActiveTasks = [folder activeTasks];
+      [calendar setObject:fActiveTasks forKey:@"activeTasks" ];
       [calendars addObject: calendar];
     }
   }

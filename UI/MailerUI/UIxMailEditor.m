@@ -644,8 +644,9 @@ static NSArray *infoKeys = nil;
   if (!attachmentAttrs || ![co imap4URL])
   {
       [co fetchInfo];
-      if (![co inReplyTo] && [co IMAP4ID] > -1)
+      if ((![co inReplyTo] || currentAttachment) && [co IMAP4ID] > -1)
         {
+          // When currentAttachment is defined, it means we just attached a new file to the mail
           mail = [[[SOGoMailObject alloc] initWithImap4URL: [co imap4URL] inContainer: [co container]] autorelease];
           a = [mail fetchFileAttachmentKeys];
           ASSIGN (attachmentAttrs, a);

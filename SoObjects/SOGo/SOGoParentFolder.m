@@ -164,34 +164,45 @@ static SoSecurityManager *sm = nil;
   NSString *folderName;
   SOGoGCSFolder *folder;
   SOGoUser *folderOwner;
-
+  SOGoUserDefaults *ud;
+  
   roles = [[context activeUser] rolesForObject: self inContext: context];
   folderOwner = [SOGoUser userWithLogin: [self ownerInContext: context]];
-
+  
+  
   // We autocreate the calendars if the user is the owner, a superuser or
   // if it's a resource as we won't necessarily want to login as a resource
   // in order to create its database tables.
   // FolderType is an enum where 0 = Personal and 1 = collected
   if ([roles containsObject: SoRole_Owner] ||
       (folderOwner && [folderOwner isResource]))
+  {
+    if (folderType == SOGoPersonalFolder)
     {
-      if (folderType == SOGoPersonalFolder)
-      {
-        folderName = @"personal";
-        folder = [subFolderClass objectWithName: folderName inContainer: self];
-        [folder setDisplayName: [self defaultFolderName]];
-      }
-      else if (folderType == SOGoCollectedFolder)
-      {
-        folderName = @"collected";
-        folder = [subFolderClass objectWithName: folderName inContainer: self];
-        [folder setDisplayName: [self collectedFolderName]];
-      }
+      folderName = @"personal";
+      folder = [subFolderClass objectWithName: folderName inContainer: self];
+      [folder setDisplayName: [self defaultFolderName]];
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
       
       if ([folder create])
-        [subFolders setObject: folder forKey: folderName];
+      [subFolders setObject: folder forKey: folderName];
     }
+    else if (folderType == SOGoCollectedFolder)
+    {
+      ud = [[context activeUser] userDefaults];
+      if ([ud mailAddOutgoingAddresses]) {
+        folderName = @"collected";
+        folder = [subFolderClass objectWithName: folderName inContainer: self];
+        [folder setDisplayName: [self collectedFolderName]];
+        [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
+        
+        if ([folder create])
+          [subFolders setObject: folder forKey: folderName];
+        
+        [ud setSelectedAddressBook:folderName];
+      }
+    }
+  }
 }
 
 - (NSException *) fetchSpecialFolders: (NSString *) sql

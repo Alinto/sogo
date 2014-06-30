@@ -64,6 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
@@ -168,6 +169,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o reloadIfNeeded];
   
   return [o properties];
+}
+
+- (unsigned int) _softDeleteCountWithFilter: (NSCalendarDate *) theFilter
+                               collectionId: (NSString *) theCollectionId
+{
+  NSMutableDictionary *dateCache;
+  NSMutableArray *sdUids;
+  SOGoCacheGCSObject *o;
+  NSArray *allKeys;
+  NSString *key;
+
+  int i;
+
+  sdUids = [NSMutableArray array];
+  
+  if (theFilter)
+    {
+      o = [SOGoCacheGCSObject objectWithName: [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], theCollectionId] inContainer: nil];
+      [o setObjectType: ActiveSyncGlobalCacheObject];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+
+      dateCache = [[o properties] objectForKey: @"DateCache"];
+      allKeys = [dateCache allKeys];
+
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          key = [allKeys objectAtIndex: i];
+          
+          if ([[dateCache objectForKey:key] compare: theFilter ] == NSOrderedAscending)
+            [sdUids addObject: [dateCache objectForKey:key]];
+        }
+    }
+  
+  return [sdUids count];
 }
 
 - (id) globallyUniqueIDToIMAPFolderName: (NSString *) theIdToTranslate
@@ -919,6 +955,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                               sortOrdering: @"REVERSE ARRIVAL"
                                                   threaded: NO];
       count = [uids count];
+      
+      // Add the number of UIDs expected to "soft delete"
+      count += [self _softDeleteCountWithFilter: filter collectionId: realCollectionId];
+
     }
   else
     {
@@ -1899,9 +1939,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
 
-  // ReplaceMime isn't specified so we must NOT use the server copy
+  // ReplaceMime IS specified so we must NOT use the server copy
   // but rather take the data as-is from the client.
-  if (![value count])
+  if ([value count])
     {
       [self processSendMail: theDocumentElement
                  inResponse: theResponse];
@@ -1921,11 +1961,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NSData *data;
 
       NGMimeMessageGenerator *generator;
-      NGMimeBodyPart   *bodyPart;
+      NGMimeBodyPart *bodyPart;
       NGMutableHashMap *map;
       NGMimeFileData *fdata;
       NSException *error;
-      id body;
+
+      id body, bodyFromSmartForward;
 
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -1941,10 +1982,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
       messageFromSmartForward = [parser parsePartFromData: data];
-
       RELEASE(parser);
       
-
       // We create a new MIME multipart/mixed message. The first part will be the text part
       // of our "smart forward" and the second part will be the message/rfc822 part of the
       // "smart forwarded" message.
@@ -1954,11 +1993,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
       
-      // First part
+      // First part - either a text/* or a multipart/*. If it's a multipart,
+      // we take the first part text/* part we see.
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
-      [map setObject: @"text/plain" forKey: @"content-type"];
+      bodyFromSmartForward = nil;
+
+      if ([[messageFromSmartForward body] isKindOfClass: [NGMimeMultipartBody class]])
+        {
+          NGMimeBodyPart *part;
+          NSArray *parts;
+          int i;
+          
+          parts = [[messageFromSmartForward body] parts];
+          
+          for (i = 0; i < [parts count]; i++)
+            {
+              part = [parts objectAtIndex: i];
+              
+              if ([[[part contentType] type] isEqualToString: @"text"])
+                {
+                  [map setObject: [[part contentType] stringValue] forKey: @"content-type"];
+                  bodyFromSmartForward = [part body];
+                  break;
+                }
+            }
+        }
+      else
+        {
+          [map setObject: [[messageFromSmartForward contentType] stringValue] forKey: @"content-type"];
+          bodyFromSmartForward = [messageFromSmartForward body];
+        }
+
       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      [bodyPart setBody: [messageFromSmartForward body]];
+      [bodyPart setBody: bodyFromSmartForward];
       [body addBodyPart: bodyPart];
 
       // Second part

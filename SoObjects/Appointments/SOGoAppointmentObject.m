@@ -1428,9 +1428,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (BOOL) _shouldScheduleEvent: (iCalPerson *) theOrganizer
 {
+  NSArray *userAgents;
   NSString *v;
   BOOL b;
-  
+  int i;
+ 
   b = YES;
 
   if (theOrganizer && (v = [theOrganizer value: 0  ofAttribute: @"SCHEDULE-AGENT"]))
@@ -1439,6 +1441,27 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  [v caseInsensitiveCompare: @"CLIENT"] == NSOrderedSame)
 	b = NO;
     }
+
+  //
+  // If we have to deal with Thunderbird/Lightning, we always send invitation
+  // reponses, as Lightning v2.6 (at least this version) sets SCHEDULE-AGENT
+  // to NONE/CLIENT when responding to an external invitation received by
+  // SOGo - so no invitation responses are ever sent by Lightning. See
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
+  //
+  userAgents = [[context request] headersForKey: @"User-Agent"];
+  
+  for (i = 0; i < [userAgents count]; i++)
+    {
+      if ([[userAgents objectAtIndex: i] rangeOfString: @"Thunderbird"].location != NSNotFound &&
+          [[userAgents objectAtIndex: i] rangeOfString: @"Lightning"].location != NSNotFound)
+        {
+          b = YES;
+          break;
+        }
+    }
+
 
   return b;
 }

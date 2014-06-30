@@ -1,9 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -484,7 +481,7 @@ static NSArray *tasksFields = nil;
   return infos;
 }
 
-- (WOResponse *) _responseWithData: (NSArray *) data
+- (WOResponse *) _responseWithData: (id) data
 {
   WOResponse *response;
   
@@ -1280,6 +1277,30 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks reverseArray];
   
   return [self _responseWithData: filteredTasks];
+}
+
+- (WOResponse *) activeTasksAction
+{
+  NSMutableDictionary *activeTasksByCalendars;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolders *co;
+  NSArray *folders;
+  
+  int i;
+  
+  co = [self clientObject];
+  folders = [co subFolders];
+  activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity: [folders count]];
+
+  for (i = 0; i < [folders count]; i++)
+    {
+      folder = [folders objectAtIndex: i];
+      
+      [activeTasksByCalendars setObject: [folder activeTasks]
+                                 forKey: [folder nameInContainer]];
+  }
+  
+  return [self _responseWithData: activeTasksByCalendars];
 }
 
 @end
