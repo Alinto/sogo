@@ -417,13 +417,14 @@ function deleteEvent() {
 }
 
 function deleteEventFromListConfirm() {
-    if (document.deleteEventAjaxRequest) {
-        document.deleteEventAjaxRequest.aborted = true;
-        document.deleteEventAjaxRequest.abort();
-    }
-
-    _batchDeleteEvents();
-    disposeDialog();
+  if (document.deleteEventAjaxRequest) {
+    document.deleteEventAjaxRequest.aborted = true;
+    document.deleteEventAjaxRequest.abort();
+  }
+  
+  _batchDeleteEvents();
+  refreshTasks();
+  disposeDialog();
 }
 
 function deleteEventFromViewConfirm() {

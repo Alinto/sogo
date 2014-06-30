@@ -123,15 +123,20 @@ function previewDisplayCallback(http) {
 }
 
 function addCalendarsColor () {
-  var activeCalendarsId = [];
   var allCalendars = window.parent$("calendarList");
   var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];
+  
   for (var i = 0; i < allCalendars.children.length; i++) {
     if (allCalendars.children[i].down("input").checked){
+      owner = allCalendars.children[i].getAttribute("owner");
       folderName = allCalendars.children[i].getAttribute("id").substr(1);
-      color = allColors["sogo1:Calendar/" + folderName];
+     
+      color = allColors[owner + ":Calendar/" + folderName];
       if (!color) {
-        color = "#AAAAAA";
+        if(folderName.split("_")[1])
+          color = allColors[owner + ":Calendar/" + folderName.split("_")[1]];
+        else
+          color = "#AAAAAA";
       }
       appendStyleElement(folderName, color);
     }

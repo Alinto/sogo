@@ -1051,7 +1051,7 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoAppointmentFolder *folder;
   NSMutableArray *selectedCalendars;
   NSArray *folders;
-  NSString *fDisplayName;
+  NSString *fUID;
   NSNumber *isActive;
   unsigned int count, foldersCount;
   int max=0, i;
@@ -1065,12 +1065,8 @@ _computeBlocksPosition (NSArray *blocks)
     folder = [folders objectAtIndex: count];
     isActive = [NSNumber numberWithBool: [folder isActive]];
     if ([isActive intValue] != 0) {
-      fDisplayName = [folder displayName];
-      if (fDisplayName == nil)
-        fDisplayName = @"";
-      if ([fDisplayName isEqualToString: [co defaultFolderName]])
-        fDisplayName = [self labelForKey: fDisplayName];
-      [selectedCalendars addObject: fDisplayName];
+      fUID = [folder nameInContainer];
+      [selectedCalendars addObject: fUID];
     }
   }
   return selectedCalendars;
@@ -1098,7 +1094,7 @@ _computeBlocksPosition (NSArray *blocks)
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
       for (j = 0; j < [events count]; j++) {
-        if ([[[events objectAtIndex:j] objectAtIndex:2] isEqualToString:[calendars objectAtIndex:i]]) {
+        if ([[[events objectAtIndex:j] objectAtIndex:1] isEqualToString:[calendars objectAtIndex:i]]) {
           [eventsForCalendar addObject: [events objectAtIndex:j]];
         }
       }
