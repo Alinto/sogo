@@ -2184,8 +2184,8 @@ function adjustMultiColumnCalendarHeaderDIV() {
     else {
       $("calendarHeader").remove();
       $("daysView").remove();
-      var htmlText = "<div class='alert-box notice'><span>" + _("notice:") + "</span>"+_("Please go ahead and select calendars")+"</div>";
-      $("calendarContent").innerHTML = htmlText;
+      $("calendarContent").style.height = "100%";
+      $("calendarContent").style.background = "#E7E7E7";
     }
 }
 
