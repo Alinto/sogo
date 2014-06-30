@@ -74,7 +74,7 @@ static NSArray *reminderValues = nil;
   if (!reminderItems && !reminderValues)
     {
       reminderItems = [NSArray arrayWithObjects:
-			       @"5_MINUTES_BEFORE",
+                                 @"5_MINUTES_BEFORE",
 			       @"10_MINUTES_BEFORE",
 			       @"15_MINUTES_BEFORE",
 			       @"30_MINUTES_BEFORE",
@@ -90,7 +90,7 @@ static NSArray *reminderValues = nil;
 			       @"1_WEEK_BEFORE",
 			       nil];
       reminderValues = [NSArray arrayWithObjects:
-				@"-PT5M",
+                                  @"-PT5M",
 				@"-PT10M",
 				@"-PT15M",
 				@"-PT30M",
@@ -704,18 +704,18 @@ static NSArray *reminderValues = nil;
   BOOL collectedAlreadyExist;
   
   contactFolders = [[[context activeUser] homeFolderInContext: context]
-                    lookupName: @"Contacts"
-                    inContext: context
-                    acquire: NO];
+                     lookupName: @"Contacts"
+                      inContext: context
+                        acquire: NO];
   folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
   count = [folders count]-1;
   
   // Inside this loop we remove all the public or shared addressbooks
   for (; count >= 0; count--)
-  {
-    if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
-    [folders removeObjectAtIndex: count];
-  }
+    {
+      if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
+        [folders removeObjectAtIndex: count];
+    }
   
   // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
   availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
@@ -723,27 +723,29 @@ static NSArray *reminderValues = nil;
   count = [folders count]-1;
   collectedAlreadyExist = NO;
   
-  for (i = 0; i <= count ; i++) {
-    [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
-    [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
-    
-    if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
-    collectedAlreadyExist = YES;
-  }
+  for (i = 0; i <= count ; i++)
+    {
+      [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
+      [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
+      
+      if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
+        collectedAlreadyExist = YES;
+    }
   // Create the dictionary for the next function : itemAddressBookText.
   if (!addressBooksIDWithDisplayName)
-  {
-    addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
-                                                                         forKeys:availableAddressBooksID];
-  }
+    {
+      addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
+                                                                           forKeys:availableAddressBooksID];
+    }
   if (!collectedAlreadyExist)
-  {
-    [availableAddressBooksID addObject: @"collected"];
-    [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"] forKey: @"collected"];
-  }
+    {
+      [availableAddressBooksID addObject: @"collected"];
+      [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"]  forKey: @"collected"];
+    }
   
   return availableAddressBooksID;
 }
+
 - (NSString *) itemAddressBookText
 {
   return [addressBooksIDWithDisplayName objectForKey: item];
@@ -931,7 +933,7 @@ static NSArray *reminderValues = nil;
         capabilities = [[self sieveClient] capabilities];
       else
         capabilities = [NSArray array];
-        [capabilities retain];
+      [capabilities retain];
     }
 
   return [capabilities jsonRepresentation];
@@ -1222,12 +1224,12 @@ static NSArray *reminderValues = nil;
   SOGoSieveManager *manager;
 
   if (!client)
-  {
-    folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
-    account = [folder lookupName: @"0" inContext: context acquire: NO];
-    manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-    client = [[manager clientForAccount: account] retain];
-  }
+    {
+      folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
+      account = [folder lookupName: @"0" inContext: context acquire: NO];
+      manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+      client = [[manager clientForAccount: account] retain];
+    }
 
   return client;
 }
@@ -1275,9 +1277,9 @@ static NSArray *reminderValues = nil;
             results = [self responseWithStatus: 502
                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
         }
-    else
-      results = [self responseWithStatus: 503
-                   andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
+      else
+        results = [self responseWithStatus: 503
+                     andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
     }
   else
     results = self;
