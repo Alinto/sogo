@@ -21,12 +21,11 @@
       onclick = "return onDayOverview();";
       image = "day-view.png";
       tooltip = "Switch to day view"; },
-    /* disabled until we fix the view */
-    /*    { link = "#";
-            label="Multicolumn Day View";
-            onclick = "return onMulticolumnDayOverview();";
-            image = "day-view-multicolumn.png";
-            tooltip = ""; }, */
+    { link = "#";
+      label="Multi-Columns View";
+      onclick = "return onMulticolumnDayOverview();";
+      image = "day-view-multicolumn.png";
+      tooltip = "Switch to multi-columns day view"; },
     { link = "#";
       label="Week View";
       onclick = "return onWeekOverview();";

@@ -39,25 +39,25 @@
 - (id) init
 {
   if ((self = [super init]))
-    {
-//       allAppointments = nil;
-      subscriptionUsers = nil;
-      hoursToDisplay = nil;
-      currentTableUser = nil;
-      currentTableHour = nil;
-//       dateFormatter = [[SOGoDateFormatter alloc]
-//                         initWithLocale: [self locale]];
-    }
-
+  {
+    //       allAppointments = nil;
+    subscriptionUsers = nil;
+    hoursToDisplay = nil;
+    currentTableUser = nil;
+    currentTableHour = nil;
+    //       dateFormatter = [[SOGoDateFormatter alloc]
+    //                         initWithLocale: [self locale]];
+  }
+  
   return self;
 }
 
 - (void) dealloc
 {
-//   [allAppointments release];
+  //   [allAppointments release];
   [subscriptionUsers release];
   [hoursToDisplay release];
-//   [dateFormatter release];
+  //   [dateFormatter release];
   [super dealloc];
 }
 
@@ -188,16 +188,6 @@
 
 /* fetching */
 
-// - (NSCalendarDate *) startDate
-// {
-//   return [[self selectedDate] beginOfDay];
-// }
-
-// - (NSCalendarDate *) endDate
-// {
-//   return [[self selectedDate] endOfDay];
-// }
-
 // - (NSArray *) appointmentsForCurrentUser
 // {
 //   NSMutableArray *filteredAppointments;
@@ -290,6 +280,13 @@
 
   return [NSNumber numberWithFloat: ([users indexOfObject: currentTableUser]
                                      * (100.0 / [users count]))];
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  [super setCurrentView: @"multicolumndayview"];
+  
+  return self;
 }
 
 @end

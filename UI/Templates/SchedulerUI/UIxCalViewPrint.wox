@@ -25,10 +25,10 @@
         <td>
           <var:popup list="printLayoutList" item="item"
           const:id="printLayoutList"
-          string="itemPrintLayoutText" /></td>
+          string="itemPrintLayoutText" selection="parentPrintLayout" /></td>
       </tr>
     </table>
-    
+  
     <!-- What to print -->
     <span class="caption"><var:string label:value="What to Print" /></span>
     <table class="frame">
@@ -81,6 +81,16 @@
     <!-- Options -->
     <span class="caption"><var:string label:value="Options" /></span>
     <table class="frame">
+      <tr>
+        <td>
+          <label>
+            <input type="checkbox" name="printWorkingHours" id="printHours" checked="true" onChange="onPrintWorkingHoursCheck(this);" />
+            <var:string label:value="Display working hours only" /></label></td></tr>
+      <tr>
+        <td>
+          <label>
+            <hr /></label></td></tr>
+      
       <tr>
         <td>
           <label>

@@ -155,6 +155,7 @@
 "What to Print" = "What to Print";
 "Options" = "Options";
 "Tasks with no due date" = "Tasks with no due date";
+"Display working hours only" = "Display working hours only";
 "Completed tasks" = "Completed Tasks";
 
 /* Appointments */
@@ -313,6 +314,7 @@
 
 "Repeat" = "Repeat";
 "Daily" = "Daily";
+"Multi-Columns" = "Multi-Columns";
 "Weekly" = "Weekly";
 "Monthly" = "Monthly";
 "Yearly" = "Yearly";
@@ -542,6 +544,12 @@ vtodo_class2 = "(Confidential task)";
 "tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
 "EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"Please select at least one calendar" = "Please select at least one calendar";
+"notice:" = "notice:";
+"error:" = "error:";
+"success:" = "success:";
+"warning:" = "warning:";
+
 
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
