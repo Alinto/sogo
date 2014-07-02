@@ -1,11 +1,15 @@
 2.2.6 (2014-XX-YY)
 ------------------
 
+New features
+ - add new 'multi-columns' calendar view (#1948)
+
 Enhancements
  - contacts photos are now synchronized using ActiveSync (#2807)
  - implemented the GetAttachment ActiveSync command (#2808)
  - implemented the Ping ActiveSync command
  - added "soft deletes" support for ActiveSync (#2734)
+ - now display the active tasks next to calendar names (#2760)
 
 Bug fixes
  - better handling of empty "Flag" messages over ActiveSync (#2806)
