@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSCalendarDate *) calendarDate;
 - (NSString *) deviceId;
 - (NSString *) deviceType;
+- (NSString *) attachmentName;
 - (NSString *) command;
 - (NSData *) convertHexStringToBytes;
 

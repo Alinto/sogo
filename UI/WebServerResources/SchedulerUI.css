@@ -392,7 +392,7 @@ DIV#daysView
   left: 0px; }
 
 DIV#daysView
-{ top: 120px;
+{ top: 97px;
   bottom: 0px;
   border-top: 1px solid #ccc;
   overflow: auto;
@@ -400,11 +400,12 @@ DIV#daysView
   right: 0px;}
 
 DIV#calendarHeader
-{ top: 50px;
+{ top: 25px;
   border: 0px;
-  height: 100px;
+  height: 85px;
   right: 0px; }
 
+DIV#calendarHeader DIV.calendarLabels,
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
 { position: absolute;
@@ -414,8 +415,16 @@ DIV#calendarHeader DIV.days
   /* 'right' is computed from JS code when daysView is first drawn */
   overflow: hidden; }
 
+DIV#calendarHeader DIV.calendarLabels
+{ top: 11px;
+  height: 20px; 
+  border-left: 1px solid #ccc;
+  text-align: center;
+  font-style:italic;
+  font-size:150%;
+}
 DIV#calendarHeader DIV.dayLabels
-{ top: 0px;
+{ top: 32px;
   height: 35px; }
 
 DIV#calendarHeader DIV.dayLabels DIV.day
@@ -432,7 +441,11 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.days
 { cursor: pointer;
   bottom: 0px;
-  top: 35px; }
+  top: 67px;
+  z-index:0;
+  border-bottom:1px solid #ccc;
+  background:white;
+ }
 
 DIV#calendarHeader DIV.day,
 DIV#daysView DIV.day
@@ -530,7 +543,8 @@ DIV.monthView DIV.dayHeader
   text-align: right;
   cursor: pointer;
   color: #666;
-  -moz-user-select: none; }
+  -moz-user-select: none; 
+  }
 
 DIV#monthDaysView DIV.selectedDay DIV.dayHeader
 { font-weight: bold; }
@@ -540,7 +554,8 @@ DIV.monthView DIV.days
   cursor: pointer;
   bottom: 0px;
   left: 0px;
-  right: 0px; }
+  right: 0px; 
+  }
 
 DIV.monthView DIV.day
 { position: absolute;
@@ -1279,13 +1294,14 @@ DIV#daysView DIV.event.lasts96
 DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
-  padding: 1px;
   top: 0px;
   bottom: 0px;
-  left: 2px;
-  right: 1px;
   -webkit-border-radius: 2px;
   border-radius: 2px; }
+  
+DIV.eventInside {
+  width:100%;
+}
 
 DIV.eventInside SPAN.location
 { font-size: smaller; }
@@ -1471,7 +1487,7 @@ DIV.event.draggable:hover DIV.rightDragGrip
 #ghostEndHour
 { bottom: -14px; }
 
-DIV#nowLineDisplay
+DIV.nowLineDisplay
 { position: relative;
   width: 100%;
   height: 2px;
@@ -1486,3 +1502,38 @@ DIV#freeBusyReplicas DIV
 { display: inline-block; height: 2em; }
 TD.attendees A.button
 { float: left; left: 19px; margin-top: 5px; }
+
+DIV#calendarContent .alert-box {
+    color:#555;
+    border-radius:10px;
+    font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
+    padding:10px 10px 10px 36px;
+    margin:10px;
+}
+
+DIV#calendarContent .alert-box span {
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.error {
+    background:#ffecec url('error.png') no-repeat 10px 50%;
+    border:1px solid #f5aca6;
+}
+.success {
+    background:#e9ffd9 url('success.png') no-repeat 10px 50%;
+    border:1px solid #a6ca8a;
+}
+.warning {
+    background:#fff8c4 url('warning.png') no-repeat 10px 50%;
+    border:1px solid #f2c779;
+}
+.notice {
+    background:#e3f7fc url('notice.png') no-repeat 10px 50%;
+    border:1px solid #8ed9f6;
+}
+
+
+
+
+

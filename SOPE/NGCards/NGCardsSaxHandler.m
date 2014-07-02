@@ -232,7 +232,7 @@ static NSArray *privilegedTagNames = nil;
 }
 
 - (void) characters: (unichar *) _chars
-             length: (int) _len
+             length: (NSUInteger) _len
 {
   if (_len && _chars)
     {

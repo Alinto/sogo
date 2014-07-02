@@ -64,6 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
@@ -122,6 +123,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 
+@interface SOGoActiveSyncDispatcher (Sync)
+
+- (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
+
+@end
+
 @implementation SOGoActiveSyncDispatcher
 
 - (id) init
@@ -162,6 +169,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o reloadIfNeeded];
   
   return [o properties];
+}
+
+- (unsigned int) _softDeleteCountWithFilter: (NSCalendarDate *) theFilter
+                               collectionId: (NSString *) theCollectionId
+{
+  NSMutableDictionary *dateCache;
+  NSMutableArray *sdUids;
+  SOGoCacheGCSObject *o;
+  NSArray *allKeys;
+  NSString *key;
+
+  int i;
+
+  sdUids = [NSMutableArray array];
+  
+  if (theFilter)
+    {
+      o = [SOGoCacheGCSObject objectWithName: [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], theCollectionId] inContainer: nil];
+      [o setObjectType: ActiveSyncGlobalCacheObject];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+
+      dateCache = [[o properties] objectForKey: @"DateCache"];
+      allKeys = [dateCache allKeys];
+
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          key = [allKeys objectAtIndex: i];
+          
+          if ([[dateCache objectForKey:key] compare: theFilter ] == NSOrderedAscending)
+            [sdUids addObject: [dateCache objectForKey:key]];
+        }
+    }
+  
+  return [sdUids count];
 }
 
 - (id) globallyUniqueIDToIMAPFolderName: (NSString *) theIdToTranslate
@@ -409,10 +451,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if (!error)
     {
+      NSString *syncKey, *key;
+      SOGoCacheGCSObject *o;
       NSMutableString *s;
-      NSString *syncKey;
       NSData *d;
-      
+
+      //
+      // We mark the cache object as deleted
+      //
+      key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [folderToDelete nameInContainer]];
+      o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+      [o delete];
+
       //
       // We update the FolderSync's synckey
       // 
@@ -484,10 +536,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Handle new name exist
   if (!error)
     {
+      NSString *syncKey, *key;
+      SOGoCacheGCSObject *o;
       NSMutableString *s;
-      NSString *syncKey;
       NSData *d;
       
+      //
+      // We update our cache
+      //
+      key = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], serverId];
+      o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+      [o setTableUrl: [self folderTableURL]];
+      [o reloadIfNeeded];
+      
+      key = [NSString stringWithFormat: @"/%@+%@", [context objectForKey: @"DeviceId"], [folderToUpdate nameInContainer]];
+      [o changePathTo: key];
+
       //
       // We update the FolderSync's synckey
       // 
@@ -498,8 +562,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       status = 1;
 
       [self _setFolderSyncKey: syncKey];
-
-      // FIXME - TODO: We *MUST* update the path in our cache! See -changePathTo in SOGoCacheGCSObject
 
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
@@ -781,7 +843,51 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processGetAttachment: (id <DOMElement>) theDocumentElement
                    inResponse: (WOResponse *) theResponse
 {
+  NSString *fileReference, *realCollectionId;
 
+  SOGoMicrosoftActiveSyncFolderType folderType;
+
+  fileReference = [context objectForKey: @"AttachmentName"];
+
+  realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
+
+  if (folderType == ActiveSyncMailFolder)
+    {
+      id currentFolder, currentCollection, currentBodyPart;
+      NSString *folderName, *messageName, *pathToPart;
+      SOGoMailAccounts *accountsFolder;
+      SOGoUserFolder *userFolder;
+      SOGoMailObject *mailObject;
+
+      NSRange r1, r2;
+
+      r1 = [realCollectionId rangeOfString: @"/"];
+      r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
+
+      folderName = [realCollectionId substringToIndex: r1.location];
+      messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
+      pathToPart = [realCollectionId substringFromIndex: r2.location+1];
+
+      userFolder = [[context activeUser] homeFolderInContext: context];
+      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
+                                          inContext: context
+                                            acquire: NO];
+
+      mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
+      currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
+
+      [theResponse setHeader: [NSString stringWithFormat: @"%@/%@", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]]
+                 forKey: @"Content-Type"];
+
+      [theResponse setContent: [currentBodyPart fetchBLOB] ];
+    }
+  else
+    {
+      [theResponse setStatus: 500];
+    }
 }
 
 //
@@ -849,6 +955,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                               sortOrdering: @"REVERSE ARRIVAL"
                                                   threaded: NO];
       count = [uids count];
+      
+      // Add the number of UIDs expected to "soft delete"
+      count += [self _softDeleteCountWithFilter: filter collectionId: realCollectionId];
+
     }
   else
     {
@@ -891,7 +1001,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   fileReference = [[[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
 
   realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
-  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   
   if (folderType == ActiveSyncMailFolder)
     {
@@ -1218,30 +1327,73 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
-// Ping requests make a little sense because the request
-// doesn't contain the SyncKey on the client. So we can't 
-// really know if something has changed on the server. What we
-// do for now is simply return Status=5 with the HeartbeatInterval
-// set at 60 seconds or we wait 60 seconds before responding with
-// Status=1
+// <?xml version="1.0"?>
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <Ping xmlns="Ping:">
+//  <HeartbeatInterval>3540</HeartbeatInterval>
+//  <Folders>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_0</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vevent/personal</Id>
+//    <Class>Calendar</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vcard/personal</Id>
+//    <Class>Contacts</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_1</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_680f_193506d5_2</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>vtodo/personal</Id>
+//    <Class>Tasks</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_753e_193511a1_0</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//   <Folder>
+//    <Id>mail%2Fsogo_753e_193511a1_1</Id>
+//    <Class>Email</Class>
+//   </Folder>
+//  </Folders>
+// </Ping>
 //
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  NSString *collectionId, *realCollectionId, *syncKey;
+  NSMutableArray *foldersWithChanges, *allFoldersID;
+  SOGoMicrosoftActiveSyncFolderType folderType;
+  NSMutableDictionary *folderMetadata;
   SOGoSystemDefaults *defaults;
+  id <DOMElement> aCollection;
+  NSArray *allCollections;
+
   NSMutableString *s;
+  id collection;
   NSData *d;
   
-  int heartbeatInterval, defaultInterval, status;
+
+  int i, j, heartbeatInterval, defaultInterval, internalInterval, status;
   
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
+  internalInterval = [defaults internalSyncInterval];
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
   else
     heartbeatInterval = defaultInterval;
-
+  
   if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
     {
       heartbeatInterval = defaultInterval;
@@ -1252,15 +1404,116 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       status = 1;
     }
 
-  NSLog(@"Got Ping request with valid interval - sleeping for %d seconds.", heartbeatInterval);
-  sleep(heartbeatInterval);
+  // We build the list of folders to "ping". When the payload is empty, we use the list
+  // of "cached" folders.
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Folders"];
+  allFoldersID = [NSMutableArray array];
 
+  if (![allCollections count])
+    {
+      SOGoMailAccounts *accountsFolder;
+      SOGoMailAccount *accountFolder;
+      SOGoUserFolder *userFolder;
+      NSArray *allValues;
+
+      userFolder = [[context activeUser] homeFolderInContext: context];
+      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
+      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+
+      allValues = [[accountFolder imapFolderGUIDs] allValues];
+      
+      for (i = 0; i < [allValues count]; i++)
+        [allFoldersID addObject: [NSString stringWithFormat: @"mail/%@", [allValues objectAtIndex: i]]];
+
+      
+      // FIXME: handle multiple GCS collecitons
+      [allFoldersID addObject: @"vcard/personal"];
+      [allFoldersID addObject: @"vevent/personal"];
+      [allFoldersID addObject: @"vtodo/personal"];
+    }
+  else
+    {      
+      for (i = 0; i < [allCollections count]; i++)
+        {
+          aCollection = [allCollections objectAtIndex: i];
+          collectionId = [[(id) [aCollection getElementsByTagName: @"Id"] lastObject] textValue];
+          [allFoldersID addObject: collectionId];
+        }
+    }
+
+  foldersWithChanges = [NSMutableArray array];
+
+  // We enter our loop detection change
+  for (i = 0; i < (heartbeatInterval/internalInterval); i++)
+    {
+      for (j = 0; j < [allFoldersID count]; j++)
+        {
+          collectionId = [allFoldersID objectAtIndex: j];
+          realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+          realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
+          collection = [self collectionFromId: realCollectionId  type: folderType];
+          
+          switch (folderType)
+            {
+            case ActiveSyncContactFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vcard/%@", [collection nameInContainer]]];
+              break;
+            case ActiveSyncEventFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vevent/%@", [collection nameInContainer]]];
+              break;
+            case ActiveSyncTaskFolder:
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"vtodo/%@", [collection nameInContainer]]];
+              break;
+            default:
+              folderMetadata = [self _folderMetadataForKey: [collection nameInContainer]];
+            }
+          
+          syncKey = [folderMetadata objectForKey: @"SyncKey"];
+      
+          if (![syncKey isEqualToString: [collection davCollectionTag]])
+            {
+              [foldersWithChanges addObject: collectionId];
+            }
+        }
+      
+      if ([foldersWithChanges count])
+        {
+          NSLog(@"Change detected, we push the content.");
+          status = 2;
+          break;
+        }
+      else
+        {
+          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          sleep(internalInterval);
+        }
+    }
+  
   // We generate our response
   s = [NSMutableString string];
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Ping xmlns=\"Ping:\">"];
   [s appendFormat: @"<Status>%d</Status>", status];
+  
+  if ([foldersWithChanges count])
+    {
+      [s appendString: @"<Folders>"];
+
+      for (i = 0; i < [foldersWithChanges count]; i++)
+        {
+          // A bit tricky here because we must call stringByEscapingURL on mail folders, but not on GCS ones.
+          // We do the same thing in -processFolderSync
+          collectionId = [foldersWithChanges objectAtIndex: i];
+
+          if ([collectionId hasPrefix: @"mail/"])
+            collectionId = [collectionId stringByEscapingURL];
+
+          [s appendFormat: @"<Folder>%@</Folder>", collectionId];
+        }
+
+      [s appendString: @"</Folders>"];
+    }
 
   if (status == 5)
     {
@@ -1686,9 +1939,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
 
-  // ReplaceMime isn't specified so we must NOT use the server copy
+  // ReplaceMime IS specified so we must NOT use the server copy
   // but rather take the data as-is from the client.
-  if (![value count])
+  if ([value count])
     {
       [self processSendMail: theDocumentElement
                  inResponse: theResponse];
@@ -1708,11 +1961,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NSData *data;
 
       NGMimeMessageGenerator *generator;
-      NGMimeBodyPart   *bodyPart;
+      NGMimeBodyPart *bodyPart;
       NGMutableHashMap *map;
       NGMimeFileData *fdata;
       NSException *error;
-      id body;
+
+      id body, bodyFromSmartForward;
 
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -1728,10 +1982,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
       messageFromSmartForward = [parser parsePartFromData: data];
-
       RELEASE(parser);
       
-
       // We create a new MIME multipart/mixed message. The first part will be the text part
       // of our "smart forward" and the second part will be the message/rfc822 part of the
       // "smart forwarded" message.
@@ -1741,11 +1993,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
       
-      // First part
+      // First part - either a text/* or a multipart/*. If it's a multipart,
+      // we take the first part text/* part we see.
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
-      [map setObject: @"text/plain" forKey: @"content-type"];
+      bodyFromSmartForward = nil;
+
+      if ([[messageFromSmartForward body] isKindOfClass: [NGMimeMultipartBody class]])
+        {
+          NGMimeBodyPart *part;
+          NSArray *parts;
+          int i;
+          
+          parts = [[messageFromSmartForward body] parts];
+          
+          for (i = 0; i < [parts count]; i++)
+            {
+              part = [parts objectAtIndex: i];
+              
+              if ([[[part contentType] type] isEqualToString: @"text"])
+                {
+                  [map setObject: [[part contentType] stringValue] forKey: @"content-type"];
+                  bodyFromSmartForward = [part body];
+                  break;
+                }
+            }
+        }
+      else
+        {
+          [map setObject: [[messageFromSmartForward contentType] stringValue] forKey: @"content-type"];
+          bodyFromSmartForward = [messageFromSmartForward body];
+        }
+
       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      [bodyPart setBody: [messageFromSmartForward body]];
+      [bodyPart setBody: bodyFromSmartForward];
       [body addBodyPart: bodyPart];
 
       // Second part
@@ -1826,6 +2106,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
+  [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
+
 
   cmdName = [[theRequest uri] command];
 
@@ -1869,7 +2151,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
-      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame)
+      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame)
         return [NSException exceptionWithHTTPStatus: 500];
     }
 
@@ -1923,9 +2205,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if ([parts count] == 5)
         {
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
-             parts in this url. */
+             parts in this url. We strip the '-' character in case we have
+             this in the domain part - like foo@bar-zot.com */
           ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [[user loginInDomain] asCSSIdentifier]];
+                                    [[[user loginInDomain] asCSSIdentifier] 
+                                      stringByReplacingOccurrencesOfString: @"-"
+                                                                withString: @"_"]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];

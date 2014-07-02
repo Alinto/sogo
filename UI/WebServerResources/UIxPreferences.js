@@ -291,6 +291,7 @@ function initPreferences() {
                 $("vacationEndDate_date").disable();
         });
     }
+    onAddOutgoingAddressesCheck();
 }
 
 function initSieveFilters() {
@@ -1172,8 +1173,15 @@ function serializeContactsCategories() {
 }
 
 /* / contact categories */
-
-
+                                   
+function onAddOutgoingAddressesCheck(checkBox) {
+  if (!checkBox) {
+    checkBox = $("addOutgoingAddresses");
+  }
+  $("addressBookList").disabled = !checkBox.checked;
+  
+}
+                                   
 function onReplyPlacementListChange() {
     if ($("replyPlacementList").value == 0) {
         // Reply placement is above quote, signature can be place before of after quote

@@ -217,10 +217,10 @@
   printf("</%s>\n", [_localName cString]);
 }
 
-- (void)characters:(unichar *)_chars length:(int)_len {
+- (void)characters:(unichar *)_chars length:(NSUInteger)_len {
   NSString *str;
   id tmp;
-  unsigned i, len;
+  NSUInteger i, len;
 
   if (_len == 0) {
     [self indent];
@@ -228,7 +228,7 @@
     return;
   }
   
-  for (i = 0; i < (unsigned)_len; i++) {
+  for (i = 0; i < _len; i++) {
     if (_chars[i] > 255) {
       NSLog(@"detected large char: o%04o d%03i h%04X",
             _chars[i], _chars[i], _chars[i]);
@@ -246,7 +246,7 @@
   [self indent];
   printf("\"%s\"\n", [str cString]);
 }
-- (void)ignorableWhitespace:(unichar *)_chars length:(int)_len {
+- (void)ignorableWhitespace:(unichar *)_chars length:(NSUInteger)_len {
   NSString *data;
   id tmp;
 

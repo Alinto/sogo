@@ -126,6 +126,9 @@ typedef enum
 
 - (void) setCategories: (NSArray *) newCategories;
 - (NSArray *) categories;
+- (NSString *) photo;
+- (void) setPhoto: (NSString *) _value;
+
 
 // - (void) setN: (NGVCardName *) _v;
 // - (NGVCardName *) n;

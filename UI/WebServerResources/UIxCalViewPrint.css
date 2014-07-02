@@ -120,7 +120,7 @@ DIV#rightSide {
     DIV#rightFrame TD.label {
         color: #666;
         text-align: right;
-        width: 30%;
+        min-width:52px;
     }
 
 /********** Overriding SchedulerUI.css **********/
@@ -128,10 +128,20 @@ DIV#rightSide {
 DIV#calendarHeader {
   position:relative;
   top:0;
-  height:70px;
+  height:38px;
   right: 0px;
 }
 
+DIV#calendarHeader DIV.calendarLabels
+{ top: 1px;
+  height: 20px; 
+  border-left: 1px solid #ccc;
+  text-align: center;
+  font-style:italic;
+  font-size:150%;
+}
+
+DIV#calendarHeader DIV.calendarLabels,
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days {
   position:relative;
@@ -139,9 +149,12 @@ DIV#calendarHeader DIV.days {
   margin-left:50px;
 }
 
+DIV#calendarHeader DIV.dayLabels
+{ top: 1px; }
+
 DIV#calendarHeader DIV.days {
   top: 0;
-  height: 33px;
+  height: 1px;
   left: 0;
   right: 0;
 }
@@ -170,9 +183,13 @@ DIV#daysView DIV.hour {
 
 DIV.event {
   z-index:1;
-  border:solid black 1px;
-  background-color:white;
+  background-color: white;
   border-radius:5px;
+  border:1px solid black;
+
+}
+DIV.eventInside {
+  width:100%;
 }
 
 DIV#daysView DIV.event.starts0
@@ -596,10 +613,15 @@ LABEL {
     position:static;
     top:5px;
     left:5px;
+
   }
 
   DIV#rightFrame {
     border:none;
     overflow:visible;
+  }
+
+  BODY {
+    background-color:white;
   }
 }

@@ -55,9 +55,12 @@
       ASSIGN (timeFormat, [ud timeFormat]);
 
       daysToDisplay = nil;
+      calendarsToDisplay = nil;
       hoursToDisplay = nil;
       numberOfDays = 1;
       startDate = nil;
+      currentView = nil;
+      currentCalendar = nil;
       currentTableDay = nil;
       currentTableHour = nil;
       weekDays = [locale objectForKey: NSShortWeekDayNameArray];
@@ -75,6 +78,8 @@
 //     [allAppointments release];
   [weekDays release];
   [daysToDisplay release];
+  [calendarsToDisplay release];
+  [currentView release];
   [hoursToDisplay release];
   [dateFormatter release];
   [timeFormat release];
@@ -119,6 +124,16 @@
   return [endDate endOfDay];
 }
 
+- (void) setCurrentView: (NSString *) aView
+{
+  ASSIGN(currentView, aView);
+}
+
+- (NSString *) currentView
+{
+  return currentView;
+}
+
 - (NSArray *) hoursToDisplay
 {
   unsigned int currentHour, lastHour;
@@ -148,20 +163,66 @@
 {
   NSCalendarDate *currentDate;
   int count;
-
+  
   if (!daysToDisplay)
+  {
+    daysToDisplay = [NSMutableArray new];
+    currentDate = [[self startDate] hour: [self dayStartHour]
+                                  minute: 0];
+    
+    for (count = 0; count < numberOfDays; count++)
     {
-      daysToDisplay = [NSMutableArray new];
-      currentDate = [[self startDate] hour: [self dayStartHour]
-                                      minute: 0];
-      for (count = 0; count < numberOfDays; count++)
-	{
-	  [daysToDisplay addObject: currentDate];
-	  currentDate = [currentDate tomorrow];
-	}
+      [daysToDisplay addObject: currentDate];
+      currentDate = [currentDate tomorrow];
     }
-
+  }
+  
   return daysToDisplay;
+}
+
+- (NSArray *) calendarsToDisplay
+{
+  if (!calendarsToDisplay)
+  {
+    int max=0, i;
+    NSArray *folders;
+    SOGoAppointmentFolders *co;
+    SOGoAppointmentFolder *folder;
+    NSMutableDictionary *calendar;
+    unsigned int count, foldersCount;
+    NSString *folderName, *fDisplayName;
+    NSNumber *isActive;
+    
+    co = [self clientObject];
+    folders = [co subFolders];
+    foldersCount = [folders count];
+    calendarsToDisplay = [[NSMutableArray alloc] initWithCapacity: foldersCount];
+    for (count = 0; count < foldersCount; count++)
+    {
+      folder = [folders objectAtIndex: count];
+      isActive = [NSNumber numberWithBool: [folder isActive]];
+      if ([isActive intValue] != 0) {
+        calendar = [NSMutableDictionary dictionary];
+        folderName = [folder nameInContainer];
+        fDisplayName = [folder displayName];
+        if (fDisplayName == nil)
+          fDisplayName = @"";
+        if ([fDisplayName isEqualToString: [co defaultFolderName]])
+          fDisplayName = [self labelForKey: fDisplayName];
+        [calendar setObject: [NSString stringWithFormat: @"/%@", folderName]
+                     forKey: @"id"];
+        [calendar setObject: fDisplayName forKey: @"displayName"];
+        [calendar setObject: folderName forKey: @"folder"];
+        [calendar setObject: [folder calendarColor] forKey: @"color"];
+        [calendar setObject: isActive forKey: @"active"];
+        [calendar setObject: [folder ownerInContext: context]
+                     forKey: @"owner"];
+        [calendarsToDisplay addObject: calendar];
+      }
+    }
+  }
+  
+  return calendarsToDisplay;
 }
 
 - (void) setCurrentTableDay: (NSCalendarDate *) aTableDay
@@ -172,6 +233,16 @@
 - (NSCalendarDate *) currentTableDay
 {
   return currentTableDay;
+}
+
+- (void) setCurrentCalendar: (NSMutableArray *) aCalendar
+{
+  ASSIGN(currentCalendar, aCalendar);
+}
+
+- (NSMutableArray *) currentCalendar
+{
+  return currentCalendar;
 }
 
 - (void) setCurrentTableHour: (NSString *) aTableHour
@@ -224,6 +295,16 @@
 - (NSString *) labelForDate
 {
   return [dateFormatter shortFormattedDate: currentTableDay];
+}
+
+- (NSString *) labelForCalendar
+{
+  return [currentCalendar objectForKey: @"displayName"];
+}
+
+- (NSString *) colorForCalendar
+{
+  return [currentCalendar objectForKey:@"color"];
 }
 
 // - (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment
@@ -318,7 +399,15 @@
 
 - (NSString *) daysViewClasses
 {
-  return [NSString stringWithFormat: @"daysView daysViewFor%dDays", numberOfDays];
+  NSString *daysView;
+  
+  if ([currentView isEqualToString:@"multicolumndayview"])
+    daysView = @"daysView daysViewForMultipleDays";
+
+  else
+    daysView = [NSString stringWithFormat: @"daysView daysViewFor%dDays", numberOfDays];
+  
+  return daysView;
 }
 
 - (NSString *) dayClasses
@@ -326,19 +415,24 @@
   NSMutableString *classes;
   unsigned int currentDayNbr, realDayOfWeek;
   
-  currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
-  realDayOfWeek = [currentTableDay dayOfWeek];
-
   classes = [NSMutableString string];
-  [classes appendFormat: @"day day%d", currentDayNbr];
-  if (numberOfDays > 1)
+  if ([currentView isEqualToString:@"multicolumndayview"])
+    [classes appendFormat:@"day dayColumn"];
+  else {
+    currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
+    realDayOfWeek = [currentTableDay dayOfWeek];
+    
+    [classes appendFormat: @"day day%d", currentDayNbr];
+    
+    if (numberOfDays > 1)
     {
       if (realDayOfWeek == 0 || realDayOfWeek == 6)
         [classes appendString: @" weekEndDay"];
       if ([currentTableDay isToday])
         [classes appendString: @" dayOfToday"];
     }
-
+  }
+       
   return classes;
 }
 
@@ -356,6 +450,22 @@
     [cellClass appendString: @" outOfDay"];
 
   return cellClass;
+}
+
+- (BOOL) isMultiColumnView
+{
+  if ([currentView isEqualToString:@"multicolumndayview"])
+    return YES;
+  
+  return NO;
+}
+
+- (BOOL) isNotMultiColumnView
+{
+  if ([currentView isEqualToString:@"dayview"] || [currentView isEqualToString:@"weekview"])
+    return YES;
+  
+  return NO;
 }
 
 @end

@@ -43,6 +43,7 @@
   NSString *value;
   NSString *criteria;
   NSString *userLogin;
+  NSString *currentView;
   BOOL dayBasedView;
   WORequest *request;
   SOGoDateFormatter *dateFormatter;

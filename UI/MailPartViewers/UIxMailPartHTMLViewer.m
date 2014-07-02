@@ -86,6 +86,9 @@ _xmlCharsetForCharset (NSString *charset)
     { @"windows-1251", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1251 -> utf8 conversion
     { @"windows-1257", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1257 -> utf8 conversion
     { @"gb2312", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger gb2312 -> utf8 conversion
+    { @"gbk", XML_CHAR_ENCODING_ERROR},          // unsupported, will trigger gb2312 -> utf8 conversion
+    { @"gb18030", XML_CHAR_ENCODING_ERROR},      // unsupported, will trigger gb2312 -> utf8 conversion
+    { @"big5", XML_CHAR_ENCODING_ERROR},         // unsupported, will trigger gb2312 -> utf8 conversion
     { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
   unsigned count;
   xmlCharEncoding encoding;
@@ -416,9 +419,9 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) _appendStyle: (unichar *) _chars
-               length: (int) _len
+               length: (NSUInteger) _len
 {
-  unsigned int count, length;
+  NSUInteger count, length;
   unichar *start, *currentChar;
 
   start = _chars;
@@ -685,7 +688,7 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) characters: (unichar *) _chars
-             length: (int) _len
+             length: (NSUInteger) _len
 {
   showWhoWeAre();
   if (!ignoredContent)
@@ -709,7 +712,7 @@ static NSData* _sanitizeContent(NSData *theData)
 }
 
 - (void) ignorableWhitespace: (unichar *) _chars
-                      length: (int) _len
+                      length: (NSUInteger) _len
 {
   showWhoWeAre();
 }
@@ -732,7 +735,7 @@ static NSData* _sanitizeContent(NSData *theData)
 
 /* SaxLexicalHandler */
 - (void) comment: (unichar *) _chars
-          length: (int) _len
+          length: (NSUInteger) _len
 {
   showWhoWeAre();
   if (inStyle)

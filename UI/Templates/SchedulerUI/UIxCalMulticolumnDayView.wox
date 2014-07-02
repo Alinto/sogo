@@ -5,40 +5,33 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-    <a href="#"
-      id="leftNavigationArrow"
-      var:date="prevDayQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-left.png"/></a>
+    
+    <div class="menu" id="currentViewMenu">
+      <ul>
+        <li><var:string label:value="New Event..."/></li>
+        <li><var:string label:value="New Task..."/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Previous Day"/></li>
+        <li><var:string label:value="Next Day"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Delete Event"/></li>
+        <li><var:string label:value="Copy event to my calendar"/></li>
+        <li><var:string label:value="View Raw Source"/></li>
+      </ul>
+    </div>
+    <!-- Navigation header -->
     <span class="daysHeader">
-      <span class="day2"><a href="#"
-          var:date="dayBeforePrevDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="dayBeforeYesterdayName"
-            /></a></span
-        ><span class="day1"><a href="#"
-          var:date="prevDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="yesterdayName"
-            /></a></span
-        ><span class="day0"><var:string value="currentDayName" /></span
-        ><span class="day1"><a href="#"
-          var:date="nextDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="tomorrowName"
-            /></a></span
-        ><span class="day2"><a href="#"
-          var:date="dayAfterNextDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="dayAfterTomorrowName"
-            /></a></span
-        ></span>
-    <a href="#"
-      id="rightNavigationArrow"
-      var:date="nextDayQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-right.png"/></a>
+      <span class="day1">
+        <a href="#" id="leftNavigationArrow" var:date="prevDayQueryParameters.day" onclick="return onCalendarGotoDay(this);">
+          <img rsrc:src="arrow-left.png"/></a></span>
+      <span class="day0"><var:string value="currentDayName" /></span>
+      <span class="day1">
+        <a href="#" id="rightNavigationArrow" var:date="nextDayQueryParameters.day" onclick="return onCalendarGotoDay(this);">
+          <img rsrc:src="arrow-right.png"/></a></span>
+      <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
+    </span>
 
+    <!-- TODO : Move this inside the schedulerUI.css -->
     <style type="text/css">
       DIV.day
       {
@@ -51,69 +44,13 @@
       }
       </var:foreach>
     </style>
-
+    
+    <!-- Display the calendar header and the table view -->
     <div id="calendarContent">
-      <div id="daysView" class="daysView multicolumnDayView">
-        <div class="hours">
-          <var:foreach list="hoursToDisplay" item="currentTableHour"
-            ><div class="hour"><var:string value="currentTableHour" />:00</div
-              ></var:foreach>
-        </div>
-        <div class="hourLines">
-          <div class="hourLine hourLine0"><!-- space --></div
-            ><div class="hourLine hourLine1"><!-- space --></div
-            ><div class="hourLine hourLine2"><!-- space --></div
-            ><div class="hourLine hourLine3"><!-- space --></div
-            ><div class="hourLine hourLine4"><!-- space --></div
-            ><div class="hourLine hourLine5"><!-- space --></div
-            ><div class="hourLine hourLine6"><!-- space --></div
-            ><div class="hourLine hourLine7"><!-- space --></div
-            ><div class="hourLine hourLine8"><!-- space --></div
-            ><div class="hourLine hourLine9"><!-- space --></div
-            ><div class="hourLine hourLine10"><!-- space --></div
-            ><div class="hourLine hourLine11"><!-- space --></div
-            ><div class="hourLine hourLine12"><!-- space --></div
-            ><div class="hourLine hourLine13"><!-- space --></div
-            ><div class="hourLine hourLine14"><!-- space --></div
-            ><div class="hourLine hourLine15"><!-- space --></div
-            ><div class="hourLine hourLine16"><!-- space --></div
-            ><div class="hourLine hourLine17"><!-- space --></div
-            ><div class="hourLine hourLine18"><!-- space --></div
-            ><div class="hourLine hourLine19"><!-- space --></div
-            ><div class="hourLine hourLine20"><!-- space --></div
-            ><div class="hourLine hourLine21"><!-- space --></div
-            ><div class="hourLine hourLine22"><!-- space --></div
-            ><div class="hourLine hourLine23"><!-- space --></div>
-        </div>
-
-        <div class="days" var:day="selectedDate.shortDateString">
-          <var:foreach list="subscriptionUsers" item="currentTableUser"
-            ><div var:class="currentUserClasses"
-              var:user="currentTableUser"
-              ><div class="header"><var:string value="currentTableUser" /></div>
-              <div class="appointments">
-                <var:foreach list="hoursToDisplay" item="currentTableHour"
-                  ><div var:class="clickableHourCellClass"
-                    var:hour="currentAppointmentHour">
-                  </div></var:foreach>
-                <var:foreach list="appointmentsForCurrentUser" item="currentAppointment"
-                  ><var:component className="UIxCalInlineAptView"
-                    dayStartHour="dayStartHour"
-                    dayEndHour="dayEndHour"
-                    appointment="currentAppointment"
-                    formatter="aptFormatter"
-                    tooltipFormatter="aptTooltipFormatter"
-                    url="appointmentViewURL"
-                    const:style="dayoverview"
-                    queryDictionary="currentDateQueryParameters"
-                    referenceDate="selectedDate"
-                    canAccess="canAccessApt"
-                    /></var:foreach
-                  >
-              </div>
-            </div>
-          </var:foreach>
-        </div>
-      </div>
+      <var:component
+      className="UIxCalDayTable"
+      startDate="startDate"
+      const:CSSClass="dayOverview"
+      const:currentView="multicolumndayview"/>
     </div>
   </container>

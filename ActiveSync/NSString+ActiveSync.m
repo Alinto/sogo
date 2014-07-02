@@ -186,6 +186,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   return s;
 }
 
+// This method extracts the "AttachmentName" from a URI:
+//
+// /SOGo/Microsoft-Server-ActiveSync?Cmd=GetAttachment&User=sogo&DeviceId=HTCa04b4932597acd3f2dc1a918b9728&DeviceType=htcvision&AttachmentName=mail/TestFldr/8/2
+//
+- (NSString *) attachmentName
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"ATTACHMENTNAME="];
+
+  if (!s)
+    s = @"Unknown";
+
+  return s;
+}
+
+
 //
 //
 //

@@ -430,7 +430,7 @@
 }
 
 - (void) ignorableWhitespace: (unichar *) whitespaces
-                      length: (int) length
+                      length: (NSUInteger) length
 {
   showWhoWeAre();
 }

@@ -238,6 +238,8 @@ struct GlobalObjectId {
 
   if (key)
     {
+      NSString *s, *charset;
+      
       d = [[self fetchPlainTextParts] objectForKey: key];
 
       encoding = [[self lookupInfoForBodyPart: key] objectForKey: @"encoding"];
@@ -246,6 +248,14 @@ struct GlobalObjectId {
         d = [d dataByDecodingBase64];
       else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
         d = [d dataByDecodingQuotedPrintableTransferEncoding];
+
+      charset = [[[self lookupInfoForBodyPart: key] objectForKey: @"parameterList"] objectForKey: @"charset"];
+
+      if (![charset length])
+        charset = @"us-ascii";
+      
+      s = [NSString stringWithData: d  usingEncodingNamed: charset];
+      d = [s dataUsingEncoding: NSUTF8StringEncoding];
     }
 
   return d;
@@ -296,13 +306,13 @@ struct GlobalObjectId {
           if ([body isKindOfClass: [NSData class]])
             {
               NSString *charset;
-              int encoding;
-
+ 
               charset = [[thePart contentType] valueOfParameter: @"charset"];
-              encoding = [NGMimeType stringEncodingForCharset: charset];
+
+              if (![charset length])
+                charset = @"us-ascii";
               
-              s = [[NSString alloc] initWithData: body  encoding: encoding];
-              AUTORELEASE(s);
+              s = [NSString stringWithData: body usingEncodingNamed: charset];     
             }
           else
             {
@@ -396,6 +406,13 @@ struct GlobalObjectId {
     {
       if ([type isEqualToString: @"text"])
         {
+          NSString *s, *charset;
+          
+          charset = [[[self lookupInfoForBodyPart: @""] objectForKey: @"parameterList"] objectForKey: @"charset"];
+          
+          if (![charset length])
+            charset = @"us-ascii";
+          
           d = [[self fetchPlainTextParts] objectForKey: @""];
           
           // We check if we have base64 encoded parts. If so, we just
@@ -407,17 +424,15 @@ struct GlobalObjectId {
           else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
             d = [d dataByDecodingQuotedPrintableTransferEncoding];
 
+          s = [NSString stringWithData: d  usingEncodingNamed: charset];
+          
           // Check if we must convert html->plain
           if (theType == 1 && [subtype isEqualToString: @"html"])
             {
-              NSString *s;
-              
-              s = [[NSString alloc] initWithData: d  encoding: NSUTF8StringEncoding];
-              AUTORELEASE(s);
-
               s = [s htmlToText];
-              d = [s dataUsingEncoding: NSUTF8StringEncoding];
             }
+          
+          d = [s dataUsingEncoding: NSUTF8StringEncoding];
         }
       else if ([type isEqualToString: @"multipart"])
         {
@@ -761,7 +776,7 @@ struct GlobalObjectId {
   
   // Flags
   [s appendString: @"<Flag xmlns=\"Email:\">"];
-  [s appendFormat: @"<FlagStatus>%d</FlagStatus>", 0];
+  [s appendFormat: @"<FlagStatus>%d</FlagStatus>", ([self flagged] ? 2 : 0)];
   [s appendString: @"</Flag>"];
   
   // FIXME - support these in the future
@@ -799,10 +814,21 @@ struct GlobalObjectId {
 
   if ((o = [theValues objectForKey: @"Flag"]))
     {
-      o = [o objectForKey: @"FlagStatus"];
-      
-      if ([o intValue])
-        [self addFlags: @"\\Flagged"];
+      // We must handle empty flags -> {Flag = ""; } - some ActiveSync clients, like the HTC Desire
+      // will send an empty Flag message when "unflagging" a mail.
+      if (([o isKindOfClass: [NSMutableDictionary class]]))
+        {
+          if ((o = [o objectForKey: @"FlagStatus"]))
+            {
+              // 0 = The flag is cleared.
+              // 1 = The status is set to complete.
+              // 2 = The status is set to active.
+              if (([o isEqualToString: @"2"]))
+                [self addFlags: @"\\Flagged"];
+              else
+                [self removeFlags: @"\\Flagged"];
+            }
+        }
       else
         [self removeFlags: @"\\Flagged"]; 
     }

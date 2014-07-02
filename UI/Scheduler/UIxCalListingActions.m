@@ -1,9 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,6 +75,8 @@ static NSArray *tasksFields = nil;
 #define maxBlocks (offsetBlocks * 2)    // maximum number of blocks to search
 // for a free slot (10 days)
 
+@class SOGoAppointment;
+
 @implementation UIxCalListingActions
 
 + (void) initialize
@@ -121,6 +120,7 @@ static NSArray *tasksFields = nil;
     ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
     dayBasedView = NO;
+    currentView = nil;
   }
   
   return self;
@@ -239,6 +239,7 @@ static NSArray *tasksFields = nil;
       endDate = nil;
     
     param = [request formValueForKey: @"view"];
+    currentView = param;
     dayBasedView = ![param isEqualToString: @"monthview"];
   }
 }
@@ -480,7 +481,7 @@ static NSArray *tasksFields = nil;
   return infos;
 }
 
-- (WOResponse *) _responseWithData: (NSArray *) data
+- (WOResponse *) _responseWithData: (id) data
 {
   WOResponse *response;
   
@@ -1044,47 +1045,113 @@ _computeBlocksPosition (NSArray *blocks)
   /* ... _computeBlocksMultiplier() ... */
 }
 
+- (NSArray *) _selectedCalendars
+{
+  SOGoAppointmentFolders *co;
+  SOGoAppointmentFolder *folder;
+  NSMutableArray *selectedCalendars;
+  NSArray *folders;
+  NSString *fUID;
+  NSNumber *isActive;
+  unsigned int count, foldersCount;
+  int max=0, i;
+  
+  co = [self clientObject];
+  folders = [co subFolders];
+  foldersCount = [folders count];
+  selectedCalendars = [[NSMutableArray alloc] initWithCapacity: foldersCount];
+  for (count = 0; count < foldersCount; count++)
+  {
+    folder = [folders objectAtIndex: count];
+    isActive = [NSNumber numberWithBool: [folder isActive]];
+    if ([isActive intValue] != 0) {
+      fUID = [folder nameInContainer];
+      [selectedCalendars addObject: fUID];
+    }
+  }
+  return selectedCalendars;
+}
+
 - (WOResponse *) eventsBlocksAction
 {
   int count, max;
   NSArray *events, *event, *eventsBlocks;
-  NSMutableArray *allDayBlocks, *blocks, *currentDay;
+  NSMutableArray *allDayBlocks, *blocks, *currentDay, *calendars, *eventsByCalendars, *eventsForCalendar;
   NSNumber *eventNbr;
   BOOL isAllDay;
+  int i, j;
   
   [self _setupContext];
   
-  [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
-  events = [self _fetchFields: eventsFields
-           forComponentOfType: @"vevent"];
-  eventsBlocks = [NSArray arrayWithObjects: events, allDayBlocks, blocks, nil];
-  max = [events count];
-  for (count = 0; count < max; count++)
-  {
-    event = [events objectAtIndex: count];
-    //      NSLog(@"***[UIxCalListingActions eventsBlocksAction] %i = %@ : %@ / %@ / %@", count,
-    //	    [event objectAtIndex: eventTitleIndex],
-    //	    [event objectAtIndex: eventStartDateIndex],
-    //	    [event objectAtIndex: eventEndDateIndex],
-    //	    [event objectAtIndex: eventRecurrenceIdIndex]);
-    eventNbr = [NSNumber numberWithUnsignedInt: count];
-    isAllDay = [[event objectAtIndex: eventIsAllDayIndex] boolValue];
-    if (dayBasedView && isAllDay)
-      [self _fillBlocks: allDayBlocks withEvent: event withNumber: eventNbr];
-    else
-      [self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
-  }
+  events = [self _fetchFields: eventsFields forComponentOfType: @"vevent"];
   
-  max = [blocks count];
-  for (count = 0; count < max; count++)
+  if ([currentView isEqualToString: @"multicolumndayview"])
   {
-    currentDay = [blocks objectAtIndex: count];
-    [currentDay sortUsingSelector: @selector (compareEventByStart:)];
-    [self _addBlocksWidth: currentDay];
+    calendars = [self _selectedCalendars];
+    eventsByCalendars = [NSMutableArray arrayWithCapacity:[calendars count]];
+    for (i = 0; i < [calendars count]; i++) // For each calendar
+    {
+      eventsForCalendar = [NSMutableArray array];
+      [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
+      for (j = 0; j < [events count]; j++) {
+        if ([[[events objectAtIndex:j] objectAtIndex:1] isEqualToString:[calendars objectAtIndex:i]]) {
+          [eventsForCalendar addObject: [events objectAtIndex:j]];
+        }
+      }
+      eventsBlocks = [NSArray arrayWithObjects:eventsForCalendar, allDayBlocks, blocks, nil];
+      max = [eventsForCalendar count];
+      for (count = 0; count < max; count++)
+      {
+        event = [eventsForCalendar objectAtIndex: count];
+        eventNbr = [NSNumber numberWithUnsignedInt: count];
+        isAllDay = [[event objectAtIndex: eventIsAllDayIndex] boolValue];
+        if (dayBasedView && isAllDay)
+          [self _fillBlocks: allDayBlocks withEvent: event withNumber: eventNbr];
+        else
+          [self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
+      }
+      max = [blocks count];
+      for (count = 0; count < max; count++)
+      {
+        currentDay = [blocks objectAtIndex: count];
+        [currentDay sortUsingSelector: @selector (compareEventByStart:)];
+        [self _addBlocksWidth: currentDay];
+      }
+      
+      [eventsByCalendars insertObject:eventsBlocks atIndex:i];
+    }
+    return [self _responseWithData: eventsByCalendars];
   }
-  
-  return [self _responseWithData: eventsBlocks];
-  //   timeIntervalSinceDate:
+  else
+  {
+    [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
+    eventsBlocks = [NSArray arrayWithObjects: events, allDayBlocks, blocks, nil];
+    max = [events count];
+    for (count = 0; count < max; count++)
+    {
+      event = [events objectAtIndex: count];
+      //      NSLog(@"***[UIxCalListingActions eventsBlocksAction] %i = %@ : %@ / %@ / %@", count,
+      //	    [event objectAtIndex: eventTitleIndex],
+      //	    [event objectAtIndex: eventStartDateIndex],
+      //	    [event objectAtIndex: eventEndDateIndex],
+      //	    [event objectAtIndex: eventRecurrenceIdIndex]);
+      eventNbr = [NSNumber numberWithUnsignedInt: count];
+      isAllDay = [[event objectAtIndex: eventIsAllDayIndex] boolValue];
+      if (dayBasedView && isAllDay)
+        [self _fillBlocks: allDayBlocks withEvent: event withNumber: eventNbr];
+      else
+        [self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
+    }
+    
+    max = [blocks count];
+    for (count = 0; count < max; count++)
+    {
+      currentDay = [blocks objectAtIndex: count];
+      [currentDay sortUsingSelector: @selector (compareEventByStart:)];
+      [self _addBlocksWidth: currentDay];
+    }
+    return [self _responseWithData: eventsBlocks];
+  }
 }
 
 - (NSString *) _getStatusClassForStatusCode: (int) statusCode
@@ -1206,6 +1273,30 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks reverseArray];
   
   return [self _responseWithData: filteredTasks];
+}
+
+- (WOResponse *) activeTasksAction
+{
+  NSMutableDictionary *activeTasksByCalendars;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolders *co;
+  NSArray *folders;
+  
+  int i;
+  
+  co = [self clientObject];
+  folders = [co subFolders];
+  activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity: [folders count]];
+
+  for (i = 0; i < [folders count]; i++)
+    {
+      folder = [folders objectAtIndex: i];
+      
+      [activeTasksByCalendars setObject: [folder activeTasks]
+                                 forKey: [folder nameInContainer]];
+  }
+  
+  return [self _responseWithData: activeTasksByCalendars];
 }
 
 @end

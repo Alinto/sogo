@@ -26,7 +26,7 @@ var firstDayOfWeek = window.opener.firstDayOfWeek;
 var printCompletedTasks=1;
 var printNoDueDateTasks=1;
 var eventsBlocks;
-var currentView;
+var currentPreview;
 var currentDay = window.parentvar("currentDay");
 var sd, ed;
 
@@ -38,7 +38,7 @@ function refreshContent() {
 }
 
 function updateDisplayView(data, newView) {
-  newView = ((newView) ? newView : currentView);
+  newView = ((newView) ? newView : currentPreview);
   var url = ApplicationBaseURL + "/" + newView;
   var day = null;
   
@@ -97,14 +97,50 @@ function previewDisplayCallback(http) {
     $("currentViewMenu").remove();
     $("listCollapse").remove();
     
-    // TODO : Month
-    _drawAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
-    _drawEvents(eventsBlocks[2], eventsBlocks[0]);
+    if (currentPreview == "multicolumndayview") {
+      _drawCalendarAllDayEvents(null, null, eventsBlocks);
+    }
+    else {
+      allDayEventsList = eventsBlocks[1];
+      if (currentPreview == "monthview") {
+        //_drawMonthCalendarEvents(eventsList, eventsBlocks[0], null);
+      }
+      else {
+        _drawCalendarAllDayEvents(allDayEventsList, eventsBlocks[0], null);
+      }
+    }
+    // This ensure the diplay working hours checkbox when switching views
+    var printHoursCheckBox = $("printHours");
+    onPrintWorkingHoursCheck(printHoursCheckBox);
+    
+    // Add events color for each calendars
+    addCalendarsColor();
   }
   else
     log ("calendarDisplayCallback Ajax error ("+ http.readyState + "/" + http.status + ")");
   
   return false;
+}
+
+function addCalendarsColor () {
+  var allCalendars = window.parent$("calendarList");
+  var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];
+  
+  for (var i = 0; i < allCalendars.children.length; i++) {
+    if (allCalendars.children[i].down("input").checked){
+      owner = allCalendars.children[i].getAttribute("owner");
+      folderName = allCalendars.children[i].getAttribute("id").substr(1);
+     
+      color = allColors[owner + ":Calendar/" + folderName];
+      if (!color) {
+        if(folderName.split("_")[1])
+          color = allColors[owner + ":Calendar/" + folderName.split("_")[1]];
+        else
+          color = "#AAAAAA";
+      }
+      appendStyleElement(folderName, color);
+    }
+  }
 }
 
 function refreshEvents() {
@@ -113,11 +149,11 @@ function refreshEvents() {
   if (!currentDay)
     currentDay = todayDate.getDayString();
   
-  if (currentView == "dayview") {
+  if (currentPreview == "dayview" || currentPreview == "multicolumndayview") { // dayView and MultiColumns View
     sd = currentDay;
     ed = sd;
   }
-  else if (currentView == "weekview") {
+  else if (currentPreview == "weekview") { // WeekView
     var startDate;
     startDate = currentDay.asDate();
     startDate = startDate.beginOfWeek();
@@ -144,7 +180,7 @@ function refreshEvents() {
     document.refreshEventsAjaxRequest.abort();
   }
   var url = (ApplicationBaseURL + "/eventsblocks?sd=" + sd + "&ed=" + ed
-             + "&view=" + currentView);
+             + "&view=" + currentPreview);
   
   document.refreshEventsAjaxRequest
   = triggerAjaxRequest(url, refreshEventsCallback,
@@ -157,9 +193,13 @@ function refreshTasks(){
     document.tasksListAjaxRequest.abort();
   }
   
+  var taskListFilter = window.parentvar("taskListFilter");
   url = window.parentvar("ApplicationBaseURL") + "/" + "taskslist?show-completed=" + printCompletedTasks
   + "&asc=" + sorting["task-ascending"]
-  + "&sort=" + sorting["task-attribute"];
+  + "&sort=" + sorting["task-attribute"]
+  + "&filterpopup=" + taskListFilter;
+  
+  // TODO : Is that really necessary ?
   var tasksList = window.parent$("tasksList");
   var selectedIds;
   if (tasksList)
@@ -176,11 +216,13 @@ function refreshEventsCallback(http) {
     if (http.responseText.length > 0) {
       eventsBlocks = http.responseText.evalJSON(true);
       $("rightFrameEvents").innerHTML = "";
-      if ($("printLayoutList").value == "0")
+      if ($("printLayoutList").value == "0" && eventsBlocks.length > 0) {
         _drawEventsCells(eventsBlocks);
-      else {
-        updateDisplayView(null, currentView);
       }
+      else {
+        updateDisplayView(null, currentPreview);
+      }
+      adjustFrames();
     }
   }
   else
@@ -193,8 +235,10 @@ function refreshTasksListCallback(http) {
     if (http.responseText.length > 0) {
       var tasksBlocks = http.responseText.evalJSON(true);
       $("rightFrameTasks").innerHTML = "";
-      var layout = $("printLayoutList").value;
-      _drawTasksCells(tasksBlocks);
+      if (tasksBlocks.length > 0) {
+        _drawTasksCells(tasksBlocks);
+        adjustFrames();
+      }
     }
   }
   else
@@ -204,10 +248,21 @@ function refreshTasksListCallback(http) {
 function _drawEventsCells(eventsBlocks) {
   var events = _("Events");
   $("rightFrameEvents").insert("<h3>"+events+"</h3>");
-  for(var i=0; i < eventsBlocks[0].length; i++)
-  {
-    var event = _parseEvent(eventsBlocks[0][i]);
-    $("rightFrameEvents").insert(event);
+  if (currentPreview == "multicolumndayview") {
+    for(var i=0; i < eventsBlocks.length; i++) // calendars
+    {
+      for (var j = 0; j < eventsBlocks[i][0].length; j++) {
+        var event = _parseEvent(eventsBlocks[i][0][j]);
+        $("rightFrameEvents").insert(event);
+      }
+    }
+  }
+  else {
+    for(var i=0; i < eventsBlocks[0].length; i++)
+    {
+      var event = _parseEvent(eventsBlocks[0][i]);
+      $("rightFrameEvents").insert(event);
+    }
   }
 }
 
@@ -225,44 +280,113 @@ function _drawTasksCells(tasksBlocks) {
 
 // TODO : Maybe use the drawfunction from the schedulerUI.js
 
-function _drawEvents(events, eventsData) {
+function _drawCalendarEvents(events, eventsData, columnsData) {
   var daysView = $("daysView");
   var subdivs = daysView.childNodesWithTag("div");
+  var printHoursCheckBox = $("printHours");
   for (var i = 0; i < subdivs.length; i++) {
     var subdiv = subdivs[i];
     if (subdiv.hasClassName("days")) {
       var days = subdiv.childNodesWithTag("div");
-      for (var j = 0; j < days.length; j++) {
-        var parentDiv = days[j].childNodesWithTag("div")[0];
-        for (var k = 0; k < events[j].length; k++) {
-          var eventRep = events[j][k];
-          var nbr = eventRep.nbr;
-          var eventCell = newEventDIV(eventRep, eventsData[nbr]);
-          parentDiv.appendChild(eventCell);
+      if (currentPreview == "multicolumndayview") {
+        for (var j = 0; j < days.length; j++) {
+          var parentDiv = days[j].childNodesWithTag("div")[0];
+          var calendar = columnsData[j];
+          var calendarEvents = calendar[2][0];
+          var calendarEventsData = calendar[0];
+          if (parentDiv.getElementsByClassName("event").length > 0) {
+            var oldEvents = parentDiv.getElementsByClassName("event");
+            var length = oldEvents.length - 1;
+            for (var x = length; x >= 0; x--){
+              oldEvents[x].remove();
+            }
+          }
+          for (var k = 0; k < calendarEvents.length; k++) {
+            var eventRep = calendarEvents[k];
+            var nbr = eventRep.nbr;
+            
+            if (printHoursCheckBox.checked) {
+              var offset = _computeOffset(parentDiv);
+              if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
+                var eventCell = newEventDIV(eventRep, calendarEventsData[nbr], offset[0]);
+                parentDiv.appendChild(eventCell);
+              }
+            }
+            else {
+              var eventCell = newEventDIV(eventRep, calendarEventsData[nbr], null);
+              parentDiv.appendChild(eventCell);
+            }
+          }
+        }
+      }
+      else {
+        for (var j = 0; j < days.length; j++) {
+          var parentDiv = days[j].childNodesWithTag("div")[0];
+          if (parentDiv.getElementsByClassName("event").length > 0) {
+            var oldEvents = parentDiv.getElementsByClassName("event");
+            var length = oldEvents.length - 1;
+            for (var x = length; x >= 0; x--){
+              oldEvents[x].remove();
+            }
+          }
+          for (var k = 0; k < events[j].length; k++) {
+            var eventRep = events[j][k];
+            var nbr = eventRep.nbr;
+            if (printHoursCheckBox.checked) {
+              var offset = _computeOffset(parentDiv);
+              if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
+                var eventCell = newEventDIV(eventRep, eventsData[nbr], offset[0]);
+                parentDiv.appendChild(eventCell);
+              }
+            }
+            else {
+              var eventCell = newEventDIV(eventRep, eventsData[nbr], null);
+              parentDiv.appendChild(eventCell);
+            }
+          }
         }
       }
     }
   }
 }
 
-function _drawAllDayEvents(events, eventsData) {
+function _drawCalendarAllDayEvents(events, eventsData, columnsData) {
   var headerView = $("calendarHeader");
   var subdivs = headerView.childNodesWithTag("div");
-  var days = subdivs[1].childNodesWithTag("div");
-  for (var i = 0; i < days.length; i++) {
-    var parentDiv = days[i];
-    for (var j = 0; j < events[i].length; j++) {
-      var eventRep = events[i][j];
-      var nbr = eventRep.nbr;
-      var eventCell = newAllDayEventDIV(eventRep, eventsData[nbr]);
-      parentDiv.appendChild(eventCell);
+  
+  if (currentPreview == "multicolumndayview"){
+    var days = subdivs[2].childNodesWithTag("div");
+    for (var i = 0; i < days.length; i++) {
+      var parentDiv = days[i];
+      var calendar = columnsData[i];
+      var calendarAllDayEvents = calendar[1][0];
+      var calendarAllDayEventsData = calendar[0];
+      for (var j = 0; j < calendarAllDayEvents.length; j++) {
+        var eventRep = calendarAllDayEvents[j];
+        var nbr = eventRep.nbr;
+        var eventCell = newAllDayEventDIV(eventRep, calendarAllDayEventsData[nbr]);
+        parentDiv.appendChild(eventCell);
+      }
     }
   }
+  else {
+    var days = subdivs[1].childNodesWithTag("div");
+    for (var i = 0; i < days.length; i++) {
+      var parentDiv = days[i];
+      for (var j = 0; j < events[i].length; j++) {
+        var eventRep = events[i][j];
+        var nbr = eventRep.nbr;
+        var eventCell = newAllDayEventDIV(eventRep, eventsData[nbr]);
+        parentDiv.appendChild(eventCell);
+      }
+    }
+  }
+  adjustPreviewHeader();
 }
 
 // todo : month
 
-function newEventDIV(eventRep, event) {
+function newEventDIV(eventRep, event, offset) {
   var eventCell = newBaseEventDIV(eventRep, event, event[4]);
   
   var pc = 100 / eventRep.siblings;
@@ -270,7 +394,12 @@ function newEventDIV(eventRep, event) {
   eventCell.style.left = left + "%";
   var right = Math.floor(100 - (eventRep.position + 1) * pc);
   eventCell.style.right = right + "%";
-  eventCell.addClassName("starts" + eventRep.start);
+  if (offset != null) {
+    eventCell.addClassName("starts" + (eventRep.start - offset));
+  }
+  else {
+    eventCell.addClassName("starts" + eventRep.start);
+  }
   eventCell.addClassName("lasts" + eventRep.length);
   
   if (event[7]) {
@@ -376,6 +505,17 @@ function newBaseEventDIV(eventRep, event, eventText) {
   return eventCell;
 }
 
+function appendStyleElement(folderPath, color) {
+  if (document.styleSheets) {
+    var fgColor = getContrastingTextColor(color);
+    var styleElement = document.styleSheets[3];
+    
+    styleElement.insertRule(".calendarFolder" + folderPath +
+                            "{background-color: " + color + " !important;" +
+                            " color: " + fgColor + " !important;}", styleElement.cssRules.length);
+  }
+}
+
 function _parseEvent(event) {
   // Localized strings :
   var start = _("Start:");
@@ -424,6 +564,29 @@ function _parseTask(task) {
   parsedTask += "</table></div>";
   
   return parsedTask;
+}
+
+function _computeOffset(hoursCells) {
+  var outOfDayCells = hoursCells.getElementsByClassName("outOfDay");
+  var count = 1;
+  var offset = [];
+  var buffer;
+  var j = 1;
+  for (var i = 0; i < outOfDayCells.length; i++) {
+    hourCell1 = parseInt(outOfDayCells[i].getAttribute("hour")) + 100;
+    hourCell2 = parseInt(outOfDayCells[j].getAttribute("hour"));
+    if (hourCell1 == hourCell2) {
+      count += 1;
+    }
+    else {
+      break;
+    }
+    j ++;
+  }
+  offset.push(count * 4);
+  offset.push((hourCell2 / 100 * 4) - (count * 4));
+  
+  return offset;
 }
 
 /************************************** Preview Navigation *****************************************/
@@ -481,74 +644,157 @@ function dateSelectorCallback(http) {
   return false;
 }
 
-/*********************** Input Field, Checkboxes, Radio and listMenu *********************************/
+/*********************** Input Field, listMenu, Checkboxes and Radio *********************************/
 
 function onInputTitleChange(event){
   var inputFieldTitle = $("inputFieldTitle").value;
   if (inputFieldTitle)
     document.getElementById("rightFrameTitle").innerHTML = inputFieldTitle + "<br />";
   else
-    document.getElementById("rightFrameTitle").innerHTML = inputFieldTitle;
+    document.getElementById("rightFrameTitle").remove();
+  
+  return false;
 }
 
 function onPrintLayoutListChange() {
-  var selectedLayout = $("printLayoutList").value;
   var parentView = window.parentvar("currentView");
+  var selectedLayout = $("printLayoutList").value;
+  document.getElementById("printHours").disabled = (selectedLayout == 0);
   switch(selectedLayout) {
     case "0": // List view
       window.resizeTo(700,500);
-      currentView = parentView;
-      ajustFrames();
+      currentPreview = parentView;
       break;
       
     case "1": // Day view
       window.resizeTo(1010,500);
-      currentView = "dayview";
-      ajustFrames(currentView);
+      currentPreview = "dayview";
       break;
-      
-    case "2": // Week view
+    
+    case "2": // Multi-columns view
       window.resizeTo(1010,500);
-      currentView = "weekview";
-      ajustFrames(currentView);
+      currentPreview = "multicolumndayview";
       break;
       
-      //todo : month
+    case "3": // Week view
+      window.resizeTo(1010,500);
+      currentPreview = "weekview";
+      break;
+    
+    /*case "4": // Month view
+      window.resizeTo(1010,500);
+      currentPreview = "monthview";
+      break;*/
   }
-  
   refreshContent();
+  return false;
 }
 
-function ajustFrames(view) {
-  if (view == "dayview" || view == "weekview") {
+function adjustPreviewHeader() {
+  // 1 - Check if there is any allDay Events. If not reduce the space taken
+  var selectedLayout = $("printLayoutList").value;
+  if (selectedLayout != 0) {
+    var calendarHeader = $("calendarHeader");
+    var allDayDisplay = $("calendarHeader").getElementsByClassName("days");
+    var allDayEvents = $("calendarHeader").getElementsByClassName("eventInside");
+    var eventHeight = 22;
+    var headerHeight = 38;
+    if (selectedLayout == 1) { // Since there is only one column in day view
+      height = allDayEvents.length * eventHeight;
+    }
+    else { // Applies only on week view and multi-columns view
+      var nbEventsMax = 0
+      var eventClass = $("calendarHeader").getElementsByClassName("event");
+      for (var i = 0; i < allDayDisplay[0].childNodes.length; i++) {
+        if (allDayDisplay[0].childNodes[i].firstChild != null) {
+          count = allDayDisplay[0].childNodes[i].getElementsByClassName("event").length;
+          if (count > nbEventsMax) {
+            nbEventsMax = count;
+          }
+        }
+      }
+      height = nbEventsMax * eventHeight;
+      if (selectedLayout == 2) {
+        headerHeight = 58;
+        adjustMultiColumnCalendarHeaderDIV();
+      }
+    }
+    calendarHeader.style.height = (height + headerHeight) + "px";
+    allDayDisplay[0].style.height = height + "px";
+  }
+}
+
+function adjustMultiColumnCalendarHeaderDIV() {
+  var ch = $("calendarHeader");
+  var calendarLabels = ch.getElementsByClassName("calendarLabels")[0];
+  var calendarsToDisplay = calendarLabels.getElementsByClassName("calendarsToDisplay");
+  var dayLabels = ch.getElementsByClassName("dayLabels")[0].getElementsByClassName("dayColumn")[0];
+  var days = ch.getElementsByClassName("days")[0].getElementsByClassName("dayColumn");
+  var daysView = $("daysView").getElementsByClassName("dayColumn");
+  
+  var nbCalendars = calendarsToDisplay.length;
+  
+  if (nbCalendars > 0) {
+    var width = 100/nbCalendars;
+    var left = 0;
+    var position = "absolute";
+    for(var i=0; i < nbCalendars; i++){
+    	calendarsToDisplay[i].setStyle({ width: width + '%', left: left + '%', position: position}).show();
+    	days[i].setStyle({ width: width + '%', left: left + '%'}).show();
+    	daysView[i].setStyle({ width: width + '%', left: left + '%'}).show();
+      left += width;
+    }
+    dayLabels.setStyle({ width: '100%'}).show();
+  }
+  else {
+    $("calendarHeader").remove();
+    $("daysView").remove();
+    var htmlText = "<div class='alert-box notice'><span>" + _("notice:") + "</span>"+_("Please go ahead and select calendars")+"</div>";
+    $("calendarContent").innerHTML = htmlText;
+  }
+}
+
+function adjustFrames() {
+  var view = $("printLayoutList").value;
+  if (view == 0) {
+    var eventsCheckBox = $("printEvents");
+    var tasksCheckBox = $("printTasks");
+    onEventsCheck(eventsCheckBox);
+    onTasksCheck(tasksCheckBox);
+    document.getElementById("rightFrameTasks").style.pageBreakBefore = 'auto';
+    document.getElementById("rightFrameTasks").style.pageBreakInside = 'auto';
+  }
+  else {
     document.getElementById("rightFrameEvents").style.width = '100%';
     document.getElementById("rightFrameTasks").style.width = '100%';
     document.getElementById("rightFrameTasks").style.pageBreakBefore = 'always';
     document.getElementById("rightFrameTasks").style.pageBreakInside = 'avoid';
-    
   }
-  else {
-    document.getElementById("rightFrameEvents").style.width = '49.5%';
-    document.getElementById("rightFrameTasks").style.width = '49.5%';
-    document.getElementById("rightFrameTasks").style.pageBreakBefore = 'auto';
-    document.getElementById("rightFrameTasks").style.pageBreakInside = 'auto';
-  }
-  
+  return false;
 }
 
 function onEventsCheck(checkBox) {
-  if(checkBox.checked){
-    document.getElementById("rightFrameEvents").style.display = 'block';
+  var printOptions = document.getElementById("printHours");
+  var selectedLayout = $("printLayoutList").value;
+  if (!checkBox.checked || selectedLayout == 0)
+    printOptions.disabled = true;
+  else
+    printOptions.disabled = false;
+  
+  var events = $("rightFrameEvents").childNodesWithTag("DIV");
+  if(checkBox.checked && events.length > 0){
+    $("rightFrameEvents").style.display = 'block';
     if ($("printLayoutList").value == 0){
-      document.getElementById("rightFrameTasks").style.width = '49.5%';
+      $("rightFrameTasks").style.width = '49.5%';
     }
   }
   else {
-    document.getElementById("rightFrameEvents").style.display = 'none';
+    $("rightFrameEvents").style.display = 'none';
     if ($("printLayoutList").value == 0){
-      document.getElementById("rightFrameTasks").style.width = '100%';
+      $("rightFrameTasks").style.width = '100%';
     }
   }
+  return false;
 }
 
 function onTasksCheck(checkBox) {
@@ -556,18 +802,58 @@ function onTasksCheck(checkBox) {
   for (var i = 0; i < printOptions.length; i++)
     printOptions[i].disabled = !checkBox.checked;
   
-  if(checkBox.checked) {
-    document.getElementById("rightFrameTasks").style.display = 'block';
+  var tasks = $("rightFrameTasks").childNodesWithTag("DIV");
+  if(checkBox.checked && tasks.length > 0) {
+    $("rightFrameTasks").style.display = 'block';
     if ($("printLayoutList").value == 0){
-      document.getElementById("rightFrameEvents").style.width = '49.5%';
+      $("rightFrameEvents").style.width = '49.5%';
     }
   }
   else {
-    document.getElementById("rightFrameTasks").style.display = 'none';
+    $("rightFrameTasks").style.display = 'none';
     if ($("printLayoutList").value == 0){
-      document.getElementById("rightFrameEvents").style.width = '100%';
+      $("rightFrameEvents").style.width = '100%';
     }
   }
+  return false;
+}
+
+function onPrintWorkingHoursCheck(checkBox) {
+  var isCheked = checkBox.checked;
+  var outOfDayCells = $$("DIV#daysView .outOfDay");
+  var hours = $$("DIV#daysView .hour");
+  var hoursOutOfDay = [];
+  for (var i = 0; i < outOfDayCells.length; i++) {
+    var buffer = outOfDayCells[i].getAttribute("hour").substr(0,1);
+    if (buffer != "0") {
+      buffer += outOfDayCells[i].getAttribute("hour").substr(1,1);
+    }
+    else {
+      buffer = outOfDayCells[i].getAttribute("hour").substr(1,1);
+    }
+    if(isCheked) {
+      outOfDayCells[i].hide();
+      hours[buffer].hide();
+    }
+    else {
+      outOfDayCells[i].show();
+      hours[buffer].show();
+    }
+  }
+  
+  if (currentPreview == "multicolumndayview") {
+    _drawCalendarEvents(null, null, eventsBlocks);
+  }
+  else {
+    eventsList = eventsBlocks[2];
+    if (currentPreview == "monthview") {
+      //_drawMonthCalendarEvents(eventsList, eventsBlocks[0], null);
+    }
+    else {
+      _drawCalendarEvents(eventsList, eventsBlocks[0], null);
+    }
+  }
+  return false;
 }
 
 /*function onPrintDateCheck() {
@@ -580,12 +866,12 @@ function onTasksCheck(checkBox) {
 
 function onPrintCompletedTasksCheck(checkBox) {
   printCompletedTasks = (checkBox.checked ? 1 : 0);
-  refreshTasks();
+  refreshContent();
 }
 
 function onPrintNoDueDateTasksCheck(checkBox) {
   printNoDueDateTasks = (checkBox.checked ? 1 : 0);
-  refreshTasks();
+  refreshContent();
 }
 
 /************** Date picker functions *************
@@ -633,7 +919,6 @@ function onPrintClick(event) {
 /**************************** Initialization *******************************************/
 
 function init() {
-  
   initializePrintSettings();
   //initializeWhatToPrint();
   //initializeOptions();
@@ -661,6 +946,6 @@ function initializePrintSettings() {
  }*/
 
 /*function initializeOptions() {
- }*/
+}*/
 
 document.observe("dom:loaded", init);

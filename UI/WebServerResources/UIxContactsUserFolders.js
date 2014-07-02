@@ -164,9 +164,9 @@ function foldersSearchCallback(http) {
 
             dd.innerHTML = '';
             for (var i = 1; i < folders.length - 1; i++)
-                dd.appendChild (addFolderBranchToTree(d, user, folders[i], nodeId, i, false));
-            dd.appendChild (addFolderBranchToTree(d, user, folders[folders.length-1], nodeId,
-                                                  (folders.length - 1), true));
+                dd.appendChild(addFolderBranchToTree(d, user, folders[i], nodeId, i, false));
+            dd.appendChild(addFolderBranchToTree(d, user, folders[folders.length-1], nodeId,
+                                                 (folders.length - 1), true));
             //dd.update(str);
             for (var i = 1; i < folders.length; i++) {
                 var sd = $("sd" + (nodeId + i));
@@ -193,13 +193,8 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
         icon += 'calendar-folder-16x16.png';
     var folderId = user + ":" + folderInfos[1].substr(1);
 
-    // name has the format "Foldername (Firstname Lastname <email>)"
     // We sanitize the value to avoid XSS issues
-    var name = folderInfos[0].escapeHTML(); 
-
-    var pos = name.lastIndexOf(' (');
-    if (pos > -1)
-        name = name.substring(0, pos); // strip the part with fullname and email
+    var name = folderInfos[0].escapeHTML();
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
                              folderInfos[2] + '-folder', '', '', icon, icon);
     node._ls = isLast;
@@ -223,25 +218,19 @@ function onConfirmFolderSelection(event) {
             var node = topNode.selectedEntry.parentNode;
             var folder = node.getAttribute("dataname");
             var type = node.getAttribute("datatype");
-
             var folderName;
             if (window.opener.userFolderType == "user") {
-                var span = $(topNode.selectedEntry).down("SPAN.nodeName");
-                var email = (span.innerHTML
-                             .replace("&lt;", "<", "g")
-                             .replace("&gt;", ">", "g"));
-                folderName = email.replace(/>,.*$/, ">", "g");
+                var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
+                var description = (resource.innerHTML
+                                   .replace("&lt;", "<", "g")
+                                   .replace("&gt;", ">", "g"));
+                folderName = description.replace(/>,.*$/, ">", "g");
             }
             else {
                 var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
-                var user = $(node.parentNode.previousSibling).down("SPAN.nodeName");
-                var email = (user.innerHTML
-                             .replace("&lt;", "<", "g")
-                             .replace("&gt;", ">", "g"));
                 folderName = resource.innerHTML;
                 folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
             }
-
             var data = { folderName: folderName, folder: folder, type: type, window: window };
             if (parent$(accessToSubscribedFolder(folder)))
                 window.alert(_("You have already subscribed to that folder!"));

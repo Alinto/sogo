@@ -294,9 +294,12 @@ static NSMapTable *contextsTable = nil;
       if ([parts count] == 5)
         {
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
-             parts in this url. */
+             parts in this url. We strip the '-' character in case we have
+             this in the domain part - like foo@bar-zot.com */
           ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [username asCSSIdentifier]];
+                                    [[[user loginInDomain] asCSSIdentifier] 
+                                      stringByReplacingOccurrencesOfString: @"-"
+                                                                withString: @"_"]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];

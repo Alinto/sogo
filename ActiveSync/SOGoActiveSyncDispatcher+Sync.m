@@ -123,8 +123,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
   
+  [[o properties] removeObjectForKey: @"SyncKey"];
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
+  [[o properties] removeObjectForKey: @"MoreAvailable"];
 
   [[o properties] addEntriesFromDictionary: theFolderMetadata];
   [o save];
@@ -476,19 +478,69 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                  lastServerKey: (NSString **) theLastServerKey
 
 {
+  NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
   NSMutableString *s;
   
   BOOL more_available;
   int i, max;
 
+  s = [NSMutableString string];
+
+  more_available = NO;
+
+  if (theFolderType == ActiveSyncMailFolder && !([theSyncKey isEqualToString: @"-1"]) && theFilterType)
+    {
+      NSArray *allKeys;
+      NSString *key;
+      int softdelete_count;
+
+      softdelete_count = 0;
+          
+      folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
+      dateCache = [folderMetadata objectForKey: @"DateCache"];
+      syncCache = [folderMetadata objectForKey: @"SyncCache"];
+          
+      allKeys = [dateCache allKeys];
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          key = [allKeys objectAtIndex: i];
+              
+          if ([[dateCache objectForKey:key] compare: theFilterType] == NSOrderedAscending)
+            {
+              [s appendString: @"<SoftDelete xmlns=\"AirSync:\">"];
+              [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", key];
+              [s appendString: @"</SoftDelete>"];
+              
+              [syncCache removeObjectForKey: key];
+              [dateCache removeObjectForKey: key];
+              
+              softdelete_count++;
+            }
+          
+          if (softdelete_count >= theWindowSize)
+            {
+              [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+              [self _setFolderMetadata: folderMetadata forKey: [theCollection nameInContainer]];
+              
+              more_available = YES;
+              *theLastServerKey = theSyncKey;
+              
+              // Since WindowSize is reached don't even try to add more to the response, let's just
+              // jump to the end and return the response immediately
+              goto return_response;
+          }
+        }
+          
+      [folderMetadata removeObjectForKey: @"MoreAvailable"];
+      [self _setFolderMetadata: folderMetadata forKey: [theCollection nameInContainer]];
+    }
+  
   //
   // No changes in the collection - 2.2.2.19.1.1 Empty Sync Request.
   // We check this and we don't generate any commands if we don't have to.
   //
-  if ([theSyncKey isEqualToString: [theCollection davCollectionTag]])
+  if ([theSyncKey isEqualToString: [theCollection davCollectionTag]] && !([s length]))
     return;
-  
-  s = [NSMutableString string];
   
   more_available = NO;
 
@@ -602,12 +654,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Add>"];
               }
           } // for ...
+
+        folderMetadata = [NSDictionary dictionaryWithObject: [theCollection davCollectionTag]
+                                                     forKey: @"SyncKey"];
+        [self _setFolderMetadata: folderMetadata
+                          forKey: [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]]];
       }
       break;
     case ActiveSyncMailFolder:
     default:
       {
-        NSMutableDictionary *syncCache, *dateCache, *folderMetadata;
         SOGoSyncCacheObject *lastCacheObject, *aCacheObject;
         NSMutableArray *allCacheObjects, *sortedBySequence;
 
@@ -637,6 +693,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
           }
+        
         // Check whether GUID in cache is equal to the GUID from imap - this is to avoid cache corruptions if a folder has been renamed and a new folder
         // with the same name has been created but folderSync has not yet updated the cache
         if (!([[theCollection nameInContainer] isEqualToString: 
@@ -782,16 +839,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
 
         if (more_available)
-          [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+          {
+            [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+            [folderMetadata setObject: *theLastServerKey  forKey: @"SyncKey"];
+          }
         else
-          [folderMetadata removeObjectForKey: @"MoreAvailable"];
+          {
+            [folderMetadata removeObjectForKey: @"MoreAvailable"];
+            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+          }
         
-
         [self _setFolderMetadata: folderMetadata
                           forKey: [theCollection nameInContainer]];
       } // default:
       break;
     } // switch (folderType) ...
+  
+ return_response:
   
   if ([s length])
     {
@@ -995,7 +1059,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if (folderType == ActiveSyncMailFolder && [syncKey isEqualToString: @"-1"])
         davCollectionTag = [collection davCollectionTag];
     }
-
 
   // Generate the response buffer
   [theBuffer appendString: @"<Collection>"];

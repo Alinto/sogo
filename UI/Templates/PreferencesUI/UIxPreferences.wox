@@ -299,7 +299,8 @@
               <dd><input type="checkbox"
                     const:name="addOutgoingAddresses"
                     const:id="addOutgoingAddresses"
-                    var:checked="addOutgoingAddresses" />
+                    var:checked="addOutgoingAddresses"
+                    onChange = "onAddOutgoingAddressesCheck(this);"/>
                     <var:string label:value="When sending mail, add unknown recipients to my"/><br/>
                     <var:popup list="addressBookList" item="item"
                          const:id="addressBookList"

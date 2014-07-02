@@ -72,7 +72,7 @@
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR(255) PRIMARY KEY,"
        @" c_parent_path VARCHAR(255),"
-       @" c_type TINYINT NOT NULL,"
+       @" c_type TINYINT UNSIGNED NOT NULL,"
        @" c_creationdate INT NOT NULL,"
        @" c_lastmodified INT NOT NULL,"
        @" c_version INT NOT NULL DEFAULT 0,"
