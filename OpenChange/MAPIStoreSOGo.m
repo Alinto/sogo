@@ -58,7 +58,7 @@ static BOOL initialization_done = NO;
 #define NS_CURRENT_THREAD_REGISTER() \
     BOOL __nsrct_thread_registered = GSRegisterCurrentThread(); \
     if (!initialization_done) { \
-        DEBUG(0, ("[SOGo: %s:%d] You should call sogo_backend_init() first. Current thread: %p, pid: %d\n", \
+        DEBUG(5, ("[SOGo: %s:%d] You should call sogo_backend_init() first. Current thread: %p, pid: %d\n", \
 		  __FUNCTION__, __LINE__, GSCurrentThread(), getpid())); \
     }
 #define NS_CURRENT_THREAD_TRY_UNREGISTER() \
