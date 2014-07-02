@@ -53,18 +53,17 @@
 
 static Class MAPIStoreContextK = Nil;
 static BOOL leakDebugging = NO;
+static BOOL initialization_done = NO;
 
 #define NS_CURRENT_THREAD_REGISTER() \
     BOOL __nsrct_thread_registered = GSRegisterCurrentThread(); \
-    if (__nsrct_thread_registered) { \
-        DEBUG(0, ("[SOGo: %s:%d] Current Thread not registered! You should call sogo_backend_init() first. Current thread: %p, pid: %d\n", \
+    if (!initialization_done) { \
+        DEBUG(0, ("[SOGo: %s:%d] You should call sogo_backend_init() first. Current thread: %p, pid: %d\n", \
 		  __FUNCTION__, __LINE__, GSCurrentThread(), getpid())); \
     }
 #define NS_CURRENT_THREAD_TRY_UNREGISTER() \
     if (__nsrct_thread_registered) { \
-        DEBUG(0, ("[SOGo: %s:%d] Unregister current thread. You should have called sogo_backend_init().  Current thread: %p, pid: %d\n", \
-		  __FUNCTION__, __LINE__, GSCurrentThread(), getpid())); \
-	GSUnregisterCurrentThread(); \
+        GSUnregisterCurrentThread(); \
     }
 
 #define TRYCATCH_START @try {
@@ -140,15 +139,15 @@ sogo_backend_init (void)
   Class MAPIApplicationK;
   NSUserDefaults *ud;
   SoProductRegistry *registry;
-  static BOOL moduleInitialized = NO;
   char *argv[] = { SAMBA_PREFIX "/sbin/samba", NULL };
 
-  if (moduleInitialized) {
+  GSRegisterCurrentThread();
+
+  if (initialization_done) {
       DEBUG(0, ("SOGo backend already initialized.\n"));
       return MAPISTORE_SUCCESS;
   }
 
-  GSRegisterCurrentThread ();
   pool = [NSAutoreleasePool new];
 
   /* Here we work around a bug in GNUstep which decodes XML user
@@ -191,7 +190,7 @@ sogo_backend_init (void)
   [pool release];
 
   DEBUG(0, ("[SOGo: %s:%d] backend init SUCCESS. Current thread: %p, pid: %d\n", __FUNCTION__, __LINE__, GSCurrentThread(), getpid()));
-  moduleInitialized = YES;
+  initialization_done = YES;
 
   return MAPISTORE_SUCCESS;
 }
