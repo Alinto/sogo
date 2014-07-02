@@ -19,7 +19,7 @@ Bug fixes
  - fixed regression when attaching files to a reply
  - wait 20 seconds (instead of 2) before deleting temporary download forms (#2811)
  - avoid raising exceptions when the db is down and we try to access the preferences module (#2813)
- - we now ignore the SCHEDULE-AGENT property when Thunderbird/Ligthning sends it to avoid
+ - we now ignore the SCHEDULE-AGENT property when Thunderbird/Lightning sends it to avoid
    not-generating invitation responses for externally received IMIP messages
  - improved charset handling over ActiveSync (#2810)
 
