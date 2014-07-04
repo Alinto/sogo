@@ -2068,27 +2068,31 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
 }
 
 function newEventDIV(eventRep, event) {
-    var eventCell = newBaseEventDIV(eventRep, event, event[4]);
-
-    var pc = 100 / eventRep.siblings;
-    var left = Math.floor(eventRep.position * pc);
-    eventCell.style.left = left + "%";
-    var right = Math.floor(100 - (eventRep.position + 1) * pc);
-    eventCell.style.right = right + "%";
-    eventCell.addClassName("starts" + eventRep.start);
-    eventCell.addClassName("lasts" + eventRep.length);
-
-    if (event[7]) {
-        var inside = eventCell.childNodesWithTag("div")[0];
-        var textDiv = inside.childNodesWithTag("div")[1];
-        textDiv.appendChild(createElement("br"));
-        var span = createElement("span", null, "location");
-        var text = _("Location:") + " " + event[7];
-        span.update(text);
-        textDiv.appendChild(span);
-    }
-
-    return eventCell;
+  var eventCell = newBaseEventDIV(eventRep, event, event[4]);
+  
+  var pc = 100 / eventRep.siblings;
+  var left = eventRep.position * pc;
+  eventCell.style.left = left + "%";
+  var right = 100 - (eventRep.position + 1) * pc;
+  
+  if (event[10] != null) {
+    eventCell.style.borderRight = "8px solid";
+  }
+  eventCell.style.right = right + "%";
+  eventCell.addClassName("starts" + eventRep.start);
+  eventCell.addClassName("lasts" + eventRep.length);
+  
+  if (event[7]) {
+    var inside = eventCell.childNodesWithTag("div")[0];
+    var textDiv = inside.childNodesWithTag("div")[1];
+    textDiv.appendChild(createElement("br"));
+    var span = createElement("span", null, "location");
+    var text = _("Location:") + " " + event[7];
+    span.update(text);
+    textDiv.appendChild(span);
+  }
+  
+  return eventCell;
 }
 
 function _drawMonthCalendarEvents(events, eventsData) {
