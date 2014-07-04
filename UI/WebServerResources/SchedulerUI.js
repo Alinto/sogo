@@ -2075,7 +2075,7 @@ function newEventDIV(eventRep, event) {
   eventCell.style.left = left + "%";
   var right = 100 - (eventRep.position + 1) * pc;
   if (event[10] != null)
-    eventCell.style.borderRight = "8px solid";
+    eventCell.style.borderRight = "8px solid white";
   
   eventCell.style.right = right + "%";
   eventCell.addClassName("starts" + eventRep.start);
@@ -2118,7 +2118,7 @@ function newMonthEventDIV(eventRep, event) {
   var eventCell = newBaseEventDIV(eventRep, event,
                                   eventText);
   if (event[10] != null)
-    eventCell.style.borderRight = "8px solid";
+    eventCell.style.borderRight = "8px solid white";
   
   return eventCell;
 }
