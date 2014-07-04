@@ -41,6 +41,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -636,6 +637,23 @@ static NSArray *reminderValues = nil;
 - (BOOL) busyOffHours
 {
   return [userDefaults busyOffHours];
+}
+
+- (void) setPreventInvitations: (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  
+  us = [user userSettings];
+  [us setBool: preventInvitations forKey: @"PreventInvitations"];
+  [us synchronize];
+}
+
+- (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  us = [user userSettings];
+  
+  return [[us objectForKey: @"PreventInvitations"] boolValue];
 }
 
 - (NSArray *) firstWeekList

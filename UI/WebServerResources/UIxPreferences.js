@@ -9,6 +9,9 @@ function savePreferences(sender) {
   if (sigList)
     sigList.disabled = false;
   
+ // if ($("appointmentsWhiteListWrapper"))
+ //   serializeAppointmentsWhiteList();
+  
   if ($("calendarCategoriesListWrapper"))
     serializeCalendarCategories();
   
@@ -201,97 +204,110 @@ function addDefaultEmailAddresses(event) {
 }
 
 function initPreferences() {
-    var tabsContainer = $("preferencesTabs");
-    var controller = new SOGoTabsController();
-    controller.attachToTabsContainer(tabsContainer);
-
-    // Inner tabs on the mail module tab
-    tabsContainer = $('mailOptionsTabs');
-    if (tabsContainer) {
-        var mailController = new SOGoTabsController();
-        mailController.attachToTabsContainer(tabsContainer);
-    }
-
-    _setupEvents();
-
-    // Optional function called when initializing the preferences
-    // Typically defined inline in the UIxAdditionalPreferences.wox template
-    if (typeof (initAdditionalPreferences) != "undefined")
-        initAdditionalPreferences();
-
-    // Color picker
-    $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
-    $(document.body).on("click", onBodyClickHandler);
-
-    // Calender categories
-    var wrapper = $("calendarCategoriesListWrapper");
-    if (wrapper) {
-        var table = wrapper.childNodesWithTag("table")[0];
-        resetCalendarCategoriesColors(null);
-        var r = $$("#calendarCategoriesListWrapper tbody tr");
-        for (var i= 0; i < r.length; i++)
-            r[i].identify();
-        table.multiselect = true;
-        resetCalendarTableActions();
-        $("calendarCategoryAdd").observe("click", onCalendarCategoryAdd);
-        $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
-        wrapper.observe("scroll", onBodyClickHandler);
-    }
-
-    // Mail labels/tags
-    var wrapper = $("mailLabelsListWrapper");
-    if (wrapper) {
-        var table = wrapper.childNodesWithTag("table")[0];
-        resetMailLabelsColors(null);
-        var r = $$("#mailLabelsListWrapper tbody tr");
-        for (var i= 0; i < r.length; i++)
-            r[i].identify();
-        table.multiselect = true;
-        resetMailTableActions();
-        $("mailLabelAdd").observe("click", onMailLabelAdd);
-        $("mailLabelDelete").observe("click", onMailLabelDelete);
-    }
-
-    // Contact categories
-    wrapper = $("contactsCategoriesListWrapper");
-    if (wrapper) {
-        var table = wrapper.childNodesWithTag("table")[0];
-        var r = $$("#contactsCategoriesListWrapper tbody tr");
-        for (var i= 0; i < r.length; i++)
-            r[i].identify();
-        table.multiselect = true;
-        resetContactsTableActions();
-        $("contactsCategoryAdd").observe("click", onContactsCategoryAdd);
-        $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
-    }
-
-    if ($("replyPlacementList"))
-        onReplyPlacementListChange();
-
-    var button = $("addDefaultEmailAddresses");
-    if (button)
-        button.observe("click", addDefaultEmailAddresses);
-
-    button = $("changePasswordBtn");
-    if (button)
-        button.observe("click", onChangePasswordClick);
-
-    initSieveFilters();
-
-    initMailAccounts();
-
-    button = $("enableVacationEndDate");
-    if (button) {
-        jQuery("#vacationEndDate_date").closest(".date").datepicker(
-            { autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
-        button.on("click", function(event) {
-            if (this.checked)
-                $("vacationEndDate_date").enable();
-            else
-                $("vacationEndDate_date").disable();
-        });
-    }
-    onAddOutgoingAddressesCheck();
+  var tabsContainer = $("preferencesTabs");
+  var controller = new SOGoTabsController();
+  controller.attachToTabsContainer(tabsContainer);
+  
+  // Inner tabs on the mail module tab
+  tabsContainer = $('mailOptionsTabs');
+  if (tabsContainer) {
+    var mailController = new SOGoTabsController();
+    mailController.attachToTabsContainer(tabsContainer);
+  }
+  
+  _setupEvents();
+  
+  // Optional function called when initializing the preferences
+  // Typically defined inline in the UIxAdditionalPreferences.wox template
+  if (typeof (initAdditionalPreferences) != "undefined")
+    initAdditionalPreferences();
+  
+  // Color picker
+  $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
+  $(document.body).on("click", onBodyClickHandler);
+  
+  // Calendar whiteList
+  var whiteList = $("appointmentsWhiteListWrapper");
+  if(whiteList) {
+    var table = whiteList.childNodesWithTag("table")[0];
+    var r = $$("#appointmentsWhiteListWrapper tbody tr");
+    for (var i= 0; i < r.length; i++)
+      r[i].identify();
+    table.multiselect = true;
+    $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
+    $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
+    whiteList.observe("scroll", onBodyClickHandler);
+  }
+  
+  // Calendar categories
+  var wrapper = $("calendarCategoriesListWrapper");
+  if (wrapper) {
+    var table = wrapper.childNodesWithTag("table")[0];
+    resetCalendarCategoriesColors(null);
+    var r = $$("#calendarCategoriesListWrapper tbody tr");
+    for (var i= 0; i < r.length; i++)
+      r[i].identify();
+    table.multiselect = true;
+    resetCalendarTableActions();
+    $("calendarCategoryAdd").observe("click", onCalendarCategoryAdd);
+    $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
+    wrapper.observe("scroll", onBodyClickHandler);
+  }
+  
+  // Mail labels/tags
+  var wrapper = $("mailLabelsListWrapper");
+  if (wrapper) {
+    var table = wrapper.childNodesWithTag("table")[0];
+    resetMailLabelsColors(null);
+    var r = $$("#mailLabelsListWrapper tbody tr");
+    for (var i= 0; i < r.length; i++)
+      r[i].identify();
+    table.multiselect = true;
+    resetMailTableActions();
+    $("mailLabelAdd").observe("click", onMailLabelAdd);
+    $("mailLabelDelete").observe("click", onMailLabelDelete);
+  }
+  
+  // Contact categories
+  wrapper = $("contactsCategoriesListWrapper");
+  if (wrapper) {
+    var table = wrapper.childNodesWithTag("table")[0];
+    var r = $$("#contactsCategoriesListWrapper tbody tr");
+    for (var i= 0; i < r.length; i++)
+      r[i].identify();
+    table.multiselect = true;
+    resetContactsTableActions();
+    $("contactsCategoryAdd").observe("click", onContactsCategoryAdd);
+    $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
+  }
+  
+  if ($("replyPlacementList"))
+    onReplyPlacementListChange();
+  
+  var button = $("addDefaultEmailAddresses");
+  if (button)
+    button.observe("click", addDefaultEmailAddresses);
+  
+  button = $("changePasswordBtn");
+  if (button)
+    button.observe("click", onChangePasswordClick);
+  
+  initSieveFilters();
+  
+  initMailAccounts();
+  
+  button = $("enableVacationEndDate");
+  if (button) {
+    jQuery("#vacationEndDate_date").closest(".date").datepicker(
+                                                                { autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
+    button.on("click", function(event) {
+              if (this.checked)
+              $("vacationEndDate_date").enable();
+              else
+              $("vacationEndDate_date").disable();
+              });
+  }
+  onAddOutgoingAddressesCheck();
 }
 
 function initSieveFilters() {
@@ -975,6 +991,117 @@ function resetCalendarTableActions() {
 function onCalendarColorEdit(e) {
     var onCCE = onColorEdit.bind(this);
     onCCE(e, "calendarCategoriesListWrapper");
+}
+
+function makeEditable (element) {
+  element.addClassName("editing");
+  element.removeClassName("whiteListCell");
+  
+  var span = element.down("SPAN");
+  span.update();
+  
+  var textField = element.down("INPUT");
+  textField.show();
+  textField.focus();
+  textField.select();
+  
+  return true;
+}
+
+function endAllEditables (e) {
+  var r = $$("TABLE#tableViewWhiteList TBODY TR TD");
+  for (var i = 0; i < r.length; i++) {
+    var element = $(r[i]);
+    if (r[i] != this && element.hasClassName("editing"))
+      endEditable(null, element.down("INPUT"));
+  }
+}
+
+function onNameEdit (e) {
+  endAllEditables();
+  if (!this.hasClassName("editing")) {
+    makeEditable (this);
+  }
+}
+
+function endEditable(event, textField) {
+  if (!textField)
+    textField = this;
+  
+  var uid = textField.readAttribute("uid");
+  var cell = textField.up("TD");
+  var textSpan = cell.down("SPAN");
+  
+  cell.removeClassName("editing");
+  cell.addClassName("whiteListCell");
+  textField.hide();
+  
+  var tmp = textField.value;
+  tmp = tmp.replace (/</, "&lt;");
+  tmp = tmp.replace (/>/, "&gt;");
+  if (!uid)
+    cell.up("TR").addClassName("notfound");
+  if (tmp)
+    textSpan.update(tmp);
+  else
+    cell.up("TR").remove();
+  
+  if (event)
+    Event.stop(event);
+  
+  return false;
+}
+
+function onAppointmentsWhiteListAdd(e) {
+  var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
+  var row = new Element("tr");
+  var td = new Element("td").update("");
+  var textField = new Element("input");
+  var span = new Element("span");
+  
+  row.addClassName("whiteListRow");
+  row.observe("mousedown", onRowClick);
+  td.addClassName ("whiteListCell");
+  td.observe("mousedown", endAllEditables);
+  td.observe("dblclick", onNameEdit);
+  textField.addInterface(SOGoAutoCompletionInterface);
+  textField.SOGoUsersSearch = true;
+  textField.observe("autocompletion:changed", endEditable);
+  textField.addClassName("textField");
+
+  td.appendChild(textField);
+  td.appendChild(span);
+  row.appendChild (td);
+  tablebody.appendChild(row);
+  $(tablebody).deselectAll();
+  row.selectElement();
+  
+  makeEditable(td);
+}
+
+function onAppointmentsWhiteListDelete(e) {
+  var list = $('appointmentsWhiteListWrapper').down("TABLE").down("TBODY");
+  var rows = list.getSelectedNodes();
+  var count = rows.length;
+  
+  for (var i=0; i < count; i++) {
+    rows[i].editionController = null;
+    rows[i].remove();
+  }
+}
+
+function serializeAppointmentsWhiteList() {
+  var r = $$("#appointmentsWhiteListWrapper TBODY TR");
+  
+  var values = [];
+  for (var i = 0; i < r.length; i++) {
+    var tds = r[i].childElements();
+    var name  = $(tds.first()).innerHTML;
+    var email = "";
+    values.push("\"" + name + "\": \"" + color + "\"");
+  }
+  
+  //$("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
 function onCalendarCategoryAdd(e) {

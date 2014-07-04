@@ -13,6 +13,23 @@ DIV.bottomToolbar
   left: 2em;
   right: 2em;
   bottom: 8px; }
+  
+#whiteListToolbar
+{ position: absolute;
+  height: 20px;
+  top: 286px;
+  width: 275px;
+  left: 235px;
+  background-image: url("thead_bg.png");
+  border: 1px solid #9B9B9B;
+  background-color: #E6E7E6;
+}
+
+#WhiteListAdd, #WhiteListDelete
+{
+  border-bottom: 1px solid #9B9B9B;
+  border-right: 1px solid #9B9B9B;
+}
 
 #mailAccountsToolbar
 { left: 5px;
@@ -47,16 +64,47 @@ DIV.listWrapper
   padding: 0px;
   margin-top: 2px;
   border-left: 1px solid #9b9b9b;
+  border-right: 1px solid #9b9b9b;
   background: #ccddec;}
 
 .listWrapper TABLE TD
 { height: 22px; }
 
+#whiteListLabel 
+{
+  position: absolute;
+  left: 12px;
+}
+
+#calendarCategoriesLabel
+{
+  position: absolute;
+  top: 305px;
+  left:0;
+}
+
 #calendarCategoriesListWrapper
-{ top: 232px;
+{ top: 320px;
   bottom: 30px;
   right: 2em;
   left: 2em; }
+
+#appointmentsWhiteListWrapper
+{ top: 230px;
+  height: 54px;
+  left:235px;
+  width:275px;
+
+ }
+ 
+#tableViewWhiteList
+{
+  width: 100%;
+}
+ 
+#whiteListTableHeader
+{
+}
 
 #contactsCategoriesListWrapper
 { overflow: auto;
