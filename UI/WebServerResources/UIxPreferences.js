@@ -229,10 +229,42 @@ function initPreferences() {
   // Calendar whiteList
   var whiteList = $("appointmentsWhiteListWrapper");
   if(whiteList) {
+    var whiteListValue = $("whiteListValue").getValue().split(",");
+    if (whiteListValue.length != 0)
+    {
+      var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
+      for (i = 0; i < whiteListValue.length; i++)
+      {
+        var elements = whiteListValue[i].split("=");
+        var row = new Element("tr");
+        var td = new Element("td").update("");
+        var textField = new Element("input");
+        var span = new Element("span");
+        
+        row.addClassName("whiteListRow");
+        row.observe("mousedown", onRowClick);
+        td.addClassName ("whiteListCell");
+        td.observe("mousedown", endAllEditables);
+        td.observe("dblclick", onNameEdit);
+        textField.addInterface(SOGoAutoCompletionInterface);
+        textField.SOGoUsersSearch = true;
+        textField.observe("autocompletion:changed", endEditable);
+        textField.addClassName("textField");
+        textField.value = elements[1];
+        textField.setAttribute("uid", elements[0]);
+        textField.hide();
+        span.innerText = elements[1];
+        
+        td.appendChild(textField);
+        td.appendChild(span);
+        row.appendChild (td);
+        tablebody.appendChild(row);
+        $(tablebody).deselectAll();
+        
+      }
+    }
+    
     var table = whiteList.childNodesWithTag("table")[0];
-    var r = $$("#appointmentsWhiteListWrapper tbody tr");
-    for (var i= 0; i < r.length; i++)
-      r[i].identify();
     table.multiselect = true;
     $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
     $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
@@ -1076,6 +1108,7 @@ function onAppointmentsWhiteListAdd(e) {
   row.selectElement();
   
   makeEditable(td);
+  
 }
 
 function onAppointmentsWhiteListDelete(e) {
@@ -1096,7 +1129,9 @@ function serializeAppointmentsWhiteList() {
   for (var i = 0; i < r.length; i++) {
     var tds = r[i].childElements().first().down("INPUT");
     var uid  = tds.getAttribute("uid");
-    values.push(uid);
+    var value = tds.getValue();
+    var user = uid + "=" + value;
+    values.push(user);
   }
   
   $("whiteListValue").value = values;

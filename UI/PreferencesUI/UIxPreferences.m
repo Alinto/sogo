@@ -639,10 +639,10 @@ static NSArray *reminderValues = nil;
   return [userDefaults busyOffHours];
 }
 
-- (NSString *) whiteListValue
+- (NSArray *) whiteListValue
 {
   SOGoUserSettings *us;
-  id *whiteListValue;
+  NSArray *whiteListValue;
   
   us = [user userSettings];
   whiteListValue = [us objectForKey:@"whiteListInvitations"];

@@ -25,6 +25,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSPredicate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -52,6 +53,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -424,51 +426,56 @@
   NSDictionary *values;
   NSMutableDictionary *value;
   SOGoUser *user, *currentUser, *ownerUser;
+  SOGoUserSettings *us;
   NSException *e;
   int count = 0, i = 0;
+  NSMutableArray *whiteList;
+  NSPredicate *predicate;
   
-  // Build a list of the attendees uids without the ressources
+  // Build list of the attendees uids without ressources
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
+  
   while ((currentAttendee = [enumerator nextObject]))
   {
     currentUID = [currentAttendee uid];
     if (currentUID)
     {
       user = [SOGoUser userWithLogin: currentUID];
+      us = [user userSettings];
       if (![user isResource])
       {
-        // Check if the user can be invited to an event.
-        if ([[user userSettings] objectForKey:@"PreventInvitations"])
+        // Check if the user prevented his account from beeing invited to events
+        if ([[us objectForKey:@"PreventInvitations"] boolValue])
         {
-          values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
-          [unavailableAttendees addObject:values];
+          // Check if the user have a whiteList
+          whiteList = [NSMutableArray arrayWithObject:[us objectForKey:@"whiteListInvitations"]];
+          predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", @"sogo1"];
+          [whiteList filterUsingPredicate:predicate];
+          
+          // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
+          if ([whiteList count] == 0)
+          {
+            values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
+            [unavailableAttendees addObject:values];
+          }
         }
       }
     }
   }
+
   count = [unavailableAttendees count];
-  if (count > 0)
+  if ([unavailableAttendees count] > 0)
   {
-    if (count > 1)
+    reason = [NSMutableString stringWithString:[self labelForKey: @"This or these persons cannot be invited:"]];
+    // Add all the unavailable users in the warning message
+    for (i = 0; i < count; i++)
     {
-      reason = [NSMutableString stringWithString:[self labelForKey: @"These persons cannot be invited :"]];
-      for (i = 0; i < count; i++)
-      {
-        value = [unavailableAttendees objectAtIndex:i];
-        [reason appendString:[value keysWithFormat: @"\n %{Cn}"]];
-        if (!(i == (count - 1)))
-        {
-          [reason appendString:@" &"];
-        }
-      }
-    }
-    else
-    {
-      value = [unavailableAttendees objectAtIndex:0];
-      reason = [self labelForKey: @"This person cannot be invited:"];
+      value = [unavailableAttendees objectAtIndex:i];
       [reason appendString:[value keysWithFormat: @"\n %{Cn}"]];
+      if (!(i == (count - 1)))
+        [reason appendString:@" &"];
     }
     [unavailableAttendees release];
     return [NSException exceptionWithHTTPStatus:403 reason: reason];
