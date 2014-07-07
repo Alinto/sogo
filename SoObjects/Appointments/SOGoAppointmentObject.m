@@ -419,23 +419,23 @@
                                     forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
-  NSMutableArray *attendees, *unavailableAttendees;
+  NSMutableArray *attendees, *unavailableAttendees, *whiteList;
   NSEnumerator *enumerator;
-  NSString *currentUID, *buffer;
+  NSPredicate *predicate;
+  NSString *currentUID, *ownerUID;
   NSMutableString *reason;
   NSDictionary *values;
-  NSMutableDictionary *value;
-  SOGoUser *user, *currentUser, *ownerUser;
+  NSMutableDictionary *value, *moduleSettings;
+  SOGoUser *user;
   SOGoUserSettings *us;
-  NSException *e;
   int count = 0, i = 0;
-  NSMutableArray *whiteList;
-  NSPredicate *predicate;
+  
   
   // Build list of the attendees uids without ressources
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
+  ownerUID = [[[self context] activeUser] login];
   
   while ((currentAttendee = [enumerator nextObject]))
   {
@@ -444,16 +444,16 @@
     {
       user = [SOGoUser userWithLogin: currentUID];
       us = [user userSettings];
+      moduleSettings = [us objectForKey:@"Calendar"];
       if (![user isResource])
       {
         // Check if the user prevented his account from beeing invited to events
-        if ([[us objectForKey:@"PreventInvitations"] boolValue])
+        if ([[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
         {
           // Check if the user have a whiteList
-          whiteList = [NSMutableArray arrayWithObject:[us objectForKey:@"whiteListInvitations"]];
-          predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", @"sogo1"];
+          whiteList = [NSMutableArray arrayWithObject:[moduleSettings objectForKey:@"PreventInvitationsWhitelist"]];
+          predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", ownerUID];
           [whiteList filterUsingPredicate:predicate];
-          
           // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
           if ([whiteList count] == 0)
           {

@@ -229,9 +229,9 @@ function initPreferences() {
   // Calendar whiteList
   var whiteList = $("appointmentsWhiteListWrapper");
   if(whiteList) {
-    var whiteListValue = $("whiteListValue").getValue().split(",");
-    if (whiteListValue.length != 0)
-    {
+    var whiteListValue = $("whiteListValue").getValue();
+    if (whiteListValue != "") {
+      whiteListValue = whiteListValue.split(",");
       var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
       for (i = 0; i < whiteListValue.length; i++)
       {

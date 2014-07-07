@@ -33,7 +33,6 @@
 {
   id item;
   SOGoUser *user;
-  SOGoUserSettings *us;
   NGSieveClient *client;
 
   // Addressbook
