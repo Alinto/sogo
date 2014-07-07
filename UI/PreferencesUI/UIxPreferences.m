@@ -639,6 +639,26 @@ static NSArray *reminderValues = nil;
   return [userDefaults busyOffHours];
 }
 
+- (NSString *) whiteListValue
+{
+  SOGoUserSettings *us;
+  id *whiteListValue;
+  
+  us = [user userSettings];
+  whiteListValue = [us objectForKey:@"whiteListInvitations"];
+
+  return whiteListValue;
+}
+
+- (void) setWhiteListValue: (NSArray *) whiteList
+{
+  SOGoUserSettings *us;
+  
+  us = [user userSettings];
+  [us setObject: whiteList forKey: @"whiteListInvitations"];
+  [us synchronize];
+}
+
 - (void) setPreventInvitations: (BOOL) preventInvitations
 {
   SOGoUserSettings *us;

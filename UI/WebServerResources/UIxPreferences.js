@@ -9,8 +9,8 @@ function savePreferences(sender) {
   if (sigList)
     sigList.disabled = false;
   
- // if ($("appointmentsWhiteListWrapper"))
- //   serializeAppointmentsWhiteList();
+  if ($("appointmentsWhiteListWrapper"))
+    serializeAppointmentsWhiteList();
   
   if ($("calendarCategoriesListWrapper"))
     serializeCalendarCategories();
@@ -236,10 +236,9 @@ function initPreferences() {
     table.multiselect = true;
     $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
     $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
-    whiteList.observe("scroll", onBodyClickHandler);
   }
   
-  // Calendar categories
+  // Calender categories
   var wrapper = $("calendarCategoriesListWrapper");
   if (wrapper) {
     var table = wrapper.childNodesWithTag("table")[0];
@@ -1095,13 +1094,12 @@ function serializeAppointmentsWhiteList() {
   
   var values = [];
   for (var i = 0; i < r.length; i++) {
-    var tds = r[i].childElements();
-    var name  = $(tds.first()).innerHTML;
-    var email = "";
-    values.push("\"" + name + "\": \"" + color + "\"");
+    var tds = r[i].childElements().first().down("INPUT");
+    var uid  = tds.getAttribute("uid");
+    values.push(uid);
   }
   
-  //$("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
+  $("whiteListValue").value = values;
 }
 
 function onCalendarCategoryAdd(e) {
@@ -1143,7 +1141,7 @@ function serializeCalendarCategories() {
     var values = [];
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements();
-        var name  = $(tds.first()).innerHTML;
+        var name  = $(tds.first()).innerHTML.trim();
         var color = $(tds.last().childElements().first()).readAttribute('data-color');
         values.push("\"" + name + "\": \"" + color + "\"");
     }
@@ -1271,7 +1269,7 @@ function onContactsCategoryAdd(e) {
     var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
     list.appendChild(row);
 
-    resetContactsTableActions ();
+    resetContactsTableActions();
     nametd.editionController.startEditing();
 }
 

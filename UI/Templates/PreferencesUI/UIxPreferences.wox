@@ -19,7 +19,7 @@
   <div class="popupMenu" id="contactsMenu">
     <ul></ul>
   </div>
-
+  
   <div id="colorPickerDialog" style="display: none;" class="dialog right bottom">
     <div>
       <span class="blc-FFFFFF"><!-- --></span>
@@ -223,7 +223,6 @@
                 var:checked="preventInvitations" />
                 <var:string label:value="Prevent from being invited to appointments"/></dd>
             </dl>
-            
             <label id="whiteListLabel"><var:string label:value="White list for appointments invitations:"/></label>
             <div id="appointmentsWhiteListWrapper" class="listWrapper">
               <table class="tableview" id="tableViewWhiteList">
@@ -231,7 +230,8 @@
                   <tr class="tableview">
                     <th const:class="tbtv_headercell" const:id="whiteListTableHeader">
                       <var:string label:value="Contacts names"/></th>
-                  </tr></thead>
+                  </tr>
+                </thead>
                 <tbody>
                   <var:foreach list="appointmentsWhiteList" item="contact">
                     <tr const:class="whiteListRow">
@@ -244,10 +244,12 @@
             </div>
             <div id="whiteListToolbar">
               <a const:id="appointmentsWhiteListAdd" href="#">
-                  <img rsrc:src="add-icon.png" label:title="Add" id="WhiteListAdd"/></a>
+                <img rsrc:src="add-icon.png" label:title="Add" id="WhiteListAdd"/></a>
               <a const:id="appointmentsWhiteListDelete" href="#">
-                  <img rsrc:src="remove-icon.png" label:title="Delete" id="WhiteListDelete" /></a>
+                <img rsrc:src="remove-icon.png" label:title="Delete" id="WhiteListDelete" /></a>
             </div>
+            <input type="hidden" const:id="whiteListValue"
+            const:name="whiteListValue" var:value="whiteListValue"/>
             
             <label id="calendarCategoriesLabel"><var:string label:value="Categories"/></label>
             <div id="calendarCategoriesListWrapper" class="listWrapper">
