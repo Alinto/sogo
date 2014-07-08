@@ -630,6 +630,9 @@ function onFolderSelectionChange(event) {
         var node = getTarget(event);
         if (node.tagName == 'UL')
             return;
+        if (node.tagName == "SPAN")
+            node = node.parentNode;
+
         // Update rows selection
         onRowClick(event, node);
     }
@@ -754,9 +757,13 @@ function appendAddressBook(name, folder) {
         li.setAttribute("list-editing", "available");
         li.setAttribute("acl-editing", "available");
         li.addClassName("local");
-        li.appendChild(document.createTextNode(name
-                                               .replace("&lt;", "<", "g")
-                                               .replace("&gt;", ">", "g")));
+
+        var displayName = document.createElement("span");
+        displayName.appendChild(document.createTextNode(name
+                                                        .replace("&lt;", "<", "g")
+                                                        .replace("&gt;", ">", "g")));
+        li.appendChild(displayName);
+
         updateAddressBooksMenus();
         configureDroppables();
     }

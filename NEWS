@@ -1,3 +1,12 @@
+2.x.y (YYYY-MM-DD)
+------------------
+
+Enhancements
+ - improved badges of active tasks count
+
+Bug fixes
+ - fixed rename of calendars
+
 2.2.6 (2014-07-02)
 ------------------
 
@@ -9,7 +18,7 @@ Enhancements
  - implemented the GetAttachment ActiveSync command (#2808)
  - implemented the Ping ActiveSync command
  - added "soft deletes" support for ActiveSync (#2734)
- - now display the active tasks next to calendar names (#2760)
+ - now display the active tasks count next to calendar names (#2760)
 
 Bug fixes
  - better handling of empty "Flag" messages over ActiveSync (#2806)

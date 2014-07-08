@@ -1356,7 +1356,7 @@ function getListIndexForFolder(items, owner, folderName) {
 
     for (i = 0; i < items.length; i++) {
         if (items[i].id == '/personal') continue;
-        var currentFolderName = items[i].lastChild.nodeValue.strip();
+        var currentFolderName = items[i].childNodesWithTag("span")[0].innerHTML.strip();
         var currentOwner = items[i].readAttribute('owner');
         if (currentOwner == owner) {
             previousOwner = currentOwner;

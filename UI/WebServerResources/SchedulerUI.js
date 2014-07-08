@@ -1104,27 +1104,33 @@ function eventsListCallback(http) {
 }
 
 function activeTasksCallback(http) {
-  if (http.readyState == 4 && http.status == 200) {
-    if (http.responseText.length > 0) {
-      document.activeTasksAjaxRequest = null;
-      var data = http.responseText.evalJSON(true);
-      var list = $("calendarList");
-      
-      var items = list.childNodesWithTag("li");
-      for (var i = 0; i < items.length; i++) {
-        var id = items[i].getAttribute("id").substr(1);
-        var number = data[id];
-        var input = items[i].childNodesWithTag("input")[0];
-        var activeTasks = items[i].childNodesWithTag("span")[0];
-        if (number == "0") {
-          activeTasks.innerHTML = "";
+    if (http.readyState == 4 && http.status == 200) {
+        if (http.responseText.length > 0) {
+            document.activeTasksAjaxRequest = null;
+            var data = http.responseText.evalJSON(true);
+            var list = $("calendarList");
+
+            var items = list.childNodesWithTag("li");
+            for (var i = 0; i < items.length; i++) {
+                var id = items[i].getAttribute("id").substr(1);
+                var number = parseInt(data[id]);
+                var input = items[i].childNodesWithTag("input")[0];
+                var activeTasks = items[i].childNodesWithTag("span")[1];
+                if (typeof activeTasks == "undefined") {
+                    if (number > 0) {
+                        activeTasks = createElement("span", null, "badge");
+                        items[i].appendChild(activeTasks);
+                    }
+                }
+                else if (number == 0) {
+                    items[i].removeChild(activeTasks);
+                }
+                if (number > 0) {
+                    activeTasks.innerHTML = number;
+                }
+            }
         }
-        else {
-          activeTasks.innerHTML = "(" + number + ")";
-        }
-      }
     }
-  }
 }
 
 function tasksListCallback(http) {
@@ -3088,15 +3094,8 @@ function initCalendarSelector() {
   var items = list.childNodesWithTag("li");
   for (var i = 0; i < items.length; i++) {
     var input = items[i].childNodesWithTag("input")[0];
-    var activeTasks = items[i].childNodesWithTag("span")[0];
+    var activeTasks = items[i].childNodesWithTag("span")[1];
     $(input).observe("click", clickEventWrapper(updateCalendarStatus));
-    if (activeTasks.textContent == "0") {
-      activeTasks.innerHTML = "";
-    }
-    else {
-      activeTasks.innerHTML = "(" + activeTasks.innerText + ")";
-    }
-    
   }
   
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -3108,7 +3107,7 @@ function initCalendarSelector() {
 
 function onCalendarSelectionChange(event) {
     var target = Event.element(event);
-    if (target.tagName == 'DIV') {
+    if (target.tagName == 'DIV' || target.tagName == 'SPAN') {
         target = target.parentNode;
     }
 
@@ -3163,12 +3162,8 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
         nodeID = "/" + folderName;
 	//   log("nodeID: " + nodeID);
     var calendarNode = $(nodeID);
-    var childNodes = calendarNode.childNodes;
-    var textNode = childNodes[childNodes.length-1];
-    if (textNode.tagName == 'DIV')
-        calendarNode.appendChild(document.createTextNode(calendarName));
-    else
-        childNodes[childNodes.length-1].nodeValue = calendarName;
+    var displayNameNode = calendarNode.childNodesWithTag("span")[0];
+    displayNameNode.innerHTML = calendarName;
 
     appendStyleElement(nodeID, calendarColor);
 }
@@ -3348,9 +3343,12 @@ function appendCalendar(folderName, folderPath) {
         li.appendChild(document.createTextNode(" "));
 
         var colorBox = document.createElement("div");
-        li.appendChild(colorBox);
-        li.appendChild(document.createTextNode(folderName));
         colorBox.appendChild(document.createTextNode("\u00a0"));
+        li.appendChild(colorBox);
+
+        var displayName = document.createElement("span");
+        displayName.appendChild(document.createTextNode(folderName));
+        li.appendChild(displayName);
 
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
@@ -3439,8 +3437,9 @@ function onCalendarRemove(event) {
 }
 
 function deletePersonalCalendar(folderElement) {
+    var displayName = folderElement.childNodesWithTag("span")[0].innerHTML.strip();
     showConfirmDialog(_("Confirmation"),
-                      _("Are you sure you want to delete the calendar \"%{0}\"?").formatted(folderElement.lastChild.nodeValue.strip()),
+                      _("Are you sure you want to delete the calendar \"%{0}\"?").formatted(displayName),
                       deletePersonalCalendarConfirm.bind(folderElement));
 }
 

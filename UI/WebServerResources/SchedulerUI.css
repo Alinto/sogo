@@ -48,6 +48,9 @@ UL#calendarList LI
   line-height: 2em;
   padding-left: 10px; }
 
+#calendarList .badge
+{ margin-left: 4px; }
+
 #tasksList .duelater,
 #tasksList .duetoday,
 #tasksList .overdue
