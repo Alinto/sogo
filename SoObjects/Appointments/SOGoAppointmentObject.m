@@ -1834,9 +1834,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       else if (scheduling && [event userIsAttendee: ownerUser])
 	{
-	  [self sendIMIPReplyForEvent: event
-		from: ownerUser
-		to: [event organizer]];
+          [self sendResponseToOrganizer: event
+                                   from: ownerUser];
 	}
 
       	      

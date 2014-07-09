@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - fixed rename of calendars
+ - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
 
 2.2.6 (2014-07-02)
 ------------------
