@@ -1131,8 +1131,8 @@ function serializeAppointmentsWhiteList() {
     var uid  = tds.getAttribute("uid");
     var value = tds.getValue();
     var user = uid + "=" + value;
-    values.push(user);
-  }
+    if (uid != null)
+      values.push(user);
   
   $("whiteListValue").value = values;
 }
