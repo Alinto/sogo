@@ -23,6 +23,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSArray.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -52,19 +53,25 @@
   WOResponse *response;
   WORequest *rq;
   SOGoAppointmentObject *co;
+  SoSecurityManager *sm;
   iCalEvent *event;
   NSCalendarDate *start, *newStart, *end, *newEnd;
   NSTimeInterval newDuration;
   SOGoUserDefaults *ud;
-  NSString *daysDelta, *startDelta, *durationDelta;
+  NSString *daysDelta, *startDelta, *durationDelta, *calendarID;
+  NSArray *calendarsID;
   NSTimeZone *tz;
   NSException *ex;
+  SOGoAppointmentFolder *componentCalendar, *previousCalendar;
+  SOGoAppointmentFolders *user;
 
   rq = [context request];
 
   daysDelta = [rq formValueForKey: @"days"];
   startDelta = [rq formValueForKey: @"start"];
   durationDelta = [rq formValueForKey: @"duration"];
+  calendarID = [rq formValueForKey: @"calendarID"];
+
   if ([daysDelta length] > 0
       || [startDelta length] > 0 || [durationDelta length] > 0)
     {
@@ -105,10 +112,31 @@
         }
 
       if ([event hasRecurrenceRules])
-	[event updateRecurrenceRulesUntilDate: end];
+        [event updateRecurrenceRulesUntilDate: end];
 
       [event setLastModified: [NSCalendarDate calendarDate]];
       ex = [co saveComponent: event];
+/***************************** TODO ******************/
+      if (![calendarID isEqualToString:@"0"]) {
+        user = [[self->context activeUser] calendarsFolderInContext: self->context];
+        calendarsID = [calendarID componentsSeparatedByString:@","];
+        previousCalendar = [user lookupName:[[calendarsID objectAtIndex:0] stringValue] inContext: self->context  acquire: 0];
+        componentCalendar = [user lookupName:[[calendarsID objectAtIndex:1] stringValue] inContext: self->context  acquire: 0];
+        // The event was moved to a different calendar.
+        sm = [SoSecurityManager sharedSecurityManager];
+        if (![sm validatePermission: SoPerm_DeleteObjects
+                         onObject: previousCalendar
+                        inContext: context])
+        {
+          if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                             onObject: componentCalendar
+                            inContext: context])
+            ex = [co moveToFolder: componentCalendar];
+        }
+
+    
+      }
+/********************************************************/
       if (ex)
         {
           NSDictionary *jsonResponse;

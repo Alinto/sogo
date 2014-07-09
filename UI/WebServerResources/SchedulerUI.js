@@ -123,28 +123,34 @@ function newEventFromDragging(controller, day, coordinates) {
     newEvent("event", day, startHm, lengthHm);
 }
 
-function updateEventFromDragging(controller, eventCells, eventDelta) {
-    if (eventDelta.dayNumber || eventDelta.start || eventDelta.duration) {
-        var params = ("days=" + eventDelta.dayNumber
-                      + "&start=" + eventDelta.start * 15
-                      + "&duration=" + eventDelta.duration * 15);
-        // log("eventCells: " + eventCells.length);
-        var eventCell = eventCells[0];
-        // log("  time: " + eventCell.recurrenceTime);
-        // log("  exception: " + eventCell.isException);
-
-        if (eventCell.recurrenceTime && !eventCell.isException)
-            _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
-        else {
-            var urlstr = (ApplicationBaseURL
-                          + "/" + eventCell.calendar + "/" + eventCell.cname);
-            if (eventCell.recurrenceTime)
-                urlstr += "/occurence" + eventCell.recurrenceTime;
-            urlstr += ("/adjust?" + params);
-            // log("  urlstr: " + urlstr);
-            triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
-        }
+function updateEventFromDragging(controller, eventCells, eventDelta, calendarID) {
+  if (eventDelta.dayNumber || eventDelta.start || eventDelta.duration) {
+    if (calendarID != 0)
+      var params = ("calendarID=" + calendarID
+                    + "&days=" + 0
+                    + "&start=" + eventDelta.start * 15
+                    + "&duration=" + eventDelta.duration * 15);
+    else
+      var params = ("calendarID=" + calendarID
+                    + "&days=" + eventDelta.dayNumber
+                    + "&start=" + eventDelta.start * 15
+                    + "&duration=" + eventDelta.duration * 15);
+    // log("eventCells: " + eventCells.length);
+    var eventCell = eventCells[0];
+    // log("  time: " + eventCell.recurrenceTime);
+    // log("  exception: " + eventCell.isException);
+    
+    if (eventCell.recurrenceTime && !eventCell.isException)
+      _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
+    else {
+      var urlstr = (ApplicationBaseURL + "/" + eventCell.calendar + "/" + eventCell.cname);
+      if (eventCell.recurrenceTime)
+        urlstr += "/occurence" + eventCell.recurrenceTime;
+      urlstr += ("/adjust?" + params);
+      // log("  urlstr: " + urlstr);
+      triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
     }
+  }
 }
 
 function performEventAdjustment(folder, event, recurrence, params) {
@@ -2293,6 +2299,22 @@ function calendarDisplayCallback(http) {
                 if (currentView == "monthview")
                     days[i].observe("scroll", onBodyClickHandler);
             }
+        else if (currentView == "multicolumndayview") {
+          var calendarHeader = $("calendarHeader");
+          var headerCalendarsLabels = calendarHeader.select("DIV.calendarLabels DIV.calendarsToDisplay");
+          var headerDays = calendarHeader.select("DIV.days DIV.day");
+          for (var i = 0; i < days.length; i++) {
+            headerDays[i].hour = "allday";
+            headerCalendarsLabels[i].observe("mousedown", listRowMouseDownHandler);
+            headerDays[i].observe("click", onCalendarSelectDay);
+            headerDays[i].observe("dblclick", onClickableCellsDblClick);
+            days[i].observe("click", onCalendarSelectDay);
+            
+            var clickableCells = days[i].select("DIV.clickableHourCell");
+            for (var j = 0; j < clickableCells.length; j++)
+              clickableCells[j].observe("dblclick", onClickableCellsDblClick);
+          }
+        }
         else {
             var calendarHeader = $("calendarHeader");
             var headerDaysLabels = calendarHeader.select("DIV.dayLabels DIV.day");
@@ -2706,6 +2728,19 @@ function onCalendarSelectDay(event) {
 
     var target = Event.findElement(event);
     var div = target.up('div');
+  
+    // Select the calendar associated with the day clicked
+    if (currentView == "multicolumndayview") {
+      if (target.getAttribute("calendar"))
+        var calendar = "[id='/" + target.getAttribute("calendar") + "']";
+      else
+        var calendar = "[id='/" + target.up("[calendar]").getAttribute("calendar") + "']";
+      var list = $("calendarList");
+      var selectedCalendar = list.down(calendar);
+      
+      onRowClick(event, selectedCalendar);
+    }
+  
     if (div && !div.hasClassName('event') && !div.hasClassName('eventInside') && !div.hasClassName('text') && !div.hasClassName('gradient')) {
         // Target is not an event -- unselect all events.
         listOfSelection = $("eventsList");

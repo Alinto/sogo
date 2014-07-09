@@ -8,6 +8,7 @@ var SOGoEventDragDayLength = 24 * 4; /* quarters */
 var SOGoEventDragHandleSize = 8; /* handles for dragging mode */
 var SOGoEventDragHorizontalOffset = 3;
 var SOGoEventDragVerticalOffset = 3;
+var calendarID = [], activeCalendars = [];;
 
 /* singleton */
 var _sogoEventDragUtilities = null;
@@ -217,27 +218,31 @@ SOGoEventDragEventCoordinates.prototype = {
     },
 
     initFromEventCellMultiDay: function(eventCell) {
-        var classNames = eventCell.className.split(" ");
-        for (var i = 0;
-             (this.start == -1 || this.duration == -1)
-                 && i < classNames.length;
-             i++) {
-            var className = classNames[i];
+      var classNames = eventCell.className.split(" ");
+        for (var i = 0; (this.start == -1 || this.duration == -1) && i < classNames.length; i++) {
+          var className = classNames[i];
             if (className.startsWith("starts")) {
-                this.start = parseInt(className.substr(6));
+              this.start = parseInt(className.substr(6));
             }
             else if (className.startsWith("lasts")) {
                 this.duration = parseInt(className.substr(5));
             }
         }
         var dayNumber = -1;
+      
         var dayNode = eventCell.parentNode.parentNode;
-        var classNames = dayNode.className.split(" ");
-        for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
+        if (currentView == "multicolumndayview") {
+          calendarID[0] = dayNode.getAttribute("calendar");
+          var dayNumber = this._updateMulticolumnViewDayNumber(calendarID);
+        }
+        else {
+          var classNames = dayNode.className.split(" ");
+          for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
             var className = classNames[i];
             if (className.startsWith("day") && className.length > 3) {
                 dayNumber = parseInt(className.substr(3));
             }
+          }
         }
         this.dayNumber = dayNumber;
     },
@@ -246,13 +251,19 @@ SOGoEventDragEventCoordinates.prototype = {
         this.duration = SOGoEventDragDayLength;
 
         var dayNode = eventCell.parentNode;
-        var classNames = dayNode.className.split(" ");
-        var dayNumber = -1;
-        for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
+        if (currentView == "multicolumndayview") {
+          calendarID[0] = dayNode.getAttribute("calendar");
+          var dayNumber = this._updateMulticolumnViewDayNumber(calendarID);
+        }
+        else {
+          var classNames = dayNode.className.split(" ");
+          var dayNumber = -1;
+          for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
             var className = classNames[i];
             if (className.startsWith("day") && className.length > 3) {
                 dayNumber = parseInt(className.substr(3));
             }
+          }
         }
         this.dayNumber = dayNumber;
     },
@@ -294,8 +305,8 @@ SOGoEventDragEventCoordinates.prototype = {
             current.setEventType(this.eventType);
             current.initFromEventCell(eventCells[i]);
             if (this.dayNumber == -1 || current.dayNumber < this.dayNumber) {
-                this.dayNumber = current.dayNumber;
-                this.start = current.start;
+              this.dayNumber = current.dayNumber;
+              this.start = current.start;
             }
             this.duration += current.duration;
         }
@@ -320,6 +331,20 @@ SOGoEventDragEventCoordinates.prototype = {
             mins = "0" + mins;
 
         return "" + hours + ":" + mins;
+    },
+  
+    _updateMulticolumnViewDayNumber: function(calendarID) {
+      var calendarList = $("calendarList").getElementsByTagName("li");
+      for (var j = 0; j < calendarList.length ; j++) {
+        if ($("calendarList").getElementsByTagName("li")[j].down().checked) {
+          activeCalendars.push($("calendarList").getElementsByTagName("li")[j].getAttribute("id").substr(1));
+        }
+      }
+      for (var k = 0; k < activeCalendars.length; k++) {
+        if (activeCalendars[k] == calendarID[0]) {
+          return k;
+        }
+      }
     },
 
     getStartTime: function() {
@@ -515,12 +540,32 @@ SOGoEventDragGhostController.prototype = {
             }
         }
     },
-
+  
+    _updateMulticolumnViewDayNumber_SEDGC: function() {
+      var calendarID_SEDGC = this.folderClass.substr(14);
+      var calendarList = $("calendarList").getElementsByTagName("li");
+      var activeCalendars = [];
+      for (var j = 0; j < calendarList.length ; j++) {
+        if ($("calendarList").getElementsByTagName("li")[j].down().checked) {
+          activeCalendars.push($("calendarList").getElementsByTagName("li")[j].getAttribute("id").substr(1));
+        }
+      }
+      for (var k = 0; k < activeCalendars.length; k++) {
+        if (activeCalendars[k] == calendarID_SEDGC) {
+          this.currentCoordinates.dayNumber = k;
+          break;
+        }
+      }
+    },
+  
     _updateCoordinates: function SEDGC__updateCoordinates() {
         var delta = this.currentPointerCoordinates
                         .getDelta(this.originalPointerCoordinates);
         var deltaQuarters = delta.x * SOGoEventDragDayLength + delta.y;
-        this.currentCoordinates.dayNumber = this.originalCoordinates.dayNumber;
+        if (currentView == "multicolumndayview")
+          this._updateMulticolumnViewDayNumber_SEDGC();
+        else
+          this.currentCoordinates.dayNumber = this.originalCoordinates.dayNumber;
 
         // log("dragMode: " + this.dragMode);
         if (this.dragMode == "move-event") {
@@ -565,6 +610,10 @@ SOGoEventDragGhostController.prototype = {
             var deltaDays = Math.floor(this.currentCoordinates.start
                                        / SOGoEventDragDayLength);
             this.currentCoordinates.start -= deltaDays * SOGoEventDragDayLength;
+          
+            // This dayNumber needs to be updated with the calendar number.
+            if (currentView == "multicolumndayview")
+              this._updateMulticolumnViewDayNumber_SEDGC();
             this.currentCoordinates.dayNumber += deltaDays;
         }
     },
@@ -1036,9 +1085,17 @@ SOGoEventDragController.prototype = {
                 this.ghostController.initWithCoordinates(coordinates);
 
                 if (!this.eventCells) {
+                  if (currentView == "multicolumndayview") {
+                    if (target.getAttribute("calendar"))
+                      var folderID = target.getAttribute("calendar");
+                    else
+                      var folderID = target.up("[calendar]").getAttribute("calendar");
+                  }
+                  else {
                     var folder = getSelectedFolder();
                     var folderID = folder.readAttribute("id").substr(1);
-                    this.ghostController.setFolderClass("calendarFolder" + folderID);
+                  }
+                  this.ghostController.setFolderClass("calendarFolder" + folderID);
                 }
                 this.ghostController.setDragMode(this._determineDragMode());
                 this.ghostController.setPointerHandler(this.pointerHandler);
@@ -1311,7 +1368,14 @@ SOGoEventDragController.prototype = {
                                 .currentCoordinates
                                 .getDelta(this.ghostController
                                               .originalCoordinates);
-                this.updateDropCallback(this, this.eventCells, delta);
+                if (currentView == "multicolumndayview" && delta.dayNumber != 0) {
+                  var position = activeCalendars.indexOf(calendarID[0]);
+                  position += delta.dayNumber;
+                  calendarID[1] = activeCalendars[position];
+                  this.updateDropCallback(this, this.eventCells, delta, calendarID);
+                }
+                else
+                  this.updateDropCallback(this, this.eventCells, delta, 0);
             } else {
                 var eventContainerNodes = utilities.getEventContainerNodes();
                 var dayNode = eventContainerNodes[this.ghostController
