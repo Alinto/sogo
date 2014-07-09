@@ -1,4 +1,4 @@
-2.x.y (YYYY-MM-DD)
+2.2.7 (2014-07-DD)
 ------------------
 
 Enhancements
@@ -6,6 +6,8 @@ Enhancements
  - refresh draft folder after sending a message
 
 Bug fixes
+ - fixed weekdays translation in the datepicker
+ - fixed event categories display
  - fixed rename of calendars
  - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
  - fixed refresh of message headers when forwarding a message (#2818)
