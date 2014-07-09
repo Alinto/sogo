@@ -214,7 +214,7 @@ On RHEL, install it using 'yum install MySQL-python'"""
     c=conn.cursor()
     tablename="sogo_cache_folder_%s" % (username)
     c.execute("TRUNCATE TABLE %s" % tablename)
-    print "Table %s emptied"
+    print "Table %s emptied" % tablename
 
 
 def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
