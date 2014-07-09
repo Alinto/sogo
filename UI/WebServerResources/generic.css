@@ -28,8 +28,7 @@ TABLE, DIV, IMG
   font-size: inherit;
   border: 0px;
   margin: 0px;
-  padding: 0px;
-  word-break: break-all; }
+  padding: 0px; }
 
 FIELDSET
 { border: 1px solid #aaa;
@@ -686,8 +685,7 @@ DIV.dialog H3
 
 DIV.dialog.none P
 { margin: 0px;
-  padding: 5px 0px;
-  word-break: normal; }
+  padding: 5px 0px; }
 
 DIV.dialog P.prompt
 { text-align: right; }
