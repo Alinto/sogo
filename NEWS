@@ -3,10 +3,12 @@
 
 Enhancements
  - improved badges of active tasks count
+ - refresh draft folder after sending a message
 
 Bug fixes
  - fixed rename of calendars
  - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
+ - fixed refresh of message headers when forwarding a message (#2818)
 
 2.2.6 (2014-07-02)
 ------------------

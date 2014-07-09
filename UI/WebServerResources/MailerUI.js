@@ -1840,7 +1840,7 @@ function refreshCurrentFolder() {
 
 /* Called after sending an email */
 function refreshMessage(mailbox, messageUID) {
-    if (Mailer.currentMailboxType == 'sent')
+    if (Mailer.currentMailboxType == 'sent' || Mailer.currentMailboxType == 'draft')
         refreshCurrentFolder();
     else if (mailbox == Mailer.currentMailbox) {
 	Mailer.dataTable.invalidate(messageUID);

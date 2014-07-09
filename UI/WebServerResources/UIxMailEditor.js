@@ -166,7 +166,7 @@ function onPostComplete(http) {
                 p = window.opener;
             if (p && p.refreshMessage)
                 p.refreshMessage(jsonResponse["sourceFolder"],
-                                 jsonResponse["messageID"]);
+                                 jsonResponse["sourceMessageID"]);
             onCloseButtonClick();
         }
         else {

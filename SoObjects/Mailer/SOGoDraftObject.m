@@ -197,6 +197,7 @@ static NSString    *userAgent      = nil;
 {
   if ((self = [super init]))
     {
+      sourceIMAP4ID = -1;
       IMAP4ID = -1;
       headers = [NSMutableDictionary new];
       text = @"";
@@ -234,8 +235,7 @@ static NSString    *userAgent      = nil;
 {
   if (!path)
     {
-      path = [[self userSpoolFolderPath] stringByAppendingPathComponent:
-					   nameInContainer];
+      path = [[self userSpoolFolderPath] stringByAppendingPathComponent: nameInContainer];
       [path retain];
     }
 
@@ -466,6 +466,9 @@ static NSString    *userAgent      = nil;
                 forKey: @"isHTML"];
       if (inReplyTo)
 	[infos setObject: inReplyTo forKey: @"inReplyTo"];
+      if (sourceIMAP4ID > -1)
+	[infos setObject: [NSString stringWithFormat: @"%i", sourceIMAP4ID]
+		  forKey: @"sourceIMAP4ID"];
       if (IMAP4ID > -1)
 	[infos setObject: [NSString stringWithFormat: @"%i", IMAP4ID]
 		  forKey: @"IMAP4ID"];
@@ -512,6 +515,10 @@ static NSString    *userAgent      = nil;
   if ([value length] > 0)
     [self setText: value];
   isHTML = [[infoDict objectForKey: @"isHTML"] boolValue];
+
+  value = [infoDict objectForKey: @"sourceIMAP4ID"];
+  if (value)
+    [self setSourceIMAP4ID: [value intValue]];
 
   value = [infoDict objectForKey: @"IMAP4ID"];
   if (value)
@@ -567,6 +574,22 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+- (void) setSourceIMAP4ID: (int) newSourceIMAP4ID
+{
+  sourceIMAP4ID = newSourceIMAP4ID;
+}
+
+//
+//
+//
+- (int) sourceIMAP4ID
+{
+  return sourceIMAP4ID;
+}
+
+//
+//
+//
 - (void) setIMAP4ID: (int) newIMAP4ID
 {
   IMAP4ID = newIMAP4ID;
@@ -610,7 +633,7 @@ static NSString    *userAgent      = nil;
     {
       if (IMAP4ID > -1)
 	error = [imap4 markURLDeleted: [self imap4URL]];
-      IMAP4ID = [self IMAP4IDFromAppendResult: result];
+      [self setIMAP4ID: [self IMAP4IDFromAppendResult: result]];
       if (imap4URL)
         {
           // Invalidate the IMAP message URL since the message ID has changed
@@ -902,9 +925,7 @@ static NSString    *userAgent      = nil;
   [self setHeaders: info];
 
   [self setText: [sourceMail contentForEditing]];
-  [self setSourceURL: [sourceMail imap4URLString]];
   [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
-  [self setSourceFolderWithMailObject: sourceMail];
 
   [self storeInfo];
 }
@@ -934,7 +955,7 @@ static NSString    *userAgent      = nil;
   [self setHeaders: info];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
-  [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
 
   [self storeInfo];
@@ -957,7 +978,7 @@ static NSString    *userAgent      = nil;
   
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"$Forwarded"];
-  [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
 
   /* attach message */
