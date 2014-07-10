@@ -480,10 +480,8 @@
     [unavailableAttendees release];
     return [NSException exceptionWithHTTPStatus:403 reason: reason];
   }
-  else {
-    [unavailableAttendees release];
-    return nil;
-  }
+  [unavailableAttendees release];
+  return nil;
 }
 
 //

@@ -640,7 +640,7 @@ static NSArray *reminderValues = nil;
   return [userDefaults busyOffHours];
 }
 
-- (NSArray *) whiteListValue
+- (NSArray *) whiteList
 {
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
@@ -652,7 +652,7 @@ static NSArray *reminderValues = nil;
   return whiteList;
 }
 
-- (void) setWhiteListValue: (NSArray *) whiteList
+- (void) setWhiteList: (NSArray *) whiteList
 {
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;

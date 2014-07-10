@@ -229,7 +229,7 @@ function initPreferences() {
   // Calendar whiteList
   var whiteList = $("appointmentsWhiteListWrapper");
   if(whiteList) {
-    var whiteListValue = $("whiteListValue").getValue();
+    var whiteListValue = $("whiteList").getValue();
     if (whiteListValue != "") {
       whiteListValue = whiteListValue.split(",");
       var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
@@ -1133,8 +1133,8 @@ function serializeAppointmentsWhiteList() {
     var user = uid + "=" + value;
     if (uid != null)
       values.push(user);
-  
-  $("whiteListValue").value = values;
+  }
+  $("whiteList").value = values;
 }
 
 function onCalendarCategoryAdd(e) {

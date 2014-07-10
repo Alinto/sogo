@@ -248,8 +248,8 @@
               <a const:id="appointmentsWhiteListDelete" href="#">
                 <img rsrc:src="remove-icon.png" label:title="Delete" id="WhiteListDelete" /></a>
             </div>
-            <input type="hidden" const:id="whiteListValue"
-            const:name="whiteListValue" var:value="whiteListValue"/>
+            <input type="hidden" const:id="whiteList"
+            const:name="whiteList" var:value="whiteList"/>
             
             <label id="calendarCategoriesLabel"><var:string label:value="Categories"/></label>
             <div id="calendarCategoriesListWrapper" class="listWrapper">
