@@ -144,7 +144,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta, calendarID)
       _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
     else {
       var urlstr = (ApplicationBaseURL + "/" + eventCell.calendar + "/" + eventCell.cname);
-      if (eventCell.recurrenceTime)
+      if (eventCell.recurrenceTime && (calendarID[0] == calendarID[1]))
         urlstr += "/occurence" + eventCell.recurrenceTime;
       urlstr += ("/adjust?" + params);
       // log("  urlstr: " + urlstr);
@@ -155,7 +155,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta, calendarID)
 
 function performEventAdjustment(folder, event, recurrence, params) {
     var urlstr = ApplicationBaseURL + "/" + folder + "/" + event;
-    if (recurrence)
+    if (recurrence && (calendarID[0] == calendarID[1]))
         urlstr += "/" + recurrence;
     urlstr += "/adjust" + generateQueryString(params);
     triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
