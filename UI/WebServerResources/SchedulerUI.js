@@ -1104,6 +1104,7 @@ function eventsListCallback(http) {
                 }
             }
         }
+        configureDraggables();
     }
     else
         log ("eventsListCallback Ajax error");
@@ -2898,6 +2899,7 @@ function updateCalendarsList(method) {
         var url = URLForFolderID(folderID) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderID);
     }
+    configureDroppables();
 }
 
 //function validateBrowseURL(input) {
@@ -2992,6 +2994,7 @@ function onTasksListMenuPrepareVisibility() {
 
     return true;
 }
+
 function getMenus() {
     var menus = {};
 
@@ -3065,7 +3068,6 @@ function onMenuRawTask(event) {
     openGenericWindow.delay(0.1, url);
 }
 
-
 function onMenuSharing(event) {
     if ($(this).hasClassName("disabled"))
         return;
@@ -3097,6 +3099,96 @@ function onMenuCurrentView(event) {
 function onMenuAllDayView(event) {
     $("eventDialog").hide();
     popupMenu(event, 'allDayViewMenu', getTarget(event));
+}
+
+function configureDraggables() {
+    if ($("eventsList")) {
+        var rows = jQuery("tr.eventRow");
+        try { rows.draggable("destroy"); } catch (e) {}
+        rows.draggable({
+                helper: function (event) { return '<div id="dragDropVisual"></div>'; },
+                    start: startDragging,
+                    drag: whileDragging,
+                    stop: stopDragging,
+                    appendTo: 'body',
+                    cursorAt: { right: 25 },
+                    scroll: false,
+                    distance: 4,
+                    zIndex: 20
+                    });
+    }
+}
+
+function configureDroppables() {
+    jQuery("#calendarList li").droppable({
+            hoverClass: 'genericHoverClass',
+                drop: dropAction });
+}
+
+function startDragging(event, ui) {
+    var row = event.target;
+    var handle = ui.helper;
+    var events = $('eventsList').getSelectedRowsId();
+    var count = events.length;
+
+    if (count == 0 || events.indexOf(row.id) < 0) {
+        onRowClick(event, $(row.id));
+        events = $("eventsList").getSelectedRowsId();
+        count = events.length;
+    }
+    handle.html(count);
+
+    handle.show();
+}
+
+function whileDragging(event, ui) {
+  if (event)
+    var handle = ui.helper;
+}
+
+function stopDragging(event, ui) {
+    var handle = ui.helper;
+    handle.hide();
+}
+
+function dropAction(event, ui) {
+    var action = "adjust";
+    refreshEventsAndDisplay();
+    dropSelectedEvents(action, this.id.substr(1));
+}
+
+function dropSelectedEvents(action, toId) {
+  var selectedCalendars = $("calendarList").getElementsByTagName("li");
+  if (selectedCalendars.length > 0) {
+    var eventIds = $('eventsList').getSelectedRowsId();
+    for (var i = 0; i < eventIds.length; i++) {
+      if (!eventIds[i].endsWith("ics")) {
+        showAlertDialog(_("Invalid, it is just invalid.. don't try this again please"));
+        return false;
+      }
+      else {
+        if (eventIds.grep(toId+"-").length == 0) {
+          
+          var x = eventIds[0].indexOf('-');
+          if (eventIds[0].indexOf('-') == 4) {
+            fromId = eventIds[0].substr(0,25);
+            eventICS = eventIds[0].substr(26);
+          }
+          else {
+            fromId = eventIds[0].substr(0, x);
+            eventICS = eventIds[0].slice(x + 1);
+          }
+          
+          var calendarID = "calendarID=" + fromId + "," + toId;
+          var params = calendarID + "&days=0&start=0&duration=0";
+
+          var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/adjust?" + params;
+          
+          triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
+        }
+      }
+    }
+  }
 }
 
 function configureDragHandles() {
