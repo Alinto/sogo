@@ -3163,20 +3163,20 @@ function dropSelectedEvents(action, toId) {
     var eventIds = $('eventsList').getSelectedRowsId();
     for (var i = 0; i < eventIds.length; i++) {
       if (!eventIds[i].endsWith("ics")) {
-        showAlertDialog(_("Invalid, it is just invalid.. don't try this again please"));
+        showAlertDialog(_("An error as occurred please try again"));
         return false;
       }
       else {
-        if (eventIds.grep(toId+"-").length == 0) {
+        if (eventIds[i].search(toId+"-") == -1) {
           
-          var x = eventIds[0].indexOf('-');
-          if (eventIds[0].indexOf('-') == 4) {
-            fromId = eventIds[0].substr(0,25);
-            eventICS = eventIds[0].substr(26);
+          var x = eventIds[i].indexOf('-');
+          if (eventIds[i].indexOf('-') == 4) {
+            fromId = eventIds[i].substr(0,25);
+            eventICS = eventIds[i].substr(26);
           }
           else {
-            fromId = eventIds[0].substr(0, x);
-            eventICS = eventIds[0].slice(x + 1);
+            fromId = eventIds[i].substr(0, x);
+            eventICS = eventIds[i].slice(x + 1);
           }
           
           var calendarID = "calendarID=" + fromId + "," + toId;

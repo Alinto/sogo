@@ -1536,6 +1536,17 @@ DIV#calendarContent .alert-box span {
     border:1px solid #8ed9f6;
 }
 
+DIV#dragDropVisual
+{
+  background-image: url(event7.png);
+  background-repeat: no-repeat;
+  background-position: 4px 2px;
+  width: 5px;
+  height: 20px;
+  padding-left: 24px;
+  padding-top: 5px;
+}
+
 
 
 
