@@ -414,8 +414,8 @@
                            withType: @"calendar:invitation-update"];
 }
 
-// This methods scans the list of attendees.
-- (NSException *) _handleAttendeeAvalability: (NSArray *) theAttendees
+// This method scans the list of attendees.
+- (NSException *) _handleAttendeeAvailability: (NSArray *) theAttendees
                                     forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
@@ -445,28 +445,25 @@
       user = [SOGoUser userWithLogin: currentUID];
       us = [user userSettings];
       moduleSettings = [us objectForKey:@"Calendar"];
-      if (![user isResource])
+      // Check if the user prevented his account from beeing invited to events
+      if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
       {
-        // Check if the user prevented his account from beeing invited to events
-        if ([[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
+        // Check if the user have a whiteList
+        whiteList = [NSMutableArray arrayWithObject:[moduleSettings objectForKey:@"PreventInvitationsWhitelist"]];
+        predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", ownerUID];
+        [whiteList filterUsingPredicate:predicate];
+        // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
+        if ([whiteList count] == 0)
         {
-          // Check if the user have a whiteList
-          whiteList = [NSMutableArray arrayWithObject:[moduleSettings objectForKey:@"PreventInvitationsWhitelist"]];
-          predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", ownerUID];
-          [whiteList filterUsingPredicate:predicate];
-          // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
-          if ([whiteList count] == 0)
-          {
-            values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
-            [unavailableAttendees addObject:values];
-          }
+          values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
+          [unavailableAttendees addObject:values];
         }
       }
     }
   }
 
   count = [unavailableAttendees count];
-  if ([unavailableAttendees count] > 0)
+  if (count > 0)
   {
     reason = [NSMutableString stringWithString:[self labelForKey: @"This or these persons cannot be invited:"]];
     // Add all the unavailable users in the warning message
@@ -690,7 +687,7 @@
   // We check for conflicts
   if ((e = [self _handleResourcesConflicts: attendees  forEvent: newEvent]))
     return e;
-  if ((e = [self _handleAttendeeAvalability: attendees  forEvent: newEvent]))
+  if ((e = [self _handleAttendeeAvailability: attendees  forEvent: newEvent]))
     return e;
   
   enumerator = [attendees objectEnumerator];
@@ -785,7 +782,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   
   if ((ex = [self _handleResourcesConflicts: [newEvent attendees] forEvent: newEvent]))
     return ex;
-  if ((ex = [self _handleAttendeeAvalability: [newEvent attendees] forEvent: newEvent]))
+  if ((ex = [self _handleAttendeeAvailability: [newEvent attendees] forEvent: newEvent]))
     return ex;
 
   addedAttendees = [changes insertedAttendees];
