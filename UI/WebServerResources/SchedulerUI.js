@@ -53,15 +53,14 @@ function printView() {
     else
         showAlertDialog("Please select at least one calendar");
 
-
     return false;
 }
 
 function newEvent(type, day, hour, duration) {
     var folder = null;
-   /* if (currentView == "multicolumndayview") {
-    	Need to find where the click register is saved
-    }*/
+    /* if (currentView == "multicolumndayview") {
+     Need to find where the click register is saved
+     }*/
     if (UserDefaults['SOGoDefaultCalendar'] == 'personal')
         folder = $("calendarList").down("li");
     else if (UserDefaults['SOGoDefaultCalendar'] == 'first') {
@@ -91,16 +90,16 @@ function newEvent(type, day, hour, duration) {
         params.push("duration=" + duration);
     if (params.length > 0)
         urlstr += "?" + params.join("&");
-
+    
     window.open(urlstr, "", "width=490,height=470,resizable=0");
-
+    
     return false; /* stop following the link */
 }
 
 function newEventFromWidget(sender, type) {
     var day = $(sender).readAttribute("day");
     var hour = sender.readAttribute("hour");
-
+    
     newEvent.delay(0.1, type, day, hour);
 }
 
@@ -111,7 +110,7 @@ function minutesToHM(minutes) {
     var mins = minutes % 60;
     if (mins < 10)
         mins = "0" + mins;
-
+    
     return "" + hours + mins;
 }
 
@@ -141,10 +140,6 @@ function updateEventFromDragging(controller, eventCells, eventDelta, calendarID)
         var eventCell = eventCells[0];
         // log("  time: " + eventCell.recurrenceTime);
         // log("  exception: " + eventCell.isException);
-        recurrenceBool = false;
-        if (calendarID == 0) {
-            recurrenceBool = true;
-        }
         if (eventCell.recurrenceTime && !eventCell.isException)
             _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
         else {
@@ -194,7 +189,7 @@ function getSelectedFolder() {
         folder = nodes[0];
     else
         folder = list.down("li"); // personal calendar
-
+    
     return folder;
 }
 
@@ -239,12 +234,12 @@ function _editEventId(id, calendar, recurrence) {
 function editEvent() {
     if (listOfSelection) {
         var nodes = listOfSelection.getSelectedRows();
-
+        
         if (nodes.length == 0) {
             showAlertDialog(_("Please select an event or a task."));
             return false;
         }
-
+        
         for (var i = 0; i < nodes.length; i++)
             _editEventId.delay(0.1,
                                nodes[i].cname,
@@ -261,7 +256,7 @@ function editEvent() {
     } else {
         showAlertDialog(_("Please select an event or a task."));
     }
-
+    
     return false; /* stop following the link */
 }
 
@@ -286,7 +281,7 @@ function deleteEvent() {
                 label = _("taskDeleteConfirmation");
             else
                 label = _("eventDeleteConfirmation");
-
+            
             if (nodes.length == 1
                 && nodes[0].recurrenceTime) {
                 if (nodes[0].erasable)
@@ -418,7 +413,7 @@ function deleteEvent() {
     }
     else
         showAlertDialog(_("Please select an event or a task."));
-
+    
     if (events.length > 0) {
         // Show confirmation dialog
         var p = new Element('p');
@@ -431,7 +426,7 @@ function deleteEvent() {
         p.appendChild(document.createTextNode(_("Would you like to continue?")));
         showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
     }
-
+    
     return false;
 }
 
@@ -440,7 +435,6 @@ function deleteEventFromListConfirm() {
         document.deleteEventAjaxRequest.aborted = true;
         document.deleteEventAjaxRequest.abort();
     }
-
     _batchDeleteEvents();
     refreshTasks();
     disposeDialog();
@@ -451,7 +445,7 @@ function deleteEventFromViewConfirm() {
         document.deleteEventAjaxRequest.aborted = true;
         document.deleteEventAjaxRequest.abort();
     }
-
+    
     selectedCalendarCell = null;
     _batchDeleteEvents();
     disposeDialog();
@@ -524,10 +518,10 @@ function onMenuRawEvent(event) {
     if (selectedCalendarCell.length != 1) {
         return;
     }
-
+    
     var calendar = selectedCalendarCell[0].calendar;
     var cname = selectedCalendarCell[0].cname;
-
+    
     var url = ApplicationBaseURL + "/" + calendar + "/" + cname + "/raw";
     openGenericWindow.delay(0.1, url);
 }
@@ -536,13 +530,13 @@ function modifyEvent(sender, modification, parameters) {
     var currentLocation = '' + window.location;
     var arr = currentLocation.split("/");
     arr[arr.length-1] = modification;
-
+    
     document.modifyEventAjaxRequest = triggerAjaxRequest(arr.join("/"),
                                                          modifyEventCallback,
                                                          modification,
                                                          parameters,
                                                          { "Content-type": "application/x-www-form-urlencoded" });
-
+    
     return false;
 }
 
@@ -550,7 +544,7 @@ function closeInvitationWindow() {
     var closeDiv = document.createElement("div");
     document.body.appendChild(closeDiv);
     closeDiv.addClassName("javascriptPopupBackground");
-
+    
     var closePseudoWin = document.createElement("div");
     document.body.appendChild(closePseudoWin);
     closePseudoWin.addClassName("javascriptMessagePseudoTopWindow");
@@ -558,7 +552,7 @@ function closeInvitationWindow() {
     closePseudoWin.style.left = "0px;";
     closePseudoWin.style.right = "0px;";
     closePseudoWin.appendChild(document.createTextNode(_("closeThisWindowMessage")));
-
+    
     var calLink = document.createElement("a");
     closePseudoWin.appendChild(calLink);
     calLink.href = ApplicationBaseURL;
@@ -636,7 +630,7 @@ function _deleteCalendarEventBlocks(calendar, cname, occurenceTime) {
                 }
         }
     }
-
+    
     resizeCalendarHeaderDIV();
 }
 
@@ -650,7 +644,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
         if (occurences) {
             var occurence = occurences.first();
             var ownerIsOrganizer = occurence[19];
-
+            
             // Delete event from events list
             var table = $("eventsList");
             var rows = table.tBodies[0].rows;
@@ -679,7 +673,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
             }
         }
     }
-
+    
     // Delete task from tasks list
     var rows = $$("tr[id^='" + calendar + basename + "']");
     rows.each(function(row) {
@@ -694,7 +688,7 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
         if (occurences)
             ownerIsOrganizer = occurences[0][19];
     }
-
+    
     for (var otherCalendar in calendarEvents) {
         if (calendarEvents[otherCalendar]) {
             var occurences = calendarEvents[otherCalendar][cname];
@@ -750,7 +744,7 @@ function deleteEventCallback(http) {
 
 function getEventById(cname, owner) {
     var event = null;
-
+    
     if (calendarEvents) {
         if (!owner)
             owner = UserLogin;
@@ -758,7 +752,7 @@ function getEventById(cname, owner) {
         if (userEvents)
             event = userEvents[cname];
     }
-
+    
     return event;
 }
 
@@ -778,7 +772,7 @@ function _editRecurrenceDialog(eventCell, method, params) {
 function onViewEvent(event) {
     if (event.detail == 2) return;
     var url = ApplicationBaseURL + "/" + this.calendar + "/" + this.cname;
-
+    
     if (typeof this.recurrenceTime != "undefined")
         url += "/occurence" + this.recurrenceTime;
     url += "/view";
@@ -804,11 +798,11 @@ function onViewEventCallback(http) {
             var view;
             var left;
             var top = cellPosition[1] - 5;
-
+            
             if (currentView != "monthview") {
                 view = $("daysView");
                 var viewPosition = view.cumulativeOffset();
-
+                
                 if (parseInt(data["isAllDay"]) == 0) {
                     top -= view.scrollTop;
                     if (viewPosition[1] > top + 2) {
@@ -822,7 +816,7 @@ function onViewEventCallback(http) {
             else {
                 top -= cell.up("DIV.day").scrollTop;
             }
-
+            
             left = cellPosition[0] + cellDimensions["width"] + 4;
             if (left + divDimensions["width"] > window.width()) {
                 left = cellPosition[0] - divDimensions["width"];
@@ -833,10 +827,10 @@ function onViewEventCallback(http) {
                 div.removeClassName("right");
                 div.addClassName("left");
             }
-
+            
             // Put the event's data in the DIV
             div.down("h1").update(data["summary"].replace(/\r?\n/g, "<BR/>"));
-
+            
             var paras = div.getElementsByTagName("p");
             var para = $(paras[0]);
             if (parseInt(data["isAllDay"]) == 0) {
@@ -844,14 +838,14 @@ function onViewEventCallback(http) {
                 para.show();
             } else
                 para.hide();
-
+            
             para = $(paras[1]);
             if (data["calendar"].length) {
                 para.down("SPAN", 1).update(data["calendar"]);
                 para.show();
             } else
                 para.hide();
-
+            
             para = $(paras[2]);
             if (data["location"].length) {
                 para.down("SPAN", 1).update(data["location"]);
@@ -865,14 +859,14 @@ function onViewEventCallback(http) {
                 para.show();
             } else
                 para.hide();
-
+            
             para = $(paras[4]);
             if (data["description"].length) {
                 para.update(data["description"].replace(/\r?\n/g, "<BR/>"));
                 para.show();
             } else
                 para.hide();
-
+            
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
             configureLinks(div);
@@ -890,7 +884,7 @@ function editDoubleClickedEvent(event) {
         _editRecurrenceDialog(this, "confirmEditing");
     else
         _editEventId(this.cname, this.calendar);
-
+    
     Event.stop(event);
 }
 
@@ -945,44 +939,44 @@ function onDaySelect(node) {
     var day = node.getAttribute('day');
     var needRefresh = (eventListFilter == 'view_selectedday'
                        && day != currentDay);
-
+    
     var td = $(node).getParentWithTagName("td");
 
     //  var table = $(td).getParentWithTagName("table");
     //   log ("table.selected: " + table.selected);
-
+    
     if (document.selectedDate)
         document.selectedDate.deselect();
-
+    
     td.selectElement();
     document.selectedDate = td;
-
+    
     changeCalendarDisplay( { "day": day } );
     currentDay = day;
     selectedDayDate = day;
     if (needRefresh)
         refreshEvents();
-
+    
     return false;
 }
 
 function onDateSelectorGotoMonth(event) {
     var day = this.getAttribute("date");
-
+    
     changeDateSelectorDisplay(day, true);
-
+    
     Event.stop(event);
 }
 
 function onCalendarGotoDay(node) {
     var day = node.getAttribute("date");
     var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
-
+    
     changeDateSelectorDisplay(day);
     changeCalendarDisplay( { "day": day } );
     if (needRefresh)
         refreshEvents();
-
+    
     return false;
 }
 
@@ -991,17 +985,17 @@ function gotoToday() {
     selectedDayDate = todayDate.getDayString();
     changeDateSelectorDisplay('');
     changeCalendarDisplay();
-
+    
     return false;
 }
 
 function setDateSelectorContent(content) {
     var div = $("dateSelectorView");
-
+    
     div.update(content);
     if (currentDay.length > 0)
         restoreCurrentDaySelection(div);
-
+    
     initDateSelectorEvents();
 }
 
@@ -1024,12 +1018,12 @@ function eventsListCallback(http) {
         document.eventsListAjaxRequest = null;
         var table = $("eventsList");
         lastClickedRow = -1; // from generic.js
-
+        
         var rows = table.select("TBODY TR");
         rows.each(function(e) {
-            e.remove();
-        });
-
+                  e.remove();
+                  });
+        
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
             for (var i = 0; i < data.length; i++) {
@@ -1059,7 +1053,7 @@ function eventsListCallback(http) {
                 if (data[i][3] != null)
                     // Status is defined -- event is readable
                     row.observe("dblclick", editDoubleClickedEvent);
-
+                
                 var td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -1069,17 +1063,17 @@ function eventsListCallback(http) {
                 var span = createElement("span");
                 td.appendChild(span);
                 span.update(data[i][4]); // title
-
+                
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 td.update(data[i][21]); // start date
-
+                
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 td.update(data[i][22]); // end date
-
+                
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -1097,10 +1091,10 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 td.update(data[i][2]); // calendar
             }
-
+            
             if (sorting["event-header"] && sorting["event-header"].length > 0) {
                 var sortHeader = $(sorting["event-header"]);
-
+                
                 if (sortHeader) {
                     var sortImages = $(table.tHead).select(".sortImage");
                     $(sortImages).each(function(item) {
@@ -1305,9 +1299,8 @@ function tasksListCallback(http) {
         }
         configureTasksDraggables();
     }
-  }
-  else
-    log ("tasksListCallback Ajax error");
+    else
+        log ("tasksListCallback Ajax error");
 }
 
 /* in dateselector */
@@ -1345,10 +1338,10 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
             day += "01";
         url += "?day=" + day;
     }
-
+    
     if (!keepCurrentDay)
         currentDay = day;
-
+    
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
         //       log ("restoring cached selector for month: " + month);
@@ -1361,9 +1354,9 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
             document.dateSelectorAjaxRequest.abort();
         }
         document.dateSelectorAjaxRequest
-            = triggerAjaxRequest(url,
-                                 dateSelectorCallback,
-                                 month);
+        = triggerAjaxRequest(url,
+                             dateSelectorCallback,
+                             month);
     }
 }
 
@@ -1376,20 +1369,20 @@ function changeCalendarDisplay(data, newView) {
         day = data['day'];
         scrollEvent = data['scrollEvent'];
     }
-
+    
     if (!day)
         day = currentDay;
-
+    
     if (day) {
         if (data) {
             var dayDiv = $("day"+day);
             if (dayDiv) {
                 // Don't reload the view if the event is present in current view
-
+                
                 // Deselect day in date selector
                 if (document.selectedDate)
                     document.selectedDate.deselect();
-
+                
                 // Select day in date selector
                 var selectedLink = $$('table#dateSelectorTable span[day='+day+']');
                 if (selectedLink.length > 0) {
@@ -1398,15 +1391,15 @@ function changeCalendarDisplay(data, newView) {
                     document.selectedDate = selectedCell;
                 } else
                     document.selectedDate = null;
-
+                
                 // Scroll to event
                 if (scrollEvent) {
                     preventAutoScroll = false;
                     scrollDayView(scrollEvent);
                 }
-
+                
                 setSelectedDayDate(day);
-
+                
                 return false;
             }
             else if (day.length == 6) {
@@ -1415,26 +1408,26 @@ function changeCalendarDisplay(data, newView) {
         }
         url += "?day=" + day;
     }
-
+    
     selectedCalendarCell = null;
-
+    
     if (document.dayDisplayAjaxRequest) {
         document.dayDisplayAjaxRequest.aborted = true;
         document.dayDisplayAjaxRequest.abort();
     }
     document.dayDisplayAjaxRequest
-        = triggerAjaxRequest(url, calendarDisplayCallback,
-                             { "view": newView,
-                               "day": day,
-                               "scrollEvent": scrollEvent });
-
+    = triggerAjaxRequest(url, calendarDisplayCallback,
+                         { "view": newView,
+                         "day": day,
+                         "scrollEvent": scrollEvent });
+    
     return false;
 }
 
 function _ensureView(view) {
     if (currentView != view)
         changeCalendarDisplay(null, view);
-
+    
     return false;
 }
 
@@ -1484,7 +1477,7 @@ function onCalendarReload() {
         refreshEventsAndTasks();
         changeCalendarDisplay();
     }
-
+    
     return false;
 }
 
@@ -1494,7 +1487,7 @@ function reloadWebCalendars() {
     if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
-
+        
         var folders = $("calendarList");
         var calendarNodes = folders.childNodesWithTag("li");
         for (var i = 0; i < calendarNodes.length; i++) {
@@ -1508,19 +1501,19 @@ function reloadWebCalendars() {
             }
         }
     }
-
+    
     return (remaining.length > 0);
 }
 
 var calendarReloadErrors = { "invalid-calendar-content":
-                             _("the returned content was not valid calendar"
-                               + " data"),
-                             "http-error": _("an unknown http error occurred"
-                                             + " during the load operation"),
-                             "bad-url": _("the url in use is invalid or the"
-                                          + " host is currently unreachable"),
-                             "invalid-url": _("the url being used is invalid"
-                                              + " or not handled") };
+    _("the returned content was not valid calendar"
+      + " data"),
+    "http-error": _("an unknown http error occurred"
+                    + " during the load operation"),
+    "bad-url": _("the url in use is invalid or the"
+                 + " host is currently unreachable"),
+    "invalid-url": _("the url being used is invalid"
+                     + " or not handled") };
 
 function reloadWebCalendar(folderID, refreshOperations) {
     var url = URLForFolderID(folderID) + "/reload";
@@ -1565,7 +1558,7 @@ function reloadWebCalendarCallback(http) {
             }
             showAlertDialog (errorMessage);
         }
-
+        
         if (requireAuth) {
             reauthenticateWebCalendar(cbData["folderID"], cbData);
         }
@@ -1653,12 +1646,12 @@ function scrollDayView(scrollEvent) {
                 var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
                 if (eventBlocks) {
                     var firstEvent = eventBlocks.first();
-
+                    
                     if (currentView == "monthview")
                         contentView = firstEvent.up("DIV.day");
                     else
                         contentView = $("daysView");
-
+                    
                     // Don't scroll to an all-day event
                     if (typeof eventRow.hour != "undefined") {
                         var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
@@ -1692,10 +1685,10 @@ function refreshCalendarEvents(scrollEvent) {
     var todayDate = new Date();
     var sd;
     var ed;
-
+    
     if (!currentDay)
         currentDay = todayDate.getDayString();
-
+    
     if (currentView == "dayview" || currentView == "multicolumndayview") {
         sd = currentDay;
         ed = sd;
@@ -1715,7 +1708,7 @@ function refreshCalendarEvents(scrollEvent) {
         monthDate = currentDay.asDate();
         monthDate.setDate(1);
         sd = monthDate.beginOfWeek().getDayString();
-
+        
         var lastMonthDate = new Date();
         lastMonthDate.setTime(monthDate.getTime());
         lastMonthDate.setMonth(monthDate.getMonth() + 1);
@@ -1729,14 +1722,14 @@ function refreshCalendarEvents(scrollEvent) {
     var url = (ApplicationBaseURL + "/eventsblocks?sd=" + sd + "&ed=" + ed
                + "&view=" + currentView);
     document.refreshCalendarEventsAjaxRequest
-        = triggerAjaxRequest(url, refreshCalendarEventsCallback,
-                             {"startDate": sd, "endDate": ed,
-                              "scrollEvent": scrollEvent});
+    = triggerAjaxRequest(url, refreshCalendarEventsCallback,
+                         {"startDate": sd, "endDate": ed,
+                         "scrollEvent": scrollEvent});
 }
 
 function _parseEvents(list, calendars) {
     var newCalendarEvents = {};
-
+    
     if (currentView == "multicolumndayview") {
         var list;
         for (var i = 0; i < calendars.length; i++) {
@@ -1787,11 +1780,11 @@ function _parseEvents(list, calendars) {
 
 function _setupEventsDragAndDrop(events) {
     /* We setup the drag controllers for all the events.
-       Since the same events may be listed more than once per calendar
-       (repeating events), we must keep account of those that have already
-       been setup. */
+     Since the same events may be listed more than once per calendar
+     (repeating events), we must keep account of those that have already
+     been setup. */
     var setupFlags = {};
-
+    
     for (var i = 0; i < events.length; i++) {
         var cname = events[i][0];
         var calendar = events[i][1];
@@ -1862,7 +1855,7 @@ function resetCategoriesStyles() {
             while (categoriesStyleSheet.firstChild)
                 categoriesStyleSheet.removeChild(categoriesStyleSheet.firstChild);
     }
-
+    
     if (UserDefaults['SOGoCalendarCategoriesColors']) {
         // Update stylesheet with new categories colors
         var selectors = [];
@@ -1916,7 +1909,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //  log ("18 editable = " + event[18]);
     //  log ("19 erasable = " + event[19]);
     //  log ("20 ownerisorganizer = " + event[20]);
-
+    
     var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
@@ -1947,22 +1940,22 @@ function newBaseEventDIV(eventRep, event, eventText) {
     innerDiv.addClassName("calendarFolder" + event[1]);
     if (eventRep.userState >= 0 && userStates[eventRep.userState])
         innerDiv.addClassName(userStates[eventRep.userState]);
-
+    
     var gradientDiv = createElement("div");
     innerDiv.appendChild(gradientDiv);
     gradientDiv.addClassName("gradient");
-
+    
     var gradientImg = createElement("img");
     gradientDiv.appendChild(gradientImg);
     gradientImg.src = ResourcesURL + "/event-gradient.png";
-
+    
     var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
     var iconSpan = createElement("span", null, "icons");
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
     textDiv.appendChild(iconSpan);
-
+    
     // Add alarm and classification icons
     if (event[9] == 1)
         createElement("img", null, null, {src: ResourcesURL + "/private.png"}, null, iconSpan);
@@ -1970,7 +1963,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
         createElement("img", null, null, {src: ResourcesURL + "/confidential.png"}, null, iconSpan);
     if (event[15] > 0)
         createElement("img", null, null, {src: ResourcesURL + "/alarm.png"}, null, iconSpan);
-
+    
     if (event[10] != null) {
         var category = event[10].decodeEntities();
         var categoryStyle = categoriesStyles.get(category);
@@ -1981,7 +1974,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
         innerDiv.addClassName(categoryStyle);
     }
     eventCell.observe("contextmenu", onMenuCurrentView);
-
+    
     if (event[3] == null) {
         // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
@@ -1995,9 +1988,9 @@ function newBaseEventDIV(eventRep, event, eventText) {
         eventCell.observe("dblclick", editDoubleClickedEvent);
         eventCell.observe("click", onViewEvent);
     }
-
+    
     event.blocks.push(eventCell);
-
+    
     return eventCell;
 }
 
@@ -2036,8 +2029,8 @@ function _drawCalendarAllDayEvents(events, eventsData, columnsData) {
 }
 
 /* When the list of all day events overflows, we resize it in order to contain
-   at least 6 or 7 items. Afterwards we restore the regular scrollbar
-   mechanism. */
+ at least 6 or 7 items. Afterwards we restore the regular scrollbar
+ mechanism. */
 function resizeCalendarHeaderDIV() {
     var headerView = $("calendarHeader");
     var daysView = $("daysView");
@@ -2046,9 +2039,9 @@ function resizeCalendarHeaderDIV() {
         var headerViewBaseHeight = 90;
         var daysViewBaseTop = 95;
         /* /consts */
-
+        
         var maxEventPerDay = 0;
-
+        
         var subdivs = headerView.childNodesWithTag("div");
         if (currentView == "multicolumndayview")
             var days = subdivs[2].childNodesWithTag("div");
@@ -2096,7 +2089,7 @@ function newAllDayEventDIV(eventRep, event) {
     // cname, calendar, starts, lasts,
     //               startHour, endHour, title) {
     var eventCell = newBaseEventDIV(eventRep, event, event[4]);
-
+    
     return eventCell;
 }
 
@@ -2131,7 +2124,6 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                         parentDiv.appendChild(eventCell);
                     }
                 }
-              } 	
             }
         }
     }
@@ -2202,8 +2194,8 @@ function attachDragControllers(contentView) {
 }
 
 /* On IE, the scroll bar is part of the last element. For other browsers, we
-   execute this method so that the "right" style attribute of the
-   "calendarHeader" element can be computed. This is execute only once. */
+ execute this method so that the "right" style attribute of the
+ "calendarHeader" element can be computed. This is execute only once. */
 function adjustCalendarHeaderDIV() {
     var dv = $("daysView");
     if (dv) {
@@ -2264,17 +2256,17 @@ function calendarDisplayCallback(http) {
     var div = $("calendarView");
     var daysView = $("daysView");
     var position = -1;
-
+    
     // Check the previous view to restore the scrolling position
     if (daysView)
         position = daysView.scrollTop;
     preventAutoScroll = (position != -1);
-
+    
     if (http.readyState == 4
         && http.status == 200) {
         document.dayDisplayAjaxRequest = null;
         div.update(http.responseText);
-
+        
         // DOM has changed
         daysView = $("daysView");
         if (daysView) {
@@ -2283,7 +2275,7 @@ function calendarDisplayCallback(http) {
             if (!calendarHeaderAdjusted)
                 adjustCalendarHeaderDIV();
         }
-
+        
         if (http.callbackData["view"])
             currentView = http.callbackData["view"];
         if (http.callbackData["day"])
@@ -2305,7 +2297,7 @@ function calendarDisplayCallback(http) {
                              deleteEvent,
                              copyEventToPersonalCalendar,
                              onMenuRawEvent
-                            );
+                             );
         var observer;
         if (currentView == 'dayview' || currentView == 'weekview' || currentView == 'multicolumndayview') {
             observer = $("daysView");
@@ -2313,7 +2305,7 @@ function calendarDisplayCallback(http) {
         else {
             observer = $("monthDaysView");
         }
-
+        
         var contentView;
         if (currentView == "monthview")
             contentView = $("calendarContent");
@@ -2321,7 +2313,7 @@ function calendarDisplayCallback(http) {
             contentView = $("daysView");
             contentView.observe("scroll", onBodyClickHandler);
             attachDragControllers($("calendarHeader"));
-
+            
             // Create a clone of the contextual menu for the all-day
             // events area
             var allDayViewMenu = Element.clone($("currentViewMenu"), true);
@@ -2334,19 +2326,19 @@ function calendarDisplayCallback(http) {
             allDayArea.observe("contextmenu", onMenuAllDayView);
         }
         attachDragControllers(contentView);
-
+        
         // Attach contextual menu
         var currentViewMenu = $("currentViewMenu");
         initMenu(currentViewMenu, menu);
         observer.observe("contextmenu", onMenuCurrentView);
         currentViewMenu.prepareVisibility = onMenuCurrentViewPrepareVisibility;
-
+        
         restoreSelectedDay();
-
+        
         refreshCalendarEvents(http.callbackData.scrollEvent);
-
+        
         var days = contentView.select("DIV.day");
-
+        
         if (currentView == "monthview")
             for (var i = 0; i < days.length; i++) {
                 days[i].observe("click", onCalendarSelectDay);
@@ -2382,7 +2374,7 @@ function calendarDisplayCallback(http) {
                 headerDays[i].observe("click", onCalendarSelectDay);
                 headerDays[i].observe("dblclick", onClickableCellsDblClick);
                 days[i].observe("click", onCalendarSelectDay);
-
+                
                 var clickableCells = days[i].select("DIV.clickableHourCell");
                 for (var j = 0; j < clickableCells.length; j++)
                     clickableCells[j].observe("dblclick", onClickableCellsDblClick);
@@ -2397,11 +2389,11 @@ function calendarDisplayCallback(http) {
 function onEventsSelectionChange() {
     listOfSelection = this;
     this.removeClassName("_unfocused");
-
+    
     var tasksList = $("tasksList");
     tasksList.addClassName("_unfocused");
     deselectAll(tasksList);
-
+    
     var rows = $(this).getSelectedNodes();
     if (rows.length == 1) {
         var row = rows[0];
@@ -2421,13 +2413,13 @@ function onEventsSelectionChange() {
 function onTasksSelectionChange(event) {
     listOfSelection = this;
     this.removeClassName("_unfocused");
-
+    
     var target = Event.element(event);
     if (target.tagName == 'SPAN')
         target = target.parentNode;
     // Update selection
     onRowClick(event, target);
-
+    
     var eventsList = $("eventsList");
     eventsList.addClassName("_unfocused");
     eventsList.deselectAll();
@@ -2440,8 +2432,8 @@ function _loadEventHref(href) {
     }
     var url = ApplicationBaseURL + "/" + href;
     document.eventsListAjaxRequest
-        = triggerAjaxRequest(url, eventsListCallback, href);
-
+    = triggerAjaxRequest(url, eventsListCallback, href);
+    
     return false;
 }
 
@@ -2474,11 +2466,11 @@ function _loadTasksHref(href) {
 function onHeaderClick(event) {
     var newSortAttribute;
     var headerId;
-
+    
     headerId = this.getAttribute("id");
-
+    
     if (headerId.startsWith('event'))
-    {
+      {
         // This is needed to get the dom object and flip the triangle
         sorting["event-header"] = headerId;
         // Take away the 'events' and 'Header' and lowercase the result
@@ -2489,9 +2481,9 @@ function onHeaderClick(event) {
             sorting["event-ascending"] = true;
         sorting["event-attribute"] = newSortAttribute;
         refreshEvents();
-    }
+      }
     else // Tasks
-    {
+      {
         // This is needed to get the dom object and flip the triangle
         sorting["task-header"] = headerId;
         // Take away the 'tasks' and 'Header' and lowercase the result
@@ -2502,31 +2494,31 @@ function onHeaderClick(event) {
             sorting["task-ascending"] = true;
         sorting["task-attribute"] = newSortAttribute;
         refreshTasks();
-    }
-
+      }
+    
     Event.stop(event);
 }
 
 function refreshCurrentFolder(id) {
     if (id == 'tasks')
-      refreshTasks();
+        refreshTasks();
     else
-      refreshEvents();
+        refreshEvents();
 }
 
 /* refreshes the "unifinder" list */
 function refreshEvents() {
     var specificSearch;
     var value = search["events"]["value"];
-
+    
     if (value && value.length)
         specificSearch = ("&search=" + search["events"]["criteria"]
                           + "&value=" + escape(value.utf8encode()));
     else
         specificSearch = "";
-
+    
     refreshAlarms();
-
+    
     return _loadEventHref("eventslist?asc=" + sorting["event-ascending"]
                           + "&sort=" + sorting["event-attribute"]
                           + "&day=" + currentDay
@@ -2537,18 +2529,18 @@ function refreshEvents() {
 function refreshTasks(setUserDefault) {
     var specificSearch;
     var value = search["tasks"]["value"];
-
+    
     if (value && value.length)
         specificSearch = ("&search=" + search["tasks"]["criteria"]
                           + "&value=" + escape(value.utf8encode()));
     else
         specificSearch = "";
-
+    
     if (setUserDefault == 1)
         specificSearch += "&setud=1";
 
     refreshAlarms();
-
+    
     return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
                           + "&asc=" + sorting["task-ascending"]
                           + "&sort=" + sorting["task-attribute"]
@@ -2563,9 +2555,9 @@ function refreshEventsAndDisplay() {
 
 function onEventsListFilterChange() {
     var node = $("filterpopup");
-
+    
     eventListFilter = node.value;
-
+    
     return refreshEvents();
 }
 
@@ -2612,13 +2604,13 @@ function popupMonthMenu(event) {
             menuId = "monthListMenu";
         else
             menuId = "yearListMenu";
-
+        
         var popup = $(menuId);
         if (id == "monthLabel")
             selectMonthInMenu(popup, this.getAttribute("month"));
         else
             selectYearInMenu(popup, this.innerHTML);
-
+        
         popupToolbarMenu(this, menuId);
         Event.stop(event);
     }
@@ -2627,14 +2619,14 @@ function popupMonthMenu(event) {
 function onMonthMenuItemClick(event) {
     var month = '' + this.getAttribute("month");
     var year = '' + $("yearLabel").innerHTML.strip();
-
+    
     changeDateSelectorDisplay(year + month + "01", true);
 }
 
 function onYearMenuItemClick(event) {
     var month = '' + $("monthLabel").getAttribute("month");;
     var year = '' + this.innerHTML.strip();
-
+    
     changeDateSelectorDisplay(year + month + "01", true);
 }
 
@@ -2660,7 +2652,7 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
             }
         }
     }
-
+    
     return blocks;
 }
 
@@ -2676,7 +2668,7 @@ function selectCalendarEvent(calendar, cname, recurrenceTime) {
         else
             selectedCalendarCell = selection;
     }
-
+    
     return selection;
 }
 
@@ -2696,10 +2688,10 @@ function onSelectAll(event) {
         }
         for (var i = 0; i < selectedBlocks.length; i++)
             selectedBlocks[i].selectElement();
-
+        
         selectedCalendarCell = selectedBlocks;
     }
-
+    
     return false;
 }
 
@@ -2721,7 +2713,7 @@ function deselectAll(list) {
 /** Click on an event in the calendar view */
 function onCalendarSelectEvent(event, willShowContextualMenu) {
     var alreadySelected = false;
-
+    
     // Look for event in events list
     // TODO: event will likely not be found if an Ajax query is refreshing
     // the events list.
@@ -2729,7 +2721,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
     if (this.recurrenceTime)
         rowID += "-" + this.recurrenceTime;
     var row = $(rowID);
-
+    
     // Check if event is already selected
     if (selectedCalendarCell)
         for (var i = 0; i < selectedCalendarCell.length; i++)
@@ -2737,7 +2729,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
                 alreadySelected = true;
                 break;
             }
-
+    
     if ((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1)) {
         // If meta or ctrl key is pressed, inverse the selection
         if (alreadySelected) {
@@ -2745,7 +2737,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
             selectedCalendarCell.splice(i, 1);
             if (row)
                 row.deselect();
-
+            
             return true;
         }
     }
@@ -2760,7 +2752,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
         if (alreadySelected)
             selectedCalendarCell = [this];
     }
-
+    
     if (!alreadySelected) {
         // Select event in calendar view
         selectCalendarEvent(this.calendar, this.cname, this.recurrenceTime);
@@ -2776,13 +2768,13 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
     var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
-
+    
     setSelectedDayDate(day);
     changeDateSelectorDisplay(day);
-
+    
     if (needRefresh)
         refreshEvents();
-
+    
     var target = Event.findElement(event);
     var div = target.up('div');
 
@@ -2804,11 +2796,11 @@ function onCalendarSelectDay(event) {
         deselectAll();
         return true;
     }
-
+    
     if (listOfSelection) {
         listOfSelection.addClassName("_unfocused");
     }
-
+    
     changeCalendarDisplay( { "day": currentDay } );
 }
 
@@ -2820,9 +2812,9 @@ function setSelectedDayDate(dayDate) {
         var allDay = $("allDay" + selectedDayDate);
         if (allDay)
             allDay.removeClassName("selectedDay");
-
+        
         selectedDayDate = dayDate;
-
+        
         day = $("day" + selectedDayDate);
         day.addClassName("selectedDay");
         selectedDayNumber = day.readAttribute("day-number");
@@ -2863,7 +2855,7 @@ function findDateFromDayNumber(dayNumber) {
 
 function onShowCompletedTasks(event) {
     showCompletedTasks = (this.checked ? 1 : 0);
-
+    
     return refreshTasks(1);
 }
 
@@ -2876,7 +2868,7 @@ function updateTaskStatus(event) {
 function updateCalendarStatus(event) {
     var list = [];
     var newStatus = (this.checked ? 1 : 0);
-
+    
     var nodes = $("calendarList").childNodesWithTag("li");
     for (var i = 0; i < nodes.length; i++) {
         var input = $(nodes[i]).childNodesWithTag("input")[0];
@@ -2889,12 +2881,12 @@ function updateCalendarStatus(event) {
                 list.push(UserLogin);
         }
     }
-
+    
     //   if (!list.length) {
     //      list.push(UserLogin);
     //      nodes[0].childNodesWithTag("input")[0].checked = true;
     //   }
-
+    
     //   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
     //                  + list.join(",") + "/Calendar/");
 
@@ -2914,7 +2906,7 @@ function updateCalendarStatus(event) {
         refreshTasks();
         changeCalendarDisplay();
     }
-
+    
     if (event) {
         event.returnValue = true;
     }
@@ -2984,9 +2976,9 @@ function onCalendarsMenuPrepareVisibility() {
     var selected = folders.getSelectedNodes();
     if (selected.length > 0) {
         var folderOwner = selected[0].getAttribute("owner");
-
+        
         var lis = $(this).down("ul").childElements();
-
+        
         /* distance: sharing = length - 1, export = length - 7 */
         var endDists = [ 1, 7 ];
         for (var i = 0; i < endDists.length; i++) {
@@ -2997,14 +2989,14 @@ function onCalendarsMenuPrepareVisibility() {
             else
                 option.addClassName("disabled");
         }
-
+        
         var deleteCalendarOption = $("deleteCalendarMenuItem");
         // Swith between Delete and Unsubscribe
         if (folderOwner == UserLogin)
             deleteCalendarOption.update(_("Delete Calendar"));
         else
             deleteCalendarOption.update(_("Unsubscribe Calendar"));
-
+        
         return true;
     }
     return false;
@@ -3034,36 +3026,36 @@ function onMenuCurrentViewPrepareVisibility() {
         else
             rawOption.addClassName("disabled");
     }
-
+    
     return true;
 }
 
 function onTasksListMenuPrepareVisibility() {
     var options = $(this).down("ul");
     var rawOption = options.down("li", 6);
-
+    
     var selectedTasks = $$("#tasksList ._selected");
     if (selectedTasks.length == 1)
         rawOption.removeClassName("disabled");
     else
         rawOption.addClassName("disabled");
-
+    
     return true;
 }
 
 function getMenus() {
     var menus = {};
-
+    
     var dateMenu = [];
     for (var i = 0; i < 12; i++)
         dateMenu.push(onMonthMenuItemClick);
     menus["monthListMenu"] = dateMenu;
-
+    
     dateMenu = [];
     for (var i = 0; i < 11; i++)
         dateMenu.push(onYearMenuItemClick);
     menus["yearListMenu"] = dateMenu;
-
+    
     menus["eventsListMenu"] = new Array(onMenuNewEventClick,
                                         onMenuNewTaskClick, "-",
                                         editEvent, deleteEvent, "-",
@@ -3084,11 +3076,11 @@ function getMenus() {
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
         calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
-
+    
     var tasksListMenu = $("tasksListMenu");
     if (tasksListMenu)
         tasksListMenu.prepareVisibility = onTasksListMenuPrepareVisibility;
-
+    
     return menus;
 }
 
@@ -3098,7 +3090,7 @@ function newTask () {
 
 function marksTasksAsCompleted () {
     var selectedTasks = $$("#tasksList ._selected");
-
+    
     for (var i = 0; i < selectedTasks.length; i++) {
         var task = selectedTasks[i];
         _updateTaskCompletion (task, 1);
@@ -3115,7 +3107,7 @@ function _updateTaskCompletion (task, value) {
     url += ("/changeStatus?status=" + value);
 
     triggerAjaxRequest(url, refreshTasks, null);
-
+    
     return false;
 }
 
@@ -3124,7 +3116,7 @@ function onMenuRawTask(event) {
     if (selectedTasks.length != 1) {
         return;
     }
-
+    
     var url = ApplicationBaseURL + "/" + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
     openGenericWindow.delay(0.1, url);
 }
@@ -3132,15 +3124,15 @@ function onMenuRawTask(event) {
 function onMenuSharing(event) {
     if ($(this).hasClassName("disabled"))
         return;
-
+    
     var folders = $("calendarList");
     var selected = folders.getSelectedNodes()[0];
     /* FIXME: activation of the context menu should preferably select the entry
-       above which the event has occurred */
+     above which the event has occurred */
     if (selected) {
         var folderID = selected.getAttribute("id");
         var urlstr = URLForFolderID(folderID) + "/acls";
-
+        
         openAclWindow(urlstr);
     }
 }
@@ -3303,7 +3295,7 @@ function configureDragHandles() {
         handle.leftBlock = $("leftPanel");
         handle.rightBlock = $("rightPanel");
     }
-
+    
     handle = $("rightDragHandle");
     if (handle) {
         handle.addInterface(SOGoDragHandlesInterface);
@@ -3342,7 +3334,7 @@ function onCalendarSelectionChange(event) {
     if (target.tagName == 'DIV' || target.tagName == 'SPAN') {
         target = target.parentNode;
     }
-
+    
     onRowClick(event, target);
 }
 
@@ -3365,7 +3357,7 @@ function onCalendarModify(event) {
         }
     }
     if (Prototype.Browser.IE) height += 10;
-
+    
     if (owner == UserLogin) {
         height += 20;
     }
@@ -3375,19 +3367,19 @@ function onCalendarModify(event) {
     else if (calendarID == "/personal") {
         height -= 26;
     }
-
+    
     $(function() {
-        var properties = window.open(url, windowID,
-                                     "width="+width+",height="+height+",resizable=0");
-        properties.focus();
-    }).delay(0.1);
+      var properties = window.open(url, windowID,
+                                   "width="+width+",height="+height+",resizable=0");
+      properties.focus();
+      }).delay(0.1);
 }
 
 function updateCalendarProperties(calendarID, calendarName, calendarColor) {
     var idParts = calendarID.split(":");
     var folderName = idParts[1].split("/")[1];
     var nodeID;
-
+    
     if (idParts[0] != UserLogin)
         nodeID = "/" + idParts[0].asCSSIdentifier() + "_" + folderName;
     else
@@ -3445,7 +3437,7 @@ function addWebCalendarCallback(http) {
                 }
                 webCalendars[data["folderID"]] = http.callbackData;
             }
-
+            
             appendCalendar(data["name"], data["folderID"]);
             reloadWebCalendar(data["folderID"]);
         }
@@ -3453,7 +3445,7 @@ function addWebCalendarCallback(http) {
     else {
         showAlertDialog (_("An error occurred while importing calendar."));
     }
-
+    
     // if (data.imported) {
     //     appendCalendar(data.displayname, "/" + data.name);
     //     refreshEvents();
@@ -3478,17 +3470,17 @@ function onCalendarImport(event) {
     var list = $("calendarList");
     var node = list.getSelectedNodes().first();
     var folderId = node.getAttribute("id");
-
+    
     var url = ApplicationBaseURL + folderId + "/import";
     $("uploadForm").action = url;
     $("calendarFile").value = "";
-
+    
     var cellPosition = node.cumulativeOffset();
     var cellDimensions = node.getDimensions();
     var left = cellDimensions['width'] - 20;
     var top = cellPosition[1];
     top -= list.scrollTop;
-
+    
     var div = $("uploadDialog");
     var res = $("uploadResults");
     res.setStyle({ top: top + "px", left: left + "px" });
@@ -3518,7 +3510,7 @@ function uploadCompleted(response) {
     btn.removeClass("disabled");
     btn.children('span').text(_('Upload'));
     var div = $("uploadResults");
-
+    
     try {
         data = response.evalJSON(true);
 
@@ -3533,33 +3525,33 @@ function uploadCompleted(response) {
     } catch (e) {
         $("uploadResultsContent").update(_("An error occurred while importing calendar."));
     }
-
+    
     hideCalendarImport();
     $("uploadResults").show();
 }
 
 function appendCalendar(folderName, folderPath) {
     var owner;
-
+    
     if (folderPath) {
         owner = getSubscribedFolderOwner(folderPath);
         folderPath = accessToSubscribedFolder(folderPath);
     }
     else
         folderPath = "/" + folderName;
-
+    
     if (!owner)
         owner = UserLogin;
-
+    
     //log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
-
+    
     if ($(folderPath))
         showAlertDialog(_("You have already subscribed to that folder!"));
     else {
         var calendarList = $("calendarList");
         var items = calendarList.select("li");
         var li = document.createElement("li");
-
+        
         // Add the calendar to the proper place
         var i = getListIndexForFolder(items, owner, folderName);
         if (i != items.length) // User is subscribed to other calendars of the same owner
@@ -3568,32 +3560,26 @@ function appendCalendar(folderName, folderPath) {
             calendarList.appendChild(li);
         $(li).writeAttribute("id", folderPath);
         $(li).writeAttribute("owner", owner);
-
+        
         var checkBox = createElement("input", null, "checkBox", { checked: 1 },
                                      { type: "checkbox" }, li);
-
+        
         li.appendChild(document.createTextNode(" "));
-
+        
         var colorBox = document.createElement("div");
         colorBox.appendChild(document.createTextNode("\u00a0"));
-        li.appendChild(colorBox);
-
-        var displayName = document.createElement("span");
-        displayName.appendChild(document.createTextNode(folderName));
-        li.appendChild(displayName);
-
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
-
+        
         // Check the checkbox (required for IE)
         li.getElementsByTagName("input")[0].checked = true;
-
+        
         // Register event on checkbox
         $(checkBox).on("click", clickEventWrapper(updateCalendarStatus));
-
+        
         var url = URLForFolderID(folderPath) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderPath);
-
+        
         // Update CSS for events color
         appendStyleElement(folderPath, "#AAAAAA");
     }
@@ -3604,15 +3590,15 @@ function appendStyleElement(folderPath, color) {
         var fgColor = getContrastingTextColor(color);
         var styleElement = document.createElement("style");
         styleElement.type = "text/css";
-
+        
         var styles = ' .calendarFolder' + folderPath.substr(1)
-            + ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }'
-            + ' div.colorBox.calendarFolder' + folderPath.substr(1)
-            + ' { color: ' + color + ' !important; }';
-
+        + ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }'
+        + ' div.colorBox.calendarFolder' + folderPath.substr(1)
+        + ' { color: ' + color + ' !important; }';
+        
         if (styleElement.styleSheet) styleElement.styleSheet.cssText = styles; // IE
         else styleElement.appendChild(document.createTextNode(styles));        // Mozilla + Webkit
-
+        
         document.getElementsByTagName("head")[0].appendChild(styleElement);
     }
 }
@@ -3664,7 +3650,7 @@ function onCalendarRemove(event) {
             }
         }
     }
-
+    
     preventDefault(event);
 }
 
@@ -3713,7 +3699,7 @@ function configureLists() {
     if (!$("schedulerTabs").visible()) {
         $('calendarView').setStyle({ top: '0' }).show();
     }
-
+    
     // TASK LIST
     var list = $("tasksList");
     list.multiselect = true;
@@ -3722,7 +3708,7 @@ function configureLists() {
     list.down("tbody").on("mousedown", onTasksSelectionChange);
     list.down("tbody").on("selectstart", listRowMouseDownHandler);
     list.down("tbody").attachMenu("tasksListMenu");
-
+    
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
 
@@ -3743,7 +3729,7 @@ function initDateSelectorEvents() {
     arrow.observe("click", onDateSelectorGotoMonth);
     arrow = $("leftArrow");
     arrow.observe("click", onDateSelectorGotoMonth);
-
+    
     var menuButton = $("monthLabel");
     menuButton.observe("click", popupMonthMenu);
     menuButton = $("yearLabel");
@@ -3761,7 +3747,7 @@ function onWindowResize(event) {
     handle = $("rightDragHandle");
     if (handle)
         handle.adjust();
-
+    
     if (!$(document.body).hasClassName("popup"))
         drawNowLine();
 }
@@ -3823,18 +3809,38 @@ function drawNowLine() {
         setTimeout("drawNowLine ();", 60000); // 1 min.
     }
     else {
-      var target = targets[0].getElementsByClassName("clickableHourCell")[hours];
-      if (target) {
-        var div = targets[0].getElementsByClassName("nowLineDisplay")[0];
-        if (!div)
-          div = new Element("div", {'class': 'nowLineDisplay'});
-        
-        div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
-        target.insertBefore(div, target.firstChild);
-      }
+        var targets = [];
     }
-    setTimeout("drawNowLine ();", 60000); // 1 min.
-  }
+    
+    if (targets[0] != undefined) {
+        if (currentView == "multicolumndayview") {
+            var nbCalendars = targets.length;
+            for(var i = 0; i < nbCalendars; i++){
+                var target = targets[i].getElementsByClassName("clickableHourCell")[hours];
+                
+                if (target) {
+                    var div = targets[i].getElementsByClassName("nowLineDisplay")[0];
+                    if (!div)
+                        div = new Element("div", {'class': 'nowLineDisplay'});
+                    
+                    div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+                    target.insertBefore(div, target.firstChild);
+                }
+            }
+        }
+        else {
+            var target = targets[0].getElementsByClassName("clickableHourCell")[hours];
+            if (target) {
+                var div = targets[0].getElementsByClassName("nowLineDisplay")[0];
+                if (!div)
+                    div = new Element("div", {'class': 'nowLineDisplay'});
+                
+                div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+                target.insertBefore(div, target.firstChild);
+            }
+        }
+        setTimeout("drawNowLine ();", 60000); // 1 min.
+    }
 }
 
 function onListCollapse(event, element) {
@@ -3843,13 +3849,13 @@ function onListCollapse(event, element) {
     var handle = $("rightDragHandle");
     var view = jQuery("#calendarView");
     var state = 'collapse';
-
+    
     if (tabs.visible()) {
         img.removeClassName('collapse').addClassName('rise');
         handle.hide();
         view.animate({ top: '0' }, 200, function() {
-            tabs.hide();
-        });
+                     tabs.hide();
+                     });
     }
     else {
         state = 'rise';
@@ -3857,15 +3863,15 @@ function onListCollapse(event, element) {
         tabs.show();
         tabs.controller.onWindowResize();
         view.animate({ top: handle.getStyle('top') }, 200, function() {
-            handle.show();
-        });
+                     handle.show();
+                     });
     }
-
+    
     var url =  ApplicationBaseURL + "/saveListState";
     var params = "state=" + state;
     triggerAjaxRequest(url, null, null, params,
                        { "Content-type": "application/x-www-form-urlencoded" });
-
+    
 }
 
 function onDocumentKeydown(event) {
@@ -3905,7 +3911,7 @@ function onDocumentKeydown(event) {
 
 function saveTabState(event) {
     var tab = $(event).memo;
-
+    
     var url =  ApplicationBaseURL + "/saveSelectedList";
     var params = "list=" + tab;
     triggerAjaxRequest(url, null, null, params,
@@ -3919,11 +3925,11 @@ function initScheduler() {
     sorting["task-attribute"] = "end";
     sorting["event-ascending"] = true;
     sorting["task-ascending"] = true;
-
+    
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
         eventListFilter = node.value;
-
+        
         var tabsContainer = $("schedulerTabs");
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
@@ -3949,7 +3955,7 @@ function initScheduler() {
 
         initRefreshViewCheckTimer()
     }
-
+    
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
 }
