@@ -475,7 +475,7 @@
         [reason appendString:@", "];
     }
     [unavailableAttendees release];
-    return [NSException exceptionWithHTTPStatus:403 reason: reason];
+    return [NSException exceptionWithHTTPStatus:409 reason: reason];
   }
   [unavailableAttendees release];
   return nil;
