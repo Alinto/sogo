@@ -215,6 +215,13 @@ function initPreferences() {
     mailController.attachToTabsContainer(tabsContainer);
   }
   
+  // Inner tabs on the calendar module tab
+  tabsContainer = $('calendarOptionsTabs');
+  if (tabsContainer) {
+    var mailController = new SOGoTabsController();
+    mailController.attachToTabsContainer(tabsContainer);
+  }
+  
   _setupEvents();
   
   // Optional function called when initializing the preferences

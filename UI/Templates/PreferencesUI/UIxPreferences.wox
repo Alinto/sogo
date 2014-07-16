@@ -216,74 +216,86 @@
                 const:name="reminderList"
                 const:id="reminderList"
                 string="itemReminderText" var:selection="reminder"/></dd>
-              <dt><var:string label:value="Appointments invitations:"/></dt>
-              <dd><input type="checkbox"
-                const:name="preventInvitations"
-                const:id="preventInvitations"
-                var:checked="preventInvitations" />
-                <var:string label:value="Prevent from being invited to appointments"/></dd>
             </dl>
-            <label id="whiteListLabel"><var:string label:value="White list for appointments invitations:"/></label>
-            <div id="appointmentsWhiteListWrapper" class="listWrapper">
-              <table class="tableview" id="tableViewWhiteList">
-                <thead>
-                  <tr class="tableview">
-                    <th const:class="tbtv_headercell" const:id="whiteListTableHeader">
-                      <var:string label:value="Contacts names"/></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <var:foreach list="appointmentsWhiteList" item="contact">
-                    <tr const:class="whiteListRow">
-                      <td const:class="whiteListCell">
-                        <var:string var:value="contact"/></td>
-                    </tr>
-                  </var:foreach>
-                </tbody>
-              </table>
-            </div>
-            <div id="whiteListToolbar">
-              <a const:id="appointmentsWhiteListAdd" href="#">
-                <img rsrc:src="add-icon.png" label:title="Add" id="WhiteListAdd"/></a>
-              <a const:id="appointmentsWhiteListDelete" href="#">
-                <img rsrc:src="remove-icon.png" label:title="Delete" id="WhiteListDelete" /></a>
-            </div>
-            <input type="hidden" const:id="whiteList"
-            const:name="whiteList" var:value="whiteList"/>
-            
-            <label id="calendarCategoriesLabel"><var:string label:value="Categories"/></label>
-            <div id="calendarCategoriesListWrapper" class="listWrapper">
-              <table class="categoriesList" cellspacing="0">
-                <thead>
-                  <tr class="tableview">
-                    <th const:class="tbtv_headercell" const:id="nameTableHeader">
-                      <var:string label:value="Name"/></th>
-                    <th const:class="tbtv_headercell" const:id="colorTableHeader">
-                      <var:string label:value="Color"/></th>
-                  </tr></thead>
-                <tbody>
-                  <var:foreach list="calendarCategoryList" item="category">
-                    <tr const:class="categoryListRow">
-                      <td const:class="categoryListCell">
-                        <var:string var:value="category"/></td>
-                      <td const:class="categoryListCell">
-                        <div const:class="colorBox" var:data-color="categoryColor"><entity name="nbsp"/></div></td>
-                    </tr>
-                  </var:foreach>
-                </tbody>
-              </table>
-            </div>
-            <div class="bottomToolbar">
-              <a const:id="calendarCategoryAdd" class="bottomButton" href="#">
-                <span><img rsrc:src="add-icon.png" label:title="Add" />
-                </span></a>
-              <a const:id="calendarCategoryDelete" class="bottomButton" href="#">
-                <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-                </span></a>
-            </div>
-            <input type="hidden" const:id="calendarCategoriesValue"
-            const:name="calendarCategoriesValue" var:value="calendarCategoriesValue"/>
-          </div>
+            <div class="tabsContainer" id="calendarOptionsTabs">
+              <ul>
+                <li target="calendarCategoriesView">
+                  <span><var:string label:value="Categories"/></span></li>
+                <li target="calendarAppointmentsInvitationsView">
+                  <span><var:string label:value="Appointments invitations"/></span></li>
+              </ul>
+              <div class="tabs">
+                <div id="calendarCategoriesView" class="tab">
+                  <div id="calendarCategoriesListWrapper" class="listWrapper">
+                    <table class="categoriesList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="nameTableHeader">
+                            <var:string label:value="Name"/></th>
+                          <th const:class="tbtv_headercell" const:id="colorTableHeader">
+                            <var:string label:value="Color"/></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <var:foreach list="calendarCategoryList" item="category">
+                          <tr const:class="categoryListRow">
+                            <td const:class="categoryListCell">
+                              <var:string var:value="category"/></td>
+                            <td const:class="categoryListCell">
+                              <div const:class="colorBox" var:data-color="categoryColor"><entity name="nbsp"/></div></td>
+                          </tr>
+                        </var:foreach>
+                      </tbody>
+                    </table>
+                  </div><!-- #calendarCategoriesListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="calendarCategoryAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" /></span></a>
+                    <a const:id="calendarCategoryDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" /> </span></a>
+                  </div><!-- .bottomToolbar -->
+                  <input type="hidden" const:id="calendarCategoriesValue"
+                         const:name="calendarCategoriesValue" var:value="calendarCategoriesValue"/>
+                </div><!-- #calendarCategoriesView -->
+                
+                <div id="calendarAppointmentsInvitationsView" class="tab">
+                  <div><input type="checkbox"
+                              const:name="preventInvitations"
+                              const:id="preventInvitations"
+                              var:checked="preventInvitations" />
+                  <var:string label:value="Prevent from being invited to appointments"/></div>
+                  <hr />
+                  <var:string label:value="White list for appointments invitations:"/>
+                  <div id="appointmentsWhiteListWrapper" class="listWrapper">
+                    <table id="tableViewWhiteList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="whiteListTableHeader">
+                            <var:string label:value="Contacts names"/></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <var:foreach list="appointmentsWhiteList" item="contact">
+                          <tr const:class="whiteListRow">
+                            <td const:class="whiteListCell">
+                              <var:string var:value="contact"/></td>
+                          </tr>
+                        </var:foreach>
+                      </tbody>
+                    </table>
+                  </div><!-- #appointmentsWhiteListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="appointmentsWhiteListAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" /></span></a>
+                    <a const:id="appointmentsWhiteListDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" /></span></a>
+                  </div><!-- .bottomToolbar -->
+                  <input type="hidden" const:id="whiteList"
+                         const:name="whiteList" var:value="whiteList"/>
+                </div><!-- #calendarAppointmentsInvitationsView -->
+              </div><!-- .tabs -->
+            </div><!-- #calendarOptionsTabs -->
+          </div><!-- #calendarOptionsView -->
         </var:if>
         <div id="contactsOptionsView" class="tab">
           <label><var:string label:value="Categories"/></label>
