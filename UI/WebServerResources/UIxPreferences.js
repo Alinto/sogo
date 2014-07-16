@@ -84,33 +84,33 @@ function savePreferences(sender) {
     
     if (sendForm) {
         saveMailAccounts();
-        
+    
         triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
-                           if (http.readyState == 4) {
-                           var response = http.responseText.evalJSON(true);
-                           if (http.status == 503) {
-                           showAlertDialog(_(response.textStatus));
-                           }
-                           else if (http.status == 200) {
-                           if (response.hasChanged == 1) {
-                           window.opener.location.reload();
-                           window.close();
-                           }
-                           else {
-                           window.close();
-                           }
-                           }
-                           else {
-                           showAlertDialog(_(response.textStatus));
-                           }
-                           }
-                           },
-                           null,
-                           Form.serialize($("mainForm")), // excludes the file input
-                           { "Content-type": "application/x-www-form-urlencoded"}
-                           );
+            if (http.readyState == 4) {
+                var response = http.responseText.evalJSON(true);
+                if (http.status == 503) {
+                    showAlertDialog(_(response.textStatus));
+                }
+                else if (http.status == 200) {
+                    if (response.hasChanged == 1) {
+                        window.opener.location.reload();
+                        window.close();
+                    }
+                    else {
+                        window.close();
+                    }
+                }
+                else {
+                    showAlertDialog(_(response.textStatus));
+                }
+            }
+        },
+        null,
+        Form.serialize($("mainForm")), // excludes the file input
+        { "Content-type": "application/x-www-form-urlencoded"}
+        );
 	}
-    return false;
+  return false;
 }
 
 function prototypeIfyFilters() {
@@ -143,25 +143,25 @@ function prototypeIfyFilters() {
 
 function _setupEvents() {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
-                   "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                   "firstWeek", "messageCheck", "sortByThreads", "displayRemoteInlineImages",
-                   "subscribedFoldersOnly", "language", "defaultCalendar",
-                   "enableVacation" ];
+                    "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
+                    "firstWeek", "messageCheck", "sortByThreads", "displayRemoteInlineImages",
+                    "subscribedFoldersOnly", "language", "defaultCalendar",
+                    "enableVacation" ];
     for (var i = 0; i < widgets.length; i++) {
         var widget = $(widgets[i]);
         if (widget) {
             widget.observe("change", onChoiceChanged);
         }
     }
-    
+
     // We check for non-null elements as replyPlacementList and composeMessagesType
     // might not be present if ModulesConstraints disable those elements
     if ($("replyPlacementList"))
         $("replyPlacementList").on("change", onReplyPlacementListChange);
-    
+
     if ($("composeMessagesType"))
         $("composeMessagesType").on("change", onComposeMessagesTypeChange);
-    
+
     // Note: we also monitor changes to the calendar categories.
     // See functions endEditable and onColorPickerChoice.
     var valueInputs = [ "calendarCategoriesValue", "calendarCategoriesValue" ];
@@ -186,20 +186,20 @@ function onChoiceChanged(event) {
 function addDefaultEmailAddresses(event) {
     var defaultAddresses = $("defaultEmailAddresses").value.split(/, */);
     var addresses = $("autoReplyEmailAddresses").value.trim();
-    
+
     if (addresses) addresses = addresses.split(/, */);
     else addresses = new Array();
-    
+
     defaultAddresses.each(function(adr) {
-                          for (var i = 0; i < addresses.length; i++)
-                          if (adr == addresses[i])
-                          break;
-                          if (i == addresses.length)
-                          addresses.push(adr);
-                          });
-    
+        for (var i = 0; i < addresses.length; i++)
+            if (adr == addresses[i])
+                break;
+        if (i == addresses.length)
+            addresses.push(adr);
+    });
+
     $("autoReplyEmailAddresses").value = addresses.join(", ");
-    
+
     event.stop();
 }
 
@@ -336,13 +336,12 @@ function initPreferences() {
     
     button = $("enableVacationEndDate");
     if (button) {
-        jQuery("#vacationEndDate_date").closest(".date").datepicker(
-                                                                    { autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
+        jQuery("#vacationEndDate_date").closest(".date").datepicker({ autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
         button.on("click", function(event) {
                   if (this.checked)
-                  $("vacationEndDate_date").enable();
+                      $("vacationEndDate_date").enable();
                   else
-                  $("vacationEndDate_date").disable();
+                      $("vacationEndDate_date").disable();
                   });
     }
     onAddOutgoingAddressesCheck();
@@ -369,11 +368,11 @@ function appendSieveFilterRow(filterTable, number, filter) {
     var row = createElement("tr");
     row.observe("mousedown", onRowClick);
     row.observe("dblclick", onFilterEdit.bindAsEventListener(row));
-    
+
     var nameColumn = createElement("td");
     nameColumn.appendChild(document.createTextNode(filter["name"]));
     row.appendChild(nameColumn);
-    
+
     var activeColumn = createElement("td", null, "activeColumn");
     var cb = createElement("input", null, "checkBox",
                            { type: "checkbox" },
@@ -382,7 +381,7 @@ function appendSieveFilterRow(filterTable, number, filter) {
     var bound = onScriptActiveCheck.bindAsEventListener(cb);
     cb.observe("click", bound);
     row.appendChild(activeColumn);
-    
+
     filterTable.tBodies[0].appendChild(row);
 }
 
@@ -399,7 +398,7 @@ function updateSieveFilterRow(filterTable, number, filter) {
         nameColumn.removeChild(nameColumn.firstChild);
     }
     nameColumn.appendChild(document.createTextNode(filter.name));
-    
+
     var activeColumn = columns[1];
     var cb = activeColumn.childNodesWithTag("input");
     cb[0].checked = filter.active;
@@ -478,7 +477,7 @@ function onFilterMoveDown(event) {
 function onFilterEdit(event) {
     _editFilter(this.rowIndex - 1);
     event.stop();
-    
+
     return false;
 }
 
@@ -497,7 +496,7 @@ function copyFilter(originalFilter) {
     for (var i = 0; i < originalFilter.actions.length; i++) {
         newFilter.actions.push(_copyFilterElement(originalFilter.actions[i]));
     }
-    
+
     return newFilter;
 }
 
@@ -509,7 +508,7 @@ function _copyFilterElement(filterElement) { /* element = rule or action */
             newElement[k] = value;
         }
     }
-    
+
     return newElement;
 }
 
@@ -527,7 +526,7 @@ function setupMailboxesFromJSON(jsonResponse) {
     userMailboxes = $([]);
     for (var i = 0; i < responseMboxes.length; i++) {
         var mbox = { 'displayName': responseMboxes[i].displayName.substr(1),
-            'path': responseMboxes[i].path.substr(1) };
+                     'path': responseMboxes[i].path.substr(1) };
         userMailboxes.push(mbox);
     }
 }
@@ -540,7 +539,7 @@ function updateFilterFromEditor(filterId, filterJSON) {
             sanitized[k] = filter[k];
         }
     }
-    
+
     var table = $("filtersList");
     if (filterId == "new") {
         var newNumber = filters.length;
@@ -557,7 +556,7 @@ function initMailAccounts() {
     var mailAccountsJSON = $("mailAccountsJSON");
     if (mailAccountsJSON) {
         mailAccounts = mailAccountsJSON.value.evalJSON();
-        
+
         var mailAccountsList = $("mailAccountsList");
         if (mailAccountsList) {
             var li = createMailAccountLI(mailAccounts[0], true);
@@ -569,7 +568,7 @@ function initMailAccounts() {
             var lis = mailAccountsList.childNodesWithTag("li");
             lis[0].readOnly = true;
             lis[0].selectElement();
-            
+
             var button = $("mailAccountAdd");
             if (button) {
                 button.observe("click", onMailAccountAdd);
@@ -579,19 +578,19 @@ function initMailAccounts() {
                 button.observe("click", onMailAccountDelete);
             }
         }
-        
+
         var inputs = $$("#accountInfo input");
         for (var i = 0; i < inputs.length; i++) {
             $(inputs[i]).observe("change", onMailAccountInfoChange);
         }
-        
+
         inputs = $$("#identityInfo input");
         for (var i = 0; i < inputs.length; i++) {
             $(inputs[i]).observe("change", onMailIdentityInfoChange);
         }
         $("actSignature").observe("click", onMailIdentitySignatureClick);
         displayMailAccount(mailAccounts[0], true);
-        
+
         inputs = $$("#returnReceiptsInfo input");
         for (var i = 0; i < inputs.length; i++) {
             $(inputs[i]).observe("change", onMailReceiptInfoChange);
@@ -625,10 +624,10 @@ function onMailReceiptInfoChange(event) {
     }
     var keyName = this.name.cssIdToHungarianId();
     this.mailAccount["receipts"][keyName] = this.value;
-    
+
     var popupIds = [ "receipt-non-recipient-action",
-                    "receipt-outside-domain-action",
-                    "receipt-any-action" ];
+                     "receipt-outside-domain-action",
+                     "receipt-any-action" ];
     var receiptActionsDisable = (this.value == "ignore");
     for (var i = 0; i < popupIds.length; i++) {
         var actionPopup = $(popupIds[i]);
@@ -664,19 +663,19 @@ function onMailIdentitySignatureClick(event) {
             if (Prototype.Browser.IE)
                 // Overwrite some fixes from iefixes.css
                 dialog.setStyle({ width: 'auto', marginLeft: 'auto' });
-            
+
             document.body.appendChild(dialog);
             dialogs[dialogId] = dialog;
-            
+
             if ($("composeMessagesType").value != 0) {
                 CKEDITOR.replace('signature',
                                  { height: "150px",
-                                 toolbar: [['Bold', 'Italic', '-', 'Link',
-                                            'Font','FontSize','-','TextColor',
-                                            'BGColor']
-                                           ],
-                                 language: localeCode,
-                                 scayt_sLang: localeCode });
+                                   toolbar: [['Bold', 'Italic', '-', 'Link',
+                                              'Font','FontSize','-','TextColor',
+                                              'BGColor']
+                                            ],
+                                   language: localeCode,
+                                   scayt_sLang: localeCode });
             }
         }
         dialog.mailAccount = this.mailAccount;
@@ -689,16 +688,16 @@ function onMailIdentitySignatureClick(event) {
             area.value = identity["signature"];
         else
             area.value = "";
-        
+
         $("bgDialogDiv").show();
         if (Prototype.Browser.IE)
             jQuery('#bgDialogDiv').css('opacity', 0.4);
         jQuery(dialog).fadeIn('fast', function() {
-                              if (CKEDITOR.instances["signature"])
-                              focusCKEditor();
-                              else
-                              area.focus();
-                              });
+            if (CKEDITOR.instances["signature"])
+                focusCKEditor();
+            else
+                area.focus();
+        });
         Event.stop(event);
     }
 }
@@ -708,7 +707,7 @@ function focusCKEditor() {
         setTimeout("focusCKEditor()", 100);
     else
         CKEDITOR.instances.signature.focus()
-        }
+}
 
 function hideSignature() {
     if (CKEDITOR.status != 'loaded')
@@ -724,7 +723,7 @@ function onMailIdentitySignatureOK(event) {
         mailAccount["identities"] = [{}];
     }
     var identity = mailAccount["identities"][0];
-    
+
     var content = (CKEDITOR.instances["signature"]
                    ? CKEDITOR.instances["signature"].getData()
                    : $("signature").value);
@@ -753,7 +752,7 @@ function createMailAccountLI(mailAccount, readOnly) {
         li.editionController = editionCtlr;
     }
     li.mailAccount = mailAccount;
-    
+
     return li;
 }
 
@@ -764,10 +763,10 @@ function onMailAccountEntryClick(event) {
 function displayMailAccount(mailAccount, readOnly) {
     var inputs = $$("#accountInfo input");
     inputs.each(function(i) {
-                i.disabled = readOnly;
-                i.mailAccount = mailAccount;
-                });
-    
+        i.disabled = readOnly;
+        i.mailAccount = mailAccount;
+    });
+
     inputs = $$("#identityInfo input");
     inputs.each(function(i) { i.mailAccount = mailAccount; });
     if (!mailCustomFromEnabled) {
@@ -775,16 +774,16 @@ function displayMailAccount(mailAccount, readOnly) {
             inputs[i].disabled = readOnly;
         }
     }
-    
+
     var form = $("mainForm");
-    
+
     var encryption = "none";
     var encRadioValues = [ "none", "ssl", "tls" ];
     if (mailAccount["encryption"]) {
         encryption = mailAccount["encryption"];
     }
     form.setRadioValue("encryption", encRadioValues.indexOf(encryption));
-    
+
     var port;
     if (mailAccount["port"]) {
         port = mailAccount["port"];
@@ -798,20 +797,20 @@ function displayMailAccount(mailAccount, readOnly) {
         }
     }
     $("port").value = port;
-    
+
     $("serverName").value = mailAccount["serverName"];
     $("userName").value = mailAccount["userName"];
     $("password").value = mailAccount["password"];
-    
+
     var identity = (mailAccount["identities"]
                     ? mailAccount["identities"][0]
                     : {} );
     $("fullName").value = identity["fullName"] || "";
     $("email").value = identity["email"] || "";
     $("replyTo").value = identity["replyTo"] || "";
-    
+
     displayAccountSignature(mailAccount);
-    
+
     var receiptAction = "ignore";
     var receiptActionValues = [ "ignore", "allow" ];
     if (mailAccount["receipts"] &&  mailAccount["receipts"]["receiptAction"]) {
@@ -825,8 +824,8 @@ function displayMailAccount(mailAccount, readOnly) {
     form.setRadioValue("receipt-action",
                        receiptActionValues.indexOf(receiptAction));
     var popupIds = [ "receipt-non-recipient-action",
-                    "receipt-outside-domain-action",
-                    "receipt-any-action" ];
+                     "receipt-outside-domain-action",
+                     "receipt-any-action" ];
     var receiptActionsDisable = (receiptAction == "ignore");
     for (var i = 0; i < popupIds.length; i++) {
         var actionPopup = $(popupIds[i]);
@@ -844,7 +843,7 @@ function displayMailAccount(mailAccount, readOnly) {
 function displayAccountSignature(mailAccount) {
     var actSignature = $("actSignature");
     actSignature.mailAccount = mailAccount;
-    
+
     var actSignatureValue;
     var identity = (mailAccount["identities"]
                     ? mailAccount["identities"][0]
@@ -876,13 +875,13 @@ function createMailAccount() {
         newIdentity[k] = firstIdentity[k];
     }
     delete newIdentity["isDefault"];
-    
+
     var newMailAccount = { name: _("New Mail Account"),
-    serverName: "mailserver",
-    userName: UserLogin,
-    password: "",
-        identities: [ newIdentity ] };
-    
+                           serverName: "mailserver",
+                           userName: UserLogin,
+                           password: "",
+                           identities: [ newIdentity ] };
+
     return newMailAccount;
 }
 
@@ -899,10 +898,10 @@ function onMailAccountAdd(event) {
     displayMailAccount(newMailAccount, false);
     li.selectElement();
     li.editionController.startEditing();
-    
+
     var hasChanged = $("hasChanged");
     hasChanged.value = "1";
-    
+
     event.stop();
 }
 
@@ -923,7 +922,7 @@ function onMailAccountDelete(event) {
             mailAccounts.splice(index, 1);
             next.selectElement();
             displayMailAccount(next.mailAccount, next.readOnly);
-            
+
             var hasChanged = $("hasChanged");
             hasChanged.value = "1";
         }
@@ -933,26 +932,26 @@ function onMailAccountDelete(event) {
 
 function saveMailAccounts() {
     /* This removal enables us to avoid a few warning from SOPE for the inputs
-     that were created dynamically. */
+       that were created dynamically. */
     var editor = $("mailAccountEditor");
-    
+
     // Could be null if ModuleConstraints disables email access
     if (editor)
     	//Instead of removing the modules, we disable it. This will prevent the window to crash if we have a connection error.
-        editor.select('input, select').each(function(i) { i.disable(); })
-        
-        compactMailAccounts();
+      editor.select('input, select').each(function(i) { i.disable(); })
+
+    compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");
-    
+
     if (mailAccountsJSON)
         mailAccountsJSON.value = Object.toJSON(mailAccounts);
 }
 
 function compactMailAccounts() {
-    
+
     if (!mailAccounts)
         return;
-    
+
     for (var i = 1; i < mailAccounts.length; i++) {
         var account = mailAccounts[i];
         var encryption = account["encryption"];
@@ -977,12 +976,12 @@ function compactMailAccounts() {
 /* common function between calendar categories and mail labels */
 function onColorEdit(e, target) {
     var view = $(target);
-    
+
     view.select('div.colorEditing').each(function(box) {
-                                         box.removeClassName('colorEditing');
-                                         });
+        box.removeClassName('colorEditing');
+    });
     this.addClassName("colorEditing");
-    
+
     var cellPosition = this.cumulativeOffset();
     var cellDimensions = this.getDimensions();
     var div = $('colorPickerDialog');
@@ -999,17 +998,17 @@ function onColorPickerChoice(event) {
     var dialog = span.up('.dialog');
     var target = dialog.readAttribute('data-target');
     var newColor = "#" + span.className.substr(4);
-    
+
     var wrapper = $(target);
     var div = wrapper.select("div.colorEditing").first();
-    
+
     div.writeAttribute('data-color', newColor);
     div.style.background = newColor;
     if (parseInt($("hasChanged").value) == 0) {
         var hasChanged = $("hasChanged");
         hasChanged.value = "1";
     }
-    
+
     dialog.hide();
 }
 
@@ -1149,19 +1148,19 @@ function onCalendarCategoryAdd(e) {
     var nametd = new Element("td").update("");
     var colortd = new Element("td");
     var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
-    
+
     row.identify();
     row.addClassName("categoryListRow");
-    
+
     nametd.addClassName("categoryListCell");
     colortd.addClassName("categoryListCell");
     colordiv.setStyle({backgroundColor: "#F0F0F0"});
-    
+
     colortd.appendChild(colordiv);
     row.appendChild(nametd);
     row.appendChild(colortd);
     $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
-    
+
     resetCalendarTableActions();
     nametd.editionController.startEditing();
 }
@@ -1170,7 +1169,7 @@ function onCalendarCategoryDelete(e) {
     var list = $('calendarCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
-    
+
     for (var i=0; i < count; i++) {
         rows[i].editionController = null;
         rows[i].remove();
@@ -1179,7 +1178,7 @@ function onCalendarCategoryDelete(e) {
 
 function serializeCalendarCategories() {
     var r = $$("#calendarCategoriesListWrapper TBODY TR");
-    
+
     var values = [];
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements();
@@ -1187,7 +1186,7 @@ function serializeCalendarCategories() {
         var color = $(tds.last().childElements().first()).readAttribute('data-color');
         values.push("\"" + name + "\": \"" + color + "\"");
     }
-    
+
     $("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
@@ -1226,19 +1225,19 @@ function onMailLabelAdd(e) {
     var nametd = new Element("td").update("");
     var colortd = new Element("td");
     var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
-    
+
     row.identify();
     row.addClassName("labelListRow");
-    
+
     nametd.addClassName("labelListCell");
     colortd.addClassName("labelListCell");
     colordiv.setStyle({backgroundColor: "#F0F0F0"});
-    
+
     colortd.appendChild(colordiv);
     row.appendChild(nametd);
     row.appendChild(colortd);
     $("mailLabelsListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
-    
+
     resetMailTableActions();
     nametd.editionController.startEditing();
 }
@@ -1247,7 +1246,7 @@ function onMailLabelDelete(e) {
     var list = $('mailLabelsListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
-    
+
     for (var i=0; i < count; i++) {
         rows[i].editionController = null;
         rows[i].remove();
@@ -1266,164 +1265,163 @@ function resetMailLabelsColors(e) {
 
 function serializeMailLabels() {
     var r = $$("#mailLabelsListWrapper TBODY TR");
-    
+
     var values = [];
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements();
-        var name = r[i].readAttribute("data-name");
+        var name = r[i].readAttribute("data-name"); 
         var label  = $(tds.first()).innerHTML;
         var color = $(tds.last().childElements().first()).readAttribute('data-color');
         
         /* if name is null, that's because we've just added a new tag */
         if (!name) {
             name = label.replace(/[ \(\)\/\{%\*<>\\\"]/g, "_");
-                                   }
+        }
+
+        values.push("\"" + name + "\": [\"" + label + "\", \"" + color + "\"]");
+    }
+
+    $("mailLabelsValue").value = "{ " + values.join(",\n") + "}";
+}
+
+/* /mail label/tags */
+
+
+/* contacts categories */
+function resetContactsTableActions() {
+    var r = $$("#contactsCategoriesListWrapper tbody tr");
+    for (var i = 0; i < r.length; i++) {
+        var row = $(r[i]);
+        row.observe("mousedown", onRowClick);
+        var tds = row.childElements();
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+    }
+}
+
+function onContactsCategoryAdd(e) {
+    var row = new Element("tr");
+    row.identify();
+    row.addClassName("categoryListRow");
+
+    var nametd = new Element("td").update("");
+    nametd.addClassName("categoryListCell");
+    row.appendChild(nametd);
+    var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
+    list.appendChild(row);
+
+    resetContactsTableActions();
+    nametd.editionController.startEditing();
+}
+
+function onContactsCategoryDelete(e) {
+    var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
+    var rows = list.getSelectedNodes();
+    var count = rows.length;
+
+    for (var i = 0; i < count; i++) {
+        rows[i].editionController = null;
+        rows[i].remove();
+    }
+}
+
+function serializeContactsCategories() {
+    var values = [];
+
+    var tds = $$("#contactsCategoriesListWrapper TBODY TD");
+
+    for (var i = 0; i < tds.length; i++) {
+        var td = $(tds[i]);
+        values.push(td.allTextContent());
+    }
+
+    $("contactsCategoriesValue").value = Object.toJSON(values);
+}
+
+/* / contact categories */
                                    
-                                   values.push("\"" + name + "\": [\"" + label + "\", \"" + color + "\"]");
-                                   }
+function onAddOutgoingAddressesCheck(checkBox) {
+    if (!checkBox) {
+        checkBox = $("addOutgoingAddresses");
+    }
+    $("addressBookList").disabled = !checkBox.checked;
+}
                                    
-                                   $("mailLabelsValue").value = "{ " + values.join(",\n") + "}";
-                                   }
-                                   
-            /* /mail label/tags */
-                                   
-                                   
-            /* contacts categories */
-                                   function resetContactsTableActions() {
-                                   var r = $$("#contactsCategoriesListWrapper tbody tr");
-                                   for (var i = 0; i < r.length; i++) {
-                                   var row = $(r[i]);
-                                   row.observe("mousedown", onRowClick);
-                                   var tds = row.childElements();
-                                   var editionCtlr = new RowEditionController();
-                                   editionCtlr.attachToRowElement(tds[0]);
-                                   }
-                                   }
-                                   
-                                   function onContactsCategoryAdd(e) {
-                                   var row = new Element("tr");
-                                   row.identify();
-                                   row.addClassName("categoryListRow");
-                                   
-                                   var nametd = new Element("td").update("");
-                                   nametd.addClassName("categoryListCell");
-                                   row.appendChild(nametd);
-                                   var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
-                                   list.appendChild(row);
-                                   
-                                   resetContactsTableActions();
-                                   nametd.editionController.startEditing();
-                                   }
-                                   
-                                   function onContactsCategoryDelete(e) {
-                                   var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
-                                   var rows = list.getSelectedNodes();
-                                   var count = rows.length;
-                                   
-                                   for (var i = 0; i < count; i++) {
-                                   rows[i].editionController = null;
-                                   rows[i].remove();
-                                   }
-                                   }
-                                   
-                                   function serializeContactsCategories() {
-                                   var values = [];
-                                   
-                                   var tds = $$("#contactsCategoriesListWrapper TBODY TD");
-                                   
-                                   for (var i = 0; i < tds.length; i++) {
-                                   var td = $(tds[i]);
-                                   values.push(td.allTextContent());
-                                   }
-                                   
-                                   $("contactsCategoriesValue").value = Object.toJSON(values);
-                                   }
-                                   
-            /* / contact categories */
-                                   
-                                   function onAddOutgoingAddressesCheck(checkBox) {
-                                   if (!checkBox) {
-                                   checkBox = $("addOutgoingAddresses");
-                                   }
-                                   $("addressBookList").disabled = !checkBox.checked;
-                                   
-                                   }
-                                   
-                                   function onReplyPlacementListChange() {
-                                   if ($("replyPlacementList").value == 0) {
-                                   // Reply placement is above quote, signature can be place before of after quote
-                                   $("signaturePlacementList").disabled = false;
-                                   }
-                                   else {
-                                   // Reply placement is bellow quote, signature is unconditionally placed after quote
-                                   $("signaturePlacementList").value = 1;
-                                   $("signaturePlacementList").disabled = true;
-                                   }
-                                   }
-                                   
-                                   function onComposeMessagesTypeChange(event) {
-                                   // var textArea = $('signature');
-                                   
-                                   if (this.value == 0) /* text */ {
-                                   if (CKEDITOR.instances["signature"]) {
-                                   var content = CKEDITOR.instances["signature"].getData();
-                                   var htmlEditorWidget = $('cke_signature');
-                                   htmlEditorWidget.parentNode.removeChild(htmlEditorWidget);
-                                   delete CKEDITOR.instances["signature"];
-                                   var textArea = $("signature");
-                                   textArea.value = content;
-                                   textArea.style.display = "";
-                                   textArea.style.visibility = "";
-                                   }
-                                   } else {
-                                   if ($("signature") && !CKEDITOR.instances["signature"]) {
-                                   CKEDITOR.replace('signature',
-                                                    {
-                                                    height: "70px",
-                                                    toolbar: [['Bold', 'Italic', '-', 'Link',
-                                                               'Font','FontSize','-','TextColor',
-                                                               'BGColor']
-                                                              ],
-                                                    language: localeCode,
-                                                    scayt_sLang: localeCode
-                                                    }
-                                                    );
-                                   }
-                                   }
-                                   }
-                                   
-                                   function onChangePasswordClick(event) {
-                                   var field = $("newPasswordField");
-                                   var confirmationField = $("newPasswordConfirmationField");
-                                   if (field && confirmationField) {
-                                   var password = field.value;
-                                   if (password == confirmationField.value) {
-                                   if (password.length > 0) {
-                                   var loginValues = readLoginCookie();
-                                   var policy = new PasswordPolicy(loginValues[0],
-                                                                   loginValues[1]);
-                                   policy.setCallbacks(onPasswordChangeSuccess,
-                                                       onPasswordChangeFailure);
-                                   policy.changePassword(password);
-                                   }
-                                   else
-                                   SetLogMessage("passwordError", _("Password must not be empty."), "error");
-                                   }
-                                   else {
-                                   SetLogMessage("passwordError", _("The passwords do not match. Please try again."), "error");
-                                   field.focus();
-                                   field.select();
-                                   }
-                                   }
-                                   event.stop();
-                                   }
-                                   
-                                   function onPasswordChangeSuccess(message) {
-                                   SetLogMessage("passwordError", message, "info");
-                                   }
-                                   
-                                   function onPasswordChangeFailure(code, message) {
-                                   SetLogMessage("passwordError", message, "error");
-                                   }
-                                   
-                                   document.observe("dom:loaded", initPreferences);
+function onReplyPlacementListChange() {
+    if ($("replyPlacementList").value == 0) {
+        // Reply placement is above quote, signature can be place before of after quote
+        $("signaturePlacementList").disabled = false;
+    }
+    else {
+        // Reply placement is bellow quote, signature is unconditionally placed after quote
+        $("signaturePlacementList").value = 1;
+        $("signaturePlacementList").disabled = true;
+    }
+}
+
+function onComposeMessagesTypeChange(event) {
+    // var textArea = $('signature');
+
+    if (this.value == 0) /* text */ {
+        if (CKEDITOR.instances["signature"]) {
+            var content = CKEDITOR.instances["signature"].getData();
+            var htmlEditorWidget = $('cke_signature');
+            htmlEditorWidget.parentNode.removeChild(htmlEditorWidget);
+            delete CKEDITOR.instances["signature"];
+            var textArea = $("signature");
+            textArea.value = content;
+            textArea.style.display = "";
+            textArea.style.visibility = "";
+        }
+    } else {
+        if ($("signature") && !CKEDITOR.instances["signature"]) {
+            CKEDITOR.replace('signature',
+                             {
+                                 height: "70px",
+                                 toolbar: [['Bold', 'Italic', '-', 'Link',
+                                            'Font','FontSize','-','TextColor',
+                                            'BGColor']
+                                          ],
+                                 language: localeCode,
+                                 scayt_sLang: localeCode
+                             }
+                            );
+        }
+    }
+}
+
+function onChangePasswordClick(event) {
+    var field = $("newPasswordField");
+    var confirmationField = $("newPasswordConfirmationField");
+    if (field && confirmationField) {
+        var password = field.value;
+        if (password == confirmationField.value) {
+            if (password.length > 0) {
+                var loginValues = readLoginCookie();
+                var policy = new PasswordPolicy(loginValues[0],
+                                                loginValues[1]);
+                policy.setCallbacks(onPasswordChangeSuccess,
+                                    onPasswordChangeFailure);
+                policy.changePassword(password);
+            }
+            else
+                SetLogMessage("passwordError", _("Password must not be empty."), "error");
+        }
+        else {
+            SetLogMessage("passwordError", _("The passwords do not match. Please try again."), "error");
+            field.focus();
+            field.select();
+        }
+    }
+    event.stop();
+}
+
+function onPasswordChangeSuccess(message) {
+    SetLogMessage("passwordError", message, "info");
+}
+
+function onPasswordChangeFailure(code, message) {
+    SetLogMessage("passwordError", message, "error");
+}
+
+document.observe("dom:loaded", initPreferences);
