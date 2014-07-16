@@ -472,7 +472,7 @@
       value = [unavailableAttendees objectAtIndex:i];
       [reason appendString:[value keysWithFormat: @"\n %{Cn}"]];
       if (!(i == (count - 1)))
-        [reason appendString:@" &"];
+        [reason appendString:@", "];
     }
     [unavailableAttendees release];
     return [NSException exceptionWithHTTPStatus:403 reason: reason];
