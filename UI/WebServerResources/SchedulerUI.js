@@ -27,6 +27,7 @@ var preventAutoScroll = false;
 var userStates = [ "needs-action", "accepted", "declined", "tentative", "delegated" ];
 
 var calendarHeaderAdjusted = false;
+var recurrenceBool = false;
 
 var categoriesStyles = new Hash();
 var categoriesStyleSheet = null;
@@ -57,9 +58,6 @@ function printView() {
 
 function newEvent(type, day, hour, duration) {
     var folder = null;
-    /* if (currentView == "multicolumndayview") {
-     Need to find where the click register is saved
-     }*/
     if (UserDefaults['SOGoDefaultCalendar'] == 'personal')
         folder = $("calendarList").down("li");
     else if (UserDefaults['SOGoDefaultCalendar'] == 'first') {
@@ -124,14 +122,14 @@ function newEventFromDragging(controller, day, coordinates) {
 }
 
 function updateEventFromDragging(controller, eventCells, eventDelta, calendarID) {
-    if (eventDelta.dayNumber || eventDelta.start || eventDelta.duration) {
+    if (eventDelta.dayNumber || eventDelta.start || eventDelta.duration || calendarID != 0) {
         if (calendarID != 0)
-            var params = ("calendarID=" + calendarID
+            var params = ("destination=" + calendarID[1]
                           + "&days=" + 0
                           + "&start=" + eventDelta.start * 15
                           + "&duration=" + eventDelta.duration * 15);
         else
-            var params = ("calendarID=" + calendarID
+            var params = ("destination=" + 0
                           + "&days=" + eventDelta.dayNumber
                           + "&start=" + eventDelta.start * 15
                           + "&duration=" + eventDelta.duration * 15);
@@ -139,12 +137,15 @@ function updateEventFromDragging(controller, eventCells, eventDelta, calendarID)
         var eventCell = eventCells[0];
         // log("  time: " + eventCell.recurrenceTime);
         // log("  exception: " + eventCell.isException);
-        
+        recurrenceBool = false;
+        if (calendarID == 0) {
+            recurrenceBool = true;
+        }
         if (eventCell.recurrenceTime && !eventCell.isException)
             _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
         else {
             var urlstr = (ApplicationBaseURL + "/" + eventCell.calendar + "/" + eventCell.cname);
-            if (eventCell.recurrenceTime && (calendarID[0] == calendarID[1]))
+            if (eventCell.recurrenceTime && recurrenceBool)
                 urlstr += "/occurence" + eventCell.recurrenceTime;
             urlstr += ("/adjust?" + params);
             // log("  urlstr: " + urlstr);
@@ -155,7 +156,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta, calendarID)
 
 function performEventAdjustment(folder, event, recurrence, params) {
     var urlstr = ApplicationBaseURL + "/" + folder + "/" + event;
-    if (recurrence && (calendarID[0] == calendarID[1]))
+    if (recurrence && recurrenceBool)
         urlstr += "/" + recurrence;
     urlstr += "/adjust" + generateQueryString(params);
     triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
@@ -3135,9 +3136,8 @@ function configureDraggables() {
 }
 
 function configureDroppables() {
-    jQuery("#calendarList li").droppable({
-                                         hoverClass: 'genericHoverClass',
-                                         drop: dropAction });
+    jQuery("#calendarList li").droppable({ hoverClass: 'genericHoverClass',
+                                           drop: dropAction });
 }
 
 function startDragging(event, ui) {
@@ -3167,6 +3167,7 @@ function stopDragging(event, ui) {
 }
 
 function dropAction(event, ui) {
+    
     var action = "adjust";
     refreshEventsAndDisplay();
     dropSelectedEvents(action, this.id.substr(1));
@@ -3192,9 +3193,8 @@ function dropSelectedEvents(action, toId) {
                         fromId = eventIds[i].substr(0, x);
                         eventICS = eventIds[i].slice(x + 1);
                     }
-                    
-                    var calendarID = "calendarID=" + fromId + "," + toId;
-                    var params = calendarID + "&days=0&start=0&duration=0";
+                    var destinationCalendar = "destination=" + toId;
+                    var params = destinationCalendar + "&days=0&start=0&duration=0";
                     var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/adjust?" + params;
                     
                     triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);

@@ -1001,6 +1001,7 @@ SOGoEventDragController.prototype = {
     draggingModeAreas: null,
 
     ghostController: null,
+    leftPanelController: null,
 
     hasSelected: false,
     dragHasStarted: false,
@@ -1385,9 +1386,14 @@ SOGoEventDragController.prototype = {
               
                 var dropCalendar = $(event).findElement('#calendarList li');
                 if (dropCalendar != null) {
+                    $$('#calendarList li').each(function(e) {
+                                        e.removeClassName('genericHoverClass');
+                                        });
                     calendarID[0] = this.folderClass.substr(14);
                     calendarID[1] = dropCalendar.getAttribute("id").substr(1);
-                    this.updateDropCallback(this, this.eventCells, delta, calendarID);
+                    delta.start = 0;
+                    if (calendarID[0] != calendarID[1])
+                        this.updateDropCallback(this, this.eventCells, delta, calendarID);
                 }
                 else if (currentView == "multicolumndayview" && delta.dayNumber != 0) {
                     var position = activeCalendars.indexOf(calendarID[0]);
@@ -1431,7 +1437,7 @@ SOGoEventDragController.prototype = {
         
         if (this.dragHasStarted) {
             var newCoordinates = this.ghostController.pointerHandler.getEventViewCoordinates();
-            if (newCoordinates == null) {
+            if (newCoordinates == null && this.leftPanelController != null) {
                 if (this.ghostController.ghosts)
                     this.ghostController.hideGhosts();
                 this.leftPanelController.updateFromPointerHandler();

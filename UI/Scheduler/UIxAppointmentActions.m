@@ -58,7 +58,7 @@
   NSCalendarDate *start, *newStart, *end, *newEnd;
   NSTimeInterval newDuration;
   SOGoUserDefaults *ud;
-  NSString *daysDelta, *startDelta, *durationDelta, *calendarID;
+  NSString *daysDelta, *startDelta, *durationDelta, *destionationCalendar;
   NSArray *calendarsID;
   NSTimeZone *tz;
   NSException *ex;
@@ -70,7 +70,7 @@
   daysDelta = [rq formValueForKey: @"days"];
   startDelta = [rq formValueForKey: @"start"];
   durationDelta = [rq formValueForKey: @"duration"];
-  calendarID = [rq formValueForKey: @"calendarID"];
+  destionationCalendar = [rq formValueForKey: @"destination"];
 
   if ([daysDelta length] > 0
       || [startDelta length] > 0 || [durationDelta length] > 0)
@@ -116,12 +116,12 @@
 
       [event setLastModified: [NSCalendarDate calendarDate]];
       ex = [co saveComponent: event];
-      if (![calendarID isEqualToString:@"0"])
+      // This condition will be executed only if the event is moved from a calendar to another. If destionationCalendar == 0; there is no calendar change
+      if (![destionationCalendar isEqualToString:@"0"])
         {
           folders = [[self->context activeUser] calendarsFolderInContext: self->context];
-          calendarsID = [calendarID componentsSeparatedByString:@","];
-          sourceCalendar = [folders lookupName:[[calendarsID objectAtIndex:0] stringValue] inContext: self->context  acquire: 0];
-          targetCalendar = [folders lookupName:[[calendarsID objectAtIndex:1] stringValue] inContext: self->context  acquire: 0];
+          sourceCalendar = [co container];
+          targetCalendar = [folders lookupName:[destionationCalendar stringValue] inContext: self->context  acquire: 0];
           // The event was moved to a different calendar.
           sm = [SoSecurityManager sharedSecurityManager];
           if (![sm validatePermission: SoPerm_DeleteObjects
