@@ -3178,16 +3178,19 @@ function dropSelectedEvents(action, toId) {
     if (selectedCalendars.length > 0) {
         var eventIds = $('eventsList').getSelectedRowsId();
         for (var i = 0; i < eventIds.length; i++) {
+        // Find the event ID (.ics)
             if (!eventIds[i].endsWith("ics")) {
+              // If it is a repeated event, substract the occurence part
                 if (eventIds[i].indexOf(".ics")) {
                     var x = eventIds[i].indexOf(".ics") + 4;
                     eventIds[i] = eventIds[i].substr(0,x);
                 }
                 else {
-                    showAlertDialog(_("An error as occurred please try again"));
+                    log("Can't find the event(.ics) on the item dragged : " + eventIds[i]);
                     return false;
                 }
             }
+            // Distinction between personal calendar and a calendar with a reference ID (ex: 4535-7545-B-5D3J)
             if (eventIds[i].search(toId+"-") == -1) {
                 var x = eventIds[i].indexOf('-');
                 if (eventIds[i].indexOf('-') == 4) {
