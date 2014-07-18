@@ -3179,26 +3179,30 @@ function dropSelectedEvents(action, toId) {
         var eventIds = $('eventsList').getSelectedRowsId();
         for (var i = 0; i < eventIds.length; i++) {
             if (!eventIds[i].endsWith("ics")) {
-                showAlertDialog(_("An error as occurred please try again"));
-                return false;
-            }
-            else {
-                if (eventIds[i].search(toId+"-") == -1) {
-                    var x = eventIds[i].indexOf('-');
-                    if (eventIds[i].indexOf('-') == 4) {
-                        fromId = eventIds[i].substr(0,25);
-                        eventICS = eventIds[i].substr(26);
-                    }
-                    else {
-                        fromId = eventIds[i].substr(0, x);
-                        eventICS = eventIds[i].slice(x + 1);
-                    }
-                    var destinationCalendar = "destination=" + toId;
-                    var params = destinationCalendar + "&days=0&start=0&duration=0";
-                    var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/adjust?" + params;
-                    
-                    triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
+                if (eventIds[i].indexOf(".ics")) {
+                    var x = eventIds[i].indexOf(".ics") + 4;
+                    eventIds[i] = eventIds[i].substr(0,x);
                 }
+                else {
+                    showAlertDialog(_("An error as occurred please try again"));
+                    return false;
+                }
+            }
+            if (eventIds[i].search(toId+"-") == -1) {
+                var x = eventIds[i].indexOf('-');
+                if (eventIds[i].indexOf('-') == 4) {
+                    fromId = eventIds[i].substr(0,25);
+                    eventICS = eventIds[i].substr(26);
+                }
+                else {
+                    fromId = eventIds[i].substr(0, x);
+                    eventICS = eventIds[i].slice(x + 1);
+                }
+                var destinationCalendar = "destination=" + toId;
+                var params = destinationCalendar + "&days=0&start=0&duration=0";
+                var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/adjust?" + params;
+                
+                triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
             }
         }
     }
