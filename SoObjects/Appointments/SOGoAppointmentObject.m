@@ -471,7 +471,7 @@
     {
       value = [unavailableAttendees objectAtIndex:i];
       [reason appendString:[value keysWithFormat: @"\n %{Cn}"]];
-      if (!(i == (count - 1)))
+      if (i < count-2)
         [reason appendString:@", "];
     }
     [unavailableAttendees release];
