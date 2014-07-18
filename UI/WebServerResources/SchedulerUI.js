@@ -3191,12 +3191,14 @@ function dropSelectedEvents(action, toId) {
             if (eventIds[i].search(toId+"-") == -1) {
                 var x = eventIds[i].indexOf('-');
                 if (eventIds[i].indexOf('-') == 4) {
-                    fromId = eventIds[i].substr(0,25);
-                    eventICS = eventIds[i].substr(26);
+                    var regEx = new RegExp(/\w+\-\w+\-\w+\-\w+/);
+                    var fromId = regEx.exec(eventIds[i]);
+                    var eventICS = eventIds[i].substr(fromId[0].length + 1);
                 }
                 else {
-                    fromId = eventIds[i].substr(0, x);
-                    eventICS = eventIds[i].slice(x + 1);
+                    var regEx = new RegExp(/\w+/);
+                    var fromId = regEx.exec(eventIds[i]);
+                    var eventICS = eventIds[i].substr(fromId[0].length + 1);
                 }
                 var destinationCalendar = "destination=" + toId;
                 var params = destinationCalendar + "&days=0&start=0&duration=0";
