@@ -975,6 +975,15 @@ function SOGoEventDragLeftPanelController() {
 }
 
 SOGoEventDragLeftPanelController.prototype = {
+    updateLeftPanelVisual : null,
+    dropCalendar : null,
+
+    setLeftPanelVisual: function SEDLPC_setLeftPanelVisual() {
+        this.updateLeftPanelVisual = $("leftPanel").on("mousemove", function(e){
+            $("DnDCalendarList").style.left = e.pageX + "px";
+            $("DnDCalendarList").style.top = e.pageY + "px";
+        });
+    },
     
     updateFromPointerHandler: function SEDLPC_updateFromPointerHandler() {
         // Highlight the calendar hover
@@ -984,6 +993,7 @@ SOGoEventDragLeftPanelController.prototype = {
         var hoverCalendar = $(event).findElement('#calendarList li');
         if (hoverCalendar)
             hoverCalendar.addClassName('genericHoverClass');
+            this.dropCalendar = hoverCalendar;
     }
 }
 
@@ -1030,6 +1040,7 @@ SOGoEventDragController.prototype = {
         this.ghostController.setTitle(this.title);
         this.ghostController.setLocation(this.location);
         this.ghostController.setFolderClass(this.folderClass);
+        this.leftPanelController.setLeftPanelVisual();
 
         this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
         for (var i = 0; i < eventCells.length; i++) {
@@ -1368,6 +1379,8 @@ SOGoEventDragController.prototype = {
         Event.stopObserving(document.body, "mousemove", this.onDragModeBound);
         this.onDragStopBound = null;
         this.onDragModeBound = null;
+        $("DnDCalendarList").style.visibility = 'hidden';
+        this.leftPanelController.updateLeftPanelVisual.stop();
 
         var utilities = SOGoEventDragUtilities();
         if (this.dragHasStarted) {
@@ -1384,13 +1397,12 @@ SOGoEventDragController.prototype = {
                                 .getDelta(this.ghostController
                                               .originalCoordinates);
               
-                var dropCalendar = $(event).findElement('#calendarList li');
-                if (dropCalendar != null) {
+                if (this.leftPanelController.dropCalendar != null) {
                     $$('#calendarList li').each(function(e) {
                                         e.removeClassName('genericHoverClass');
                                         });
                     calendarID[0] = this.folderClass.substr(14);
-                    calendarID[1] = dropCalendar.getAttribute("id").substr(1);
+                    calendarID[1] = this.leftPanelController.dropCalendar.getAttribute("id").substr(1);
                     delta.start = 0;
                     if (calendarID[0] != calendarID[1])
                         this.updateDropCallback(this, this.eventCells, delta, calendarID);
@@ -1438,13 +1450,20 @@ SOGoEventDragController.prototype = {
         if (this.dragHasStarted) {
             var newCoordinates = this.ghostController.pointerHandler.getEventViewCoordinates();
             if (newCoordinates == null && this.leftPanelController != null) {
-                if (this.ghostController.ghosts)
+                if (this.ghostController.ghosts) {
                     this.ghostController.hideGhosts();
+                    $("DnDCalendarList").style.visibility = 'visible';
+                    this.leftPanelController.updateLeftPanelVisual.start();
+                    
+                }
                 this.leftPanelController.updateFromPointerHandler();
             }
             else {
-                if (this.ghostController.ghosts == null)
+                if (this.ghostController.ghosts == null) {
                     this.ghostController.showGhosts();
+                    $("DnDCalendarList").style.visibility = 'hidden';
+                    this.leftPanelController.updateLeftPanelVisual.stop();
+                }
                 this.ghostController.updateFromPointerHandler();
             }
         }
