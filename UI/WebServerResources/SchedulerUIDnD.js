@@ -1380,7 +1380,6 @@ SOGoEventDragController.prototype = {
         this.onDragStopBound = null;
         this.onDragModeBound = null;
         $("DnDCalendarList").style.visibility = 'hidden';
-        this.leftPanelController.updateLeftPanelVisual.stop();
 
         var utilities = SOGoEventDragUtilities();
         if (this.dragHasStarted) {
@@ -1401,6 +1400,7 @@ SOGoEventDragController.prototype = {
                     $$('#calendarList li').each(function(e) {
                                         e.removeClassName('genericHoverClass');
                                         });
+                    this.leftPanelController.updateLeftPanelVisual.stop();
                     calendarID[0] = this.folderClass.substr(14);
                     calendarID[1] = this.leftPanelController.dropCalendar.getAttribute("id").substr(1);
                     delta.start = 0;
