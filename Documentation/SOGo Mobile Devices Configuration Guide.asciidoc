@@ -1,0 +1,330 @@
+Mobile Devices Configuration Guide
+==================================
+
+////
+
+    This file is part of the SOGo project.
+
+    See SOGo Mobile Devices Configuration-docinfo.xml for authors,
+    copyright and license information.
+
+////
+
+include::includes/global-attributes.asciidoc[]
+
+About this Guide
+----------------
+
+This guide will walk you through the installation and configuration of
+popular SyncML clients to be used with the SOGo solution.
+
+This guide also include instructions for configuring Apple iPhone OS
+devices (iPhone, iPod touch, and iPad).
+
+The instructions are based on version {release_version} of SOGo.
+
+The latest version of this guide is available at
+http://www.sogo.nu/downloads/documentation.html.
+
+Introduction
+------------
+
+SOGo is a free and modern scalable groupware server. It offers shared
+calendars, address books, and emails through your favourite Web browser
+and by using a native client such as Mozilla Thunderbird and Lightning.
+
+SOGo is standard-compliant. It supports CalDAV, CardDAV, GroupDAV, iMIP
+and iTIP and reuses existing IMAP, SMTP and database servers - making
+the solution easy to deploy and interoperable with many applications.
+
+SOGo features:
+
+* Scalable architecture suitable for deployments from dozen to many
+thousand users
+* Rich Web-based interface that shares the look and feel, the features
+and the data of Mozilla Thunderbird and Lightning
+* Improved integration with Mozilla Thunderbird and Lighthing by using
+the SOGo Connector and the SOGo Integrator
+* Two-way synchronization support with any Microsoft ActiveSync-capable
+device, or Outlook 2013
+
+SOGo is developed by a community of developers located mainly in North
+America and Europe. More information can be found on
+http://www.sogo.nu/.
+
+Installation
+------------
+
+This section will guide you through the installation of popular SyncML
+clients on various devices.
+
+Funambol SyncML Client
+~~~~~~~~~~~~~~~~~~~~~~
+
+The recommended SyncML client for BlackBerry, Apple iPhone (for
+contacts), mobile devices based on Microsoft Windows Mobile Smartphone
+or Windows Mobile PocketPC, is the one provided directly by Funambol,
+which is free and open source.
+
+For Microsoft Window Mobile, you must identify which kind of device you
+have ("Smartphone" vs. "PocketPC").
+
+Once you've identified what kind of device you have, download the
+appropriate client from:
+
+http://www.funambol.com/opensource/downloads.php
+
+The version 8.5 GA or later is required. 
+
+NextHaus SyncJe
+~~~~~~~~~~~~~~~
+
+For BlackBerry and Apple iPhone devices, you can also use the
+SyncJe SyncML client from NextHaus (http://www.nexthaus.com/). This
+client allows one to synchronize contacts, event and tasks with SOGo.
+
+The version 2.43 or later is required. For BlackBerry 7XXX devices, the
+required version is 2.25 but isn't officially supported. You can install
+SyncJe on your BlackBerry device, over the air, by opening the following
+link from your BlackBerry device:
+
+http://www.nexthaus.com/bb/syncjebb.jad
+
+This will download and install the application on your mobile device.
+It's important to use the Web browser application and not the WAP
+browser to perform this operation. Once installed, restart the device.
+This procedure can also be used to update the SyncJe application. Note
+that an update of SyncJe will not affect the state of previous
+synchronizations. It's not necessary to perform a "slow sync" after an
+update of SyncJe. 
+
+Synthesis SyncML Client
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The Synthesis (http://www.synthesis.ch/) company provides a SyncML
+client for Palm OS-based devices.
+
+"Over The Air" synchronization is possible, as well as synchronization
+through a cradle. For the latter, you must install Softick PPP using the
+Palm Desktop software. The version 3.01 or later is required and you can
+download it from http://www.softick.com/ppp/. Once installed, the
+desktop computer must be restarted.
+
+Once completed, you must download the Synthesis client for Palm OS. The
+version 3.0.2.9 or later is required. Either the standard or the
+professional version can be used.
+
+Once downloaded, uncompress the archive and install the `.prc` file on
+your Palm OS-based device. After, you should see a "SyncML" icon on your
+device.
+
+Configuration
+-------------
+
+In this section, you'll learn how to configure the popular SyncML
+clients in order to fully synchronize your mobile device with SOGo.
+
+Instructions for Apple iPhone OS based devices are also included. Note
+that those devices do not require a SyncML client for synchronizing
+calendars.
+
+Funambol SyncML Client
+~~~~~~~~~~~~~~~~~~~~~~
+
+Once the Funambol SyncML client is installed, start the application from
+your mobile device to configure it using the following steps:
+
+From the _Tools_ menu, choose _Options..._:
+
+* Specify the _Location_. If your SOGo server is `sogo.domain.com`, the
+location should be `http://sogo.domain.com/funambol/ds`.
+* Specify your username and password
+* Check the _Contacts_ check box and click on the _Details_ button.
+  The synchronization type is _two-way_ and the _Remote name_ is
+  `sogo-card`. The data format is vCard.
+* Check the _Calendar_ check box and click on the _Details_ button. The
+  synchronization type is _two-way_ and the _Remote name_ is `sogo-cal`.
+  The data format is vCalendar.
+* Check the _Tasks_ check box and click on the _Details_ button. The
+  synchronization type is _two-way_ and the _Remote name_ is
+  `sogo-todo`. The data format is SIF.
+* Save the preferences.
+
+To prevent the BlackBerry to automatically add a new event in the
+calendar when an invitation is received by email (IMIP message) on the
+BlackBerry device, you should delete the CICAL service from the Service
+Book. To do so, proceed with the following steps:
+
+From the _Options_ menu:
+
+* Choose _Advanced Options_
+* Choose _Service Book_
+* Identify the line that mentions the email address of the BlackBerry
+  user followed by the `[CICAL]` string. For example, `user@domain.com
+[CICAL]`.
+* Delete this entry.
+
+Once completed, you must restart the device by removing its battery for
+a couple of seconds. If you ever want to reactivate the CICAL service,
+follow those instructions:
+
+http://support.appriver.com/KB/a205/how-to-resend-service-books-on-blackberry.aspx
+
+Once complete, the client is ready for an initial synchronization.
+
+Ideally, you should *delete* all data from the mobile device before the
+initial synchronization. To do so:
+
+* From the _Tools_ menu, choose _Recover..._
+* Choose _Replace with data from server_
+* Check the _Contacts_, _Calendar_ and _Tasks_ check boxes
+
+Finally, click on the _Sync All_ button to proceed with the
+synchronization.
+
+NextHaus SyncJe
+~~~~~~~~~~~~~~~
+
+Once NextHaus SyncJe is installed, proceed with the following steps,
+from your BlackBerry device, to configure it:
+
+* Open the _SyncJe Client_
+
+From the _Settings_ menu:
+
+* Specify the _Server URL_. If your SOGo server is `sogo.domain.com`,
+the URL should be `http://sogo.domain.com/funambol/ds`.
+* Specify your user name and password
+* Check the _Contacts_ check box and specify `sogo-card` as the
+  _Foldername_
+* Check the _Calendar_ check box and specify `sogo-cal` as the
+  _Foldername_
+* Check the _ToDo_ check box and specify `sogo-todo` as the _Foldername_
+* Check the _Auto Sync_ check box if you wish to automatically
+  synchronize contacts, events and tasks at a predefined time interval
+* Do *not* check the _Sync events between_ check box
+* Check the _Skip saving attendees_ - this will prevent the BlackBerry
+  device from sending emails to meeting participants for events
+  downloaded from the SOGo server
+* Check the _BIS_ check box (for _BlackBerry Internet Services_)
+* Leave the other fields to the their default value
+* Then choose _Save_ from the menu to save the preferences 
+
+To prevent the BlackBerry to automatically add a new event in the
+calendar when an invitation is received by email (IMIP message) on the
+BlackBerry device, you should delete the CICAL service from the Service
+Book. To do so, proceed with the following steps:
+
+From the _Options_ menu:
+
+* Choose _Advanced Options_
+* Choose _Service Book_
+* Identify the line that mentions the email address of the BlackBerry
+user followed by the `[CICAL]` string. For example, `user@domain.com
+[CICAL]`.
+* Delete this entry
+
+Once completed, you must restart the device by removing its battery for
+a couple of seconds. If you ever want to reactivate the CICAL service,
+follow those instructions:
+
+http://support.appriver.com/KB/a205/how-to-resend-service-books-on-blackberry.aspx
+
+Once done, you're now ready for your first synchronization.
+
+Ideally, you must delete all data on the BlackBerry before proceeding
+with the initial synchronization. To do so, proceed with the following
+steps:
+
+* Open the _SyncJe Client_
+
+From the _Settings_ menu:
+
+* Choose the _Clear databases_ option
+* Respond _Yes_ to all questions. This will delete all contacts, events
+  and tasks from your BlackBerry device. 
+* Go back in the previous menu
+* Choose the _Force Slow Sync_ option
+* Choose the _Start Sync_ option to start the synchronization. This
+  could take a few minutes if you have many contacts, events or tasks.
+  Subsequent synchronizations should be much faster. 
+
+After the initial _Slow Sync_, you can simply chose the _Start Sync_ 
+option if you do a manual synchronization to synchronize all changes. 
+
+Synthesis SyncML Client
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Once the Synthesis SyncML client is installed, proceed with the
+following steps to configure it:
+
+* Open the _Synthesis SyncML Standard Edition_ application
+
+From the _Settings..._ menu:
+
+* Specify the _Server URL_. If your SOGo server is `sogo.domain.com`,
+  the URL should be `http://sogo.domain.com/funambol/ds`.
+* Specify your user name and password
+* Check the _Contacts_, _Events_ and _Task_ check boxes
+* Click on the _more..._ button
+* For the _Contacts_, choose _reload device_ and specify `sogo-card` as
+  the _Server Path_.
+* For the _Events_, choose _reload device_ and specify `sogo-cal` as
+  the _Server Path_. Do *not* check the _Only from..._ check box.
+* For the _Tasks_, choose _reload device_ and specify `sogo-todo` as
+  the _Server Path_.
+* Once completed, click on the _Done_ button
+
+The _reload device_ value will *delete* all entries on the device during
+the initial synchronization and obtain contacts, events and tasks from
+the server. If you do not want to delete everything from the device,
+please choose _normal_ instead of _reload device_.
+
+Once ready, click on the _Start_ button to proceed with the initial
+synchronization.
+
+During the initial synchronization, the Palm device will ask you how to
+connect to the desktop system. From the Palm device, choose _Windows
+RAS_ without specifying an user name or a password. This will allow the
+Palm device to establish a PPP connection between itself and Softick PPP
+and then communicate using its TCP/IP stack to the Funambol server.
+
+Apple iOS — Calendars
+~~~~~~~~~~~~~~~~~~~~~
+
+Starting from iOS 3, Apple has added CalDAV support to the calendar
+application included in the iPhone/iPod/iPad.
+
+To add a CalDAV account, follow those instructions:
+
+* From the _Settings_ menu, choose _Mail, Contacts, Calendars_
+* Choose _Add Account..._
+* Choose _Other_
+* Choose _Add CalDAV Account_
+* Specify the _Server_, the URL should be
+  `http://sogo.domain.com/SOGo/dav/<username>`
+
+On iOS 3.1.2 and later, you must also specify the range of events you
+want to have. 
+
+* From the _Settings_ menu, choose _Mail, Contacts, Calendars_
+* From the _Sync_ menu, choose _All Events_
+
+Note that other options (_Events 2 Weeks Back_, etc.) do not work right
+now.
+
+Apple iOS — Contacts
+~~~~~~~~~~~~~~~~~~~~
+
+If you want to synchronize contacts with your Apple mobile device, use
+the native address book application with SOGo using the CardDAV
+protocol. To configure the address book application so it works with
+SOGo, create a new CardDAV account and specify your server name. In
+the _Advanced Settings_, set the port to `8800`.
+
+On iOS prior to version 4, you must install the Funambol client and
+configure the `sogo-card` source.
+
+include::includes/additional-info.asciidoc[]
+
+include::includes/commercial-support.asciidoc[]
