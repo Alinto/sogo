@@ -3,109 +3,112 @@ var mailAccounts = null;
 var dialogs = {};
 
 function savePreferences(sender) {
-  var sendForm = true;
-  
-  var sigList = $("signaturePlacementList");
-  if (sigList)
-    sigList.disabled = false;
-  
-  if ($("calendarCategoriesListWrapper"))
-    serializeCalendarCategories();
-  
-  if ($("contactsCategoriesListWrapper"))
-    serializeContactsCategories();
-  
-  if ($("mailLabelsListWrapper"))
-    serializeMailLabels();
-  
-  if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
-    showAlertDialog(_("Please specify a valid sender address."));
-    sendForm = false;
-  }
-  
-  if ($("replyTo")) {
-    var replyTo = $("replyTo").value;
-    if (!replyTo.blank() && !emailRE.test(replyTo)) {
-      showAlertDialog(_("Please specify a valid reply-to address."));
-      sendForm = false;
-    }
-  }
-  
-  if ($("dayStartTime")) {
-    var start = $("dayStartTime");
-    var selectedStart = parseInt(start.options[start.selectedIndex].value);
-    var end = $("dayEndTime");
-    var selectedEnd = parseInt(end.options[end.selectedIndex].value);
+    var sendForm = true;
     
-    if (selectedStart >= selectedEnd) {
-      showAlertDialog (_("Day start time must be prior to day end time."));
-      sendForm = false;
-    }
-  }
-  
-  if ($("enableVacation") && $("enableVacation").checked) {
-    if ($("autoReplyText").value.strip().length == 0 || $("autoReplyEmailAddresses").value.strip().length == 0) {
-      showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
-      sendForm = false;
-    }
+    var sigList = $("signaturePlacementList");
+    if (sigList)
+        sigList.disabled = false;
     
-    if ($("autoReplyText").value.strip().endsWith('\n.')) {
-      showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
-	    sendForm = false;
-    }
+    if ($("appointmentsWhiteListWrapper"))
+        serializeAppointmentsWhiteList();
     
-    if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
-      var e = $("vacationEndDate_date");
-      var endDate = e.inputAsDate();
-      var now = new Date();
-      if (isNaN(endDate.getTime()) || endDate.getTime() < now.getTime()) {
-        showAlertDialog(_("End date of your auto reply must be in the future."));
+    if ($("calendarCategoriesListWrapper"))
+        serializeCalendarCategories();
+    
+    if ($("contactsCategoriesListWrapper"))
+        serializeContactsCategories();
+    
+    if ($("mailLabelsListWrapper"))
+        serializeMailLabels();
+    
+    if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
+        showAlertDialog(_("Please specify a valid sender address."));
         sendForm = false;
-      }
     }
-  }
-  
-  if ($("enableForward") && $("enableForward").checked) {
-    var addresses = $("forwardAddress").value.split(",");
-    for (var i = 0; i < addresses.length && sendForm; i++)
-      if (!emailRE.test(addresses[i].strip())) {
-        showAlertDialog(_("Please specify an address to which you want to forward your messages."));
-        sendForm = false;
-      }
-  }
-  
-  if (typeof sieveCapabilities != "undefined") {
-    var jsonFilters = prototypeIfyFilters();
-    $("sieveFilters").setValue(Object.toJSON(jsonFilters));
-  }
-  
-  if (sendForm) {
-    saveMailAccounts();
     
-    triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
-      if (http.readyState == 4) {
-        var response = http.responseText.evalJSON(true);
-        if (http.status == 503) {
-          showAlertDialog(_(response.textStatus));
+    if ($("replyTo")) {
+        var replyTo = $("replyTo").value;
+        if (!replyTo.blank() && !emailRE.test(replyTo)) {
+            showAlertDialog(_("Please specify a valid reply-to address."));
+            sendForm = false;
         }
-        else if (http.status == 200) {
-          if (response.hasChanged == 1) {
-            window.opener.location.reload();
-            window.close();
-          }
-          else {
-            window.close();
-          }
+    }
+    
+    if ($("dayStartTime")) {
+        var start = $("dayStartTime");
+        var selectedStart = parseInt(start.options[start.selectedIndex].value);
+        var end = $("dayEndTime");
+        var selectedEnd = parseInt(end.options[end.selectedIndex].value);
+        
+        if (selectedStart >= selectedEnd) {
+            showAlertDialog (_("Day start time must be prior to day end time."));
+            sendForm = false;
         }
-        else {
-          showAlertDialog(_(response.textStatus));
+    }
+    
+    if ($("enableVacation") && $("enableVacation").checked) {
+        if ($("autoReplyText").value.strip().length == 0 || $("autoReplyEmailAddresses").value.strip().length == 0) {
+            showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
+            sendForm = false;
         }
-      }
-    },
-    null,
-    Form.serialize($("mainForm")), // excludes the file input
-    { "Content-type": "application/x-www-form-urlencoded"}
-    );
+        
+        if ($("autoReplyText").value.strip().endsWith('\n.')) {
+            showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+            sendForm = false;
+        }
+        
+        if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
+            var e = $("vacationEndDate_date");
+            var endDate = e.inputAsDate();
+            var now = new Date();
+            if (isNaN(endDate.getTime()) || endDate.getTime() < now.getTime()) {
+                showAlertDialog(_("End date of your auto reply must be in the future."));
+                sendForm = false;
+            }
+        }
+    }
+    
+    if ($("enableForward") && $("enableForward").checked) {
+        var addresses = $("forwardAddress").value.split(",");
+        for (var i = 0; i < addresses.length && sendForm; i++)
+            if (!emailRE.test(addresses[i].strip())) {
+                showAlertDialog(_("Please specify an address to which you want to forward your messages."));
+                sendForm = false;
+            }
+    }
+    
+    if (typeof sieveCapabilities != "undefined") {
+        var jsonFilters = prototypeIfyFilters();
+        $("sieveFilters").setValue(Object.toJSON(jsonFilters));
+    }
+    
+    if (sendForm) {
+        saveMailAccounts();
+    
+        triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
+            if (http.readyState == 4) {
+                var response = http.responseText.evalJSON(true);
+                if (http.status == 503) {
+                    showAlertDialog(_(response.textStatus));
+                }
+                else if (http.status == 200) {
+                    if (response.hasChanged == 1) {
+                        window.opener.location.reload();
+                        window.close();
+                    }
+                    else {
+                        window.close();
+                    }
+                }
+                else {
+                    showAlertDialog(_(response.textStatus));
+                }
+            }
+        },
+        null,
+        Form.serialize($("mainForm")), // excludes the file input
+        { "Content-type": "application/x-www-form-urlencoded"}
+        );
 	}
   return false;
 }
@@ -118,14 +121,14 @@ function prototypeIfyFilters() {
         newFilter.name = filter.name;
         newFilter.match = filter.match;
         newFilter.active = filter.active;
-
+        
         if (filter.rules) {
             newFilter.rules = $([]);
             for (var j = 0; j < filter.rules.length; j++) {
                 newFilter.rules.push($(filter.rules[j]));
             }
         }
-
+        
         if (filter.actions) {
             newFilter.actions = $([]);
             for (var j = 0; j < filter.actions.length; j++) {
@@ -134,7 +137,7 @@ function prototypeIfyFilters() {
         }
         newFilters.push(newFilter);
     }
-
+    
     return newFilters;
 }
 
@@ -204,25 +207,76 @@ function initPreferences() {
     var tabsContainer = $("preferencesTabs");
     var controller = new SOGoTabsController();
     controller.attachToTabsContainer(tabsContainer);
-
+    
     // Inner tabs on the mail module tab
     tabsContainer = $('mailOptionsTabs');
     if (tabsContainer) {
         var mailController = new SOGoTabsController();
         mailController.attachToTabsContainer(tabsContainer);
     }
-
+    
+    // Inner tabs on the calendar module tab
+    tabsContainer = $('calendarOptionsTabs');
+    if (tabsContainer) {
+        var mailController = new SOGoTabsController();
+        mailController.attachToTabsContainer(tabsContainer);
+    }
+    
     _setupEvents();
-
+    
     // Optional function called when initializing the preferences
     // Typically defined inline in the UIxAdditionalPreferences.wox template
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
-
+    
     // Color picker
     $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
     $(document.body).on("click", onBodyClickHandler);
-
+    
+    // Calendar whiteList
+    var whiteList = $("appointmentsWhiteListWrapper");
+    if(whiteList) {
+        var whiteListValue = $("whiteList").getValue();
+        if (whiteListValue != "") {
+            whiteListValue = whiteListValue.split(",");
+            var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
+            for (i = 0; i < whiteListValue.length; i++)
+              {
+                var elements = whiteListValue[i].split("=");
+                var row = new Element("tr");
+                var td = new Element("td").update("");
+                var textField = new Element("input");
+                var span = new Element("span");
+                
+                row.addClassName("whiteListRow");
+                row.observe("mousedown", onRowClick);
+                td.addClassName ("whiteListCell");
+                td.observe("mousedown", endAllEditables);
+                td.observe("dblclick", onNameEdit);
+                textField.addInterface(SOGoAutoCompletionInterface);
+                textField.SOGoUsersSearch = true;
+                textField.observe("autocompletion:changed", endEditable);
+                textField.addClassName("textField");
+                textField.value = elements[1];
+                textField.setAttribute("uid", elements[0]);
+                textField.hide();
+                span.innerText = elements[1];
+                
+                td.appendChild(textField);
+                td.appendChild(span);
+                row.appendChild (td);
+                tablebody.appendChild(row);
+                $(tablebody).deselectAll();
+                
+              }
+        }
+        
+        var table = whiteList.childNodesWithTag("table")[0];
+        table.multiselect = true;
+        $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
+        $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
+    }
+    
     // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
     if (wrapper) {
@@ -237,7 +291,7 @@ function initPreferences() {
         $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
         wrapper.observe("scroll", onBodyClickHandler);
     }
-
+    
     // Mail labels/tags
     var wrapper = $("mailLabelsListWrapper");
     if (wrapper) {
@@ -251,7 +305,7 @@ function initPreferences() {
         $("mailLabelAdd").observe("click", onMailLabelAdd);
         $("mailLabelDelete").observe("click", onMailLabelDelete);
     }
-
+    
     // Contact categories
     wrapper = $("contactsCategoriesListWrapper");
     if (wrapper) {
@@ -264,32 +318,31 @@ function initPreferences() {
         $("contactsCategoryAdd").observe("click", onContactsCategoryAdd);
         $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
     }
-
+    
     if ($("replyPlacementList"))
         onReplyPlacementListChange();
-
+    
     var button = $("addDefaultEmailAddresses");
     if (button)
         button.observe("click", addDefaultEmailAddresses);
-
+    
     button = $("changePasswordBtn");
     if (button)
         button.observe("click", onChangePasswordClick);
-
+    
     initSieveFilters();
-
+    
     initMailAccounts();
-
+    
     button = $("enableVacationEndDate");
     if (button) {
-        jQuery("#vacationEndDate_date").closest(".date").datepicker(
-            { autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
+        jQuery("#vacationEndDate_date").closest(".date").datepicker({ autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
         button.on("click", function(event) {
-            if (this.checked)
-                $("vacationEndDate_date").enable();
-            else
-                $("vacationEndDate_date").disable();
-        });
+                  if (this.checked)
+                      $("vacationEndDate_date").enable();
+                  else
+                      $("vacationEndDate_date").disable();
+                  });
     }
     onAddOutgoingAddressesCheck();
 }
@@ -977,6 +1030,119 @@ function onCalendarColorEdit(e) {
     onCCE(e, "calendarCategoriesListWrapper");
 }
 
+function makeEditable (element) {
+    element.addClassName("editing");
+    element.removeClassName("whiteListCell");
+    
+    var span = element.down("SPAN");
+    span.update();
+    
+    var textField = element.down("INPUT");
+    textField.show();
+    textField.focus();
+    textField.select();
+    
+    return true;
+}
+
+function endAllEditables (e) {
+    var r = $$("TABLE#tableViewWhiteList TBODY TR TD");
+    for (var i = 0; i < r.length; i++) {
+        var element = $(r[i]);
+        if (r[i] != this && element.hasClassName("editing"))
+            endEditable(null, element.down("INPUT"));
+    }
+}
+
+function onNameEdit (e) {
+    endAllEditables();
+    if (!this.hasClassName("editing")) {
+        makeEditable (this);
+    }
+}
+
+function endEditable(event, textField) {
+    if (!textField)
+        textField = this;
+    
+    var uid = textField.readAttribute("uid");
+    var cell = textField.up("TD");
+    var textSpan = cell.down("SPAN");
+    
+    cell.removeClassName("editing");
+    cell.addClassName("whiteListCell");
+    textField.hide();
+    
+    var tmp = textField.value;
+    tmp = tmp.replace (/</, "&lt;");
+    tmp = tmp.replace (/>/, "&gt;");
+    if (!uid)
+        cell.up("TR").addClassName("notfound");
+    if (tmp)
+        textSpan.update(tmp);
+    else
+        cell.up("TR").remove();
+    
+    if (event)
+        Event.stop(event);
+    
+    return false;
+}
+
+function onAppointmentsWhiteListAdd(e) {
+    var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
+    var row = new Element("tr");
+    var td = new Element("td").update("");
+    var textField = new Element("input");
+    var span = new Element("span");
+    
+    row.addClassName("whiteListRow");
+    row.observe("mousedown", onRowClick);
+    td.addClassName ("whiteListCell");
+    td.observe("mousedown", endAllEditables);
+    td.observe("dblclick", onNameEdit);
+    textField.addInterface(SOGoAutoCompletionInterface);
+    textField.SOGoUsersSearch = true;
+    textField.observe("autocompletion:changed", endEditable);
+    textField.addClassName("textField");
+    
+    td.appendChild(textField);
+    td.appendChild(span);
+    row.appendChild (td);
+    tablebody.appendChild(row);
+    $(tablebody).deselectAll();
+    row.selectElement();
+    
+    makeEditable(td);
+    
+}
+
+function onAppointmentsWhiteListDelete(e) {
+    var list = $('appointmentsWhiteListWrapper').down("TABLE").down("TBODY");
+    var rows = list.getSelectedNodes();
+    var count = rows.length;
+    
+    for (var i=0; i < count; i++) {
+        rows[i].editionController = null;
+        rows[i].remove();
+    }
+}
+
+function serializeAppointmentsWhiteList() {
+    var r = $$("#appointmentsWhiteListWrapper TBODY TR");
+    
+    var values = [];
+    for (var i = 0; i < r.length; i++) {
+        var tds = r[i].childElements().first().down("INPUT");
+        var uid  = tds.getAttribute("uid");
+        var value = tds.getValue();
+        var user = uid + "=" + value;
+        if (uid != null)
+            values.push(user);
+    }
+    $("whiteList").value = values;
+}
+
 function onCalendarCategoryAdd(e) {
     var row = new Element("tr");
     var nametd = new Element("td").update("");
@@ -1016,7 +1182,7 @@ function serializeCalendarCategories() {
     var values = [];
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements();
-        var name  = $(tds.first()).innerHTML;
+        var name  = $(tds.first()).innerHTML.trim();
         var color = $(tds.last().childElements().first()).readAttribute('data-color');
         values.push("\"" + name + "\": \"" + color + "\"");
     }
@@ -1144,7 +1310,7 @@ function onContactsCategoryAdd(e) {
     var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
     list.appendChild(row);
 
-    resetContactsTableActions ();
+    resetContactsTableActions();
     nametd.editionController.startEditing();
 }
 
@@ -1175,11 +1341,10 @@ function serializeContactsCategories() {
 /* / contact categories */
                                    
 function onAddOutgoingAddressesCheck(checkBox) {
-  if (!checkBox) {
-    checkBox = $("addOutgoingAddresses");
-  }
-  $("addressBookList").disabled = !checkBox.checked;
-  
+    if (!checkBox) {
+        checkBox = $("addOutgoingAddresses");
+    }
+    $("addressBookList").disabled = !checkBox.checked;
 }
                                    
 function onReplyPlacementListChange() {

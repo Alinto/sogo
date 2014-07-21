@@ -374,7 +374,7 @@ TH.tbtv_navcell
   text-align: left;
   font-weight: normal;
   background-color: #E7E7E7;
-  height: 20px; }
+  height: 20px;}
 
 TD.sortableTableHeader:active,
 TH.sortableTableHeader:active
@@ -410,7 +410,8 @@ TH.tbtv_headercell IMG.tbtv_sortcell
   text-align: right;
   border: 0px;
   width: 12px;
-  height: 12px; }
+  height: 12px; 
+  top:0;}
 
 .tableview
 { cursor: default;
