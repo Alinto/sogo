@@ -33,7 +33,7 @@
       <div class="days">
         <var:foreach list="calendarsToDisplay" item="currentCalendar">
           <var:foreach list="daysToDisplay" item="currentTableDay">
-            <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" hour="allday"><!-- space --></div>
+            <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" var:calendar="currentCalendar.folder" hour="allday"><!-- space --></div>
           </var:foreach>
         </var:foreach>
       </div>
@@ -75,7 +75,7 @@
       <var:if condition="isMultiColumnView">
         <var:foreach list="calendarsToDisplay" item="currentCalendar">
           <var:foreach list="daysToDisplay" item="currentTableDay">
-            <div var:class="dayClasses" var:id="currentDayId" var:day-number="currentDayNumber" var:day="currentTableDay.shortDateString">
+            <div var:class="dayClasses" var:id="currentDayId" var:day-number="currentDayNumber" var:calendar="currentCalendar.folder" var:day="currentTableDay.shortDateString">
               <div class="hourCells">
                 <var:foreach list="hoursToDisplay" item="currentTableHour">
                   <div var:class="clickableHourCellClass" var:day="currentTableDay.shortDateString" var:hour="currentAppointmentHour">

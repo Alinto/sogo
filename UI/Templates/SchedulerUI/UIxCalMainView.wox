@@ -9,7 +9,7 @@
   className="UIxPageFrame"
   const:userDefaultsKeys="SOGoCalendarCategoriesColors,SOGoDefaultCalendar"
   const:userSettingsKeys="Calendar,ShowCompletedTasks"
-  const:jsFiles="SchedulerUIDnD.js"
+  const:jsFiles="SchedulerUIDnD.js,jquery-ui.js"
   title="title">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
@@ -34,6 +34,7 @@
   <div class="preload" style="visibility: hidden;">
     <img rsrc:src="event-gradient.png"/>
   </div>
+  <img rsrc:src="event7.png" id="DnDLeftPanelImage" style="visibility: hidden;"/>
   <div class="menu" id="monthListMenu">
     <ul>
       <var:foreach list="monthMenuItems" item="monthMenuItem"

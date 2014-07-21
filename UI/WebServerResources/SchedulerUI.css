@@ -1297,14 +1297,12 @@ DIV#daysView DIV.event.lasts96
 DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
+  width:100%;
   top: 0px;
   bottom: 0px;
   -webkit-border-radius: 2px;
-  border-radius: 2px; }
-  
-DIV.eventInside {
-  width:100%;
-}
+  border-radius: 2px;
+  cursor:move; }
 
 DIV.eventInside SPAN.location
 { font-size: smaller; }
@@ -1442,7 +1440,8 @@ DIV.event.draggable:hover DIV.rightDragGrip
 #daysView DIV.eventDragGhost > DIV.eventInside
 { padding: 0px;
   border-left: 1px solid #555;
-  border-right: 1px solid #555; }
+  border-right: 1px solid #555;
+}
 
 #daysView DIV.eventDragGhost.startGhost > DIV.eventInside
 { border-top: 1px solid #555; }
@@ -1536,6 +1535,24 @@ DIV#calendarContent .alert-box span {
     border:1px solid #8ed9f6;
 }
 
+DIV#dragDropVisual
+{
+  background-image: url(event7.png);
+  background-repeat: no-repeat;
+  background-position: 4px 2px;
+  width: 5px;
+  height: 20px;
+  padding-left: 24px;
+  padding-top: 5px;
+}
+
+#DnDLeftPanelImage
+{
+  position:absolute;
+  z-index:1;
+  left:0;
+  top:0;
+}
 
 
 
