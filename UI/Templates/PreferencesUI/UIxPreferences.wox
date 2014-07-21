@@ -265,13 +265,13 @@
                               var:checked="preventInvitations" />
                   <var:string label:value="Prevent from being invited to appointments"/></div>
                   <hr />
-                  <var:string label:value="White list for appointments invitations:"/>
+                  <var:string label:value="White list for appointment invitations:"/>
                   <div id="appointmentsWhiteListWrapper" class="listWrapper">
                     <table id="tableViewWhiteList" cellspacing="0">
                       <thead>
                         <tr class="tableview">
                           <th const:class="tbtv_headercell" const:id="whiteListTableHeader">
-                            <var:string label:value="Contacts names"/></th>
+                            <var:string label:value="Contacts Names"/></th>
                         </tr>
                       </thead>
                       <tbody>

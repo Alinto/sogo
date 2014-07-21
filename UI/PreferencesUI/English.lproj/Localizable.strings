@@ -104,6 +104,9 @@
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "First full week";
 
+"White list for appointment invitations:" = "White list for appointment invitations:";
+"Contacts Names" = "Contacts Names";
+
 /* Default Calendar */
 "Default calendar :" = "Default calendar:";
 "selectedCalendar" = "Selected calendar";
