@@ -1,9 +1,13 @@
 2.2.7 (2014-07-DD)
 ------------------
 
+New features
+ - now possible to prevent event invitations
+
 Enhancements
  - improved badges of active tasks count
  - refresh draft folder after sending a message
+ - now possible to DnD events in the calendar list
 
 Bug fixes
  - fixed weekdays translation in the datepicker
