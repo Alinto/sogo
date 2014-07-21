@@ -1117,8 +1117,6 @@ function activeTasksCallback(http) {
             document.activeTasksAjaxRequest = null;
             var data = http.responseText.evalJSON(true);
             var list = $("calendarList");
-<<<<<<< HEAD
-
             var items = list.childNodesWithTag("li");
             for (var i = 0; i < items.length; i++) {
                 var id = items[i].getAttribute("id").substr(1);
@@ -1136,20 +1134,6 @@ function activeTasksCallback(http) {
                 }
                 if (number > 0) {
                     activeTasks.innerHTML = number;
-=======
-            
-            var items = list.childNodesWithTag("li");
-            for (var i = 0; i < items.length; i++) {
-                var id = items[i].getAttribute("id").substr(1);
-                var number = data[id];
-                var input = items[i].childNodesWithTag("input")[0];
-                var activeTasks = items[i].childNodesWithTag("span")[0];
-                if (number == "0") {
-                    activeTasks.innerHTML = "";
-                }
-                else {
-                    activeTasks.innerHTML = "(" + number + ")";
->>>>>>> added event7.png and adjust javascript indentation
                 }
             }
         }
