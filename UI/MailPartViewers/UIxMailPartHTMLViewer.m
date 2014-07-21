@@ -146,34 +146,34 @@ static NSData* _sanitizeContent(NSData *theData)
   const char *bytes;
   char *buf;
   int i, j, len;
-  BOOL found_delimiter;
+  BOOL found_delimiter, in_meta;
 
   d = [NSMutableData dataWithData: theData];
   bytes = [d bytes];
   len = [d length];
   i = 0;
 
+  in_meta = NO;
+
   while (i < len)
     {
-      // We check if we see </head> in which case, we don't do any kind
-      // of substitution there after.
-      if (i < len-6)
+      // We check if we see <meta ...> in which case, we substitute de charset= stuff.
+      if (i < len-5)
 	{
 	  if ((*bytes == '<') &&
-	      (*(bytes+1) == '/') &&
-	      (*(bytes+2) == 'h' || *(bytes+2) == 'H') &&
-	      (*(bytes+3) == 'e' || *(bytes+3) == 'E') &&
-	      (*(bytes+4) == 'a' || *(bytes+4) == 'A') &&
-	      (*(bytes+5) == 'd' || *(bytes+5) == 'D') &&
-	      (*(bytes+6) == '>'))
-            break;
+	      (*(bytes+1) == 'm' || *(bytes+2) == 'M') &&
+	      (*(bytes+2) == 'e' || *(bytes+3) == 'E') &&
+	      (*(bytes+3) == 't' || *(bytes+4) == 'T') &&
+	      (*(bytes+4) == 'a' || *(bytes+5) == 'A') &&
+	      (*(bytes+5) == ' '))
+            in_meta = YES;
 	}
       
       // We search for something like :
       // 
       // <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
       //
-      if (i < len-9)
+      if (in_meta && i < len-9)
 	{
 	  if ((*bytes == 'c' || *bytes == 'C') &&
 	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
@@ -195,16 +195,18 @@ static NSData* _sanitizeContent(NSData *theData)
 		  // We haven't found anything, let's return the data untouched
 		  if ((i+j) >= len)
                     {
-                      found_delimiter = NO;
+                      in_meta = found_delimiter = NO;
                       break;
                     }
 		}
 
               if (found_delimiter)
-                [d replaceBytesInRange: NSMakeRange(i, j)
-                             withBytes: NULL
-                                length: 0];
-	      break;
+                {
+                  [d replaceBytesInRange: NSMakeRange(i, j)
+                               withBytes: NULL
+                                  length: 0];
+                  in_meta = found_delimiter = NO;
+                }
 	    }
 	}
 
