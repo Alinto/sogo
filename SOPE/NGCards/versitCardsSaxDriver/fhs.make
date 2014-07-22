@@ -9,7 +9,7 @@ FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib64/
 else
 FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
 endif
-FHS_SAX_DIR=$(FHS_LIB_DIR)sope-$(MAJOR_VERSION).$(MINOR_VERSION)/saxdrivers/
+FHS_SAX_DIR=$(DESTDIR)/$(FHS_LIB_DIR)sope-$(MAJOR_VERSION).$(MINOR_VERSION)/saxdrivers/
 
 fhs-sax-dirs ::
 	$(MKDIRS) $(FHS_SAX_DIR)
