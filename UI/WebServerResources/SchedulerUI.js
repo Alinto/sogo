@@ -3227,15 +3227,8 @@ function initCalendarSelector() {
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
         var input = items[i].childNodesWithTag("input")[0];
-        var activeTasks = items[i].childNodesWithTag("span")[0];
+        var activeTasks = items[i].childNodesWithTag("span")[1];
         $(input).observe("click", clickEventWrapper(updateCalendarStatus));
-        if (activeTasks.textContent == "0") {
-            activeTasks.innerHTML = "";
-        }
-        else {
-            activeTasks.innerHTML = "(" + activeTasks.innerText + ")";
-        }
-        
     }
     
     var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -3484,6 +3477,12 @@ function appendCalendar(folderName, folderPath) {
         
         var colorBox = document.createElement("div");
         colorBox.appendChild(document.createTextNode("\u00a0"));
+        li.appendChild(colorBox);
+
+        var displayName = document.createElement("span");
+        displayName.appendChild(document.createTextNode(folderName));
+        li.appendChild(displayName);
+
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
         
