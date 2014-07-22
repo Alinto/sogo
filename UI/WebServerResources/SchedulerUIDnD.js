@@ -1392,7 +1392,8 @@ SOGoEventDragController.prototype = {
         Event.stopObserving(document.body, "mousemove", this.onDragModeBound);
         this.onDragStopBound = null;
         this.onDragModeBound = null;
-        this.leftPanelController.stopEvent();
+        if (this.leftPanelController)
+            this.leftPanelController.stopEvent();
 
         var utilities = SOGoEventDragUtilities();
         if (this.dragHasStarted) {
