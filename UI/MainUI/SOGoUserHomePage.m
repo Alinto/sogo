@@ -442,10 +442,8 @@
   [response setStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"Content-Type"];
-  foldersEnum = [folders objectEnumerator];
-  while ((currentFolder = [foldersEnum nextObject]))
-    [response appendContentString:
-		[currentFolder keysWithFormat: @";%{displayName}:%{name}:%{type}:%{formattedName}"]];
+
+  [response appendContentString: [folders JSONRepresentation]];
 
   return response;
 }

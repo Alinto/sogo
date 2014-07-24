@@ -9,6 +9,7 @@ Enhancements
  - refresh draft folder after sending a message
  - now possible to DnD events in the calendar list
  - improved handling of SOGoSubscriptionFolderFormat
+ - JSON'ified folder subscription interface
 
 Bug fixes
  - fixed weekdays translation in the datepicker
