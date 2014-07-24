@@ -988,7 +988,7 @@ SOGoEventDragLeftPanelController.prototype = {
         this.updateLeftPanelVisual.stop();
     },
     
-    updateFromPointerHandler: function SEDLPC_updateFromPointerHandler() {
+    updateFromPointerHandler: function SEDLPC_updateFromPointerHandler(event) {
         // Highlight the calendar hover
         $$('#calendarList li').each(function(e) {
                                     e.removeClassName('genericHoverClass');
@@ -1467,7 +1467,7 @@ SOGoEventDragController.prototype = {
                     this.ghostController.hideGhosts();
                     this.leftPanelController.startEvent();
                 }
-                this.leftPanelController.updateFromPointerHandler();
+                this.leftPanelController.updateFromPointerHandler(event);
             }
             else {
                 if (this.ghostController.ghosts == null) {
