@@ -198,7 +198,9 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
                              folderInfos[2] + '-folder', '', '', icon, icon);
     node._ls = isLast;
+
     var content = tree.node(node, (nodeId + subId), null);
+    content._formattedName = folderInfos[3];
 
     return content;
 }
@@ -227,9 +229,7 @@ function onConfirmFolderSelection(event) {
                 folderName = description.replace(/>,.*$/, ">", "g");
             }
             else {
-                var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
-                folderName = resource.innerHTML;
-                folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
+                folderName = node._formattedName;
             }
             var data = { folderName: folderName, folder: folder, type: type, window: window };
             if (parent$(accessToSubscribedFolder(folder)))
