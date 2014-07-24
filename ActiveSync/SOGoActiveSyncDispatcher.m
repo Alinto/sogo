@@ -457,13 +457,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NSData *d;
 
       //
-      // We mark the cache object as deleted
+      // We destroy the cache object
       //
       key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [folderToDelete nameInContainer]];
       o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
       [o setTableUrl: [self folderTableURL]];
-      [o reloadIfNeeded];
-      [o delete];
+      [o destroy];
 
       //
       // We update the FolderSync's synckey
@@ -697,7 +696,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           if (![imapGUIDs allKeysForObject: cKey])
             {
-              // Delete folders cache content to avoid stale data if a new folder gets created with the same name
+              // Destroy folders cache content to avoid stale data if a new folder gets created with the same name
               key =  [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [cachedGUIDs objectForKey: cKey]];
               o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
               [o setObjectType: ActiveSyncFolderCacheObject];
@@ -711,8 +710,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   command_count++;
                 }
               
-              [[o properties] removeAllObjects];
-              [o save];
+              [o destroy];
             }
         }
       

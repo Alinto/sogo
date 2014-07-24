@@ -16,6 +16,7 @@ Bug fixes
  - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
  - fixed refresh of message headers when forwarding a message (#2818)
  - we now correctly escape all charset= in <meta> tags, not only in the <head>
+ - we now destroy cache objects of vanished folders
 
 2.2.6 (2014-07-02)
 ------------------

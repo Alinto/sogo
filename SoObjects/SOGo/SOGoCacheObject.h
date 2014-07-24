@@ -42,6 +42,8 @@
 - (NSCalendarDate *) creationDate;
 - (NSCalendarDate *) lastModified;
 
+- (NSException *) destroy;
+
 @end
 
 #endif /* SOGOCACHEOBJECT_H */
