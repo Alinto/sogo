@@ -8,6 +8,7 @@ Enhancements
  - improved badges of active tasks count
  - refresh draft folder after sending a message
  - now possible to DnD events in the calendar list
+ - improved handling of SOGoSubscriptionFolderFormat
 
 Bug fixes
  - fixed weekdays translation in the datepicker
