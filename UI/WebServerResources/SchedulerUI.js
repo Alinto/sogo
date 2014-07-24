@@ -174,6 +174,14 @@ function updateEventFromDraggingCallback(http) {
     }
 }
 
+function updateTaskFromDraggingCallback(http) {
+    if (http.readyState == 4) {
+        if (http.status == 200) {
+            refreshTasks();
+        }
+    }
+}
+
 function getSelectedFolder() {
     var folder;
     var list = $("calendarList");
@@ -1105,7 +1113,7 @@ function eventsListCallback(http) {
                 }
             }
         }
-        configureDraggables();
+        configureEventsDraggables();
     }
     else
         log ("eventsListCallback Ajax error");
@@ -1182,6 +1190,7 @@ function tasksListCallback(http) {
                 row.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
                 row.addClassName(data[i][12]); // status
+                row.addClassName("taskRow");
                 row.calendar = calendar;
                 row.cname = cname;
                 row.erasable = data[i][10] || IsSuperUser;
@@ -1272,7 +1281,10 @@ function tasksListCallback(http) {
             }
             else
                 log ("tasksListCallback: no data");
+            
+
         }
+        configureTasksDraggables();
     }
     else
         log ("tasksListCallback Ajax error");
@@ -3101,12 +3113,30 @@ function onMenuAllDayView(event) {
     popupMenu(event, 'allDayViewMenu', getTarget(event));
 }
 
-function configureDraggables() {
+function configureEventsDraggables() {
     if ($("eventsList")) {
         var rows = jQuery("tr.eventRow");
         try { rows.draggable("destroy"); } catch (e) {}
         rows.draggable({
-                       helper: function (event) { return '<div id="dragDropVisual"></div>'; },
+                       helper: function (event) { return '<div id="DnDVisualEvents"></div>'; },
+                       start: startDragging,
+                       drag: whileDragging,
+                       stop: stopDragging,
+                       appendTo: 'body',
+                       cursorAt: { right: 25 },
+                       scroll: false,
+                       distance: 4,
+                       zIndex: 20
+                       });
+    }
+}
+
+function configureTasksDraggables() {
+    if ($("tasksList")) {
+        var rows = jQuery("tr.taskRow");
+        try { rows.draggable("destroy"); } catch (e) {}
+        rows.draggable({
+                       helper: function (event) { return '<div id="DnDVisualTasks"></div>'; },
                        start: startDragging,
                        drag: whileDragging,
                        stop: stopDragging,
@@ -3128,12 +3158,21 @@ function startDragging(event, ui) {
     var row = event.target;
     var handle = ui.helper;
     var events = $('eventsList').getSelectedRowsId();
-    var count = events.length;
+    var tasks = $('tasksList').getSelectedRowsId();
+    
+    if (events.length > 0)
+      var count = events.length;
+    else
+      var count = tasks.length;
     
     if (count == 0 || events.indexOf(row.id) < 0) {
         onRowClick(event, $(row.id));
         events = $("eventsList").getSelectedRowsId();
-        count = events.length;
+        tasks = $("tasksList").getSelectedRowsId();
+        if (events.length > 0)
+            var count = events.length;
+        else
+            var count = tasks.length;
     }
     handle.html(count);
     
@@ -3151,47 +3190,65 @@ function stopDragging(event, ui) {
 }
 
 function dropAction(event, ui) {
+    var events = $("eventsList").getSelectedRowsId();
+    var tasks = $("tasksList").getSelectedRowsId();
     
-    var action = "adjust";
-    refreshEventsAndDisplay();
-    dropSelectedEvents(action, this.id.substr(1));
+    if(events.length > 0 || tasks.length > 0)
+        dropSelectedItems(this.id.substr(1));
 }
 
-function dropSelectedEvents(action, toId) {
-    var selectedCalendars = $("calendarList").getElementsByTagName("li");
-    if (selectedCalendars.length > 0) {
-        var eventIds = $('eventsList').getSelectedRowsId();
-        for (var i = 0; i < eventIds.length; i++) {
+function dropSelectedItems(toId) {
+    var eventIds = $('eventsList').getSelectedRowsId();
+    var taskIds = $('tasksList').getSelectedRowsId();
+    var itemIds = {};
+    
+    if (eventIds.length > 0) {
+        itemIds.data = eventIds;
+        itemIds.type = "events";
+    }
+    else {
+        itemIds.data = taskIds;
+        itemIds.type = "tasks";
+    }
+
+    for (var i = 0; i < itemIds.data.length; i++) {
         // Find the event ID (.ics)
-            if (!eventIds[i].endsWith("ics")) {
-              // If it is a repeated event, substract the occurence part
-                if (eventIds[i].indexOf(".ics")) {
-                    var x = eventIds[i].indexOf(".ics") + 4;
-                    eventIds[i] = eventIds[i].substr(0,x);
-                }
-                else {
-                    log("Can't find the event(.ics) on the item dragged : " + eventIds[i]);
-                    return false;
-                }
+        if (!itemIds.data[i].endsWith("ics")) {
+            // If it is a repeated event, substract the occurence part
+            if (itemIds.data[i].indexOf(".ics")) {
+                var x = eventIds[i].indexOf(".ics") + 4;
+                itemIds.data[i] = itemIds.data[i].substr(0,x);
             }
-            // Distinction between personal calendar and a calendar with a reference ID (ex: 4535-7545-B-5D3J)
-            if (eventIds[i].search(toId+"-") == -1) {
-                var x = eventIds[i].indexOf('-');
-                if (eventIds[i].indexOf('-') == 4) {
-                    var regEx = new RegExp(/\w+\-\w+\-\w+\-\w+/);
-                    var fromId = regEx.exec(eventIds[i]);
-                    var eventICS = eventIds[i].substr(fromId[0].length + 1);
-                }
-                else {
-                    var regEx = new RegExp(/\w+/);
-                    var fromId = regEx.exec(eventIds[i]);
-                    var eventICS = eventIds[i].substr(fromId[0].length + 1);
-                }
+            else {
+                log("Can't find the event(.ics) on the item dragged : " + eventIds[i]);
+                return false;
+            }
+        }
+        // Distinction between personal calendar and a calendar with a reference ID (ex: 4535-7545-B-5D3J)
+        if (itemIds.data[i].search(toId+"-") == -1) {
+            var x = itemIds.data[i].indexOf('-');
+            if (itemIds.data[i].indexOf('-') == 4) {
+                var regEx = new RegExp(/\w+\-\w+\-\w+\-\w+/);
+                var fromId = regEx.exec(itemIds.data[i]);
+                var eventICS = itemIds.data[i].substr(fromId[0].length + 1);
+            }
+            else {
+                var regEx = new RegExp(/\w+/);
+                var fromId = regEx.exec(itemIds.data[i]);
+                var eventICS = itemIds.data[i].substr(fromId[0].length + 1);
+            }
+            
+            if (itemIds.type == "events") {
                 var destinationCalendar = "destination=" + toId;
                 var params = destinationCalendar + "&days=0&start=0&duration=0";
                 var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/adjust?" + params;
                 
                 triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
+            }
+            else if (itemIds.type == "tasks") {
+                var params = "moveToCalendar=" + toId;
+                var urlstr = ApplicationBaseURL + "/" + fromId + "/" + eventICS + "/saveAsTask?" + params;
+                triggerAjaxRequest(urlstr, updateTaskFromDraggingCallback);
             }
         }
     }

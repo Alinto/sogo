@@ -1535,9 +1535,14 @@ DIV#calendarContent .alert-box span {
     border:1px solid #8ed9f6;
 }
 
-DIV#dragDropVisual
+DIV#DnDVisualEvents
+{ background-image: url(event7.png); }
+
+DIV#DnDVisualTasks
+{ background-image: url(task.png); }
+
+DIV#DnDVisualEvents, DIV#DnDVisualTasks
 {
-  background-image: url(event7.png);
   background-repeat: no-repeat;
   background-position: 4px 2px;
   width: 5px;
