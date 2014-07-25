@@ -470,7 +470,7 @@
         
         // Get the StartDate, EndDate in both local time and epoch time
         // 1- startDate, 2- endDate, 3- epoch startDate, 4- epoch endDate
-        vEventDates = [self _vEventDates:[theRecords objectAtIndex:0]]
+        vEventDates = [self _vEventDates:[theRecords objectAtIndex:0]];
         _startDate = [[theRecords objectAtIndex:0] objectForKey:@"startDate"];
         _endDate = [[theRecords objectAtIndex:0] objectForKey:@"endDate"];
         
