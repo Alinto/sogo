@@ -423,9 +423,10 @@ DIV#calendarHeader DIV.calendarLabels
   height: 20px; 
   border-left: 1px solid #ccc;
   text-align: center;
-  font-style:italic;
   font-size:150%;
 }
+.calendarsToDisplay
+{ border-top: 2px solid #fff; }
 DIV#calendarHeader DIV.dayLabels
 { top: 32px;
   height: 35px; }

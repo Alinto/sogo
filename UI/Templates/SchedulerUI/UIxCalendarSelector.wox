@@ -12,6 +12,8 @@
 { background-color: <var:string value="currentCalendar.color" />; color: <var:string value="contrastingTextColor" />; }
 div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
 { color: <var:string value="currentCalendar.color" />; }
+.calendarLabels [data-folder='<var:string value="currentCalendar.folder" />']
+{ border-color: <var:string value="currentCalendar.color" />; }
     </var:foreach>
   </style>
   <div id="calendarSelector">
