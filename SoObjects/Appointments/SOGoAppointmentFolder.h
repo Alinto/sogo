@@ -51,6 +51,8 @@
 @class iCalCalendar;
 @class iCalTimeZone;
 @class SOGoWebDAVValue;
+@class NGCalendarDateRange;
+@class iCalRepeatableEntityObject;
 
 typedef enum {
   SOGoAppointmentProxyPermissionNone = 0,
@@ -148,7 +150,7 @@ typedef enum {
 - (NSString *) aclSQLListingFilter;
 
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
-					forUser: (NSString *) uid;
+                                        forUser: (NSString *) uid;
 
 - (BOOL) showCalendarAlarms;
 - (void) setShowCalendarAlarms: (BOOL) new;
@@ -185,6 +187,39 @@ typedef enum {
      proxyPermissionForUserWithLogin: (NSString *) login;
 
 - (NSArray *) aclUsersWithProxyWriteAccess: (BOOL) write;
+
+/* Function needed to calculate the next occurence of a recursive event */
+
++ (void) flattenCycleRecord: (NSDictionary *) theRecord
+                   forRange: (NGCalendarDateRange *) theRange
+                  intoArray: (NSMutableArray *) theRecords;
+
++ (NSMutableDictionary *) fixupRecord: (NSDictionary *) theRecord;
+
++ (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) theRecord
+                                cycleRange: (NGCalendarDateRange *) theCycle
+            firstInstanceCalendarDateRange: (NGCalendarDateRange *) theFirstCycle
+                         withEventTimeZone: (iCalTimeZone *) theEventTimeZone;
+
++ (void) appendCycleExceptionsFromRow: (NSDictionary *) row
+       firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
+                             forRange: (NGCalendarDateRange *) dateRange
+                         withTimeZone: (NSTimeZone *) tz
+                              toArray: (NSMutableArray *) ma;
+
++ (void) appendCycleException: (iCalRepeatableEntityObject *) component
+firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
+                      fromRow: (NSDictionary *) row
+                     forRange: (NGCalendarDateRange *) dateRange
+                 withTimeZone: (NSTimeZone *) tz
+                      toArray: (NSMutableArray *) ma;
+
++ (int) indexOfRecordMatchingDate: (NSCalendarDate *) matchDate
+                          inArray: (NSArray *) recordArray;
+
++ (void) fixExceptionRecord: (NSMutableDictionary *) recRecord
+                    fromRow: (NSDictionary *) row;
+
 
 @end
 

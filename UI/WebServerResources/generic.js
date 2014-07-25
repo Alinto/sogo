@@ -1417,17 +1417,20 @@ function refreshAlarmsCallback(http) {
 
 function triggerNextAlarm() {
     if (Alarms.length > 0) {
-        var next = Alarms.pop();
-        var now = new Date();
-        var utc = Math.floor(now.getTime()/1000);
-        var url = next[0] + '/' + next[1];
-        var alarmTime = parseInt(next[2]);
-        var delay = alarmTime;
-        if (alarmTime > 0) delay -= utc;
-        var d = new Date(alarmTime*1000);
-        log ("now = " + now.toUTCString());
-        log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
-        showAlarm.delay(delay, url);
+      for (i=1; Alarms.length != 1; i++) {
+        Alarms.pop();
+      }
+      var next = Alarms.pop();
+      var now = new Date();
+      var utc = Math.floor(now.getTime()/1000);
+      var url = next[0] + '/' + next[1];
+      var alarmTime = parseInt(next[2]);
+      var delay = alarmTime;
+      if (alarmTime > 0) delay -= utc;
+      var d = new Date(alarmTime*1000);
+      log ("now = " + now.toUTCString());
+      log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
+      showAlarm.delay(delay, url);
     }
 }
 
