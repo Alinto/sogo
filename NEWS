@@ -14,6 +14,7 @@ Enhancements
 Bug fixes
  - fixed weekdays translation in the datepicker
  - fixed event categories display
+ - fixed all-day events display in IE
  - fixed rename of calendars
  - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
  - fixed refresh of message headers when forwarding a message (#2818)

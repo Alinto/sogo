@@ -1762,7 +1762,9 @@ function _setupEventsDragAndDrop(events) {
                 var blocks = occurrences[j].blocks;
                 var dragController = new SOGoEventDragController();
                 dragController.updateDropCallback = updateEventFromDragging;
-                dragController.attachToEventCells(blocks);
+                if (blocks.length > 0)
+                    // Ignore events that have no visible blocks
+                    dragController.attachToEventCells(blocks);
             }
             setupFlags[setupId] = true;
         }
@@ -1826,25 +1828,27 @@ function resetCategoriesStyles() {
         var selectors = [];
         var rules = [];
         categoriesStyles.keys().each(function(category) {
-                                     var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
-                                     if (color) {
-                                     rules[rules.length] = '{ border-right: 8px solid ' + color + '; }';
-                                     selectors[selectors.length] = 'DIV.' + categoriesStyles.get(category);
-                                     }
-                                     });
+            var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
+            if (color) {
+                rules.push('border-right: 8px solid ' + color);
+                selectors.push('DIV.' + categoriesStyles.get(category));
+            }
+        });
         
         if (selectors.length > 0) {
             if (categoriesStyleSheet.styleSheet && categoriesStyleSheet.styleSheet.addRule) {
                 // IE
-                for (var i = 0; i < selectors.length; i++)
+                for (var i = 0; i < selectors.length; i++) {
                     categoriesStyleSheet.styleSheet.addRule(selectors[i],
                                                             rules[i]);
+                }
             }
             else {
                 // Mozilla + Safari
-                for (var i = 0; i < selectors.length; i++)
+                for (var i = 0; i < selectors.length; i++) {
                     categoriesStyleSheet.appendChild(document.createTextNode(selectors[i] +
-                                                                             ' ' + rules[i]));
+                                                                             ' { ' + rules[i] + '; }'));
+                }
             }
         }
     }
@@ -1953,7 +1957,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     }
     
     event.blocks.push(eventCell);
-    
+
     return eventCell;
 }
 
@@ -2099,8 +2103,6 @@ function newEventDIV(eventRep, event) {
     var left = eventRep.position * pc;
     eventCell.style.left = left + "%";
     var right = 100 - (eventRep.position + 1) * pc;
-    if (event[10] != null)
-        eventCell.style.borderRight = "8px solid white";
     
     eventCell.style.right = right + "%";
     eventCell.addClassName("starts" + eventRep.start);
@@ -2115,7 +2117,7 @@ function newEventDIV(eventRep, event) {
         span.update(text);
         textDiv.appendChild(span);
     }
-    
+
     return eventCell;
 }
 
@@ -2142,9 +2144,7 @@ function newMonthEventDIV(eventRep, event) {
     
     var eventCell = newBaseEventDIV(eventRep, event,
                                     eventText);
-    if (event[10] != null)
-        eventCell.style.borderRight = "8px solid white";
-    
+
     return eventCell;
 }
 
@@ -2176,8 +2176,9 @@ function adjustCalendarHeaderDIV() {
         var rule = ("right: " + delta + "px");
         if (styleElement.styleSheet && styleElement.styleSheet.addRule) {
             // IE
-            styleElement.styleSheet.addRule(selectors[0], rule);
-            styleElement.styleSheet.addRule(selectors[1], rule);
+            for (var i = 0; i < selectors.length; i++) {
+                styleElement.styleSheet.addRule(selectors[i], rule);
+            }
         } else {
             // Mozilla + Firefox
             var styleText = selectors.join(",") + " { " + rule + "; }";

@@ -400,7 +400,7 @@ DIV#daysView
   border-top: 1px solid #ccc;
   overflow: auto;
   overflow-x: hidden;
-  right: 0px;}
+  right: 0px; }
 
 DIV#calendarHeader
 { top: 25px;
@@ -1298,9 +1298,10 @@ DIV#daysView DIV.event.lasts96
 DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
-  width:100%;
   top: 0px;
   bottom: 0px;
+  left: 0px;
+  right: 0px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
   cursor:move; }
