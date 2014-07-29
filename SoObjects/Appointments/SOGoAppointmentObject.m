@@ -462,7 +462,7 @@
   count = [unavailableAttendees count];
   if (count > 0)
     {
-      reason = [NSMutableString stringWithString:[self labelForKey: @"This or these persons cannot be invited:"]];
+      reason = [NSMutableString stringWithString:[self labelForKey: @"Inviting the following persons is prohibited:"]];
       // Add all the unavailable users in the warning message
       for (i = 0; i < count; i++)
         {
