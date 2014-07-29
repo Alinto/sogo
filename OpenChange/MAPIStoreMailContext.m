@@ -87,7 +87,7 @@ MakeDisplayFolderName (NSString *folderName)
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName, *trashName;
+  NSString *urlBase, *stringData, *currentName, *realName, *inboxName, *draftsName, *sentName, *trashName;
   NSArray *unprefixedFolders;
   NSMutableArray *secondaryFolders;
   enum mapistore_context_role role[] = {MAPISTORE_MAIL_ROLE,
@@ -153,12 +153,23 @@ MakeDisplayFolderName (NSString *folderName)
   for (count = 0; count < max; count++)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
+      // secondaryFolders has the names (1) Imap4Encoded and (2) asCSSIdentifier
+      //     e.g.: Probl&AOg-mes_SP_de_SP_synchronisation
       currentName = [secondaryFolders objectAtIndex: count];
-      stringData = [NSString stringWithFormat: @"%@%@",
-                             urlBase, [currentName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-      context->url = [stringData asUnicodeInMemCtx: context];
-      stringData = [[[currentName substringFromIndex: 6] fromCSSIdentifier] stringByDecodingImap4FolderName];
-      context->name = [stringData asUnicodeInMemCtx: context];
+      // To get the real name we have to revert that (applying the decode functions)
+      // in reverse order
+      //     e.g.: Problèmes de synchronisation
+      realName = [[currentName fromCSSIdentifier]
+                               stringByDecodingImap4FolderName];
+      // And finally to represent that as URI we have to (1) asCSSIdentifier,
+      // (2) Imap4Encode and (3) AddPercentEscapes
+      //     e.g.: Probl&AOg-mes_SP_de_SP_synchronisation
+      // In the example there are no percent escapes added because is already ok
+      stringData = [[[realName asCSSIdentifier]
+                               stringByEncodingImap4FolderName]
+                               stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      context->url = [[NSString stringWithFormat: @"%@%@", urlBase, stringData] asUnicodeInMemCtx: context];
+      context->name = [[realName substringFromIndex: 6] asUnicodeInMemCtx: context];
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
       context->tag = "tag";
