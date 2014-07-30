@@ -275,9 +275,8 @@ function initPreferences() {
             row.appendChild (td);
             tablebody.appendChild(row);
             $(tablebody).deselectAll();
-            
         }
-        
+
         var table = whiteList.childNodesWithTag("table")[0];
         table.multiselect = true;
         $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
