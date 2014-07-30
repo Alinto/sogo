@@ -35,7 +35,8 @@
 {
   const char *inStrings[] = { "éléphant", "2š", "sogo+test", NULL };
   const char **inString;
-  NSString *outStrings[] = { @"%C3%A9l%C3%A9phant", @"2%C5%A1", @"sogo+test" };
+  //NSString *outStrings[] = { @"%C3%A9l%C3%A9phant", @"2%C5%A1", @"sogo+test" };
+  NSString *outStrings[] = { @"%C3%A9l%C3%A9phant", @"2%C5%A1", @"sogo%2Btest" };
   NSString **outString;
   NSString *result, *error;
 

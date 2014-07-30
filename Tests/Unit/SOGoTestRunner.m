@@ -31,7 +31,7 @@
 
 #import "SOGoTestRunner.h"
 
-#define EXPECTED_FAILURES 3
+#define EXPECTED_FAILURES 0
 
 @implementation SOGoTestRunner
 
@@ -120,7 +120,7 @@
   else
     [message appendString: @"\n"];
   [message appendString: @"----------------------------------------------------------------------\n"];
-    
+
   if (failureCode == SOGoTestFailureFailure)
     {
       [message appendString: [exception reason]];
