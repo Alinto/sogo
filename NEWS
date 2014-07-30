@@ -1,8 +1,8 @@
-2.2.7 (2014-07-DD)
+2.2.7 (2014-07-30)
 ------------------
 
 New features
- - now possible to prevent event invitations
+ - new user preference to prevent event invitations
 
 Enhancements
  - improved badges of active tasks count
@@ -10,6 +10,7 @@ Enhancements
  - now possible to DnD events in the calendar list
  - improved handling of SOGoSubscriptionFolderFormat
  - JSON'ified folder subscription interface
+ - updated Finnish, French, German, and Spanish (Spain) translations
 
 Bug fixes
  - fixed weekdays translation in the datepicker
