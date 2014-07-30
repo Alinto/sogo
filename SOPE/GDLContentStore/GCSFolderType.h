@@ -41,7 +41,7 @@
 @class NSString, NSArray, NSDictionary;
 @class EOQualifier;
 @class NGResourceLocator;
-@class GCSFolder, GCSFieldExtractor;
+@class GCSFolder;
 
 @interface GCSFolderType : NSObject
 {
@@ -50,7 +50,6 @@
   NSArray      *fields, *quickFields;  // GCSFieldInfo objects
   EOQualifier  *folderQualifier;       // to further limit the table set
   NSString     *extractorClassName;
-  GCSFieldExtractor *extractor;
 }
 
 + (id)folderTypeWithName:(NSString *)_type;
@@ -66,10 +65,6 @@
 /* generating SQL */
 
 - (NSString *)sqlQuickCreateWithTableName:(NSString *)_tabName;
-
-/* quick support */
-
-- (GCSFieldExtractor *)quickExtractor;
 
 /* locator used to find .ocs files */
 

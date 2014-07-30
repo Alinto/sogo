@@ -213,7 +213,7 @@ NSNumber *iCalDistantFutureNumber = nil;
   return dateNumber;
 }
 
-- (NSMutableDictionary *) quickRecord
+- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
 {
   [self subclassResponsibility: _cmd];
 

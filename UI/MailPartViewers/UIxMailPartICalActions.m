@@ -1,8 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,7 +177,7 @@
       if ([*eventObject isNew])
 	{
 	  chosenEvent = emailEvent;
-	  [*eventObject saveContentString: [[emailEvent parent] versitString]];
+	  [*eventObject saveCalendar: [emailEvent parent]];
 	}
       else
 	{
@@ -209,7 +207,7 @@
 		  parent = [calendarEvent parent];
 		  [parent removeChild: calendarEvent];
 		  [parent addChild: emailEvent];
-		  [*eventObject saveContentString: [parent versitString]];
+		  [*eventObject saveCalendar: parent];
 		  [*eventObject flush];
 		  chosenEvent = emailEvent;
 		}
@@ -332,7 +330,6 @@
 {
   iCalEvent *emailEvent;
   SOGoAppointmentObject *eventObject;
-  NSString *iCalString;
   WOResponse *response;
 
   emailEvent = [self _emailEvent];
@@ -341,8 +338,7 @@
       eventObject = [self _eventObjectWithUID: [emailEvent uid]];      
       if ([eventObject isNew])
 	{
-	  iCalString = [[emailEvent parent] versitString];
-	  [eventObject saveContentString: iCalString];
+	  [eventObject saveCalendar: [emailEvent parent]];
 	  response = [self responseWith204];
 	}
       else

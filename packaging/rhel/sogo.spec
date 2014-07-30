@@ -262,7 +262,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_sbindir}/openchange_user_cleanup
 %{_libdir}/libSOGo.so.*
 %{_libdir}/libSOGoUI.so.*
-%{_libdir}/libOGoContentStore.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
 %{_libdir}/GNUstep/SOGo/Appointments.SOGo
 %{_libdir}/GNUstep/SOGo/CommonUI.SOGo

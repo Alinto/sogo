@@ -1,20 +1,20 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING. If not, write to the
+  License along with SOGo; see the file COPYING. If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -35,7 +35,6 @@
 #import "GCSFolderType.h"
 #import "GCSFolder.h"
 #import "GCSFieldInfo.h"
-#import "GCSFieldExtractor.h"
 
 @implementation GCSFolderType
 
@@ -116,7 +115,6 @@
 
 - (void) dealloc
 {
-  [extractor release];
   [extractorClassName release];
   [blobTablePattern release];
   [quickTablePattern release];
@@ -171,36 +169,6 @@
   [sql appendString:@"\n)"];
  
   return sql;
-}
-
-/* quick support */
-
-- (GCSFieldExtractor *) quickExtractor
-{
-  Class clazz;
-  GCSFieldExtractor *quickExtractor;
-
-  if (!extractor)
-    {
-      clazz = (extractorClassName
-	       ? NSClassFromString (extractorClassName)
-	       : [GCSFieldExtractor class]);
-      if (clazz)
-	{
-	  extractor = [clazz new];
-	  if (!extractor)
-	    [self logWithFormat:@"ERROR: could not create field extractor of class %@",
-		  clazz];
-	}
-      else
-	[self logWithFormat:@"ERROR: did not find field extractor class (%@)", extractorClassName];
-    }
-  if ([extractor isNotNull])
-    quickExtractor = extractor;
-  else
-    quickExtractor = nil;
- 
-  return quickExtractor;
 }
 
 - (NSArray *) quickFields

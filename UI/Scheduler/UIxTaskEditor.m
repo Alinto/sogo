@@ -1,8 +1,6 @@
 /* UIxTaskEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -420,18 +418,6 @@
 
   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
 }
-
-// - (id <WOActionResults>) saveAction
-// {
-//   SOGoTaskObject *clientObject;
-//   NSString *iCalString;
-
-//   clientObject = [self clientObject];
-//   iCalString = [[clientObject calendar: NO secure: NO] versitString];
-//   [clientObject saveContentString: iCalString];
-
-//   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
-// }
 
 - (id <WOActionResults>) viewAction
 {

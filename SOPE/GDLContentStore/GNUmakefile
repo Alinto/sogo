@@ -31,7 +31,6 @@ libGDLContentStore_HEADER_FILES +=		\
 	GCSFolderManager.h			\
 	GCSFolderType.h				\
 	GCSChannelManager.h			\
-	GCSFieldExtractor.h			\
 	GCSSessionsFolder.h			\
 	GCSSpecialQueries.h			\
 	GCSStringFormatter.h			\
@@ -48,7 +47,6 @@ libGDLContentStore_OBJC_FILES +=		\
 	GCSFolderManager.m			\
 	GCSFolderType.m				\
 	GCSChannelManager.m			\
-	GCSFieldExtractor.m			\
 	GCSSessionsFolder.m			\
 	GCSSpecialQueries.m			\
 	GCSStringFormatter.m			\
@@ -60,6 +58,14 @@ GDLContentStore_HEADER_FILES = $(libGDLContentStore_HEADER_FILES)
 GDLContentStore_OBJC_FILES   = $(libGDLContentStore_OBJC_FILES)
 GDLContentStore_SUBPROJECTS  = $(libGDLContentStore_SUBPROJECTS)
 
+# Type models
+TYPEMODELS_DIR = $(SOGO_TYPEMODELS)
+
+libGDLContentStore_TYPEMODELS += \
+	appointment.ocs	\
+	contact.ocs \
+	appointment-oracle.ocs \
+	contact-oracle.ocs
 
 # building
 

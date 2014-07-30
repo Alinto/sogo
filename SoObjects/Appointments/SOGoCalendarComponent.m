@@ -169,6 +169,11 @@
   DESTROY(originalCalendar);
 }
 
+- (Class *) parsingClass
+{
+  return [iCalCalendar class];
+}
+
 - (NSString *) davContentType
 {
   return @"text/calendar";
@@ -662,7 +667,7 @@
 
 - (NSException *) saveCalendar: (iCalCalendar *) newCalendar
 {
-  [self saveContentString: [newCalendar versitString]];
+  [super saveComponent: newCalendar];
 
   return nil;
 }
@@ -1193,7 +1198,19 @@
 				 [NSString stringWithFormat: @"%@.ics", newUID]
 			       inContainer: newFolder];
 
-  return [newComponent saveContentString: [calendar versitString]];
+  return [newComponent saveCalendar: calendar];
+}
+
+- (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
+{
+  NSException *ex;
+
+  ex = [self copyToFolder: newFolder];
+
+  if (!ex)
+    ex = [self delete];
+
+  return ex;
 }
 
 #warning Should we not remove the concept of Organizer and Participant roles?

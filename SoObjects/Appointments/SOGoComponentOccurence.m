@@ -1,9 +1,6 @@
 /* SOGoComponentOccurence.m - this file is part of SOGo
  * 
- * Copyright (C) 2008-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -152,7 +149,6 @@
   NSArray *occurences;
   NSCalendarDate *recurrenceId, *currentId;
   NSException *error;
-  NSString *newContent;
   NSTimeZone *timeZone;
   iCalCalendar *calendar;
   iCalEntityObject *currentOccurence;
@@ -197,10 +193,8 @@
       [master addToExceptionDates: recurrenceId];
       [master increaseSequence];
 
-      // We generate the updated iCalendar file and we save it
-      // in the database.
-      newContent = [calendar versitString];
-      error = [container saveContentString: newContent];
+      // We save the updated iCalendar in the database.
+      error = [container saveComponent: calendar];
     }
 
   return error;

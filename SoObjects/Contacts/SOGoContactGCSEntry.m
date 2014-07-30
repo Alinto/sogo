@@ -48,6 +48,11 @@
   [super dealloc];
 }
 
+- (Class *) parsingClass
+{
+  return [NGVCard class];
+}
+
 /* content */
 
 - (NGVCard *) vCard
@@ -121,10 +126,24 @@
 
   newContact = [[self class] objectWithName:
 			       [NSString stringWithFormat: @"%@.vcf", newUID]
-			     inContainer: newFolder];
+                                inContainer: newFolder];
 
-  return [newContact saveContentString: [newCard versitString]];
+  return [newContact saveComponent: newCard];
 }
+
+
+- (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
+{
+  NSException *ex;
+
+  ex = [self copyToFolder: newFolder];
+
+  if (!ex)
+    ex = [self delete];
+
+  return ex;
+}
+
 
 - (NSString *) displayName
 {
@@ -150,7 +169,7 @@
   NSException *result;
 
   if (card)
-    result = [self saveContentString: [card versitString]];
+    result = [super saveComponent: card];
   else
     result = nil; /* TODO: we should probably return an exception instead */
 
@@ -160,15 +179,15 @@
 - (NSException *) saveComponent: (NGVCard *) newCard
 {
   ASSIGN(card, newCard);
-  return [self save];
+  return [super saveComponent: newCard];
 }
 
-- (NSException *) saveContentString: (NSString *) newContent
-                        baseVersion: (unsigned int) newVersion
+- (NSException *) saveComponent: (NGVCard *) newCard
+                    baseVersion: (unsigned int) newVersion
 {
   NSException *ex;
 
-  ex = [super saveContentString: newContent baseVersion: newVersion];
+  ex = [super saveComponent: newCard baseVersion: newVersion];
   [card release];
   card = nil;
 

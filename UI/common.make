@@ -29,14 +29,11 @@ RELBUILD_DIR_libSOGo = \
 	$(GNUSTEP_BUILD_DIR)/../../SoObjects/SOGo/SOGo.framework/
 RELBUILD_DIR_libSOGoUI = \
 	$(GNUSTEP_BUILD_DIR)/../SOGoUI/$(GNUSTEP_OBJ_DIR_NAME)
-RELBUILD_DIR_libOGoContentStore = \
-	$(GNUSTEP_BUILD_DIR)/../../OGoContentStore/$(GNUSTEP_OBJ_DIR_NAME)
 
 ADDITIONAL_LIB_DIRS += 				\
 	-L$(RELBUILD_DIR_libNGCards)		\
 	-L$(RELBUILD_DIR_libSOGo)		\
-	-L$(RELBUILD_DIR_libSOGoUI)		\
-	-L$(RELBUILD_DIR_libOGoContentStore)
+	-L$(RELBUILD_DIR_libSOGoUI)
 endif
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

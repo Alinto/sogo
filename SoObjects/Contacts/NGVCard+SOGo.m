@@ -24,9 +24,12 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSNull+misc.h>
+
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NSString+NGCards.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "NSDictionary+LDIF.h"
@@ -786,6 +789,53 @@ convention:
     }
   
   return date;
+}
+
+- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+{
+  NSMutableDictionary *fields;
+  CardElement *element;
+  NSString *value;
+  NSArray *v;
+
+  fields = [NSMutableDictionary dictionaryWithCapacity: 16];
+
+  value = [self fn];
+  if (value)
+    [fields setObject: value forKey: @"c_cn"];
+  element = [self n];
+  [fields setObject: [element flattenedValueAtIndex: 0 forKey: @""]
+             forKey: @"c_sn"];
+  [fields setObject: [element flattenedValueAtIndex: 1 forKey: @""]
+             forKey: @"c_givenName"];
+  value = [self preferredTel];
+  if (value)
+    [fields setObject: value forKey: @"c_telephonenumber"];
+  value = [self preferredEMail];
+  if (![value isNotNull])
+    value = @"";
+  [fields setObject: value forKey: @"c_mail"];
+  element = [self org];
+  [fields setObject: [element flattenedValueAtIndex: 0 forKey: @""]
+             forKey: @"c_o"];
+  [fields setObject: [element flattenedValueAtIndex: 1 forKey: @""]
+             forKey: @"c_ou"];
+  element = [self preferredAdr];
+  if (element && ![element isVoid])
+    [fields setObject: [element flattenedValueAtIndex: 3
+                                               forKey: @""]
+               forKey: @"c_l"];
+  value = [[self uniqueChildWithTag: @"X-AIM"] flattenedValuesForKey: @""];
+  [fields setObject: value forKey: @"c_screenname"];
+  v = [[self categories] trimmedComponents];
+  if ([v count] > 0)
+    [fields setObject: [v componentsJoinedByString: @","]
+               forKey: @"c_categories"];
+  else
+    [fields setObject: [NSNull null] forKey: @"c_categories"];
+  [fields setObject: @"vcard" forKey: @"c_component"];
+
+  return fields;
 }
 
 @end /* NGVCard */

@@ -1,9 +1,6 @@
-/* iCalEvent+SOGo.m - this file is part of SOGo
+/* iCalToDot+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
- * Copyright (C) 2004-2005 SKYRIX Software AG
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +38,7 @@
 
 @implementation iCalToDo (SOGoExtensions)
 
-- (NSMutableDictionary *) quickRecord
+- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *dueDate, *nextAlarmDate;

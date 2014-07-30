@@ -1,3 +1,15 @@
+2.2.8 (2014-XX-XX)
+------------------
+
+New features
+ -
+
+Enchancements
+ - major refactoring of the GCS component saving code (dropped OGoContentStore)
+
+Bug fixes
+ -
+
 2.2.7 (2014-07-30)
 ------------------
 

@@ -1712,7 +1712,7 @@ RANGE(2);
 - (BOOL) isWriteableClientObject
 {
   return [[self clientObject]
-	   respondsToSelector: @selector(saveContentString:)];
+	   respondsToSelector: @selector(saveCompontent:)];
 }
 
 /* access */

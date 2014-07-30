@@ -513,7 +513,7 @@
     }
   [vToDo setTimeStampAsDate: now];
 
-  [sogoObject saveContentString: [vCalendar versitString]];
+  [sogoObject saveComponent: vCalendar];
 
   [self updateVersions];
 }

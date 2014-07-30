@@ -187,15 +187,15 @@
   if (![theUID isEqualToString: theOwner])
     {
       SOGoAppointmentObject *attendeeObject;
-      NSString *iCalString;
+      iCalCalendar *iCalendarToSave;
       
-      iCalString = nil;
+      iCalendarToSave = nil;
       attendeeObject = [self _lookupEvent: [theEvent uid] forUID: theUID];
       
       // We must add an occurence to a non-existing event. We have
       // to handle this with care, as in the postCalDAVEventRequestTo:from:
       if ([attendeeObject isNew] && [theEvent recurrenceId])
-	      {
+        {
           iCalEvent *ownerEvent;
           iCalPerson *person;
           SOGoUser *user;
@@ -217,7 +217,7 @@
               [person setRole: @"REQ-PARTICIPANT"];
               [ownerEvent addToAttendees: person];
               
-              iCalString = [[ownerEvent parent] versitString];
+              iCalendarToSave = [ownerEvent parent];
             }
         }
       else
@@ -229,12 +229,12 @@
           // in attendee's calendar (add exception dates and remove matching
           // occurrences) -- see _updateRecurrenceIDsWithEvent:
           
-          iCalString = [[theEvent parent] versitString];
+          iCalendarToSave = [theEvent parent];
         }
       
       // Save the event in the attendee's calendar
-      if (iCalString)
-      [attendeeObject saveContentString: iCalString];
+      if (iCalendarToSave)
+        [attendeeObject saveCalendar: iCalendarToSave];
     }
 }
 
@@ -253,7 +253,6 @@
       iCalRepeatableEntityObject *event;
       iCalCalendar *calendar;
       NSCalendarDate *currentId;
-      NSString *calendarContent;
       NSArray *occurences;
       int max, count;
       
@@ -294,10 +293,8 @@
               
               [event increaseSequence];
               
-              // We generate the updated iCalendar file and we save it
-              // in the database.
-              calendarContent = [calendar versitString];
-              [object saveContentString: calendarContent];
+              // We save the updated iCalendar in the database.
+              [object saveCalendar: calendar];
             }
         }
     }
@@ -413,10 +410,10 @@
 
 // This method scans the list of attendees.
 - (NSException *) _handleAttendeeAvailability: (NSArray *) theAttendees
-                                    forEvent: (iCalEvent *) theEvent
+                                     forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
-  NSMutableArray *attendees, *unavailableAttendees, *whiteList;
+  NSMutableArray *unavailableAttendees, *whiteList;
   NSEnumerator *enumerator;
   NSPredicate *predicate;
   NSString *currentUID, *ownerUID;
@@ -425,11 +422,11 @@
   NSMutableDictionary *value, *moduleSettings;
   SOGoUser *user;
   SOGoUserSettings *us;
-  int count = 0, i = 0;
-  
+  int i, count;
+
+  i = count = 0;
   
   // Build list of the attendees uids without ressources
-  attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
   ownerUID = [[[self context] activeUser] login];
@@ -500,7 +497,7 @@
   NSMutableArray *attendees;
   NSEnumerator *enumerator;
   NSString *currentUID;
-  SOGoUser *user, *currentUser, *ownerUser;
+  SOGoUser *user, *currentUser;
   
   // Build a list of the attendees uids
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
@@ -971,7 +968,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   iCalCalendar *calendar;
   iCalEntityObject *event;
   iCalPerson *otherAttendee, *otherDelegate;
-  NSString *iCalString, *recurrenceTime, *delegateEmail;
+  NSString *recurrenceTime, *delegateEmail;
   NSException *error;
   BOOL addDelegate, removeDelegate;
 
@@ -1082,10 +1079,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             }
         }
       
-      // We generate the updated iCalendar file and we save it
-      // in the database.
-      iCalString = [[event parent] versitString];
-      error = [eventObject saveContentString: iCalString];
+      // We save the updated iCalendar in the database.
+      error = [eventObject saveCalendar: [event parent]];
     }
       
   return error;
@@ -1464,7 +1459,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // Over DAV, it'll be handled directly in PUTAction:
               if (![context request] || [[context request] handledByDefaultHandler]
                                      || [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
-                ex = [self saveContentString: [[event parent] versitString]];
+                ex = [self saveCalendar: [event parent]];
             }
         }
       else
@@ -2099,8 +2094,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // the content string and we could have etag mismatches.
   baseVersion = (isNew ? 0 : version);
       
-  ex = [self saveContentString: [calendar versitString]
-                   baseVersion: baseVersion];
+  ex = [self saveComponent: calendar
+               baseVersion: baseVersion];
       
   return ex;
 }

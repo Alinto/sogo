@@ -1833,7 +1833,7 @@ static NSString    *userAgent      = nil;
         newContact = [contactGCSEntry objectWithName: uid
                                          inContainer: folder];
         [newContact setIsNew: YES];
-        [newContact saveContentString: [card versitString]];
+        [newContact saveComponent: card];
       }
     }
   }

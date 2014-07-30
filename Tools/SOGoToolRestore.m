@@ -374,7 +374,8 @@ typedef enum SOGoToolRestoreMode {
             {
               NSLog (@"restoring record '%@'", cName);
               cContent = [currentRecord objectForKey: @"c_content"];
-              [gcsFolder writeContent: cContent toName: cName
+              [gcsFolder writeContent: cContent
+                               toName: cName
                           baseVersion: &version];
             }
         }

@@ -1,8 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
- *
- * Author: Cyril Robert <crobert@inverse.ca>
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +67,21 @@
   [rc appendFormat: @"\n"];
 
   return rc;
+}
+
+- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+{
+  NSMutableDictionary *fields;
+  NSString *value;
+  
+  fields = [NSMutableDictionary dictionaryWithCapacity: 1];
+  
+  value = [self fn];
+  if (value)
+    [fields setObject: value forKey: @"c_cn"];
+  [fields setObject: @"vlist" forKey: @"c_component"];
+
+  return fields;
 }
 
 @end /* NGVList */

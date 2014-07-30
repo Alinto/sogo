@@ -983,7 +983,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	{
           if ([dateRange containsDate: [component startDate]])
             {
-              newRecord = [self fixupRecord: [component quickRecord]];
+              newRecord = [self fixupRecord: [component quickRecordForContainer: self]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
             }
           else
@@ -999,7 +999,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       // The recurrence id of the exception is outside the date range;
       // simply add the exception to the records array
-      newRecord = [self fixupRecord: [component quickRecord]];
+      newRecord = [self fixupRecord: [component quickRecordForContainer: self]];
       newRecordRange = [NGCalendarDateRange 
 			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
 			 endDate: [newRecord objectForKey: @"endDate"]];
@@ -3034,7 +3034,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     [content appendFormat: @"%@\n",  [timezone versitString]];
   [content appendFormat: @"%@\nEND:VCALENDAR", [event versitString]];
   
-  return ([object saveContentString: content] == nil) ? uid : nil;
+  return ([object saveCalendar: [iCalCalendar parseSingleFromSource: content]] == nil) ? uid : nil;
 }
 
 /**
@@ -3047,7 +3047,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *vtimezones;
   NSMutableArray *components;
   NSMutableDictionary *timezones, *uids;
-  NSString *tzId, *uid, *originalUid, *content;
+  NSString *tzId, *uid, *originalUid;
   iCalEntityObject *element;
   iCalDateTime *startDate;
   iCalTimeZone *timezone;
@@ -3175,8 +3175,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                               [masterCalendar addToEvents: event];
                               if (timezone)
                                 [masterCalendar addTimeZone: timezone];
-                              content = [masterCalendar versitString];
-                              [master saveContentString: content];
+                              [master saveCalendar: masterCalendar];
                               continue;
                             }
                         }

@@ -43,7 +43,7 @@ extern NSNumber *iCalDistantFutureNumber;
 - (id) itipEntryWithMethod: (NSString *) method;
 
 - (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
-- (NSMutableDictionary *) quickRecord;
+- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer;
 
 - (int) priorityNumber;
 - (NSString *) createdBy;
