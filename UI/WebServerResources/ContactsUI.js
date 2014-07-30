@@ -53,7 +53,7 @@ function contactsListCallback(http) {
     if (http.readyState == 4) {
         if (http.status == 200) {
             document.contactsListAjaxRequest = null;
-            
+
             var div = $("contactsListContent");
             var table = $("contactsList");
             var tbody = table.tBodies[0];
@@ -173,13 +173,13 @@ function contactsListCallback(http) {
                     sortHeader = $("phoneHeader");
                 else
                     sortHeader = null;
-                
+
                 if (sortHeader) {
                     var sortImages = $(table.tHead).select(".sortImage");
                     $(sortImages).each(function(item) {
                             item.remove();
                         });
-                    
+
                     var sortImage = createElement("img", "messageSortImage", "sortImage");
                     sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                     if (sorting["ascending"])
@@ -433,7 +433,7 @@ function onContactSelectionChange(event) {
     }
     if (contactView) {
         var rows = this.parentNode.getSelectedRowsId();
-  
+
         if (rows.length == 1) {
             var node = $(rows[0]);
             loadContact(node.getAttribute('id'));
@@ -499,7 +499,7 @@ function onToolbarWriteToSelectedContacts(event) {
         if (document.body.hasClassName("popup"))
             window.close();
     }
-  
+
     return false;
 }
 
@@ -664,7 +664,7 @@ function onConfirmContactSelection(event) {
     var currentAddressBookName = folder.textContent;
     var selectorList = null;
     var initialValues = null;
-	
+
     var contactsList = $("contactsList");
     var rows = contactsList.getSelectedRows();
     for (i = 0; i < rows.length; i++) {
@@ -787,7 +787,7 @@ function onFolderUnsubscribeCB(folderId) {
     var node = $(folderId);
     node.deselect();
     node.parentNode.removeChild(node);
-    
+
     var personal = $("/personal");
     personal.selectElement();
     onFolderSelectionChange();
@@ -924,7 +924,7 @@ function deletePersonalAddressBookCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
             var ul = $("contactFolders");
-	
+
             var children = ul.childNodesWithTag("li");
             var i = 0;
             var done = false;
@@ -1002,7 +1002,7 @@ function configureAddressBooks() {
         contactFolders.on("dblclick", onAddressBookModify);
         contactFolders.on("selectstart", listRowMouseDownHandler);
         contactFolders.attachMenu("contactFoldersMenu");
-    
+
         lookupDeniedFolders();
         configureDroppables();
 
@@ -1041,16 +1041,16 @@ function updateAddressBooksMenus() {
             var menuDIV = $(menuId);
             if (menuDIV)
                 menuDIV.parentNode.removeChild(menuDIV);
-	
+
             menuDIV = document.createElement("div");
             pageContent.appendChild(menuDIV);
-	
+
             var menu = document.createElement("ul");
             menuDIV.appendChild(menu);
-	
+
             $(menuDIV).addClassName("menu");
             menuDIV.setAttribute("id", menuId);
-	
+
             var submenuIds = new Array();
             for (var i = 0; i < contactFolders.length; i++) {
                 if (contactFolders[i].hasClassName("local")) {
@@ -1067,7 +1067,7 @@ function updateAddressBooksMenus() {
         }
     }
 }
-  
+
 function onAddressBookModify(event) {
     var folders = $("contactFolders");
     var selected = folders.getSelectedNodes()[0];
@@ -1076,12 +1076,12 @@ function onAddressBookModify(event) {
     var windowID = sanitizeWindowName(addressBookID + " properties");
     var width = 410;
     var height = 410;
-  
+
     $(function() {
             var properties = window.open(url, windowID, "width="+width+",height="+height+",resizable=0");
             properties.focus();
         }).delay(0.1);
-  
+
 }
 
 function onMenuSharing(event) {
@@ -1253,14 +1253,14 @@ getMenus = function() {
                                      "moveContactMenu", "copyContactMenu", 
                                      onMenuExportContact, onMenuRawContact);
     menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
-   
+
     var contactFoldersMenu = $("contactFoldersMenu");
     if (contactFoldersMenu)
         contactFoldersMenu.prepareVisibility = onAddressBooksMenuPrepareVisibility;
     var contactMenu = $("contactMenu");
     if (contactMenu)
         contactMenu.prepareVisibility = onContactMenuPrepareVisibility;
-   
+
     if (originalGetMenus) {
         var originalMenus = originalGetMenus();
         if (originalMenus)
@@ -1306,7 +1306,7 @@ function onDocumentKeydown(event) {
                     nextRow = row.previous("tr");
                 if (nextRow) {
                     row.up().deselectAll();
-                    
+
                     // Adjust the scollbar
                     var viewPort = $("contactsListContent");
                     var divDimensions = viewPort.getDimensions();
@@ -1319,7 +1319,7 @@ function onDocumentKeydown(event) {
                         viewPort.scrollTop += rowBottom - divBottom;
                     else if (rowScrollOffset.top > rowPosition.top)
                         viewPort.scrollTop -= rowScrollOffset.top - rowPosition.top;
-                    
+
                     // Select and load the next message
                     nextRow.selectElement();
                     loadContact(nextRow.readAttribute("id"));
@@ -1358,7 +1358,7 @@ function initContacts(event) {
     }
 
     Event.observe(document, "keydown", onDocumentKeydown);
-    
+
     configureAddressBooks();
     configureDraggables();
     updateAddressBooksMenus();
@@ -1378,7 +1378,7 @@ function initContacts(event) {
         }
         configureSortableTableHeaders(table);
     }
-    
+
     if (typeof onWindowResize != 'function') {
         // When loaded from the mail editor, onWindowResize is
         // already registered

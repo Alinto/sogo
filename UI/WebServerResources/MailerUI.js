@@ -34,13 +34,13 @@ var deleteMessageRequestCount = 0;
 var messageCheckTimer;
 
 /* We need to override this method since it is adapted to GCS-based folder
-   references, which we do not use here */
+ references, which we do not use here */
 function URLForFolderID(folderID, application) {
     if (application)
         application = UserFolderURL + application + "/";
     else
         application = ApplicationBaseURL;
-  
+
     var url = application + encodeURI(folderID);
 
     if (url[url.length-1] == '/')
@@ -100,7 +100,7 @@ function onMenuSharing(event) {
 
     if (type == "additional")
         showAlertDialog(clabels["The user rights cannot be"
-                             + " edited for this object!"]);
+                                + " edited for this object!"]);
     else {
         var urlstr = URLForFolderID(folderID) + "/acls";
         openAclWindow(urlstr);
@@ -280,7 +280,7 @@ function mailListToggleMessagesRead(row, force_mark_as_read) {
             markMailInWindow(window, msguid, markread);
 
             var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-                + msguid + "/" + action;
+                    + msguid + "/" + action;
 
             var data = { "msguid": msguid };
             triggerAjaxRequest(url, mailListMarkMessageCallback, data);
@@ -289,14 +289,14 @@ function mailListToggleMessagesRead(row, force_mark_as_read) {
 }
 
 /*
-function mailListMarkMessage(event) {
-    mailListToggleMessagesRead();
+ function mailListMarkMessage(event) {
+ mailListToggleMessagesRead();
 
-    preventDefault(event);
+ preventDefault(event);
 
-    return false;
-}
-*/
+ return false;
+ }
+ */
 
 function mailListMarkMessageCallback(http) {
     var data = http.callbackData;
@@ -305,7 +305,7 @@ function mailListMarkMessageCallback(http) {
     }
     else {
         log("Message Mark Failed (" + http.status + "): " + http.statusText);
-	Mailer.dataTable.invalidate(data["msguid"], false);
+        Mailer.dataTable.invalidate(data["msguid"], false);
     }
 }
 
@@ -343,7 +343,7 @@ function mailListToggleMessagesFlagged(row) {
             flagMailInWindow(window, msguid, flagged);
 
             var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-                + msguid + "/" + action;
+                    + msguid + "/" + action;
             var data = { "msguid": msguid };
 
             triggerAjaxRequest(url, mailListToggleMessageFlaggedCallback, data);
@@ -363,11 +363,11 @@ function onUnload(event) {
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/expunge";
 
     new Ajax.Request(url, {
-            asynchronous: false,
-            method: 'get',
-            onFailure: function(transport) {
-                log("Can't expunge current folder: " + transport.status);
-            }
+        asynchronous: false,
+        method: 'get',
+        onFailure: function(transport) {
+            log("Can't expunge current folder: " + transport.status);
+        }
     });
 
     return true;
@@ -383,12 +383,12 @@ function onDocumentKeydown(event) {
                 keyCode = "A".charCodeAt(0);
             }
         }
-	if (keyCode == Event.KEY_DELETE ||
+        if (keyCode == Event.KEY_DELETE ||
             keyCode == Event.KEY_BACKSPACE) {
             deleteSelectedMessages();
             Event.stop(event);
         }
-	else if (keyCode == Event.KEY_DOWN ||
+        else if (keyCode == Event.KEY_DOWN ||
                  keyCode == Event.KEY_UP) {
             if (Mailer.currentMessages[Mailer.currentMailbox]) {
                 var row = $("row_" + Mailer.currentMessages[Mailer.currentMailbox]);
@@ -411,7 +411,7 @@ function onDocumentKeydown(event) {
 
                     if (divBottom < rowBottom)
                         viewPort.scrollTop += rowBottom - divBottom + centerOffset;
-                     else if (viewPort.scrollTop > nextRow.offsetTop)
+                    else if (viewPort.scrollTop > nextRow.offsetTop)
                         viewPort.scrollTop -= rowScrollOffset.top - nextRow.offsetTop + centerOffset;
 
                     // Select and load the next message
@@ -419,12 +419,12 @@ function onDocumentKeydown(event) {
                     loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
                     // from generic.js
                     lastClickedRow = nextRow.rowIndex;
-	            lastClickedRowId = nextRow.id;
+                    lastClickedRowId = nextRow.id;
                 }
                 Event.stop(event);
             }
         }
-	else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
+        else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
                  && keyCode == "A".charCodeAt(0)) {  // Ctrl-A
             $("messageListBody").down("TBODY").selectAll();
             Event.stop(event);
@@ -449,18 +449,18 @@ function deleteSelectedMessages(sender) {
     if (rowIds && rowIds.length > 0) {
         messageList.deselectAll();
         for (var i = 0; i < rowIds.length; i++) {
-	    if (unseenCount < 1) {
-		var rows = messageList.select('#' + rowIds[i]);
-		if (rows.length > 0) {
-		    var row = rows.first();
-		    row.hide();
-		    if (row.hasClassName("mailer_unreadmail"))
-			unseenCount--;
-		}
-		else {
-		    unseenCount = 1;
-		}
-	    }
+            if (unseenCount < 1) {
+                var rows = messageList.select('#' + rowIds[i]);
+                if (rows.length > 0) {
+                    var row = rows.first();
+                    row.hide();
+                    if (row.hasClassName("mailer_unreadmail"))
+                        unseenCount--;
+                }
+                else {
+                    unseenCount = 1;
+                }
+            }
             var uid = rowIds[i].substr(4); // drop "row_"
             var path = Mailer.currentMailbox + "/" + uid;
             uids.push(uid);
@@ -508,7 +508,7 @@ function deleteSelectedMessages(sender) {
                 if (nextRow) {
                     // from generic.js
                     lastClickedRow = nextRow.rowIndex;
-	            lastClickedRowId = nextRow.id;
+                    lastClickedRowId = nextRow.id;
                 }
                 if (Mailer.currentMailboxType != "trash")
                     deleteCachedMailboxByType("trash");
@@ -545,10 +545,10 @@ function deleteSelectedMessagesCallback(http) {
             if (rdata.quotas && data["mailbox"].startsWith('/0/'))
                 updateQuotas(rdata.quotas);
         }
-	if (data["refreshUnseenCount"])
+        if (data["refreshUnseenCount"])
             // TODO : the unseen count should be returned when calling the batchDelete remote action,
             // in order to avoid this extra AJAX call.
-	    getUnseenCountForFolder(data["mailbox"]);
+            getUnseenCountForFolder(data["mailbox"]);
         if (data["refreshFolder"])
             Mailer.dataTable.refresh();
     }
@@ -572,7 +572,7 @@ function deleteMessagesWithoutTrash(data) {
     var parameters = "uid=" + data["id"].join(",") + '&withoutTrash=1';
     data["withoutTrash"] = true;
     triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
-                           { "Content-type": "application/x-www-form-urlencoded" });
+                       { "Content-type": "application/x-www-form-urlencoded" });
     disposeDialog();
 }
 
@@ -685,9 +685,9 @@ function onMailboxMenuMove(event) {
     for (var i = 0; i < rowIds.length; i++) {
         var uid = rowIds[i].substr(4);
         var path = Mailer.currentMailbox + "/" + uid;
-	var rows = messageList.select('#' + rowIds[i]);
-	if (rows.length > 0)
-	    rows.first().hide();
+        var rows = messageList.select('#' + rowIds[i]);
+        if (rows.length > 0)
+            rows.first().hide();
         uids.push(uid);
         paths.push(path);
         // Remove references to closed popups
@@ -803,8 +803,8 @@ function openMailbox(mailbox, reload) {
             if (sortHeader) {
                 var sortImages = sortHeader.up('THEAD').select(".sortImage");
                 $(sortImages).each(function(item) {
-                        item.remove();
-                    });
+                    item.remove();
+                });
                 var sortImage = createElement("img", "messageSortImage", "sortImage");
                 sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                 if (sorting["ascending"])
@@ -865,13 +865,13 @@ function openMailbox(mailbox, reload) {
             Mailer.unseenCountMailboxes.push(mailbox);
         }
 
-	// Restore previous selection
+        // Restore previous selection
         var currentMessage = Mailer.currentMessages[mailbox];
         if (currentMessage) {
             if (!reload) {
                 loadMessage(currentMessage);
             }
-	}
+        }
     }
 }
 
@@ -887,7 +887,7 @@ function messageListCallback(row, data, isNew) {
 
     // Restore previous selection
     if (data['uid'] == currentMessage)
-	row.addClassName('_selected');
+        row.addClassName('_selected');
 
     if (data['Thread'])
         row.addClassName('openedThread');
@@ -968,10 +968,10 @@ function updateUnseenCount(node, count, isDelta) {
             counterSpan.removeChild(counterSpan.firstChild);
         }
         counterSpan.appendChild(document.createTextNode(" (" + count + ")"));
-  	if (count > 0) {
+        if (count > 0) {
             counterSpan.removeClassName("hidden");
             unseenSpan.addClassName("unseen");
-  	}
+        }
         else {
             counterSpan.addClassName("hidden");
             unseenSpan.removeClassName("unseen");
@@ -1019,9 +1019,9 @@ function onMessageListRender(event) {
     // Restore previous selection
     var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
     if (currentMessage) {
-	var rows = this.select("TR#row_" + currentMessage);
-	if (rows.length == 1)
-	    rows[0].selectElement();
+        var rows = this.select("TR#row_" + currentMessage);
+        if (rows.length == 1)
+            rows[0].selectElement();
     }
     // Update message counter in folder name
     updateMessageListCounter(event.memo, false);
@@ -1105,7 +1105,7 @@ function deleteCachedMailboxByType(type) {
 function deleteCachedMailbox(mailboxPath) {
     var keys = Mailer.dataSources.keys();
     for (var i = 0; i < keys.length; i++) {
-	if (keys[i] == mailboxPath || keys[i].startsWith(mailboxPath + "?"))
+        if (keys[i] == mailboxPath || keys[i].startsWith(mailboxPath + "?"))
             Mailer.dataSources.unset(keys[i]);
     }
 }
@@ -1121,8 +1121,8 @@ function deleteCachedMessage(messageId) {
             Mailer.cachedMessages.splice(counter, 1);
             done = true;
         }
-        else
-            counter++;
+    else
+        counter++;
 }
 
 function getCachedMessage(idx) {
@@ -1134,8 +1134,8 @@ function getCachedMessage(idx) {
         if (Mailer.cachedMessages[counter]
             && Mailer.cachedMessages[counter]['idx'] == Mailer.currentMailbox + '/' + idx)
             message = Mailer.cachedMessages[counter];
-        else
-            counter++;
+    else
+        counter++;
 
     return message;
 }
@@ -1223,8 +1223,8 @@ function loadMessage(msguid) {
                    + msguid + "/view?noframe=1");
         div.innerHTML = '';
         document.messageAjaxRequest = triggerAjaxRequest(url,
-							 loadMessageCallback,
-							 { 'mailbox': Mailer.currentMailbox,
+                                                         loadMessageCallback,
+                                                         { 'mailbox': Mailer.currentMailbox,
                                                            'msguid': msguid,
                                                            'seenStateHasChanged': seenStateHasChanged });
     }
@@ -1251,13 +1251,13 @@ function loadMessage(msguid) {
 
 /**
  * Hide the "Load Images" button when there's no unsafe content
-*/
+ */
 function configureLoadImagesButton() {
     var loadImagesButton = $("loadImagesButton");
     if (typeof(loadImagesButton) == "undefined" ||
         loadImagesButton == null ) {
-        return;
-    }
+            return;
+        }
     var content = $("messageContent");
     var unsafeElements = content.select('[unsafe-src], [unsafe-data], [unsafe-classid], [unsafe-background], [unsafe-style]');
     if (unsafeElements.length == 0) {
@@ -1272,7 +1272,7 @@ function configureSignatureFlagImage() {
     var signedPart = $("signedMessage");
     if (signedPart) {
         var supportsSMIME
-            = parseInt(signedPart.getAttribute("supports-smime"));
+                = parseInt(signedPart.getAttribute("supports-smime"));
 
         if (supportsSMIME) {
             var loadImagesButton = $("loadImagesButton");
@@ -1320,7 +1320,7 @@ function showSignatureMessage () {
 function hideSignatureMessage () {
     var div = $("signatureFlagMessage");
     if (div)
-      div.style.display = "none";
+        div.style.display = "none";
 }
 
 function configureLinksInMessage() {
@@ -1398,10 +1398,10 @@ function configureiCalLinksInMessage() {
             // The user delegates the invitation
             editDelegate.stopObserving("click");
             editDelegate.observe("click", function(event) {
-                    $("delegateEditor").show();
-                    $("delegatedTo").focus();
-                    this.hide();
-                });
+                $("delegateEditor").show();
+                $("delegatedTo").focus();
+                this.hide();
+            });
         }
 
         var delegatedToLink = $("delegatedToLink");
@@ -1410,12 +1410,12 @@ function configureiCalLinksInMessage() {
             // to change the delegated attendee
             delegatedToLink.stopObserving("click");
             delegatedToLink.observe("click", function(event) {
-                    $("delegatedTo").show();
-                    $("iCalendarDelegate").show();
-                    $("delegatedTo").focus();
-                    this.hide();
-                    Event.stop(event);
-                });
+                $("delegatedTo").show();
+                $("iCalendarDelegate").show();
+                $("delegatedTo").focus();
+                this.hide();
+                Event.stop(event);
+            });
         }
     }
 }
@@ -1428,7 +1428,7 @@ function onICalendarDelegate(event) {
             currentMsg = mailboxName + "/" + messageName;
         else
             currentMsg = Mailer.currentMailbox + "/"
-                + Mailer.currentMessages[Mailer.currentMailbox];
+            + Mailer.currentMessages[Mailer.currentMailbox];
         delegateInvitation(link, ICalendarButtonCallback, currentMsg);
     }
     this.blur(); // required by IE
@@ -1500,19 +1500,19 @@ function resizeMailContent() {
     var contentDiv = document.getElementsByClassName('mailer_mailcontent')[0];
 
     contentDiv.setStyle({ 'top':
-                (Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
+                          (Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
 
     // Show expand buttons if necessary
     var spans = $$("TABLE TR.mailer_fieldrow TD.mailer_fieldvalue SPAN");
     spans.each(function(span) {
-            var row = span.up("TR");
-            if (span.getWidth() > row.getWidth()) {
-                var cell = row.select("TD.mailer_fieldname").first();
-                var link = cell.down("img");
-                link.show();
-                link.observe("click", toggleDisplayHeader);
-            }
-        });
+        var row = span.up("TR");
+        if (span.getWidth() > row.getWidth()) {
+            var cell = row.select("TD.mailer_fieldname").first();
+            var link = cell.down("img");
+            link.show();
+            link.observe("click", toggleDisplayHeader);
+        }
+    });
 }
 
 function toggleDisplayHeader(event) {
@@ -1621,7 +1621,7 @@ function loadMessageCallback(http) {
     if (http.status == 200) {
         if (http.callbackData) {
             document.messageAjaxRequest = null;
-	    var msguid = http.callbackData.msguid;
+            var msguid = http.callbackData.msguid;
             var mailbox = http.callbackData.mailbox;
             if (Mailer.currentMailbox == mailbox &&
                 Mailer.currentMessages[Mailer.currentMailbox] == msguid) {
@@ -1646,8 +1646,8 @@ function loadMessageCallback(http) {
     }
     else if (http.status == 404) {
         showAlertDialog (_("The message you have selected doesn't exist anymore."));
-	Mailer.dataTable.remove(http.callbackData.msguid);
-	Mailer.currentMessages[Mailer.currentMailbox] = null;
+        Mailer.dataTable.remove(http.callbackData.msguid);
+        Mailer.currentMessages[Mailer.currentMailbox] = null;
     }
     else
         log("messageCallback: problem during ajax request: " + http.status);
@@ -1843,7 +1843,7 @@ function refreshMessage(mailbox, messageUID) {
     if (Mailer.currentMailboxType == 'sent' || Mailer.currentMailboxType == 'draft')
         refreshCurrentFolder();
     else if (mailbox == Mailer.currentMailbox) {
-	Mailer.dataTable.invalidate(messageUID);
+        Mailer.dataTable.invalidate(messageUID);
     }
 }
 
@@ -1960,13 +1960,13 @@ function initMailer(event) {
         Event.observe(document, "keydown", onDocumentKeydown);
 
         /* Perform an expunge when leaving the webmail */
-//        if (isSafari()) {
-//            $('calendarBannerLink').observe("click", onUnload);
-//            $('contactsBannerLink').observe("click", onUnload);
-//            $('logoff').observe("click", onUnload);
-//        }
-//        else
-            Event.observe(window, "beforeunload", onUnload);
+        //        if (isSafari()) {
+        //            $('calendarBannerLink').observe("click", onUnload);
+        //            $('contactsBannerLink').observe("click", onUnload);
+        //            $('logoff').observe("click", onUnload);
+        //        }
+        //        else
+        Event.observe(window, "beforeunload", onUnload);
 
         onMessageListResize();
     }
@@ -2003,7 +2003,7 @@ function initMailboxTree() {
     mailboxTree.config.hideRoot = true;
     mailboxTree.icon.root = ResourcesURL + "/tbtv_account_17x17.png";
     mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
-    mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.png";
+    mailboxTree.icon.folderOpen = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.node = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.line = ResourcesURL + "/tbtv_line_17x22.png";
     mailboxTree.icon.join = ResourcesURL + "/tbtv_junction_17x22.png";
@@ -2021,7 +2021,7 @@ function initMailboxTree() {
 
     var chainRq = new AjaxRequestsChain(initMailboxTreeCB);
     for (var i = 0; i < mailAccounts.length; i++) {
-      var url = ApplicationBaseURL + "/" + i + "/mailboxes";
+        var url = ApplicationBaseURL + "/" + i + "/mailboxes";
         chainRq.requests.push([url, onLoadMailboxesCallback, i]);
     }
     chainRq.start();
@@ -2331,7 +2331,7 @@ function onMenuDeleteFolder(event) {
     var urlstr = URLForFolderID(folderID) + "/delete";
     var errorLabel = _("The folder could not be deleted.");
     showConfirmDialog(_("Confirmation"),
-                     _("Do you really want to move this folder into the trash ?"),
+                      _("Do you really want to move this folder into the trash ?"),
                       function(event) {
                           triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
                           disposeDialog();
@@ -2448,25 +2448,25 @@ function onMenuLabelNone() {
     else if (Object.isArray(document.menuTarget))
         // Menu called from multiple selection in messages list view
         $(document.menuTarget).collect(function(row) {
-                messages.push(row.getAttribute("id").substr(4));
-            });
+            messages.push(row.getAttribute("id").substr(4));
+        });
     else
         // Menu called from one selection in messages list view
         messages.push(document.menuTarget.getAttribute("id").substr(4));
 
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
     messages.each(function(id) {
-            triggerAjaxRequest(url + id + "/removeAllLabels",
-                               messageFlagCallback,
-                               { mailbox: Mailer.currentMailbox, msg: id, label: null } );
-        });
+        triggerAjaxRequest(url + id + "/removeAllLabels",
+                           messageFlagCallback,
+                           { mailbox: Mailer.currentMailbox, msg: id, label: null } );
+    });
 }
 
 function onMenuLabelFlag() {
     var messages = new Hash();
 
     var flag = this.readAttribute("data-name");
-    
+
     if (document.menuTarget.tagName == "DIV")
         // Menu called from message content view
         messages.set(Mailer.currentMessages[Mailer.currentMailbox],
@@ -2483,15 +2483,15 @@ function onMenuLabelFlag() {
         // Menu called from one selection in messages list view
         messages.set(document.menuTarget.getAttribute("id").substr(4),
                      document.menuTarget.getAttribute("labels"));
-    
+
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
     messages.keys().each(function(id) {
         var flags = messages.get(id).split(" ");
         var operation = "add";
-        
+
         if (flags.indexOf(flag) > -1)
             operation = "remove";
-        
+
         triggerAjaxRequest(url + id + "/" + operation + "Label?flag=" + flag.asCSSIdentifier(),
                            messageFlagCallback,
                            { mailbox: Mailer.currentMailbox, msg: id,
@@ -2517,7 +2517,7 @@ function folderRefreshCallback(http) {
         var oldMailbox = http.callbackData.mailbox;
         if (http.callbackData.refresh
             && oldMailbox == Mailer.currentMailbox) {
-	    getUnseenCountForFolder(oldMailbox);
+            getUnseenCountForFolder(oldMailbox);
             if (http.callbackData.id) {
                 var s = http.callbackData.id + "";
                 var uids = s.split(",");
@@ -2542,8 +2542,8 @@ function folderRefreshCallback(http) {
             log ("folderRefreshCallback failed for UIDs " + s);
             for (var i = 0; i < uids.length; i++) {
                 var row = $("row_" + uids[i]);
-		if (row)
-		    row.show();
+                if (row)
+                    row.show();
             }
         }
         var msg = /<p>(.*)<\/p>/m.exec(http.responseText);
@@ -2607,7 +2607,7 @@ function onMessageListMenuPrepareVisibility() {
 function onAccountIconMenuPrepareVisibility() {
     /* This methods disables or enables the "Delegation..." menu option on
      mail accounts. */
-   if (document.menuTarget) {
+    if (document.menuTarget) {
         var mbx = document.menuTarget.getAttribute("dataname");
         if (mbx) {
             var lis = this.getElementsByTagName("li");
@@ -2656,8 +2656,8 @@ function onLabelMenuPrepareVisibility() {
         var rows = messageList.getSelectedRows();
         for (var i = 0; i < rows.length; i++) {
             $w(rows[i].getAttribute("labels")).each(function(flag) {
-                    flags[flag] = true;
-                });
+                flags[flag] = true;
+            });
         }
     }
 
@@ -2675,7 +2675,7 @@ function onLabelMenuPrepareVisibility() {
         // We bind the event handlers if we need to
         if (lis[i].menuCallback == null) {
             lis[i].menuCallback = onMenuLabelFlag;
-	    lis[i].on("mousedown", onMenuClickHandler);
+            lis[i].on("mousedown", onMenuClickHandler);
             lis[i].removeClassName("disabled");
         }
 
@@ -2854,9 +2854,9 @@ document.observe("dom:loaded", initMailer);
 function Mailbox(type, name, unseen, displayName) {
     this.type = type;
     if (displayName)
-      this.displayName = displayName;
+        this.displayName = displayName;
     else
-      this.displayName = name;
+        this.displayName = name;
     // log("name: " + name + "; dn: " + displayName);
     this.name = name;
     this.unseen = unseen;
@@ -2893,8 +2893,8 @@ Mailbox.prototype = {
             if (this.children[i].name == name
                 || this.children[i].displayName == name)
                 mailbox = this.children[i];
-            else
-                i++;
+        else
+            i++;
 
         return mailbox;
     },
@@ -2923,7 +2923,7 @@ function configureDraggables() {
 function configureDroppables() {
     jQuery('#mailboxTree .dTreeNode[datatype!="account"][datatype!="additional"] .node .nodeName').droppable({
         hoverClass: 'genericHoverClass',
-              drop: dropAction });
+        drop: dropAction });
 }
 
 function startDragging(event, ui) {
