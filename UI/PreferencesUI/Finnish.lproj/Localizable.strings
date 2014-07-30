@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
 "firstWeekOfYear_FirstFullWeek" = "Ensimmäinen täysi viikko";
 
+"Prevent from being invited to appointments" = "Estä tapaamiskutsut";
+"White list for appointment invitations:" = "Valkoinen lista kalenterikutsuille:";
+"Contacts Names" = "Yhteystietojen Nimet";
+
 /* Default Calendar */
 "Default calendar :" = "Oletuskalenteri";
 "selectedCalendar" = "Valittu kalenteri";

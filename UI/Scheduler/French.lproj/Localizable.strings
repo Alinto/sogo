@@ -155,6 +155,7 @@
 "What to Print" = "Contenu";
 "Options" = "Options";
 "Tasks with no due date" = "Tâches sans date d'échéance";
+"Display working hours only" = "Afficher les heures de bureau seulement";
 "Completed tasks" = "Tâches complétées";
 
 /* Appointments */
@@ -542,6 +543,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "tagWasRemoved" = "Afin de ne plus synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
 "DestinationCalendarError" = "Le calendrier de destination est le même que celui de l'événement. Choisissez un calendrier de destination différent.";
 "EventCopyError" = "La copie a échouée. Choisissez un calendrier de destination différent.";
+"Please select at least one calendar" = "Veuillez sélectionner au moins un calendrier.";
+
 
 "Open Task..." = "Ouvrir la tâche...";
 "Mark Completed" = "Marquer comme accomplie";
