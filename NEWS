@@ -11,6 +11,7 @@ Enhancements
  - improved handling of SOGoSubscriptionFolderFormat
  - JSON'ified folder subscription interface
  - updated Finnish, French, German, and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.3
 
 Bug fixes
  - fixed weekdays translation in the datepicker
