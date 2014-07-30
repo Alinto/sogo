@@ -31,7 +31,7 @@
 
 #import "SOGoTestRunner.h"
 
-#define EXPECTED_FAILURES 3
+#define EXPECTED_FAILURES 0
 
 @implementation SOGoTestRunner
 
