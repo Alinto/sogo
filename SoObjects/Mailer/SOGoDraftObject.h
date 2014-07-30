@@ -53,6 +53,7 @@
 {
   NSString *path;
   int IMAP4ID;
+  int sourceIMAP4ID;
   NSMutableDictionary *headers;
   NSString *inReplyTo;
   NSString *text;
@@ -86,6 +87,9 @@
 - (void) setSourceFlag: (NSString *) newSourceFlag;
 - (void) setSourceFolder: (NSString *) newSourceFolder;
 - (NSString *) sourceFolder;
+
+- (void) setSourceIMAP4ID: (int) newSourceIMAPID;
+- (int) sourceIMAP4ID;
 
 - (void) setIMAP4ID: (int) newIMAPID;
 - (int) IMAP4ID;

@@ -155,6 +155,7 @@
 "What to Print" = "Tulostusvalinnat";
 "Options" = "Asetukset";
 "Tasks with no due date" = "Tehtävät ilman määräpäivää";
+"Display working hours only" = "Näytä vain työajat";
 "Completed tasks" = "Valmistuneet tehtävät";
 
 /* Appointments */
@@ -542,6 +543,8 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "tagWasRemoved" = "Mobiililaitteesi kalenteritiedot on päivitettävä mikäli haluat poistaa tämän kalenterin synkronoinnista.⏎ Jatketaanko?";
 "DestinationCalendarError" = "Lähde- ja kohdekalenterit ovat samoja. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
 "EventCopyError" = "Kopiointi epäonnistui. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
+"Please select at least one calendar" = "Ole hyvä ja valitse ainakin yksi kalenteri";
+
 
 "Open Task..." = "Avaa tehtävä...";
 "Mark Completed" = "Merkitse valmistuneeksi";

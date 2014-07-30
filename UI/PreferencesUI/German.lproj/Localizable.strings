@@ -22,7 +22,7 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
-"Auto reply message :" = "Folgende Nachricht wird automatisch an jeden Absender gesendet:";
+"Auto reply message :" = "Mit folgender Nachricht auf jede eingehende E-Mail antworten:";
 "Email addresses (separated by commas) :" = "E-Mail-Adressen (getrennt durch Kommata):";
 "Add default email addresses" = "Standardadresse hinzufügen";
 "Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten:";
@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
 "firstWeekOfYear_FirstFullWeek" = "Erste ganze Woche";
 
+"Prevent from being invited to appointments" = "Verhindere, dass ich zu Terminen eingeladen werde";
+"White list for appointment invitations:" = "White-Liste für Termineinladungen:";
+"Contacts Names" = "Kontaktnamen";
+
 /* Default Calendar */
 "Default calendar :" = "Standardkalender";
 "selectedCalendar" = "Gewählter Kalender";
@@ -129,7 +133,7 @@
 "Label" = "Schlagwort";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
-"When sending mail, add unknown recipients to my" = "Wenn ich E-Mails sende, füge die unbekannten Empfänger zu meinem";
+"When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
 "messagecheck_manually" = "Manuell";
 "messagecheck_every_minute" = "Minütlich";
@@ -310,7 +314,7 @@
 "Password change failed - Password is too short" = "Passwortänderung fehlgeschlagen - Passwort ist zu kurz";
 "Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - zu frühe Passwortänderung";
 "Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort wurde zuvor verwendet";
-"Unhandled policy error: %{0}" = "Unbearbeiteter Vorgabenfehler: %{0}";
-"Unhandled error response" = "Unbearbeitete Fehlerantwort";
+"Unhandled policy error: %{0}" = "Unerwarteter Fehler bei Passwortänderung: %{0}";
+"Unhandled error response" = "Unerwarteter Fehler";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
-"Unhandled HTTP error code: %{0}" = "Unbearbeiteter HTTP-Fehlercode: %{0}";
+"Unhandled HTTP error code: %{0}" = "Unerwarteter HTTP-Fehlercode: %{0}";

@@ -153,13 +153,15 @@
 
 - (NSArray *) _subFoldersFromFolder: (SOGoParentFolder *) parentFolder
 {
-  NSMutableArray *folders;
-  NSEnumerator *subfolders;
-  SOGoFolder *currentFolder;
-  NSString *folderName, *folderOwner;
-  Class subfolderClass;
+  NSDictionary *folderSubscriptionValues, *ownerIdentity;
+  NSString *folderName, *folderOwner, *formattedName;
   NSMutableDictionary *currentDictionary;
   SoSecurityManager *securityManager;
+  SOGoFolder *currentFolder;
+  NSEnumerator *subfolders;
+  NSMutableArray *folders;
+  SOGoDomainDefaults *dd;
+  Class subfolderClass;
 
   folders = [NSMutableArray array];
 
@@ -190,6 +192,18 @@
                                 forKey: @"owner"];
 	  [currentDictionary setObject: [currentFolder folderType]
                                 forKey: @"type"];
+
+          dd = [[context activeUser] domainDefaults];
+          ownerIdentity = [[SOGoUserManager sharedUserManager]
+                            contactInfosForUserWithUIDorEmail: owner];
+          folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: [currentFolder displayName], @"FolderName",
+                                                      [ownerIdentity objectForKey: @"cn"], @"UserName",
+                                                      [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+
+          formattedName = [folderSubscriptionValues keysWithFormat: [dd subscriptionFolderFormat]];
+          [currentDictionary setObject: formattedName
+                                forKey: @"formattedName"];
+
 	  [folders addObject: currentDictionary];
 	}
     }

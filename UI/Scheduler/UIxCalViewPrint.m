@@ -2,7 +2,6 @@
  *
  * Copyright (C) 2006-2014 Inverse inc.
  *
- *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -38,7 +37,6 @@ static NSArray *layoutItems = nil;
     layoutItems = [NSArray arrayWithObjects: @"LIST", @"Daily", @"Multi-Columns", @"Weekly", nil];
     [layoutItems retain];
   }
-
 }
 
 - (id) init
@@ -53,12 +51,9 @@ static NSArray *layoutItems = nil;
   [item release];
 }
 
-/****************************************************************/
-/* Interfacing; populating the popup list for the print layouts */
-
 - (void) setItem: (NSString *) newItem
 {
-  ASSIGN (item, newItem);
+  ASSIGN(item, newItem);
 }
 
 - (NSString *) item
@@ -76,9 +71,12 @@ static NSArray *layoutItems = nil;
   return [self labelForKey: [NSString stringWithFormat: item]];
 }
 
+//
+// The objective here is to return the parent view layout and select the print
+// layout corresponding. Default print view: list view
+// 
 - (NSString *) parentPrintLayout
 {
-  // The objective here is to return the parent view layout and select the print layout corresponding. Default print view: list view
   SOGoUser *activeUser;
   NSString *parentView;
   
@@ -98,8 +96,5 @@ static NSArray *layoutItems = nil;
   else
     return @"LIST";
 }
-
-/******************************************************************/
-/*  */
 
 @end

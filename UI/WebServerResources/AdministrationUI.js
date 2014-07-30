@@ -9,21 +9,21 @@ var usersRightsWindowWidth = 450;
 function onSearchFormSubmit(panel) {
     var searchValue = panel.down('[name="search"]');
     var encodedValue = encodeURI(searchValue.value);
-    
+
     if (encodedValue.blank()) {
-	checkAjaxRequestsState();
+        checkAjaxRequestsState();
     }
     else {
-	var url = (UserFolderURL
-		   + "usersSearch?search=" + encodedValue);
-	if (document.userFoldersRequest) {
-	    document.userFoldersRequest.aborted = true;
-	    document.userFoldersRequest.abort();
-	}
-	document.userFoldersRequest
-	    = triggerAjaxRequest(url, usersSearchCallback);
+        var url = (UserFolderURL
+                   + "usersSearch?search=" + encodedValue);
+        if (document.userFoldersRequest) {
+            document.userFoldersRequest.aborted = true;
+            document.userFoldersRequest.abort();
+        }
+        document.userFoldersRequest
+            = triggerAjaxRequest(url, usersSearchCallback);
     }
-    
+
     return false;
 }
 
@@ -31,11 +31,11 @@ function usersSearchCallback(http) {
     document.userFoldersRequest = null;
     var div = $("administrationContent");
     if (http.status == 200) {
-	var response = http.responseText.evalJSON();
-	buildUsersTree(div, response)
-    }
+        var response = http.responseText.evalJSON();
+        buildUsersTree(div, response)
+            }
     else if (http.status == 404)
-	div.update();
+        div.update();
 }
 
 function buildUsersTree(treeDiv, response) {
@@ -57,10 +57,10 @@ function buildUsersTree(treeDiv, response) {
     d.icon.empty = ResourcesURL + '/empty.gif';
     d.preload ();
     d.add(0, -1, '');
-    
+
     var isUserDialog = false;
     var multiplier = ((isUserDialog) ? 1 : 2);
-    
+
     for (var i = 0; i < response.length; i++)
         addUserLineToTree(d, 1 + i * multiplier, response[i]);
     treeDiv.innerHTML = "";
@@ -78,10 +78,10 @@ function buildUsersTree(treeDiv, response) {
 
 function addUserLineToTree(tree, parent, line) {
     var icon = ResourcesURL + '/busy.gif';
-    
+
     var email = line[1] + " &lt;" + line[2] + "&gt;";
     if (line[3] && !line[3].empty())
-      email += ", " + line[3]; // extra contact info
+        email += ", " + line[3]; // extra contact info
     tree.add(parent, 0, email, 0, '#', line[0], 'person',
              '', '',
              ResourcesURL + '/abcard.png',
@@ -92,57 +92,57 @@ function addUserLineToTree(tree, parent, line) {
 
 function onTreeItemClick(event) {
     preventDefault(event);
-    
+
     var topNode = $("d");
     if (topNode.selectedEntry)
-	topNode.selectedEntry.deselect();
+        topNode.selectedEntry.deselect();
     this.selectElement();
     topNode.selectedEntry = this;
 }
 
 function onUserNodeToggle(event) {
     this.stopObserving("click", onUserNodeToggle);
-    
+
     var person = this.parentNode.getAttribute("dataname");
     var url = (UserFolderURLForUser(person) + "foldersSearch");
     var nodeId = this.getAttribute("id").substr(3);
     triggerAjaxRequest(url, foldersSearchCallback,
-		       { nodeId: nodeId, user: person });
+                       { nodeId: nodeId, user: person });
 }
 
 function foldersSearchCallback(http) {
     if (http.status == 200) {
-	var response = http.responseText;
- 	var nodeId = parseInt(http.callbackData["nodeId"]);
-	
-	var dd = $("dd" + (nodeId + 2));
-	var indentValue = (dd ? 1 : 0);
-	d.aIndent.push(indentValue);
-	
-	var dd = $("dd" + nodeId);
-	if (response.length) {
-	    var folders = response.split(";");
-	    var user = http.callbackData["user"];
-	    
-	    dd.innerHTML = '';
-	    for (var i = 1; i < folders.length - 1; i++)
+        var response = http.responseText;
+        var nodeId = parseInt(http.callbackData["nodeId"]);
+
+        var dd = $("dd" + (nodeId + 2));
+        var indentValue = (dd ? 1 : 0);
+        d.aIndent.push(indentValue);
+
+        var dd = $("dd" + nodeId);
+        if (response.length) {
+            var folders = response.split(";");
+            var user = http.callbackData["user"];
+
+            dd.innerHTML = '';
+            for (var i = 1; i < folders.length - 1; i++)
                 dd.appendChild(addFolderBranchToTree (d, user, folders[i], nodeId, i, false));
- 	    dd.appendChild (addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
+            dd.appendChild (addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
                                                    (folders.length - 1), true));
-	    for (var i = 1; i < folders.length; i++) {
-      		var sd = $("sd" + (nodeId + i));
-      		sd.observe("click", onTreeItemClick);
-      		sd.observe("dblclick", onFolderOpen);
-	    }
-	}
-	else {
-	    dd.innerHTML = '';
-	    dd.appendChild (addFolderNotFoundNode (d, nodeId, null));
-	    var sd = $("sd" + (nodeId + 1));
-	    sd.observe("click", onTreeItemClick);
-	}
-	
-	d.aIndent.pop();
+            for (var i = 1; i < folders.length; i++) {
+                var sd = $("sd" + (nodeId + i));
+                sd.observe("click", onTreeItemClick);
+                sd.observe("dblclick", onFolderOpen);
+            }
+        }
+        else {
+            dd.innerHTML = '';
+            dd.appendChild (addFolderNotFoundNode (d, nodeId, null));
+            var sd = $("sd" + (nodeId + 1));
+            sd.observe("click", onTreeItemClick);
+        }
+
+        d.aIndent.pop();
     }
 }
 
@@ -150,19 +150,19 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     var folderInfos = folder.split(":");
     var icon = ResourcesURL + '/';
     if (folderInfos[2] == 'Contact')
-	icon += 'tb-mail-addressbook-flat-16x16.png';
+        icon += 'tb-mail-addressbook-flat-16x16.png';
     else
-	icon += 'calendar-folder-16x16.png';
+        icon += 'calendar-folder-16x16.png';
     var folderId = user + ":" + folderInfos[1];
     var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
     var pos = name.lastIndexOf(' (');
     if (pos > -1)
-	name = name.substring(0, pos); // strip the part with fullname and email
+        name = name.substring(0, pos); // strip the part with fullname and email
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
                              folderInfos[2] + '-folder', '', '', icon, icon);
     node._ls = isLast;
     var content = tree.node(node, (nodeId + subId), null);
-    
+
     return content;
 }
 

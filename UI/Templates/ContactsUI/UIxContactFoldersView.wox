@@ -110,7 +110,7 @@
           var:class="currentContactFolderClass"
           var:acl-editing="currentContactFolderAclEditing"
           var:list-editing="currentContactFolderListEditing"
-          ><var:string value="currentContactFolderName"/></li
+          ><span><var:string value="currentContactFolderName"/></span></li
           ></var:foreach
         >
     </ul>

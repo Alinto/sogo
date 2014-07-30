@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
 "firstWeekOfYear_FirstFullWeek" = "Primera semana del año completa";
 
+"Prevent from being invited to appointments" = "Evitar invitaciones a eventos";
+"White list for appointment invitations:" = "Lista blanca de invitaciones a eventos:";
+"Contacts Names" = "Nombres de Contacto";
+
 /* Default Calendar */
 "Default calendar :" = "Calendario por defecto";
 "selectedCalendar" = "Calendario seleccionado";

@@ -65,6 +65,7 @@ DIV#rightFrameTitle {
   border:solid black 2px;
   border-radius:5px;
   margin-top:3px;
+  overflow:hidden;
 }
 
 .eventsTitle, .tasksTitle {
@@ -121,6 +122,7 @@ DIV#rightSide {
         color: #666;
         text-align: right;
         min-width:52px;
+        vertical-align:top;
     }
 
 /********** Overriding SchedulerUI.css **********/

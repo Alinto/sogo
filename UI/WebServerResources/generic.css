@@ -28,8 +28,7 @@ TABLE, DIV, IMG
   font-size: inherit;
   border: 0px;
   margin: 0px;
-  padding: 0px;
-  word-break:break-all; }
+  padding: 0px; }
 
 FIELDSET
 { border: 1px solid #aaa;
@@ -375,7 +374,7 @@ TH.tbtv_navcell
   text-align: left;
   font-weight: normal;
   background-color: #E7E7E7;
-  height: 20px; }
+  height: 20px;}
 
 TD.sortableTableHeader:active,
 TH.sortableTableHeader:active
@@ -411,7 +410,8 @@ TH.tbtv_headercell IMG.tbtv_sortcell
   text-align: right;
   border: 0px;
   width: 12px;
-  height: 12px; }
+  height: 12px; 
+  top:0;}
 
 .tableview
 { cursor: default;
@@ -848,6 +848,23 @@ INPUT[name="search"]
 .disabled.button:active SPAN
 { background-position: top left;
   padding: 5px 2px 5px 5px; }
+
+.badge
+{ display: inline-block;
+  min-width: 10px;
+  padding: 2px 3px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #777;
+  border-radius: 10px; }
+
+.badge:empty
+{ display: none; }
 
 dt, dd {
   line-height: 20px;

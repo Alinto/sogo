@@ -808,7 +808,7 @@ static NSArray *infoKeys = nil;
       jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"success", @"status",
                                    [co sourceFolder], @"sourceFolder",
-                                        [NSNumber numberWithInt: [co IMAP4ID]], @"messageID",
+                                        [NSNumber numberWithInt: [co sourceIMAP4ID]], @"sourceMessageID",
                                    nil];
      
       recipients_count += [[co allRecipients] count];

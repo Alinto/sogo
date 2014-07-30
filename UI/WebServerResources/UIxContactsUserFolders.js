@@ -159,17 +159,17 @@ function foldersSearchCallback(http) {
 
         var dd = $("dd" + nodeId);
         if (response.length) {
-            var folders = response.split(";");
+            var folders = response.evalJSON();
             var user = http.callbackData["user"];
 
             dd.innerHTML = '';
-            for (var i = 1; i < folders.length - 1; i++)
-                dd.appendChild(addFolderBranchToTree(d, user, folders[i], nodeId, i, false));
+            for (var i = 0; i < folders.length-1; i++)
+                dd.appendChild(addFolderBranchToTree(d, user, folders[i], nodeId, i+1, false));
             dd.appendChild(addFolderBranchToTree(d, user, folders[folders.length-1], nodeId,
-                                                 (folders.length - 1), true));
+                                                 folders.length, true));
             //dd.update(str);
-            for (var i = 1; i < folders.length; i++) {
-                var sd = $("sd" + (nodeId + i));
+            for (var i = 0; i < folders.length; i++) {
+                var sd = $("sd" + (nodeId + i + 1));
                 sd.on("click", onTreeItemClick);
             }
         }
@@ -185,20 +185,21 @@ function foldersSearchCallback(http) {
 }
 
 function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
-    var folderInfos = folder.split(":");
     var icon = ResourcesURL + '/';
-    if (folderInfos[2] == 'Contact')
+    if (folder.type == 'Contact')
         icon += 'tb-mail-addressbook-flat-16x16.png';
     else
         icon += 'calendar-folder-16x16.png';
-    var folderId = user + ":" + folderInfos[1].substr(1);
+    var folderId = user + ":" + folder.name.substr(1);
 
     // We sanitize the value to avoid XSS issues
-    var name = folderInfos[0].escapeHTML();
+    var name = folder.displayName.escapeHTML();
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
-                             folderInfos[2] + '-folder', '', '', icon, icon);
+                             folder.type + '-folder', '', '', icon, icon);
     node._ls = isLast;
+
     var content = tree.node(node, (nodeId + subId), null);
+    content._formattedName = folder.formattedName;
 
     return content;
 }
@@ -227,9 +228,7 @@ function onConfirmFolderSelection(event) {
                 folderName = description.replace(/>,.*$/, ">", "g");
             }
             else {
-                var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
-                folderName = resource.innerHTML;
-                folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
+                folderName = node._formattedName;
             }
             var data = { folderName: folderName, folder: folder, type: type, window: window };
             if (parent$(accessToSubscribedFolder(folder)))

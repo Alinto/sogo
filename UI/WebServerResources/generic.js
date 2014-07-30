@@ -3,21 +3,21 @@
    Copyright (C) 2005 SKYRIX Software AG
    Copyright (C) 2006-2012 Inverse
 
- SOGo is free software; you can redistribute it and/or modify it under
- the terms of the GNU Lesser General Public License as published by the
- Free Software Foundation; either version 2, or (at your option) any
- later version.
+   SOGo is free software; you can redistribute it and/or modify it under
+   the terms of the GNU Lesser General Public License as published by the
+   Free Software Foundation; either version 2, or (at your option) any
+   later version.
 
- SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
- WARRANTY; without even the implied warranty of MERCHANTABILITY or
- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
- License for more details.
+   SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+   License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with SOGo; see the file COPYING.  If not, write to the
- Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
- 02111-1307, USA.
- */
+   You should have received a copy of the GNU Lesser General Public
+   License along with SOGo; see the file COPYING.  If not, write to the
+   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+   02111-1307, USA.
+*/
 
 var logConsole;
 var logWindow = null;
@@ -49,10 +49,10 @@ var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-
 
 
 /* This function enables the execution of a wrapper function just before the
- user callback is executed. The wrapper in question executes "preventDefault"
- to the event parameter if and only when "this" is a link. The goal of this
- operation is to prevent links with attached even handlers to be followed,
- including those with an href set to "#". */
+   user callback is executed. The wrapper in question executes "preventDefault"
+   to the event parameter if and only when "this" is a link. The goal of this
+   operation is to prevent links with attached even handlers to be followed,
+   including those with an href set to "#". */
 function clickEventWrapper(functionRef) {
     function button_clickEventWrapper(event) {
         if (this.tagName == "A") {
@@ -91,7 +91,7 @@ function createElement(tagName, id, classes, attributes, htmlAttributes, parentN
 function URLForFolderID(folderID) {
     var folderInfos = folderID.split(":");
     var url;
-                  
+
     if (folderInfos.length > 1) {
         url = UserFolderURL + "../" + encodeURI(folderInfos[0]);
         if (!(folderInfos[0].endsWith('/')
@@ -132,7 +132,7 @@ function extractEmailName(mailTo) {
     tmpMailTo = tmpMailTo.replace("&gt;", ">");
     tmpMailTo = tmpMailTo.replace("&amp;", "&");
 
-    var emailNamere = /([ 	]+)?(.+)\ </;
+    var emailNamere = /([       ]+)?(.+)\ </;
     if (emailNamere.test(tmpMailTo)) {
         emailNamere.exec(tmpMailTo);
         emailName = RegExp.$2;
@@ -210,7 +210,7 @@ function openGenericWindow(url, wId) {
         var iframe = div.down("iframe");
         iframe.src = url;
         if (!wId)
-	    wId = "genericFrame";
+            wId = "genericFrame";
         iframe.id = wId;;
         var bgDiv = $("bgFrameDiv");
         if (bgDiv) {
@@ -347,12 +347,12 @@ function onEmailTo(event) {
 function deleteDraft(url) {
     /* this is called by UIxMailEditor with window.opener */
     new Ajax.Request(url, {
-                         asynchronous: false,
-                         method: 'post',
-                         onFailure: function(transport) {
-                             log("draftDeleteCallback: problem during ajax request: " + transport.status);
-                         }
-                     });
+        asynchronous: false,
+        method: 'post',
+        onFailure: function(transport) {
+            log("draftDeleteCallback: problem during ajax request: " + transport.status);
+        }
+    });
 }
 
 function refreshFolderByType(type) {
@@ -383,12 +383,12 @@ function onCASRecoverIFrameLoaded(event) {
         var request = this.request;
         if (request.attempt == 0) {
             window.setTimeout(function() {
-                                  triggerAjaxRequest(request.url,
-                                                     request.callback,
-                                                     request.callbackData,
-                                                     request.content,
-                                                     request.paramHeaders,
-                                                     1); },
+                triggerAjaxRequest(request.url,
+                                   request.callback,
+                                   request.callbackData,
+                                   request.content,
+                                   request.paramHeaders,
+                                   1); },
                               100);
         }
         else {
@@ -727,8 +727,8 @@ function onRowClick(event, target) {
         $(node).selectElement();
     }
     if (rowIndex != null) {
-	lastClickedRow = rowIndex;
-	lastClickedRowId = node.getAttribute("id");
+        lastClickedRow = rowIndex;
+        lastClickedRowId = node.getAttribute("id");
     }
 
     return true;
@@ -1356,7 +1356,7 @@ function getListIndexForFolder(items, owner, folderName) {
 
     for (i = 0; i < items.length; i++) {
         if (items[i].id == '/personal') continue;
-        var currentFolderName = items[i].lastChild.nodeValue.strip();
+        var currentFolderName = items[i].childNodesWithTag("span")[0].innerHTML.strip();
         var currentOwner = items[i].readAttribute('owner');
         if (currentOwner == owner) {
             previousOwner = currentOwner;
@@ -1531,7 +1531,7 @@ function initMenu(menuDIV, callbacks) {
                 }
                 else {
                     node.menuCallback = callback;
-		    node.on("mousedown", onMenuClickHandler);
+                    node.on("mousedown", onMenuClickHandler);
                 }
             }
             else
@@ -2090,12 +2090,12 @@ function _showConfirmDialog(title, label, callbackYes, callbackNo, yesLabel, noL
     if (dialog) {
         $("bgDialogDiv").show();
 
-	// Update callbacks on buttons
-	var buttons = dialog.getElementsByTagName("a");
-	buttons[0].stopObserving();
-	buttons[0].on("click", callbackYes);
-	buttons[1].stopObserving();
-	buttons[1].on("click", callbackNo || disposeDialog);
+        // Update callbacks on buttons
+        var buttons = dialog.getElementsByTagName("a");
+        buttons[0].stopObserving();
+        buttons[0].on("click", callbackYes);
+        buttons[1].stopObserving();
+        buttons[1].on("click", callbackNo || disposeDialog);
     }
     else {
         var fields = createElement("p");
@@ -2127,19 +2127,19 @@ function _showPromptDialog(title, label, callback, defaultValue) {
     v = defaultValue?defaultValue:"";
     if (dialog) {
         $("bgDialogDiv").show();
-	dialog.down("input").value = v;
+        dialog.down("input").value = v;
     }
     else {
         var fields = createElement("p", null, ["prompt"]);
-	fields.appendChild(document.createTextNode(label));
+        fields.appendChild(document.createTextNode(label));
         var input = createElement("input", null, "textField",
-				  { type: "text", "value": v },
-				  { previousValue: v });
-	fields.appendChild(input);
+                                  { type: "text", "value": v },
+                                  { previousValue: v });
+        fields.appendChild(input);
         fields.appendChild(createButton(null,
                                         _("OK"),
                                         callback.bind(input)));
-	fields.appendChild(createButton(null,
+        fields.appendChild(createButton(null,
                                         _("Cancel"),
                                         disposeDialog));
         dialog = createDialog(null,
@@ -2174,9 +2174,9 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     }
     else {
         var fields = createElement("p", null, []);
-	fields.update(label);
+        fields.update(label);
         var select = createElement("select"); //, null, null, { cname: name } );
-	fields.appendChild(select);
+        fields.appendChild(select);
         var values = $H(options).keys();
         for (var i = 0; i < values.length; i++) {
             var option = createElement("option", null, null,
@@ -2188,7 +2188,7 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
         fields.appendChild(createButton(null,
                                         button,
                                         callbackFcn.bind(select, callbackArg)));
-	fields.appendChild(createButton(null,
+        fields.appendChild(createButton(null,
                                         _("Cancel"),
                                         disposeDialog));
         dialog = createDialog(null,
@@ -2200,7 +2200,7 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
         dialogs[title+label] = dialog;
     }
     if (defaultValue)
-	defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
+        defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
     if (Prototype.Browser.IE)
         jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast');
@@ -2225,19 +2225,19 @@ function _showAuthenticationDialog(label, callback) {
     }
     else {
         var fields = createElement("p", null, ["prompt"]);
-	fields.appendChild(document.createTextNode(_("Username:")));
+        fields.appendChild(document.createTextNode(_("Username:")));
         var un_input = createElement("input", null, "textField",
-				     { type: "text", "value": "" });
-	fields.appendChild(un_input);
-	fields.appendChild(document.createTextNode(_("Password:")));
+                                     { type: "text", "value": "" });
+        fields.appendChild(un_input);
+        fields.appendChild(document.createTextNode(_("Password:")));
         var pw_input = createElement("input", null, "textField",
-			             { type: "password", "value": "" });
-	fields.appendChild(pw_input);
+                                     { type: "password", "value": "" });
+        fields.appendChild(pw_input);
         function callbackWrapper() {
             callback(un_input.value, pw_input.value);
         }
         fields.appendChild(createButton(null, _("OK"), callbackWrapper));
-	fields.appendChild(createButton(null, _("Cancel"), disposeDialog));
+        fields.appendChild(createButton(null, _("Cancel"), disposeDialog));
         dialog = createDialog(null, label, null, fields, "none");
         document.body.appendChild(dialog);
         dialogs[label] = dialog;

@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
@@ -41,6 +42,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -636,6 +638,47 @@ static NSArray *reminderValues = nil;
 - (BOOL) busyOffHours
 {
   return [userDefaults busyOffHours];
+}
+
+- (NSArray *) whiteList
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  NSArray *whiteList;
+  
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
+  return whiteList;
+}
+
+- (void) setWhiteList: (NSArray *) whiteList
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  [moduleSettings setObject: whiteList forKey: @"PreventInvitationsWhitelist"];
+  [us synchronize];
+}
+
+- (void) setPreventInvitations: (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  [moduleSettings setObject: [NSNumber numberWithBool: preventInvitations] forKey: @"PreventInvitations"];
+  [us synchronize];
+}
+
+- (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  return [[moduleSettings objectForKey: @"PreventInvitations"] boolValue];
 }
 
 - (NSArray *) firstWeekList

@@ -22,7 +22,7 @@
       image = "day-view.png";
       tooltip = "Switch to day view"; },
     { link = "#";
-      label="Multi-Columns View";
+      label="Multicolumn Day View";
       onclick = "return onMulticolumnDayOverview();";
       image = "day-view-multicolumn.png";
       tooltip = "Switch to multi-columns day view"; },
