@@ -25,12 +25,17 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSData+Crypto.m \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
-	TestNSString+Utilities.m
+	TestNSString+Utilities.m \
+	\
+	TestRTFHandler.m \
+	../../OpenChange/RTFHandler.m
+    # I don't know how to link against -l:SOGoBackend \
+	     undefined reference to `__objc_class_name_SOGoMailFolder'
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
 $(TEST_TOOL)_CPPFLAGS += \
-	-Wall -D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/ -I../../UI/
+	-Wall -D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/ -I../../UI/ -I../../OpenChange
 
 ADDITIONAL_LIB_DIRS += \
 	-L../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -L../../SOPE/NGCards/obj -L../../SOPE/GDLContentStore/obj -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc \
@@ -44,3 +49,4 @@ include $(GNUSTEP_MAKEFILES)/test-tool.make
 
 check :: $(TEST_TOOL)
 	./obj/sogo-tests
+
