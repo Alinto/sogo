@@ -121,16 +121,16 @@ function foldersSearchCallback(http) {
 
         var dd = $("dd" + nodeId);
         if (response.length) {
-            var folders = response.split(";");
+            var folders = response.evalJSON();
             var user = http.callbackData["user"];
 
             dd.innerHTML = '';
-            for (var i = 1; i < folders.length - 1; i++)
-                dd.appendChild(addFolderBranchToTree (d, user, folders[i], nodeId, i, false));
+            for (var i = 0; i < folders.length - 1; i++)
+                dd.appendChild(addFolderBranchToTree (d, user, folders[i], nodeId, i+1, false));
             dd.appendChild (addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
-                                                   (folders.length - 1), true));
-            for (var i = 1; i < folders.length; i++) {
-                var sd = $("sd" + (nodeId + i));
+                                                   (folders.length), true));
+            for (var i = 0; i < folders.length; i++) {
+                var sd = $("sd" + (nodeId + i + 1));
                 sd.observe("click", onTreeItemClick);
                 sd.observe("dblclick", onFolderOpen);
             }
@@ -147,21 +147,21 @@ function foldersSearchCallback(http) {
 }
 
 function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
-    var folderInfos = folder.split(":");
     var icon = ResourcesURL + '/';
-    if (folderInfos[2] == 'Contact')
+    if (folder.type == 'Contact')
         icon += 'tb-mail-addressbook-flat-16x16.png';
     else
         icon += 'calendar-folder-16x16.png';
-    var folderId = user + ":" + folderInfos[1];
-    var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
+    var folderId = user + ":" + folder.name.substr(1);
+    var name = folder.displayName.escapeHTML(); // name has the format "Folername (Firstname Lastname <email>)"
     var pos = name.lastIndexOf(' (');
     if (pos > -1)
         name = name.substring(0, pos); // strip the part with fullname and email
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
-                             folderInfos[2] + '-folder', '', '', icon, icon);
+                             folder.type + '-folder', '', '', icon, icon);
     node._ls = isLast;
     var content = tree.node(node, (nodeId + subId), null);
+    content._formattedName = folder.formattedName;
 
     return content;
 }
