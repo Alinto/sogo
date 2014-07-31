@@ -814,20 +814,28 @@ const unsigned short ansicpg874[256] = {
 
               if (!formattingOptions)
                 continue;
-              
+
               if (formattingOptions->font_index >= 0 &&
                   font_index != formattingOptions->font_index)
                 {
                   [_html appendBytes: "</font>"  length: 7];
                 }
-              
+
               formattingOptions->font_index = font_index;
 
               fontInfo = [fontTable fontInfoAtIndex: font_index];
-
-              char *v = malloc(128*sizeof(char));
-              memset(v, 0, 128);
-              sprintf(v, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+              char *v = calloc(128, sizeof(char));
+              if (fontInfo)
+                {
+                  sprintf(v, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+                }
+              else
+                {
+                  // RTF badformed? We don't know about that font (font_index).
+                  // Anyhow, we still open the html tag because in the future
+                  // we will close it (e.g. when new font is used).
+                  sprintf(v, "<font>");
+                }
               [_html appendBytes: v  length: strlen(v)];
               free(v);
             }
