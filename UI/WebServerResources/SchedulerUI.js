@@ -3156,27 +3156,19 @@ function configureDroppables() {
 }
 
 function startDragging(event, ui) {
-    var row = event.target;
+    var row = Event.findElement(event);
     var handle = ui.helper;
-    var events = $('eventsList').getSelectedRowsId();
-    var tasks = $('tasksList').getSelectedRowsId();
+    var table = row.up('table');
+    var elements = table.getSelectedRowsId();
+    var count = elements.length;
 
-    if (events.length > 0)
-        var count = events.length;
-    else
-        var count = tasks.length;
-
-    if (count == 0 || events.indexOf(row.id) < 0) {
-        onRowClick(event, $(row.id));
-        events = $("eventsList").getSelectedRowsId();
-        tasks = $("tasksList").getSelectedRowsId();
-        if (events.length > 0)
-            var count = events.length;
-        else
-            var count = tasks.length;
+    if (count == 0 || elements.indexOf(row.id) < 0) {
+        onRowClick(event, row);
+        elements = table.getSelectedRowsId();
+        count = elements.length;
     }
-    handle.html(count);
 
+    handle.html(count);
     handle.show();
 }
 
@@ -3191,26 +3183,11 @@ function stopDragging(event, ui) {
 }
 
 function dropAction(event, ui) {
-    var events = $("eventsList").getSelectedRowsId();
-    var tasks = $("tasksList").getSelectedRowsId();
-
-    if(events.length > 0 || tasks.length > 0)
-        dropSelectedItems(this.id.substr(1));
-}
-
-function dropSelectedItems(toId) {
-    var eventIds = $('eventsList').getSelectedRowsId();
-    var taskIds = $('tasksList').getSelectedRowsId();
-    var itemIds = {};
-
-    if (eventIds.length > 0) {
-        itemIds.data = eventIds;
-        itemIds.type = "events";
-    }
-    else {
-        itemIds.data = taskIds;
-        itemIds.type = "tasks";
-    }
+    var toId = this.id.substr(1);
+    var table = ui.draggable.closest('table')[0];
+    var itemIds = { data: table.getSelectedRowsId(),
+                    // The table ID is either eventsList or tasksList
+                    type: table.id.substr(0, table.id.indexOf('List')) };
 
     for (var i = 0; i < itemIds.data.length; i++) {
         // Find the event ID (.ics)
