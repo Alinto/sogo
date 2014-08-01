@@ -882,7 +882,8 @@ andAttribute: (EOAttribute *)_attribute
 
 - (NSException *) writeContent: (NSString *) _content
                  fromComponent: (id) theComponent
-			toName: (NSString *) _name
+                     container: (id) theContainer
+  			toName: (NSString *) _name
 		   baseVersion: (unsigned int *) _baseVersion
 {
   EOAdaptorChannel    *storeChannel, *quickChannel;
@@ -943,7 +944,7 @@ andAttribute: (EOAttribute *)_attribute
 	      || *_baseVersion == [storedVersion unsignedIntValue])
 	    {
 	      /* extract quick info */
-              quickRow = [theComponent performSelector: @selector(quickRecordForContainer:)  withObject: self];
+              quickRow = [theComponent performSelector: @selector(quickRecordForContainer:)  withObject: theContainer];
 	      if (quickRow)
 		{
 		  [quickRow setObject:_name forKey:@"c_name"];
@@ -1097,16 +1098,6 @@ andAttribute: (EOAttribute *)_attribute
 			 userInfo:nil];
 
   return error;
-}
-
-
-- (NSException *)writeContent:(NSString *)_content
-                 fromComponent: (id) theComponent
-                       toName:(NSString *)_name
-{
-  /* this method does not check for concurrent writes */
-  unsigned int v = 0;
-  return [self writeContent:_content fromComponent: theComponent toName:_name baseVersion:&v];
 }
 
 - (NSException *)deleteContentWithName:(NSString *)_name {

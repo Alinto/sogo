@@ -118,12 +118,9 @@
 
 - (NSException *) writeContent: (NSString *) _content
                  fromComponent: (id) theComponent
+                     container: (id) theContainer
 			toName: (NSString *) _name
 		   baseVersion: (unsigned int *) _baseVersion;
-
-- (NSException *) writeContent: (NSString *) _content
-                 fromComponent: (id) theComponent
-			toName: (NSString *) _name;
 
 - (NSException *) deleteContentWithName: (NSString *) _name;
 - (NSException *) deleteAllContent;

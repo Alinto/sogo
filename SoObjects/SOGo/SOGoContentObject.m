@@ -221,6 +221,7 @@
     {
       ex = [folder writeContent: newContent
                   fromComponent: theComponent
+                      container: container
                          toName: nameInContainer
                     baseVersion: &version];
       if (ex)
