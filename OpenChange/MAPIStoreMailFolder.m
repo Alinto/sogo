@@ -639,7 +639,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       changeNumber = nil;
       for (count = 0; count < max; count++)
         {
-          uid = [fetchResults objectAtIndex: count];
+          uid = [[fetchResults objectAtIndex: count] stringValue];
           if ([messages objectForKey: uid])
             {
               newChangeNum = [[changeNumbers objectAtIndex: count]
