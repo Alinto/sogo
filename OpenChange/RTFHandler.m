@@ -824,16 +824,29 @@ const unsigned short ansicpg874[256] = {
               formattingOptions->font_index = font_index;
 
               fontInfo = [fontTable fontInfoAtIndex: font_index];
-              char *v = calloc(128, sizeof(char));
-              if (fontInfo)
+              char *v = NULL;
+              if (fontInfo && fontInfo->name)
                 {
-                  sprintf(v, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+                  if (fontInfo->name.length < 128)
+                    {
+                      int tag_size = 15 + fontInfo->name.length;
+                      v = calloc(tag_size, sizeof(char));
+                      snprintf(v, tag_size, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+                    }
+                  else
+                    {
+                      NSLog(@"RTFHandler: Font %u has %d chars length, parse error? "
+                            "Ignored", font_index, fontInfo->name.length);
+                      v = calloc(7, sizeof(char));
+                      sprintf(v, "<font>");
+                    }
                 }
               else
                 {
                   // RTF badformed? We don't know about that font (font_index).
                   // Anyhow, we still open the html tag because in the future
                   // we will close it (e.g. when new font is used).
+                  v = calloc(7, sizeof(char));
                   sprintf(v, "<font>");
                 }
               [_html appendBytes: v  length: strlen(v)];
