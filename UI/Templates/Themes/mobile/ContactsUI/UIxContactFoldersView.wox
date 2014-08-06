@@ -1,0 +1,139 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    const:userDefaultsKeys="SOGoContactsCategories"
+    const:jsFiles="Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    className="UIxPageFrame"
+    title="name"
+    var:popup="isPopup">
+  <script type="text/javascript">
+    var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO"/>;
+  </script>
+
+  <body data-ng-app="SOGo.Contacts">
+
+  <ion-nav-view><!-- main view --></ion-nav-view>
+
+  <script type="text/ng-template" id="menu.html">
+    <ion-side-menus>
+      <ion-side-menu-content>
+        <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+          <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"><!-- back --></i> Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent" animation="slide-left-right"><!-- content --></ion-nav-view>
+      </ion-side-menu-content>
+
+      <ion-side-menu side="left">
+        <header class="bar bar-header bar-stable">
+          <h1 class="title">{{UserLogin}}</h1>
+        </header>
+        <ion-content class="has-header">
+          <ion-list>
+            <ion-item class="nav-clear menu-close" href="#/app/addressbook">
+              <var:string label:value="Address Books"/>
+            </ion-item>
+          </ion-list>
+          <a class="button button-full button-assertive" href="#" data-ng-href="{{UserFolderURL}}logoff?theme=mobile"><var:string label:value="Disconnect"/></a>
+          <a class="button button-small button-outline button-stable button-block" href="#" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
+        </ion-content>
+      </ion-side-menu>
+    </ion-side-menus>
+  </script>
+
+  <script type="text/ng-template" id="addressbooks.html">
+    <ion-view title="Address Books">
+      <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"><!-- menu toggle --></button>
+      </ion-nav-buttons>
+      <ion-content class="has-header">
+        <ion-list>
+          <ion-item ng-repeat="folder in addressbooks" option-buttons="buttons" href="#/app/addressbook/{{folder.id}}" class="item-icon-right">
+            {{folder.name}}
+            <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
+            <ion-option-button class="button-info"
+                               ng-click="edit(item)"><var:string label:value="Edit"/></ion-option-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-view>
+  </script>
+
+  <script type="text/ng-template" id="addressbook.html">
+    <ion-view title="{{addressbook.name}}">
+      <ion-content class="has-header">
+        <ion-list>
+          <ion-item class="item-input">
+            <i class="icon ion-search placeholder-icon"><!-- search --></i>
+            <input type="text"
+                   placeholder="Search"
+                   data-ng-model="search.filter"
+                   data-ng-keyup="doSearch($event)"/>
+          </ion-item>
+        </ion-list>
+         <ion-list>
+          <ion-item ng-repeat="card in addressbook.cards" option-buttons="buttons" href="#/app/addressbook/{{addressbook.id}}/{{card.c_name}}" class="item-icon-right">
+            {{card.c_cn || card.c_mail}}
+            <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-view>
+  </script>
+
+  <script type="text/ng-template" id="card.html">
+    <ion-view title="{{addressbook.card.c_cn}}">
+      <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive" ng-click="edit()">Edit</button>
+      </ion-nav-buttons>
+      <ion-content padding="10" class="has-header">
+        <h4 data-ng-bind-html="addressbook.card.$fullname()"><!-- fullname --></h4>
+        <p>{{addressbook.card.$description()}}</p>
+        <ion-list class="list-clear" data-ng-show="addressbook.card.emails">
+          <ion-item ng-repeat="email in addressbook.card.emails"
+                    href="{{UserFolderURL}}Mail/Compose/{{email.value}}"
+                    class="item-icon-right">
+            <i class="icon ion-email"><!-- icon --></i>
+            <small>{{email.type}}</small> {{email.value}}
+          </ion-item>
+        </ion-list>
+        <ion-list class="list-clear" data-ng-show="addressbook.card.phones">
+          <ion-item ng-repeat="phone in addressbook.card.phones"
+                    href="tel:{{phone.value}}"
+                    class="item-icon-right">
+            <i class="icon ion-ios7-telephone-outline"><!-- icon --></i>
+            <small>{{phone.type}}</small> {{phone.value}}
+          </ion-item>
+        </ion-list>
+        <ion-list class="list-clear" data-ng-show="addressbook.card.urls">
+          <ion-item ng-repeat="url in addressbook.card.urls"
+                    href="{{url.value}}"
+                    class="item-icon-right">
+            <i class="icon ion-link"><!-- icon --></i>
+            <small>{{url.type}}</small> {{url.value}}
+          </ion-item>
+        </ion-list>
+        <ion-list class="list-clear" data-ng-show="addressbook.card.addresses">
+          <ion-item ng-repeat="address in addressbook.card.addresses">
+            <small>{{address.type}}</small>
+            <address data-sg-address="address"><!-- address --></address>
+          </ion-item>
+        </ion-list>
+        <ion-list class="list-clear" data-ng-show="addressbook.card.note">
+          <ion-item>
+            <small><var:string label:value="note"/></small>
+            {{addressbook.card.note}}
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-view>
+  </script>
+
+</body>
+
+</var:component>
