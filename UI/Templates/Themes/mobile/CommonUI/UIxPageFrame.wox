@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  ><var:string var:value="doctype" const:escapeHTML="NO" />
+<html const:xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en" const:lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"/>
+    <title><var:string value="title"/></title>
+
+    <link rsrc:href="css/mobile.css" rel="stylesheet"><!-- mobile.css --></link>
+
+    <!-- ionic/angularjs js -->
+    <script rsrc:src="js/vendor/ionic.bundle.js"><!-- ionic --></script>
+
+    <!-- your app's js -->
+	  <script type="text/javascript">
+	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
+	    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
+	    var minimumSearchLength = <var:string value="minimumSearchLength"/>;
+	    <var:if condition="isSuperUser"
+	      >var IsSuperUser = true;
+	    </var:if>
+	    <var:if condition="isSuperUser" const:negate="YES"
+	      >var IsSuperUser = false;
+	    </var:if>
+	    <var:if condition="usesCASAuthentication"
+	      >var usesCASAuthentication = true;
+	    </var:if>
+	    <var:if condition="usesCASAuthentication" const:negate="YES"
+	      >var usesCASAuthentication = false;
+	    </var:if>
+	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
+	      const:negate="YES"
+	      >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
+	      var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
+	      var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
+            </var:if>
+	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
+	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
+	  </script>
+	  <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/ui-mobile.js"><!-- space --></script>
+  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
+      var:src="productJavaScriptURL"><!-- space --></script></var:if>
+  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
+      var:src="pageJavaScriptURL"><!-- space --></script></var:if>
+  <var:foreach list="additionalJSFiles" item="item"
+    ><script type="text/javascript" var:src="item"><!-- space --></script>
+  </var:foreach>
+  <var:foreach list="systemAdditionalJSFiles" item="item"
+    ><script type="text/javascript" var:src="item"><!-- space --></script>
+  </var:foreach>
+  </head>
+
+  <var:component-content/>
+</html>
+</container>
