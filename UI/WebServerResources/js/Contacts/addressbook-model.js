@@ -1,104 +1,100 @@
 (function() {
     'use strict';
 
+    /* Constructor */
     function AddressBook(futureAddressBookData) {
-        /* DATA IS IMMEDIATELY AVAILABLE */
+        // Data is immediately available
         if (typeof futureAddressBookData.then !== 'function') {
             angular.extend(this, futureAddressBookData);
             return;
         }
 
-        /* THE PROMISE WILL BE UNWRAPPED FIRST */
+        // The promise will be unwrapped first
         this.$unwrap(futureAddressBookData);
     }
 
-    /* THE FACTORY WE'LL USE TO REGISTER WITH ANGULAR */
-    AddressBook.$factory = ['$timeout', 'sgSettings', 'sgResource', 'sgContact', function($timeout, Settings, Resource, Contact) {
+    /* The factory we'll use to register with Angular */
+    AddressBook.$factory = ['$timeout', 'sgSettings', 'sgResource', 'sgCard', function($timeout, Settings, Resource, Card) {
         angular.extend(AddressBook, {
             $$resource: new Resource(Settings.baseURL),
             $timeout: $timeout,
-            $Contact: Contact
+            $Card: Card
         });
 
         return AddressBook; // return constructor
     }];
 
-    /* ANGULAR MODULE REGISTRATION */
-    angular.module('SOGo').factory('sgAddressBook', AddressBook.$factory);
+    /* Factory registration in Angular module */
+    angular.module('SOGo.Contacts').factory('sgAddressBook', AddressBook.$factory);
 
-    // AddressBook.$selectedId = function(addressbook_id) {
-    //     if (addressbook_id) angular.extend(AddressBook, { $selected_id: addressbook_id });
-    //     console.debug("selected id = " + AddressBook.$selected_id);
-    //     return AddressBook.$selected_id;
-    // };
+    AddressBook.$all = function(data) {
+        if (data) {
+            this.$addressbooks = data;
+        }
+        return this.$addressbooks;
+    };
 
-    /* Fetch list of contacts */
+    /* Fetch list of cards */
     AddressBook.$find = function(addressbook_id) {
-        var futureAddressBookData = this.$$resource.find(addressbook_id); // should return attributes of addressbook +
+        var futureAddressBookData = AddressBook.$$resource.find(addressbook_id); // should return attributes of addressbook +
         // AddressBook.$selectedId(addressbook_id);
         return new AddressBook(futureAddressBookData);
     };
 
-    // Instance methods
+    /* Instance methods */
 
     AddressBook.prototype.$id = function() {
-        var self = this;
         return this.$futureAddressBookData.then(function(data) {
             return data.id;
         });
     };
 
-    AddressBook.prototype.$getContact = function(contact_id) {
+    AddressBook.prototype.$filter = function(search) {
         var self = this;
-        // return this.$futureAddressBookData.then(function(data) {
-        //     return data.id;
-        // }).then(function(addressbook_id) {
+        var params = { 'search': 'name_or_address',
+                       'value': search,
+                       'sort': 'c_cn',
+                       'asc': 'true' };
+
         return this.$id().then(function(addressbook_id) {
-            var contact = AddressBook.$Contact.$find(addressbook_id, contact_id);
-
-            AddressBook.$timeout(function() {
-                self.contact = contact;
-            });
-
-            return contact.$futureContactData.then(function() {
-                return self.contact;
+            var futureAddressBookData = AddressBook.$$resource.filter(addressbook_id, params);
+            return futureAddressBookData.then(function(data) {
+                return AddressBook.$timeout(function() {
+                    self.cards = data.cards;
+                    return self.cards;
+                });
             });
         });
     };
 
-    AddressBook.prototype.$resetContact = function() {
-        this.$getContact(this.contact.id);
+    AddressBook.prototype.$getCard = function(card_id) {
+        var self = this;
+        return this.$id().then(function(addressbook_id) {
+            var card = AddressBook.$Card.$find(addressbook_id, card_id);
+
+            AddressBook.$timeout(function() {
+                self.card = card;
+            });
+
+            return card.$futureCardData.then(function() {
+                angular.forEach(self.cards, function(o, i) {
+                        if (o.c_name == card_id) {
+                            angular.extend(self.card, o);
+                        }
+                    });
+
+                return self.card;
+            });
+        });
+    };
+
+    AddressBook.prototype.$resetCard = function() {
+        this.$getCard(this.card.id);
     };
 
     AddressBook.prototype.$viewerIsActive = function(editMode) {
-        return (typeof this.contact != "undefined" && !editMode);
+        return (!angular.isUndefined(this.card) && !editMode);
     };
-
-    // AddressBook.prototype.$getContacts = function() {
-    //     var self = this;
-
-    //     return AddressBook.$timeout(function() {
-    //         var contacts = [];
-    //         angular.forEach(self.contacts, function(addressBookContact, index) {
-    //             var contact = AddressBook.$Contact.$find(addressBookContact.c_name);
-    //             angular.extend(contact, addressBookContact); // useless?
-    //             this.push(contact);
-    //         }, contacts);
-
-    //         AddressBook.$timeout(function() {
-    //             self.contacts = contacts;
-    //         });
-
-    //         var futureContactData = [];
-    //         angular.forEach(contacts, function(contact, index) {
-    //             this.push(contact.$futureContactData);
-    //         }, futureContactData);
-    //         return this._q.all(futureContactData).then(function() {
-    //             //self.$$emitter.emit('update');
-    //             return self.contacts;
-    //         });
-    //     });
-    // };
 
     // Unwrap a promise
     AddressBook.prototype.$unwrap = function(futureAddressBookData) {
@@ -106,9 +102,16 @@
 
         this.$futureAddressBookData = futureAddressBookData;
         this.$futureAddressBookData.then(function(data) {
-            // The success callback. Calling _.extend from $timeout will wrap it into a try/catch call
-            // and return a promise.
-            AddressBook.$timeout(function() { angular.extend(self, data); });
+            AddressBook.$timeout(function() {
+                angular.extend(self, data);
+                self.$id().then(function(addressbook_id) {
+                    angular.forEach(AddressBook.$all(), function(o, i) {
+                        if (o.id == addressbook_id) {
+                            angular.extend(self, o);
+                        }
+                    });
+                });
+            });
         });
     };
 
@@ -117,13 +120,12 @@
         var addressbook = {};
         angular.forEach(this, function(value, key) {
             if (key != 'constructor' &&
-                key != 'contact' &&
-                key != 'contacts' &&
+                key != 'card' &&
+                key != 'cards' &&
                 key[0] != '$') {
                 addressbook[key] = value;
             }
         });
-        console.debug(angular.toJson(addressbook));
         return addressbook;
     };
 

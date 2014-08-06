@@ -3,51 +3,76 @@
 
     /* Constructor */
 
-    function Contact(futureContactData) {
+    function Card(futureCardData) {
 
         /* DATA IS IMMEDIATELY AVAILABLE */
-        // if (!futureContactData.inspect) {
-        //     angular.extend(this, futureContactData);
+        // if (!futureCardData.inspect) {
+        //     angular.extend(this, futureCardData);
         //     return;
         // }
 
         /* THE PROMISE WILL BE UNWRAPPED FIRST */
-        this.$unwrap(futureContactData);
+        this.$unwrap(futureCardData);
     }
 
-    Contact.$tel_types = [_('work'), 'home', 'cell', 'fax', 'pager'];
-    Contact.$email_types = ['work', 'home', 'pref'];
-    Contact.$url_types = ['work', 'home', 'pref'];
-    Contact.$address_types = ['work', 'home'];
+    Card.$tel_types = ['work', 'home', 'cell', 'fax', 'pager'];
+    Card.$email_types = ['work', 'home', 'pref'];
+    Card.$url_types = ['work', 'home', 'pref'];
+    Card.$address_types = ['work', 'home'];
 
     /* THE FACTORY WE'LL USE TO REGISTER WITH ANGULAR */
-    Contact.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
-        angular.extend(Contact, {
+    Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
+        angular.extend(Card, {
             $$resource: new Resource(Settings.baseURL),
             $timeout: $timeout
         });
 
-        return Contact; // return constructor
+        return Card; // return constructor
     }];
 
     /* ANGULAR MODULE REGISTRATION */
-    angular.module('SOGo').factory('sgContact', Contact.$factory);
+    angular.module('SOGo.Contacts')
+    .factory('sgCard', Card.$factory)
+
+    .directive('sgAddress', function() {
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: { data: '=sgAddress' },
+            controller: ['$scope', function($scope) {
+                $scope.addressLines = function(data) {
+                    var lines = [];
+                    if (data.street) lines.push(data.street);
+                    if (data.street2) lines.push(data.street2);
+                    var locality_region = [];
+                    if (data.locality) locality_region.push(data.locality);
+                    if (data.region) locality_region.push(data.region);
+                    if (locality_region.length > 0) lines.push(locality_region.join(', '));
+                    if (data.country) lines.push(data.country);
+                    if (data.postalcode) lines.push(data.postalcode);
+                    return lines.join('<br>');
+                };
+            }],
+            template: '<address ng-bind-html="addressLines(data)"></address>'
+        }
+    });
+
 
     /* FETCH A UNIT */
-    Contact.$find = function(addressbook_id, contact_id) {
+    Card.$find = function(addressbook_id, card_id) {
 
         /* FALLS BACK ON AN INSTANCE OF RESOURCE */
         // Fetch data over the wire.
-        var futureContactData = this.$$resource.find([addressbook_id, contact_id].join('/'));
+        var futureCardData = this.$$resource.find([addressbook_id, card_id].join('/'));
 
-        if (contact_id) return new Contact(futureContactData); // a single contact
+        if (card_id) return new Card(futureCardData); // a single card
 
-        return Contact.$unwrapCollection(futureContactData); // a collection of contacts
+        return Card.$unwrapCollection(futureCardData); // a collection of cards
     };
 
     // Instance methods
 
-    Contact.prototype.$id = function() {
+    Card.prototype.$id = function() {
         //var self = this;
         return this.$futureAddressBookData.then(function(data) {
             return data.id;
@@ -55,20 +80,19 @@
     };
 
     // Unwrap a promise
-    Contact.prototype.$unwrap = function(futureContactData) {
+    Card.prototype.$unwrap = function(futureCardData) {
         var self = this;
 
-        this.$futureContactData = futureContactData;
-        this.$futureContactData.then(function(data) {
+        this.$futureCardData = futureCardData;
+        this.$futureCardData.then(function(data) {
             // The success callback. Calling _.extend from $timeout will wrap it into a try/catch call.
-            // I guess this is the only reason to do this.
-            Contact.$timeout(function() {
+            Card.$timeout(function() {
                 angular.extend(self, data);
             });
         });
     };
 
-    Contact.prototype.$fullname = function() {
+    Card.prototype.$fullname = function() {
         var fn = this.fn || '';
         if (fn.length == 0) {
             var names = [];
@@ -91,7 +115,7 @@
         return fn;
     };
 
-    Contact.prototype.$description = function() {
+    Card.prototype.$description = function() {
         var description = [];
         if (this.title) description.push(this.title);
         if (this.role) description.push(this.role);
@@ -106,30 +130,29 @@
         return description.join(', ');
     };
 
-    Contact.prototype.$birthday = function() {
+    Card.prototype.$birthday = function() {
         return new Date(this.birthday*1000);
     };
 
-    Contact.prototype.$isContact = function() {
+    Card.prototype.$isCard = function() {
         return this.tag == 'VCARD';
     };
 
-    Contact.prototype.$isList = function() {
+    Card.prototype.$isList = function() {
         return this.tag == 'VLIST';
     };
 
-    Contact.prototype.$delete = function(attribute, index) {
+    Card.prototype.$delete = function(attribute, index) {
         if (index > -1 && this[attribute].length > index) {
             this[attribute].splice(index, 1);
         }
     };
 
-    Contact.prototype.$addOrgUnit = function(orgUnit) {
+    Card.prototype.$addOrgUnit = function(orgUnit) {
         if (angular.isUndefined(this.orgUnits)) {
             this.orgUnits = [{value: orgUnit}];
         }
         else {
-            console.debug(angular.toJson(this.orgUnits));
             for (var i = 0; i < this.orgUnits.length; i++) {
                 if (this.orgUnits[i].value == orgUnit) {
                     break;
@@ -141,7 +164,7 @@
         return this.orgUnits.length - 1;
     };
 
-    Contact.prototype.$addCategory = function(category) {
+    Card.prototype.$addCategory = function(category) {
         if (angular.isUndefined(this.categories)) {
             this.categories = [{value: category}];
         }
@@ -157,7 +180,7 @@
         return this.categories.length - 1;
     };
 
-    Contact.prototype.$addEmail = function(type) {
+    Card.prototype.$addEmail = function(type) {
         if (angular.isUndefined(this.emails)) {
             this.emails = [{type: type, value: ''}];
         }
@@ -167,7 +190,7 @@
         return this.emails.length - 1;
     };
 
-    Contact.prototype.$addPhone = function(type) {
+    Card.prototype.$addPhone = function(type) {
         if (angular.isUndefined(this.phones)) {
             this.phones = [{type: type, value: ''}];
         }
@@ -177,7 +200,7 @@
         return this.phones.length - 1;
     };
 
-    Contact.prototype.$addUrl = function(type, url) {
+    Card.prototype.$addUrl = function(type, url) {
         if (angular.isUndefined(this.urls)) {
             this.urls = [{type: type, value: url}];
         }
@@ -187,7 +210,7 @@
         return this.urls.length - 1;
     };
 
-    Contact.prototype.$addAddress = function(type, postoffice, street, street2, locality, region, country, postalcode) {
+    Card.prototype.$addAddress = function(type, postoffice, street, street2, locality, region, country, postalcode) {
         if (angular.isUndefined(this.addresses)) {
             this.addresses = [{type: type, postoffice: postoffice, street: street, street2: street2, locality: locality, region: region, country: country, postalcode: postalcode}];
         }
@@ -204,15 +227,15 @@
     };
 
     /* never call for now */
-    Contact.$unwrapCollection = function(futureContactData) {
+    Card.$unwrapCollection = function(futureCardData) {
         var collection = {};
 
-        collection.$futureContactData = futureContactData;
+        collection.$futureCardData = futureCardData;
 
-        futureContactData.then(function(contacts) {
-            Contact.$timeout(function() {
-                angular.forEach(contacts, function(data, index) {
-                    collection[data.id] = new Contact(data);
+        futureCardData.then(function(cards) {
+            Card.$timeout(function() {
+                angular.forEach(cards, function(data, index) {
+                    collection[data.id] = new Card(data);
                 });
             });
         });
@@ -221,19 +244,18 @@
     };
 
     // $omit returns a sanitized object used to send to the server
-    Contact.prototype.$omit = function() {
-        var contact = {};
+    Card.prototype.$omit = function() {
+        var card = {};
         angular.forEach(this, function(value, key) {
             if (key != 'constructor' && key[0] != '$') {
-                contact[key] = value;
+                card[key] = value;
             }
         });
-        console.debug(angular.toJson(contact));
-        return contact;
+        return card;
     };
 
-    Contact.prototype.$save = function() {
-        return Contact.$$resource.set([this.pid, this.id].join('/'), this.$omit()).then(function (data) {
+    Card.prototype.$save = function() {
+        return Card.$$resource.set([this.pid, this.id].join('/'), this.$omit()).then(function (data) {
             return data;
         });
     };
