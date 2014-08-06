@@ -38,10 +38,18 @@
   NSMutableArray *languages;
   NSArray *browserLanguages;
   SOGoUser *user;
-  NSString *language;
+  NSString *language, *theme;
   
   languages = [NSMutableArray array];
   user = [self activeUser];
+  theme = [[self request] formValueForKey: @"theme"];
+
+  if ([theme length] > 0)
+    {
+      [languages addObject: [NSString stringWithFormat: @"theme_%@", theme]];
+      [self setObject: theme forKey: @"theme"];
+    }
+
   if (!user || [[user login] isEqualToString: @"anonymous"])
     {
       browserLanguages = [[self request] browserLanguages];
@@ -54,14 +62,6 @@
       language = [[user domainDefaults] language];
       [languages addObject: language];
     }
-
-  // if (activeUser && [activeUser language])
-  //   [languages addObject: [activeUser language]];
-  
-  // if ([self hasSession])
-  //   [languages addObjectsFromArray: [[self session] languages]];
-  // else
-  //   [languages addObjectsFromArray: [[self request] browserLanguages]];
 
   return languages;
 }

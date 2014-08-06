@@ -113,8 +113,9 @@
   
   rm = [self pageResourceManager];
 
-  return [rm pathForResourceNamed: rn inFramework: fw 
-	     languages: [[self context] resourceLookupLanguages]];
+  return [rm pathForResourceNamed: rn
+                      inFramework: fw
+                        languages: languages];
 }
 
 - (id)loadToolbarConfigFromResourceNamed:(NSString *)_name {

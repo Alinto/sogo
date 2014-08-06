@@ -43,6 +43,7 @@
   NSCalendarDate *_selectedDate;
   NSDictionary *locale;
   SOGoUserDefaults *userDefaults;
+  NSArray *languages;
 }
 
 + (NSArray *) monthLabelKeys;

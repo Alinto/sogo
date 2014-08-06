@@ -49,6 +49,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/WOContext+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxJSClose.h"
@@ -149,6 +150,7 @@ static SoProduct      *commonProduct      = nil;
       if (!userDefaults)
         ASSIGN (userDefaults, [SOGoSystemDefaults sharedSystemDefaults]);
       language = [userDefaults language];
+      ASSIGN (languages, [context resourceLookupLanguages]);
       ASSIGN (locale,
               [[self resourceManager] localeForLanguageNamed: language]);
     }
@@ -536,7 +538,6 @@ static SoProduct      *commonProduct      = nil;
 - (NSString *) labelForKey: (NSString *) _str
        withResourceManager: (WOResourceManager *) rm
 {
-  NSArray *languages;
   NSString *lKey, *lTable, *lVal;
   NSRange r;
 
@@ -545,10 +546,6 @@ static SoProduct      *commonProduct      = nil;
 
   if (rm == nil)
     [self warnWithFormat:@"missing resource manager!"];
-
-  /* lookup languages */
-
-  languages = [context resourceLookupLanguages];
 
   /* get parameters */
     
@@ -710,9 +707,27 @@ static SoProduct      *commonProduct      = nil;
 - (WOResponse *) redirectToLocation: (NSString *) newLocation
 {
   WOResponse *response;
+  NSURL *url;
+  NSMutableString *location;
+  NSString *theme, *query;
+
+  location = [NSMutableString stringWithString: newLocation];
+  theme = [[context request] formValueForKey: @"theme"];
+  if ([theme length])
+    {
+      url = [NSURL URLWithString: newLocation];
+      query = [url query];
+      if ([query length])
+        {
+          if ([query rangeOfString: @"theme="].length == 0)
+            [location appendFormat: @"&theme=%@", theme];
+        }
+      else
+        [location appendFormat: @"?theme=%@", theme];
+    }
 
   response = [self responseWithStatus: 302];
-  [response setHeader: newLocation forKey: @"location"];
+  [response setHeader: location forKey: @"location"];
 
   return response;
 }
