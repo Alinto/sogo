@@ -1,0 +1,95 @@
+
+/*************** Table adjustment *****************/
+
+TABLE#searchMailHeader, TABLE#searchFiltersList, TABLE#searchMailFooter
+{ width: 100%; }
+
+TABLE#searchFiltersList, TABLE#searchMailFooter
+{
+  border: 1px solid #909090;
+  margin-top: 1em;
+  padding:2px;
+  border-radius: 3px;
+}
+
+TABLE#searchFiltersList
+{
+  display:block;
+  max-height:100px;
+  overflow:auto;
+  width:672px;
+}
+
+TABLE#searchMailFooter
+{
+   height:141px;
+   min-height: 110px;
+}
+
+.buttonsCell
+{
+  width:1%;
+}
+
+.inputsCell
+{
+  width:45%;
+}
+
+.filterRow
+{
+  cellspacing=0;
+}
+
+.scrollbar 
+{
+  overflow-y:auto;
+  height:106px;
+  width:676px;
+  position:absolute;
+}
+
+/*************** Table adjustment : search results *****************/
+.resultsRow {
+  cursor:pointer;
+}
+
+/*************** Button adjustment *****************/
+
+#headerButtons
+{
+  width:27%;
+}
+
+#searchButton, #cancelButton
+{
+  margin-top:0;
+}
+
+.searchByList, .searchArgumentsList, .searchInput
+{
+  width:100%;
+}
+
+DIV#optionsButtons
+{ float:left; }
+
+.button
+{
+  font-style:normal;
+}
+
+#changeHeader
+{ width:15px}
+
+DIV.bottomToolbar {
+  margin:0;
+  position:relative;
+  border-radius:5px;
+  width:40px;
+}
+
+/*************** Lists *****************/
+.hidden 
+{ display:none; }
+

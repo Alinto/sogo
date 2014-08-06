@@ -325,24 +325,33 @@
 - (NSString *) imap4SortKey
 {
   NSString *sort;
+  NSDictionary *urlParams, *sortingAttributes;
+  WORequest *request;
   
-  sort = [[context request] formValueForKey: @"sort"];
+  request = [context request];
+  urlParams = [request contentAsString] objectFromJSONString];
+  sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
+  sort = [sortingAttributes objectForKey:@"sort"];
 
   return [sort uppercaseString];
 }
 
 - (NSString *) imap4SortOrdering 
 {
-  NSString *sort, *ascending;
+  NSString *sort;
   NSString *module;
   NSMutableDictionary *moduleSettings;
+  NSDictionary *urlParams, *sortingAttributes;
+  WORequest *request;
   BOOL asc;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
 
   sort = [self imap4SortKey];
-  ascending = [[context request] formValueForKey: @"asc"];
-  asc = [ascending boolValue];
+  request = [context request];
+  urlParams = [[request contentAsString] objectFromJSONString];
+  sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
+  asc = [[sortingAttributes objectForKey:@"asc"] boolValue];
 
   activeUser = [context activeUser];
   module = @"Mail";
@@ -393,68 +402,71 @@
 
 - (EOQualifier *) searchQualifier
 {
-  NSString *criteria, *value;
-  EOQualifier *qualifier;
-  WORequest *request;  
-
-  request = [context request];
-  criteria = [request formValueForKey: @"search"];
-  value = [request formValueForKey: @"value"];
-  qualifier = nil;
-  if ([value length])
-    {
-      if ([criteria isEqualToString: @"subject"])
-	qualifier = [EOQualifier qualifierWithQualifierFormat:
-				       @"(subject doesContain: %@)", value];
-      else if ([criteria isEqualToString: @"sender"])
-	qualifier = [EOQualifier qualifierWithQualifierFormat:
-					  @"(from doesContain: %@)", value];
-      else if ([criteria isEqualToString: @"subject_or_sender"])
-	qualifier = [EOQualifier qualifierWithQualifierFormat:
-				      @"((subject doesContain: %@)"
-				      @" OR (from doesContain: %@))",
-				 value, value];
-      else if ([criteria isEqualToString: @"to_or_cc"])
-	qualifier = [EOQualifier qualifierWithQualifierFormat:
-					   @"((to doesContain: %@)"
-					@" OR (cc doesContain: %@))",
-				 value, value];
-      else if ([criteria isEqualToString: @"entire_message"])
-	qualifier = [EOQualifier qualifierWithQualifierFormat:
-					  @"(body doesContain: %@)", value];
-    }
+  EOQualifier *qualifier, *searchQualifier;
+  WORequest *request;
+  NSDictionary *filters, *sortingAttributes, *content;
+  NSString *searchBy, *searchArgument, *searchInput, *searchString, *match;
+  NSMutableArray *searchArray;
+  int nbFilters, i;
   
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  qualifier = nil;
+  searchString = nil;
+  nbFilters = 0;
+  searchArray = [[NSMutableArray alloc] init];
+
+  if ([content objectForKey:@"filters"])
+    {
+      filters = [content objectForKey:@"filters"];
+      sortingAttributes = [content objectForKey:@"sortingAttributes"];
+      nbFilters = [filters count];
+      match = [NSString stringWithString:[sortingAttributes objectForKey:@"match"]]; // AND, OR
+    
+      for (i = 0; i < nbFilters; i++)
+        {
+          searchBy = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchBy"]];
+          searchArgument = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchArgument"]];
+          searchInput = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchInput"]];
+      
+          searchString = [NSString stringWithFormat:@"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
+          searchQualifier = [EOQualifier qualifierWithQualifierFormat:searchString];
+          [searchArray addObject:searchQualifier];
+        }
+      if ([match isEqualToString:@"OR"])
+        qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
+      else
+        qualifier = [[EOAndQualifier alloc] initWithQualifierArray: searchArray];
+  
+      [searchArray release];
+      [qualifier autorelease];
+    }
   return qualifier;
 }
 
 - (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder
 {
   EOQualifier *qualifier, *fetchQualifier, *notDeleted;
-
+  
   if (!sortedUIDs)
     {
-      notDeleted = [EOQualifier qualifierWithQualifierFormat:
-				  @"(not (flags = %@))",
-				@"deleted"];
+      notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
       qualifier = [self searchQualifier];
       if (qualifier)
-	{
-	  fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers:
-						     notDeleted, qualifier,
-						   nil];
-	  [fetchQualifier autorelease];
-	}
+        {
+          fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, qualifier, nil];
+          [fetchQualifier autorelease];
+        }
       else
-	fetchQualifier = notDeleted;
-
-      sortedUIDs
-        = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
-				    sortOrdering: [self imap4SortOrdering]
-                                        threaded: sortByThread];
-
+        fetchQualifier = notDeleted;
+    
+      sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
+                                             sortOrdering: [self imap4SortOrdering]
+                                                 threaded: sortByThread];
+    
       [sortedUIDs retain];
     }
-
+  
   return sortedUIDs;
 }
 
@@ -681,6 +693,7 @@
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
 	       forKey: @"content-type"];
+
   folder = [self clientObject];
   
   noHeaders = [request formValueForKey: @"no_headers"];

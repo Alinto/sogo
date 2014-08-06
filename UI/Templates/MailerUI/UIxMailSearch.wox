@@ -1,0 +1,112 @@
+<?xml version='1.0' standalone='yes'?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  
+  <ul id="searchByList" class="hidden">
+    <li><var:string label:value="Subject"/></li>
+    <li><var:string label:value="From"/></li>
+    <li><var:string label:value="To"/></li>
+    <li><var:string label:value="Cc"/></li>
+    <li><var:string label:value="Body"/></li>
+  </ul>
+  <ul id="stringArgumentsList" class="hidden">
+      <li><var:string label:value="contains"/></li>
+      <li><var:string label:value="doesn't contain"/></li>
+  </ul>
+  <!-- TODO
+  <ul id="intArgumentsList" class="hidden">
+      <li><var:string label:value="is"/></li>
+      <li><var:string label:value="is less than"/></li>
+      <li><var:string label:value="is greater than"/></li>
+  </ul>
+  <ul id="priorityArgumentsList" class="hidden">
+      <li><var:string label:value="Highest"/></li>
+      <li><var:string label:value="High"/></li>
+      <li><var:string label:value="Normal"/></li>
+      <li><var:string label:value="Low"/></li>
+      <li><var:string label:value="Lowest"/></li>
+  </ul>
+  <ul id="statusArgumentsList" class="hidden">
+      <li><var:string label:value="Replied"/></li>
+      <li><var:string label:value="Read"/></li>
+      <li><var:string label:value="New"/></li>
+      <li><var:string label:value="Forwarded"/></li>
+      <li><var:string label:value="Starred"/></li>
+  </ul>
+  -->
+
+  <table id="searchMailHeader">
+    <tbody>
+      <tr>
+        <td id="mailAccountsCell">
+          <label><var:string label:value="Search messages in:" /></label>
+          <var:popup const:id="mailAccountsList" list="mailAccountsList" item="item" />
+        </td>
+        <td id="headerButtons">
+          <a class="button" name="search" id="searchButton" onclick="onSearchClick()">
+            <span><var:string label:value="Search"/></span></a>
+          <a class="button" name="cancel" id="cancelButton" onclick="onCancelClick()">
+            <span><var:string label:value="Cancel" /></span></a>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div>
+            <input type="checkbox" id="searchSubfolders" checked="true" onChange="onSearchSubfoldersCheck(this);" />
+            <var:string label:value="Search subfolders" /></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div>
+            <input type="radio" name="matchfilters" id="matchAllFilters" onChange="onMatchFilters(this);" />
+            <var:string label:value="Match all of the following" />
+            <input type="radio" name="matchfilters" id="matchAnyFilters" onChange="onMatchFilters(this);" />
+            <var:string label:value="Match any of the following" />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table id="searchFiltersList">
+    <tbody>
+    </tbody>
+  </table>
+  <div>
+    <a class="button" name="resizeUp" id="resizeButton" onclick="onResizeClick()">
+      <span><img id="resizeUp" rsrc:src="arrow-up.png" />
+            <img id="resizeDown" rsrc:src="arrow-down.png" style = "display:none;"/></span></a>
+  </div>
+  <table id="searchMailFooter">
+    <thead>
+      <tr class="tableview">
+        <td class="tbtv_headercell sortableTableHeader" id="subjectHeader">
+          <img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"/>
+          <var:string label:value="Subject" /></td>
+        <td class="tbtv_headercell sortableTableHeader" id="fromHeader">
+          <var:string label:value="From"/></td>
+        <td class="tbtv_headercell sortableTableHeader" id="dateHeader">
+          <var:string label:value="Date" /></td>
+        <td class="tbtv_headercell sortableTableHeader" id="locationHeader">
+          <var:string label:value="Location" /></td>
+        <td class="tbtv_headercell sortableTableHeader" id="changeHeader">
+          <img rsrc:src="add-icon.png"/></td>
+      </tr>
+    </thead>
+    <tbody class="scrollbar" id="resultsTable">
+      <tr>
+        <td colspan="4" id="noSearchResults"><var:string label:value="No matches found" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <div id="optionsButtons">
+    <a class="button" name="delete" id="deleteButton" onclick="onDeleteClick(this)">
+      <span><var:string label:value="Delete" /></span></a>
+    <a class="button" name="open" id="openButton" onclick="onOpenClick(this)">
+      <span><var:string label:value="Open" /></span></a>
+  </div>
+</div>
