@@ -24,40 +24,81 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
 
 @import "foundation";
 //@import "foundation/components/grid";
-@import "foundation/components/offcanvas";
+//@import "foundation/components/dropdown", "foundation/components/offcanvas", "foundation/components/top-bar";
 //@import "toolbars";
 
 @mixin off-canvas-list {
-  list-style-type: none;
-  padding:0;
-  margin:0;
+    list-style-type: none;
+    padding:0;
+    margin:0;
+    display: table;
+    width: 100%;
 
-  li {
-    label {
-      padding: $off-canvas-label-padding;
-      color: $off-canvas-label-color;
-      text-transform: $off-canvas-label-text-transform;
-      font-weight: $off-canvas-label-font-weight;
-      background: $off-canvas-label-bg;
-      border-top: $off-canvas-label-border-top;
-      border-bottom: $off-canvas-label-border-bottom;
-      margin: $off-canvas-label-margin;
+    li {
+        /*
+           +-----------------------------------------------+
+           + li                                            |
+           |+------+-----------------------------+--------+|
+           || i    | form                        | span   ||
+           |+------+-----------------------------+--------+|
+           +-----------------------------------------------+
+       */
+        display: table-row;
+        transition: background 300ms ease;
+        width: 100%;
+        label {
+            display: block;
+            padding: $off-canvas-label-padding;
+            color: $off-canvas-label-color;
+            text-transform: $off-canvas-label-text-transform;
+            font-size: $off-canvas-label-font-size;
+            font-weight: $off-canvas-label-font-weight;
+            background: $off-canvas-label-bg;
+            border-top: $off-canvas-label-border-top;
+            border-bottom: $off-canvas-label-border-bottom;
+            margin: $off-canvas-label-margin;
+        }
+        >* {
+            display: table-cell;
+            padding: $off-canvas-link-padding;
+            color: $off-canvas-link-color;
+            border-bottom: $off-canvas-link-border-bottom;
+            //vertical-align: middle;
+        }
+        .icon {
+            width: 2em;
+        }
+        form {
+            margin: 0;
+            padding-left: 0;
+            padding-right: 0;
+            * {
+                color: $off-canvas-link-color;
+                display: block;
+                width: 100%;
+                padding: 0;
+                padding-left: $off-canvas-link-padding;
+            }
+            input {
+                border: 0;
+                color: #333 !important;
+                font-size: 1rem;
+                height: $off-canvas-link-padding/2+1rem;
+                margin: 0;
+            }
+        }
+        &:hover {
+            background: scale-color($tabbar-bg, $lightness: -30%);
+        }
+        &._selected {
+            background-color: #242424 !important;
+            border: 0 !important;
+            * {
+                color: #eee;
+            }
+        }
     }
-    div, a {
-      display: block;
-    }
-    div {
-      padding: $off-canvas-link-padding;
-      color: $off-canvas-link-color;
-      border-bottom: $off-canvas-link-border-bottom;
-      &:hover { background: scale-color($tabbar-bg, $lightness: -30%); }
-      transition: background 300ms ease;
-      a { color: $off-canvas-link-color; }
-    }
-  }
-
 }
-//ul.off-canvas-list { @include off-canvas-list; }
 
 $total-columns: 13;
 $column-gutter: 0;
@@ -66,62 +107,10 @@ $column-gutter: 0;
     @include off-canvas-wrap();
     ul {
         @include off-canvas-list();
-    li {
-        &._selected {
-            background-color: #242424 !important;
-            border: 0 !important;
-            a {
-                color: #eee !important;
-            }
-        }
-        div {
-            @include grid-row($behavior: nest);
-            .folder {
-                @include grid-column($columns:11);
-                i {
-                    float: left;
-                    width: 30px;
-                    padding: $off-canvas-link-padding / 2;
-                }
-            }
-            .actions {
-                @include grid-column($columns:2);
-                text-align: center;
-            }
-        }
-        a {
-            &[data-ng-click] {
-                //display: table-cell;
-                //font-size: $off-canvas-link-text-size;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                //padding-right: 30px;
-            }
-            &[data-dropdown-toggle-n0] {
-                //display: table-cell;
-                //float: right;
-                color: #fff;
-                position: absolute;
-                right: 7px;
-                //line-height: 3em;
-            }   
-        }
-        input {
-            //padding-right: 30px;
-            //background-color: scale-color($f-dropdown-list-hover-bg, $lightness: 28%);
-            //background-color: scale-color($tabbar-bg, $lightness: 52%);
-            font-size: 1em;
-            height: 23px;
-            height: 1.6em;
-            padding-left: 30px;
-            margin: 0;
-        }
-    }
     }
 }
 
-.contact-picture {
+.card-picture {
     display: inline-block;
     float: left;
     width: 40px;
@@ -236,12 +225,6 @@ $column-gutter: 0;
             border-left: $topbar-divider-border-bottom;
             padding: $table-head-padding;
             padding-top: 0;
-            //font-size: $table-row-font-size;
-            /* span { */
-            /*     ul { */
-            /*         margin-left: 20px; */
-            /*     } */
-            /* } */
             @include grid-column($columns:13);
             @media #{$medium-up} {
                 @include grid-column($columns:5);
@@ -275,7 +258,6 @@ $column-gutter: 0;
             }
             .section {
                 border-bottom: 1px solid #ddd;
-                //margin-bottom: rem-calc(12);
                 margin: 0 rem-calc(12) rem-calc(12) rem-calc(12);
                 padding-bottom: rem-calc(12);
             }
@@ -305,7 +287,6 @@ $column-gutter: 0;
             }
             .buttonsToolbar {
                 margin-bottom: rem-calc(12);
-                //text-align: right;
                 background-color: #eee;
                 border-top: 2px solid #ddd;
                 .button {
@@ -318,7 +299,7 @@ $column-gutter: 0;
             }
             .viewer {
                 .value {
-                    div, a, ul, span {
+                    div, a, address, ul, span {
                         line-height: $form-label-line-height;
                         margin-left: rem-calc(12);
                     }
@@ -364,30 +345,10 @@ $column-gutter: 0;
 }
 
 .buttonsToolbar {
-    /* background-color: $secondary-color; */
-    /* text-align: center; */
     text-align: right;
-    /* font-size: 1.5em; */
-    /* line-height: 2.5em; */
-    /* min-height: 2.5em; */
     .button {
         margin-bottom: 0;
-        //background-color: $tabbar-bg;
-        /* background-color: $secondary-color; */
-        /* color: scale-color($secondary-color, $lightness: 52%); */
-        //padding: 0.45em 1em 0.35em 1em;
-        /* padding: 0 1em; */
-        /* font-size: 1.0em; */
         font-size: 1.0em;
-        /* transition: color 300ms ease; */
-        //&.success {
-        //    background-color: $secondary-color;
-        //}
-        /* &:focus, &:hover { */
-        /*     color: #fff; */
-        /*     //background-color: #449539; */
-        /*     //background-color: scale-color($secondary-color, $lightness: 13%); */
-        /* } */
     }
     .folders-list & {
         background-color: $tabbar-bg;
@@ -409,26 +370,59 @@ $column-gutter: 0;
 
 .searchToolbar {
     @include grid-row($behavior:collapse);
-    .inputField {
-        //@include grid-column($offset:1, $columns:9);
+    .input-content {
         @include grid-column($offset:0, $columns:11);
-        input {
-            transition: background-color 300ms ease;
-            //background-color: $secondary-color;
-            background-color: transparent;
-            margin: 0.4em;
-            &:focus {
-                background-color: #fff;
+        .input-search {
+            //display: flex;
+            display: table;
+            width: 100%;
+            background-color: $input-bg-color;
+            border: $input-border-width $input-border-style $input-border-color;
+            @include radius($input-border-radius);
+            box-shadow: $input-box-shadow;
+            margin: 5px;
+            i {
+                display: table-cell;
+                //min-width: rem-calc(24);
+                width: rem-calc(24);
+                color: $clearing-caption-font-color;
+                font-size: rem-calc(18);
+                line-height: rem-calc(32);
+                padding-left: $form-spacing;
+                vertical-align: middle;
+            }
+            input {
+                display: table-cell;
+                /* transition: background-color 300ms ease; */
+                //background-color: $secondary-color;
+                background-color: transparent;
+                border: 0;
+                box-shadow: none;
+                margin-bottom: 0;
+                /* &:focus { */
+                /*     background-color: #fff; */
+                /* } */
             }
         }
     }
-    .optionsButton {
+    .input-options {
         @include grid-column($columns:2);
         .button {
             color: $input-disabled-bg;
             background-color: transparent;
             //line-height: 3.5em;
         }
+    }
+}
+
+.alert-bg {
+    color: #ccc;
+    font-size: 24px;
+    text-align: center;
+    i {
+        display: block;
+        font-size: 48px;
+        margin: 12px;
     }
 }
 
@@ -476,6 +470,10 @@ $column-gutter: 0;
             border-color: transparent transparent $primary-color transparent;
         }
     }
+}
+
+address {
+    font-style: normal;
 }
 
 h1 {
