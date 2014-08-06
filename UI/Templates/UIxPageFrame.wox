@@ -62,12 +62,15 @@
                 <section class="top-bar-section">
               <var:if condition="canLogoff">
                 <ul class="right">
-                  <li class="name">
-                    <a href="#"><var:if condition="userHasVacationEnabled">
+                  <li class="name has-dropdown">
+                    <a href="#" class="" data-dropdown-toggle="#userOptions"><var:if condition="userHasVacationEnabled">
                       <img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" />
-                    </var:if>
-                    <var:string var:value="userIdentification"/></a>
+                    </var:if><var:string var:value="userIdentification"/></a>
+                    <ul id="userOptions" class="f-dropdown">
+                      <li><a href="#"><!-- preferences / mobile version / etc --></a></li>
+                    </ul>
                   </li>
+                  <li class="divider hide-for-small"><!-- divider --></li>
                   <li>
                     <a id="logoff" var:href="logoffPath"><var:string label:value="Disconnect"/></a>
                   </li>
@@ -143,12 +146,11 @@
 	  </script>
 	  <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="js/vendor/angular-route.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-sanitize.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="js/vendor/mm-foundation.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/app.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/SOGo.js"><!-- space --></script>
-	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/mm-foundation-tpls.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+          <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
 	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
 	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
 	      var:src="pageJavaScriptURL"><!-- space --></script></var:if>
@@ -159,7 +161,7 @@
 	    ><script type="text/javascript" var:src="item"><!-- space --></script>
 	  </var:foreach>
         </var:if>
-        <var:if condition="isCompatibleBrowser" const:negate="YES"
+       <var:if condition="isCompatibleBrowser" const:negate="YES"
 	  ><var:component className="SOGoBrowsersPanel"
 	    /></var:if>
 	<noscript>
