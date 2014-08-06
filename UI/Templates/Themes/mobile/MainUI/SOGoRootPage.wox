@@ -1,0 +1,79 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    const:jsFiles="Common/SOGoAuthentication.js"
+    className="UIxPageFrame"
+    title="name"
+    var:popup="isPopup">
+
+  <body data-ng-app="SOGo.RootPage">
+
+  <ion-nav-view><!-- main view --></ion-nav-view>
+
+  <script type="text/ng-template" id="menu.html">
+    <ion-side-menus>
+      <ion-side-menu-content>
+        <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+          <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"><!-- back --></i> Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent" animation="slide-left-right"><!-- content --></ion-nav-view>
+      </ion-side-menu-content>
+
+      <ion-side-menu side="left">
+        <ion-content padding="true">
+          <img class="full-image" alt="SOGo" rsrc:src="img/sogo-logo.png"/>
+          <a class="button button-balanced button-block button-clear" href="http://sogo.nu/" target="_new">sogo.nu</a>
+          <small>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></small>
+          <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
+          <img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>
+          <a class="button button-positive button-block button-clear" href="http://inverse.ca/" target="_new">inverse.ca</a>
+          <a class="button button-small button-outline button-stable button-block" href="#" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
+        </ion-content>
+      </ion-side-menu>
+    </ion-side-menus>
+  </script>
+
+  <script type="text/ng-template" id="login.html">
+    <ion-view label:title="Login">
+      <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"><!-- menu toggle --></button>
+      </ion-nav-buttons>
+      <ion-content class="has-header">
+        <form name="loginForm" data-ng-submit="login(creds)">
+        <ion-list>
+          <ion-item class="item-input item-floating-label">
+            <span class="input-label"><var:string label:value="Username"/></span>
+            <input type="text" placeholder="username" ng-model="creds.username" required="required"/>
+          </ion-item>
+          <ion-item class="item-input item-floating-label">
+            <span class="input-label"><var:string label:value="Password"/></span>
+            <input type="password" placeholder="password" ng-model="creds.password" required="required"/>
+          </ion-item>
+          <ion-item class="item-input item-select">
+            <div class="input-label"><var:string label:value="Language"/></div>
+            <var:popup const:name="language"
+                       const:data-ng-model="creds.language"
+		       list="languages"
+		       item="item"
+		       var:value="item"
+		       string="languageText"
+		       label:noSelectionString="choose"
+		       />
+          </ion-item>
+        </ion-list>
+        <ion-checkbox data-ng-model="creds.rememberLogin"><var:string label:value="Remember username"/></ion-checkbox>
+        <p class="padding"><input class="button button-block button-positive" type="submit" label:value="Connect"/></p>
+        </form>
+      </ion-content>
+    </ion-view>
+  </script>
+
+  </body>
+
+</var:component>
