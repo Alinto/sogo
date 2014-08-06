@@ -292,33 +292,4 @@
   return rc;
 }
 
-- (id <WOActionResults>) saveAction
-{
-  SOGoContactGCSFolder *folder;
-  WORequest *request;
-  WOResponse *response;
-  NSDictionary *params, *message;
-  NSString *folderName;
-
-  request = [context request];
-  NSLog(@"%@", [request contentAsString]);
-  params = [[request contentAsString] objectFromJSONString];
-
-  folderName = [params objectForKey: @"name"];
-  if ([folderName length] > 0)
-    {
-      folder = [self clientObject];
-      [folder renameTo: folderName];
-      response = [self responseWith204];
-    }
-  else
-    {
-      message = [NSDictionary dictionaryWithObject: @"Missing name parameter" forKey: @"error"];
-      response = [self responseWithStatus: 500
-                                andString: [message jsonRepresentation]];
-   }
-
-  return response;
-}
-
 @end /* UIxContactFolderActions */

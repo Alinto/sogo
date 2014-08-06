@@ -34,6 +34,8 @@
 
 #import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoGCSFolder.h>
 #import <SoObjects/SOGo/SOGoParentFolder.h>
@@ -193,9 +195,13 @@
 - (WOResponse *) renameFolderAction
 {
   WOResponse *response;
+  WORequest *request;
+  NSDictionary *params, *message;
   NSString *folderName;
 
-  folderName = [[context request] formValueForKey: @"name"];
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  folderName = [params objectForKey: @"name"];
   if ([folderName length] > 0)
     {
       clientObject = [self clientObject];
@@ -204,8 +210,9 @@
     }
   else
     {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Missing 'name' parameter."];
+      message = [NSDictionary dictionaryWithObject: @"Missing name parameter" forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [message jsonRepresentation]];
     }
 
   return response;
