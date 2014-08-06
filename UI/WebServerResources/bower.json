@@ -1,0 +1,12 @@
+{
+  "name": "sogo-web",
+  "private": true,
+  "devDependencies": {
+    "angular": "~1.2",
+    "angular-ui-router": "~0.2",
+    "angular-foundation": "~0.3",
+    "foundation": "~5.3",
+    "ionic": "1.0.0-beta.10",
+    "underscore": "~1.6"
+  }
+}
