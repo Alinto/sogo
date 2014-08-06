@@ -2,7 +2,7 @@
 
 include ../common.make
 
-WEBSERVER_RESOURCE_FILES = $(shell ls *css *ico *js *gif *png *html *txt 2> /dev/null)
+WEBSERVER_RESOURCE_DIRS = css fonts img js
 
 all ::
 
@@ -11,9 +11,7 @@ install ::
 	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Installation skipped."; \
 	else \
 	  mkdir -p $(SOGO_WEBSERVERRESOURCESDIR); \
-	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR)/; \
-	  cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR)/; \
-	  rm -rf $(SOGO_WEBSERVERRESOURCESDIR)/ckeditor/_source; \
+	  cp -r $(WEBSERVER_RESOURCE_DIRS) $(SOGO_WEBSERVERRESOURCESDIR)/; \
 	fi
 
 check ::
