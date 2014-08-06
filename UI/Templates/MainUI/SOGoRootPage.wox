@@ -7,10 +7,10 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
-  const:jsFiles="SOGo/SOGoAuthentication.js"
+  const:jsFiles="Common/SOGoAuthentication.js"
   const:popup="YES"
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
-  <div data-ng-app="SOGoRootPage">
+  <div data-ng-app="SOGo.RootPage">
   <div id="aboutBox" style="display:none;">
     <div>
       <p class="logo"><img const:alt="SOGo" rsrc:src="sogo-logo.png"/></p>
@@ -34,17 +34,18 @@
     <div id="logo">
       <img const:alt="*" id="splash" rsrc:src="img/sogo-logo.png"/>
     </div>
-    <form name="loginForm" data-ng-controller="loginController" data-ng-submit="login($event)">
-      <var:if condition="hasLoginSuffix"><input type="hidden" data-ng-model="loginSuffix" var:value="loginSuffix"/></var:if>
+    <form name="loginForm" data-ng-controller="loginController" data-ng-submit="login(creds)">
+      <var:if condition="hasLoginSuffix"><input type="hidden" data-ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
       <div data-ng-show="warning" data-ng-cloak="ng-cloak" data-alert="data-alert" class="alert-box radius warning">{{warning}}</div>
 	<label><var:string label:value="Username:"/>
-	<input type="text" data-ng-model="username" var:data-ng-init="cookieUsername" required="required" />
+	<input type="text" data-ng-model="creds.username" var:data-ng-init="cookieUsername" required="required" />
         </label>
 	<label><var:string label:value="Password:"/>
-	<input type="password" data-ng-model="password" required="required" />
+	<input type="password" data-ng-model="creds.password" required="required" />
         </label>
 	<label><var:string label:value="Language:"/>
 	<var:popup const:name="language"
+                   const:data-ng-model="creds.language"
 		   list="languages"
 		   item="item"
 		   var:value="item"
@@ -55,6 +56,7 @@
       <var:if condition="hasLoginDomains">
 	  <label><var:string label:value="Domain:"/><br/>
 	  <var:popup const:name="domain"
+                     const:data-ng-model="creds.domain"
 		     list="loginDomains"
 		     item="item"
 		     var:selection="item"
@@ -63,7 +65,7 @@
 		     />
           </label>
       </var:if>
-	<label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin"/> <var:string label:value="Remember username"/></label>
+	<label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin" data-ng-model="creds.rememberLogin"/> <var:string label:value="Remember username"/></label>
 	<label>
 	  <button type="submit" class="small" data-ng-disabled='!loginForm.$valid'>
 	  <var:string label:value="Connect" /></button>
