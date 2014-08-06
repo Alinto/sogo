@@ -273,10 +273,18 @@
 - (NSString *) pageJavaScriptURL
 {
   WOComponent *page;
-  NSString *filename;
+  NSString *theme, *filename;
   
   page = [context page];
-  filename = [NSString stringWithFormat: @"js/%@.js", NSStringFromClass([page class])];
+  theme = [context objectForKey: @"theme"];
+  if ([theme length])
+    {
+      filename = [NSString stringWithFormat: @"js/%@/%@.js", theme, NSStringFromClass([page class])];
+    }
+  else
+    {
+      filename = [NSString stringWithFormat: @"js/%@.js", NSStringFromClass([page class])];
+    }
   NSLog(@"pageJavaScript => %@", filename);
 
   return [self urlForResourceFilename: filename];
@@ -285,10 +293,19 @@
 - (NSString *) productJavaScriptURL
 {
   WOComponent *page;
-  NSString *filename;
+  NSString *theme, *filename;
 
   page = [context page];
-  filename = [NSString stringWithFormat: @"js/%@.js", [page frameworkName]];
+  [context resourceLookupLanguages];
+  theme = [context objectForKey: @"theme"];
+  if ([theme length])
+    {
+      filename = [NSString stringWithFormat: @"js/%@/%@.js", theme, [page frameworkName]];
+    }
+  else
+    {
+      filename = [NSString stringWithFormat: @"js/%@.js", [page frameworkName]];
+    }
   NSLog(@"productJavaScript => %@", filename);
   
   return [self urlForResourceFilename: filename];
