@@ -571,7 +571,7 @@
   if (max > 0)
     {
       addresses = [NSMutableArray arrayWithCapacity: max];
-      for (count = 1; count < max; count++)
+      for (count = 0; count < max; count++)
         {
           adr = [elements objectAtIndex: count];
           type = [adr value: 0 ofAttribute: @"type"];
