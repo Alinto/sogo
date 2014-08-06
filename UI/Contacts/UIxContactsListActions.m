@@ -154,7 +154,7 @@
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                          [[self clientObject] nameInContainer], @"id",
-                       newContactsList, @"contacts",
+                       newContactsList, @"cards",
                        nil];
 
   result = [self responseWithStatus: 200
@@ -215,7 +215,7 @@
         sortedContacts = [NSArray array];
 
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-           sortedContacts, @"contacts", nil];
+           sortedContacts, @"cards", nil];
       result = [self responseWithStatus: 200
 			      andString: [data jsonRepresentation]];
     }
