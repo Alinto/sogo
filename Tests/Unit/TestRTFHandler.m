@@ -69,5 +69,16 @@
   // Output is not correct... but the original issue was segfault
 }
 
+- (void) test_zentyal_crash_2089
+{
+  NSString *out = nil, *error = nil, *in = nil, *expected = nil;
+
+  in = [self get_zentyal_crash_contents_of: 2089];
+  expected = @"<html><meta charset='utf-8'><body><font color=\"#000000\">Lorem Ipsum</font></body></html>";
+  out = [self rtf2html: in];
+  error = [NSString stringWithFormat:
+                    @"Html from rtf result `%@` is not what we expected", out];
+  testWithMessage([out isEqualToString: expected], error);
+}
 
 @end
