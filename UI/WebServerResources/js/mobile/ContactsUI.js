@@ -9,7 +9,7 @@
     angular.module('SOGo.Contacts', ['ionic', 'SOGo.Common', 'SOGo.Contacts'])
 
     .constant('sgSettings', {
-        'baseURL': '/SOGo/so/francis/Contacts'
+        'baseURL': ApplicationBaseURL
     })
 
     .run(function($ionicPlatform) {
