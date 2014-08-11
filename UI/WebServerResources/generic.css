@@ -660,15 +660,14 @@ DIV.dialog > DIV
 
 DIV.dialog.searchMail { 
   position: relative;
-  margin: 0px;
   padding: 0px;
   opacity: 1;
   width: 700px;
-  margin: 100px auto;
+  margin: 2em auto;
 }
 
-DIV.dialog.searchMail > DIV { 
-  padding: 10px; 
+DIV.dialog.searchMail > DIV {
+  min-height:467px;
 }
 
 DIV.dialog.none

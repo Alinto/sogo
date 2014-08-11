@@ -54,6 +54,7 @@
 #import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -329,7 +330,7 @@
   WORequest *request;
   
   request = [context request];
-  urlParams = [request contentAsString] objectFromJSONString];
+  urlParams = [[request contentAsString] objectFromJSONString];
   sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
   sort = [sortingAttributes objectForKey:@"sort"];
 
@@ -404,7 +405,8 @@
 {
   EOQualifier *qualifier, *searchQualifier;
   WORequest *request;
-  NSDictionary *filters, *sortingAttributes, *content;
+  NSDictionary *sortingAttributes, *content;
+  NSArray *filters;
   NSString *searchBy, *searchArgument, *searchInput, *searchString, *match;
   NSMutableArray *searchArray;
   int nbFilters, i;
@@ -428,8 +430,12 @@
           searchBy = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchBy"]];
           searchArgument = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchArgument"]];
           searchInput = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchInput"]];
-      
-          searchString = [NSString stringWithFormat:@"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
+        
+        if ([[[filters objectAtIndex:i] objectForKey:@"negative"] boolValue])
+            searchString = [NSString stringWithFormat:@"(not (%@ %@: '%@'))", searchBy, searchArgument, searchInput];
+        else
+            searchString = [NSString stringWithFormat:@"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
+        
           searchQualifier = [EOQualifier qualifierWithQualifierFormat:searchString];
           [searchArray addObject:searchQualifier];
         }

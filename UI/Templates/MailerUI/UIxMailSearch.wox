@@ -14,31 +14,10 @@
     <li><var:string label:value="Body"/></li>
   </ul>
   <ul id="stringArgumentsList" class="hidden">
-      <li><var:string label:value="contains"/></li>
-      <li><var:string label:value="doesn't contain"/></li>
+    <li><var:string label:value="contains"/></li>
+    <li><var:string label:value="does not contain"/></li>
   </ul>
-  <!-- TODO
-  <ul id="intArgumentsList" class="hidden">
-      <li><var:string label:value="is"/></li>
-      <li><var:string label:value="is less than"/></li>
-      <li><var:string label:value="is greater than"/></li>
-  </ul>
-  <ul id="priorityArgumentsList" class="hidden">
-      <li><var:string label:value="Highest"/></li>
-      <li><var:string label:value="High"/></li>
-      <li><var:string label:value="Normal"/></li>
-      <li><var:string label:value="Low"/></li>
-      <li><var:string label:value="Lowest"/></li>
-  </ul>
-  <ul id="statusArgumentsList" class="hidden">
-      <li><var:string label:value="Replied"/></li>
-      <li><var:string label:value="Read"/></li>
-      <li><var:string label:value="New"/></li>
-      <li><var:string label:value="Forwarded"/></li>
-      <li><var:string label:value="Starred"/></li>
-  </ul>
-  -->
-
+  
   <table id="searchMailHeader">
     <tbody>
       <tr>
@@ -63,9 +42,9 @@
       <tr>
         <td colspan="2">
           <div>
-            <input type="radio" name="matchfilters" id="matchAllFilters" onChange="onMatchFilters(this);" />
+            <input type="radio" name="matchfilters" id="matchAllFilters" value="all" onChange="onMatchFilters(this);" selection="all" />
             <var:string label:value="Match all of the following" />
-            <input type="radio" name="matchfilters" id="matchAnyFilters" onChange="onMatchFilters(this);" />
+            <input type="radio" name="matchfilters" id="matchAnyFilters" value="any" onChange="onMatchFilters(this);" />
             <var:string label:value="Match any of the following" />
           </div>
         </td>
@@ -76,25 +55,22 @@
     <tbody>
     </tbody>
   </table>
-  <div>
-    <a class="button" name="resizeUp" id="resizeButton" onclick="onResizeClick()">
-      <span><img id="resizeUp" rsrc:src="arrow-up.png" />
-            <img id="resizeDown" rsrc:src="arrow-down.png" style = "display:none;"/></span></a>
+  <div id="imgPosition">
+    <a href="#" id="listCollapse">
+      <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
+    </a>
   </div>
   <table id="searchMailFooter">
     <thead>
-      <tr class="tableview">
-        <td class="tbtv_headercell sortableTableHeader" id="subjectHeader">
-          <img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"/>
+      <tr>
+        <td id="subjectHeader" class="td_header">
           <var:string label:value="Subject" /></td>
-        <td class="tbtv_headercell sortableTableHeader" id="fromHeader">
+        <td id="fromHeader" class="td_header">
           <var:string label:value="From"/></td>
-        <td class="tbtv_headercell sortableTableHeader" id="dateHeader">
+        <td id="toHeader" class="td_header">
+          <var:string label:value="To" /></td>
+        <td id="dateHeader" class="td_header">
           <var:string label:value="Date" /></td>
-        <td class="tbtv_headercell sortableTableHeader" id="locationHeader">
-          <var:string label:value="Location" /></td>
-        <td class="tbtv_headercell sortableTableHeader" id="changeHeader">
-          <img rsrc:src="add-icon.png"/></td>
       </tr>
     </thead>
     <tbody class="scrollbar" id="resultsTable">
@@ -108,5 +84,7 @@
       <span><var:string label:value="Delete" /></span></a>
     <a class="button" name="open" id="openButton" onclick="onOpenClick(this)">
       <span><var:string label:value="Open" /></span></a>
+  </div>
+  <div id="resultsFound">
   </div>
 </div>

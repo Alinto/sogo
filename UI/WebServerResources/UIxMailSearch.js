@@ -49,10 +49,14 @@ function onSearchClick() {
             for (j = 0; j < searchArgumentsOptions.length ; j++) {
                 if (searchArgumentsOptions[j].selected) {
                     filter.searchArgument = searchArgumentsOptions[j].innerText;
-                    if (filter.searchArgument == "contains")
+                    filter.negative = false;
+                    if (filter.searchArgument == "contains") {
                         filter.searchArgument = "doesContain";
-                    else
-                        filter.searchArgument = "NOT doesContain";
+                    }
+                    else if (filter.searchArgument == "does not contain") {
+                        filter.searchArgument = "doesContain";
+                        filter.negative = true;
+                    }
                     break;
                 }
             }
@@ -73,7 +77,7 @@ function onSearchClick() {
     }
     else {
         stopOngoingSearch = true;
-        $("searchButton").down().innerText = _("Search");
+        onSearchEnd();
     }
 }
 
@@ -155,16 +159,20 @@ function searchMailsCallback(http) {
                 row.writeAttribute("folderName", http.callbackData.folderName);
                 
                 var cell1 = row.insertCell(0);
+                cell1.writeAttribute("id", "td_table_1");
                 cell1.innerHTML = response.headers[i][3];
                 
                 var cell2 = row.insertCell(1);
+                cell2.writeAttribute("id", "td_table_2");
                 cell2.innerHTML = response.headers[i][4];
                 
                 var cell3 = row.insertCell(2);
-                cell3.innerHTML = response.headers[i][7];
+                cell3.writeAttribute("id", "td_table_3");
+                cell3.innerHTML = response.headers[i][0];
                 
                 var cell4 = row.insertCell(3);
-                cell4.innerHTML = response.headers[i][12];
+                cell4.writeAttribute("id", "td_table_4");
+                cell4.innerHTML = response.headers[i][7];
             }
 
         }
@@ -195,10 +203,21 @@ function searchMailsCallback(http) {
             document.searchMailsAjaxRequest = triggerAjaxRequest(urlstr, searchMailsCallback, callbackData, content, {"content-type": "application/json"});
         }
         else {
-            $("searchButton").down().innerText = _("Search");
+            onSearchEnd();
         }
  
     }
+}
+
+function onSearchEnd() {
+    $("searchButton").down().innerText = _("Search");
+    var nbResults = $$(".resultsRow").length;
+    if (nbResults == 1)
+        $("resultsFound").innerHTML = nbResults + " " + _("result found");
+    else if (nbResults > 0)
+        $("resultsFound").innerHTML = nbResults + " " + _("results found");
+    else
+        $("resultsFound").innerHTML = "";
 }
 
 function onCancelClick() {
@@ -261,31 +280,27 @@ function onAddFilter() {
     
     var cell4 = row.insertCell(3);
     Element.addClassName(cell4, "buttonsCell");
-    var element4 = document.createElement("a");
-    var element5 = document.createElement("a");
-    var buttonsDiv = document.createElement("div");
-    var spanAddFilter = document.createElement("span");
-    var imageAddFilter = document.createElement("img");
-    var spanRemoveFilter = document.createElement("span");
-    var imageRemoveFilter = document.createElement("img");
-    Element.addClassName(element4, "addFilterButton");
-    Element.addClassName(buttonsDiv, "bottomToolbar");
-    element4.writeAttribute("name", "addFilter");
-    element4.writeAttribute("id", "addFilterButtonRow" + rowCount);
-    element4.writeAttribute("onclick", "onAddFilter(this)");
-    imageAddFilter.writeAttribute("src", "/SOGo.woa/WebServerResources/add-icon.png");
-    spanAddFilter.appendChild(imageAddFilter);
-    element4.appendChild(spanAddFilter);
-    buttonsDiv.appendChild(element4);
     
-    Element.addClassName(element5, "removeFilterButton");
-    element5.writeAttribute("name", "removeFilter");
-    element5.writeAttribute("id", "removeFilterButtonRow" + rowCount);
-    element5.writeAttribute("onclick", "onRemoveFilter(this)");
+    var buttonsDiv = document.createElement("div");
+    var imageAddFilter = document.createElement("img");
+    var imageRemoveFilter = document.createElement("img");
+    imageAddFilter.writeAttribute("src", "/SOGo.woa/WebServerResources/add-icon.png");
     imageRemoveFilter.writeAttribute("src", "/SOGo.woa/WebServerResources/remove-icon.png");
-    spanRemoveFilter.appendChild(imageRemoveFilter);
-    element5.appendChild(spanRemoveFilter);
-    buttonsDiv.appendChild(element5);
+    Element.addClassName(imageAddFilter, "addFilterButton");
+    Element.addClassName(imageAddFilter, "glow");
+    Element.addClassName(imageRemoveFilter, "removeFilterButton");
+    Element.addClassName(imageRemoveFilter, "glow");
+    imageAddFilter.writeAttribute("name", "addFilter");
+    imageAddFilter.writeAttribute("id", "addFilterButtonRow" + rowCount);
+    imageAddFilter.writeAttribute("onclick", "onAddFilter(this)");
+    imageRemoveFilter.writeAttribute("name", "removeFilter");
+    imageRemoveFilter.writeAttribute("id", "removeFilterButtonRow" + rowCount);
+    imageRemoveFilter.writeAttribute("onclick", "onRemoveFilter(this)");
+    buttonsDiv.writeAttribute("id", "filterButtons");
+    
+    buttonsDiv.appendChild(imageAddFilter);
+    buttonsDiv.appendChild(imageRemoveFilter);
+    
     cell4.appendChild(buttonsDiv);
 
 }
@@ -333,24 +348,37 @@ function onDeleteClick(event) {
 }
 
 function onResizeClick() {
-    var resizeAttrribute = $("resizeButton").getAttribute("name");
-    if (resizeAttrribute == "resizeUp") {
-        $("searchFiltersList").style.display = "none";
-        $("searchMailFooter").style.height = "300px";
-        $("resultsTable").style.height = "265px";
-        $("resizeUp").style.display = "none";
-        $("resizeDown").style.display = "block";
-        $("resizeButton").writeAttribute("name", "resizeDown");
+    var searchFiltersList = jQuery("#searchFiltersList");
+    var searchMailFooter = jQuery("#searchMailFooter");
+    var resultsTable = jQuery("#resultsTable");
+    var imgPosition = jQuery("#imgPosition");
+    var state = 'collapse';
+    var img = $("listCollapse").select('img').first();
+    
+    
+    if (searchFiltersList[0].visible()) {
+        searchFiltersList.fadeOut(300, function() {
+            searchMailFooter.animate({ top:"120px" }, {queue: false, duration: 100});
+            resultsTable.animate({height:"288px"}, 100);
+            searchMailFooter.animate({height:"312px" }, {queue: false, duration: 100, complete: function() {
+                img.removeClassName('collapse').addClassName('rise');
+                $("resultsFound").style.bottom = "40px;";
+            }});
+            imgPosition.animate({ top:"113px" }, {duration: 100});
+        });
     }
     else {
-        $("searchFiltersList").style.display = "block";
-        $("searchMailFooter").style.height = "141px";
-        $("resultsTable").style.height = "106px";
-        $("resizeUp").style.display = "block";
-        $("resizeDown").style.display = "none";
-        $("resizeButton").writeAttribute("name", "resizeUp");
+        state = 'rise';
+        searchMailFooter.animate({height:"194px"}, {queue: false, duration: 100});
+        searchMailFooter.animate({top:"240px" }, {queue: false, duration: 100, complete:function() {
+            searchFiltersList.fadeIn();
+            img.removeClassName('rise').addClassName('collapse');
+            $("resultsFound").style.bottom = "25px;";
+        }});
+        imgPosition.animate({ top:"233px" }, {duration: 100});
+        resultsTable.animate({height:"171px"}, 100);
+        
     }
-    
 }
 
 /*************** Init ********************/
@@ -363,6 +391,4 @@ function initSearchMailView () {
     // Observers : Event.on(element, eventName[, selector], callback)
     $("searchMailFooter").down("tbody").on("mousedown", "tr", onResultSelectionChange);
     $("searchMailFooter").down("tbody").on("dblclick", "tr", onOpenClick);
-    
-    
 }
