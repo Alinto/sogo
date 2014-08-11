@@ -7,7 +7,7 @@
     angular.module('SOGo.RootPage', ['SOGo.Authentication', 'SOGo.UIMobile', 'ionic'])
 
     .constant('sgSettings', {
-        'baseURL': '/SOGo/so/francis/'
+        'baseURL': ApplicationBaseURL
     })
 
     .run(function($ionicPlatform) {
@@ -48,9 +48,9 @@
         $urlRouterProvider.otherwise('/app/login');
     })
 
-    .controller('AppCtrl', function($scope) {
-        $scope.ApplicationBaseURL = ApplicationBaseURL;
-    })
+    .controller('AppCtrl', ['$scope', 'sgSettings', function(Settings, $scope) {
+        $scope.ApplicationBaseURL = Settings.baseURL;
+    }])
 
     .controller('LoginCtrl', ['$scope', 'Authentication', 'sgDialog', function($scope, Authentication, Dialog) {
         $scope.creds = { 'username': null, 'password': null };

@@ -9,7 +9,7 @@
     angular.module('SOGo.Contacts', ['ngSanitize', 'ui.router', 'mm.foundation', 'mm.foundation.offcanvas', 'SOGo.Common'])
 
     .constant('sgSettings', {
-        'baseURL': '/SOGo/so/francis/Contacts'
+        'baseURL': ApplicationBaseURL
     })
 
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
