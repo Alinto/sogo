@@ -79,10 +79,14 @@
             } else {
                 newAddress = baseAddress;
             }
+
             if (/theme=mobile/.test(window.location.search)) {
-                return baseAddress + '/Contacts' + '?theme=mobile';
+                newAddress = baseAddress + '/Contacts' + '?theme=mobile';
             }
-            return newAddress.replace(/(Calendar|Mail)/, 'Contacts');
+            else {
+                newAddress = baseAddress + '/Contacts';
+            }
+
             return newAddress;
         };
     
