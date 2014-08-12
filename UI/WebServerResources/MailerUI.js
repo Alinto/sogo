@@ -219,13 +219,16 @@ function openMessageWindowsForSelection(action, firstOnly) {
     return false;
 }
 
-/*
+
 function mailListToggleMessageThread(row, cell) {
     var show = row.hasClassName('closedThread');
+    var msguid = row.id.split("_")[1];
+    var action = "markMessageCollapse";
     $(cell).down('img').remove();
     if (show) {
         row.removeClassName('closedThread');
         row.addClassName('openedThread');
+        action = "markMessageUncollapse";
         var img = createElement("img", null, null, { src: ResourcesURL + '/arrow-down.png' });
         cell.insertBefore(img, cell.firstChild);
     }
@@ -241,8 +244,23 @@ function mailListToggleMessageThread(row, cell) {
         else
             row.hide();
     }
+    
+    // Update the dictionnary of the collapsed threads
+    var mailbox = Mailer.currentMailbox;
+    var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
+    var data = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid };
+    
+    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback);
 }
-*/
+
+function mailListToggleMessageCollapseCallback(http) {
+    var data = http.callbackData;
+    if (!isHttpStatus204(http.status)) {
+        log("Message Collapse Failed (" + http.status + "): " + http.statusText);
+    }
+    //Mailer.dataTable.invalidate(data["msguid"], true);
+}
+
 
 /* Triggered when clicking on the read/unread dot of a message row or
  * through the contextual menu. */
@@ -878,6 +896,8 @@ function openMailbox(mailbox, reload) {
 /*
  * Called from SOGoDataTable.render()
  */
+var show = false;
+
 function messageListCallback(row, data, isNew) {
     var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
     row.id = data['rowID'];
@@ -889,13 +909,31 @@ function messageListCallback(row, data, isNew) {
     if (data['uid'] == currentMessage)
         row.addClassName('_selected');
 
-    if (data['Thread'])
-        row.addClassName('openedThread');
+    if (data['Thread']) {
+        if (UserSettings.Mail.threadsCollapsed) {
+            var mailbox = Mailer.currentMailbox;
+            var collapsedList = UserSettings.Mail.threadsCollapsed[mailbox];
+            if (collapsedList != undefined && collapsedList.indexOf(row.id.split("_")[1]) != -1) {
+                row.addClassName('closedThread');
+                show = true;
+            }
+            else {
+                row.addClassName('openedThread');
+            }
+        }
+    }
+    
     else if (data['ThreadLevel'] > 0) {
         if (data['ThreadLevel'] > 10) data['ThreadLevel'] = 10;
         row.addClassName('thread');
         row.addClassName('thread' + data['ThreadLevel']);
+        
+        if (show)
+            row.hide();
     }
+    
+    else
+        show = false;
 
     var cells = row.childElements();
     for (var j = 0; j < cells.length; j++) {
@@ -1171,7 +1209,7 @@ function onMessageSelectionChange(event) {
         t = t.parentNode;
         if (t.tagName == 'TD') {
             if (t.className == 'messageThreadColumn') {
-                //mailListToggleMessageThread(t.parentNode, t); Disable thread collapsing
+                mailListToggleMessageThread(t.parentNode, t);
             }
             else if (t.className == 'messageUnreadColumn') {
                 mailListToggleMessagesRead(t.parentNode);

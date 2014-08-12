@@ -205,8 +205,13 @@ SOGoMailDataSource = Class.create({
                     data[j] = this.cache.get(this.uids[i][0]);
 
                     // Add thread-related data
-                    if (parseInt(this.uids[i][2]) > 0)
-                        data[j]['Thread'] = '&nbsp;'; //'<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
+                    if (parseInt(this.uids[i][2]) > 0) {
+                        var mailbox = Mailer.currentMailbox;
+                        if ((UserSettings.Mail.threadsCollapsed[Mailer.currentMailbox] != undefined) && (UserSettings.Mail.threadsCollapsed[Mailer.currentMailbox].indexOf((this.uids[i][0]).toString())) != -1)
+                            data[j]['Thread'] = '<img class="messageThread" src="' + ResourcesURL + '/arrow-right.png">';
+                        else
+                            data[j]['Thread'] = '<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
+                    }
                     else if (data[j]['Thread'])
                         delete data[j]['Thread'];
                     if (parseInt(this.uids[i][1]) > -1)
