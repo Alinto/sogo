@@ -36,13 +36,14 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', ['sass']);
     grunt.registerTask('default', ['build','watch']);
-    grunt.registerTask('js', function(dev) {
+    grunt.registerTask('static', function(dev) {
         var options = {
             'src':        'bower_components',
-            'dest':       'js/vendor/',
+            'js_dest':    'js/vendor/',
+            'fonts_dest': 'fonts/',
             'min':        (dev? '' : '.min')
         };
-        var vendor = [
+        var js = [
             '<%= src %>/angular/angular<%= min %>.js',
             '<%= src %>/angular-sanitize/angular-sanitize<%= min %>.js',
             '<%= src %>/angular-ui-router/release/angular-ui-router<%= min %>.js',
@@ -51,10 +52,21 @@ module.exports = function(grunt) {
             '<%= src %>/ionic/release/js/ionic<%= min %>.js',
             '<%= src %>/underscore/underscore-min.js'
         ];
-        for (var i = 0; i < vendor.length; i++) {
-            var src = grunt.template.process(vendor[i], {data: options});
+        for (var i = 0; i < js.length; i++) {
+            var src = grunt.template.process(js[i], {data: options});
             var paths = src.split('/');
-            var dest = options.dest + paths[paths.length-1];
+            var dest = options.js_dest + paths[paths.length-1];
+            grunt.file.copy(src, dest);
+            grunt.log.ok("copy " + src + " => " + dest);
+        }
+        var fonts = grunt.file.expand(
+            grunt.template.process('<%= src %>/ionic/release/fonts/ionicons.*',
+                                   {data: options})
+        );
+        for (var i = 0; i < fonts.length; i++) {
+            var src = fonts[i];
+            var paths = src.split('/');
+            var dest = options.fonts_dest + paths[paths.length-1];
             grunt.file.copy(src, dest);
             grunt.log.ok("copy " + src + " => " + dest);
         }
