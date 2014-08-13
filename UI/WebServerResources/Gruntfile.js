@@ -50,14 +50,17 @@ module.exports = function(grunt) {
             '<%= src %>/angular-foundation/mm-foundation-tpls<%= min %>.js',
             '<%= src %>/foundation/js/foundation<%= min %>.js',
             '<%= src %>/ionic/release/js/ionic<%= min %>.js',
-            '<%= src %>/underscore/underscore-min.js'
+            '<%= src %>/underscore/underscore-min.*'
         ];
-        for (var i = 0; i < js.length; i++) {
-            var src = grunt.template.process(js[i], {data: options});
-            var paths = src.split('/');
-            var dest = options.js_dest + paths[paths.length-1];
-            grunt.file.copy(src, dest);
-            grunt.log.ok("copy " + src + " => " + dest);
+        for (var j = 0; j < js.length; j++) {
+            var files = grunt.file.expand(grunt.template.process(js[j], {data: options}))
+            for (var i = 0; i < files.length; i++) {
+                var src = files[i];
+                var paths = src.split('/');
+                var dest = options.js_dest + paths[paths.length-1];
+                grunt.file.copy(src, dest);
+                grunt.log.ok("copy " + src + " => " + dest);
+            }
         }
         var fonts = grunt.file.expand(
             grunt.template.process('<%= src %>/ionic/release/fonts/ionicons.*',
