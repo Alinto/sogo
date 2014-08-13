@@ -100,9 +100,9 @@ function searchMails() {
         var accountNumber = "/" + userNames.indexOf(accountUser);
       
         var position = searchLocation.length;
-        var folderName = accountNumber + "/folder" + searchLocation[1];
+        var folderName = accountNumber + "/folder" + searchLocation[1].replace(" ", "_SP_");
         for (i = 2; i < position; i++)
-            folderName += accountNumber + "/folder" + searchLocation[i];
+            folderName += "/folder" + searchLocation[i];
         
         var folderPath = optionsList[selectedIndex].innerText;
       

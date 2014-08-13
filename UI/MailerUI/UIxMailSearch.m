@@ -32,87 +32,61 @@
 
 - (id) init
 {
-    item = nil;
-    
-    return self;
+  item = nil;
+  
+  return self;
 }
 
 - (void) dealloc
 {
-    [item release];
+  [item release];
 }
 
 - (void) setItem: (NSString *) newItem
 {
-    ASSIGN(item, newItem);
+  ASSIGN(item, newItem);
 }
 
 - (NSString *) item
 {
-    return item;
+  return item;
 }
 
 - (NSArray *) mailAccountsList
 {
-    SOGoMailAccount *co, *accountFolder;
-    SOGoMailAccounts *accountsFolder;
-    SOGoUserFolder *userFolder;
-    NSString *userName, *option, *lookup;
-    NSArray *folders;
-    NSMutableArray *mailboxes;
-    NSDictionary *mailAccount;
-    int nbMailboxes, nbMailAccounts, i, j;
-    
-    
-    userFolder = [[context activeUser] homeFolderInContext: context];
-    accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
-    nbMailAccounts = [[accountsFolder mailAccounts] count];
+  SOGoMailAccount *mAccount;
+  SOGoMailAccounts *mAccounts;
+  NSString *userName, *option, *aString;
+  NSArray *accountFolders;
+  NSMutableArray *mailboxes;
+  NSDictionary *accountName;
+  int nbMailboxes, nbMailAccounts, i, j;
   
-    mailboxes = [[NSMutableArray alloc] init];
-    for (i = 0; i < nbMailAccounts; i++)
-      {
-        mailAccount = [[[accountsFolder mailAccounts] objectAtIndex:i] objectForKey:@"name"]; // Keys on this account = (name, port, encryption, mailboxes, serverName, identities, userName)
-        userName = [[[accountsFolder mailAccounts] objectAtIndex:i] objectForKey:@"userName"];
-        lookup = [NSString stringWithFormat:@"%i", i];
-        accountFolder = [accountsFolder lookupName:lookup inContext: context acquire: NO];
-        folders = [accountFolder allFoldersMetadata];
-        nbMailboxes = [folders count];
-        [mailboxes addObject:mailAccount];
-        for (j = 0; j < nbMailboxes; j++)
-          {
-            option = [NSString stringWithFormat:@"%@%@", userName, [[folders objectAtIndex:j] objectForKey:@"displayName"]];
-            [mailboxes addObject:option];
-          }
-      }
-    return mailboxes;
-    [mailboxes release];
-}
+  // Number of accounts linked with the current user
+  mAccounts = [self clientObject];
+  nbMailAccounts = [[mAccounts mailAccounts] count];
 
-//
-// The objective here is to return the parent view layout and select the print
-// layout corresponding. Default print view: list view
-/*
-- (NSString *) mailAccountSelected
-{
-    SOGoUser *activeUser;
-    NSString *parentView;
-    
-    activeUser = [context activeUser];
-    us = [activeUser userSettings];
-    parentView = [[us objectForKey:@"Calendar"] objectForKey:@"View" ];
-    
-    if ([parentView isEqualToString:@"dayview"])
-        return @"Daily";
-    
-    else if ([parentView isEqualToString:@"weekview"])
-        return @"Weekly";
-    
-    else if ([parentView isEqualToString:@"multicolumndayview"])
-        return @"Multi-Columns";
-    
-    else
-        return @"LIST";
+  mailboxes = [[NSMutableArray alloc] init];
+  for (i = 0; i < nbMailAccounts; i++)
+    {
+      accountName = [[[mAccounts mailAccounts] objectAtIndex:i] objectForKey:@"name"]; // Keys on this account = (name, port, encryption, mailboxes, serverName, identities, userName)
+      userName = [[[mAccounts mailAccounts] objectAtIndex:i] objectForKey:@"userName"];
+  
+      aString = [NSString stringWithFormat:@"%i", i];
+      mAccount = [mAccounts lookupName:aString inContext: context acquire: NO];
+      accountFolders = [mAccount allFoldersMetadata];
+  
+      // Number of mailboxes inside the current account
+      nbMailboxes = [accountFolders count];
+      [mailboxes addObject:accountName];
+      for (j = 0; j < nbMailboxes; j++)
+        {
+          option = [NSString stringWithFormat:@"%@%@", userName, [[accountFolders objectAtIndex:j] objectForKey:@"displayName"]];
+          [mailboxes addObject:option];
+        }
+    }
+  return mailboxes;
+  [mailboxes release];
 }
-*/
 
 @end

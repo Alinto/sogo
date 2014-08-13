@@ -323,35 +323,20 @@
   return @"ARRIVAL";
 }
 
-- (NSString *) imap4SortKey
-{
-  NSString *sort;
-  NSDictionary *urlParams, *sortingAttributes;
-  WORequest *request;
-  
-  request = [context request];
-  urlParams = [[request contentAsString] objectFromJSONString];
-  sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
-  sort = [sortingAttributes objectForKey:@"sort"];
-
-  return [sort uppercaseString];
-}
-
 - (NSString *) imap4SortOrdering 
 {
-  NSString *sort;
-  NSString *module;
+  WORequest *request;
+  NSString *sort, *module;
   NSMutableDictionary *moduleSettings;
   NSDictionary *urlParams, *sortingAttributes;
-  WORequest *request;
-  BOOL asc;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
+  BOOL asc;
 
-  sort = [self imap4SortKey];
   request = [context request];
   urlParams = [[request contentAsString] objectFromJSONString];
   sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
+  sort = [[sortingAttributes objectForKey:@"sort"] uppercaseString];
   asc = [[sortingAttributes objectForKey:@"asc"] boolValue];
 
   activeUser = [context activeUser];
@@ -409,14 +394,12 @@
   NSArray *filters;
   NSString *searchBy, *searchArgument, *searchInput, *searchString, *match;
   NSMutableArray *searchArray;
-  int nbFilters, i;
+  int nbFilters = 0, i;
   
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
   qualifier = nil;
   searchString = nil;
-  nbFilters = 0;
-  searchArray = [[NSMutableArray alloc] init];
 
   if ([content objectForKey:@"filters"])
     {
@@ -425,6 +408,7 @@
       nbFilters = [filters count];
       match = [NSString stringWithString:[sortingAttributes objectForKey:@"match"]]; // AND, OR
     
+      searchArray = [NSMutableArray arrayWithCapacity:nbFilters];
       for (i = 0; i < nbFilters; i++)
         {
           searchBy = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchBy"]];
@@ -443,17 +427,15 @@
         qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
       else
         qualifier = [[EOAndQualifier alloc] initWithQualifierArray: searchArray];
-  
-      [searchArray release];
-      [qualifier autorelease];
     }
+    
   return qualifier;
 }
 
 - (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder
 {
   EOQualifier *qualifier, *fetchQualifier, *notDeleted;
-  
+
   if (!sortedUIDs)
     {
       notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
@@ -472,7 +454,7 @@
     
       [sortedUIDs retain];
     }
-  
+
   return sortedUIDs;
 }
 
@@ -689,7 +671,7 @@
 
 - (id <WOActionResults>) getUIDsAction
 {
-  NSDictionary *data;
+  NSDictionary *data, *requestContent;
   NSString *noHeaders;
   SOGoMailFolder *folder;
   WORequest *request;
@@ -697,12 +679,14 @@
 
   request = [context request];
   response = [context response];
+  requestContent = [[request contentAsString] objectFromJSONString];
+  
   [response setHeader: @"text/plain; charset=utf-8"
-	       forKey: @"content-type"];
+                      forKey: @"content-type"];
 
   folder = [self clientObject];
   
-  noHeaders = [request formValueForKey: @"no_headers"];
+  noHeaders = [[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"no_headers"];
   data = [self getUIDsInFolder: folder
                    withHeaders: ([noHeaders length] == 0)];
 
