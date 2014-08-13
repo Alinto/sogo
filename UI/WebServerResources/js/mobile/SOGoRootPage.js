@@ -48,7 +48,7 @@
         $urlRouterProvider.otherwise('/app/login');
     })
 
-    .controller('AppCtrl', ['$scope', 'sgSettings', function(Settings, $scope) {
+    .controller('AppCtrl', ['$scope', 'sgSettings', function($scope, Settings) {
         $scope.ApplicationBaseURL = Settings.baseURL;
     }])
 
