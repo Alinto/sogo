@@ -273,42 +273,49 @@
 - (NSString *) pageJavaScriptURL
 {
   WOComponent *page;
-  NSString *theme, *filename;
+  NSString *theme, *filename, *url;
   
+  url = nil;
   page = [context page];
   theme = [context objectForKey: @"theme"];
   if ([theme length])
     {
       filename = [NSString stringWithFormat: @"js/%@/%@.js", theme, NSStringFromClass([page class])];
+      url = [self urlForResourceFilename: filename];
     }
-  else
+  if ([url length] == 0)
     {
+      // No theme defined or no specific JavaScript for the theme; rollback to default JavaScript
       filename = [NSString stringWithFormat: @"js/%@.js", NSStringFromClass([page class])];
+      url = [self urlForResourceFilename: filename];
     }
   NSLog(@"pageJavaScript => %@", filename);
 
-  return [self urlForResourceFilename: filename];
+  return url;
 }
 
 - (NSString *) productJavaScriptURL
 {
   WOComponent *page;
-  NSString *theme, *filename;
+  NSString *theme, *filename, *url;
 
+  url = nil;
   page = [context page];
   [context resourceLookupLanguages];
   theme = [context objectForKey: @"theme"];
   if ([theme length])
     {
       filename = [NSString stringWithFormat: @"js/%@/%@.js", theme, [page frameworkName]];
+      url = [self urlForResourceFilename: filename];
     }
-  else
+  if ([url length] == 0)
     {
       filename = [NSString stringWithFormat: @"js/%@.js", [page frameworkName]];
+      url = [self urlForResourceFilename: filename];
     }
   NSLog(@"productJavaScript => %@", filename);
   
-  return [self urlForResourceFilename: filename];
+  return url;
 }
 
 - (BOOL) hasPageSpecificJavaScript

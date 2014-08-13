@@ -33,7 +33,7 @@
           <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
           <img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>
           <a class="button button-positive button-block button-clear" href="http://inverse.ca/" target="_new">inverse.ca</a>
-          <a class="button button-small button-outline button-stable button-block" href="#" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
+          <a data-ng-href="{{ApplicationBaseURL}}?theme=desktop" class="button button-small button-outline button-stable button-block"><var:string label:value="Desktop Version"/></a>
         </ion-content>
       </ion-side-menu>
     </ion-side-menus>
