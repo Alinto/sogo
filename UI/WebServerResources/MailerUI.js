@@ -248,17 +248,28 @@ function mailListToggleMessageThread(row, cell) {
     // Update the dictionnary of the collapsed threads
     var mailbox = Mailer.currentMailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
-    var data = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid };
+    var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};
     
-    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback);
+    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback, callbackData);
 }
 
 function mailListToggleMessageCollapseCallback(http) {
     var data = http.callbackData;
-    if (!isHttpStatus204(http.status)) {
+    if (isHttpStatus204(http.status)) {
+        if (data.action == "markMessageCollapse") {
+            if (cachedThreadsCollapsed[data.currentMailbox])
+                cachedThreadsCollapsed[data.currentMailbox].push(data.msguid);
+            else
+                cachedThreadsCollapsed[data.currentMailbox] = [data.msguid];
+        }
+        else {
+            var index = cachedThreadsCollapsed[data.currentMailbox].indexOf(data.msguid);
+            cachedThreadsCollapsed[data.currentMailbox].splice(index, 1);
+        }
+    }
+    else {
         log("Message Collapse Failed (" + http.status + "): " + http.statusText);
     }
-    //Mailer.dataTable.invalidate(data["msguid"], true);
 }
 
 
@@ -948,6 +959,7 @@ function openMailbox(mailbox, reload) {
  * Called from SOGoDataTable.render()
  */
 var show = false;
+var cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
 
 function messageListCallback(row, data, isNew) {
     var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
@@ -961,9 +973,9 @@ function messageListCallback(row, data, isNew) {
         row.addClassName('_selected');
 
     if (data['Thread']) {
-        if (UserSettings.Mail.threadsCollapsed) {
+        if (cachedThreadsCollapsed) {
             var mailbox = Mailer.currentMailbox;
-            var collapsedList = UserSettings.Mail.threadsCollapsed[mailbox];
+            var collapsedList = cachedThreadsCollapsed[mailbox];
             if (collapsedList != undefined && collapsedList.indexOf(row.id.split("_")[1]) != -1) {
                 row.addClassName('closedThread');
                 show = true;
