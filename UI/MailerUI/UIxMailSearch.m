@@ -66,7 +66,7 @@
   mAccounts = [self clientObject];
   nbMailAccounts = [[mAccounts mailAccounts] count];
 
-  mailboxes = [[NSMutableArray alloc] init];
+  mailboxes = [NSMutableArray array];
   for (i = 0; i < nbMailAccounts; i++)
     {
       accountName = [[[mAccounts mailAccounts] objectAtIndex:i] objectForKey:@"name"]; // Keys on this account = (name, port, encryption, mailboxes, serverName, identities, userName)
@@ -86,7 +86,6 @@
         }
     }
   return mailboxes;
-  [mailboxes release];
 }
 
 @end
