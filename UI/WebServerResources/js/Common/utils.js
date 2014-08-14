@@ -71,13 +71,17 @@ String.prototype.base64decode = function() {
     return output;
 };
 
-function l(key) {
+function l() {
+    var key = arguments[0];
     var value = key;
     if (labels[key]) {
         value = labels[key];
     }
     else if (clabels[key]) {
         value = clabels[key];
+    }
+    for (var i = 1, j = 0; i < arguments.length; i++, j++) {
+        value = value.replace('%{' + j + '}', arguments[i]);
     }
 
     return value;
