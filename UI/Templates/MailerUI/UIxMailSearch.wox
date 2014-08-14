@@ -4,7 +4,8 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:uix="OGo:uix"
   xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label">
+  xmlns:label="OGo:label"
+  const:jsFiles="tablekit.js, tablekit-sogo.js, tablekit-trueresize.js">
   
   <ul id="searchByList" class="hidden">
     <li><var:string label:value="Subject"/></li>
@@ -60,7 +61,7 @@
       <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
     </a>
   </div>
-  <table id="searchMailFooter">
+  <table id="searchMailFooter" class="sortable">
     <thead>
       <tr>
         <td id="subjectHeader" class="td_header">

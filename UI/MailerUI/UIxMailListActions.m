@@ -459,7 +459,8 @@
 }
 
 /**
- * Returns a flatten representation of the messages threads as triples of 
+ * Returns a 
+ of the messages threads as triples of
  * metadata, including the message UID, thread level and root position.
  * @param _sortedUIDs the interleaved arrays representation of the messages UIDs
  * @return an flatten array representation of the messages UIDs
@@ -632,11 +633,14 @@
 
   // Retrieve messages UIDs using form parameters "sort" and "asc"
   uids = [self getSortedUIDsInFolder: folder];
+  
+  // Get rid of the extra parenthesis
+   // uids = [[[[uids stringValue] stringByReplacingOccurrencesOfString:@"(" withString:@""] stringByReplacingOccurrencesOfString:@")" withString:@""] componentsSeparatedByString:@","];
 
   if (includeHeaders)
     {
       // Also retrieve the first headers, up to 'headersPrefetchMaxSize'
-      count = [uids count];
+      count = [[uids flattenedArray] count];
       if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
       r = NSMakeRange(0, count);
       headers = [self getHeadersForUIDs: [[uids flattenedArray] subarrayWithRange: r]

@@ -159,19 +159,19 @@ function searchMailsCallback(http) {
                 row.writeAttribute("folderName", http.callbackData.folderName);
                 
                 var cell1 = row.insertCell(0);
-                cell1.writeAttribute("id", "td_table_1");
+                Element.addClassName(cell1, "td_table_1");
                 cell1.innerHTML = response.headers[i][3];
                 
                 var cell2 = row.insertCell(1);
-                cell2.writeAttribute("id", "td_table_2");
+                Element.addClassName(cell2, "td_table_2");
                 cell2.innerHTML = response.headers[i][4];
                 
                 var cell3 = row.insertCell(2);
-                cell3.writeAttribute("id", "td_table_3");
+                Element.addClassName(cell3, "td_table_3");
                 cell3.innerHTML = response.headers[i][0];
                 
                 var cell4 = row.insertCell(3);
-                cell4.writeAttribute("id", "td_table_4");
+                Element.addClassName(cell4, "td_table_4");
                 cell4.innerHTML = response.headers[i][7];
             }
 
@@ -218,6 +218,8 @@ function onSearchEnd() {
         $("resultsFound").innerHTML = nbResults + " " + _("results found");
     else
         $("resultsFound").innerHTML = "";
+    
+    TableKit.reloadTable($("searchMailFooter"));
 }
 
 function onCancelClick() {
@@ -344,7 +346,85 @@ function onOpenClick(event) {
 }
 
 function onDeleteClick(event) {
-    console.debug("deleteButton");
+    var messageList = $("resultsTable");
+    var row = messageList.getSelectedRows()[0];
+    if (row) {
+        var rowIds = messageList.getSelectedRows()[0].getAttribute("uid");
+        var uids = new Array(); // message IDs
+        var paths = new Array(); // row IDs
+        var unseenCount = 0;
+        var refreshFolder = false;
+        
+        if (rowIds && rowIds.length > 0) {
+            messageList.deselectAll();
+            if (unseenCount < 1) {
+                row.remove();
+                if (row.hasClassName("mailer_unreadmail"))
+                    unseenCount--;
+                else
+                    unseenCount = 1;
+            }
+            var uid = rowIds;
+            var path = Mailer.currentMailbox + "/" + uid;
+            uids.push(uid);
+            paths.push(path);
+            deleteMessageRequestCount++;
+            
+            deleteCachedMessage(path);
+            if (Mailer.currentMessages[Mailer.currentMailbox] == uid) {
+                if (messageContent) messageContent.innerHTML = '';
+                Mailer.currentMessages[Mailer.currentMailbox] = null;
+            }
+            
+            Mailer.dataTable.remove(uid);
+            updateMessageListCounter(0 - rowIds.length, true);
+            if (unseenCount < 0) {
+                var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
+                if (node) {
+                    updateUnseenCount(node, unseenCount, true);
+                }
+            }
+            var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/batchDelete";
+            var parameters = "uid=" + uids.join(",");
+            var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "refreshUnseenCount": (unseenCount > 0), "refreshFolder": refreshFolder };
+            triggerAjaxRequest(url, deleteMessageCallback, data, parameters,
+                               { "Content-type": "application/x-www-form-urlencoded" });
+        }
+    }
+    return false;
+
+}
+
+function deleteMessageCallback (http){
+    if (isHttpStatus204(http.status) || http.status == 200) {
+        var data = http.callbackData;
+        if (http.status == 200) {
+            // The answer contains quota information
+            var rdata = http.responseText.evalJSON(true);
+            if (rdata.quotas && data["mailbox"].startsWith('/0/'))
+                updateQuotas(rdata.quotas);
+        }
+        if (data["refreshUnseenCount"])
+            // TODO : the unseen count should be returned when calling the batchDelete remote action,
+            // in order to avoid this extra AJAX call.
+            getUnseenCountForFolder(data["mailbox"]);
+        if (data["refreshFolder"])
+            Mailer.dataTable.refresh();
+    }
+    else if (!http.callbackData["withoutTrash"]) {
+        showConfirmDialog(_("Warning"),
+                          _("The messages could not be moved to the trash folder. Would you like to delete them immediately?"),
+                          deleteMessagesWithoutTrash.bind(document, http.callbackData),
+                          function() { refreshCurrentFolder(); disposeDialog(); });
+    }
+    else {
+        var html = new Element('div').update(http.responseText);
+        log ("Messages deletion failed (" + http.status + ") : ");
+        log (html.down('p').innerHTML);
+        showAlertDialog(_("Operation failed"));
+        refreshCurrentFolder();
+    }
+     onSearchEnd();
 }
 
 function onResizeClick() {
@@ -391,4 +471,5 @@ function initSearchMailView () {
     // Observers : Event.on(element, eventName[, selector], callback)
     $("searchMailFooter").down("tbody").on("mousedown", "tr", onResultSelectionChange);
     $("searchMailFooter").down("tbody").on("dblclick", "tr", onOpenClick);
+    TableKit.Sortable.init($("searchMailFooter"), {sortable : true});
 }

@@ -50,7 +50,7 @@ TABLE#searchMailFooter
   right:0;
 }
 
-#td_table_1, #td_table_2, #td_table_3, #td_table_4 {
+.td_table_1, .td_table_2, .td_table_3, .td_table_4 {
  width:25%;
 }
 
