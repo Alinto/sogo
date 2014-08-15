@@ -8,7 +8,7 @@ Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
 
 Bug fixes
- -
+ - fixed crasher when subscribing users to resources (#2892)
 
 2.2.7 (2014-07-30)
 ------------------

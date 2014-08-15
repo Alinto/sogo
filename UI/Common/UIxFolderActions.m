@@ -377,7 +377,7 @@
       for (count = 0; count < max; count++)
         [folder subscribeUserOrGroup: [userIDs objectAtIndex: count]
 			    reallyDo: YES
-                            response: response];
+                            response: nil];
       ex = nil;
     }
   else
