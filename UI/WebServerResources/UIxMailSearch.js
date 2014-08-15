@@ -226,6 +226,8 @@ function onSearchEnd() {
 function onCancelClick() {
     disposeDialog();
     $("searchMailView").remove();
+    $("toolbarSearchButton").disabled = false;
+    
 }
 
 function onSearchSubfoldersCheck(event) {
