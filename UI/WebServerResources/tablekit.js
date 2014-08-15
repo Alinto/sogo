@@ -242,6 +242,12 @@ Object.extend(TableKit, {
 	  if(op.resizable) {TableKit.Resizable.init(table);}
 	  if(op.editable) {TableKit.Editable.init(table);}
 	},
+    reloadSortableTable : function(table){
+      table = $(table);
+      TableKit.unloadTable(table);
+      var op = TableKit.option('sortable', table.id);
+      if(op.sortable) {TableKit.Sortable.init(table);}
+    },
 	reload : function() {
 	  for(var k in TableKit.tables) {
 	    TableKit.reloadTable(k);

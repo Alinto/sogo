@@ -4,26 +4,24 @@
 TABLE#searchMailHeader
 { width: 100%; }
 
-TABLE#searchFiltersList, TABLE#searchMailFooter
-{
-  border: 1px solid #909090;
-  padding:2px;
-  border-radius: 3px;
-}
-
 TABLE#searchFiltersList
 {
+  border: 1px solid #909090;
+  padding-top:2px;
+  border-radius: 3px;
   display:inline-block;
   max-height:105px;
   height:105px;
   overflow:auto;
-  width:674px;
+  width:100%;
   margin-top: 1em;
 }
 
 TABLE#searchMailFooter
 {
    position:absolute;
+   border: 1px solid #909090;
+   border-radius: 3px;
    left:10px;
    width:680px;
    top:240px;
@@ -54,16 +52,25 @@ TABLE#searchMailFooter
  width:25%;
 }
 
-/*************** Table adjustment : search results *****************/
-.resultsRow {
-  cursor:pointer;
+TD.sortasc {
+  background:#bfc2bf;
+  background-image: url(/SOGo.woa/WebServerResources/arrow-up.png);
+  background-repeat: no-repeat;
+  background-position:right center;
+}
+
+TD.sortdesc {
+  background:#bfc2bf;
+  background-image: url(/SOGo.woa/WebServerResources/arrow-down.png);
+  background-repeat: no-repeat;
+  background-position:right center;
 }
 
 .td_header {
-  border: solid #909090 1px;
-  position:absolute;
-  top:-1px;
-  width:157px;
+  border-bottom: solid #909090 1px;
+  border-right: solid #909090 1px;
+  height:18px;
+  width:20%;
   cursor:pointer;
   background: -webkit-linear-gradient(left top, #f0f1f0 , #e6e7e6); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(bottom right, #f0f1f0, #e6e7e6); /* For Opera 11.1 to 12.0 */
@@ -74,20 +81,17 @@ TABLE#searchMailFooter
 .td_header:hover
 {text-decoration: underline; }
 
-#subjectHeader {
-  left:-1px;
-  border-top-left-radius: 3px;
+#buttonExpandHeader {
+  width:3%;
+  border-right:0;
 }
-#fromHeader {
-  left:166px;
-}
-#toHeader {
-  left:333px;
-}
-#dateHeader {
-  left:500px;
-  width:168px;
-  border-top-right-radius: 3px;
+
+@-moz-document url-prefix() {
+  #buttonExpandHeader {
+    width:1.5%;
+    border-right:0;
+  }
+
 }
 
 /*************** Button adjustment *****************/
@@ -118,9 +122,6 @@ DIV#optionsButtons
   font-style:normal;
 }
 
-#changeHeader
-{ width:15px}
-
 #resizeFrame
 {
   text-align: -webkit-right;
@@ -133,47 +134,64 @@ DIV#optionsButtons
   text-align: -webkit-center;
 }
 
-
 #resultsFound {
   position:absolute;
   bottom:25px;
   right:10px;
 }
 
-
 #imgPosition
-{ position: absolute;
-  right: 17px;
-  top: 233px;
-  z-index: 1;
-}
-
-#listCollapse
-{ position: absolute;
-  top: .2em;
-  right: 0;
-  margin: 0.5em 1em; }
+{ z-index: 1; }
 
 #listCollapse img
 { position: absolute; }
 
 #listCollapse img.collapse
 { clip: rect(0 18px 18px 0);
-  left: 0;
-  top: 0; }
+  top: 1px;
+  right: -16px; }
 
 #listCollapse img.collapse:hover
 { clip: rect(0 36px 18px 18px);
-  left: -18px; }
+  top: 1px;
+  right: 2px; }
 
 #listCollapse img.rise
 { clip: rect(18px 18px 36px 0);
-  left: 0;
-  top: -18px; }
+  top: -17px;
+  right:-16px;
+  }
 
 #listCollapse img.rise:hover
 { clip: rect(18px 36px 36px 18px);
-  left: -18px; }
+  top: -17px;
+  right:2px; }
+
+@-moz-document url-prefix() {
+  #listCollapse img
+  { position: absolute; }
+
+  #listCollapse img.collapse
+  { clip: rect(0 18px 18px 0);
+    top: 2px;
+    right: -16px; }
+
+  #listCollapse img.collapse:hover
+  { clip: rect(0 36px 18px 18px);
+    top: 2px;
+    right: 2px; }
+
+  #listCollapse img.rise
+  { clip: rect(18px 18px 36px 0);
+    top: -16px;
+    right:-16px;
+    }
+
+  #listCollapse img.rise:hover
+  { clip: rect(18px 36px 36px 18px);
+    top: -16px;
+    right:2px; }
+}
   
 #filterButtons 
 {

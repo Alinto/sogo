@@ -15,7 +15,7 @@ var stopOngoingSearch = false;
 function onSearchClick() {
 // This function updates the searchParams
     var filterRows = $$(".filterRow");
-    var searchButton = $("searchButton").down().innerText;
+    var searchButton = $("searchButton").down().innerHTML;
     var mailAccountsList = $("mailAccountsList").options;
     
     if (searchButton == _("Search")) {
@@ -25,7 +25,7 @@ function onSearchClick() {
         // Get the mailboxe(s)
         for (i = 0; i < mailAccountsList.length ; i++) {
             if (mailAccountsList[i].selected) {
-                searchParams.searchLocation = mailAccountsList[i].innerText;
+                searchParams.searchLocation = mailAccountsList[i].innerHTML;
                 break;
             }
         }
@@ -40,7 +40,7 @@ function onSearchClick() {
             // Get the searchBy
             for (j = 0; j < searchByOptions.length ; j++) {
                 if (searchByOptions[j].selected) {
-                    filter.searchBy = searchByOptions[j].innerText;
+                    filter.searchBy = searchByOptions[j].innerHTML;
                     break;
                 }
             }
@@ -48,7 +48,7 @@ function onSearchClick() {
             // Get the searchArgument
             for (j = 0; j < searchArgumentsOptions.length ; j++) {
                 if (searchArgumentsOptions[j].selected) {
-                    filter.searchArgument = searchArgumentsOptions[j].innerText;
+                    filter.searchArgument = searchArgumentsOptions[j].innerHTML;
                     filter.negative = false;
                     if (filter.searchArgument == "contains") {
                         filter.searchArgument = "doesContain";
@@ -70,7 +70,7 @@ function onSearchClick() {
         }
         // Send the request only if there is at least one filter
         if (searchParams.filters.length > 0) {
-            $("searchButton").down().innerText = _("Stop");
+            $("searchButton").down().innerHTML = _("Stop");
             searchMails();
         }
         // TODO - give the user a warning or a notice that it needs at least one filter
@@ -104,15 +104,15 @@ function searchMails() {
         for (i = 2; i < position; i++)
             folderName += "/folder" + searchLocation[i];
         
-        var folderPath = optionsList[selectedIndex].innerText;
+        var folderPath = optionsList[selectedIndex].innerHTML;
       
     }
     
     var subfolders = [];
     if (searchParams.subfolder == true) {
         for (i = 0; i < nbOptions; i++) {
-            if ((optionsList[i].innerText.search(folderPath) != -1) && (i != selectedIndex)) {
-                var splitArray = optionsList[i].innerText.split("/");
+            if ((optionsList[i].innerHTML.search(folderPath) != -1) && (i != selectedIndex)) {
+                var splitArray = optionsList[i].innerHTML.split("/");
                 // Remove the user information since it is not required
                 splitArray.splice(0, 1);
                 var subfolder = [];
@@ -184,7 +184,7 @@ function searchMailsCallback(http) {
               
                 cell.writeAttribute("id", "noSearchResults");
                 cell.writeAttribute("colspan", "4");
-                element.innerText = _("No matches found");
+                element.innerHTML = _("No matches found");
                 cell.appendChild(element);
             }
         }
@@ -210,7 +210,7 @@ function searchMailsCallback(http) {
 }
 
 function onSearchEnd() {
-    $("searchButton").down().innerText = _("Search");
+    $("searchButton").down().innerHTML = _("Search");
     var nbResults = $$(".resultsRow").length;
     if (nbResults == 1)
         $("resultsFound").innerHTML = nbResults + " " + _("result found");
@@ -219,7 +219,8 @@ function onSearchEnd() {
     else
         $("resultsFound").innerHTML = "";
     
-    TableKit.reloadTable($("searchMailFooter"));
+    TableKit.reloadSortableTable($("searchMailFooter"));
+    $("buttonExpandHeader").addClassName("nosort");
 }
 
 function onCancelClick() {
@@ -253,7 +254,7 @@ function onAddFilter() {
     for (i = 0; i < searchByList.length; i++) {
         var option = document.createElement("option");
         option.writeAttribute("value", i);
-        option.innerHTML = searchByList[i].innerText;
+        option.innerHTML = searchByList[i].innerHTML;
         element1.appendChild(option);
     }
     cell1.appendChild(element1);
@@ -265,7 +266,7 @@ function onAddFilter() {
     for (i = 0; i < stringArgumentsList.length; i++) {
         var option = document.createElement("option");
         option.writeAttribute("value", i);
-        option.innerHTML = stringArgumentsList[i].innerText;
+        option.innerHTML = stringArgumentsList[i].innerHTML;
         element2.appendChild(option);
     }
     cell2.appendChild(element2);
@@ -320,7 +321,7 @@ function onRemoveFilter(event) {
 function onResultSelectionChange(event) {
     var table = $("searchMailFooter").down("tbody");
     
-    if (event && (event.target.innerText != _("No matches found"))) {
+    if (event && (event.target.innerHTML != _("No matches found"))) {
         var node = getTarget(event);
         
         if (node.tagName == "SPAN")
@@ -431,7 +432,6 @@ function onResizeClick() {
     var searchFiltersList = jQuery("#searchFiltersList");
     var searchMailFooter = jQuery("#searchMailFooter");
     var resultsTable = jQuery("#resultsTable");
-    var imgPosition = jQuery("#imgPosition");
     var state = 'collapse';
     var img = $("listCollapse").select('img').first();
     
@@ -444,7 +444,6 @@ function onResizeClick() {
                 img.removeClassName('collapse').addClassName('rise');
                 $("resultsFound").style.bottom = "40px;";
             }});
-            imgPosition.animate({ top:"113px" }, {duration: 100});
         });
     }
     else {
@@ -455,7 +454,6 @@ function onResizeClick() {
             img.removeClassName('rise').addClassName('collapse');
             $("resultsFound").style.bottom = "25px;";
         }});
-        imgPosition.animate({ top:"233px" }, {duration: 100});
         resultsTable.animate({height:"171px"}, 100);
         
     }
@@ -471,5 +469,4 @@ function initSearchMailView () {
     // Observers : Event.on(element, eventName[, selector], callback)
     $("searchMailFooter").down("tbody").on("mousedown", "tr", onResultSelectionChange);
     $("searchMailFooter").down("tbody").on("dblclick", "tr", onOpenClick);
-    TableKit.Sortable.init($("searchMailFooter"), {sortable : true});
 }

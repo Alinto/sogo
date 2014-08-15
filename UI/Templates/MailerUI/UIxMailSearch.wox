@@ -56,22 +56,22 @@
     <tbody>
     </tbody>
   </table>
-  <div id="imgPosition">
-    <a href="#" id="listCollapse">
-      <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
-    </a>
-  </div>
   <table id="searchMailFooter" class="sortable">
     <thead>
       <tr>
-        <td id="subjectHeader" class="td_header">
+        <td id="subjectSearchHeader" class="td_header">
           <var:string label:value="Subject" /></td>
-        <td id="fromHeader" class="td_header">
+        <td id="fromSearchHeader" class="td_header">
           <var:string label:value="From"/></td>
-        <td id="toHeader" class="td_header">
+        <td id="toSearchHeader" class="td_header">
           <var:string label:value="To" /></td>
-        <td id="dateHeader" class="td_header">
+        <td id="dateSearchHeader" class="td_header">
           <var:string label:value="Date" /></td>
+        <td id="buttonExpandHeader" class="td_header">
+          <div id="imgPosition">
+            <a href="#" id="listCollapse">
+              <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
+            </a></div></td>
       </tr>
     </thead>
     <tbody class="scrollbar" id="resultsTable">
