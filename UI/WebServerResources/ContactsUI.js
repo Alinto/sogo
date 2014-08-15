@@ -1071,17 +1071,18 @@ function updateAddressBooksMenus() {
 function onAddressBookModify(event) {
     var folders = $("contactFolders");
     var selected = folders.getSelectedNodes()[0];
-    var addressBookID = selected.getAttribute("id");
-    var url = ApplicationBaseURL + addressBookID + "/properties";
-    var windowID = sanitizeWindowName(addressBookID + " properties");
-    var width = 410;
-    var height = 410;
-
-    $(function() {
-            var properties = window.open(url, windowID, "width="+width+",height="+height+",resizable=0");
-            properties.focus();
-        }).delay(0.1);
-
+    if (selected.getAttribute("list-editing") == "available") {
+        var addressBookID = selected.getAttribute("id");
+        var url = ApplicationBaseURL + addressBookID + "/properties";
+        var windowID = sanitizeWindowName(addressBookID + " properties");
+        var width = 410;
+        var height = 410;
+        
+        $(function() {
+          var properties = window.open(url, windowID, "width="+width+",height="+height+",resizable=0");
+          properties.focus();
+          }).delay(0.1);
+    }
 }
 
 function onMenuSharing(event) {
