@@ -276,6 +276,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
   NSString *username;
 
+  if (newConnInfo == NULL)
+    {
+      return nil;
+    }
+
   if ((self = [self init]))
     {
       ASSIGN (contextUrl, newUrl);
