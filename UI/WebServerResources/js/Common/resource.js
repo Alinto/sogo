@@ -2,18 +2,19 @@
     'use strict';
 
     /* Constructor  */
-    function Resource($http, $q, path) {
+    function Resource($http, $q, path, options) {
         angular.extend(this, {
             _http: $http,
             _q: $q,
             _path: path
         });
+        angular.extend(this, options);
     }
 
     /* The factory we'll use to register with Angular */
     Resource.$factory =  ['$http', '$q', function($http, $q) {
-        return function(path) {
-            return new Resource($http, $q, path);
+        return function(path, options) {
+            return new Resource($http, $q, path, options);
         };
     }];
 
@@ -29,7 +30,8 @@
     Resource.prototype.find = function(uid) {
         var deferred = this._q.defer();
 
-        this._http.get(this.path(uid))
+        this._http
+            .get(this.path(uid))
             .success(deferred.resolve)
             .error(deferred.reject);
 
@@ -50,9 +52,22 @@
         return deferred.promise;
     };
 
-    Resource.prototype.set = function(uid, newValue) {
+    Resource.prototype.newguid = function(uid) {
         var deferred = this._q.defer();
-        var path = this._path + '/' + uid + '/save';
+        var path = this._path + '/' + uid + '/newguid';
+
+        this._http
+            .get(path)
+            .success(deferred.resolve)
+            .error(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    Resource.prototype.set = function(uid, newValue, options) {
+        var deferred = this._q.defer();
+        var action = (options && options.action)? options.action : 'save';
+        var path = this._path + '/' + uid + '/' + action;
 
         this._http
             .post(path, newValue)
@@ -62,4 +77,15 @@
         return deferred.promise;
     };
 
+    Resource.prototype.remove = function(uid) {
+        var deferred = this._q.defer();
+        var path = this._path + '/' + uid + '/delete';
+
+        this._http
+            .get(path)
+            .success(deferred.resolve)
+            .error(deferred.reject);
+
+        return deferred.promise;
+    };
 })();
