@@ -92,26 +92,41 @@
   <div data-ng-app="SOGo.Contacts">
 
     <div data-ng-controller="AddressBookCtrl" data-ng-init="init()">
+
+      <!-- dropdown menu for addressbook options button -->
       <div id="addressbookProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
         <ul class="button-group">
-          <li><span class="button"><i class="icon-hyperlink"><!-- links --></i></span></li>
-          <li><span class="button"><i class="icon-pencil" data-ng-click="edit()"><!-- rename --></i></span></li>
-          <li><span class="button" data-ng-click="sharing()"><i class="icon-earth"><!-- share --></i></span></li>
-          <li><span class="button"><i class="icon-trash"><!-- delete --></i></span></li>
+          <li>
+            <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
+          </li>
+          <li data-ng-show="!addressbook.isRemote">
+            <span class="button"><i class="icon-pencil" data-ng-click="edit()"><!-- rename --></i></span>
+          </li>
+          <li data-ng-show="!addressbook.isRemote">
+            <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
+          </li>
+          <li data-ng-show="!addressbook.isRemote">
+            <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
+          </li>
         </ul>
       </div>
+
+      <!-- dropdown menu for new card split button -->
+      <ul id="newListDrop" class="f-dropdown">
+        <li><a class="tiny" data-ui-sref="addressbook.new({addressbook_id: addressbook.id, contact_type: 'list'})"><var:string label:value="New List"/></a></li>
+      </ul>
+
+      <!-- modal for addressbook sharing options -->
       <script type="text/ng-template" id="addressbookSharing.html">
         <h2>Sharing</h2>
         <p class="lead"></p>
         <p></p>
         <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
       </script>
+
       <div id="addressbooksList" class="folders-list">
         <div class="newItemsToolbar">
-          <a href="#" class="button tiny radius split"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
-          <ul id="newListDrop" class="f-dropdown" data-dropdown-content="dropdown-content">
-            <li><a href="#"><var:string label:value="New List"/></a></li>
-          </ul>
+          <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbook_id: addressbook.id, contact_type: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
         </div>
         <ul id="contactFolders">
           <li data-ng-repeat="folder in addressbooks"
@@ -119,7 +134,7 @@
               data-ng-dblclick="edit($index)">
             <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
             <form data-ng-submit="save($index)">
-              <a href="#/{{folder.id}}"
+              <a data-ui-sref="addressbook({addressbook_id: folder.id})"
                  data-ng-click="select($index)"
                  data-ng-show="editMode!=folder.id"
                  data-ng-cloak="ng-cloak">{{folder.name}}</a>
@@ -129,18 +144,18 @@
                      data-ng-cloak="ng-cloak"
                      data-sg-focus-on="addressBookName_{{$index}}"/>
             </form>
-            <span data-ng-cloak="ng-cloak"><a class="icon" href="#" data-dropdown-toggle="#addressbookProperties" data-options="align:right" data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a></span>
+            <span class="icon" data-ng-cloak="ng-cloak"><a class="icon" href="#" data-dropdown-toggle="#addressbookProperties" data-options="align:right" data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a></span>
           </li>
         </ul>
         <div class="buttonsToolbar">
           <a href="#" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></a>
           <a href="#" class="button small" label:title="Subscribe to an Addressbook..."><i class="icon-earth"><!-- subscribe --></i></a>
         </div>
-        <var:if condition="hasContactSelectionButtons">
+        <!--<var:if condition="hasContactSelectionButtons">
           <div class="contactSelection">
             <var:component value="selectorComponent" />
           </div>
-        </var:if>
+        </var:if>-->
       </div>
     </div>
 
@@ -169,20 +184,21 @@
           <div data-ng-switch-when="no-result" class="alert-bg">
             <i class="icon-ion-search"><!-- no result --></i><var:string label:value="No matching card"/>
           </div>
-          <div data-ng-switch-when="remote-addressbook" class="alert-bg">
+          <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
             <i class="icon-ion-search"><!-- search --></i><var:string label:value="Initiate a search"/>
           </div>
         </div>
         <ul>
           <li data-ng-repeat="card in addressbook.cards"
-              data-ng-class="{_selected: addressbook.card.id==card.c_name}">
-            <a href="#/{{addressbook.id}}/{{card.c_name}}">
-              <span class="card-picture">
-                <i data-ng-show="card.c_component == 'vcard'" class="icon-ion-ios7-person"><!-- card --></i>
-                <i data-ng-show="card.c_component == 'vlist'" class="icon-ion-ios7-people"><!-- list --></i>
+              data-ng-class="{_selected: addressbook.card.id == card.id}">
+            <input type="checkbox" class="card-picture left"/>
+            <a data-ui-sref="addressbook.card({addressbook_id: addressbook.id, card_id: card.id})">
+              <span class="card-picture" data-ng-switch="card.tag">
+                <i data-ng-switch-when="vcard" class="icon-ion-ios7-person"><!-- card --></i>
+                <i data-ng-switch-when="vlist" class="icon-ion-ios7-people"><!-- list --></i>
               </span>
-              <div class="name" data-ng-bind="card.c_cn"><!-- cn --></div>
-              <div><span data-ng-show="card.c_mail"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{card.c_mail}}</span><var:entity const:name="nbsp" /></div>
+              <div class="name" data-ng-bind-html="card.$fullname()"><!-- cn --></div>
+              <div><span data-ng-show="card.emails"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{card.$preferredEmail()}}</span><var:entity const:name="nbsp" /></div>
             </a>
           </li>
         </ul>
@@ -203,7 +219,7 @@
         <div class="buttonsToolbar">
           <span data-ng-show="addressbook.isEditable">
             <span class="button tiny radius" data-ng-click="edit()"><i class="icon-pencil"><!-- edit --></i></span>
-            <span class="button tiny radius alert"><i class="icon-trash"><!-- delete --></i></span>
+            <span class="button tiny radius alert" data-ng-click="confirmDelete(addressbook.card)"><i class="icon-trash"><!-- delete --></i></span>
           </span>
         </div>
         <div class="attr" data-ng-show="addressbook.card.birthday">

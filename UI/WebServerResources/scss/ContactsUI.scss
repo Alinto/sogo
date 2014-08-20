@@ -9,7 +9,7 @@ $module-color: #6F5A73;
 $module-secondary-color: #8EC588; // light green
 $module-secondary-color: #3D792A; // green
 $module-secondary-color: #B996BF;
-$module-secondary-color: #B59BB9;
+$module-secondary-color: #B59BB9; // SOGo green
 $module-light-color: #F7ECFF;
 $topbar-bg-color: $module-color;
 $topbar-link-bg-active-hover: scale-color($module-secondary-color, $lightness: -14%);
@@ -66,6 +66,7 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
             //vertical-align: middle;
         }
         .icon {
+            //vertical-align: middle; // causes glitch when selecting row
             width: 2em;
         }
         form {
@@ -77,7 +78,7 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
                 display: block;
                 width: 100%;
                 padding: 0;
-                padding-left: $off-canvas-link-padding;
+                //padding-left: $off-canvas-link-padding;
             }
             input {
                 border: 0;
@@ -117,7 +118,7 @@ $column-gutter: 0;
     height: 40px;
     border-radius: 20px;
     color: $input-disabled-bg;
-    line-height: 40px;
+    //line-height: 40px;
     text-align: center;
     border: 1px solid $input-disabled-bg;
     margin-right: 1em;
@@ -129,6 +130,15 @@ $column-gutter: 0;
 
 #pageContent {
     @include grid-row($behavior: nest);
+
+    #newListDrop {
+        a {
+            text-transform: uppercase;
+            &.tiny {
+                @include button-size($padding:$button-tny);
+            }
+        }
+    }
 
     #addressbooksList {
         position: absolute;
@@ -393,14 +403,14 @@ $column-gutter: 0;
             }
             input {
                 display: table-cell;
-                /* transition: background-color 300ms ease; */
+                //transition: all 300ms ease;
                 //background-color: $secondary-color;
                 background-color: transparent;
                 border: 0;
                 box-shadow: none;
                 margin-bottom: 0;
                 /* &:focus { */
-                /*     background-color: #fff; */
+                /*      border: 1px solid blue; */
                 /* } */
             }
         }
@@ -439,21 +449,6 @@ $column-gutter: 0;
 }
 
 .f-dropdown {
-    dd {
-        a {
-            background-color: $module-secondary-color;
-            color: #fff;
-            &:hover {
-                background-color: $module-color;
-            }
-        }
-        &.active {
-            a {
-                background-color: $module-color;
-                color: #fff;
-            }
-        }
-    }
     &.icons-dropdown {
         width: auto;
         //background-color: $primary-color;

@@ -27,6 +27,7 @@
     /* Factory registration in Angular module */
     angular.module('SOGo.Contacts').factory('sgAddressBook', AddressBook.$factory);
 
+    /* Set or get the list of addressbooks */
     AddressBook.$all = function(data) {
         if (data) {
             this.$addressbooks = data;
@@ -34,10 +35,10 @@
         return this.$addressbooks;
     };
 
-    /* Fetch list of cards */
+    /* Fetch list of cards and return an AddressBook instance */
     AddressBook.$find = function(addressbook_id) {
-        var futureAddressBookData = AddressBook.$$resource.find(addressbook_id); // should return attributes of addressbook +
-        // AddressBook.$selectedId(addressbook_id);
+        var futureAddressBookData = AddressBook.$$resource.find(addressbook_id);
+
         return new AddressBook(futureAddressBookData);
     };
 
@@ -59,32 +60,35 @@
         return this.$id().then(function(addressbook_id) {
             var futureAddressBookData = AddressBook.$$resource.filter(addressbook_id, params);
             return futureAddressBookData.then(function(data) {
-                return AddressBook.$timeout(function() {
-                    self.cards = data.cards;
-                    return self.cards;
+                self.cards = data.cards;
+                // Instanciate Card objects
+                angular.forEach(self.cards, function(o, i) {
+                    self.cards[i] = new AddressBook.$Card(o);
                 });
+                return self.cards;
             });
+        });
+    };
+
+    AddressBook.prototype.$delete = function() {
+        return AddressBook.$$resource.remove(this.id);
+    };
+
+    AddressBook.prototype.$save = function() {
+        return AddressBook.$$resource.set(this.id, this.$omit()).then(function (data) {
+            return data;
         });
     };
 
     AddressBook.prototype.$getCard = function(card_id) {
         var self = this;
         return this.$id().then(function(addressbook_id) {
-            var card = AddressBook.$Card.$find(addressbook_id, card_id);
-
-            AddressBook.$timeout(function() {
-                self.card = card;
+            self.card = AddressBook.$Card.$find(addressbook_id, card_id);
+            self.card.$id().catch(function() {
+                // Card not found
+                self.card = null;
             });
-
-            return card.$futureCardData.then(function() {
-                angular.forEach(self.cards, function(o, i) {
-                        if (o.c_name == card_id) {
-                            angular.extend(self.card, o);
-                        }
-                    });
-
-                return self.card;
-            });
+            return self.card;
         });
     };
 
@@ -93,7 +97,7 @@
     };
 
     AddressBook.prototype.$viewerIsActive = function(editMode) {
-        return (!angular.isUndefined(this.card) && !editMode);
+        return (this.card != null && !editMode);
     };
 
     // Unwrap a promise
@@ -104,12 +108,16 @@
         this.$futureAddressBookData.then(function(data) {
             AddressBook.$timeout(function() {
                 angular.extend(self, data);
-                self.$id().then(function(addressbook_id) {
-                    angular.forEach(AddressBook.$all(), function(o, i) {
-                        if (o.id == addressbook_id) {
-                            angular.extend(self, o);
-                        }
-                    });
+                // Also extend AddressBook instance from data of addressbooks list.
+                // Will inherit attributes such as isEditable and isRemote.
+                angular.forEach(AddressBook.$all(), function(o, i) {
+                    if (o.id == self.id) {
+                        angular.extend(self, o);
+                    }
+                });
+                // Instanciate Card objects
+                angular.forEach(self.cards, function(o, i) {
+                    self.cards[i] = new AddressBook.$Card(o);
                 });
             });
         });
@@ -127,11 +135,5 @@
             }
         });
         return addressbook;
-    };
-
-    AddressBook.prototype.$save = function() {
-        return AddressBook.$$resource.set(this.id, this.$omit()).then(function (data) {
-            return data;
-        });
     };
 })();
