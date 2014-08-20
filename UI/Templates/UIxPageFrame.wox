@@ -146,10 +146,12 @@
 	  </script>
 	  <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-animate.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-sanitize.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/mm-foundation-tpls.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/ui-desktop.js"><!-- space --></script>
           <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
 	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
 	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
