@@ -74,6 +74,15 @@
         };
       };
     };
+    SOGoFolder = {
+      methods = {
+        newguid = {
+          protectedBy = "<public>";
+          actionClass = "UIxFolderActions";
+          actionName  = "newguid";
+        };
+      };
+    };
     SOGoGCSFolder = {
       methods = {
         subscribe = {
