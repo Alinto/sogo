@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "angular": "~1.2",
+    "angular-animate": "~1.2",
     "angular-ui-router": "~0.2",
     "angular-foundation": "~0.3",
     "foundation": "~5.3",

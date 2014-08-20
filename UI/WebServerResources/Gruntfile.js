@@ -44,13 +44,14 @@ module.exports = function(grunt) {
             'min':        (dev? '' : '.min')
         };
         var js = [
-            '<%= src %>/angular/angular<%= min %>.js',
-            '<%= src %>/angular-sanitize/angular-sanitize<%= min %>.js',
+            '<%= src %>/angular/angular<%= min %>.js{,.map}',
+            '<%= src %>/angular-animate/angular-animate<%= min %>.js{,.map}',
+            '<%= src %>/angular-sanitize/angular-sanitize<%= min %>.js{,.map}',
             '<%= src %>/angular-ui-router/release/angular-ui-router<%= min %>.js',
             '<%= src %>/angular-foundation/mm-foundation-tpls<%= min %>.js',
             '<%= src %>/foundation/js/foundation<%= min %>.js',
             '<%= src %>/ionic/release/js/ionic<%= min %>.js',
-            '<%= src %>/underscore/underscore-min.*'
+            '<%= src %>/underscore/underscore-min.{js,map}'
         ];
         for (var j = 0; j < js.length; j++) {
             var files = grunt.file.expand(grunt.template.process(js[j], {data: options}))
