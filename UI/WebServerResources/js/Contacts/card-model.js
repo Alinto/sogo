@@ -2,16 +2,21 @@
     'use strict';
 
     /* Constructor */
-
     function Card(futureCardData) {
 
-        /* DATA IS IMMEDIATELY AVAILABLE */
-        // if (!futureCardData.inspect) {
-        //     angular.extend(this, futureCardData);
-        //     return;
-        // }
+        // Data is immediately available
+        if (typeof futureCardData.then !== 'function') {
+            angular.extend(this, futureCardData);
+            if (this.pid && !this.id) {
+                // Prepare for the creation of a new card;
+                // Get UID from the server.
+                var newCardData = Card.$$resource.newguid(this.pid);
+                this.$unwrap(newCardData);
+            }
+            return;
+        }
 
-        /* THE PROMISE WILL BE UNWRAPPED FIRST */
+        // The promise will be unwrapped first
         this.$unwrap(futureCardData);
     }
 
@@ -20,7 +25,7 @@
     Card.$url_types = ['work', 'home', 'pref'];
     Card.$address_types = ['work', 'home'];
 
-    /* THE FACTORY WE'LL USE TO REGISTER WITH ANGULAR */
+    /* The factory we'll use to register with Angular */
     Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
         angular.extend(Card, {
             $$resource: new Resource(Settings.baseURL),
@@ -30,10 +35,11 @@
         return Card; // return constructor
     }];
 
-    /* ANGULAR MODULE REGISTRATION */
+    /* Factory registration in Angular module */
     angular.module('SOGo.Contacts')
     .factory('sgCard', Card.$factory)
 
+    // Directive to format a postal address
     .directive('sgAddress', function() {
         return {
             restrict: 'A',
@@ -57,12 +63,8 @@
         }
     });
 
-
-    /* FETCH A UNIT */
+    /* Fetch a card */
     Card.$find = function(addressbook_id, card_id) {
-
-        /* FALLS BACK ON AN INSTANCE OF RESOURCE */
-        // Fetch data over the wire.
         var futureCardData = this.$$resource.find([addressbook_id, card_id].join('/'));
 
         if (card_id) return new Card(futureCardData); // a single card
@@ -70,26 +72,53 @@
         return Card.$unwrapCollection(futureCardData); // a collection of cards
     };
 
-    // Instance methods
+    /* Unwrap to a collection of Card instances */
+    Card.$unwrapCollection = function(futureCardData) {
+        var collection = {};
+
+        collection.$futureCardData = futureCardData;
+
+        futureCardData.then(function(cards) {
+            Card.$timeout(function() {
+                angular.forEach(cards, function(data, index) {
+                    collection[data.id] = new Card(data);
+                });
+            });
+        });
+
+        return collection;
+    };
+
+    /* Instance methods */
 
     Card.prototype.$id = function() {
-        //var self = this;
-        return this.$futureAddressBookData.then(function(data) {
+        return this.$futureCardData.then(function(data) {
             return data.id;
         });
     };
 
-    // Unwrap a promise
-    Card.prototype.$unwrap = function(futureCardData) {
-        var self = this;
-
-        this.$futureCardData = futureCardData;
-        this.$futureCardData.then(function(data) {
-            // The success callback. Calling _.extend from $timeout will wrap it into a try/catch call.
-            Card.$timeout(function() {
-                angular.extend(self, data);
+    Card.prototype.$save = function() {
+        var action = 'saveAsContact';
+        if (this.tag == 'VLIST') action = 'saveAsList';
+        //var action = 'saveAs' + this.tag.substring(1).capitalize();
+        return Card.$$resource.set([this.pid, this.id || '_new_'].join('/'),
+                                   this.$omit(),
+                                   { 'action': action })
+            .then(function (data) {
+                return data;
             });
-        });
+    };
+
+    Card.prototype.$delete = function(attribute, index) {
+        if (attribute) {
+            if (index > -1 && this[attribute].length > index) {
+                this[attribute].splice(index, 1);
+            }
+        }
+        else {
+            // No arguments -- delete card
+            return Card.$$resource.remove([this.pid, this.id].join('/'));
+        }
     };
 
     Card.prototype.$fullname = function() {
@@ -109,6 +138,9 @@
             }
             else if (this.emails && this.emails.length > 0) {
                 fn = _.find(this.emails, function(i) { return i.value != ''; }).value;
+            }
+            else if (this.c_cn && this.c_cn.length > 0) {
+                fn = this.c_cn;
             }
         }
 
@@ -130,22 +162,30 @@
         return description.join(', ');
     };
 
+    Card.prototype.$preferredEmail = function() {
+        var email = _.find(this.emails, function(o) {
+            return o.type == 'pref';
+        });
+        if (email) {
+            email = email.value;
+        }
+        else if (this.emails && this.emails.length) {
+            email = this.emails[0].value;
+        }
+
+        return email;
+    };
+
     Card.prototype.$birthday = function() {
         return new Date(this.birthday*1000);
     };
 
     Card.prototype.$isCard = function() {
-        return this.tag == 'VCARD';
+        return this.tag == 'vcard';
     };
 
     Card.prototype.$isList = function() {
-        return this.tag == 'VLIST';
-    };
-
-    Card.prototype.$delete = function(attribute, index) {
-        if (index > -1 && this[attribute].length > index) {
-            this[attribute].splice(index, 1);
-        }
+        return this.tag == 'vlist';
     };
 
     Card.prototype.$addOrgUnit = function(orgUnit) {
@@ -226,24 +266,21 @@
         return this.addresses.length - 1;
     };
 
-    /* never call for now */
-    Card.$unwrapCollection = function(futureCardData) {
-        var collection = {};
+    // Unwrap a promise
+    Card.prototype.$unwrap = function(futureCardData) {
+        var self = this;
 
-        collection.$futureCardData = futureCardData;
-
-        futureCardData.then(function(cards) {
+        this.$futureCardData = futureCardData;
+        this.$futureCardData.then(function(data) {
+            // The success callback. Calling _.extend from $timeout will wrap it into a try/catch call and return
+            // a promise resolved immediately.
             Card.$timeout(function() {
-                angular.forEach(cards, function(data, index) {
-                    collection[data.id] = new Card(data);
-                });
+                angular.extend(self, data);
             });
         });
-
-        return collection;
     };
 
-    // $omit returns a sanitized object used to send to the server
+    // Return a sanitized object used to send to the server
     Card.prototype.$omit = function() {
         var card = {};
         angular.forEach(this, function(value, key) {
@@ -253,11 +290,4 @@
         });
         return card;
     };
-
-    Card.prototype.$save = function() {
-        return Card.$$resource.set([this.pid, this.id].join('/'), this.$omit()).then(function (data) {
-            return data;
-        });
-    };
-
 })();
