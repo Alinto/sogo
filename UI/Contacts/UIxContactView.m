@@ -812,7 +812,7 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[contact container] nameInContainer], @"pid",
                               [contact nameInContainer], @"id",
-                              [card tag], @"tag",
+                              [[card tag] lowercaseString], @"tag",
                               nil];
   o = [card fn];
   if (o) [data setObject: o forKey: @"fn"];
