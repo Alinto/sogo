@@ -1,6 +1,6 @@
 /* UIxFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,6 +190,40 @@
 - (WOResponse *) deactivateFolderAction
 {
   return [self _realFolderActivation: NO];
+}
+
+- (WOResponse *) newguidAction
+{
+  NSString *objectId, *folderId;
+  NSDictionary *data;
+  WOResponse *response;
+  SOGoFolder *co;
+  SoSecurityManager *sm;
+
+  co = [self clientObject];
+  objectId = [co globallyUniqueObjectId];
+  if ([objectId length] > 0)
+    {
+      sm = [SoSecurityManager sharedSecurityManager];
+      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	      onObject: co
+	      inContext: context])
+	{
+          folderId = [co nameInContainer];
+	}
+      else
+	{
+          folderId = @"personal";
+	}
+      data = [NSDictionary dictionaryWithObjectsAndKeys: objectId, @"id", folderId, @"pid", nil];
+      response = [self responseWithStatus: 200
+                                andString: [data jsonRepresentation]];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
+                                             reason: @"could not create a unique ID"];
+
+  return response;
 }
 
 - (WOResponse *) renameFolderAction
