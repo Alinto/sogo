@@ -36,7 +36,9 @@
 #import <NGCards/NGVCard.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
@@ -346,79 +348,25 @@ static Class SOGoContactGCSEntryK = Nil;
 
 - (id <WOActionResults>) saveAction
 {
-  SOGoObject <SOGoContactObject> *contact;
+  SOGoContentObject <SOGoContactObject> *contact;
   WORequest *request;
   WOResponse *response;
-  //id result;
-  NSDictionary *params;
-  //NSString *jsRefreshMethod;
-  SoSecurityManager *sm;
+  NSDictionary *params, *data;
 
   contact = [self clientObject];
   request = [context request];
-  NSLog(@"%@", [request contentAsString]);
   params = [[request contentAsString] objectFromJSONString];
-
-  // LDIF                     NSDictionary (vCard)
-  // ---------------------------------------------
-  // sn                       familyname
-  // givenname                givenname
-  // mozillanickname          nickname
-  // displayname              fullname
-  // title                    title
-  // o                        organization
-  // ou[]                     units[]
-  // telephonenumber          tel;work
-  // homephone                tel;home
-  // mobile                   tel;cell
-  // facsimiletelephonenumber tel;fax
-  // pager                    tel;pager
-  // mail                     email;work
-  // mozillasecondemail       email;home
-  // mozillausehtmlmail       x-mozilla-html
-  // mozillahomeurl           url;home
-  // mozillaworkurl           url;work
-  // nsaimid                  x-aim
-  // birth(year/month/day)    bday
-  // c_info                   x-sogo-contactinfo
-  // description              note
-  // vcardcategories          categories
-
   [contact setAttributes: params];
 
-  response = [self responseWithStatus: 204];
-
-  //[contact setLDIFRecord: ldifRecord];
-  //[self _fetchAndCombineCategoriesList];
   [contact save];
 
-//   if (componentAddressBook && componentAddressBook != [self componentAddressBook])
-//     {
-//       if ([contact isKindOfClass: SOGoContactGCSEntryK])
-//         {
-//           sm = [SoSecurityManager sharedSecurityManager];
-//           if (![sm validatePermission: SoPerm_DeleteObjects
-//                              onObject: componentAddressBook
-//                             inContext: context]
-//               && ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-//                                 onObject: componentAddressBook
-//                                inContext: context])
-//             [(SOGoContactGCSEntry *) contact
-//                moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO:
-//                                                                      // handle
-//                                                                      // exception
-//         }
-//     }
-      
-  // if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-  //   result = [self redirectToLocation: [self modulePath]];
-  // else
-  //   {
-  //     jsRefreshMethod
-  //       = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
-  //                   [contact nameInContainer]];
-  //     result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
-  //   }
+  // Return card UID and addressbook ID in a JSON payload
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         [[contact container] nameInContainer], @"pid",
+                         [contact nameInContainer], @"id",
+                         nil];
+  response = [self responseWithStatus: 200
+                            andString: [data jsonRepresentation]];
 
   return response;
 }
@@ -449,41 +397,6 @@ static Class SOGoContactGCSEntryK = Nil;
     url = [NSString stringWithFormat: @"%@/Mail/compose", [self userFolderPath]];
   
   return [self redirectToLocation: url];
-}
-
-#warning Could this be part of a common parent with UIxAppointment/UIxTaskEditor/UIxListEditor ?
-- (id) newAction
-{
-  NSString *objectId, *method, *uri;
-  id <WOActionResults> result;
-  SOGoContactGCSFolder *co;
-  SoSecurityManager *sm;
-
-  co = [self clientObject];
-  objectId = [co globallyUniqueObjectId];
-  if ([objectId length] > 0)
-    {
-      sm = [SoSecurityManager sharedSecurityManager];
-      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-	      onObject: co
-	      inContext: context])
-	{
-	  method = [NSString stringWithFormat: @"%@/%@.vcf/editAsContact",
-			     [co soURL], objectId];
-	}
-      else
-	{
-	  method = [NSString stringWithFormat: @"%@/Contacts/personal/%@.vcf/editAsContact",
-			     [self userFolderPath], objectId];
-	}
-      uri = [self completeHrefForMethod: method];
-      result = [self redirectToLocation: uri];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
-                          reason: @"could not create a unique ID"];
-
-  return result;
 }
 
 @end /* UIxContactEditor */
