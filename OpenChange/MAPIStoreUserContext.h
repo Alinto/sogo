@@ -68,6 +68,8 @@
 - (id) initWithUsername: (NSString *) newUsername
          andTDBIndexing: (struct indexing_context *) indexing;
 
+- (void) updateIndexing: (struct indexing_context *) indexing;
+
 - (NSString *) username;
 - (SOGoUser *) sogoUser;
 
