@@ -196,7 +196,6 @@ static NSArray *childRecordFields = nil;
       ocsPath = nil;
       ocsFolder = nil;
       childRecords = [NSMutableDictionary new];
-      folderSubscriptionValues = nil;
       userCanAccessAllObjects = NO;
     }
 
@@ -208,7 +207,6 @@ static NSArray *childRecordFields = nil;
   [ocsFolder release];
   [ocsPath release];
   [childRecords release];
-  [folderSubscriptionValues release];
   [super dealloc];
 }
 
@@ -287,9 +285,6 @@ static NSArray *childRecordFields = nil;
 - (void) _setDisplayNameFromRow: (NSDictionary *) row
 {
   NSString *primaryDN;
-  NSDictionary *ownerIdentity;
-  NSString *subjectFormat;
-  SOGoDomainDefaults *dd;
   
   primaryDN = [row objectForKey: @"c_foldername"];
   
@@ -301,7 +296,7 @@ static NSArray *childRecordFields = nil;
         displayName = [self labelForKey: primaryDN
                               inContext: context];
       else
-        displayName =primaryDN;
+        displayName = primaryDN;
       
       RETAIN(displayName);
     }
@@ -348,7 +343,31 @@ static NSArray *childRecordFields = nil;
 
 - (void) _fetchDisplayNameFromSubscriber
 {
+  NSDictionary *ownerIdentity, *folderSubscriptionValues;
+  NSString *displayNameFormat;
+  SOGoDomainDefaults *dd;
+
   displayName = [self folderPropertyValueInCategory: @"FolderDisplayNames"];
+  if (!displayName)
+    {
+      [self _fetchDisplayNameFromOwner];
+
+      // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
+      // as it'll load user defaults and user settings which is _very costly_
+      // since it involves JSON parsing and database requests
+      ownerIdentity = [[SOGoUserManager sharedUserManager]
+                                contactInfosForUserWithUIDorEmail: owner];
+
+      folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
+                                                  [ownerIdentity objectForKey: @"cn"], @"UserName",
+                                                  [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+
+      dd = [[context activeUser] domainDefaults];
+      displayNameFormat = [dd subscriptionFolderFormat];
+
+      displayName = [folderSubscriptionValues keysWithFormat: displayNameFormat];
+    }
+
   [displayName retain];
 }
 
@@ -855,13 +874,10 @@ static NSArray *childRecordFields = nil;
 		     reallyDo: (BOOL) reallyDo
                      response: (WOResponse *) theResponse
 {
-  NSDictionary *ownerIdentity, *folderSubscriptionValues;
   NSMutableDictionary *moduleSettings, *folderShowAlarms;
-  NSString *subjectFormat, *formattedName;
   NSMutableArray *folderSubscription;
   NSString *subscriptionPointer;
   NSMutableArray *allUsers;
-  SOGoDomainDefaults *dd;
   SOGoUserSettings *us;
   NSDictionary *dict;
   SOGoUser *sogoUser;
@@ -869,7 +885,7 @@ static NSArray *childRecordFields = nil;
   int i;
 
   dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
-  
+
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
       SOGoGroup *aGroup;
@@ -891,28 +907,12 @@ static NSArray *childRecordFields = nil;
       else
 	allUsers = [NSArray array];
     }
-  
+
   rc = NO;
-  
-  // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
-  // as it'll load user defaults and user settings which is _very costly_
-  // since it involves JSON parsing and database requests
-  ownerIdentity = [[SOGoUserManager sharedUserManager]
-                                contactInfosForUserWithUIDorEmail: owner];
-  
-  
-  folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: [self displayName], @"FolderName",
-                                              [ownerIdentity objectForKey: @"cn"], @"UserName",
-                                              [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
-  
-  dd = [[context activeUser] domainDefaults];
-  subjectFormat = [dd subscriptionFolderFormat];
-  
-  formattedName = [folderSubscriptionValues keysWithFormat: subjectFormat];
-  
+
   // This is consumed by SOGo Integrator during folder subscription since v24.0.6
   if (theResponse)
-    [theResponse appendContentString: formattedName];
+    [theResponse appendContentString: [self displayName]];
 
   for (i = 0; i < [allUsers count]; i++)
     {
@@ -926,8 +926,7 @@ static NSArray *childRecordFields = nil;
           [us setObject: moduleSettings forKey: [container nameInContainer]];
         }
 
-      folderSubscription
-        = [moduleSettings objectForKey: @"SubscribedFolders"];
+      folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
       subscriptionPointer = [self folderReference];
       
       folderShowAlarms = [moduleSettings objectForKey: @"FolderShowAlarms"];
@@ -950,7 +949,7 @@ static NSArray *childRecordFields = nil;
                                  forKey: @"FolderShowAlarms"];
             }
 
-          [self setFolderPropertyValue: formattedName
+          [self setFolderPropertyValue: [self displayName]
                             inCategory: @"FolderDisplayNames"
                               settings: us];
 
