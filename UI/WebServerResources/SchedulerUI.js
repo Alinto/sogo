@@ -3331,7 +3331,7 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
     //   log("nodeID: " + nodeID);
     var calendarNode = $(nodeID);
     var displayNameNode = calendarNode.childNodesWithTag("span")[0];
-    displayNameNode.innerHTML = calendarName;
+    displayNameNode.innerHTML = calendarName.escapeHTML();
 
     appendStyleElement(nodeID, calendarColor);
 }
@@ -3515,7 +3515,7 @@ function appendCalendar(folderName, folderPath) {
         li.appendChild(colorBox);
 
         var displayName = document.createElement("span");
-        displayName.appendChild(document.createTextNode(folderName));
+        displayName.appendChild(document.createTextNode(folderName.escapeHTML()));
         li.appendChild(displayName);
 
         $(colorBox).addClassName("colorBox");

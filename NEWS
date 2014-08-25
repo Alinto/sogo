@@ -9,6 +9,7 @@ Enchancements
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)
+ - fixed encoding of new calendars and new subscriptions (JavaScript only)
 
 2.2.7 (2014-07-30)
 ------------------
