@@ -412,16 +412,17 @@ const unsigned short ansicpg874[256] = {
 - (const char *) parseControlWord: (unsigned int *) len
 {
   const char *start, *end;
-  
+
   start = ADVANCE;
-  
-  while (isalnum(*_bytes) || *_bytes == '-')
+
+  while (isalnum(*_bytes) || *_bytes == '-' || isspace(*_bytes))
     {
       ADVANCE;
     }
   end = _bytes;
-  
+
   *len = end-start-1;
+
   return start+1;
 }
 
