@@ -24,7 +24,8 @@
 /******************************** Global variables *******************************************/
 var firstDayOfWeek = window.opener.firstDayOfWeek;
 var printCompletedTasks=1;
-var printNoDueDateTasks=1;
+var printNoDueDateTasks=true;
+var printColors= { checked:true, style:"borders" };
 var eventsBlocks;
 var currentPreview;
 var currentDay = window.parentvar("currentDay");
@@ -42,12 +43,10 @@ function updateDisplayView(data, newView) {
     var url = ApplicationBaseURL + "/" + newView;
     var day = null;
 
-    if (data) {
+    if (data)
         day = data['day'];
-    }
     if (!day)
         day = currentDay;
-
     if (day) {
         if (data) {
             var dayDiv = $("day"+day);
@@ -64,22 +63,21 @@ function updateDisplayView(data, newView) {
                     selectedCell = selectedLink[0].getParentWithTagName("td");
                     $(selectedCell).selectElement();
                     document.selectedDate = selectedCell;
-                } else
+                }
+                else
                     document.selectedDate = null;
 
                 setSelectedDayDate(day);
 
                 return false;
             }
-            else if (day.length == 6) {
+            else if (day.length == 6)
                 day += "01";
-            }
         }
         url += "?day=" + day;
     }
-
     selectedCalendarCell = null;
-    
+
     if (document.dayDisplayAjaxRequest) {
         document.dayDisplayAjaxRequest.aborted = true;
         document.dayDisplayAjaxRequest.abort();
@@ -95,24 +93,22 @@ function previewDisplayCallback(http) {
         $("currentViewMenu").remove();
         $("listCollapse").remove();
 
-        if (currentPreview == "multicolumndayview") {
+        if (currentPreview == "multicolumndayview")
             _drawCalendarAllDayEvents(null, null, eventsBlocks);
-        }
         else {
             allDayEventsList = eventsBlocks[1];
             if (currentPreview == "monthview") {
                 //_drawMonthCalendarEvents(eventsList, eventsBlocks[0], null);
             }
-            else {
+            else
                 _drawCalendarAllDayEvents(allDayEventsList, eventsBlocks[0], null);
-            }
         }
-        // This ensure the diplay working hours checkbox when switching views
+        // This ensure to diplay working hours checkbox when switching views
         var printHoursCheckBox = $("printHours");
         onPrintWorkingHoursCheck(printHoursCheckBox);
         
         // Add events color for each calendars
-        addCalendarsColor();
+        //addCalendarsColor();
     }
     else
         log ("calendarDisplayCallback Ajax error ("+ http.readyState + "/" + http.status + ")");
@@ -147,11 +143,11 @@ function refreshEvents() {
     if (!currentDay)
         currentDay = todayDate.getDayString();
 
-    if (currentPreview == "dayview" || currentPreview == "multicolumndayview") { // dayView and MultiColumns View
+    if (currentPreview == "dayview" || currentPreview == "multicolumndayview") {
         sd = currentDay;
         ed = sd;
     }
-    else if (currentPreview == "weekview") { // WeekView
+    else if (currentPreview == "weekview") {
         var startDate;
         startDate = currentDay.asDate();
         startDate = startDate.beginOfWeek();
@@ -266,14 +262,25 @@ function _drawTasksCells(tasksBlocks) {
     var task = _("Tasks");
     $("rightFrameTasks").insert("<h3>"+task+"</h3>");
     for(var i=0; i < tasksBlocks.length; i++) {
-        if (!(printNoDueDateTasks == 0 && tasksBlocks[i][5] == null)) {
+        if (!(printNoDueDateTasks == false && tasksBlocks[i][5] == null)) {
             var task = _parseTask(tasksBlocks[i]);
             $("rightFrameTasks").insert(task);
         }
     }
 }
 
-// TODO : Maybe use the drawfunction from the schedulerUI.js
+function addColorsOnEvents(eventInside, eventCell) {
+    if (printColors.checked == true) {
+        if (printColors.style == "borders") {
+            var string = "borderC" + eventInside.getAttribute("class").split(" ")[1].substr(1);
+            Element.addClassName(eventCell, string);
+        }
+        else if(printColors.style == "backgrounds") {
+            var string = "backgroundC" + eventInside.getAttribute("class").split(" ")[1].substr(1);
+            Element.addClassName(eventInside, string);
+        }
+    }
+}
 
 function _drawCalendarEvents(events, eventsData, columnsData) {
     var daysView = $("daysView");
@@ -303,11 +310,15 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                             var offset = _computeOffset(parentDiv);
                             if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
                                 var eventCell = newEventDIV(eventRep, calendarEventsData[nbr], offset[0]);
+                                var eventInside = eventCell.down(".eventInside");
+                                addColorsOnEvents(eventInside, eventCell);
                                 parentDiv.appendChild(eventCell);
                             }
                         }
                         else {
                             var eventCell = newEventDIV(eventRep, calendarEventsData[nbr], null);
+                            var eventInside = eventCell.down(".eventInside");
+                            addColorsOnEvents(eventInside, eventCell);
                             parentDiv.appendChild(eventCell);
                         }
                     }
@@ -329,11 +340,15 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                             var offset = _computeOffset(parentDiv);
                             if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
                                 var eventCell = newEventDIV(eventRep, eventsData[nbr], offset[0]);
+                                var eventInside = eventCell.down(".eventInside");
+                                addColorsOnEvents(eventInside, eventCell);
                                 parentDiv.appendChild(eventCell);
                             }
                         }
                         else {
                             var eventCell = newEventDIV(eventRep, eventsData[nbr], null);
+                            var eventInside = eventCell.down(".eventInside");
+                            addColorsOnEvents(eventInside, eventCell);
                             parentDiv.appendChild(eventCell);
                         }
                     }
@@ -502,10 +517,18 @@ function appendStyleElement(folderPath, color) {
     if (document.styleSheets) {
         var fgColor = getContrastingTextColor(color);
         var styleElement = document.styleSheets[3];
-
-        styleElement.insertRule(".calendarFolder" + folderPath +
-                                "{background-color: " + color + " !important;" +
-                                " color: " + fgColor + " !important;}", styleElement.cssRules.length);
+        
+        if (printColors.style == "backgrounds") {
+            styleElement.insertRule(".calendarFolder" + folderPath +
+                                    "{background-color: " + color + " !important;" +
+                                    " color: " + fgColor + " !important;" +
+                                    " border: none;}", styleElement.cssRules.length);
+        }
+        else if (printColors.style == "borders")
+            styleElement.insertRule(".calendarFolder" + folderPath +
+                                    "{background-color: none" +
+                                    " color: none" +
+                                    " border:1px solid " + color + " !important;}", styleElement.cssRules.length);
     }
 }
 
@@ -513,49 +536,144 @@ function _parseEvent(event) {
     // Localized strings :
     var start = _("Start:");
     var end = _("End:");
-    var Location = _("Location:");
-    var Calendar = _("Calendar:");
+    var location = _("Location:");
+    var calendar = _("Calendar:");
 
-    var parsedEvent;
+    var newEvent = document.createElement("div");
+    var table = document.createElement("table");
+    Element.addClassName(newEvent, "divEventsPreview");
+
+    var row = table.insertRow(0);
+    row.insertCell(0);
+    var title = row.insertCell(1);
+    row = table.insertRow(1);
+    var startCell = row.insertCell(0);
+    Element.addClassName(startCell, "cellFormat");
+    var startCellValue = row.insertCell(1);
+    row = table.insertRow(2);
+    var endCell = row.insertCell(0);
+    Element.addClassName(endCell, "cellFormat");
+    var endCellValue = row.insertCell(1);
+    row = table.insertRow(3);
+    var locationCell = row.insertCell(0);
+    Element.addClassName(locationCell, "cellFormat");
+    var locationCellValue = row.insertCell(1);
+    row = table.insertRow(4);
+    var calendarCell = row.insertCell(0);
+    Element.addClassName(calendarCell, "cellFormat");
+    var calendarCellValue = row.insertCell(1);
+    
+    title.innerHTML = event[4];
+    startCell.innerHTML = start;
     var startDate = new Date(event[5] *1000);
+    startCellValue.innerHTML = startDate.toLocaleString();
+    endCell.innerHTML = end;
     var endDate = new Date(event[6] *1000);
-	parsedEvent = "<div class=\"divEventsPreview\"><table>";
-    parsedEvent += "<tr><th></th><th>"+ event[4] +"</th></tr>";
-    parsedEvent += "<tr><td class=\"label\">" + start + "</td><td>" + startDate.toLocaleString() + "</td></tr>";
-    parsedEvent += "<tr><td class=\"label\">" + end + "</td><td>" + endDate.toLocaleString() + "</td></tr>";
-    if (event[7] != "")
-        parsedEvent += "<tr><td class=\"label\">"+ Location +"</td><td>" + event[7] + "</td></tr>";
-    parsedEvent += "<tr><td class=\"label\">"+ Calendar +"</td><td>" + event[2] + "</td></tr>";
-    parsedEvent += "</table></div>";
-	return parsedEvent;
+    endCellValue.innerHTML = endDate.toLocaleString();
+    locationCell.innerHTML = location;
+    locationCellValue.innerHTML = event[7];
+    calendarCell.innerHTML = calendar;
+    calendarCellValue.innerHTML = event[2];
+
+    if (printColors.checked) {
+        var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];
+        var owner = event[13];
+        var folderName = event[1];
+        var color = allColors[owner + ":Calendar/" + folderName];
+        var fgColor = getContrastingTextColor(color);
+        
+        if (printColors.style == "backgrounds") {
+            newEvent.writeAttribute("style", "background-color:" + color + "; color:" + fgColor + ";");
+            startCell.writeAttribute("style", "color:" + fgColor + ";");
+            endCell.writeAttribute("style", "color:" + fgColor + ";");
+            locationCell.writeAttribute("style", "color:" + fgColor + ";");
+            calendarCell.writeAttribute("style", "color:" + fgColor + ";");
+            
+        }
+        else if (printColors.style == "borders")
+            newEvent.writeAttribute("style", "border:2px solid " + color + ";");
+    }
+    if (event[7] == "") {
+        locationCell.hide();
+        locationCellValue.hide();
+    }
+    newEvent.appendChild(table);
+
+    return newEvent;
 }
 
 function _parseTask(task) {
-    var parsedTask;
+    // new code
     var end = _("Due Date:");
-    var Calendar = _("Calendar:");
-    var Location = _("Location:");
-    
-    parsedTask = "<div class=\"divTasksPreview\"><table>";
-    if (task[12] == "overdue")
-        parsedTask += "<tr><th></th><th class=\"overdueTasks\">"+ task[4] +"</th></tr>";
-    else if (task[12] == "completed") {
-        parsedTask += "<tr><th></th><th class=\"completedTasks\">"+ task[4] +"</th></tr>";
-    }
-    else
-        parsedTask += "<tr class=\"tasksTitle\"><th></th><th>"+ task[4] +"</th></tr>";
+    var calendar = _("Calendar:");
+    var location = _("Location:");
 
+    var newTask = document.createElement("div");
+    var table = document.createElement("table");
+    Element.addClassName(newTask, "divTasksPreview");
+
+    var row = table.insertRow(0);
+    row.insertCell(0);
+    var title = row.insertCell(1);
+    row = table.insertRow(1);
+    var endCell = row.insertCell(0);
+    var endCellValue = row.insertCell(1);
+    row = table.insertRow(2);
+    var locationCell = row.insertCell(0);
+    var locationCellValue = row.insertCell(1);
+    row = table.insertRow(3);
+    var calendarCell = row.insertCell(0);
+    var calendarCellValue = row.insertCell(1);
+
+    title.innerHTML = task[4];
     if (task[5] != null) {
+        endCell.innerHTML = end;
         var endDate = new Date(task[5] *1000);
-        parsedTask += "<tr><td class=\"label\">"+ end +"</td><td>"+ endDate.toLocaleString() + "</td></tr>";
+        endCellValue.innerHTML = endDate.toLocaleString();
+    }
+    else {
+        endCell.hide();
+        endCellValue.hide();
     }
     if (task[7] != "") {
-        parsedTask += "<tr><td class=\"label\">"+ Location +"</td><td>" + task[7] + "</td></tr>";
+        locationCell.innerHTML = location;
+        locationCellValue.innerHTML = task[7];
     }
-    parsedTask += "<tr><td class=\"label\">" + Calendar + "</td><td>" + task[2] + "</td></tr>";
-    parsedTask += "</table></div>";
+    else {
+        locationCell.hide();
+        locationCellValue.hide();
+    }
+    calendarCell.innerHTML = calendar;
+    calendarCellValue.innerHTML = task[2];
+    
+    if (task[13] == "overdue")
+        Element.addClassName(title, "overdueTasks");
+    else if (task[13] == "completed")
+        Element.addClassName(title, "completedTasks");
+    else
+        Element.addClassName(title, "tasksTitle");
+    
+    if (printColors.checked) {
+        var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];
+        var owner = task[12];
+        var folderName = task[1];
+        var color = allColors[owner + ":Calendar/" + folderName];
+        var fgColor = getContrastingTextColor(color);
+        
+        if (printColors.style == "backgrounds") {
+            newTask.writeAttribute("style", "background-color:" + color + "; color:" + fgColor + ";");
+            endCell.writeAttribute("style", "color:" + fgColor + ";");
+            locationCell.writeAttribute("style", "color:" + fgColor + ";");
+            calendarCell.writeAttribute("style", "color:" + fgColor + ";");
+            
+        }
+        else if (printColors.style == "borders")
+            newTask.writeAttribute("style", "border:2px solid " + color + ";");
+    }
 
-    return parsedTask;
+    newTask.appendChild(table);
+
+    return newTask;
 }
 
 function _computeOffset(hoursCells) {
@@ -834,14 +952,33 @@ function onPrintWorkingHoursCheck(checkBox) {
         _drawCalendarEvents(null, null, eventsBlocks);
     else {
         eventsList = eventsBlocks[2];
-        if (currentPreview == "monthview")
+        if (currentPreview == "monthview") {
             //_drawMonthCalendarEvents(eventsList, eventsBlocks[0], null);
+        }
         else
             _drawCalendarEvents(eventsList, eventsBlocks[0], null);
     }
     return false;
 }
 
+function onPrintColorsCheck(checkBox) {
+    printColors.checked = (checkBox.checked ? true : false);
+    
+    if (printColors.checked) {
+        $("printBackgroundColors").disabled = false;
+        $("printBorderColors").disabled = false;
+    }
+    else {
+        $("printBackgroundColors").disabled = true;
+        $("printBorderColors").disabled = true;
+    }
+    refreshContent();
+}
+
+function onPrintColors(selectedRadioButton) {
+    printColors.style = selectedRadioButton.value;
+    refreshContent();
+}
 /*function onPrintDateCheck() {
  var dateRange = document.getElementsByName("dateRange");
  var customDate = document.getElementById("customDate");
@@ -856,7 +993,7 @@ function onPrintCompletedTasksCheck(checkBox) {
 }
 
 function onPrintNoDueDateTasksCheck(checkBox) {
-    printNoDueDateTasks = (checkBox.checked ? 1 : 0);
+    printNoDueDateTasks = (checkBox.checked ? true : false);
     refreshContent();
 }
 

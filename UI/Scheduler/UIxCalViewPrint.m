@@ -80,7 +80,7 @@ static NSArray *layoutItems = nil;
   SOGoUser *activeUser;
   NSString *parentView;
   
-  activeUser = [context activeUser];
+  activeUser = [[self context] activeUser];
   us = [activeUser userSettings];
   parentView = [[us objectForKey:@"Calendar"] objectForKey:@"View" ];
   

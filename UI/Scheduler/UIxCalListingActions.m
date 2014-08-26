@@ -99,7 +99,7 @@ static NSArray *tasksFields = nil;
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"editable", @"erasable",
-                   @"c_priority", nil];
+                   @"c_priority", @"c_owner", nil];
     [tasksFields retain];
   }
 }

@@ -1176,8 +1176,9 @@ function tasksListCallback(http) {
             // [9] Editable?
             // [10] Erasable?
             // [11] Priority (0, 1 = important, 9 = low)
-            // [12] Status CSS class (duelater, completed, etc)
-            // (13) Due date (formatted)
+            // [12] Owner
+            // [13] Status CSS class (duelater, completed, etc)
+            // [14] Due date (formatted)
 
             for (var i = 0; i < data.length; i++) {
                 var row = createElement("tr");
@@ -1189,7 +1190,7 @@ function tasksListCallback(http) {
                 var cname = escape(data[i][0]);
                 row.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                row.addClassName(data[i][12]); // status
+                row.addClassName(data[i][14]); // status
                 row.addClassName("taskRow");
                 row.calendar = calendar;
                 row.cname = cname;
@@ -1234,8 +1235,8 @@ function tasksListCallback(http) {
 
                 cell = createElement("td");
                 row.appendChild(cell);
-                if (data[i][13])
-                    cell.update(data[i][13]); // end date
+                if (data[i][14])
+                    cell.update(data[i][14]); // end date
 
                 cell = createElement("td");
                 row.appendChild(cell);

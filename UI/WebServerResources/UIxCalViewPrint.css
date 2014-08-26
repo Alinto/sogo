@@ -74,11 +74,9 @@ DIV#rightFrameTitle {
 
 .overdueTasks {
   color:red;
-  text-align:center;
 }
 .completedTasks {
   font-style:italic;
-  text-align:center;
 }
 
 DIV#rightSide {
@@ -118,7 +116,7 @@ DIV#rightSide {
         text-align: left;
     }
 
-    DIV#rightFrame TD.label {
+    DIV#rightFrame TD.cellFormat {
         color: #666;
         text-align: right;
         min-width:52px;
@@ -159,6 +157,7 @@ DIV#calendarHeader DIV.days {
   height: 1px;
   left: 0;
   right: 0;
+  cursor:initial;
 }
 
 DIV#daysView {
@@ -174,6 +173,7 @@ DIV#daysView DIV.hours {
 
 DIV#daysView DIV.day DIV.clickableHourCell {
  height: 29px;
+ cursor:initial;
 }
 
 DIV#daysView DIV.hour {
@@ -190,8 +190,9 @@ DIV.event {
   border:1px solid black;
 
 }
-DIV.eventInside {
+DIV.event > DIV.eventInside {
   width:100%;
+  cursor:initial;
 }
 
 DIV#daysView DIV.event.starts0
@@ -610,20 +611,24 @@ LABEL {
   .no-print, SPAN.caption, SPAN.weeksHeader, SPAN.daysHeader {
     display:none;
   }
+  BODY, DIV#calendarHeader DIV.dayLabels DIV.day, DIV#calendarHeader DIV.days DIV.weekEndDay, DIV#daysView DIV.day DIV.clickableHourCell.outOfDay,
+  DIV#daysView DIV.weekEndDay DIV.clickableHourCell, DIV#daysView DIV.weekEndDay DIV.clickableHourCell.outOfDay,DIV#monthDaysView DIV.dayOfToday, 
+  DIV.daysViewFor7Days#calendarHeader DIV.days DIV.dayOfToday, DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell {
+    background-color:white;
+  }
 
   DIV#rightSide {
     position:static;
     top:5px;
     left:5px;
-
   }
 
   DIV#rightFrame {
     border:none;
     overflow:visible;
   }
-
-  BODY {
-    background-color:white;
+  
+  DIV#calendarHeader DIV.calendarLabels {
+    font-size:120%;
   }
 }
