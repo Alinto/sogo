@@ -158,8 +158,8 @@ function foldersSearchCallback(http) {
         d.aIndent.push(indentValue);
 
         var dd = $("dd" + nodeId);
-        if (response.length) {
-            var folders = response.evalJSON();
+        var folders = response.evalJSON();
+        if (folders.length) {
             var user = http.callbackData["user"];
 
             dd.innerHTML = '';

@@ -9,6 +9,10 @@ Enchancements
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)
+ - fixed encoding of new calendars and new subscriptions (JavaScript only)
+ - fixed display of users with no possible subscription
+ - fixed usage of SOGoSubscriptionFolderFormat domain default when the folder's name hasn't been changed
+ - fixed "sogo-tool restore -l" that was returning incorrect folder IDs
 
 2.2.7 (2014-07-30)
 ------------------

@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2014 Inverse inc.
 
   This file is part of SOGo.
 
@@ -53,7 +53,6 @@
   NSString *ocsPath;
   GCSFolder *ocsFolder;
   NSMutableDictionary *childRecords;
-  NSMutableDictionary *folderSubscriptionValues;
   BOOL userCanAccessAllObjects; /* i.e. user obtains 'Access Object' on
                                    subobjects */
 }
@@ -102,7 +101,8 @@
                 withReference: (NSString *) reference;
 
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
-		     reallyDo: (BOOL) reallyDo;
+		     reallyDo: (BOOL) reallyDo
+                     response: (WOResponse *) theResponse;
 - (BOOL) userIsSubscriber: (NSString *) subscribingUser;
 
 - (void) initializeQuickTablesAclsInContext: (WOContext *) localContext;

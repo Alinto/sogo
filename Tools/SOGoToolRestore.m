@@ -558,14 +558,14 @@ typedef enum SOGoToolRestoreMode {
   if (tables)
     {
       NSLog (@"Restorable folders:");
-      folderPrefixLen = 1 + [userID length];
-      tableKeys = [[tables allKeys] objectEnumerator];
+      folderPrefixLen = 8 + [userID length]; // tables keys start with /Users/<userID>
+      tableKeys = [[[tables allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] objectEnumerator];
       while ((key = [tableKeys nextObject]))
         {
           currentFolder = [tables objectForKey: key];
           folderKey = [key substringFromIndex: folderPrefixLen];
-          NSLog (@"  '%@': %@",
-                 [currentFolder objectForKey: @"displayname"], folderKey);
+          NSLog (@"  %@ (%@)",
+                 folderKey, [currentFolder objectForKey: @"displayname"]);
         }
     }
   else
