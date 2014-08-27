@@ -982,21 +982,23 @@ SOGoEventDragLeftPanelController.prototype = {
     setLeftPanelVisual: function SEDLPC_setLeftPanelVisual() {
         var that = this;
         this.updateLeftPanelVisual = $("leftPanel").on("mousemove", function(e){
-            that.DnDLeftPanelImage.style.left = e.pageX + "px";
-            that.DnDLeftPanelImage.style.top = e.pageY + "px";
+            that.DnDLeftPanelImage.style.left = e.pageX + 5 + "px";
+            that.DnDLeftPanelImage.style.top = e.pageY + 5 + "px";
         });
-        this.updateLeftPanelVisual.stop();
     },
     
     updateFromPointerHandler: function SEDLPC_updateFromPointerHandler(event) {
         // Highlight the calendar hover
-        $$('#calendarList li').each(function(e) {
+        $$('#calendarList li').each(function(e){
                                     e.removeClassName('genericHoverClass');
                                     });
         var hoverCalendar = $(event).findElement('#calendarList li');
-        if (hoverCalendar)
+        if (hoverCalendar) {
             hoverCalendar.addClassName('genericHoverClass');
             this.dropCalendar = hoverCalendar;
+        }
+        else
+            this.dropCalendar = null;
     },
     
     startEvent: function SEDLPC_startEvent() {
@@ -1472,6 +1474,8 @@ SOGoEventDragController.prototype = {
             else {
                 if (this.ghostController.ghosts == null) {
                     this.ghostController.showGhosts();
+                    this.leftPanelController.dropCalendar = null;
+                    $$('#calendarList li').each(function(e){ e.removeClassName('genericHoverClass'); });
                     this.leftPanelController.stopEvent();
                 }
                 this.ghostController.updateFromPointerHandler();
