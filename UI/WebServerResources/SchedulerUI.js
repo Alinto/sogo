@@ -2323,7 +2323,7 @@ function calendarDisplayCallback(http) {
                 headerCalendarsLabels[i].observe("mousedown", listRowMouseDownHandler);
                 headerDays[i].observe("click", onCalendarSelectDay);
                 headerDays[i].observe("dblclick", onClickableCellsDblClick);
-                days[i].observe("click", onCalendarSelectDay);
+                Event.on(days[i], "mousedown", onCalendarSelectDay);
 
                 var clickableCells = days[i].select("DIV.clickableHourCell");
                 for (var j = 0; j < clickableCells.length; j++)
@@ -3098,6 +3098,20 @@ function onMenuSharing(event) {
     }
 }
 
+function multicolumndayviewCalendarSelector(event, target) {
+    // Select the calendar associated with the day clicked
+    if (currentView == "multicolumndayview") {
+        if (target.getAttribute("calendar"))
+            var calendar = "[id='/" + target.getAttribute("calendar") + "']";
+        else
+            var calendar = "[id='/" + target.up("[calendar]").getAttribute("calendar") + "']";
+        var list = $("calendarList");
+        var selectedCalendar = list.down(calendar);
+        
+        onRowClick(event, selectedCalendar);
+    }
+}
+
 function onMenuCurrentView(event) {
     var target = getTarget(event);
     $("eventDialog").hide();
@@ -3107,11 +3121,13 @@ function onMenuCurrentView(event) {
         onClick(event, true);
         target = this;
     }
+    multicolumndayviewCalendarSelector(event, target);
     popupMenu(event, 'currentViewMenu', target);
 }
 
 function onMenuAllDayView(event) {
     $("eventDialog").hide();
+    multicolumndayviewCalendarSelector(event, getTarget(event));
     popupMenu(event, 'allDayViewMenu', getTarget(event));
 }
 
