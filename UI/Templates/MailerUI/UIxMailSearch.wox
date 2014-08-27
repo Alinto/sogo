@@ -56,30 +56,32 @@
     <tbody>
     </tbody>
   </table>
-  <table id="searchMailFooter" class="sortable">
-    <thead>
-      <tr>
-        <td id="subjectSearchHeader" class="td_header">
-          <var:string label:value="Subject" /></td>
-        <td id="fromSearchHeader" class="td_header">
-          <var:string label:value="From"/></td>
-        <td id="toSearchHeader" class="td_header">
-          <var:string label:value="To" /></td>
-        <td id="dateSearchHeader" class="td_header">
-          <var:string label:value="Date" /></td>
-        <td id="buttonExpandHeader" class="td_header">
-          <div id="imgPosition">
-            <a href="#" id="listCollapse">
-              <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
-            </a></div></td>
-      </tr>
-    </thead>
-    <tbody class="scrollbar" id="resultsTable">
-      <tr>
-        <td colspan="4" id="noSearchResults"><var:string label:value="No matches found" /></td>
-      </tr>
-    </tbody>
-  </table>
+  <div id="resultsTable">
+    <table id="searchMailFooter" class="sortable messageList">
+      <thead>
+        <tr>
+          <td id="subjectSearchHeader" class="td_header">
+            <var:string label:value="Subject" /></td>
+          <td id="fromSearchHeader" class="td_header">
+            <var:string label:value="From"/></td>
+          <td id="toSearchHeader" class="td_header">
+            <var:string label:value="To" /></td>
+          <td id="dateSearchHeader" class="td_header">
+            <var:string label:value="Date" /></td>
+          <td id="buttonExpandHeader" class="td_header">
+            <div id="imgPosition">
+              <a href="#" id="listCollapse">
+                <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
+              </a></div></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4" id="noSearchResults"><var:string label:value="No matches found" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div id="optionsButtons">
     <a class="button" name="delete" id="deleteButton" onclick="onDeleteClick(this)">
       <span><var:string label:value="Delete" /></span></a>

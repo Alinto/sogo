@@ -662,7 +662,8 @@ DIV.dialog.searchMail {
   position: relative;
   padding: 0px;
   opacity: 1;
-  width: 700px;
+  width: 60%;
+  height: 75%;
   margin: 2em auto;
 }
 

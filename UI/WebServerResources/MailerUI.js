@@ -458,7 +458,7 @@ function displaySearchMailCallback(http) {
         var id = _("searchMailView");
         fields.innerHTML = http.responseText;
         
-        dialog = createDialog(id, title, null, fields, "searchMail"); // (id, title, legend, content, positionClass)
+        var dialog = createDialog(id, title, null, fields, "searchMail"); // (id, title, legend, content, positionClass)
         document.body.appendChild(dialog);
         
         if (Prototype.Browser.IE)

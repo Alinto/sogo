@@ -86,30 +86,30 @@ function searchMails() {
     var optionsList = $("mailAccountsList").options;
     var nbOptions = optionsList.length;
     var selectedIndex = optionsList.selectedIndex;
+    var accountNumber, accountUser, folderPath, folderName;
   
     var mailAccountIndex = mailAccounts.indexOf(searchParams.searchLocation);
     if (mailAccountIndex != -1) {
-        var accountNumber = "/" + mailAccountIndex;
-        var folderName = accountNumber + "/folderINBOX";
-        var accountUser = userNames[mailAccountIndex];
-        var folderPath = accountUser;
+        accountNumber = "/" + mailAccountIndex;
+        folderName = accountNumber + "/folderINBOX";
+        accountUser = userNames[mailAccountIndex];
+        folderPath = accountUser;
     }
     else {
         var searchLocation = searchParams.searchLocation.split("/");
-        var accountUser = searchLocation[0];
-        var accountNumber = "/" + userNames.indexOf(accountUser);
+        accountUser = searchLocation[0];
+        accountNumber = "/" + userNames.indexOf(accountUser);
       
         var position = searchLocation.length;
-        var folderName = accountNumber + "/folder" + searchLocation[1].replace(" ", "_SP_");
+        folderName = accountNumber + "/folder" + searchLocation[1].replace(" ", "_SP_");
         for (i = 2; i < position; i++)
             folderName += "/folder" + searchLocation[i];
         
-        var folderPath = optionsList[selectedIndex].innerHTML;
-      
+        folderPath = optionsList[selectedIndex].innerHTML;
     }
-    
+
     var subfolders = [];
-    if (searchParams.subfolder == true) {
+    if (searchParams.subfolder === true) {
         for (i = 0; i < nbOptions; i++) {
             if ((optionsList[i].innerHTML.search(folderPath) != -1) && (i != selectedIndex)) {
                 var splitArray = optionsList[i].innerHTML.split("/");
@@ -124,7 +124,7 @@ function searchMails() {
             }
         }
     }
-    
+
     var urlstr = (ApplicationBaseURL + folderName + "/uids");
     
     var callbackData = {"folderName" : folderName, "subfolders" : subfolders, "newSearch" : true};
@@ -172,6 +172,7 @@ function searchMailsCallback(http) {
                 
                 var cell4 = row.insertCell(3);
                 Element.addClassName(cell4, "td_table_4");
+                cell4.writeAttribute("colspan", "2");
                 cell4.innerHTML = response.headers[i][7];
             }
 
@@ -341,8 +342,9 @@ function onOpenClick(event) {
     var selectedRow = $("searchMailFooter").down("._selected");
     var msguid = selectedRow.getAttribute("uid");
     var folderName = selectedRow.getAttribute("folderName");
+    var accountUser = userNames[0];
   
-    var url = "/SOGo/so/sogo1/Mail" + folderName + "/" + msguid + "/popupview";
+    var url = "/SOGo/so/" + accountUser + "/Mail" + folderName + "/" + msguid + "/popupview";
     if (selectedRow) {
         openMessageWindow(msguid, url);
     }
@@ -432,33 +434,35 @@ function deleteMessageCallback (http){
 
 function onResizeClick() {
     var searchFiltersList = jQuery("#searchFiltersList");
-    var searchMailFooter = jQuery("#searchMailFooter");
-    var resultsTable = jQuery("#resultsTable");
-    var state = 'collapse';
     var img = $("listCollapse").select('img').first();
-    
-    
+    var dialogWindowHeight = $("searchMailView").getHeight();
+    var state = "collapse";
+  
     if (searchFiltersList[0].visible()) {
+        var state = "rise";
         searchFiltersList.fadeOut(300, function() {
-            searchMailFooter.animate({ top:"120px" }, {queue: false, duration: 100});
-            resultsTable.animate({height:"288px"}, 100);
-            searchMailFooter.animate({height:"312px" }, {queue: false, duration: 100, complete: function() {
-                img.removeClassName('collapse').addClassName('rise');
-                $("resultsFound").style.bottom = "40px;";
-            }});
+            adjustResultsTable(state);
+            img.removeClassName('collapse').addClassName('rise');
         });
     }
     else {
-        state = 'rise';
-        searchMailFooter.animate({height:"194px"}, {queue: false, duration: 100});
-        searchMailFooter.animate({top:"240px" }, {queue: false, duration: 100, complete:function() {
-            searchFiltersList.fadeIn();
-            img.removeClassName('rise').addClassName('collapse');
-            $("resultsFound").style.bottom = "25px;";
-        }});
-        resultsTable.animate({height:"171px"}, 100);
-        
+        state = "collapse"
+        adjustResultsTable(state);
+        searchFiltersList.fadeIn();
+        img.removeClassName('rise').addClassName('collapse');
     }
+}
+
+function adjustResultsTable(state) {
+    var resultsTable = $("resultsTable");
+    var width = $("searchMailView").getWidth() - 22;
+    var height = $("searchMailView").getHeight();
+    if (state == "collapse")
+        height -= 260;
+    else
+        height -= 146;
+    resultsTable.style.width = width + "px";
+    resultsTable.style.height = height + "px";
 }
 
 /*************** Init ********************/
@@ -467,8 +471,13 @@ function initSearchMailView () {
     
     // Add one filterRow
     onAddFilter();
+    adjustResultsTable("collapse");
     
     // Observers : Event.on(element, eventName[, selector], callback)
     $("searchMailFooter").down("tbody").on("mousedown", "tr", onResultSelectionChange);
     $("searchMailFooter").down("tbody").on("dblclick", "tr", onOpenClick);
+    Event.observe(window, "resize", function() {
+                  var state = ($("searchFiltersList").visible() ? "collapse": "rise");
+                  adjustResultsTable(state);
+                  });
 }

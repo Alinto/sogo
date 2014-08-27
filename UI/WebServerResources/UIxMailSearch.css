@@ -2,7 +2,8 @@
 /*************** Table adjustment *****************/
 
 TABLE#searchMailHeader
-{ width: 100%; }
+{ width: 100%;
+  margin-bottom: 1em; }
 
 TABLE#searchFiltersList
 {
@@ -14,18 +15,18 @@ TABLE#searchFiltersList
   height:105px;
   overflow:auto;
   width:100%;
-  margin-top: 1em;
 }
 
-TABLE#searchMailFooter
+DIV#resultsTable
 {
-   position:absolute;
    border: 1px solid #909090;
    border-radius: 3px;
-   left:10px;
-   width:680px;
-   top:240px;
-   height:194px;
+   overflow-y: auto;
+}
+
+TD#mailAccountsCell {
+  overflow:hidden;
+  white-space: nowrap;
 }
 
 .buttonsCell
@@ -38,18 +39,8 @@ TABLE#searchMailFooter
   width:45%;
 }
 
-.scrollbar 
-{
-  overflow-y:auto;
-  height:171px;
-  position:absolute;
-  top:21px;
-  left:0;
-  right:0;
-}
-
 .td_table_1, .td_table_2, .td_table_3, .td_table_4 {
- width:25%;
+ cursor:default;
 }
 
 TD.sortasc {
@@ -82,8 +73,7 @@ TD.sortdesc {
 {text-decoration: underline; }
 
 #buttonExpandHeader {
-  width:3%;
-  border-right:0;
+  width:10px;
 }
 
 @-moz-document url-prefix() {
@@ -98,7 +88,8 @@ TD.sortdesc {
 
 #headerButtons
 {
-  width:27%;
+  width:171px;
+  white-space: nowrap;
 }
 
 #searchButton, #cancelButton
@@ -136,36 +127,37 @@ DIV#optionsButtons
 
 #resultsFound {
   position:absolute;
-  bottom:25px;
+  bottom:20px;
   right:10px;
 }
 
 #imgPosition
-{ z-index: 1; }
+{ z-index: 1;
+  position:relative; }
 
 #listCollapse img
 { position: absolute; }
 
 #listCollapse img.collapse
 { clip: rect(0 18px 18px 0);
-  top: 1px;
-  right: -16px; }
+  top: -9px;
+  right: -22px; }
 
 #listCollapse img.collapse:hover
 { clip: rect(0 36px 18px 18px);
-  top: 1px;
-  right: 2px; }
+  top: -9px;
+  right: -4px; }
 
 #listCollapse img.rise
 { clip: rect(18px 18px 36px 0);
-  top: -17px;
-  right:-16px;
+  top: -27px;
+  right:-22px;
   }
 
 #listCollapse img.rise:hover
 { clip: rect(18px 36px 36px 18px);
-  top: -17px;
-  right:2px; }
+  top: -27px;
+  right:-4px; }
 
 @-moz-document url-prefix() {
   #listCollapse img
