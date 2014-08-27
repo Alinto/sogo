@@ -46,7 +46,7 @@ class preferences:
 
     self.client = webdavlib.WebDAVClient(hostname, port)
 
-    authCookie = sogoLogin.getAuthCookie(hostname, port, username, password)
+    authCookie = sogoLogin.getAuthCookie(hostname, port, self.login, self.passw)
     self.cookie = authCookie
 
     # map between preferences/jsonDefaults and the webUI names
@@ -56,17 +56,22 @@ class preferences:
         "SOGoTimeZone": "timezone",
         "SOGoSieveFilters": "sieveFilters",
 
-			   # Vacation stuff
-			   "Vacation": "enableVacation", # to disable, don't specify it
-			   "autoReplyText": "autoReplyText", # string
-			   "autoReplyEmailAddresses":  "autoReplyEmailAddresses", # LIST
-			   "daysBetweenResponse":  "daysBetweenResponsesList", 
-			   "ignoreLists":  "ignoreLists", #bool
+        # Vacation stuff
+        "Vacation": "enableVacation", # to disable, don't specify it
+        "autoReplyText": "autoReplyText", # string
+        "autoReplyEmailAddresses":  "autoReplyEmailAddresses", # LIST
+        "daysBetweenResponse":  "daysBetweenResponsesList", 
+        "ignoreLists":  "ignoreLists", #bool
 
-			   # forward stuff
-         "Forward": "enableForward", # to disable, don't specify it
-         "forwardAddress": "forwardAddress",
-         "keepCopy": "forwardKeepCopy",
+        # forward stuff
+        "Forward": "enableForward", # to disable, don't specify it
+        "forwardAddress": "forwardAddress",
+        "keepCopy": "forwardKeepCopy",
+
+        # Calendar stuff
+        "enablePreventInvitations": "preventInvitations",
+        "PreventInvitations": "PreventInvitations",
+        "whiteList": "whiteList",
     }
 
   def set(self, preference, value=None):
@@ -74,11 +79,11 @@ class preferences:
     content=""
     if isinstance(preference, dict):
       for k,v in preference.items():
-        content+="%s=%s&" % (self.preferencesMap[k], v)
+        content+="%s=%s&" % (self.preferencesMap[k], urllib.quote(v))
     else:
       # assume it is a str
       formKey = self.preferencesMap[preference]
-      content = "%s=%s&hasChanged=1" % (formKey, value)
+      content = "%s=%s&hasChanged=1" % (formKey, urllib.quote(value))
 
 
     url = "/SOGo/so/%s/preferences" % self.login
@@ -94,7 +99,7 @@ class preferences:
       raise Exception ("failure setting prefs, (code = %d)" \
                        % post.response["status"])
 
-  def get(self, preference):
+  def get(self, preference=None):
     url = "/SOGo/so/%s/preferences/jsonDefaults" % self.login
     get = HTTPPreferencesGET (url)
     get.cookie = self.cookie
@@ -102,7 +107,26 @@ class preferences:
     content = simplejson.loads(get.response['body'])
     result = None
     try:
-      result = content[preference]
+      if preference:
+        result = content[preference]
+      else:
+        result = content
+    except:
+      pass
+    return result
+
+  def get_settings(self, preference=None):
+    url = "/SOGo/so/%s/preferences/jsonSettings" % self.login
+    get = HTTPPreferencesGET (url)
+    get.cookie = self.cookie
+    self.client.execute (get)
+    content = simplejson.loads(get.response['body'])
+    result = None
+    try:
+      if preference:
+        result = content[preference]
+      else:
+        result = content
     except:
       pass
     return result
