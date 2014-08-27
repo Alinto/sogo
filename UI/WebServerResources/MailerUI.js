@@ -568,7 +568,7 @@ function deleteSelectedMessagesCallback(http) {
 }
 
 function deleteMessagesWithoutTrash(data) {
-    var url = ApplicationBaseURL + encodeURI(data["/mailbox"]) + "/batchDelete";
+    var url = ApplicationBaseURL + encodeURI(data["mailbox"]) + "/batchDelete";
     var parameters = "uid=" + data["id"].join(",") + '&withoutTrash=1';
     data["withoutTrash"] = true;
     triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
