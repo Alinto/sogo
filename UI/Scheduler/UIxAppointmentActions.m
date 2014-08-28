@@ -25,6 +25,8 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 
+#import <NGExtensions/NSObject+Values.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -41,6 +43,7 @@
 #import <Appointments/iCalEvent+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import <Common/WODirectAction+SOGo.h>
 
@@ -59,7 +62,6 @@
   NSTimeInterval newDuration;
   SOGoUserDefaults *ud;
   NSString *daysDelta, *startDelta, *durationDelta, *destionationCalendar;
-  NSArray *calendarsID;
   NSTimeZone *tz;
   NSException *ex;
   SOGoAppointmentFolder *targetCalendar, *sourceCalendar;
