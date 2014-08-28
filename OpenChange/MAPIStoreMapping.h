@@ -42,7 +42,6 @@
 - (id) initForUsername: (NSString *) username
           withIndexing: (struct indexing_context *) indexing;
 
-- (void) updateIndexing: (struct indexing_context *) indexing;
 
 - (void) increaseUseCount;
 - (void) decreaseUseCount;

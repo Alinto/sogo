@@ -65,14 +65,7 @@ static NSMapTable *contextsTable = nil;
   id userContext;
 
   userContext = [contextsTable objectForKey: username];
-  if (userContext)
-    {
-      // The indexing_context used when this user context was created
-      // could had been freed, so we have to update it and use the one
-      // that we receive as parameter (which is a valid one for sure).
-      [userContext updateIndexing: indexing];
-    }
-  else
+  if (!userContext)
     {
       userContext = [[self alloc] initWithUsername: username
                                     andTDBIndexing: indexing];
@@ -81,11 +74,6 @@ static NSMapTable *contextsTable = nil;
     }
 
   return userContext;
-}
-
-- (void) updateIndexing: (struct indexing_context *) indexing
-{
-    [mapping updateIndexing: indexing];
 }
 
 - (id) init

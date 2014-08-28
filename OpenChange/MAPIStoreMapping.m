@@ -119,11 +119,6 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   return self;
 }
 
-- (void) updateIndexing: (struct indexing_context *) newIndexing
-{
-    indexing = newIndexing;
-}
-
 - (void) dealloc
 {
   [username release];
