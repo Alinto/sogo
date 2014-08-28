@@ -89,22 +89,45 @@
 - (WOResponse *) renameFolderAction
 {
   SOGoMailFolder *co;
+  SOGoUserSettings *us;
   WOResponse *response;
   NSException *error;
-  NSString *folderName;
+  NSString *newFolderName, *oldFolderName, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSArray *values;
 
   co = [self clientObject];
+  //Prepare the variables need to verify if the current folder have any collapsed threads saved in userSettings
+  us = [[context activeUser] userSettings];
+  moduleSettings = [us objectForKey: @"Mail"];
+  threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
+  currentMailbox = [co nameInContainer];
+  currentAccount = [[co container] nameInContainer];
+  keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
 
-  folderName = [[context request] formValueForKey: @"name"];
-  error = [co renameTo: folderName];
+  newFolderName = [[context request] formValueForKey: @"name"];
+  newKeyForMsgUIDs = [NSString stringWithFormat:@"/%@/folder%@", currentAccount, newFolderName];
+  error = [co renameTo: newFolderName];
   if (error)
     {
       response = [self responseWithStatus: 500];
       [response appendContentString: @"Unable to rename folder."];
     }
   else
-    response = [self responseWith204];
-
+    {
+      // Verify if the current folder have any collapsed threads save under it old name and adjust the folderName
+      if ([threadsCollapsed boolValue])
+        {
+          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+            {
+              values = [NSArray arrayWithArray:[threadsCollapsed objectForKey:keyForMsgUIDs]];
+              [threadsCollapsed setObject:values forKey:newKeyForMsgUIDs];
+              [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+              [us synchronize];
+            }
+        }
+      response = [self responseWith204];
+    }
   return response;
 }
 
@@ -149,10 +172,13 @@
 - (WOResponse *) deleteAction
 {
   SOGoMailFolder *co, *inbox;
+  SOGoUserSettings *us;
   WOResponse *response;
   NGImap4Connection *connection;
   NSException *error;
   NSURL *srcURL, *destURL;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
 
   co = [self clientObject];
   if ([co ensureTrashFolder])
@@ -174,7 +200,23 @@
         // We unsubscribe to the old one, and subscribe back to the new one
         [[connection client] subscribe: [destURL path]];
         [[connection client] unsubscribe: [srcURL path]];
-        
+    
+         // Verify if the current folder have any collapsed threads save under it name and erase it
+         us = [[context activeUser] userSettings];
+         moduleSettings = [us objectForKey: @"Mail"];
+         threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
+         currentMailbox = [co nameInContainer];
+         currentAccount = [[co container] nameInContainer];
+         keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+
+         if ([threadsCollapsed boolValue])
+           {
+             if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+               {
+                  [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+                  [us synchronize];
+               }
+           }
         response = [self responseWith204];
       }
   }
@@ -191,11 +233,16 @@
 {
   SOGoMailFolder *co;
   SOGoMailAccount *account;
+  SOGoUserSettings *us;
   WOResponse *response;
   NSArray *uids;
   NSString *value;
   NSDictionary *data;
   BOOL withTrash;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  NSMutableArray *mailboxThreadsCollapsed;
+  int i;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
@@ -217,7 +264,30 @@
                                         andString: [data jsonRepresentation]];
             }
           else
-            response = [self responseWith204];
+            {
+              // Verify if the message beeing delete is saved as the root of a collapsed thread
+              us = [[context activeUser] userSettings];
+              moduleSettings = [us objectForKey: @"Mail"];
+              threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
+              currentMailbox = [co nameInContainer];
+              currentAccount = [[co container] nameInContainer];
+              keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+
+              if ([threadsCollapsed boolValue])
+                {
+                  if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+                    {
+                      mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
+                      for (i = 0; i < [uids count]; i++)
+                        {
+                          if ([mailboxThreadsCollapsed containsObject:[uids objectAtIndex:i]])
+                            [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
+                        }
+                      [us synchronize];
+                    }
+                }
+              response = [self responseWith204];
+            }
         }
     }
   else
@@ -317,9 +387,14 @@
 - (WOResponse *) moveMessagesAction
 {
   SOGoMailFolder *co;
+  SOGoUserSettings *us;
   WOResponse *response;
   NSArray *uids;
   NSString *value, *destinationFolder;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  NSMutableArray *mailboxThreadsCollapsed;
+  int i;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
@@ -331,6 +406,27 @@
     uids = [value componentsSeparatedByString: @","];
     response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
     if (!response)
+      // Verify if the message beeing delete is saved as the root of a collapsed thread
+      us = [[context activeUser] userSettings];
+      moduleSettings = [us objectForKey: @"Mail"];
+      threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
+      currentMailbox = [co nameInContainer];
+      currentAccount = [[co container] nameInContainer];
+      keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+
+      if ([threadsCollapsed boolValue])
+        {
+          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+            {
+              mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
+              for (i = 0; i < [uids count]; i++)
+                {
+                  if ([mailboxThreadsCollapsed containsObject:[uids objectAtIndex:i]])
+                    [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
+                }
+              [us synchronize];
+            }
+        }
       response = [self responseWith204];
   }
   else
