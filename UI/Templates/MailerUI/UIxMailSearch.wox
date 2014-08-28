@@ -68,6 +68,8 @@
             <var:string label:value="To" /></td>
           <td id="dateSearchHeader" class="td_header">
             <var:string label:value="Date" /></td>
+          <td id="locationSearchHeader" class="td_header">
+            <var:string label:value="Location" /></td>
           <td id="buttonExpandHeader" class="td_header">
             <div id="imgPosition">
               <a href="#" id="listCollapse">

@@ -172,8 +172,15 @@ function searchMailsCallback(http) {
                 
                 var cell4 = row.insertCell(3);
                 Element.addClassName(cell4, "td_table_4");
-                cell4.writeAttribute("colspan", "2");
                 cell4.innerHTML = response.headers[i][7];
+              
+                var cell5 = row.insertCell(4);
+                Element.addClassName(cell5, "td_table_5");
+                cell5.writeAttribute("colspan", "2");
+                var folderPath = http.callbackData.folderName.split("/");
+                var folderLocation = folderPath[folderPath.length - 1]; // get the last element of the array (location)
+                folderLocation = folderLocation.substr(6); // strip down the prefix folder
+                cell5.innerHTML = folderLocation;
             }
 
         }
