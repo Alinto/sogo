@@ -31,7 +31,7 @@ var pageContent = $("pageContent");
 
 var deleteMessageRequestCount = 0;
 
-var messageCheckTimer;
+var refreshViewCheckTimer;
 
 // Variables for feature threadsCollapsing
 var displayThreadElement = false;
@@ -2072,7 +2072,7 @@ function initMailer(event) {
         configureMessageListEvents();
 
         initMailboxTree();
-        initMessageCheckTimer();
+        initRefreshViewCheckTimer();
 
         Event.observe(document, "keydown", onDocumentKeydown);
 
@@ -2092,23 +2092,27 @@ function initMailer(event) {
     Event.observe(window, "resize", onWindowResize);
 }
 
-function initMessageCheckTimer() {
-    var messageCheck = UserDefaults["SOGoMailMessageCheck"];
-    if (messageCheck && messageCheck != "manually") {
+function initRefreshViewCheckTimer() {
+    // TEMPORARY : to be erase
+    var refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
+    if (refreshViewCheck == null)
+        refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+    
+    if (refreshViewCheck && refreshViewCheck != "manually") {
         var interval;
-        if (messageCheck == "once_per_hour")
+        if (refreshViewCheck == "once_per_hour")
             interval = 3600;
-        else if (messageCheck == "every_minute")
+        else if (refreshViewCheck == "every_minute")
             interval = 60;
         else {
-            interval = parseInt(messageCheck.substr(6)) * 60;
+            interval = parseInt(refreshViewCheck.substr(6)) * 60;
         }
-        messageCheckTimer = window.setInterval(onMessageCheckCallback,
-                                               interval * 1000);
+        refreshViewCheckTimer = window.setInterval(onRefreshViewCheckCallback,
+                                                  interval * 1000);
     }
 }
 
-function onMessageCheckCallback(event) {
+function onRefreshViewCheckCallback(event) {
     refreshMailbox();
 }
 

@@ -11,6 +11,8 @@ var Contact = {
     currentContactId: null
 };
 
+var refreshViewCheckTimer;
+
 function openContactsFolder(contactsFolder, reload, idx) {
     if ((contactsFolder && contactsFolder != Contact.currentAddressBook)
         || reload) {
@@ -1363,6 +1365,7 @@ function initContacts(event) {
     configureAddressBooks();
     configureDraggables();
     updateAddressBooksMenus();
+    initRefreshViewCheckTimer();
 
     var table = $("contactsList");
     if (table) {
@@ -1623,6 +1626,26 @@ function dropSelectedContacts(action, toId) {
 
 function onContactsReload () {
     openContactsFolder(Contact.currentAddressBook, true);
+}
+
+function initRefreshViewCheckTimer() {
+  var refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+  if (refreshViewCheck && refreshViewCheck != "manually") {
+    var interval;
+    if (refreshViewCheck == "once_per_hour")
+      interval = 3600;
+    else if (refreshViewCheck == "every_minute")
+      interval = 60;
+    else {
+      interval = parseInt(refreshViewCheck.substr(6)) * 60;
+    }
+    refreshViewCheckTimer = window.setInterval(onRefreshViewCheckCallback,
+                                               interval * 1000);
+  }
+}
+
+function onRefreshViewCheckCallback(event) {
+  onContactsReload();
 }
 
 document.observe("dom:loaded", initContacts);

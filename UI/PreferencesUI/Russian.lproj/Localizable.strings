@@ -131,14 +131,14 @@
 "Sort messages by threads" = "Сортировать сообщения по нитям";
 "When sending mail, add unknown recipients to my" = "При отправке писем добавлять неизвестных получателей в мою";
 "Check for new mail:" = "Проверять новую почту:";
-"messagecheck_manually" = "Вручную";
-"messagecheck_every_minute" = "Каждую минуту";
-"messagecheck_every_2_minutes" = "Каждые 2 минуты";
-"messagecheck_every_5_minutes" = "Каждые 5 минут";
-"messagecheck_every_10_minutes" = "Каждые 10 минут";
-"messagecheck_every_20_minutes" = "Каждые 20 минут";
-"messagecheck_every_30_minutes" = "Каждые 30 минут";
-"messagecheck_once_per_hour" = "Раз в час";
+"refreshview_manually" = "Вручную";
+"refreshview_every_minute" = "Каждую минуту";
+"refreshview_every_2_minutes" = "Каждые 2 минуты";
+"refreshview_every_5_minutes" = "Каждые 5 минут";
+"refreshview_every_10_minutes" = "Каждые 10 минут";
+"refreshview_every_20_minutes" = "Каждые 20 минут";
+"refreshview_every_30_minutes" = "Каждые 30 минут";
+"refreshview_once_per_hour" = "Раз в час";
 
 "Forward messages:" = "Пересылать сообщения:";
 "messageforward_inline" = "В теле письма";
@@ -207,8 +207,8 @@
 "Contacts" = "Адресная книга";
 "Mail" = "Почта";
 "Last" = "Последнее использование";
-"Default module :" = "Модуль по умолчанию :";
-"SOGo version:" = "Версия SOGo:";
+"Default Module :" = "Модуль по умолчанию :";
+"SOGo Version :" = "Версия SOGo:";
 
 "Language :" = "Язык :";
 "choose" = "Выбрать ...";

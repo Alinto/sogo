@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
-"Check for new mail:" = "Check for new mail:";
-"messagecheck_manually" = "Manually";
-"messagecheck_every_minute" = "Every minute";
-"messagecheck_every_2_minutes" = "Every 2 minutes";
-"messagecheck_every_5_minutes" = "Every 5 minutes";
-"messagecheck_every_10_minutes" = "Every 10 minutes";
-"messagecheck_every_20_minutes" = "Every 20 minutes";
-"messagecheck_every_30_minutes" = "Every 30 minutes";
-"messagecheck_once_per_hour" = "Once per hour";
 
 "Forward messages:" = "Forward messages:";
 "messageforward_inline" = "Inline";
@@ -211,8 +202,8 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module:";
-"SOGo version:" = "SOGo version:";
+"Default Module :" = "Default Module:";
+"SOGo Version :" = "SOGo Version:";
 
 "Language :" = "Language:";
 "choose" = "Choose ...";
@@ -239,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Refresh View:";
+"refreshview_manually" = "Manually";
+"refreshview_every_minute" = "Every minute";
+"refreshview_every_2_minutes" = "Every 2 minutes";
+"refreshview_every_5_minutes" = "Every 5 minutes";
+"refreshview_every_10_minutes" = "Every 10 minutes";
+"refreshview_every_20_minutes" = "Every 20 minutes";
+"refreshview_every_30_minutes" = "Every 30 minutes";
+"refreshview_once_per_hour" = "Once per hour";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";

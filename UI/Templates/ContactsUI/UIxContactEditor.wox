@@ -8,7 +8,7 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="name"
-  const:userDefaultsKeys="SOGoContactsCategories"
+  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoContactsCategories"
   const:popup="YES"
   const:cssFiles="datepicker.css"
   const:jsFiles="datepicker.js">

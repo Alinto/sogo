@@ -114,14 +114,14 @@
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Chwilio am ebost newydd:";
-"messagecheck_manually" = "Corfforol";
-"messagecheck_every_minute" = "Pob munud";
-"messagecheck_every_2_minutes" = "Pob 2 munud";
-"messagecheck_every_5_minutes" = "Pob 5 munud";
-"messagecheck_every_10_minutes" = "Pob 10 munud";
-"messagecheck_every_20_minutes" = "Pob 20 munud";
-"messagecheck_every_30_minutes" = "Pob 30 munud";
-"messagecheck_once_per_hour" = "Unwaith pob awr";
+"refreshview_manually" = "Corfforol";
+"refreshview_every_minute" = "Pob munud";
+"refreshview_every_2_minutes" = "Pob 2 munud";
+"refreshview_every_5_minutes" = "Pob 5 munud";
+"refreshview_every_10_minutes" = "Pob 10 munud";
+"refreshview_every_20_minutes" = "Pob 20 munud";
+"refreshview_every_30_minutes" = "Pob 30 munud";
+"refreshview_once_per_hour" = "Unwaith pob awr";
 
 "Forward messages:" = "Blaenyrru negeseuon:";
 "messageforward_inline" = "Mewn llinell";
@@ -176,7 +176,7 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module :";
+"Default Module :" = "Default module :";
 
 "Language :" = "Iaith :";
 "choose" = "Dewis ...";

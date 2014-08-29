@@ -127,14 +127,14 @@
 "Show subscribed mailboxes only" = "عرض صناديق البريد المشترك بها فقط";
 "Sort messages by threads" = "رتب الرسائل حسب المواضيع";
 "Check for new mail:" = "تحقق من وجود بريد جديد:";
-"messagecheck_manually" = "يدوي";
-"messagecheck_every_minute" = "كل دقيقة";
-"messagecheck_every_2_minutes" = "كل 2 دقيقة";
-"messagecheck_every_5_minutes" = "كل 5 دقائق";
-"messagecheck_every_10_minutes" = "كل 10 دقائق";
-"messagecheck_every_20_minutes" = "كل 20 دقيقة";
-"messagecheck_every_30_minutes" = "كل 30 دقيقة";
-"messagecheck_once_per_hour" = "مرة كل ساعة";
+"refreshview_manually" = "يدوي";
+"refreshview_every_minute" = "كل دقيقة";
+"refreshview_every_2_minutes" = "كل 2 دقيقة";
+"refreshview_every_5_minutes" = "كل 5 دقائق";
+"refreshview_every_10_minutes" = "كل 10 دقائق";
+"refreshview_every_20_minutes" = "كل 20 دقيقة";
+"refreshview_every_30_minutes" = "كل 30 دقيقة";
+"refreshview_once_per_hour" = "مرة كل ساعة";
 
 "Forward messages:" = "أعد توجيه الرسائل:";
 "messageforward_inline" = "مضمنة";
@@ -199,7 +199,7 @@
 "Contacts" = "دفتر العناوين";
 "Mail" = "بريد";
 "Last" = "أخر إستخدام";
-"Default module :" = "وحدة نمطية افتراضية :";
+"Default Module :" = "وحدة نمطية افتراضية :";
 
 "Language :" = "اللغة:";
 "choose" = "اختيار ...";

@@ -55,11 +55,11 @@
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
     SOGoSelectedAddressBook = "collected";
-    SOGoMailMessageCheck = "manually";
+    SOGoRefreshViewCheck = "manually";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
     SOGoMailSignaturePlacement = "below";
-    SOGoMailPollingIntervals = ( 1, 2, 5, 10, 20, 30, 60 );
+    SOGoRefreshViewIntervals = ( 1, 2, 5, 10, 20, 30, 60 );
     SOGoMailComposeMessageType = "text";
     SOGoMailListViewColumnsOrder = ( "Thread", "Flagged", "Attachment", "Subject",
                                      "From", "Unread", "Date", "Priority",

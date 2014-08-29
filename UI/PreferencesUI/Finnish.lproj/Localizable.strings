@@ -135,14 +135,14 @@
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
 "When sending mail, add unknown recipients to my" = "Postia lähettäessä lisää tuntemattomat vastaanottajat";
 "Check for new mail:" = "Hae uudet sähköpostit";
-"messagecheck_manually" = "Manuaalisesti";
-"messagecheck_every_minute" = "Joka minuutti";
-"messagecheck_every_2_minutes" = "Joka toinen minuutti";
-"messagecheck_every_5_minutes" = "Viiden minuutin välein";
-"messagecheck_every_10_minutes" = "10 minuutin välein";
-"messagecheck_every_20_minutes" = "20 minuutin välein";
-"messagecheck_every_30_minutes" = "Puolen tunnin välein";
-"messagecheck_once_per_hour" = "Kerran tunnissa ";
+"refreshview_manually" = "Manuaalisesti";
+"refreshview_every_minute" = "Joka minuutti";
+"refreshview_every_2_minutes" = "Joka toinen minuutti";
+"refreshview_every_5_minutes" = "Viiden minuutin välein";
+"refreshview_every_10_minutes" = "10 minuutin välein";
+"refreshview_every_20_minutes" = "20 minuutin välein";
+"refreshview_every_30_minutes" = "Puolen tunnin välein";
+"refreshview_once_per_hour" = "Kerran tunnissa ";
 
 "Forward messages:" = "Edelleenlähetä viestit:";
 "messageforward_inline" = "Tekstisisällössä";
@@ -211,8 +211,8 @@
 "Contacts" = "Osoitekirja";
 "Mail" = "Sähköposti";
 "Last" = "Viimeksi käytetty";
-"Default module :" = "Oletusmoduli:";
-"SOGo version:" = "SOGo versio:";
+"Default Module :" = "Oletusmoduli:";
+"SOGo Version :" = "SOGo versio:";
 
 "Language :" = "Kieli:";
 "choose" = "Valitse...";

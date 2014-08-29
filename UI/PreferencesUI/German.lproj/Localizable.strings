@@ -135,14 +135,14 @@
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
-"messagecheck_manually" = "Manuell";
-"messagecheck_every_minute" = "Minütlich";
-"messagecheck_every_2_minutes" = "Alle 2 Minuten";
-"messagecheck_every_5_minutes" = "Alle 5 Minuten";
-"messagecheck_every_10_minutes" = "Alle 10 Minuten";
-"messagecheck_every_20_minutes" = "Alle 20 Minuten";
-"messagecheck_every_30_minutes" = "Alle 30 Minuten";
-"messagecheck_once_per_hour" = "Stündlich";
+"refreshview_manually" = "Manuell";
+"refreshview_every_minute" = "Minütlich";
+"refreshview_every_2_minutes" = "Alle 2 Minuten";
+"refreshview_every_5_minutes" = "Alle 5 Minuten";
+"refreshview_every_10_minutes" = "Alle 10 Minuten";
+"refreshview_every_20_minutes" = "Alle 20 Minuten";
+"refreshview_every_30_minutes" = "Alle 30 Minuten";
+"refreshview_once_per_hour" = "Stündlich";
 
 "Forward messages:" = "Nachrichten weiterleiten:";
 "messageforward_inline" = "Eingebunden";
@@ -211,8 +211,8 @@
 "Contacts" = "Adressbuch";
 "Mail" = "E-Mail";
 "Last" = "Zuletzt benutztes";
-"Default module :" = "Standard Modul:";
-"SOGo version:" = "SOGo Version:";
+"Default Module :" = "Standard Modul:";
+"SOGo Version :" = "SOGo Version:";
 
 "Language :" = "Sprache:";
 "choose" = "Auswählen ...";

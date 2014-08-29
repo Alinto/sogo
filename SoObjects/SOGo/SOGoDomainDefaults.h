@@ -66,7 +66,7 @@
 - (BOOL) foldersSendEMailNotifications;
 - (NSArray *) calendarDefaultRoles;
 - (NSArray *) contactsDefaultRoles;
-- (NSArray *) mailPollingIntervals;
+- (NSArray *) refreshViewIntervals;
 - (NSString *) subscriptionFolderFormat;
 
 - (NSString *) calendarDefaultCategoryColor;
