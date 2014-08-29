@@ -6,6 +6,8 @@ New features
 
 Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
+ - users can now print their calendars in colors with every views; list, daily, weekly and multicolumns
+ - users can choose to print their calendars events and tasks with the background color or with a border color  
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)
@@ -13,6 +15,9 @@ Bug fixes
  - fixed display of users with no possible subscription
  - fixed usage of SOGoSubscriptionFolderFormat domain default when the folder's name hasn't been changed
  - fixed "sogo-tool restore -l" that was returning incorrect folder IDs
+ - fixed Can not delete mail when over quota (#2812)
+ - fixed Events and tasks cannot be moved to other calendars using drag&drop (#2759)
+ - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
 
 2.2.7 (2014-07-30)
 ------------------
