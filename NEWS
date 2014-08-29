@@ -6,8 +6,8 @@ New features
 
 Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
- - users can now print their calendars in colors with every views; list, daily, weekly and multicolumns
- - users can choose to print their calendars events and tasks with the background color or with a border color  
+ - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
+ - new option to print calendars events and tasks with a background color or with a border color  
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)
@@ -18,6 +18,7 @@ Bug fixes
  - fixed Can not delete mail when over quota (#2812)
  - fixed Events and tasks cannot be moved to other calendars using drag&drop (#2759)
  - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
+ - fixed handling of messages labels (#2902)
 
 2.2.7 (2014-07-30)
 ------------------

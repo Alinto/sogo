@@ -2440,15 +2440,15 @@ function onMenuToggleMessageRead(event) {
 }
 
 function onMenuLabelNone() {
-    var messages = new Array();
+    var messages = [];
 
     if (document.menuTarget.tagName == "DIV")
         // Menu called from message content view
         messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
     else if (Object.isArray(document.menuTarget))
         // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(row) {
-            messages.push(row.getAttribute("id").substr(4));
+        $(document.menuTarget).collect(function(rowID) {
+            messages.push(rowID.substr(4));
         });
     else
         // Menu called from one selection in messages list view
@@ -2561,21 +2561,18 @@ function messageFlagCallback(http) {
             var operation = data["label"];
             if (operation) {
                 var labels = row.getAttribute("labels");
-                var flags;
+                var flags = [];
                 if (labels.length > 0)
                     flags = labels.split(" ");
-                else
-                    flags = new Array();
                 if (operation.substr(0, 3) == "add")
-                    flags.push("label" + operation.substr(3));
+                    flags.push(operation.substr(3));
                 else {
-                    var flag = "label" + operation.substr(6);
+                    // Remove flag
+                    var flag = operation.substr(6);
                     var idx = flags.indexOf(flag);
                     flags.splice(idx, 1);
                 }
                 row.writeAttribute("labels", flags.join(" "));
-                row.toggleClassName("_selected");
-                row.toggleClassName("_selected");
             }
             else
                 row.writeAttribute("labels", "");
