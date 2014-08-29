@@ -279,10 +279,7 @@
                     {
                       mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
                       for (i = 0; i < [uids count]; i++)
-                        {
-                          if ([mailboxThreadsCollapsed containsObject:[uids objectAtIndex:i]])
-                            [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
-                        }
+                        [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
                       [us synchronize];
                     }
                 }
@@ -420,10 +417,7 @@
             {
               mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
               for (i = 0; i < [uids count]; i++)
-                {
-                  if ([mailboxThreadsCollapsed containsObject:[uids objectAtIndex:i]])
-                    [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
-                }
+                [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
               [us synchronize];
             }
         }
