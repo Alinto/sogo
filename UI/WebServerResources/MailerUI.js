@@ -2550,8 +2550,10 @@ function messageFlagCallback(http) {
                     var flags = [];
                     if (labels.length > 0)
                         flags = labels.split(" ");
-                    if (operation == "add")
-                        flags.push(data["flag"]);
+                    if (operation == "add") {
+                        if (flags.indexOf(data["flag"]) == -1)
+                            flags.push(data["flag"]);
+                    }
                     else {
                         // Remove flag
                         var flag = data["flag"];

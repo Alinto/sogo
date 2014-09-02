@@ -635,11 +635,7 @@
   flags = [NSArray arrayWithObject:[content objectForKey:@"flags"]];
   msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
   operation = [content objectForKey:@"operation"];
-  
-  if ([operation isEqualToString:@"add"])
-    addOrRemove = YES;
-  else
-    addOrRemove = NO;
+  addOrRemove = ([operation isEqualToString:@"add"]? YES: NO);
 
   co = [self clientObject];
   client = [[co imap4Connection] client];
@@ -648,7 +644,7 @@
   if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
     response = [self responseWith204];
   else
-    response = nil;
+    response = [self responseWithStatus:500 andJSONRepresentation:result];
 
   return response;
 }
@@ -674,16 +670,16 @@
   co = [self clientObject];
   v = [[[context activeUser] userDefaults] mailLabelsColors];
   [flags addObjectsFromArray: [v allKeys]];
-  
+
   client = [[co imap4Connection] client];
   [[co imap4Connection] selectFolder: [co imap4URL]];
   result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:NO];
-  
+
   if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
     response = [self responseWith204];
   else
-    response = nil;
-  
+    response = [self responseWithStatus:500 andJSONRepresentation:result];
+
   return response;
 }
 
