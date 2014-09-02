@@ -618,7 +618,7 @@
   return response;
 }
 
-- (WOResponse *) addLabelAction
+- (WOResponse *) addOrRemoveLabelAction
 {
   WOResponse *response;
   WORequest *request;
@@ -626,14 +626,14 @@
   NSException *error;
   NSArray *msgUIDs, *flags;
   NSString *operation;
-  NSDictionary *content;
+  NSDictionary *content, *result;
   BOOL addOrRemove;
   NGImap4Client *client;
 
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
-  flags = [content objectForKey:@"flags"];
-  msgUIDs = [content objectForKey:@"msgUIDs"];
+  flags = [NSArray arrayWithObject:[content objectForKey:@"flags"]];
+  msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
   operation = [content objectForKey:@"operation"];
   
   if ([operation isEqualToString:@"add"])
@@ -643,60 +643,46 @@
 
   co = [self clientObject];
   client = [[co imap4Connection] client];
-  error = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
-  if (error)
-    response = (WOResponse *) error;
-  else
+  [[co imap4Connection] selectFolder: [co imap4URL]];
+  result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
+  if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
     response = [self responseWith204];
-
-  return response;
-}
-
-- (WOResponse *) removeLabelAction
-{
-  WOResponse *response;
-  SOGoMailObject *co;
-  NSException *error;
-  NSArray *flags;
-  NSString *flag;
-  
-  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
-  co = [self clientObject];
-  flags = [NSArray arrayWithObject: flag];
-  
-  error = [co removeFlags: flags];
-  if (error)
-    response = (WOResponse *) error;
   else
-    response = [self responseWith204];
-  
+    response = nil;
+
   return response;
 }
 
 - (WOResponse *) removeAllLabelsAction
 {
-  NSMutableArray *flags;
   WOResponse *response;
-  SOGoMailObject *co;
-  NSException *error;
-  NSDictionary *v;
-  
-  
-  co = [self clientObject];
-  
-  v = [[[context activeUser] userDefaults] mailLabelsColors];
-  
+  WORequest *request;
+  SOGoMailFolder *co;
+  NGImap4Client *client;
+  NSArray *msgUIDs;
+  NSMutableArray *flags;
+  NSDictionary *v, *content, *result;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
+
   // We always unconditionally remove the Mozilla tags
   flags = [NSMutableArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
            @"$Label4", @"$Label5", nil];
-  
+
+  co = [self clientObject];
+  v = [[[context activeUser] userDefaults] mailLabelsColors];
   [flags addObjectsFromArray: [v allKeys]];
   
-  error = [co removeFlags: flags];
-  if (error)
-    response = (WOResponse *) error;
-  else
+  client = [[co imap4Connection] client];
+  [[co imap4Connection] selectFolder: [co imap4URL]];
+  result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:NO];
+  
+  if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
     response = [self responseWith204];
+  else
+    response = nil;
   
   return response;
 }

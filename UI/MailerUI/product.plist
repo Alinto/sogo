@@ -181,15 +181,10 @@
           pageName    = "UIxMailUserRightsEditor";
           actionName  = "saveUserRights";
         };
-        addLabel = {
+        addOrRemoveLabel = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
-          actionName  = "addLabel";
-        };
-        removeLabel = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName  = "removeLabel";
+          actionName  = "addOrRemoveLabel";
         };
         removeAllLabels = {
           protectedBy = "View";
