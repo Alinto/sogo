@@ -618,4 +618,88 @@
   return response;
 }
 
+- (WOResponse *) addLabelAction
+{
+  WOResponse *response;
+  WORequest *request;
+  SOGoMailFolder *co;
+  NSException *error;
+  NSArray *msgUIDs, *flags;
+  NSString *operation;
+  NSDictionary *content;
+  BOOL addOrRemove;
+  NGImap4Client *client;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  flags = [content objectForKey:@"flags"];
+  msgUIDs = [content objectForKey:@"msgUIDs"];
+  operation = [content objectForKey:@"operation"];
+  
+  if ([operation isEqualToString:@"add"])
+    addOrRemove = YES;
+  else
+    addOrRemove = NO;
+
+  co = [self clientObject];
+  client = [[co imap4Connection] client];
+  error = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) removeLabelAction
+{
+  WOResponse *response;
+  SOGoMailObject *co;
+  NSException *error;
+  NSArray *flags;
+  NSString *flag;
+  
+  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
+  co = [self clientObject];
+  flags = [NSArray arrayWithObject: flag];
+  
+  error = [co removeFlags: flags];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
+  
+  return response;
+}
+
+- (WOResponse *) removeAllLabelsAction
+{
+  NSMutableArray *flags;
+  WOResponse *response;
+  SOGoMailObject *co;
+  NSException *error;
+  NSDictionary *v;
+  
+  
+  co = [self clientObject];
+  
+  v = [[[context activeUser] userDefaults] mailLabelsColors];
+  
+  // We always unconditionally remove the Mozilla tags
+  flags = [NSMutableArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
+           @"$Label4", @"$Label5", nil];
+  
+  [flags addObjectsFromArray: [v allKeys]];
+  
+  error = [co removeFlags: flags];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
+  
+  return response;
+}
+
+
 @end

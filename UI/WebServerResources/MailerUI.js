@@ -31,7 +31,7 @@ var pageContent = $("pageContent");
 
 var deleteMessageRequestCount = 0;
 
-var messageCheckTimer;
+var refreshViewCheckTimer;
 
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
@@ -1955,7 +1955,7 @@ function initMailer(event) {
         configureMessageListEvents();
 
         initMailboxTree();
-        initMessageCheckTimer();
+        initRefreshViewCheckTimer();
 
         Event.observe(document, "keydown", onDocumentKeydown);
 
@@ -1975,23 +1975,27 @@ function initMailer(event) {
     Event.observe(window, "resize", onWindowResize);
 }
 
-function initMessageCheckTimer() {
-    var messageCheck = UserDefaults["SOGoMailMessageCheck"];
-    if (messageCheck && messageCheck != "manually") {
+function initRefreshViewCheckTimer() {
+    // TEMPORARY : to be erase
+    var refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
+    if (refreshViewCheck == null)
+        refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+    
+    if (refreshViewCheck && refreshViewCheck != "manually") {
         var interval;
-        if (messageCheck == "once_per_hour")
+        if (refreshViewCheck == "once_per_hour")
             interval = 3600;
-        else if (messageCheck == "every_minute")
+        else if (refreshViewCheck == "every_minute")
             interval = 60;
         else {
-            interval = parseInt(messageCheck.substr(6)) * 60;
+            interval = parseInt(refreshViewCheck.substr(6)) * 60;
         }
-        messageCheckTimer = window.setInterval(onMessageCheckCallback,
-                                               interval * 1000);
+        refreshViewCheckTimer = window.setInterval(onRefreshViewCheckCallback,
+                                                  interval * 1000);
     }
 }
 
-function onMessageCheckCallback(event) {
+function onRefreshViewCheckCallback(event) {
     refreshMailbox();
 }
 
@@ -2447,8 +2451,8 @@ function onMenuLabelNone() {
         messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
     else if (Object.isArray(document.menuTarget))
         // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(rowID) {
-            messages.push(rowID.substr(4));
+        $(document.menuTarget).collect(function(row) {
+            messages.push(row.substr(4));
         });
     else
         // Menu called from one selection in messages list view
@@ -2463,40 +2467,51 @@ function onMenuLabelNone() {
 }
 
 function onMenuLabelFlag() {
-    var messages = new Hash();
-
     var flag = this.readAttribute("data-name");
-
-    if (document.menuTarget.tagName == "DIV")
-        // Menu called from message content view
-        messages.set(Mailer.currentMessages[Mailer.currentMailbox],
-                     $('row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
-    else if (Object.isArray(document.menuTarget))
-        // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(rowID) {
-            var row = $(rowID);
-            if (row)
-                messages.set(rowID.substr(4),
-                             row.getAttribute("labels"));
-        });
-    else
-        // Menu called from one selection in messages list view
-        messages.set(document.menuTarget.getAttribute("id").substr(4),
-                     document.menuTarget.getAttribute("labels"));
-
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
-    messages.keys().each(function(id) {
-        var flags = messages.get(id).split(" ");
-        var operation = "add";
+    var operation = "add";
+    var msgUIDs;
+    var msgLabels;
 
+    if (!Object.isArray(document.menuTarget)) {
+        msgUIDs = Mailer.currentMessages[Mailer.currentMailbox];
+        if (document.menuTarget.tagName == "DIV")
+            // Menu called from message content view
+            msgLabels = $('row_' + msgLabels).getAttribute("labels");
+        else
+            // Menu called from one selection in messages list view
+            msgLabels = document.menuTarget.getAttribute("labels");
+        
+        var flags = msgLabels.split(" ");
         if (flags.indexOf(flag) > -1)
             operation = "remove";
+    }
+    else {
+        // Menu called from multiple selection in messages list view
+        var rows = $(document.menuTarget);
+        var blockedOperation = false;
+        for (var i = 0; i < rows.length; i++) {
+            var row = $(rows[i]);
+            if (row) {
+                msgUIDs.push(rows[i].substr(4));
+                msgLabels = row.getAttribute("labels");
+                
+                var flags = msgLabels.split(" ");
+                if (flags.indexOf(flag) > -1 && !blockedOperation) {
+                    operation = "remove";
+                }
+                else {
+                    blockedOperation = true;
+                    operation = "add";
+                }
+            }
+        }
+    }
 
-        triggerAjaxRequest(url + id + "/" + operation + "Label?flag=" + flag.asCSSIdentifier(),
-                           messageFlagCallback,
-                           { mailbox: Mailer.currentMailbox, msg: id,
-                             label: operation + flag } );
-    });
+    var callbackData = { mailbox: Mailer.currentMailbox, operation: operation, flag: flag };
+    var content = {flags: flag.asCSSIdentifier(), msgUIDs: msgUIDs, operation: operation};
+    content = Object.toJSON(content);
+    triggerAjaxRequest(url + operation + "Label", messageFlagCallback, callbackData, content);
 }
 
 function onMenuToggleMessageFlag(event) {
