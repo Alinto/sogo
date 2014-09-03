@@ -270,6 +270,15 @@
   return [NSString stringWithFormat: @"var labels = %@;", [self _stringsForFramework: frameworkName]];
 }
 
+- (NSString *) angularModule
+{
+  NSString *frameworkName;
+
+  frameworkName = [[context page] frameworkName];
+
+  return [NSString stringWithFormat: @"SOGo.%@", frameworkName];
+}
+
 - (NSString *) pageJavaScriptURL
 {
   WOComponent *page;
