@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container 
+<container
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xml="http://www.w3.org/XML/1998/namespace"
   xmlns:var="http://www.skyrix.com/od/binding"
@@ -63,11 +63,11 @@
               <var:if condition="canLogoff">
                 <ul class="right">
                   <li class="name has-dropdown">
-                    <a href="#" class="" data-dropdown-toggle="#userOptions"><var:if condition="userHasVacationEnabled">
+                    <a data-dropdown-toggle="#userOptionsDrop"><var:if condition="userHasVacationEnabled">
                       <img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" />
                     </var:if><var:string var:value="userIdentification"/></a>
-                    <ul id="userOptions" class="f-dropdown">
-                      <li><a href="#"><!-- preferences / mobile version / etc --></a></li>
+                    <ul id="userOptionsDrop" class="f-dropdown">
+                      <li><a href="?theme=mobile"><var:string label:value="Mobile Version"/></a></li>
                     </ul>
                   </li>
                   <li class="divider hide-for-small"><!-- divider --></li>
@@ -90,7 +90,7 @@
 	      </var:if>
 	      <var:if condition="isContacts" const:negate="YES">
 		<li><a var:href="relativeContactsPath"><var:string label:value="Address Book" /></a></li>
-	      </var:if>	      
+	      </var:if>
 	      <var:if condition="userHasMailAccess">
 		<var:if condition="isMail">
 		    <li class="active"><var:string label:value="Mail"/></li>
@@ -100,7 +100,7 @@
 		</var:if>
 	      </var:if>
 	      <li><a var:href="relativePreferencesPath"><var:string label:value="Preferences" /></a></li>
-	      <var:if condition="isSuperUser">		
+	      <var:if condition="isSuperUser">
 		<var:if condition="isAdministration">
 		  <li class="active"><var:string label:value="Administration"/></li>
 		</var:if>
