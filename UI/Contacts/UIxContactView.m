@@ -262,15 +262,6 @@
   return @"";
 }
 
-// - (NSString *) categories
-// {
-//   NSString *categories;
-
-//   categories = [[card categories] componentsJoinedByString: @", "];
-//   return [self _cardStringWithLabel: @"Categories:"
-//                value: categories];
-// }
-
 - (BOOL) hasTelephones
 {
   if (!phones)
@@ -628,66 +619,6 @@
   return [self _cardStringWithLabel: nil value: services];
 }
 
-- (NSString *) workCompany
-{
-  return [self _cardStringWithLabel: nil value: [card workCompany]];
-}
-
-- (NSString *) workPobox
-{
-  return [self _cardStringWithLabel: nil
-                              value: [workAdr flattenedValueAtIndex: 0
-                                                             forKey: @""]];
-}
-
-- (NSString *) workExtendedAddress
-{
-  return [self _cardStringWithLabel: nil
-                              value: [workAdr flattenedValueAtIndex: 1
-                                                             forKey: @""]];
-}
-
-- (NSString *) workStreetAddress
-{
-  return [self _cardStringWithLabel: nil
-                              value: [workAdr flattenedValueAtIndex: 2
-                                                             forKey: @""]];
-}
-
-- (NSString *) workCityAndProv
-{
-  NSString *city, *prov;
-  NSMutableString *data;
-
-  city = [workAdr flattenedValueAtIndex: 3 forKey: @""];
-  prov = [workAdr flattenedValueAtIndex: 4 forKey: @""];
-
-  data = [NSMutableString string];
-  [data appendString: city];
-  if ([city length] > 0 && [prov length] > 0)
-    [data appendString: @" "];
-  [data appendString: prov];
-
-  return [self _cardStringWithLabel: nil value: data];
-}
-
-- (NSString *) workPostalCodeAndCountry
-{
-  NSString *postalCode, *country;
-  NSMutableString *data;
-
-  postalCode = [workAdr flattenedValueAtIndex: 5 forKey: @""];
-  country = [workAdr flattenedValueAtIndex: 6 forKey: @""];
-
-  data = [NSMutableString string];
-  [data appendString: postalCode];
-  if ([postalCode length] > 0 && [country length] > 0)
-    [data appendFormat: @" ", country];
-  [data appendString: country];
-
-  return [self _cardStringWithLabel: nil value: data];
-}
-
 - (NSString *) workUrl
 {
   return [self _urlOfType: @"work"];
@@ -791,7 +722,6 @@
   id <WOActionResults> result;
   id o;
   SOGoObject <SOGoContactObject> *contact;
-  // NSMutableArray *description;
   NSMutableDictionary *data;
 
   contact = [self clientObject];
@@ -808,7 +738,6 @@
     return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
                                          reason: @"could not locate contact"];
 
-  // description = [NSMutableArray array];
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[contact container] nameInContainer], @"pid",
                               [contact nameInContainer], @"id",
@@ -828,33 +757,26 @@
     }
   o = [card nickname];
   if (o) [data setObject: o forKey: @"nickname"];
-  // o = [card fullName];
-  // if (o) [data setObject: o forKey: @"fullname"];
   o = [card title];
   if ([o length] > 0)
     {
       [data setObject: o forKey: @"title"];
-      // [description addObject: o];
     }
   o = [card role];
   if ([o length] > 0)
     {
       [data setObject: o forKey: @"role"];
-      // [description addObject: o];
     }
   o = [self orgUnits];
   if ([o count] > 0)
     {
       [data setObject: o forKey: @"orgUnits"];
-      // [description addObjectsFromArray: o];
     }
   o = [card workCompany];
   if ([o length] > 0)
     {
       [data setObject: o forKey: @"org"];
-      // [description addObject: o];
     }
-  // if ([description count]) [data setObject: description forKey: @"description"];
 
   o = [card birthday];
   if (o)

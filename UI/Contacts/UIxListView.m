@@ -174,13 +174,12 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[co container] nameInContainer], @"pid",
                               [co nameInContainer], @"id",
-                              [list tag], @"tag",
+                              [[list tag] lowercaseString], @"tag",
                               [list fn], @"fn",
+                              [list nickname], @"nickname",
                               [list description], @"description",
                               cards, @"refs",
                               nil];
-
-  // [list cardReferences]
 
   result = [self responseWithStatus: 200
                           andString: [data jsonRepresentation]];
