@@ -29,7 +29,7 @@ class preventInvitationsTest(unittest.TestCase):
 
     def tearDown(self):
       self.prefs.set("autoReplyText", "")
-      self.prefs.set('PreventInvitations', 0)
+      self.prefs.set('PreventInvitations', '0')
       self.prefs.set("whiteList", "")
       #- Manual Cleanup, not called because classs is not derived from unittest
       self.caldav.tearDown()
@@ -37,7 +37,7 @@ class preventInvitationsTest(unittest.TestCase):
     def testDontPreventInvitation(self):
       """ Set/get the PreventInvitation pref"""
       #- First accept the invitation
-      self.prefs.set('PreventInvitations', 0)
+      self.prefs.set('PreventInvitations', '0')
       notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(notset, 0)
       self.caldav.AddAttendee()
@@ -46,7 +46,7 @@ class preventInvitationsTest(unittest.TestCase):
     def testPreventInvitation(self):
       """ Set PreventInvitation and don't accept the Invitation"""
       #- Second, enable PreventInviation and refuse it
-      self.prefs.set('enablePreventInvitations', 0)
+      self.prefs.set('enablePreventInvitations', '0')
       isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(isset, 1)
       self.caldav.AddAttendee(409)
@@ -55,13 +55,13 @@ class preventInvitationsTest(unittest.TestCase):
     def testPreventInvitationWhiteList(self):
       """ Set PreventInvitation add to WhiteList and accept the Invitation"""
       #- First, add the Organiser to the Attendee's whitelist
-      self.prefs.set('enablePreventInvitations', 0)
+      self.prefs.set('enablePreventInvitations', '0')
       self.prefs.set("whiteList", white_listed_attendee)
       whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
       self.assertEqual(whitelist, white_listed_attendee)
 
       #- Second, try again to invite, it should work
-      self.prefs.set('enablePreventInvitations', 0)
+      self.prefs.set('enablePreventInvitations', '0')
       isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(isset, 1)
       self.caldav.AddAttendee()
