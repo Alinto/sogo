@@ -29,6 +29,9 @@
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/SOGoContactGCSList.h>
@@ -50,36 +53,6 @@
   [list retain];
 
   return self;
-}
-
-- (NSString *) listName
-{
-  return [list fn];
-}
-
-- (void) setListName: (NSString *) newName
-{
-  [list setFn: newName];
-}
-
-- (NSString *) nickname
-{
-  return [list nickname];
-}
-
-- (void) setNickname: (NSString *) newName
-{
-  [list setNickname: newName];
-}
-
-- (NSString *) description
-{
-  return [list description];
-}
-
-- (void) setDescription: (NSString *) newDescription
-{
-  [list setDescription: newDescription];
 }
 
 - (NSArray *) references
@@ -121,7 +94,7 @@
   int i, count;
   NGVCardReference *cardReference;
   SOGoContactGCSFolder *folder;
-  
+
   references = [value componentsSeparatedByString: @","];
   if ([references count])
     {
@@ -140,11 +113,11 @@
 
       // Add new cards
       count = [references count];
-      
+
       for (i = 0; i < count; i++)
         {
           currentReference = [references objectAtIndex: i];
-          if (![self cardReferences: [list cardReferences] 
+          if (![self cardReferences: [list cardReferences]
                             contain: currentReference])
             {
               // Search contact by vCard UID
@@ -155,7 +128,7 @@
 		  [cardReference setFn: [values objectForKey: @"c_cn"]];
 		  [cardReference setEmail: [values objectForKey: @"c_mail"]];
 		  [cardReference setReference: currentReference];
-		  
+
 		  [list addCardReference: cardReference];
 		}
               else
@@ -166,7 +139,7 @@
                   NGVCard *newCard;
                   CardElement *newWorkMail;
                   SOGoContactGCSEntry *newContact;
-                  
+
                   contactInfo = [currentReference componentsSeparatedByString: @"|"];
                   if ([contactInfo count] > 1)
                     {
@@ -194,38 +167,131 @@
                       [cardReference setFn: fn];
                       [cardReference setEmail: workMail];
                       [cardReference setReference: newUID];
-                      
+
                       [list addCardReference: cardReference];
                     }
                 }
 	    }
 	}
-    }  
+    }
+}
+
+- (void) setReferences: (NSArray *) references
+{
+  NSDictionary *values;
+  NSArray *initialReferences;
+  NSDictionary *currentReference;
+  NSString *uid, *workMail, *fn, *newUID;
+  int i, count;
+  NGVCardReference *cardReference;
+  SOGoContactGCSFolder *folder;
+
+  folder = [co container];
+
+  // Remove from the list the cards that were deleted
+  initialReferences = [list cardReferences];
+  count = [initialReferences count];
+  for (i = 0; i < count; i++)
+    {
+      cardReference = [initialReferences objectAtIndex: i];
+      if (![references containsObject: [cardReference reference]])
+        [list deleteCardReference: cardReference];
+    }
+
+  // TODO: update existing cards?
+
+  // Add new cards
+  count = [references count];
+
+  for (i = 0; i < count; i++)
+    {
+      if ([[references objectAtIndex: i] isKindOfClass: [NSDictionary class]])
+        {
+          currentReference = [references objectAtIndex: i];
+          uid = [currentReference objectForKey: @"reference"];
+          if (![self cardReferences: [list cardReferences]
+                            contain: uid])
+            {
+              // Search contact by vCard UID
+	      values = [folder lookupContactWithName: uid];
+	      if (values)
+		{
+		  cardReference = [NGVCardReference elementWithTag: @"card"];
+		  [cardReference setFn: [values objectForKey: @"c_cn"]];
+		  [cardReference setEmail: [values objectForKey: @"c_mail"]];
+		  [cardReference setReference: uid];
+
+		  [list addCardReference: cardReference];
+		}
+              else
+                {
+                  // Invalid UID or no UID
+                  NGVCard *newCard;
+                  CardElement *newWorkMail;
+                  SOGoContactGCSEntry *newContact;
+
+                  workMail = [currentReference objectForKey: @"email"];
+                  fn = [currentReference objectForKey: @"fn"];
+
+                  // Create a new vCard
+                  newUID = [NSString stringWithFormat: @"%@.vcf", [co globallyUniqueObjectId]];
+                  newCard = [NGVCard cardWithUid: newUID];
+                  newWorkMail = [CardElement new];
+                  [newWorkMail autorelease];
+                  [newWorkMail setTag: @"email"];
+                  [newWorkMail addType: @"work"];
+                  [newCard addChild: newWorkMail];
+                  [newWorkMail setSingleValue: workMail forKey: @""];
+                  [newCard setFn: fn];
+
+                  // Add vCard to current folder
+                  newContact = [SOGoContactGCSEntry objectWithName: newUID
+                                                       inContainer: folder];
+                  [newContact saveContentString: [newCard versitString]];
+
+                  // Create card reference for the list
+                  cardReference = [NGVCardReference elementWithTag: @"card"];
+                  [cardReference setFn: fn];
+                  [cardReference setEmail: workMail];
+                  [cardReference setReference: newUID];
+
+                  [list addCardReference: cardReference];
+                }
+	    }
+	}
+    }
 }
 
 - (BOOL) cardReferences: (NSArray *) references
-                contain: (NSString *) ref
+                contain: (NSString *) reference
 {
   int i, count;
   BOOL rc = NO;
 
-  count = [references count];
-  for (i = 0; i < count; i++)
+  if (reference)
     {
-      if ([ref isEqualToString: [[references objectAtIndex: i] reference]])
+      count = [references count];
+      for (i = 0; i < count; i++)
         {
-          rc = YES;
-          break;
+          if ([reference isEqualToString: [[references objectAtIndex: i] reference]])
+            {
+              rc = YES;
+              break;
+            }
         }
     }
 
   return rc;
 }
 
-- (NSString *) saveURL
+/**
+ *
+ */
+- (void) setAttributes: (NSDictionary *) attributes
 {
-  return [NSString stringWithFormat: @"%@/saveAsList",
-               [co baseURLInContext: context]];
+  [list setNickname: [attributes objectForKey: @"nickname"]];
+  [list setFn: [attributes objectForKey: @"fn"]];
+  [list setDescription: [attributes objectForKey: @"description"]];
 }
 
 - (BOOL) canCreateOrModify
@@ -234,72 +300,36 @@
           && [super canCreateOrModify]);
 }
 
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-                           inContext: (WOContext*) context
-{
-  NSString *actionName;
-  BOOL rc;
-
-  co = [self clientObject];
-  actionName = [[request requestHandlerPath] lastPathComponent];
-  if ([co isKindOfClass: [SOGoContactGCSList class]]
-      && [actionName hasPrefix: @"save"])
-    {
-      list = [co vList];
-      [list retain];
-      rc = YES;
-    }
-  else
-    rc = NO;
-
-  return rc;
-}
-
-#warning Could this be part of a common parent with UIxAppointment/UIxTaskEditor/UIxListEditor ?
-- (id) newAction
-{
-  NSString *objectId, *method, *uri;
-  id <WOActionResults> result;
-
-  co = [self clientObject];
-  objectId = [co globallyUniqueObjectId];
-  if ([objectId length] > 0)
-    {
-      method = [NSString stringWithFormat:@"%@/%@.vlf/editAsList",
-                         [co soURL], objectId];
-      uri = [self completeHrefForMethod: method];
-      result = [self redirectToLocation: uri];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
-                          reason: @"could not create a unique ID"];
-
-  return result;
-}
-
 - (id <WOActionResults>) saveAction
 {
-  id result;
-  NSString *jsRefreshMethod;
+  WORequest *request;
+  WOResponse *response;
+  NSDictionary *params, *data;
+  id o;
 
-  if (co)
-    {
-      [co save];
-      if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-        result = [self redirectToLocation: [self modulePath]];
-      else
-        {
-          jsRefreshMethod
-            = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
-            [co nameInContainer]];
-          result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
-        }
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-                                           reason: @"method cannot be invoked on "
-                                           @"the specified object"];
-  return result;
+  co = [self clientObject];
+  list = [co vList];
+  [list retain];
+
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+
+  o = [params objectForKey: @"refs"];
+  if (![o isKindOfClass: [NSArray class]])
+    o = nil;
+  [self setReferences: (NSArray *) o];
+  [self setAttributes: params];
+  [co save];
+
+  // Return list UID and addressbook ID in a JSON payload
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         [[co container] nameInContainer], @"pid",
+                         [co nameInContainer], @"id",
+                         nil];
+  response = [self responseWithStatus: 200
+                            andString: [data jsonRepresentation]];
+
+  return response;
 }
 
 @end

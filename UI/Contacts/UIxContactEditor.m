@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2010 Inverse inc.
+  Copyright (C) 2005-2014 Inverse inc.
 
   This file is part of SOGo
 
@@ -15,7 +15,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -42,6 +42,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
+#import <Contacts/NGVCard+SOGo.h>
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactObject.h>
@@ -111,12 +112,6 @@ static Class SOGoContactGCSEntryK = Nil;
 - (id) addressBookItem
 {
   return addressBookItem;
-}
-
-- (NSString *) saveURL
-{
-  return [NSString stringWithFormat: @"%@/saveAsContact",
-		   [[self clientObject] baseURL]];
 }
 
 - (NSArray *) htmlMailFormatList
@@ -346,24 +341,167 @@ static Class SOGoContactGCSEntryK = Nil;
   return [NSString stringWithFormat: @"%@/photo", [soURL absoluteString]];
 }
 
+- (void) setAttributes: (NSDictionary *) attributes
+{
+  CardElement *element;
+  NSArray *elements, *values;
+  NSMutableArray *units, *categories;
+  id o;
+  unsigned int i;
+
+  [card setNWithFamily: [attributes objectForKey: @"sn"]
+                 given: [attributes objectForKey: @"givenname"]
+            additional: nil prefixes: nil suffixes: nil];
+  [card setNickname: [attributes objectForKey: @"nickname"]];
+  [card setFn: [attributes objectForKey: @"fn"]];
+  [card setTitle: [attributes objectForKey: @"title"]];
+  [card setBday: [attributes objectForKey: @"birthday"]];
+
+  if ([[attributes objectForKey: @"addresses"] isKindOfClass: [NSArray class]])
+    {
+      elements = [card childrenWithTag: @"adr"];
+      [card removeChildren: elements];
+      values = [attributes objectForKey: @"addresses"];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              element = [card elementWithTag: @"adr" ofType: [o objectForKey: @"type"]];
+              [element setSingleValue: [o objectForKey: @"postoffice"]
+                              atIndex: 0 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"street2"]
+                              atIndex: 1 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"street"]
+                              atIndex: 2 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"locality"]
+                              atIndex: 3 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"region"]
+                              atIndex: 4 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"postalcode"]
+                              atIndex: 5 forKey: @""];
+              [element setSingleValue: [o objectForKey: @"country"]
+                              atIndex: 6 forKey: @""];
+            }
+        }
+    }
+
+  if ([[attributes objectForKey: @"orgUnits"] isKindOfClass: [NSArray class]])
+    {
+      elements = [card childrenWithTag: @"org"];
+      [card removeChildren: elements];
+      values = [attributes objectForKey: @"orgUnits"];
+      units = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              [units addObject: [o objectForKey: @"value"]];
+            }
+        }
+    }
+  else
+    {
+      units = nil;
+    }
+  [card setOrg: [attributes objectForKey: @"org"]
+         units: units];
+
+  elements = [card childrenWithTag: @"tel"];
+  [card removeChildren: elements];
+  values = [attributes objectForKey: @"phones"];
+  if ([values isKindOfClass: [NSArray class]])
+    {
+      NSEnumerator *list = [values objectEnumerator];
+      id attrs;
+      while ((attrs = [list nextObject]))
+        {
+          if ([attrs isKindOfClass: [NSDictionary class]])
+            {
+              element = [card elementWithTag: @"tel" ofType: [attrs objectForKey: @"type"]];
+              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+            }
+        }
+  }
+
+  if ([[attributes objectForKey: @"emails"] isKindOfClass: [NSArray class]])
+    {
+      elements = [card childrenWithTag: @"email"];
+      [card removeChildren: elements];
+      values = [attributes objectForKey: @"emails"];
+      if (values)
+        {
+          NSEnumerator *list = [values objectEnumerator];
+          while ((o = [list nextObject]))
+            {
+              if ([o isKindOfClass: [NSDictionary class]])
+                {
+                  element = [card elementWithTag: @"email" ofType: [o objectForKey: @"type"]];
+                  [element setSingleValue: [o objectForKey: @"value"] forKey: @""];
+                }
+            }
+        }
+    }
+
+  elements = [card childrenWithTag: @"url"];
+  [card removeChildren: elements];
+  values = [attributes objectForKey: @"urls"];
+  if ([values isKindOfClass: [NSArray class]])
+    {
+      NSEnumerator *list = [values objectEnumerator];
+      id attrs;
+      while ((attrs = [list nextObject]))
+        {
+          if ([attrs isKindOfClass: [NSDictionary class]])
+            {
+              element = [card elementWithTag: @"url" ofType: [attrs objectForKey: @"type"]];
+              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+            }
+        }
+  }
+
+  [card setNote: [attributes objectForKey: @"note"]];
+
+  if ([[attributes objectForKey: @"categories"] isKindOfClass: [NSArray class]])
+    {
+      elements = [card childrenWithTag: @"categories"];
+      [card removeChildren: elements];
+      values = [attributes objectForKey: @"categories"];
+      categories = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              [categories addObject: [o objectForKey: @"value"]];
+            }
+        }
+      [card setCategories: categories];
+    }
+
+  [card cleanupEmptyChildren];
+}
+
 - (id <WOActionResults>) saveAction
 {
-  SOGoContentObject <SOGoContactObject> *contact;
+  SOGoContentObject <SOGoContactObject> *co;
   WORequest *request;
   WOResponse *response;
   NSDictionary *params, *data;
 
-  contact = [self clientObject];
+  co = [self clientObject];
+  card = [co vCard];
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
-  [contact setAttributes: params];
 
-  [contact save];
+  [self setAttributes: params];
+  [co save];
 
   // Return card UID and addressbook ID in a JSON payload
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-                         [[contact container] nameInContainer], @"pid",
-                         [contact nameInContainer], @"id",
+                         [[co container] nameInContainer], @"pid",
+                         [co nameInContainer], @"id",
                          nil];
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];

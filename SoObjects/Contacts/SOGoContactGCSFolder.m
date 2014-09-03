@@ -222,45 +222,53 @@ static NSArray *folderListingFields = nil;
   data = [contactRecord objectForKey: @"c_component"];
   if ([data length])
     [contactRecord setObject: data forKey: @"tag"];
-  [contactRecord removeObjectForKey: @"c_component"];
 
   // c_categories => categories
   data = [contactRecord objectForKey: @"c_categories"];
   if ([data length])
     [contactRecord setObject: data forKey: @"categories"];
-  [contactRecord removeObjectForKey: @"c_categories"];
 
   // c_name => id
   data = [contactRecord objectForKey: @"c_name"];
   if ([data length])
     [contactRecord setObject: data forKey: @"id"];
-  [contactRecord removeObjectForKey: @"c_name"];
 
   // c_cn => fn
   data = [contactRecord objectForKey: @"c_cn"];
   if ([data length])
     [contactRecord setObject: data forKey: @"fn"];
-  [contactRecord removeObjectForKey: @"c_cn"];
+  else
+    {
+      data = [contactRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
+      if ([data length] > 1)
+        {
+          [contactRecord setObject: data forKey: @"c_cn"];
+        }
+      else
+        {
+          data = [contactRecord objectForKey: @"c_o"];
+          [contactRecord setObject: data forKey: @"c_cn"];
+        }
+    }
 
   // c_givenname => givenname
   data = [contactRecord objectForKey: @"c_givenname"];
   if ([data length])
     [contactRecord setObject: data forKey: @"givenname"];
-  [contactRecord removeObjectForKey: @"c_givenname"];
 
   // c_sn => sn
   data = [contactRecord objectForKey: @"c_sn"];
   if ([data length])
     [contactRecord setObject: data forKey: @"sn"];
-  [contactRecord removeObjectForKey: @"c_sn"];
 
   // c_screenname => X-AIM
+  if (![contactRecord objectForKey: @"c_screenname"])
+    [contactRecord setObject: @"" forKey: @"c_screenname"];
 
   // c_o => org
   data = [contactRecord objectForKey: @"c_o"];
   if ([data length])
       [contactRecord setObject: data forKey: @"org"];
-  [contactRecord removeObjectForKey: @"c_o"];
 
   // c_mail => emails[]
   data = [contactRecord objectForKey: @"c_mail"];
@@ -270,7 +278,8 @@ static NSArray *folderListingFields = nil;
       email = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];
       [contactRecord setObject: [NSArray arrayWithObject: email] forKey: @"emails"];
     }
-  [contactRecord removeObjectForKey: @"c_mail"];
+  else
+    [contactRecord setObject: @"" forKey: @"c_mail"];
 
   // c_telephonenumber => phones
   data = [contactRecord objectForKey: @"c_telephonenumber"];
@@ -280,7 +289,8 @@ static NSArray *folderListingFields = nil;
       phonenumber = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];
       [contactRecord setObject: [NSArray arrayWithObject: phonenumber] forKey: @"phones"];
     }
-  [contactRecord removeObjectForKey: @"c_telephonenumber"];
+  else
+    [contactRecord setObject: @"" forKey: @"c_telephonenumber"];
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records

@@ -217,6 +217,11 @@
   return [source removeContactEntryWithID: [ldifEntry nameInContainer]];
 }
 
+/**
+ * Normalize keys of dictionary representing a contact.
+ * @param oldRecord a dictionary with pairs from the source folder (LDAP or SQL)
+ * @see [SOGoContactGCSFolder _fixupContactRecord]
+ */
 - (NSDictionary *) _flattenedRecord: (NSDictionary *) oldRecord
 {
   NSMutableDictionary *newRecord;
@@ -226,26 +231,45 @@
   newRecord = [NSMutableDictionary dictionaryWithCapacity: 8];
   [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
                 forKey: @"c_uid"];
+
+  // c_name => id
   [newRecord setObject: [oldRecord objectForKey: @"c_name"]
                 forKey: @"c_name"];
+  [newRecord setObject: [oldRecord objectForKey: @"c_name"]
+                forKey: @"id"];
 
+  // displayname || c_cn => fn
   data = [oldRecord objectForKey: @"displayname"];
   if (!data)
     data = [oldRecord objectForKey: @"c_cn"];
-  if (!data)
+  if (data)
+    [newRecord setObject: data forKey: @"fn"];
+  else
     data = @"";
   [newRecord setObject: data forKey: @"c_cn"];
 
+  // mail => emails[]
   data = [oldRecord objectForKey: @"mail"];
-  if (!data)
-    data = @"";
-  else if ([data isKindOfClass: [NSArray class]])
+  if (data)
     {
-      if ([data count] > 0)
-        data = [data objectAtIndex: 0];
+      if ([data isKindOfClass: [NSArray class]])
+        {
+          if ([data count] > 0)
+            data = [data objectAtIndex: 0];
+          else
+            data = nil;
+        }
+      if (data)
+        {
+          NSDictionary *email;
+          email = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];
+          [newRecord setObject: [NSArray arrayWithObject: email] forKey: @"emails"];
+        }
       else
         data = @"";
     }
+  else
+    data = @"";
   [newRecord setObject: data forKey: @"c_mail"];
 
   data = [oldRecord objectForKey: @"nsaimid"];
@@ -255,17 +279,27 @@
     data = @"";
   [newRecord setObject: data forKey: @"c_screenname"];
 
+  // o => org
   data = [oldRecord objectForKey: @"o"];
-  if (!data)
+  if (data)
+    [newRecord setObject: data forKey: @"org"];
+  else
     data = @"";
   [newRecord setObject: data forKey: @"c_o"];
 
+  // telephonenumber || cellphone || homephone => phones[]
   data = [oldRecord objectForKey: @"telephonenumber"];
   if (![data length])
     data = [oldRecord objectForKey: @"cellphone"];
   if (![data length])
     data = [oldRecord objectForKey: @"homephone"];
-  if (![data length])
+  if (data)
+    {
+      NSDictionary *phonenumber;
+      phonenumber = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];
+      [newRecord setObject: [NSArray arrayWithObject: phonenumber] forKey: @"phones"];
+    }
+  else
     data = @"";
   [newRecord setObject: data forKey: @"c_telephonenumber"];
 
@@ -275,17 +309,21 @@
   if (data)
     {
       [newRecord setObject: data forKey: @"isGroup"];
-      [newRecord setObject: @"vlist" forKey: @"c_component"];
+      [newRecord setObject: @"vlist" forKey: @"tag"];
     }
 #warning TODO: create a custom icon for resources
   else
     {
-      [newRecord setObject: @"vcard" forKey: @"c_component"];
+      [newRecord setObject: @"vcard" forKey: @"tag"];
     }
   
+  // c_info => note
   data = [oldRecord objectForKey: @"c_info"];
   if ([data length] > 0)
-    [newRecord setObject: data forKey: @"contactInfo"];
+    {
+      [newRecord setObject: data forKey: @"note"];
+      [newRecord setObject: data forKey: @"contactInfo"];
+    }
 
   recordSource = [oldRecord objectForKey: @"source"];
   if ([recordSource conformsToProtocol: @protocol (SOGoDNSource)] &&

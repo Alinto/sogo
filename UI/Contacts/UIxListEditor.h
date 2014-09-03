@@ -30,7 +30,6 @@
 {
   NGVList *list;
   SOGoContactGCSList *co;
-  id reference;
 }
 
 - (BOOL) cardReferences: (NSArray *) references contain: (NSString *) ref;
