@@ -12,5 +12,6 @@ tags
 SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
 Tests/*/config.py
+UI/WebServerResources/js/vendor/
 *.pyc
 ._*
