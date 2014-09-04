@@ -37,7 +37,7 @@ class preferencesTest(unittest.TestCase):
 
     def testSetPreventInvitation(self):
       """ Set/get the PreventInvitation pref"""
-      self.prefs.set('PreventInvitations', 0)
+      self.prefs.set('PreventInvitations', '0')
       notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(notset, 0)
       self.prefs.set('enablePreventInvitations', '0')

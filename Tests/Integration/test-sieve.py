@@ -96,7 +96,7 @@ class sieveTest(unittest.TestCase):
 
       filterAdd = {"Vacation":"1",
                    "autoReplyText": vacation_msg,
-                   "daysBetweenResponse": daysSelect,
+                   "daysBetweenResponse": "%d" % daysSelect,
 		   "autoReplyEmailAddresses": self.user_email,
 		   "ignoreLists": "1",
 		  } 
