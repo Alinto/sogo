@@ -198,7 +198,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
                         @"SOGoLanguage", @"Language",
                         @"SOGoMailComposeMessageType", @"ComposeMessagesType",
                         @"SOGoSelectedAddressBook", @"SelectedAddressBook",
-                        @"SOGoRefreshViewCheck", @"refreshViewCheck",
+                        @"SOGoRefreshViewCheck", @"RefreshViewCheck",
                         @"SOGoMailMessageForwarding", @"MessageForwarding",
                         @"SOGoMailSignature", @"MailSignature",
                         @"SOGoMailSignaturePlacement", @"SignaturePlacement",
