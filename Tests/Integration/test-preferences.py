@@ -40,7 +40,7 @@ class preferencesTest(unittest.TestCase):
       self.prefs.set('PreventInvitations', 0)
       notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(notset, 0)
-      self.prefs.set('enablePreventInvitations', 0)
+      self.prefs.set('enablePreventInvitations', '0')
       isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(isset, 1)
 
