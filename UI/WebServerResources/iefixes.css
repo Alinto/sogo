@@ -54,9 +54,6 @@ DIV.colorBox
 IMG.dragMessage
 { filter: alpha(opacity=70); }
 
-TABLE.messageList TD
-{ white-space: pre; }
-
 TABLE.messageList TR._selected TD
 { border-right: 1px solid #9ABCD8 !important; }
 

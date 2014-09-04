@@ -434,9 +434,10 @@ function onDocumentKeydown(event) {
 
 /* Search mail, call the template and open inside a dialog windoƒw */
 function onSearchMail(event) {
-    if (event.element().disabled == false || event.element().disabled == undefined) {
-        event.element().disabled = true;
-        event.element().writeAttribute("id", "toolbarSearchButton");
+    var element = Event.findElement(event);
+    if (element.disabled == false || element.disabled == undefined) {
+        element.disabled = true;
+        element.writeAttribute("id", "toolbarSearchButton");
         if ($("searchMailView")) {
             $("searchMailView").style.display = "block";
             $("bgDialogDiv").style.display = "block";

@@ -250,6 +250,7 @@
 "No matches found" = "No matches found";
 "results found" = "results found";
 "result found" = "result found";
+"Please specify at least one filter" = "Please specify at least one filter";
 
 /* Folder operations */
 "Name :" = "Name :";

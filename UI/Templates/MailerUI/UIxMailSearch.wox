@@ -52,10 +52,10 @@
       </tr>
     </tbody>
   </table>
-  <table id="searchFiltersList">
-    <tbody>
-    </tbody>
-  </table>
+  <div id="searchFiltersList">
+    <table>
+    </table>
+  </div>
   <div id="resultsTable">
     <table id="searchMailFooter" class="sortable messageList">
       <thead>
@@ -85,10 +85,10 @@
     </table>
   </div>
   <div id="optionsButtons">
-    <a class="button" name="delete" id="deleteButton" onclick="onDeleteClick(this)">
-      <span><var:string label:value="Delete" /></span></a>
     <a class="button" name="open" id="openButton" onclick="onOpenClick(this)">
       <span><var:string label:value="Open" /></span></a>
+    <a class="button" name="delete" id="deleteButton" onclick="onDeleteClick(this)">
+      <span><var:string label:value="Delete" /></span></a>
   </div>
   <div id="resultsFound">
   </div>

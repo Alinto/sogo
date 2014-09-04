@@ -5,23 +5,25 @@ TABLE#searchMailHeader
 { width: 100%;
   margin-bottom: 1em; }
 
-TABLE#searchFiltersList
+DIV#searchFiltersList
 {
   border: 1px solid #909090;
   padding-top:2px;
   border-radius: 3px;
-  display:inline-block;
   max-height:105px;
   height:105px;
-  overflow:auto;
+  overflow-y:auto;
+  overflow-x:hidden;
   width:100%;
 }
 
 DIV#resultsTable
 {
    border: 1px solid #909090;
+   margin-top:5px;
    border-radius: 3px;
    overflow-y: auto;
+   width:100%;
 }
 
 TD#mailAccountsCell {
@@ -29,14 +31,25 @@ TD#mailAccountsCell {
   white-space: nowrap;
 }
 
-.buttonsCell
+TR.filterRow
 {
-  width:1%;
+  width:100%;
 }
 
-.inputsCell
+TR.filterRow > TD
 {
-  width:45%;
+  width: 20%;
+  vertical-align:middle;
+}
+
+TR.filterRow > TD.buttonsCell 
+{
+  width:7%;
+}
+
+TR.filterRow > TD.inputsCell
+{
+  width:70%;
 }
 
 .td_table_1, .td_table_2, .td_table_3, .td_table_4 {
@@ -58,6 +71,7 @@ TD.sortdesc {
 }
 
 .td_header {
+  white-space:initial !important;
   border-bottom: solid #909090 1px;
   border-right: solid #909090 1px;
   height:18px;
@@ -88,7 +102,7 @@ TD.sortdesc {
 
 #headerButtons
 {
-  width:171px;
+  width:175px;
   white-space: nowrap;
 }
 
@@ -104,8 +118,14 @@ TD.sortdesc {
 
 DIV#optionsButtons
 { 
-  position:absolute;
-  bottom:10px;
+  position:relative;
+  height:22px;
+}
+
+A#deleteButton, A#openButton
+{
+  float:left;
+  margin-top:5px;
 }
 
 .button
@@ -131,30 +151,30 @@ DIV#optionsButtons
   right:10px;
 }
 
-#imgPosition
+DIV#imgPosition
 { z-index: 1;
   position:relative; }
 
-#listCollapse img
+A#listCollapse > img
 { position: absolute; }
 
-#listCollapse img.collapse
+A#listCollapse > img.collapse
 { clip: rect(0 18px 18px 0);
   top: -9px;
   right: -22px; }
 
-#listCollapse img.collapse:hover
+A#listCollapse > img.collapse:hover
 { clip: rect(0 36px 18px 18px);
   top: -9px;
   right: -4px; }
 
-#listCollapse img.rise
+A#listCollapse > img.rise
 { clip: rect(18px 18px 36px 0);
   top: -27px;
   right:-22px;
   }
 
-#listCollapse img.rise:hover
+A#listCollapse > img.rise:hover
 { clip: rect(18px 36px 36px 18px);
   top: -27px;
   right:-4px; }
@@ -188,6 +208,11 @@ DIV#optionsButtons
 #filterButtons 
 {
   width:40px;
+}
+
+IMG.addFilterButton, IMG.removeFilterButton
+{
+  z-index: 1;
   cursor:pointer;
 }
 

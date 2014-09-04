@@ -73,7 +73,8 @@ function onSearchClick() {
             $("searchButton").down().innerHTML = _("Stop");
             searchMails();
         }
-        // TODO - give the user a warning or a notice that it needs at least one filter
+        else
+            alert(_("Please specify at least one filter"));
     }
     else {
         stopOngoingSearch = true;
@@ -87,8 +88,8 @@ function searchMails() {
     var nbOptions = optionsList.length;
     var selectedIndex = optionsList.selectedIndex;
     var accountNumber, accountUser, folderPath, folderName;
-  
     var mailAccountIndex = mailAccounts.indexOf(searchParams.searchLocation);
+    
     if (mailAccountIndex != -1) {
         accountNumber = "/" + mailAccountIndex;
         folderName = accountNumber + "/folderINBOX";
@@ -101,7 +102,7 @@ function searchMails() {
         accountNumber = "/" + userNames.indexOf(accountUser);
       
         var position = searchLocation.length;
-        folderName = accountNumber + "/folder" + searchLocation[1].replace(" ", "_SP_");
+        folderName = accountNumber + "/folder" + searchLocation[1].asCSSIdentifier();
         for (i = 2; i < position; i++)
             folderName += "/folder" + searchLocation[i];
         
@@ -126,12 +127,10 @@ function searchMails() {
     }
 
     var urlstr = (ApplicationBaseURL + folderName + "/uids");
-    
     var callbackData = {"folderName" : folderName, "subfolders" : subfolders, "newSearch" : true};
     var object = {"filters":searchParams.filters, "sortingAttributes":{"match":searchParams.filterMatching}};
     var content = Object.toJSON(object);
     document.searchMailsAjaxRequest = triggerAjaxRequest(urlstr, searchMailsCallback, callbackData, content, {"content-type": "application/json"});
-
 }
 
 function searchMailsCallback(http) {
@@ -143,44 +142,54 @@ function searchMailsCallback(http) {
         if (http.callbackData.newSearch) {
             var oldEntries = table.rows;
             var count = oldEntries.length - 1;
-            for (x = count; x >= 0; x--)
-                oldEntries[x].remove();
+            for (var x = count; x >= 0; x--){
+                $(oldEntries[x]).remove();
+            }
+            
+            
         }
-        
+
         // ["To", "Attachment", "Flagged", "Subject", "From", "Unread", "Priority", "Date", "Size", "rowClasses", "labels", "rowID", "uid"]
         if (response.headers.length > 1) {
             if ($("noSearchResults"))
                 $("noSearchResults").remove();
-          
-            for (i = 1; i < response.headers.length; i++) { // Starts at 1 because the position 0 in the array are the headers of the table
-                var row = table.insertRow(i - 1);           // This is the reason why row inserting starts at i - 1
+
+            for (var i = 1; i < response.headers.length; i++) { // Starts at 1 because the position 0 in the array are the headers of the table
+                var row = document.createElement("tr");
                 Element.addClassName(row, "resultsRow");
-                row.writeAttribute("uid", response.headers[i][12]);
-                row.writeAttribute("folderName", http.callbackData.folderName);
+                row.setAttribute("uid", response.headers[i][12]);
+                row.setAttribute("folderName", http.callbackData.folderName);
                 
-                var cell1 = row.insertCell(0);
+                var cell1 = document.createElement("td");
                 Element.addClassName(cell1, "td_table_1");
                 cell1.innerHTML = response.headers[i][3];
+                row.appendChild(cell1);
                 
-                var cell2 = row.insertCell(1);
+                var cell2 = document.createElement("td");
                 Element.addClassName(cell2, "td_table_2");
                 cell2.innerHTML = response.headers[i][4];
+                row.appendChild(cell2);
                 
-                var cell3 = row.insertCell(2);
+                var cell3 = document.createElement("td");
                 Element.addClassName(cell3, "td_table_3");
                 cell3.innerHTML = response.headers[i][0];
+                row.appendChild(cell3);
                 
-                var cell4 = row.insertCell(3);
+                var cell4 = document.createElement("td");
                 Element.addClassName(cell4, "td_table_4");
                 cell4.innerHTML = response.headers[i][7];
+                row.appendChild(cell4);
               
-                var cell5 = row.insertCell(4);
+                var cell5 = document.createElement("td");
                 Element.addClassName(cell5, "td_table_5");
-                cell5.writeAttribute("colspan", "2");
+                cell5.setAttribute("colspan", "2");
                 var folderPath = http.callbackData.folderName.split("/");
                 var folderLocation = folderPath[folderPath.length - 1]; // get the last element of the array (location)
                 folderLocation = folderLocation.substr(6); // strip down the prefix folder
                 cell5.innerHTML = folderLocation;
+                row.appendChild(cell5);
+                
+                table.appendChild(row);
             }
 
         }
@@ -190,8 +199,8 @@ function searchMailsCallback(http) {
                 var cell = row.insertCell(0);
                 var element = document.createElement("span");
               
-                cell.writeAttribute("id", "noSearchResults");
-                cell.writeAttribute("colspan", "4");
+                cell.setAttribute("id", "noSearchResults");
+                cell.setAttribute("colspan", "4");
                 element.innerHTML = _("No matches found");
                 cell.appendChild(element);
             }
@@ -213,7 +222,6 @@ function searchMailsCallback(http) {
         else {
             onSearchEnd();
         }
- 
     }
 }
 
@@ -249,33 +257,31 @@ function onMatchFilters(event) {
 /**** Search mail body ****/
 
 function onAddFilter() {
-    var table = $("searchFiltersList").down("tbody");
+    var table = $("searchFiltersList").down("TABLE");
     var searchByList = $("searchByList").getElementsByTagName("li");
     var stringArgumentsList = $("stringArgumentsList").getElementsByTagName("li");
-    
+
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
     Element.addClassName(row, "filterRow");
-    
+
     var cell1 = row.insertCell(0);
     var element1 = document.createElement("select");
     Element.addClassName(element1, "searchByList");
-    element1.writeAttribute("id", "searchByListRow" + rowCount);
-    for (i = 0; i < searchByList.length; i++) {
+    element1.setAttribute("id", "searchByListRow" + rowCount);
+    for (var i = 0; i < searchByList.length; i++) {
         var option = document.createElement("option");
-        option.writeAttribute("value", i);
         option.innerHTML = searchByList[i].innerHTML;
         element1.appendChild(option);
     }
     cell1.appendChild(element1);
-    
+
     var cell2 = row.insertCell(1);
     var element2 = document.createElement("select");
     Element.addClassName(element2, "searchArgumentsList");
-    element2.writeAttribute("id", "searchArgumentsListRow" + rowCount);
-    for (i = 0; i < stringArgumentsList.length; i++) {
+    element2.setAttribute("id", "searchArgumentsListRow" + rowCount);
+    for (var i = 0; i < stringArgumentsList.length; i++) {
         var option = document.createElement("option");
-        option.writeAttribute("value", i);
         option.innerHTML = stringArgumentsList[i].innerHTML;
         element2.appendChild(option);
     }
@@ -285,10 +291,9 @@ function onAddFilter() {
     Element.addClassName(cell3, "inputsCell");
     var element3 = document.createElement("input");
     Element.addClassName(element3, "searchInput");
-    element3.writeAttribute("type", "text");
-    element3.writeAttribute("name", "searchInput");
-    element3.writeAttribute("value", "");
-    element3.writeAttribute("id", "searchInputRow" + rowCount);
+    element3.setAttribute("type", "text");
+    element3.setAttribute("name", "searchInput");
+    element3.setAttribute("id", "searchInputRow" + rowCount);
     cell3.appendChild(element3);
     
     var cell4 = row.insertCell(3);
@@ -297,33 +302,32 @@ function onAddFilter() {
     var buttonsDiv = document.createElement("div");
     var imageAddFilter = document.createElement("img");
     var imageRemoveFilter = document.createElement("img");
-    imageAddFilter.writeAttribute("src", "/SOGo.woa/WebServerResources/add-icon.png");
-    imageRemoveFilter.writeAttribute("src", "/SOGo.woa/WebServerResources/remove-icon.png");
+    imageAddFilter.setAttribute("src", "/SOGo.woa/WebServerResources/add-icon.png");
+    imageRemoveFilter.setAttribute("src", "/SOGo.woa/WebServerResources/remove-icon.png");
     Element.addClassName(imageAddFilter, "addFilterButton");
     Element.addClassName(imageAddFilter, "glow");
     Element.addClassName(imageRemoveFilter, "removeFilterButton");
     Element.addClassName(imageRemoveFilter, "glow");
-    imageAddFilter.writeAttribute("name", "addFilter");
-    imageAddFilter.writeAttribute("id", "addFilterButtonRow" + rowCount);
-    imageAddFilter.writeAttribute("onclick", "onAddFilter(this)");
-    imageRemoveFilter.writeAttribute("name", "removeFilter");
-    imageRemoveFilter.writeAttribute("id", "removeFilterButtonRow" + rowCount);
-    imageRemoveFilter.writeAttribute("onclick", "onRemoveFilter(this)");
-    buttonsDiv.writeAttribute("id", "filterButtons");
+    imageAddFilter.setAttribute("name", "addFilter");
+    imageAddFilter.setAttribute("id", "addFilterButtonRow" + rowCount);
+    $(imageAddFilter).on("click", onAddFilter);
+    imageRemoveFilter.setAttribute("name", "removeFilter");
+    imageRemoveFilter.setAttribute("id", "removeFilterButtonRow" + rowCount);
+    $(imageRemoveFilter).on("click", onRemoveFilter);
+    buttonsDiv.setAttribute("id", "filterButtons");
     
     buttonsDiv.appendChild(imageAddFilter);
     buttonsDiv.appendChild(imageRemoveFilter);
     
     cell4.appendChild(buttonsDiv);
-
 }
 
-function onRemoveFilter(event) {
-    var rows = $("searchFiltersList").down("tbody").getElementsByTagName("tr");
-    var currentRow = event.up(".filterRow");
+function onRemoveFilter() {
+    var rows = $("searchFiltersList").getElementsByTagName("tr");
+    var currentRow = this.up(".filterRow");
     
     if(rows.length > 1)
-        currentRow.remove();
+        $(currentRow).remove();
 }
 
 /**** Search mail Footer ****/
@@ -358,23 +362,23 @@ function onOpenClick(event) {
 }
 
 function onDeleteClick(event) {
-    var messageList = $("resultsTable");
-    var row = messageList.getSelectedRows()[0];
+    var messageList = $("resultsTable").down("TABLE");
+    var row = $(messageList).getSelectedRows()[0];
     if (row) {
-        var rowIds = messageList.getSelectedRows()[0].getAttribute("uid");
+        var rowIds = row.getAttribute("uid");
         var uids = new Array(); // message IDs
         var paths = new Array(); // row IDs
         var unseenCount = 0;
         var refreshFolder = false;
-        
-        if (rowIds && rowIds.length > 0) {
+        if (rowIds) {
             messageList.deselectAll();
             if (unseenCount < 1) {
-                row.remove();
                 if (row.hasClassName("mailer_unreadmail"))
                     unseenCount--;
                 else
                     unseenCount = 1;
+
+                $(row).remove();
             }
             var uid = rowIds;
             var path = Mailer.currentMailbox + "/" + uid;
@@ -387,7 +391,6 @@ function onDeleteClick(event) {
                 if (messageContent) messageContent.innerHTML = '';
                 Mailer.currentMessages[Mailer.currentMailbox] = null;
             }
-            
             Mailer.dataTable.remove(uid);
             updateMessageListCounter(0 - rowIds.length, true);
             if (unseenCount < 0) {
@@ -462,13 +465,11 @@ function onResizeClick() {
 
 function adjustResultsTable(state) {
     var resultsTable = $("resultsTable");
-    var width = $("searchMailView").getWidth() - 22;
     var height = $("searchMailView").getHeight();
     if (state == "collapse")
-        height -= 260;
+        height = height - 266;
     else
-        height -= 146;
-    resultsTable.style.width = width + "px";
+        height = height - 152;
     resultsTable.style.height = height + "px";
 }
 
