@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div id="uploadResults" data-dropdown-content="dropdown-content" class="f-dropdown content">
+  <div id="uploadResults" data-dropdown-content="dropdown-content" class="f-dropdown">
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
       <p id="uploadResultsContent"><!-- empty --></p>
@@ -89,7 +89,7 @@
     <li><var:string label:value="View Raw Source" /></li>
   </ul>
 
-  <div data-ng-app="SOGo.Contacts">
+  <div>
 
     <div data-ng-controller="AddressBookCtrl" data-ng-init="init()">
 
@@ -218,7 +218,7 @@
         </div>
         <div class="buttonsToolbar">
           <span data-ng-show="addressbook.isEditable">
-            <span class="button tiny radius" data-ng-click="edit()"><i class="icon-pencil"><!-- edit --></i></span>
+            <a class="button tiny radius" data-ui-sref="addressbook.editor({addressbook_id: addressbook.id, card_id: addressbook.card.id})"><i class="icon-pencil"><!-- edit --></i></a>
             <span class="button tiny radius alert" data-ng-click="confirmDelete(addressbook.card)"><i class="icon-trash"><!-- delete --></i></span>
           </span>
         </div>
@@ -227,13 +227,14 @@
             <label class="right"><var:string label:value="Birthday"/></label>
           </div>
           <div class="value">
-            <span>{{addressbook.card.$birthday()}}</span>
+            <span>{{addressbook.card.$birthday() | date}}</span>
           </div>
         </div>
         <div class="section" data-ng-show="addressbook.card.refs.length > 0">
+          <!-- list members -->
           <div class="attr" data-ng-repeat="ref in addressbook.card.refs">
             <div class="value single">
-              <a href="mailto:{{ref.email}}">{{ref.fn}}</a>
+              <a href="mailto:{{ref.email}}">{{ref.fn || ref.email}}</a>
             </div>
           </div>
         </div>
@@ -285,11 +286,14 @@
             <div data-ng-bind-html="addressbook.card.note"><!-- note --></div>
           </div>
         </div>
-      </div><!-- .viewer -->
+      </div>
 
-      <div class="editor" data-ng-show="editMode">
-        <form name="contactForm" href="" data-ng-show="addressbook.card.$isCard()"
-              data-ng-submit="save(contactForm)">
+    </script><!-- card.html -->
+
+    <script type="text/ng-template" id="cardEditor.html">
+
+      <div class="editor">
+        <form name="cardForm" data-ng-show="addressbook.card.$isCard()" data-ng-submit="save(cardForm)">
           <div class="buttonsToolbar">
             <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i></span>
             <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i></span>
@@ -364,7 +368,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addOrgUnit()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Organizational Unit"/></span>
+                <span class="button secondary tiny" data-ng-click="addOrgUnit()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Organizational Unit"/></span>
               </div>
             </div>
           </div>
@@ -388,7 +392,7 @@
                 <label class="right inline"><var:string label:value="Category"/></label>
               </div>
               <div class="value">
-                <input type="text" label:placeholder="category" data-ng-model="category.value" data-sg-focus-on="category_{{$index}}" data-typeahead="cat for cat in addressbook.card.allCategories"/>
+                <input type="text" label:placeholder="category" data-ng-model="category.value" data-sg-focus-on="category_{{$index}}" data-typeahead="cat for cat in addressbook.card.allCategories | filter:$viewValue"/>
               </div>
             </div>
             <div class="attr">
@@ -498,29 +502,59 @@
             </div>
           </div>
         </form>
-        <form name="contactForm" href="" data-ng-show="addressbook.card.$isList()" data-ng-submit="save()">
-          <div class="attr">
-            <div class="action"><var:entity const:name="nbsp"/></div>
-            <div class="key">
-              <label class="right inline"><var:string label:value="Display"/></label>
+        <form name="listForm" data-ng-show="addressbook.card.$isList()" data-ng-submit="save(listForm)">
+          <div class="buttonsToolbar">
+            <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i></span>
+            <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i></span>
+            <button class="button tiny radius" type="submit"><i class="icon-checkmark"><!-- save --></i></button>
+          </div>
+          <div class="section">
+            <div class="attr">
+              <div class="action"><var:entity const:name="nbsp"/></div>
+              <div class="key">
+                <label class="right inline"><var:string label:value="Display"/></label>
+              </div>
+              <div class="value">
+                <input type="text" data-ng-model="addressbook.card.fn"/>
+              </div>
             </div>
-            <div class="value">
-              <input type="text" data-ng-model="addressbook.card.fn"/>
+            <div class="attr">
+              <div class="action"><var:entity const:name="nbsp"/></div>
+              <div class="key">
+                <label class="right inline"><var:string label:value="Nickname"/></label>
+              </div>
+              <div class="value">
+                <input type="text" data-ng-model="addressbook.card.nickname"/>
+              </div>
             </div>
           </div>
-          <div class="attr">
-            <div class="action"><var:entity const:name="nbsp"/></div>
-            <div class="key">
-              <label class="right inline"><var:string label:value="Firstname"/></label>
+          <!-- list members -->
+          <div class="section">
+            <div class="attr" data-ng-repeat="ref in addressbook.card.refs">
+              <div class="action">
+                <span class="button alert icon" data-ng-click="addressbook.card.$delete('refs', $index)"><i class="icon-minus"><!-- remove --></i></span>
+              </div>
+              <div class="key">
+                <label class="right inline"><var:string label:value="Member"/></label>
+              </div>
+              <div class="value">
+                <input type="text" label:placeholder="email address"
+                       data-ng-model="ref.email"
+                       data-sg-focus-on="ref_{{$index}}"
+                       data-typeahead="card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})"
+                       data-typeahead-on-select="addressbook.card.$updateMember($index, $model, $item)"/>
+              </div>
             </div>
-            <div class="value">
-              <input type="text" data-ng-model="addressbook.card.givenname"/>
+            <div class="attr">
+              <div class="value single">
+                <span class="button secondary tiny" data-ng-click="addMember()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Member"/></span>
+              </div>
             </div>
           </div>
         </form>
-      </div><!-- .editor -->
+      </div>
 
-    </script>
+    </script><!-- cardEditor.html -->
 
     <!--<div class="dragHandle" id="rightDragHandle"></div>-->
 

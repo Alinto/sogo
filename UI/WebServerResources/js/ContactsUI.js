@@ -6,7 +6,7 @@
 
     angular.module('SOGo.Common', []);
 
-    angular.module('SOGo.Contacts', ['ngSanitize', 'ui.router', 'mm.foundation', 'mm.foundation.offcanvas', 'SOGo.Common', 'SOGo.UIDesktop'])
+    angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'SOGo.Common', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
         'baseURL': ApplicationBaseURL
@@ -28,7 +28,7 @@
                 views: {
                     'card': {
                         templateUrl: "card.html",
-                        controller: 'cardCtrl'
+                        controller: 'CardCtrl'
                     }
                 }
             })
@@ -36,8 +36,17 @@
                 url: "/:contact_type/new",
                 views: {
                     'card': {
-                        templateUrl: "card.html",
-                        controller: 'cardCtrl'
+                        templateUrl: "cardEditor.html",
+                        controller: 'CardCtrl'
+                    }
+                }
+            })
+            .state('addressbook.editor', {
+                url: "/:card_id/edit",
+                views: {
+                    'card': {
+                        templateUrl: "cardEditor.html",
+                        controller: 'CardCtrl'
                     }
                 }
             });
@@ -100,10 +109,9 @@
             $rootScope.addressbook.name = $rootScope.addressbooks[i].name;
             $rootScope.addressbook.$save()
                 .then(function(data) {
-                    console.debug("saved!");
                     $scope.editMode = false;
                 }, function(data, status) {
-                    console.debug("failed");
+                    Dialog.alert(l('Warning'), data);
                 });
         };
         $scope.confirmDelete = function() {
@@ -124,7 +132,6 @@
         $scope.share = function() {
             var modal = $modal.open({
                 templateUrl: 'addressbookSharing.html',
-                //controller: 'addressbookSharingCtrl'
                 controller: function($scope, $modalInstance) {
                     $scope.closeModal = function() {
                         $modalInstance.close();
@@ -159,10 +166,9 @@
         };
     }])
 
-    .controller('cardCtrl', ['$scope', '$rootScope', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', function($scope, $rootScope, AddressBook, Card, Dialog, focus, $state, $stateParams) {
+    .controller('CardCtrl', ['$scope', '$rootScope', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', function($scope, $rootScope, AddressBook, Card, Dialog, focus, $state, $stateParams) {
         if ($stateParams.card_id) {
-            // Show existing card
-            if ($rootScope.addressbook == null) {
+            if (!$rootScope.addressbook) {
                 // Card is directly access with URL fragment
                 $rootScope.addressbook = AddressBook.$find($stateParams.addressbook_id);
             }
@@ -175,16 +181,14 @@
             $scope.addressbook.card = new Card({ 'pid': $stateParams.addressbook_id, 'tag': tag });
             $scope.editMode = true;
         }
+
         $scope.allEmailTypes = Card.$email_types;
         $scope.allTelTypes = Card.$tel_types;
         $scope.allUrlTypes = Card.$url_types;
         $scope.allAddressTypes = Card.$address_types;
 
-        $scope.edit = function() {
-            $rootScope.master_card = angular.copy($rootScope.addressbook.card);
-            $scope.editMode = true;
-            console.debug('edit');
-        };
+        $rootScope.master_card = angular.copy($rootScope.addressbook.card);
+
         $scope.addOrgUnit = function() {
             var i = $rootScope.addressbook.card.$addOrgUnit('');
             focus('orgUnit_' + i);
@@ -209,12 +213,14 @@
             var i = $rootScope.addressbook.card.$addAddress('', '', '', '', '', '', '', '');
             focus('address_' + i);
         };
-        $scope.save = function(cardForm) {
-            if (cardForm.$valid) {
+        $scope.addMember = function() {
+            var i = $rootScope.addressbook.card.$addMember('');
+            focus('ref_' + i);
+        };
+        $scope.save = function(form) {
+            if (form.$valid) {
                 $rootScope.addressbook.card.$save()
                     .then(function(data) {
-                        console.debug("saved!");
-                        $scope.editMode = false;
                         var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $rootScope.addressbook.card.id);
                         if (i < 0) {
                             // Reload contacts list and show addressbook in which the card has been created
@@ -224,6 +230,7 @@
                             // Update contacts list with new version of the Card object
                             $rootScope.addressbook.cards[i] = angular.copy($rootScope.addressbook.card);
                         }
+                        $state.go('addressbook.card');
                     }, function(data, status) {
                         console.debug("failed");
                     });
@@ -231,26 +238,30 @@
         };
         $scope.cancel = function() {
             $scope.reset();
-            $scope.editMode = false;
+            //$scope.editMode = false;
+            delete $rootScope.master_card;
+            $state.go('addressbook.card', { card_id: $scope.addressbook.card.id });
         };
         $scope.reset = function() {
             $rootScope.addressbook.card = angular.copy($rootScope.master_card);
         };
         $scope.confirmDelete = function(card) {
             Dialog.confirm(l('Warning'),
-                           l('Are you sure you want to delete the card of "%{0}"?', card.$fullname()),
-                           function() {
-                               card.$delete()
-                                   .then(function() {
-                                       $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
-                                           return o.id == card.id;
-                                       });
-                                       $rootScope.addressbook.card = null;
-                                   }, function(data, status) {
-                                       Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
-                                                                    card.$fullname()));
-                                   });
-                           });
+                           l('Are you sure you want to delete the card of <b>%{0}</b>?', card.$fullname()))
+                .then(function(res) {
+                    if (res) {
+                        card.$delete()
+                            .then(function() {
+                                $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
+                                    return o.id == card.id;
+                                });
+                                delete $rootScope.addressbook.card;
+                            }, function(data, status) {
+                                Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
+                                                             card.$fullname()));
+                            });
+                    }
+                });
         };
     }]);
 

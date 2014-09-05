@@ -25,7 +25,7 @@
     }];
 
     /* Factory registration in Angular module */
-    angular.module('SOGo.Contacts').factory('sgAddressBook', AddressBook.$factory);
+    angular.module('SOGo.ContactsUI').factory('sgAddressBook', AddressBook.$factory);
 
     /* Set or get the list of addressbooks */
     AddressBook.$all = function(data) {
@@ -50,22 +50,35 @@
         });
     };
 
-    AddressBook.prototype.$filter = function(search) {
+    /**
+     * @param {} [options]
+     */
+    AddressBook.prototype.$filter = function(search, options) {
         var self = this;
         var params = { 'search': 'name_or_address',
                        'value': search,
                        'sort': 'c_cn',
                        'asc': 'true' };
+        if (options && options.excludeLists) {
+            params.excludeLists = true;
+        }
 
         return this.$id().then(function(addressbook_id) {
             var futureAddressBookData = AddressBook.$$resource.filter(addressbook_id, params);
             return futureAddressBookData.then(function(data) {
-                self.cards = data.cards;
+                var cards;
+                if (options && options.dry) {
+                    cards = data.cards;
+                }
+                else {
+                    self.cards = data.cards;
+                    cards = self.cards;
+                }
                 // Instanciate Card objects
-                angular.forEach(self.cards, function(o, i) {
-                    self.cards[i] = new AddressBook.$Card(o);
+                angular.forEach(cards, function(o, i) {
+                    cards[i] = new AddressBook.$Card(o);
                 });
-                return self.cards;
+                return cards;
             });
         });
     };
@@ -84,10 +97,6 @@
         var self = this;
         return this.$id().then(function(addressbook_id) {
             self.card = AddressBook.$Card.$find(addressbook_id, card_id);
-            self.card.$id().catch(function() {
-                // Card not found
-                self.card = null;
-            });
             return self.card;
         });
     };

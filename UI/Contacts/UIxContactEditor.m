@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -346,8 +347,9 @@ static Class SOGoContactGCSEntryK = Nil;
   CardElement *element;
   NSArray *elements, *values;
   NSMutableArray *units, *categories;
+  NSCalendarDate *date;
   id o;
-  unsigned int i;
+  unsigned int i, year, month, day;
 
   [card setNWithFamily: [attributes objectForKey: @"sn"]
                  given: [attributes objectForKey: @"givenname"]
@@ -355,7 +357,16 @@ static Class SOGoContactGCSEntryK = Nil;
   [card setNickname: [attributes objectForKey: @"nickname"]];
   [card setFn: [attributes objectForKey: @"fn"]];
   [card setTitle: [attributes objectForKey: @"title"]];
-  [card setBday: [attributes objectForKey: @"birthday"]];
+
+  unsigned int seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
+  if (seconds > 0)
+    {
+      date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+      year = [date yearOfCommonEra];
+      month = [date monthOfYear];
+      day = [date dayOfMonth];
+      [card setBday: [NSString stringWithFormat: @"%.4d%.2d%.2d", year, month, day]];
+    }
 
   if ([[attributes objectForKey: @"addresses"] isKindOfClass: [NSArray class]])
     {

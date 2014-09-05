@@ -89,8 +89,13 @@
 {
   id <SOGoContactFolder> folder;
   NSString *ascending, *searchText, *valueText;
+  NSArray *results;
+  NSMutableArray *filteredContacts;
+  NSDictionary *contact;
+  BOOL excludeLists;
   NSComparisonResult ordering;
   WORequest *rq;
+  unsigned int i;
 
   if (!contactInfos)
     {
@@ -107,12 +112,31 @@
       else
 	valueText = nil;
 
+      excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
+
       [contactInfos release];
-      contactInfos = [folder lookupContactsWithFilter: valueText
-                                           onCriteria: searchText
-                                               sortBy: [self sortKey]
-                                             ordering: ordering
-                                             inDomain: [[context activeUser] domain]];
+      results = [folder lookupContactsWithFilter: valueText
+                                      onCriteria: searchText
+                                          sortBy: [self sortKey]
+                                        ordering: ordering
+                                        inDomain: [[context activeUser] domain]];
+      if (excludeLists)
+        {
+          filteredContacts = [NSMutableArray array];
+          for (i = 0; i < [results count]; i++)
+            {
+              contact = [results objectAtIndex: i];
+              if (![[contact objectForKey: @"c_component"] isEqualToString: @"vlist"])
+                {
+                  [filteredContacts addObject: contact];
+                }
+            }
+          contactInfos = [NSArray arrayWithArray: filteredContacts];
+        }
+      else
+        {
+          contactInfos = results;
+        }
       [contactInfos retain];
     }
 
@@ -167,6 +191,7 @@
 {
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
+  BOOL excludeLists;
   NSString *searchText, *mail, *domain;
   NSDictionary *contact, *data;
   NSArray *contacts, *descriptors, *sortedContacts;
@@ -176,6 +201,7 @@
   WORequest *rq;
 
   rq = [context request];
+  excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
   searchText = [rq formValueForKey: @"search"];
   if ([searchText length] > 0)
     {
@@ -198,9 +224,12 @@
       for (i = 0; i < [contacts count]; i++)
         {
           contact = [contacts objectAtIndex: i];
-          mail = [contact objectForKey: @"c_mail"];
-          if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
-            [uniqueContacts setObject: contact forKey: mail];
+          if (!excludeLists || ![[contact objectForKey: @"c_component"] isEqualToString: @"vlist"])
+            {
+              mail = [contact objectForKey: @"c_mail"];
+              if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
+                [uniqueContacts setObject: contact forKey: mail];
+            }
         }
 
       if ([uniqueContacts count] > 0)

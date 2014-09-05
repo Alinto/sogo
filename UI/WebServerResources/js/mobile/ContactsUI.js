@@ -6,7 +6,7 @@
 
     angular.module('SOGo.Common', []);
 
-    angular.module('SOGo.Contacts', ['ionic', 'SOGo.Common', 'SOGo.Contacts'])
+    angular.module('SOGo.ContactsUI', ['ionic', 'SOGo.Common', 'SOGo.UIMobile'])
 
     .constant('sgSettings', {
         'baseURL': ApplicationBaseURL
@@ -16,10 +16,10 @@
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
-            if(window.cordova && window.cordova.plugins.Keyboard) {
+            if (window.cordova && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
-            if(window.StatusBar) {
+            if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
@@ -50,17 +50,51 @@
                 views: {
                     'menuContent': {
                         templateUrl: "addressbook.html",
-                        controller: 'AddressBookCtrl'
+                        controller: 'AddressBookCtrl',
+                        resolve: {
+                            stateAddressbook: function($stateParams, sgAddressBook) {
+                                return sgAddressBook.$find($stateParams.addressbook_id);
+                            }
+                        }
                     }
                 }
             })
 
-            .state('app.contact', {
+            .state('app.newCard', {
+                url: "/addressbook/:addressbook_id/:contact_type/new",
+                views: {
+                    'menuContent': {
+                        templateUrl: "card.html",
+                        controller: 'CardCtrl',
+                        resolve: {
+                            stateCard: function($rootScope, $stateParams, sgAddressBook, sgCard) {
+                                var tag = 'v' + $stateParams.contact_type;
+                                if (!$rootScope.addressbook) {
+                                    $rootScope.addressbook = sgAddressBook.$find($stateParams.addressbook_id);
+                                }
+                                return new sgCard({ 'pid': $stateParams.addressbook_id,
+                                                                           'tag': tag,
+                                                                           'isNew': true });
+                            }
+                        }
+                    }
+                }
+            })
+
+            .state('app.card', {
                 url: "/addressbook/:addressbook_id/:card_id",
                 views: {
                     'menuContent': {
                         templateUrl: "card.html",
-                        controller: 'CardCtrl'
+                        controller: 'CardCtrl',
+                        resolve: {
+                            stateCard: function($rootScope, $stateParams, sgAddressBook) {
+                                if (!$rootScope.addressbook) {
+                                    $rootScope.addressbook = sgAddressBook.$find($stateParams.addressbook_id);
+                                }
+                                return $rootScope.addressbook.$getCard($stateParams.card_id);
+                            }
+                        }
                     }
                 }
             });
@@ -68,29 +102,6 @@
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/addressbooks');
     })
-
-// .directive('sgAddress', function() {
-//     return {
-//         restrict: 'A',
-//         replace: false,
-//         scope: { data: '=sgAddress' },
-//         controller: ['$scope', function($scope) {
-//             $scope.addressLines = function(data) {
-//                 var lines = [];
-//                 if (data.street) lines.push(data.street);
-//                 if (data.street2) lines.push(data.street2);
-//                 var locality_region = [];
-//                 if (data.locality) locality_region.push(data.locality);
-//                 if (data.region) locality_region.push(data.region);
-//                 if (locality_region.length > 0) lines.push(locality_region.join(', '));
-//                 if (data.country) lines.push(data.country);
-//                 if (data.postalcode) lines.push(data.postalcode);
-//                 return lines.join('<br>');
-//             };
-//         }],
-//         template: '<address ng-bind-html="addressLines(data)"></address>'
-//     }
-// })
 
 .controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.UserLogin = UserLogin;
@@ -107,29 +118,16 @@
 .controller('AddressBooksCtrl', ['$scope', '$rootScope', '$timeout', 'sgAddressBook', function($scope, $rootScope, $timeout, AddressBook) {
     // Initialize with data from template
     $scope.addressbooks = AddressBook.$all(contactFolders);
-    // $scope.select = function(rowIndex) {
-    //     $rootScope.selectedAddressBook = $rootScope.addressbooks[rowIndex];
-    // };
-    // $scope.rename = function() {
-    //     console.debug("rename folder");
-    //     $scope.editMode = $rootScope.addressbook.id;
-    //     //focus('folderName');
-    // };
-    // $scope.save = function() {
-    //     console.debug("save addressbook");
-    //     $rootScope.addressbook.$save()
-    //         .then(function(data) {
-    //             console.debug("saved!");
-    //             $scope.editMode = false;
-    //         }, function(data, status) {
-    //             console.debug("failed");
-    //         });
-    // };
+    $scope.edit = function(i) {
+
+    };
+    $scope.save = function(i) {
+
+    };
 }])
 
-    .controller('AddressBookCtrl', ['$scope', '$rootScope', '$stateParams', 'sgAddressBook', function($scope, $rootScope, $stateParams, AddressBook) {
-        var id = $stateParams.addressbook_id;
-        $rootScope.addressbook = AddressBook.$find(id);
+    .controller('AddressBookCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'sgAddressBook', 'sgCard', 'stateAddressbook', function($scope, $rootScope, $stateParams, $state, AddressBook, Card, stateAddressbook) {
+        $rootScope.addressbook = stateAddressbook;
 
         $scope.search = { 'status': null, 'filter': null, 'last_filter': null };
         $scope.doSearch = function(keyEvent) {
@@ -144,7 +142,7 @@
                 }
                 else if ($scope.search.filter.length == 0) {
                     $scope.searchStatus = '';
-                    $rootScope.addressbook = AddressBook.$find(id);
+                    $rootScope.addressbook = AddressBook.$find($rootScope.addressbook.id);
                 }
                 else {
                     $scope.search.status = 'min-char';
@@ -153,15 +151,126 @@
             }
             $scope.search.last_filter = $scope.search.filter;
         };
-
     }])
 
-    .controller('CardCtrl', ['$scope', '$rootScope', '$stateParams', 'sgAddressBook', 'sgCard', function($scope, $rootScope, $stateParams, AddressBook, Card) {
+    .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', function($scope, $rootScope, $state, $stateParams, $ionicModal, Dialog, AddressBook, Card, stateCard) {
+        $rootScope.addressbook.card = stateCard;
+
         $scope.UserFolderURL = UserFolderURL;
-        if (!$rootScope.addressbook) {
-            $rootScope.addressbook = AddressBook.$find($stateParams.addressbook_id);
+        $scope.allEmailTypes = Card.$email_types;
+        $scope.allTelTypes = Card.$tel_types;
+        $scope.allUrlTypes = Card.$url_types;
+        $scope.allAddressTypes = Card.$address_types;
+
+        $scope.edit = function() {
+            // Copy card to be able to cancel changes later
+            $scope.master_card = angular.copy($rootScope.addressbook.card);
+            // Build modal editor
+            $ionicModal.fromTemplateUrl('cardEditor.html', {
+                scope: $scope,
+                focusFirstInput: false
+            }).then(function(modal) {
+                if ($scope.$cardEditorModal) {
+                    // Delete previous modal
+                    $scope.$cardEditorModal.remove();
+                }
+                $scope.$cardEditorModal = modal;
+                // Show modal
+                $scope.$cardEditorModal.show();
+            });
+        };
+        $scope.cancel = function() {
+            if ($rootScope.addressbook.card.isNew) {
+                $scope.$cardEditorModal.hide().then(function() {
+                    // Go back to addressbook
+                    $state.go('app.addressbook', { addressbook_id: $rootScope.addressbook.id });
+                });
+            }
+            else {
+                $rootScope.addressbook.card = angular.copy($scope.master_card);
+                $scope.$cardEditorModal.hide()
+            }
+        };
+        $scope.addOrgUnit = function() {
+            var i = $rootScope.addressbook.card.$addOrgUnit('');
+            focus('orgUnit_' + i);
+        };
+        $scope.addCategory = function() {
+            var i = $rootScope.addressbook.card.$addCategory($scope.new_category);
+            focus('category_' + i);
+        };
+        $scope.addEmail = function() {
+            var i = $rootScope.addressbook.card.$addEmail($scope.new_email_type);
+            focus('email_' + i);
+        };
+        $scope.addPhone = function() {
+            var i = $rootScope.addressbook.card.$addPhone($scope.new_phone_type);
+            focus('phone_' + i);
+        };
+        $scope.addUrl = function() {
+            var i = $rootScope.addressbook.card.$addUrl('', '');
+            focus('url_' + i);
+        };
+        $scope.addAddress = function() {
+            var i = $rootScope.addressbook.card.$addAddress('', '', '', '', '', '', '', '');
+            focus('address_' + i);
+        };
+        $scope.addMember = function() {
+            var i = $rootScope.addressbook.card.$addMember('');
+            focus('ref_' + i);
+        };
+        $scope.save = function(form) {
+            if (form.$valid) {
+                $rootScope.addressbook.card.$save()
+                    .then(function(data) {
+                        delete $rootScope.addressbook.card.isNew;
+                        var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $rootScope.addressbook.card.id);
+                        if (i < 0) {
+                            // New card
+                            // Reload contacts list and show addressbook in which the card has been created
+                            var card = angular.copy($rootScope.addressbook.card);
+                            $rootScope.addressbook = AddressBook.$find(data.pid);
+                            $rootScope.addressbook.card = card;
+                        }
+                        else {
+                            // Update contacts list with new version of the Card object
+                            $rootScope.addressbook.cards[i] = angular.copy($rootScope.addressbook.card);
+                        }
+                        // Close editor
+                        $scope.$cardEditorModal.hide();
+                    });
+            }
+        };
+        $scope.confirmDelete = function(card) {
+            Dialog.confirm(l('Warning'),
+                           l('Are you sure you want to delete the card of <b>%{0}</b>?', card.$fullname()))
+                .then(function(res) {
+                    if (res) {
+                        // User has confirmed deletion
+                        card.$delete()
+                            .then(function() {
+                                // Delete card from list of addressbook
+                                $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
+                                    return o.id == card.id;
+                                });
+                                // Delete card object
+                                delete $rootScope.addressbook.card;
+                                // Delete modal editor
+                                $scope.$cardEditorModal.remove();
+                                // Go back to addressbook
+                                $state.go('app.addressbook', { addressbook_id: $rootScope.addressbook.id });
+                            }, function(data, status) {
+                                Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
+                                                             card.$fullname()));
+                            });
+                    }
+                });
+        };
+
+        if ($scope.addressbook.card && $scope.addressbook.card.isNew) {
+            // New contact
+            $scope.edit();
         }
-        $rootScope.addressbook.$getCard($stateParams.card_id);
-    }])
+    }]);
 
 })();
