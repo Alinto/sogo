@@ -1,9 +1,26 @@
 @import "ionic";
 
+.ion-plus-circled {
+    color: $balanced;
+}
+
+.button {
+    &.button-icon {
+        &.button-assertive {
+            color: $assertive;
+        }
+        &.button-small {
+            &.icon:before {
+                font-size: $button-small-icon-size;
+            }
+        }
+    }
+}
+
 .list-clear {
-    .list {
+    > .list {
         border-top: 1px solid $item-light-border;
-        ion-item {
+        > ion-item {
             border: 0;
             &, a {
                 padding-top: 5px !important;
@@ -23,13 +40,37 @@ ion-content {
             margin-right: 5px;
         }
     }
+    .list-address {
+        &, .list {
+            border-left: $item-border-width solid $item-default-border;
+        }
+        ion-item {
+            border: 0;
+            padding-left: 2px !important;
+            padding-right: 0px;
+            &.item-input {
+                input {
+                    flex: 1 0 120px;
+                }
+            }
+        }
+    }
 }
 
 ion-item {
     small {
         display: block;
-        color: $positive;
+        color: $positive !important;
     }
-    .list-clear & {
-    }
+}
+
+/* Additional styles */
+
+.label {
+    @extend .button-small;
+    @include button-style($button-dark-bg, $button-dark-border, $button-dark-active-bg, $button-dark-active-border, $button-dark-text);
+    @include button-clear($button-dark-bg);
+    @include button-outline($button-dark-bg);
+    border-radius: 4px;
+    margin-left: 4px;
 }
