@@ -450,14 +450,13 @@ function onResizeClick() {
     var state = "collapse";
   
     if (searchFiltersList[0].visible()) {
-        var state = "rise";
+        state = "rise";
         searchFiltersList.fadeOut(300, function() {
             adjustResultsTable(state);
             img.removeClassName('collapse').addClassName('rise');
         });
     }
     else {
-        state = "collapse"
         adjustResultsTable(state);
         searchFiltersList.fadeIn();
         img.removeClassName('rise').addClassName('collapse');

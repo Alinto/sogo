@@ -26,9 +26,6 @@ DIV#resultsTable
    width:100%;
 }
 
-TABLE.messageList TD
-{ white-space: normal !important; }
-
 TD#mailAccountsCell {
   overflow:hidden;
   white-space: nowrap;
@@ -90,15 +87,7 @@ TD.sortdesc {
 {text-decoration: underline; }
 
 #buttonExpandHeader {
-  width:10px;
-}
-
-@-moz-document url-prefix() {
-  #buttonExpandHeader {
-    width:1.5%;
-    border-right:0;
-  }
-
+  width: 20px;
 }
 
 /*************** Button adjustment *****************/
@@ -156,60 +145,33 @@ A#deleteButton, A#openButton
   right:10px;
 }
 
-DIV#imgPosition
-{ z-index: 1;
-  position:relative; }
+#listCollapse
+{ position: relative;
+  border: 1px solid transparent; }
 
-A#listCollapse > img
+#listCollapse img
 { position: absolute; }
 
-A#listCollapse > img.collapse
+#listCollapse img.collapse
 { clip: rect(0 18px 18px 0);
-  top: -9px;
-  right: -22px; }
+  top: 0;
+  left: 0; }
 
-A#listCollapse > img.collapse:hover
+#listCollapse img.collapse:hover
 { clip: rect(0 36px 18px 18px);
-  top: -9px;
-  right: -4px; }
+  top: 0;
+  left: -18px; }
 
-A#listCollapse > img.rise
+#listCollapse img.rise
 { clip: rect(18px 18px 36px 0);
-  top: -27px;
-  right:-22px;
-  }
+  top: -18px;
+  left: 0; }
 
-A#listCollapse > img.rise:hover
+#listCollapse img.rise:hover
 { clip: rect(18px 36px 36px 18px);
-  top: -27px;
-  right:-4px; }
+  top: -18px;
+  left: -18px; }
 
-@-moz-document url-prefix() {
-  #listCollapse img
-  { position: absolute; }
-
-  #listCollapse img.collapse
-  { clip: rect(0 18px 18px 0);
-    top: 2px;
-    right: -16px; }
-
-  #listCollapse img.collapse:hover
-  { clip: rect(0 36px 18px 18px);
-    top: 2px;
-    right: 2px; }
-
-  #listCollapse img.rise
-  { clip: rect(18px 18px 36px 0);
-    top: -16px;
-    right:-16px;
-    }
-
-  #listCollapse img.rise:hover
-  { clip: rect(18px 36px 36px 18px);
-    top: -16px;
-    right:2px; }
-}
-  
 #filterButtons 
 {
   width:40px;

@@ -53,28 +53,22 @@
     </tbody>
   </table>
   <div id="searchFiltersList">
-    <table>
-    </table>
+    <table><!-- filters --></table>
   </div>
   <div id="resultsTable">
     <table id="searchMailFooter" class="sortable messageList" cellspacing="0">
       <thead>
-        <tr>
-          <td id="subjectSearchHeader" class="td_header">
-            <var:string label:value="Subject" /></td>
-          <td id="fromSearchHeader" class="td_header">
-            <var:string label:value="From"/></td>
-          <td id="toSearchHeader" class="td_header">
-            <var:string label:value="To" /></td>
-          <td id="dateSearchHeader" class="td_header">
-            <var:string label:value="Date" /></td>
-          <td id="locationSearchHeader" class="td_header">
-            <var:string label:value="Location" /></td>
-          <td id="buttonExpandHeader" class="td_header">
-            <div id="imgPosition">
-              <a href="#" id="listCollapse">
-                <img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()" />
-              </a></div></td>
+        <tr class="tableview">
+          <td id="subjectSearchHeader" class="td_header"><var:string label:value="Subject" /></td>
+          <td id="fromSearchHeader" class="td_header"><var:string label:value="From"/></td>
+          <td id="toSearchHeader" class="td_header"><var:string label:value="To" /></td>
+          <td id="dateSearchHeader" class="td_header"><var:string label:value="Date" /></td>
+          <td id="locationSearchHeader" class="td_header"><var:string label:value="Location" /></td>
+          <td id="buttonExpandHeader" class="td_header"
+              ><a href="#" id="listCollapse"
+                  ><img rsrc:src="collapse.png" class="collapse" onclick="onResizeClick()"
+              /></a
+          ></td>
         </tr>
       </thead>
       <tbody>
