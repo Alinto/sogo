@@ -13,11 +13,10 @@
                 var newCardData = Card.$$resource.newguid(this.pid);
                 this.$unwrap(newCardData);
             }
-            return;
         }
-
-        // The promise will be unwrapped first
-        this.$unwrap(futureCardData);
+        else
+            // The promise will be unwrapped first
+            this.$unwrap(futureCardData);
     }
 
     Card.$tel_types = ['work', 'home', 'cell', 'fax', 'pager'];
@@ -36,7 +35,7 @@
     }];
 
     /* Factory registration in Angular module */
-    angular.module('SOGo.Contacts')
+    angular.module('SOGo.ContactsUI')
     .factory('sgCard', Card.$factory)
 
     // Directive to format a postal address
@@ -99,7 +98,7 @@
 
     Card.prototype.$save = function() {
         var action = 'saveAsContact';
-        if (this.tag == 'VLIST') action = 'saveAsList';
+        if (this.tag == 'vlist') action = 'saveAsList';
         //var action = 'saveAs' + this.tag.substring(1).capitalize();
         return Card.$$resource.set([this.pid, this.id || '_new_'].join('/'),
                                    this.$omit(),
@@ -162,18 +161,49 @@
         return description.join(', ');
     };
 
-    Card.prototype.$preferredEmail = function() {
-        var email = _.find(this.emails, function(o) {
-            return o.type == 'pref';
-        });
+    /**
+     * @name $preferredEmail
+     * @desc Returns the first email address of type "pref" or the first address if none found.
+     * @param {string} [partial] - a partial string that the email must match
+     */
+    Card.prototype.$preferredEmail = function(partial) {
+        var email;
+        if (partial) {
+            var re = new RegExp(partial);
+            email = _.find(this.emails, function(o) {
+                return re.test(o.value);
+            });
+        }
         if (email) {
             email = email.value;
         }
-        else if (this.emails && this.emails.length) {
-            email = this.emails[0].value;
+        else {
+            email = _.find(this.emails, function(o) {
+                return o.type == 'pref';
+            });
+            if (email) {
+                email = email.value;
+            }
+            else if (this.emails && this.emails.length) {
+                email = this.emails[0].value;
+            }
+            else {
+                email = '';
+            }
         }
 
         return email;
+    };
+
+    /**
+     *
+     */
+    Card.prototype.$shortFormat = function(partial) {
+        var fullname = this.$fullname();
+        var email = this.$preferredEmail(partial);
+        if (email && email != fullname)
+            fullname += ' (' + email + ')';
+        return fullname;
     };
 
     Card.prototype.$birthday = function() {
@@ -264,6 +294,35 @@
             this.addresses.push({type: type, postoffice: postoffice, street: street, street2: street2, locality: locality, region: region, country: country, postalcode: postalcode});
         }
         return this.addresses.length - 1;
+    };
+
+    Card.prototype.$addMember = function(email) {
+        if (angular.isUndefined(this.refs)) {
+            this.refs = [{email: email}];
+        }
+        else {
+            for (var i = 0; i < this.refs.length; i++) {
+                if (this.refs[i].email == email) {
+                    break;
+                }
+            }
+            if (i == this.refs.length)
+                this.refs.push({email: email});
+        }
+        return this.refs.length - 1;
+    };
+
+    /**
+     * @name $updateMember
+     * @desc Update an existing list member from a Card instance.
+     * A list member has the following attribtues:
+     * - email
+     * - reference
+     * - fn
+     */
+    Card.prototype.$updateMember = function(index, email, card) {
+        var ref = {'email': email, 'reference': card.c_name, 'fn': card.$fullname()};
+        this.refs[index] = ref;
     };
 
     // Unwrap a promise

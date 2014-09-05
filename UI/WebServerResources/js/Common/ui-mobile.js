@@ -1,10 +1,10 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
-/* JavaScript for SOGoContacts */
+/* JavaScript for common UI services for mobile theme */
 
 (function() {
     'use strict';
 
-    /* Constructor */
+    /* Dialog */
     function Dialog() {
     }
 
@@ -13,29 +13,27 @@
             title: title,
             template: content
         });
-        // alertPopup.then(function(res) {
-        //     console.log('Thank you for not eating my delicious ice cream cone');
-        // });
+        return alertPopup;
     };
 
+    Dialog.confirm = function(title, content) {
+        var alertPopup = this.$ionicPopup.confirm({
+            title: title,
+            template: content
+        });
+        return alertPopup;
+    };
+
+    /* The factory we'll use to register with Angular */
     Dialog.$factory = ['$ionicPopup', function($ionicPopup) {
         angular.extend(Dialog, { $ionicPopup: $ionicPopup });
 
         return Dialog; // return constructor
     }];
 
+    /* Angular module instanciation */
     angular.module('SOGo.UIMobile', ['ionic'])
 
+    /* Factory registration in Angular module */
     .factory('sgDialog', Dialog.$factory);
-    // angular.module('SOGo').factory('sgDialog', Dialog);
-
-    // Dialog.prototype.alert = function(title, content) {
-    //     var alertPopup = $ionicPopup.alert({
-    //         title: title,
-    //         template: content
-    //     });
-    //     alertPopup.then(function(res) {
-    //         console.log('Thank you for not eating my delicious ice cream cone');
-    //     });
-    // };
 })();
