@@ -57,7 +57,7 @@
     </table>
   </div>
   <div id="resultsTable">
-    <table id="searchMailFooter" class="sortable messageList">
+    <table id="searchMailFooter" class="sortable messageList" cellspacing="0">
       <thead>
         <tr>
           <td id="subjectSearchHeader" class="td_header">
@@ -79,7 +79,7 @@
       </thead>
       <tbody>
         <tr>
-          <td colspan="4" id="noSearchResults"><var:string label:value="No matches found" /></td>
+          <td colspan="6" id="noSearchResults"><var:string label:value="No matches found" /></td>
         </tr>
       </tbody>
     </table>

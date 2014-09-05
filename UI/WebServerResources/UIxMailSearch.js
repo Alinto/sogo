@@ -298,6 +298,7 @@ function onAddFilter() {
     
     var cell4 = row.insertCell(3);
     Element.addClassName(cell4, "buttonsCell");
+    cell4.setAttribute("align", "center");
     
     var buttonsDiv = document.createElement("div");
     var imageAddFilter = document.createElement("img");
@@ -465,12 +466,13 @@ function onResizeClick() {
 
 function adjustResultsTable(state) {
     var resultsTable = $("resultsTable");
-    var height = $("searchMailView").getHeight();
-    if (state == "collapse")
-        height = height - 266;
+    var height = "innerHeight" in $("searchMailView") ? $("searchMailView").innerHeight : $("searchMailView").offsetHeight;
+    if (state == "collapse") {
+        height -= 266;
+    }
     else
-        height = height - 152;
-    resultsTable.style.height = height + "px";
+        height -= 152;
+    $(resultsTable).style.height = height + "px";
 }
 
 /*************** Init ********************/

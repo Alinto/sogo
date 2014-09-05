@@ -26,12 +26,15 @@ DIV#resultsTable
    width:100%;
 }
 
+TABLE.messageList TD
+{ white-space: normal !important; }
+
 TD#mailAccountsCell {
   overflow:hidden;
   white-space: nowrap;
 }
 
-TR.filterRow
+TR.filterRow, DIV#searchFiltersList > TABLE
 {
   width:100%;
 }
@@ -44,12 +47,12 @@ TR.filterRow > TD
 
 TR.filterRow > TD.buttonsCell 
 {
-  width:7%;
+  width:5%;
 }
 
 TR.filterRow > TD.inputsCell
 {
-  width:70%;
+  width:55%;
 }
 
 .td_table_1, .td_table_2, .td_table_3, .td_table_4 {
@@ -113,7 +116,9 @@ TD.sortdesc {
 
 .searchByList, .searchArgumentsList, .searchInput
 {
-  width:100%;
+  width:98%;
+  paddin:0;
+  margin:0;
 }
 
 DIV#optionsButtons
