@@ -432,6 +432,43 @@ function onDocumentKeydown(event) {
     }
 }
 
+/* Search mail, call the template and open inside a dialog windoƒw */
+function onSearchMail(event) {
+    var element = Event.findElement(event);
+    if (element.disabled == false || element.disabled == undefined) {
+        element.disabled = true;
+        element.writeAttribute("id", "toolbarSearchButton");
+        if ($("searchMailView")) {
+            $("searchMailView").style.display = "block";
+            $("bgDialogDiv").style.display = "block";
+            initSearchMailView();
+        }
+        else {
+            var urlstr = ApplicationBaseURL + "/search";
+            
+            // Return the template for the searchMail feature
+            triggerAjaxRequest(urlstr, displaySearchMailCallback);
+        }
+    }
+}
+
+function displaySearchMailCallback(http) {
+    if (http.readyState == 4 && http.status == 200) {
+        var fields = createElement("div", null); // (tagName, id, classes, attributes, htmlAttributes, parentNode)
+        var title = _("Search mail");
+        var id = _("searchMailView");
+        fields.innerHTML = http.responseText;
+        
+        var dialog = createDialog(id, title, null, fields, "searchMail"); // (id, title, legend, content, positionClass)
+        document.body.appendChild(dialog);
+        
+        if (Prototype.Browser.IE)
+            jQuery('#bgDialogDiv').css('opacity', 0.4);
+        jQuery(dialog).fadeIn('fast');
+        initSearchMailView();
+    }
+}
+
 /* bulk delete of messages */
 
 function deleteSelectedMessages(sender) {
@@ -780,7 +817,7 @@ function composeNewMessage() {
 function openMailbox(mailbox, reload) {
     if (mailbox != Mailer.currentMailbox || reload) {
         var url = ApplicationBaseURL + encodeURI(mailbox.unescapeHTML());
-        var urlParams = new Hash();
+        var urlParams = {};
 
         if (!reload) {
             var messageContent = $("messageContent");
@@ -791,13 +828,28 @@ function openMailbox(mailbox, reload) {
 
         var searchValue = search["mail"]["value"];
         if (searchValue && searchValue.length > 0) {
-            urlParams.set("search", search["mail"]["criteria"]);
-            urlParams.set("value", escape(searchValue.utf8encode()));
+            var searchCriteria = [];
+            if (search["mail"]["criteria"] == "subject")
+                searchCriteria.push("subject");
+            else if (search["mail"]["criteria"] == "sender")
+                searchCriteria.push("from");
+            else if (search["mail"]["criteria"] == "subject_or_sender")
+                searchCriteria.push("subject", "from");
+            else if (search["mail"]["criteria"] == "to_or_cc")
+                searchCriteria.push("to", "cc");
+            else if (search["mail"]["criteria"] == "entire_message")
+                searchCriteria.push("body");
+            
+            var filters = [];
+            for (i = 0; i < searchCriteria.length; i++)
+                filters.push({"searchBy": searchCriteria[i], "searchArgument": "doesContain", "searchInput": searchValue});
+            
+            urlParams.filters = filters;
         }
         var sortAttribute = sorting["attribute"];
         if (sortAttribute && sortAttribute.length > 0) {
-            urlParams.set("sort", sorting["attribute"]);
-            urlParams.set("asc", sorting["ascending"]);
+            var sortingAttributes = {"sort":sorting["attribute"], "asc":sorting["ascending"], "match":"OR"};
+            urlParams.sortingAttributes = sortingAttributes;
 
             var sortHeader = $(sorting["attribute"] + "Header");
             if (sortHeader) {
@@ -816,18 +868,15 @@ function openMailbox(mailbox, reload) {
 
         var messageList = $("messageListBody").down('TBODY');
         var key = mailbox;
-        if (urlParams.keys().length > 0) {
-            var p = urlParams.keys().collect(function(key) { return key + "=" + urlParams.get(key); }).join("&");
-            key += "?" + p;
-        }
 
         if (reload) {
             // Don't change data source, only query UIDs from server and refresh
             // the view. Cases that end up here:
             // - performed a search
             // - clicked on Get Mail button
-            urlParams.set("no_headers", "1");
-            Mailer.dataTable.load(urlParams);
+            urlParams.sortingAttributes.no_headers= "1";
+            var content = Object.toJSON(urlParams);
+            Mailer.dataTable.load(content);
             Mailer.dataTable.refresh();
         }
         else {
@@ -843,7 +892,8 @@ function openMailbox(mailbox, reload) {
                 }
                 else
                     // Fetch UIDs and headers from server
-                    dataSource.load(urlParams);
+                    var content = Object.toJSON(urlParams);
+                    dataSource.load(content);
                 // Cache data source
                 Mailer.dataSources.set(key, dataSource);
                 // Update unseen count
@@ -851,8 +901,9 @@ function openMailbox(mailbox, reload) {
             }
             else {
                 // Data source is cached, query only UIDs from server
-                urlParams.set("no_headers", "1");
-                dataSource.load(urlParams);
+                urlParams.sortingAttributes.no_headers= "1";
+                var content = Object.toJSON(urlParams);
+                dataSource.load(content);
             }
             // Associate data source with data table and render the view
             Mailer.dataTable.setSource(dataSource);

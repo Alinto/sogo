@@ -659,6 +659,19 @@ DIV.dialog > DIV
   top: 7px;
 }
 
+DIV.dialog.searchMail { 
+  position: relative;
+  padding: 0px;
+  opacity: 1;
+  width: 75%;
+  height: 75%;
+  margin: 2em auto;
+}
+
+DIV.dialog.searchMail > DIV {
+  min-height:500px;
+}
+
 DIV.dialog.none
 { position: relative;
   margin: 0px;

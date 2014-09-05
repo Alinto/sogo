@@ -118,8 +118,7 @@ var SOGoDataTableInterface = {
     load: function(urlParams) {
         if (!this.dataSource) return;
 //         log ("DataTable.load() with parameters [" + urlParams.keys().join(' ') + "]");
-        if (Object.isHash(urlParams) && urlParams.keys().length > 0) this.dataSource.load(urlParams);
-        else this.dataSource.load(new Hash());
+        this.dataSource.load(urlParams);
     },
 
     visibleRowCount: function() {

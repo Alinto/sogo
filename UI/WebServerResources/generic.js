@@ -1998,7 +1998,7 @@ function createDialog(id, title, legend, content, positionClass) {
     var newDialog = createElement("div", id, ["dialog", positionClass]);
     newDialog.setStyle({"display": "none"});
 
-    if (positionClass == "none") {
+    if (positionClass == "none" || positionClass == "searchMail") {
         var bgDiv = $("bgDialogDiv");
         if (bgDiv) {
             bgDiv.show();

@@ -119,6 +119,17 @@
   return [names jsonRepresentation];
 }
 
+- (NSString *) userNames
+{
+  NSArray *accounts, *userNames;
+  
+  accounts = [[self clientObject] mailAccounts];
+  userNames = [accounts objectsForKey: @"userName" notFoundMarker: nil];
+  
+  return [userNames jsonRepresentation];
+  
+}
+
 - (NSString *) pageFormURL
 {
   NSString *u;

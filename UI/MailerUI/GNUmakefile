@@ -23,6 +23,7 @@ MailerUI_OBJC_FILES += \
 	UIxMailPopupView.m		\
 	UIxMailMoveToPopUp.m		\
 	UIxMailFilterPanel.m		\
+  UIxMailSearch.m		      \
 	\
 	UIxMailAccountActions.m		\
 	UIxMailFolderActions.m		\
