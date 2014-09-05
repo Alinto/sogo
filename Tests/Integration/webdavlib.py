@@ -108,7 +108,8 @@ class WebDAVClient:
                           body, self.prepare_headers(query, body))
         try:
             query.set_response(self.conn.getresponse());
-        except BadStatusLine:
+        except httplib.BadStatusLine, e:
+            print e
             time.sleep(3)
             query.set_response(self.conn.getresponse());
         query.duration = time.time() - query.start
