@@ -1,8 +1,6 @@
 /* UIxParentFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +25,12 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 
-#import <UI/Common/WODirectAction+SOGo.h>
 #import <SoObjects/SOGo/SOGoParentFolder.h>
+
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+
+#import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxParentFolderActions.h"
 
@@ -38,8 +40,13 @@
 {
   WOResponse *response;
   NSString *name, *nameInContainer;
+  NSDictionary *params, *data;
+  WORequest *request;
 
-  name = [[context request] formValueForKey: @"name"];
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+
+  name = [params objectForKey: @"name"];
   nameInContainer = nil;
 
   if ([name length] > 0)
@@ -50,19 +57,24 @@
                                                            nameInContainer: &nameInContainer];
           if (!response)
             {
-              response = [self responseWithStatus: 201];
-              [response setHeader: @"text/plain; charset=us-ascii"
-                forKey: @"content-type"];
-              [response appendContentString: nameInContainer];
-            }
+              data = [NSDictionary dictionaryWithObjectsAndKeys: nameInContainer, @"id", nil];
+              response = [self responseWithStatus: 201
+                                        andString: [data jsonRepresentation]];
+          }
         }
       else
-        response = [NSException exceptionWithHTTPStatus: 409
-                                                 reason: @"That name already exists"];
+        {
+          data = [NSDictionary dictionaryWithObjectsAndKeys: @"That name already exists", @"error", nil];
+          response = [self responseWithStatus: 409
+                                    andString: [data jsonRepresentation]];
+        }
     }
   else
-    response = [NSException exceptionWithHTTPStatus: 400
-                                             reason: @"The name is missing"];
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys: @"The name is missing", @"error", nil];
+      response = [self responseWithStatus: 400
+                                andString: [data jsonRepresentation]];
+    }
 
   return response;
 }
