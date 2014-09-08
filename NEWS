@@ -2,7 +2,7 @@
 ------------------
 
 New features
- -
+- new user settings for threads collapsing
 
 Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
