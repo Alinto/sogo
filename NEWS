@@ -7,7 +7,8 @@ New features
 Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
  - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
- - new option to print calendars events and tasks with a background color or with a border color  
+ - new option to print calendars events and tasks with a background color or with a border color
+ - labels tagging only make one AJAX call for all the selected messages instead of one AJAX call per message  
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)

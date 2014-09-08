@@ -31,7 +31,7 @@ var pageContent = $("pageContent");
 
 var deleteMessageRequestCount = 0;
 
-var refreshViewCheckTimer;
+var messageCheckTimer;
 
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
@@ -1969,7 +1969,7 @@ function initMailer(event) {
         configureMessageListEvents();
 
         initMailboxTree();
-        initRefreshViewCheckTimer();
+        initMessageCheckTimer();
 
         Event.observe(document, "keydown", onDocumentKeydown);
 
@@ -1989,27 +1989,23 @@ function initMailer(event) {
     Event.observe(window, "resize", onWindowResize);
 }
 
-function initRefreshViewCheckTimer() {
-    // TEMPORARY : to be erase
-    var refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
-    if (refreshViewCheck == null)
-        refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
-    
-    if (refreshViewCheck && refreshViewCheck != "manually") {
+function initMessageCheckTimer() {
+    var messageCheck = UserDefaults["SOGoMailMessageCheck"];
+    if (messageCheck && messageCheck != "manually") {
         var interval;
-        if (refreshViewCheck == "once_per_hour")
+        if (messageCheck == "once_per_hour")
             interval = 3600;
-        else if (refreshViewCheck == "every_minute")
+        else if (messageCheck == "every_minute")
             interval = 60;
         else {
-            interval = parseInt(refreshViewCheck.substr(6)) * 60;
+            interval = parseInt(messageCheck.substr(6)) * 60;
         }
-        refreshViewCheckTimer = window.setInterval(onRefreshViewCheckCallback,
-                                                  interval * 1000);
+        messageCheckTimer = window.setInterval(onMessageCheckCallback,
+                                               interval * 1000);
     }
 }
 
-function onRefreshViewCheckCallback(event) {
+function onMessageCheckCallback(event) {
     refreshMailbox();
 }
 
