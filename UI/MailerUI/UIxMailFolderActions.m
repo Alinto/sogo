@@ -92,7 +92,7 @@
   SOGoUserSettings *us;
   WOResponse *response;
   NSException *error;
-  NSString *newFolderName, *oldFolderName, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
+  NSString *newFolderName, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSArray *values;
 
@@ -116,9 +116,9 @@
   else
     {
       // Verify if the current folder have any collapsed threads save under it old name and adjust the folderName
-      if ([threadsCollapsed boolValue])
+      if (threadsCollapsed)
         {
-          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+          if ([threadsCollapsed objectForKey:keyForMsgUIDs])
             {
               values = [NSArray arrayWithArray:[threadsCollapsed objectForKey:keyForMsgUIDs]];
               [threadsCollapsed setObject:values forKey:newKeyForMsgUIDs];
@@ -209,9 +209,9 @@
          currentAccount = [[co container] nameInContainer];
          keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
 
-         if ([threadsCollapsed boolValue])
+         if (threadsCollapsed)
            {
-             if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+             if ([threadsCollapsed objectForKey:keyForMsgUIDs])
                {
                   [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
                   [us synchronize];
@@ -273,11 +273,10 @@
               currentAccount = [[co container] nameInContainer];
               keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
 
-              if ([threadsCollapsed boolValue])
+              if (threadsCollapsed)
                 {
-                  if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+                  if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
                     {
-                      mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
                       for (i = 0; i < [uids count]; i++)
                         [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
                       [us synchronize];
@@ -411,11 +410,10 @@
       currentAccount = [[co container] nameInContainer];
       keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
 
-      if ([threadsCollapsed boolValue])
+      if (threadsCollapsed)
         {
-          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
             {
-              mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
               for (i = 0; i < [uids count]; i++)
                 [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
               [us synchronize];

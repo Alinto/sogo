@@ -34,6 +34,7 @@
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "../Common/WODirectAction+SOGo.h"
@@ -164,13 +165,11 @@
   if (isCollapsing)
     {
       // Check if the module threadsCollapsed is created in the userSettings
-      if ([[moduleSettings objectForKey:@"threadsCollapsed"] boolValue])
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
         {
-          threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
           // Check if the currentMailbox already have other threads saved and add the new collapsed thread
-          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
             {
-              mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
               if (![mailboxThreadsCollapsed containsObject:msguid])
                 [mailboxThreadsCollapsed addObject:msguid];
             }
@@ -191,13 +190,11 @@
   else
     {
       // Check if the module threadsCollapsed is created in the userSettings
-      if ([[moduleSettings objectForKey:@"threadsCollapsed"] boolValue])
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
         {
-          threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
           // Check if the currentMailbox already have other threads saved and remove the uncollapsed thread
-          if ([[threadsCollapsed objectForKey:keyForMsgUIDs] boolValue])
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
             {
-              mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs];
               [mailboxThreadsCollapsed removeObject:msguid];
       
               if ([mailboxThreadsCollapsed count] == 0)
