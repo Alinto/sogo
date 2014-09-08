@@ -37,6 +37,10 @@ var refreshViewCheckTimer;
 var displayThreadElement = false;
 var cachedThreadsCollapsed = [];
 
+// Variables for feature threadsCollapsing
+var displayThreadElement = false;
+var cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
 function URLForFolderID(folderID, application) {
