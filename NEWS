@@ -19,6 +19,7 @@ Bug fixes
  - fixed Events and tasks cannot be moved to other calendars using drag&drop (#2759)
  - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
  - fixed handling of messages labels (#2902)
+ - fixed Apache > 2.3 configuration
 
 2.2.7 (2014-07-30)
 ------------------
