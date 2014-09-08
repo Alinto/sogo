@@ -33,6 +33,10 @@ var deleteMessageRequestCount = 0;
 
 var messageCheckTimer;
 
+// Variables for feature threadsCollapsing
+var displayThreadElement = false;
+var cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
 function URLForFolderID(folderID, application) {
@@ -958,8 +962,6 @@ function openMailbox(mailbox, reload) {
 /*
  * Called from SOGoDataTable.render()
  */
-var show = false;
-var cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
 
 function messageListCallback(row, data, isNew) {
     var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
@@ -978,7 +980,7 @@ function messageListCallback(row, data, isNew) {
             var collapsedList = cachedThreadsCollapsed[mailbox];
             if (collapsedList != undefined && collapsedList.indexOf(row.id.split("_")[1]) != -1) {
                 row.addClassName('closedThread');
-                show = true;
+                displayThreadElement = true;
             }
             else {
                 row.addClassName('openedThread');
@@ -991,12 +993,12 @@ function messageListCallback(row, data, isNew) {
         row.addClassName('thread');
         row.addClassName('thread' + data['ThreadLevel']);
         
-        if (show)
+        if (displayThreadElement)
             row.hide();
     }
     
     else
-        show = false;
+        displayThreadElement = false;
 
     var cells = row.childElements();
     for (var j = 0; j < cells.length; j++) {
@@ -2604,10 +2606,19 @@ function onMenuToggleMessageFlag(event) {
     mailListToggleMessagesFlagged();
 }
 
+function refreshUserSettingsCallback(http) {
+    var allUserSettings = http.response.evalJSON();
+    UserSettings.Mail = allUserSettings.Mail;
+    cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+    refreshMailbox();
+}
+
 function folderOperationCallback(http) {
-    if (http.readyState == 4
-        && isHttpStatus204(http.status))
+    if (http.readyState == 4 && isHttpStatus204(http.status)) {
         initMailboxTree();
+        var url = ApplicationBaseURL.split("Mail")[0];
+        triggerAjaxRequest(url + "/jsonSettings", refreshUserSettingsCallback);
+    }
     else
         showAlertDialog(http.callbackData);
 }
