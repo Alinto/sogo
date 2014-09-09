@@ -237,15 +237,15 @@ function initPreferences() {
     var whiteList = $("appointmentsWhiteListWrapper");
     if (whiteList) {
         var whiteListString = $("whiteList").getValue();
+        var whiteListObject = {};
         // This condition is a backward compatibility where the strings looks like : "sogo1=John DOE <sogo1@example.com>"
         if (whiteListString.search("=") != -1) {
             var split = whiteListString.split("=");
-            var whiteListObject = {};
             whiteListObject[split[0]] = split[1];
             
         }
         else if (whiteListString != "") {
-            var whiteListObject = JSON.parse(whiteListString);
+            whiteListObject = JSON.parse(whiteListString);
         }
         var allKeys = Object.keys(whiteListObject);
         var allValues = Object.values(whiteListObject);
