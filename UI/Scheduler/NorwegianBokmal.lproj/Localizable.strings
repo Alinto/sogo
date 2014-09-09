@@ -5,6 +5,7 @@
 "Create a new event" = "Opprett en ny hendelse";
 "Create a new task" = "Opprett en ny oppgave";
 "Edit this event or task" = "Endre hendelse eller oppgave";
+"Print the current calendar view" = "Skriv ut den gjeldende kalendervisningen";
 "Delete this event or task" = "Slett denne hendelsen eller oppgaven";
 "Go to today" = "Gå til i dag";
 "Switch to day view" = "Endre til dagsvisning";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Navn på kalenderen";
 
 "new" = "Ny";
-"printview" = "Skriv ut";
+"Print view" = "Forhåndsvisning";
 "edit" = "Endre";
 "delete" = "Slett";
 "proposal" = "Foreslå";
@@ -145,6 +146,17 @@
 "Hide already accepted and rejected appointments" = "Skjul allerede aksepterte og avviste avtaler";
 "Show already accepted and rejected appointments" = "Vis aksepterte og avviste avtaler";
 
+/* Print view */
+
+"LIST" = "Liste";
+"Print Settings" = "Utskrift instillinger";
+"Title:" = "Tittel:";
+"Layout:" = "Visning:";
+"What to Print" = "Hva som skal printes";
+"Options" = "Alternativer";
+"Tasks with no due date" = "Oppgaver uten forfallsdato";
+"Display working hours only" = "Vis kun arbeidstimer";
+"Completed tasks" = "Fullførte oppgaver";
 
 /* Appointments */
 
@@ -179,6 +191,7 @@
 "Reminder:" = "Påminnelse:";
 "General:" = "Generell:";
 "Reply:" = "Svar:";
+"Created by:" = "Opprettet av:";
 
 
 "Target:" = "Mål:";
@@ -224,8 +237,13 @@
 "view_future" = "Alle fremtidige hendelser";
 "view_selectedday" = "Valgt dag";
 
+"view_not_started" = "Oppgaver som ikke er startet";
+"view_overdue" = "Forfalte oppgaver";
+"view_incomplete" = "Ufullstendige oppgaver";
+
 "View:" = "Vis:";
-"Title or Description" = "Tittel eller beskrivelse";
+"Title, category or location" = "Tittel, kategori eller sted";
+"Entire content" = "Fullstendig innhold";
 
 "Search" = "Søk";
 "Search attendees" = "Søk deltakere";
@@ -375,6 +393,7 @@
 "Show Time as Free" = "Vis tid som ledig";
 
 /* email notifications */
+"Send Appointment Notifications" = "Send avtale varslinger";
 
 /* validation errors */
 
@@ -504,7 +523,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
 "Authenticated User Access" = "Autentisert brukertilgang";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
@@ -524,6 +543,8 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "tagWasRemoved" = "Om du fjerner kalenderen fra synkronisering trenger du å laste dataene i din mobiltelefon på nytt.\nFortsette?";
 "DestinationCalendarError" = "Kilde- og målkalendere er de samme. Prøv å kopiere til en annen kalender.";
 "EventCopyError" = "Kopiering feilet. Vennligst prøv å kopiere til en annen kalender.";
+"Please select at least one calendar" = "Velg minst én kalender";
+
 
 "Open Task..." = "Åpne oppgave...";
 "Mark Completed" = "Merk utført";

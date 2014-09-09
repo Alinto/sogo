@@ -27,7 +27,7 @@
 "Add default email addresses" = "Přidat základní emailové adresy";
 "Days between responses :" = "Počet dnů mezi odpověďmi :";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
-"Disable auto reply on" = "Zakázat automatické odpovědi na";
+"Disable auto reply on" = "Automatické odpovědi vypnout dne";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím zadejte text zprávy a své emailové adresy, pro které chcete zasílání v nepřítomnosti použít.";
 "Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
@@ -103,6 +103,10 @@
 "firstWeekOfYear_January1" = "Začíná 1. ledna";
 "firstWeekOfYear_First4DayWeek" = "První 4-denní týden";
 "firstWeekOfYear_FirstFullWeek" = "První celý týden";
+
+"Prevent from being invited to appointments" = "Blokovat budoucí pozvání na schůzky";
+"White list for appointment invitations:" = "Seznam povolených pro pozvání na schůzky:";
+"Contacts Names" = "Jména kontaktů";
 
 /* Default Calendar */
 "Default calendar :" = "Výchozí kalendář :";

@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Et voi luoda listaa jaettuun osoitekirjaan.";
 "Warning" = "Varoitus";
+"Can't contact server" = "Virhe palvelinyhteydessä. Yritä myöhemmin uudelleen.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Sinulla ei ole pääsyoikeuksia tähän moduliin tai järjestelmään. Ole hyvä ja ota yhteyttä järjestelmänvalvojaan. ";
@@ -102,9 +103,7 @@
 "Location:" = "Sijainti:";
 
 /* mail labels */
-/* Mail labels */
 "Important" = "Tärkeä";
-"Work" = "Työ";
 "Work" = "Työ";
 "Personal" = "Henkilökohtainen";
 "To Do" = "Tehtävä";

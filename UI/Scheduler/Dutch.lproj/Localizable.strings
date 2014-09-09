@@ -155,6 +155,7 @@
 "What to Print" = "Wat moet afgedrukt worden";
 "Options" = "Opties:";
 "Tasks with no due date" = "Taken zonder verloopdatum";
+"Display working hours only" = "Alleen werktijd weergeven";
 "Completed tasks" = "Afgeronde taken";
 
 /* Appointments */
@@ -518,7 +519,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Notifications" = "Notificaties";
 "Receive a mail when I modify my calendar" = "Ontvang een e-mail als ik mijn agenda verander";
 "Receive a mail when someone else modifies my calendar" = "Ontvang een e-mail als iemand anders mijn agenda verandert";
-"When I modify my calendar, send a mail to:" = "Als ik mijn agenda verader, stuur een e-mail naar:";
+"When I modify my calendar, send a mail to:" = "Als ik mijn agenda verander, stuur een e-mail naar:";
 
 "Links to this Calendar" = "Koppelingen naar deze agenda";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
@@ -542,6 +543,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "tagWasRemoved" = "Als u deze agenda wil verwijderen van de synchronisatie, moet u de gegevens opnieuw laden op uw mobiele apparaat.\nDoorgaan?";
 "DestinationCalendarError" = "De bron en bestemming agenda's zijn hetzelfde. Probeer te kopiëren naar een andere agenda.";
 "EventCopyError" = "De kopie is mislukt. Probeer te kopiëren naar een verschil-agenda.";
+"Please select at least one calendar" = "Selecteer tenminste een agenda";
+
 
 "Open Task..." = "Taak openen...";
 "Mark Completed" = "Markeren als voltooid";

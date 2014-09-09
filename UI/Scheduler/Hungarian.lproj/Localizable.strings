@@ -155,6 +155,7 @@
 "What to Print" = "Mi kerüljön nyomtatásra";
 "Options" = "Beállítások";
 "Tasks with no due date" = "Befejező dátum nélküli feladatok";
+"Display working hours only" = "Csak a munkaidő órái jelenjen meg";
 "Completed tasks" = "Befejezett feladatok";
 
 /* Appointments */
@@ -542,6 +543,8 @@ vtodo_class2 = "(Bizalmas feladat)";
 "tagWasRemoved" = "Amennyiben nem szinkronizálja a továbbiakban a naptárat, frissíteni kell az adatokat a mobil készülékén.";
 "DestinationCalendarError" = "A forrás- és cél naptár ugyanaz. Kérem válasszon egy másik naptárat.";
 "EventCopyError" = "Hiba történt a másoláskor. Kérem válasszon egy másik naptárat.";
+"Please select at least one calendar" = "Kérem válasszon legalább egy naptárat";
+
 
 "Open Task..." = "Feladat megnyitása...";
 "Mark Completed" = "A jelölés befejeződött.";

@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Nemůžete vytvořit seznam ve sdíleném adresáři.";
 "Warning" = "Upozornění";
+"Can't contact server" = "Při připojení k serveru došlo k chybě. Prosím zkuste to později.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nemáte oprávnění pro přístup k tomuto modulu nebo systému. Kontaktujte prosím svého systémového administrátora.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Do dne:";
 "Location:" = "Místo:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Důležitý";
-"Work" = "Pracovní";
 "Work" = "Pracovní";
 "Personal" = "Osobní";
 "To Do" = "Třeba udělat";

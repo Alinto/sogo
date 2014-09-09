@@ -97,13 +97,16 @@
 "Show time as busy outside working hours" = "Vis tid som opptatt utenfor arbeidstid";
 "First week of year :" = "Første uken i året:";
 "Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
-"Play a sound when a reminder comes due"
-= "Avspill lyd ved en påminnelse";
+"Play a sound when a reminder comes due" = "Avspill lyd ved en påminnelse";
 "Default reminder :" = "Standardpåminnelse:";
 
 "firstWeekOfYear_January1" = "Begynner den 1. januar";
 "firstWeekOfYear_First4DayWeek" = "Første firedagersuken i året";
 "firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
+
+"Prevent from being invited to appointments" = "Hindre fra å bli invitert til avtaler";
+"White list for appointment invitations:" = "Hviteliste for avtale invitasjoner:";
+"Contacts Names" = "Kontakters navn";
 
 /* Default Calendar */
 "Default calendar :" = "Standard kalender:";
@@ -111,21 +114,26 @@
 "personalCalendar" = "Personlig kalender";
 "firstCalendar" = "Første aktiverte kalender";
 
+"reminder_NONE" = "Ingen påminnelse";
 "reminder_5_MINUTES_BEFORE" = "5 minutter";
 "reminder_10_MINUTES_BEFORE" = "10 minutter";
 "reminder_15_MINUTES_BEFORE" = "15 minutter";
 "reminder_30_MINUTES_BEFORE" = "30 minutter";
+"reminder_45_MINUTES_BEFORE" = "45 minutter før";
 "reminder_1_HOUR_BEFORE" = "1 time";
 "reminder_2_HOURS_BEFORE" = "2 timer";
-"reminder_5_HOURS_BEFORE"= "5 timer";
-"reminder_15_HOURS_BEFORE"= "15 timer";
+"reminder_5_HOURS_BEFORE" = "5 timer";
+"reminder_15_HOURS_BEFORE" = "15 timer";
 "reminder_1_DAY_BEFORE" = "1 dag";
 "reminder_2_DAYS_BEFORE" = "2 dager";
+"reminder_1_WEEK_BEFORE" = "1 uke før";
 
 /* Mailer */
+"Labels" = "Merkelapper";
 "Label" = "Etikett";
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
 "Sort messages by threads" = "Sorter meldinger etter tråder";
+"When sending mail, add unknown recipients to my" = "Ved sending av mail, legg til ukjente mottakere til min";
 "Check for new mail:" = "Hent ny post:";
 "refreshview_manually" = "Manuelt";
 "refreshview_every_minute" = "Hvert minutt";
@@ -152,6 +160,10 @@
 "Display remote inline images" = "Vis bilder lenket til fra andre nettsteder";
 "displayremoteinlineimages_never" = "Aldri";
 "displayremoteinlineimages_always" = "Alltid";
+
+/* Contact */
+"Personal Address Book" = "Personlig addressebok";
+"Collected Address Book" = "Samlet addressebok";
 
 /* IMAP Accounts */
 "New Mail Account" = "Ny e-postkonto";
@@ -200,6 +212,7 @@
 "Mail" = "E-post";
 "Last" = "Sist besøkt";
 "Default Module :" = "Standardmodul:";
+"SOGo Version :" = "SOGo versjon:";
 
 "Language :" = "Språk:";
 "choose" = "Velg ...";
@@ -244,6 +257,8 @@
 "Active" = "Aktiv";
 "Move Up" = "Flytt opp";
 "Move Down" = "Flytt ned";
+"Connection error" = "Koblingsfeil";
+"Service temporarily unavailable" = "Tjeneste midlertidig utilgjengelig";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Filternavn:";
@@ -261,6 +276,7 @@
 "To or Cc" = "Til eller Kopi";
 "Size (Kb)" = "Størrelse (Kb)";
 "Header" = "Tittel";
+"Body" = "Kropp";
 "Flag the message with:" = "Flagg meldingen med:";
 "Discard the message" = "Forkast meldingen";
 "File the message in:" = "Fil meldingen i:";
@@ -287,12 +303,8 @@
 "Flagged" = "Flagget";
 "Junk" = "Søppel";
 "Not Junk" = "Ikke søppel";
-"Label 1" = "Etikett 1";
-"Label 2" = "Etikett 2";
-"Label 3" = "Etikett 3";
-"Label 4" = "Etikett 4";
-"Label 5" = "Etikett 5";
 
+/* Password policy */
 "The password was changed successfully." = "Passordet ble endret.";
 "Password must not be empty." = "Passord kan ikke være tomme.";
 "The passwords do not match. Please try again." = "Passordene er ikke like. Prøv igjen.";

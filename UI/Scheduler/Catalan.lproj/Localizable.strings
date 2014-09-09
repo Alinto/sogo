@@ -5,6 +5,7 @@
 "Create a new event" = "Crear un esdeveniment nou en el calendari";
 "Create a new task" = "Crear una tasca nova";
 "Edit this event or task" = "Modificar aquest esdeveniment o tasca";
+"Print the current calendar view" = "Imprimeix la vista de calendari actual";
 "Delete this event or task" = "Esborrar aquest esdeveniment o tasca";
 "Go to today" = "Anar a avui";
 "Switch to day view" = "Canviar a vista diària";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Nom del calendari";
 
 "new" = "Nou";
-"printview" = "Vista preliminar";
+"Print view" = "Imprimeix la vista";
 "edit" = "Modificar";
 "delete" = "Esborrar";
 "proposal" = "Proposta";
@@ -145,6 +146,17 @@
 "Hide already accepted and rejected appointments" = "Ocultar cites confirmades o rebutjades";
 "Show already accepted and rejected appointments" = "Mostrar cites confirmades o rebutjades";
 
+/* Print view */
+
+"LIST" = "Llista";
+"Print Settings" = "Configuració d'Impressió";
+"Title:" = "Títol:";
+"Layout:" = "Disseny:";
+"What to Print" = "Què imprimir";
+"Options" = "Opcions";
+"Tasks with no due date" = "Tasques sense data de finalització";
+"Display working hours only" = "Mostra només les hores de treball";
+"Completed tasks" = "Tasques Completades";
 
 /* Appointments */
 
@@ -179,6 +191,8 @@
 "Reminder:" = "Recordatori:";
 "General:" = "General:";
 "Reply:" = "Respondre:";
+"Created by:" = "Creat per:";
+
 
 "Target:" = "URL document:";
 
@@ -223,8 +237,13 @@
 "view_future" = "Tots els esdeveniments futurs";
 "view_selectedday" = "Dia seleccionat";
 
+"view_not_started" = "Tasques no iniciades";
+"view_overdue" = "Tasques vençudes";
+"view_incomplete" = "Incomplete tasks";
+
 "View:" = "Veure:";
-"Title or Description" = "Títol o descripció";
+"Title, category or location" = "Títol, categoria o ubicació";
+"Entire content" = "Tot el contingut";
 
 "Search" = "Cercar";
 "Search attendees" = "Cercar assistents";
@@ -373,6 +392,9 @@
 
 "Show Time as Free" = "Mostrar temps com a lliure";
 
+/* email notifications */
+"Send Appointment Notifications" = "Envia notificacions de cites";
+
 /* validation errors */
 
 validate_notitle           = "Sense títol, continuar?";
@@ -501,7 +523,7 @@ vtodo_class2 = "(Tasca confidencial)";
 
 "Links to this Calendar" = "Enllaços a aquest calendari";
 "Authenticated User Access" = "Accés autenticat";
-"CalDAV URL" = "url CalDAV";
+"CalDAV URL" = "URL CalDAV:";
 "WebDAV ICS URL" = "url WebDAV ICS";
 "WebDAV XML URL" = "url WebDAV XML";
 
@@ -521,6 +543,8 @@ vtodo_class2 = "(Tasca confidencial)";
 "tagWasRemoved" = "Si tragueu aquest calendari de la sincronització, haureu de recarregar les dades en el dispositiu mòbil.\nVoleu continuar?";
 "DestinationCalendarError" = "El calendari origen i destinació són el mateix. Intenteu copiar-lo en un calendari diferent.";
 "EventCopyError" = "Error de còpia. Intenteu-lo copiar en un calendari diferent.";
+"Please select at least one calendar" = "Per favor, seleccionar almenys un calendari";
+
 
 "Open Task..." = "Obrir tasca...";
 "Mark Completed" = "Marcar com a completada";
@@ -534,3 +558,4 @@ vtodo_class2 = "(Tasca confidencial)";
 "Web Calendar" = "Calendari Web";
 "Reload on login" = "Actualitzar en connectar-se";
 "Invalid number." = "Número incorrecte";
+"Please identify yourself to %{0}" = "Per favor, identifica't davant %{0}";

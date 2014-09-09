@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
 
+"Prevent from being invited to appointments" = "Voorkom uitgenodigingen voor gebeurtenissen";
+"White list for appointment invitations:" = "Whitelist voor uitnodigingen:";
+"Contacts Names" = "Contactnamen";
+
 /* Default Calendar */
 "Default calendar :" = "Standaardagenda:";
 "selectedCalendar" = "Geselecteerde agenda";

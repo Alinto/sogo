@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "U kunt geen lijst maken in een gedeeld adresboek.";
 "Warning" = "Waarschuwing";
+"Can't contact server" = "Bij het verbinden met de server is een fout opgetreden, probeer het alter opnieuw.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "U heeft geen toegang tot deze module of dit systeem. Neem contact op met uw systeembeheerder.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Verloopdatum:";
 "Location:" = "Plaats:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Belangrijk";
-"Work" = "Werk";
 "Work" = "Werk";
 "Personal" = "Persoonlijk";
 "To Do" = "Te doen";

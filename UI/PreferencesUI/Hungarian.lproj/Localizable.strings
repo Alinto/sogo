@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
 "firstWeekOfYear_FirstFullWeek" = "Első teljes héttől";
 
+"Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
+"White list for appointment invitations:" = "Engedélyezési lista a találkozók meghívásaihoz:";
+"Contacts Names" = "Kapcsolatok nevei";
+
 /* Default Calendar */
 "Default calendar :" = "Alapértelmezett naptár";
 "selectedCalendar" = "Kiválasztott naptár";

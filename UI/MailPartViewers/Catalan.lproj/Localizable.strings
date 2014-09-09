@@ -12,6 +12,8 @@ publish_info_text = "El remitent us informa de l'esdeveniment adjunt.";
 cancel_info_text = "La vostra invitació o l'esdeveniment han estat \ncancel·lats.";
 request_info_no_attendee = "Heu proposat un esdeveniment. Rebeu aquest correu com a notificació, però no hi figureu com a participant.";
 Appointment = "Cita";
+"Status Update" = "Canvi d'estat";
+was = "era";
 
 Organizer = "Organitzador";
 Time = "Hora";
