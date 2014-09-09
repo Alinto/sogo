@@ -2565,8 +2565,7 @@ function refreshUserSettingsCallback(http) {
 function folderOperationCallback(http) {
     if (http.readyState == 4 && isHttpStatus204(http.status)) {
         initMailboxTree();
-        var url = ApplicationBaseURL.split("Mail")[0];
-        triggerAjaxRequest(url + "/jsonSettings", refreshUserSettingsCallback);
+        triggerAjaxRequest(UserFolderURL + "/preferences/jsonSettings", refreshUserSettingsCallback);
     }
     else
         showAlertDialog(http.callbackData);
