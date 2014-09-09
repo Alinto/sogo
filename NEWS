@@ -2,7 +2,8 @@
 ------------------
 
 New features
-- new user settings for threads collapsing
+ - new user settings for threads collapsing
+ - IMAP global search support (#2670)
 
 Enchancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
@@ -11,9 +12,8 @@ Enchancements
  - labels tagging only make one AJAX call for all the selected messages instead of one AJAX call per message  
  - new option to print calendars events and tasks with a background color or with a border color  
  - all modules can now be automatically refreshed 
- -- new configurable user defaults variables; SOGoRefreshViewCheck & SOGoRefreshViewIntervals
- --- SOGoMailMessageCheck has been replaced by SOGoRefreshViewCheck
- --- SOGoMailPollingIntervals has been replaced by SOGoRefreshViewIntervals
+ - new configurable user defaults variables; SOGoRefreshViewCheck & SOGoRefreshViewIntervals. SOGoMailMessageCheck has
+   been replaced by SOGoRefreshViewCheck and SOGoMailPollingIntervals has been replaced by SOGoRefreshViewIntervals
 
 Bug fixes
  - fixed crasher when subscribing users to resources (#2892)
