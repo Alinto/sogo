@@ -641,7 +641,7 @@
   client = [[co imap4Connection] client];
   [[co imap4Connection] selectFolder: [co imap4URL]];
   result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
-  if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
+  if ([[result valueForKey: @"result"] boolValue])
     response = [self responseWith204];
   else
     response = [self responseWithStatus:500 andJSONRepresentation:result];
@@ -675,7 +675,7 @@
   [[co imap4Connection] selectFolder: [co imap4URL]];
   result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:NO];
 
-  if ([[[[result objectForKey:@"RawResponse"] objectForKey:@"ResponseResult"] objectForKey:@"description"] isEqualToString:@"Completed"])
+  if ([[result valueForKey: @"result"] boolValue])
     response = [self responseWith204];
   else
     response = [self responseWithStatus:500 andJSONRepresentation:result];
