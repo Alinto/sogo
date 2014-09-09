@@ -259,18 +259,8 @@ function mailListToggleMessageThread(row, cell) {
 
 function mailListToggleMessageCollapseCallback(http) {
     var data = http.callbackData;
-    if (isHttpStatus204(http.status)) {
-        if (data.action == "markMessageCollapse") {
-            if (cachedThreadsCollapsed[data.currentMailbox])
-                cachedThreadsCollapsed[data.currentMailbox].push(data.msguid);
-            else
-                cachedThreadsCollapsed[data.currentMailbox] = [data.msguid];
-        }
-        else {
-            var index = cachedThreadsCollapsed[data.currentMailbox].indexOf(data.msguid);
-            cachedThreadsCollapsed[data.currentMailbox].splice(index, 1);
-        }
-    }
+    if (isHttpStatus204(http.status))
+        triggerAjaxRequest(UserFolderURL + "/preferences/jsonSettings", refreshUserSettingsCallback);
     else {
         log("Message Collapse Failed (" + http.status + "): " + http.statusText);
     }
