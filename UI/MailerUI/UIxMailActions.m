@@ -156,12 +156,13 @@
 
   co = [self clientObject];
   us = [[context activeUser] userSettings];
-  moduleSettings = [us objectForKey: @"Mail"];
+  if (!(moduleSettings = [us objectForKey: @"Mail"]))
+    [us setObject:[NSMutableDictionary dictionnary] forKey: @"Mail"];
   msguid = [co nameInContainer];
   currentMailbox = [[co container] nameInContainer];
   currentAccount = [[[co container] container] nameInContainer];
   keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
-
+  
   if (isCollapsing)
     {
       // Check if the module threadsCollapsed is created in the userSettings
@@ -196,14 +197,12 @@
           if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
             {
               [mailboxThreadsCollapsed removeObject:msguid];
-      
               if ([mailboxThreadsCollapsed count] == 0)
                 [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
             }
         }
-      // TODO : Manage errors
+    // TODO : Manage errors
     }
-  
   [us synchronize];
 }
 

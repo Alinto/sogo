@@ -35,7 +35,7 @@ var messageCheckTimer;
 
 // Variables for feature threadsCollapsing
 var displayThreadElement = false;
-var cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+var cachedThreadsCollapsed = (UserSettings.Mail ? UserSettings.Mail.threadsCollapsed: []);
 
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
@@ -2608,8 +2608,10 @@ function onMenuToggleMessageFlag(event) {
 
 function refreshUserSettingsCallback(http) {
     var allUserSettings = http.response.evalJSON();
-    UserSettings.Mail = allUserSettings.Mail;
-    cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+    if (UserSettings.Mail) {
+        UserSettings.Mail = allUserSettings.Mail;
+        cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+    }
     refreshMailbox();
 }
 
