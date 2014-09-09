@@ -618,4 +618,70 @@
   return response;
 }
 
+- (WOResponse *) addOrRemoveLabelAction
+{
+  WOResponse *response;
+  WORequest *request;
+  SOGoMailFolder *co;
+  NSException *error;
+  NSArray *msgUIDs, *flags;
+  NSString *operation;
+  NSDictionary *content, *result;
+  BOOL addOrRemove;
+  NGImap4Client *client;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  flags = [NSArray arrayWithObject:[content objectForKey:@"flags"]];
+  msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
+  operation = [content objectForKey:@"operation"];
+  addOrRemove = ([operation isEqualToString:@"add"]? YES: NO);
+
+  co = [self clientObject];
+  client = [[co imap4Connection] client];
+  [[co imap4Connection] selectFolder: [co imap4URL]];
+  result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
+  if ([[result valueForKey: @"result"] boolValue])
+    response = [self responseWith204];
+  else
+    response = [self responseWithStatus:500 andJSONRepresentation:result];
+
+  return response;
+}
+
+- (WOResponse *) removeAllLabelsAction
+{
+  WOResponse *response;
+  WORequest *request;
+  SOGoMailFolder *co;
+  NGImap4Client *client;
+  NSArray *msgUIDs;
+  NSMutableArray *flags;
+  NSDictionary *v, *content, *result;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
+
+  // We always unconditionally remove the Mozilla tags
+  flags = [NSMutableArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
+           @"$Label4", @"$Label5", nil];
+
+  co = [self clientObject];
+  v = [[[context activeUser] userDefaults] mailLabelsColors];
+  [flags addObjectsFromArray: [v allKeys]];
+
+  client = [[co imap4Connection] client];
+  [[co imap4Connection] selectFolder: [co imap4URL]];
+  result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:NO];
+
+  if ([[result valueForKey: @"result"] boolValue])
+    response = [self responseWith204];
+  else
+    response = [self responseWithStatus:500 andJSONRepresentation:result];
+
+  return response;
+}
+
+
 @end

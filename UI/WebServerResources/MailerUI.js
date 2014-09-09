@@ -930,14 +930,28 @@ function openMailbox(mailbox, reload) {
  * Called from SOGoDataTable.render()
  */
 function messageListCallback(row, data, isNew) {
-    var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
+    var currentMessages = [];
+    if (!Object.isArray(document.menuTarget)) {
+        // Menu called from one selection in message list view
+        currentMessages.push(Mailer.currentMessages[Mailer.currentMailbox]);
+    }
+    else {
+        // Menu called from multiple selection in messages list view
+        var rows = $(document.menuTarget);
+        for (var i = 0; i < rows.length; i++) {
+            var _row = $(rows[i]);
+            if (_row) {
+                currentMessages.push(rows[i].substr(4));
+            }
+        }
+    }
     row.id = data['rowID'];
     row.writeAttribute('labels', (data['labels']?data['labels']:""));
     row.className = data['rowClasses'];
     row.show(); // make sure the row is visible
 
     // Restore previous selection
-    if (data['uid'] == currentMessage)
+    if (currentMessages.indexOf(String(data['uid'])) != -1)
         row.addClassName('_selected');
 
     if (data['Thread'])
@@ -2491,63 +2505,115 @@ function onMenuToggleMessageRead(event) {
 }
 
 function onMenuLabelNone() {
-    var messages = [];
+    var msgUIDs = [];
+    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox);
 
-    if (document.menuTarget.tagName == "DIV")
-        // Menu called from message content view
-        messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
-    else if (Object.isArray(document.menuTarget))
+    if (!Object.isArray(document.menuTarget)) {
+        if (document.menuTarget.tagName == "DIV")
+            // Menu called from message content view
+            msgUIDs.push(Mailer.currentMessages[Mailer.currentMailbox]);
+        
+        else
+            // Menu called from one selection in message list view
+            msgUIDs.push(document.menuTarget.getAttribute("id").substr(4));
+    }
+    else {
         // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(rowID) {
-            messages.push(rowID.substr(4));
-        });
-    else
-        // Menu called from one selection in messages list view
-        messages.push(document.menuTarget.getAttribute("id").substr(4));
+        var rows = $(document.menuTarget);
+        for (var i = 0; i < rows.length; i++) {
+            var row = $(rows[i]);
+            if (row) {
+                msgUIDs.push(rows[i].substr(4));
+            }
+        }
+    }
 
-    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
-    messages.each(function(id) {
-        triggerAjaxRequest(url + id + "/removeAllLabels",
-                           messageFlagCallback,
-                           { mailbox: Mailer.currentMailbox, msg: id, label: null } );
-    });
+    var callbackData = { mailbox: Mailer.currentMailbox, msgUIDs: msgUIDs };
+    var content = { mailbox: Mailer.currentMailbox, msgUIDs: msgUIDs };
+    content = Object.toJSON(content);
+    triggerAjaxRequest(url + "/removeAllLabels", messageFlagCallback, callbackData, content);
 }
 
 function onMenuLabelFlag() {
-    var messages = new Hash();
-
     var flag = this.readAttribute("data-name");
+    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox);
+    var operation = "add";
+    var msgUIDs = [];
+    var msgLabels;
 
-    if (document.menuTarget.tagName == "DIV")
-        // Menu called from message content view
-        messages.set(Mailer.currentMessages[Mailer.currentMailbox],
-                     $('row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
-    else if (Object.isArray(document.menuTarget))
-        // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(rowID) {
-            var row = $(rowID);
-            if (row)
-                messages.set(rowID.substr(4),
-                             row.getAttribute("labels"));
-        });
-    else
-        // Menu called from one selection in messages list view
-        messages.set(document.menuTarget.getAttribute("id").substr(4),
-                     document.menuTarget.getAttribute("labels"));
-
-    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
-    messages.keys().each(function(id) {
-        var flags = messages.get(id).split(" ");
-        var operation = "add";
-
+    if (!Object.isArray(document.menuTarget)) {
+        msgUIDs.push(Mailer.currentMessages[Mailer.currentMailbox]);
+        if (document.menuTarget.tagName == "DIV")
+            // Menu called from message content view
+            msgLabels = $('row_' + msgUIDs[0]).getAttribute("labels");
+        else
+            // Menu called from one selection in messages list view
+            msgLabels = document.menuTarget.getAttribute("labels");
+        
+        var flags = msgLabels.split(" ");
         if (flags.indexOf(flag) > -1)
             operation = "remove";
+    }
+    else {
+        // Menu called from multiple selection in messages list view
+        var rows = $(document.menuTarget);
+        var blockedOperation = false;
+        for (var i = 0; i < rows.length; i++) {
+            var row = $(rows[i]);
+            if (row) {
+                msgUIDs.push(rows[i].substr(4));
+                msgLabels = row.getAttribute("labels");
+                
+                var flags = msgLabels.split(" ");
+                if (flags.indexOf(flag) > -1 && !blockedOperation) {
+                    operation = "remove";
+                }
+                else {
+                    blockedOperation = true;
+                    operation = "add";
+                }
+            }
+        }
+    }
 
-        triggerAjaxRequest(url + id + "/" + operation + "Label?flag=" + flag.asCSSIdentifier(),
-                           messageFlagCallback,
-                           { mailbox: Mailer.currentMailbox, msg: id,
-                             label: operation + flag } );
-    });
+    var callbackData = { mailbox: Mailer.currentMailbox, operation: operation, flag: flag, msgUIDs: msgUIDs};
+    var content = {flags: flag.asCSSIdentifier(), msgUIDs: msgUIDs, operation: operation};
+    content = Object.toJSON(content);
+    triggerAjaxRequest(url + "/addOrRemoveLabel", messageFlagCallback, callbackData, content);
+}
+
+function messageFlagCallback(http) {
+    if (http.readyState == 4
+        && isHttpStatus204(http.status)) {
+        var data = http.callbackData;
+        if (data["mailbox"] == Mailer.currentMailbox) {
+            var msgUIDs = data["msgUIDs"];
+            for (var i = 0; i < msgUIDs.length; i++) {
+                Mailer.dataTable.invalidate(msgUIDs[i]);
+                var row = $("row_" + msgUIDs[i]);
+                var operation = data["operation"];
+                if (operation) {
+                    var labels = row.getAttribute("labels");
+                    var flags = [];
+                    if (labels.length > 0)
+                        flags = labels.split(" ");
+                    if (operation == "add") {
+                        if (flags.indexOf(data["flag"]) == -1)
+                            flags.push(data["flag"]);
+                    }
+                    else {
+                        // Remove flag
+                        var flag = data["flag"];
+                        var idx = flags.indexOf(flag);
+                        flags.splice(idx, 1);
+                    }
+                    row.writeAttribute("labels", flags.join(" "));
+                }
+                else
+                    row.writeAttribute("labels", "");
+            }
+        }
+    }
 }
 
 function onMenuToggleMessageFlag(event) {
@@ -2599,35 +2665,6 @@ function folderRefreshCallback(http) {
         }
         var msg = /<p>(.*)<\/p>/m.exec(http.responseText);
         showAlertDialog(_("Operation failed") + ": " + msg[1]);
-    }
-}
-
-function messageFlagCallback(http) {
-    if (http.readyState == 4
-        && isHttpStatus204(http.status)) {
-        var data = http.callbackData;
-        if (data["mailbox"] == Mailer.currentMailbox) {
-            Mailer.dataTable.invalidate(data["msg"]);
-            var row = $("row_" + data["msg"]);
-            var operation = data["label"];
-            if (operation) {
-                var labels = row.getAttribute("labels");
-                var flags = [];
-                if (labels.length > 0)
-                    flags = labels.split(" ");
-                if (operation.substr(0, 3) == "add")
-                    flags.push(operation.substr(3));
-                else {
-                    // Remove flag
-                    var flag = operation.substr(6);
-                    var idx = flags.indexOf(flag);
-                    flags.splice(idx, 1);
-                }
-                row.writeAttribute("labels", flags.join(" "));
-            }
-            else
-                row.writeAttribute("labels", "");
-        }
     }
 }
 

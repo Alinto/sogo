@@ -181,6 +181,16 @@
           pageName    = "UIxMailUserRightsEditor";
           actionName  = "saveUserRights";
         };
+        addOrRemoveLabel = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName  = "addOrRemoveLabel";
+        };
+        removeAllLabels = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName  = "removeAllLabels";
+        };
       };
     };
 
@@ -271,21 +281,6 @@
           protectedBy = "View";
           actionClass = "UIxMailActions";
           actionName  = "markMessageRead";
-        };
-        addLabel = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "addLabel";
-        };
-        removeLabel = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "removeLabel";
-        };
-        removeAllLabels = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "removeAllLabels";
         };
       };
     };
