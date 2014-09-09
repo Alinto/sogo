@@ -33,6 +33,10 @@ var deleteMessageRequestCount = 0;
 
 var messageCheckTimer;
 
+// Variables for feature threadsCollapsing
+var displayThreadElement = false;
+var cachedThreadsCollapsed = (UserSettings.Mail ? UserSettings.Mail.threadsCollapsed: []);
+
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
 function URLForFolderID(folderID, application) {
@@ -219,13 +223,16 @@ function openMessageWindowsForSelection(action, firstOnly) {
     return false;
 }
 
-/*
+
 function mailListToggleMessageThread(row, cell) {
     var show = row.hasClassName('closedThread');
+    var msguid = row.id.split("_")[1];
+    var action = "markMessageCollapse";
     $(cell).down('img').remove();
     if (show) {
         row.removeClassName('closedThread');
         row.addClassName('openedThread');
+        action = "markMessageUncollapse";
         var img = createElement("img", null, null, { src: ResourcesURL + '/arrow-down.png' });
         cell.insertBefore(img, cell.firstChild);
     }
@@ -241,8 +248,34 @@ function mailListToggleMessageThread(row, cell) {
         else
             row.hide();
     }
+    
+    // Update the dictionnary of the collapsed threads
+    var mailbox = Mailer.currentMailbox;
+    var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
+    var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};
+    
+    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback, callbackData);
 }
-*/
+
+function mailListToggleMessageCollapseCallback(http) {
+    var data = http.callbackData;
+    if (isHttpStatus204(http.status)) {
+        if (data.action == "markMessageCollapse") {
+            if (cachedThreadsCollapsed[data.currentMailbox])
+                cachedThreadsCollapsed[data.currentMailbox].push(data.msguid);
+            else
+                cachedThreadsCollapsed[data.currentMailbox] = [data.msguid];
+        }
+        else {
+            var index = cachedThreadsCollapsed[data.currentMailbox].indexOf(data.msguid);
+            cachedThreadsCollapsed[data.currentMailbox].splice(index, 1);
+        }
+    }
+    else {
+        log("Message Collapse Failed (" + http.status + "): " + http.statusText);
+    }
+}
+
 
 /* Triggered when clicking on the read/unread dot of a message row or
  * through the contextual menu. */
@@ -929,6 +962,7 @@ function openMailbox(mailbox, reload) {
 /*
  * Called from SOGoDataTable.render()
  */
+
 function messageListCallback(row, data, isNew) {
     var currentMessages = [];
     if (!Object.isArray(document.menuTarget)) {
@@ -954,13 +988,31 @@ function messageListCallback(row, data, isNew) {
     if (currentMessages.indexOf(String(data['uid'])) != -1)
         row.addClassName('_selected');
 
-    if (data['Thread'])
-        row.addClassName('openedThread');
+    if (data['Thread']) {
+        if (cachedThreadsCollapsed) {
+            var mailbox = Mailer.currentMailbox;
+            var collapsedList = cachedThreadsCollapsed[mailbox];
+            if (collapsedList != undefined && collapsedList.indexOf(row.id.split("_")[1]) != -1) {
+                row.addClassName('closedThread');
+                displayThreadElement = true;
+            }
+            else {
+                row.addClassName('openedThread');
+            }
+        }
+    }
+    
     else if (data['ThreadLevel'] > 0) {
         if (data['ThreadLevel'] > 10) data['ThreadLevel'] = 10;
         row.addClassName('thread');
         row.addClassName('thread' + data['ThreadLevel']);
+        
+        if (displayThreadElement)
+            row.hide();
     }
+    
+    else
+        displayThreadElement = false;
 
     var cells = row.childElements();
     for (var j = 0; j < cells.length; j++) {
@@ -1236,7 +1288,7 @@ function onMessageSelectionChange(event) {
         t = t.parentNode;
         if (t.tagName == 'TD') {
             if (t.className == 'messageThreadColumn') {
-                //mailListToggleMessageThread(t.parentNode, t); Disable thread collapsing
+                mailListToggleMessageThread(t.parentNode, t);
             }
             else if (t.className == 'messageUnreadColumn') {
                 mailListToggleMessagesRead(t.parentNode);
@@ -2620,10 +2672,20 @@ function onMenuToggleMessageFlag(event) {
     mailListToggleMessagesFlagged();
 }
 
+function refreshUserSettingsCallback(http) {
+    var allUserSettings = http.response.evalJSON();
+    if (UserSettings.Mail) {
+        UserSettings.Mail = allUserSettings.Mail;
+        cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+    }
+    refreshMailbox();
+}
+
 function folderOperationCallback(http) {
-    if (http.readyState == 4
-        && isHttpStatus204(http.status))
+    if (http.readyState == 4 && isHttpStatus204(http.status)) {
         initMailboxTree();
+        triggerAjaxRequest(UserFolderURL + "/preferences/jsonSettings", refreshUserSettingsCallback);
+    }
     else
         showAlertDialog(http.callbackData);
 }

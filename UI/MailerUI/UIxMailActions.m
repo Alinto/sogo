@@ -34,6 +34,7 @@
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "../Common/WODirectAction+SOGo.h"
@@ -143,6 +144,80 @@
     response = [self responseWith204];
   
   return response;
+}
+
+- (void) collapseAction: (BOOL) isCollapsing
+{
+  SOGoMailObject *co;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSMutableArray *mailboxThreadsCollapsed;
+  NSString *msguid, *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  SOGoUserSettings *us;
+
+  co = [self clientObject];
+  us = [[context activeUser] userSettings];
+  if (!(moduleSettings = [us objectForKey: @"Mail"]))
+    [us setObject:[NSMutableDictionary dictionnary] forKey: @"Mail"];
+  msguid = [co nameInContainer];
+  currentMailbox = [[co container] nameInContainer];
+  currentAccount = [[[co container] container] nameInContainer];
+  keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+  
+  if (isCollapsing)
+    {
+      // Check if the module threadsCollapsed is created in the userSettings
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
+        {
+          // Check if the currentMailbox already have other threads saved and add the new collapsed thread
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+            {
+              if (![mailboxThreadsCollapsed containsObject:msguid])
+                [mailboxThreadsCollapsed addObject:msguid];
+            }
+          else
+            {
+              mailboxThreadsCollapsed = [NSMutableArray arrayWithObject:msguid];
+              [threadsCollapsed setObject:mailboxThreadsCollapsed forKey:keyForMsgUIDs];
+            }
+        }
+      else
+        {
+          // Created the module threadsCollapsed and add the new collapsed thread
+          mailboxThreadsCollapsed = [NSMutableArray arrayWithObject:msguid];
+          threadsCollapsed = [NSMutableDictionary dictionaryWithObject:mailboxThreadsCollapsed forKey:keyForMsgUIDs];
+          [moduleSettings setObject:threadsCollapsed forKey: @"threadsCollapsed"];
+        }
+    }
+  else
+    {
+      // Check if the module threadsCollapsed is created in the userSettings
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
+        {
+          // Check if the currentMailbox already have other threads saved and remove the uncollapsed thread
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+            {
+              [mailboxThreadsCollapsed removeObject:msguid];
+              if ([mailboxThreadsCollapsed count] == 0)
+                [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+            }
+        }
+    // TODO : Manage errors
+    }
+  [us synchronize];
+}
+
+- (id) markMessageCollapseAction
+{
+  [self collapseAction: YES];
+  
+  return [self responseWith204];
+}
+
+- (id) markMessageUncollapseAction
+{
+  [self collapseAction: NO];
+  
+  return [self responseWith204];
 }
 
 /* SOGoDraftObject */

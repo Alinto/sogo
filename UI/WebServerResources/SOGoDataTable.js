@@ -248,7 +248,6 @@ var SOGoDataTableInterface = {
                  j++, i++) {
                 var row = this.rowModel.cloneNode(true);
                 this.rowRenderCallback(row, data[j], true);
-                row.show();
                 this.body.insertBefore(row, this.rowBottom);
             }
         }
