@@ -127,7 +127,7 @@
       <div class="tabs">
         <div id="generalView" class="tab">
           <dl class="dl-horizontal">
-            <dt><var:string label:value="SOGo version:"/></dt>
+            <dt><var:string label:value="SOGo Version :"/></dt>
             <dd><var:string value="sogoVersion"/></dd>
             <dt><var:string label:value="Language :"/></dt>
             <dd><var:popup list="languages" item="item"
@@ -158,11 +158,16 @@
               const:name="timeFormat"
               string="itemTimeFormatText" selection="userTimeFormat"
               /></dd>
-            <dt><var:string label:value="Default module :"/></dt>
+            <dt><var:string label:value="Default Module :"/></dt>
             <dd><var:popup list="availableModules" item="item"
               const:id="defaultModule"
               const:name="defaultModule"
               string="itemModuleText" selection="userDefaultModule"/></dd>
+            <dt><var:string label:value="Refresh View :"/></dt>
+            <dd><var:popup list="refreshViewList" item="item"
+              const:id="refreshView"
+              const:name="refreshView"
+              string="itemRefreshViewCheckText" selection="userRefreshViewCheck"/></dd>
           </dl>
         </div>
         <var:if condition="userHasCalendarAccess">
@@ -354,11 +359,6 @@
                 const:name="addressBookList"
                 string="itemAddressBookText" selection="userAddressBook"/></dd>
               <dt></dt>
-              <dt><var:string label:value="Check for new mail:"/></dt>
-              <dd><var:popup list="messageCheckList" item="item"
-                const:id="messageCheck"
-                const:name="messageCheck"
-                string="itemMessageCheckText" selection="userMessageCheck"/></dd>
               <dt><var:string label:value="Forward messages:"/></dt>
               <dd><var:popup list="messageForwardingList" item="item"
                 const:id="messageForwarding"

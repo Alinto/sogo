@@ -7,7 +7,7 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages"
+  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages"
   const:userSettingsKeys="Mail"
   const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js,jquery-ui.js, UIxMailSearch.js"
   const:cssFiles="UIxMailSearch.css">

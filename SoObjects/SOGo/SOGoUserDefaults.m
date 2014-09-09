@@ -198,7 +198,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
                         @"SOGoLanguage", @"Language",
                         @"SOGoMailComposeMessageType", @"ComposeMessagesType",
                         @"SOGoSelectedAddressBook", @"SelectedAddressBook",
-                        @"SOGoMailMessageCheck", @"MessageCheck",
+                        @"SOGoRefreshViewCheck", @"RefreshViewCheck",
                         @"SOGoMailMessageForwarding", @"MessageForwarding",
                         @"SOGoMailSignature", @"MailSignature",
                         @"SOGoMailSignaturePlacement", @"SignaturePlacement",
@@ -488,14 +488,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoSelectedAddressBook"];
 }
 
-- (void) setMailMessageCheck: (NSString *) newValue
+- (void) setRefreshViewCheck: (NSString *) newValue
 {
-  [self setObject: newValue forKey: @"SOGoMailMessageCheck"];
+  [self setObject: newValue forKey: @"SOGoRefreshViewCheck"];
 }
 
-- (NSString *) mailMessageCheck
+- (NSString *) refreshViewCheck
 {
-  return [self stringForKey: @"SOGoMailMessageCheck"];
+  return [self stringForKey: @"SOGoRefreshViewCheck"];
 }
 
 - (void) setMailComposeMessageType: (NSString *) newValue

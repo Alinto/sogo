@@ -131,14 +131,14 @@
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
 "Check for new mail:" = "Zkontrolovat novou poštu:";
-"messagecheck_manually" = "Manuálně";
-"messagecheck_every_minute" = "Každou minutu";
-"messagecheck_every_2_minutes" = "Každé 2 minuty";
-"messagecheck_every_5_minutes" = "Každých 5 minut";
-"messagecheck_every_10_minutes" = "Každých 10 minut";
-"messagecheck_every_20_minutes" = "Každých 20 minut";
-"messagecheck_every_30_minutes" = "Každých 30 minut";
-"messagecheck_once_per_hour" = "Jednou za hodinu";
+"refreshview_manually" = "Manuálně";
+"refreshview_every_minute" = "Každou minutu";
+"refreshview_every_2_minutes" = "Každé 2 minuty";
+"refreshview_every_5_minutes" = "Každých 5 minut";
+"refreshview_every_10_minutes" = "Každých 10 minut";
+"refreshview_every_20_minutes" = "Každých 20 minut";
+"refreshview_every_30_minutes" = "Každých 30 minut";
+"refreshview_once_per_hour" = "Jednou za hodinu";
 
 "Forward messages:" = "Přeposlat zprávy:";
 "messageforward_inline" = "Do řady";
@@ -207,8 +207,8 @@
 "Contacts" = "Adresář";
 "Mail" = "Pošta";
 "Last" = "Naposledy použitý";
-"Default module :" = "Výchozí modul :";
-"SOGo version:" = "SOGo verze:";
+"Default Module :" = "Výchozí modul :";
+"SOGo Version :" = "SOGo verze:";
 
 "Language :" = "Jazyk :";
 "choose" = "Vybrat ...";

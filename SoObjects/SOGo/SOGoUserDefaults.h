@@ -117,8 +117,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setSelectedAddressBook: (NSString *) newValue;
 - (NSString *) selectedAddressBook;
 
-- (void) setMailMessageCheck: (NSString *) newValue;
-- (NSString *) mailMessageCheck;
+- (void) setRefreshViewCheck: (NSString *) newValue;
+- (NSString *) refreshViewCheck;
 
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;

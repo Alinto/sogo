@@ -126,14 +126,14 @@
 "Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
 "Sort messages by threads" = "Сортувати повідомлення за гілками";
 "Check for new mail:" = "Перевіряти нову пошту:";
-"messagecheck_manually" = "Вручну";
-"messagecheck_every_minute" = "Щохвилини";
-"messagecheck_every_2_minutes" = "Кожні 2 хвилини";
-"messagecheck_every_5_minutes" = "Кожні 5 хвилин";
-"messagecheck_every_10_minutes" = "Кожні 10 хвилин";
-"messagecheck_every_20_minutes" = "Кожні 20 хвилин";
-"messagecheck_every_30_minutes" = "Кожні 30 хвилин";
-"messagecheck_once_per_hour" = "Раз на годину";
+"refreshview_manually" = "Вручну";
+"refreshview_every_minute" = "Щохвилини";
+"refreshview_every_2_minutes" = "Кожні 2 хвилини";
+"refreshview_every_5_minutes" = "Кожні 5 хвилин";
+"refreshview_every_10_minutes" = "Кожні 10 хвилин";
+"refreshview_every_20_minutes" = "Кожні 20 хвилин";
+"refreshview_every_30_minutes" = "Кожні 30 хвилин";
+"refreshview_once_per_hour" = "Раз на годину";
 
 "Forward messages:" = "Перенаправляти повідомлення:";
 "messageforward_inline" = "В тілі листа";
@@ -188,7 +188,7 @@
 "Contacts" = "Адресна книга";
 "Mail" = "Електронна пошта";
 "Last" = "Останнє";
-"Default module :" = "Модуль за замовчанням :";
+"Default Module :" = "Модуль за замовчанням :";
 
 "Language :" = "Мова :";
 "choose" = "Choose ...";

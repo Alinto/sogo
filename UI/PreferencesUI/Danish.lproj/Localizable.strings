@@ -127,14 +127,14 @@
 "Show subscribed mailboxes only" = "Vis kun abonnerede postkasser";
 "Sort messages by threads" = "Sortér beskeder efter tråd";
 "Check for new mail:" = "Tjek for ny post:";
-"messagecheck_manually" = "Manuelt";
-"messagecheck_every_minute" = "Hvert minut";
-"messagecheck_every_2_minutes" = "Hvert 2. minut";
-"messagecheck_every_5_minutes" = "Hvert 5. minut";
-"messagecheck_every_10_minutes" = "Hvert 10. minut";
-"messagecheck_every_20_minutes" = "Hvert 20. minut";
-"messagecheck_every_30_minutes" = "Hvert 30. minut";
-"messagecheck_once_per_hour" = "Én gang i timen";
+"refreshview_manually" = "Manuelt";
+"refreshview_every_minute" = "Hvert minut";
+"refreshview_every_2_minutes" = "Hvert 2. minut";
+"refreshview_every_5_minutes" = "Hvert 5. minut";
+"refreshview_every_10_minutes" = "Hvert 10. minut";
+"refreshview_every_20_minutes" = "Hvert 20. minut";
+"refreshview_every_30_minutes" = "Hvert 30. minut";
+"refreshview_once_per_hour" = "Én gang i timen";
 
 "Forward messages:" = "Videresend beskeder:";
 "messageforward_inline" = "På linie";
@@ -199,7 +199,7 @@
 "Contacts" = "Adressebog";
 "Mail" = "Mail";
 "Last" = "Sidst anvendt";
-"Default module :" = "Standard modul:";
+"Default Module :" = "Standard modul:";
 
 "Language :" = "Sprog:";
 "choose" = "Vælg ...";

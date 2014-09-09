@@ -127,14 +127,14 @@
 "Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
 "Sort messages by threads" = "Ordenar els missatges per temes";
 "Check for new mail:" = "Comprovar nou correu: ";
-"messagecheck_manually" = "Manualment";
-"messagecheck_every_minute" = "Cada minut";
-"messagecheck_every_2_minutes" = "Cada 2 minuts";
-"messagecheck_every_5_minutes" = "Cada 5 minuts";
-"messagecheck_every_10_minutes" = "Cada 10 minuts";
-"messagecheck_every_20_minutes" = "Cada 20 minuts";
-"messagecheck_every_30_minutes" = "Cada 30 minuts";
-"messagecheck_once_per_hour" = "Cada hora";
+"refreshview_manually" = "Manualment";
+"refreshview_every_minute" = "Cada minut";
+"refreshview_every_2_minutes" = "Cada 2 minuts";
+"refreshview_every_5_minutes" = "Cada 5 minuts";
+"refreshview_every_10_minutes" = "Cada 10 minuts";
+"refreshview_every_20_minutes" = "Cada 20 minuts";
+"refreshview_every_30_minutes" = "Cada 30 minuts";
+"refreshview_once_per_hour" = "Cada hora";
 
 "Forward messages:" = "Reenviar missatges:";
 "messageforward_inline" = "Incorporats";
@@ -199,7 +199,7 @@
 "Contacts" = "Llibreta d'adreces";
 "Mail" = "Correu";
 "Last" = "Últim usat";
-"Default module :" = "Pàgina per defecte :";
+"Default Module :" = "Pàgina per defecte :";
 
 "Language :" = "Language :";
 "choose" = "Choose ...";

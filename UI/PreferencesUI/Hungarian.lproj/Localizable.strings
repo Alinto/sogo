@@ -131,14 +131,14 @@
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Check for new mail:" = "Új üzenetek letöltése:";
-"messagecheck_manually" = "Kézi";
-"messagecheck_every_minute" = "Percenként";
-"messagecheck_every_2_minutes" = "Kétpercenként";
-"messagecheck_every_5_minutes" = "Ötpercenként";
-"messagecheck_every_10_minutes" = "Tízpercenként";
-"messagecheck_every_20_minutes" = "Húszpercenként";
-"messagecheck_every_30_minutes" = "Harminc percenként";
-"messagecheck_once_per_hour" = "Óránként";
+"refreshview_manually" = "Kézi";
+"refreshview_every_minute" = "Percenként";
+"refreshview_every_2_minutes" = "Kétpercenként";
+"refreshview_every_5_minutes" = "Ötpercenként";
+"refreshview_every_10_minutes" = "Tízpercenként";
+"refreshview_every_20_minutes" = "Húszpercenként";
+"refreshview_every_30_minutes" = "Harminc percenként";
+"refreshview_once_per_hour" = "Óránként";
 
 "Forward messages:" = "Üzenetek továbbítása:";
 "messageforward_inline" = "Levélként";
@@ -207,8 +207,8 @@
 "Contacts" = "Címjegyzék";
 "Mail" = "Levél";
 "Last" = "Utoljára használt";
-"Default module :" = "Alapértelmezett modul";
-"SOGo version:" = "SOGo verzió:";
+"Default Module :" = "Alapértelmezett modul";
+"SOGo Version :" = "SOGo verzió:";
 
 "Language :" = "Nyelv :";
 "choose" = "Válasszon ...";

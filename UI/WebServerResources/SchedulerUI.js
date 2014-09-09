@@ -35,6 +35,7 @@ var categoriesStyleSheet = null;
 var clipboard = null;
 var eventsToCopy = [];
 
+var refreshViewCheckTimer;
 
 // This should probably go in the generic.js
 function printView() {
@@ -1438,6 +1439,26 @@ function onMonthOverview() {
 function refreshEventsAndTasks() {
     refreshEvents();
     refreshTasks();
+}
+
+function initRefreshViewCheckTimer() {
+  var refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+  if (refreshViewCheck && refreshViewCheck != "manually") {
+    var interval;
+    if (refreshViewCheck == "once_per_hour")
+      interval = 3600;
+    else if (refreshViewCheck == "every_minute")
+      interval = 60;
+    else {
+      interval = parseInt(refreshViewCheck.substr(6)) * 60;
+    }
+    refreshViewCheckTimer = window.setInterval(onRefreshViewCheckCallback,
+                                               interval * 1000);
+  }
+}
+
+function onRefreshViewCheckCallback(event) {
+  onCalendarReload();
 }
 
 function onCalendarReload() {
@@ -3887,6 +3908,7 @@ function initScheduler() {
         $("calendarView").on("click", "#listCollapse", onListCollapse);
         Event.observe(document, "keydown", onDocumentKeydown);
     }
+    initRefreshViewCheckTimer()
 
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
