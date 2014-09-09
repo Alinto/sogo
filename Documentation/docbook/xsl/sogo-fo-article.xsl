@@ -6,9 +6,9 @@
 
 <!-- ********************************************************************
 
-     PacketFence Documentation Docbook FO Parameters
+     SOGo Documentation Docbook FO Parameters
 
-     This file is part of the PacketFence project.
+     This file is part of the SOGo project.
      Authors: 
        - Inverse inc. <info@inverse.ca>
 

@@ -5,8 +5,7 @@ Installation and Configuration Guide
 
     This file is part of the SOGo project.
 
-    See PacketFence_Administration_Guide-docinfo.xml for authors, copyright 
-    and license information.
+    See docinfo.xml for authors, copyright and license information.
 
 ////
 
