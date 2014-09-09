@@ -26,6 +26,7 @@ Bug fixes
  - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
  - fixed handling of messages labels (#2902)
  - fixed Apache > 2.3 configuration
+ - fixed freebusy retrieval during timezone changes (#1240)
 
 2.2.7 (2014-07-30)
 ------------------
