@@ -413,24 +413,22 @@
                                      forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
-  NSMutableArray *unavailableAttendees, *whiteList;
-  NSEnumerator *enumerator;
-  NSPredicate *predicate;
-  NSString *currentUID, *ownerUID;
-  NSMutableString *reason;
-  NSDictionary *values;
-  NSMutableDictionary *value, *moduleSettings;
   SOGoUser *user;
   SOGoUserSettings *us;
+  NSMutableArray *unavailableAttendees;
+  NSEnumerator *enumerator;
+  NSString *currentUID, *ownerUID, *whiteListString;
+  NSMutableString *reason;
+  NSDictionary *values;
+  NSMutableDictionary *value, *moduleSettings, *whiteList;
   int i, count;
-
   i = count = 0;
-  
+
   // Build list of the attendees uids without ressources
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
   ownerUID = [[[self context] activeUser] login];
-  
+
   while ((currentAttendee = [enumerator nextObject]))
     {
       currentUID = [currentAttendee uid];
@@ -443,11 +441,10 @@
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
-              whiteList = [NSMutableArray arrayWithObject:[moduleSettings objectForKey:@"PreventInvitationsWhitelist"]];
-              predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", ownerUID];
-              [whiteList filterUsingPredicate:predicate];
+              whiteListString = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
+              whiteList = [whiteListString objectFromJSONString];
               // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
-              if ([whiteList count] == 0)
+              if (![whiteList objectForKey:ownerUID])
                 {
                   values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
                   [unavailableAttendees addObject:values];

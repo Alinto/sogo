@@ -235,47 +235,54 @@ function initPreferences() {
 
     // Calendar whiteList
     var whiteList = $("appointmentsWhiteListWrapper");
-    if(whiteList) {
-        var whiteListValue = $("whiteList").getValue();
-        if (whiteListValue != "") {
-            whiteListValue = whiteListValue.split(",");
-            var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
-            for (i = 0; i < whiteListValue.length; i++)
-            {
-                var elements = whiteListValue[i].split("=");
-                var row = new Element("tr");
-                var td = new Element("td").update("");
-                var textField = new Element("input");
-                var span = new Element("span");
-
-                row.addClassName("whiteListRow");
-                row.observe("mousedown", onRowClick);
-                td.addClassName ("whiteListCell");
-                td.observe("mousedown", endAllEditables);
-                td.observe("dblclick", onNameEdit);
-                textField.addInterface(SOGoAutoCompletionInterface);
-                textField.SOGoUsersSearch = true;
-                textField.observe("autocompletion:changed", endEditable);
-                textField.addClassName("textField");
-                textField.value = elements[1];
-                textField.setAttribute("uid", elements[0]);
-                textField.hide();
-                span.innerText = elements[1];
-
-                td.appendChild(textField);
-                td.appendChild(span);
-                row.appendChild (td);
-                tablebody.appendChild(row);
-                $(tablebody).deselectAll();
-
-            }
+    if (whiteList) {
+        var whiteListString = $("whiteList").getValue();
+        // This condition is a backward compatibility where the strings looks like : "sogo1=John DOE <sogo1@example.com>"
+        if (whiteListString.search("=") != -1) {
+            var split = whiteListString.split("=");
+            var whiteListObject = {};
+            whiteListObject[split[0]] = split[1];
+            
         }
-
-        var table = whiteList.childNodesWithTag("table")[0];
-        table.multiselect = true;
-        $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
-        $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
+        else if (whiteListString != "") {
+            var whiteListObject = JSON.parse(whiteListString);
+        }
+        var allKeys = Object.keys(whiteListObject);
+        var allValues = Object.values(whiteListObject);
+        var tablebody = $("appointmentsWhiteListWrapper").childNodesWithTag("table")[0].tBodies[0];
+        for (i = 0; i < allKeys.length; i++) {
+            var row = new Element("tr");
+            var td = new Element("td").update("");
+            var textField = new Element("input");
+            var span = new Element("span");
+            
+            row.addClassName("whiteListRow");
+            row.observe("mousedown", onRowClick);
+            td.addClassName ("whiteListCell");
+            td.observe("mousedown", endAllEditables);
+            td.observe("dblclick", onNameEdit);
+            textField.addInterface(SOGoAutoCompletionInterface);
+            textField.SOGoUsersSearch = true;
+            textField.observe("autocompletion:changed", endEditable);
+            textField.addClassName("textField");
+            textField.value = allValues[i];
+            textField.setAttribute("uid", allKeys[i]);
+            textField.hide();
+            span.innerText = allValues[i];
+            
+            td.appendChild(textField);
+            td.appendChild(span);
+            row.appendChild (td);
+            tablebody.appendChild(row);
+            $(tablebody).deselectAll();
+            
+        }
     }
+    
+    var table = whiteList.childNodesWithTag("table")[0];
+    table.multiselect = true;
+    $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
+    $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
 
     // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
@@ -1131,16 +1138,15 @@ function onAppointmentsWhiteListDelete(e) {
 function serializeAppointmentsWhiteList() {
     var r = $$("#appointmentsWhiteListWrapper TBODY TR");
 
-    var values = [];
+    var users = {};
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements().first().down("INPUT");
         var uid  = tds.getAttribute("uid");
         var value = tds.getValue();
-        var user = uid + "=" + value;
         if (uid != null)
-            values.push(user);
+            users[uid] = value;
     }
-    $("whiteList").value = values;
+    $("whiteList").value = Object.toJSON(users);
 }
 
 function onCalendarCategoryAdd(e) {

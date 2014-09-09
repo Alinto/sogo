@@ -652,13 +652,14 @@ static NSArray *reminderValues = nil;
   return whiteList;
 }
 
-- (void) setWhiteList: (NSArray *) whiteList
+- (void) setWhiteList: (NSString *) whiteListString
 {
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
+  
   us = [user userSettings];
   moduleSettings = [us objectForKey: @"Calendar"];
-  [moduleSettings setObject: whiteList forKey: @"PreventInvitationsWhitelist"];
+  [moduleSettings setObject: whiteListString forKey: @"PreventInvitationsWhitelist"];
   [us synchronize];
 }
 
