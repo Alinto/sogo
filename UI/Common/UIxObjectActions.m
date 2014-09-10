@@ -23,11 +23,15 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+
+#import <SOGo/NSDictionary+Utilities.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -74,10 +78,19 @@
 - (WOResponse *) deleteAction
 {
   WOResponse *response;
+  NSDictionary *data;
 
   response = (WOResponse *) [[self clientObject] delete];
-  if (!response)
-    response = [self responseWithStatus: 204];
+  if (response)
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [(NSException *) response reason], @"error", nil];
+      response = [self responseWithStatus: 403
+                                andString: [data jsonRepresentation]];
+    }
+  else
+    {
+      response = [self responseWithStatus: 204];
+    }
 
   return response;
 }

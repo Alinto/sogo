@@ -51,15 +51,19 @@
       <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"><!-- menu toggle --></button>
       </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ng-click="newAddressbook()"><!-- new --></a>
+      </ion-nav-buttons>
       <ion-content class="has-header">
         <ion-list>
-          <ion-item ng-repeat="folder in addressbooks" option-buttons="buttons"
-                    ui-sref="app.addressbook({addressbook_id: folder.id})"
-                    class="item-icon-right">
-            {{folder.name}}
+          <ion-item ng-repeat="addressbook in addressbooks" option-buttons="buttons"
+                    ui-sref="app.addressbook({addressbook_id: addressbook.id})"
+                    class="item-icon-left item-icon-right">
+            <i class="icon" ng-class="{'ion-earth': addressbook.isRemote}"><!-- public addressbook --></i>
+            {{addressbook.name}}
             <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
             <ion-option-button class="button-info"
-                               ng-click="edit(item)"><var:string label:value="Edit"/></ion-option-button>
+                               ng-click="edit(addressbook)"><var:string label:value="Edit"/></ion-option-button>
           </ion-item>
         </ion-list>
       </ion-content>
