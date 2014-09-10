@@ -38,28 +38,13 @@ function onSearchClick() {
             var searchInput = filterRows[i].down(".searchInput");
 
             // Get the searchBy
-            for (j = 0; j < searchByOptions.length ; j++) {
-                if (searchByOptions[j].selected) {
-                    filter.searchBy = searchByOptions[j].innerHTML;
-                    break;
-                }
-            }
+            // Options : 0-Subject, 1-From, 2-To, 3-Cc, 4-Body
+            filter.searchBy = searchByOptions[searchByOptions.selectedIndex].getAttribute("value");
 
             // Get the searchArgument
-            for (j = 0; j < searchArgumentsOptions.length ; j++) {
-                if (searchArgumentsOptions[j].selected) {
-                    filter.searchArgument = searchArgumentsOptions[j].innerHTML;
-                    filter.negative = false;
-                    if (filter.searchArgument == "contains") {
-                        filter.searchArgument = "doesContain";
-                    }
-                    else if (filter.searchArgument == "does not contain") {
-                        filter.searchArgument = "doesContain";
-                        filter.negative = true;
-                    }
-                    break;
-                }
-            }
+            // Options : 0-contains, 1-doesn't contains; on the IMAP query add the prefix NOT to negate the statement
+            filter.negative = ((searchArgumentsOptions == 1) ? true:false);
+            filter.searchArgument = "doesContain";
 
             // Get the input text
             filter.searchInput = searchInput.getValue();
@@ -269,9 +254,11 @@ function onAddFilter() {
     var element1 = document.createElement("select");
     Element.addClassName(element1, "searchByList");
     element1.setAttribute("id", "searchByListRow" + rowCount);
+    var options = {0:"subject", 1:"from", 2:"to", 3:"cc", 4:"body"};
     for (var i = 0; i < searchByList.length; i++) {
         var option = document.createElement("option");
-        option.innerHTML = searchByList[i].innerHTML;
+        option.value = options[i];
+        option.text = searchByList[i].innerHTML;
         element1.appendChild(option);
     }
     cell1.appendChild(element1);
@@ -282,7 +269,7 @@ function onAddFilter() {
     element2.setAttribute("id", "searchArgumentsListRow" + rowCount);
     for (var i = 0; i < stringArgumentsList.length; i++) {
         var option = document.createElement("option");
-        option.innerHTML = stringArgumentsList[i].innerHTML;
+        option.text = stringArgumentsList[i].innerHTML;
         element2.appendChild(option);
     }
     cell2.appendChild(element2);
