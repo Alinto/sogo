@@ -446,6 +446,16 @@ $column-gutter: 0;
     &.alert {
         color: $alert-color;
     }
+    &.outline {
+        background-color: transparent;
+        border-width: 1px;
+        &.secondary {
+            color: $secondary-color;
+            &:hover {
+                color: $button-font-color;
+            }
+        }
+    }
 }
 
 .f-dropdown {

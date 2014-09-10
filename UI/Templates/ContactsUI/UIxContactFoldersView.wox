@@ -295,9 +295,9 @@
       <div class="editor">
         <form name="cardForm" data-ng-show="addressbook.card.$isCard()" data-ng-submit="save(cardForm)">
           <div class="buttonsToolbar">
-            <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i></span>
-            <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i></span>
-            <button class="button tiny radius" type="submit"><i class="icon-checkmark"><!-- save --></i></button>
+            <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i> <var:string label:value="Cancel"/></span>
+            <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i> <var:string label:value="Reset"/></span>
+            <button class="button tiny radius" type="submit"><i class="icon-checkmark"><!-- save --></i> <var:string label:value="Save"/></button>
           </div>
           <div class="attr">
             <div class="action"><var:entity const:name="nbsp"/></div>
@@ -368,7 +368,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addOrgUnit()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Organizational Unit"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addOrgUnit()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Organizational Unit"/></span>
               </div>
             </div>
           </div>
@@ -397,7 +397,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addCategory()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Category"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addCategory()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Category"/></span>
               </div>
             </div>
           </div>
@@ -418,7 +418,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addEmail()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Email Address"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addEmail()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Email Address"/></span>
               </div>
             </div>
           </div>
@@ -439,7 +439,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addPhone()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Phone Number"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addPhone()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Phone Number"/></span>
               </div>
             </div>
           </div>
@@ -460,7 +460,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addUrl()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New URL"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addUrl()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New URL"/></span>
               </div>
             </div>
           </div>
@@ -487,7 +487,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addAddress()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Address"/></span>
+                <span class="button secondary outline tiny" data-ng-click="addAddress()"><i class="icon-plus"><!-- new --></i> <var:string label:value="New Address"/></span>
               </div>
             </div>
           </div>
@@ -504,9 +504,9 @@
         </form>
         <form name="listForm" data-ng-show="addressbook.card.$isList()" data-ng-submit="save(listForm)">
           <div class="buttonsToolbar">
-            <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i></span>
-            <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i></span>
-            <button class="button tiny radius" type="submit"><i class="icon-checkmark"><!-- save --></i></button>
+            <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i> <var:string label:value="Cancel"/></span>
+            <span class="button tiny radius secondary" data-ng-click="reset()"><i class="icon-undo"><!-- reset --></i> <var:string label:value="Reset"/></span>
+            <button class="button tiny radius" type="submit"><i class="icon-checkmark"><!-- save --></i> <var:string label:value="Save"/></button>
           </div>
           <div class="section">
             <div class="attr">
@@ -547,7 +547,7 @@
             </div>
             <div class="attr">
               <div class="value single">
-                <span class="button secondary tiny" data-ng-click="addMember()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Member"/></span>
+                <span class="button outline secondary tiny" data-ng-click="addMember()"><i class="icon-plus"><!-- new --></i> <var:string label:value="Add Member"/></span>
               </div>
             </div>
           </div>
