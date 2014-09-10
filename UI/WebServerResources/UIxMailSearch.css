@@ -42,7 +42,7 @@ TR.filterRow > TD
   vertical-align:middle;
 }
 
-TR.filterRow > TD.buttonsCell 
+TR.filterRow > TD.buttonsCell
 {
   width:5%;
 }
@@ -111,7 +111,7 @@ TD.sortdesc {
 }
 
 DIV#optionsButtons
-{ 
+{
   position:relative;
   height:22px;
 }
@@ -172,7 +172,7 @@ A#deleteButton, A#openButton
   top: -18px;
   left: -18px; }
 
-#filterButtons 
+#filterButtons
 {
   width:40px;
 }
@@ -199,7 +199,7 @@ IMG.addFilterButton, IMG.removeFilterButton
 }
 
 /*************** Lists *****************/
-.hidden 
+.hidden
 { display:none; }
 
 

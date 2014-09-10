@@ -112,8 +112,8 @@ div#header
   border-bottom: 1px solid #000; }
 
 div#header img.headerlogo
-{ float: right; 
-  width: 182px; 
+{ float: right;
+  width: 182px;
   height: 30px; }
 
 div#header div#headerhistory
@@ -184,7 +184,7 @@ DIV.linkbanner IMG
 { vertical-align: bottom;
   text-align: left; }
 
-.linkbannerimage { 
+.linkbannerimage {
   text-align: right; }
 
 DIV.contactSelector
@@ -228,7 +228,7 @@ DIV.contactSelector DIV.contactList
   border-left: 1px solid #FFFFFF;
   border-bottom: 1px solid #909090;
   border-right: 1px solid #909090;
-  overflow: auto; 
+  overflow: auto;
   overflow-x: hidden; }
 
 .popupMenu
@@ -410,7 +410,7 @@ TH.tbtv_headercell IMG.tbtv_sortcell
   text-align: right;
   border: 0px;
   width: 12px;
-  height: 12px; 
+  height: 12px;
   top:0;}
 
 .tableview
@@ -474,7 +474,7 @@ DIV#javascriptSafetyNet
 DIV.javascriptPopupBackground
 { position: absolute;
   background-color: #999;
-  -moz-opacity: 0.6; 
+  -moz-opacity: 0.6;
   opacity: 0.6;
   z-index: 2;
   top: 0px;
@@ -532,7 +532,7 @@ TD._selected
 }
 
 LI._selected.denied
-{ 
+{
   background-color: #f33;
 }
 
@@ -556,7 +556,7 @@ DIV.dTreeNode A._selected SPAN.nodeName
 /* drag'n'drop */
 
 DIV.dTreeNode SPAN._dragOver
-{ 
+{
   background-color: #9ABCD8;
   color: #fff;
 }
@@ -659,7 +659,7 @@ DIV.dialog > DIV
   top: 7px;
 }
 
-DIV.dialog.searchMail { 
+DIV.dialog.searchMail {
   position: relative;
   padding: 0px;
   opacity: 1;
@@ -818,9 +818,9 @@ INPUT[name="search"]
   background-color: #CCDDEC;
   color: #909090; }
 
-/* Buttons 
+/* Buttons
  * Avoid using DIVS as buttons, they're only helpful when they have multiple
- * listeners for "onclick" 
+ * listeners for "onclick"
  */
 .button, a.button {
   padding: 0px 0.5em;
@@ -829,7 +829,7 @@ INPUT[name="search"]
   float: right;
   height: 23px;
   padding-right: 3px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   text-align: center;
   color: inherit;
   cursor: pointer;
@@ -999,7 +999,7 @@ DIV.tabsContainer > UL LI
   float: left;
   height: 24px;
   padding-right: 2px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit; }
 
 DIV.tabsContainer > UL LI SPAN
@@ -1106,15 +1106,15 @@ DIV.toolbar IMG.buttonImage
 { width: 24px;
   height: 24px; }
 
-A.toolbarButton, 
+A.toolbarButton,
 A.toolbarButton:hover,
-A.smallToolbarButton, 
+A.smallToolbarButton,
 A.smallToolbarButton:hover {
   display: inline;
   float: left;
   height: 49px;
   padding-right: 3px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
@@ -1138,7 +1138,7 @@ A.toolbarButton:hover SPAN {
   cursor: pointer;
 }
 
-A.smallToolbarButton SPAN, 
+A.smallToolbarButton SPAN,
 A.smallToolbarButton:hover SPAN {
   text-align: center;
   display: block;
@@ -1185,7 +1185,7 @@ DIV.bottomToolbar A.bottomButton
   padding: 0px;
   width: 23px;
   text-align: center;
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit;
   cursor: pointer;
   border-bottom: 1px solid #9B9B9B;

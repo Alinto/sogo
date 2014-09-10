@@ -17,11 +17,11 @@ function onSearchClick() {
     var filterRows = $$(".filterRow");
     var searchButton = $("searchButton").down().innerHTML;
     var mailAccountsList = $("mailAccountsList").options;
-    
+
     if (searchButton == _("Search")) {
         searchParams.filters = [];
         stopOngoingSearch = false;
-        
+
         // Get the mailboxe(s)
         for (i = 0; i < mailAccountsList.length ; i++) {
             if (mailAccountsList[i].selected) {
@@ -36,7 +36,7 @@ function onSearchClick() {
             var searchByOptions = filterRows[i].down(".searchByList").options;
             var searchArgumentsOptions = filterRows[i].down(".searchArgumentsList").options;
             var searchInput = filterRows[i].down(".searchInput");
-            
+
             // Get the searchBy
             for (j = 0; j < searchByOptions.length ; j++) {
                 if (searchByOptions[j].selected) {
@@ -44,7 +44,7 @@ function onSearchClick() {
                     break;
                 }
             }
-            
+
             // Get the searchArgument
             for (j = 0; j < searchArgumentsOptions.length ; j++) {
                 if (searchArgumentsOptions[j].selected) {
@@ -60,10 +60,10 @@ function onSearchClick() {
                     break;
                 }
             }
-            
+
             // Get the input text
             filter.searchInput = searchInput.getValue();
-            
+
             // Add the filter inside the searchParams.filters if the input is not empty
             if (!filter.searchInput.empty())
                 searchParams.filters.push(filter);
@@ -89,7 +89,7 @@ function searchMails() {
     var selectedIndex = optionsList.selectedIndex;
     var accountNumber, accountUser, folderPath, folderName;
     var mailAccountIndex = mailAccounts.indexOf(searchParams.searchLocation);
-    
+
     if (mailAccountIndex != -1) {
         accountNumber = "/" + mailAccountIndex;
         folderName = accountNumber + "/folderINBOX";
@@ -100,12 +100,12 @@ function searchMails() {
         var searchLocation = searchParams.searchLocation.split("/");
         accountUser = searchLocation[0];
         accountNumber = "/" + userNames.indexOf(accountUser);
-      
+
         var position = searchLocation.length;
         folderName = accountNumber + "/folder" + searchLocation[1].asCSSIdentifier();
         for (i = 2; i < position; i++)
             folderName += "/folder" + searchLocation[i];
-        
+
         folderPath = optionsList[selectedIndex].innerHTML;
     }
 
@@ -137,7 +137,7 @@ function searchMailsCallback(http) {
     if (http.readyState == 4 && http.status == 200 && !stopOngoingSearch) {
         var response = http.responseText.evalJSON();
         var table = $("searchMailFooter").down("tbody");
-        
+
         // Erase all previous entries before proceeding with the current request
         if (http.callbackData.newSearch) {
             var oldEntries = table.rows;
@@ -145,8 +145,8 @@ function searchMailsCallback(http) {
             for (var x = count; x >= 0; x--){
                 $(oldEntries[x]).remove();
             }
-            
-            
+
+
         }
 
         // ["To", "Attachment", "Flagged", "Subject", "From", "Unread", "Priority", "Date", "Size", "rowClasses", "labels", "rowID", "uid"]
@@ -159,27 +159,27 @@ function searchMailsCallback(http) {
                 Element.addClassName(row, "resultsRow");
                 row.setAttribute("uid", response.headers[i][12]);
                 row.setAttribute("folderName", http.callbackData.folderName);
-                
+
                 var cell1 = document.createElement("td");
                 Element.addClassName(cell1, "td_table_1");
                 cell1.innerHTML = response.headers[i][3];
                 row.appendChild(cell1);
-                
+
                 var cell2 = document.createElement("td");
                 Element.addClassName(cell2, "td_table_2");
                 cell2.innerHTML = response.headers[i][4];
                 row.appendChild(cell2);
-                
+
                 var cell3 = document.createElement("td");
                 Element.addClassName(cell3, "td_table_3");
                 cell3.innerHTML = response.headers[i][0];
                 row.appendChild(cell3);
-                
+
                 var cell4 = document.createElement("td");
                 Element.addClassName(cell4, "td_table_4");
                 cell4.innerHTML = response.headers[i][7];
                 row.appendChild(cell4);
-              
+
                 var cell5 = document.createElement("td");
                 Element.addClassName(cell5, "td_table_5");
                 cell5.setAttribute("colspan", "2");
@@ -188,7 +188,7 @@ function searchMailsCallback(http) {
                 folderLocation = folderLocation.substr(6); // strip down the prefix folder
                 cell5.innerHTML = folderLocation;
                 row.appendChild(cell5);
-                
+
                 table.appendChild(row);
             }
 
@@ -198,22 +198,22 @@ function searchMailsCallback(http) {
                 var row = table.insertRow(0);
                 var cell = row.insertCell(0);
                 var element = document.createElement("span");
-              
+
                 cell.setAttribute("id", "noSearchResults");
                 cell.setAttribute("colspan", "4");
                 element.innerHTML = _("No matches found");
                 cell.appendChild(element);
             }
         }
-        
+
         if (http.callbackData.subfolders.length > 0) {
             var folderName = http.callbackData.subfolders[0];
             var subfolders = http.callbackData.subfolders;
             subfolders.splice(0, 1);
-        
+
             var urlstr = (ApplicationBaseURL + folderName + "/uids");
             var callbackData = {"folderName" : folderName, "subfolders" : subfolders, "newSearch" : false};
-          
+
             // TODO - need to add these following contents ; asc, no-headers, sort
             var object = {"filters":searchParams.filters, "sortingAttributes":{"match":searchParams.filterMatching}};
             var content = Object.toJSON(object);
@@ -234,7 +234,7 @@ function onSearchEnd() {
         $("resultsFound").innerHTML = nbResults + " " + _("results found");
     else
         $("resultsFound").innerHTML = "";
-    
+
     TableKit.reloadSortableTable($("searchMailFooter"));
     $("buttonExpandHeader").addClassName("nosort");
 }
@@ -243,7 +243,7 @@ function onCancelClick() {
     disposeDialog();
     $("searchMailView").remove();
     $("toolbarSearchButton").disabled = false;
-    
+
 }
 
 function onSearchSubfoldersCheck(event) {
@@ -286,7 +286,7 @@ function onAddFilter() {
         element2.appendChild(option);
     }
     cell2.appendChild(element2);
-    
+
     var cell3 = row.insertCell(2);
     Element.addClassName(cell3, "inputsCell");
     var element3 = document.createElement("input");
@@ -295,11 +295,11 @@ function onAddFilter() {
     element3.setAttribute("name", "searchInput");
     element3.setAttribute("id", "searchInputRow" + rowCount);
     cell3.appendChild(element3);
-    
+
     var cell4 = row.insertCell(3);
     Element.addClassName(cell4, "buttonsCell");
     cell4.setAttribute("align", "center");
-    
+
     var buttonsDiv = document.createElement("div");
     var imageAddFilter = document.createElement("img");
     var imageRemoveFilter = document.createElement("img");
@@ -316,17 +316,17 @@ function onAddFilter() {
     imageRemoveFilter.setAttribute("id", "removeFilterButtonRow" + rowCount);
     $(imageRemoveFilter).on("click", onRemoveFilter);
     buttonsDiv.setAttribute("id", "filterButtons");
-    
+
     buttonsDiv.appendChild(imageAddFilter);
     buttonsDiv.appendChild(imageRemoveFilter);
-    
+
     cell4.appendChild(buttonsDiv);
 }
 
 function onRemoveFilter() {
     var rows = $("searchFiltersList").getElementsByTagName("tr");
     var currentRow = this.up(".filterRow");
-    
+
     if(rows.length > 1)
         $(currentRow).remove();
 }
@@ -335,13 +335,13 @@ function onRemoveFilter() {
 
 function onResultSelectionChange(event) {
     var table = $("searchMailFooter").down("tbody");
-    
+
     if (event && (event.target.innerHTML != _("No matches found"))) {
         var node = getTarget(event);
-        
+
         if (node.tagName == "SPAN")
             node = node.parentNode;
-        
+
         // Update rows selection
         onRowClick(event, node);
     }
@@ -355,7 +355,7 @@ function onOpenClick(event) {
     var msguid = selectedRow.getAttribute("uid");
     var folderName = selectedRow.getAttribute("folderName");
     var accountUser = userNames[0];
-  
+
     var url = "/SOGo/so/" + accountUser + "/Mail" + folderName + "/" + msguid + "/popupview";
     if (selectedRow) {
         openMessageWindow(msguid, url);
@@ -386,7 +386,7 @@ function onDeleteClick(event) {
             uids.push(uid);
             paths.push(path);
             deleteMessageRequestCount++;
-            
+
             deleteCachedMessage(path);
             if (Mailer.currentMessages[Mailer.currentMailbox] == uid) {
                 if (messageContent) messageContent.innerHTML = '';
@@ -448,7 +448,7 @@ function onResizeClick() {
     var img = $("listCollapse").select('img').first();
     var dialogWindowHeight = $("searchMailView").getHeight();
     var state = "collapse";
-  
+
     if (searchFiltersList[0].visible()) {
         state = "rise";
         searchFiltersList.fadeOut(300, function() {
@@ -477,11 +477,11 @@ function adjustResultsTable(state) {
 /*************** Init ********************/
 
 function initSearchMailView () {
-    
+
     // Add one filterRow
     onAddFilter();
     adjustResultsTable("collapse");
-    
+
     // Observers : Event.on(element, eventName[, selector], callback)
     $("searchMailFooter").down("tbody").on("mousedown", "tr", onResultSelectionChange);
     $("searchMailFooter").down("tbody").on("dblclick", "tr", onOpenClick);

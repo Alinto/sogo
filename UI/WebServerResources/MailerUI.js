@@ -248,12 +248,12 @@ function mailListToggleMessageThread(row, cell) {
         else
             row.hide();
     }
-    
+
     // Update the dictionnary of the collapsed threads
     var mailbox = Mailer.currentMailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
     var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};
-    
+
     triggerAjaxRequest(url, mailListToggleMessageCollapseCallback, callbackData);
 }
 
@@ -468,7 +468,7 @@ function onSearchMail(event) {
         }
         else {
             var urlstr = ApplicationBaseURL + "/search";
-            
+
             // Return the template for the searchMail feature
             triggerAjaxRequest(urlstr, displaySearchMailCallback);
         }
@@ -481,10 +481,10 @@ function displaySearchMailCallback(http) {
         var title = _("Search mail");
         var id = _("searchMailView");
         fields.innerHTML = http.responseText;
-        
+
         var dialog = createDialog(id, title, null, fields, "searchMail"); // (id, title, legend, content, positionClass)
         document.body.appendChild(dialog);
-        
+
         if (Prototype.Browser.IE)
             jQuery('#bgDialogDiv').css('opacity', 0.4);
         jQuery(dialog).fadeIn('fast');
@@ -862,11 +862,11 @@ function openMailbox(mailbox, reload) {
                 searchCriteria.push("to", "cc");
             else if (search["mail"]["criteria"] == "entire_message")
                 searchCriteria.push("body");
-            
+
             var filters = [];
             for (i = 0; i < searchCriteria.length; i++)
                 filters.push({"searchBy": searchCriteria[i], "searchArgument": "doesContain", "searchInput": searchValue});
-            
+
             urlParams.filters = filters;
         }
         var sortAttribute = sorting["attribute"];
@@ -991,16 +991,16 @@ function messageListCallback(row, data, isNew) {
             }
         }
     }
-    
+
     else if (data['ThreadLevel'] > 0) {
         if (data['ThreadLevel'] > 10) data['ThreadLevel'] = 10;
         row.addClassName('thread');
         row.addClassName('thread' + data['ThreadLevel']);
-        
+
         if (displayThreadElement)
             row.hide();
     }
-    
+
     else
         displayThreadElement = false;
 
@@ -2087,7 +2087,7 @@ function initRefreshViewCheckTimer() {
     var refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
     if (refreshViewCheck == null)
         refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
-    
+
     if (refreshViewCheck && refreshViewCheck != "manually") {
         var interval;
         if (refreshViewCheck == "once_per_hour")
@@ -2558,7 +2558,7 @@ function onMenuLabelNone() {
         if (document.menuTarget.tagName == "DIV")
             // Menu called from message content view
             msgUIDs.push(Mailer.currentMessages[Mailer.currentMailbox]);
-        
+
         else
             // Menu called from one selection in message list view
             msgUIDs.push(document.menuTarget.getAttribute("id").substr(4));
@@ -2595,7 +2595,7 @@ function onMenuLabelFlag() {
         else
             // Menu called from one selection in messages list view
             msgLabels = document.menuTarget.getAttribute("labels");
-        
+
         var flags = msgLabels.split(" ");
         if (flags.indexOf(flag) > -1)
             operation = "remove";
@@ -2609,7 +2609,7 @@ function onMenuLabelFlag() {
             if (row) {
                 msgUIDs.push(rows[i].substr(4));
                 msgLabels = row.getAttribute("labels");
-                
+
                 var flags = msgLabels.split(" ");
                 if (flags.indexOf(flag) > -1 && !blockedOperation) {
                     operation = "remove";
