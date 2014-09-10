@@ -5,8 +5,8 @@
     'use strict';
 
     /**
-     * @name Dialog (sgDialog factory in SOGo.UIDesktop)
-     * @desc Dialog object constructor
+     * @name Dialog
+     * @constructor
      */
     function Dialog() {
     }
@@ -19,7 +19,7 @@
      */
     Dialog.alert = function(title, content) {
         var modal = this.$modal.open({
-            template: 
+            template:
               '<h2 data-ng-bind-html="title"></h2>' +
               '<p data-ng-bind-html="content"></p>' +
               '<a class="button button-primary" ng-click="closeModal()">' + l('OK') + '</a>' +
@@ -46,7 +46,7 @@
     Dialog.confirm = function(title, content) {
         var d = this.$q.defer();
         var modal = this.$modal.open({
-            template: 
+            template:
               '<h2 data-ng-bind-html="title"></h2>' +
               '<p data-ng-bind-html="content"></p>' +
               '<a class="button button-primary" ng-click="confirm()">' + l('OK') + '</a>' +
@@ -69,7 +69,39 @@
         return d.promise;
     };
 
-    /* The factory we'll use to register with Angular */
+    Dialog.prompt = function(title, inputPlaceholder, options) {
+        var o = options || {};
+        var d = this.$q.defer();
+        var modal = this.$modal.open({
+            template:
+              '<h2 ng-bind-html="title"></h2>' +
+              '<form><input type="' + (o.inputType || 'text')
+                + '" placeholder="' + (inputPlaceholder || '') + '" ng-model="inputValue" /></form>' +
+              '<a class="button button-primary" ng-click="confirm(inputValue)">' + l('OK') + '</a>' +
+              '<a class="button button-secondary" ng-click="closeModal()">' + l('Cancel') + '</a>' +
+              '<span class="close-reveal-modal" ng-click="closeModal()"><i class="icon-close"></i></span>',
+            windowClass: 'small',
+
+            controller: function($scope, $modalInstance) {
+                $scope.title = title;
+                $scope.inputValue = o.inputValue || '';
+                $scope.closeModal = function() {
+                    $modalInstance.close();
+                    d.resolve(false);
+                };
+                $scope.confirm = function(value) {
+                    $modalInstance.close();
+                    d.resolve(value);
+                };
+            }
+        });
+        return d.promise;
+    };
+
+    /**
+     * @memberof Dialog
+     * @desc The factory we'll register as sgDialog in the Angular module SOGo.UIDesktop
+     */
     Dialog.$factory = ['$modal', '$q', function($modal, $q) {
         angular.extend(Dialog, { $modal: $modal, $q: $q });
 

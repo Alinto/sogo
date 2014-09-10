@@ -1,23 +1,33 @@
 (function() {
     'use strict';
 
-    /* Constructor */
+     /**
+      * @name AddressBook
+      * @constructor
+      * @param {object} futureAddressBookData
+      */
     function AddressBook(futureAddressBookData) {
         // Data is immediately available
         if (typeof futureAddressBookData.then !== 'function') {
             angular.extend(this, futureAddressBookData);
-            return;
+            if (this.name && !this.id) {
+                // Create a new addressbook on the server
+                var newAddressBookData = AddressBook.$$resource.create('createFolder', this.name);
+                this.$unwrap(newAddressBookData);
+            }
         }
-
-        // The promise will be unwrapped first
-        this.$unwrap(futureAddressBookData);
+        else {
+            // The promise will be unwrapped first
+            this.$unwrap(futureAddressBookData);
+        }
     }
 
     /* The factory we'll use to register with Angular */
-    AddressBook.$factory = ['$timeout', 'sgSettings', 'sgResource', 'sgCard', function($timeout, Settings, Resource, Card) {
+    AddressBook.$factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgCard', function($q, $timeout, Settings, Resource, Card) {
         angular.extend(AddressBook, {
-            $$resource: new Resource(Settings.baseURL),
+            $q: $q,
             $timeout: $timeout,
+            $$resource: new Resource(Settings.baseURL),
             $Card: Card
         });
 
@@ -27,12 +37,36 @@
     /* Factory registration in Angular module */
     angular.module('SOGo.ContactsUI').factory('sgAddressBook', AddressBook.$factory);
 
-    /* Set or get the list of addressbooks */
+    /**
+     * @memberof AddressBook
+     * @desc Set or get the list of addressbooks. Will instanciate a new AddressBook object for each item.
+     * @param {array} [data] - the metadata of the addressbooks
+     * @returns the list of addressbooks
+     */
     AddressBook.$all = function(data) {
+        var self = this;
         if (data) {
             this.$addressbooks = data;
+            // Instanciate AddressBook objects
+            angular.forEach(this.$addressbooks, function(o, i) {
+                self.$addressbooks[i] = new AddressBook(o);
+            });
         }
         return this.$addressbooks;
+    };
+
+    /**
+     * @memberof AddressBook
+     * @desc Add a new addressbook to the static list of addressbooks
+     * @param {AddressBook} addressbook - an Addressbook object instance
+     */
+    AddressBook.$add = function(addressbook) {
+        // Insert new addressbook at proper index
+        var sibling = _.find(this.$addressbooks, function(o) {
+            return (o.isRemote || (o.id != 'personal' && o.name.localeCompare(addressbook.name) === 1));
+        });
+        var i = sibling? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
+        this.$addressbooks.splice(i, 0, addressbook);
     };
 
     /* Fetch list of cards and return an AddressBook instance */
@@ -51,7 +85,12 @@
     };
 
     /**
-     * @param {} [options]
+     * @function $filter
+     * @memberof AddressBook.prototype
+     * @desc Search for cards matching some criterias
+     * @param {string} search - the search string to match
+     * @param {hash} [options] - additional options to the query
+     * @returns a collection of Cards instances
      */
     AddressBook.prototype.$filter = function(search, options) {
         var self = this;
@@ -68,6 +107,8 @@
             return futureAddressBookData.then(function(data) {
                 var cards;
                 if (options && options.dry) {
+                    // Don't keep a copy of the resulting cards.
+                    // This is usefull when doing autocompletion.
                     cards = data.cards;
                 }
                 else {
@@ -83,12 +124,37 @@
         });
     };
 
+    /**
+     * @function $rename
+     * @memberof AddressBook.prototype
+     * @desc Rename the addressbook
+     * @param {string} name - the new name
+     * @returns a promise of the HTTP operation
+     */
+    AddressBook.prototype.$rename = function(name) {
+        var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), this.id);
+        this.name = name;
+        AddressBook.$addressbooks.splice(i, 1);
+        AddressBook.$add(this);
+        return this.$save();
+    };
+
     AddressBook.prototype.$delete = function() {
-        return AddressBook.$$resource.remove(this.id);
+        var self = this;
+        var d = AddressBook.$q.defer();
+        AddressBook.$$resource.remove(this.id)
+            .then(function() {
+                var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), self.id);
+                AddressBook.$addressbooks.splice(i, 1);
+                d.resolve(true);
+            }, function(data, status) {
+                d.reject(data);
+            });
+        return d.promise;
     };
 
     AddressBook.prototype.$save = function() {
-        return AddressBook.$$resource.set(this.id, this.$omit()).then(function (data) {
+        return AddressBook.$$resource.save(this.id, this.$omit()).then(function (data) {
             return data;
         });
     };
@@ -129,6 +195,9 @@
                     self.cards[i] = new AddressBook.$Card(o);
                 });
             });
+        }, function(data) {
+            angular.extend(self, data);
+            self.isError = true;
         });
     };
 

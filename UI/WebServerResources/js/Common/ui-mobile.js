@@ -4,7 +4,10 @@
 (function() {
     'use strict';
 
-    /* Dialog */
+    /**
+     * @name Dialog
+     * @constructor
+     */
     function Dialog() {
     }
 
@@ -17,14 +20,25 @@
     };
 
     Dialog.confirm = function(title, content) {
-        var alertPopup = this.$ionicPopup.confirm({
+        var confirmPopup = this.$ionicPopup.confirm({
             title: title,
             template: content
         });
-        return alertPopup;
+        return confirmPopup;
     };
 
-    /* The factory we'll use to register with Angular */
+    Dialog.prompt = function(title, content) {
+        var promptPopup = this.$ionicPopup.prompt({
+            title: title,
+            inputPlaceholder: content
+        });
+        return promptPopup;
+    };
+
+    /**
+     * @memberof Dialog
+     * @desc The factory we'll register as sgDialog in the Angular module SOGo.UIMobile
+     */
     Dialog.$factory = ['$ionicPopup', function($ionicPopup) {
         angular.extend(Dialog, { $ionicPopup: $ionicPopup });
 

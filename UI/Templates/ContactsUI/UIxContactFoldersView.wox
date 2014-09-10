@@ -148,7 +148,7 @@
           </li>
         </ul>
         <div class="buttonsToolbar">
-          <a href="#" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></a>
+          <button data-ng-click="newAddressbook()" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
           <a href="#" class="button small" label:title="Subscribe to an Addressbook..."><i class="icon-earth"><!-- subscribe --></i></a>
         </div>
         <!--<var:if condition="hasContactSelectionButtons">
@@ -191,7 +191,7 @@
         <ul>
           <li data-ng-repeat="card in addressbook.cards"
               data-ng-class="{_selected: addressbook.card.id == card.id}">
-            <input type="checkbox" class="card-picture left"/>
+            <!-- <input type="checkbox" class="card-picture left"/> -->
             <a data-ui-sref="addressbook.card({addressbook_id: addressbook.id, card_id: card.id})">
               <span class="card-picture" data-ng-switch="card.tag">
                 <i data-ng-switch-when="vcard" class="icon-ion-ios7-person"><!-- card --></i>
