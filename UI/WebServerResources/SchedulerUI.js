@@ -3907,8 +3907,9 @@ function initScheduler() {
         $("uploadOK").observe("click", hideImportResults);
         $("calendarView").on("click", "#listCollapse", onListCollapse);
         Event.observe(document, "keydown", onDocumentKeydown);
+
+        initRefreshViewCheckTimer()
     }
-    initRefreshViewCheckTimer()
 
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);

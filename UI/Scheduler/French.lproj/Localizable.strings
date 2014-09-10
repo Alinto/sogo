@@ -151,12 +151,15 @@
 "LIST" = "Liste";
 "Print Settings" = "Paramètres d'impression";
 "Title:" = "Titre :";
-"Layout:" = "Disposition :";
+"Layout:" = "Vue :";
 "What to Print" = "Contenu";
 "Options" = "Options";
 "Tasks with no due date" = "Tâches sans date d'échéance";
 "Display working hours only" = "Afficher les heures de bureau seulement";
 "Completed tasks" = "Tâches complétées";
+"Display events and tasks colors" = "Affichage en couleurs";
+"Borders" = "Bordures";
+"Backgrounds" = "Arrière-plans";
 
 /* Appointments */
 

@@ -124,7 +124,7 @@
     </div>
     <div id="printButtons" class="no-print">
       <a class="button" name="print" id="printButton">
-        <span><var:string label:value="Print" /></span></a>
+        <span><var:string label:value="Print view" /></span></a>
       <a class="button" name="cancel" id="cancelButton">
         <span><var:string label:value="Cancel"/></span></a>
     </div>
