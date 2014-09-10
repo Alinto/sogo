@@ -42,7 +42,7 @@
 "Attachment" = "Attachment";
 "Unread" = "Unread";
 "Flagged" = "Flagged";
-"Search inbox" = "Search inbox";
+"Search multiple mailboxes" = "Search multiple mailboxes";
 
 /* Main Frame  */
 
@@ -240,7 +240,7 @@
 "As Not Junk" = "As Not Junk";
 "Run Junk Mail Controls" = "Run Junk Mail Controls";
 
-"Search messages in" = "Search messages in";
+"Search messages in:" = "Search messages in:";
 "Search" = "Search";
 "Search subfolders" = "Search subfolders";
 "Match any of the following" = "Match any of the following";

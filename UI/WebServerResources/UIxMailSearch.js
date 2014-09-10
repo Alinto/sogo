@@ -305,9 +305,7 @@ function onAddFilter() {
     var imageRemoveFilter = document.createElement("img");
     imageAddFilter.setAttribute("src", "/SOGo.woa/WebServerResources/add-icon.png");
     imageRemoveFilter.setAttribute("src", "/SOGo.woa/WebServerResources/remove-icon.png");
-    Element.addClassName(imageAddFilter, "addFilterButton");
     Element.addClassName(imageAddFilter, "glow");
-    Element.addClassName(imageRemoveFilter, "removeFilterButton");
     Element.addClassName(imageRemoveFilter, "glow");
     imageAddFilter.setAttribute("name", "addFilter");
     imageAddFilter.setAttribute("id", "addFilterButtonRow" + rowCount);
@@ -315,7 +313,7 @@ function onAddFilter() {
     imageRemoveFilter.setAttribute("name", "removeFilter");
     imageRemoveFilter.setAttribute("id", "removeFilterButtonRow" + rowCount);
     $(imageRemoveFilter).on("click", onRemoveFilter);
-    buttonsDiv.setAttribute("id", "filterButtons");
+    Element.addClassName(buttonsDiv, "filterButtons");
 
     buttonsDiv.appendChild(imageAddFilter);
     buttonsDiv.appendChild(imageRemoveFilter);

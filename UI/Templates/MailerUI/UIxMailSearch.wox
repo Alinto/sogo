@@ -6,7 +6,7 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   const:jsFiles="tablekit.js, tablekit-sogo.js, tablekit-trueresize.js">
-  
+
   <ul id="searchByList" class="hidden">
     <li><var:string label:value="Subject"/></li>
     <li><var:string label:value="From"/></li>
@@ -30,7 +30,7 @@
           <a class="button" name="search" id="searchButton" onclick="onSearchClick()">
             <span><var:string label:value="Search"/></span></a>
           <a class="button" name="cancel" id="cancelButton" onclick="onCancelClick()">
-            <span><var:string label:value="Cancel" /></span></a>
+            <span><var:string label:value="Close" /></span></a>
         </td>
       </tr>
       <tr>

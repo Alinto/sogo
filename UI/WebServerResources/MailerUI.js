@@ -35,7 +35,7 @@ var refreshViewCheckTimer;
 
 // Variables for feature threadsCollapsing
 var displayThreadElement = false;
-var cachedThreadsCollapsed = (UserSettings.Mail ? UserSettings.Mail.threadsCollapsed: []);
+var cachedThreadsCollapsed = [];
 
 /* We need to override this method since it is adapted to GCS-based folder
  references, which we do not use here */
@@ -457,6 +457,7 @@ function onDocumentKeydown(event) {
 
 /* Search mail, call the template and open inside a dialog windoƒw */
 function onSearchMail(event) {
+    Event.stop(event);
     var element = Event.findElement(event);
     if (element.disabled == false || element.disabled == undefined) {
         element.disabled = true;
@@ -473,12 +474,13 @@ function onSearchMail(event) {
             triggerAjaxRequest(urlstr, displaySearchMailCallback);
         }
     }
+    return false;
 }
 
 function displaySearchMailCallback(http) {
     if (http.readyState == 4 && http.status == 200) {
         var fields = createElement("div", null); // (tagName, id, classes, attributes, htmlAttributes, parentNode)
-        var title = _("Search mail");
+        var title = _("Search multiple mailboxes");
         var id = _("searchMailView");
         fields.innerHTML = http.responseText;
 
@@ -2033,15 +2035,20 @@ function initMailer(event) {
         else if (!Mailer.sortByThread && Mailer.columnsOrder[0] == "Thread")
             Mailer.columnsOrder.shift(); // drop the thread column
 
-        // Restore sorting from user settings
-        if (UserSettings && UserSettings["Mail"] && UserSettings["Mail"]["SortingState"]) {
-            sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
-            sorting["ascending"] = parseInt(UserSettings["Mail"]["SortingState"][1]) > 0;
-            if (sorting["attribute"] == 'to') sorting["attribute"] = 'from'; // initial mailbox is always the inbox
-        }
-        else {
-            sorting["attribute"] = "date";
-            sorting["ascending"] = false;
+        if (UserSettings && UserSettings.Mail) {
+            // Restore threads
+            cachedThreadsCollapsed = UserSettings.Mail.threadsCollapsed;
+
+            // Restore sorting from user settings
+            if (UserSettings.Mail.SortingState) {
+                sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
+                sorting["ascending"] = parseInt(UserSettings["Mail"]["SortingState"][1]) > 0;
+                if (sorting["attribute"] == 'to') sorting["attribute"] = 'from'; // initial mailbox is always the inbox
+            }
+            else {
+                sorting["attribute"] = "date";
+                sorting["ascending"] = false;
+            }
         }
 
         Mailer.dataTable = $("mailboxList");

@@ -1,3 +1,17 @@
+/*************** Dialog *****************/
+
+DIV.dialog.searchMail {
+  position: relative;
+  padding: 0px;
+  opacity: 1;
+  width: 85%;
+  height: 75%;
+  margin: 2em auto;
+}
+
+DIV.dialog.searchMail > DIV {
+  min-height: 500px;
+}
 
 /*************** Table adjustment *****************/
 
@@ -44,7 +58,7 @@ TR.filterRow > TD
 
 TR.filterRow > TD.buttonsCell
 {
-  width:5%;
+  width: 40px;
 }
 
 TR.filterRow > TD.inputsCell
@@ -172,15 +186,16 @@ A#deleteButton, A#openButton
   top: -18px;
   left: -18px; }
 
-#filterButtons
+.filterButtons
 {
-  width:40px;
+  width: 40px;
 }
 
-IMG.addFilterButton, IMG.removeFilterButton
+.filterButtons IMG
 {
   z-index: 1;
-  cursor:pointer;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 /* Glow */

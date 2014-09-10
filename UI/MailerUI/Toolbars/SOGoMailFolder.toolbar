@@ -69,6 +69,6 @@
      cssClass = "";
      image = "search-messages.png";
      label = "Search";
-     tooltip = "Search inbox"; }
+     tooltip = "Search multiple mailboxes"; }
   )
 )
