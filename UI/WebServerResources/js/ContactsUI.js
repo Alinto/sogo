@@ -96,6 +96,19 @@
         $scope.select = function(rowIndex) {
             $scope.editMode = false;
         };
+        $scope.newAddressbook = function() {
+            $scope.editMode = false;
+            Dialog.prompt(l('New addressbook'),
+                          l('Name of new addressbook'))
+                .then(function(name) {
+                    if (name && name.length > 0) {
+                        var addressbook = new AddressBook({ 'name': name,
+                                                            'isEditable': true,
+                                                            'isRemote': false });
+                        AddressBook.$add(addressbook);
+                    }
+                });
+        };
         $scope.edit = function(i) {
             if (!$rootScope.addressbook.isRemote) {
                 if (angular.isUndefined(i)) {
@@ -116,18 +129,19 @@
         };
         $scope.confirmDelete = function() {
             Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook "%{0}"?',
-                                          $rootScope.addressbook.name), function() {
-                $rootScope.addressbook.$delete()
-                    .then(function() {
-                        $rootScope.addressbooks = _.reject($rootScope.addressbooks, function(o) {
-                            return o.id == $rootScope.addressbook.id;
-                        });
-                        $rootScope.addressbook = null;
-                    }, function(data, status) {
-                        Dialog.alert(l('Warning'), l('An error occured while deleting the addressbook "%{0}".',
-                                                     $rootScope.addressbook.name));
-                    });
-            });
+                                          $rootScope.addressbook.name))
+                .then(function(res) {
+                    if (res) {
+                        $rootScope.addressbook.$delete()
+                            .then(function() {
+                                $rootScope.addressbook = null;
+                            }, function(data, status) {
+                                Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                                               $rootScope.addressbook.name),
+                                             l(data.error));
+                            });
+                    }
+                });
         };
         $scope.share = function() {
             var modal = $modal.open({
@@ -238,9 +252,16 @@
         };
         $scope.cancel = function() {
             $scope.reset();
-            //$scope.editMode = false;
             delete $rootScope.master_card;
-            $state.go('addressbook.card', { card_id: $scope.addressbook.card.id });
+            if ($scope.addressbook.card.id) {
+                // Cancelling the edition of an existing card
+                $state.go('addressbook.card', { card_id: $scope.addressbook.card.id });
+            }
+            else {
+                // Cancelling the creation of a card
+                delete $rootScope.addressbook.card;
+                $state.go('addressbook', { addressbook_id: $scope.addressbook.id });
+            }
         };
         $scope.reset = function() {
             $rootScope.addressbook.card = angular.copy($rootScope.master_card);

@@ -1,7 +1,11 @@
 (function() {
     'use strict';
 
-    /* Constructor */
+     /**
+      * @name Card
+      * @constructor
+      * @param {object} futureCardData
+      */
     function Card(futureCardData) {
 
         // Data is immediately available
@@ -14,9 +18,10 @@
                 this.$unwrap(newCardData);
             }
         }
-        else
+        else {
             // The promise will be unwrapped first
             this.$unwrap(futureCardData);
+        }
     }
 
     Card.$tel_types = ['work', 'home', 'cell', 'fax', 'pager'];
@@ -62,7 +67,13 @@
         }
     });
 
-    /* Fetch a card */
+    /**
+     * @memberof Card
+     * @desc Fetch a card from a specific addressbook
+     * @param {string} addressbook_id - the addressbook ID
+     * @param {string} card_id - the card ID
+     * @see {@link AddressBook.$getCard}
+     */
     Card.$find = function(addressbook_id, card_id) {
         var futureCardData = this.$$resource.find([addressbook_id, card_id].join('/'));
 
@@ -71,7 +82,11 @@
         return Card.$unwrapCollection(futureCardData); // a collection of cards
     };
 
-    /* Unwrap to a collection of Card instances */
+    /**
+     * @memberof Card
+     * @desc Unwrap to a collection of Card instances
+     * @param {Object} futureCardData
+     */
     Card.$unwrapCollection = function(futureCardData) {
         var collection = {};
 
@@ -88,21 +103,30 @@
         return collection;
     };
 
-    /* Instance methods */
-
+    /**
+     * @function $id
+     * @memberof Card.prototype
+     * @desc Return the card ID
+     * @returns the card ID
+     */
     Card.prototype.$id = function() {
         return this.$futureCardData.then(function(data) {
             return data.id;
         });
     };
 
+    /**
+     * @function $save
+     * @memberof Card.prototype
+     * @desc Save the card to the server
+     */
     Card.prototype.$save = function() {
         var action = 'saveAsContact';
         if (this.tag == 'vlist') action = 'saveAsList';
         //var action = 'saveAs' + this.tag.substring(1).capitalize();
-        return Card.$$resource.set([this.pid, this.id || '_new_'].join('/'),
-                                   this.$omit(),
-                                   { 'action': action })
+        return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
+                                    this.$omit(),
+                                    { 'action': action })
             .then(function (data) {
                 return data;
             });
@@ -162,9 +186,11 @@
     };
 
     /**
-     * @name $preferredEmail
-     * @desc Returns the first email address of type "pref" or the first address if none found.
+     * @function $preferredEmail
+     * @memberof Card.prototype
+     * @desc Get the preferred email address
      * @param {string} [partial] - a partial string that the email must match
+     * @returns the first email address of type "pref" or the first address if none found
      */
     Card.prototype.$preferredEmail = function(partial) {
         var email;
@@ -196,7 +222,10 @@
     };
 
     /**
-     *
+     * @function $shortFormat
+     * @memberof Card.prototype
+     * @param {string} [partial] - a partial string that the email must match
+     * @returns the fullname along with a matching email address in parentheses
      */
     Card.prototype.$shortFormat = function(partial) {
         var fullname = this.$fullname();
@@ -313,12 +342,16 @@
     };
 
     /**
-     * @name $updateMember
+     * @function $updateMember
+     * @memberof Card.prototype
      * @desc Update an existing list member from a Card instance.
      * A list member has the following attribtues:
      * - email
      * - reference
      * - fn
+     * @param {number} index
+     * @param {string} email
+     * @param {Card} card
      */
     Card.prototype.$updateMember = function(index, email, card) {
         var ref = {'email': email, 'reference': card.c_name, 'fn': card.$fullname()};

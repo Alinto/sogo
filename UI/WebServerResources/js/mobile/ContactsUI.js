@@ -115,14 +115,56 @@
     // };
 }])
 
-.controller('AddressBooksCtrl', ['$scope', '$rootScope', '$timeout', 'sgAddressBook', function($scope, $rootScope, $timeout, AddressBook) {
+.controller('AddressBooksCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', function($scope, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook) {
     // Initialize with data from template
     $scope.addressbooks = AddressBook.$all(contactFolders);
-    $scope.edit = function(i) {
-
+    $scope.newAddressbook = function() {
+        Dialog.prompt(l('Create addressbook'),
+                      l('Name of new addressbook'))
+        .then(function(res) {
+            if (res && res.length > 0) {
+                var addressbook = new AddressBook({ 'name': res,
+                                                    'isEditable': true,
+                                                    'isRemote': false });
+                AddressBook.$add(addressbook);
+            }
+        });
     };
-    $scope.save = function(i) {
-
+    $scope.edit = function(addressbook) {
+        $ionicActionSheet.show({
+            titleText: l('Modify your addressbook %{0}', addressbook.name),
+            buttons: [
+                { text: l('Rename') }
+            ],
+            destructiveText: l('Delete'),
+            cancelText: l('Cancel'),
+            buttonClicked: function(index) {
+                // Rename addressbook
+                Dialog.prompt(l('Rename addressbook'),
+                              addressbook.name)
+                    .then(function(name) {
+                        if (name && name.length > 0) {
+                            addressbook.$rename(name);
+                        }
+                    });
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                // Delete addressbook
+                addressbook.$delete()
+                    .then(function() {
+                        addressbook = null;
+                    }, function(data) {
+                        Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                                                     addressbook.name),
+                                     l(data.error));
+                    });
+                return true;
+            },
+            // cancel: function() {
+            // },
+        });
+        $ionicListDelegate.closeOptionButtons();
     };
 }])
 

@@ -64,7 +64,25 @@
         return deferred.promise;
     };
 
-    Resource.prototype.set = function(uid, newValue, options) {
+    /**
+     * @function create
+     * @desc Create a new resource using a specific action
+     * @param {string} action - the action to be used in the URL
+     * @param {string} name - the new resource's name
+     */
+    Resource.prototype.create = function(action, name) {
+        var deferred = this._q.defer();
+        var path = this._path + '/' + action;
+
+        this._http
+            .post(path, { 'name': name })
+            .success(deferred.resolve)
+            .error(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    Resource.prototype.save = function(uid, newValue, options) {
         var deferred = this._q.defer();
         var action = (options && options.action)? options.action : 'save';
         var path = this._path + '/' + uid + '/' + action;
