@@ -101,7 +101,7 @@ class TestACLUtility(TestUtility):
         post = webdavlib.HTTPPOST(self.resource, subscribeQuery)
         post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
-        self.test.assertEquals(post.response["status"], 204,
+        self.test.assertEquals(post.response["status"], 200,
                                "subscribtion failure to '%s' for '%s' (status: %d)"
                                % (self.resource, "', '".join(subscribers),
                                   post.response["status"]))

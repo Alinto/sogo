@@ -36,7 +36,6 @@
 "delete" = "esborrar";
 "edit" = "modificar";
 "invalidemailwarn" = "Adreça de correu no vàlida.";
-"invaliddatewarn" = "Data no vàlida.";
 "new" = "nou";
 "Preferred Phone" = "Telèfon preferit";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Afegir contacte";
 "New List" = "Crear llista";
+"Edit" = "Modificar";
 "Properties" = "Propietats";
 "Sharing..." = "Compartir...";
 "Write" = "Escriure";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "No podeu esborrar el contacte \"%{0}\".";
 
-"Address Book Name" = "Nom de la llibreta";
+
 
 "You cannot subscribe to a folder that you own!"
 = "No us podeu subscriure a una carpeta que és vostra.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "S'han importat a la llibreta %{0} contactes.";
 
 "Reload" = "Actualitzar";
+
+/* Properties window */
+"Address Book Name:" = "Nom de la llibreta d'adreces";
+"Links to this Address Book" = "Enllaços a aquesta llibreta d'adreces";
+"Authenticated User Access" = "Accés autenticat";
+"CardDAV URL: " = "URL CardDAV:";
+

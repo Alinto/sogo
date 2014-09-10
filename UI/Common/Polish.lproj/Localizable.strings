@@ -103,9 +103,7 @@
 "Location:" = "Miejsce:";
 
 /* mail labels */
-/* Mail labels */
 "Important" = "Ważne";
-"Work" = "Praca";
 "Work" = "Praca";
 "Personal" = "Osobiste";
 "To Do" = "Do zrobienia";

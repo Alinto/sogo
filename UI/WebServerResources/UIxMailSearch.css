@@ -1,0 +1,221 @@
+/*************** Dialog *****************/
+
+DIV.dialog.searchMail {
+  position: relative;
+  padding: 0px;
+  opacity: 1;
+  width: 85%;
+  height: 75%;
+  margin: 2em auto;
+}
+
+DIV.dialog.searchMail > DIV {
+  min-height: 500px;
+}
+
+/*************** Table adjustment *****************/
+
+TABLE#searchMailHeader
+{ width: 100%;
+  margin-bottom: 1em; }
+
+DIV#searchFiltersList
+{
+  border: 1px solid #909090;
+  padding-top:2px;
+  border-radius: 3px;
+  max-height:105px;
+  height:105px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  width:100%;
+}
+
+DIV#resultsTable
+{
+   border: 1px solid #909090;
+   margin-top:5px;
+   border-radius: 3px;
+   overflow-y: auto;
+   width:100%;
+}
+
+TD#mailAccountsCell {
+  overflow:hidden;
+  white-space: nowrap;
+}
+
+TR.filterRow, DIV#searchFiltersList > TABLE
+{
+  width:100%;
+}
+
+TR.filterRow > TD
+{
+  width: 20%;
+  vertical-align:middle;
+}
+
+TR.filterRow > TD.buttonsCell
+{
+  width: 40px;
+}
+
+TR.filterRow > TD.inputsCell
+{
+  width:55%;
+}
+
+.td_table_1, .td_table_2, .td_table_3, .td_table_4 {
+ cursor:default;
+}
+
+TD.sortasc {
+  background:#bfc2bf;
+  background-image: url(/SOGo.woa/WebServerResources/arrow-up.png);
+  background-repeat: no-repeat;
+  background-position:right center;
+}
+
+TD.sortdesc {
+  background:#bfc2bf;
+  background-image: url(/SOGo.woa/WebServerResources/arrow-down.png);
+  background-repeat: no-repeat;
+  background-position:right center;
+}
+
+.td_header {
+  white-space:initial !important;
+  border-bottom: solid #909090 1px;
+  border-right: solid #909090 1px;
+  height:18px;
+  width:20%;
+  cursor:pointer;
+  background: -webkit-linear-gradient(left top, #f0f1f0 , #e6e7e6); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(bottom right, #f0f1f0, #e6e7e6); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(bottom right, #f0f1f0, #e6e7e6); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom right, #f0f1f0 , #e6e7e6); /* Standard syntax */
+}
+
+.td_header:hover
+{text-decoration: underline; }
+
+#buttonExpandHeader {
+  width: 20px;
+}
+
+/*************** Button adjustment *****************/
+
+#headerButtons
+{
+  width:175px;
+  white-space: nowrap;
+}
+
+#searchButton, #cancelButton
+{
+  margin-top:0;
+}
+
+.searchByList, .searchArgumentsList, .searchInput
+{
+  width:98%;
+  paddin:0;
+  margin:0;
+}
+
+DIV#optionsButtons
+{
+  position:relative;
+  height:22px;
+}
+
+A#deleteButton, A#openButton
+{
+  float:left;
+  margin-top:5px;
+}
+
+.button
+{
+  font-style:normal;
+}
+
+#resizeFrame
+{
+  text-align: -webkit-right;
+  margin-top:1em;
+}
+
+#resizeButton
+{
+  display:inline-block;
+  text-align: -webkit-center;
+}
+
+#resultsFound {
+  position:absolute;
+  bottom:20px;
+  right:10px;
+}
+
+#listCollapse
+{ position: relative;
+  border: 1px solid transparent; }
+
+#listCollapse img
+{ position: absolute; }
+
+#listCollapse img.collapse
+{ clip: rect(0 18px 18px 0);
+  top: 0;
+  left: 0; }
+
+#listCollapse img.collapse:hover
+{ clip: rect(0 36px 18px 18px);
+  top: 0;
+  left: -18px; }
+
+#listCollapse img.rise
+{ clip: rect(18px 18px 36px 0);
+  top: -18px;
+  left: 0; }
+
+#listCollapse img.rise:hover
+{ clip: rect(18px 36px 36px 18px);
+  top: -18px;
+  left: -18px; }
+
+.filterButtons
+{
+  width: 40px;
+}
+
+.filterButtons IMG
+{
+  z-index: 1;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Glow */
+.glow {
+  display: inline-block;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.glow:hover, .glow:focus, .glow:active {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/*************** Lists *****************/
+.hidden
+{ display:none; }
+
+
+

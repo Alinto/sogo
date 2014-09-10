@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -31,6 +31,9 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
+
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/NGVCard.h>
 
 #import "NSCalendarDate+SOGo.h"
 #import "SOGoCache.h"
@@ -85,6 +88,13 @@
     }
 
   return self;
+}
+
+- (Class *) parsingClass
+{
+  [self subclassResponsibility: _cmd];
+  
+  return nil;
 }
 
 - (void) _setRecord: (NSDictionary *) objectRecord
@@ -187,16 +197,18 @@
   return content;
 }
 
-- (NSException *) saveContentString: (NSString *) newContent
-                        baseVersion: (unsigned int) newVersion
+- (NSException *) saveComponent: (id) theComponent
+                    baseVersion: (unsigned int) newVersion
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
   GCSFolder *folder;
   NSException *ex;
   NSCalendarDate *now;
+  NSString *newContent;
 
   ex = nil;
-
+  
+  newContent = [theComponent versitString];
   now = [NSCalendarDate calendarDate];
   if (!content)
     ASSIGN (creationDate, now);
@@ -208,8 +220,10 @@
   if (folder)
     {
       ex = [folder writeContent: newContent
-		   toName: nameInContainer
-		   baseVersion: &version];
+                  fromComponent: theComponent
+                      container: container
+                         toName: nameInContainer
+                    baseVersion: &version];
       if (ex)
 	[self errorWithFormat:@"write failed: %@", ex];
     }
@@ -223,9 +237,9 @@
   return ex;
 }
 
-- (NSException *) saveContentString: (NSString *) newContent
+- (NSException *) saveComponent: (id) theComponent
 {
-  return [self saveContentString: newContent baseVersion: version];
+  return [self saveComponent: theComponent  baseVersion: version];
 }
 
 /* actions */
@@ -239,17 +253,7 @@
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
-  SOGoContentObject *newObject;
-  NSException *ex;
-
-  newObject = [[self class] objectWithName: nameInContainer
-			    inContainer: newFolder];
-  [newObject setIsNew: YES];
-  ex = [newObject saveContentString: content];
-  if (!ex)
-    ex = [self delete];
-
-  return ex;
+  [self subclassResponsibility: _cmd];
 }
 
 - (NSException *) delete
@@ -341,8 +345,8 @@
 
       /* attempt a save */
       
-      error = [self saveContentString: [rq contentAsString]
-		    baseVersion: baseVersion];
+      error = [self saveComponent: [[self parsingClass] parseSingleFromSource: [rq contentAsString]]
+                      baseVersion: baseVersion];
       if (error)
 	response = (WOResponse *) error;
       else

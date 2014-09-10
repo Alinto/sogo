@@ -1200,7 +1200,7 @@ fromProperties: (NSDictionary *) attachmentProps
   //
   // we save the new/modified card
   //
-  [sogoObject saveContentString: [newCard versitString]];
+  [sogoObject saveComponent: newCard];
 
   [self updateVersions];
 }

@@ -1,9 +1,6 @@
 /* UIxListEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,7 +187,7 @@
                       // Add vCard to current folder
                       newContact = [SOGoContactGCSEntry objectWithName: newUID
                                                            inContainer: folder];
-                      [newContact saveContentString: [newCard versitString]];
+                      [newContact saveComponent: newCard];
 
                       // Create card reference for the list
                       cardReference = [NGVCardReference elementWithTag: @"card"];

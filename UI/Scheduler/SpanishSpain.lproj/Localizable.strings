@@ -155,6 +155,7 @@
 "What to Print" = "Que imprimir";
 "Options" = "Parametros";
 "Tasks with no due date" = "Tareas sin fecha de vencimiento";
+"Display working hours only" = "Enseñar solo horas de trabajo";
 "Completed tasks" = "Tareas Finalizadas";
 
 /* Appointments */
@@ -542,6 +543,8 @@ vtodo_class2 = "(Tarea confidencial)";
 "tagWasRemoved" = "Si quita este calendario de la sincronización, necesitará recargar los datos en su teléfono móvil.\n¿Continuar?";
 "DestinationCalendarError" = "El calendario origen y el destino son iguales. Por favor, intente copiar a otro calendario.";
 "EventCopyError" = "La copia falló. Por favor, intente copiar a un calendario distinto.";
+"Please select at least one calendar" = "Por favor, selecciona al menos un calendario";
+
 
 "Open Task..." = "Abrir tarea...";
 "Mark Completed" = "Marcar como completo";

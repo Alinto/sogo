@@ -225,9 +225,9 @@
   return [mailingMechanism lowercaseString];
 }
 
-- (NSArray *) mailPollingIntervals
+- (NSArray *) refreshViewIntervals
 {
-  return [self arrayForKey: @"SOGoMailPollingIntervals"];
+  return [self arrayForKey: @"SOGoRefreshViewIntervals"];
 }
 
 - (NSString *) smtpServer

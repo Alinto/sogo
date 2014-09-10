@@ -8,7 +8,14 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   const:popup="YES">
-
+  <style type="text/css">
+      <var:foreach list="calendars" item="currentCalendar">
+          DIV.borderCalendarFolder<var:string value="currentCalendar.folder" />
+          { border: 1px solid <var:string value="currentCalendar.color" />; }
+          DIV.backgroundCalendarFolder<var:string value="currentCalendar.folder" />
+          { background-color: <var:string value="currentCalendar.color" />; color: <var:string value="contrastingTextColor" />; }
+      </var:foreach>
+  </style>
   <div id="leftSide" class="no-print">
     <!-- Print settings -->
     <span class="caption"><var:string label:value="Print Settings" /></span>
@@ -34,12 +41,10 @@
     <table class="frame">
       <tr>
         <td>
-          <label>
-            <input type="checkbox" id="printEvents" value="eventsSelected" checked="true" onChange="onEventsCheck(this);"/>
-            <var:string label:value="Events"/></label>
-          <label>
-            <input type="checkbox" id ="printTasks" value="tasksSelected" checked="true" onChange="onTasksCheck(this);"/>
-            <var:string label:value="Tasks"/></label></td></tr>
+          <input type="checkbox" id="printEvents" value="eventsSelected" checked="true" onChange="onEventsCheck(this);"/>
+          <var:string label:value="Events"/>
+          <input type="checkbox" id ="printTasks" value="tasksSelected" checked="true" onChange="onTasksCheck(this);"/>
+          <var:string label:value="Tasks"/></td></tr>
 <!-- TODO
       <tr>
         <td>
@@ -83,24 +88,32 @@
     <table class="frame">
       <tr>
         <td>
-          <label>
-            <input type="checkbox" name="printWorkingHours" id="printHours" checked="true" onChange="onPrintWorkingHoursCheck(this);" />
-            <var:string label:value="Display working hours only" /></label></td></tr>
+          <input type="checkbox" name="printWorkingHours" id="printHours" checked="true" onChange="onPrintWorkingHoursCheck(this);" />
+          <var:string label:value="Display working hours only" /></td></tr>
+      <tr>
+          <td>
+              <hr /></td></tr>
       <tr>
         <td>
-          <label>
-            <hr /></label></td></tr>
-      
+          <input type="checkbox" id="printColors" checked="true" onChange="onPrintColorsCheck(this);" />
+          <var:string label:value="Display events and tasks colors" /></td></tr>
       <tr>
         <td>
-          <label>
-            <input type="checkbox" name="printOptions" id="selectNoDueDateTasks" checked="true" onChange="onPrintNoDueDateTasksCheck(this);" />
-            <var:string label:value="Tasks with no due date" /></label></td></tr>
+          <input type="radio" name="printColors" id="printBorderColors" value="borders" onChange="onPrintColors(this);" selection="borders"/>
+          <var:string label:value="Borders" />
+          <input type="radio" name="printColors" id="printBackgroundColors" value="backgrounds" onChange="onPrintColors(this);" />
+          <var:string label:value="Backgrounds" /></td></tr>
       <tr>
         <td>
-          <label>
-            <input type="checkbox" name="printOptions" id="selectCompletedTasks" checked="true" onChange="onPrintCompletedTasksCheck(this);" />
-            <var:string label:value="Completed tasks" /></label></td></tr>
+          <hr /></td></tr>
+      <tr>
+        <td>
+          <input type="checkbox" name="printOptions" id="selectNoDueDateTasks" checked="true" onChange="onPrintNoDueDateTasksCheck(this);" />
+          <var:string label:value="Tasks with no due date" /></td></tr>
+      <tr>
+        <td>
+          <input type="checkbox" name="printOptions" id="selectCompletedTasks" checked="true" onChange="onPrintCompletedTasksCheck(this);" />
+          <var:string label:value="Completed tasks" /></td></tr>
     </table>
   </div>
   <div id="rightSide">
@@ -111,7 +124,7 @@
     </div>
     <div id="printButtons" class="no-print">
       <a class="button" name="print" id="printButton">
-        <span><var:string label:value="Print" /></span></a>
+        <span><var:string label:value="Print view" /></span></a>
       <a class="button" name="cancel" id="cancelButton">
         <span><var:string label:value="Cancel"/></span></a>
     </div>

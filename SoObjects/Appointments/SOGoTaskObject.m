@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2012 Inverse inc.
+  Copyright (C) 2006-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -65,12 +65,12 @@
 
 #warning this code should be put in SOGoCalendarComponent once the UID hack\
   in SOGoAppointmentObject is resolved
-- (NSException *) saveContentString: (NSString *) newContent
-                        baseVersion: (unsigned int) newVersion
+- (NSException *) saveComponent: (id) theComponent
+                    baseVersion: (unsigned int) newVersion
 {
   NSException *ex;
 
-  ex = [super saveContentString: newContent baseVersion: newVersion];
+  ex = [super saveComponent: theComponent baseVersion: newVersion];
   [fullCalendar release];
   fullCalendar = nil;
   [safeCalendar release];

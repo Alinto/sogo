@@ -22,6 +22,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
@@ -140,7 +141,7 @@
 
 - (NSString *) tasksFilterLabel
 {
-  return [self labelForKey: [self valueForKey:@"taskFilter"]];
+  return [self labelForKey: [self valueForKey: @"taskFilter"]];
 }
 
 - (NSString *) selectedTasksFilter

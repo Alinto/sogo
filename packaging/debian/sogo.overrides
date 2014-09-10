@@ -1,4 +1,4 @@
 sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/prototype.js
 sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/jquery.js
 sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/jquery-ui.js
-sogo: package-name-doesnt-match-sonames libGDLContentStore4.9 libNGCards4.9 libOGoContentStore0.9 libSOGoUI1.0
+sogo: package-name-doesnt-match-sonames libGDLContentStore4.9 libNGCards4.9 libSOGoUI1.0

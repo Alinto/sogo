@@ -155,6 +155,7 @@
 "What to Print" = "Elementy do wydruku";
 "Options" = "Opcje";
 "Tasks with no due date" = "Zadania bez terminu";
+"Display working hours only" = "Pokazuj tylko godziny robocze";
 "Completed tasks" = "Zadania ukończone";
 
 /* Appointments */
@@ -493,7 +494,7 @@ vtodo_class1 = "(Zadanie prywatne)";
 vtodo_class2 = "(Zadanie poufne)";
 
 "closeThisWindowMessage" = "Dziękuję! Możesz teraz zamknąć to okno lub wyświetlić twoje ";
-"Multicolumn Day View" = "Wielokolumnowy widok dnia";
+"Multicolumn Day View" = "Widok dnia wielokolumnowy";
 
 "Please select an event or a task." = "Zaznacz wydarzenie lub zadanie.";
 
@@ -542,6 +543,8 @@ vtodo_class2 = "(Zadanie poufne)";
 "tagWasRemoved" = "Jeśli usuniesz ten kalendarz z synchronizacji, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "DestinationCalendarError" = "Chcesz kopiować do tego samego kalendarza. Musisz wybrać inny kalendarz.";
 "EventCopyError" = "Kopiowanie nie udało się. Wybierz inny kalendarz.";
+"Please select at least one calendar" = "Wybierz co najmniej jeden kalendarz";
+
 
 "Open Task..." = "Otwórz zadanie";
 "Mark Completed" = "Oznacz jako ukończone";

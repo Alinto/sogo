@@ -8,6 +8,7 @@ var SOGoEventDragDayLength = 24 * 4; /* quarters */
 var SOGoEventDragHandleSize = 8; /* handles for dragging mode */
 var SOGoEventDragHorizontalOffset = 3;
 var SOGoEventDragVerticalOffset = 3;
+var calendarID = [], activeCalendars = [];
 
 /* singleton */
 var _sogoEventDragUtilities = null;
@@ -218,10 +219,7 @@ SOGoEventDragEventCoordinates.prototype = {
 
     initFromEventCellMultiDay: function(eventCell) {
         var classNames = eventCell.className.split(" ");
-        for (var i = 0;
-             (this.start == -1 || this.duration == -1)
-                 && i < classNames.length;
-             i++) {
+        for (var i = 0; (this.start == -1 || this.duration == -1) && i < classNames.length; i++) {
             var className = classNames[i];
             if (className.startsWith("starts")) {
                 this.start = parseInt(className.substr(6));
@@ -231,12 +229,19 @@ SOGoEventDragEventCoordinates.prototype = {
             }
         }
         var dayNumber = -1;
+        
         var dayNode = eventCell.parentNode.parentNode;
-        var classNames = dayNode.className.split(" ");
-        for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
-            var className = classNames[i];
-            if (className.startsWith("day") && className.length > 3) {
-                dayNumber = parseInt(className.substr(3));
+        if (currentView == "multicolumndayview") {
+            calendarID[0] = dayNode.getAttribute("calendar");
+            var dayNumber = this._updateMulticolumnViewDayNumber(calendarID);
+        }
+        else {
+            var classNames = dayNode.className.split(" ");
+            for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
+                var className = classNames[i];
+                if (className.startsWith("day") && className.length > 3) {
+                    dayNumber = parseInt(className.substr(3));
+                }
             }
         }
         this.dayNumber = dayNumber;
@@ -244,14 +249,20 @@ SOGoEventDragEventCoordinates.prototype = {
     initFromEventCellMultiDayAllDay: function(eventCell) {
         this.start = 0;
         this.duration = SOGoEventDragDayLength;
-
+        
         var dayNode = eventCell.parentNode;
-        var classNames = dayNode.className.split(" ");
-        var dayNumber = -1;
-        for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
-            var className = classNames[i];
-            if (className.startsWith("day") && className.length > 3) {
-                dayNumber = parseInt(className.substr(3));
+        if (currentView == "multicolumndayview") {
+            calendarID[0] = dayNode.getAttribute("calendar");
+            var dayNumber = this._updateMulticolumnViewDayNumber(calendarID);
+        }
+        else {
+            var classNames = dayNode.className.split(" ");
+            var dayNumber = -1;
+            for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
+                var className = classNames[i];
+                if (className.startsWith("day") && className.length > 3) {
+                    dayNumber = parseInt(className.substr(3));
+                }
             }
         }
         this.dayNumber = dayNumber;
@@ -294,8 +305,8 @@ SOGoEventDragEventCoordinates.prototype = {
             current.setEventType(this.eventType);
             current.initFromEventCell(eventCells[i]);
             if (this.dayNumber == -1 || current.dayNumber < this.dayNumber) {
-                this.dayNumber = current.dayNumber;
-                this.start = current.start;
+              this.dayNumber = current.dayNumber;
+              this.start = current.start;
             }
             this.duration += current.duration;
         }
@@ -320,6 +331,19 @@ SOGoEventDragEventCoordinates.prototype = {
             mins = "0" + mins;
 
         return "" + hours + ":" + mins;
+    },
+  
+    _updateMulticolumnViewDayNumber: function(calendarID) {
+        var calendarList = $("calendarList").getElementsByTagName("li");
+        for (var j = 0; j < calendarList.length ; j++) {
+            if ($("calendarList").getElementsByTagName("li")[j].down().checked)
+                activeCalendars.push($("calendarList").getElementsByTagName("li")[j].getAttribute("id").substr(1));
+        }
+        for (var k = 0; k < activeCalendars.length; k++) {
+            if (activeCalendars[k] == calendarID[0]) {
+                return k;
+            }
+        }
     },
 
     getStartTime: function() {
@@ -504,8 +528,7 @@ SOGoEventDragGhostController.prototype = {
             this.currentPointerCoordinates = newCoordinates;
             if (this.originalPointerCoordinates) {
                 if (!newCoordinates)
-                    this.currentPointerCoordinates
-                        = this.originalPointerCoordinates.clone();
+                    this.currentPointerCoordinates = this.originalPointerCoordinates.clone();
                 this._updateCoordinates();
                 if (this.ghosts) {
                     this._updateGhosts();
@@ -515,12 +538,31 @@ SOGoEventDragGhostController.prototype = {
             }
         }
     },
-
+  
+    _updateMulticolumnViewDayNumber_SEDGC: function() {
+        var calendarID_SEDGC = this.folderClass.substr(14);
+        var calendarList = $("calendarList").getElementsByTagName("li");
+        activeCalendars = [];
+        for (var j = 0; j < calendarList.length ; j++) {
+            if ($("calendarList").getElementsByTagName("li")[j].down().checked)
+                activeCalendars.push($("calendarList").getElementsByTagName("li")[j].getAttribute("id").substr(1));
+        }
+        for (var k = 0; k < activeCalendars.length; k++) {
+            if (activeCalendars[k] == calendarID_SEDGC) {
+                this.currentCoordinates.dayNumber = k;
+                break;
+            }
+        }
+    },
+  
     _updateCoordinates: function SEDGC__updateCoordinates() {
         var delta = this.currentPointerCoordinates
                         .getDelta(this.originalPointerCoordinates);
         var deltaQuarters = delta.x * SOGoEventDragDayLength + delta.y;
-        this.currentCoordinates.dayNumber = this.originalCoordinates.dayNumber;
+        if (currentView == "multicolumndayview")
+          this._updateMulticolumnViewDayNumber_SEDGC();
+        else
+          this.currentCoordinates.dayNumber = this.originalCoordinates.dayNumber;
 
         // log("dragMode: " + this.dragMode);
         if (this.dragMode == "move-event") {
@@ -565,6 +607,10 @@ SOGoEventDragGhostController.prototype = {
             var deltaDays = Math.floor(this.currentCoordinates.start
                                        / SOGoEventDragDayLength);
             this.currentCoordinates.start -= deltaDays * SOGoEventDragDayLength;
+          
+            // This dayNumber needs to be updated with the calendar number.
+            if (currentView == "multicolumndayview")
+              this._updateMulticolumnViewDayNumber_SEDGC();
             this.currentCoordinates.dayNumber += deltaDays;
         }
     },
@@ -925,6 +971,47 @@ SOGoScrollController.prototype = {
     }
 };
 
+function SOGoEventDragLeftPanelController() {
+}
+
+SOGoEventDragLeftPanelController.prototype = {
+    updateLeftPanelVisual : null,
+    dropCalendar : null,
+    DnDLeftPanelImage : $("DnDLeftPanelImage"),
+
+    setLeftPanelVisual: function SEDLPC_setLeftPanelVisual() {
+        var that = this;
+        this.updateLeftPanelVisual = $("leftPanel").on("mousemove", function(e){
+            that.DnDLeftPanelImage.style.left = e.pageX + 5 + "px";
+            that.DnDLeftPanelImage.style.top = e.pageY + 5 + "px";
+        });
+    },
+    
+    updateFromPointerHandler: function SEDLPC_updateFromPointerHandler(event) {
+        // Highlight the calendar hover
+        $$('#calendarList li').each(function(e){
+                                    e.removeClassName('genericHoverClass');
+                                    });
+        var hoverCalendar = $(event).findElement('#calendarList li');
+        if (hoverCalendar) {
+            hoverCalendar.addClassName('genericHoverClass');
+            this.dropCalendar = hoverCalendar;
+        }
+        else
+            this.dropCalendar = null;
+    },
+    
+    startEvent: function SEDLPC_startEvent() {
+        this.DnDLeftPanelImage.style.visibility = 'visible';
+        this.updateLeftPanelVisual.start();
+    },
+    
+    stopEvent: function SEDLPC_stopEvent() {
+        this.DnDLeftPanelImage.style.visibility = 'hidden';
+        this.updateLeftPanelVisual.stop();
+    }
+}
+
 function SOGoEventDragController() {
 }
 
@@ -939,6 +1026,7 @@ SOGoEventDragController.prototype = {
     draggingModeAreas: null,
 
     ghostController: null,
+    leftPanelController: null,
 
     hasSelected: false,
     dragHasStarted: false,
@@ -959,6 +1047,7 @@ SOGoEventDragController.prototype = {
         this.eventCells = eventCells;
 
         this.ghostController = new SOGoEventDragGhostController();
+        this.leftPanelController = new SOGoEventDragLeftPanelController();
         this._determineEventInvitation(eventCells[0]);
         this._determineEventType(eventCells[0]);
         this._prepareEventType();
@@ -966,6 +1055,7 @@ SOGoEventDragController.prototype = {
         this.ghostController.setTitle(this.title);
         this.ghostController.setLocation(this.location);
         this.ghostController.setFolderClass(this.folderClass);
+        this.leftPanelController.setLeftPanelVisual();
 
         this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
         for (var i = 0; i < eventCells.length; i++) {
@@ -1036,8 +1126,16 @@ SOGoEventDragController.prototype = {
                 this.ghostController.initWithCoordinates(coordinates);
 
                 if (!this.eventCells) {
-                    var folder = getSelectedFolder();
-                    var folderID = folder.readAttribute("id").substr(1);
+                    if (currentView == "multicolumndayview") {
+                        if (target.getAttribute("calendar"))
+                            var folderID = target.getAttribute("calendar");
+                        else
+                            var folderID = target.up("[calendar]").getAttribute("calendar");
+                    }
+                    else {
+                        var folder = getSelectedFolder();
+                        var folderID = folder.readAttribute("id").substr(1);
+                    }
                     this.ghostController.setFolderClass("calendarFolder" + folderID);
                 }
                 this.ghostController.setDragMode(this._determineDragMode());
@@ -1296,6 +1394,8 @@ SOGoEventDragController.prototype = {
         Event.stopObserving(document.body, "mousemove", this.onDragModeBound);
         this.onDragStopBound = null;
         this.onDragModeBound = null;
+        if (this.leftPanelController)
+            this.leftPanelController.stopEvent();
 
         var utilities = SOGoEventDragUtilities();
         if (this.dragHasStarted) {
@@ -1311,7 +1411,25 @@ SOGoEventDragController.prototype = {
                                 .currentCoordinates
                                 .getDelta(this.ghostController
                                               .originalCoordinates);
-                this.updateDropCallback(this, this.eventCells, delta);
+              
+                if (this.leftPanelController.dropCalendar != null) {
+                    $$('#calendarList li').each(function(e) {
+                                        e.removeClassName('genericHoverClass');
+                                        });
+                    calendarID[0] = this.folderClass.substr(14);
+                    calendarID[1] = this.leftPanelController.dropCalendar.getAttribute("id").substr(1);
+                    delta.start = 0;
+                    if (calendarID[0] != calendarID[1])
+                        this.updateDropCallback(this, this.eventCells, delta, calendarID);
+                }
+                else if (currentView == "multicolumndayview" && delta.dayNumber != 0) {
+                    var position = activeCalendars.indexOf(calendarID[0]);
+                    position += delta.dayNumber;
+                    calendarID[1] = activeCalendars[position];
+                    this.updateDropCallback(this, this.eventCells, delta, calendarID);
+                }
+                else
+                    this.updateDropCallback(this, this.eventCells, delta, 0);
             } else {
                 var eventContainerNodes = utilities.getEventContainerNodes();
                 var dayNode = eventContainerNodes[this.ghostController
@@ -1343,10 +1461,27 @@ SOGoEventDragController.prototype = {
         this.pointerHandler.updateFromEvent(event);
         if (this.scrollController)
             this.scrollController.updateFromPointerHandler();
-
+        
         if (this.dragHasStarted) {
-            this.ghostController.updateFromPointerHandler();
-        } else {
+            var newCoordinates = this.ghostController.pointerHandler.getEventViewCoordinates();
+            if (newCoordinates == null && this.leftPanelController != null) {
+                if (this.ghostController.ghosts) {
+                    this.ghostController.hideGhosts();
+                    this.leftPanelController.startEvent();
+                }
+                this.leftPanelController.updateFromPointerHandler(event);
+            }
+            else {
+                if (this.ghostController.ghosts == null) {
+                    this.ghostController.showGhosts();
+                    this.leftPanelController.dropCalendar = null;
+                    $$('#calendarList li').each(function(e){ e.removeClassName('genericHoverClass'); });
+                    this.leftPanelController.stopEvent();
+                }
+                this.ghostController.updateFromPointerHandler();
+            }
+        }
+        else {
             var distance = this.pointerHandler.getDistance();
             if (distance > 3) {
                 $("eventDialog").hide();
@@ -1361,7 +1496,6 @@ SOGoEventDragController.prototype = {
                 this.ghostController.updateFromPointerHandler();
             }
         }
-
         Event.stop(event);
     }
 };

@@ -12,6 +12,8 @@ publish_info_text = "Avsenderen informerer deg om vedlagte arrangement.";
 cancel_info_text = "Din invitasjon eller hele arrangementet er avlyst.";
 request_info_no_attendee = "foreslår et møte til deltakerne. Du har fått informasjon, men er ikke planlagt som en deltaker.";
 Appointment = "Møte";
+"Status Update" = "Status oppdatering";
+was = "var";
 
 Organizer = "Arrangør";
 Time = "Tid";

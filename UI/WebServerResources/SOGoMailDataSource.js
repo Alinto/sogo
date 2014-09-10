@@ -72,22 +72,13 @@ SOGoMailDataSource = Class.create({
 //            log ("MailDataSource.init() " + this.uids.length + " UIDs, " + this.cache.keys().length + " headers");
         },
 
-        load: function(urlParams) {
-            var params;
+        load: function(content) {
             this.loaded = false;
-            if (urlParams.keys().length > 0) {
-                params = urlParams.keys().collect(function(key) { return key + "=" + urlParams.get(key); }).join("&");
-            }
-            else
-                params = "";
-            this.id = this.url + "?" + params;
-
-//            log ("MailDataSource.load() " + params);
             triggerAjaxRequest(this.url + "/uids",
                                this._loadCallback.bind(this),
                                null,
-                               params,
-                               { "Content-type": "application/x-www-form-urlencoded" });
+                               content,
+                               { "content-type": "application/json" });
         },
 
         _loadCallback: function(http) {
@@ -205,8 +196,16 @@ SOGoMailDataSource = Class.create({
                     data[j] = this.cache.get(this.uids[i][0]);
 
                     // Add thread-related data
-                    if (parseInt(this.uids[i][2]) > 0)
-                        data[j]['Thread'] = '&nbsp;'; //'<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
+                    if (parseInt(this.uids[i][2]) > 0) {
+                        var mailbox = Mailer.currentMailbox;
+                        if ((UserSettings.Mail.threadsCollapsed != undefined) &&
+                            (UserSettings.Mail.threadsCollapsed[Mailer.currentMailbox] != undefined) &&
+                            (UserSettings.Mail.threadsCollapsed[Mailer.currentMailbox].indexOf((this.uids[i][0]).toString())) != -1) {
+                                  data[j]['Thread'] = '<img class="messageThread" src="' + ResourcesURL + '/arrow-right.png">';
+                        }
+                        else
+                            data[j]['Thread'] = '<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
+                    }
                     else if (data[j]['Thread'])
                         delete data[j]['Thread'];
                     if (parseInt(this.uids[i][1]) > -1)

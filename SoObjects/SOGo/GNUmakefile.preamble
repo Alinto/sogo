@@ -15,7 +15,6 @@ ADDITIONAL_CPPFLAGS += \
 
 SOGo_LIBRARIES_DEPEND_UPON += \
         -Wl,--no-as-needed \
-	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
 	-lmemcached		\
 	-lGDLAccess		\

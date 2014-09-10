@@ -79,7 +79,7 @@
 "Remove this folder" = "Fjern mappen";
 "Erase mails from this folder" = "Slett meldinger fra mappen";
 "Expunge this folder" = "Fjern mappen";
-"Archive This Folder" = "Arkiver denne mappen";
+"Export This Folder" = "Eksporter denne mappen";
 "Modify the acl of this folder" = "Endre adgangsrettigheter til mappen";
 
 "Saved Messages.zip" = "Lagrede Meldinger.zip";
@@ -97,11 +97,12 @@
 "Reply-To"	= "Svar-til";
 "Add address"   = "Legg til adresse";
 
-"Attachments:" = "Vedlegg:";
 "Open" = "Åpne";
 "Select All" = "Velg alle";
 "Attach Web Page..." = "Legg til url...";
-"Attach File(s)..." = "Legg til fil(er)...";
+"file" = "fil";
+"files" = "filer";
+"Save all" = "Lagre alle";
 
 "to"            = "Til";
 "cc"            = "Kopi";
@@ -278,6 +279,9 @@
 "error_missingsubject" = "Emnefelt mangler. Vil du likevel sende meldingen?";
 "error_missingrecipients" = "Ingen mottakere er angitt";
 "Send Anyway" = "Send likevel";
+"Error while saving the draft:" = "Problem ved lagring av utkast:";
+"Error while uploading the file \"%{0}\":" = "Problem ved opplasting av fil \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Det er en aktiv fil opplasting. Lukk vinduet for å avbryte den.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende melding: alle mottakeradresser er ugyldige.";

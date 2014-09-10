@@ -196,7 +196,6 @@ static NSArray *childRecordFields = nil;
       ocsPath = nil;
       ocsFolder = nil;
       childRecords = [NSMutableDictionary new];
-      folderSubscriptionValues = nil;
       userCanAccessAllObjects = NO;
     }
 
@@ -208,7 +207,6 @@ static NSArray *childRecordFields = nil;
   [ocsFolder release];
   [ocsPath release];
   [childRecords release];
-  [folderSubscriptionValues release];
   [super dealloc];
 }
 
@@ -216,18 +214,17 @@ static NSArray *childRecordFields = nil;
 
 - (void) setFolderPropertyValue: (id) theValue
                      inCategory: (NSString *) theKey
+                       settings: (SOGoUserSettings *) theSettings
 {
-  SOGoUserSettings *settings;
   NSMutableDictionary *folderSettings, *values;
   NSString *module;
 
-  settings = [[context activeUser] userSettings];
   module = [container nameInContainer];
-  folderSettings = [settings objectForKey: module];
+  folderSettings = [theSettings objectForKey: module];
   if (!folderSettings)
     {
       folderSettings = [NSMutableDictionary dictionary];
-      [settings setObject: folderSettings forKey: module];
+      [theSettings setObject: folderSettings forKey: module];
     }
   values = [folderSettings objectForKey: theKey];
   if (theValue)
@@ -249,7 +246,19 @@ static NSArray *childRecordFields = nil;
 	[folderSettings removeObjectForKey: theKey];
     }
 
-  [settings synchronize];
+  [theSettings synchronize];
+}
+
+- (void) setFolderPropertyValue: (id) theValue
+                     inCategory: (NSString *) theKey
+{
+  SOGoUserSettings *settings;
+
+  settings = [[context activeUser] userSettings];
+  
+  [self setFolderPropertyValue: theValue
+                    inCategory: theKey
+                      settings: settings];
 }
 
 - (id) folderPropertyValueInCategory: (NSString *) theKey
@@ -276,39 +285,21 @@ static NSArray *childRecordFields = nil;
 - (void) _setDisplayNameFromRow: (NSDictionary *) row
 {
   NSString *primaryDN;
-  NSDictionary *ownerIdentity;
-  NSString *subjectFormat;
-  SOGoDomainDefaults *dd;
   
   primaryDN = [row objectForKey: @"c_foldername"];
+  
   if ([primaryDN length])
-  {
-    displayName = [NSMutableString new];
-    if ([primaryDN isEqualToString: [container defaultFolderName]])
-      [displayName appendString: [self labelForKey: primaryDN
-                                         inContext: context]];
-    else
-      [displayName appendString: primaryDN];
-    
-    if (!activeUserIsOwner)
     {
-      // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
-      // as it'll load user defaults and user settings which is _very costly_
-      // since it involves JSON parsing and database requests
-      ownerIdentity = [[SOGoUserManager sharedUserManager]
-                       contactInfosForUserWithUIDorEmail: owner];
-
-      folderSubscriptionValues = [[NSMutableDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
-                                                                   [ownerIdentity objectForKey: @"cn"], @"UserName",
-                                                                   [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+      DESTROY(displayName);
       
-      dd = [[context activeUser] domainDefaults];
-      subjectFormat = [dd subscriptionFolderFormat];
+      if ([primaryDN isEqualToString: [container defaultFolderName]])
+        displayName = [self labelForKey: primaryDN
+                              inContext: context];
+      else
+        displayName = primaryDN;
       
-      displayName = [folderSubscriptionValues keysWithFormat: subjectFormat];
-      [displayName retain];
+      RETAIN(displayName);
     }
-  }
 }
 
 /* This method fetches the display name defined by the owner, but is also the
@@ -352,7 +343,31 @@ static NSArray *childRecordFields = nil;
 
 - (void) _fetchDisplayNameFromSubscriber
 {
+  NSDictionary *ownerIdentity, *folderSubscriptionValues;
+  NSString *displayNameFormat;
+  SOGoDomainDefaults *dd;
+
   displayName = [self folderPropertyValueInCategory: @"FolderDisplayNames"];
+  if (!displayName)
+    {
+      [self _fetchDisplayNameFromOwner];
+
+      // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
+      // as it'll load user defaults and user settings which is _very costly_
+      // since it involves JSON parsing and database requests
+      ownerIdentity = [[SOGoUserManager sharedUserManager]
+                                contactInfosForUserWithUIDorEmail: owner];
+
+      folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
+                                                  [ownerIdentity objectForKey: @"cn"], @"UserName",
+                                                  [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+
+      dd = [[context activeUser] domainDefaults];
+      displayNameFormat = [dd subscriptionFolderFormat];
+
+      displayName = [folderSubscriptionValues keysWithFormat: displayNameFormat];
+    }
+
   [displayName retain];
 }
 
@@ -365,6 +380,7 @@ static NSArray *childRecordFields = nil;
       else
         {
           [self _fetchDisplayNameFromSubscriber];
+          
           if (!displayName)
             [self _fetchDisplayNameFromOwner];
         }
@@ -856,6 +872,7 @@ static NSArray *childRecordFields = nil;
 
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
 		     reallyDo: (BOOL) reallyDo
+                     response: (WOResponse *) theResponse
 {
   NSMutableDictionary *moduleSettings, *folderShowAlarms;
   NSMutableArray *folderSubscription;
@@ -868,7 +885,7 @@ static NSArray *childRecordFields = nil;
   int i;
 
   dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
-  
+
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
       SOGoGroup *aGroup;
@@ -890,8 +907,12 @@ static NSArray *childRecordFields = nil;
       else
 	allUsers = [NSArray array];
     }
-  
+
   rc = NO;
+
+  // This is consumed by SOGo Integrator during folder subscription since v24.0.6
+  if (theResponse)
+    [theResponse appendContentString: [self displayName]];
 
   for (i = 0; i < [allUsers count]; i++)
     {
@@ -905,8 +926,7 @@ static NSArray *childRecordFields = nil;
           [us setObject: moduleSettings forKey: [container nameInContainer]];
         }
 
-      folderSubscription
-        = [moduleSettings objectForKey: @"SubscribedFolders"];
+      folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
       subscriptionPointer = [self folderReference];
       
       folderShowAlarms = [moduleSettings objectForKey: @"FolderShowAlarms"];
@@ -928,6 +948,10 @@ static NSArray *childRecordFields = nil;
               [moduleSettings setObject: folderShowAlarms
                                  forKey: @"FolderShowAlarms"];
             }
+
+          [self setFolderPropertyValue: [self displayName]
+                            inCategory: @"FolderDisplayNames"
+                              settings: us];
 
           [folderSubscription addObjectUniquely: subscriptionPointer];
 	  
@@ -987,7 +1011,7 @@ static NSArray *childRecordFields = nil;
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
     forKey: @"Content-Type"];
-  [response setStatus: 204];
+  [response setStatus: 200];
 
   currentUser = [context activeUser];
   delegatedUsers = [self _parseDAVDelegatedUsers];
@@ -1002,7 +1026,8 @@ static NSArray *childRecordFields = nil;
              create contention on GDNC. */
           for (count = 0; count < max; count++)
             [self subscribeUserOrGroup: [delegatedUsers objectAtIndex: count]
-			      reallyDo: reallyDo];
+			      reallyDo: reallyDo
+                              response: response];
         }
       else
         {
@@ -1021,7 +1046,9 @@ static NSArray *childRecordFields = nil;
                       @"You cannot (un)subscribe to a folder that you own!"];
         }
       else
-        [self subscribeUserOrGroup: userLogin reallyDo: reallyDo];
+        [self subscribeUserOrGroup: userLogin
+                          reallyDo: reallyDo
+                          response: response];
     }
 
   return response;

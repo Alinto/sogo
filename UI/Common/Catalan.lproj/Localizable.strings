@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "No podeu crear una llista en una agenda compartida.";
 "Warning" = "Atenció";
+"Can't contact server" = "Ha ocorregut un error en contactar amb el servidor. Per favor, intenti-ho més tarda.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "No teniu permís per a accedir a aquest mòdul o sistema. Contacteu amb l'administrador.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Data límit:";
 "Location:" = "Lloc:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Important";
-"Work" = "Feina";
 "Work" = "Feina";
 "Personal" = "Personal";
 "To Do" = "Per fer";

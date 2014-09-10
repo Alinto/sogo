@@ -1,22 +1,22 @@
 /*
   Copyright (C) 2004-2007 SKYRIX Software AG
   Copyright (C) 2007      Helge Hess
-  Copyright (c) 2008-2011 Inverse inc.
+  Copyright (c) 2008-2014 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -38,7 +38,6 @@
 #import "GCSFolderManager.h"
 #import "GCSFolderType.h"
 #import "GCSChannelManager.h"
-#import "GCSFieldExtractor.h"
 #import "NSURL+GCS.h"
 #import "EOAdaptorChannel+GCS.h"
 #import "EOQualifier+GCS.h"
@@ -882,13 +881,14 @@ andAttribute: (EOAttribute *)_attribute
 }
 
 - (NSException *) writeContent: (NSString *) _content
-			toName: (NSString *) _name
+                 fromComponent: (id) theComponent
+                     container: (id) theContainer
+  			toName: (NSString *) _name
 		   baseVersion: (unsigned int *) _baseVersion
 {
   EOAdaptorChannel    *storeChannel, *quickChannel;
   NSMutableDictionary *quickRow, *contentRow;
   NSDictionary	      *currentRow;
-  GCSFieldExtractor   *extractor;
   NSNumber            *storedVersion;
   BOOL                isNewRecord, hasInsertDelegate, hasUpdateDelegate;
   NSCalendarDate      *nowDate;
@@ -944,8 +944,7 @@ andAttribute: (EOAttribute *)_attribute
 	      || *_baseVersion == [storedVersion unsignedIntValue])
 	    {
 	      /* extract quick info */
-	      extractor = [folderInfo quickExtractor];
-	      quickRow = [extractor extractQuickFieldsFromContent:_content];
+              quickRow = [theComponent performSelector: @selector(quickRecordForContainer:)  withObject: theContainer];
 	      if (quickRow)
 		{
 		  [quickRow setObject:_name forKey:@"c_name"];
@@ -1080,8 +1079,8 @@ andAttribute: (EOAttribute *)_attribute
 			  __PRETTY_FUNCTION__];
 		}
 	      else
-		error = [self errorExtractorReturnedNoQuickRow:extractor
-			      forContent:_content];
+                [self errorWithFormat:@"%s: could not extract quick row information",
+                      __PRETTY_FUNCTION__];
 	    }
 	  else /* version mismatch (concurrent update) */
 	    error = [self errorVersionMismatchBetweenStoredVersion:
@@ -1099,13 +1098,6 @@ andAttribute: (EOAttribute *)_attribute
 			 userInfo:nil];
 
   return error;
-}
-
-
-- (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name {
-  /* this method does not check for concurrent writes */
-  unsigned int v = 0;
-  return [self writeContent:_content toName:_name baseVersion:&v];
 }
 
 - (NSException *)deleteContentWithName:(NSString *)_name {

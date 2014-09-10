@@ -11,10 +11,9 @@ function onThisButtonClick(event) {
     else if (action == 'delete')
         window.opener.performEventDeletion(calendarFolder, componentName,
                                            recurrenceName);
-    else if (action == 'adjust') {
+    else if (action == 'adjust')
         window.opener.performEventAdjustment(calendarFolder, componentName,
                                              recurrenceName, queryParameters);
-    }
     else
         window.alert("Invalid action: " + action);
 

@@ -44,7 +44,7 @@ function folderRenameCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
             var dict = http.callbackData;
-            dict["node"].innerHTML = dict["name"];
+            dict["node"].childNodesWithTag("span")[0].innerHTML = dict["name"];
             window.close();
         }
     }

@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Du kan ikke opprette en liste i en delt adressebok.";
 "Warning" = "Advarsel";
+"Can't contact server" = "Det oppstod en feil ved opprettelse av kontakt med serveren. Vennligst prøv igjen senere.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har ikke rettigheter til modulen eller systemet. Kontakt din systemadministrator.";
@@ -101,9 +102,8 @@
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Viktig";
-"Work" = "Arbeid";
 "Work" = "Arbeid";
 "Personal" = "Personlig";
 "To Do" = "Gjøremål";

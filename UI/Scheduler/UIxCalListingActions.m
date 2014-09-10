@@ -75,8 +75,6 @@ static NSArray *tasksFields = nil;
 #define maxBlocks (offsetBlocks * 2)    // maximum number of blocks to search
 // for a free slot (10 days)
 
-@class SOGoAppointment;
-
 @implementation UIxCalListingActions
 
 + (void) initialize
@@ -101,7 +99,7 @@ static NSArray *tasksFields = nil;
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"editable", @"erasable",
-                   @"c_priority", nil];
+                   @"c_priority", @"c_owner", nil];
     [tasksFields retain];
   }
 }

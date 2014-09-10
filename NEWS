@@ -1,3 +1,59 @@
+2.2.8 (2014-09-10)
+------------------
+
+New features
+ - new user settings for threads collapsing
+ - IMAP global search support (#2670)
+
+Enchancements
+ - major refactoring of the GCS component saving code (dropped OGoContentStore)
+ - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
+ - new option to print calendars events and tasks with a background color or with a border color
+ - labels tagging only make one AJAX call for all the selected messages instead of one AJAX call per message  
+ - new option to print calendars events and tasks with a background color or with a border color  
+ - all modules can now be automatically refreshed 
+ - new configurable user defaults variables; SOGoRefreshViewCheck & SOGoRefreshViewIntervals. SOGoMailMessageCheck has
+   been replaced by SOGoRefreshViewCheck and SOGoMailPollingIntervals has been replaced by SOGoRefreshViewIntervals
+ - updated Catalan, Czech, Dutch, Finnish, French, Hungarian, Norwegian, and Polish translations
+
+Bug fixes
+ - fixed crasher when subscribing users to resources (#2892)
+ - fixed encoding of new calendars and new subscriptions (JavaScript only)
+ - fixed display of users with no possible subscription
+ - fixed usage of SOGoSubscriptionFolderFormat domain default when the folder's name hasn't been changed
+ - fixed "sogo-tool restore -l" that was returning incorrect folder IDs
+ - fixed Can not delete mail when over quota (#2812)
+ - fixed Events and tasks cannot be moved to other calendars using drag&drop (#2759)
+ - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
+ - fixed handling of messages labels (#2902)
+ - fixed Apache > 2.3 configuration
+ - fixed freebusy retrieval during timezone changes (#1240)
+
+2.2.7 (2014-07-30)
+------------------
+
+New features
+ - new user preference to prevent event invitations
+
+Enhancements
+ - improved badges of active tasks count
+ - refresh draft folder after sending a message
+ - now possible to DnD events in the calendar list
+ - improved handling of SOGoSubscriptionFolderFormat
+ - JSON'ified folder subscription interface
+ - updated Finnish, French, German, and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.3
+
+Bug fixes
+ - fixed weekdays translation in the datepicker
+ - fixed event categories display
+ - fixed all-day events display in IE
+ - fixed rename of calendars
+ - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
+ - fixed refresh of message headers when forwarding a message (#2818)
+ - we now correctly escape all charset= in <meta> tags, not only in the <head>
+ - we now destroy cache objects of vanished folders
+
 2.2.6 (2014-07-02)
 ------------------
 
@@ -9,7 +65,7 @@ Enhancements
  - implemented the GetAttachment ActiveSync command (#2808)
  - implemented the Ping ActiveSync command
  - added "soft deletes" support for ActiveSync (#2734)
- - now display the active tasks next to calendar names (#2760)
+ - now display the active tasks count next to calendar names (#2760)
 
 Bug fixes
  - better handling of empty "Flag" messages over ActiveSync (#2806)

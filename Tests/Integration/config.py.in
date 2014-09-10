@@ -23,6 +23,8 @@ attendee1_delegate_password = "sogo"
 resource_no_overbook = "res"
 resource_can_overbook = "res-nolimit"
 
+white_listed_attendee = '{"sogo1":"John Doe <sogo1@example.com>"}'
+
 mailserver = "imaphost"
 
 testput_nbrdays = 30

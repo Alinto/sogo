@@ -1,8 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +40,10 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/NGVCard.h>
+#import <NGCards/NGVList.h>
 
 #import "SOGoTool.h"
 
@@ -114,6 +116,29 @@ typedef enum SOGoToolRestoreMode {
 	   "Examples:   sogo-tool restore -l /tmp/foo bob\n"
 	   "            sogo-tool restore -f Contacts/personal /tmp/foo bob\n"
 	   "            sogo-tool restore -p /tmp/foo bob\n");
+}
+
+- (Class) parsingClassForContent: (NSString *) theContent
+{
+  CardGroup *cardEntry;
+  NSString *firstTag;
+  Class objectClass;
+
+  objectClass = Nil;
+
+  cardEntry = [CardGroup parseSingleFromSource: theContent];
+  if (cardEntry)
+    {
+      firstTag = [[cardEntry tag] uppercaseString];
+      if ([firstTag isEqualToString: @"VCARD"])
+	objectClass = [NGVCard class];
+      else if ([firstTag isEqualToString: @"VLIST"])
+	objectClass = [NGVList class];
+      else
+	objectClass = [iCalCalendar class];
+    }
+
+  return objectClass;
 }
 
 - (BOOL) checkDirectory
@@ -347,11 +372,12 @@ typedef enum SOGoToolRestoreMode {
 - (BOOL) restoreRecords: (NSArray *) records
                ofFolder: (GCSFolder *) gcsFolder
 {
-  NSAutoreleasePool *pool;
   NSDictionary *existingRecords, *currentRecord;
   NSString *cName, *cContent;
-  int count, max;
+  NSAutoreleasePool *pool;
+
   unsigned int version;
+  int count, max;
   BOOL rc;
 
   if (records)
@@ -374,7 +400,10 @@ typedef enum SOGoToolRestoreMode {
             {
               NSLog (@"restoring record '%@'", cName);
               cContent = [currentRecord objectForKey: @"c_content"];
-              [gcsFolder writeContent: cContent toName: cName
+              [gcsFolder writeContent: cContent
+                        fromComponent: [[self parsingClassForContent: cContent] parseSingleFromSource: cContent]
+                            container: nil
+                               toName: cName
                           baseVersion: &version];
             }
         }
@@ -529,14 +558,14 @@ typedef enum SOGoToolRestoreMode {
   if (tables)
     {
       NSLog (@"Restorable folders:");
-      folderPrefixLen = 1 + [userID length];
-      tableKeys = [[tables allKeys] objectEnumerator];
+      folderPrefixLen = 8 + [userID length]; // tables keys start with /Users/<userID>
+      tableKeys = [[[tables allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] objectEnumerator];
       while ((key = [tableKeys nextObject]))
         {
           currentFolder = [tables objectForKey: key];
           folderKey = [key substringFromIndex: folderPrefixLen];
-          NSLog (@"  '%@': %@",
-                 [currentFolder objectForKey: @"displayname"], folderKey);
+          NSLog (@"  %@ (%@)",
+                 folderKey, [currentFolder objectForKey: @"displayname"]);
         }
     }
   else

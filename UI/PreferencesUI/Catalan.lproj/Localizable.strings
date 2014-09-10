@@ -97,13 +97,16 @@
 "Show time as busy outside working hours" = "Mostra el temps com ocupat fora de les hores de treball";
 "First week of year :" = "Primera setmana de l'any: ";
 "Enable reminders for Calendar items" = "Habilitar recordatoris per a ítems del calendari";
-"Play a sound when a reminder comes due"
-= "Usar senyal acústic per als recordatoris";
+"Play a sound when a reminder comes due" = "Usar senyal acústic per als recordatoris";
 "Default reminder :" = "Recordatori per omissió: ";
 
 "firstWeekOfYear_January1" = "Comença l'1 de gener";
 "firstWeekOfYear_First4DayWeek" = "Primera setmana de 4 dies";
 "firstWeekOfYear_FirstFullWeek" = "Primera setmana completa";
+
+"Prevent from being invited to appointments" = "Impedeix ser convidat a cites";
+"White list for appointment invitations:" = "Llista blanca per a invitacions a cites:";
+"Contacts Names" = "Nom dels Contactes";
 
 /* Default Calendar */
 "Default calendar :" = "Calendari per defecte";
@@ -111,30 +114,35 @@
 "personalCalendar" = "Calendari personal";
 "firstCalendar" = "Primer calendari habilitat";
 
+"reminder_NONE" = "Cap Recordatori";
 "reminder_5_MINUTES_BEFORE" = "5 minuts";
 "reminder_10_MINUTES_BEFORE" = "10 minuts";
 "reminder_15_MINUTES_BEFORE" = "15 minuts";
 "reminder_30_MINUTES_BEFORE" = "30 minuts";
+"reminder_45_MINUTES_BEFORE" = "45 minuts abans";
 "reminder_1_HOUR_BEFORE" = "1 hora";
 "reminder_2_HOURS_BEFORE" = "2 hores";
-"reminder_5_HOURS_BEFORE"= "5 hores";
-"reminder_15_HOURS_BEFORE"= "15 hores";
+"reminder_5_HOURS_BEFORE" = "5 hores";
+"reminder_15_HOURS_BEFORE" = "15 hores";
 "reminder_1_DAY_BEFORE" = "1 dia";
 "reminder_2_DAYS_BEFORE" = "2 dies";
+"reminder_1_WEEK_BEFORE" = "1 setmana abans";
 
 /* Mailer */
+"Labels" = "Etiquetes";
 "Label" = "Etiquetar";
 "Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
 "Sort messages by threads" = "Ordenar els missatges per temes";
+"When sending mail, add unknown recipients to my" = "En enviar un missatge, afegeix els destinataris desconeguts al meu";
 "Check for new mail:" = "Comprovar nou correu: ";
-"messagecheck_manually" = "Manualment";
-"messagecheck_every_minute" = "Cada minut";
-"messagecheck_every_2_minutes" = "Cada 2 minuts";
-"messagecheck_every_5_minutes" = "Cada 5 minuts";
-"messagecheck_every_10_minutes" = "Cada 10 minuts";
-"messagecheck_every_20_minutes" = "Cada 20 minuts";
-"messagecheck_every_30_minutes" = "Cada 30 minuts";
-"messagecheck_once_per_hour" = "Cada hora";
+"refreshview_manually" = "Manualment";
+"refreshview_every_minute" = "Cada minut";
+"refreshview_every_2_minutes" = "Cada 2 minuts";
+"refreshview_every_5_minutes" = "Cada 5 minuts";
+"refreshview_every_10_minutes" = "Cada 10 minuts";
+"refreshview_every_20_minutes" = "Cada 20 minuts";
+"refreshview_every_30_minutes" = "Cada 30 minuts";
+"refreshview_once_per_hour" = "Cada hora";
 
 "Forward messages:" = "Reenviar missatges:";
 "messageforward_inline" = "Incorporats";
@@ -152,6 +160,10 @@
 "Display remote inline images" = "Mostrar imatges remotes embegudes";
 "displayremoteinlineimages_never" = "Mai";
 "displayremoteinlineimages_always" = "Sempre";
+
+/* Contact */
+"Personal Address Book" = "Llibreta personal d'adreces";
+"Collected Address Book" = "Llibreta d'adreces recopilades";
 
 /* IMAP Accounts */
 "New Mail Account" = "Compte de correu nou";
@@ -199,7 +211,8 @@
 "Contacts" = "Llibreta d'adreces";
 "Mail" = "Correu";
 "Last" = "Últim usat";
-"Default module :" = "Pàgina per defecte :";
+"Default Module :" = "Pàgina per defecte :";
+"SOGo Version :" = "Versió del SOGo:";
 
 "Language :" = "Language :";
 "choose" = "Choose ...";
@@ -244,6 +257,8 @@
 "Active" = "Actiu";
 "Move Up" = "Pujar";
 "Move Down" = "Baixar";
+"Connection error" = "Error de connexió";
+"Service temporarily unavailable" = "Servei temporalment no disponible";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Nom del filtre:";
@@ -261,6 +276,7 @@
 "To or Cc" = "A o Cc";
 "Size (Kb)" = "Mida (Kb)";
 "Header" = "Capçalera";
+"Body" = "Cos";
 "Flag the message with:" = "Marca el missatge amb:";
 "Discard the message" = "Descarta el missatge";
 "File the message in:" = "Arxiva el missatge en:";
@@ -287,12 +303,8 @@
 "Flagged" = "Marcat";
 "Junk" = "Brossa";
 "Not Junk" = "No brossa";
-"Label 1" = "Etiqueta 1";
-"Label 2" = "Etiqueta 2";
-"Label 3" = "Etiqueta 3";
-"Label 4" = "Etiqueta 4";
-"Label 5" = "Etiqueta 5";
 
+/* Password policy */
 "The password was changed successfully." = "La contrasenya s'ha canviat correctament";
 "Password must not be empty." = "La contrasenya no ha d'estar buida.";
 "The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Intenta-ho de nou.";

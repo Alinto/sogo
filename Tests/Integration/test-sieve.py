@@ -73,9 +73,9 @@ class sieveTest(unittest.TestCase):
 					       "days": preferences.daysBetweenResponseList[daysSelect],
 					     }
 
-      filterAdd = {"Vacation":1,
+      filterAdd = {"Vacation":"1",
                    "autoReplyText": vacation_msg,
-                   "daysBetweenResponse": daysSelect,
+                   "daysBetweenResponse": "%d" % daysSelect,
 		   "autoReplyEmailAddresses": self.user_email,
 		  } 
 
@@ -94,11 +94,11 @@ class sieveTest(unittest.TestCase):
 					       "days": preferences.daysBetweenResponseList[daysSelect],
 					     }
 
-      filterAdd = {"Vacation":1,
+      filterAdd = {"Vacation":"1",
                    "autoReplyText": vacation_msg,
-                   "daysBetweenResponse": daysSelect,
+                   "daysBetweenResponse": "%d" % daysSelect,
 		   "autoReplyEmailAddresses": self.user_email,
-		   "ignoreLists": 1,
+		   "ignoreLists": "1",
 		  } 
 
       self.prefs.set(filterAdd)
@@ -112,7 +112,7 @@ class sieveTest(unittest.TestCase):
 
       sieveScript = sieve_simple_forward % { "redirect_mailaddr": redirect_mailaddr }
 
-      filterAdd = { "Forward": 1,
+      filterAdd = { "Forward": "1",
                     "forwardAddress": redirect_mailaddr,
                   }
 
@@ -126,9 +126,9 @@ class sieveTest(unittest.TestCase):
 
       sieveScript = sieve_forward_keep % { "redirect_mailaddr": redirect_mailaddr }
 
-      filterAdd = { "Forward": 1,
+      filterAdd = { "Forward": "1",
                     "forwardAddress": redirect_mailaddr,
-                    "keepCopy": 1,
+                    "keepCopy": "1",
                   }
 
       self.prefs.set(filterAdd)

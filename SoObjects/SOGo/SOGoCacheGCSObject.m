@@ -456,6 +456,40 @@ static EOAttribute *textColumn = nil;
   return nil;
 }
 
+- (NSException *) destroy
+{
+  NSString *tableName, *pathValue, *sql;
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+  NSException *result;
+  EOAdaptor *adaptor;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: [self tableUrl]];
+  tableName = [self tableName];
+
+  adaptor = [[channel adaptorContext] adaptor];
+  pathValue = [adaptor formatValue: [self path]
+                      forAttribute: textColumn];
+  result = nil;
+
+  sql = [NSString stringWithFormat:
+                    (@"DELETE FROM %@"
+                     @" WHERE c_path = %@"),
+                  tableName,
+                  pathValue];
+
+  result = [channel evaluateExpressionX: sql];
+  
+  if (result)
+    [self errorWithFormat: @"could not delete record %@"
+                 @" in %@: %@", pathValue, tableName, result];
+  
+  [cm releaseChannel: channel];
+
+  return result;
+}
+
 - (void) save
 {
   NSString *sql;

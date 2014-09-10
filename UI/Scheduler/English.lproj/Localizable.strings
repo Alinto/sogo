@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Tasks with no due date";
 "Display working hours only" = "Display working hours only";
 "Completed tasks" = "Completed Tasks";
+"Display events and tasks colors" = "Display events and tasks colors";
+"Borders" = "Borders";
+"Backgrounds" = "Backgrounds";
 
 /* Appointments */
 
@@ -314,7 +317,6 @@
 
 "Repeat" = "Repeat";
 "Daily" = "Daily";
-"Multi-Columns" = "Multi-Columns";
 "Weekly" = "Weekly";
 "Monthly" = "Monthly";
 "Yearly" = "Yearly";

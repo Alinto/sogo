@@ -107,14 +107,14 @@
 "Label" = "Merki";
 "Show subscribed mailboxes only" = "Sýna aðeins pósthólf sem eru í áskrift";
 "Check for new mail:" = "Sækja nýjan póst:";
-"messagecheck_manually" = "Handvirkt";
-"messagecheck_every_minute" = "Hverjar mínútu";
-"messagecheck_every_2_minutes" = "Hverjar 2 mínútur";
-"messagecheck_every_5_minutes" = "Hverjar 5 mínútur";
-"messagecheck_every_10_minutes" = "Hverjar 10 mínútur";
-"messagecheck_every_20_minutes" = "Hverjar 20 mínútur";
-"messagecheck_every_30_minutes" = "Hverjar 30 mínútur";
-"messagecheck_once_per_hour" = "Á klukkustundar fresti";
+"refreshview_manually" = "Handvirkt";
+"refreshview_every_minute" = "Hverjar mínútu";
+"refreshview_every_2_minutes" = "Hverjar 2 mínútur";
+"refreshview_every_5_minutes" = "Hverjar 5 mínútur";
+"refreshview_every_10_minutes" = "Hverjar 10 mínútur";
+"refreshview_every_20_minutes" = "Hverjar 20 mínútur";
+"refreshview_every_30_minutes" = "Hverjar 30 mínútur";
+"refreshview_once_per_hour" = "Á klukkustundar fresti";
 
 "Forward messages:" = "Áframsenda póst:";
 "messageforward_inline" = "Innfellt";
@@ -169,7 +169,7 @@
 "Contacts" = "Nafnaskrá";
 "Mail" = "Póstur";
 "Last" = "Síðast notað";
-"Default module :" = "Sjálfgefið viðmót :";
+"Default Module :" = "Sjálfgefið viðmót :";
 
 "Language :" = "Tungumál :";
 "choose" = "Velja...";

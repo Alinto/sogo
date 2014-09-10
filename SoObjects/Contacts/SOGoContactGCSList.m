@@ -1,8 +1,6 @@
 /* SOGoContactGCSList.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +43,12 @@
   [super dealloc];
 }
 
+- (Class *) parsingClass
+{
+  return [NGVList class];
+}
+
+
 /* content */
 
 - (NGVList *) vList
@@ -77,7 +81,19 @@
                 [NSString stringWithFormat: @"%@.vlf", newUID]
                                inContainer: newFolder];
 
-  return [newGList saveContentString: [newList versitString]];
+  return [newGList saveComponent: newList];
+}
+
+- (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
+{
+  NSException *ex;
+
+  ex = [self copyToFolder: newFolder];
+
+  if (!ex)
+    ex = [self delete];
+
+  return ex;
 }
 
 /* DAV */
@@ -100,7 +116,7 @@
 
   vlist = [self vList];
 
-  [self saveContentString: [vlist versitString]];
+  [self saveComponent: vlist];
 }
 
 @end

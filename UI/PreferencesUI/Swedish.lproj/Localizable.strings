@@ -114,14 +114,14 @@
 "Show subscribed mailboxes only" = "Visa endast prenumrerade postlådor";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hämta ny post:";
-"messagecheck_manually" = "Manuellt";
-"messagecheck_every_minute" = "Varje minut";
-"messagecheck_every_2_minutes" = "Varje 2 minuter";
-"messagecheck_every_5_minutes" = "Varje 5 minuter";
-"messagecheck_every_10_minutes" = "Varje 10 minuter";
-"messagecheck_every_20_minutes" = "Varje 20 minuter";
-"messagecheck_every_30_minutes" = "Varje 30 minuter";
-"messagecheck_once_per_hour" = "Varje timme";
+"refreshview_manually" = "Manuellt";
+"refreshview_every_minute" = "Varje minut";
+"refreshview_every_2_minutes" = "Varje 2 minuter";
+"refreshview_every_5_minutes" = "Varje 5 minuter";
+"refreshview_every_10_minutes" = "Varje 10 minuter";
+"refreshview_every_20_minutes" = "Varje 20 minuter";
+"refreshview_every_30_minutes" = "Varje 30 minuter";
+"refreshview_once_per_hour" = "Varje timme";
 
 "Forward messages:" = "Vidarebefordra meddelanden:";
 "messageforward_inline" = "Infogade";
@@ -178,7 +178,7 @@ Servernamn:";
 "Contacts" = "Adressbok";
 "Mail" = "E-post";
 "Last" = "Senast använd";
-"Default module :" = "Standardmodul:";
+"Default Module :" = "Standardmodul:";
 
 "Language :" = "Språk:";
 "choose" = "Välj ...";

@@ -155,6 +155,7 @@
 "What to Print" = "Was soll gedruckt werden";
 "Options" = "Optionen";
 "Tasks with no due date" = "Aufgaben ohne Fälligkeitsdatum";
+"Display working hours only" = "Nur Arbeitszeit anzeigen";
 "Completed tasks" = "Abgeschlossene Aufgaben";
 
 /* Appointments */
@@ -542,6 +543,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "tagWasRemoved" = "Wenn der Kalender aus der Synchronisation entfernt wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
 "DestinationCalendarError" = "Quell- und Zielkalender sind identisch. Bitte kopieren Sie in einen anderen Kalender.";
 "EventCopyError" = "Kopieren fehlgeschlagen. Bitte kopieren Sie in einen anderen Kalender.";
+"Please select at least one calendar" = "Bitte mindestens einen Kalender auswählen";
+
 
 "Open Task..." = "Aufgabe öffnen...";
 "Mark Completed" = "Als abgeschlossen markieren";

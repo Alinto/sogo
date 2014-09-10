@@ -155,6 +155,7 @@
 "What to Print" = "Rozsah tisku";
 "Options" = "Možnosti";
 "Tasks with no due date" = "Úkoly bez termínu";
+"Display working hours only" = "Zobrazit jen pracovní hodiny";
 "Completed tasks" = "Dokončené úkoly";
 
 /* Appointments */
@@ -377,7 +378,7 @@
 
 "Choose a Reminder Action" = "Zvolit akci";
 "Show an Alert" = "Zobrazit výstrahu";
-"Send an E-mail" = "Poslat e-mai";
+"Send an E-mail" = "Poslat e-mail";
 "Email Organizer" = "E-mail organizátorovi";
 "Email Attendees" = "E-mail účastníkům";
 
@@ -392,7 +393,7 @@
 "Show Time as Free" = "Čas zobrazit jako volný";
 
 /* email notifications */
-"Send Appointment Notifications" = "Poslat upozornění na schůzku";
+"Send Appointment Notifications" = "Poslat pozvání na schůzku";
 
 /* validation errors */
 
@@ -493,7 +494,7 @@ vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Důvěrný úkol)";
 
 "closeThisWindowMessage" = "Děkujeme! Nyní můžete okno zavřít nebo se podívat na vaše ";
-"Multicolumn Day View" = "Vícesloupkové denní zobrazení";
+"Multicolumn Day View" = "Sloupce";
 
 "Please select an event or a task." = "Vyberte prosím událost nebo úkol.";
 
@@ -542,6 +543,8 @@ vtodo_class2 = "(Důvěrný úkol)";
 "tagWasRemoved" = "Odstraníte-li u tohoto kalendáře synchronizaci, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
 "EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"Please select at least one calendar" = "Prosím zvolte alespoň jeden kalendář";
+
 
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";

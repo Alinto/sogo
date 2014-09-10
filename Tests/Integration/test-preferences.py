@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from config import hostname, port, username, password
+from config import hostname, port, username, password, white_listed_attendee
 
 import preferences
 import simplejson
@@ -34,6 +34,23 @@ class preferencesTest(unittest.TestCase):
       """ Set/get a text preference - weird characters - used to crash on 1.3.12"""
       prefText = "weird data   \ ' \"; ^"
       self._setTextPref(prefText)
+
+    def testSetPreventInvitation(self):
+      """ Set/get the PreventInvitation pref"""
+      self.prefs.set('PreventInvitations', '0')
+      notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
+      self.assertEqual(notset, 0)
+      self.prefs.set('enablePreventInvitations', '0')
+      isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
+      self.assertEqual(isset, 1)
+
+    def testPreventInvitationsWhiteList(self):
+      """Add to the PreventInvitations Whitelist"""
+      self.prefs.set("whiteList", white_listed_attendee)
+      whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
+      self.assertEqual(whitelist, white_listed_attendee)
+
+
 
 if __name__ == "__main__":
     sogotests.runTests()

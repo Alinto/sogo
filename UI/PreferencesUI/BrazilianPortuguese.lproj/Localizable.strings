@@ -127,14 +127,14 @@
 "Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
 "Check for new mail:" = "Checar novos emails:";
-"messagecheck_manually" = "Manualmente";
-"messagecheck_every_minute" = "A cada minuto";
-"messagecheck_every_2_minutes" = "A cada 2 minutos";
-"messagecheck_every_5_minutes" = "A cada 5 minutos";
-"messagecheck_every_10_minutes" = "A cada 10 minutos";
-"messagecheck_every_20_minutes" = "A cada 20 minutos";
-"messagecheck_every_30_minutes" = "A cada 30 minutos";
-"messagecheck_once_per_hour" = "Uma vez por hora";
+"refreshview_manually" = "Manualmente";
+"refreshview_every_minute" = "A cada minuto";
+"refreshview_every_2_minutes" = "A cada 2 minutos";
+"refreshview_every_5_minutes" = "A cada 5 minutos";
+"refreshview_every_10_minutes" = "A cada 10 minutos";
+"refreshview_every_20_minutes" = "A cada 20 minutos";
+"refreshview_every_30_minutes" = "A cada 30 minutos";
+"refreshview_once_per_hour" = "Uma vez por hora";
 
 "Forward messages:" = "Encaminhar mensagens:";
 "messageforward_inline" = "No corpo da mensagem";
@@ -199,7 +199,7 @@
 "Contacts" = "Catálogo";
 "Mail" = "Correio";
 "Last" = "Último usado";
-"Default module :" = "Módulo Padrão:";
+"Default Module :" = "Módulo Padrão:";
 
 "Language :" = "Idioma :";
 "choose" = "Escolha ...";

@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
 
+"Prevent from being invited to appointments" = "Voorkom uitgenodigingen voor gebeurtenissen";
+"White list for appointment invitations:" = "Whitelist voor uitnodigingen:";
+"Contacts Names" = "Contactnamen";
+
 /* Default Calendar */
 "Default calendar :" = "Standaardagenda:";
 "selectedCalendar" = "Geselecteerde agenda";
@@ -131,14 +135,14 @@
 "Sort messages by threads" = "Berichten sorteren op threads";
 "When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
 "Check for new mail:" = "Controleren op nieuwe mail:";
-"messagecheck_manually" = "Handmatig";
-"messagecheck_every_minute" = "Iedere minuut";
-"messagecheck_every_2_minutes" = "Iedere 2 minuten";
-"messagecheck_every_5_minutes" = "Iedere 5 minuten";
-"messagecheck_every_10_minutes" = "Iedere 10 minuten";
-"messagecheck_every_20_minutes" = "Iedere 20 minuten";
-"messagecheck_every_30_minutes" = "Iedere 30 minuten";
-"messagecheck_once_per_hour" = "Ieder uur";
+"refreshview_manually" = "Handmatig";
+"refreshview_every_minute" = "Iedere minuut";
+"refreshview_every_2_minutes" = "Iedere 2 minuten";
+"refreshview_every_5_minutes" = "Iedere 5 minuten";
+"refreshview_every_10_minutes" = "Iedere 10 minuten";
+"refreshview_every_20_minutes" = "Iedere 20 minuten";
+"refreshview_every_30_minutes" = "Iedere 30 minuten";
+"refreshview_once_per_hour" = "Ieder uur";
 
 "Forward messages:" = "Berichten doorsturen:";
 "messageforward_inline" = "In het bericht";
@@ -207,8 +211,8 @@
 "Contacts" = "Adresboek";
 "Mail" = "Mail";
 "Last" = "Laatst gebruikt";
-"Default module :" = "Standaardmodule:";
-"SOGo version:" = "SOGo versie:";
+"Default Module :" = "Standaardmodule:";
+"SOGo Version :" = "SOGo versie:";
 
 "Language :" = "Taal:";
 "choose" = "Kies...";

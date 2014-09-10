@@ -63,5 +63,12 @@
      image = "tb-mail-print-flat-24x24.png";
      label = "Print"; 
      tooltip = "Print this message"; },
+     
+     { link = "#";
+     onclick = "return onSearchMail(event);";
+     cssClass = "";
+     image = "search-messages.png";
+     label = "Search";
+     tooltip = "Search multiple mailboxes"; }
   )
 )

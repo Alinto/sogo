@@ -34,6 +34,7 @@
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "../Common/WODirectAction+SOGo.h"
@@ -145,6 +146,80 @@
   return response;
 }
 
+- (void) collapseAction: (BOOL) isCollapsing
+{
+  SOGoMailObject *co;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSMutableArray *mailboxThreadsCollapsed;
+  NSString *msguid, *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  SOGoUserSettings *us;
+
+  co = [self clientObject];
+  us = [[context activeUser] userSettings];
+  if (!(moduleSettings = [us objectForKey: @"Mail"]))
+    [us setObject:[NSMutableDictionary dictionnary] forKey: @"Mail"];
+  msguid = [co nameInContainer];
+  currentMailbox = [[co container] nameInContainer];
+  currentAccount = [[[co container] container] nameInContainer];
+  keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+  
+  if (isCollapsing)
+    {
+      // Check if the module threadsCollapsed is created in the userSettings
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
+        {
+          // Check if the currentMailbox already have other threads saved and add the new collapsed thread
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+            {
+              if (![mailboxThreadsCollapsed containsObject:msguid])
+                [mailboxThreadsCollapsed addObject:msguid];
+            }
+          else
+            {
+              mailboxThreadsCollapsed = [NSMutableArray arrayWithObject:msguid];
+              [threadsCollapsed setObject:mailboxThreadsCollapsed forKey:keyForMsgUIDs];
+            }
+        }
+      else
+        {
+          // Created the module threadsCollapsed and add the new collapsed thread
+          mailboxThreadsCollapsed = [NSMutableArray arrayWithObject:msguid];
+          threadsCollapsed = [NSMutableDictionary dictionaryWithObject:mailboxThreadsCollapsed forKey:keyForMsgUIDs];
+          [moduleSettings setObject:threadsCollapsed forKey: @"threadsCollapsed"];
+        }
+    }
+  else
+    {
+      // Check if the module threadsCollapsed is created in the userSettings
+      if ((threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"]))
+        {
+          // Check if the currentMailbox already have other threads saved and remove the uncollapsed thread
+          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+            {
+              [mailboxThreadsCollapsed removeObject:msguid];
+              if ([mailboxThreadsCollapsed count] == 0)
+                [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+            }
+        }
+    // TODO : Manage errors
+    }
+  [us synchronize];
+}
+
+- (id) markMessageCollapseAction
+{
+  [self collapseAction: YES];
+  
+  return [self responseWith204];
+}
+
+- (id) markMessageUncollapseAction
+{
+  [self collapseAction: NO];
+  
+  return [self responseWith204];
+}
+
 /* SOGoDraftObject */
 - (WOResponse *) editAction
 {
@@ -199,76 +274,6 @@
       response = [self responseWithStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
-
-  return response;
-}
-
-- (WOResponse *) addLabelAction
-{
-  WOResponse *response;
-  SOGoMailObject *co;
-  NSException *error;
-  NSArray *flags;
-  NSString *flag;
-
-  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
-  co = [self clientObject];
-  flags = [NSArray arrayWithObject: flag];
-
-  error = [co addFlags: flags];
-  if (error)
-    response = (WOResponse *) error;
-  else
-    response = [self responseWith204];
-
-  return response;
-}
-
-- (WOResponse *) removeLabelAction
-{
-  WOResponse *response;
-  SOGoMailObject *co;
-  NSException *error;
-  NSArray *flags;
-  NSString *flag;
-
-  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
-  co = [self clientObject];
-  flags = [NSArray arrayWithObject: flag];
-
-  error = [co removeFlags: flags];
-  if (error)
-    response = (WOResponse *) error;
-  else
-    response = [self responseWith204];
-
-  return response;
-}
-
-- (WOResponse *) removeAllLabelsAction
-{
-  NSMutableArray *flags;
-  WOResponse *response;
-  SOGoMailObject *co;
-  NSException *error;
-  NSDictionary *v;
-
-
-  co = [self clientObject];
-
-  v = [[[context activeUser] userDefaults] mailLabelsColors];
-
-  // We always unconditionally remove the Mozilla tags
-  flags = [NSMutableArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
-                          @"$Label4", @"$Label5", nil];
-
-  [flags addObjectsFromArray: [v allKeys]];
-
-  error = [co removeFlags: flags];
-  if (error)
-    response = (WOResponse *) error;
-  else
-    response = [self responseWith204];
 
   return response;
 }

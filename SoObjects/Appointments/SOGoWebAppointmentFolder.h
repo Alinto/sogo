@@ -1,9 +1,6 @@
 /* SOGoWebAppointmentFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
- *
- * Author: Cyril Robert <crobert@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -181,6 +181,16 @@
           pageName    = "UIxMailUserRightsEditor";
           actionName  = "saveUserRights";
         };
+        addOrRemoveLabel = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName  = "addOrRemoveLabel";
+        };
+        removeAllLabels = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName  = "removeAllLabels";
+        };
       };
     };
 
@@ -252,6 +262,16 @@
           actionClass = "UIxMailActions";
           actionName  = "forward";
         };
+        markMessageUncollapse = {
+          protectedBy = "View";
+          actionClass = "UIxMailActions";
+          actionName  = "markMessageUncollapse";
+        };
+        markMessageCollapse = {
+          protectedBy = "View";
+          actionClass = "UIxMailActions";
+          actionName  = "markMessageCollapse";
+        };
         markMessageUnflagged = {
           protectedBy = "View";
           actionClass = "UIxMailActions";
@@ -271,21 +291,6 @@
           protectedBy = "View";
           actionClass = "UIxMailActions";
           actionName  = "markMessageRead";
-        };
-        addLabel = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "addLabel";
-        };
-        removeLabel = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "removeLabel";
-        };
-        removeAllLabels = {
-          protectedBy = "View";
-          actionClass = "UIxMailActions";
-          actionName  = "removeAllLabels";
         };
       };
     };
@@ -326,6 +331,10 @@
           protectedBy = "View";
           pageName    = "UIxMailMainFrame";
           actionName  = "saveColumnsState";
+        };
+        search = {
+          protectedBy = "View";
+          pageName    = "UIxMailSearch";
         };
       };
     };

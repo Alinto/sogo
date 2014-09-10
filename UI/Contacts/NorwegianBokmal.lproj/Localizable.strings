@@ -36,7 +36,6 @@
 "delete" = "slett";
 "edit" = "endre";
 "invalidemailwarn" = "Den spesifiserte e-posten er ikke gyldig";
-"invaliddatewarn" = "Den spesifiserte datoen er ikke gyldig.";
 "new" = "ny";
 "Preferred Phone" = "Foretrukket telefon";
 
@@ -64,6 +63,7 @@
 
 "New Card" = "Nytt adressekort";
 "New List" = "Ny mailingliste";
+"Edit" = "Endre";
 "Properties" = "Egenskaper";
 "Sharing..." = "Deling...";
 "Write" = "Skriv";
@@ -147,7 +147,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "Du kan ikke slette adressekortet \"%{0}\".";
 
-"Address Book Name" = "Navn på adressebok";
+
 
 "You cannot subscribe to a folder that you own!"
 = "Du kan ikke abonnere på en mappe som du selv eier.";
@@ -206,3 +206,10 @@
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adressekortene ble importert til adresseboken.";
 
 "Reload" = "Last på nytt";
+
+/* Properties window */
+"Address Book Name:" = "Addressebok navn:";
+"Links to this Address Book" = "Lenker til denne addresseboken";
+"Authenticated User Access" = "Autentisert brukertilgang";
+"CardDAV URL: " = "CardDAV URL:";
+

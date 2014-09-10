@@ -13,6 +13,7 @@
 "Print"       = "Print";
 "Stop"        = "Stop";
 "Write"       = "Write";
+"Search"      = "Search";
 
 "Send" = "Send";
 "Contacts" = "Contacts";
@@ -41,6 +42,7 @@
 "Attachment" = "Attachment";
 "Unread" = "Unread";
 "Flagged" = "Flagged";
+"Search multiple mailboxes" = "Search multiple mailboxes";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "To";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	= "Reply-To";
+"Reply-To"	    = "Reply-To";
 "Add address"   = "Add address";
+"Body"          = "Body";
 
 "Open" = "Open";
 "Select All" = "Select All";
@@ -236,6 +239,18 @@
 "As Junk" = "As Junk";
 "As Not Junk" = "As Not Junk";
 "Run Junk Mail Controls" = "Run Junk Mail Controls";
+
+"Search messages in:" = "Search messages in:";
+"Search" = "Search";
+"Search subfolders" = "Search subfolders";
+"Match any of the following" = "Match any of the following";
+"Match all of the following" = "Match all of the following";
+"contains" = "contains";
+"does not contain" = "does not contain";
+"No matches found" = "No matches found";
+"results found" = "results found";
+"result found" = "result found";
+"Please specify at least one filter" = "Please specify at least one filter";
 
 /* Folder operations */
 "Name :" = "Name :";

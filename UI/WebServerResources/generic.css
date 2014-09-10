@@ -28,8 +28,7 @@ TABLE, DIV, IMG
   font-size: inherit;
   border: 0px;
   margin: 0px;
-  padding: 0px;
-  word-break:break-all; }
+  padding: 0px; }
 
 FIELDSET
 { border: 1px solid #aaa;
@@ -113,8 +112,8 @@ div#header
   border-bottom: 1px solid #000; }
 
 div#header img.headerlogo
-{ float: right; 
-  width: 182px; 
+{ float: right;
+  width: 182px;
   height: 30px; }
 
 div#header div#headerhistory
@@ -185,7 +184,7 @@ DIV.linkbanner IMG
 { vertical-align: bottom;
   text-align: left; }
 
-.linkbannerimage { 
+.linkbannerimage {
   text-align: right; }
 
 DIV.contactSelector
@@ -229,7 +228,7 @@ DIV.contactSelector DIV.contactList
   border-left: 1px solid #FFFFFF;
   border-bottom: 1px solid #909090;
   border-right: 1px solid #909090;
-  overflow: auto; 
+  overflow: auto;
   overflow-x: hidden; }
 
 .popupMenu
@@ -375,7 +374,7 @@ TH.tbtv_navcell
   text-align: left;
   font-weight: normal;
   background-color: #E7E7E7;
-  height: 20px; }
+  height: 20px;}
 
 TD.sortableTableHeader:active,
 TH.sortableTableHeader:active
@@ -411,7 +410,8 @@ TH.tbtv_headercell IMG.tbtv_sortcell
   text-align: right;
   border: 0px;
   width: 12px;
-  height: 12px; }
+  height: 12px;
+  top:0;}
 
 .tableview
 { cursor: default;
@@ -474,7 +474,7 @@ DIV#javascriptSafetyNet
 DIV.javascriptPopupBackground
 { position: absolute;
   background-color: #999;
-  -moz-opacity: 0.6; 
+  -moz-opacity: 0.6;
   opacity: 0.6;
   z-index: 2;
   top: 0px;
@@ -532,7 +532,7 @@ TD._selected
 }
 
 LI._selected.denied
-{ 
+{
   background-color: #f33;
 }
 
@@ -556,7 +556,7 @@ DIV.dTreeNode A._selected SPAN.nodeName
 /* drag'n'drop */
 
 DIV.dTreeNode SPAN._dragOver
-{ 
+{
   background-color: #9ABCD8;
   color: #fff;
 }
@@ -805,9 +805,9 @@ INPUT[name="search"]
   background-color: #CCDDEC;
   color: #909090; }
 
-/* Buttons 
+/* Buttons
  * Avoid using DIVS as buttons, they're only helpful when they have multiple
- * listeners for "onclick" 
+ * listeners for "onclick"
  */
 .button, a.button {
   padding: 0px 0.5em;
@@ -816,7 +816,7 @@ INPUT[name="search"]
   float: right;
   height: 23px;
   padding-right: 3px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   text-align: center;
   color: inherit;
   cursor: pointer;
@@ -848,6 +848,23 @@ INPUT[name="search"]
 .disabled.button:active SPAN
 { background-position: top left;
   padding: 5px 2px 5px 5px; }
+
+.badge
+{ display: inline-block;
+  min-width: 10px;
+  padding: 2px 3px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #777;
+  border-radius: 10px; }
+
+.badge:empty
+{ display: none; }
 
 dt, dd {
   line-height: 20px;
@@ -969,7 +986,7 @@ DIV.tabsContainer > UL LI
   float: left;
   height: 24px;
   padding-right: 2px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit; }
 
 DIV.tabsContainer > UL LI SPAN
@@ -1076,15 +1093,15 @@ DIV.toolbar IMG.buttonImage
 { width: 24px;
   height: 24px; }
 
-A.toolbarButton, 
+A.toolbarButton,
 A.toolbarButton:hover,
-A.smallToolbarButton, 
+A.smallToolbarButton,
 A.smallToolbarButton:hover {
   display: inline;
   float: left;
   height: 49px;
   padding-right: 3px; /* sliding doors padding */
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
@@ -1108,7 +1125,7 @@ A.toolbarButton:hover SPAN {
   cursor: pointer;
 }
 
-A.smallToolbarButton SPAN, 
+A.smallToolbarButton SPAN,
 A.smallToolbarButton:hover SPAN {
   text-align: center;
   display: block;
@@ -1155,7 +1172,7 @@ DIV.bottomToolbar A.bottomButton
   padding: 0px;
   width: 23px;
   text-align: center;
-  text-decoration: none;  
+  text-decoration: none;
   color: inherit;
   cursor: pointer;
   border-bottom: 1px solid #9B9B9B;

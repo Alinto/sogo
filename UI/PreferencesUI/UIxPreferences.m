@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
@@ -41,6 +42,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -638,6 +640,48 @@ static NSArray *reminderValues = nil;
   return [userDefaults busyOffHours];
 }
 
+- (NSArray *) whiteList
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  NSArray *whiteList;
+  
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
+  return whiteList;
+}
+
+- (void) setWhiteList: (NSString *) whiteListString
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  [moduleSettings setObject: whiteListString forKey: @"PreventInvitationsWhitelist"];
+  [us synchronize];
+}
+
+- (void) setPreventInvitations: (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  [moduleSettings setObject: [NSNumber numberWithBool: preventInvitations] forKey: @"PreventInvitations"];
+  [us synchronize];
+}
+
+- (BOOL) preventInvitations
+{
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
+  us = [user userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+  return [[moduleSettings objectForKey: @"PreventInvitations"] boolValue];
+}
+
 - (NSArray *) firstWeekList
 {
   return [NSArray arrayWithObjects:
@@ -761,15 +805,15 @@ static NSArray *reminderValues = nil;
   [userDefaults setSelectedAddressBook: newSelectedAddressBook];
 }
 
-- (NSArray *) messageCheckList
+- (NSArray *) refreshViewList
 {
   NSArray *intervalsList;
-  NSMutableArray *messageCheckList;
+  NSMutableArray *refreshViewList;
   NSString *value;
   int count, max, interval;
 
-  intervalsList = [[user domainDefaults] mailPollingIntervals];
-  messageCheckList = [NSMutableArray arrayWithObjects: @"manually", nil];
+  intervalsList = [[user domainDefaults] refreshViewIntervals];
+  refreshViewList = [NSMutableArray arrayWithObjects: @"manually", nil];
   max = [intervalsList count];
   for (count = 0; count < max; count++)
     {
@@ -788,26 +832,25 @@ static NSArray *reminderValues = nil;
           value = nil;
         }
       if (value)
-        [messageCheckList addObject: value];
+        [refreshViewList addObject: value];
     }
 
-  return messageCheckList;
+  return refreshViewList;
 }
 
-- (NSString *) itemMessageCheckText
+- (NSString *) itemRefreshViewCheckText
 {
-  return [self labelForKey:
-                 [NSString stringWithFormat: @"messagecheck_%@", item]];
+  return [self labelForKey: [NSString stringWithFormat: @"refreshview_%@", item]];
 }
 
-- (NSString *) userMessageCheck
+- (NSString *) userRefreshViewCheck
 {
-  return [userDefaults mailMessageCheck];
+  return [userDefaults refreshViewCheck];
 }
 
-- (void) setUserMessageCheck: (NSString *) newMessageCheck
+- (void) setUserRefreshViewCheck: (NSString *) newRefreshViewCheck
 {
-  [userDefaults setMailMessageCheck: newMessageCheck];
+  [userDefaults setRefreshViewCheck: newRefreshViewCheck];
 }
 
 - (NSArray *) messageForwardingList

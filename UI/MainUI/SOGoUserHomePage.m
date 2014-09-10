@@ -1,8 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +44,8 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
+
+#import <SBJson/NSObject+SBJSON.h>
 
 #define intervalSeconds 900 /* 15 minutes */
 
@@ -91,7 +91,7 @@
   NSDictionary *record;
   SOGoUser *user;
 
-  int recordCount, recordMax, count, startInterval, endInterval, i, type, maxBookings, isResource;
+  int recordCount, recordMax, count, startInterval, endInterval, i, type, maxBookings, isResource, delta;
 
   recordMax = [records count];
   user = [SOGoUser userWithLogin: [[self clientObject] ownerInContext: context] roles: nil];
@@ -148,12 +148,18 @@
                     startInterval = ([currentDate timeIntervalSinceDate: startDate]
                                      / intervalSeconds);
 
+                  delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
+                  startInterval += (delta/60/15);
+
                   currentDate = [record objectForKey: @"endDate"];
                   if ([currentDate earlierDate: endDate] == endDate)
                     endInterval = itemCount - 1;
                   else
                     endInterval = ([currentDate timeIntervalSinceDate: startDate]
                                    / intervalSeconds);
+                  
+                  delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
+                  endInterval += (delta/60/15);
 
                   // Update bit string representation
                   // If the user is a resource, keep the sum of overlapping events
@@ -183,10 +189,30 @@
                           forFreeBusy: (SOGoFreeBusyObject *) fb
                            andContact: (NSString *) uid
 {
+  NSCalendarDate *start, *end;
   NSMutableArray *freeBusy;
   unsigned int *freeBusyItems;
   NSTimeInterval interval;
   unsigned int count, intervals;
+
+  // We "copy" the start/end date because -fetchFreeBusyInfosFrom will mess
+  // with the timezone and we don't want that to properly calculate the delta
+  // DO NOT USE -copy HERE - it'll simply return [self retain].
+  start = [NSCalendarDate dateWithYear: [startDate yearOfCommonEra]
+                                 month: [startDate monthOfYear]
+                                   day: [startDate dayOfMonth]
+                                  hour: [startDate hourOfDay]
+                                minute: [startDate minuteOfHour]
+                                second: [startDate secondOfMinute]
+                              timeZone: [startDate timeZone]];
+  
+  end = [NSCalendarDate dateWithYear: [endDate yearOfCommonEra]
+                               month: [endDate monthOfYear]
+                                 day: [endDate dayOfMonth]
+                                hour: [endDate hourOfDay]
+                              minute: [endDate minuteOfHour]
+                              second: [endDate secondOfMinute]
+                            timeZone: [endDate timeZone]];
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / intervalSeconds; /* slices of 15 minutes */
@@ -195,7 +221,7 @@
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems
                      count: intervals
-	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate forContact: uid]
+	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
              fromStartDate: startDate
                  toEndDate: endDate];
 
@@ -437,17 +463,13 @@
 - (WOResponse *) _foldersResponseForResults: (NSArray *) folders
 {
   WOResponse *response;
-  NSEnumerator *foldersEnum;
-  NSDictionary *currentFolder;
 
   response = [context response];
   [response setStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"Content-Type"];
-  foldersEnum = [folders objectEnumerator];
-  while ((currentFolder = [foldersEnum nextObject]))
-    [response appendContentString:
-		[currentFolder keysWithFormat: @";%{displayName}:%{name}:%{type}"]];
+
+  [response appendContentString: [folders JSONRepresentation]];
 
   return response;
 }

@@ -79,7 +79,7 @@
 "Remove this folder" = "Esborrar aquesta carpeta";
 "Erase mails from this folder" = "Esborrar els correus d'aquesta carpeta";
 "Expunge this folder" = "Compactar aquesta carpeta";
-"Archive This Folder" = "Arxivar aquesta carpeta";
+"Export This Folder" = "Exportar Aquesta Carpeta";
 "Modify the acl of this folder" = "Modificar la llista de permisos d'aquesta carpeta";
 
 "Saved Messages.zip" = "missatgesdesats.zip";
@@ -97,11 +97,12 @@
 "Reply-To"	= "Respondre a";
 "Add address"   = "Afegir adreça";
 
-"Attachments:" = "Adjunts:";
 "Open" = "Obrir";
 "Select All" = "Seleccionar tots";
 "Attach Web Page..." = "Adjuntar pàgina Web...";
-"Attach File(s)..." = "Adjuntar fitxers...";
+"file" = "Fitxer";
+"files" = "Fitxers";
+"Save all" = "Desar Tot";
 
 "to"            = "per a";
 "cc"            = "cc";
@@ -252,7 +253,6 @@
 "Please select only one message to print." = "Per imprimir, seleccioneu només un missatge.";
 "The message you have selected doesn't exist anymore." = "El missatge seleccionat ja no existeix.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "La carpeta de nom \"%{0}\" no es pot crear.";
 "This folder could not be renamed to \"%{0}\"."
@@ -279,11 +279,15 @@
 "error_missingsubject" = "No heu indicat l'assumpte";
 "error_missingrecipients" = "No heu indicat els destinataris";
 "Send Anyway" = "Enviar igualment";
+"Error while saving the draft:" = "Error en guardar l'esborrany:";
+"Error while uploading the file \"%{0}\":" = "Error en carregar el fitxer \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Hi ha una càrrega de fitxer activa. S'interromprà si es tanca la finestra.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
 "cannot send message (smtp) - recipients discarded:" = "No s'ha pogut enviar el missatge. Les següents adreces són incorrectes:";
 "cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";
 
-"Name" = "Nom";
+/* Contacts list in mail editor */
 "Email" = "Correu electrònic";
+"Name" = "Nom";
