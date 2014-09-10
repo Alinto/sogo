@@ -258,7 +258,7 @@ function onAddFilter() {
     for (var i = 0; i < searchByList.length; i++) {
         var option = document.createElement("option");
         option.value = options[i];
-        option.text = searchByList[i].innerHTML;
+        option.innerHTML = searchByList[i].innerHTML;
         element1.appendChild(option);
     }
     cell1.appendChild(element1);
@@ -269,7 +269,7 @@ function onAddFilter() {
     element2.setAttribute("id", "searchArgumentsListRow" + rowCount);
     for (var i = 0; i < stringArgumentsList.length; i++) {
         var option = document.createElement("option");
-        option.text = stringArgumentsList[i].innerHTML;
+        option.innerHTML = stringArgumentsList[i].innerHTML;
         element2.appendChild(option);
     }
     cell2.appendChild(element2);
