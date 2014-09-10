@@ -3128,7 +3128,7 @@ function multicolumndayviewCalendarSelector(event, target) {
             var calendar = "[id='/" + target.up("[calendar]").getAttribute("calendar") + "']";
         var list = $("calendarList");
         var selectedCalendar = list.down(calendar);
-        
+
         onRowClick(event, selectedCalendar);
     }
 }
