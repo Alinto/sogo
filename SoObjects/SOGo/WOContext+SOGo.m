@@ -48,6 +48,11 @@
 
   if ([theme length] > 0)
     {
+      if ([theme hasSuffix: @"/"])
+        {
+          // Remove trailing slash
+          theme = [theme substringToIndex: [theme length] - 1];
+        }
       [languages addObject: [NSString stringWithFormat: @"theme_%@", theme]];
       [self setObject: theme forKey: @"theme"];
     }
