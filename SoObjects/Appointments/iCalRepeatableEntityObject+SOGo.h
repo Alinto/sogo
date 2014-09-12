@@ -28,6 +28,7 @@
 
 - (NSString *) cycleInfo;
 - (NGCalendarDateRange *) firstOccurenceRange;
+- (NSTimeInterval) occurenceInterval;
 - (BOOL) doesOccurOnDate: (NSCalendarDate *) occurenceDate;
 
 @end

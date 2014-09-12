@@ -176,7 +176,6 @@
 ////////////////////////////////// JUNK ////////////////////////////////////////
 
 /* access */
-- (BOOL) isMyComponent;
 - (BOOL) canEditComponent;
 - (unsigned int) firstDayOfWeek;
 

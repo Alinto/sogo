@@ -417,4 +417,11 @@ lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarD
   return firstOccurrenceStartDate;
 }
 
+- (NSCalendarDate *) lastPossibleRecurrenceStartDate
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 @end

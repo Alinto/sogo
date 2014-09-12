@@ -38,10 +38,11 @@
 
 @implementation iCalToDo (SOGoExtensions)
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *dueDate, *nextAlarmDate;
+  NSCalendarDate *startDate, *dueDate;
   NSArray *attendees, *categories;
   NSString *uid, *title, *location, *status;
   NSNumber *sequence;
@@ -55,7 +56,6 @@
  
   startDate = [self startDate];
   dueDate = [self due];
-  nextAlarmDate = nil;
   uid = [self uid];
   title = [self summary];
   if (![title isNotNull])
@@ -168,35 +168,8 @@
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 
-  nextAlarmDate = nil;
-  if (![self isRecurrent] && [self hasAlarms])
-    {
-      // We currently have the following limitations for alarms:
-      // - the component must not be recurrent;
-      // - only the first alarm is considered;
-      // - the alarm's action must be of type DISPLAY;
-      //
-      // Morever, we don't update the quick table if the property X-WebStatus
-      // of the trigger is set to "triggered".
-      iCalAlarm *anAlarm;
-      NSString *webstatus;
-
-      anAlarm = [[self alarms] objectAtIndex: 0];
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"]
-          == NSOrderedSame)
-        {
-          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
-          if (!webstatus
-              || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
-                  != NSOrderedSame))
-            nextAlarmDate = [anAlarm nextAlarmDate];
-        }
-    }
-  if ([nextAlarmDate isNotNull])
-    [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
-	 forKey: @"c_nextalarm"];
-  else
-    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
+  /* handle alarms */
+  [self updateNextAlarmDateInRow: row  forContainer: theContainer];
   
   categories = [self categories];
   if ([categories count] > 0)
@@ -206,13 +179,7 @@
   return row;
 }
 
-- (NGCalendarDateRange *) firstOccurenceRange
-{
-  return [NGCalendarDateRange calendarDateRangeWithStartDate: [self startDate]
-			      endDate: [self due]];
-}
-
-- (unsigned int) occurenceInterval
+- (NSTimeInterval) occurenceInterval
 {
   return [[self due] timeIntervalSinceDate: [self startDate]];
 }

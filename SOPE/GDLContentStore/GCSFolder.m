@@ -944,7 +944,7 @@ andAttribute: (EOAttribute *)_attribute
 	      || *_baseVersion == [storedVersion unsignedIntValue])
 	    {
 	      /* extract quick info */
-              quickRow = [theComponent performSelector: @selector(quickRecordForContainer:)  withObject: theContainer];
+              quickRow = [theComponent performSelector: @selector(quickRecordFromContent:container:)  withObject: _content  withObject: theContainer];
 	      if (quickRow)
 		{
 		  [quickRow setObject:_name forKey:@"c_name"];

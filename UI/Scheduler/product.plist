@@ -399,6 +399,11 @@
           pageName    = "UIxTaskEditor"; 
           actionName  = "save";
         };
+        delete = {
+          protectedBy = "Delete Object";
+          pageName    = "UIxOccurenceDialog";
+          actionName  = "delete";
+        };
       };
     };
   };

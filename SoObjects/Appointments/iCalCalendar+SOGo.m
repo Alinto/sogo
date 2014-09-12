@@ -25,6 +25,7 @@
 #import <NGCards/iCalRepeatableEntityObject.h>
 
 #import "iCalCalendar+SOGo.h"
+#import "iCalEntityObject+SOGo.h"
 
 @implementation iCalCalendar (SOGoExtensions)
 
@@ -78,7 +79,8 @@
   return [self _occurrence: recID inArray: [self todos]];
 }
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   CardGroup *element;
   NSArray *elements;
@@ -91,11 +93,11 @@
     element = [elements objectAtIndex: 0];
   else
     {
-      [self logWithFormat: @"ERROR: given calendar contains no elements: %@", self];
+      NSLog(@"ERROR: given calendar contains no elements: %@", self);
       element = nil;
     }
 
-  return [element quickRecordForContainer: theContainer];
+  return [(id)element quickRecordFromContent: theContent  container: theContainer];
 }
 
 @end

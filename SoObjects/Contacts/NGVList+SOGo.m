@@ -69,7 +69,8 @@
   return rc;
 }
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   NSMutableDictionary *fields;
   NSString *value;

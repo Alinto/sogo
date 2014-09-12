@@ -27,8 +27,6 @@
 
 @interface iCalToDo (SOGoExtensions)
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer;
-
 @end
 
 #endif /* ICALTODO_SOGO_H */

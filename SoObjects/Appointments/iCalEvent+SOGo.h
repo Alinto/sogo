@@ -29,7 +29,6 @@
 
 - (BOOL) isStillRelevant;
 - (unsigned int) occurenceInterval;
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer;
 - (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate;
 
 @end

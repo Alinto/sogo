@@ -89,7 +89,7 @@
 {
   if (!todo)
     {
-      todo = (iCalToDo *) [[self clientObject] component: YES secure: YES];
+      todo = (iCalToDo *) [[self clientObject] occurence];
       [[todo parent] retain];
     }
 
@@ -424,11 +424,16 @@
   WOResponse *result;
   NSDictionary *data;
   NSCalendarDate *startDate, *dueDate;
+  SOGoCalendarComponent *co;
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
+  iCalAlarm *anAlarm;
   BOOL resetAlarm;
+  BOOL snoozeAlarm;
 
   [self todo];
+
+  co = [self clientObject];
 
   result = [self responseWithStatus: 200];
   ud = [[context activeUser] userDefaults];
@@ -437,21 +442,41 @@
   [startDate setTimeZone: timeZone];
   dueDate = [todo due];
   [dueDate setTimeZone: timeZone];
-  
-  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
-  if (resetAlarm && [todo hasAlarms] && ![todo hasRecurrenceRules])
-    {
-      iCalAlarm *anAlarm;
-      iCalTrigger *aTrigger;
-      SOGoCalendarComponent *co;
 
-      anAlarm = [[todo alarms] objectAtIndex: 0];
-      aTrigger = [anAlarm trigger];
-      [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
-      
-      co = [self clientObject];
-      [co saveComponent: todo];
+  // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
+  // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
+  // user clicks on "Snooze for" X minutes, when the popup is being displayed.
+  // If either is set to yes, we must find the right alarm.
+  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+  snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
+  
+  if (resetAlarm || snoozeAlarm)
+    {
+      iCalToDo *master;
+
+      master = todo;
+      [[co container] findEntityForClosestAlarm: &todo
+                                       timezone: timeZone
+                                      startDate: &startDate
+                                        endDate: &dueDate];
+      if (resetAlarm)
+        {
+          iCalTrigger *aTrigger;
+          
+          anAlarm = [[todo alarms] objectAtIndex: 0];
+          aTrigger = [anAlarm trigger];
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+          
+          [co saveComponent: master];
+        }
+      else if (snoozeAlarm)
+        {
+          anAlarm = [[todo alarms] objectAtIndex: 0];
+          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+            [co snoozeAlarm: snoozeAlarm];
+        }
     }
+  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   
   data = [NSDictionary dictionaryWithObjectsAndKeys:
 		       [todo tag], @"component",
@@ -537,26 +562,6 @@
     }
 
 }
-
-// TODO: add tentatively
-
-// - (id) acceptOrDeclineAction: (BOOL) _accept
-// {
-//   [[self clientObject] changeParticipationStatus:
-//                          _accept ? @"ACCEPTED" : @"DECLINED"];
-
-//   return self;
-// }
-
-// - (id) acceptAction
-// {
-//   return [self acceptOrDeclineAction: YES];
-// }
-
-// - (id) declineAction
-// {
-//   return [self acceptOrDeclineAction: NO];
-// }
 
 - (id) changeStatusAction
 {

@@ -26,6 +26,8 @@
 #import "iCalDateTime.h"
 #import "iCalToDo.h"
 
+#import <NGExtensions/NGCalendarDateRange.h>
+
 @implementation iCalToDo
 
 - (Class) classForTag: (NSString *) classTag
@@ -118,5 +120,18 @@
 //   [ms appendString:@">"];
 //   return ms;
 // }
+
+- (NSCalendarDate *) lastPossibleRecurrenceStartDate
+{
+  NGCalendarDateRange *fir;
+
+  if (![self isRecurrent])
+    return nil;
+
+  fir = [NGCalendarDateRange calendarDateRangeWithStartDate: [self startDate]
+                             endDate: [self due]];
+
+  return [self lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: fir];
+}
 
 @end /* iCalToDo */

@@ -905,7 +905,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                      updatedAttendees: nil
                             operation: EventCreated];
     }
-      else
+  else
     {
       BOOL hasOrganizer;
       

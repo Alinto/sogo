@@ -791,7 +791,8 @@ convention:
   return date;
 }
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   NSMutableDictionary *fields;
   CardElement *element;

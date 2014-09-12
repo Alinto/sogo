@@ -1,9 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +30,15 @@
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalByDayMask.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalToDo.h>
 #import <NGCards/iCalTrigger.h>
+
+
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -46,6 +48,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
@@ -1717,14 +1720,9 @@ RANGE(2);
 
 /* access */
 
-- (BOOL) isMyComponent
-{
-  return ([[context activeUser] hasEmail: [organizer rfc822Email]]);
-}
-
 - (BOOL) canEditComponent
 {
-  return [self isMyComponent];
+  return ([[context activeUser] hasEmail: [organizer rfc822Email]]);
 }
 
 /* response generation */

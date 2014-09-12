@@ -28,7 +28,6 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalEvent.h>
@@ -37,6 +36,7 @@
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
 
+#import "SOGoAppointmentFolder.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
 
 #import "iCalEvent+SOGo.h"
@@ -64,10 +64,11 @@
 //
 //
 //
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *endDate, *nextAlarmDate;
+  NSCalendarDate *startDate, *endDate;
   NSArray *attendees, *categories;
   NSString *uid, *title, *location, *status;
   NSNumber *sequence;
@@ -167,6 +168,7 @@
 					  forAllDay: isAllDay]
 	      forKey: @"c_enddate"];
     }
+  
   if ([self isRecurrent])
     {
       NSCalendarDate *date;
@@ -202,11 +204,11 @@
   else
     {
       /* confirmed by default */
-      [row setObject: [NSNumber numberWithInt:1] forKey: @"c_status"];
+      [row setObject: [NSNumber numberWithInt: 1] forKey: @"c_status"];
     }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
-       forKey: @"c_classification"];
+          forKey: @"c_classification"];
 
   organizer = [self organizer];
   if (organizer)
@@ -235,35 +237,10 @@
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 
-  nextAlarmDate = nil;
-  if (![self isRecurrent] && [self hasAlarms])
-    {
-      // We currently have the following limitations for alarms:
-      // - the component must not be recurrent;
-      // - only the first alarm is considered;
-      // - the alarm's action must be of type DISPLAY;
-      //
-      // Morever, we don't update the quick table if the property X-WebStatus
-      // of the trigger is set to "triggered".
-      iCalAlarm *anAlarm;
-      NSString *webstatus;
+  /* handle alarms */
+  [self updateNextAlarmDateInRow: row  forContainer: theContainer];
 
-      anAlarm = [[self alarms] objectAtIndex: 0];
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
-        {
-          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
-          if (!webstatus
-              || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
-                  != NSOrderedSame))
-            nextAlarmDate = [anAlarm nextAlarmDate];
-        }
-    }
-  if ([nextAlarmDate isNotNull])
-    [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
-	 forKey: @"c_nextalarm"];
-  else
-    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
-
+  /* handle categories */
   categories = [self categories];
   if ([categories count] > 0)
     [row setObject: [categories componentsJoinedByString: @","]
@@ -274,33 +251,7 @@
   return row;
 }
 
-/**
- * Extract the start and end dates from the event, from which all recurrence
- * calculations will be based on.
- * @return the range of the first occurrence.
- */
-- (NGCalendarDateRange *) firstOccurenceRange
-{
-  NSCalendarDate *start, *end;
-  NGCalendarDateRange *firstRange;
-  NSArray *dates;
-
-  firstRange = nil;
-
-  dates = [[[self uniqueChildWithTag: @"dtstart"] valuesForKey: @""] lastObject];
-  if ([dates count] > 0)
-    {
-      start = [[dates lastObject] asCalendarDate]; // ignores timezone
-      end = [start addTimeInterval: [self occurenceInterval]];
-
-      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start
-                                                               endDate: end];
-    }
-  
-  return firstRange;
-}
-
-- (unsigned int) occurenceInterval
+- (NSTimeInterval) occurenceInterval
 {
   return [[self endDate] timeIntervalSinceDate: [self startDate]];
 }

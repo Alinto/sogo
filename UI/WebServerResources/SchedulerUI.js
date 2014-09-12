@@ -678,10 +678,10 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
     }
 
     // Delete task from tasks list
-    var row = $(calendar + basename);
-    if (row) {
+    var rows = $$("tr[id^='" + calendar + basename + "']");
+    rows.each(function(row) {
         row.parentNode.removeChild(row);
-    }
+    });
 }
 
 function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
@@ -725,7 +725,6 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
 function deleteEventCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
-            var isTask = false;
             var calendar = http.callbackData.calendar;
             var events = http.callbackData.events;
             for (var i = 0; i < events.length; i++) {
@@ -901,14 +900,14 @@ function performEventDeletion(folder, event, recurrence) {
         if (recurrence) {
             // Only one recurrence
             var occurenceTime = recurrence.substring(9);
-            var nodes = _eventBlocksMatching(folder, event, occurenceTime);
+            //var nodes = _eventBlocksMatching(folder, event, occurenceTime);
             var urlstr = ApplicationBaseURL + "/" + folder + "/" + event  + "/" + recurrence + "/delete";
 
-            if (nodes)
-                document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
-                                                                     performDeleteEventCallback,
-                                                                     { nodes: nodes,
-                                                                       occurence: occurenceTime });
+            document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+                                                                 performDeleteEventCallback,
+                                                                 { calendar: folder,
+                                                                   cname: event,
+                                                                   occurence: occurenceTime });
         }
         else {
             // All recurrences
@@ -926,11 +925,11 @@ function performEventDeletion(folder, event, recurrence) {
 function performDeleteEventCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
+    
             var occurenceTime = http.callbackData.occurence;
-            var nodes = http.callbackData.nodes;
-            var cname = nodes[0].cname;
-            var calendar = nodes[0].calendar;
-
+            var cname = http.callbackData.cname;
+            var calendar = http.callbackData.calendar;
+            
             _deleteCalendarEventBlocks(calendar, cname, occurenceTime);
             _deleteEventFromTables(calendar, cname, occurenceTime);
             _deleteCalendarEventCache(calendar, cname, occurenceTime);
@@ -1178,8 +1177,10 @@ function tasksListCallback(http) {
             // [10] Erasable?
             // [11] Priority (0, 1 = important, 9 = low)
             // [12] Owner
-            // [13] Status CSS class (duelater, completed, etc)
-            // [14] Due date (formatted)
+            // [13] recurrence-id
+            // [14] isException
+            // [15] Status CSS class (duelater, completed, etc)
+            // [16] Due date (formatted)
 
             for (var i = 0; i < data.length; i++) {
                 var row = createElement("tr");
@@ -1189,9 +1190,22 @@ function tasksListCallback(http) {
 
                 var calendar = escape(data[i][1]);
                 var cname = escape(data[i][0]);
-                row.setAttribute("id", calendar + "-" + cname);
+                
+                var rTime = data[i][13];
+                var id = escape(data[i][1] + "-" + data[i][0]);
+                if (rTime)
+                    id += "-" + escape(rTime);
+                row.setAttribute("id", id);
+                //row.cname = escape(data[i][0]);
+                //row.calendar = calendar;
+                if (rTime)
+                    row.recurrenceTime = escape(rTime);
+                row.isException = data[i][14];
+
+
+                //row.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                row.addClassName(data[i][14]); // status
+                //row.addClassName(data[i][14]); // status
                 row.addClassName("taskRow");
                 row.calendar = calendar;
                 row.cname = cname;
@@ -1236,8 +1250,8 @@ function tasksListCallback(http) {
 
                 cell = createElement("td");
                 row.appendChild(cell);
-                if (data[i][14])
-                    cell.update(data[i][14]); // end date
+                if (data[i][16])
+                    cell.update(data[i][16]); // end date
 
                 cell = createElement("td");
                 row.appendChild(cell);
@@ -3086,7 +3100,12 @@ function marksTasksAsCompleted () {
 
 function _updateTaskCompletion (task, value) {
     url = (ApplicationBaseURL + "/" + task.calendar
-           + "/" + task.cname + "/changeStatus?status=" + value);
+           + "/" + task.cname);
+
+    if (task.recurrenceTime)
+        url += ("/occurence" + task.recurrenceTime);
+
+    url += ("/changeStatus?status=" + value);
 
     triggerAjaxRequest(url, refreshTasks, null);
 

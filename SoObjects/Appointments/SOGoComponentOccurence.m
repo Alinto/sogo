@@ -127,6 +127,12 @@
   ASSIGN (parentCalendar, [component parent]);
 }
 
+
+- (iCalRepeatableEntityObject *) masterComponent
+{
+  return master;
+}
+
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster
 {
   master = newMaster;
@@ -194,7 +200,7 @@
       [master increaseSequence];
 
       // We save the updated iCalendar in the database.
-      error = [container saveComponent: calendar];
+      error = [container saveCalendar: calendar];
     }
 
   return error;
