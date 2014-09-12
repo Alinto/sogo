@@ -48,6 +48,10 @@ else
 SOGo_LIBRARIES_DEPEND_UPON += -lcrypt
 endif
 
+ifeq ($(findstring gnu, $(GNUSTEP_HOST_OS)), gnu)
+SOGo_LIBRARIES_DEPEND_UPON += -ldl
+endif
+
 ADDITIONAL_TOOL_LIBS += \
         -L$(GNUSTEP_OBJ_DIR)/ \
         -lSOGo \
