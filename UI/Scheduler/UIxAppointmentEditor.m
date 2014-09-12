@@ -517,21 +517,19 @@
                                          startDate: &eventStartDate
                                            endDate: &eventEndDate];
       
+      anAlarm = [event firstDisplayOrAudioAlarm];
+
       if (resetAlarm)
         {
           iCalTrigger *aTrigger;
-          
-          anAlarm = [[event alarms] objectAtIndex: 0];
+
           aTrigger = [anAlarm trigger];
-          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
-          
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];          
           [co saveComponent: master];
         }
       else if (snoozeAlarm)
         {
-          anAlarm = [[event alarms] objectAtIndex: 0];
-          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
-            [co snoozeAlarm: snoozeAlarm];
+          [co snoozeAlarm: snoozeAlarm];
         }
     }
 

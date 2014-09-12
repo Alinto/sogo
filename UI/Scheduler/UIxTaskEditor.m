@@ -459,11 +459,13 @@
                                        timezone: timeZone
                                       startDate: &startDate
                                         endDate: &dueDate];
+
+      anAlarm = [todo firstDisplayOrAudioAlarm];
+
       if (resetAlarm)
         {
           iCalTrigger *aTrigger;
           
-          anAlarm = [[todo alarms] objectAtIndex: 0];
           aTrigger = [anAlarm trigger];
           [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
           
@@ -471,9 +473,7 @@
         }
       else if (snoozeAlarm)
         {
-          anAlarm = [[todo alarms] objectAtIndex: 0];
-          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
-            [co snoozeAlarm: snoozeAlarm];
+          [co snoozeAlarm: snoozeAlarm];
         }
     }
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];

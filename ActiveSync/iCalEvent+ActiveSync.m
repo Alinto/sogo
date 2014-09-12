@@ -236,7 +236,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       iCalAlarm *alarm;
       
-      alarm = [[self alarms] objectAtIndex: 0];
+      alarm = [self firstDisplayOrAudioAlarm];
       [s appendString: [alarm activeSyncRepresentationInContext: context]];
     }
 

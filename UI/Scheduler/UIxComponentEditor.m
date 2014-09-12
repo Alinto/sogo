@@ -534,16 +534,16 @@ iRANGE(2);
   if ([component hasAlarms])
     {
       // We currently have the following limitations for alarms:
-      // - only the first alarm is considered;
-      // - the alarm's action must be of type DISPLAY;
+      // - the alarm's action must be of type DISPLAY or AUDIO (considered as DISPLAY)
       // - the alarm's trigger value type must be DURATION.
 
-      anAlarm = [[component alarms] objectAtIndex: 0];
+      anAlarm = [component firstSupportedAlarm];
       aTrigger = [anAlarm trigger];
       ASSIGN (reminderAction, [[anAlarm action] lowercaseString]);
-      if (([reminderAction isEqualToString: @"display"]
-           || [reminderAction isEqualToString: @"email"])
-	  && [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+
+      //  The default value type is DURATION. See http://tools.ietf.org/html/rfc5545#section-3.8.6.3
+      if (![[aTrigger valueType] length] ||
+          [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
 	{
 	  duration = [aTrigger flattenedValuesForKey: @""];
 	  i = [reminderValues indexOfObject: duration];

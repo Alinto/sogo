@@ -264,6 +264,50 @@ NSNumber *iCalDistantFutureNumber = nil;
   return created_by;
 }
 
+//
+// We ignore ACTION:PROCEDURE for now.
+//
+- (iCalAlarm *) firstSupportedAlarm
+{
+  iCalAlarm *anAlarm;
+  NSArray *alarms;
+  int i;
+
+  alarms = [self alarms];
+
+  for (i = 0; i < [alarms count]; i++)
+    {
+      anAlarm = [[self alarms] objectAtIndex: i];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"AUDIO"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"EMAIL"] == NSOrderedSame)
+        return anAlarm;
+    }
+
+  return nil;
+}
+
+- (iCalAlarm *) firstDisplayOrAudioAlarm
+{
+  iCalAlarm *anAlarm;
+  NSArray *alarms;
+  int i;
+
+  alarms = [self alarms];
+
+  for (i = 0; i < [alarms count]; i++)
+    {
+      anAlarm = [[self alarms] objectAtIndex: i];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"AUDIO"] == NSOrderedSame)
+        return anAlarm;
+    }
+
+  return nil;
+}
+
 - (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
                      forContainer: (id) theContainer
 {
@@ -284,8 +328,8 @@ NSNumber *iCalDistantFutureNumber = nil;
 
       if (![(id)self isRecurrent])
         {
-          anAlarm = [[self alarms] objectAtIndex: 0];
-          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+          anAlarm = [self firstDisplayOrAudioAlarm];
+          if (anAlarm)
             {
               webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
               if (!webstatus
@@ -370,8 +414,8 @@ NSNumber *iCalDistantFutureNumber = nil;
                       
                       if ([[o alarms] count])
                         {
-                          anAlarm = [[o alarms] objectAtIndex: 0];
-                          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+                          anAlarm = [self firstDisplayOrAudioAlarm];
+                          if (anAlarm)
                             {
                               webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
                               if (!webstatus

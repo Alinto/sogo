@@ -981,7 +981,7 @@ static Class iCalEventK = nil;
   // alarm defined.
   if ([[component alarms] count])
     {
-      alarm = [[component alarms] objectAtIndex: 0];      
+      alarm = [component firstDisplayOrAudioAlarm];   
       [row setObject: [NSNumber numberWithInt: [[alarm nextAlarmDate] timeIntervalSince1970]]
               forKey: @"c_nextalarm"];
     }

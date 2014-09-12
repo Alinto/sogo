@@ -23,6 +23,7 @@
 
 #import <NGCards/iCalEntityObject.h>
 
+@class iCalAlarm;
 @class NSMutableDictionary;
 @class SOGoUser;
 
@@ -54,6 +55,9 @@ extern NSNumber *iCalDistantFutureNumber;
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer;
+
+- (iCalAlarm *) firstSupportedAlarm;
+- (iCalAlarm *) firstDisplayOrAudioAlarm;
 
 - (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
                      forContainer: (id) theContainer;
