@@ -2538,7 +2538,17 @@ Upgrading
 This section describes what needs to be done when upgrading to the
 current version of SOGo from the previous release.
 
+[cols="100a"]
 |=======================================================================
+h|2.2.8
+|The configuration configuration parameters were renamed:
+
+[options="compact"]
+* _SOGoMailMessageCheck_ was replaced with _SOGoRefreshViewCheck_
+* _SOGoMailPollingIntervals_ was replaced with _SOGoRefreshViewIntervals_
+
+Backward compatibility is in place for the old preferences values.
+
 h|2.0.5
 |The configuration is now stored in /etc/sogo/sogo.conf. Perform the following commands as root to migrate your previous user defaults:
 
