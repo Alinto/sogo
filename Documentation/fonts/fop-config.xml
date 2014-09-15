@@ -1,0 +1,23 @@
+<fop version="1.0">
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <font metrics-url="fonts/inconsolata.xml" kerning="yes" embed-url="fonts/inconsolata.ttf">
+          <font-triplet name="Incosolata" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/oflgoudystm.xml" kerning="yes" embed-url="fonts/oflgoudystm.ttf">
+          <font-triplet name="Sorts Mill Goudy" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/oflgoudystmitalic.xml" kerning="yes" embed-url="fonts/oflgoudystmitalic.ttf">
+          <font-triplet name="Sorts Mill Goudy" style="italic" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/deliciousroman.xml" kerning="yes" embed-url="fonts/deliciousroman.ttf">
+          <font-triplet name="Delicious" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/deliciousitalic.xml" kerning="yes" embed-url="fonts/deliciousitalic.ttf">
+          <font-triplet name="Delicious" style="italic" weight="normal"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

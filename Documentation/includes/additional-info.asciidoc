@@ -1,0 +1,27 @@
+////
+
+    Additional information section
+
+    This file is part of the SOGo project.
+    Authors: 
+      - Inverse inc. <info@inverse.ca>
+
+    Copyright (C) 2008-2014 Inverse inc.
+    License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
+
+////
+
+Additional Information
+----------------------
+
+For more information, please consult the online FAQs (Frequently Asked
+Questions) :
+
+http://www.sogo.nu/english/support/faq.html
+
+You can also read the mailing archives or post your questions to it. For
+details, see :
+
+https://lists.inverse.ca/sogo
+
+// vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:
