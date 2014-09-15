@@ -4,7 +4,15 @@ include ../common.make
 
 WEBSERVER_RESOURCE_DIRS = css fonts img js
 
-all ::
+build-static-files:
+	@if [ -d bower_components ]; then \
+	  bower update; \
+	else \
+	  bower install; \
+	fi
+	grunt build
+
+all :: build-static-files
 
 install ::
 	@if [ -L "$(SOGO_WEBSERVERRESOURCESDIR)" ]; then \
