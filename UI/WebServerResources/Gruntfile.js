@@ -34,23 +34,20 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('build', ['sass']);
-    grunt.registerTask('default', ['build','watch']);
-    grunt.registerTask('static', function(dev) {
+    grunt.task.registerTask('static', function() {
         var options = {
             'src':        'bower_components',
             'js_dest':    'js/vendor/',
-            'fonts_dest': 'fonts/',
-            'min':        (dev? '' : '.min')
+            'fonts_dest': 'fonts/'
         };
         var js = [
-            '<%= src %>/angular/angular<%= min %>.js{,.map}',
-            '<%= src %>/angular-animate/angular-animate<%= min %>.js{,.map}',
-            '<%= src %>/angular-sanitize/angular-sanitize<%= min %>.js{,.map}',
-            '<%= src %>/angular-ui-router/release/angular-ui-router<%= min %>.js',
-            '<%= src %>/angular-foundation/mm-foundation-tpls<%= min %>.js',
-            '<%= src %>/foundation/js/foundation<%= min %>.js',
-            '<%= src %>/ionic/release/js/ionic<%= min %>.js',
+            '<%= src %>/angular/angular{,.min}.js{,.map}',
+            '<%= src %>/angular-animate/angular-animate{,.min}.js{,.map}',
+            '<%= src %>/angular-sanitize/angular-sanitize{,.min}.js{,.map}',
+            '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
+            '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
+            '<%= src %>/foundation/js/foundation{,.min}.js',
+            '<%= src %>/ionic/release/js/ionic{,.min}.js',
             '<%= src %>/underscore/underscore-min.{js,map}'
         ];
         for (var j = 0; j < js.length; j++) {
@@ -75,4 +72,6 @@ module.exports = function(grunt) {
             grunt.log.ok("copy " + src + " => " + dest);
         }
     });
+    grunt.task.registerTask('build', ['static', 'sass']);
+    grunt.task.registerTask('default', ['build','watch']);
 }
