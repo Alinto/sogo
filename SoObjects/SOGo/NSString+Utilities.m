@@ -46,7 +46,7 @@ static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
 static int cssEscapingCount;
 
-static unichar thisCharCode[30];
+static unichar thisCharCode[31];
 static NSString *controlCharString = nil;
 static NSCharacterSet *controlCharSet = nil;
 
@@ -285,11 +285,12 @@ static NSCharacterSet *controlCharSet = nil;
       int i, j;
       
       // Create an array of chars for all control characters between 0x00 and 0x1F,
-      // apart from \t, \n, \f and \r (0x09, 0x0A, 0x0C and 0x0D)
+      // apart from \t, \n and \r (0x09, 0x0A and 0x0D)
       for (i = 0, j = 0x00; j <= 0x08; i++, j++) {
         thisCharCode[i] = j;
       }
       thisCharCode[i++] = 0x0B;
+      thisCharCode[i++] = 0x0C;
       for (j = 0x0E; j <= 0x1F; i++, j++) {
         thisCharCode[i] = j;
       }
