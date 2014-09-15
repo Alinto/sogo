@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2013 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -49,6 +49,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoGroup.h>
@@ -1668,9 +1669,41 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
 }
 
+- (void) _adjustClassificationInRequestCalendar: (iCalCalendar *) rqCalendar
+{
+  SOGoUserDefaults *userDefaults;
+  NSString *accessClass;
+  NSArray *allObjects;
+  id entity;
+  
+  int i;
+  
+  userDefaults = [[context activeUser] userDefaults];
+  allObjects = [rqCalendar allObjects];
+
+  for (i = 0; i < [allObjects count]; i++)
+    {
+      entity = [allObjects objectAtIndex: i];
+
+      if ([entity respondsToSelector: @selector(accessClass)])
+        {
+          accessClass = [entity accessClass];
+          
+          if (!accessClass || [accessClass length] == 0)
+            {
+              if ([entity isKindOfClass: [iCalEvent class]])
+                [entity setAccessClass: [userDefaults calendarEventsDefaultClassification]];
+              else if ([entity isKindOfClass: [iCalToDo class]])
+                [entity setAccessClass: [userDefaults calendarTasksDefaultClassification]];
+            }
+        }
+    }
+}
+
 /**
  * Verify vCalendar for any inconsistency or missing attributes.
  * Currently only check if the events have an end date or a duration.
+ * We also check for the default transparency parameters.
  * @param rq the HTTP PUT request
  */
 - (void) _adjustEventsInRequestCalendar: (iCalCalendar *) rqCalendar
@@ -1694,6 +1727,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             [event setDuration: @"PT1H"];
           [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
         }
+
+      
     }
 }
 
@@ -1816,6 +1851,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
       
       [self _adjustEventsInRequestCalendar: calendar];
+      [self _adjustClassificationInRequestCalendar: calendar];
     }
       
   //
@@ -2111,10 +2147,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   WORequest *rq;
   WOResponse *response;
   iCalCalendar *rqCalendar;
-
+  
   rq = [_ctx request];
   rqCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-
+  
   if (![self isNew])
     {
       //
@@ -2126,10 +2162,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if (ex)
         return ex;
     }
-      
-      ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
-      if (ex)
-        response = (WOResponse *) ex;
+  
+  ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
+  if (ex)
+    response = (WOResponse *) ex;
   else
     {
       response = [_ctx response];

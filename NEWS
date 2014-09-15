@@ -7,6 +7,7 @@ New features
 Enchancements
  - alarms can now be snoozed for 1 day
  - better iCal compability regarding alarms (#1920)
+ - force default classification over CalDAV if none is set (#2326)
 
 Bug fixes
  - 

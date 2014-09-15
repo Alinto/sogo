@@ -1463,16 +1463,16 @@ iRANGE(2);
 
 - (NSArray *) classificationClasses
 {
-  static NSArray *priorities = nil;
-
-  if (!priorities)
+  static NSArray *classes = nil;
+  
+  if (!classes)
     {
-      priorities = [NSArray arrayWithObjects: @"PUBLIC",
-                            @"CONFIDENTIAL", @"PRIVATE", nil];
-      [priorities retain];
+      classes = [NSArray arrayWithObjects: @"PUBLIC",
+                         @"CONFIDENTIAL", @"PRIVATE", nil];
+      [classes retain];
     }
-
-  return priorities;
+  
+  return classes;
 }
 
 - (void) setClassification: (NSString *) _classification
