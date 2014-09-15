@@ -149,20 +149,22 @@
 - (void) collapseAction: (BOOL) isCollapsing
 {
   SOGoMailObject *co;
-  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  WORequest *request;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed, *content;
   NSMutableArray *mailboxThreadsCollapsed;
-  NSString *msguid, *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  NSString *msguid, *keyForMsgUIDs;
   SOGoUserSettings *us;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  keyForMsgUIDs = [content objectForKey:@"currentMailbox"];
+  msguid = [content objectForKey:@"msguid"];
 
   co = [self clientObject];
   us = [[context activeUser] userSettings];
   if (!(moduleSettings = [us objectForKey: @"Mail"]))
     [us setObject:[NSMutableDictionary dictionnary] forKey: @"Mail"];
-  msguid = [co nameInContainer];
-  currentMailbox = [[co container] nameInContainer];
-  currentAccount = [[[co container] container] nameInContainer];
-  keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
-  
+
   if (isCollapsing)
     {
       // Check if the module threadsCollapsed is created in the userSettings

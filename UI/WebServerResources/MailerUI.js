@@ -253,8 +253,9 @@ function mailListToggleMessageThread(row, cell) {
     var mailbox = Mailer.currentMailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
     var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};
+    var content = {"currentMailbox": Mailer.currentMailbox, "msguid": msguid};
 
-    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback, callbackData);
+    triggerAjaxRequest(url, mailListToggleMessageCollapseCallback, callbackData, Object.toJSON(content));
 }
 
 function mailListToggleMessageCollapseCallback(http) {
