@@ -741,7 +741,6 @@
       phones = nil;
       homeAdr = nil;
       workAdr = nil;
-      NSLog(@"%@", [card versitString]);
     }
   else
     return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
