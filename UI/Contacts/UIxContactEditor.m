@@ -485,7 +485,11 @@ static Class SOGoContactGCSEntryK = Nil;
           o = [values objectAtIndex: i];
           if ([o isKindOfClass: [NSDictionary class]])
             {
-              [categories addObject: [o objectForKey: @"value"]];
+              o = [o objectForKey: @"value"];
+              if (o && [o isKindOfClass: [NSString class]] && [(NSString *) o length] > 0)
+                {
+                  [categories addObject: o];
+                }
             }
         }
       [card setCategories: categories];
