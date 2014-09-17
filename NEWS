@@ -10,7 +10,7 @@ Enchancements
  - force default classification over CalDAV if none is set (#2326)
 
 Bug fixes
- - 
+ - fixed sending mails to multiple recipients over AS 
 
 2.2.8 (2014-09-10)
 ------------------

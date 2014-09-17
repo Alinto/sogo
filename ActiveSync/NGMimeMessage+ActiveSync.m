@@ -33,14 +33,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
+
 #import <SOGo/NSString+Utilities.h>
 
 @implementation NGMimeMessage (ActiveSync)
 
 - (NSArray *) allRecipients
 {
+  NSEnumerator *enumerator, *addressList;
   NSMutableArray *recipients;
-  NSEnumerator *enumerator;
+  NGMailAddressParser *parser;
+  NGMailAddress *address;
   NSString *s;
 
   recipients = [NSMutableArray array];
@@ -48,13 +53,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   enumerator = [[self headersForKey: @"to"] objectEnumerator];
   while ((s = [enumerator nextObject]))
     {
-      [recipients addObject: [s pureEMailAddress]];
+      parser = [NGMailAddressParser mailAddressParserWithString: s];
+      addressList = [[parser parseAddressList] objectEnumerator];
+      
+      while ((address = [addressList nextObject]))
+        [recipients addObject: [address address]];
     }
 
   enumerator = [[self headersForKey: @"cc"] objectEnumerator];
   while ((s = [enumerator nextObject]))
     {
-      [recipients addObject: [s pureEMailAddress]];
+      parser = [NGMailAddressParser mailAddressParserWithString: s];
+      addressList = [[parser parseAddressList] objectEnumerator];
+      
+      while ((address = [addressList nextObject]))
+        [recipients addObject: [address address]];
     }
 
   return recipients;
