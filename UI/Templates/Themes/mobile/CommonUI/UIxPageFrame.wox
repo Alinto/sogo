@@ -61,6 +61,8 @@
   </var:foreach>
   </head>
 
-  <var:component-content/>
+  <body var:data-ng-app="angularModule">
+    <var:component-content/>
+  </body>
 </html>
 </container>
