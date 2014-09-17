@@ -16,8 +16,6 @@
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO"/>;
   </script>
 
-  <body data-ng-app="SOGo.ContactsUI">
-
   <ion-nav-view><!-- main view --></ion-nav-view>
 
   <script type="text/ng-template" id="menu.html">
@@ -310,7 +308,5 @@
       </form>
     </ion-modal-view>
   </script>
-
-</body>
 
 </var:component>
