@@ -33,6 +33,8 @@
 
 #import <GDLAccess/EOAdaptorChannel.h>
 
+#import <DOM/DOMElement.h>
+#import <DOM/DOMNode.h>
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -57,6 +59,40 @@
 #import "SOGoAppointmentFolders.h"
 
 static SoSecurityManager *sm = nil;
+
+@interface NGDOMElement (SOGo)
+
+- (BOOL) isTextNode;
+
+@end
+
+@implementation NGDOMElement (SOGo)
+
+- (BOOL) isTextNode
+{
+  id <DOMNodeList> children;
+  id <DOMElement> element;
+  int i;
+
+  if ([self nodeType] == DOM_TEXT_NODE)
+    return YES;
+  
+  children = [self childNodes];
+
+  for (i = 0; i < [children length]; i++)
+    {
+      element = [children objectAtIndex: i];
+
+      if ([element nodeType] != DOM_TEXT_NODE)
+        return NO;
+    }
+  
+  return YES;
+}
+
+@end
+
+
 
 @implementation SOGoAppointmentFolders
 
@@ -307,10 +343,17 @@ static SoSecurityManager *sm = nil;
 			      [currentElement nodeName]];
       if ([currentName isEqualToString: propertyName])
 	{
-	  values = [currentElement childNodes];
-	  if ([values length])
-	    property = [[values objectAtIndex: 0] nodeValue];
-	}
+          if ([(id)currentElement isTextNode])
+            {
+              property = [(id)currentElement textValue];
+            }
+          else
+            {
+              values = [currentElement childNodes];
+              if ([values length])
+                property = [[values objectAtIndex: 0] nodeValue];
+            }
+        }
     }
 
   return property;
@@ -333,7 +376,11 @@ static SoSecurityManager *sm = nil;
       values = [currentProperty childNodes];
       if ([values length])
 	{
-	  value = [[values objectAtIndex: 0] nodeValue];
+          if ([(id)currentProperty isTextNode])
+            value = [(id)currentProperty textValue];
+          else
+            value = [[values objectAtIndex: 0] nodeValue];
+          
 	  currentName = [NSString stringWithFormat: @"{%@}%@",
 				  [currentProperty namespaceURI],
 				  [currentProperty nodeName]];
