@@ -2368,6 +2368,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [components addObject: [SOGoWebDAVValue
                                valueForObject: @"<n1:comp name=\"VEVENT\"/>"
                                    attributes: nil]];
+
+      [components addObject: [SOGoWebDAVValue
+                               valueForObject: @"<n1:comp name=\"VFREEBUSY\"/>"
+                                   attributes: nil]];
+
       if ([self showCalendarTasks])
         [components addObject: [SOGoWebDAVValue
                                  valueForObject: @"<n1:comp name=\"VTODO\"/>"

@@ -11,6 +11,7 @@ Enchancements
 
 Bug fixes
  - fixed sending mails to multiple recipients over AS 
+ - fixed freebusy support in iCal 7 and free/busy state changes (#2878, #2879)
 
 2.2.8 (2014-09-10)
 ------------------
