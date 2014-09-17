@@ -171,10 +171,6 @@
         this.$getCard(this.card.id);
     };
 
-    AddressBook.prototype.$viewerIsActive = function(editMode) {
-        return (this.card != null && !editMode);
-    };
-
     // Unwrap a promise
     AddressBook.prototype.$unwrap = function(futureAddressBookData) {
         var self = this;
