@@ -60,20 +60,6 @@
     </div>
   </div>
 
-  <ul class="f-dropdown" data-dropdown-content="dropdown-content" id="contactFoldersMenu">
-    <li><var:string label:value="Properties" /></li>
-    <li><!-- separator --></li>
-    <li><var:string label:value="New Card" /></li>
-    <li><var:string label:value="New List" /></li>
-    <li><!-- separator --></li>
-    <li><var:string label:value="Delete" /></li>
-    <li><!-- separator --></li>
-    <li><var:string label:value="Export Address Book..."/></li>
-    <li><var:string label:value="Import Cards" /></li>
-    <li><!-- separator --></li>
-    <li><var:string label:value="Sharing..." /></li>
-  </ul>
-
   <ul class="f-dropdown" data-dropdown-content="dropdown-content" id="contactMenu">
     <li><var:string label:value="Properties" /></li>
     <li><var:string label:value="Categories" /></li>
@@ -91,7 +77,17 @@
 
   <div>
 
-    <div data-ng-controller="AddressBookCtrl" data-ng-init="init()">
+    <div data-ui-view="addressbooks"><!-- addressbooks list --></div>
+
+    <!-- modal for addressbook sharing options -->
+    <script type="text/ng-template" id="addressbookSharing.html">
+      <h2>Sharing</h2>
+      <p class="lead"></p>
+      <p></p>
+      <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
+    </script>
+
+    <script type="text/ng-template" id="addressbooks.html">
 
       <!-- dropdown menu for addressbook options button -->
       <div id="addressbookProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
@@ -106,6 +102,9 @@
             <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
           </li>
           <li data-ng-show="!addressbook.isRemote">
+            <span class="button" data-ng-click="importCards()"><i class="icon-file"><!-- import --></i></span>
+          </li>
+          <li data-ng-show="!addressbook.isRemote">
             <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
           </li>
         </ul>
@@ -115,14 +114,6 @@
       <ul id="newListDrop" class="f-dropdown">
         <li><a class="tiny" data-ui-sref="addressbook.new({addressbook_id: addressbook.id, contact_type: 'list'})"><var:string label:value="New List"/></a></li>
       </ul>
-
-      <!-- modal for addressbook sharing options -->
-      <script type="text/ng-template" id="addressbookSharing.html">
-        <h2>Sharing</h2>
-        <p class="lead"></p>
-        <p></p>
-        <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
-      </script>
 
       <div id="addressbooksList" class="folders-list">
         <div class="newItemsToolbar">
@@ -157,13 +148,10 @@
           </div>
         </var:if>-->
       </div>
-    </div>
 
-    <div class="dragHandle" id="dragHandle"><!-- space --></div>
+      <div class="dragHandle" id="dragHandle"><!-- space --></div>
 
-    <div id="rightPanel" ui-view="addressbook"><!-- addressbook state view --></div>
- 
-    <script type="text/ng-template" id="addressbook.html">
+      <div id="rightPanel">
 
       <div id="contactsList">
         <div class="buttonsToolbar searchToolbar">
@@ -203,13 +191,15 @@
           </li>
         </ul>
       </div>
-      <div id="contactView" ui-view="card"><!-- card state view --></div>
 
+      <div id="contactView" data-ui-view="card"><!-- card state view --></div>>
+
+      </div>
     </script>
 
     <script type="text/ng-template" id="card.html">
 
-      <div class="viewer" data-ng-show="addressbook.$viewerIsActive(editMode)">
+      <div class="viewer">
         <div class="header">
           <h1 data-ng-bind-html="addressbook.card.$fullname()"><!-- fullname --></h1>
           <h6>{{addressbook.card.$description()}}
