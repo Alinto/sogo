@@ -925,11 +925,11 @@ function performEventDeletion(folder, event, recurrence) {
 function performDeleteEventCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
-    
+
             var occurenceTime = http.callbackData.occurence;
             var cname = http.callbackData.cname;
             var calendar = http.callbackData.calendar;
-            
+
             _deleteCalendarEventBlocks(calendar, cname, occurenceTime);
             _deleteEventFromTables(calendar, cname, occurenceTime);
             _deleteCalendarEventCache(calendar, cname, occurenceTime);
@@ -1190,7 +1190,7 @@ function tasksListCallback(http) {
 
                 var calendar = escape(data[i][1]);
                 var cname = escape(data[i][0]);
-                
+
                 var rTime = data[i][13];
                 var id = escape(data[i][1] + "-" + data[i][0]);
                 if (rTime)
@@ -3572,7 +3572,7 @@ function appendCalendar(folderName, folderPath) {
         li.appendChild(colorBox);
 
         var displayName = document.createElement("span");
-        displayName.appendChild(document.createTextNode(folderName.escapeHTML()));
+        displayName.appendChild(document.createTextNode(folderName));
         li.appendChild(displayName);
 
         $(colorBox).addClassName("colorBox");
@@ -3662,7 +3662,7 @@ function onCalendarRemove(event) {
 }
 
 function deletePersonalCalendar(folderElement) {
-    var displayName = folderElement.childNodesWithTag("span")[0].innerHTML.strip();
+    var displayName = folderElement.childNodesWithTag("span")[0].innerHTML.strip().unescapeHTML();
     showConfirmDialog(_("Confirmation"),
                       _("Are you sure you want to delete the calendar \"%{0}\"?").formatted(displayName),
                       deletePersonalCalendarConfirm.bind(folderElement));
