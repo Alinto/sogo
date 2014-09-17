@@ -2369,6 +2369,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                valueForObject: @"<n1:comp name=\"VEVENT\"/>"
                                    attributes: nil]];
 
+      // See bugs #2878 and #2879
       [components addObject: [SOGoWebDAVValue
                                valueForObject: @"<n1:comp name=\"VFREEBUSY\"/>"
                                    attributes: nil]];
