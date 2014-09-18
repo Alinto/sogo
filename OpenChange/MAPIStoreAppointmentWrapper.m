@@ -1231,7 +1231,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       /* Avoiding those trail weird characters at event description */
       range = [stringValue rangeOfString: trimingString
                                  options: NSBackwardsSearch];
-      if (range.location > 0)
+      if (range.location != NSNotFound)
         {
           stringValue = [stringValue substringToIndex: (NSMaxRange(range) -1)];
         }
