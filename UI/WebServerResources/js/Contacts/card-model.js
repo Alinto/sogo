@@ -24,10 +24,10 @@
         }
     }
 
-    Card.$tel_types = ['work', 'home', 'cell', 'fax', 'pager'];
-    Card.$email_types = ['work', 'home', 'pref'];
-    Card.$url_types = ['work', 'home', 'pref'];
-    Card.$address_types = ['work', 'home'];
+    Card.$TEL_TYPES = ['work', 'home', 'cell', 'fax', 'pager'];
+    Card.$EMAIL_TYPES = ['work', 'home', 'pref'];
+    Card.$URL_TYPES = ['work', 'home', 'pref'];
+    Card.$ADDRESS_TYPES = ['work', 'home'];
 
     /* The factory we'll use to register with Angular */
     Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
@@ -39,11 +39,18 @@
         return Card; // return constructor
     }];
 
-    /* Factory registration in Angular module */
+    /**
+     * @module SOGo.ContactsUI
+     * @desc Factory registration of Card in Angular module
+     */
     angular.module('SOGo.ContactsUI')
     .factory('sgCard', Card.$factory)
 
-    // Directive to format a postal address
+    /**
+     * @name sgAddress
+     * @memberof ContactsUI
+     * @desc Directive to format a postal address
+     */
     .directive('sgAddress', function() {
         return {
             restrict: 'A',

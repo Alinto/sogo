@@ -55,7 +55,7 @@
       <ion-content class="has-header">
         <ion-list>
           <ion-item ng-repeat="addressbook in addressbooks" option-buttons="buttons"
-                    ui-sref="app.addressbook({addressbook_id: addressbook.id})"
+                    ui-sref="app.addressbook({addressbookId: addressbook.id})"
                     class="item-icon-left item-icon-right">
             <i class="icon" ng-class="{'ion-earth': addressbook.isRemote}"><!-- public addressbook --></i>
             {{addressbook.name}}
@@ -71,7 +71,7 @@
   <script type="text/ng-template" id="addressbook.html">
     <ion-view title="{{addressbook.name}}">
       <ion-nav-buttons side="right">
-        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ui-sref="app.newCard({ addressbook_id: addressbook.id, contact_type: 'card' })"><!-- new --></a>
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ui-sref="app.newCard({ addressbookId: addressbook.id, contactType: 'card' })"><!-- new --></a>
       </ion-nav-buttons>
       <ion-content class="has-header">
         <ion-list>
@@ -86,7 +86,7 @@
          <ion-list>
           <ion-item class="item-icon-right" option-buttons="buttons"
                     data-ng-repeat="card in addressbook.cards"
-                    data-ui-sref="app.card({addressbook_id: addressbook.id, card_id: card.c_name})">
+                    data-ui-sref="app.card({addressbookId: addressbook.id, cardId: card.c_name})">
             {{card.c_cn || card.c_mail}}
             <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
           </ion-item>
