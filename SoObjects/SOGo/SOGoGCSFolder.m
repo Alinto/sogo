@@ -2078,8 +2078,13 @@ static NSArray *childRecordFields = nil;
       nodeTag = [self _nodeTag: *property];
       if (*currentValue)
 	{
+          // Make sure the sent value is sanitized.
+          NSString *sanitizedValue;
+          
+          sanitizedValue = [[*currentValue componentsSeparatedByCharactersInSet: [*currentValue safeCharacterSet]]
+                             componentsJoinedByString: @""];
 	  propertyValue = [NSString stringWithFormat: @"<%@>%@</%@>",
-				    nodeTag, *currentValue, nodeTag];
+				    nodeTag, sanitizedValue, nodeTag];
 	  propDict = properties200;
 	}
       else

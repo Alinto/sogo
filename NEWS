@@ -12,6 +12,7 @@ Enchancements
 Bug fixes
  - fixed sending mails to multiple recipients over AS 
  - fixed freebusy support in iCal 7 and free/busy state changes (#2878, #2879)
+ - we now get rid of all potential control characters before sending the DAV response
 
 2.2.8 (2014-09-10)
 ------------------
