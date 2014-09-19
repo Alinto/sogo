@@ -415,10 +415,39 @@ const unsigned short ansicpg874[256] = {
 
   start = ADVANCE;
 
-  while (isalnum(*_bytes) || *_bytes == '-' || isspace(*_bytes))
+  /*
+    A control word is defined by:
+
+    \<ASCII Letter Sequence><Delimiter>
+  */
+  while (isalpha(*_bytes))
     {
       ADVANCE;
     }
+
+  /*
+    The <Delimiter> can be one of the following:
+
+     - A space. This serves only to delimit a control word and is
+       ignored in subsequent processing.
+
+     - A numeric digit or an ASCII minus sign (-), which indicates
+       that a numeric parameter is associated with the control word.
+       Only this case requires to include it in the control word.
+
+     - Any character other than a letter or a digit
+  */
+  if (*_bytes == '-' || isdigit(*_bytes))
+    {
+      ADVANCE;
+      while (isdigit(*_bytes))  // TODO: Allow up to 10 digits
+        {
+          ADVANCE;
+        }
+    }
+  /* In this case, the delimiting character terminates the control
+     word and is not part of the control word. */
+
   end = _bytes;
 
   *len = end-start-1;
