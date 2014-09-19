@@ -15,7 +15,7 @@
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider
         .state('addressbook', {
-          url: '/:addressbook_id',
+          url: '/:addressbookId',
           views: {
             addressbooks: {
               templateUrl: 'addressbooks.html',
@@ -27,12 +27,12 @@
               return AddressBook.$all(contactFolders);
             }],
             stateAddressbook: ['$stateParams', 'sgAddressBook', function($stateParams, AddressBook) {
-              return AddressBook.$find($stateParams.addressbook_id);
+              return AddressBook.$find($stateParams.addressbookId);
             }]
           }
         })
         .state('addressbook.card', {
-          url: '/:card_id',
+          url: '/:cardId',
           views: {
             card: {
               templateUrl: 'card.html',
@@ -41,12 +41,12 @@
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
-              return stateAddressbook.$getCard($stateParams.card_id);
+              return stateAddressbook.$getCard($stateParams.cardId);
             }]
           }
         })
         .state('addressbook.new', {
-          url: '/:contact_type/new',
+          url: '/:contactType/new',
           views: {
             card: {
               templateUrl: 'cardEditor.html',
@@ -55,14 +55,14 @@
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', 'sgCard', function($stateParams, stateAddressbook, Card) {
-              var tag = 'v' + $stateParams.contact_type;
-              stateAddressbook.card = new Card({ pid: $stateParams.addressbook_id, tag: tag });
+              var tag = 'v' + $stateParams.contactType;
+              stateAddressbook.card = new Card({ pid: $stateParams.addressbookId, tag: tag });
               return stateAddressbook.card;
             }]
           }
         })
         .state('addressbook.editor', {
-          url: '/:card_id/edit',
+          url: '/:cardId/edit',
           views: {
             card: {
               templateUrl: 'cardEditor.html',
@@ -71,7 +71,7 @@
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
-              return stateAddressbook.$getCard($stateParams.card_id);
+              return stateAddressbook.$getCard($stateParams.cardId);
             }]
           }
         });
@@ -100,19 +100,20 @@
     }])
 
     .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$modal', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, stateAddressbooks, stateAddressbook) {
-      var addressbookEntry;
+      var currentAddressbook;
 
-      // $scope objects
-      $scope.search = { status: null, filter: null, last_filter: null };
-
-      $rootScope.addressbooks = stateAddressbooks;
+      // Resolve objects
+      $scope.addressbooks = stateAddressbooks;
       $rootScope.addressbook = stateAddressbook;
 
+      // $scope objects
+      $scope.search = { status: null, filter: null, lastFilter: null };
+
       // Adjust search status depending on addressbook type
-      var o = _.find($rootScope.addressbooks, function(o) {
-        return o.id ==  $stateParams.addressbook_id;
+      currentAddressbook = _.find($scope.addressbooks, function(o) {
+        return o.id ==  $stateParams.addressbookId;
       });
-      $scope.search.status = (o && o.isRemote)? 'remote-addressbook' : '';
+      $scope.search.status = (currentAddressbook && currentAddressbook.isRemote)? 'remote-addressbook' : '';
 
       // $scope functions
       $scope.select = function(rowIndex) {
@@ -138,14 +139,14 @@
       $scope.edit = function(i) {
         if (!$rootScope.addressbook.isRemote) {
           if (angular.isUndefined(i)) {
-            i = _.indexOf(_.pluck($rootScope.addressbooks, 'id'), $rootScope.addressbook.id);
+            i = _.indexOf(_.pluck($scope.addressbooks, 'id'), $rootScope.addressbook.id);
           }
           $scope.editMode = $rootScope.addressbook.id;
           focus('addressBookName_' + i);
         }
       };
       $scope.save = function(i) {
-        var name = $rootScope.addressbooks[i].name;
+        var name = $scope.addressbooks[i].name;
         if (name && name.length > 0) {
           $scope.addressbook.$rename(name)
             .then(function(data) {
@@ -184,7 +185,7 @@
         });
       };
       $scope.doSearch = function(keyEvent) {
-        if ($scope.search.filter != $scope.search.last_filter) {
+        if ($scope.search.filter != $scope.search.lastFilter) {
           if ($scope.search.filter.length > 2) {
             $rootScope.addressbook.$filter($scope.search.filter).then(function(data) {
               if (data.length == 0)
@@ -194,10 +195,10 @@
             });
           }
           else if ($scope.search.filter.length == 0) {
-            $rootScope.addressbook = AddressBook.$find($stateParams.addressbook_id);
+            $rootScope.addressbook = AddressBook.$find($stateParams.addressbookId);
             // Extend resulting model instance with parameters from addressbooks listing
-            var o = _.find($rootScope.addressbooks, function(o) {
-              return o.id ==  $stateParams.addressbook_id;
+            var o = _.find($scope.addressbooks, function(o) {
+              return o.id ==  $stateParams.addressbookId;
             });
             $scope.search.status = (o.isRemote)? 'remote-addressbook' : '';
           }
@@ -206,32 +207,32 @@
             $rootScope.addressbook.cards = [];
           }
         }
-        $scope.search.last_filter = $scope.search.filter;
+        $scope.search.lastFilter = $scope.search.filter;
       };
     }])
 
     .controller('CardCtrl', ['$scope', '$rootScope', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', function($scope, $rootScope, AddressBook, Card, Dialog, focus, $state, $stateParams) {
-      $scope.allEmailTypes = Card.$email_types;
-      $scope.allTelTypes = Card.$tel_types;
-      $scope.allUrlTypes = Card.$url_types;
-      $scope.allAddressTypes = Card.$address_types;
+      $scope.allEmailTypes = Card.$EMAIL_TYPES;
+      $scope.allTelTypes = Card.$TEL_TYPES;
+      $scope.allUrlTypes = Card.$URL_TYPES;
+      $scope.allAddressTypes = Card.$ADDRESS_TYPES;
 
-      $rootScope.master_card = angular.copy($rootScope.addressbook.card);
+      $rootScope.masterCard = angular.copy($rootScope.addressbook.card);
 
       $scope.addOrgUnit = function() {
         var i = $rootScope.addressbook.card.$addOrgUnit('');
         focus('orgUnit_' + i);
       };
       $scope.addCategory = function() {
-        var i = $rootScope.addressbook.card.$addCategory($scope.new_category);
+        var i = $rootScope.addressbook.card.$addCategory('');
         focus('category_' + i);
       };
       $scope.addEmail = function() {
-        var i = $rootScope.addressbook.card.$addEmail($scope.new_email_type);
+        var i = $rootScope.addressbook.card.$addEmail('');
         focus('email_' + i);
       };
       $scope.addPhone = function() {
-        var i = $rootScope.addressbook.card.$addPhone($scope.new_phone_type);
+        var i = $rootScope.addressbook.card.$addPhone('');
         focus('phone_' + i);
       };
       $scope.addUrl = function() {
@@ -267,19 +268,19 @@
       };
       $scope.cancel = function() {
         $scope.reset();
-        delete $rootScope.master_card;
+        delete $rootScope.masterCard;
         if ($scope.addressbook.card.id) {
           // Cancelling the edition of an existing card
-          $state.go('addressbook.card', { card_id: $scope.addressbook.card.id });
+          $state.go('addressbook.card', { cardId: $scope.addressbook.card.id });
         }
         else {
           // Cancelling the creation of a card
           delete $rootScope.addressbook.card;
-          $state.go('addressbook', { addressbook_id: $scope.addressbook.id });
+          $state.go('addressbook', { addressbookId: $scope.addressbook.id });
         }
       };
       $scope.reset = function() {
-        $rootScope.addressbook.card = angular.copy($rootScope.master_card);
+        $rootScope.addressbook.card = angular.copy($rootScope.masterCard);
       };
       $scope.confirmDelete = function(card) {
         Dialog.confirm(l('Warning'),
