@@ -1676,6 +1676,32 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSCalendarDate *maxStart;
 
   parentNode = (id <DOMElement>) [filterElement parentNode];
+  
+  // This parses time-range filters. 
+  //
+  //   <C:filter>
+  //   <C:comp-filter name="VCALENDAR">
+  //     <C:comp-filter name="VEVENT">
+  //       <C:time-range start="20060104T000000Z"
+  //                     end="20060105T000000Z"/>
+  //     </C:comp-filter>
+  //   </C:comp-filter>
+  // </C:filter>
+  //
+  //
+  // We currently ignore filters based on just the component type.
+  // For example, this is ignored:
+  //
+  // <c:calendar-query xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav">
+  //     <d:prop>
+  //         <d:getetag />
+  //         <c:calendar-data />
+  //     </d:prop>
+  //     <c:filter>
+  //         <c:comp-filter name="VCALENDAR" />
+  //     </c:filter>
+  // </c:calendar-query>
+  //
   if ([[parentNode tagName] isEqualToString: @"comp-filter"]
       && [[parentNode attribute: @"name"] isEqualToString: @"VCALENDAR"])
     {
