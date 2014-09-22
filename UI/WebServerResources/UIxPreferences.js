@@ -277,12 +277,12 @@ function initPreferences() {
             $(tablebody).deselectAll();
             
         }
+        
+        var table = whiteList.childNodesWithTag("table")[0];
+        table.multiselect = true;
+        $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
+        $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
     }
-    
-    var table = whiteList.childNodesWithTag("table")[0];
-    table.multiselect = true;
-    $("appointmentsWhiteListAdd").observe("click", onAppointmentsWhiteListAdd);
-    $("appointmentsWhiteListDelete").observe("click", onAppointmentsWhiteListDelete);
 
     // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
