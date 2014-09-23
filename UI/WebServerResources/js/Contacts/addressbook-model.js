@@ -24,7 +24,11 @@
     }
   }
 
-  /* The factory we'll use to register with Angular */
+  /**
+   * @memberof AddressBook
+   * @desc The factory we'll use to register with Angular
+   * @returns the AddressBook constructor
+   */
   AddressBook.$factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgCard', function($q, $timeout, Settings, Resource, Card) {
     angular.extend(AddressBook, {
       $q: $q,
@@ -38,25 +42,7 @@
 
   /* Factory registration in Angular module */
   angular.module('SOGo.ContactsUI')
-    .factory('sgAddressBook', AddressBook.$factory)
-
-  /**
-   * @memberof AddressBook
-   * @desc Set or get the list of addressbooks. Will instanciate a new AddressBook object for each item.
-   * @param {array} [data] - the metadata of the addressbooks
-   * @returns the list of addressbooks
-   */
-  AddressBook.$all = function(data) {
-    var self = this;
-    if (data) {
-      this.$addressbooks = data;
-      // Instanciate AddressBook objects
-      angular.forEach(this.$addressbooks, function(o, i) {
-        self.$addressbooks[i] = new AddressBook(o);
-      });
-    }
-    return this.$addressbooks;
-  };
+    .factory('sgAddressBook', AddressBook.$factory);
 
   /**
    * @memberof AddressBook
@@ -72,7 +58,30 @@
     this.$addressbooks.splice(i, 0, addressbook);
   };
 
-  /* Fetch list of cards and return an AddressBook instance */
+  /**
+   * @memberof AddressBook
+   * @desc Set or get the list of addressbooks. Will instanciate a new AddressBook object for each item.
+   * @param {array} [data] - the metadata of the addressbooks
+   * @returns the list of addressbooks
+   */
+  AddressBook.$findAll = function(data) {
+    var self = this;
+    if (data) {
+      this.$addressbooks = data;
+      // Instanciate AddressBook objects
+      angular.forEach(this.$addressbooks, function(o, i) {
+        self.$addressbooks[i] = new AddressBook(o);
+      });
+    }
+    return this.$addressbooks;
+  };
+
+  /**
+   * @memberOf AddressBook
+   * @desc Fetch list of cards and return an AddressBook instance
+   * @param {string} addressbook_id - the addressbook identifier
+   * @returns an AddressBook object instance
+   */
   AddressBook.$find = function(addressbook_id) {
     var futureAddressBookData = AddressBook.$$resource.find(addressbook_id);
 
@@ -184,7 +193,7 @@
         angular.extend(self, data);
         // Also extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
-        angular.forEach(AddressBook.$all(), function(o, i) {
+        angular.forEach(AddressBook.$findAll(), function(o, i) {
           if (o.id == self.id) {
             angular.extend(self, o);
           }

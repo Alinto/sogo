@@ -92,12 +92,12 @@
               templateUrl: 'card.html',
               controller: 'CardCtrl',
               resolve: {
-                stateCard: function($rootScope, $stateParams, sgAddressBook) {
+                stateCard: ['$rootScope', '$stateParams', 'sgAddressBook', function($rootScope, $stateParams, AddressBook) {
                   if (!$rootScope.addressbook) {
-                    $rootScope.addressbook = sgAddressBook.$find($stateParams.addressbookId);
+                    $rootScope.addressbook = AddressBook.$find($stateParams.addressbookId);
                   }
                   return $rootScope.addressbook.$getCard($stateParams.cardId);
-                }
+                }]
               }
             }
           }
@@ -121,7 +121,7 @@
 
     .controller('AddressBooksCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', function($scope, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook) {
       // Initialize with data from template
-      $scope.addressbooks = AddressBook.$all(contactFolders);
+      $scope.addressbooks = AddressBook.$findAll(contactFolders);
       $scope.newAddressbook = function() {
         Dialog.prompt(l('Create addressbook'),
                       l('Name of new addressbook'))
