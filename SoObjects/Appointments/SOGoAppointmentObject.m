@@ -1700,6 +1700,48 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
 }
 
+//
+// iOS devices (and potentially others) send event invitations with no PARTSTAT defined.
+// This confuses DAV clients like Thunderbird, or event SOGo web. The RFC says:
+//
+//    Description: This parameter can be specified on properties with a
+//    CAL-ADDRESS value type. The parameter identifies the participation
+//    status for the calendar user specified by the property value. The
+//    parameter values differ depending on whether they are associated with
+//    a group scheduled "VEVENT", "VTODO" or "VJOURNAL". The values MUST
+//    match one of the values allowed for the given calendar component. If
+//    not specified on a property that allows this parameter, the default
+//    value is NEEDS-ACTION.
+//
+- (void) _adjustPartStatInRequestCalendar: (iCalCalendar *) rqCalendar
+{
+  NSArray *allObjects, *allAttendees;
+  iCalPerson *attendee;
+  id entity;
+  
+  int i, j;
+  
+  allObjects = [rqCalendar allObjects];
+
+  for (i = 0; i < [allObjects count]; i++)
+    {
+      entity = [allObjects objectAtIndex: i];
+
+      if ([entity isKindOfClass: [iCalEvent class]])
+        {
+          allAttendees = [entity attendees];
+
+          for (j = 0; j < [allAttendees count]; j++)
+            {
+              attendee = [allAttendees objectAtIndex: j];
+
+              if (![[attendee partStat] length])
+                [attendee setPartStat: @"NEEDS-ACTION"];
+            }
+        }
+    }
+}
+
 /**
  * Verify vCalendar for any inconsistency or missing attributes.
  * Currently only check if the events have an end date or a duration.
@@ -1852,6 +1894,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       
       [self _adjustEventsInRequestCalendar: calendar];
       [self _adjustClassificationInRequestCalendar: calendar];
+      [self _adjustPartStatInRequestCalendar: calendar];
     }
       
   //
