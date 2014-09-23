@@ -24,7 +24,7 @@
           },
           resolve: {
             stateAddressbooks: ['sgAddressBook', function(AddressBook) {
-              return AddressBook.$all(contactFolders);
+              return AddressBook.$findAll(contactFolders);
             }],
             stateAddressbook: ['$stateParams', 'sgAddressBook', function($stateParams, AddressBook) {
               return AddressBook.$find($stateParams.addressbookId);

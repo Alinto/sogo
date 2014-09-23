@@ -29,7 +29,11 @@
     Card.$URL_TYPES = ['work', 'home', 'pref'];
     Card.$ADDRESS_TYPES = ['work', 'home'];
 
-    /* The factory we'll use to register with Angular */
+    /**
+     * @memberof Card
+     * @desc The factory we'll use to register with Angular
+     * @returns the Card constructor
+     */
     Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
         angular.extend(Card, {
             $$resource: new Resource(Settings.baseURL),
