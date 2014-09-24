@@ -42,6 +42,9 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
 
 #import <SOGo/SOGoConstants.h>
@@ -161,7 +164,7 @@
                 object = nil;
             }
           else
-	          object = nil;
+            object = nil;
         }
     }
   
@@ -182,8 +185,8 @@
 //
 //
 - (void) _addOrUpdateEvent: (iCalEvent *) theEvent
-		                forUID: (NSString *) theUID
-		                 owner: (NSString *) theOwner
+                    forUID: (NSString *) theUID
+                     owner: (NSString *) theOwner
 {
   if (![theUID isEqualToString: theOwner])
     {
@@ -433,17 +436,20 @@
   while ((currentAttendee = [enumerator nextObject]))
     {
       currentUID = [currentAttendee uid];
+
       if (currentUID)
         {
           user = [SOGoUser userWithLogin: currentUID];
           us = [user userSettings];
           moduleSettings = [us objectForKey:@"Calendar"];
+          
           // Check if the user prevented his account from beeing invited to events
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
               whiteListString = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
               whiteList = [whiteListString objectFromJSONString];
+          
               // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
               if (![whiteList objectForKey:ownerUID])
                 {
@@ -455,9 +461,11 @@
     }
 
   count = [unavailableAttendees count];
+  
   if (count > 0)
     {
       reason = [NSMutableString stringWithString:[self labelForKey: @"Inviting the following persons is prohibited:"]];
+      
       // Add all the unavailable users in the warning message
       for (i = 0; i < count; i++)
         {
@@ -466,10 +474,14 @@
           if (i < count-2)
             [reason appendString:@", "];
         }
+      
       [unavailableAttendees release];
+      
       return [NSException exceptionWithHTTPStatus:409 reason: reason];
     }
+
   [unavailableAttendees release];
+
   return nil;
 }
 
@@ -524,14 +536,14 @@
       
       if ([user isResource])
         {
+          NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
           SOGoAppointmentFolder *folder;
-          NSCalendarDate *start, *end;
           NGCalendarDateRange *range;
           NSMutableArray *fbInfo;
           NSArray *allOccurences;
           
           BOOL must_delete;
-          int i, j;
+          int i, j, delta;
           
           // We get the start/end date for our conflict range. If the event to be added is recurring, we
           // check for at least a year to start with.
@@ -574,8 +586,18 @@
           
           for (i = [fbInfo count]-1; i >= 0; i--)
             {
-              range = [NGCalendarDateRange calendarDateRangeWithStartDate: [[fbInfo objectAtIndex: i] objectForKey: @"startDate"]
-                                                                  endDate: [[fbInfo objectAtIndex: i] objectForKey: @"endDate"]];
+              // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
+              // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
+              rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
+              delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
+              rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
+              delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
+              rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
+                                                                  endDate: rangeEndDate];
               
               if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
                 {
@@ -608,9 +630,9 @@
             {
               currentAttendee = [theAttendees objectAtIndex: i];
               if ([[currentAttendee uid] isEqualToString: currentUID])
-              break;
+                break;
               else
-              currentAttendee = nil;
+                currentAttendee = nil;
             }
           
           if ([fbInfo count])
@@ -956,10 +978,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
                      withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
-		                  forEventUID: (NSString *) eventUID
-		             withRecurrenceId: (NSCalendarDate *) recurrenceId
-		                 withSequence: (NSNumber *) sequence
-			                     forUID: (NSString *) uid
+                      forEventUID: (NSString *) eventUID
+                 withRecurrenceId: (NSCalendarDate *) recurrenceId
+                     withSequence: (NSNumber *) sequence
+                           forUID: (NSString *) uid
                   shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
@@ -1022,12 +1044,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                     }
                 }
               else
-              addDelegate = YES;
+                addDelegate = YES;
             }
           else
             {
               if (otherDelegate)
-              removeDelegate = YES;
+                removeDelegate = YES;
             }
           
           if (removeDelegate)
@@ -1094,8 +1116,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (NSException *) _handleAttendee: (iCalPerson *) attendee
                      withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
-		                 statusChange: (NSString *) newStatus
-			                    inEvent: (iCalEvent *) event
+                     statusChange: (NSString *) newStatus
+                          inEvent: (iCalEvent *) event
 {
   NSString *currentStatus, *organizerUID;
   SOGoUser *ownerUser, *currentUser;
