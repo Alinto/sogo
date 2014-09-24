@@ -49,8 +49,10 @@
 /* SQL safety */
 - (NSString *) asSafeSQLString;
 
+/* Unicode safety */
+- (NSString *) safeString;
+
 /* JSON */
-- (NSCharacterSet *) safeCharacterSet;
 - (NSString *) jsonRepresentation;
 - (BOOL) isJSONString;
 - (id) objectFromJSONString;

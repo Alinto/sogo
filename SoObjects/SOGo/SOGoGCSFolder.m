@@ -2081,8 +2081,7 @@ static NSArray *childRecordFields = nil;
           // Make sure the sent value is sanitized.
           NSString *sanitizedValue;
           
-          sanitizedValue = [[*currentValue componentsSeparatedByCharactersInSet: [*currentValue safeCharacterSet]]
-                             componentsJoinedByString: @""];
+          sanitizedValue = [*currentValue safeString];
 	  propertyValue = [NSString stringWithFormat: @"<%@>%@</%@>",
 				    nodeTag, sanitizedValue, nodeTag];
 	  propDict = properties200;

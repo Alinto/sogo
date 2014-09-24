@@ -63,8 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   s = [self stringByEscapingHTMLString];
 
-  return [[s componentsSeparatedByCharactersInSet: [self safeCharacterSet]]
-                        componentsJoinedByString: @""];
+  return [s safeString];
 }
 
 - (int) activeSyncFolderType
