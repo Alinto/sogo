@@ -42,7 +42,7 @@
                                        container: (id) theContainer
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *dueDate;
+  NSCalendarDate *startDate, *dueDate, *completed;
   NSArray *attendees, *categories;
   NSString *uid, *title, *location, *status;
   NSNumber *sequence;
@@ -63,6 +63,7 @@
   location = [self location];
   sequence = [self sequence];
   accessClass = [self symbolicAccessClass];
+  completed = [self completed];
   status = [[self status] uppercaseString];
 
   attendees = [self attendees];
@@ -121,10 +122,10 @@
   if ([partmails length] > 0)
     [row setObject:partmails forKey: @"c_partmails"];
 
-  if ([status isNotNull])
+  if (completed || [status isNotNull])
     {
       code = 0; /* NEEDS-ACTION */
-      if ([status isEqualToString: @"COMPLETED"])
+      if (completed || [status isEqualToString: @"COMPLETED"])
 	code = 1;
       else if ([status isEqualToString: @"IN-PROCESS"])
 	code = 2;

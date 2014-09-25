@@ -41,6 +41,8 @@
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoTaskObject.h>
 
@@ -213,13 +215,12 @@
 
 - (BOOL) statusDateDisabled
 {
-  return ![status isEqualToString: @"COMPLETED"];
+  return !([status isEqualToString: @"COMPLETED"] || statusDate);
 }
 
 - (BOOL) statusPercentDisabled
 {
-  return ([status length] == 0
-	  || [status isEqualToString: @"CANCELLED"]);
+  return ([status length] == 0 || [status isEqualToString: @"CANCELLED"]);
 }
 
 - (void) setStatusPercent: (NSString *) newStatusPercent
@@ -311,11 +312,15 @@
         hasDueDate = YES;
       else
         dueDate = [self newStartDate];
+      
+      ASSIGN (statusDate, [todo completed]);
+      [statusDate setTimeZone: timeZone];
+
       ASSIGN (status, [todo status]);
-      if ([status isEqualToString: @"COMPLETED"])
+      
+      if ([status length] == 0 && statusDate)
 	{
-	  ASSIGN (statusDate, [todo completed]);
-	  [statusDate setTimeZone: timeZone];
+          ASSIGN(status, @"COMPLETED");
 	}
       else
 	{
