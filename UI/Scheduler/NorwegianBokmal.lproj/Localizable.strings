@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Oppgaver uten forfallsdato";
 "Display working hours only" = "Vis kun arbeidstimer";
 "Completed tasks" = "Fullførte oppgaver";
+"Display events and tasks colors" = "Vis hendelsers og oppgavers farger";
+"Borders" = "Grenser";
+"Backgrounds" = "Bakgrunner";
 
 /* Appointments */
 

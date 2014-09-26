@@ -16,12 +16,12 @@
 "Log Console (dev.)" = "Loggkonsoll";
 
 "User" = "Bruker";
-"Vacation message is enabled" = "Fraværsmelding er aktivert.";
+"Vacation message is enabled" = "Fraværsmelding er aktivert";
 
 "Help" = "Hjelp";
 
-"noJavascriptError" = "SOGo krever at Javascript kan kjøres. Kontroll at Javascript kan kjøres og at det er aktivert i din nettlesers innstillinger.";
-"noJavascriptRetry" = "Forsøk igjen";
+"noJavascriptError" = "SOGo krever Javascript for å kjøre. Vennligst kontroller at Javascript er tilgjengelig og aktivert i din nettlesers innstillinger.";
+"noJavascriptRetry" = "Prøv på ny";
 
 "Owner:" = "Eier:";
 "Publish the Free/Busy information" = "Publiser ledig/opptatt-informasjon";
@@ -31,40 +31,40 @@
 
 "Subscribe User" = "Abonnér bruker";
 
-"Any Authenticated User" = "Enhver autentisert bruker";
+"Any Authenticated User" = "Hvilken som helst autentiserte bruker";
 "Public Access" = "Offentlig tilgang";
-"Any user not listed above" = "Enhver bruker som ikke er listet ovenfor";
-"Anybody accessing this resource from the public area" = "Enhver som bruker denne ressursen fra det offentlige området";
+"Any user not listed above" = "Hvilken som heldst bruker som ikke er listet ovenfor";
+"Anybody accessing this resource from the public area" = "Hvem som heldst som bruker denne ressursen fra det offentlige området";
 
-"Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
+"Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for det objektet.";
 
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Enhver bruker med konto på dette systemet vil kunne se mailboksen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
+     = "Hvilken som heldst bruker med konto på dette systemet vil kunne se mailboksen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Alle brukere med konto på systemet vil kunne se kalenderen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
+     = "Hvilken som heldst bruker med konto på systemet vil kunne se kalenderen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potensielt kan hvem som helst på internett se kalenderen \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for det åpne internett?";
+     = "Potensielt kan hvem som helst på Internett se kalenderen \"%{0}\", selv om de ikke har konto på dette systemet. Er denne informasjonen passende for det åpne Internett?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Enhver bruker med konto på dette systemet vil kunne se adresseboken \"%{0}\". Er du sikker på at du stoler på alle sammen?";
+     = "Hvilken som heldst bruker med konto på dette systemet vil kunne se adresseboken \"%{0}\". Er du sikker på at du stoler på alle sammen?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potensielt hvem som helst på internett vil kunne se adresseboken \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for det åpne internett?";
+     = "Potensielt kan hvem som helst på Internett vil kunne se adresseboken \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for det åpne Internett?";
 "Give Access" = "Gi tilgang";
 "Keep Private" = "Behold privat";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Du kan ikke abonnere på den mappen!";
+	= "Kan ikke abonnere på den mappen!";
 "You cannot subscribe to a folder that you own!"
       	= "Du kan ikke abonnere på en mappe som du selv eier!";
 "Unable to unsubscribe from that folder!"
-	= "Du kan ikke avslutte abonnement på mappen!";
+	= "Du kan ikke avslutte abonnement på den mappen!";
 "You cannot unsubscribe from a folder that you own!"
       	= "Du kan ikke avslutte abonnement på en mappe som du selv eier!";
-"Unable to rename that folder!" = "Du kan ikke bytte navn på mappen!";
+"Unable to rename that folder!" = "Kan ikke bytte navn på mappen!";
 "You have already subscribed to that folder!"
      	= "Du abonnerer allerede på mappen!";
 "The user rights cannot be edited for this object!"
-        = "Brukerrettighetene kan ikke endres på objektet!";
+        = "Brukerrettighetene kan ikke endres for dette objektet!";
 "A folder by that name already exists." = "En mappe med det navnet finnes fra før.";
 "You cannot create a list in a shared address book." 
         = "Du kan ikke opprette en liste i en delt adressebok.";
@@ -72,14 +72,14 @@
 "Can't contact server" = "Det oppstod en feil ved opprettelse av kontakt med serveren. Vennligst prøv igjen senere.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Du har ikke rettigheter til modulen eller systemet. Kontakt din systemadministrator.";
+= "Du har ikke rettigheter til denne modulen eller dette systemet. Kontakt din systemadministrator.";
 "You don't have the required privileges to perform the operation."
 = "Du har ikke rettigheter til å utføre operasjonen.";
 
-"noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon til.";
-"delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
+"noEmailForDelegation" = "Du må angi adressen du vil delegerer din invitasjon til.";
+"delegate is organizer" = "Delegaten er arrangør. Vennligst angi en annen delegat.";
 "delegate is a participant" = "Delegaten er allerede en deltaker.";
-"delegate is a group" = "Den angitte adressen er en gruppe. Du kan bare delegere til enkeltpersoner.";
+"delegate is a group" = "Den angitte adressen er en gruppe. Du kan kun delegere til en unik person.";
 
 "Snooze for " = "Slumre i";
 "5 minutes" = "5 minutter";
@@ -88,7 +88,7 @@
 "30 minutes" = "30 minutter";
 "45 minutes" = "45 minutter";
 "1 hour" = "1 time";
-
+"1 day" = "1 dag";
 
 /* common buttons */
 "OK" = "OK";
@@ -100,7 +100,7 @@
 "Reminder:" = "Påminnelse:";
 "Start:" = "Start:";
 "Due Date:" = "Forfallsdato:";
-"Location:" = "Lokasjon:";
+"Location:" = "Sted:";
 
 /* mail labels */
 "Important" = "Viktig";

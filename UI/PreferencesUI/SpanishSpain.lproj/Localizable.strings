@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
 "Sort messages by threads" = "Ordenar mensajes por temas";
 "When sending mail, add unknown recipients to my" = "Cuando se envía correo, añade destinatarios desconocidos a mi";
-"Check for new mail:" = "Comprobar correo nuevo: ";
-"refreshview_manually" = "Manualmente";
-"refreshview_every_minute" = "Cada minuto";
-"refreshview_every_2_minutes" = "Cada 2 minutos";
-"refreshview_every_5_minutes" = "Cada 5 minutos";
-"refreshview_every_10_minutes" = "Cada 10 minutos";
-"refreshview_every_20_minutes" = "Cada 20 minutos";
-"refreshview_every_30_minutes" = "Cada 30 minutos";
-"refreshview_once_per_hour" = "Cada hora";
 
 "Forward messages:" = "Reenviar mensajes:";
 "messageforward_inline" = "Incorporado";
@@ -239,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Refrescar Vista:";
+"refreshview_manually" = "Manualmente";
+"refreshview_every_minute" = "Cada minuto";
+"refreshview_every_2_minutes" = "Cada 2 minutos";
+"refreshview_every_5_minutes" = "Cada 5 minutos";
+"refreshview_every_10_minutes" = "Cada 10 minutos";
+"refreshview_every_20_minutes" = "Cada 20 minutos";
+"refreshview_every_30_minutes" = "Cada 30 minutos";
+"refreshview_once_per_hour" = "Cada hora";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";

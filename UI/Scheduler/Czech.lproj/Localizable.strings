@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Úkoly bez termínu";
 "Display working hours only" = "Zobrazit jen pracovní hodiny";
 "Completed tasks" = "Dokončené úkoly";
+"Display events and tasks colors" = "Zobrazit barvy událostí a úkolů";
+"Borders" = "Okraje";
+"Backgrounds" = "Pozadí";
 
 /* Appointments */
 

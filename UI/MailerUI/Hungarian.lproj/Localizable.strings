@@ -13,6 +13,7 @@
 "Print"       = "Nyomtatás";
 "Stop"        = "Leállítás";
 "Write"       = "Levélírás";
+"Search"      = "Keresés";
 
 "Send" = "Küldés";
 "Contacts" = "Kapcsolatok";
@@ -41,6 +42,7 @@
 "Attachment" = "Melléklet";
 "Unread" = "Olvasatlan";
 "Flagged" = "Csillagozott";
+"Search multiple mailboxes" = "Keresés több postafiókban";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Címzett";
 "Cc"            = "Másolat";
 "Bcc"           = "Titkos másolat";
-"Reply-To"	= "Válaszcím";
+"Reply-To"	    = "Válaszcím";
 "Add address"   = "Cím hozzáadása";
+"Body"          = "Levéltörzs";
 
 "Open" = "Megnyitás";
 "Select All" = "Összes kijelölése";
@@ -236,6 +239,18 @@
 "As Junk" = "Szemétként";
 "As Not Junk" = "Nem szemétként";
 "Run Junk Mail Controls" = "Levélszemétgyűjtő futtatása";
+
+"Search messages in:" = "Üzenetek keresése ebben:";
+"Search" = "Keresés";
+"Search subfolders" = "Keresés almappákban";
+"Match any of the following" = "A következők egyikének feleljen meg";
+"Match all of the following" = "Az összes következőnek felejen meg";
+"contains" = "tartalmazza";
+"does not contain" = "nem tartalmazza";
+"No matches found" = "Nincs találat";
+"results found" = "találat";
+"result found" = "találat";
+"Please specify at least one filter" = "Legalább egy feltételt adjon meg";
 
 /* Folder operations */
 "Name :" = "Név:";

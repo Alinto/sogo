@@ -13,6 +13,7 @@
 "Print"       = "Tisk";
 "Stop"        = "Zastavit";
 "Write"       = "Napsat";
+"Search"      = "Hledat";
 
 "Send" = "Odeslat";
 "Contacts" = "Kontakty";
@@ -41,6 +42,7 @@
 "Attachment" = "Příloha";
 "Unread" = "Nepřečtené";
 "Flagged" = "Oštítkované";
+"Search multiple mailboxes" = "Hledat ve zprávách";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Komu";
 "Cc"            = "Kopie";
 "Bcc"           = "Skrytá Kopie";
-"Reply-To"	= "Odpovědět komu";
+"Reply-To"	    = "Odpovědět komu";
 "Add address"   = "Přidat adresu";
+"Body"          = "Tělo";
 
 "Open" = "Otevřít";
 "Select All" = "Vybrat vše";
@@ -237,6 +240,18 @@
 "As Not Junk" = "Jako vyžádané";
 "Run Junk Mail Controls" = "Spustit kontrolu nevyžádaných";
 
+"Search messages in:" = "Hledat zprávy v:";
+"Search" = "Hledat";
+"Search subfolders" = "Hledat v podsložkách";
+"Match any of the following" = "Odpovídající některému pravidlu";
+"Match all of the following" = "Odpovídající všem pravidlům";
+"contains" = "obsahuje";
+"does not contain" = "neobsahuje";
+"No matches found" = "Nebylo nalezeno nic";
+"results found" = "výskytů nalezeno";
+"result found" = "výskyt nalezen";
+"Please specify at least one filter" = "Zadejte alespoň jedno pravidlo";
+
 /* Folder operations */
 "Name :" = "Jméno :";
 "Enter the new name of your folder :"
@@ -277,7 +292,7 @@
 
 /* Message editing */
 "error_missingsubject" = "Chybí předmět";
-"error_missingrecipients" = "Příjemci nebyli specifikováni";
+"error_missingrecipients" = "Zadejte alespoň jednoho příjemce.";
 "Send Anyway" = "Odeslat";
 "Error while saving the draft:" = "Při uložení konceptu došlo k chybě:";
 "Error while uploading the file \"%{0}\":" = "Při přenosu souboru \"%{0}\" došlo k chybě:";

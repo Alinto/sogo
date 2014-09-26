@@ -104,6 +104,10 @@
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
 "firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
 
+"Prevent from being invited to appointments" = "Не допускать приглашения на встречи";
+"White list for appointment invitations:" = "Белый список для приглашений на встречи:";
+"Contacts Names" = "Имена контактов";
+
 /* Default Calendar */
 "Default calendar :" = "Календарь по-умолчанию";
 "selectedCalendar" = "Выбранный календарь";
@@ -130,15 +134,6 @@
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Sort messages by threads" = "Сортировать сообщения по нитям";
 "When sending mail, add unknown recipients to my" = "При отправке писем добавлять неизвестных получателей в мою";
-"Check for new mail:" = "Проверять новую почту:";
-"refreshview_manually" = "Вручную";
-"refreshview_every_minute" = "Каждую минуту";
-"refreshview_every_2_minutes" = "Каждые 2 минуты";
-"refreshview_every_5_minutes" = "Каждые 5 минут";
-"refreshview_every_10_minutes" = "Каждые 10 минут";
-"refreshview_every_20_minutes" = "Каждые 20 минут";
-"refreshview_every_30_minutes" = "Каждые 30 минут";
-"refreshview_once_per_hour" = "Раз в час";
 
 "Forward messages:" = "Пересылать сообщения:";
 "messageforward_inline" = "В теле письма";
@@ -235,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Обновить вид:";
+"refreshview_manually" = "Вручную";
+"refreshview_every_minute" = "Каждую минуту";
+"refreshview_every_2_minutes" = "Каждые 2 минуты";
+"refreshview_every_5_minutes" = "Каждые 5 минут";
+"refreshview_every_10_minutes" = "Каждые 10 минут";
+"refreshview_every_20_minutes" = "Каждые 20 минут";
+"refreshview_every_30_minutes" = "Каждые 30 минут";
+"refreshview_once_per_hour" = "Раз в час";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
