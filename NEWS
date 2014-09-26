@@ -1,19 +1,24 @@
-2.2.9 (YYYY-MM-DD)
+2.2.9 (2014-09-26)
 ------------------
 
 New features
- - 
+ - support for recurrent tasks (#2160)
+ - support for alarms on recurrent events / tasks
 
 Enchancements
  - alarms can now be snoozed for 1 day
- - better iCal compability regarding alarms (#1920)
+ - better iOS/Mac OS X Calendar compability regarding alarms (#1920)
  - force default classification over CalDAV if none is set (#2326)
  - now compliant when handling completed tasks (#589)
+ - better iOS invitations handling regarding part state (#2852)
+ - fixed Mac OS X Calendar delegation issue (#2837)
 
 Bug fixes
  - fixed sending mails to multiple recipients over AS 
  - fixed freebusy support in iCal 7 and free/busy state changes (#2878, #2879)
  - we now get rid of all potential control characters before sending the DAV response
+ - sync-token can now be returned during PROPFIND (#2493)
+ - fixed calendar deletion on iOS/Mac OS Calendar (#2838)
 
 2.2.8 (2014-09-10)
 ------------------
