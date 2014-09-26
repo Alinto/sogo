@@ -2010,9 +2010,14 @@ like this:
         ConfidentialDAndTViewer
     );
     SOGoLanguage = English;
+    SOGoTimeZone = America/Montreal;
     SOGoMailDomain = acme.com;
-    SOGoDraftsFolderName = Drafts;
     SOGoIMAPServer = localhost;
+    SOGoDraftsFolderName = Drafts;
+    SOGoSentFolderName = Sent;
+    SOGoTrashFolderName = Trash;
+    SOGoMailingMechanism = smtp;
+    SOGoSMTPServer = 127.0.0.1;
     SOGoUserSources = (
         {
             type = ldap;
@@ -2030,11 +2035,6 @@ like this:
             port = 389;
         }
     );
-    SOGoMailingMechanism = smtp;
-    SOGoSMTPServer = 127.0.0.1;
-    SOGoSentFolderName = Sent;
-    SOGoTimeZone = America/Montreal;
-    SOGoTrashFolderName = Trash;
 }
 ----
 
@@ -2048,24 +2048,7 @@ coyote.com):
 
 ----
 {
-    SOGoProfileURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile";
-    OCSFolderInfoURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info";
-    OCSSessionsFolderURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder";
-    SOGoAppointmentSendEMailNotifications = YES;
-    SOGoCalendarDefaultRoles = (
-        PublicViewer,
-        ConfidentialDAndTViewer
-    );
-    SOGoLanguage = English;
-    SOGoMailingMechanism = smtp;
-    SOGoSMTPServer = 127.0.0.1;
-    SOGoSentFolderName = Sent;
-    SOGoTimeZone = America/Montreal;
-    SOGoTrashFolderName = Trash;
-    SOGoIMAPServer = localhost;
+...
     domains = {
         acme = {
             SOGoMailDomain = acme.com;

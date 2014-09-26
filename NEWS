@@ -12,6 +12,7 @@ Enchancements
  - now compliant when handling completed tasks (#589)
  - better iOS invitations handling regarding part state (#2852)
  - fixed Mac OS X Calendar delegation issue (#2837)
+ - converted ODT documentation to AsciiDoc format
 
 Bug fixes
  - fixed sending mails to multiple recipients over AS 

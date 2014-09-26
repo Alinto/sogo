@@ -17,7 +17,7 @@ Commercial Support and Contact Information
 For any questions or comments, do not hesitate to contact us by writing
 an email to :
 
-mailto:support@inverse.ca
+mailto:support@inverse.ca[support@inverse.ca]
 
 Inverse (http://inverse.ca/[http://inverse.ca]) offers professional
 services around SOGo to help organizations deploy the solution and
