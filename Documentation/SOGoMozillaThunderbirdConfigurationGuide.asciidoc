@@ -80,7 +80,7 @@ https://addons.mozilla.org/en-US/thunderbird/addon/lightning/
 When using version 17 ESR of Thunderbird, you can use Mozilla Lightning
 version 1.9.1. In order to download the extension, please visit:
 
-https://addons.mozilla.org/en-US/thunderbird/addon/lightning/versions/?page=1#version-1.9.1
+https://addons.mozilla.org/en-US/thunderbird/addon/lightning/versions/1.9.1
 
 For Thunderbird 2 and 3.1, you need the _Inverse Edition_of Mozilla
 Lightning. It provides back ported features, bug fixes and security
