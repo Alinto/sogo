@@ -62,7 +62,7 @@ Mozilla Thunderbird
 Mozilla Thunderbird is the official front end client of SOGo.
 
 Mozilla Thunderbird version 2, 3.1, 10 ESR (Extended Support Release),
-17 ESR, and 24 are supported and it is recommended to use version 24 of
+17 ESR, 24 and 31 are supported and it is recommended to use version 31 of
 Thunderbird.
 
 In order to download and install Mozilla Thunderbird, please visit:
@@ -72,7 +72,7 @@ https://www.mozilla.org/en-US/thunderbird/organizations/all-esr.html
 Mozilla Lightning
 ~~~~~~~~~~~~~~~~~
 
-When using version 24 of Thunderbird, you can use the latest version of
+When using version 24 or 31 of Thunderbird, you can use the latest version of
 Mozilla Lightning. Use the Add-ons manager of Thunderbird or visit:
 
 https://addons.mozilla.org/en-US/thunderbird/addon/lightning/
@@ -97,7 +97,7 @@ SOGo Connector and SOGo Integrator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The SOGo Connector and Integrator extensions are provided to perfect the
-integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR and 24 with
+integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR, 24 and 31 with
 the SOGo groupware solution.
 
 First of all, the SOGo Connector extension transforms Thunderbird into a
@@ -262,15 +262,15 @@ and Lightning, you would have:
 $plugins 
 = array( "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "24.0.5",
-                   "filename" => "sogo-connector-24.0.5.xpi" ),
+                   "version" => "31.0.0",
+                   "filename" => "sogo-connector-31.0.0.xpi" ),
          "sogo-integrator@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "24.0.5",
-                   "filename" => "sogo-integrator-24.0.5-sogo-demo.xpi" ),
+                   "version" => "31.0.0",
+                   "filename" => "sogo-integrator-31.0.0-sogo-demo.xpi" ),
          "{e2fda1a4-762b-4020-b5ad-a41df1933103}"
          => array( "application" => "thunderbird",
-                   "version" => "2.6.5",
+                   "version" => "3.3.1",
                    "filename" => "lightning.xpi" ));
 ----
 
