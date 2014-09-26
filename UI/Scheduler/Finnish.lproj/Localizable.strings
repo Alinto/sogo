@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Tehtävät ilman määräpäivää";
 "Display working hours only" = "Näytä vain työajat";
 "Completed tasks" = "Valmistuneet tehtävät";
+"Display events and tasks colors" = "Näytä tapahtumat ja tehtävien värit";
+"Borders" = "Reunat";
+"Backgrounds" = "Taustat";
 
 /* Appointments */
 

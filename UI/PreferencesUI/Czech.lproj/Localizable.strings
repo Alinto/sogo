@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
-"Check for new mail:" = "Zkontrolovat novou poštu:";
-"refreshview_manually" = "Manuálně";
-"refreshview_every_minute" = "Každou minutu";
-"refreshview_every_2_minutes" = "Každé 2 minuty";
-"refreshview_every_5_minutes" = "Každých 5 minut";
-"refreshview_every_10_minutes" = "Každých 10 minut";
-"refreshview_every_20_minutes" = "Každých 20 minut";
-"refreshview_every_30_minutes" = "Každých 30 minut";
-"refreshview_once_per_hour" = "Jednou za hodinu";
 
 "Forward messages:" = "Přeposlat zprávy:";
 "messageforward_inline" = "Do řady";
@@ -240,6 +231,16 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
+"Refresh View :" = "Aktualizace zobrazení:";
+"refreshview_manually" = "Manuálně";
+"refreshview_every_minute" = "Každou minutu";
+"refreshview_every_2_minutes" = "Každé 2 minuty";
+"refreshview_every_5_minutes" = "Každých 5 minut";
+"refreshview_every_10_minutes" = "Každých 10 minut";
+"refreshview_every_20_minutes" = "Každých 20 minut";
+"refreshview_every_30_minutes" = "Každých 30 minut";
+"refreshview_once_per_hour" = "Jednou za hodinu";
+
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Pokud zpráva obsahuje žádost potvrzení o přečtení:";
 "Never send a return receipt" = "Nikdy neodeslat potvrzení o přečtení";
@@ -263,8 +264,8 @@
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Jméno filtru:";
 "For incoming messages that" = "Pro příchozí zprávy, které";
-"match all of the following rules:" = "vyhovují všem následujícím podmínkám:";
-"match any of the following rules:" = "vyhovují některé z následujících podmínek:";
+"match all of the following rules:" = "odpovídají všem následujícím pravidlům:";
+"match any of the following rules:" = "odpovídají některému z následujících pravidel:";
 "match all messages" = "odpovídají všem zprávám";
 "Perform these actions:" = "Proveď tyto akce:";
 "Untitled Filter" = "Nepojmenovaný filtr";

@@ -13,6 +13,7 @@
 "Print"       = "Drukuj";
 "Stop"        = "Zatrzymaj";
 "Write"       = "Napisz";
+"Search"      = "Szukaj";
 
 "Send" = "Wyślij";
 "Contacts" = "Kontakty";
@@ -41,6 +42,7 @@
 "Attachment" = "Załącznik";
 "Unread" = "Nie przeczytane";
 "Flagged" = "Oflagowane";
+"Search multiple mailboxes" = "Przeszukaj wiele skrzynek";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Do";
 "Cc"            = "DW";
 "Bcc"           = "UDW";
-"Reply-To"	= "Odpowiedź do";
+"Reply-To"	    = "Odpowiedź do";
 "Add address"   = "Dodaj adres";
+"Body"          = "Treść";
 
 "Open" = "Otwórz";
 "Select All" = "Zaznacz wszystkie";
@@ -235,7 +238,19 @@
 "Flag" = "Flaga";
 "As Junk" = "Jako śmieć";
 "As Not Junk" = "Jako nie-śmieć";
-"Run Junk Mail Controls" = "Uruchom kontrole wiadomości śmieci";
+"Run Junk Mail Controls" = "Uruchom kontrolę wiadomości śmieci";
+
+"Search messages in:" = "Szukaj wiadomości w:";
+"Search" = "Szukaj";
+"Search subfolders" = "Przeszukaj podfoldery";
+"Match any of the following" = "Dopasuj dowolny z warunków";
+"Match all of the following" = "Dopasuj wszystkie warunki";
+"contains" = "zawiera";
+"does not contain" = "nie zawiera";
+"No matches found" = "Żadna wiadomość nie pasuje";
+"results found" = "wiadomości pasuje";
+"result found" = "pasująca wiadomość";
+"Please specify at least one filter" = "Wybierz co najmniej jeden filtr";
 
 /* Folder operations */
 "Name :" = "Nazwa :";

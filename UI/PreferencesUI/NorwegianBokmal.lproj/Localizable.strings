@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
 "Sort messages by threads" = "Sorter meldinger etter tråder";
 "When sending mail, add unknown recipients to my" = "Ved sending av mail, legg til ukjente mottakere til min";
-"Check for new mail:" = "Hent ny post:";
-"refreshview_manually" = "Manuelt";
-"refreshview_every_minute" = "Hvert minutt";
-"refreshview_every_2_minutes" = "Hvert 2. minutt";
-"refreshview_every_5_minutes" = "Hvert 5. minutt";
-"refreshview_every_10_minutes" = "Hvert 10. minutt";
-"refreshview_every_20_minutes" = "Hvert 20. minutt";
-"refreshview_every_30_minutes" = "Hvert 30. minutt";
-"refreshview_once_per_hour" = "Hver time";
 
 "Forward messages:" = "Videresend meldinger:";
 "messageforward_inline" = "Innsatt";
@@ -239,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Oppdater Visning:";
+"refreshview_manually" = "Manuelt";
+"refreshview_every_minute" = "Hvert minutt";
+"refreshview_every_2_minutes" = "Hvert 2. minutt";
+"refreshview_every_5_minutes" = "Hvert 5. minutt";
+"refreshview_every_10_minutes" = "Hvert 10. minutt";
+"refreshview_every_20_minutes" = "Hvert 20. minutt";
+"refreshview_every_30_minutes" = "Hvert 30. minutt";
+"refreshview_once_per_hour" = "Hver time";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";

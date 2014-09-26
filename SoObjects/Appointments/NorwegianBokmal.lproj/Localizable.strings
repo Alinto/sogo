@@ -28,23 +28,23 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Hendelseinvitasjon: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sendt av %{SentBy})";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.⏎ ⏎ Start: %{StartDate}⏎ Slutt: %{EndDate}⏎ Beskrivelse: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.\n\nStart: %{StartDate}\nSlutt: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.\n\nStart: %{StartDate} klokken %{StartTime}\nSlutt: %{EndDate} klokken %{EndTime}\nBeskrivelse: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Hendelse avlyst: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} har avlyst hendelsen: %{Summary}.⏎ ⏎ Start: %{StartDate}⏎ Slutt: %{EndDate}⏎ Beskrivelse: %{Description}";
+= "%{Organizer} %{SentByText} har avlyst hendelsen: %{Summary}.\n\nStart: %{StartDate}\nSlutt: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} har avlyst : %{Summary}.\n\nStart: %{StartDate} klokken %{StartTime}\nEnd: %{EndDate} klokken %{EndTime}\nBeskrivelse: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "Avtalen \"%{Summary}\", %{OldStartDate} er endret";
+= "Avtalen \"%{Summary}\", %{OldStartDate} har endret seg";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "Avtalen \"%{Summary}\" for %{OldStartDate} klokken %{OldStartTime} er endret.";
+= "Avtalen \"%{Summary}\" for %{OldStartDate} klokken %{OldStartTime} har endret seg";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Følgende parametre er endret for \"%{Summary}\"-møtet:";
+= "Følgende parametre har endret seg for \"%{Summary}\" møtet:";
 "Please accept or decline those changes."
 = "Vennligst godta eller avvis endringene.";
 
@@ -52,16 +52,16 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Accepted invitation: \"%{Summary}\"" = "Aksepterte invitasjonen: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Avviste invitasjonen: \"%{Summary}\"";
 "Delegated invitation: \"%{Summary}\"" = "Delegerte invitasjonen: \"%{Summary}\"";
-"Not yet decided on invitation: \"%{Summary}\"" = "Fortsatt ikke svart på invitasjonen: \"%{Summary}";
+"Not yet decided on invitation: \"%{Summary}\"" = "Har enda ikke svart på invitasjonen: \"%{Summary}";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText} har godtatt invitasjonen.";
+= "%{Attendee} %{SentByText} har godtatt invitasjonen din.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText} har avvist invitasjonen.";
+= "%{Attendee} %{SentByText} har avvist invitasjonen din.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText} har delegert invitasjonen til %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText} har ikke svart på invitasjonen.";
+= "%{Attendee} %{SentByText} har enda ikke svart på invitasjonen din.";
 
 /* Resources */
-"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kan ikke få tilgang til ressurs: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimum antall samtidige reservasjoner (%{NumberOfSimultaneousBookings}) er nådd for ressursen \"%{Cn} %{SystemEmail}\". Kolliderende hendelse er \"%{EventTitle}\", som starter %{StartDate}.";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Har ikke tilgang til ressurs: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimum antall samtidige reservasjoner (%{NumberOfSimultaneousBookings}) er nådd for ressursen \"%{Cn} %{SystemEmail}\". Den kolliderende hendelsen er \"%{EventTitle}\", og starter %{StartDate}.";

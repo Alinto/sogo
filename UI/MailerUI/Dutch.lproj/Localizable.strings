@@ -13,6 +13,7 @@
 "Print"       = "Afdrukken";
 "Stop"        = "Stoppen";
 "Write"       = "Opstellen";
+"Search"      = "Zoeken";
 
 "Send" = "Verzenden";
 "Contacts" = "Adresboek";
@@ -41,6 +42,7 @@
 "Attachment" = "Bijlage";
 "Unread" = "Ongelezen";
 "Flagged" = "Gemarkeerd";
+"Search multiple mailboxes" = "Zoek in meerdere mailboxen";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Aan";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	= "Reply-To";
+"Reply-To"	    = "Reply-To";
 "Add address"   = "Adres toevoegen";
+"Body"          = "Inhoud";
 
 "Open" = "Openen";
 "Select All" = "Selecteer Alles";
@@ -236,6 +239,18 @@
 "As Junk" = "Als ongewenst";
 "As Not Junk" = "Als gewenst";
 "Run Junk Mail Controls" = "Ongewenste berichtenfilter starten";
+
+"Search messages in:" = "Zoek berichten in:";
+"Search" = "Zoeken";
+"Search subfolders" = "Zoek in submappen";
+"Match any of the following" = "Gelijk aan een van de volgende";
+"Match all of the following" = "Gelijk aan alle van de volgende";
+"contains" = "bevat";
+"does not contain" = "bevat niet";
+"No matches found" = "Geen overeenkomsten gevonden";
+"results found" = "resultaten gevonden";
+"result found" = "resultaat gevonden";
+"Please specify at least one filter" = "Specificeer tenminste een filter";
 
 /* Folder operations */
 "Name :" = "Naam:";

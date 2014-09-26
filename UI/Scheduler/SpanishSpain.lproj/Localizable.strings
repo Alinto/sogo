@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Tareas sin fecha de vencimiento";
 "Display working hours only" = "Enseñar solo horas de trabajo";
 "Completed tasks" = "Tareas Finalizadas";
+"Display events and tasks colors" = "Enseña colores de eventos y tareas";
+"Borders" = "Bordes";
+"Backgrounds" = "Fondos";
 
 /* Appointments */
 
