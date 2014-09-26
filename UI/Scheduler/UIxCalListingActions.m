@@ -99,7 +99,7 @@ static NSArray *tasksFields = nil;
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"editable", @"erasable",
-                   @"c_priority", @"c_owner", nil];
+                   @"c_priority", @"c_owner", @"c_recurrence_id", @"isException", nil];
     [tasksFields retain];
   }
 }
@@ -331,150 +331,158 @@ static NSArray *tasksFields = nil;
   
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
-  {
-    if ([currentFolder isActive])
     {
-      folderIsRemote = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
+      if ([currentFolder isActive])
+        {
+          folderIsRemote = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
       
-      if ([criteria isEqualToString:@"title_Category_Location"])
-        currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
-                                                       to: endDate
-                                                    title: value
-                                                component: component
-                                        additionalFilters: criteria] objectEnumerator];
-      
-      else if ([criteria isEqualToString:@"entireContent"])
-      {
-        // First research : Through the quick table inside the location, category and title columns
-        quickInfos = [currentFolder fetchCoreInfosFrom: startDate
-                                                    to: endDate
-                                                 title: value
-                                             component: component
-                                     additionalFilters: criteria];
-        
-        // Save the c_name in another array to compare with
-        if ([quickInfos count] > 0)
-        {
-          quickInfosFlag = YES;
-          quickInfosName = [NSMutableArray arrayWithCapacity:[quickInfos count]];
-          for (i = 0; i < [quickInfos count]; i++)
-            [quickInfosName addObject:[[quickInfos objectAtIndex:i] objectForKey:@"c_name"]];
-        }
-        
-        // Second research : Every objects except for those already in the quickInfos array
-        allInfos = [currentFolder fetchCoreInfosFrom: startDate
-                                                  to: endDate
-                                               title: nil
-                                           component: component];
-        if (quickInfosFlag == YES)
-        {
-          for (i = ([allInfos count] - 1); i >= 0 ; i--) {
-            if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
-              [allInfos removeObjectAtIndex:i];
-          }
-        }
-        
-        
-        for (i = 0; i < [allInfos count]; i++)
-        {
-          iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
-          calendar = [iCalCalendar parseSingleFromSource: iCalString];
-          master = [calendar firstChildWithTag:component];
-          if (master) {
-            if ([[master comment] length] > 0)
+          //
+          // criteria can have the following values: "title", "title_Category_Location" and "entireContent"
+          //
+          if ([criteria isEqualToString:@"title_Category_Location"])
             {
-              match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
-              if (match.length > 0) {
-                [quickInfos addObject:[allInfos objectAtIndex:i]];
-              }
+              currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
+                                                             to: endDate
+                                                          title: value
+                                                      component: component
+                                              additionalFilters: criteria] objectEnumerator];
             }
-          }
-        }
+          else if ([criteria isEqualToString:@"entireContent"])
+            {
+              // First search : Through the quick table inside the location, category and title columns
+              quickInfos = [currentFolder fetchCoreInfosFrom: startDate
+                                                          to: endDate
+                                                       title: value
+                                                   component: component
+                                           additionalFilters: criteria];
         
-      currentInfos = [quickInfos objectEnumerator];
-      }
-      
+              // Save the c_name in another array to compare with
+              if ([quickInfos count] > 0)
+                {
+                  quickInfosFlag = YES;
+                  quickInfosName = [NSMutableArray arrayWithCapacity:[quickInfos count]];
+                  for (i = 0; i < [quickInfos count]; i++)
+                    [quickInfosName addObject:[[quickInfos objectAtIndex:i] objectForKey:@"c_name"]];
+                }
+        
+              // Second research : Every objects except for those already in the quickInfos array
+              allInfos = [currentFolder fetchCoreInfosFrom: startDate
+                                                        to: endDate
+                                                     title: nil
+                                                 component: component];
+              if (quickInfosFlag == YES)
+                {
+                  for (i = ([allInfos count] - 1); i >= 0 ; i--) {
+                    if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
+                      [allInfos removeObjectAtIndex:i];
+                  }
+                }
+        
+        
+              for (i = 0; i < [allInfos count]; i++)
+                {
+                  iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
+                  calendar = [iCalCalendar parseSingleFromSource: iCalString];
+                  master = [calendar firstChildWithTag:component];
+                  if (master) {
+                    if ([[master comment] length] > 0)
+                      {
+                        match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
+                        if (match.length > 0) {
+                          [quickInfos addObject:[allInfos objectAtIndex:i]];
+                        }
+                      }
+                  }
+                }
+        
+              currentInfos = [quickInfos objectEnumerator];
+            }
+          else
+            {
+              id foo;
 
-      else
-        currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
-                                                       to: endDate
-                                                    title: value
-                                                component: component] objectEnumerator];
+              foo = [currentFolder fetchCoreInfosFrom: startDate
+                                                             to: endDate
+                                                          title: value
+                                            component: component];
+              currentInfos = [foo objectEnumerator];
+            }
       
-      owner = [currentFolder ownerInContext: context];
-      ownerUser = [SOGoUser userWithLogin: owner];
-      isErasable = ([owner isEqualToString: userLogin] || [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
+          owner = [currentFolder ownerInContext: context];
+          ownerUser = [SOGoUser userWithLogin: owner];
+          isErasable = ([owner isEqualToString: userLogin] || [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
       
-      while ((newInfo = [currentInfos nextObject]))
-      {
-        if ([fields containsObject: @"editable"])
-        {
-          if (folderIsRemote)
-            // .ics subscriptions are not editable
-            [newInfo setObject: [NSNumber numberWithInt: 0]
-                        forKey: @"editable"];
-          else
-          {
-            // Identifies whether the active user can edit the event.
-            role = [currentFolder roleForComponentsWithAccessClass:[[newInfo objectForKey: @"c_classification"] intValue]
-                                                           forUser: userLogin];
-            if ([role isEqualToString: @"ComponentModifier"] || [role length] == 0)
-              [newInfo setObject: [NSNumber numberWithInt: 1]
-                          forKey: @"editable"];
-            else
-              [newInfo setObject: [NSNumber numberWithInt: 0]
-                          forKey: @"editable"];
-          }
-        }
+          while ((newInfo = [currentInfos nextObject]))
+            {
+              if ([fields containsObject: @"editable"])
+                {
+                  if (folderIsRemote)
+                    // .ics subscriptions are not editable
+                    [newInfo setObject: [NSNumber numberWithInt: 0]
+                                forKey: @"editable"];
+                  else
+                    {
+                      // Identifies whether the active user can edit the event.
+                      role = [currentFolder roleForComponentsWithAccessClass:[[newInfo objectForKey: @"c_classification"] intValue]
+                                                                     forUser: userLogin];
+                      if ([role isEqualToString: @"ComponentModifier"] || [role length] == 0)
+                        [newInfo setObject: [NSNumber numberWithInt: 1]
+                                    forKey: @"editable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 0]
+                                    forKey: @"editable"];
+                    }
+                }
 	      if ([fields containsObject: @"ownerIsOrganizer"])
-        {
-          // Identifies whether the active user is the organizer
-          // of this event.
-          NSString *c_orgmail;
-          c_orgmail = [newInfo objectForKey: @"c_orgmail"];
+                {
+                  // Identifies whether the active user is the organizer
+                  // of this event.
+                  NSString *c_orgmail;
+                  c_orgmail = [newInfo objectForKey: @"c_orgmail"];
           
-          if ([c_orgmail isKindOfClass: [NSString class]] && [ownerUser hasEmail: c_orgmail])
-            [newInfo setObject: [NSNumber numberWithInt: 1]
-                        forKey: @"ownerIsOrganizer"];
-          else
-            [newInfo setObject: [NSNumber numberWithInt: 0]
-                        forKey: @"ownerIsOrganizer"];
-        }
+                  if ([c_orgmail isKindOfClass: [NSString class]] && [ownerUser hasEmail: c_orgmail])
+                    [newInfo setObject: [NSNumber numberWithInt: 1]
+                                forKey: @"ownerIsOrganizer"];
+                  else
+                    [newInfo setObject: [NSNumber numberWithInt: 0]
+                                forKey: @"ownerIsOrganizer"];
+                }
 	      if (isErasable)
-          [newInfo setObject: [NSNumber numberWithInt: 1]
-                      forKey: @"erasable"];
+                [newInfo setObject: [NSNumber numberWithInt: 1]
+                            forKey: @"erasable"];
 	      else
-          [newInfo setObject: [NSNumber numberWithInt: 0]
-                      forKey: @"erasable"];
+                [newInfo setObject: [NSNumber numberWithInt: 0]
+                            forKey: @"erasable"];
         
 	      [newInfo setObject: [currentFolder nameInContainer]
-                    forKey: @"c_folder"];
-        [newInfo setObject: [currentFolder ownerInContext: context]
-                    forKey: @"c_owner"];
-        calendarName = [currentFolder displayName];
-        if (calendarName == nil)
-          calendarName = @"";
-        [newInfo setObject: calendarName
-                    forKey: @"calendarName"];
-        if (![[newInfo objectForKey: @"c_title"] length])
-          [self _fixComponentTitle: newInfo withType: component];
+                          forKey: @"c_folder"];
+              [newInfo setObject: [currentFolder ownerInContext: context]
+                          forKey: @"c_owner"];
+              calendarName = [currentFolder displayName];
+              if (calendarName == nil)
+                calendarName = @"";
+              [newInfo setObject: calendarName
+                          forKey: @"calendarName"];
+              if (![[newInfo objectForKey: @"c_title"] length])
+                [self _fixComponentTitle: newInfo withType: component];
+
 	      // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
-        [self _fixDates: newInfo];
-        newInfoForComponent = [NSMutableArray arrayWithArray: [newInfo objectsForKeys: fields
-                                                                       notFoundMarker: marker]];
-        // Escape HTML
-        count = [newInfoForComponent count];
-        for (i = 0; i < count; i++)
-        {
-          currentInfo = [newInfoForComponent objectAtIndex: i];
-          if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
-            [newInfoForComponent replaceObjectAtIndex: i withObject: [currentInfo stringByEscapingHTMLString]];
+              [self _fixDates: newInfo];
+              newInfoForComponent = [NSMutableArray arrayWithArray: [newInfo objectsForKeys: fields
+                                                                             notFoundMarker: marker]];
+              // Escape HTML
+              count = [newInfoForComponent count];
+              for (i = 0; i < count; i++)
+                {
+                  currentInfo = [newInfoForComponent objectAtIndex: i];
+                  if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
+                    [newInfoForComponent replaceObjectAtIndex: i withObject: [currentInfo stringByEscapingHTMLString]];
+                }
+              [infos addObject: newInfoForComponent];
+            }
         }
-        [infos addObject: newInfoForComponent];
-      }
     }
-  }
   
   return infos;
 }
@@ -520,7 +528,6 @@ static NSArray *tasksFields = nil;
 // - for ALL subscribed and ACTIVE calendars
 //  - returns alarms that will occur in the next 48 hours or the non-triggered alarms
 //    for non-completed events
-//  - recurring events are currently ignored
 //
 - (WOResponse *) alarmsListAction
 {
@@ -539,33 +546,28 @@ static NSArray *tasksFields = nil;
   
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
-  {
-    if ([currentFolder isActive] && [currentFolder showCalendarAlarms])
     {
-      NSDictionary *entry;
-      NSArray *alarms;
-      BOOL isCycle;
-      int i;
-      
-      alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
-                                               to: [NSNumber numberWithInt: laterTime]];
-      
-      for (i = 0; i < [alarms count]; i++)
-	    {
-	      entry = [alarms objectAtIndex: i];
-	      isCycle = [[entry objectForKey: @"c_iscycle"] boolValue];
-	      
-	      if (!isCycle)
+      if ([currentFolder isActive] && [currentFolder showCalendarAlarms])
         {
-          [allAlarms addObject: [NSArray arrayWithObjects:
-                                 [currentFolder nameInContainer],
-                                 [entry objectForKey: @"c_name"],
-                                 [entry objectForKey: @"c_nextalarm"],
-                                 nil]];
+          NSDictionary *entry;
+          NSArray *alarms;
+          int i;
+          
+          alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
+                                                   to: [NSNumber numberWithInt: laterTime]];
+          
+          for (i = 0; i < [alarms count]; i++)
+            {
+              entry = [alarms objectAtIndex: i];
+              
+              [allAlarms addObject: [NSArray arrayWithObjects:
+                                               [currentFolder nameInContainer],
+                                          [entry objectForKey: @"c_name"],
+                                          [entry objectForKey: @"c_nextalarm"],
+                                             nil]];
+            }
         }
-	    }
     }
-  }
   
   
   response = [self responseWithStatus: 200];
@@ -1242,9 +1244,9 @@ _computeBlocksPosition (NSArray *blocks)
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
         [filteredTasks addObject: filteredTask];
-      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:12] isEqualToString:@"overdue"]))
+      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:15] isEqualToString:@"overdue"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:12] isEqualToString:@"completed"]))
+      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:15] isEqualToString:@"completed"]))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:3] stringValue] isEqualToString:@"0"]))
         [filteredTasks addObject: filteredTask];

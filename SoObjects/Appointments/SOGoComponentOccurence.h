@@ -1,8 +1,6 @@
 /* SOGoComponentOccurence.h - this file is part of SOGo
  * 
- * Copyright (C) 2008 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +54,7 @@
 		  inContainer: (SOGoCalendarComponent *) newContainer;
 
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent;
+- (iCalRepeatableEntityObject *) masterComponent;
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster;
 
 @end

@@ -46,7 +46,6 @@ static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
 static int cssEscapingCount;
 
-static unichar thisCharCode[30];
 static NSString *controlCharString = nil;
 static NSCharacterSet *controlCharSet = nil;
 
@@ -116,7 +115,6 @@ static NSCharacterSet *controlCharSet = nil;
 
 //       [urlNonEndingChars addCharactersInString: @">&=,.:;\t \r\n"];
 //       [urlAfterEndingChars addCharactersInString: @"()[]{}&;<\t \r\n"];
-
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
@@ -278,31 +276,53 @@ static NSCharacterSet *controlCharSet = nil;
   return [NSString stringWithFormat: @"\"%@\"", representation];
 }
 
-- (NSCharacterSet *) safeCharacterSet
+//
+// See http://www.hackcraft.net/xmlUnicode/
+//
+// XML1.0 and XML1.1 allow different characters in different contexts, but for the most part I will only describe the XML1.0 usage, XML1.1 usage is analogous.
+// The first definition that is relevant here is that of a Char:
+// [2]	Char	::=	#x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]	/* any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+//
+// This defines which characters can be used in an XML1.0 document. It is clearly very liberal, banning only some of the control characters and the noncharacters U+FFFE and U+FFFF.
+// Indeed it is somewhat too liberal in my view since it allows other noncharacters (the code points from U+FDD0 to U+FDEF inclusive and the last 2 code points in each plane,
+// from U+1FFFE & U+1FFFF through to U+10FFFE & U+10FFFF, are noncharacters) but the production quoted above allows them.
+//
+- (NSString *) safeString
 {
-  if (!controlCharSet)
+  NSString *s;
+
+  unichar *buf, *start, c;
+  int len, i, j;
+
+  len = [self length];
+  start = buf = (unichar *)malloc(len*sizeof(unichar));
+  [self getCharacters: buf range: NSMakeRange(0, len)];
+
+  for (i = 0, j = 0; i < len; i++)
     {
-      int i, j;
-      
-      // Create an array of chars for all control characters between 0x00 and 0x1F,
-      // apart from \t, \n, \f and \r (0x09, 0x0A, 0x0C and 0x0D)
-      for (i = 0, j = 0x00; j <= 0x08; i++, j++) {
-        thisCharCode[i] = j;
-      }
-      thisCharCode[i++] = 0x0B;
-      for (j = 0x0E; j <= 0x1F; i++, j++) {
-        thisCharCode[i] = j;
-      }
-      
-      // Also add some unicode separators
-      thisCharCode[i++] = 0x2028; // line separator
-      thisCharCode[i++] = 0x2029; // paragraph separator
-      controlCharString = [NSString stringWithCharacters:thisCharCode length:i];
-      controlCharSet = [NSCharacterSet characterSetWithCharactersInString: controlCharString];
-      [controlCharSet retain];
+      c = *buf;
+
+      if (c == 0x9 ||
+          c == 0xA ||
+          c == 0xD ||
+          (c >= 0x20 && c <= 0xD7FF) ||
+          (c >= 0xE000 && c <= 0xFFFD) ||
+          (c >= 0x10000 && c <= 0x10FFFF))
+        j++;
+      else
+        {
+          if (i+1 < len)
+            {
+              *(start+j) = *buf;
+            }
+        }
+
+      buf++;
     }
 
-  return controlCharSet;
+  s = [[NSString alloc] initWithCharactersNoCopy: start  length: j  freeWhenDone: YES];
+
+  return AUTORELEASE(s);
 }
 
 - (NSString *) jsonRepresentation
@@ -310,8 +330,7 @@ static NSCharacterSet *controlCharSet = nil;
   NSString *cleanedString;
 
   // Escape double quotes and remove control characters
-  cleanedString = [[[self doubleQuotedString] componentsSeparatedByCharactersInSet: [self safeCharacterSet]]
-                              componentsJoinedByString: @""];
+  cleanedString = [[self doubleQuotedString] safeString];
   return cleanedString;
 }
 

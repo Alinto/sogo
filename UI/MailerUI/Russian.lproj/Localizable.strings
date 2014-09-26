@@ -13,6 +13,7 @@
 "Print"       = "Печать";
 "Stop"        = "Стоп";
 "Write"       = "Написать";
+"Search"      = "Поиск";
 
 "Send" = "Послать";
 "Contacts" = "Адресная книга";
@@ -41,6 +42,7 @@
 "Attachment" = "Вложения";
 "Unread" = "Непрочитанные";
 "Flagged" = "Помеченные флагом";
+"Search multiple mailboxes" = "Поиск в нескольких ящиках";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Кому";
 "Cc"            = "Копия";
 "Bcc"           = "Скрытая копия";
-"Reply-To"	= "Обратный адрес";
+"Reply-To"	    = "Обратный адрес";
 "Add address"   = "Добавить адрес";
+"Body"          = "Тело письма";
 
 "Open" = "Открыть";
 "Select All" = "Выбрать все";
@@ -236,6 +239,18 @@
 "As Junk" = "Спам";
 "As Not Junk" = "Не спам";
 "Run Junk Mail Controls" = "Запустить фильтр спама";
+
+"Search messages in:" = "Искать сообщения в:.";
+"Search" = "Поиск";
+"Search subfolders" = "Искать во вложенных папках";
+"Match any of the following" = "Отвечают любому из следующих";
+"Match all of the following" = "Отвечают всем из следующих";
+"contains" = "содержит";
+"does not contain" = "не содержит";
+"No matches found" = "Не найдено совпадений";
+"results found" = "результатов найдено";
+"result found" = "результат найден";
+"Please specify at least one filter" = "Укажите хотя бы один фильтр";
 
 /* Folder operations */
 "Name :" = "Имя :";

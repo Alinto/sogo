@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
@@ -31,6 +32,7 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSDictionary+NGCards.h>
+
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -98,14 +100,33 @@
   return value;
 }
 
+/**
+ * Extract the start and end dates from the event, from which all recurrence
+ * calculations will be based on.
+ * @return the range of the first occurrence.
+ */
 - (NGCalendarDateRange *) firstOccurenceRange
 {
-  [self subclassResponsibility: _cmd];
+  NSCalendarDate *start, *end;
+  NGCalendarDateRange *firstRange;
+  NSArray *dates;
 
-  return nil;
+  firstRange = nil;
+
+  dates = [[[self uniqueChildWithTag: @"dtstart"] valuesForKey: @""] lastObject];
+  if ([dates count] > 0)
+    {
+      start = [[dates lastObject] asCalendarDate]; // ignores timezone
+      end = [start addTimeInterval: [self occurenceInterval]];
+
+      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                               endDate: end];
+    }
+  
+  return firstRange;
 }
 
-- (unsigned int) occurenceInterval
+- (NSTimeInterval) occurenceInterval
 {
   [self subclassResponsibility: _cmd];
 
@@ -123,9 +144,8 @@
   NSArray *ranges;
   NGCalendarDateRange *checkRange, *firstRange;
   NSCalendarDate *startDate, *endDate;
-  id firstStartDate, firstEndDate, timeZone;
+  id firstStartDate, timeZone;
   BOOL doesOccur;
-  int offset;
 
   doesOccur = [self isRecurrent];
   if (doesOccur)

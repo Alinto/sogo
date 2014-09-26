@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
-"Check for new mail:" = "Auf neue Nachrichten prüfen:";
-"refreshview_manually" = "Manuell";
-"refreshview_every_minute" = "Minütlich";
-"refreshview_every_2_minutes" = "Alle 2 Minuten";
-"refreshview_every_5_minutes" = "Alle 5 Minuten";
-"refreshview_every_10_minutes" = "Alle 10 Minuten";
-"refreshview_every_20_minutes" = "Alle 20 Minuten";
-"refreshview_every_30_minutes" = "Alle 30 Minuten";
-"refreshview_once_per_hour" = "Stündlich";
 
 "Forward messages:" = "Nachrichten weiterleiten:";
 "messageforward_inline" = "Eingebunden";
@@ -239,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Ansicht aktualisieren:";
+"refreshview_manually" = "Manuell";
+"refreshview_every_minute" = "Minütlich";
+"refreshview_every_2_minutes" = "Alle 2 Minuten";
+"refreshview_every_5_minutes" = "Alle 5 Minuten";
+"refreshview_every_10_minutes" = "Alle 10 Minuten";
+"refreshview_every_20_minutes" = "Alle 20 Minuten";
+"refreshview_every_30_minutes" = "Alle 30 Minuten";
+"refreshview_once_per_hour" = "Stündlich";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Wenn ich die Anforderung einer Empfangsbestätigung erhalte:";

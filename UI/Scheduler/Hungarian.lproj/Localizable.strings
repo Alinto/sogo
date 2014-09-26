@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Befejező dátum nélküli feladatok";
 "Display working hours only" = "Csak a munkaidő órái jelenjen meg";
 "Completed tasks" = "Befejezett feladatok";
+"Display events and tasks colors" = "Események és feladatok színes megjelenítése";
+"Borders" = "Keretek";
+"Backgrounds" = "Hátterek";
 
 /* Appointments */
 

@@ -1,0 +1,32 @@
+<fop version="1.0">
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <font metrics-url="fonts/inconsolata.xml" kerning="yes" embed-url="fonts/inconsolata.ttf">
+          <font-triplet name="Incosolata" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-Regular.xml" kerning="yes" embed-url="fonts/lato/Lato-Regular.ttf">
+          <font-triplet name="Lato" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-Italic.xml" kerning="yes" embed-url="fonts/lato/Lato-Italic.ttf">
+          <font-triplet name="Lato" style="italic" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-Light.xml" kerning="yes" embed-url="fonts/lato/Lato-Light.ttf">
+          <font-triplet name="Lato-Light" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-LightItalic.xml" kerning="yes" embed-url="fonts/lato/Lato-LightItalic.ttf">
+          <font-triplet name="Lato-Light" style="italic" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-Medium.xml" kerning="yes" embed-url="fonts/lato/Lato-Medium.ttf">
+          <font-triplet name="Lato-Medium" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-MediumItalic.xml" kerning="yes" embed-url="fonts/lato/Lato-MediumItalic.ttf">
+          <font-triplet name="Lato-Medium" style="italic" weight="normal"/>
+        </font>
+        <font metrics-url="fonts/lato/Lato-Semibold.xml" kerning="yes" embed-url="fonts/lato/Lato-Semibold.ttf">
+          <font-triplet name="Lato-Semibold" style="normal" weight="normal"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

@@ -69,6 +69,8 @@
 
 - (NSCalendarDate *) firstRecurrenceStartDateWithEndDate: (NSCalendarDate *) endDate;
 
+- (NSCalendarDate *) lastPossibleRecurrenceStartDate;
+
 @end
 
 #endif	/* __NGCards_iCalRepeatableEntityObject_H_ */

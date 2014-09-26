@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2013 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -42,6 +42,9 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
 
 #import <SOGo/SOGoConstants.h>
@@ -49,6 +52,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoGroup.h>
@@ -160,7 +164,7 @@
                 object = nil;
             }
           else
-	          object = nil;
+            object = nil;
         }
     }
   
@@ -181,8 +185,8 @@
 //
 //
 - (void) _addOrUpdateEvent: (iCalEvent *) theEvent
-		                forUID: (NSString *) theUID
-		                 owner: (NSString *) theOwner
+                    forUID: (NSString *) theUID
+                     owner: (NSString *) theOwner
 {
   if (![theUID isEqualToString: theOwner])
     {
@@ -432,17 +436,20 @@
   while ((currentAttendee = [enumerator nextObject]))
     {
       currentUID = [currentAttendee uid];
+
       if (currentUID)
         {
           user = [SOGoUser userWithLogin: currentUID];
           us = [user userSettings];
           moduleSettings = [us objectForKey:@"Calendar"];
+          
           // Check if the user prevented his account from beeing invited to events
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
               whiteListString = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
               whiteList = [whiteListString objectFromJSONString];
+          
               // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
               if (![whiteList objectForKey:ownerUID])
                 {
@@ -454,9 +461,11 @@
     }
 
   count = [unavailableAttendees count];
+  
   if (count > 0)
     {
       reason = [NSMutableString stringWithString:[self labelForKey: @"Inviting the following persons is prohibited:"]];
+      
       // Add all the unavailable users in the warning message
       for (i = 0; i < count; i++)
         {
@@ -465,10 +474,14 @@
           if (i < count-2)
             [reason appendString:@", "];
         }
+      
       [unavailableAttendees release];
+      
       return [NSException exceptionWithHTTPStatus:409 reason: reason];
     }
+
   [unavailableAttendees release];
+
   return nil;
 }
 
@@ -523,14 +536,14 @@
       
       if ([user isResource])
         {
+          NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
           SOGoAppointmentFolder *folder;
-          NSCalendarDate *start, *end;
           NGCalendarDateRange *range;
           NSMutableArray *fbInfo;
           NSArray *allOccurences;
           
           BOOL must_delete;
-          int i, j;
+          int i, j, delta;
           
           // We get the start/end date for our conflict range. If the event to be added is recurring, we
           // check for at least a year to start with.
@@ -573,8 +586,18 @@
           
           for (i = [fbInfo count]-1; i >= 0; i--)
             {
-              range = [NGCalendarDateRange calendarDateRangeWithStartDate: [[fbInfo objectAtIndex: i] objectForKey: @"startDate"]
-                                                                  endDate: [[fbInfo objectAtIndex: i] objectForKey: @"endDate"]];
+              // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
+              // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
+              rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
+              delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
+              rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
+              delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
+              rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
+                                                                  endDate: rangeEndDate];
               
               if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
                 {
@@ -607,9 +630,9 @@
             {
               currentAttendee = [theAttendees objectAtIndex: i];
               if ([[currentAttendee uid] isEqualToString: currentUID])
-              break;
+                break;
               else
-              currentAttendee = nil;
+                currentAttendee = nil;
             }
           
           if ([fbInfo count])
@@ -905,7 +928,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                      updatedAttendees: nil
                             operation: EventCreated];
     }
-      else
+  else
     {
       BOOL hasOrganizer;
       
@@ -955,10 +978,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
                      withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
-		                  forEventUID: (NSString *) eventUID
-		             withRecurrenceId: (NSCalendarDate *) recurrenceId
-		                 withSequence: (NSNumber *) sequence
-			                     forUID: (NSString *) uid
+                      forEventUID: (NSString *) eventUID
+                 withRecurrenceId: (NSCalendarDate *) recurrenceId
+                     withSequence: (NSNumber *) sequence
+                           forUID: (NSString *) uid
                   shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
@@ -1021,12 +1044,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                     }
                 }
               else
-              addDelegate = YES;
+                addDelegate = YES;
             }
           else
             {
               if (otherDelegate)
-              removeDelegate = YES;
+                removeDelegate = YES;
             }
           
           if (removeDelegate)
@@ -1093,8 +1116,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (NSException *) _handleAttendee: (iCalPerson *) attendee
                      withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
-		                 statusChange: (NSString *) newStatus
-			                    inEvent: (iCalEvent *) event
+                     statusChange: (NSString *) newStatus
+                          inEvent: (iCalEvent *) event
 {
   NSString *currentStatus, *organizerUID;
   SOGoUser *ownerUser, *currentUser;
@@ -1668,9 +1691,83 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
 }
 
+- (void) _adjustClassificationInRequestCalendar: (iCalCalendar *) rqCalendar
+{
+  SOGoUserDefaults *userDefaults;
+  NSString *accessClass;
+  NSArray *allObjects;
+  id entity;
+  
+  int i;
+  
+  userDefaults = [[context activeUser] userDefaults];
+  allObjects = [rqCalendar allObjects];
+
+  for (i = 0; i < [allObjects count]; i++)
+    {
+      entity = [allObjects objectAtIndex: i];
+
+      if ([entity respondsToSelector: @selector(accessClass)])
+        {
+          accessClass = [entity accessClass];
+          
+          if (!accessClass || [accessClass length] == 0)
+            {
+              if ([entity isKindOfClass: [iCalEvent class]])
+                [entity setAccessClass: [userDefaults calendarEventsDefaultClassification]];
+              else if ([entity isKindOfClass: [iCalToDo class]])
+                [entity setAccessClass: [userDefaults calendarTasksDefaultClassification]];
+            }
+        }
+    }
+}
+
+//
+// iOS devices (and potentially others) send event invitations with no PARTSTAT defined.
+// This confuses DAV clients like Thunderbird, or event SOGo web. The RFC says:
+//
+//    Description: This parameter can be specified on properties with a
+//    CAL-ADDRESS value type. The parameter identifies the participation
+//    status for the calendar user specified by the property value. The
+//    parameter values differ depending on whether they are associated with
+//    a group scheduled "VEVENT", "VTODO" or "VJOURNAL". The values MUST
+//    match one of the values allowed for the given calendar component. If
+//    not specified on a property that allows this parameter, the default
+//    value is NEEDS-ACTION.
+//
+- (void) _adjustPartStatInRequestCalendar: (iCalCalendar *) rqCalendar
+{
+  NSArray *allObjects, *allAttendees;
+  iCalPerson *attendee;
+  id entity;
+  
+  int i, j;
+  
+  allObjects = [rqCalendar allObjects];
+
+  for (i = 0; i < [allObjects count]; i++)
+    {
+      entity = [allObjects objectAtIndex: i];
+
+      if ([entity isKindOfClass: [iCalEvent class]])
+        {
+          allAttendees = [entity attendees];
+
+          for (j = 0; j < [allAttendees count]; j++)
+            {
+              attendee = [allAttendees objectAtIndex: j];
+
+              if (![[attendee partStat] length])
+                [attendee setPartStat: @"NEEDS-ACTION"];
+            }
+        }
+    }
+}
+
 /**
  * Verify vCalendar for any inconsistency or missing attributes.
  * Currently only check if the events have an end date or a duration.
+ * We also check for the default transparency parameters.
  * @param rq the HTTP PUT request
  */
 - (void) _adjustEventsInRequestCalendar: (iCalCalendar *) rqCalendar
@@ -1694,6 +1791,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             [event setDuration: @"PT1H"];
           [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
         }
+
+      
     }
 }
 
@@ -1816,6 +1915,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
       
       [self _adjustEventsInRequestCalendar: calendar];
+      [self _adjustClassificationInRequestCalendar: calendar];
+      [self _adjustPartStatInRequestCalendar: calendar];
     }
       
   //
@@ -2111,10 +2212,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   WORequest *rq;
   WOResponse *response;
   iCalCalendar *rqCalendar;
-
+  
   rq = [_ctx request];
   rqCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-
+  
   if (![self isNew])
     {
       //
@@ -2126,10 +2227,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if (ex)
         return ex;
     }
-      
-      ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
-      if (ex)
-        response = (WOResponse *) ex;
+  
+  ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
+  if (ex)
+    response = (WOResponse *) ex;
   else
     {
       response = [_ctx response];

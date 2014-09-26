@@ -1,8 +1,6 @@
 /* iCalDateTime.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,8 +90,8 @@
       calendar
 	= (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
       timeZone = [calendar timeZoneWithId: tzId];
-      if (!timeZone)
-	[self logWithFormat: @"timezone '%@' not found in calendar", tzId];
+      //if (!timeZone)
+      //[self logWithFormat: @"timezone '%@' not found in calendar", tzId];
     }
 
   return timeZone;

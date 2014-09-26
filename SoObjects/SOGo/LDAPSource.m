@@ -887,7 +887,7 @@ static Class NSStringK;
            intoLDIFRecord: (NSMutableDictionary *) ldifRecord
 {
   NSDictionary *constraints;
-  NSEnumerator *matches;
+  NSEnumerator *matches, *ldapValues;
   NSString *currentMatch, *currentValue, *ldapValue;
   BOOL result;
 
@@ -897,16 +897,15 @@ static Class NSStringK;
   if (constraints)
     {
       matches = [[constraints allKeys] objectEnumerator];
-      currentMatch = [matches nextObject];
-      while (result && currentMatch)
+      while (result == YES && (currentMatch = [matches nextObject]))
         {
-          ldapValue = [[ldapEntry attributeWithName: currentMatch]
-            stringValueAtIndex: 0];
+          ldapValues = [[[ldapEntry attributeWithName: currentMatch] allStringValues] objectEnumerator];
           currentValue = [constraints objectForKey: currentMatch];
-          if ([ldapValue caseInsensitiveMatches: currentValue])
-            currentMatch = [matches nextObject];
-          else
-            result = NO;
+          result = NO;
+
+          while (result == NO && (ldapValue = [ldapValues nextObject]))
+            if ([ldapValue caseInsensitiveMatches: currentValue])
+              result = YES;
         }
     }
 

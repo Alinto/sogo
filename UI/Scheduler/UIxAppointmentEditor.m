@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -31,6 +32,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGCards/iCalAlarm.h>
@@ -49,8 +51,10 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalCalendar+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
+#import <Appointments/iCalRepeatableEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentOccurence.h>
@@ -470,6 +474,7 @@
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
   NSString *created_by;
+  iCalAlarm *anAlarm;
 
   BOOL resetAlarm;
   unsigned int snoozeAlarm;
@@ -492,31 +497,41 @@
         componentCalendar = [componentCalendar container];
       [componentCalendar retain];
     }
+
+  created_by = [event createdBy];
   
-  if ([event hasAlarms] && ![event hasRecurrenceRules])
+  // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
+  // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
+  // user clicks on "Snooze for" X minutes, when the popup is being displayed.
+  // If either is set to yes, we must find the right alarm.
+  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+  snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
+  
+  if (resetAlarm || snoozeAlarm)
     {
-      iCalAlarm *anAlarm;
-      resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
-      snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
+      iCalEvent *master;
+
+      master = event;
+      [componentCalendar findEntityForClosestAlarm: &event
+                                          timezone: timeZone
+                                         startDate: &eventStartDate
+                                           endDate: &eventEndDate];
+      
+      anAlarm = [event firstDisplayOrAudioAlarm];
+
       if (resetAlarm)
         {
           iCalTrigger *aTrigger;
-          
-          anAlarm = [[event alarms] objectAtIndex: 0];
+
           aTrigger = [anAlarm trigger];
-          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
-          
-          [co saveComponent: event];
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];          
+          [co saveComponent: master];
         }
       else if (snoozeAlarm)
         {
-          anAlarm = [[event alarms] objectAtIndex: 0];
-          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
-            [co snoozeAlarm: snoozeAlarm];
+          [co snoozeAlarm: snoozeAlarm];
         }
     }
-
-  created_by = [event createdBy];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                        [[componentCalendar displayName] stringByEscapingHTMLString], @"calendar",
@@ -525,7 +540,6 @@
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
                        [dateFormatter formattedDate: eventEndDate], @"endDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
-                     //([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
                        ([event isAllDay] ? @"1": @"0"), @"isAllDay",
                        [[event summary] stringByEscapingHTMLString], @"summary",
                        [[event location] stringByEscapingHTMLString], @"location",

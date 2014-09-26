@@ -1,0 +1,19 @@
+////
+
+    License section
+
+    This file is part of the SOGo project.
+    Authors:
+      - Inverse inc. <info@inverse.ca>
+
+    Copyright (C) 2008-2014 Inverse inc.
+    License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
+
+////
+
+GNU Free Documentation License
+------------------------------
+
+Please refer to http://www.gnu.org/licenses/fdl-1.2.txt for the full license.
+
+// vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

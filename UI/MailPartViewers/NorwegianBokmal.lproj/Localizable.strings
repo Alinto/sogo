@@ -10,8 +10,8 @@ you_are_an_attendee = "du er en deltager";
 add_info_text = "iMIP 'ADD'-forespørsler støttes ikke enda av SOGo.";
 publish_info_text = "Avsenderen informerer deg om vedlagte arrangement.";
 cancel_info_text = "Din invitasjon eller hele arrangementet er avlyst.";
-request_info_no_attendee = "foreslår et møte til deltakerne. Du har fått informasjon, men er ikke planlagt som en deltaker.";
-Appointment = "Møte";
+request_info_no_attendee = "foreslår et møte til deltakerne. Du mottar denne meldingen som en varslig, du er ikke en planlagt deltaker.";
+Appointment = "Avtale";
 "Status Update" = "Status oppdatering";
 was = "var";
 
@@ -19,23 +19,23 @@ Organizer = "Arrangør";
 Time = "Tid";
 Attendees = "Deltakere";
 request_info = "inviterer deg til å delta i et møte.";
-"Add to calendar" = "Legg inn i kalenderen";
-"Delete from calendar" = "Ta bort fra kalenderen";
+"Add to calendar" = "Legg til i kalenderen";
+"Delete from calendar" = "Fjern fra kalenderen";
 "Update status" = "Oppdater status";
 Accept = "Godta";
 Decline = "Avslå";
 Tentative = "Foreløpig";
-"Delegate ..." = "Delegere ...";
+"Delegate ..." = "Deleger ...";
 "Delegated to" = "Delegert til";
 "Update status in calendar" = "Oppdater status i kalenderen";
 "delegated from" = "delegert fra";
 
-reply_info_no_attendee = "Du har fått svar angående en planlagt begivenhet som avsenderen ikke er invitert til.";
-reply_info = "Du har fått et svar angående en begivenhet invitert av deg.";
+reply_info_no_attendee = "Du mottok et svar til en planlagt hendelse, men avsenderen er ikke en deltaker.";
+reply_info = "Dette er et svar på en invitasjon sendt av deg.";
 
 "to" = "til";
 
-"Untitled" = "Ingen emne";
+"Untitled" = "Uten emne";
 
 "Size" = "Størrelse";
 
@@ -45,4 +45,4 @@ reply_info = "Du har fått et svar angående en begivenhet invitert av deg.";
 "From" = "Fra";
 "Date" = "Dato";
 "To" = "Til";
-"Issuer" = "Utført av";
+"Issuer" = "Utsteder";

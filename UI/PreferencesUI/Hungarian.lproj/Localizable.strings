@@ -134,15 +134,6 @@
 "Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
-"Check for new mail:" = "Új üzenetek letöltése:";
-"refreshview_manually" = "Kézi";
-"refreshview_every_minute" = "Percenként";
-"refreshview_every_2_minutes" = "Kétpercenként";
-"refreshview_every_5_minutes" = "Ötpercenként";
-"refreshview_every_10_minutes" = "Tízpercenként";
-"refreshview_every_20_minutes" = "Húszpercenként";
-"refreshview_every_30_minutes" = "Harminc percenként";
-"refreshview_once_per_hour" = "Óránként";
 
 "Forward messages:" = "Üzenetek továbbítása:";
 "messageforward_inline" = "Levélként";
@@ -239,6 +230,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Nézet frissítés:";
+"refreshview_manually" = "Kézi";
+"refreshview_every_minute" = "Percenként";
+"refreshview_every_2_minutes" = "Kétpercenként";
+"refreshview_every_5_minutes" = "Ötpercenként";
+"refreshview_every_10_minutes" = "Tízpercenként";
+"refreshview_every_20_minutes" = "Húszpercenként";
+"refreshview_every_30_minutes" = "Harminc percenként";
+"refreshview_once_per_hour" = "Óránként";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Visszaigazolási kérelem esetén:";

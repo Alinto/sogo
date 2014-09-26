@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN );
+  requires = ( MAIN, Contacts );
 
   publicResources = (
   );

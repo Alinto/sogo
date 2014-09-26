@@ -23,6 +23,8 @@
 
 #import <NGCards/iCalEntityObject.h>
 
+@class iCalAlarm;
+@class NSMutableDictionary;
 @class SOGoUser;
 
 extern NSCalendarDate *iCalDistantFuture;
@@ -43,7 +45,6 @@ extern NSNumber *iCalDistantFutureNumber;
 - (id) itipEntryWithMethod: (NSString *) method;
 
 - (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer;
 
 - (int) priorityNumber;
 - (NSString *) createdBy;
@@ -51,6 +52,15 @@ extern NSNumber *iCalDistantFutureNumber;
 - (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
 			    withOffset: (int) offset
 			     forAllDay: (BOOL) allDay;
+
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer;
+
+- (iCalAlarm *) firstSupportedAlarm;
+- (iCalAlarm *) firstDisplayOrAudioAlarm;
+
+- (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
+                     forContainer: (id) theContainer;
 
 @end
 

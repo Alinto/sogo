@@ -25,9 +25,16 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRepeatableEntityObject.h>
+
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSNull+misc.h>
+
+#import "SOGoAppointmentFolder.h"
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -38,6 +45,7 @@
 
 #import "iCalPerson+SOGo.h"
 
+#import "iCalCalendar+SOGo.h"
 #import "iCalEntityObject+SOGo.h"
 
 NSCalendarDate *iCalDistantFuture = nil;
@@ -213,7 +221,8 @@ NSNumber *iCalDistantFutureNumber = nil;
   return dateNumber;
 }
 
-- (NSMutableDictionary *) quickRecordForContainer: (id) theContainer
+- (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
+                                       container: (id) theContainer
 {
   [self subclassResponsibility: _cmd];
 
@@ -253,6 +262,185 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
 
   return created_by;
+}
+
+//
+// We ignore ACTION:PROCEDURE for now.
+//
+- (iCalAlarm *) firstSupportedAlarm
+{
+  iCalAlarm *anAlarm;
+  NSArray *alarms;
+  int i;
+
+  alarms = [self alarms];
+
+  for (i = 0; i < [alarms count]; i++)
+    {
+      anAlarm = [[self alarms] objectAtIndex: i];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"AUDIO"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"EMAIL"] == NSOrderedSame)
+        return anAlarm;
+    }
+
+  return nil;
+}
+
+- (iCalAlarm *) firstDisplayOrAudioAlarm
+{
+  iCalAlarm *anAlarm;
+  NSArray *alarms;
+  int i;
+
+  alarms = [self alarms];
+
+  for (i = 0; i < [alarms count]; i++)
+    {
+      anAlarm = [[self alarms] objectAtIndex: i];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame ||
+          [[anAlarm action] caseInsensitiveCompare: @"AUDIO"] == NSOrderedSame)
+        return anAlarm;
+    }
+
+  return nil;
+}
+
+- (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
+                     forContainer: (id) theContainer
+{
+  NSCalendarDate *nextAlarmDate;
+
+  nextAlarmDate = nil;
+
+  if ([self hasAlarms])
+    {
+      // We currently have the following limitations for alarms:
+      // - only the first alarm is considered;
+      // - the alarm's action must be of type DISPLAY;
+      //
+      // Morever, we don't update the quick table if the property X-WebStatus
+      // of the trigger is set to "triggered".
+      iCalAlarm *anAlarm;
+      NSString *webstatus;
+
+      if (![(id)self isRecurrent])
+        {
+          anAlarm = [self firstDisplayOrAudioAlarm];
+          if (anAlarm)
+            {
+              webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+              if (!webstatus
+                  || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
+                      != NSOrderedSame))
+                nextAlarmDate = [anAlarm nextAlarmDate];
+            }
+          else
+            {
+              // TODO: handle email alarms here
+            }
+        }
+      // Recurring event/task
+      else
+        {
+          NSCalendarDate *start, *end;
+          NGCalendarDateRange *range;
+          NSMutableArray *alarms;
+          
+          alarms = [NSMutableArray array];
+          start = [NSCalendarDate date];
+          end = [start addYear:1 month:0 day:0 hour:0 minute:0 second:0];
+          range = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                              endDate: end];
+          
+          // Always check if container is defined. If not, that means this method
+          // call was reentrant.
+          if (theContainer)
+            {
+              NSTimeInterval now;
+              int i, v, delta, c_startdate, c_nextalarm;
+              
+              //
+              // Here is the logic:
+              //
+              // We flatten the structure. When flattening it (or after), we compute the alarm based on the trigger for every single
+              // event part of the recurrence rule. Exceptions can have their own triggers. Then, we start from NOW and move forward,
+              // and we look at the closest one. When found one, we pick it and store it in c_nextalarm.
+              //
+              // When popping up the alarm, we must find for which occurence it is - so we can show the proper start/end time, or even
+              // infos from the exception. It gets tricky because the user could have snoozed the alarm. So here is the logic:
+              //
+              // We flatten the structure and compute the alarms based on triggers. If c_nextalarm is a match, we have have a winner.
+              // If we don't have a match, we pick the event for which its trigger is the closest to the c_nextalarm.
+              //
+              nextAlarmDate = nil;
+              
+              [theContainer flattenCycleRecord: (id)row
+                                      forRange: range
+                                     intoArray: alarms
+                                  withCalendar: [self parent]];
+              
+              // We pickup the closest one from now. We remove the actual reminder (ie., 15 mins before - plus 1 minute for roundups)
+              // so we don't pickup the same alarm over and over. This could happen if our alarm popups and the user clicks on "Cancel".
+              // In case of a repetitive event, we want to pickup the next one (next day for example), and not the one that has just
+              // popped up.
+              now = [start timeIntervalSince1970];
+              v = 0;
+              for (i = 0; i < [alarms count]; i++)
+                {
+                  c_startdate = [[[alarms objectAtIndex: i] objectForKey: @"c_startdate"] intValue];
+                  c_nextalarm = [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue];
+                  delta = (c_startdate - now - (c_startdate - c_nextalarm)) - 60;
+                  
+                  // If value is not initialized, we grab it right away
+                  if (!v && delta > 0)
+                    v = delta;
+                  
+                  // If we found a smaller delta than before, use it.
+                  if (v > 0 && delta > 0 && delta <= v)
+                    {
+                      id o;
+
+                      // Find the relevant component
+                      if ([self respondsToSelector: @selector(endDate)])
+                        o = [[self parent] eventWithRecurrenceID: [[alarms objectAtIndex: i] objectForKey: @"c_recurrence_id"]];
+                      else
+                        o = [[self parent] todoWithRecurrenceID: [[alarms objectAtIndex: i] objectForKey: @"c_recurrence_id"]];
+                      
+                      if (!o)
+                        o = self;
+                      
+                      if ([[o alarms] count])
+                        {
+                          anAlarm = [self firstDisplayOrAudioAlarm];
+                          if (anAlarm)
+                            {
+                              webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+                              if (!webstatus
+                                  || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
+                                      != NSOrderedSame))
+                                
+                                v = delta;
+                              nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
+                            }
+                          else
+                            {
+                              // TODO: handle email alarms here
+                            }
+                        }
+                    }
+                } // for ( ... )
+            } // if (theContainer)
+        }
+    }
+  
+  if ([nextAlarmDate isNotNull])
+    [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
+            forKey: @"c_nextalarm"];
+  else
+    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
 }
 
 @end

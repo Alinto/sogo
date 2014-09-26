@@ -13,6 +13,7 @@
 "Print"       = "Tulosta";
 "Stop"        = "Lopeta";
 "Write"       = "Kirjoita";
+"Search"      = "Etsi";
 
 "Send" = "Lähetä";
 "Contacts" = "Yhteystiedot";
@@ -41,6 +42,7 @@
 "Attachment" = "Liitetiedosto";
 "Unread" = "Lukematta";
 "Flagged" = "Merkitty";
+"Search multiple mailboxes" = "Etsi useista postilaatikoista";
 
 /* Main Frame  */
 
@@ -94,8 +96,9 @@
 "To"            = "Vastaanottaja";
 "Cc"            = "Kopio";
 "Bcc"           = "Piilokopio";
-"Reply-To"	= "Vastausosoite";
+"Reply-To"	    = "Vastausosoite";
 "Add address"   = "Lisää osoite";
+"Body"          = "Runko";
 
 "Open" = "Avaa.";
 "Select All" = "Valitse kaikki";
@@ -236,6 +239,18 @@
 "As Junk" = "Roskaksi";
 "As Not Junk" = "Ei roskaksi";
 "Run Junk Mail Controls" = "Käynnistä roskapostien hallinta";
+
+"Search messages in:" = "Etsi viestejä:";
+"Search" = "Etsi";
+"Search subfolders" = "Etsi alihakemistoista";
+"Match any of the following" = "Täsmää mihin tahansa seuraavista";
+"Match all of the following" = "Täsmää kaikkiin seuraaviin";
+"contains" = "sisältää";
+"does not contain" = "ei sisällä";
+"No matches found" = "Vastaavuuksia ei löytynyt";
+"results found" = "löytyneitä tuloksia";
+"result found" = "löytynyt tulos";
+"Please specify at least one filter" = "Ole hyvä ja määritä ainakin yksi suodatin";
 
 /* Folder operations */
 "Name :" = "Nimi:";

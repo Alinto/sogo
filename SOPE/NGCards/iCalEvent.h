@@ -66,8 +66,6 @@
 - (BOOL) isWithinCalendarDateRange: (NGCalendarDateRange *) _range;
 - (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *)_r;
 
-- (NSCalendarDate *) lastPossibleRecurrenceStartDate;
-
 /* calculating changes */
 
 - (iCalEventChanges *) getChangesRelativeToEvent: (iCalEvent *) _event;

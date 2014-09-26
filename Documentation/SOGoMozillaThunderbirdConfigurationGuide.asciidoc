@@ -1,0 +1,358 @@
+Mozilla Thunderbird Configuration Guide
+=======================================
+
+////
+
+    This file is part of the SOGo project.
+
+    See SOGo Mozilla Thunderbird Configuration Guide-docinfo.xml for
+    authors, copyright and license information.
+
+////
+
+include::includes/global-attributes.asciidoc[]
+
+About this Guide
+----------------
+
+This guide will walk you through the installation and configuration of
+Mozilla Thunderbird and its associated extensions so it can be used with
+the SOGo solution.
+
+The instructions are based on version {release_version} of SOGo.
+
+The latest version of this guide is available
+at http://www.sogo.nu/downloads/documentation.html.
+
+Introduction
+------------
+
+SOGo is a free and modern scalable groupware server. It offers shared
+calendars, address books, and emails through your favourite Web browser
+and by using a native client such as Mozilla Thunderbird and Lightning.
+
+SOGo is standard-compliant. It supports CalDAV, CardDAV, GroupDAV, iMIP
+and iTIP and reuses existing IMAP, SMTP and database servers - making
+the solution easy to deploy and interoperable with many applications.
+
+SOGo features:
+
+* Scalable architecture suitable for deployments from dozen to many
+thousand users
+* Rich Web-based interface that shares the look and feel, the features
+and the data of Mozilla Thunderbird and Lightning
+* Improved integration with Mozilla Thunderbird and Lightning by using
+the SOGo Connector and the SOGo Integrator extensions
+* Two-way synchronization support with any Microsoft ActiveSync-capable
+device, or Outlook 2013
+
+SOGo is developed by a community of developers located mainly in North
+America and Europe. More information can be found on
+http://www.sogo.nu/.
+
+Installation
+------------
+
+This section will guide you through the installation of Thunderbird and
+its associated extensions.
+
+Mozilla Thunderbird
+~~~~~~~~~~~~~~~~~~~
+
+Mozilla Thunderbird is the official front end client of SOGo.
+
+Mozilla Thunderbird version 2, 3.1, 10 ESR (Extended Support Release),
+17 ESR, 24 and 31 are supported and it is recommended to use version 31 of
+Thunderbird.
+
+In order to download and install Mozilla Thunderbird, please visit:
+
+https://www.mozilla.org/en-US/thunderbird/organizations/all-esr.html
+
+Mozilla Lightning
+~~~~~~~~~~~~~~~~~
+
+When using version 24 or 31 of Thunderbird, you can use the latest version of
+Mozilla Lightning. Use the Add-ons manager of Thunderbird or visit:
+
+https://addons.mozilla.org/en-US/thunderbird/addon/lightning/
+
+When using version 17 ESR of Thunderbird, you can use Mozilla Lightning
+version 1.9.1. In order to download the extension, please visit:
+
+https://addons.mozilla.org/en-US/thunderbird/addon/lightning/versions/?page=1#version-1.9.1
+
+For Thunderbird 2 and 3.1, you need the _Inverse Edition_of Mozilla
+Lightning. It provides back ported features, bug fixes and security
+fixes from the current development version of Mozilla Lightning. For
+Thunderbird 2, it is based on release version 0.9 of Lightning. For
+Thunderbird 3.1, it is based on 1.0b2.
+
+In order to download and install Mozilla Lightning – Inverse Edition for
+Thunderbird 2 or 3.1, please visit:
+
+http://www.sogo.nu/downloads/frontends.html
+
+SOGo Connector and SOGo Integrator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The SOGo Connector and Integrator extensions are provided to perfect the
+integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR, 24 and 31 with
+the SOGo groupware solution.
+
+First of all, the SOGo Connector extension transforms Thunderbird into a
+full DAV client for groupware servers such as SOGo, eGroupware or
+Citadel. It does this by adding support for remote DAV address books and
+by adding features to be used along with the Lightning calendar
+extension.
+
+Among supported features of the SOGo Connector extension, we have:
+
+* Free / Busy URL field in the address book
+* Free / Busy functionality through HTTP
+* Event organizers
+* Synchronization of the address book using GroupDAV
+* CardDAV implementation for the address book
+* Support for WebDAV ACL
+
+On the other hand, the SOGo Integrator extension transforms Thunderbird
+into a pure "heavy" client for SOGo. Whereas the SOGo Connector is meant
+for portability (horizontal integration), the SOGo Integrator makes use
+of the features and layout only available from SOGo (vertical
+integration).
+
+Among the supported features of the SOGo Integrator extension, we have :
+
+* Remote administration of folder subscriptions
+* Remote administration of folder access control lists (ACL)
+* Automatic replication of your local and subscribed folders
+* When correctly configured, it handles the propagation of updates to
+chosen extensions from a local update server
+* Automatic propagation of default settings
+
+In order to download and install the SOGo Connector and Integrator
+extensions, please visit:
+
+http://www.sogo.nu/downloads/frontends.html
+
+Prior to installing the SOGo Integrator extension, you should read the
+following chapter – _SOGo Integrator Customization_.
+
+SOGo Integrator Customization
+-----------------------------
+
+In this section, you'll learn how to customize the SOGo Integrator
+extension so it can be used alongside your SOGo server.
+
+Customization
+~~~~~~~~~~~~~
+
+The customization steps described here involves understanding of XML and
+of text file edition. If you do not have those skills, it is recommended
+that you don't try to use this extension.
+
+There are actually two steps in the configuration of a working
+environment for SOGo Integrator. First of all, the Integrator will use
+the same user name used to connect to the first email server configured
+in Thunderbird. It is a current limitation but it will fit nearly all
+configurations out there.
+
+For testing purpose, you are strongly recommended to create and
+configure an additional user profile for Thunderbird. This is for two
+reasons. The first is because of the limitation mentioned above. The
+second is because the Integrator will synchronize your personal address
+book onto the SOGo server and then remove it so that only your personal
+address book on SOGo will be available. If you are not able to do that,
+you may want to make a copy of that address book beforehand.
+
+The second part requires editing one file in the extension file sub tree
+to specify where the SOGo server is located. This is done by hand. In an
+enterprise environment, this step is only required once per release
+since the updates are expected to propagate automatically. 
+
+Uncompress (using a ZIP or jar tool) the SOGo Integrator XPI and locate
+the following file:
+
+ extensions.rdf
+
+This file is used for locating the extension update server and the SOGo
+server, which we consider to be the same for the moment. There is a line
+starting with a "Seq" tag and with an attribute named "isi:updateURL".
+Replace the host part of that url with the SOGo server you want to
+connect to.
+
+For example, one would replace:
+
+ <Seq about="http://inverse.ca/sogo-integrator/extensions" isi:updateURL="http://sogo-demo.inverse.ca/plugins/updates.php?plugin=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;platform=%PLATFORM%">
+
+by:
+
+ <Seq about="http://inverse.ca/sogo-integrator/extensions" isi:updateURL="https://sogo.acme.com/plugins/updates.php?plugin=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;platform=%PLATFORM%">
+
+if the SOGo server is accessible from the following URL:
+
+ https://sogo.acme.com/SOGo
+
+Note that if you changed the `x-webobjects-server-url` configuration
+setting from your HTTP server configuration file for SOGo, the
+value *must* match the one you specify in `isi:updateURL` – even the
+port number.
+
+Moreover, you *must* change the value of the
+`sogo-integrator.autocomplete.server.urlid` preference from
+`defaults/preferences/site.js` to match the identifier of your
+_SOGoUserSources_. This source will be used by Thunderbird for
+autocompletion.
+
+Once you're done modifying the configuration file, save your changes and
+reconstruct the XPI file. 
+
+Now start Thunderbird and install your newly modified extension.
+
+SOGo Update Server
+------------------
+
+In this section, you will learn how to install and configure the SOGo
+Update Server.
+
+The SOGo Update Server can be used to automatically install or uninstall
+Mozilla Thunderbird extensions, push user settings and more – all from a
+central place managed by system administrators.
+
+Installation
+~~~~~~~~~~~~
+
+Installation is relatively straightforward. You need to make
+the `updates.php` script available through your HTTP server at the URL
+you've specified from the `extensions.rdf` file. The `updates.php`
+script can be found in the SOGo sources, under the `Scripts` directory.
+
+The `updateLink` section of the XML payload returned to sogo-integrator
+is built dynamically using the `SCRIPT_URI` variable, which is only
+available when running with mod_rewrite. It should work out of the box
+as long as the script is placed in the same directory as the xpi files.
+
+If it is not the case, then the link should be adjusted to fit the
+actual file layout:
+
+ <em:updateLink><?php echo dirname(getenv('SCRIPT_URI')) . '/relative/path/to/' . $plugin["filename"] ?></em:updateLink>
+
+An http request similar to the following can be used to make sure that
+the generated link is correct:
+
+ http://sogo.host/path/to/updates.php?plugin=sogo-integrator@inverse.ca&version=0.00
+
+Please refer to your HTTP server documentation for the installation and
+configuration of PHP.
+
+Configuration
+~~~~~~~~~~~~~
+
+To configure the SOGo update server, you need to modify the
+`updates.php` script directly.
+
+Adding an extension to be pushed automatically by the update server
+require you to modify the `$plugins` array from updates.php and also
+adjust accordingly SOGo Integrator's `extensions.rdf` file.
+
+For example, to automatically install SOGo Connector, SOGo Integrator
+and Lightning, you would have:
+
+----
+$plugins 
+= array( "sogo-connector@inverse.ca"
+         => array( "application" => "thunderbird",
+                   "version" => "31.0.0",
+                   "filename" => "sogo-connector-31.0.0.xpi" ),
+         "sogo-integrator@inverse.ca"
+         => array( "application" => "thunderbird",
+                   "version" => "31.0.0",
+                   "filename" => "sogo-integrator-31.0.0-sogo-demo.xpi" ),
+         "{e2fda1a4-762b-4020-b5ad-a41df1933103}"
+         => array( "application" => "thunderbird",
+                   "version" => "3.3.1",
+                   "filename" => "lightning.xpi" ));
+----
+
+The syntax is:
+
+----
+         "<extension ID>"
+         => array( "application" => "thunderbird",
+                   "version" => "<exact version found in the extension's install.rdf file>",
+                   "filename" => "<exact filename on the filesystem>" )
+----
+
+The path of the filename, specified in the `filename` parameter, is
+relative to the location of the `updates.php` script. For extensions
+that are dependant on the architecture and operating system (Microsoft
+Windows, Apple Mac OS X, etc.), they can be placed in subdirectories
+relative again to the `updates.php` script (but the filename must be
+identical in all subdirectories). For exemple, for Mozilla Lightning, we
+could have:
+
+----
+Darwin_x86-gcc3/lightning.xpi
+Linux_x86-gcc3/lightning.xpi
+Linux_x86_64-gcc3/lightning.xpi
+WINNT_x86-msvc/lightning.xpi
+----
+
+If you eventually want to disable an extension, that is, without
+removing it from your users' computers, you can specify `disabled` as
+the version number.
+
+Next is to modify the `extensions.rdf` file. Again, to automatically
+install SOGo Connector, SOGo Integrator and Lightning, you would have:
+
+----
+<li>
+  <Description
+    em:id="{e2fda1a4-762b-4020-b5ad-a41df1933103}"
+    em:name="Lightning"/>
+</li>
+<li>
+  <Description
+    em:id="sogo-integrator@inverse.ca"
+    em:name="SOGo Integrator"/>
+</li>
+<li>
+  <Description
+    em:id="sogo-connector@inverse.ca"
+    em:name="SOGo Connector"/>
+</li>
+----
+
+Using SOGo Integrator, you can also push user-settings for any part of
+Thunderbird or its extensions. There are two kind of user-settings
+push:
+
+* Settings that are pushed during the initial configuration of
+Thunderbird
+* Settings that are pushed upon every restart (ie., forced) of
+Thunderbird
+
+Settings that pushed are pushed during initial configuration are
+controlled by the `./defaults/preferences/site.js` file from SOGo
+Integrator. Here is an example:
+
+----
+pref("calendar.alarms.showmissed", false);
+pref("calendar.caldav.sched.enabled", true);
+----
+
+Preferences that are forced upon every restart of Thunderbird are
+controlled from the `./chrome/content/general/custom-preferences.js`
+configuration file.
+
+Here is an example:
+
+----
+force_int_pref("changequote.replyformat.format", 0);
+force_bool_pref("changequote.headers.withcc", true);
+force_char_pref(“foo.bar”, “zot”);
+----
+
+include::includes/additional-info.asciidoc[]
+
+include::includes/commercial-support.asciidoc[]

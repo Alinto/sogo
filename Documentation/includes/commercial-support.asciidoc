@@ -1,0 +1,26 @@
+////
+
+    Commercial support section
+
+    This file is part of the SOGo project.
+    Authors:
+      - Inverse inc. <info@inverse.ca>
+
+    Copyright (C) 2008-2014 Inverse inc.
+    License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
+
+////
+
+Commercial Support and Contact Information
+------------------------------------------
+
+For any questions or comments, do not hesitate to contact us by writing
+an email to :
+
+mailto:support@inverse.ca[support@inverse.ca]
+
+Inverse (http://inverse.ca/[http://inverse.ca]) offers professional
+services around SOGo to help organizations deploy the solution and
+migrate from their legacy systems.
+
+// vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

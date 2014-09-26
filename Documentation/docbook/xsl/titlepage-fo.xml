@@ -1,0 +1,96 @@
+<!DOCTYPE t:templates [
+<!ENTITY hsize0 "10pt">
+<!ENTITY hsize1 "12pt">
+<!ENTITY hsize2 "14.4pt">
+<!ENTITY hsize3 "17.28pt">
+<!ENTITY hsize4 "20.736pt">
+<!ENTITY hsize5 "24.8832pt">
+<!ENTITY hsize0space "7.5pt"> <!-- 0.75 * hsize0 -->
+<!ENTITY hsize1space "9pt"> <!-- 0.75 * hsize1 -->
+<!ENTITY hsize2space "10.8pt"> <!-- 0.75 * hsize2 -->
+<!ENTITY hsize3space "12.96pt"> <!-- 0.75 * hsize3 -->
+<!ENTITY hsize4space "15.552pt"> <!-- 0.75 * hsize4 -->
+<!ENTITY hsize5space "18.6624pt"> <!-- 0.75 * hsize5 -->
+]>
+<t:templates xmlns:t="http://nwalsh.com/docbook/xsl/template/1.0"
+	     xmlns:param="http://nwalsh.com/docbook/xsl/template/1.0/param"
+             xmlns:fo="http://www.w3.org/1999/XSL/Format"
+             xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<!-- ********************************************************************
+
+     SOGo title page
+
+     This file is part of the SOGo project.
+     Authors: 
+       - Inverse inc. <info@inverse.ca>
+
+     Copyright (C) 2011-2014 Inverse inc.
+     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
+
+     ******************************************************************** -->
+
+<!-- 
+     If you make changes you need to rebuild XSL: 
+
+     xsltproc -o docs/docbook/xsl/titlepage-fo.xsl \
+         /usr/share/xml/docbook/stylesheet/docbook-xsl/template/titlepage.xsl \
+         docs/docbook/xsl/titlepage-fo.xml
+
+     On some platforms the titlepage.xsl is located elsewhere:
+     * OSX: /opt/local/share/xsl/docbook-xsl/template/titlepage.xsl
+
+     This is a customized version of docbook-xsl/fo/titlepage.templates.xml.
+     I removed every section except the book one. Feel free to add more if more
+     customization are required.
+-->
+
+  <t:titlepage t:element="book" t:wrapper="fo:block">
+    <t:titlepage-content t:side="recto">
+      <mediaobject/>
+      <title
+	     t:named-template="division.title"
+	     param:node="ancestor-or-self::book[1]"
+	     text-align="right"
+	     font-size="&hsize5;"
+	     space-before="&hsize5space;"
+	     font-weight="bold"
+	     font-family="{$title.fontset}"
+	     margin-top="8em"/>
+      <subtitle
+		text-align="right"
+		font-size="&hsize4;"
+		space-before="&hsize4space;"
+		font-family="{$title.fontset}"
+		border-bottom="solid"/>
+    </t:titlepage-content>
+
+  <t:titlepage-content t:side="verso">
+      <title
+	     font-size="&hsize2;"
+	     font-weight="bold"
+	     font-family="{$title.fontset}"/>
+      <corpauthor/>
+      <authorgroup t:named-template="verso.authorgroup"/>
+      <author/>
+      <othercredit/>
+      <releaseinfo space-before="0.5em"/>
+      <pubdate space-before="1em"/>
+      <copyright/>
+      <abstract/>
+      <legalnotice font-size="8pt"/>
+  </t:titlepage-content>
+
+  <t:titlepage-separator>
+      <fo:block break-after="page"/>
+  </t:titlepage-separator>
+
+  <t:titlepage-before t:side="recto">
+  </t:titlepage-before>
+
+  <t:titlepage-before t:side="verso">
+      <fo:block break-after="page"/>
+  </t:titlepage-before>
+</t:titlepage>
+
+</t:templates>

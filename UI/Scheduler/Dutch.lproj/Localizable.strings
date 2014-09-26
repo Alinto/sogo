@@ -157,6 +157,9 @@
 "Tasks with no due date" = "Taken zonder verloopdatum";
 "Display working hours only" = "Alleen werktijd weergeven";
 "Completed tasks" = "Afgeronde taken";
+"Display events and tasks colors" = "Toon afspraak- en taakkleuren";
+"Borders" = "Randen";
+"Backgrounds" = "Achtergronden";
 
 /* Appointments */
 

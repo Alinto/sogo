@@ -1,9 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +30,15 @@
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalByDayMask.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalToDo.h>
 #import <NGCards/iCalTrigger.h>
+
+
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -46,6 +48,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
@@ -531,16 +534,16 @@ iRANGE(2);
   if ([component hasAlarms])
     {
       // We currently have the following limitations for alarms:
-      // - only the first alarm is considered;
-      // - the alarm's action must be of type DISPLAY;
+      // - the alarm's action must be of type DISPLAY or AUDIO (considered as DISPLAY)
       // - the alarm's trigger value type must be DURATION.
 
-      anAlarm = [[component alarms] objectAtIndex: 0];
+      anAlarm = [component firstSupportedAlarm];
       aTrigger = [anAlarm trigger];
       ASSIGN (reminderAction, [[anAlarm action] lowercaseString]);
-      if (([reminderAction isEqualToString: @"display"]
-           || [reminderAction isEqualToString: @"email"])
-	  && [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+
+      //  The default value type is DURATION. See http://tools.ietf.org/html/rfc5545#section-3.8.6.3
+      if (![[aTrigger valueType] length] ||
+          [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
 	{
 	  duration = [aTrigger flattenedValuesForKey: @""];
 	  i = [reminderValues indexOfObject: duration];
@@ -1460,16 +1463,16 @@ iRANGE(2);
 
 - (NSArray *) classificationClasses
 {
-  static NSArray *priorities = nil;
-
-  if (!priorities)
+  static NSArray *classes = nil;
+  
+  if (!classes)
     {
-      priorities = [NSArray arrayWithObjects: @"PUBLIC",
-                            @"CONFIDENTIAL", @"PRIVATE", nil];
-      [priorities retain];
+      classes = [NSArray arrayWithObjects: @"PUBLIC",
+                         @"CONFIDENTIAL", @"PRIVATE", nil];
+      [classes retain];
     }
-
-  return priorities;
+  
+  return classes;
 }
 
 - (void) setClassification: (NSString *) _classification
@@ -1717,14 +1720,9 @@ RANGE(2);
 
 /* access */
 
-- (BOOL) isMyComponent
-{
-  return ([[context activeUser] hasEmail: [organizer rfc822Email]]);
-}
-
 - (BOOL) canEditComponent
 {
-  return [self isMyComponent];
+  return ([[context activeUser] hasEmail: [organizer rfc822Email]]);
 }
 
 /* response generation */

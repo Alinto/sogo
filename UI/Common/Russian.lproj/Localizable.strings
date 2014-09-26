@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Вы не можете создать список в разделяемой адресной книге.";
 "Warning" = "Предупреждение";
+"Can't contact server" = "Произошла ошибка при обращении к серверу. Пожалуйста, повторите попытку позже.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Вам не предоставлено право доступа к этому модулю/системе. Пожалуйста, свяжитесь с администратором.";
@@ -87,7 +88,7 @@
 "30 minutes" = "30 минут";
 "45 minutes" = "45 минут";
 "1 hour" = "1 час";
-
+"1 day" = "1 день";
 
 /* common buttons */
 "OK" = "OK";
@@ -101,9 +102,8 @@
 "Due Date:" = "Дата начала:";
 "Location:" = "Место:";
 
-/* Mail labels */
+/* mail labels */
 "Important" = "Важно";
-"Work" = "Работа";
 "Work" = "Работа";
 "Personal" = "Личное";
 "To Do" = "К исполнению";

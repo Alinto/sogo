@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
 
   This file is part of SOGo.
 
@@ -50,6 +50,7 @@
 @class GCSFolder;
 @class iCalCalendar;
 @class iCalTimeZone;
+@class NGCalendarDateRange;
 @class SOGoWebDAVValue;
 
 typedef enum {
@@ -118,6 +119,11 @@ typedef enum {
 - (NSArray *) fetchAlarmInfosFrom: (NSNumber *) _startUTCDate
 			       to: (NSNumber *) _endUTCDate;
 
+- (void) flattenCycleRecord: (NSDictionary *) theRecord
+                   forRange: (NGCalendarDateRange *) theRange
+                  intoArray: (NSMutableArray *) theRecords
+               withCalendar: (iCalCalendar *) calendar;
+
 /* URL generation */
 
 - (NSString *) baseURLForAptWithUID: (NSString *) _uid
@@ -137,11 +143,6 @@ typedef enum {
 - (NSArray *) uidsFromICalPersons: (NSArray *) _persons;
 - (NSArray *) lookupCalendarFoldersForICalPerson: (NSArray *) _persons
                                        inContext: (id) _ctx;
-
-// - (id) lookupGroupFolderForUIDs: (NSArray *) _uids
-//                       inContext: (id) _ctx;
-// - (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
-//                               inContext: (id) _ctx;
 
 /* bulk fetches */
 
@@ -185,6 +186,11 @@ typedef enum {
      proxyPermissionForUserWithLogin: (NSString *) login;
 
 - (NSArray *) aclUsersWithProxyWriteAccess: (BOOL) write;
+
+- (void) findEntityForClosestAlarm: (id *) theEntity
+                          timezone: (NSTimeZone *) theTimeZone
+                         startDate: (NSCalendarDate **) theStartDate
+                           endDate: (NSCalendarDate **) theEndDate;
 
 @end
 

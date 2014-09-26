@@ -20,6 +20,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSException.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -79,6 +81,37 @@
   originalCalendar = nil;
 
   return ex;
+}
+
+- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) theRecurrenceID
+{
+  iCalToDo *newOccurence, *master;
+  NSCalendarDate *date, *firstDate;
+  NSTimeInterval interval;
+
+  newOccurence = (iCalToDo *) [super newOccurenceWithID: theRecurrenceID];
+  date = [newOccurence recurrenceId];
+
+  master = [self component: NO secure: NO];
+  firstDate = [master startDate];
+
+  interval = [[master due]
+               timeIntervalSinceDate: (NSDate *)firstDate];
+  
+  [newOccurence setStartDate: date];
+  [newOccurence setDue: [date addYear: 0
+                                month: 0
+                                  day: 0
+                                 hour: 0
+                               minute: 0
+                               second: interval]];
+
+  return newOccurence;
+}
+
+- (void) prepareDeleteOccurence: (iCalToDo *) occurence
+{
+
 }
 
 @end /* SOGoTaskObject */
