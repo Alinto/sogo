@@ -100,6 +100,14 @@
       [roles addObject: SOGoCalendarRole_PrivateViewer];
       [roles addObject: SOGoCalendarRole_ConfidentialViewer];
     }
+  if (rights & RightsFreeBusySimple)
+    {
+      [roles addObject: SOGoCalendarRole_PublicDAndTViewer];
+    }
+  if (rights & RightsFreeBusyDetailed)
+    {
+      [roles addObject: SOGoCalendarRole_ConfidentialDAndTViewer];
+    }
 
   // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
 
@@ -121,12 +129,21 @@
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
-    rights |= RightsReadItems | 0x1800;
+    // We have to set by hand other rights as only the highest role is returned
+    // See SOGoAppointmentFolder.m:aclsForUser for details
+    rights |= RightsReadItems | RightsFreeBusySimple | RightsFreeBusyDetailed;
+
+  if ([roles containsObject: SOGoCalendarRole_PublicDAndTViewer])
+      rights |= RightsFreeBusySimple;
+
+  if ([roles containsObject: SOGoCalendarRole_ConfidentialDAndTViewer])
+      rights |= RightsFreeBusyDetailed;
+
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
 
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
- 
+
   return rights;
 }
 
