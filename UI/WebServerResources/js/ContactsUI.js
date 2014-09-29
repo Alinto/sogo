@@ -31,20 +31,6 @@
             }]
           }
         })
-        .state('addressbook.card', {
-          url: '/:cardId',
-          views: {
-            card: {
-              templateUrl: 'card.html',
-              controller: 'CardCtrl'
-            }
-          },
-          resolve: {
-            stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
-              return stateAddressbook.$getCard($stateParams.cardId);
-            }]
-          }
-        })
         .state('addressbook.new', {
           url: '/:contactType/new',
           views: {
@@ -55,25 +41,36 @@
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', 'sgCard', function($stateParams, stateAddressbook, Card) {
-              var tag = 'v' + $stateParams.contactType;
-              stateAddressbook.card = new Card({ pid: $stateParams.addressbookId, tag: tag });
-              return stateAddressbook.card;
+              var tag = 'v' + $stateParams.contactType,
+                  card = new Card({ pid: $stateParams.addressbookId, tag: tag });
+              return card;
             }]
           }
         })
-        .state('addressbook.editor', {
-          url: '/:cardId/edit',
+        .state('addressbook.card', {
+          url: '/:cardId',
+          abstract: true,
           views: {
             card: {
-              templateUrl: 'cardEditor.html',
-              controller: 'CardCtrl'
+              template: '<ui-view/>',
             }
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
+              console.debug('resovle');
               return stateAddressbook.$getCard($stateParams.cardId);
             }]
           }
+        })
+        .state('addressbook.card.view', {
+          url: '/view',
+          templateUrl: 'card.html',
+          controller: 'CardCtrl'
+        })
+        .state('addressbook.card.editor', {
+          url: '/edit',
+          templateUrl: 'cardEditor.html',
+          controller: 'CardCtrl'
         });
 
       // if none of the above states are matched, use this as the fallback
@@ -211,76 +208,78 @@
       };
     }])
 
-    .controller('CardCtrl', ['$scope', '$rootScope', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', function($scope, $rootScope, AddressBook, Card, Dialog, focus, $state, $stateParams) {
+  /**
+   * Controller to view and edit a card
+   */
+    .controller('CardCtrl', ['$scope', '$rootScope', '$timeout', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', 'stateCard', function($scope, $rootScope, $timeout, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
+      $scope.card = stateCard;
+
       $scope.allEmailTypes = Card.$EMAIL_TYPES;
       $scope.allTelTypes = Card.$TEL_TYPES;
       $scope.allUrlTypes = Card.$URL_TYPES;
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
 
-      $rootScope.masterCard = angular.copy($rootScope.addressbook.card);
-
       $scope.addOrgUnit = function() {
-        var i = $rootScope.addressbook.card.$addOrgUnit('');
+        var i = $scope.card.$addOrgUnit('');
         focus('orgUnit_' + i);
       };
       $scope.addCategory = function() {
-        var i = $rootScope.addressbook.card.$addCategory('');
+        var i = $scope.card.$addCategory('');
         focus('category_' + i);
       };
       $scope.addEmail = function() {
-        var i = $rootScope.addressbook.card.$addEmail('');
+        var i = $scope.card.$addEmail('');
         focus('email_' + i);
       };
       $scope.addPhone = function() {
-        var i = $rootScope.addressbook.card.$addPhone('');
+        var i = $scope.card.$addPhone('');
         focus('phone_' + i);
       };
       $scope.addUrl = function() {
-        var i = $rootScope.addressbook.card.$addUrl('', '');
+        var i = $scope.card.$addUrl('', '');
         focus('url_' + i);
       };
       $scope.addAddress = function() {
-        var i = $rootScope.addressbook.card.$addAddress('', '', '', '', '', '', '', '');
+        var i = $scope.card.$addAddress('', '', '', '', '', '', '', '');
         focus('address_' + i);
       };
       $scope.addMember = function() {
-        var i = $rootScope.addressbook.card.$addMember('');
+        var i = $scope.card.$addMember('');
         focus('ref_' + i);
       };
       $scope.save = function(form) {
         if (form.$valid) {
-          $rootScope.addressbook.card.$save()
+          $scope.card.$save()
             .then(function(data) {
-              var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $rootScope.addressbook.card.id);
+              var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $scope.card.id);
               if (i < 0) {
                 // Reload contacts list and show addressbook in which the card has been created
                 $rootScope.addressbook = AddressBook.$find(data.pid);
               }
               else {
                 // Update contacts list with new version of the Card object
-                $rootScope.addressbook.cards[i] = angular.copy($rootScope.addressbook.card);
+                $rootScope.addressbook.cards[i] = angular.copy($scope.card);
               }
-              $state.go('addressbook.card');
+              $state.go('addressbook.card.view', { cardId: $scope.card.id });
             }, function(data, status) {
               console.debug('failed');
             });
         }
       };
+      $scope.reset = function() {
+        $scope.card.reset();
+      };
       $scope.cancel = function() {
-        $scope.reset();
-        delete $rootScope.masterCard;
-        if ($scope.addressbook.card.id) {
-          // Cancelling the edition of an existing card
-          $state.go('addressbook.card', { cardId: $scope.addressbook.card.id });
-        }
-        else {
+        $scope.card.reset();
+        if ($scope.card.isNew) {
           // Cancelling the creation of a card
-          delete $rootScope.addressbook.card;
+          delete $scope.card;
           $state.go('addressbook', { addressbookId: $scope.addressbook.id });
         }
-      };
-      $scope.reset = function() {
-        $rootScope.addressbook.card = angular.copy($rootScope.masterCard);
+        else {
+          // Cancelling the edition of an existing card
+          $state.go('addressbook.card.view', { cardId: $scope.card.id });
+        }
       };
       $scope.confirmDelete = function(card) {
         Dialog.confirm(l('Warning'),
@@ -293,7 +292,7 @@
                   $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
                     return o.id == card.id;
                   });
-                  delete $rootScope.addressbook.card;
+                  delete $scope.card;
                 }, function(data, status) {
                   Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                                card.$fullname()));

@@ -18,7 +18,7 @@
    * @param {string} content
    */
   Dialog.alert = function(title, content) {
-    var modal = this.$modal.open({
+    this.$modal.open({
       template:
       '<h2 data-ng-bind-html="title"></h2>' +
         '<p data-ng-bind-html="content"></p>' +
