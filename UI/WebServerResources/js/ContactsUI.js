@@ -57,7 +57,6 @@
           },
           resolve: {
             stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
-              console.debug('resovle');
               return stateAddressbook.$getCard($stateParams.cardId);
             }]
           }
@@ -267,10 +266,10 @@
         }
       };
       $scope.reset = function() {
-        $scope.card.reset();
+        $scope.card.$reset();
       };
       $scope.cancel = function() {
-        $scope.card.reset();
+        $scope.card.$reset();
         if ($scope.card.isNew) {
           // Cancelling the creation of a card
           delete $scope.card;
@@ -289,9 +288,11 @@
               // User confirmed the deletion
               card.$delete()
                 .then(function() {
+                  // Remove card from list of addressbook
                   $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
                     return o.id == card.id;
                   });
+                  // Remove card object from scope
                   delete $scope.card;
                 }, function(data, status) {
                   Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',

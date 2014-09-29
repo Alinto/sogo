@@ -294,14 +294,14 @@
                        l('Are you sure you want to delete the card of <b>%{0}</b>?', card.$fullname()))
           .then(function(res) {
             if (res) {
-              // User has confirmed deletion
+              // User confirmed the deletion
               card.$delete()
                 .then(function() {
-                  // Delete card from list of addressbook
+                  // Remove card from list of addressbook
                   $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
                     return o.id == card.id;
                   });
-                  // Delete card object
+                  // Remove card object from scope
                   delete $scope.card;
                   // Delete modal editor
                   $scope.$cardEditorModal.remove();
