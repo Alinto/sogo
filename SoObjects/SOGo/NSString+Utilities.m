@@ -46,9 +46,6 @@ static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
 static int cssEscapingCount;
 
-static NSString *controlCharString = nil;
-static NSCharacterSet *controlCharSet = nil;
-
 @implementation NSString (SOGoURLExtension)
 
 - (NSString *) composeURLWithAction: (NSString *) action
@@ -308,14 +305,9 @@ static NSCharacterSet *controlCharSet = nil;
           (c >= 0x20 && c <= 0xD7FF) ||
           (c >= 0xE000 && c <= 0xFFFD) ||
           (c >= 0x10000 && c <= 0x10FFFF))
-        j++;
-      else
         {
-          if (i+1 < len)
-            {
-              buf++;
-              *(start+j) = *buf;
-            }
+          *(start+j) = c;
+          j++;
         }
 
       buf++;
