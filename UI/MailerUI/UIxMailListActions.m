@@ -186,7 +186,7 @@
   if (![subject length])
     subject = @"";
 
-  return [subject stringByEscapingHTMLString];
+  return [[subject safeString] stringByEscapingHTMLString];
 }
 
 - (BOOL) showToAddress 

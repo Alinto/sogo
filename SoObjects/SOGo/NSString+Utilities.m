@@ -313,6 +313,7 @@ static NSCharacterSet *controlCharSet = nil;
         {
           if (i+1 < len)
             {
+              buf++;
               *(start+j) = *buf;
             }
         }
