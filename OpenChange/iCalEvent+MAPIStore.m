@@ -228,6 +228,15 @@
       [start setTimeZone: tz];
       if (isAllDay)
         {
+          /* when user TZ is positive (East) all-day events were not
+             shown properly in SOGo UI. This day delay fixes it */
+          tzOffset = [userTimeZone secondsFromGMTForDate: value];
+          if (tzOffset > 0)
+            {
+              value = [value dateByAddingYears: 0 months: 0 days: 1
+                                         hours: 0 minutes: 0
+                                       seconds: 0];
+            }
           [start setDate: value];
           [start setTimeZone: nil];
         }
@@ -251,6 +260,15 @@
       [end setTimeZone: tz];
       if (isAllDay)
         {
+          /* when user TZ is positive (East) all-day events were not
+             shown properly in SOGo UI. This day delay fixes it */
+          tzOffset = [userTimeZone secondsFromGMTForDate: value];
+          if (tzOffset > 0)
+            {
+              value = [value dateByAddingYears: 0 months: 0 days: 1
+                                         hours: 0 minutes: 0
+                                       seconds: 0];
+            }
           [end setDate: value];
           [end setTimeZone: nil];
         }

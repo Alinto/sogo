@@ -133,7 +133,8 @@ $(PLREADER_TOOL)_OBJC_FILES += \
 
 DBMSGREADER_TOOL = dbmsgreader
 $(DBMSGREADER_TOOL)_OBJC_FILES += \
-	dbmsgreader.m
+	dbmsgreader.m \
+	NSObject+PropertyList.m
 
 $(DBMSGREADER_TOOL)_LIB_DIRS += \
 	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \

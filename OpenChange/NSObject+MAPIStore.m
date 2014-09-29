@@ -47,13 +47,13 @@ MAPIStoreTallocWrapperDestroy (void *data)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
 
-  GSRegisterCurrentThread ();
+//  GSRegisterCurrentThread ();
   pool = [NSAutoreleasePool new];
   wrapper = data;
   //NSLog (@"destroying wrapped object (wrapper: %p; object: %p (%@))...\n", wrapper, wrapper->instance, NSStringFromClass([wrapper->instance class]));
   [wrapper->instance release];
   [pool release];
-  GSUnregisterCurrentThread ();
+//  GSUnregisterCurrentThread ();
 
   return 0;
 }

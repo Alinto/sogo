@@ -433,10 +433,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) deleteFolder
+- (void) deleteFolderImpl
 {
+  // TODO: raise exception in case underlying delete fails?
   // [propsMessage delete];
   [dbFolder delete];
+}
+
+- (int) deleteFolder
+{
+  [self deleteFolderImpl];
 
   [self cleanupCaches];
 
@@ -890,7 +896,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             {
               fmid = [mapping idFromURL: [self url]];
               [mapping unregisterURLWithID: fmid];
-              [self deleteFolder];
+              [self deleteFolderImpl];
               [mapping registerURL: [newFolder url]
                             withID: fmid];
             }
