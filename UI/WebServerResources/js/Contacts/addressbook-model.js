@@ -65,12 +65,12 @@
    * @returns the list of addressbooks
    */
   AddressBook.$findAll = function(data) {
-    var self = this;
+    var _this = this;
     if (data) {
       this.$addressbooks = data;
       // Instanciate AddressBook objects
       angular.forEach(this.$addressbooks, function(o, i) {
-        self.$addressbooks[i] = new AddressBook(o);
+        _this.$addressbooks[i] = new AddressBook(o);
       });
     }
     return this.$addressbooks;
@@ -105,7 +105,7 @@
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options) {
-    var self = this;
+    var _this = this;
     var params = { 'search': 'name_or_address',
                    'value': search,
                    'sort': 'c_cn',
@@ -124,8 +124,8 @@
           cards = data.cards;
         }
         else {
-          self.cards = data.cards;
-          cards = self.cards;
+          _this.cards = data.cards;
+          cards = _this.cards;
         }
         // Instanciate Card objects
         angular.forEach(cards, function(o, i) {
@@ -152,11 +152,11 @@
   };
 
   AddressBook.prototype.$delete = function() {
-    var self = this;
+    var _this = this;
     var d = AddressBook.$q.defer();
     AddressBook.$$resource.remove(this.id)
       .then(function() {
-        var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), self.id);
+        var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
         AddressBook.$addressbooks.splice(i, 1);
         d.resolve(true);
       }, function(data, status) {
@@ -172,40 +172,38 @@
   };
 
   AddressBook.prototype.$getCard = function(card_id) {
-    var self = this;
     return this.$id().then(function(addressbook_id) {
-      self.card = AddressBook.$Card.$find(addressbook_id, card_id);
-      return self.card;
+      return AddressBook.$Card.$find(addressbook_id, card_id);
     });
-  };
-
-  AddressBook.prototype.$resetCard = function() {
-    this.$getCard(this.card.id);
   };
 
   // Unwrap a promise
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
-    var self = this;
+    var _this = this;
 
+    // Expose the promise
     this.$futureAddressBookData = futureAddressBookData;
+    // Resolve the promise
     this.$futureAddressBookData.then(function(data) {
       AddressBook.$timeout(function() {
-        angular.extend(self, data);
+        angular.extend(_this, data);
         // Also extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
         angular.forEach(AddressBook.$findAll(), function(o, i) {
-          if (o.id == self.id) {
-            angular.extend(self, o);
+          if (o.id == _this.id) {
+            angular.extend(_this, o);
           }
         });
         // Instanciate Card objects
-        angular.forEach(self.cards, function(o, i) {
-          self.cards[i] = new AddressBook.$Card(o);
+        angular.forEach(_this.cards, function(o, i) {
+          _this.cards[i] = new AddressBook.$Card(o);
         });
       });
     }, function(data) {
-      angular.extend(self, data);
-      self.isError = true;
+      AddressBook.$timeout(function() {
+        angular.extend(_this, data);
+        _this.isError = true;
+      });
     });
   };
 
@@ -214,7 +212,6 @@
     var addressbook = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
-          key != 'card' &&
           key != 'cards' &&
           key[0] != '$') {
         addressbook[key] = value;

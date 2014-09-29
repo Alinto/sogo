@@ -101,60 +101,60 @@
         <a class="button button-clear button-positive" data-ng-click="edit()"><var:string label:value="Edit"/></a>
       </ion-nav-buttons>
       <ion-content padding="10" class="has-header">
-        <h4 data-ng-bind-html="addressbook.card.$fullname()"><!-- fullname --></h4>
+        <h4 data-ng-bind-html="card.$fullname()"><!-- fullname --></h4>
         <p>
-          {{addressbook.card.$description()}}
-          <span class="label" data-ng-repeat="category in addressbook.card.categories">{{category.value}}</span>
+          {{card.$description()}}
+          <span class="label" data-ng-repeat="category in card.categories">{{category.value}}</span>
         </p>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.birthday">
+        <ion-list class="list-clear" data-ng-show="card.birthday">
           <ion-item class="item-icon-right">
             <i class="icon ion-calendar"><!-- icon --></i>
-            <small><var:string label:value="Birthday"/></small> {{addressbook.card.$birthday() | date}}
+            <small><var:string label:value="Birthday"/></small> {{card.$birthday() | date}}
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.refs.length > 0">
-          <ion-item ng-repeat="ref in addressbook.card.refs"
+        <ion-list class="list-clear" data-ng-show="card.refs.length > 0">
+          <ion-item ng-repeat="ref in card.refs"
                     href="{{UserFolderURL}}Mail/Compose/{{ref.email}}"
                     class="item-icon-right">
             <i class="icon ion-person"><!-- icon --></i>
             {{ref.fn || ref.email}}
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.emails">
-          <ion-item ng-repeat="email in addressbook.card.emails"
+        <ion-list class="list-clear" data-ng-show="card.emails">
+          <ion-item ng-repeat="email in card.emails"
                     href="{{UserFolderURL}}Mail/Compose/{{email.value}}"
                     class="item-icon-right">
             <i class="icon ion-email"><!-- icon --></i>
             <small>{{email.type}}</small> {{email.value}}
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.phones">
-          <ion-item ng-repeat="phone in addressbook.card.phones"
+        <ion-list class="list-clear" data-ng-show="card.phones">
+          <ion-item ng-repeat="phone in card.phones"
                     href="tel:{{phone.value}}"
                     class="item-icon-right">
             <i class="icon ion-ios7-telephone-outline"><!-- icon --></i>
             <small>{{phone.type}}</small> {{phone.value}}
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.urls">
-          <ion-item ng-repeat="url in addressbook.card.urls"
+        <ion-list class="list-clear" data-ng-show="card.urls">
+          <ion-item ng-repeat="url in card.urls"
                     href="{{url.value}}"
                     class="item-icon-right">
             <i class="icon ion-link"><!-- icon --></i>
             <small>{{url.type}}</small> {{url.value}}
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.addresses">
-          <ion-item class="item-icon-right" ng-repeat="address in addressbook.card.addresses">
+        <ion-list class="list-clear" data-ng-show="card.addresses">
+          <ion-item class="item-icon-right" ng-repeat="address in card.addresses">
             <i class="icon ion-location"><!-- icon --></i>
             <small>{{address.type}}</small>
             <address data-sg-address="address"><!-- address --></address>
           </ion-item>
         </ion-list>
-        <ion-list class="list-clear" data-ng-show="addressbook.card.note">
+        <ion-list class="list-clear" data-ng-show="card.note">
           <ion-item>
             <small><var:string label:value="note"/></small>
-            {{addressbook.card.note}}
+            {{card.note}}
           </ion-item>
         </ion-list>
       </ion-content>
@@ -163,7 +163,7 @@
 
   <script type="text/ng-template" id="cardEditor.html">
     <ion-modal-view>
-      <form name="cardForm" data-ng-show="addressbook.card.$isCard()">
+      <form name="cardForm" data-ng-show="card.$isCard()">
       <ion-header-bar class="bar-positive">
         <button class="button button-clear" ng-click="cancel()"><var:string label:value="Cancel"/></button>
         <button class="button button-clear" ng-click="save(cardForm)"><var:string label:value="Save"/></button>
@@ -171,28 +171,28 @@
       <ion-content padding="10">
         <ion-list class="list-clear">
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Display" ng-model="addressbook.card.fn"/>
+            <input type="text" label:placeholder="Display" ng-model="card.fn"/>
           </ion-item>
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Givenname" ng-model="addressbook.card.givenname"/>
+            <input type="text" label:placeholder="Givenname" ng-model="card.givenname"/>
           </ion-item>
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Lastname" ng-model="addressbook.card.sn"/>
+            <input type="text" label:placeholder="Lastname" ng-model="card.sn"/>
           </ion-item>
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Nickname" ng-model="addressbook.card.nickname"/>
+            <input type="text" label:placeholder="Nickname" ng-model="card.nickname"/>
           </ion-item>
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Organization" ng-model="addressbook.card.org"/>
+            <input type="text" label:placeholder="Organization" ng-model="card.org"/>
           </ion-item>
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Title" ng-model="addressbook.card.title"/>
+            <input type="text" label:placeholder="Title" ng-model="card.title"/>
           </ion-item>
         </ion-list>
         <ion-list class="list-clear">
-          <ion-item ng-repeat="unit in addressbook.card.orgUnits"
+          <ion-item ng-repeat="unit in card.orgUnits"
                     class="item-input">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="addressbook.card.$delete('orgUnits', $index)"><!-- remove --></button>
+            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('orgUnits', $index)"><!-- remove --></button>
             <input type="text" label:placeholder="organization unit"
                    ng-model="unit.value"/>
           </ion-item>
@@ -208,9 +208,9 @@
           </ion-item>
         </ion-list>
         <ion-list class="list-clear">
-          <ion-item ng-repeat="category in addressbook.card.categories"
+          <ion-item ng-repeat="category in card.categories"
                     class="item-input">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="addressbook.card.$delete('categories', $index)"><!-- remove --></button>
+            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('categories', $index)"><!-- remove --></button>
             <input type="text" label:placeholder="category"
                    ng-model="category.value"/>
           </ion-item>
@@ -220,9 +220,9 @@
           </ion-item>
         </ion-list>
         <ion-list class="list-clear">
-          <ion-item ng-repeat="email in addressbook.card.emails"
+          <ion-item ng-repeat="email in card.emails"
                     class="item-input item-select">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="addressbook.card.$delete('emails', $index)"><!-- remove --></button>
+            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('emails', $index)"><!-- remove --></button>
             <input type="text" label:placeholder="email address"
                    ng-model="email.value"/>
             <select data-ng-model="email.type"
@@ -234,9 +234,9 @@
           </ion-item>
         </ion-list>
         <ion-list class="list-clear">
-          <ion-item ng-repeat="phone in addressbook.card.phones"
+          <ion-item ng-repeat="phone in card.phones"
                     class="item-input item-select">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="addressbook.card.$delete('phones', $index)"><!-- remove --></button>
+            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('phones', $index)"><!-- remove --></button>
             <input type="text" label:placeholder="phone number"
                    ng-model="phone.value"/>
             <select data-ng-model="phone.type"
@@ -248,10 +248,10 @@
           </ion-item>
         </ion-list>
         <ion-list class="list-clear">
-          <ion-item ng-repeat="url in addressbook.card.urls"
+          <ion-item ng-repeat="url in card.urls"
                     class="item-input item-select">
             <button class="button button-small button-assertive button-icon icon ion-minus-circled"
-                    data-ng-click="addressbook.card.$delete('urls', $index)"><!-- remove --></button>
+                    data-ng-click="card.$delete('urls', $index)"><!-- remove --></button>
             <input type="text" label:placeholder="URL"
                    ng-model="url.value"/>
             <select data-ng-model="url.type"
@@ -264,10 +264,10 @@
           </ion-item>
         </ion-list>
         <ion-list class="list-clear"
-                  ng-repeat="address in addressbook.card.addresses">
+                  ng-repeat="address in card.addresses">
           <ion-item class="item-input">
             <button class="button button-small button-assertive button-icon icon ion-minus-circled"
-                    data-ng-click="addressbook.card.$delete('addresses', $index)"><!-- remove --></button>
+                    data-ng-click="card.$delete('addresses', $index)"><!-- remove --></button>
             <ion-list class="list-address">
               <ion-item class="item-input">
                 <input type="text" label:placeholder="street" data-ng-model="address.street"/>
@@ -298,12 +298,12 @@
         </ion-list>
         <ion-list class="list-clear">
           <ion-item class="item-input">
-            <input type="text" label:placeholder="Note" data-ng-model="addressbook.card.note"/>
+            <input type="text" label:placeholder="Note" data-ng-model="card.note"/>
           </ion-item>
         </ion-list>
         <button class="button button-block button-assertive"
-                ng-hide="addressbook.card.isNew"
-                ng-click="confirmDelete(addressbook.card)"><var:string label:value="Delete"/></button>
+                ng-hide="card.isNew"
+                ng-click="confirmDelete(card)"><var:string label:value="Delete"/></button>
       </ion-content>
       </form>
     </ion-modal-view>
