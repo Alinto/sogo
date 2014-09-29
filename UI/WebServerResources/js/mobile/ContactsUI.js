@@ -204,7 +204,7 @@
     }])
 
     .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', function($scope, $rootScope, $state, $stateParams, $ionicModal, Dialog, AddressBook, Card, stateCard) {
-      $rootScope.addressbook.card = stateCard;
+      $scope.card = stateCard;
 
       $scope.UserFolderURL = UserFolderURL;
       $scope.allEmailTypes = Card.$EMAIL_TYPES;
@@ -213,8 +213,6 @@
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
 
       $scope.edit = function() {
-        // Copy card to be able to cancel changes later
-        $scope.masterCard = angular.copy($rootScope.addressbook.card);
         // Build modal editor
         $ionicModal.fromTemplateUrl('cardEditor.html', {
           scope: $scope,
@@ -230,62 +228,61 @@
         });
       };
       $scope.cancel = function() {
-        if ($rootScope.addressbook.card.isNew) {
+        if ($scope.card.isNew) {
           $scope.$cardEditorModal.hide().then(function() {
             // Go back to addressbook
             $state.go('app.addressbook', { addressbookId: $rootScope.addressbook.id });
           });
         }
         else {
-          $rootScope.addressbook.card = angular.copy($scope.masterCard);
+          $scope.card.$reset();
           $scope.$cardEditorModal.hide()
         }
       };
       $scope.addOrgUnit = function() {
-        var i = $rootScope.addressbook.card.$addOrgUnit('');
+        var i = $scope.card.$addOrgUnit('');
         focus('orgUnit_' + i);
       };
       $scope.addCategory = function() {
-        var i = $rootScope.addressbook.card.$addCategory('');
+        var i = $scope.card.$addCategory('');
         focus('category_' + i);
       };
       $scope.addEmail = function() {
-        var i = $rootScope.addressbook.card.$addEmail('');
+        var i = $scope.card.$addEmail('');
         focus('email_' + i);
       };
       $scope.addPhone = function() {
-        var i = $rootScope.addressbook.card.$addPhone('');
+        var i = $scope.card.$addPhone('');
         focus('phone_' + i);
       };
       $scope.addUrl = function() {
-        var i = $rootScope.addressbook.card.$addUrl('', '');
+        var i = $scope.card.$addUrl('', '');
         focus('url_' + i);
       };
       $scope.addAddress = function() {
-        var i = $rootScope.addressbook.card.$addAddress('', '', '', '', '', '', '', '');
+        var i = $scope.card.$addAddress('', '', '', '', '', '', '', '');
         focus('address_' + i);
       };
       $scope.addMember = function() {
-        var i = $rootScope.addressbook.card.$addMember('');
+        var i = $scope.card.$addMember('');
         focus('ref_' + i);
       };
       $scope.save = function(form) {
         if (form.$valid) {
-          $rootScope.addressbook.card.$save()
+          $scope.card.$save()
             .then(function(data) {
-              var i, card;
-              delete $rootScope.addressbook.card.isNew;
-              i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $rootScope.addressbook.card.id);
+              var i;
+              delete $scope.card.isNew;
+              i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $scope.card.id);
               if (i < 0) {
                 // New card
                 // Reload contacts list and show addressbook in which the card has been created
-                card = angular.copy($rootScope.addressbook.card);
                 $rootScope.addressbook = AddressBook.$find(data.pid);
-                $rootScope.addressbook.card = card;
+                $state.go('app.addressbook', { addressbookId: data.pid });
               }
               else {
                 // Update contacts list with new version of the Card object
-                $rootScope.addressbook.cards[i] = angular.copy($rootScope.addressbook.card);
+                $rootScope.addressbook.cards[i] = angular.copy($scope.card);
               }
               // Close editor
               $scope.$cardEditorModal.hide();
@@ -305,7 +302,7 @@
                     return o.id == card.id;
                   });
                   // Delete card object
-                  delete $rootScope.addressbook.card;
+                  delete $scope.card;
                   // Delete modal editor
                   $scope.$cardEditorModal.remove();
                   // Go back to addressbook
@@ -318,7 +315,7 @@
           });
       };
 
-      if ($scope.addressbook.card && $scope.addressbook.card.isNew) {
+      if ($scope.card && $scope.card.isNew) {
         // New contact
         $scope.edit();
       }

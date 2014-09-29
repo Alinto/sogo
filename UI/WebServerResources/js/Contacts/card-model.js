@@ -34,7 +34,7 @@
 
   /**
    * @memberof Card
-   * @desc The factory we'll use to register with Angular
+   * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
   Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
@@ -48,7 +48,7 @@
 
   /**
    * @module SOGo.ContactsUI
-   * @desc Factory registration of Card in Angular module
+   * @desc Factory registration of Card in Angular module.
    */
   angular.module('SOGo.ContactsUI')
     .factory('sgCard', Card.$factory)
@@ -56,7 +56,7 @@
   /**
    * @name sgAddress
    * @memberof ContactsUI
-   * @desc Directive to format a postal address
+   * @desc Directive to format a postal address.
    */
     .directive('sgAddress', function() {
       return {
@@ -83,7 +83,7 @@
 
   /**
    * @memberof Card
-   * @desc Fetch a card from a specific addressbook
+   * @desc Fetch a card from a specific addressbook.
    * @param {string} addressbook_id - the addressbook ID
    * @param {string} card_id - the card ID
    * @see {@link AddressBook.$getCard}
@@ -98,7 +98,7 @@
 
   /**
    * @memberof Card
-   * @desc Unwrap to a collection of Card instances
+   * @desc Unwrap to a collection of Card instances.
    * @param {Object} futureCardData
    */
   Card.$unwrapCollection = function(futureCardData) {
@@ -120,7 +120,7 @@
   /**
    * @function $id
    * @memberof Card.prototype
-   * @desc Return the card ID
+   * @desc Return the card ID.
    * @returns the card ID
    */
   Card.prototype.$id = function() {
@@ -132,7 +132,7 @@
   /**
    * @function $save
    * @memberof Card.prototype
-   * @desc Save the card to the server
+   * @desc Save the card to the server.
    */
   Card.prototype.$save = function() {
     var action = 'saveAsContact';
@@ -202,7 +202,7 @@
   /**
    * @function $preferredEmail
    * @memberof Card.prototype
-   * @desc Get the preferred email address
+   * @desc Get the preferred email address.
    * @param {string} [partial] - a partial string that the email must match
    * @returns the first email address of type "pref" or the first address if none found
    */
@@ -356,6 +356,22 @@
   };
 
   /**
+   * @function $reset
+   * @memberof Card.prototype
+   * @desc Reset the original state the card's data.
+   */
+  Card.prototype.$reset = function() {
+    var _this = this;
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key[0] != '$') {
+        delete _this[key];
+      }
+    });
+    angular.extend(this, this.$shadowData);
+    this.$shadowData = this.$omit(true);
+  };
+
+  /**
    * @function $updateMember
    * @memberof Card.prototype
    * @desc Update an existing list member from a Card instance.
@@ -372,30 +388,44 @@
     this.refs[index] = ref;
   };
 
-  // Unwrap a promise
+  /**
+   * @function $unwrap
+   * @memberof Card.prototype
+   * @desc Unwrap a promise and make a copy of the resolved data.
+   * @param {Object} futureCardData - a promise of the Card's data
+   */
   Card.prototype.$unwrap = function(futureCardData) {
     var _this = this;
-
     if (futureCardData) {
+      // Expose the promise
       this.$futureCardData = futureCardData;
     }
-    return this.$futureCardData.then(function(data) {
-      // The success callback. Calling _.extend from $timeout will wrap it into a try/catch call and return
-      // a promise resolved immediately.
-      return Card.$timeout(function() {
+    // Resolve the promise
+    this.$futureCardData.then(function(data) {
+      // Calling $timeout will force Angular to refresh the view
+      Card.$timeout(function() {
         angular.extend(_this, data);
-        console.debug(angular.toJson(data));
-        return _this;
+        // Make a copy of the data in order for an eventual reset.
+        _this.$shadowData = _this.$omit(true);
       });
     });
   };
 
-  // Return a sanitized object used to send to the server
-  Card.prototype.$omit = function() {
+  /**
+   * @function $omit
+   * @memberof Card.prototype
+   * @desc Return a sanitized object used to send to the server.
+   * @param {boolean} deep - make a deep copy if true
+   * @return an object literal copy of the Card instance
+   */
+  Card.prototype.$omit = function(deep) {
     var card = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key[0] != '$') {
-        card[key] = value;
+        if (deep)
+          card[key] = angular.copy(value);
+        else
+          card[key] = value;
       }
     });
     return card;
