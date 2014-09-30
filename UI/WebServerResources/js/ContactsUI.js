@@ -177,6 +177,80 @@
             $scope.closeModal = function() {
               $modalInstance.close();
             };
+            $scope.saveModal = function() {
+              if(Object.keys(dirtyObjects).length > 0) {
+                $scope.AclUsers.saveUsersRights(dirtyObjects);
+              }
+              $modalInstance.close();
+            };
+            $scope.removeUser = function() {
+              if ($scope.userSelected) {
+                if(dirtyObjects[$scope.userSelected.UID])
+                  delete dirtyObjects[$scope.userSelected.UID];
+                $scope.AclUsers.removeUser($scope.userSelected);
+                $scope.AclUsers.getUsers().then(function(data) { 
+                  $scope.users = data;
+                });
+                $scope.userSelected = {};
+              }
+            };
+            $scope.addUser = function (user) {
+              if (user) {
+                angular.forEach($scope.userObjects, function(userObject) {
+                  if (user.indexOf(userObject.uid) != -1) {
+                    var test = true;
+                    angular.forEach($scope.users, function(userData) {
+                      if (user.indexOf(userData.UID) != -1) {
+                        test = false;
+                      }
+                    })
+                    if (test) {
+                      $scope.AclUsers.addUser(userObject.uid);
+                      $scope.AclUsers.getUsers().then(function(data) { 
+                        $scope.users = data;
+                      });
+                    }
+                    else {
+                      // TODO : Write a better msg and add the string inside the .string
+                      Dialog.alert(l('Warning'), l('This user is already added to your AclUsers list'));
+                    }
+                  }
+                });
+              }
+            };
+            $scope.selectUser = function(index) {
+              // Check if it is a different user
+              if ($scope.userSelected != $scope.users[index]){
+                $scope.userSelected = {};
+                $scope.selected = index;
+                $scope.userSelected = $scope.users[index];
+
+                if (dirtyObjects[$scope.userSelected.UID]) {
+                  $scope.userSelected.aclOptions = dirtyObjects[$scope.userSelected.UID].aclOptions;
+                }
+                else {
+                  $scope.AclUsers.openRightsForUserId($scope.userSelected.UID).then(function(userRights) { 
+                    $scope.userSelected.aclOptions = userRights;
+                  });
+                }
+              }
+            };
+            $scope.getContacts = function(value){
+              return $scope.AclUsers.searchUsers(value).then(function(response) {
+                $scope.usersFound = [];
+                $scope.userObjects = response;
+                angular.forEach(response, function(userObject){
+                  $scope.usersFound.push(userObject.displayName + " <" + userObject.email + ">");
+                });
+                return $scope.usersFound;
+              });
+            };
+            $scope.dirtyObjects = function() {
+              dirtyObjects[$scope.userSelected.UID] = $scope.userSelected;
+            };
+            $scope.displayUserRights = function() {
+              return ($scope.userSelected && $scope.userSelected.UID != "anonymous") ? true : false;
+            };
           }
         });
       };

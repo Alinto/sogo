@@ -108,4 +108,41 @@
 
     return deferred.promise;
   };
+
+  /**
+   * @function fetch
+   * @desc Fetch resources using a specific object, action and/or parameters
+   * @param {string} object_id - the object on which the action will be applied (ex: addressbook, calendar)
+   * @param {string} action - the action to be used in the URL
+   * @param {string} params - the url parameter 
+   */
+  Resource.prototype.fetch = function(object_id, action, params) {
+    var deferred = this._q.defer();
+    var object_id_path = object_id ? ("/" + object_id) : "";
+    var action_path = action ? ("/" + action) : "";
+    var params_path = params ? ("?" + params) : "";
+
+    var path = this._path + object_id_path + action_path + params_path;
+
+    this._http
+        .get(path)
+        .success(deferred.resolve)
+        .error(deferred.reject);
+
+    return deferred.promise;
+  };
+
+  Resource.prototype.saveAclUsers = function(object_id, action, data) {
+    var deferred = this._q.defer();
+    var object_id_path = object_id ? ("/" + object_id) : "";
+    var action_path = action ? ("/" + action) : "";
+    var path = this._path + object_id_path + action_path;
+
+    this._http
+        .post(path, data)
+        .success(deferred.resolve)
+        .error(deferred.reject);
+
+    return deferred.promise;
+  };
 })();
