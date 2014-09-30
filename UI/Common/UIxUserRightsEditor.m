@@ -237,7 +237,6 @@
     {
       response = [self responseWithStatus: 403
                                 andString: @"No such user."];
-      return response;
     }
     else 
     {
@@ -251,7 +250,7 @@
 
       response = [self jsCloseWithRefreshMethod: nil];
     }
-
+  }
   return response;
 }
 
