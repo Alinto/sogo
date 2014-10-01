@@ -63,6 +63,11 @@
           pageName    = "UIxUserRightsEditor";
           actionName = "saveUserRights";
         };
+        getUsersForObject = {
+          protectedBy = "view";
+          pageName    = "UIxAclEditor";
+          actionName  = "usersForObject";
+        };
       };
     };
     SOGoParentFolder = {
