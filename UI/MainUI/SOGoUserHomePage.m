@@ -215,7 +215,10 @@
                             timeZone: [endDate timeZone]];
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
-  intervals = interval / intervalSeconds; /* slices of 15 minutes */
+
+  // Slices of 15 minutes. The +4 is to take into account that we can
+  // have a timezone change during the freebusy lookup.
+  intervals = interval / intervalSeconds + 4;
 
   // Build a bit string representation of the freebusy data for the period
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));

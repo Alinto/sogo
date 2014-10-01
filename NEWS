@@ -1,3 +1,9 @@
+2.2.10 (2014-xx-xx)
+-------------------
+
+Bug fixes
+ - fix freebusy lookup with "Show time as busy" (#2930)
+
 2.2.9a (2014-09-29)
 -------------------
 
