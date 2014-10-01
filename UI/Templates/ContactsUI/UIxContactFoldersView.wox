@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    const:jsFiles="Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
     className="UIxPageFrame"
     title="name"
     var:popup="isPopup">
@@ -61,12 +61,14 @@
   </ul>
 
   <div>
+    <div data-ui-view="addressbooks"><!-- addressbooks list --></div>
+
     <!-- modal for addressbook sharing options -->
-      <script type="text/ng-template" id="addressbookSharing.html">
-        <div id="modalACL">
-          <h2>Sharing</h2>
-          <div>
-          <!-- left side -->
+    <script type="text/ng-template" id="addressbookSharing.html">
+      <div id="modalACL">
+        <h2>Sharing</h2>
+        <div>
+        <!-- left side -->
           <div id="usersList">
             <div>
               <ul>
@@ -133,16 +135,6 @@
         <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
       </script>
 
-    <div data-ui-view="addressbooks"><!-- addressbooks list --></div>
-
-    <!-- modal for addressbook sharing options -->
-    <script type="text/ng-template" id="addressbookSharing.html">
-      <h2>Sharing</h2>
-      <p class="lead"></p>
-      <p></p>
-      <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
-    </script>
-
     <script type="text/ng-template" id="addressbooks.html">
 
       <!-- dropdown menu for addressbook options button -->
@@ -151,16 +143,16 @@
           <li>
             <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
           </li>
-          <li data-ng-show="!addressbook.isRemote">
+          <li data-ng-hide="addressbook.isRemote">
             <span class="button"><i class="icon-pencil" data-ng-click="edit()"><!-- rename --></i></span>
           </li>
-          <li data-ng-show="!addressbook.isRemote">
-            <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
+          <li data-ng-hide="addressbook.isRemote">
+            <span class="button" data-ng-click="share()"><i class="icon-share"><!-- share --></i></span>
           </li>
-          <li data-ng-show="!addressbook.isRemote">
+          <li data-ng-hide="addressbook.isRemote">
             <span class="button" data-ng-click="importCards()"><i class="icon-file"><!-- import --></i></span>
           </li>
-          <li data-ng-show="!addressbook.isRemote">
+          <li data-ng-hide="addressbook.isRemote">
             <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
           </li>
         </ul>
