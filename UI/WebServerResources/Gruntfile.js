@@ -47,7 +47,7 @@ module.exports = function(grunt) {
             '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
             '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
             '<%= src %>/foundation/js/foundation{,.min}.js',
-            '<%= src %>/ionic/release/js/ionic{,.min}.js',
+            '<%= src %>/ionic/release/js/ionic.bundle{,.min}.js',
             '<%= src %>/underscore/underscore-min.{js,map}'
         ];
         for (var j = 0; j < js.length; j++) {
