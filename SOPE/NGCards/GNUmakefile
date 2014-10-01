@@ -131,6 +131,7 @@ ifneq ($(frameworks),yes)
 ifneq ($(FHS_INSTALL_ROOT),)
 GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
 endif
+GNUSTEP_TARGET_LDIR=sogo
 include $(GNUSTEP_MAKEFILES)/library.make
 else
 include $(GNUSTEP_MAKEFILES)/framework.make
