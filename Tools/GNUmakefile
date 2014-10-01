@@ -4,6 +4,8 @@ include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
+ADDITIONAL_LDFLAGS += -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
+
 ###
 SOGO_TOOL = sogo-tool
 $(SOGO_TOOL)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)

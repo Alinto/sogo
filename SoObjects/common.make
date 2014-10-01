@@ -18,7 +18,7 @@ ADDITIONAL_INCLUDE_DIRS += \
         -I../../SOPE
 
 ADDITIONAL_LIB_DIRS += \
-        -L../SOGo/SOGo.framework/ \
+        -L../SOGo/SOGo.framework/sogo/ \
 	-L../../SOGo/$(GNUSTEP_OBJ_DIR)/ \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
         -L/usr/local/lib
