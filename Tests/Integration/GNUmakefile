@@ -1,3 +1,4 @@
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 TOOL_NAME = teststrings 

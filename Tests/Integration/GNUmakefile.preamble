@@ -10,9 +10,10 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../../SoObjects/SOGo/SOGo.framework/sogo -lSOGo \
+	-L../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -lSOGo \
 	-L../../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
-        -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions
+        -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions \
+	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
 
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
