@@ -40,6 +40,7 @@
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 
+#import "Codepages.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -923,15 +924,13 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagInternetCodepage: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  /* ref:
-     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
-  
-     minimal list that should be handled:
-     us-ascii: 20127
-     iso-8859-1: 28591
-     iso-8859-15: 28605
-     utf-8: 65001 */
-  *data = MAPILongValue(memCtx, 65001);
+  NSNumber *codepage;
+
+  codepage = [Codepages getCodepageFromName: headerCharset];
+  if (!codepage)
+    codepage = [Codepages getCodepageFromName: @"utf-8"];
+
+  *data = MAPILongValue(memCtx, [codepage intValue]);
 
   return MAPISTORE_SUCCESS;
 }

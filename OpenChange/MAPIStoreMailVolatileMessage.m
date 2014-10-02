@@ -50,6 +50,7 @@
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/NSString+Mail.h>
 
+#import "Codepages.h"
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
@@ -672,21 +673,9 @@ MakeTextHtmlBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
     {
       /* charset */
       codePage = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_CPID)];
-      switch ([codePage intValue])
-        {
-        case 20127:
-          charset = @"us-ascii";
-          break;
-        case 28605:
-          charset = @"iso-8859-15";
-          break;
-        case 65001:
-          charset = @"utf-8";
-          break;
-        case 28591:
-        default:
-          charset = @"iso-8859-1";
-        }
+      charset = [Codepages getNameFromCodepage: codePage];
+      if (!charset)
+        charset = @"utf-8";
       htmlContentType = [NSString stringWithFormat: @"text/html; charset=%@",
                                   charset];
 

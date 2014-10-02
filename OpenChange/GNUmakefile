@@ -120,7 +120,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	iCalEvent+MAPIStore.m \
 	iCalTimeZone+MAPIStore.m \
 	\
-	RTFHandler.m
+	RTFHandler.m \
+	\
+	Codepages.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
