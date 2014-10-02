@@ -14,6 +14,6 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
         -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions \
-	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
+	-Wl,-rpath,$(SOGO_SYSLIBDIR)/sogo
 
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed

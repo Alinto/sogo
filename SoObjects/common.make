@@ -23,7 +23,7 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
         -L../../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
         -L/usr/local/lib \
-        -Wl,-rpath,../SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
+        -Wl,-rpath,$(SOGO_SYSLIBDIR)/sogo
 
 BUNDLE_LIBS += \
 	-lGDLAccess				\
