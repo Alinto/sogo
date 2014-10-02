@@ -18,18 +18,17 @@ ADDITIONAL_INCLUDE_DIRS += \
         -I../../SOPE
 
 ADDITIONAL_LIB_DIRS += \
-        -L../SOGo/SOGo.framework/Versions/Current/sogo/ \
+        -L../SOGo/SOGo.framework/Versions/Current/sogo/ -lSOGo \
 	-L../../SOGo/$(GNUSTEP_OBJ_DIR)/ \
-	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
+	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
+        -L../../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
         -L/usr/local/lib \
-        -Wl,-rpath,../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo
+        -Wl,-rpath,../SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
 
 BUNDLE_LIBS += \
-	-lSOGo					\
-	-lGDLContentStore			\
 	-lGDLAccess				\
 	-lNGObjWeb				\
-	-lNGCards -lNGMime -lNGLdap		\
+	-lNGMime -lNGLdap			\
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC -lSBJson
 
