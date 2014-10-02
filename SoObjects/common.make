@@ -21,7 +21,8 @@ ADDITIONAL_LIB_DIRS += \
         -L../SOGo/SOGo.framework/Versions/Current/sogo/ \
 	-L../../SOGo/$(GNUSTEP_OBJ_DIR)/ \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
-        -L/usr/local/lib
+        -L/usr/local/lib \
+        -Wl,-rpath,../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo
 
 BUNDLE_LIBS += \
 	-lSOGo					\
