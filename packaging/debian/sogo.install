@@ -12,7 +12,7 @@ usr/lib/GNUstep/SaxMappings/*
 usr/lib/GNUstep/WOxElemBuilders-4.9/*
 usr/lib/GNUstep/SOGo/Templates
 usr/lib/GNUstep/SOGo/WebServerResources
-usr/lib/lib*.so.*
+usr/lib/sogo/lib*.so.*
 usr/share/lintian/*
 usr/lib/GNUstep/SOGo/AdministrationUI.SOGo
 usr/lib/GNUstep/SOGo/Appointments.SOGo
