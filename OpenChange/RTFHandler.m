@@ -756,16 +756,16 @@ const unsigned short ansicpg874[256] = {
             {
               // We rewind our buffer so we start at the beginning of {\fonttbl...
               _bytes = cw-2;
-              _current_pos -= 10;
+              _current_pos -= 9;  // Length: {\fonttbl
               fontTable = [self parseFontTable];
               
-              // We go back 1 byte in order to end our section properly ('}' character
+              // We go back 1 byte in order to end our section properly ('}' character)
               REWIND;
             }
           else if (strncmp(cw, "stylesheet", 10) == 0)
   	     {
                _bytes = cw-2;
-               _current_pos -= 13;
+               _current_pos -= 12;  // Length: {\stylesheet
                [self parseStyleSheet];
                REWIND;
              } 
@@ -776,7 +776,7 @@ const unsigned short ansicpg874[256] = {
            else if (strncmp(cw, "pict", 4) == 0)
              {
                _bytes = cw-2;
-               _current_pos -= 7;
+               _current_pos -= 6;  // Length: {\pict
                [self parsePicture];
                REWIND;
              }
