@@ -573,7 +573,7 @@ const unsigned short ansicpg874[256] = {
           // Skip our control word
           if (strncmp((const char*)cw, "fonttbl", len) == 0)
             continue;
-            
+
           // We must at least parse <fontnum><fontfamily><fcharset>
           s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                              length: len-1
@@ -588,12 +588,18 @@ const unsigned short ansicpg874[256] = {
               
               // We now parse <fontfamily><fcharset>
               cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
               fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                                                 length: len-1
                                                               encoding: NSASCIIStringEncoding
                                                           freeWhenDone: NO];
 
               cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
               fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                                                  length: len-1
                                                                encoding: NSASCIIStringEncoding
