@@ -2,7 +2,8 @@
 -------------------
 
 Bug fixes
- - fix freebusy lookup with "Show time as busy" (#2930)
+ - fixed freebusy lookup with "Show time as busy" (#2930)
+ - don't escape <br>'s in a card's note field
 
 2.2.9a (2014-09-29)
 -------------------
