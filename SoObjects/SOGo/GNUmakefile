@@ -81,10 +81,6 @@ SOGo_HEADER_FILES = \
 	\
 	SOGoCredentialsFile.h
 
-# daemon tool
-all::
-	@touch SOGoBuild.m
-
 SOGo_OBJC_FILES = \
 	SOGoBuild.m \
 	SOGoProductLoader.m		\

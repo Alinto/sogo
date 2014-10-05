@@ -22,7 +22,6 @@
 
 #import <Foundation/NSString.h>
 
-NSString *SOGoBuildDate = SOGO_BUILD_DATE;
 NSString *SOGoVersion = (SOGO_MAJOR_VERSION
                          @"." SOGO_MINOR_VERSION
                          @"." SOGO_SUBMINOR_VERSION);

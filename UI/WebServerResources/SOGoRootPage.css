@@ -26,9 +26,6 @@ DIV#aboutBox DIV
   padding-bottom: 20px;
   width: 550px; }
 
-DIV#aboutBox SPAN.buildDate
-{ color: #666; }
-
 A#aboutClose
 { position: relative;
   margin-right: 10px;

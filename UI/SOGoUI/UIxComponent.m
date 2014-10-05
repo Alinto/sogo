@@ -719,11 +719,6 @@ static SoProduct      *commonProduct      = nil;
 
 /* debugging */
 
-- (NSString *) buildDate
-{
-  return SOGoBuildDate;
-}
-
 - (BOOL) isUIxDebugEnabled
 {
   SOGoSystemDefaults *sd;

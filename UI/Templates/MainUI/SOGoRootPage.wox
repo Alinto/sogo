@@ -13,7 +13,7 @@
   <div id="aboutBox" style="display:none;">
     <div>
       <p class="logo"><img const:alt="SOGo" rsrc:src="sogo-logo.png"/></p>
-      <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
+      <p>Version <var:string value="version"/></p>
       <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
       <img const:alt="Inverse" rsrc:src="inverse.png"/>
       <p class="links"><a href="http://www.sogo.nu/" target="_new">www.sogo.nu</a> / 

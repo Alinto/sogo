@@ -19,7 +19,6 @@
         <meta name="description" content="SOGo Web Interface" />
         <meta name="author" content="SKYRIX Software AG/Inverse inc." />
         <meta name="robots" content="stop" />
-        <meta name="build" var:content="buildDate" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <link href="mailto:support@inverse.ca" rev="made" />
         <link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
