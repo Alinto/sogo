@@ -1274,8 +1274,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSUInteger count, max;
   NSString *messageKey, *messageUid, *bodyPartKey;
   NGImap4Client *client;
-  NSArray *fetch;
+  NSArray *fetch, *flags;
   NSData *bodyContent;
+  BOOL unseen;
+  NSMutableArray *unseenUIDs;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
@@ -1305,6 +1307,25 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       
           client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
           [client select: [sogoObject absoluteImap4Name]];
+
+          /* Fetch flags to remove seen flag if required,
+             as fetching a message body set the seen flag */
+          response = [client fetchUids: [keyAssoc allKeys]
+                                 parts: [NSArray arrayWithObjects: @"flags", nil]];
+          fetch = [response objectForKey: @"fetch"];
+          max = [fetch count];
+          unseenUIDs = [NSMutableArray arrayWithCapacity: max];
+          for (count = 0; count < max; count++)
+            {
+              response = [fetch objectAtIndex: count];
+              messageUid = [[response objectForKey: @"uid"] stringValue];
+              flags = [response objectForKey: @"flags"];
+              unseen = [flags indexOfObject: @"seen"] == NSNotFound;
+              if (unseen) {
+                [unseenUIDs addObject: messageUid];
+              }
+            }
+
           response = [client fetchUids: [keyAssoc allKeys]
                              parts: [bodyPartKeys allObjects]];
           fetch = [response objectForKey: @"fetch"];
@@ -1325,6 +1346,14 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                       [bodyData setObject: bodyContent forKey: messageKey];
                     }
                 }
+            }
+
+          // Restore unseen state once the body has been fetched
+          if ([unseenUIDs count] > 0)
+            {
+              response = [client storeFlags: [NSArray arrayWithObjects: @"seen", nil]
+                                    forUIDs: unseenUIDs
+                                addOrRemove: NO];
             }
         }
     }
