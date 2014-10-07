@@ -112,5 +112,20 @@
   angular.module('SOGo.UIDesktop', ['mm.foundation'])
 
   /* Factory registration in Angular module */
-    .factory('sgDialog', Dialog.$factory);
+    .factory('sgDialog', Dialog.$factory)
+
+  /**
+   * @desc A directive evaluated when the escape key is pressed.
+   */
+    .directive('sgEscape', function() {
+      var ESCAPE_KEY = 27;
+      return function (scope, elem, attrs) {
+	elem.bind('keydown', function (event) {
+	  if (event.keyCode === ESCAPE_KEY) {
+	    scope.$apply(attrs.sgEscape);
+	  }
+	});
+      };
+    });
+
 })();
