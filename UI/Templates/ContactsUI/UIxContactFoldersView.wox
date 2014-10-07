@@ -167,7 +167,7 @@
         <div class="newItemsToolbar">
           <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
         </div>
-        <ul id="contactFolders">
+        <ul>
           <li data-ng-repeat="folder in addressbooks"
               data-ng-class="{_selected: addressbook.id==folder.id}"
               data-ng-dblclick="edit($index)">
@@ -181,7 +181,9 @@
                      data-ng-model="folder.name"
                      data-ng-show="editMode==folder.id"
                      data-ng-cloak="ng-cloak"
-                     data-sg-focus-on="addressBookName_{{$index}}"/>
+                     data-ng-blur="save($index)"
+                     data-sg-focus-on="addressBookName_{{$index}}"
+                     data-sg-escape="revertEditing($index)"/>
             </form>
             <span class="icon" data-ng-cloak="ng-cloak"><a class="icon" href="#" data-dropdown-toggle="#addressbookProperties" data-options="align:right" data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a></span>
           </li>
@@ -243,7 +245,7 @@
       <div id="contactView" data-ui-view="card"><!-- card state view --></div>
 
       </div>
-    </script>
+    </script><!-- addressbooks.html -->
 
     <script type="text/ng-template" id="card.html">
 

@@ -138,8 +138,13 @@
             i = _.indexOf(_.pluck($scope.addressbooks, 'id'), $rootScope.addressbook.id);
           }
           $scope.editMode = $rootScope.addressbook.id;
+	  $scope.originalAddressbook = angular.extend({}, $scope.addressbook.$omit());
           focus('addressBookName_' + i);
         }
+      };
+      $scope.revertEditing = function(i) {
+        $scope.addressbooks[i].name = $scope.originalAddressbook.name;
+        $scope.editMode = false;
       };
       $scope.save = function(i) {
         var name = $scope.addressbooks[i].name;
