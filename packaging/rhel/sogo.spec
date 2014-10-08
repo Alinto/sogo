@@ -36,6 +36,10 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 %{?!el5:Requires: lasso}
 %{?!el5:BuildRequires: lasso-devel}
 
+# We disable OpenChange builds on el5 since it's prehistoric
+%define enable_openchange 1
+%{?el5:%define enable_openchange 0}
+
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
 the SOPE application server.  It focuses on scalability.
@@ -333,7 +337,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_includedir}/NGCards
 %{_libdir}/sogo/libNGCards.so*
 
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 %files openchange-backend
 %defattr(-,root,root,-)
 %{_libdir}/GNUstep/SOGo/*.MAPIStore
