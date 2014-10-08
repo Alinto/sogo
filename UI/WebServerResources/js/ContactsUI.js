@@ -197,9 +197,39 @@
             };
             $scope.saveModal = function() {
               if(!_.isEmpty(dirtyObjects)) {
-                $scope.AclUsers.saveUsersRights(dirtyObjects);
+                if(dirtyObjects["anonymous"])
+                {
+                  Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
+                    if(res){
+                      $scope.AclUsers.saveUsersRights(dirtyObjects);
+                      $modalInstance.close();
+                    };
+                  })
+                }
+                else if (dirtyObjects["<default>"]) {
+                  Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
+                    if(res){
+                      $scope.AclUsers.saveUsersRights(dirtyObjects);
+                      $modalInstance.close();
+                    };
+                  })
+                }
+                else {
+                  $scope.AclUsers.saveUsersRights(dirtyObjects);
+                  var usersToSubscribe = [];
+                  angular.forEach(dirtyObjects, function(dirtyObject){
+                    if(dirtyObject.canSubscribeUser && dirtyObject.isSubscribed){
+                      usersToSubscribe.push(dirtyObject.uid);
+                    }
+                  })
+                  if(!_.isEmpty(usersToSubscribe))
+                    $scope.AclUsers.subscribeUsers(usersToSubscribe);
+
+                  $modalInstance.close();
+                }
               }
-              $modalInstance.close();
+              else
+                $scope.$aclEditorModal.remove();
             };
             $scope.removeUser = function() {
               if (!_.isEmpty($scope.userSelected)) {
