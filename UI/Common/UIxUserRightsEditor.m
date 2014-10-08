@@ -119,62 +119,29 @@
   if ([newUID length] > 0)
     {
       if (!defaultUserID)
-	      ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+	ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
       um = [SOGoUserManager sharedUserManager];
-      if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"] 
-                                                  || [[um getEmailForUID: newUID] length] > 0)
-	      {
-	        if (![newUID hasPrefix: @"@"])
-	          {
+      if ([newUID isEqualToString: defaultUserID]
+	  || [newUID isEqualToString: @"anonymous"]
+	  || [[um getEmailForUID: newUID] length] > 0)
+	{
+	  if (![newUID hasPrefix: @"@"])
+	    {
               domain = [[context activeUser] domain];
-	            group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-	            if (group)
-		            newUID = [NSString stringWithFormat: @"@%@", newUID];
-	          }
-          ASSIGN (uid, newUID);
-	        clientObject = [self clientObject];
-	        [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
+	      group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
+	      if (group)
+		newUID = [NSString stringWithFormat: @"@%@", newUID];
+	    }
 
-          response = YES;
-	      }
+	  ASSIGN (uid, newUID);
+	  clientObject = [self clientObject];
+	  [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
+
+	  response = YES;
+	}
     }
-  return response;
-}
 
-- (BOOL) _initRightsWithParameter:(NSString *) newUID
-{
-  BOOL response;
-  NSString *domain;
-  SOGoUserManager *um;
-  SOGoObject *clientObject;
-  SOGoGroup *group;
-
-  response = NO;
-
-  if ([newUID length] > 0)
-    {
-      if (!defaultUserID)
-        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
-
-      um = [SOGoUserManager sharedUserManager];
-      if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"] 
-                                                  || [[um getEmailForUID: newUID] length] > 0)
-        {
-          if (![newUID hasPrefix: @"@"])
-            {
-              domain = [[context activeUser] domain];
-              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-              if (group)
-                newUID = [NSString stringWithFormat: @"@%@", newUID];
-            }
-          ASSIGN (uid, newUID);
-          clientObject = [self clientObject];
-          [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
-
-          response = YES;
-        }
-    }
   return response;
 }
 
@@ -219,32 +186,20 @@
 - (id <WOActionResults>) saveUserRightsAction
 {
   id <WOActionResults> response;
-  WORequest *value;
   SOGoDomainDefaults *dd;
-  NSDictionary *jsonObject, *currentObject;
-  NSEnumerator *enumerator;
-  NSArray *o;
-  id key; 
 
-  value = [[self context] request];
-  jsonObject = [[value contentAsString] objectFromJSONString];
-  enumerator = [jsonObject keyEnumerator];
+  if (![self _initRights])
+    response = [NSException exceptionWithHTTPStatus: 403
+			    reason: @"No such user."];
+  else
+    {
+      NSArray *o;
 
-  while((key = [enumerator nextObject]))
-  {
-    currentObject = [jsonObject objectForKey: key];
-    if(![self _initRightsWithParameter: [currentObject objectForKey: @"UID"]]) 
-    {
-      response = [self responseWithStatus: 403
-                                andString: @"No such user."];
-      return response;
-    }
-    else 
-    {
-      [self updateRights:[currentObject objectForKey: @"aclOptions"]];
-      [[self clientObject] setRoles: userRights forUser: uid];
-      
       o = [NSArray arrayWithArray: userRights];
+
+      [self updateRights];
+      [[self clientObject] setRoles: userRights forUser: uid];
+
       dd = [[context activeUser] domainDefaults];
       if (![o isEqualToArray: userRights] && [dd aclSendEMailNotifications])
         [self sendACLAdvisoryTemplateForObject: [self clientObject]];
@@ -277,6 +232,10 @@
 - (void) removeAllRightsFromList: (NSArray *) list
 {
   [userRights removeObjectsInArray: list];
+}
+
+- (void) prepareRightsForm
+{
 }
 
 - (void) updateRights
