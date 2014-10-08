@@ -187,11 +187,25 @@
 {
   id <WOActionResults> response;
   SOGoDomainDefaults *dd;
+  NSDictionary *jsonObject, *currentObject;
+  NSEnumerator *enumerator;
+  NSArray *o;
+  id key; 
 
-  if (![self _initRights])
-    response = [NSException exceptionWithHTTPStatus: 403
-			    reason: @"No such user."];
-  else
+  value = [[self context] request];
+  jsonObject = [[value contentAsString] objectFromJSONString];
+  enumerator = [jsonObject keyEnumerator];
+
+  while((key = [enumerator nextObject]))
+  {
+    currentObject = [jsonObject objectForKey: key];
+    if(![self _initRightsWithParameter: [currentObject objectForKey: @"uid"]]) 
+    {
+      response = [self responseWithStatus: 403
+                                andString: @"No such user."];
+      return response;
+    }
+    else 
     {
       NSArray *o;
 
