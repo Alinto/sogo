@@ -19,9 +19,9 @@
    * Public method, assigned to prototype      
    */
   User.prototype.$filter = function(search) {
-  	// return a collections of users for a filter
+    // return a collections of users for a filter
     var param = {search: search};
-  	return User.$$resource.fetch(null, "usersSearch", param).then(function(results) {
+    return User.$$resource.fetch(null, "usersSearch", param).then(function(results) {
       return results;
     })
   };

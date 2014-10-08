@@ -80,7 +80,7 @@
   return defaultUserID;
 }
 
-- (NSArray *) usersForObject
+- (id <WOActionResults>) aclsAction
 {
   NSEnumerator *aclsEnum;
   NSString *currentUID, *ownerLogin;
@@ -105,14 +105,14 @@
                   object = [NSDictionary dictionaryWithObjectsAndKeys: currentUser, @"uid",
                                                                       [self currentUserClass], @"userClass",
                                                                       [self currentUserDisplayName], @"displayName",
-                                                                      [NSNumber numberWithBool:[self currentUserIsSubscribed]], @"isSubscribed", nil];
-                  [users setObject:object forKey: currentUID];
+                                                                      [NSNumber numberWithBool: [self currentUserIsSubscribed]], @"isSubscribed", nil];
+                  [users setObject: object forKey: currentUID];
             }
         }
       // Adding the Any authenticated user and the public access
-      [users setObject:[NSDictionary dictionaryWithObjectsAndKeys: @"<default>", @"uid", [self labelForKey: @"Any Authenticated User"], @"displayName", @"public-user", @"userClass", nil] forKey: @"<default>"];
+      [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"<default>", @"uid", [self labelForKey: @"Any Authenticated User"], @"displayName", @"public-user", @"userClass", nil] forKey: @"<default>"];
       if ([self isPublicAccessEnabled])
-        [users setObject:[NSDictionary dictionaryWithObjectsAndKeys: @"anonymous", @"uid", [self labelForKey: @"Public Access"], @"displayName", @"public-user", @"userClass", nil] forKey: @"anonymous"];
+        [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"anonymous", @"uid", [self labelForKey: @"Public Access"], @"displayName", @"public-user", @"userClass", nil] forKey: @"anonymous"];
       prepared = YES;
     }
 

@@ -84,10 +84,10 @@
     return deferred.promise;
   };
 
-  Resource.prototype.save = function(uid, newValue, options) {
+  Resource.prototype.save = function(id, newValue, options) {
     var deferred = this._q.defer(),
         action = (options && options.action)? options.action : 'save',
-        path = this._path + '/' + uid + '/' + action;
+        path = this._path + '/' + id + '/' + action;
 
     this._http
       .post(path, newValue)
@@ -103,6 +103,31 @@
 
     this._http
       .get(path)
+      .success(deferred.resolve)
+      .error(deferred.reject);
+
+    return deferred.promise;
+  };
+
+  /**
+   * @function fetch
+   * @desc Fetch resources using a specific object, action and/or parameters
+   * @param {string} object_id - the object on which the action will be applied (ex: addressbook, calendar)
+   * @param {string} action - the action to be used in the URL
+   * @param {Object} params - Object parameters injected through the $http protocol 
+   */
+  Resource.prototype.fetch = function(folder_id, action, params) {
+    var deferred = this._q.defer();
+    var folder_id_path = folder_id ? ("/" + folder_id) : "";
+    var action_path = action ? ("/" + action) : "";
+
+    var path = this._path + folder_id_path + action_path;
+
+    this._http({
+      method: 'GET',
+      url: path,
+      params: params
+    })
       .success(deferred.resolve)
       .error(deferred.reject);
 
