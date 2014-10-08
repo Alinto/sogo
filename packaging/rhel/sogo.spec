@@ -275,7 +275,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/SOGo/SchedulerUI.SOGo
 
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Resources
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/Current
 %{_libdir}/GNUstep/SOGo/Templates
@@ -312,7 +312,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/libSOGo.so
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/SOGo
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
