@@ -119,25 +119,25 @@
   if ([newUID length] > 0)
     {
       if (!defaultUserID)
-        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+	      ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
       um = [SOGoUserManager sharedUserManager];
       if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"] 
                                                   || [[um getEmailForUID: newUID] length] > 0)
-        {
-          if (![newUID hasPrefix: @"@"])
-            {
+	      {
+	        if (![newUID hasPrefix: @"@"])
+	          {
               domain = [[context activeUser] domain];
-              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-              if (group)
-                newUID = [NSString stringWithFormat: @"@%@", newUID];
-            }
+	            group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
+	            if (group)
+		            newUID = [NSString stringWithFormat: @"@%@", newUID];
+	          }
           ASSIGN (uid, newUID);
-          clientObject = [self clientObject];
-          [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
+	        clientObject = [self clientObject];
+	        [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
 
           response = YES;
-        }
+	      }
     }
   return response;
 }
@@ -183,11 +183,13 @@
   id <WOActionResults> response;
 
   if (![self _initRights])
-    response = [self responseWithStatus: 403
-                              andString: @"No such user."];
+    response = [NSException exceptionWithHTTPStatus: 403
+			    reason: @"No such user."];
   else
-    response = [self responseWithStatus: 200 
-                              andString:[[self userRightsForObject] jsonRepresentation]];
+    {
+      [self prepareRightsForm];
+      response = self;
+    }
 
   return response;
 }
@@ -235,7 +237,6 @@
     {
       response = [self responseWithStatus: 403
                                 andString: @"No such user."];
-      return response;
     }
     else 
     {
@@ -246,9 +247,10 @@
       dd = [[context activeUser] domainDefaults];
       if (![o isEqualToArray: userRights] && [dd aclSendEMailNotifications])
         [self sendACLAdvisoryTemplateForObject: [self clientObject]];
+
+      response = [self jsCloseWithRefreshMethod: nil];
     }
   }
-  response = [self jsCloseWithRefreshMethod: nil];
   return response;
 }
 
@@ -265,7 +267,7 @@
 }
 
 - (void) appendExclusiveRight: (NSString *) newRight
-         fromList: (NSArray *) list
+		     fromList: (NSArray *) list
 {
   [userRights removeObjectsInArray: list];
   [self appendRight: newRight];

@@ -178,19 +178,7 @@
       $scope.share = function() {
         var modal = $modal.open({
           templateUrl: 'addressbookSharing.html',
-          controller: function($scope, $http, $modalInstance, sgAclUsers) {
-            /* Variables for the scope */
-            $scope.AclUsers = new sgAclUsers($rootScope.addressbook);
-            $scope.userObjects = {};
-            $scope.AclUsers.getUsers().then(function(data) { 
-              $scope.users = data;
-            });
-            var dirtyObjects = {};
-
-            /* Functions */
-            $scope.removeButton = function() {
-              return ($scope.userSelected && $scope.userSelected.userClass != "public-user") ? false : true;
-            };
+          controller: function($scope, $modalInstance) {
             $scope.closeModal = function() {
               $modalInstance.close();
             };
