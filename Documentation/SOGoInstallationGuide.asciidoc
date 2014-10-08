@@ -193,7 +193,7 @@ installation for a Red Hat or CentOS distribution.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
-SOGo can be installed using the+yum+utility. To do so, first create
+SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
 
@@ -1167,7 +1167,7 @@ keytool -import -keystore /etc/ssl/certs/java/cacerts  \
 
 *The certificate used by the CAS server must also be trusted by SOGo.*
 In case of a self-signed certificate, this means exporting tomcat's
-certificate using the +keytool+utility, converting it to PEM format and
+certificate using the `keytool` utility, converting it to PEM format and
 appending it to the `ca-certificates.crt` file (the name and location of
 that file differs between distributions). Basically:
 
@@ -1581,8 +1581,8 @@ Note that TLS is supported but SSL is not.
 
 |D |SOGoSieveFolderEncoding
 |Parameter used to specify which encoding is used for IMAP folder names
-in Sieve filters. Defaults to "UTF-7". The other possible value is
-"UTF-8".
+in Sieve filters. Defaults to `UTF-7`. The other possible value is
+`UTF-8`.
 
 |U |SOGoMailShowSubscribedFoldersOnly
 |Parameter used to specify if the Web interface should only show
@@ -1644,7 +1644,7 @@ SASL mechanism. Please note that feature might be limited at this time.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the
-name is a group name not a user name.
+name is a group name, not a user name.
 
 RFC4314 gives examples where group names are prefixed with `$`. Dovecot,
 for one, follows this scheme, and will, for example, apply permissions
@@ -1993,7 +1993,7 @@ Defaults to `NO` when unset.
 SOGo Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The complete SOGo configuration file+/etc/sogo/sogo.conf+should look
+The complete SOGo configuration file `/etc/sogo/sogo.conf` should look
 like this:
 
 ----
