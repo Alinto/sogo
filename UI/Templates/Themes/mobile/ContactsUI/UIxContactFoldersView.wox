@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common/resource.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    const:jsFiles="Common/user-model.js, Common/resource.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js"
     className="UIxPageFrame"
     title="name"
     var:popup="isPopup">
@@ -367,15 +367,15 @@
   <script type="text/ng-template" id="acl-modal.html">
     <ion-modal-view>
       <ion-header-bar class="bar-positive">
-        <div class="buttons" ng-show="onGoingSearch">
-          <button class="button button-icon" ng-click="closeModal()">close</button>
-        </div>
         <div class="buttons" ng-hide="onGoingSearch">
-          <button class="button button-icon" ng-click="cancelSearch()">back</button>
+          <button class="button button-icon" ng-click="closeModal()"><var:string label:value="Close"/></button>
+        </div>
+        <div class="buttons" ng-show="onGoingSearch">
+          <button class="button button-icon" ng-click="cancelSearch()"><var:string label:value="Back"/></button>
         </div>
         <h1 class="title">{{addressbook.name}}</h1>
         <div class="buttons">
-          <button class="button button-icon" ng-click="saveModal()">save</button>
+          <button class="button button-icon" ng-click="saveModal()"><var:string label:value="Save"/></button>
         </div>
       </ion-header-bar>
       <ion-content>
@@ -409,8 +409,8 @@
         </ion-list>
       </ion-content>
       <ion-footer-bar class="bar-footer">
-        <ion-search class="item item-light" placeholder="Search a user/group" min-length="2" model="usersFound" 
-                    source="getContacts(str)" clear="cancelSearch()">
+        <ion-search class="item item-light" label:placeholder="Add..." min-length="2" model="usersFound" 
+                    source="searchUsers(search)" clear="cancelSearch()">
         </ion-search>
       </ion-footer-bar>
     </ion-modal-view>

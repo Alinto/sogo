@@ -45,10 +45,6 @@
           actionClass = "UIxObjectActions";
           actionName  = "delete";
         };
-        acls = {
-          protectedBy = "ReadAcls";
-          pageName    = "UIxAclEditor";
-        };
         saveAcls = {
           protectedBy = "Change Permissions";
           pageName    = "UIxAclEditor";
@@ -62,6 +58,11 @@
           protectedBy = "Change Permissions";
           pageName    = "UIxUserRightsEditor";
           actionName = "saveUserRights";
+        };
+        acls = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxAclEditor";
+          actionName  = "acls";
         };
       };
     };
