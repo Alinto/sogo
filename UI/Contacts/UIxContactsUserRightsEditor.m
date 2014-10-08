@@ -22,7 +22,6 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSValue.h>
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
@@ -30,17 +29,25 @@
 
 @implementation UIxContactsUserRightsEditor
 
-/*- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects
+- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects
 {
   if (userCanCreateObjects)
     [self appendRight: SOGoRole_ObjectCreator];
   else
     [self removeRight: SOGoRole_ObjectCreator];
-}*/
+}
 
 - (BOOL) userCanCreateObjects
 {
   return [userRights containsObject: SOGoRole_ObjectCreator];
+}
+
+- (void) setUserCanEraseObjects: (BOOL) userCanEraseObjects
+{
+  if (userCanEraseObjects)
+    [self appendRight: SOGoRole_ObjectEraser];
+  else
+    [self removeRight: SOGoRole_ObjectEraser];
 }
 
 - (BOOL) userCanEraseObjects
@@ -48,9 +55,25 @@
   return [userRights containsObject: SOGoRole_ObjectEraser];
 }
 
+- (void) setUserCanEditObjects: (BOOL) userCanEditObjects
+{
+  if (userCanEditObjects)
+    [self appendRight: SOGoRole_ObjectEditor];
+  else
+    [self removeRight: SOGoRole_ObjectEditor];
+}
+
 - (BOOL) userCanEditObjects
 {
   return [userRights containsObject: SOGoRole_ObjectEditor];
+}
+
+- (void) setUserCanViewObjects: (BOOL) userCanViewObjects
+{
+  if (userCanViewObjects)
+    [self appendRight: SOGoRole_ObjectViewer];
+  else
+    [self removeRight: SOGoRole_ObjectViewer];
 }
 
 - (BOOL) userCanViewObjects
@@ -58,33 +81,28 @@
   return [userRights containsObject: SOGoRole_ObjectViewer];
 }
 
-- (NSDictionary *) userRightsForObject
+- (void) updateRights
 {
-  return [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:[self userCanCreateObjects]], @"canCreateObjects",
-                                                     [NSNumber numberWithBool:[self userCanEraseObjects]], @"canEraseObjects",
-                                                     [NSNumber numberWithBool:[self userCanEditObjects]], @"canEditObjects",
-                                                     [NSNumber numberWithBool:[self userCanViewObjects]], @"canViewObjects", nil];
-}
+  WORequest *request;
 
-- (void) updateRights: (NSDictionary *) newRights
-{
+  request = [context request];
 
-  if ([[newRights objectForKey: @"canCreateObjects"] boolValue])
+  if ([[request formValueForKey: @"ObjectCreator"] length] > 0)
     [self appendRight: SOGoRole_ObjectCreator];
   else
     [self removeRight: SOGoRole_ObjectCreator];
 
-  if ([[newRights objectForKey: @"canEditObjects"] boolValue])
+  if ([[request formValueForKey: @"ObjectEditor"] length] > 0)
     [self appendRight: SOGoRole_ObjectEditor];
   else
     [self removeRight: SOGoRole_ObjectEditor];
 
-  if ([[newRights objectForKey: @"canViewObjects"] boolValue])
+  if ([[request formValueForKey: @"ObjectViewer"] length] > 0)
     [self appendRight: SOGoRole_ObjectViewer];
   else
     [self removeRight: SOGoRole_ObjectViewer];
 
-  if ([[newRights objectForKey: @"canEraseObjects"] boolValue])
+  if ([[request formValueForKey: @"ObjectEraser"] length] > 0)
     [self appendRight: SOGoRole_ObjectEraser];
   else
     [self removeRight: SOGoRole_ObjectEraser];
