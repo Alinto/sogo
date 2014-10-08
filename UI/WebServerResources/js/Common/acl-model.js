@@ -1,10 +1,8 @@
 (function() {
   'use strict';
 
-  function AclUsers(addressbook) {  
-    this.addressbook_id = addressbook.id;  
-    this.addressbook_name = addressbook.name;
-    this.addressbook_owner = addressbook.owner;
+  function AclUsers(folder) {  
+    this.folder_id = folder.id;  
   }
 
   /* The factory we'll use to register with Angular */
@@ -24,36 +22,29 @@
   /* Instance methods
    * Public method, assigned to prototype      
    */
-  AclUsers.prototype.getUsers = function() {
-    return AclUsers.$$resource.fetch(this.addressbook_id, "getUsersForObject");
+  AclUsers.prototype.userRights = function(uid) {
+    var param = {"uid": uid};
+    return AclUsers.$$resource.fetch(this.folder_id, "userRights", param);
   };
 
-  AclUsers.prototype.searchUsers = function(inputText) {
-    var param = "search=" + inputText;
-    return AclUsers.$$resource.fetch(null, "usersSearch", param);
-  };
-   
-  AclUsers.prototype.openRightsForUserId = function(user) {
-    var param = "uid=" + user;
-    return AclUsers.$$resource.fetch(this.addressbook_id, "userRights", param);
+  AclUsers.prototype.addUser = function(uid) {
+    var param = {"uid": uid};
+    AclUsers.$$resource.fetch(this.folder_id, "addUserInAcls", param);
   };
 
-  AclUsers.prototype.addUser = function(user) {
-    var param = "uid=" + user;
-    AclUsers.$$resource.fetch(this.addressbook_id, "addUserInAcls", param);
-  };
-
-  AclUsers.prototype.subscribeUsers = function(users) {
-    var param = "uids=" + users;
-    AclUsers.$$resource.fetch(this.addressbook_id, "subscribeUsers", param);
-  };
-
-  AclUsers.prototype.removeUser = function(user) {
-    var userId = "uid=" + user.uid;
-    AclUsers.$$resource.fetch(this.addressbook_id, "removeUserFromAcls", userId);
+  AclUsers.prototype.removeUser = function(uid) {
+    var param = {"uid": uid};
+    AclUsers.$$resource.fetch(this.folder_id, "removeUserFromAcls", param);
   };
 
   AclUsers.prototype.saveUsersRights = function(dirtyObjects) {
-    AclUsers.$$resource.saveAclUsers(this.addressbook_id, "saveUserRights", dirtyObjects);
+    var param = {"action": "saveUserRights"};
+    AclUsers.$$resource.save(this.folder_id, dirtyObjects, param);
   };
+
+  AclUsers.prototype.subscribeUsers = function(uids) {
+    var param = {"uids": uids};
+    AclUsers.$$resource.fetch(this.folder_id, "subscribeUsers", param);
+  };
+
 })();

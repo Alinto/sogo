@@ -29,14 +29,6 @@
 
 @implementation UIxContactsUserRightsEditor
 
-- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects
-{
-  if (userCanCreateObjects)
-    [self appendRight: SOGoRole_ObjectCreator];
-  else
-    [self removeRight: SOGoRole_ObjectCreator];
-}
-
 - (BOOL) userCanCreateObjects
 {
   return [userRights containsObject: SOGoRole_ObjectCreator];
