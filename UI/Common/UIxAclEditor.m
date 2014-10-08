@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -82,8 +83,10 @@
 
 - (id <WOActionResults>) aclsAction
 {
+  id <WOActionResults> result;
   NSEnumerator *aclsEnum;
   NSString *currentUID, *ownerLogin;
+  NSDictionary *object;
 
   if (!prepared)
     {
@@ -116,7 +119,10 @@
       prepared = YES;
     }
 
-  return users;
+  result = [self responseWithStatus: 200
+                          andString: [users jsonRepresentation]];
+
+  return result;
 }
 
 - (void) setCurrentUser: (NSString *) newCurrentUser
