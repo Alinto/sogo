@@ -1632,6 +1632,12 @@ cronjob `sogo-tmpwatch`.
 
 Defaults to `/var/spool/sogo`.
 
+|S |NGImap4DisableIMAP4Pooling
+|Disables IMAP pooling when set to `YES`. Enable pooling by setting to
+`NO` or using a caching proxy like imapproxy.
+
+The default value is `YES`.
+
 |S |NGImap4ConnectionStringSeparator
 |Parameter used to set the IMAP mailbox separator. Setting this will
 also have an impact on the mailbox separator used by Sieve filters.
