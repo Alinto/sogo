@@ -260,8 +260,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
 %{_sbindir}/openchange_user_cleanup
-%{_libdir}/sogo/libSOGo.so.*
-%{_libdir}/sogo/libSOGoUI.so.*
+%{_libdir}/sogo/libSOGo.so*
+%{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
 %{_libdir}/GNUstep/SOGo/Appointments.SOGo
 %{_libdir}/GNUstep/SOGo/CommonUI.SOGo
@@ -275,7 +275,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/SOGo/SchedulerUI.SOGo
 
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Resources
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/Current
 %{_libdir}/GNUstep/SOGo/Templates
@@ -306,32 +306,32 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo-devel
 %{_includedir}/SOGo
 %{_includedir}/SOGoUI
-%{_libdir}/sogo/libSOGo.so.*
-%{_libdir}/sogo/libSOGoUI.so.*
+%{_libdir}/sogo/libSOGo.so*
+%{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/SOGo
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
-%{_libdir}/sogo/libGDLContentStore*.so.*
+%{_libdir}/sogo/libGDLContentStore*.so*
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
 %{_includedir}/GDLContentStore
-%{_libdir}/sogo/libGDLContentStore*.so
+%{_libdir}/sogo/libGDLContentStore*.so*
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards
-%{_libdir}/sogo/libNGCards.so.*
+%{_libdir}/sogo/libNGCards.so*
 %{_libdir}/GNUstep/SaxDrivers-*
 %{_libdir}/GNUstep/SaxMappings
 %{_libdir}/GNUstep/Libraries/Resources/NGCards
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 %{_includedir}/NGCards
-%{_libdir}/sogo/libNGCards.so
+%{_libdir}/sogo/libNGCards.so*
 
 %if %{sogo_major_version} >= 2
 %files openchange-backend
