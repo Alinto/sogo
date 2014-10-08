@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSValue.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -81,12 +80,10 @@
   return defaultUserID;
 }
 
-- (id <WOActionResults>) usersForObjectAction
+- (NSArray *) usersForObject
 {
-  id <WOActionResults> result;
   NSEnumerator *aclsEnum;
   NSString *currentUID, *ownerLogin;
-  NSDictionary *object;
 
   if (!prepared)
     {
@@ -99,30 +96,13 @@
         {
           if (!([currentUID isEqualToString: ownerLogin]
                 || [currentUID isEqualToString: defaultUserID]
-                || [currentUID isEqualToString: @"anonymous"])) 
-            {
-                  // Set the current user in order to get information associated with it
-                  [self setCurrentUser: currentUID];
-
-                  // Build the object associated with the key; currentUID
-                  object = [NSDictionary dictionaryWithObjectsAndKeys: currentUser, @"UID",
-                                                                      [self currentUserClass], @"userClass",
-                                                                      [self currentUserDisplayName], @"displayName",
-                                                                      [NSNumber numberWithBool:[self currentUserIsSubscribed]], @"isSubscribed", nil];
-                  [users addObject:object];
-            }
+                || [currentUID isEqualToString: @"anonymous"]))
+            [users addObjectUniquely: currentUID];
         }
-      // Adding the Any authenticated user and the public access
-      [users addObject:[NSDictionary dictionaryWithObjectsAndKeys: @"<default>", @"UID", @"Any authenticated user", @"displayName", @"public-user", @"userClass", nil]];
-      if ([self isPublicAccessEnabled])
-        [users addObject:[NSDictionary dictionaryWithObjectsAndKeys: @"anonymous", @"UID", @"Public access", @"displayName", @"public-user", @"userClass", nil]];
       prepared = YES;
     }
 
-  result = [self responseWithStatus: 200
-                          andString: [users jsonRepresentation]];
-
-  return result;
+  return users;
 }
 
 - (void) setCurrentUser: (NSString *) newCurrentUser
@@ -153,13 +133,20 @@
   return [um getFullEmailForUID: [self currentUser]];
 }
 
+- (BOOL) canSubscribeUsers
+{
+  return [[self clientObject]
+           respondsToSelector: @selector (subscribeUserOrGroup:reallyDo:response:)];
+}
+
 - (BOOL) currentUserIsSubscribed
 {
   SOGoGCSFolder *folder;
 
   folder = [self clientObject];
 
-  return ([folder respondsToSelector: @selector (userIsSubscriber:)] && [folder userIsSubscriber: currentUser]);
+  return ([folder respondsToSelector: @selector (userIsSubscriber:)]
+          && [folder userIsSubscriber: currentUser]);
 }
 
 - (void) setUserUIDS: (NSString *) retainedUsers
