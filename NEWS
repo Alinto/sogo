@@ -4,6 +4,7 @@
 Bug fixes
  - fixed freebusy lookup with "Show time as busy" (#2930)
  - don't escape <br>'s in a card's note field
+ - fixed folder's display name when subscribing to a folder
  - fixed folder's display name when the active user subscribes another user to one of her/his folders
 
 2.2.9a (2014-09-29)

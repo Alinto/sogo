@@ -199,7 +199,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     node._ls = isLast;
 
     var content = tree.node(node, (nodeId + subId), null);
-    content._formattedName = folder.formattedName;
+    content.displayName = folder.displayName;
 
     return content;
 }
@@ -228,7 +228,7 @@ function onConfirmFolderSelection(event) {
                 folderName = description.replace(/>,.*$/, ">", "g");
             }
             else {
-                folderName = node._formattedName;
+                folderName = node.displayName;
             }
             var data = { folderName: folderName, folder: folder, type: type, window: window };
             if (parent$(accessToSubscribedFolder(folder)))
