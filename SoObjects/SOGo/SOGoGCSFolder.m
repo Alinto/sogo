@@ -282,41 +282,40 @@ static NSArray *childRecordFields = nil;
   return value;
 }
 
-- (void) _setDisplayNameFromRow: (NSDictionary *) row
+- (NSString *) _displayNameFromRow: (NSDictionary *) row
 {
-  NSString *primaryDN;
+  NSString *name, *primaryDN;
   
+  name = nil;
   primaryDN = [row objectForKey: @"c_foldername"];
   
   if ([primaryDN length])
     {
-      DESTROY(displayName);
-      
       if ([primaryDN isEqualToString: [container defaultFolderName]])
-        displayName = [self labelForKey: primaryDN
-                              inContext: context];
+        name = [self labelForKey: primaryDN
+                       inContext: context];
       else
-        displayName = primaryDN;
-      
-      RETAIN(displayName);
+        name = primaryDN;
     }
+
+  return name;
 }
 
 /* This method fetches the display name defined by the owner, but is also the
    fallback when a subscriber has not redefined the display name yet in his
    environment. */
-- (void) _fetchDisplayNameFromOwner
+- (NSString *) _displayNameFromOwner
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *fc;
   NSURL *folderLocation;
-  NSString *sql;
+  NSString *name, *sql;
   NSArray *attrs;
   NSDictionary *row;
 
+  name = nil;
   cm = [GCSChannelManager defaultChannelManager];
-  folderLocation
-    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  folderLocation = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if (fc)
     {
@@ -324,33 +323,34 @@ static NSArray *childRecordFields = nil;
       // performing the query. This could have unexpected results.
       NS_DURING
         {
-          sql
-            = [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
-                                           @" WHERE c_path = '%@'"),
-                        [folderLocation gcsTableName], ocsPath];
+          sql = [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
+                                             @" WHERE c_path = '%@'"),
+                          [folderLocation gcsTableName], ocsPath];
           [fc evaluateExpressionX: sql];
           attrs = [fc describeResults: NO];
           row = [fc fetchAttributes: attrs withZone: NULL];
           if (row)
-            [self _setDisplayNameFromRow: row];
+            name = [self _displayNameFromRow: row];
           [fc cancelFetch];
           [cm releaseChannel: fc];
         }
       NS_HANDLER;
       NS_ENDHANDLER;
     }
+
+  return name;
 }
 
-- (void) _fetchDisplayNameFromSubscriber
+- (NSString *) _displayNameFromSubscriber
 {
   NSDictionary *ownerIdentity, *folderSubscriptionValues;
-  NSString *displayNameFormat;
+  NSString *name, *displayNameFormat;
   SOGoDomainDefaults *dd;
 
-  displayName = [self folderPropertyValueInCategory: @"FolderDisplayNames"];
-  if (!displayName)
+  name = [self folderPropertyValueInCategory: @"FolderDisplayNames"];
+  if (!name)
     {
-      [self _fetchDisplayNameFromOwner];
+      name = [self _displayNameFromOwner];
 
       // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
       // as it'll load user defaults and user settings which is _very costly_
@@ -358,17 +358,17 @@ static NSArray *childRecordFields = nil;
       ownerIdentity = [[SOGoUserManager sharedUserManager]
                                 contactInfosForUserWithUIDorEmail: owner];
 
-      folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
+      folderSubscriptionValues = [[NSDictionary alloc] initWithObjectsAndKeys: name, @"FolderName",
                                                   [ownerIdentity objectForKey: @"cn"], @"UserName",
                                                   [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
 
       dd = [[context activeUser] domainDefaults];
       displayNameFormat = [dd subscriptionFolderFormat];
 
-      displayName = [folderSubscriptionValues keysWithFormat: displayNameFormat];
+      name = [folderSubscriptionValues keysWithFormat: displayNameFormat];
     }
 
-  [displayName retain];
+  return name;
 }
 
 - (NSString *) displayName
@@ -376,14 +376,14 @@ static NSArray *childRecordFields = nil;
   if (!displayName)
     {
       if (activeUserIsOwner)
-        [self _fetchDisplayNameFromOwner];
+        displayName = [self _displayNameFromOwner];
       else
         {
-          [self _fetchDisplayNameFromSubscriber];
-          
+          displayName = [self _displayNameFromSubscriber];
           if (!displayName)
-            [self _fetchDisplayNameFromOwner];
+            displayName = [self _displayNameFromOwner];
         }
+      [displayName retain];
     }
 
   return displayName;
@@ -949,7 +949,7 @@ static NSArray *childRecordFields = nil;
                                  forKey: @"FolderShowAlarms"];
             }
 
-          [self setFolderPropertyValue: [self displayName]
+          [self setFolderPropertyValue: [self _displayNameFromSubscriber]
                             inCategory: @"FolderDisplayNames"
                               settings: us];
 
