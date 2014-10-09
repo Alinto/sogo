@@ -1629,7 +1629,7 @@ function onContactsReload () {
 }
 
 function initRefreshViewCheckTimer() {
-  var refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+  var refreshViewCheck = typeof UserDefaults == 'undefined' ? false : UserDefaults["SOGoRefreshViewCheck"];
   if (refreshViewCheck && refreshViewCheck != "manually") {
     var interval;
     if (refreshViewCheck == "once_per_hour")
