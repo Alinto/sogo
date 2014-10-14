@@ -49,6 +49,8 @@
 - (NSString *) urlFromID: (uint64_t) idKey;
 
 - (uint64_t) idFromURL: (NSString *) url;
+- (uint64_t) idFromURL: (NSString *) url
+         isSoftDeleted: (bool *) softDeleted;
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
 - (void) registerURLs: (NSArray *) urlString
