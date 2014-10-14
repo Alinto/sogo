@@ -6,8 +6,7 @@ include ../Version
 
 ADDITIONAL_OBJCFLAGS += -fPIE
 ADDITIONAL_INCLUDE_DIRS +=
-ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
-ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -fPIE -pie -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -fPIE -pie -Wl,--rpath,$(GNUSTEP_SYSTEM_LIBRARIES)/sogo
 
 SOGOD     = sogod
 TOOL_NAME = $(SOGOD)
