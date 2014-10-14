@@ -278,4 +278,13 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
                      idNbr, MAPISTORE_PERMANENT_DELETE);
 }
 
+- (void) unregisterURLWithID: (uint64_t) idNbr
+                    andFlags: (uint8_t) flags
+{
+  indexing->del_fmid(indexing, [username UTF8String],
+                     idNbr,
+                     (flags == MAPISTORE_SOFT_DELETE) ? MAPISTORE_SOFT_DELETE : MAPISTORE_PERMANENT_DELETE);
+}
+
+
 @end

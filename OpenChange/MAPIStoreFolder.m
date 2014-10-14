@@ -568,6 +568,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
 
+  /* flags that control the behaviour of the operation
+     (MAPISTORE_SOFT_DELETE or MAPISTORE_PERMANENT_DELETE) */
   [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16llx  flags: %d", mid, flags];
   
   mapping = [self mapping];
@@ -646,7 +648,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                               notifyChangesForChild: message];
                     }
                   [self logWithFormat: @"successfully deleted object at URL: %@", childURL];
-                  [mapping unregisterURLWithID: mid];
+                  /* Ensure we are respecting flags parameter */
+                  [mapping unregisterURLWithID: mid andFlags: flags];
                   [self cleanupCaches];
                   rc = MAPISTORE_SUCCESS;
                 }

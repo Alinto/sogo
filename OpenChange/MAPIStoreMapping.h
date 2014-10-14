@@ -54,6 +54,8 @@
 - (void) registerURLs: (NSArray *) urlString
               withIDs: (NSArray *) idNbrs;
 - (void) unregisterURLWithID: (uint64_t) idNbr;
+- (void) unregisterURLWithID: (uint64_t) idNbr
+                    andFlags: (uint8_t) flags;
 - (void) updateID: (uint64_t) idNbr
           withURL: (NSString *) urlString;
 
