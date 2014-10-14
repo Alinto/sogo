@@ -6,6 +6,7 @@ Bug fixes
  - don't escape <br>'s in a card's note field
  - fixed folder's display name when subscribing to a folder
  - fixed folder's display name when the active user subscribes another user to one of her/his folders
+ - fixed error with new user default sorting value for the mailer module (#2952)
 
 2.2.9a (2014-09-29)
 -------------------
