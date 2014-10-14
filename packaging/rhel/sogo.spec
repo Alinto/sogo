@@ -143,7 +143,7 @@ AutoReqProv:  off
 %description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 SOPE versit parsing library for iCal and VCard formats
 
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 %package openchange-backend
 Summary:      SOGo backend for OpenChange
 Group:        Productivity/Groupware
