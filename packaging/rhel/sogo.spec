@@ -1,6 +1,7 @@
 # We disable OpenChange builds on el5 since it's prehistoric
 %define enable_openchange 1
 %{?el5:%define enable_openchange 0}
+%{?el7:%define enable_openchange 0}
 
 %ifarch %ix86
 %define enable_openchange 0
