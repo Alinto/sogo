@@ -6,9 +6,9 @@ WEBSERVER_RESOURCE_DIRS = css fonts img js
 
 build-static-files:
 	@if [ -d bower_components ]; then \
-	  bower update; \
+	  bower update --allow-root; \
 	else \
-	  bower install; \
+	  bower install --allow-root; \
 	fi
 	( cd bower_components/underscore/ && npm run-script build )
 	grunt build

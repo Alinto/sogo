@@ -31,7 +31,7 @@
   BOOL publishInFreeBusy;
   NSArray *aclUsers;
   NSArray *savedUIDs;
-  NSMutableArray *users;
+  NSMutableDictionary *users;
   NSString *currentUser;
   NSString *defaultUserID;
 }
