@@ -2,6 +2,10 @@
 %define enable_openchange 1
 %{?el5:%define enable_openchange 0}
 
+%ifarch %ix86
+%define enable_openchange 0
+%endif
+
 %{!?sogo_major_version: %global sogo_major_version %(/bin/echo %{sogo_version} | /bin/cut -f 1 -d .)}
 %if %enable_openchange
 %global oc_build_depends samba4 openchange
