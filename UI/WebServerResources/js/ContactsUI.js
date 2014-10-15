@@ -174,6 +174,10 @@
           });
       };
       $scope.importCards = function() {
+
+      };
+      $scope.exportCards = function() {
+        window.location.href = ApplicationBaseURL + "/" + $rootScope.addressbook.id + "/exportFolder";
       };
       $scope.share = function() {
         var modal = $modal.open({
