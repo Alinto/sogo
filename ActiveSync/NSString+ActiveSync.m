@@ -35,8 +35,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSDate.h>
 
 #include <SOGo/NSString+Utilities.h>
+#include <SOGo/NSData+Crypto.h>
 
+#include <NGExtensions/NGBase64Coding.h>
 #include <NGExtensions/NSString+misc.h>
+
+static NSArray *easCommandCodes = nil;
 
 @implementation NSString (ActiveSync)
 
@@ -134,11 +138,49 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString *) _valueForParameter: (NSString *) theParameter
 {
-  NSArray *components;
+  NSMutableArray *components;
   NSString *s;
   int i;
 
-  components = [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"];
+  components = [NSMutableArray arrayWithArray: [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"]];
+
+  // We handle BASE64 encoded queryStrings. See http://msdn.microsoft.com/en-us/library/ee160227%28v=exchg.80%29.aspx for details.
+  if ([components count] == 1)
+    {
+      NSString *deviceType;
+      NSData *queryString;
+      
+      int cmd_code, deviceid_length, policy_length, devicetype_length;
+      const char* qs_bytes;
+     
+      queryString = [[components objectAtIndex: 0] dataByDecodingBase64];
+      qs_bytes = (const char*)[queryString bytes];
+
+      if (!easCommandCodes)
+        {
+          easCommandCodes = [NSArray arrayWithObjects:@"Sync", @"SendMail", @"SmartForward", @"SmartReply", @"GetAttachment", @"na", @"na", @"na", @"na",
+                                     @"FolderSync", @"FolderCreate", @"FolderDelete", @"FolderUpdate", @"MoveItems", @"GetItemEstimate", @"MeetingResponse",
+                                     @"Search", @"Settings", @"Ping", @"ItemOperations", @"Provision", @"ResolveRecipients", @"ValidateCert", nil];
+          RETAIN(easCommandCodes);
+        }
+
+      // Command code, 1 byte, ie.: cmd=
+      cmd_code = qs_bytes[1];
+      [components addObject:[NSString stringWithFormat: @"cmd=%@", [easCommandCodes objectAtIndex: cmd_code]]];
+
+      // Device ID length and Device ID (variable)
+      deviceid_length = qs_bytes[4];
+      [components addObject:[NSString stringWithFormat: @"deviceId=%@", [[NSData encodeDataAsHexString:[queryString subdataWithRange:NSMakeRange(5, deviceid_length)]] uppercaseString]]];
+
+      // Device type length and type (variable)
+      policy_length = qs_bytes[5+deviceid_length];
+      devicetype_length = qs_bytes[5+deviceid_length+1+policy_length];
+      deviceType = [[NSString alloc] initWithData:[queryString subdataWithRange: NSMakeRange(5+deviceid_length+1+policy_length+1, devicetype_length)]
+                                         encoding:NSASCIIStringEncoding];
+      AUTORELEASE(deviceType);
+
+      [components addObject:[NSString stringWithFormat: @"deviceType=%@", deviceType]];                                      
+    }
   
   for (i = 0; i < [components count]; i++)
     {
