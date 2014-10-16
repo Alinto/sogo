@@ -894,7 +894,7 @@ static NSCharacterSet *hexCharacterSet = nil;
         }
       else
         dateValue = [NSCalendarDate dateWithYear: 4500 month: 8 day: 31
-                                            hour: 23 minute: 59 second: 59
+                                            hour: 23 minute: 59 second: 00
                                         timeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
