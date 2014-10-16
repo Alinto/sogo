@@ -51,6 +51,7 @@
   NSArray *byMonth;
   iCalByDayMask *mask;
   NSCalendarDate *dateValue;
+  int16_t wDay;
 
   rrule = [self recurrenceRule];
   byMonth = [rrule byMonth];
@@ -59,7 +60,14 @@
       tzData->wMonth = [[byMonth objectAtIndex: 0] intValue];
       mask = [rrule byDayMask];
       tzData->wDayOfWeek = [mask firstDay];
-      tzData->wDay = [mask firstOccurrence];
+      wDay = [mask firstOccurrence];
+      if (wDay < 0)
+          /* [MS-OXOCAL] the wDay field is set to indicate the
+             occurrence of the day of the week within the month (1 to
+             5, where 5 indicates the final occurrence during the
+             month if that day of the week does not occur 5 times). */
+          wDay += 6;
+      tzData->wDay = (uint16_t) wDay;
 
       dateValue = [self startDate];
       tzData->wHour = [dateValue hourOfDay];
