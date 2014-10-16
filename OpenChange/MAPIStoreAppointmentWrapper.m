@@ -791,11 +791,20 @@ static NSCharacterSet *hexCharacterSet = nil;
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  NSCalendarDate *dateValue;
+  NSCalendarDate *dateValue, *start;
 
   if ([event isRecurrent])
     {
-      dateValue = [[event startDate] hour: 0 minute: 0 second: 0];
+      /* [MS-OXOCAL] For a recurring series, this property specifies
+         midnight in the user's machine time zone, on the date of the
+         first instance, then is persisted in UTC. */
+      start = [event startDate];
+      dateValue = [NSCalendarDate dateWithYear: [start yearOfCommonEra]
+                                         month: [start monthOfYear]
+                                           day: [start dayOfMonth]
+                                          hour: 0 minute: 0 second: 0
+                                      timeZone: timeZone];
+      [dateValue setTimeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
