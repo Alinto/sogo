@@ -222,7 +222,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self setNote: o];
 
   // Categories
-  if ((o = [theValues objectForKey: @"Categories"]))
+  if ((o = [theValues objectForKey: @"Categories"]) && [o length])
     [self setCategories: o];
 
   // Birthday
