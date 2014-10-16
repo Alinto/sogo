@@ -1037,7 +1037,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                        inBuffer: s
                       processed: &processed];
 
-      if (processed)
+      // Windows phons don't empty Responses tags - such as: <Responses></Responses>.
+      // We onnly generate this tag when the command has generated a response.
+      if (processed && [s length])
         [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
       else
         [commandsBuffer appendString: s];
