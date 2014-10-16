@@ -2385,6 +2385,10 @@ see http://support.microsoft.com/kb/291621 for configuration
 instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 `YES` and the URL to use must be of the following format: 
 `http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb`
+* If you have very large mail folders (thousands of messages), you will
+need to adjust the word size of your IMAP server. In Dovecot, the parameter
+to increase is "imap_max_line_length" while under Cyrus IMAP Server, the
+parameter is "maxword". We suggest a buffer of 2MB.
 
 In order to use the SOGo ActiveSync support code in production
 environments, you need to get a proper usage license from Microsoft.
