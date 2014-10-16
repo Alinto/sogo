@@ -486,7 +486,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // be done automatically by the ActiveSync client when invoking MeetingResponse.
   if (![self userIsAttendee: [context activeUser]])
     {
-      if ((o = [theValues objectForKey: @"Attendees"]))
+      // Windows phones sens sometimes an empty Attendees tag.
+      // We check it's an array before processing it.
+      if ((o = [theValues objectForKey: @"Attendees"])&& [o isKindOfClass: [NSArray class]])
         {
           NSMutableArray *attendees;
           NSDictionary *attendee;
