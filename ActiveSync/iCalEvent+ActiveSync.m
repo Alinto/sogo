@@ -361,14 +361,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self setAccessClass: @"PUBLIC"];
         }
     }
-
-  if ((o = [theValues objectForKey: @"TimeZone"]))
-    {
-      // Ugh, we ignore it for now.
-      userTimeZone = [[[context activeUser] userDefaults] timeZone];
-      tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
-      [(iCalCalendar *) parent addTimeZone: tz];
-    }
+  
+  // We ignore TimeZone sent by mobile devices for now.
+  // Some Windows devices don't send during event updates.
+  //if ((o = [theValues objectForKey: @"TimeZone"]))
+  //  {
+  userTimeZone = [[[context activeUser] userDefaults] timeZone];
+  tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
+  [(iCalCalendar *) parent addTimeZone: tz];
+  //}
   
   // FIXME: merge with iCalToDo
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
