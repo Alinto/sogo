@@ -118,10 +118,11 @@ $column-gutter: 0;
     height: 40px;
     border-radius: 20px;
     color: $input-disabled-bg;
-    //line-height: 40px;
     text-align: center;
+    vertical-align: center;
     border: 1px solid $input-disabled-bg;
     margin-right: 1em;
+    margin-left: 5px;
     i {
         font-size: 42px;
         line-height: 36px;
@@ -363,6 +364,102 @@ $column-gutter: 0;
     }
 }
 
+#modalACL {
+    height: 25vw;
+    ul {
+        height: 85%;
+    }
+    #usersList {
+        height: 100%;
+        padding: 0;
+        ul {
+            @include block-grid(
+                $per-row: 1,
+                $spacing: $block-grid-default-spacing,
+                $base-style: false
+            );
+            height: 85%;
+            border: 1px solid black;
+            padding: 0;
+            margin: 0;
+            li {
+                padding: 0;
+                line-height: 45px;
+                background-color: $f-dropdown-list-hover-bg;
+                transition: background 300ms ease;
+                &:hover, &:active {
+                    background-color: $f-dropdown-list-hover-bg;
+                    background-color: #fff;
+                }
+                &._selected, &._selected span {
+                    background-color: $module-color;
+                    background-color: #fff;
+                }
+                .subscriptionArea {
+                    float: right;
+                }
+            }
+        }
+        #bottomTable {
+            width: 100%;
+            margin: 0;
+            border: none;
+            #td_1 {
+                padding: 0;
+                width:100%;
+                i {
+                    position: absolute;
+                    padding-top: 10px;
+                    padding-left: 8px;
+                }
+                input {
+                    padding-left: 20px;
+                    margin: 0;
+                }
+            }
+            #td_2 {
+                padding: 0;
+                margin: 0;
+                float: right;
+                white-space: nowrap;
+                button {
+                    margin: 0;
+                }
+            }
+        }
+    }
+    #AccessRightList {
+        border: 1px solid black;
+        height: 100%;
+        padding: 0;
+        .title {
+            background-color: #54B948;
+            line-height: 75px;
+            color: white;
+            padding-left: 0.5em;
+        }
+        ul {
+            @include block-grid(
+                $per-row: 1,
+                $spacing: $block-grid-default-spacing,
+                $base-style: false
+            );
+            li {
+                padding: 5px;
+                clear: none !important;
+            }
+        }
+    }
+}
+#aclButtons {
+    margin: 0px;
+    padding:0;
+    float: right;
+    button {
+        margin: 0;
+    }
+}
+
 .buttonsToolbar {
     text-align: right;
     .button {
@@ -470,6 +567,7 @@ $column-gutter: 0;
 .f-dropdown {
     &.icons-dropdown {
         width: auto;
+        height: inherit;
         //background-color: $primary-color;
         .button {
             margin: 0;
