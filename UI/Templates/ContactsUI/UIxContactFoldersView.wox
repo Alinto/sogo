@@ -67,43 +67,40 @@
     <!-- modal for addressbook sharing options -->
     <script type="text/ng-template" id="addressbookSharing.html">
       <div id="modalACL">
-        <h2><var:string label:value="Sharing"/></h2>
-        <div>
+        <h2><var:string label:value="Sharing - "/>{{addressbook.name}}</h2>
+        <ul class="small-block-grid-2">
         <!-- left side -->
-          <div id="usersList">
-            <div>
-              <ul>
-                <li ng-repeat="user in users | orderBy:['userClass', 'displayName']" data-ng-click="selectUser(user)" 
-                    data-ng-class="{_selected: user==selected}">
-                  <span>
-                    <i data-ng-class="(user.userClass == 'public-user') ? 'icon-user4' : 'icon-vcard'"><!-- spacer --></i>
-                    {{user.displayName}}</span>
+          <li id="usersList">
+            <ul>
+              <li ng-repeat="user in users | orderBy:['userClass', 'displayName']" data-ng-click="selectUser(user)" data-ng-class="{_selected: user==selected}">
+                  <span class="card-picture" data-ng-switch="user.userClass">
+                    <i data-ng-switch-when="normal-user" class="icon-ion-ios7-person"><!-- normal-user --></i>
+                    <i data-ng-switch-when="public-user" class="icon-ion-ios7-people"><!-- public-user --></i>
+                  </span>
+                  <span class="name">{{user.displayName}}</span>
                   <span class="subscriptionArea" data-ng-hide="user.userClass == 'public-user'">
                     <input type="checkbox" ng-model="user.isSubscribed" ng-checked="user.isSubscribed" 
                            ng-disabled="!user.canSubscribeUser" ng-change="markUserAsDirty(user)" />
-                    <span><var:string label:value="Subscribe User"/></span></span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <form ng-submit="addUser(userToAdd)" class="addContactsToolbar">
-                <input type="search" ng-model="userToAdd" label:placeholder="Add..." typeahead-wait-ms="1000"
-                      typeahead="user as user.displayName for user in User.$filter($viewValue) | filter:$viewValue" class="form-control" />
-                <button type="submit" ><var:string label:value="Add User"/></button>
-                <button type="button" ng-disabled="userIsReadOnly()" data-ng-click="removeUser()"><var:string label:value="Remove User"/></button>
-              </form>
-
-            </div>
-          </div>
-
-          <!-- right side -->
-          <div id="AccessRightList">
-            <input id="uid" type="hidden" name="uid" var:value="uid"/>
+                    <span><var:string label:value="Subscribe User"/></span>
+                  </span>
+              </li>
+            </ul>
+            <form ng-submit="addUser(userToAdd)" class="addContactsToolbar">
+              <table id="bottomTable">
+                <tr>
+                  <td id="td_1"><i class="icon-ion-search"><!-- search --></i>
+                       <input type="search" ng-model="userToAdd" label:placeholder="Add..." typeahead-wait-ms="1000"
+                              typeahead="user as user.cn for user in User.$filter($viewValue) | filter:$viewValue" class="form-control" /></td>
+                  <td id="td_2"><button type="submit" ><var:string label:value="Add User"/></button>
+                      <button type="button" ng-disabled="userIsReadOnly()" data-ng-click="removeUser()"><var:string label:value="Remove User"/></button></td>
+                </tr>
+              </table>
+            </form>
+          </li>
+        <!-- right side -->
+          <li id="AccessRightList">
             <div class="title">
-              <label><var:string label:value="Access rights to"/><br />
-                 <span id="folderName" class="value">{{addressbook.name}}</span></label>
-              <label><var:string label:value="For user"/><br />
-                 <span class="value">{{userSelected.displayName}}</span></label>
+              {{userSelected.displayName}}
             </div>
             <div class="calendarUserRights">
               <ul>
@@ -128,15 +125,15 @@
                   <var:string label:value="This person can read the cards of this addressbook."/></li>
               </ul>
             </div>
-          </div>
-          </div>
-          <div id="aclButtons">
-            <button data-ng-click="closeModal()"><var:string label:value="Close"/></button>
-            <button data-ng-click="saveModal()"><var:string label:value="Save"/></button>
-          </div>
-        </div>
-        <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
-      </script>
+          </li>
+        </ul>
+      </div>
+      <div id="aclButtons">
+        <button data-ng-click="closeModal()"><var:string label:value="Close"/></button>
+        <button data-ng-click="saveModal()"><var:string label:value="Save"/></button>
+      </div>
+      <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
+    </script>
 
     <script type="text/ng-template" id="addressbooks.html">
 
@@ -238,8 +235,8 @@
             <!-- <input type="checkbox" class="card-picture left"/> -->
             <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
               <span class="card-picture" data-ng-switch="currentCard.tag">
-                <i data-ng-switch-when="vcard" class="icon-ion-ios7-person"><!-- card --></i>
-                <i data-ng-switch-when="vlist" class="icon-ion-ios7-people"><!-- list --></i>
+                <i data-ng-switch-when="vcard" data-ng-class="{'icon-ion-ios7-person': currentCard.photoURL == undefined}" ><!-- card --></i>
+                <i data-ng-switch-when="vlist" data-ng-class="icon-ion-ios7-people"><!-- list --></i>
               </span>
               <div class="name" data-ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
               <div><span data-ng-show="currentCard.emails"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{currentCard.$preferredEmail()}}</span><var:entity const:name="nbsp" /></div>
