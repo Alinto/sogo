@@ -394,39 +394,42 @@
   NSArray *filters;
   NSString *searchBy, *searchArgument, *searchInput, *searchString, *match;
   NSMutableArray *searchArray;
-  int nbFilters = 0, i;
+  int nbFilters, i;
   
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
   qualifier = nil;
   searchString = nil;
+  match = nil;
+  filters = [content objectForKey: @"filters"];
 
-  if ([content objectForKey:@"filters"])
+  if (filters)
     {
-      filters = [content objectForKey:@"filters"];
-      sortingAttributes = [content objectForKey:@"sortingAttributes"];
       nbFilters = [filters count];
-      match = [NSString stringWithString:[sortingAttributes objectForKey:@"match"]]; // AND, OR
-    
-      searchArray = [NSMutableArray arrayWithCapacity:nbFilters];
-      for (i = 0; i < nbFilters; i++)
-        {
-          searchBy = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchBy"]];
-          searchArgument = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchArgument"]];
-          searchInput = [NSString stringWithString:[[filters objectAtIndex:i] objectForKey:@"searchInput"]];
+      if (nbFilters > 0) {
+        searchArray = [NSMutableArray arrayWithCapacity: nbFilters];
+        sortingAttributes = [content objectForKey: @"sortingAttributes"];
+        if (sortingAttributes)
+          match = [sortingAttributes objectForKey :@"match"]; // AND, OR
+        for (i = 0; i < nbFilters; i++)
+          {
+            searchBy = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchBy"]];
+            searchArgument = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchArgument"]];
+            searchInput = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchInput"]];
         
-        if ([[[filters objectAtIndex:i] objectForKey:@"negative"] boolValue])
-            searchString = [NSString stringWithFormat:@"(not (%@ %@: '%@'))", searchBy, searchArgument, searchInput];
+            if ([[[filters objectAtIndex:i] objectForKey: @"negative"] boolValue])
+              searchString = [NSString stringWithFormat: @"(not (%@ %@: '%@'))", searchBy, searchArgument, searchInput];
+            else
+              searchString = [NSString stringWithFormat: @"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
+        
+            searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
+            [searchArray addObject: searchQualifier];
+          }
+        if ([match isEqualToString: @"OR"])
+          qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
         else
-            searchString = [NSString stringWithFormat:@"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
-        
-          searchQualifier = [EOQualifier qualifierWithQualifierFormat:searchString];
-          [searchArray addObject:searchQualifier];
-        }
-      if ([match isEqualToString:@"OR"])
-        qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
-      else
-        qualifier = [[EOAndQualifier alloc] initWithQualifierArray: searchArray];
+          qualifier = [[EOAndQualifier alloc] initWithQualifierArray: searchArray];
+      }
     }
     
   return qualifier;
