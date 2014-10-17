@@ -159,7 +159,7 @@
       // };
     }])
 
-    .controller('AddressBooksCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'sgAclUsers', 'sgUser', function($scope, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, sgAclUsers, sgUser) {
+    .controller('AddressBooksCtrl', ['$scope', '$state', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'sgUser', function($scope, $state, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, sgUser) {
       // Initialize with data from template
       $scope.addressbooks = AddressBook.$findAll(contactFolders);
       $scope.newAddressbook = function() {
@@ -205,11 +205,9 @@
                 }
                 // Variables in scope
                 $scope.$aclEditorModal = modal;
-                $scope.addressbook = addressbook;
-                $scope.AclUsers = new sgAclUsers(addressbook);
-                $scope.User = new sgUser(addressbook);
+                $scope.User = new sgUser();
                 var aclUsers = {};
-                $scope.User.$acls().then(function(users) {
+                addressbook.$acl.$users().then(function(users) {
                   $scope.refreshUsers(users);
                 });
                 $scope.showDelete = false;
@@ -238,23 +236,35 @@
                   if(!_.isEmpty(dirtyObjects)) {
                     if(dirtyObjects["anonymous"])
                     {
-                      Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
-                        if(res){
-                          $scope.AclUsers.saveUsersRights(dirtyObjects);
-                          $scope.$aclEditorModal.remove();
-                        };
-                      })
+                      if($scope.validateChanges(dirtyObjects["anonymous"])) {
+                        Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
+                          if(res){
+                            addressbook.$acl.$saveUsersRights(dirtyObjects);
+                            $scope.$aclEditorModal.remove();
+                          };
+                        })
+                      }
+                      else {
+                        addressbook.$acl.$saveUsersRights(dirtyObjects);
+                        $scope.$aclEditorModal.remove();
+                      }
                     }
                     else if (dirtyObjects["<default>"]) {
-                      Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
-                        if(res){
-                          $scope.AclUsers.saveUsersRights(dirtyObjects);
-                          $scope.$aclEditorModal.remove();
-                        };
-                      })
+                      if($scope.validateChanges(dirtyObjects["<default>"])) {
+                        Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
+                          if(res){
+                            addressbook.$acl.$saveUsersRights(dirtyObjects);
+                            $scope.$aclEditorModal.remove();
+                          };
+                        })
+                      }
+                      else {
+                        addressbook.$acl.$saveUsersRights(dirtyObjects);
+                        $scope.$aclEditorModal.remove();
+                      }
                     }
                     else {
-                      $scope.AclUsers.saveUsersRights(dirtyObjects);
+                      addressbook.$acl.$saveUsersRights(dirtyObjects);
                       var usersToSubscribe = [];
                       angular.forEach(dirtyObjects, function(dirtyObject){
                         if(dirtyObject.canSubscribeUser && dirtyObject.isSubscribed){
@@ -262,7 +272,7 @@
                         }
                       })
                       if(!_.isEmpty(usersToSubscribe))
-                        $scope.AclUsers.subscribeUsers(usersToSubscribe);
+                        addressbook.$acl.$subscribeUsers(usersToSubscribe);
 
                       $scope.$aclEditorModal.remove();
                     }
@@ -270,8 +280,14 @@
                   else
                     $scope.$aclEditorModal.remove();
                 };
+                $scope.validateChanges = function(object) {
+                  if (object.aclOptions.canViewObjects || object.aclOptions.canCreateObjects || object.aclOptions.canEditObjects || object.aclOptions.canEraseObjects)
+                    return true;
+                  else
+                    return false;
+                };
                 $scope.cancelSearch = function() {
-                  $scope.User.$acls().then(function(users) { 
+                  addressbook.$acl.$users().then(function(users) { 
                     $scope.refreshUsers(users);
                   });
                 };
@@ -283,7 +299,7 @@
                     if(dirtyObjects[user.uid])
                       delete dirtyObjects[user.uid];
                     delete aclUsers[user.uid];
-                    $scope.AclUsers.removeUser(user.uid);
+                    addressbook.$acl.$removeUser(user.uid);
                     // Remove from the users list
                     $scope.users = _.reject($scope.users, function(o) {
                       return o.uid == user.uid;
@@ -294,7 +310,7 @@
                 $scope.addUser = function (user) {
                   if (user.uid) {
                     if(!aclUsers[user.uid]) {
-                      $scope.AclUsers.addUser(user.uid);
+                      addressbook.$acl.$addUser(user.uid);
                       user.inAclList = true;
                       user.canSubscribeUser = (user.isSubscribed) ? false : true;
                       aclUsers[user.uid] = user;
@@ -316,7 +332,7 @@
                     }
                     else {
                       // Otherwise, if it's the first time the user consult the user rights; fetch from server
-                      $scope.AclUsers.userRights($scope.userSelected.uid).then(function(userRights) { 
+                      addressbook.$acl.$userRights($scope.userSelected.uid).then(function(userRights) { 
                         $scope.userSelected.aclOptions = userRights;
                       });
                     }
@@ -328,6 +344,7 @@
                   return $scope.User.$filter(search).then(function(results) {
                     angular.forEach(results, function(userFound){
                       userFound.inAclList = (aclUsers[userFound.uid]) ? true : false;
+                      userFound["displayName"] = userFound.cn + " <" + userFound.c_email + ">";
                       $scope.users.push(userFound);
                     })
                   });

@@ -1,50 +1,51 @@
 (function() {
   'use strict';
 
-  function AclUsers(folder) {  
-    this.folder_id = folder.id;  
+  function Acl(folder_id) {
+    this.folder_id = folder_id;
   }
 
   /* The factory we'll use to register with Angular */
-  AclUsers.factory = ['$q', '$timeout', 'sgSettings', 'sgResource', function($q, $timeout, Settings, Resource) {
-    angular.extend(AclUsers, {
-      $q: $q,
-      $timeout: $timeout,
+  Acl.factory = ['sgSettings', 'sgResource', function(Settings, Resource) {
+    angular.extend(Acl, {
       $$resource: new Resource(Settings.baseURL)
     });
 
-    return AclUsers; // return constructor
+    return Acl; // return constructor
   }];
 
   /* Factory registration in Angular module */
-  angular.module('SOGo.Common').factory('sgAclUsers', AclUsers.factory);
+  angular.module('SOGo.Common').factory('sgAcl', Acl.factory);
 
   /* Instance methods
    * Public method, assigned to prototype      
    */
-  AclUsers.prototype.userRights = function(uid) {
+  Acl.prototype.$userRights = function(uid) {
     var param = {"uid": uid};
-    return AclUsers.$$resource.fetch(this.folder_id, "userRights", param);
+    return Acl.$$resource.fetch(this.folder_id, "userRights", param);
   };
 
-  AclUsers.prototype.addUser = function(uid) {
+  Acl.prototype.$addUser = function(uid) {
     var param = {"uid": uid};
-    AclUsers.$$resource.fetch(this.folder_id, "addUserInAcls", param);
+    Acl.$$resource.fetch(this.folder_id, "addUserInAcls", param);
   };
 
-  AclUsers.prototype.removeUser = function(uid) {
+  Acl.prototype.$removeUser = function(uid) {
     var param = {"uid": uid};
-    AclUsers.$$resource.fetch(this.folder_id, "removeUserFromAcls", param);
+    Acl.$$resource.fetch(this.folder_id, "removeUserFromAcls", param);
   };
 
-  AclUsers.prototype.saveUsersRights = function(dirtyObjects) {
+  Acl.prototype.$saveUsersRights = function(dirtyObjects) {
     var param = {"action": "saveUserRights"};
-    AclUsers.$$resource.save(this.folder_id, dirtyObjects, param);
+    Acl.$$resource.save(this.folder_id, dirtyObjects, param);
   };
 
-  AclUsers.prototype.subscribeUsers = function(uids) {
+  Acl.prototype.$subscribeUsers = function(uids) {
     var param = {"uids": uids};
-    AclUsers.$$resource.fetch(this.folder_id, "subscribeUsers", param);
+    Acl.$$resource.fetch(this.folder_id, "subscribeUsers", param);
   };
 
+  Acl.prototype.$users = function() {
+    return Acl.$$resource.fetch(this.folder_id, "acls");
+  };
 })();

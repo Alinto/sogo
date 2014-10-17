@@ -117,11 +117,9 @@
    * @param {Object} params - Object parameters injected through the $http protocol 
    */
   Resource.prototype.fetch = function(folder_id, action, params) {
-    var deferred = this._q.defer();
-    var folder_id_path = folder_id ? ("/" + folder_id) : "";
-    var action_path = action ? ("/" + action) : "";
-
-    var path = this._path + folder_id_path + action_path;
+    var deferred = this._q.defer(),
+        path = [this._path, (folder_id ? folder_id : ""), (action ? action : "")];
+    path = _.compact(path).join("/");
 
     this._http({
       method: 'GET',

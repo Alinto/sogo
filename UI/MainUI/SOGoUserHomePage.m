@@ -407,7 +407,8 @@
           if ([domain length])
             uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
           [jsonLine setObject: uid forKey: @"uid"];
-          [jsonLine setObject: [NSString stringWithFormat:@"%@ <%@>",[contact objectForKey: @"cn"], [contact objectForKey: @"c_email"]] forKey: @"displayName"];
+          [jsonLine setObject: [contact objectForKey: @"cn"] forKey: @"cn"];
+          [jsonLine setObject: [contact objectForKey: @"c_email"] forKey: @"c_email"];
           [jsonLine setObject: [NSNumber numberWithBool: [[contact objectForKey: @"isGroup"] boolValue]] forKey: @"isGroup"];
           contactInfo = [contact objectForKey: @"c_info"];
           if (contactInfo)
