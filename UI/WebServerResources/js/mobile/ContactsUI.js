@@ -239,7 +239,57 @@
       }).then(function(popover) {
         $scope.popover = popover;
       });
-      $scope.searchCards = {fn: ""};
+
+      $scope.search = {query: ""};
+
+
+      $scope.shortFormat = function(ref) {
+        var fullname = ref.fn,
+        email = ref.email;
+        if (email && fullname)
+          fullname += ' (' + email + ')';
+        return fullname;
+      };
+
+      $scope.searchCards = function(item) {
+        if (item.tag == "vcard" && $scope.search.query) {
+          var displayCard = false;
+          if(item.emails.length > 0) {
+            angular.forEach(item.emails, function(email) {
+              var mail = email.value.toLowerCase();
+              if(mail.indexOf($scope.search.query.toLowerCase()) != -1) {
+                displayCard = true;
+              }
+            })
+          }
+          if (item.fn) {
+            var fullName = item.fn.toLowerCase();
+            if(fullName.indexOf($scope.search.query.toLowerCase())!=-1)
+              displayCard = true;
+          }
+          return displayCard;
+        }
+      };
+      $scope.clearSearch = function() {
+        $scope.search.query = null;
+      };
+      $scope.displayIcon = function() {
+        if ($scope.search.query) {
+          return true;
+        }
+        else
+          return false;
+      };
+      $scope.displayContact = function(card) {
+        var contact = true;
+        if(card.tag == "vcard" && card.c_mail){
+          angular.forEach($scope.card.refs, function(ref) {
+            if( card.c_mail == ref.email)
+              contact = false;
+          })
+        }
+        return contact;
+      };
 
       $scope.edit = function() {
         // Build modal editor
@@ -293,46 +343,22 @@
         focus('address_' + i);
       };
       $scope.addMember = function(member) {
-        var isAlreadyInList = angular.forEach($scope.card.refs, function(ref) {
+        var isAlreadyInList = false;
+        angular.forEach($scope.card.refs, function(ref) {
           if (member.c_mail == ref.email)
-            return false;
+            isAlreadyInList = true;
           else
-            return true;
+            isAlreadyInList = false;
         });
-        if (member.c_mail && isAlreadyInList) {
+        if (member.c_mail && !isAlreadyInList) {
           var i = $scope.card.$addMember('');
           $scope.card.$updateMember(i, member.c_mail, member);
           $scope.popover.hide();
         }
       };
-      $scope.toggleEMailList = function(card) {
-        if ($scope.isEMailsShown(card))
-          $scope.EMailsShown = null;
-        else
-          $scope.EMailsShown = card;
-      };
-      $scope.isEMailsShown = function(card) {
-        return $scope.EMailsShown === card;
-      };
       $scope.showPopOver = function(keyEvent) {
         $scope.popover.show(keyEvent);
       }
-      $scope.displayContact = function(card) {
-        var b = true;
-        if(card.tag == "vcard" && card.emails.length > 0){
-          angular.forEach($scope.card.refs, function(ref) {
-            angular.forEach(card.emails, function(email) {
-              if (email.value == ref.email) {
-                b = false;
-              }
-            })
-          })
-        }
-        else
-          b = false;
-
-        return b;
-      };
       $scope.save = function(form) {
         if (form.$valid) {
           $scope.card.$save()

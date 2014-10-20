@@ -331,16 +331,15 @@
           <div id="search-box" class="item-input-inset">
             <div class="item-input-wrapper">
               <i class="icon ion-search placeholder-icon"></i>
-              <input type="text" label:placeholder="Search" ng-model="searchCards.fn" data-ng-keyup="showPopOver($event)" />
-              <!--TODO <i class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"></i> -->
+              <input type="text" label:placeholder="Search" data-ng-model="search.query" data-ng-keyup="showPopOver($event)" />
+              <i ng-show="displayIcon()" class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"><!-- spacer --></i>
             </div>
           </div>
           <ion-list class="list-clear">
             <ion-item ng-repeat="ref in card.refs" class="item-input">
               <button class="button button-small button-assertive button-icon icon ion-minus-circled" 
                       data-ng-click="card.$delete('refs', $index)"><!-- remove --></button>
-              <span ng-if="ref.fn">({{ref.fn}})</span>
-              <span>{{ref.email}}</span>
+              <span>{{shortFormat(ref)}}</span>
             </ion-item>
           </ion-list>
           <button class="button button-block button-assertive" ng-hide="card.isNew"
@@ -354,22 +353,8 @@
     <ion-popover-view>
       <ion-content>
         <ion-list ng-repeat="card in addressbook.cards | orderBy:['sn'] | filter:searchCards">
-          <ion-item ng-if="card.emails.length > 1" ng-click="toggleEMailList(card)" ng-class="{active: isEMailsShown(card)}">
-            <i class="icon" ng-class="isEMailsShown(card) ? 'ion-minus' : 'ion-plus'"><!-- spacer --></i>
-            <span ng-if="card.fn">{{card.fn}}</span>
-            <!--TODO<span ng-if="!card.fn && card.c_givenname">{{card.c_givenname}}</span>-->
-            <!--TODO<span ng-if="!card.fn && !card.c_givenname">{{card.c_mail}}</span>-->
-            <ion-item class="item-accordion"
-                      ng-repeat="email in card.emails"
-                      ng-show="isEMailsShown(card)"
-                      ng-click="card.$updateMember($index, $model, $item)">
-              {{email}}
-            </ion-item>
-          </ion-item>
           <ion-item ng-if="displayContact(card)" ng-click="addMember(card)">
-            <span ng-if="card.fn">{{card.fn}}</span>
-            <!--TODO<span ng-if="!card.fn">{{card.c_givenname}}</span>-->
-            <span ng-if="!card.fn">{{card.c_mail}}</span>
+            <span>{{card.$shortFormat()}}</span>
           </ion-item>
         </ion-list>
       </ion-content>
