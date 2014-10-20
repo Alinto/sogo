@@ -31,7 +31,7 @@ endif
 all::
 	@echo " Python executable: ${PYTHON}"
 
-SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
+SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py 'private dir' || echo /var/lib/samba/private)
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
