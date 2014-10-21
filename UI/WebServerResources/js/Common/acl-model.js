@@ -27,22 +27,22 @@
 
   Acl.prototype.$addUser = function(uid) {
     var param = {"uid": uid};
-    Acl.$$resource.fetch(this.folder_id, "addUserInAcls", param);
+    return Acl.$$resource.fetch(this.folder_id, "addUserInAcls", param);
   };
 
   Acl.prototype.$removeUser = function(uid) {
     var param = {"uid": uid};
-    Acl.$$resource.fetch(this.folder_id, "removeUserFromAcls", param);
+    return Acl.$$resource.fetch(this.folder_id, "removeUserFromAcls", param);
   };
 
   Acl.prototype.$saveUsersRights = function(dirtyObjects) {
     var param = {"action": "saveUserRights"};
-    Acl.$$resource.save(this.folder_id, dirtyObjects, param);
+    return Acl.$$resource.save(this.folder_id, dirtyObjects, param);
   };
 
   Acl.prototype.$subscribeUsers = function(uids) {
     var param = {"uids": uids};
-    Acl.$$resource.fetch(this.folder_id, "subscribeUsers", param);
+    return Acl.$$resource.fetch(this.folder_id, "subscribeUsers", param);
   };
 
   Acl.prototype.$users = function() {

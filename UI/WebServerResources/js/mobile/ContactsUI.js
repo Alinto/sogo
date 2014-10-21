@@ -159,7 +159,7 @@
       // };
     }])
 
-    .controller('AddressBooksCtrl', ['$scope', '$state', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'sgUser', function($scope, $state, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, sgUser) {
+    .controller('AddressBooksCtrl', ['$scope', '$state', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'User', function($scope, $state, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, User) {
       // Initialize with data from template
       $scope.addressbooks = AddressBook.$findAll(contactFolders);
       $scope.newAddressbook = function() {
@@ -182,7 +182,7 @@
         $ionicActionSheet.show({
           buttons: [
             { text: l('Rename') },
-            { text: l('Sharing') }
+            { text: l('Access rights') }
           ],
           destructiveText: l('Delete'),
           cancelText: l('Cancel'),
@@ -205,10 +205,12 @@
                 }
                 // Variables in scope
                 $scope.$aclEditorModal = modal;
-                $scope.User = new sgUser();
+                $scope.User = new User();
                 var aclUsers = {};
                 addressbook.$acl.$users().then(function(users) {
-                  $scope.refreshUsers(users);
+                  refreshUsers(users);
+                }, function(data, status) {
+                  Dialog.alert(l('Warning'), l('An error occurs while trying to fetch users from the server.'));
                 });
                 $scope.showDelete = false;
                 $scope.onGoingSearch = false;
@@ -217,7 +219,7 @@
                 var dirtyObjects = {};
 
                 // Local functions
-                $scope.refreshUsers = function(users) {
+                function refreshUsers(users) {
                   $scope.users = [];
                   $scope.onGoingSearch = false;
                   angular.forEach(users, function(user){
@@ -239,13 +241,17 @@
                       if($scope.validateChanges(dirtyObjects["anonymous"])) {
                         Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
                           if(res){
-                            addressbook.$acl.$saveUsersRights(dirtyObjects);
+                            addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                              Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                            });
                             $scope.$aclEditorModal.remove();
                           };
                         })
                       }
                       else {
-                        addressbook.$acl.$saveUsersRights(dirtyObjects);
+                        addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                        });
                         $scope.$aclEditorModal.remove();
                       }
                     }
@@ -253,18 +259,24 @@
                       if($scope.validateChanges(dirtyObjects["<default>"])) {
                         Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
                           if(res){
-                            addressbook.$acl.$saveUsersRights(dirtyObjects);
+                            addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                              Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                            });
                             $scope.$aclEditorModal.remove();
                           };
                         })
                       }
                       else {
-                        addressbook.$acl.$saveUsersRights(dirtyObjects);
+                        addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                        });
                         $scope.$aclEditorModal.remove();
                       }
                     }
                     else {
-                      addressbook.$acl.$saveUsersRights(dirtyObjects);
+                      addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                      });
                       var usersToSubscribe = [];
                       angular.forEach(dirtyObjects, function(dirtyObject){
                         if(dirtyObject.canSubscribeUser && dirtyObject.isSubscribed){
@@ -272,7 +284,9 @@
                         }
                       })
                       if(!_.isEmpty(usersToSubscribe))
-                        addressbook.$acl.$subscribeUsers(usersToSubscribe);
+                        addressbook.$acl.$subscribeUsers(usersToSubscribe).then(null, function(data, status) {
+                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                        });
 
                       $scope.$aclEditorModal.remove();
                     }
@@ -288,7 +302,9 @@
                 };
                 $scope.cancelSearch = function() {
                   addressbook.$acl.$users().then(function(users) { 
-                    $scope.refreshUsers(users);
+                    refreshUsers(users);
+                  }, function(data, status) {
+                    Dialog.alert(l('Warning'), l('An error occured please try again.'));
                   });
                 };
                 $scope.toggleDelete = function(boolean) {
@@ -299,7 +315,9 @@
                     if(dirtyObjects[user.uid])
                       delete dirtyObjects[user.uid];
                     delete aclUsers[user.uid];
-                    addressbook.$acl.$removeUser(user.uid);
+                    addressbook.$acl.$removeUser(user.uid).then(null, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
                     // Remove from the users list
                     $scope.users = _.reject($scope.users, function(o) {
                       return o.uid == user.uid;
@@ -310,13 +328,16 @@
                 $scope.addUser = function (user) {
                   if (user.uid) {
                     if(!aclUsers[user.uid]) {
-                      addressbook.$acl.$addUser(user.uid);
-                      user.inAclList = true;
-                      user.canSubscribeUser = (user.isSubscribed) ? false : true;
-                      aclUsers[user.uid] = user;
+                      addressbook.$acl.$addUser(user.uid).then(function() {
+                        user.inAclList = true;
+                        user.canSubscribeUser = (user.isSubscribed) ? false : true;
+                        aclUsers[user.uid] = user;
+                      }, function(data, status) {
+                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                      });
                     }
                     else
-                      Dialog.alert(l('Warning'), l('You have already subscribed to that folder!'));
+                      Dialog.alert(l('Warning'), l('This user is already in your permissions list.'));
                   }
                   else
                     Dialog.alert(l('Warning'), l('Please select a user inside your domain'));
@@ -334,6 +355,8 @@
                       // Otherwise, if it's the first time the user consult the user rights; fetch from server
                       addressbook.$acl.$userRights($scope.userSelected.uid).then(function(userRights) { 
                         $scope.userSelected.aclOptions = userRights;
+                      }, function(data, status) {
+                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
                       });
                     }
                   }
