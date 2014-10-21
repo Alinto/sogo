@@ -367,6 +367,7 @@ $column-gutter: 0;
 #modalACL {
     height: 25vw;
     ul {
+        @include block-grid(2);
         height: 85%;
     }
     #usersList {
@@ -379,11 +380,14 @@ $column-gutter: 0;
                 $base-style: false
             );
             height: 85%;
-            border: 1px solid black;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
             padding: 0;
             margin: 0;
             li {
                 padding: 0;
+                padding-top: 5px;
                 line-height: 45px;
                 background-color: $f-dropdown-list-hover-bg;
                 transition: background 300ms ease;
@@ -397,8 +401,12 @@ $column-gutter: 0;
                 }
                 .subscriptionArea {
                     float: right;
+                    padding-right: 5px;
                 }
             }
+        }
+        .f-dropdown {
+            height: auto;
         }
         #bottomTable {
             width: 100%;
@@ -446,7 +454,7 @@ $column-gutter: 0;
             );
             li {
                 padding: 5px;
-                clear: none !important;
+                margin-left: 5px;
             }
         }
     }

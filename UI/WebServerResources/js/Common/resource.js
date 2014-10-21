@@ -111,8 +111,8 @@
 
   /**
    * @function fetch
-   * @desc Fetch resources using a specific object, action and/or parameters
-   * @param {string} object_id - the object on which the action will be applied (ex: addressbook, calendar)
+   * @desc Fetch resources using a specific folder, action and/or parameters
+   * @param {string} folder_id - the folder on which the action will be applied (ex: addressbook, calendar)
    * @param {string} action - the action to be used in the URL
    * @param {Object} params - Object parameters injected through the $http protocol 
    */
