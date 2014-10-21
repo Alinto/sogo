@@ -367,42 +367,42 @@
   <script type="text/ng-template" id="acl-modal.html">
     <ion-modal-view>
       <ion-header-bar class="bar-positive">
-        <div class="buttons" ng-hide="onGoingSearch">
-          <button class="button button-icon" ng-click="closeModal()"><var:string label:value="Close"/></button>
+        <div class="buttons" data-ng-hide="onGoingSearch">
+          <button class="button button-icon" data-ng-click="closeModal()"><var:string label:value="Close"/></button>
         </div>
-        <div class="buttons" ng-show="onGoingSearch">
-          <button class="button button-icon" ng-click="cancelSearch()"><var:string label:value="Back"/></button>
+        <div class="buttons" data-ng-show="onGoingSearch">
+          <button class="button button-icon" data-ng-click="cancelSearch()"><var:string label:value="Back"/></button>
         </div>
         <h1 class="title">{{addressbook.name}}</h1>
         <div class="buttons">
-          <button class="button button-icon" ng-click="saveModal()"><var:string label:value="Save"/></button>
+          <button class="button button-icon" data-ng-click="saveModal()"><var:string label:value="Save"/></button>
         </div>
       </ion-header-bar>
       <ion-content>
         <ion-list show-delete="showDelete" on-tap="toggleDelete(false)">
           <div ng-repeat="user in users | orderBy:['userClass', 'displayName']">
-            <ion-item class="item-stable item-icon-left item-icon-right" ng-click="toggleUser(user)" on-swipe-right="toggleDelete(true)">
-              <i class="icon" ng-class="(user.userClass == 'public-user') ? 'ion-ios7-people' : 'ion-ios7-person'"><!-- spacer --></i>
+            <ion-item class="item-stable item-icon-left item-icon-right" data-ng-click="toggleUser(user)" on-swipe-right="toggleDelete(true)">
+              <i class="icon" data-ng-class="(user.userClass == 'public-user') ? 'ion-ios7-people' : 'ion-ios7-person'"><!-- spacer --></i>
               {{user.displayName}}
-              <i class="icon" ng-class="displayIcon(user)"><!-- spacer --></i>
-              <ion-delete-button class="ion-minus-circled" ng-disabled="user.userClass == 'public-user' || !user.inAclList" 
-                                 ng-click="removeUser(user)"></ion-delete-button>
+              <i class="icon" data-ng-class="displayIcon(user)"><!-- spacer --></i>
+              <ion-delete-button class="ion-minus-circled" data-ng-disabled="user.userClass == 'public-user' || !user.inAclList" 
+                                 data-ng-click="removeUser(user)"></ion-delete-button>
             </ion-item>
-            <div class="item-accordion" ng-show="isUserShown(user)">
-              <ion-toggle ng-show="displaySubscribeUser()" ng-model="userSelected.isSubscribed" ng-checked="userSelected.isSubscribed" 
-                          ng-disabled="!userSelected.canSubscribeUser" ng-change="markUserAsDirty()">
+            <div class="item-accordion" data-ng-show="isUserShown(user)">
+              <ion-toggle data-ng-show="displaySubscribeUser()" data-ng-model="userSelected.isSubscribed" data-ng-checked="userSelected.isSubscribed" 
+                          data-ng-disabled="!userSelected.canSubscribeUser" data-ng-change="markUserAsDirty()">
                 <var:string label:value="Subscribe user"/></ion-toggle>
-              <ion-checkbox ng-show="displayUserRights()" ng-checked="userSelected.aclOptions.canCreateObjects"
-                            ng-model="userSelected.aclOptions.canCreateObjects" ng-change="markUserAsDirty()">
+              <ion-checkbox data-ng-show="displayUserRights()" data-ng-checked="userSelected.aclOptions.canCreateObjects"
+                            data-ng-model="userSelected.aclOptions.canCreateObjects" data-ng-change="markUserAsDirty()">
                 <var:string label:value="This person can add cards to this addressbook."/></ion-checkbox>
-              <ion-checkbox ng-show="displayUserRights()" ng-checked="userSelected.aclOptions.canEditObjects"
-                            ng-model="userSelected.aclOptions.canEditObjects" ng-change="markUserAsDirty()">
+              <ion-checkbox data-ng-show="displayUserRights()" data-ng-checked="userSelected.aclOptions.canEditObjects"
+                            data-ng-model="userSelected.aclOptions.canEditObjects" data-ng-change="markUserAsDirty()">
                 <var:string label:value="This person can edit the cards of this addressbook."/></ion-checkbox>
-              <ion-checkbox ng-show="displayUserRights()" ng-checked="userSelected.aclOptions.canEraseObjects"
-                            ng-model="userSelected.aclOptions.canEraseObjects" ng-change="markUserAsDirty()">
+              <ion-checkbox data-ng-show="displayUserRights()" data-ng-checked="userSelected.aclOptions.canEraseObjects"
+                            data-ng-model="userSelected.aclOptions.canEraseObjects" data-ng-change="markUserAsDirty()">
                 <var:string label:value="This person can erase cards from this addressbook."/></ion-checkbox>
-              <ion-checkbox ng-checked="userSelected.aclOptions.canViewObjects"
-                            ng-model="userSelected.aclOptions.canViewObjects" ng-change="markUserAsDirty()">
+              <ion-checkbox data-ng-checked="userSelected.aclOptions.canViewObjects"
+                            data-ng-model="userSelected.aclOptions.canViewObjects" data-ng-change="markUserAsDirty()">
                 <var:string label:value="This person can read the cards of this addressbook."/></ion-checkbox>
             </div>
           </div>

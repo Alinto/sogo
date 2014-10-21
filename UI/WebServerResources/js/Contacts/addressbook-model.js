@@ -18,7 +18,7 @@
         this.$unwrap(newAddressBookData);
       }
       else if (this.id){
-        this.$acl = new AddressBook.$$acl(this.id);
+        this.$acl = new AddressBook.$$Acl(this.id);
       }
     }
     else {
@@ -38,7 +38,7 @@
       $timeout: $timeout,
       $$resource: new Resource(Settings.baseURL),
       $Card: Card,
-      $$acl: Acl
+      $$Acl: Acl
     });
 
     return AddressBook; // return constructor
@@ -204,7 +204,7 @@
           _this.cards[i] = new AddressBook.$Card(o);
         });
         // Instanciate Acl object
-        _this.$acl = new AddressBook.$$acl(_this.id);
+        _this.$acl = new AddressBook.$$Acl(_this.id);
       });
     }, function(data) {
       AddressBook.$timeout(function() {
