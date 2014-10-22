@@ -122,7 +122,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	RTFHandler.m \
 	\
-	Codepages.m
+	Codepages.m \
+	\
+	NGImap4Connection+Monkeypatching.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
