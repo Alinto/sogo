@@ -20,7 +20,7 @@
 
 #import "NGImap4Connection+Monkeypatching.h"
 
-#import <Foundation/NSObject.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSDictionary.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -28,8 +28,9 @@
 
 @implementation NGImap4Connection (Monkeypatching)
 
-- (NSArray *)fetchUIDs:(NSArray *)_uids inURL:(NSURL *)_url
-                                        parts:(NSArray *)_parts
+- (NSArray *) fetchUIDs: (NSArray *) _uids
+                  inURL: (NSURL *) _url
+                  parts: (NSArray *) _parts
 {
   // currently returns a dict?!
   /*
@@ -72,37 +73,81 @@
     partial_result = [[self client] fetchUids:partial_uids parts:_parts];
 
     if (![[partial_result valueForKey:@"result"] boolValue]) {
-      [self errorWithFormat: @"could not fetch %d uids for url: %@", [_uids count], _url];
+      [self errorWithFormat: @"could not fetch %d uids for url: %@",
+                             [_uids count], _url];
       return nil;
     }
 
-    if (!result) {
+    if (result == nil) {
       /* First iteration, first result */
       result = [[partial_result mutableCopy] autorelease];
-      /* RawResponse has already been processed, ignore it */
-      [result removeObjectForKey: @"RawResponse"];
-      continue;
-    }
-
-    /* Merge partial_result into previous result */
-    for (id key in [partial_result keyEnumerator]) {
-      id obj, current_obj;
-
-      current_obj = [result objectForKey: key];
-      if (!current_obj) continue;
-
-      obj = [partial_result objectForKey: key];
-      if ([obj isKindOfClass: [NSArray class]]) {
-        NSArray *data, *current_data, *new_data;
-        data = obj;
-        current_data = current_obj;
-        new_data = [current_data arrayByAddingObjectsFromArray: data];
-        [result setObject: new_data forKey: key];
-      }
+    } else {
+      /* Merge partial_result into previous result */
+      [self _mergeDict: partial_result into: result];
     }
   }
 
   return (id)result;
+}
+
+- (void) _mergeDict: (NSDictionary *) source
+               into: (NSMutableDictionary *) target
+{
+  for (id key in [source keyEnumerator]) {
+    id obj, current_obj;
+
+    current_obj = [target objectForKey: key];
+    if (current_obj == nil) {
+      /* This should never happen but just in case... */
+      [self errorWithFormat: @"Error while merging results: nonexistent key "
+                             @"%@ on current target", key];
+      continue;
+    }
+
+    obj = [source objectForKey: key];
+    if ([obj isKindOfClass: [NSArray class]]) {
+      NSArray *data, *current_data, *new_data;
+      data = obj;
+      current_data = current_obj;
+      new_data = [current_data arrayByAddingObjectsFromArray: data];
+      [target setObject: new_data forKey: key];
+    } else if ([obj isKindOfClass: [NGMutableHashMap class]]) {
+      [self _mergeNGHashMap: obj into: current_obj];
+    } else if ([obj isKindOfClass: [NSNumber class]]) {
+      if (obj != current_obj) {
+        [self errorWithFormat: @"While fetching uids problem happened "
+                               @"merging results for key %@: %@ != %@",
+                               key, obj, current_obj];
+      }
+    } else {
+      [self errorWithFormat: @"While fetching uids and mergin results ignored "
+                             @"%@ (%@) key", key, [key class]];
+    }
+  }
+}
+
+- (void) _mergeNGHashMap: (NGMutableHashMap *) source
+                    into: (NGMutableHashMap *) target
+{
+  for (id key in [source keyEnumerator]) {
+    NSArray *obj, *current_obj;
+
+    current_obj = [target objectsForKey: key];
+    if (current_obj == nil) {
+      /* This should never happen but just in case... */
+      [self errorWithFormat: @"Error while merging results: nonexistent key "
+                             @"%@ on current target", key];
+      continue;
+    }
+
+    if ([current_obj count] == 1) {
+      /* Merge only results, that means fields with more than 1 object */
+      continue;
+    }
+
+    obj = [source objectsForKey: key];
+    [target addObjects: obj forKey: key];
+  }
 }
 
 @end

@@ -24,12 +24,20 @@
 #import <Foundation/NSArray.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <NGExtensions/NGHashMap.h>
 
 
 @interface NGImap4Connection (Monkeypatching)
 
-- (NSArray *)fetchUIDs:(NSArray *)_uids inURL:(NSURL *)_url
-                                        parts:(NSArray *)_parts;
+- (NSArray *) fetchUIDs: (NSArray *) _uids
+                  inURL: (NSURL *) _url
+                  parts: (NSArray *) _parts;
+
+- (void) _mergeDict: (NSDictionary *) source
+               into: (NSMutableDictionary *) target;
+
+- (void) _mergeNGHashMap: (NGMutableHashMap *) source
+                    into: (NGMutableHashMap *) target;
 
 @end
 
