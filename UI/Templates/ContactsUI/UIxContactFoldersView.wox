@@ -253,18 +253,26 @@
 
     <script type="text/ng-template" id="card.html">
 
+      <!-- dropdown menu for card options button -->
+      <div id="cardProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
+        <ul class="button-group">
+          <li>
+            <span class="button" data-ng-click="toggleRawSource(card)"><i class="icon-file"><!-- delete --></i></span>
+          </li>
+        </ul>
+      </div>
+
       <div class="viewer">
         <div class="header">
+          <span class="icon" data-ng-cloak="ng-cloak">
+            <a class="icon" href="#" data-dropdown-toggle="#cardProperties" data-options="align:right"><i class="icon-cog"><!-- options --></i></a></span>
           <h1 data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-          <h6>{{card.$description()}}
-          <span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span>
-          </h6>
+          <h6>{{card.$description()}}<span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span></h6>
         </div>
         <div class="buttonsToolbar">
           <span data-ng-show="addressbook.isEditable">
-            <a class="button tiny radius" data-ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})"><i class="icon-pencil"><!-- edit --></i></a>
-            <span class="button tiny radius alert" data-ng-click="confirmDelete(card)"><i class="icon-trash"><!-- delete --></i></span>
-          </span>
+            <a class="button tiny radius" data-ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})"><i class="icon-pencil"><!-- edit --></i></a></span>
+          <span class="button tiny radius alert" data-ng-click="confirmDelete(card)"><i class="icon-trash"><!-- delete --></i></span>
         </div>
         <div class="attr" data-ng-show="card.birthday">
           <div class="key">
@@ -333,8 +341,13 @@
             <div data-ng-bind-html="card.note"><!-- note --></div>
           </div>
         </div>
+        <div class="footerBar">
+          <div data-ng-show="displayRawData(card)">
+            <span>{{rawSource.data}}</span>
+            <i class="icon-cancel-circle" data-ng-click="toggleRawSource(card)"><!-- close raw data --></i>
+          </div>
+        </div>
       </div>
-
     </script><!-- card.html -->
 
     <script type="text/ng-template" id="cardEditor.html">

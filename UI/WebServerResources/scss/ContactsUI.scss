@@ -254,6 +254,11 @@ $column-gutter: 0;
                 margin-left: rem-calc(3);
             }
             .header {
+                .icon {
+                    float: right;
+                    margin: 0.5em;
+                    color: #fff;
+                }
                 background-color: $secondary-color;
                 padding-bottom: 0.2em;
                 h1, h6 {
@@ -318,10 +323,33 @@ $column-gutter: 0;
                 }
             }
             .viewer {
+                height: 100%;
                 .value {
                     div, a, address, ul, span {
                         line-height: $form-label-line-height;
                         margin-left: rem-calc(12);
+                    }
+                }
+                .footerBar {
+                    position: absolute;
+                    bottom: 0;
+                    left: 10px;
+                    right: 10px;
+                    display:inline-block;
+                    background-color: #eee;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    border: 1px solid #ddd;
+                    z-index: 2;
+                    span {
+                        white-space: pre-line;
+                    }
+                    i {
+                        position: absolute;
+                        cursor: pointer;
+                        top: 0;
+                        right: 0;
+                        margin: 0.5em;
                     }
                 }
             }
@@ -573,6 +601,8 @@ $column-gutter: 0;
 }
 
 .f-dropdown {
+    margin-top: 8px;
+    margin-left: -10px;
     &.icons-dropdown {
         width: auto;
         height: inherit;
@@ -604,4 +634,3 @@ input.ng-dirty.ng-invalid {
     border-color: $alert-color !important;
     color: $alert-color !important;
 }
-

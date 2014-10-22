@@ -158,6 +158,12 @@
     }
   };
 
+  Card.prototype.$rawData = function(folder_id) {
+    var path = [folder_id, this.id];
+    path = path.join("/");
+    return Card.$$resource.fetch(path, "raw");
+  };
+
   Card.prototype.$fullname = function() {
     var fn = this.fn || '', names;
     if (fn.length == 0) {

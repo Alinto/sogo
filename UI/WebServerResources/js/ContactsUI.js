@@ -104,6 +104,7 @@
 
       // $scope objects
       $scope.search = { status: null, filter: null, lastFilter: null };
+      $scope.rawSource = {data: "", toggle: false, lastCardId: ""};
 
       // Adjust search status depending on addressbook type
       currentAddressbook = _.find($scope.addressbooks, function(o) {
@@ -174,7 +175,33 @@
           });
       };
       $scope.importCards = function() {
+      };
 
+      $scope.displayRawData = function(card) {
+        if($scope.rawSource.lastCardId == card.id && $scope.rawSource.toggle)
+          return true;
+        else if($scope.rawSource.lastCardId == card.id && !$scope.rawSource.toggle)
+          return false;
+        else {
+          $scope.rawSource.toggle = false;
+          $scope.rawSource.data = "";
+          return false;
+        }
+      };
+      $scope.toggleRawSource = function(card) {
+        if($scope.rawSource.toggle){
+          $scope.rawSource.toggle = false;
+        }
+        else if($scope.rawSource.lastCardId == card.id) {
+          $scope.rawSource.toggle = true;
+        }
+        else {
+          card.$rawData($rootScope.addressbook.id).then(function(dataSource) {
+            $scope.rawSource.data = dataSource;
+          });
+          $scope.rawSource.toggle = true;
+          $scope.rawSource.lastCardId = card.id;
+        }
       };
       $scope.exportCards = function() {
         window.location.href = ApplicationBaseURL + "/" + $rootScope.addressbook.id + "/exportFolder";
