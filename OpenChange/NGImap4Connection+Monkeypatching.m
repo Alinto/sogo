@@ -73,8 +73,8 @@
     partial_result = [[self client] fetchUids:partial_uids parts:_parts];
 
     if (![[partial_result valueForKey:@"result"] boolValue]) {
-      [self errorWithFormat: @"could not fetch %d uids for url: %@",
-                             [_uids count], _url];
+      [self errorWithFormat: @"Error fetching %u uids for url: %@",
+	                         total, _url];
       return nil;
     }
 
@@ -99,8 +99,8 @@
     current_obj = [target objectForKey: key];
     if (current_obj == nil) {
       /* This should never happen but just in case... */
-      [self errorWithFormat: @"Error while merging results: nonexistent key "
-                             @"%@ on current target", key];
+      [self errorWithFormat: @"Error merging fetchUids results: "
+                             @"nonexistent key %@ on current target", key];
       continue;
     }
 
@@ -115,13 +115,13 @@
       [self _mergeNGHashMap: obj into: current_obj];
     } else if ([obj isKindOfClass: [NSNumber class]]) {
       if (obj != current_obj) {
-        [self errorWithFormat: @"While fetching uids problem happened "
-                               @"merging results for key %@: %@ != %@",
+        [self errorWithFormat: @"Error merging fetchUids results: "
+                               @"incorrect value for key %@: %@ != %@",
                                key, obj, current_obj];
       }
     } else {
-      [self errorWithFormat: @"While fetching uids and mergin results ignored "
-                             @"%@ (%@) key", key, [key class]];
+      [self errorWithFormat: @"Error merging fetchUids results: "
+                             @"ignored %@ (%@) key", key, [key class]];
     }
   }
 }
@@ -135,8 +135,8 @@
     current_obj = [target objectsForKey: key];
     if (current_obj == nil) {
       /* This should never happen but just in case... */
-      [self errorWithFormat: @"Error while merging results: nonexistent key "
-                             @"%@ on current target", key];
+      [self errorWithFormat: @"Error merging fetchUids results: "
+                             @"nonexistent key %@ on current target", key];
       continue;
     }
 
