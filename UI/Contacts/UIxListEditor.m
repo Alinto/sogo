@@ -247,7 +247,7 @@
                   // Add vCard to current folder
                   newContact = [SOGoContactGCSEntry objectWithName: newUID
                                                        inContainer: folder];
-                  [newContact saveContentString: [newCard versitString]];
+                  [newContact saveComponent: newCard];
 
                   // Create card reference for the list
                   cardReference = [NGVCardReference elementWithTag: @"card"];
