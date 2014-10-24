@@ -63,7 +63,6 @@ ion-item {
         color: $positive !important;
     }
 }
-
 /* Additional styles */
 
 .label {
@@ -73,4 +72,16 @@ ion-item {
     @include button-outline($button-dark-bg);
     border-radius: 4px;
     margin-left: 4px;
+}
+
+.subtitle {
+    margin-left: 5px;
+    margin-top: 5px;
+    color:#4a87ee;
+    line-height: initial;
+    font-size: 120%;
+    text-shadow: 1px #145fd7;
+}
+
+.popover {
 }

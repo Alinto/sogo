@@ -71,7 +71,7 @@
   <script type="text/ng-template" id="addressbook.html">
     <ion-view title="{{addressbook.name}}">
       <ion-nav-buttons side="right">
-        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ui-sref="app.newCard({ addressbookId: addressbook.id, contactType: 'card' })"><!-- new --></a>
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ng-click="addCard()"><!-- new --></a>
       </ion-nav-buttons>
       <ion-content class="has-header">
         <ion-list>
@@ -164,108 +164,108 @@
   <script type="text/ng-template" id="cardEditor.html">
     <ion-modal-view>
       <form name="cardForm" data-ng-show="card.$isCard()">
-      <ion-header-bar class="bar-positive">
-        <button class="button button-clear" ng-click="cancel()"><var:string label:value="Cancel"/></button>
-        <button class="button button-clear" ng-click="save(cardForm)"><var:string label:value="Save"/></button>
-      </ion-header-bar>
-      <ion-content padding="10">
-        <ion-list class="list-clear">
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Display" ng-model="card.fn"/>
-          </ion-item>
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Givenname" ng-model="card.givenname"/>
-          </ion-item>
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Lastname" ng-model="card.sn"/>
-          </ion-item>
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Nickname" ng-model="card.nickname"/>
-          </ion-item>
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Organization" ng-model="card.org"/>
-          </ion-item>
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Title" ng-model="card.title"/>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item ng-repeat="unit in card.orgUnits"
-                    class="item-input">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('orgUnits', $index)"><!-- remove --></button>
-            <input type="text" label:placeholder="organization unit"
+        <ion-header-bar class="bar-positive">
+          <button class="button button-clear" ng-click="cancel()"><var:string label:value="Cancel"/></button>
+          <button class="button button-clear" ng-click="save(cardForm)"><var:string label:value="Save"/></button>
+        </ion-header-bar>
+        <ion-content padding="10">
+          <ion-list class="list-clear">
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Display" ng-model="card.fn"/>
+            </ion-item>
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Givenname" ng-model="card.givenname"/>
+            </ion-item>
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Lastname" ng-model="card.sn"/>
+            </ion-item>
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Nickname" ng-model="card.nickname"/>
+            </ion-item>
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Organization" ng-model="card.org"/>
+            </ion-item>
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Title" ng-model="card.title"/>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="unit in card.orgUnits"
+                      class="item-input">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('orgUnits', $index)"><!-- remove --></button>
+              <input type="text" label:placeholder="organization unit"
                    ng-model="unit.value"/>
-          </ion-item>
-          <ion-item>
-            <button class="button button-small button-clear button-positive"
-                    data-ng-click="addOrgUnit()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Organizational Unit"/></button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item class="item-input">
-            <input type="date" label:placeholder="birthday"
-                   ng-model="birthday"/>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item ng-repeat="category in card.categories"
-                    class="item-input">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('categories', $index)"><!-- remove --></button>
-            <input type="text" label:placeholder="category"
-                   ng-model="category.value"/>
-          </ion-item>
-          <ion-item>
-            <button class="button button-small button-clear button-positive"
-                    data-ng-click="addCategory()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Category"/></button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item ng-repeat="email in card.emails"
-                    class="item-input item-select">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('emails', $index)"><!-- remove --></button>
-            <input type="text" label:placeholder="email address"
-                   ng-model="email.value"/>
-            <select data-ng-model="email.type"
-                    data-ng-options="type for type in allEmailTypes"><!-- email types --></select>
-          </ion-item>
-          <ion-item>
-            <button class="button button-small button-clear button-positive"
-                    data-ng-click="addEmail()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Email Address"/></button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item ng-repeat="phone in card.phones"
-                    class="item-input item-select">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('phones', $index)"><!-- remove --></button>
-            <input type="text" label:placeholder="phone number"
-                   ng-model="phone.value"/>
-            <select data-ng-model="phone.type"
+            </ion-item>
+            <ion-item>
+              <button class="button button-small button-clear button-positive"
+                      data-ng-click="addOrgUnit()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Organizational Unit"/></button>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item class="item-input">
+              <input type="date" label:placeholder="birthday"
+                     ng-model="birthday"/>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="category in card.categories"
+                      class="item-input">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('categories', $index)"><!-- remove --></button>
+              <input type="text" label:placeholder="category"
+                     ng-model="category.value"/>
+            </ion-item>
+            <ion-item>
+              <button class="button button-small button-clear button-positive"
+                      data-ng-click="addCategory()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Category"/></button>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="email in card.emails"
+                      class="item-input item-select">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('emails', $index)"><!-- remove --></button>
+              <input type="text" label:placeholder="email address"
+                     ng-model="email.value"/>
+              <select data-ng-model="email.type"
+                      data-ng-options="type for type in allEmailTypes"><!-- email types --></select>
+            </ion-item>
+            <ion-item>
+              <button class="button button-small button-clear button-positive"
+                      data-ng-click="addEmail()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Email Address"/></button>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="phone in card.phones"
+                      class="item-input item-select">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled" data-ng-click="card.$delete('phones', $index)"><!-- remove --></button>
+              <input type="text" label:placeholder="phone number"
+                     ng-model="phone.value"/>
+              <select data-ng-model="phone.type"
                     data-ng-options="type for type in allPhoneTypes"><!-- phone types --></select>
-          </ion-item>
-          <ion-item>
-            <button class="button button-small button-clear button-positive"
-                    data-ng-click="addPhone()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Phone Number"/></button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item ng-repeat="url in card.urls"
-                    class="item-input item-select">
-            <button class="button button-small button-assertive button-icon icon ion-minus-circled"
-                    data-ng-click="card.$delete('urls', $index)"><!-- remove --></button>
-            <input type="text" label:placeholder="URL"
-                   ng-model="url.value"/>
-            <select data-ng-model="url.type"
-                    data-ng-options="type for type in allUrlTypes"><!-- url types --></select>
-          </ion-item>
-          <ion-item>
-            <button class="button button-small button-clear button-positive" data-ng-click="addUrl()">
-              <i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add URL"/>
-            </button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear"
-                  ng-repeat="address in card.addresses">
-          <ion-item class="item-input">
+            </ion-item>
+            <ion-item>
+              <button class="button button-small button-clear button-positive"
+                      data-ng-click="addPhone()"><i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Phone Number"/></button>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="url in card.urls"
+                      class="item-input item-select">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled"
+                      data-ng-click="card.$delete('urls', $index)"><!-- remove --></button>
+              <input type="text" label:placeholder="URL"
+                      ng-model="url.value"/>
+              <select data-ng-model="url.type"
+                      data-ng-options="type for type in allUrlTypes"><!-- url types --></select>
+            </ion-item>
+            <ion-item>
+              <button class="button button-small button-clear button-positive" data-ng-click="addUrl()">
+                <i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add URL"/>
+              </button>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear"
+                    ng-repeat="address in card.addresses">
+            <ion-item class="item-input">
             <button class="button button-small button-assertive button-icon icon ion-minus-circled"
                     data-ng-click="card.$delete('addresses', $index)"><!-- remove --></button>
             <ion-list class="list-address">
@@ -289,24 +289,76 @@
                 <input type="text" label:placeholder="Postal Code" data-ng-model="address.postalcode"/>
               </ion-item>
             </ion-list>
-          </ion-item>
-          <ion-item>
+            </ion-item>
+            <ion-item>
             <button class="button button-small button-clear button-positive" data-ng-click="addAddress()">
               <i class="icon ion-plus-circled"><!-- add --></i> <var:string label:value="Add Address"/>
             </button>
-          </ion-item>
-        </ion-list>
-        <ion-list class="list-clear">
-          <ion-item class="item-input">
-            <input type="text" label:placeholder="Note" data-ng-model="card.note"/>
-          </ion-item>
-        </ion-list>
-        <button class="button button-block button-assertive"
-                ng-hide="card.isNew"
-                ng-click="confirmDelete(card)"><var:string label:value="Delete"/></button>
-      </ion-content>
+            </ion-item>
+          </ion-list>
+          <ion-list class="list-clear">
+            <ion-item class="item-input">
+              <input type="text" label:placeholder="Note" data-ng-model="card.note"/>
+            </ion-item>
+          </ion-list>
+          <button class="button button-block button-assertive"
+                  ng-hide="card.isNew"
+                  ng-click="confirmDelete(card)"><var:string label:value="Delete"/></button>
+        </ion-content>
+      </form>
+      <form name="listForm" data-ng-show="card.$isList()">
+        <ion-header-bar class="bar-positive">
+          <button class="button button-clear" ng-click="cancel()"><var:string label:value="Cancel"/></button>
+          <button class="button button-clear" ng-click="save(listForm)"><var:string label:value="Save" /></button>
+        </ion-header-bar>
+        <ion-content padding="10">
+          <div>
+            <div class="subtitle">
+              <var:string label:value="List display"/>
+            </div>
+            <ion-list class="list-clear">
+              <ion-item class="item-input">
+                <input type="text" label:placeholder="Display" ng-model="card.fn"/>
+              </ion-item>
+              <ion-item class="item-input">
+                <input type="text" label:placeholder="Nickname" ng-model="card.nickname"/>
+              </ion-item>
+            </ion-list>
+          </div>
+          <div class="subtitle">
+            <var:string label:value="List of members"/>
+          </div>
+          <div id="search-box" class="item-input-inset">
+            <div class="item-input-wrapper">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" label:placeholder="Search" data-ng-model="search.query" data-ng-keyup="showPopOver($event)" />
+              <i ng-show="displayIcon()" class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"><!-- spacer --></i>
+            </div>
+          </div>
+          <ion-list class="list-clear">
+            <ion-item ng-repeat="ref in card.refs" class="item-input">
+              <button class="button button-small button-assertive button-icon icon ion-minus-circled" 
+                      data-ng-click="card.$delete('refs', $index)"><!-- remove --></button>
+              <span>{{shortFormat(ref)}}</span>
+            </ion-item>
+          </ion-list>
+          <button class="button button-block button-assertive" ng-hide="card.isNew"
+                  ng-click="confirmDelete(card)"><var:string label:value="Delete"/></button>
+        </ion-content>
       </form>
     </ion-modal-view>
+  </script>
+
+  <script type="text/ng-template" id="searchFolderContacts.html">
+    <ion-popover-view>
+      <ion-content>
+        <ion-list ng-repeat="card in addressbook.cards | orderBy:['sn'] | filter:searchCards">
+          <ion-item ng-if="displayContact(card)" ng-click="addMember(card)">
+            <span>{{card.$shortFormat()}}</span>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-popover-view>
   </script>
 
 </var:component>

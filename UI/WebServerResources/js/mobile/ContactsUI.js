@@ -176,10 +176,31 @@
       };
     }])
 
-    .controller('AddressBookCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'sgAddressBook', 'sgCard', 'stateAddressbook', function($scope, $rootScope, $stateParams, $state, AddressBook, Card, stateAddressbook) {
+    .controller('AddressBookCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$ionicActionSheet', 'sgAddressBook', 'sgCard', 'stateAddressbook', function($scope, $rootScope, $stateParams, $state, $ionicActionSheet, AddressBook, Card, stateAddressbook) {
       $rootScope.addressbook = stateAddressbook;
 
       $scope.search = { status: null, filter: null, lastFilter: null };
+
+      $scope.addCard = function() {
+        $ionicActionSheet.show({
+          titleText: l('Create a new card or a new list'),
+          buttons: [
+            { text: l('New Card')},
+            { text: l('New List')}
+          ],
+          canceltext: l('Cancel'),
+          buttonClicked: function(index) {
+            if(index == 0){
+              $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'card' });
+            }
+            else if(index == 1){
+              $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'list' });
+            }
+            return true;
+          }
+        });
+      };
+
       $scope.doSearch = function(keyEvent) {
         if ($scope.search.lastFilter != $scope.search.filter) {
           if ($scope.search.filter.length > 2) {
@@ -203,7 +224,8 @@
       };
     }])
 
-    .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', function($scope, $rootScope, $state, $stateParams, $ionicModal, Dialog, AddressBook, Card, stateCard) {
+    .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', '$ionicPopover', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', 
+      function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicPopover, Dialog, AddressBook, Card, stateCard) {
       $scope.card = stateCard;
 
       $scope.UserFolderURL = UserFolderURL;
@@ -211,6 +233,63 @@
       $scope.allTelTypes = Card.$TEL_TYPES;
       $scope.allUrlTypes = Card.$URL_TYPES;
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
+
+      $ionicPopover.fromTemplateUrl('searchFolderContacts.html', {
+        scope: $scope,
+      }).then(function(popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.search = {query: ""};
+
+
+      $scope.shortFormat = function(ref) {
+        var fullname = ref.fn,
+        email = ref.email;
+        if (email && fullname)
+          fullname += ' (' + email + ')';
+        return fullname;
+      };
+
+      $scope.searchCards = function(item) {
+        if (item.tag == "vcard" && $scope.search.query) {
+          var displayCard = false;
+          if(item.emails.length > 0) {
+            angular.forEach(item.emails, function(email) {
+              var mail = email.value.toLowerCase();
+              if(mail.indexOf($scope.search.query.toLowerCase()) != -1) {
+                displayCard = true;
+              }
+            })
+          }
+          if (item.fn) {
+            var fullName = item.fn.toLowerCase();
+            if(fullName.indexOf($scope.search.query.toLowerCase())!=-1)
+              displayCard = true;
+          }
+          return displayCard;
+        }
+      };
+      $scope.clearSearch = function() {
+        $scope.search.query = null;
+      };
+      $scope.displayIcon = function() {
+        if ($scope.search.query) {
+          return true;
+        }
+        else
+          return false;
+      };
+      $scope.displayContact = function(card) {
+        var contact = true;
+        if(card.tag == "vcard" && card.c_mail){
+          angular.forEach($scope.card.refs, function(ref) {
+            if( card.c_mail == ref.email)
+              contact = false;
+          })
+        }
+        return contact;
+      };
 
       $scope.edit = function() {
         // Build modal editor
@@ -230,9 +309,9 @@
       $scope.cancel = function() {
         if ($scope.card.isNew) {
           $scope.$cardEditorModal.hide().then(function() {
-            // Go back to addressbook
-            $state.go('app.addressbook', { addressbookId: $rootScope.addressbook.id });
-          });
+              // Go back to addressbook
+              $state.go('app.addressbook', { addressbookId: $rootScope.addressbook.id });
+            });
         }
         else {
           $scope.card.$reset();
@@ -263,10 +342,23 @@
         var i = $scope.card.$addAddress('', '', '', '', '', '', '', '');
         focus('address_' + i);
       };
-      $scope.addMember = function() {
-        var i = $scope.card.$addMember('');
-        focus('ref_' + i);
+      $scope.addMember = function(member) {
+        var isAlreadyInList = false;
+        angular.forEach($scope.card.refs, function(ref) {
+          if (member.c_mail == ref.email)
+            isAlreadyInList = true;
+          else
+            isAlreadyInList = false;
+        });
+        if (member.c_mail && !isAlreadyInList) {
+          var i = $scope.card.$addMember('');
+          $scope.card.$updateMember(i, member.c_mail, member);
+          $scope.popover.hide();
+        }
       };
+      $scope.showPopOver = function(keyEvent) {
+        $scope.popover.show(keyEvent);
+      }
       $scope.save = function(form) {
         if (form.$valid) {
           $scope.card.$save()
@@ -320,5 +412,4 @@
         $scope.edit();
       }
     }]);
-
 })();
