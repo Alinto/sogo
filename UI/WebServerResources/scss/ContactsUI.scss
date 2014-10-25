@@ -293,8 +293,7 @@ $column-gutter: 0;
                     &.single {
                         @include grid-column($offset: 4, $columns:9);
                     }
-                    span {
-                        display: block;
+                    div {
                         a {
                             color: #666;
                             margin-left: 0.2em;
