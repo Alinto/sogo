@@ -5,11 +5,11 @@
 //$topbar-bg-color: $primary-color;
 $module-color: #75B4BF;
 $module-color: #C6C543;
-$module-color: #6F5A73;
+$module-color: #6F5A73; // purple
 $module-secondary-color: #8EC588; // light green
 $module-secondary-color: #3D792A; // green
 $module-secondary-color: #B996BF;
-$module-secondary-color: #B59BB9; // SOGo green
+$module-secondary-color: #B59BB9; // light purple
 $module-light-color: #F7ECFF;
 $topbar-bg-color: $module-color;
 $topbar-link-bg-active-hover: scale-color($module-secondary-color, $lightness: -14%);
@@ -292,6 +292,16 @@ $column-gutter: 0;
                     @include grid-column($columns:9);
                     &.single {
                         @include grid-column($offset: 4, $columns:9);
+                    }
+                    span {
+                        display: block;
+                        a {
+                            color: #666;
+                            margin-left: 0.2em;
+                            &:hover {
+                                color: #000;
+                            }
+                        }
                     }
                 }
             }

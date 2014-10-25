@@ -340,8 +340,12 @@
   };
 
   Card.prototype.$addMember = function(email) {
+    var card = new Card({email: email, emails: [{value: email}]});
     if (angular.isUndefined(this.refs)) {
-      this.refs = [{email: email}];
+      this.refs = [card];
+    }
+    else if (email.length == 0) {
+      this.refs.push(card);
     }
     else {
       for (var i = 0; i < this.refs.length; i++) {
@@ -350,7 +354,7 @@
         }
       }
       if (i == this.refs.length)
-        this.refs.push({email: email});
+        this.refs.push(card);
     }
     return this.refs.length - 1;
   };
@@ -368,6 +372,11 @@
       }
     });
     angular.extend(this, this.$shadowData);
+    // Reinstanciate Card objects for list members
+    angular.forEach(this.refs, function(o, i) {
+      if (o.email) o.emails = [{value: o.email}];
+      _this.refs[i] = new Card(o);
+    });
     this.$shadowData = this.$omit(true);
   };
 
@@ -384,8 +393,11 @@
    * @param {Card} card
    */
   Card.prototype.$updateMember = function(index, email, card) {
-    var ref = {email: email, reference: card.c_name, fn: card.$fullname()};
-    this.refs[index] = ref;
+    var ref = {email: email,
+               emails: [{value: email}],
+               reference: card.c_name,
+               fn: card.$fullname()};
+    this.refs[index] = new Card(ref);
   };
 
   /**
@@ -405,6 +417,11 @@
       // Calling $timeout will force Angular to refresh the view
       Card.$timeout(function() {
         angular.extend(_this, data);
+        // Instanciate Card objects for list members
+        angular.forEach(_this.refs, function(o, i) {
+          if (o.email) o.emails = [{value: o.email}];
+          _this.refs[i] = new Card(o);
+        });
         // Make a copy of the data in order for an eventual reset.
         _this.$shadowData = _this.$omit(true);
       });
@@ -421,7 +438,12 @@
   Card.prototype.$omit = function(deep) {
     var card = {};
     angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key[0] != '$') {
+      if (key == 'refs') {
+        card.refs = _.map(value, function(o) {
+          return o.$omit(deep);
+        });
+      }
+      else if (key != 'constructor' && key[0] != '$') {
         if (deep)
           card[key] = angular.copy(value);
         else

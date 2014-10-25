@@ -81,7 +81,7 @@
             <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
           </li>
           <li data-ng-show="!addressbook.isRemote">
-            <span class="button"><i class="icon-pencil" data-ng-click="edit()"><!-- rename --></i></span>
+            <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
           </li>
           <li data-ng-show="!addressbook.isRemote">
             <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
@@ -207,11 +207,14 @@
             <span>{{card.$birthday() | date}}</span>
           </div>
         </div>
-        <div class="section" data-ng-show="card.refs.length > 0">
+        <div class="section" data-ng-repeat="ref in card.refs">
           <!-- list members -->
-          <div class="attr" data-ng-repeat="ref in card.refs">
+          <div class="attr">
             <div class="value single">
-              <a href="mailto:{{ref.email}}">{{ref.fn || ref.email}}</a>
+                <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">{{ref.$fullname()}}</a>
+              <span data-ng-show="ref.email">
+                <a href="mailto:{{ref.email}}"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{ref.email}}</a>
+              </span>
             </div>
           </div>
         </div>
