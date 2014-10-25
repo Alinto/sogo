@@ -212,9 +212,9 @@
           <div class="attr">
             <div class="value single">
                 <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">{{ref.$fullname()}}</a>
-              <span data-ng-show="ref.email">
+              <div data-ng-show="ref.email">
                 <a href="mailto:{{ref.email}}"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{ref.email}}</a>
-              </span>
+              </div>
             </div>
           </div>
         </div>
