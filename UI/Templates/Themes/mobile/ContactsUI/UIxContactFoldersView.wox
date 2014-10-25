@@ -314,32 +314,35 @@
         <ion-content padding="10">
           <div>
             <div class="subtitle">
-              <var:string label:value="List display"/>
+              <var:string label:value="List details"/>
             </div>
             <ion-list class="list-clear">
               <ion-item class="item-input">
-                <input type="text" label:placeholder="Display" ng-model="card.fn"/>
+                <input type="text" label:placeholder="List name:" ng-model="card.fn"/>
               </ion-item>
               <ion-item class="item-input">
-                <input type="text" label:placeholder="Nickname" ng-model="card.nickname"/>
+                <input type="text" label:placeholder="List nickname:" ng-model="card.nickname"/>
+              </ion-item>
+              <ion-item class="item-input">
+                <input type="text" label:placeholder="List description:" ng-model="card.description"/>
               </ion-item>
             </ion-list>
           </div>
           <div class="subtitle">
-            <var:string label:value="List of members"/>
+            <var:string label:value="Members"/>
           </div>
           <div id="search-box" class="item-input-inset">
             <div class="item-input-wrapper">
               <i class="icon ion-search placeholder-icon"></i>
               <input type="text" label:placeholder="Search" data-ng-model="search.query" data-ng-keyup="showPopOver($event)" />
-              <i ng-show="displayIcon()" class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"><!-- spacer --></i>
+              <i ng-show="search.query" class="clear-search icon ion-ios7-close-empty" ng-click="resetSearch()"><!-- spacer --></i>
             </div>
           </div>
           <ion-list class="list-clear">
             <ion-item ng-repeat="ref in card.refs" class="item-input">
               <button class="button button-small button-assertive button-icon icon ion-minus-circled" 
                       data-ng-click="card.$delete('refs', $index)"><!-- remove --></button>
-              <span>{{shortFormat(ref)}}</span>
+              <span>{{ref.$shortFormat()}}</span>
             </ion-item>
           </ion-list>
           <button class="button button-block button-assertive" ng-hide="card.isNew"
@@ -352,9 +355,9 @@
   <script type="text/ng-template" id="searchFolderContacts.html">
     <ion-popover-view>
       <ion-content>
-        <ion-list ng-repeat="card in addressbook.cards | orderBy:['sn'] | filter:searchCards">
-          <ion-item ng-if="displayContact(card)" ng-click="addMember(card)">
-            <span>{{card.$shortFormat()}}</span>
+        <ion-list ng-repeat="card in addressbook.cards | orderBy:['sn'] | filter:cardsFilter">
+          <ion-item ng-click="addMember(card)">
+            <span>{{card.$shortFormat(search.query)}}</span>
           </ion-item>
         </ion-list>
       </ion-content>

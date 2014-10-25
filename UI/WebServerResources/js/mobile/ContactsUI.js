@@ -1,5 +1,5 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* JavaScript for SOGoContacts (mobile) */
+/* JavaScript for SOGo.ContactsUI (mobile) module */
 
 (function() {
   'use strict';
@@ -140,7 +140,6 @@
       };
       $scope.edit = function(addressbook) {
         $ionicActionSheet.show({
-          titleText: l('Modify your addressbook %{0}', addressbook.name),
           buttons: [
             { text: l('Rename') }
           ],
@@ -183,17 +182,17 @@
 
       $scope.addCard = function() {
         $ionicActionSheet.show({
-          titleText: l('Create a new card or a new list'),
+          //titleText: l('Create a new card or a new list'),
           buttons: [
             { text: l('New Card')},
             { text: l('New List')}
           ],
           canceltext: l('Cancel'),
           buttonClicked: function(index) {
-            if(index == 0){
+            if (index == 0){
               $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'card' });
             }
-            else if(index == 1){
+            else if (index == 1){
               $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'list' });
             }
             return true;
@@ -224,8 +223,7 @@
       };
     }])
 
-    .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', '$ionicPopover', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', 
-      function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicPopover, Dialog, AddressBook, Card, stateCard) {
+    .controller('CardCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$ionicModal', '$ionicPopover', 'sgDialog', 'sgAddressBook', 'sgCard', 'stateCard', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicPopover, Dialog, AddressBook, Card, stateCard) {
       $scope.card = stateCard;
 
       $scope.UserFolderURL = UserFolderURL;
@@ -234,62 +232,46 @@
       $scope.allUrlTypes = Card.$URL_TYPES;
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
 
+      $scope.search = {query: ""};
+      $scope.cardsFilter = function(item) {
+        var query, id = false;
+        if (item.tag == "vcard" && $scope.search.query) {
+          query = $scope.search.query.toLowerCase();
+          if (item.emails && item.emails.length > 0) {
+            // Is one of the email addresses match the query string?
+            if (_.find(item.emails, function(email) {
+              return (email.value.toLowerCase().indexOf(query) >= 0);
+            }))
+              id = item.id;
+          }
+          if (!id && item.fn)
+            // Is the fn attribute matches the query string?
+            if (item.fn.toLowerCase().indexOf(query) >= 0)
+              id = item.id;
+          if (id) {
+            // Is the card already part of the members? If so, ignore it.
+            if (_.find($scope.card.refs, function(ref) {
+              return ref.reference == id;
+            }))
+              id = false;
+          }
+        }
+        return id;
+      };
+      $scope.resetSearch = function() {
+        $scope.search.query = null;
+      };
+      $scope.addMember = function(member) {
+        var i = $scope.card.$addMember(''),
+            email = member.$preferredEmail($scope.search.query);
+        $scope.card.$updateMember(i, email, member);
+        $scope.popover.hide();
+      };
       $ionicPopover.fromTemplateUrl('searchFolderContacts.html', {
         scope: $scope,
       }).then(function(popover) {
         $scope.popover = popover;
       });
-
-      $scope.search = {query: ""};
-
-
-      $scope.shortFormat = function(ref) {
-        var fullname = ref.fn,
-        email = ref.email;
-        if (email && fullname)
-          fullname += ' (' + email + ')';
-        return fullname;
-      };
-
-      $scope.searchCards = function(item) {
-        if (item.tag == "vcard" && $scope.search.query) {
-          var displayCard = false;
-          if(item.emails.length > 0) {
-            angular.forEach(item.emails, function(email) {
-              var mail = email.value.toLowerCase();
-              if(mail.indexOf($scope.search.query.toLowerCase()) != -1) {
-                displayCard = true;
-              }
-            })
-          }
-          if (item.fn) {
-            var fullName = item.fn.toLowerCase();
-            if(fullName.indexOf($scope.search.query.toLowerCase())!=-1)
-              displayCard = true;
-          }
-          return displayCard;
-        }
-      };
-      $scope.clearSearch = function() {
-        $scope.search.query = null;
-      };
-      $scope.displayIcon = function() {
-        if ($scope.search.query) {
-          return true;
-        }
-        else
-          return false;
-      };
-      $scope.displayContact = function(card) {
-        var contact = true;
-        if(card.tag == "vcard" && card.c_mail){
-          angular.forEach($scope.card.refs, function(ref) {
-            if( card.c_mail == ref.email)
-              contact = false;
-          })
-        }
-        return contact;
-      };
 
       $scope.edit = function() {
         // Build modal editor
@@ -341,20 +323,6 @@
       $scope.addAddress = function() {
         var i = $scope.card.$addAddress('', '', '', '', '', '', '', '');
         focus('address_' + i);
-      };
-      $scope.addMember = function(member) {
-        var isAlreadyInList = false;
-        angular.forEach($scope.card.refs, function(ref) {
-          if (member.c_mail == ref.email)
-            isAlreadyInList = true;
-          else
-            isAlreadyInList = false;
-        });
-        if (member.c_mail && !isAlreadyInList) {
-          var i = $scope.card.$addMember('');
-          $scope.card.$updateMember(i, member.c_mail, member);
-          $scope.popover.hide();
-        }
       };
       $scope.showPopOver = function(keyEvent) {
         $scope.popover.show(keyEvent);
