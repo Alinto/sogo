@@ -380,7 +380,8 @@
   NSString *uid;
   NSDictionary *contact;
   NSString *contactInfo, *login;
-  NSMutableArray *jsonResponse, *jsonLine;
+  NSMutableArray *jsonResponse;
+  NSMutableDictionary *jsonLine;
   NSArray *allUsers;
   int count, max;
   BOOL activeUserIsInDomain;
@@ -402,16 +403,16 @@
       // We do NOT return the current authenticated user
       if (!activeUserIsInDomain || ![uid isEqualToString: login])
         {
-          jsonLine = [NSMutableArray arrayWithCapacity: 4];
+          jsonLine = [NSMutableDictionary dictionary];
           if ([domain length])
             uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
-          [jsonLine addObject: uid];
-          [jsonLine addObject: [contact objectForKey: @"cn"]];
-          [jsonLine addObject: [contact objectForKey: @"c_email"]];
-          [jsonLine addObject: [NSNumber numberWithBool: [[contact objectForKey: @"isGroup"] boolValue]]];
+          [jsonLine setObject: uid forKey: @"uid"];
+          [jsonLine setObject: [contact objectForKey: @"cn"] forKey: @"cn"];
+          [jsonLine setObject: [contact objectForKey: @"c_email"] forKey: @"c_email"];
+          [jsonLine setObject: [NSNumber numberWithBool: [[contact objectForKey: @"isGroup"] boolValue]] forKey: @"isGroup"];
           contactInfo = [contact objectForKey: @"c_info"];
           if (contactInfo)
-            [jsonLine addObject: contactInfo];
+            [jsonLine setObject: contactInfo forKey: @"c_info"];
           [jsonResponse addObject: jsonLine];
         }
     }

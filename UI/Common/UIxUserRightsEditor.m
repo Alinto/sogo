@@ -119,29 +119,62 @@
   if ([newUID length] > 0)
     {
       if (!defaultUserID)
-	ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
       um = [SOGoUserManager sharedUserManager];
-      if ([newUID isEqualToString: defaultUserID]
-	  || [newUID isEqualToString: @"anonymous"]
-	  || [[um getEmailForUID: newUID] length] > 0)
-	{
-	  if (![newUID hasPrefix: @"@"])
-	    {
+      if ([newUID isEqualToString: defaultUserID] 
+         || [newUID isEqualToString: @"anonymous"] 
+         || [[um getEmailForUID: newUID] length] > 0)
+        {
+          if (![newUID hasPrefix: @"@"])
+            {
               domain = [[context activeUser] domain];
-	      group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-	      if (group)
-		newUID = [NSString stringWithFormat: @"@%@", newUID];
-	    }
+              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
+              if (group)
+                newUID = [NSString stringWithFormat: @"@%@", newUID];
+            }
+          ASSIGN (uid, newUID);
+          clientObject = [self clientObject];
+          [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
 
-	  ASSIGN (uid, newUID);
-	  clientObject = [self clientObject];
-	  [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
-
-	  response = YES;
-	}
+          response = YES;
+        }
     }
+  return response;
+}
+- (BOOL) _initRightsForUserID:(NSString *) newUID
+{
+  BOOL response;
+  NSString *domain;
+  SOGoUserManager *um;
+  SOGoObject *clientObject;
+  SOGoGroup *group;
 
+  response = NO;
+
+  if ([newUID length] > 0)
+    {
+      if (!defaultUserID)
+        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
+      um = [SOGoUserManager sharedUserManager];
+      if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"] 
+                                                  || [[um getEmailForUID: newUID] length] > 0)
+        {
+          if (![newUID hasPrefix: @"@"])
+            {
+              domain = [[context activeUser] domain];
+              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
+              if (group)
+                newUID = [NSString stringWithFormat: @"@%@", newUID];
+            }
+          ASSIGN (uid, newUID);
+          clientObject = [self clientObject];
+          [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
+
+          response = YES;
+        }
+    }
   return response;
 }
 
@@ -150,14 +183,13 @@
   id <WOActionResults> response;
 
   if (![self _initRights])
-    response = [NSException exceptionWithHTTPStatus: 403
-			    reason: @"No such user."];
-  else
-    {
-      [self prepareRightsForm];
-      response = self;
-    }
-
+    response = [self responseWithStatus: 403
+                              andString: @"No such user."];
+  else {
+    //[self prepareRightsForm];
+    response = [self responseWithStatus: 200 
+                              andString:[[self userRightsForObject] jsonRepresentation]];
+  }
   return response;
 }
 
@@ -186,18 +218,31 @@
 - (id <WOActionResults>) saveUserRightsAction
 {
   id <WOActionResults> response;
+  WORequest *request;
   SOGoDomainDefaults *dd;
+  NSDictionary *dirtyUsers, *currentUser, *jsonResponse;;
+  NSEnumerator *enumerator;
+  NSString *uid;
+  NSArray *o;
 
-  if (![self _initRights])
-    response = [NSException exceptionWithHTTPStatus: 403
-			    reason: @"No such user."];
-  else
+  request = [[self context] request];
+  dirtyUsers = [[request contentAsString] objectFromJSONString];
+  enumerator = [dirtyUsers keyEnumerator];
+
+  while((uid = [enumerator nextObject]))
+  {
+    currentUser = [dirtyUsers objectForKey: uid];
+    if(!([self _initRightsForUserID: [currentUser objectForKey: @"uid"]])) 
     {
-      NSArray *o;
-
+      jsonResponse = [NSDictionary dictionaryWithObject: @"No such user." forKey: @"error"];
+      response = [self responseWithStatus: 403
+                                andString: [jsonResponse jsonRepresentation]];
+      return response;
+    }
+    else 
+    {
       o = [NSArray arrayWithArray: userRights];
-
-      [self updateRights];
+      [self updateRights:[currentUser objectForKey: @"aclOptions"]];
       [[self clientObject] setRoles: userRights forUser: uid];
 
       dd = [[context activeUser] domainDefaults];
@@ -206,7 +251,8 @@
 
       response = [self jsCloseWithRefreshMethod: nil];
     }
-
+  }
+  response = [self responseWithStatus: 200];
   return response;
 }
 

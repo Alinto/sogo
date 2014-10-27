@@ -13,16 +13,14 @@
   }];
 
   /* Factory registration in Angular module */
-  angular.module('SOGo.Common').factory('sgUser', User.factory);
+  angular.module('SOGo.Common').factory('User', User.factory);
 
   /* Instance methods
    * Public method, assigned to prototype      
    */
   User.prototype.$filter = function(search) {
-  	// return a collections of users for a filter
+    // return a collections of users for a filter
     var param = {search: search};
-  	return User.$$resource.fetch(null, "usersSearch", param).then(function(results) {
-      return results;
-    })
+    return User.$$resource.fetch(null, "usersSearch", param);
   };
 })();

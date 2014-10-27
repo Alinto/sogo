@@ -138,7 +138,7 @@
             i = _.indexOf(_.pluck($scope.addressbooks, 'id'), $rootScope.addressbook.id);
           }
           $scope.editMode = $rootScope.addressbook.id;
-	  $scope.originalAddressbook = angular.extend({}, $scope.addressbook.$omit());
+          $scope.originalAddressbook = angular.extend({}, $scope.addressbook.$omit());
           focus('addressBookName_' + i);
         }
       };
@@ -174,13 +174,159 @@
           });
       };
       $scope.importCards = function() {
+
+      };
+      $scope.exportCards = function() {
+        window.location.href = ApplicationBaseURL + "/" + $rootScope.addressbook.id + "/exportFolder";
       };
       $scope.share = function() {
         var modal = $modal.open({
           templateUrl: 'addressbookSharing.html',
-          controller: function($scope, $modalInstance) {
+          controller: function($scope, $modalInstance, User) {
+            /* Variables for the scope */
+            var dirtyObjects = {};
+            stateAddressbook.$acl.$users().then(function(users) {
+              $scope.users = [];
+              angular.forEach(users, function(user){
+                user.canSubscribeUser = user.isSubscribed;
+                $scope.users.push(user);
+              })
+            }, function(data, status) {
+              Dialog.alert(l('Warning'), l('An error occurs while trying to fetch users from the server.'));
+            });
+            $scope.User = new User();
+            /* Functions */
             $scope.closeModal = function() {
               $modalInstance.close();
+            };
+            $scope.saveModal = function() {
+              if(!_.isEmpty(dirtyObjects)) {
+                if(dirtyObjects["anonymous"]) {
+                  if($scope.validateChanges(dirtyObjects["anonymous"])) {
+                    Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
+                      if(res){
+                        stateAddressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                        });
+                        $modalInstance.close();
+                      }
+                    })
+                  }
+                  else{
+                    stateAddressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
+                    $modalInstance.close();
+                  }
+                }
+                else if (dirtyObjects["<default>"]) {
+                  if($scope.validateChanges(dirtyObjects["<default>"])) {
+                    Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
+                      if(res){
+                        stateAddressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                        });
+                        $modalInstance.close();
+                      };
+                    })
+                  }
+                  else{
+                    stateAddressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
+                    $modalInstance.close();
+                  }
+                }
+                else {
+                  stateAddressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
+                    Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                  });
+                  var usersToSubscribe = [];
+                  angular.forEach(dirtyObjects, function(dirtyObject){
+                    if(dirtyObject.canSubscribeUser && dirtyObject.isSubscribed){
+                      usersToSubscribe.push(dirtyObject.uid);
+                    }
+                  })
+                  if(!_.isEmpty(usersToSubscribe))
+                    stateAddressbook.$acl.$subscribeUsers(usersToSubscribe).then(null, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
+
+                  $modalInstance.close();
+                }
+              }
+              else
+                $modalInstance.close();
+            };
+            $scope.validateChanges = function(object) {
+              if (object.aclOptions.canViewObjects || object.aclOptions.canCreateObjects || object.aclOptions.canEditObjects || object.aclOptions.canEraseObjects)
+                return true;
+              else
+                return false;
+            };
+            $scope.removeUser = function() {
+              if (!_.isEmpty($scope.userSelected)) {
+                if(dirtyObjects[$scope.userSelected.uid])
+                  delete dirtyObjects[$scope.userSelected.uid];
+                stateAddressbook.$acl.$removeUser($scope.userSelected.uid).then(null, function(data, status) {
+                  Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                });
+                // Remove from the users list
+                $scope.users = _.reject($scope.users, function(o) {
+                  return o.uid == $scope.userSelected.uid;
+                });
+                $scope.userSelected = {};
+              }
+            };
+            $scope.addUser = function(user) {
+              if (user.uid) {
+                // Looks through the list and returns the first value that matches all of the key-value pairs listed
+                if(!_.findWhere($scope.users, {uid: user.uid})) {
+                  stateAddressbook.$acl.$addUser(user.uid).then(function() {
+                    var displayName = user.cn + " <" + user.c_email + ">";
+                    var userClass = user.isGroup ? "group-user" : "normal-user";
+                    var newUser = {canSubscribeUser: 0, displayName: displayName, isSubscribed: 0, uid: user.uid, userClass: userClass};
+                    $scope.users.push(newUser);
+                  }, function(data, status) {
+                    Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                  });
+                }
+                else
+                  Dialog.alert(l('Warning'), l('This user is already in your permissions list.'));
+              }
+              else
+                Dialog.alert(l('Warning'), l('Please select a user inside your domain'));
+            };
+            $scope.selectUser = function(user) {
+              // Check if it is a different user
+              if ($scope.userSelected != user){
+                $scope.userSelected = {};
+                $scope.selected = user;
+                $scope.userSelected = user;
+
+                if (dirtyObjects[$scope.userSelected.uid]) {
+                  $scope.userSelected.aclOptions = dirtyObjects[$scope.userSelected.uid].aclOptions;
+                }
+                else {
+                  stateAddressbook.$acl.$userRights($scope.userSelected.uid).then(function(userRights) { 
+                    $scope.userSelected.aclOptions = userRights;
+                  }, function(data, status) {
+                    Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                  });
+                }
+              }
+            };
+            $scope.markUserAsDirty  = function(user) {
+              if(!$scope.userSelected)
+                $scope.selectUser(user);
+
+              dirtyObjects[$scope.userSelected.uid] = $scope.userSelected;
+            };
+            $scope.displayUserRights = function() {
+              return ($scope.userSelected && ($scope.userSelected.uid != "anonymous")) ? true : false;
+            };
+            $scope.userIsReadOnly = function() {
+              return (!$scope.userSelected || $scope.userSelected.userClass == "public-user");
             };
           }
         });

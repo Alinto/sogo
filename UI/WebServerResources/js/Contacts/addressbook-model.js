@@ -17,6 +17,9 @@
         var newAddressBookData = AddressBook.$$resource.create('createFolder', this.name);
         this.$unwrap(newAddressBookData);
       }
+      else if (this.id){
+        this.$acl = new AddressBook.$$Acl(this.id);
+      }
     }
     else {
       // The promise will be unwrapped first
@@ -29,12 +32,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the AddressBook constructor
    */
-  AddressBook.$factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgCard', function($q, $timeout, Settings, Resource, Card) {
+  AddressBook.$factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgCard', 'sgAcl', function($q, $timeout, Settings, Resource, Card, Acl) {
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
       $$resource: new Resource(Settings.baseURL),
-      $Card: Card
+      $Card: Card,
+      $$Acl: Acl
     });
 
     return AddressBook; // return constructor
@@ -131,6 +135,7 @@
         angular.forEach(cards, function(o, i) {
           cards[i] = new AddressBook.$Card(o);
         });
+
         return cards;
       });
     });
@@ -198,6 +203,8 @@
         angular.forEach(_this.cards, function(o, i) {
           _this.cards[i] = new AddressBook.$Card(o);
         });
+        // Instanciate Acl object
+        _this.$acl = new AddressBook.$$Acl(_this.id);
       });
     }, function(data) {
       AddressBook.$timeout(function() {

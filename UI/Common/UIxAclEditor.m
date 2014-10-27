@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -46,7 +47,7 @@
       aclUsers = nil;
       prepared = NO;
       publishInFreeBusy = NO;
-      users = [NSMutableArray new];
+      users = [NSMutableDictionary new];
       currentUser = nil;
       defaultUserID = nil;
       savedUIDs = nil;
@@ -80,10 +81,12 @@
   return defaultUserID;
 }
 
-- (NSArray *) usersForObject
+- (id <WOActionResults>) aclsAction
 {
+  id <WOActionResults> result;
   NSEnumerator *aclsEnum;
   NSString *currentUID, *ownerLogin;
+  NSDictionary *object;
 
   if (!prepared)
     {
@@ -96,13 +99,30 @@
         {
           if (!([currentUID isEqualToString: ownerLogin]
                 || [currentUID isEqualToString: defaultUserID]
-                || [currentUID isEqualToString: @"anonymous"]))
-            [users addObjectUniquely: currentUID];
+                || [currentUID isEqualToString: @"anonymous"])) 
+            {
+                  // Set the current user in order to get information associated with it
+                  [self setCurrentUser: currentUID];
+
+                  // Build the object associated with the key; currentUID
+                  object = [NSDictionary dictionaryWithObjectsAndKeys: currentUser, @"uid",
+                                                                      [self currentUserClass], @"userClass",
+                                                                      [self currentUserDisplayName], @"displayName",
+                                                                      [NSNumber numberWithBool: [self currentUserIsSubscribed]], @"isSubscribed", nil];
+                  [users setObject: object forKey: currentUID];
+            }
         }
+      // Adding the Any authenticated user and the public access
+      [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"<default>", @"uid", [self labelForKey: @"Any Authenticated User"], @"displayName", @"public-user", @"userClass", nil] forKey: @"<default>"];
+      if ([self isPublicAccessEnabled])
+        [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"anonymous", @"uid", [self labelForKey: @"Public Access"], @"displayName", @"public-user", @"userClass", nil] forKey: @"anonymous"];
       prepared = YES;
     }
 
-  return users;
+  result = [self responseWithStatus: 200
+                          andString: [users jsonRepresentation]];
+
+  return result;
 }
 
 - (void) setCurrentUser: (NSString *) newCurrentUser
