@@ -375,6 +375,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
             }
 
+          [theBuffer appendString: @"<Change>"];
+          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
+          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+          [theBuffer appendString: @"</Change>"];
         }
     }
 }
@@ -431,6 +435,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           if (![sogoObject isKindOfClass: [NSException class]])
             [sogoObject delete];
+
+          [theBuffer appendString: @"<Delete>"];
+          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
+          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+          [theBuffer appendString: @"</Delete>"];
         }
     }
 }
@@ -926,6 +935,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                     inCollection: theCollection
                                         withType: theFolderType
                                         inBuffer: theBuffer];
+                  *processed = YES;
                 }
               else if ([[element tagName] isEqualToString: @"Fetch"])
                 {
@@ -1041,8 +1051,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We onnly generate this tag when the command has generated a response.
       if (processed && [s length])
         [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
-      else
-        [commandsBuffer appendString: s];
     }
  
   // If we got any changes or if we have applied any commands
@@ -1078,8 +1086,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
   [theBuffer appendFormat: @"<Status>%d</Status>", 1];
 
-  [theBuffer appendString: changeBuffer];
   [theBuffer appendString: commandsBuffer];
+  [theBuffer appendString: changeBuffer];
 
   [theBuffer appendString: @"</Collection>"];
 }
