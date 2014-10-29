@@ -505,7 +505,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       softdelete_count = 0;
           
-      folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
+      folderMetadata = [self _folderMetadataForKey: [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]]];
+
       dateCache = [folderMetadata objectForKey: @"DateCache"];
       syncCache = [folderMetadata objectForKey: @"SyncCache"];
           
@@ -529,7 +530,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           if (softdelete_count >= theWindowSize)
             {
               [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
-              [self _setFolderMetadata: folderMetadata forKey: [theCollection nameInContainer]];
+              [self _setFolderMetadata: folderMetadata forKey: [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]]];
               
               more_available = YES;
               *theLastServerKey = theSyncKey;
@@ -541,7 +542,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
           
       [folderMetadata removeObjectForKey: @"MoreAvailable"];
-      [self _setFolderMetadata: folderMetadata forKey: [theCollection nameInContainer]];
+      [self _setFolderMetadata: folderMetadata forKey: [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]]];
     }
   
   //
@@ -695,21 +696,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
         
         // If it's a new Sync operation, DateCache and SyncCache need to be deleted
-        // but GUID stored by folderSync shouldn't be touched
-        folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
+        folderMetadata = [self _folderMetadataForKey: [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]]];
+
         if ([theSyncKey isEqualToString: @"-1"])
           {
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
-          }
-        
-        // Check whether GUID in cache is equal to the GUID from imap - this is to avoid cache corruptions if a folder has been renamed and a new folder
-        // with the same name has been created but folderSync has not yet updated the cache
-        if (!([[theCollection nameInContainer] isEqualToString: 
-                                    [NSString stringWithFormat: @"folder%@", [self globallyUniqueIDToIMAPFolderName: [folderMetadata objectForKey: @"GUID"]  type: theFolderType]]]))
-          {
-            NSLog(@"GUID mismatch don't sync now!");
-            return;
           }
         
         syncCache = [folderMetadata objectForKey: @"SyncCache"];
@@ -859,7 +851,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
         
         [self _setFolderMetadata: folderMetadata
-                          forKey: [theCollection nameInContainer]];
+                          forKey: [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]]];
       } // default:
       break;
     } // switch (folderType) ...
@@ -958,7 +950,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       inBuffer: (NSMutableString *) theBuffer
                 changeDetected: (BOOL *) changeDetected
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey, *nameInCache;
   SOGoMicrosoftActiveSyncFolderType folderType;
   id collection, value;
   
@@ -975,6 +967,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   collection = [self collectionFromId: realCollectionId  type: folderType];
   
   syncKey = davCollectionTag = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
+
+  if (collection == nil)
+    {
+      // Collection not found - next folderSync will do the cleanup
+      //NSLog(@"Sync Collection not found %@ %@", collectionId, realCollectionId);
+      [theBuffer appendString: @"<Collection>"];
+      [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
+      [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
+      [theBuffer appendFormat: @"<Status>%d</Status>", 8];
+      [theBuffer appendString: @"</Collection>"];
+      
+      return;
+    }
   
   // We check for a window size, default to 100 if not specfied or out of bounds
   windowSize = [[[(id)[theDocumentElement getElementsByTagName: @"WindowSize"] lastObject] textValue] intValue];
@@ -1059,9 +1064,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       if (lastServerKey)
         davCollectionTag = lastServerKey;
-      else if (![[self _folderMetadataForKey: [collection nameInContainer]] objectForKey: @"MoreAvailable"])
-        davCollectionTag = [collection davCollectionTag];
-     
+      else
+        {
+          if (folderType == ActiveSyncMailFolder)
+            nameInCache = [[[collection mailAccountFolder] imapFolderGUIDs] objectForKey: [collection nameInContainer]];
+          else 
+            nameInCache = [collection nameInContainer];
+          
+          if (![[self _folderMetadataForKey: nameInCache]  objectForKey: @"MoreAvailable"])
+            davCollectionTag = [collection davCollectionTag];
+        }
+      
       *changeDetected = YES;
     }
   else
