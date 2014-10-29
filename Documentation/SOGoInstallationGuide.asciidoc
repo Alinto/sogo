@@ -2331,7 +2331,7 @@ ActiveSync:
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before replying to a Ping command.
 
-If not set, it defaults to `5` seconds.
+If not set, it defaults to `10` seconds.
 
 |S |SOGoMaximumSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
@@ -2342,7 +2342,8 @@ If not set, it defaults to `30` seconds.
 |S |SOGoInternalSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before doing an internal check for data changes (add, delete, and
-update). This parameter must be lower than _SOGoMaximumSyncInterval_.
+update). This parameter must be lower than _SOGoMaximumSyncInterval_ and
+_SOGoMaximumPingInterval_.
 
 If not set, it defaults to `10` seconds.
 

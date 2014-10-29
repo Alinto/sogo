@@ -3,6 +3,7 @@
 
 Enhancements
  - no longer leaking database passwords in the logs (#2953)
+ - added support for multiple calendars and address books over ActiveSync
 
 Bug fixes
  - fixed freebusy lookup with "Show time as busy" (#2930)
@@ -10,6 +11,8 @@ Bug fixes
  - fixed folder's display name when subscribing to a folder
  - fixed folder's display name when the active user subscribes another user to one of her/his folders
  - fixed error with new user default sorting value for the mailer module (#2952)
+ - fixed ActiveSync PING command flooding the server (#2940)
+ - fixed many interop issues with Windows Phones over ActiveSync
 
 2.2.9a (2014-09-29)
 -------------------

@@ -1693,19 +1693,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
           if (folderType == ActiveSyncMailFolder)
-              folderMetadata = [self _folderMetadataForKey:  [NSString stringWithFormat: @"folder%@", [[collectionId stringByUnescapingURL] substringFromIndex:5]]];
+              folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"folder%@", [[collectionId stringByUnescapingURL] substringFromIndex:5]]];
           else 
               folderMetadata = [self _folderMetadataForKey: [collectionId stringByUnescapingURL]];
 
           collection = [self collectionFromId: realCollectionId  type: folderType];
 
-          // if collection doesn't exists skip it - next foldersync will do the cleanup
+          // If collection doesn't exist skip it - next foldersync will do the cleanup
           if (!collection)
              continue;
           
           syncKey = [folderMetadata objectForKey: @"SyncKey"];
       
-          if (![syncKey isEqualToString: [collection davCollectionTag]])
+          if (syncKey && ![syncKey isEqualToString: [collection davCollectionTag]])
             {
               [foldersWithChanges addObject: collectionId];
             }

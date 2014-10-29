@@ -592,7 +592,7 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   v = [self integerForKey: @"SOGoMaximumPingInterval"];
 
   if (!v)
-    v = 5;
+    v = 10;
 
   return v;
 }
