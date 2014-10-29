@@ -315,6 +315,15 @@ static NSString *mailETag = nil;
               [matchingIdentityEMail retain];
             }
         }
+      
+      if (!matchingIdentityEMail)
+        {
+          // This can happen if we receive the message because we are
+          // in the list of bcc. In this case, we take the first
+          // identity associated with the account.
+          matchingIdentityEMail = [[[[[self clientObject] mailAccountFolder] identities] lastObject] objectForKey: @"email"];
+          RETAIN(matchingIdentityEMail);
+        }
     }
 
   return matchingIdentityEMail;
@@ -487,13 +496,18 @@ static NSString *mailETag = nil;
 
 - (NGHashMap *) _receiptMessageHeaderTo: (NSString *) email
 {
+  NSString *subject, *from;
   NGMutableHashMap *map;
-  NSString *subject;
 
   map = [[NGMutableHashMap alloc] initWithCapacity: 1];
   [map autorelease];
   [map setObject: email forKey: @"to"];
-  [map setObject: [self _matchingIdentityEMail] forKey: @"from"];
+
+  from = [self _matchingIdentityEMail];
+  
+  if (from)
+    [map setObject: from forKey: @"from"];
+  
   [map setObject: @"multipart/report; report-type=disposition-notification"
           forKey: @"content-type"];
   subject = [NSString stringWithFormat:
