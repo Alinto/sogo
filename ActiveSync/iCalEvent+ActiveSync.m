@@ -127,7 +127,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
 
   if (!tz)
-    tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
+    tz = [iCalTimeZone timeZoneForName: [userTimeZone name]]
 
   [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
