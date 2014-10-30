@@ -67,8 +67,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/NSString+Mail.h>
 #include <Mailer/SOGoMailBodyPart.h>
-
 #include <SOGo/SOGoUser.h>
+#include <SOGo/NSString+Utilities.h>
 
 typedef struct {
   uint32_t dwLowDateTime;
@@ -323,6 +323,11 @@ struct GlobalObjectId {
 
           if (s)
             {
+              // We sanitize the content immediately, in case we have non-UNICODE safe
+              // characters that would be re-encoded later in HTML entities and thus,
+              // ignore afterwards.
+              s = [s safeString];
+
               body = [s dataUsingEncoding: NSUTF8StringEncoding];
             }
 
