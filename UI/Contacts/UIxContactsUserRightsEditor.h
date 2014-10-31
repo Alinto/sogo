@@ -27,19 +27,10 @@
 
 @interface UIxContactsUserRightsEditor : UIxUserRightsEditor
 
-- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects;
 - (BOOL) userCanCreateObjects;
-
-- (void) setUserCanEraseObjects: (BOOL) userCanEraseObjects;
 - (BOOL) userCanEraseObjects;
-
-- (void) setUserCanEditObjects: (BOOL) userCanEditObjects;
 - (BOOL) userCanEditObjects;
-
-- (void) setUserCanViewObjects: (BOOL) userCanViewObjects;
 - (BOOL) userCanViewObjects;
-
-- (void) updateRights;
 
 @end
 

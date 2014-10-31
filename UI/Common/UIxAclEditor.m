@@ -24,17 +24,19 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
 
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGCards/iCalPerson.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "UIxAclEditor.h"
 
@@ -85,8 +87,9 @@
 {
   id <WOActionResults> result;
   NSEnumerator *aclsEnum;
-  NSString *currentUID, *ownerLogin;
-  NSDictionary *object;
+  NSString *currentUID, *ownerLogin, *info;
+  NSMutableDictionary *userData;
+  NSDictionary *currentUserInfos;
 
   if (!prepared)
     {
@@ -104,18 +107,40 @@
                   // Set the current user in order to get information associated with it
                   [self setCurrentUser: currentUID];
 
-                  // Build the object associated with the key; currentUID
-                  object = [NSDictionary dictionaryWithObjectsAndKeys: currentUser, @"uid",
-                                                                      [self currentUserClass], @"userClass",
-                                                                      [self currentUserDisplayName], @"displayName",
-                                                                      [NSNumber numberWithBool: [self currentUserIsSubscribed]], @"isSubscribed", nil];
-                  [users setObject: object forKey: currentUID];
+                  // Build the object associated to the current UID
+                  currentUserInfos = [self currentUserInfos];
+                  userData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                             currentUser, @"uid",
+                                           [self currentUserClass], @"userClass",
+                                           [NSNumber numberWithBool: [self currentUserIsSubscribed]], @"isSubscribed",
+                                           nil];
+                  if ((info = [currentUserInfos objectForKey: @"cn"]) && [info length])
+                    [userData setObject: info forKey: @"cn"];
+                  if ((info = [currentUserInfos objectForKey: @"c_email"]) && [info length])
+                    [userData setObject: info forKey: @"c_email"];
+                  [users setObject: userData forKey: currentUID];
             }
         }
-      // Adding the Any authenticated user and the public access
-      [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"<default>", @"uid", [self labelForKey: @"Any Authenticated User"], @"displayName", @"public-user", @"userClass", nil] forKey: @"<default>"];
+
+      // Add the 'Any authenticated' user
+      userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 @"<default>", @"uid",
+                               [self labelForKey: @"Any Authenticated User"], @"cn",
+                               @"public-user", @"userClass",
+                               nil];
+      [users setObject: userData forKey: @"<default>"];
+
       if ([self isPublicAccessEnabled])
-        [users setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"anonymous", @"uid", [self labelForKey: @"Public Access"], @"displayName", @"public-user", @"userClass", nil] forKey: @"anonymous"];
+        {
+          // Add the 'public access' user
+          userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"anonymous", @"uid",
+                                   [self labelForKey: @"Public Access"], @"cn",
+                                   @"public-user", @"userClass",
+                                   nil];
+          [users setObject: userData forKey: @"anonymous"];
+        }
+
       prepared = YES;
     }
 
@@ -151,6 +176,15 @@
   um = [SOGoUserManager sharedUserManager];
 
   return [um getFullEmailForUID: [self currentUser]];
+}
+
+- (NSDictionary *) currentUserInfos
+{
+  SOGoUserManager *um;
+
+  um = [SOGoUserManager sharedUserManager];
+
+  return [um contactInfosForUserWithUIDorEmail: [self currentUser]];
 }
 
 - (BOOL) canSubscribeUsers
@@ -203,16 +237,15 @@
   while ((currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"]))
     if ([currentUID isEqualToString: ownerLogin]
         || [savedUIDs containsObject: currentUID])
-      [users removeObject: currentUID];
-  [clientObject removeAclsForUsers: users];
+      [users removeObjectForKey: currentUID];
+  [clientObject removeAclsForUsers: [users allKeys]];
 
   return [self jsCloseWithRefreshMethod: nil];
 }
 
 - (BOOL) isPublicAccessEnabled
 {
-  return [[SOGoSystemDefaults sharedSystemDefaults]
-           enablePublicAccess];
+  return [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess];
 }
 
 @end
