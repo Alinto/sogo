@@ -1,8 +1,6 @@
 /* UIxUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
+
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoObject.h>
@@ -31,6 +34,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
+
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
 #import "UIxUserRightsEditor.h"
@@ -123,8 +127,8 @@
 
       um = [SOGoUserManager sharedUserManager];
       if ([newUID isEqualToString: defaultUserID] 
-         || [newUID isEqualToString: @"anonymous"] 
-         || [[um getEmailForUID: newUID] length] > 0)
+          || [newUID isEqualToString: @"anonymous"]
+          || [[um getEmailForUID: newUID] length] > 0)
         {
           if (![newUID hasPrefix: @"@"])
             {
@@ -140,6 +144,7 @@
           response = YES;
         }
     }
+
   return response;
 }
 - (BOOL) _initRightsForUserID:(NSString *) newUID
@@ -158,7 +163,7 @@
         ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
       um = [SOGoUserManager sharedUserManager];
-      if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"] 
+      if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"]
                                                   || [[um getEmailForUID: newUID] length] > 0)
         {
           if (![newUID hasPrefix: @"@"])
@@ -181,15 +186,21 @@
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> response;
+  NSDictionary *jsonResponse;
 
   if (![self _initRights])
-    response = [self responseWithStatus: 403
-                              andString: @"No such user."];
-  else {
-    //[self prepareRightsForm];
-    response = [self responseWithStatus: 200 
-                              andString:[[self userRightsForObject] jsonRepresentation]];
-  }
+    {
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
+                                                 forKey: @"error"];
+      response = [self responseWithStatus: 403
+                                andString: [jsonResponse jsonRepresentation]];
+    }
+  else
+    {
+      jsonResponse = [self userRightsForObject];
+      response = [self responseWithStatus: 200
+                                andString: [jsonResponse jsonRepresentation]];
+    }
   return response;
 }
 
@@ -220,39 +231,39 @@
   id <WOActionResults> response;
   WORequest *request;
   SOGoDomainDefaults *dd;
-  NSDictionary *dirtyUsers, *currentUser, *jsonResponse;;
-  NSEnumerator *enumerator;
-  NSString *uid;
+  NSArray *users;
+  NSDictionary *currentUser, *jsonResponse;;
+  NSEnumerator *usersList;
+  NSString *currentUid;
   NSArray *o;
 
   request = [[self context] request];
-  dirtyUsers = [[request contentAsString] objectFromJSONString];
-  enumerator = [dirtyUsers keyEnumerator];
-
-  while((uid = [enumerator nextObject]))
-  {
-    currentUser = [dirtyUsers objectForKey: uid];
-    if(!([self _initRightsForUserID: [currentUser objectForKey: @"uid"]])) 
-    {
-      jsonResponse = [NSDictionary dictionaryWithObject: @"No such user." forKey: @"error"];
-      response = [self responseWithStatus: 403
-                                andString: [jsonResponse jsonRepresentation]];
-      return response;
-    }
-    else 
-    {
-      o = [NSArray arrayWithArray: userRights];
-      [self updateRights:[currentUser objectForKey: @"aclOptions"]];
-      [[self clientObject] setRoles: userRights forUser: uid];
-
-      dd = [[context activeUser] domainDefaults];
-      if (![o isEqualToArray: userRights] && [dd aclSendEMailNotifications])
-        [self sendACLAdvisoryTemplateForObject: [self clientObject]];
-
-      response = [self jsCloseWithRefreshMethod: nil];
-    }
-  }
   response = [self responseWithStatus: 200];
+  users = [[request contentAsString] objectFromJSONString];
+  usersList = [users objectEnumerator];
+
+  while ((currentUser = [usersList nextObject]))
+    {
+      currentUid = [currentUser objectForKey: @"uid"];
+      if (!([self _initRightsForUserID: currentUid]))
+        {
+          jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
+                                                     forKey: @"error"];
+          response = [self responseWithStatus: 403
+                                    andString: [jsonResponse jsonRepresentation]];
+          break;
+        }
+      else
+        {
+          o = [NSArray arrayWithArray: userRights];
+          [self updateRights: [currentUser objectForKey: @"rights"]];
+          [[self clientObject] setRoles: userRights forUser: currentUid];
+
+          dd = [[context activeUser] domainDefaults];
+          if (![o isEqualToArray: userRights] && [dd aclSendEMailNotifications])
+            [self sendACLAdvisoryTemplateForObject: [self clientObject]];
+        }
+    }
   return response;
 }
 
@@ -280,11 +291,12 @@
   [userRights removeObjectsInArray: list];
 }
 
-- (void) prepareRightsForm
+- (NSDictionary *) userRightsForObject
 {
+  return [self subclassResponsibility: _cmd];
 }
 
-- (void) updateRights
+- (void) updateRights: (NSDictionary *) newRights
 {
   [self subclassResponsibility: _cmd];
 }

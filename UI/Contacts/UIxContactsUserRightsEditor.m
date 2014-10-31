@@ -1,8 +1,6 @@
 /* UIxContactsUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +19,12 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
+
 #import <NGObjWeb/WORequest.h>
+
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxContactsUserRightsEditor.h"
@@ -52,15 +53,16 @@
 
 - (NSDictionary *) userRightsForObject
 {
-  return [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:[self userCanCreateObjects]], @"canCreateObjects",
-                                                     [NSNumber numberWithBool:[self userCanEraseObjects]], @"canEraseObjects",
-                                                     [NSNumber numberWithBool:[self userCanEditObjects]], @"canEditObjects",
-                                                     [NSNumber numberWithBool:[self userCanViewObjects]], @"canViewObjects", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSNumber numberWithBool:[self userCanCreateObjects]], @"canCreateObjects",
+                           [NSNumber numberWithBool:[self userCanEraseObjects]], @"canEraseObjects",
+                           [NSNumber numberWithBool:[self userCanEditObjects]], @"canEditObjects",
+                           [NSNumber numberWithBool:[self userCanViewObjects]], @"canViewObjects",
+                       nil];
 }
 
 - (void) updateRights: (NSDictionary *) newRights
 {
-
   if ([[newRights objectForKey: @"canCreateObjects"] boolValue])
     [self appendRight: SOGoRole_ObjectCreator];
   else
