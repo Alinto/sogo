@@ -64,6 +64,10 @@
           pageName    = "UIxAclEditor";
           actionName  = "acls";
         };
+        aclsTemplate = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxAclEditor";
+        };
       };
     };
     SOGoParentFolder = {

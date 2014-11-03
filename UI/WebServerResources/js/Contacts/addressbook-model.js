@@ -38,7 +38,8 @@
       $timeout: $timeout,
       $$resource: new Resource(Settings.baseURL),
       $Card: Card,
-      $$Acl: Acl
+      $$Acl: Acl,
+      activeUser: Settings.activeUser
     });
 
     return AddressBook; // return constructor
@@ -77,6 +78,9 @@
       // Instanciate AddressBook objects
       angular.forEach(this.$addressbooks, function(o, i) {
         _this.$addressbooks[i] = new AddressBook(o);
+        // Add 'isOwned' attribute based on active user (TODO: add it server-side?)
+        _this.$addressbooks[i].isOwned = _this.activeUser.isSuperUser
+          || _this.$addressbooks[i].owner == _this.activeUser.login;
       });
     }
     return this.$addressbooks;

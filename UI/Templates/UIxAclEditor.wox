@@ -1,57 +1,74 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
 <var:component xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:label="OGo:label"
-  xmlns:rsrc="OGo:url"
-  className="UIxPageFrame"
-  title="title"
-  const:toolbar="none"
-  const:popup="YES">
-  <script type="text/javascript">
-    var canSubscribeUsers = <var:if condition="canSubscribeUsers"
-      >true</var:if><var:if condition="canSubscribeUsers"
-      const:negate="YES"
-      >false</var:if>;
-    var isPublicAccessEnabled = <var:if condition="isPublicAccessEnabled"
-      >true</var:if><var:if condition="isPublicAccessEnabled"
-      const:negate="YES"
-      >false</var:if>;
-  </script>
-
-  <form id="aclForm" const:href="saveAcls">
-    <div class="acls">
-      <div id="userSelectorHeader">
-	<input type="hidden" name="defaultUserID" id="defaultUserID"
-	  var:value="defaultUserID"/>
-	<input type="hidden" name="action" value="saveAcls"/>
-	<input type="hidden" name="folderID" id="folderID" var:value="folderID"/>
-      </div>
-      <div class="userSelector" id="userRoles">
-        <div id="userSelectorButtons">
-          <a href="#" id="aclAddUser" class="smallToolbarButton"><span>
-          <img rsrc:src="add-contact.gif" label:title="Add..." /></span></a>
-          <a href="#" id="aclDeleteUser" class="smallToolbarButton"><span>
-          <img rsrc:src="remove-contact.gif" label:title="Remove" /></span></a>
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:uix="OGo:uix"
+               xmlns:label="OGo:label"
+               xmlns:rsrc="OGo:url"
+               className="UIxPageFrame"
+               title="title"
+               const:toolbar="none"
+               const:popup="YES">
+  <div id="modalACL">
+    <h2><var:string label:value="Access Rights"/> - <em>{{addressbook.name}}</em></h2>
+    <ul>
+      <!-- left side -->
+      <li>
+        <ul class="aclUsers">
+          <li data-ng-repeat="user in users | orderBy:['userClass', 'displayName']"
+              data-ng-click="selectUser(user)"
+              data-ng-class="{_selected: user==selectedUser}">
+            <span class="card-picture" data-ng-switch="user.userClass">
+              <i data-ng-switch-when="normal-user" class="icon-ion-ios7-person"><!-- normal-user --></i>
+              <i data-ng-switch-when="public-user" class="icon-ion-ios7-people"><!-- public-user --></i>
+            </span>
+            <span class="name">{{user.$shortFormat()}}</span>
+            <span class="subscriptionArea"
+                  data-ng-hide="user.$isSpecial()">
+              <label>
+                <input type="checkbox"
+                       data-ng-model="user.isSubscribed"
+                       data-ng-checked="user.isSubscribed"
+                       data-ng-disabled="user.wasSubscribed" />
+                <span><var:string label:value="Subscribe User"/></span>
+              </label>
+            </span>
+          </li>
+        </ul>
+        <form class="addContactsToolbar"
+              data-ng-submit="addUser(userToAdd)">
+          <table id="bottomTable">
+            <tr>
+              <td id="td_1"><i class="icon-ion-search"><!-- search --></i>
+              <input type="search" class="form-control" label:placeholder="email address"
+                     data-ng-model="userToAdd"
+                     data-typeahead-editable="false"
+                     data-typeahead-wait-ms="500"
+                     data-typeahead="user as user.$shortFormat() for user in userFilter($viewValue)"/>
+              </td>
+              <td id="td_2">
+                <button type="submit" ><var:string label:value="Add User" /></button>
+                <button type="button"
+                        data-ng-disabled="!selectedUser || selectedUser.$isSpecial()"
+                        data-ng-click="removeUser(selectedUser)"><var:string label:value="Remove User"/></button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </li>
+      <!-- right side -->
+      <li id="AccessRightList" data-ng-show="selectedUser">
+        <div class="title">
+          {{selectedUser.$shortFormat()}}
         </div>
-	<ul id="userList">
-	  <var:foreach list="usersForObject" item="currentUser"
-            ><li var:id="currentUser.stringByEscapingHTMLString" var:class="currentUserClass">
-              <span class="userFullName"
-                 ><var:string value="currentUserDisplayName"
-                 /></span>
-              <var:if condition="canSubscribeUsers"
-                 ><label class="subscriptionArea"><input type="checkbox"
-                    var:checked="currentUserIsSubscribed"
-                    var:disabled="currentUserIsSubscribed"
-                    /><var:string label:value="Subscribe User"/></label
-                  ></var:if
-                ></li>
-          </var:foreach>
-	</ul>
-      </div>
-    </div>
-  </form>
+        <div data-ng-include="'userRights.html'"><!-- load template from main wox --></div>
+      </li>
+    </ul>
+  </div>
+  <div id="aclButtons">
+    <button data-ng-click="closeModal()"><var:string label:value="Close"/></button>
+    <button data-ng-click="saveModal()"><var:string label:value="Save"/></button>
+  </div>
+  <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
 </var:component>

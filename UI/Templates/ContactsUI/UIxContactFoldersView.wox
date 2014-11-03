@@ -65,107 +65,47 @@
     <div data-ui-view="addressbooks"><!-- addressbooks list --></div>
 
     <!-- modal for addressbook sharing options -->
-    <script type="text/ng-template" id="addressbookSharing.html">
-      <div id="modalACL">
-        <h2><var:string label:value="Access Rights"/> - <em>{{addressbook.name}}</em></h2>
+    <script type="text/ng-template" id="userRights.html">
+      <div class="addressbookUserRights">
         <ul>
-          <!-- left side -->
           <li>
-            <ul class="aclUsers">
-              <li data-ng-repeat="user in users | orderBy:['userClass', 'displayName']"
-                  data-ng-click="selectUser(user)"
-                  data-ng-class="{_selected: user==selectedUser}">
-                <span class="card-picture" data-ng-switch="user.userClass">
-                  <i data-ng-switch-when="normal-user" class="icon-ion-ios7-person"><!-- normal-user --></i>
-                  <i data-ng-switch-when="public-user" class="icon-ion-ios7-people"><!-- public-user --></i>
-                </span>
-                <span class="name">{{user.$shortFormat()}}</span>
-                <span class="subscriptionArea"
-                      data-ng-hide="user.$isSpecial()">
-                  <label>
-                    <input type="checkbox"
-                           data-ng-model="user.isSubscribed"
-                           data-ng-checked="user.isSubscribed"
-                           data-ng-disabled="user.wasSubscribed" />
-                    <span><var:string label:value="Subscribe User"/></span>
-                  </label>
-                </span>
-              </li>
-            </ul>
-            <form class="addContactsToolbar"
-                  data-ng-submit="addUser(userToAdd)">
-              <table id="bottomTable">
-                <tr>
-                  <td id="td_1"><i class="icon-ion-search"><!-- search --></i>
-                  <input type="search" class="form-control" label:placeholder="email address"
-                         data-ng-model="userToAdd"
-                         data-typeahead-editable="false"
-                         data-typeahead-wait-ms="500"
-                         data-typeahead="user as user.$shortFormat() for user in userFilter($viewValue)"/>
-                  </td>
-                  <td id="td_2">
-                    <button type="submit" ><var:string label:value="Add User" /></button>
-                    <button type="button"
-                            data-ng-disabled="!selectedUser || selectedUser.$isSpecial()"
-                            data-ng-click="removeUser(selectedUser)"><var:string label:value="Remove User"/></button>
-                  </td>
-                </tr>
-              </table>
-            </form>
+            <label>
+              <input type="checkbox"
+                     data-ng-checked="selectedUser.rights.canViewObjects"
+                     data-ng-model="selectedUser.rights.canViewObjects"
+                     data-ng-change="confirmChange(selectedUser)" />
+              <var:string label:value="This person can read the cards of this addressbook."/>
+            </label>
           </li>
-          <!-- right side -->
-          <li id="AccessRightList" data-ng-show="selectedUser">
-            <div class="title">
-              {{selectedUser.$shortFormat()}}
-            </div>
-            <div class="calendarUserRights">
-              <ul>
-                <li>
-                  <label>
-                    <input type="checkbox"
-                           data-ng-checked="selectedUser.rights.canViewObjects"
-                           data-ng-model="selectedUser.rights.canViewObjects"
-                           data-ng-change="confirmChange(selectedUser)" />
-                    <var:string label:value="This person can read the cards of this addressbook."/>
-                  </label>
-                </li>
-                <li data-ng-hide="selectedUser.$isAnonymous()">
-                  <label>
-                    <input type="checkbox"
-                           data-ng-checked="selectedUser.rights.canCreateObjects"
-                           data-ng-model="selectedUser.rights.canCreateObjects"
-                           data-ng-change="confirmChange(selectedUser)" />
-                    <var:string label:value="This person can add cards to this addressbook."/>
-                  </label>
-                </li>
-                <li data-ng-hide="selectedUser.$isAnonymous()">
-                  <label>
-                    <input type="checkbox"
-                           data-ng-checked="selectedUser.rights.canEditObjects"
-                           data-ng-model="selectedUser.rights.canEditObjects"
-                           data-ng-change="confirmChange(selectedUser)" />
-                    <var:string label:value="This person can edit the cards of this addressbook."/>
-                  </label>
-                </li>
-                <li data-ng-hide="selectedUser.$isAnonymous()">
-                  <label>
-                    <input type="checkbox"
-                           data-ng-checked="selectedUser.rights.canEraseObjects"
-                           data-ng-model="selectedUser.rights.canEraseObjects"
-                           data-ng-change="confirmChange(selectedUser)" />
-                    <var:string label:value="This person can erase cards from this addressbook."/>
-                  </label>
-                </li>
-              </ul>
-            </div>
+          <li data-ng-hide="selectedUser.$isAnonymous()">
+            <label>
+              <input type="checkbox"
+                     data-ng-checked="selectedUser.rights.canCreateObjects"
+                     data-ng-model="selectedUser.rights.canCreateObjects"
+                     data-ng-change="confirmChange(selectedUser)" />
+              <var:string label:value="This person can add cards to this addressbook."/>
+            </label>
+          </li>
+          <li data-ng-hide="selectedUser.$isAnonymous()">
+            <label>
+              <input type="checkbox"
+                     data-ng-checked="selectedUser.rights.canEditObjects"
+                     data-ng-model="selectedUser.rights.canEditObjects"
+                     data-ng-change="confirmChange(selectedUser)" />
+              <var:string label:value="This person can edit the cards of this addressbook."/>
+            </label>
+          </li>
+          <li data-ng-hide="selectedUser.$isAnonymous()">
+            <label>
+              <input type="checkbox"
+                     data-ng-checked="selectedUser.rights.canEraseObjects"
+                     data-ng-model="selectedUser.rights.canEraseObjects"
+                     data-ng-change="confirmChange(selectedUser)" />
+              <var:string label:value="This person can erase cards from this addressbook."/>
+            </label>
           </li>
         </ul>
       </div>
-      <div id="aclButtons">
-        <button data-ng-click="closeModal()"><var:string label:value="Close"/></button>
-        <button data-ng-click="saveModal()"><var:string label:value="Save"/></button>
-      </div>
-      <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
     </script>
 
     <script type="text/ng-template" id="addressbooks.html">
@@ -179,7 +119,7 @@
           <li data-ng-hide="addressbook.isRemote">
             <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
           </li>
-          <li data-ng-hide="addressbook.isRemote">
+          <li data-ng-show="addressbook.isOwned">
             <span class="button" data-ng-click="share()"><i class="icon-share"><!-- share --></i></span>
           </li>
           <li data-ng-hide="addressbook.isRemote">

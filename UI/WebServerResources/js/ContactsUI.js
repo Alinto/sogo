@@ -9,7 +9,13 @@
   angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'SOGo.Common', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
-      baseURL: ApplicationBaseURL
+      baseURL: ApplicationBaseURL,
+      activeUser: {
+        login: UserLogin,
+        language: UserLanguage,
+        folderURL: UserFolderURL,
+        isSuperUser: IsSuperUser
+      }
     })
 
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
@@ -181,7 +187,7 @@
       };
       $scope.share = function() {
         var modal = $modal.open({
-          templateUrl: 'addressbookSharing.html',
+          templateUrl: stateAddressbook.id + '/aclsTemplate',
           resolve: {
             modalUsers: function() {
               return stateAddressbook.$acl.$users();
