@@ -67,63 +67,95 @@
     <!-- modal for addressbook sharing options -->
     <script type="text/ng-template" id="addressbookSharing.html">
       <div id="modalACL">
-        <h2><var:string label:value="Access rights - "/>{{addressbook.name}}</h2>
+        <h2><var:string label:value="Access Rights"/> - <em>{{addressbook.name}}</em></h2>
         <ul>
-        <!-- left side -->
-          <li id="usersList">
-            <ul>
-              <li data-ng-repeat="user in users | orderBy:['userClass', 'displayName']" data-ng-click="selectUser(user)" data-ng-class="{_selected: user==selected}">
-                  <span class="card-picture" data-ng-switch="user.userClass">
-                    <i data-ng-switch-when="normal-user" class="icon-ion-ios7-person"><!-- normal-user --></i>
-                    <i data-ng-switch-when="public-user" class="icon-ion-ios7-people"><!-- public-user --></i>
-                  </span>
-                  <span class="name">{{user.displayName}}</span>
-                  <span class="subscriptionArea" data-ng-hide="user.userClass == 'public-user'">
-                    <input type="checkbox" data-ng-model="user.isSubscribed" data-ng-checked="user.isSubscribed" 
-                           data-ng-disabled="!user.canSubscribeUser" data-ng-change="markUserAsDirty(user)" />
+          <!-- left side -->
+          <li>
+            <ul class="aclUsers">
+              <li data-ng-repeat="user in users | orderBy:['userClass', 'displayName']"
+                  data-ng-click="selectUser(user)"
+                  data-ng-class="{_selected: user==selectedUser}">
+                <span class="card-picture" data-ng-switch="user.userClass">
+                  <i data-ng-switch-when="normal-user" class="icon-ion-ios7-person"><!-- normal-user --></i>
+                  <i data-ng-switch-when="public-user" class="icon-ion-ios7-people"><!-- public-user --></i>
+                </span>
+                <span class="name">{{user.$shortFormat()}}</span>
+                <span class="subscriptionArea"
+                      data-ng-hide="user.$isSpecial()">
+                  <label>
+                    <input type="checkbox"
+                           data-ng-model="user.isSubscribed"
+                           data-ng-checked="user.isSubscribed"
+                           data-ng-disabled="user.wasSubscribed" />
                     <span><var:string label:value="Subscribe User"/></span>
-                  </span>
+                  </label>
+                </span>
               </li>
             </ul>
-            <form data-ng-submit="addUser(userToAdd)" class="addContactsToolbar">
+            <form class="addContactsToolbar"
+                  data-ng-submit="addUser(userToAdd)">
               <table id="bottomTable">
                 <tr>
                   <td id="td_1"><i class="icon-ion-search"><!-- search --></i>
-                    <input type="search" data-ng-model="userToAdd" label:placeholder="email address" typeahead-wait-ms="500" 
-                          typeahead="user as user.cn for user in User.$filter($viewValue) | filter:$viewValue" 
-                          class="form-control" /></td>
-                  <td id="td_2"><button type="submit" ><var:string label:value="Add User"/></button>
-                      <button type="button" data-ng-disabled="userIsReadOnly()" data-ng-click="removeUser()"><var:string label:value="Remove User"/></button></td>
+                  <input type="search" class="form-control" label:placeholder="email address"
+                         data-ng-model="userToAdd"
+                         data-typeahead-editable="false"
+                         data-typeahead-wait-ms="500"
+                         data-typeahead="user as user.$shortFormat() for user in userFilter($viewValue)"/>
+                  </td>
+                  <td id="td_2">
+                    <button type="submit" ><var:string label:value="Add User" /></button>
+                    <button type="button"
+                            data-ng-disabled="!selectedUser || selectedUser.$isSpecial()"
+                            data-ng-click="removeUser(selectedUser)"><var:string label:value="Remove User"/></button>
+                  </td>
                 </tr>
               </table>
             </form>
           </li>
-        <!-- right side -->
-          <li id="AccessRightList">
+          <!-- right side -->
+          <li id="AccessRightList" data-ng-show="selectedUser">
             <div class="title">
-              {{userSelected.displayName}}
+              {{selectedUser.$shortFormat()}}
             </div>
             <div class="calendarUserRights">
               <ul>
-                <li data-ng-show="displayUserRights()">
-                  <input type="checkbox" data-ng-checked="userSelected.aclOptions.canCreateObjects" 
-                         data-ng-model="userSelected.aclOptions.canCreateObjects" data-ng-change="markUserAsDirty()" />
-                  <var:string label:value="This person can add cards to this addressbook."/></li>
-
-                <li data-ng-show="displayUserRights()" data-ng-model="displayUserRights">
-                  <input type="checkbox" data-ng-checked="userSelected.aclOptions.canEditObjects"
-                         ng-model="userSelected.aclOptions.canEditObjects" data-ng-change="markUserAsDirty()" />
-                  <var:string label:value="This person can edit the cards of this addressbook."/></li>
-
-                <li data-ng-show="displayUserRights()" data-ng-model="displayUserRights">
-                  <input type="checkbox" data-ng-checked="userSelected.aclOptions.canEraseObjects"
-                         data-ng-model="userSelected.aclOptions.canEraseObjects" data-ng-change="markUserAsDirty()" />
-                  <var:string label:value="This person can erase cards from this addressbook."/></li>
-
-                <li data-ng-hide="!userSelected.displayName">
-                  <input type="checkbox" data-ng-checked="userSelected.aclOptions.canViewObjects"
-                         data-ng-model="userSelected.aclOptions.canViewObjects" data-ng-change="markUserAsDirty()" />
-                  <var:string label:value="This person can read the cards of this addressbook."/></li>
+                <li>
+                  <label>
+                    <input type="checkbox"
+                           data-ng-checked="selectedUser.rights.canViewObjects"
+                           data-ng-model="selectedUser.rights.canViewObjects"
+                           data-ng-change="confirmChange(selectedUser)" />
+                    <var:string label:value="This person can read the cards of this addressbook."/>
+                  </label>
+                </li>
+                <li data-ng-hide="selectedUser.$isAnonymous()">
+                  <label>
+                    <input type="checkbox"
+                           data-ng-checked="selectedUser.rights.canCreateObjects"
+                           data-ng-model="selectedUser.rights.canCreateObjects"
+                           data-ng-change="confirmChange(selectedUser)" />
+                    <var:string label:value="This person can add cards to this addressbook."/>
+                  </label>
+                </li>
+                <li data-ng-hide="selectedUser.$isAnonymous()">
+                  <label>
+                    <input type="checkbox"
+                           data-ng-checked="selectedUser.rights.canEditObjects"
+                           data-ng-model="selectedUser.rights.canEditObjects"
+                           data-ng-change="confirmChange(selectedUser)" />
+                    <var:string label:value="This person can edit the cards of this addressbook."/>
+                  </label>
+                </li>
+                <li data-ng-hide="selectedUser.$isAnonymous()">
+                  <label>
+                    <input type="checkbox"
+                           data-ng-checked="selectedUser.rights.canEraseObjects"
+                           data-ng-model="selectedUser.rights.canEraseObjects"
+                           data-ng-change="confirmChange(selectedUser)" />
+                    <var:string label:value="This person can erase cards from this addressbook."/>
+                  </label>
+                </li>
               </ul>
             </div>
           </li>

@@ -17,7 +17,7 @@
         var newAddressBookData = AddressBook.$$resource.create('createFolder', this.name);
         this.$unwrap(newAddressBookData);
       }
-      else if (this.id){
+      else if (this.id) {
         this.$acl = new AddressBook.$$Acl(this.id);
       }
     }
@@ -55,10 +55,12 @@
    */
   AddressBook.$add = function(addressbook) {
     // Insert new addressbook at proper index
-    var sibling = _.find(this.$addressbooks, function(o) {
+    var sibling, i;
+
+    sibling = _.find(this.$addressbooks, function(o) {
       return (o.isRemote || (o.id != 'personal' && o.name.localeCompare(addressbook.name) === 1));
     });
-    var i = sibling? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
+    i = sibling ? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
     this.$addressbooks.splice(i, 0, addressbook);
   };
 
@@ -83,11 +85,11 @@
   /**
    * @memberOf AddressBook
    * @desc Fetch list of cards and return an AddressBook instance
-   * @param {string} addressbook_id - the addressbook identifier
+   * @param {string} addressbookId - the addressbook identifier
    * @returns an AddressBook object instance
    */
-  AddressBook.$find = function(addressbook_id) {
-    var futureAddressBookData = AddressBook.$$resource.find(addressbook_id);
+  AddressBook.$find = function(addressbookId) {
+    var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view');
 
     return new AddressBook(futureAddressBookData);
   };
@@ -109,17 +111,19 @@
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options) {
-    var _this = this;
-    var params = { 'search': 'name_or_address',
-                   'value': search,
-                   'sort': 'c_cn',
-                   'asc': 'true' };
+    var _this = this,
+        params = {
+          search: 'name_or_address',
+          value: search,
+          sort: 'c_cn',
+          asc: 'true'
+        };
     if (options && options.excludeLists) {
       params.excludeLists = true;
     }
 
-    return this.$id().then(function(addressbook_id) {
-      var futureAddressBookData = AddressBook.$$resource.filter(addressbook_id, params);
+    return this.$id().then(function(addressbookId) {
+      var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', params);
       return futureAddressBookData.then(function(data) {
         var cards;
         if (options && options.dry) {
@@ -157,8 +161,8 @@
   };
 
   AddressBook.prototype.$delete = function() {
-    var _this = this;
-    var d = AddressBook.$q.defer();
+    var _this = this,
+        d = AddressBook.$q.defer();
     AddressBook.$$resource.remove(this.id)
       .then(function() {
         var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
@@ -171,14 +175,14 @@
   };
 
   AddressBook.prototype.$save = function() {
-    return AddressBook.$$resource.save(this.id, this.$omit()).then(function (data) {
+    return AddressBook.$$resource.save(this.id, this.$omit()).then(function(data) {
       return data;
     });
   };
 
-  AddressBook.prototype.$getCard = function(card_id) {
-    return this.$id().then(function(addressbook_id) {
-      return AddressBook.$Card.$find(addressbook_id, card_id);
+  AddressBook.prototype.$getCard = function(cardId) {
+    return this.$id().then(function(addressbookId) {
+      return AddressBook.$Card.$find(addressbookId, cardId);
     });
   };
 

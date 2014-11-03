@@ -89,7 +89,7 @@
    * @see {@link AddressBook.$getCard}
    */
   Card.$find = function(addressbook_id, card_id) {
-    var futureCardData = this.$$resource.find([addressbook_id, card_id].join('/'));
+    var futureCardData = this.$$resource.fetch([addressbook_id, card_id].join('/'), 'view');
 
     if (card_id) return new Card(futureCardData); // a single card
 
@@ -340,7 +340,8 @@
   };
 
   Card.prototype.$addMember = function(email) {
-    var card = new Card({email: email, emails: [{value: email}]});
+    var card = new Card({email: email, emails: [{value: email}]}),
+        i;
     if (angular.isUndefined(this.refs)) {
       this.refs = [card];
     }
@@ -348,7 +349,7 @@
       this.refs.push(card);
     }
     else {
-      for (var i = 0; i < this.refs.length; i++) {
+      for (i = 0; i < this.refs.length; i++) {
         if (this.refs[i].email == email) {
           break;
         }
@@ -393,10 +394,12 @@
    * @param {Card} card
    */
   Card.prototype.$updateMember = function(index, email, card) {
-    var ref = {email: email,
-               emails: [{value: email}],
-               reference: card.c_name,
-               fn: card.$fullname()};
+    var ref = {
+      email: email,
+      emails: [{value: email}],
+      reference: card.c_name,
+      fn: card.$fullname()
+    };
     this.refs[index] = new Card(ref);
   };
 
