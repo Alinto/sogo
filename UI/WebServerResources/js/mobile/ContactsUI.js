@@ -107,12 +107,13 @@
       $urlRouterProvider.otherwise('/app/addressbooks');
     })
 
+  // Inspired from http://codepen.io/gastonbesada/pen/eqvJK
     .directive('ionSearch', function() {
       return {
         restrict: 'E',
         replace: true,
         scope: {
-          getData: '&source',
+          getData: '=source',
           clearData: '&clear',
           model: '=?',
           search: '=?filter'
@@ -126,9 +127,9 @@
             element.addClass(attrs.class);
 
           if (attrs.source) {
-            scope.$watch('search.value', function (newValue, oldValue) {
+            scope.$watch('search.value', function(newValue, oldValue) {
               if (newValue.length > attrs.minLength) {
-                scope.getData({search: newValue}).then(function (results) {
+                scope.getData(newValue).then(function(results) {
                   scope.model = results;
                 });
               }
@@ -140,10 +141,10 @@
           };
         },
         template: '<div class="item-input-wrapper">' +
-                  '<i class="icon ion-android-search"></i>' +
-                  '<input type="search" placeholder="{{placeholder}}" ng-model="search.value" id="searchInput">' +
-                  '<i ng-if="search.value.length > 0" ng-click="clearSearch()" class="icon ion-close"></i>' +
-                  '</div>'
+          '<i class="icon ion-android-search"></i>' +
+          '<input type="search" placeholder="{{placeholder}}" ng-model="search.value" id="searchInput">' +
+          '<i ng-if="search.value.length > 0" ng-click="clearSearch()" class="icon ion-close"></i>' +
+          '</div>'
       };
     })
 
@@ -159,7 +160,7 @@
       // };
     }])
 
-    .controller('AddressBooksCtrl', ['$scope', '$state', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'User', function($scope, $state, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, User) {
+    .controller('AddressBooksCtrl', ['$scope', '$state', '$rootScope', '$ionicModal', '$ionicListDelegate', '$ionicActionSheet', 'sgDialog', 'sgAddressBook', 'sgUser', function($scope, $state, $rootScope, $ionicModal, $ionicListDelegate, $ionicActionSheet, Dialog, AddressBook, User) {
       // Initialize with data from template
       $scope.addressbooks = AddressBook.$findAll(contactFolders);
       $scope.newAddressbook = function() {
@@ -182,126 +183,91 @@
         $ionicActionSheet.show({
           buttons: [
             { text: l('Rename') },
-            { text: l('Access rights') }
+            { text: l('Set Access Rights') }
           ],
           destructiveText: l('Delete'),
           cancelText: l('Cancel'),
           buttonClicked: function(index) {
-            if(index == 0) {
-              // Rename addressbook
-              Dialog.prompt(l('Rename addressbook'),
-                addressbook.name)
-              .then(function(name) {
-                if (name && name.length > 0) {
-                  addressbook.$rename(name);
-                }
-              });
+            if (index == 0) {
+              // Rename
+              Dialog.prompt(l('Rename addressbook'), addressbook.name)
+                .then(function(name) {
+                  if (name && name.length > 0) {
+                    addressbook.$rename(name); // TODO check error
+                  }
+                });
             }
-            else if(index == 1) {
-              // Build modal editor
+            else if (index == 1) {
+              // Set Access Rights
               $ionicModal.fromTemplateUrl('acl-modal.html', { scope: $scope }).then(function(modal) {
-                if ($scope.$aclEditorModal) {
-                  $scope.$aclEditorModal.remove();
-                }
-                // Variables in scope
-                $scope.$aclEditorModal = modal;
-                $scope.User = new User();
                 var aclUsers = {};
+
+                function refreshUsers(users) {
+                  $scope.users = [];
+                  $scope.search.active = false;
+                  angular.forEach(users, function(user) {
+                    user.inAclList = true;
+                    $scope.users.push(user);
+                    aclUsers[user.uid] = user;
+                  })
+                };
+
+                if ($scope.aclEditorModal) {
+                  $scope.aclEditorModal.remove();
+                }
+
+                $scope.title = addressbook.name;
+                $scope.aclEditorModal = modal;
+                $scope.showDelete = false;
+                $scope.search = {active: false};
+
+                // Load ACL users
                 addressbook.$acl.$users().then(function(users) {
                   refreshUsers(users);
                 }, function(data, status) {
                   Dialog.alert(l('Warning'), l('An error occurs while trying to fetch users from the server.'));
                 });
-                $scope.showDelete = false;
-                $scope.onGoingSearch = false;
 
-                // Variables in javascript
-                var dirtyObjects = {};
-
-                // Local functions
-                function refreshUsers(users) {
-                  $scope.users = [];
-                  $scope.onGoingSearch = false;
-                  angular.forEach(users, function(user){
-                    user.inAclList = true;
-                    user.canSubscribeUser = (user.isSubscribed) ? false : true;
-                    $scope.users.push(user);
-                    aclUsers[user.uid] = user;
-                  })
-                };
-    
-                // Function in scope
                 $scope.closeModal = function() {
-                  $scope.$aclEditorModal.remove();
+                  $scope.aclEditorModal.remove();
                 };
-                $scope.saveModal = function() {
-                  if(!_.isEmpty(dirtyObjects)) {
-                    if(dirtyObjects["anonymous"])
-                    {
-                      if($scope.validateChanges(dirtyObjects["anonymous"])) {
-                        Dialog.confirm(l("Warning"), l("Potentially anyone on the Internet will be able to access your folder, even if they do not have an account on this system. Is this information suitable for the public Internet?")).then(function(res){
-                          if(res){
-                            addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
-                              Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                            });
-                            $scope.$aclEditorModal.remove();
-                          };
-                        })
-                      }
-                      else {
-                        addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
-                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                        });
-                        $scope.$aclEditorModal.remove();
-                      }
-                    }
-                    else if (dirtyObjects["<default>"]) {
-                      if($scope.validateChanges(dirtyObjects["<default>"])) {
-                        Dialog.confirm(l("Warning"), l("Any user with an account on this system will be able to access your folder. Are you certain you trust them all?")).then(function(res){
-                          if(res){
-                            addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
-                              Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                            });
-                            $scope.$aclEditorModal.remove();
-                          };
-                        })
-                      }
-                      else {
-                        addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
-                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                        });
-                        $scope.$aclEditorModal.remove();
-                      }
+                $scope.displayIcon = function(user) {
+                  if (user.inAclList)
+                    return ($scope.userIsSelected(user) ? 'ion-ios7-arrow-down' : 'ion-ios7-arrow-right');
+                  else
+                    return 'ion-plus';
+                }
+                $scope.toggleUser = function(user) {
+                  if (user.inAclList) {
+                    if ($scope.userIsSelected(user)) {
+                      // Close rights editor
+                      delete $scope.selectedUser;
                     }
                     else {
-                      addressbook.$acl.$saveUsersRights(dirtyObjects).then(null, function(data, status) {
-                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                      });
-                      var usersToSubscribe = [];
-                      angular.forEach(dirtyObjects, function(dirtyObject){
-                        if(dirtyObject.canSubscribeUser && dirtyObject.isSubscribed){
-                          usersToSubscribe.push(dirtyObject.uid);
-                        }
-                      })
-                      if(!_.isEmpty(usersToSubscribe))
-                        addressbook.$acl.$subscribeUsers(usersToSubscribe).then(null, function(data, status) {
-                          Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                        });
-
-                      $scope.$aclEditorModal.remove();
+                      // Edit user rights
+                      $scope.editUser(user);
                     }
                   }
-                  else
-                    $scope.$aclEditorModal.remove();
+                  else {
+                    // Add user
+                    $scope.addUser(user);
+                  }
                 };
-                $scope.validateChanges = function(object) {
-                  if (object.aclOptions.canViewObjects || object.aclOptions.canCreateObjects || object.aclOptions.canEditObjects || object.aclOptions.canEraseObjects)
-                    return true;
-                  else
-                    return false;
+                $scope.userIsSelected = function(user) {
+                  return $scope.selectedUser && $scope.selectedUser.uid == user.uid;
+                };
+                $scope.searchUsers = function(search) {
+                  $scope.users = [];
+                  $scope.search.active = true;
+                  return User.$filter(search).then(function(results) {
+                    angular.forEach(results, function(userFound) {
+                      userFound.inAclList = (aclUsers[userFound.uid]) ? true : false;
+                      $scope.users.push(userFound);
+                    })
+                  });
                 };
                 $scope.cancelSearch = function() {
-                  addressbook.$acl.$users().then(function(users) { 
+                  addressbook.$acl.$users().then(function(users) {
                     refreshUsers(users);
                   }, function(data, status) {
                     Dialog.alert(l('Warning'), l('An error occured please try again.'));
@@ -310,104 +276,57 @@
                 $scope.toggleDelete = function(boolean) {
                   $scope.showDelete = boolean;
                 };
-                $scope.removeUser = function(user) {
-                  if (user) {
-                    if(dirtyObjects[user.uid])
-                      delete dirtyObjects[user.uid];
-                    delete aclUsers[user.uid];
-                    addressbook.$acl.$removeUser(user.uid).then(null, function(data, status) {
-                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                    });
-                    // Remove from the users list
-                    $scope.users = _.reject($scope.users, function(o) {
-                      return o.uid == user.uid;
-                    });
-                    $scope.userSelected = {};
-                  }
-                };
-                $scope.addUser = function (user) {
-                  if (user.uid) {
-                    if(!aclUsers[user.uid]) {
-                      addressbook.$acl.$addUser(user.uid).then(function() {
-                        user.inAclList = true;
-                        user.canSubscribeUser = (user.isSubscribed) ? false : true;
-                        aclUsers[user.uid] = user;
-                      }, function(data, status) {
-                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                      });
-                    }
-                    else
-                      Dialog.alert(l('Warning'), l('This user is already in your permissions list.'));
-                  }
-                  else
-                    Dialog.alert(l('Warning'), l('Please select a user inside your domain'));
-                };
                 $scope.editUser = function(user) {
-                  if ($scope.userSelected != user){
-                    $scope.userSelected = user;
-
-                    if (dirtyObjects[$scope.userSelected.uid]) {
-                      // If the user already made changes on the user rights, it is saved inside an object called dirty.
-                      // We preverse these changes untill the user decide to save or discard them.
-                      $scope.userSelected.aclOptions = dirtyObjects[$scope.userSelected.uid].aclOptions;
-                    }
-                    else {
-                      // Otherwise, if it's the first time the user consult the user rights; fetch from server
-                      addressbook.$acl.$userRights($scope.userSelected.uid).then(function(userRights) { 
-                        $scope.userSelected.aclOptions = userRights;
-                      }, function(data, status) {
-                        Dialog.alert(l('Warning'), l('An error occured please try again.'))
-                      });
-                    }
+                  if ($scope.selectedUser != user) {
+                    $scope.selectedUser = user;
+                    $scope.selectedUser.$rights();
                   }
                 };
-                $scope.searchUsers = function(search){
-                  $scope.users = [];
-                  $scope.onGoingSearch = true;
-                  return $scope.User.$filter(search).then(function(results) {
-                    angular.forEach(results, function(userFound){
-                      userFound.inAclList = (aclUsers[userFound.uid]) ? true : false;
-                      userFound["displayName"] = userFound.cn + " <" + userFound.c_email + ">";
-                      $scope.users.push(userFound);
-                    })
+                $scope.confirmChange = function(user) {
+                  var confirmation = user.$confirmRights();
+                  if (confirmation) {
+                    Dialog.confirm(l('Warning'), confirmation).then(function(res) {
+                      if (!res)
+                        user.$resetRights(true);
+                    });
+                  }
+                };
+                $scope.saveModal = function() {
+                  addressbook.$acl.$saveUsersRights().then(function() {
+                    $scope.aclEditorModal.remove();
+                  }, function(data, status) {
+                    Dialog.alert(l('Warning'), l('An error occured please try again.'));
                   });
                 };
-                $scope.toggleUser = function(user) {
-                  if (user.inAclList) {
-                    if ($scope.isUserShown(user)) {
-                      $scope.shownUser = null;
-                    } 
-                    else {
-                      $scope.shownUser = user;
-                      $scope.editUser(user);
-                    }
+                $scope.removeUser = function(user) {
+                  if (user) {
+                    addressbook.$acl.$removeUser(user.uid).then(function() {
+                      delete aclUsers[user.uid];
+                      delete $scope.selectedUser;
+                      $scope.users = _.reject($scope.users, function(o) {
+                        return o.uid == user.uid;
+                      });
+                    }, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
+                  }
+                };
+                $scope.addUser = function(user) {
+                  if (user.uid) {
+                    addressbook.$acl.$addUser(user).then(function() {
+                      user.inAclList = true;
+                      aclUsers[user.uid] = user;
+                    }, function(data, status) {
+                      Dialog.alert(l('Warning'), l('An error occured please try again.'))
+                    });
                   }
                   else {
-                    $scope.addUser(user);
-                  }  
+                    Dialog.alert(l('Warning'), l('Please select a user inside your domain'));
+                  }
                 };
-                $scope.isUserShown = function(user) {
-                  return $scope.shownUser === user;
-                };
-                $scope.markUserAsDirty = function() {
-                  dirtyObjects[$scope.userSelected.uid] = $scope.userSelected;
-                };
-                $scope.displayUserRights = function() {
-                  // Does the rights applies on the user/group
-                  return ($scope.userSelected && ($scope.userSelected.uid != "anonymous")) ? true : false;
-                };
-                $scope.displaySubscribeUser = function() {
-                  // Is the user/group available for subscription
-                  return ($scope.userSelected && !($scope.userSelected.uid == "anonymous" || $scope.userSelected.uid == "<default>")) ? true : false;
-                };
-                $scope.displayIcon = function(user) {
-                  if (user.inAclList)
-                    return ($scope.isUserShown(user) ? 'ion-ios7-arrow-down' : 'ion-ios7-arrow-right');
-                  else
-                    return 'ion-plus';
-                }
+
                 // Show modal
-                $scope.$aclEditorModal.show();
+                $scope.aclEditorModal.show();
               });
             }
             return true;
@@ -440,15 +359,15 @@
         $ionicActionSheet.show({
           //titleText: l('Create a new card or a new list'),
           buttons: [
-            { text: l('New Card')},
-            { text: l('New List')}
+            { text: l('New Card') },
+            { text: l('New List') }
           ],
           canceltext: l('Cancel'),
           buttonClicked: function(index) {
-            if (index == 0){
+            if (index == 0) {
               $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'card' });
             }
-            else if (index == 1){
+            else if (index == 1) {
               $state.go('app.newCard', { addressbookId: stateAddressbook.id, contactType: 'list' });
             }
             return true;
@@ -488,28 +407,32 @@
       $scope.allUrlTypes = Card.$URL_TYPES;
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
 
-      $scope.search = {query: ""};
+      $scope.search = {query: ''};
       $scope.cardsFilter = function(item) {
         var query, id = false;
-        if (item.tag == "vcard" && $scope.search.query) {
+        if (item.tag == 'vcard' && $scope.search.query) {
           query = $scope.search.query.toLowerCase();
           if (item.emails && item.emails.length > 0) {
             // Is one of the email addresses match the query string?
             if (_.find(item.emails, function(email) {
               return (email.value.toLowerCase().indexOf(query) >= 0);
-            }))
+            })) {
               id = item.id;
+            }
           }
-          if (!id && item.fn)
+          if (!id && item.fn) {
             // Is the fn attribute matches the query string?
-            if (item.fn.toLowerCase().indexOf(query) >= 0)
+            if (item.fn.toLowerCase().indexOf(query) >= 0) {
               id = item.id;
+            }
+          }
           if (id) {
             // Is the card already part of the members? If so, ignore it.
             if (_.find($scope.card.refs, function(ref) {
               return ref.reference == id;
-            }))
+            })) {
               id = false;
+            }
           }
         }
         return id;
@@ -524,7 +447,7 @@
         $scope.popover.hide();
       };
       $ionicPopover.fromTemplateUrl('searchFolderContacts.html', {
-        scope: $scope,
+        scope: $scope
       }).then(function(popover) {
         $scope.popover = popover;
       });
@@ -547,9 +470,9 @@
       $scope.cancel = function() {
         if ($scope.card.isNew) {
           $scope.$cardEditorModal.hide().then(function() {
-              // Go back to addressbook
-              $state.go('app.addressbook', { addressbookId: $rootScope.addressbook.id });
-            });
+            // Go back to addressbook
+            $state.go('app.addressbook', { addressbookId: $rootScope.addressbook.id });
+          });
         }
         else {
           $scope.card.$reset();

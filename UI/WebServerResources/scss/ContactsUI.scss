@@ -365,74 +365,67 @@ $column-gutter: 0;
 }
 
 #modalACL {
-    height: 25vw;
-    ul {
+    height: 60vh;
+    >ul {
         @include block-grid(2);
-        height: 85%;
     }
-    #usersList {
-        height: 100%;
+    padding: 0;
+    ul.aclUsers {
+        @include block-grid(
+            $per-row: 1,
+            $spacing: $block-grid-default-spacing,
+            $base-style: false
+        );
+        height: 85%;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
         padding: 0;
-        ul {
-            @include block-grid(
-                $per-row: 1,
-                $spacing: $block-grid-default-spacing,
-                $base-style: false
-            );
-            height: 85%;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
+        margin: 0;
+        li {
+            padding: 0;
+            padding-top: 5px;
+            line-height: 45px;
+            background-color: $f-dropdown-list-hover-bg;
+            transition: background 300ms ease;
+            &:hover, &:active {
+                         background-color: $f-dropdown-list-hover-bg;
+                         background-color: #fff;
+                     }
+            &._selected, &._selected span {
+                background-color: $module-color;
+                background-color: #fff;
+            }
+            .subscriptionArea {
+                float: right;
+                padding-right: 5px;
+            }
+        }
+    }
+    #bottomTable {
+        width: 100%;
+        margin: 0;
+        border: none;
+        #td_1 {
+            padding: 0;
+            width:100%;
+            i {
+                position: absolute;
+                padding-top: 10px;
+                padding-left: 8px;
+            }
+            input {
+                padding-left: 20px;
+                margin: 0;
+            }
+        }
+        #td_2 {
             padding: 0;
             margin: 0;
-            li {
-                padding: 0;
-                padding-top: 5px;
-                line-height: 45px;
-                background-color: $f-dropdown-list-hover-bg;
-                transition: background 300ms ease;
-                &:hover, &:active {
-                    background-color: $f-dropdown-list-hover-bg;
-                    background-color: #fff;
-                }
-                &._selected, &._selected span {
-                    background-color: $module-color;
-                    background-color: #fff;
-                }
-                .subscriptionArea {
-                    float: right;
-                    padding-right: 5px;
-                }
-            }
-        }
-        .f-dropdown {
-            height: auto;
-        }
-        #bottomTable {
-            width: 100%;
-            margin: 0;
-            border: none;
-            #td_1 {
-                padding: 0;
-                width:100%;
-                i {
-                    position: absolute;
-                    padding-top: 10px;
-                    padding-left: 8px;
-                }
-                input {
-                    padding-left: 20px;
-                    margin: 0;
-                }
-            }
-            #td_2 {
-                padding: 0;
+            float: right;
+            white-space: nowrap;
+            button {
                 margin: 0;
-                float: right;
-                white-space: nowrap;
-                button {
-                    margin: 0;
-                }
             }
         }
     }
@@ -573,8 +566,10 @@ $column-gutter: 0;
 }
 
 .f-dropdown {
+    width: auto;
+    max-width: 300px;
+    white-space: nowrap;
     &.icons-dropdown {
-        width: auto;
         height: inherit;
         //background-color: $primary-color;
         .button {
