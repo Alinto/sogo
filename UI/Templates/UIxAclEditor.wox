@@ -1,15 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
-<!DOCTYPE var:component>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-               xmlns:var="http://www.skyrix.com/od/binding"
-               xmlns:const="http://www.skyrix.com/od/constant"
-               xmlns:uix="OGo:uix"
-               xmlns:label="OGo:label"
-               xmlns:rsrc="OGo:url"
-               className="UIxPageFrame"
-               title="title"
-               const:toolbar="none"
-               const:popup="YES">
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
   <div id="modalACL">
     <h2><var:string label:value="Access Rights"/> - <em>{{addressbook.name}}</em></h2>
     <ul>
@@ -71,4 +66,4 @@
     <button data-ng-click="saveModal()"><var:string label:value="Save"/></button>
   </div>
   <span class="close-reveal-modal" data-ng-click="closeModal()"><i class="icon-close"><!-- close --></i></span>
-</var:component>
+</container>
