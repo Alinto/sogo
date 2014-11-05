@@ -14,6 +14,7 @@ Bug fixes
  - fixed ActiveSync PING command flooding the server (#2940)
  - fixed many interop issues with Windows Phones over ActiveSync
  - fixed automatic return receipts crash when not in the recepient list (#2965)
+ - fixed support for Sieve folder encoding parameter (#2622)
 
 2.2.9a (2014-09-29)
 -------------------
