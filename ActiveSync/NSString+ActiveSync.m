@@ -66,9 +66,9 @@ static NSArray *easCommandParameters = nil;
 {
   NSString *s;
 
-  s = [self stringByEscapingHTMLString];
+  s = [self safeString];
 
-  return [s safeString];
+  return [s stringByEscapingHTMLString];
 }
 
 - (int) activeSyncFolderType

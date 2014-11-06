@@ -16,6 +16,7 @@ Bug fixes
  - fixed automatic return receipts crash when not in the recepient list (#2965)
  - fixed support for Sieve folder encoding parameter (#2622)
  - fixed rename of subscribed addressbooks
+ - sanitize strings before escaping them when using EAS
 
 2.2.9a (2014-09-29)
 -------------------
