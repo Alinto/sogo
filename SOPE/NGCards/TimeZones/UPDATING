@@ -7,8 +7,8 @@ To updated the timezone files:
   
   mkdir /tmp/zones
   cd /tmp/zones
-  wget ftp://munnari.oz.au/pub/oldtz/tzdata2012j.tar.gz
-  tar -zxvf tzdata2012j.tar.gz
+  wget http://www.iana.org/time-zones/repository/releases/tzdata2014i.tar.gz
+  tar -zxvf tzdata2014i.tar.gz 
 
 3- run the conversion tool
 
