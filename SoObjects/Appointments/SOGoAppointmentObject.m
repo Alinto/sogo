@@ -1768,6 +1768,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
  * Verify vCalendar for any inconsistency or missing attributes.
  * Currently only check if the events have an end date or a duration.
  * We also check for the default transparency parameters.
+ * We also check for broken ORGANIZER such as "ORGANIZER;:mailto:sogo3@example.com"
  * @param rq the HTTP PUT request
  */
 - (void) _adjustEventsInRequestCalendar: (iCalCalendar *) rqCalendar
@@ -1792,7 +1793,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
         }
 
-      
+      if ([event organizer] && ![[[event organizer] cn] length])
+        {
+          [[event organizer] setCn: [[event organizer] rfc822Email]];
+        }
     }
 }
 
