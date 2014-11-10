@@ -11,11 +11,12 @@
    * @param {String} path - the base path of the external resource
    * @param {Object} options - extra attributes to be associated to the object
    */
-  function Resource($http, $q, path, options) {
+  function Resource($http, $q, path, activeUser, options) {
     angular.extend(this, {
       _http: $http,
       _q: $q,
-      _path: path
+      _path: path,
+      _activeUser: activeUser
     });
     angular.extend(this, options);
   }
@@ -38,6 +39,20 @@
   angular.module('SOGo.Common').factory('sgResource', Resource.$factory);
 
   /**
+   * @function userResource
+   * @memberof Resource.prototype
+   * @desc Create a new Resource object associated to a username different than the active user.
+   * @param {String} uid - the user UID
+   * @return a new Resource object
+   */
+  Resource.prototype.userResource = function(uid) {
+    var path = _.compact(this._activeUser.folderURL.split('/'));
+    path.splice(path.length - 1, 1, escape(uid));
+
+    return new Resource(this._http, this._q, '/' + path.join('/'), this._activeUser);
+  };
+
+  /**
    * @function fetch
    * @memberof Resource.prototype
    * @desc Fetch resource using a specific folder, action and/or parameters.
@@ -48,8 +63,10 @@
    */
   Resource.prototype.fetch = function(folderId, action, params) {
     var deferred = this._q.defer(),
-        path = [this._path, (folderId ? folderId : ''), (action ? action : '')];
-    path = _.compact(path).join('/');
+        path = [this._path];
+    if (folderId) path.push(folderId.split('/'));
+    if (action)   path.push(action);
+    path = _.compact(_.flatten(path)).join('/');
 
     this._http({
       method: 'GET',
