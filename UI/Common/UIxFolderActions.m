@@ -32,16 +32,17 @@
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/NSException+HTTP.h>
 
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoContentObject.h>
-#import <SoObjects/SOGo/SOGoGCSFolder.h>
-#import <SoObjects/SOGo/SOGoParentFolder.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <Contacts/SOGoContactSourceFolder.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -76,18 +77,17 @@
 - (WOResponse *) _subscribeAction: (BOOL) reallyDo
 {
   WOResponse *response;
+  NSDictionary *jsonResponse;
   NSURL *mailInvitationURL;
 
-  response = [context response];
-  [response setHeader: @"text/plain; charset=utf-8"
-               forKey: @"Content-Type"];
-
+  response = nil;
   [self _setupContext];
   if ([owner isEqualToString: login])
     {
-      [response setStatus: 403];
-      [response appendContentString:
-                  @"You cannot (un)subscribe to a folder that you own!"];
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"You cannot (un)subscribe to a folder that you own!"]
+                                                 forKey: @"error"];
+      response = [self responseWithStatus: 403
+                    andJSONRepresentation: jsonResponse];
     }
   else
     {
@@ -97,14 +97,27 @@
 
       if (isMailInvitation)
         {
-          mailInvitationURL
-            = [clientObject soURLToBaseContainerForCurrentUser];
-          [response setStatus: 302];
+          mailInvitationURL = [clientObject soURLToBaseContainerForCurrentUser];
+          response = [self responseWithStatus: 302];
           [response setHeader: [mailInvitationURL absoluteString]
                        forKey: @"location"];
         }
       else
-        [response setStatus: 204];
+        {
+          // @see [SOGoGCSFolder folderWithSubscriptionReference:inContainer:]
+          jsonResponse
+            = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSString stringWithFormat: @"%@_%@", [owner asCSSIdentifier], [clientObject nameInContainer]], @"id",
+                            owner, @"owner",
+                            [clientObject displayName], @"name",
+                            [NSNumber numberWithBool: [clientObject isKindOfClass: [SOGoGCSFolder class]]], @"isEditable",
+                            [NSNumber numberWithBool:
+                                        [clientObject isKindOfClass: [SOGoContactSourceFolder class]]
+                                      && ![(SOGoContactSourceFolder *) clientObject isPersonalSource]], @"isRemote",
+                            nil];
+          response = [self responseWithStatus: 200
+                        andJSONRepresentation: jsonResponse];
+        }
     }
 
   return response;
