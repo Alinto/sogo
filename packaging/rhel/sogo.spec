@@ -174,7 +174,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
+%if %{el7}
+. /usr/lib64/GNUstep/Makefiles/GNUstep.sh
+%else
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
+%endif
 ./configure %saml2_cfg_opts
 
 case %{_target_platform} in
