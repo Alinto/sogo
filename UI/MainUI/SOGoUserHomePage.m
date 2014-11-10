@@ -542,11 +542,18 @@
   id <WOActionResults> result;
   SOGoUserFolder *userFolder;
 
+
   folderType = [self queryParameterForKey: @"type"];
-  userFolder = [self clientObject];
-  folders = [userFolder foldersOfType: folderType
-                               forUID: [userFolder ownerInContext: context]];
-  result = [self _foldersResponseForResults: folders];
+  if ([folderType length])
+    {
+      userFolder = [self clientObject];
+      folders = [userFolder foldersOfType: folderType
+                                   forUID: [userFolder ownerInContext: context]];
+      result = [self _foldersResponseForResults: folders];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'type' parameter"];
   
   return result;
 }
