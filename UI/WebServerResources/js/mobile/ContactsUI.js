@@ -9,7 +9,13 @@
   angular.module('SOGo.ContactsUI', ['ionic', 'SOGo.Common', 'SOGo.UIMobile'])
 
     .constant('sgSettings', {
-      baseURL: ApplicationBaseURL
+      baseURL: ApplicationBaseURL,
+      activeUser: {
+        login: UserLogin,
+        language: UserLanguage,
+        folderURL: UserFolderURL,
+        isSuperUser: IsSuperUser
+      }
     })
 
     .run(function($ionicPlatform) {
@@ -52,9 +58,9 @@
               templateUrl: 'addressbook.html',
               controller: 'AddressBookCtrl',
               resolve: {
-                stateAddressbook: function($stateParams, sgAddressBook) {
-                  return sgAddressBook.$find($stateParams.addressbookId);
-                }
+                stateAddressbook: ['$stateParams', 'sgAddressBook', function($stateParams, AddressBook) {
+                  return AddressBook.$find($stateParams.addressbookId);
+                }]
               }
             }
           }

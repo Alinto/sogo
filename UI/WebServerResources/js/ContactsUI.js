@@ -131,7 +131,8 @@
                 {
                   name: name,
                   isEditable: true,
-                  isRemote: false
+                  isRemote: false,
+                  owner: UserLogin
                 }
               );
               AddressBook.$add(addressbook);
@@ -164,20 +165,34 @@
         }
       };
       $scope.confirmDelete = function() {
-        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
-                                       $rootScope.addressbook.name))
-          .then(function(res) {
-            if (res) {
-              $rootScope.addressbook.$delete()
-                .then(function() {
-                  $rootScope.addressbook = null;
-                }, function(data, status) {
-                  Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                                 $rootScope.addressbook.name),
-                               l(data.error));
-                });
-            }
-          });
+        if ($scope.addressbook.isOwned) {
+          Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
+                                         $scope.addressbook.name))
+            .then(function(res) {
+              if (res) {
+                $rootScope.addressbook.$delete()
+                  .then(function() {
+                    $rootScope.addressbook = null;
+                  }, function(data, status) {
+                    Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                                   $rootScope.addressbook.name),
+                                 l(data.error));
+                  });
+              }
+            });
+        }
+        else {
+          // Unsubscribe without confirmation
+          $rootScope.addressbook.$delete()
+            .then(function() {
+              $rootScope.addressbook = null;
+            }, function(data, status) {
+              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                             $rootScope.addressbook.name),
+                           l(data.error));
+            });
+
+        }
       };
       $scope.importCards = function() {
 
@@ -187,7 +202,7 @@
       };
       $scope.share = function() {
         var modal = $modal.open({
-          templateUrl: stateAddressbook.id + '/aclsTemplate',
+          templateUrl: stateAddressbook.id + '/aclsTemplate', // UI/Templates/UIxAclEditor.wox
           resolve: {
             modalUsers: function() {
               return stateAddressbook.$acl.$users();
@@ -265,6 +280,16 @@
           }
         }
         $scope.search.lastFilter = $scope.search.filter;
+      };
+
+      /**
+       * subscribeToFolder - Callback of sgSubscribe directive
+       */
+      $scope.subscribeToFolder = function(addressbookData) {
+        console.debug('subscribeToFolder ' + addressbookData.owner + addressbookData.name);
+        AddressBook.$subscribe(addressbookData.owner, addressbookData.name).catch(function(data) {
+          Dialog.alert(l('Warning'), l('An error occured please try again.'));
+        });
       };
     }])
 

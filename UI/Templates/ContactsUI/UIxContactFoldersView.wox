@@ -111,7 +111,7 @@
     <script type="text/ng-template" id="addressbooks.html">
 
       <!-- dropdown menu for addressbook options button -->
-      <div id="addressbookProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
+      <div id="addressbookProperties" class="f-dropdown icons-dropdown">
         <ul class="button-group">
           <li>
             <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
@@ -139,6 +139,11 @@
         <li><a class="tiny" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'list'})"><var:string label:value="New List"/></a></li>
       </ul>
 
+      <!-- dropdown menu for subscriptions -->
+      <div id="folderSubscribe" class="sg-dropdown-content"
+           data-sg-subscribe="contact"
+           data-sg-subscribe-on-select="subscribeToFolder"><!-- subscription dropdown --></div>
+
       <div id="addressbooksList" class="folders-list">
         <div class="newItemsToolbar">
           <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
@@ -161,12 +166,18 @@
                      data-sg-focus-on="addressBookName_{{$index}}"
                      data-sg-escape="revertEditing($index)"/>
             </form>
-            <span class="icon" data-ng-cloak="ng-cloak"><a class="icon" href="#" data-dropdown-toggle="#addressbookProperties" data-options="align:right" data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a></span>
+            <span class="icon" data-ng-cloak="ng-cloak">
+              <a class="icon" href="#"
+                 data-dropdown-toggle="#addressbookProperties"
+                 data-options="align:right"
+                 data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a>
+            </span>
           </li>
         </ul>
         <div class="buttonsToolbar">
           <button data-ng-click="newAddressbook()" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
-          <a href="#" class="button small" label:title="Subscribe to an Addressbook..."><i class="icon-earth"><!-- subscribe --></i></a>
+          <a href="#" class="button small" label:title="Subscribe to an Addressbook..."
+             data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth"><!-- subscribe --></i></a>
         </div>
         <!--<var:if condition="hasContactSelectionButtons">
           <div class="contactSelection">
@@ -411,7 +422,10 @@
                 <label class="right inline"><var:string label:value="Category"/></label>
               </div>
               <div class="value">
-                <input type="text" label:placeholder="category" data-ng-model="category.value" data-sg-focus-on="category_{{$index}}" data-typeahead="cat for cat in card.allCategories | filter:$viewValue"/>
+                <input type="text" label:placeholder="category"
+                       data-ng-model="category.value"
+                       data-sg-focus-on="category_{{$index}}"
+                       data-typeahead="cat for cat in card.allCategories | filter:$viewValue"/>
               </div>
             </div>
             <div class="attr">
