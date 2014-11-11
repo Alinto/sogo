@@ -587,6 +587,52 @@ $column-gutter: 0;
     }
 }
 
+.sg-dropdown-content {
+    background-color: #fff;
+    height: 300px;
+    &.joyride-tip-guide {
+        .joyride-nub {
+            &.left {
+                border-color: white !important;
+                border-top-color: transparent !important;
+                border-left-color: transparent !important;
+                border-bottom-color: transparent !important;
+            }
+        }
+        .joyride-content-wrapper {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            ul {
+                list-style-type: none;
+                &.subitems {
+                    margin-left: 0;
+                }
+            }
+            li {
+                &.title {
+                    background-color: $secondary-color;
+                    padding: $f-dropdown-list-padding;
+                    text-transform: uppercase;
+                    &:hover {
+                        background-color: $secondary-color;
+                    }
+                }
+                &.item {
+                    margin: 0 5px;
+                    @include radius($input-border-radius);
+                    .disabled {
+                        color: #ccc;
+                    }
+                }
+                @include dropdown-style();
+            }
+        }
+    }
+}
+
+
+
 address {
     font-style: normal;
 }
