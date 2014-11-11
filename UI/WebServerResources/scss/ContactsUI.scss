@@ -594,6 +594,8 @@ $column-gutter: 0;
 .sg-dropdown-content {
     background-color: #fff;
     height: 300px;
+    overflow: hidden;
+    overflow-y: auto;
     &.joyride-tip-guide {
         .joyride-nub {
             &.left {
