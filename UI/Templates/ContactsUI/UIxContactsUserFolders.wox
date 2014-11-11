@@ -1,23 +1,45 @@
-<?xml version='1.0' standalone='yes'?>
-<!DOCTYPE var:component>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:uix="OGo:uix"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="name"
-  const:toolbar="none"
-  const:popup="YES"
-  const:jsFiles="dtree.js">
-  <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-  <div id="folders"><!-- space --></div>
-  <div id="buttons">
-    <a id="addButton" class="button actionButton disabled" href="#">
-      <span><var:string label:value="Add" /></span></a>
-    <a id="doneButton" class="button" name="done">
-      <span><var:string label:value="Done"/></span></a>
-  </div>
-</var:component>
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
+  <ul>
+    <li class="title"><var:string label:value="Subscribe"/></li>
+    <li class="search">
+      <input type="text" label:placeholder="Search"
+             data-ng-model="searchString"
+             data-sg-user-typeahead="sg-user-typeahead" />
+    </li>
+    <li class="item"
+        data-ng-repeat="user in users">
+      <a data-ng-click="selectUser($index)"
+         data-ng-mouseenter="selectActive($index)">
+        <span data-bind-html-unsafe="user.$shortFormat() | typeaheadHighlight:query"><!-- user --></span>
+        <i class="icon right"
+           data-ng-class="{'icon-arrow-right': user.uid != selectedUser.uid, 'icon-arrow-down': user.uid == selectedUser.uid}"><!-- arrow --></i>
+      </a>
+      <ul class="subitems"
+          data-ng-if="user.uid == selectedUser.uid">
+        <li class="item"
+            data-ng-show="user.$$folders.length == 0">
+          <a class="disabled">
+            <i class="icon icon-notification"><!-- no subscription --></i>
+            <var:string label:value="No possible subscription"/>
+          </a>
+        </li>
+        <li class="item"
+            data-ng-repeat="folder in user.$$folders">
+          <a>
+            <i class="icon"
+               data-ng-class="{'icon-address-book': folder.type == 'Contact'}"><!-- type --></i>
+            <span data-ng-bind="folder.displayName"><!-- folder --></span>
+            <button class="button tiny right"
+                    data-ng-click="selectFolder(folder)">Subscribe</button>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</container>

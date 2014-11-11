@@ -27,8 +27,8 @@
    * @return a new Resource object
    */
   Resource.$factory =  ['$http', '$q', function($http, $q) {
-    return function(path, options) {
-      return new Resource($http, $q, path, options);
+    return function(path, activeUser, options) {
+      return new Resource($http, $q, path, activeUser, options);
     };
   }];
 

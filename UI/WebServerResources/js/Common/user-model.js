@@ -19,7 +19,7 @@
   User.factory = ['$q', 'sgSettings', 'sgResource', function($q, Settings, Resource) {
     angular.extend(User, {
       $q: $q,
-      $$resource: new Resource(Settings.baseURL)
+      $$resource: new Resource(Settings.baseURL, Settings.activeUser)
     });
 
     return User;
@@ -91,7 +91,7 @@
         return data;
       });
     }
-    return deferred;
+    return deferred.promise;
   };
 
   /**
@@ -167,6 +167,31 @@
       // Restore initial rights
       this.rights = angular.copy(this.$shadowRights);
     }
+  };
+
+  /**
+   * @function $folders
+   * @memberof User.prototype
+   * @desc Retrive the list of folders of a specific type
+   * @param {String} type - either 'contact' or 'calendar'
+   * @return a promise of the HTTP query result or the cached result
+   */
+  User.prototype.$folders = function(type) {
+    var _this = this,
+        deferred = User.$q.defer(),
+        param = {type: type};
+    if (this.$$folders) {
+      deferred.resolve(this.$$folders);
+    }
+    else {
+      User.$$resource.userResource(this.uid).fetch(null, 'foldersSearch', param).then(function(data) {
+        _this.$$folders = data;
+        deferred.resolve(data);
+        console.debug(JSON.stringify(data, undefined, 2));
+        return data;
+      });
+    }
+    return deferred.promise;
   };
 
   /**

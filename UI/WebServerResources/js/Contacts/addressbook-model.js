@@ -36,7 +36,7 @@
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
-      $$resource: new Resource(Settings.baseURL),
+      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
       $Card: Card,
       $$Acl: Acl,
       activeUser: Settings.activeUser
@@ -58,8 +58,11 @@
     // Insert new addressbook at proper index
     var sibling, i;
 
+    addressbook.isOwned = this.activeUser.isSuperUser || addressbook.owner == this.activeUser.login;
     sibling = _.find(this.$addressbooks, function(o) {
-      return (o.isRemote || (o.id != 'personal' && o.name.localeCompare(addressbook.name) === 1));
+      return (o.isRemote || (o.id != 'personal'
+                             && o.isOwned == addressbook.isOwned
+                             && o.name.localeCompare(addressbook.name) === 1));
     });
     i = sibling ? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
     this.$addressbooks.splice(i, 0, addressbook);
@@ -88,7 +91,7 @@
 
   /**
    * @memberOf AddressBook
-   * @desc Fetch list of cards and return an AddressBook instance
+   * @desc Fetch list of cards and return an AddressBook instance.
    * @param {string} addressbookId - the addressbook identifier
    * @returns an AddressBook object instance
    */
@@ -98,8 +101,32 @@
     return new AddressBook(futureAddressBookData);
   };
 
-  /* Instance methods */
+  /**
+   * @memberOf AddressBook
+   * @desc Subscribe to another user's addressbook and add it to the list of addressbooks.
+   * @param {String} uid - user id
+   * @param {String} path - path of folder for specified user
+   * @returns a promise of the HTTP query result
+   */
+  AddressBook.$subscribe = function(uid, path) {
+    var _this = this;
+    return AddressBook.$$resource.userResource(uid).fetch(path, 'subscribe').then(function(addressbookData) {
+      var addressbook = new AddressBook(addressbookData);
+      if (!_.find(_this.$addressbooks, function(o) {
+        return o.id == addressbookData.id;
+      })) {
+        AddressBook.$add(addressbook);
+      }
+      return addressbook;
+    });
+  };
 
+  /**
+   * @function $id
+   * @memberof AddressBook.prototype
+   * @desc Resolve the addressbook id.
+   * @returns a promise of the addressbook id
+   */
   AddressBook.prototype.$id = function() {
     return this.$futureAddressBookData.then(function(data) {
       return data.id;
@@ -166,15 +193,21 @@
 
   AddressBook.prototype.$delete = function() {
     var _this = this,
-        d = AddressBook.$q.defer();
-    AddressBook.$$resource.remove(this.id)
-      .then(function() {
-        var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
-        AddressBook.$addressbooks.splice(i, 1);
-        d.resolve(true);
-      }, function(data, status) {
-        d.reject(data);
-      });
+        d = AddressBook.$q.defer(),
+        promise;
+
+    if (this.isOwned)
+      promise = AddressBook.$$resource.remove(this.id);
+    else
+      promise = AddressBook.$$resource.fetch(this.id, 'unsubscribe');
+
+    promise.then(function() {
+      var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
+      AddressBook.$addressbooks.splice(i, 1);
+      d.resolve(true);
+    }, function(data, status) {
+      d.reject(data);
+    });
     return d.promise;
   };
 
