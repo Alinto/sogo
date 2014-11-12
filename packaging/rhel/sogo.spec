@@ -201,6 +201,8 @@ make CC="$cc" LDFLAGS="$ldflags" messages=yes
 
 # ****************************** install ******************************
 %install
+QA_SKIP_BUILD_ROOT=1
+export QA_SKIP_BUILD_ROOT
 
 case %{_target_platform} in
 ppc64-*)
