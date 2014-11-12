@@ -197,6 +197,7 @@
                 dropdownCss.top =  $window.innerHeight - dropdownHeight - 5;
                 if (dropdownHeight > $window.innerHeight) {
                   // Resize height of dropdown to fit window
+                  dropdownCss.top = 5;
                   dropdownCss.height = ($window.innerHeight - 10) + 'px';
                 }
               }
@@ -273,10 +274,7 @@
           };
         }],
         link: function(scope, element, attrs, controller) {
-          // NOTE: We could also make these modifications in the wox template
           element.addClass('joyride-tip-guide');
-          angular.element(element.children()[0]).addClass('joyride-content-wrapper');
-          element.prepend('<span class="joyride-nub left"></span>');
         }
       };
     }])

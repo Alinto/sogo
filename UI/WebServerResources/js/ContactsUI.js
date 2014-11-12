@@ -165,7 +165,18 @@
         }
       };
       $scope.confirmDelete = function() {
-        if ($scope.addressbook.isOwned) {
+        if ($scope.addressbook.isSubscription) {
+          // Unsubscribe without confirmation
+          $rootScope.addressbook.$delete()
+            .then(function() {
+              $rootScope.addressbook = null;
+            }, function(data, status) {
+              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                             $rootScope.addressbook.name),
+                           l(data.error));
+            });
+        }
+        else {
           Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
                                          $scope.addressbook.name))
             .then(function(res) {
@@ -180,18 +191,6 @@
                   });
               }
             });
-        }
-        else {
-          // Unsubscribe without confirmation
-          $rootScope.addressbook.$delete()
-            .then(function() {
-              $rootScope.addressbook = null;
-            }, function(data, status) {
-              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                             $rootScope.addressbook.name),
-                           l(data.error));
-            });
-
         }
       };
       $scope.importCards = function() {

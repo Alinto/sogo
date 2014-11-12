@@ -59,9 +59,10 @@
     var sibling, i;
 
     addressbook.isOwned = this.activeUser.isSuperUser || addressbook.owner == this.activeUser.login;
+    addressbook.isSubscription = addressbook.owner != this.activeUser.login;
     sibling = _.find(this.$addressbooks, function(o) {
       return (o.isRemote || (o.id != 'personal'
-                             && o.isOwned == addressbook.isOwned
+                             && o.isSubscription === addressbook.isSubscription
                              && o.name.localeCompare(addressbook.name) === 1));
     });
     i = sibling ? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
@@ -81,7 +82,8 @@
       // Instanciate AddressBook objects
       angular.forEach(this.$addressbooks, function(o, i) {
         _this.$addressbooks[i] = new AddressBook(o);
-        // Add 'isOwned' attribute based on active user (TODO: add it server-side?)
+        // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
+        _this.$addressbooks[i].isSubscription = _this.$addressbooks[i].owner != _this.activeUser.login;
         _this.$addressbooks[i].isOwned = _this.activeUser.isSuperUser
           || _this.$addressbooks[i].owner == _this.activeUser.login;
       });
@@ -196,10 +198,10 @@
         d = AddressBook.$q.defer(),
         promise;
 
-    if (this.isOwned)
-      promise = AddressBook.$$resource.remove(this.id);
-    else
+    if (this.isSubscription)
       promise = AddressBook.$$resource.fetch(this.id, 'unsubscribe');
+    else
+      promise = AddressBook.$$resource.remove(this.id);
 
     promise.then(function() {
       var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
