@@ -2401,7 +2401,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else
     {
-      // Ping command with empty body
+      // Ping or Sync command with empty body
       cmdName = [NSString stringWithFormat: @"process%@:inResponse:", cmdName];
     }
   
