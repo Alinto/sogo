@@ -52,6 +52,7 @@
 #import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
 #import "SOGoCacheGCSObject+MAPIStore.h"
+#import <Mailer/SOGoMailObject.h>
 
 #include <gen_ndr/exchange.h>
 
@@ -278,6 +279,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       msgObject = [sogoObject lookupName: messageKey
                                inContext: nil
                                  acquire: NO];
+      /* If the lookup in the indexing table works, but the IMAP does
+         not have the message, then the message does not exist in this
+         folder */
+      if (msgObject && [msgObject isKindOfClass: [SOGoMailObject class]]
+          && ! [(SOGoMailObject *)msgObject doesMailExist])
+        return nil;
       if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
         {
           [msgObject setContext: [[self userContext] woContext]];
@@ -503,6 +510,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           else
             rc = MAPISTORE_ERR_DENIED;
         }
+      else
+        {
+          /* Unregistering from indexing table as the backend says the
+             object was not found */
+          [mapping unregisterURLWithID: mid];
+        }
     }
 
   return rc;
@@ -571,7 +584,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   /* flags that control the behaviour of the operation
      (MAPISTORE_SOFT_DELETE or MAPISTORE_PERMANENT_DELETE) */
   [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16llx  flags: %d", mid, flags];
-  
+
   mapping = [self mapping];
   childURL = [mapping urlFromID: mid];
   if (childURL)
