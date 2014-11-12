@@ -594,8 +594,6 @@ $column-gutter: 0;
 .sg-dropdown-content {
     background-color: #fff;
     height: 300px;
-    overflow: hidden;
-    overflow-y: auto;
     &.joyride-tip-guide {
         .joyride-nub {
             &.left {
@@ -607,13 +605,15 @@ $column-gutter: 0;
         }
         .joyride-content-wrapper {
             list-style: none;
-            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            overflow: hidden;
+            overflow-y: auto;
             padding: 0;
             ul {
+                margin-left: 0;
                 list-style-type: none;
-                &.subitems {
-                    margin-left: 0;
-                }
             }
             li {
                 &.title {
