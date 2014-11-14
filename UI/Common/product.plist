@@ -120,7 +120,7 @@
           actionClass = "UIxFolderActions";
           actionName  = "subscribeUsers";
         };
-        renameFolder = {
+        save = {
           protectedBy = "Access Contents Information";
           actionClass = "UIxFolderActions";
           actionName  = "renameFolder";

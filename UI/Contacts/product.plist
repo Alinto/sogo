@@ -114,11 +114,6 @@
           actionClass = "UIxContactFolderActions";
           actionName  = "import";
         };
-        save = {
-          protectedBy = "Change Permissions";
-          actionClass = "UIxFolderActions";
-          actionName  = "renameFolder";
-        };
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxContactsUserRightsEditor";
