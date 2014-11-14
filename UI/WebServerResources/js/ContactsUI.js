@@ -296,7 +296,7 @@
    * Controller to view and edit a card
    */
     .controller('CardCtrl', ['$scope', '$rootScope', '$timeout', 'sgAddressBook', 'sgCard', 'sgDialog', 'sgFocus', '$state', '$stateParams', 'stateCard', function($scope, $rootScope, $timeout, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
-      $scope.card = stateCard;
+      $rootScope.card = stateCard;
 
       $scope.allEmailTypes = Card.$EMAIL_TYPES;
       $scope.allTelTypes = Card.$TEL_TYPES;
