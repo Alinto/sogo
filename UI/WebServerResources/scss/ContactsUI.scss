@@ -62,11 +62,10 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
             display: table-cell;
             padding: $off-canvas-link-padding;
             color: $off-canvas-link-color;
-            border-bottom: $off-canvas-link-border-bottom;
-            //vertical-align: middle;
         }
         .icon {
             //vertical-align: middle; // causes glitch when selecting row
+            border-left: 3px solid transparent;
             width: 2em;
         }
         form {
@@ -92,8 +91,10 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
             background: scale-color($tabbar-bg, $lightness: -30%);
         }
         &._selected {
-            background-color: #242424 !important;
             border: 0 !important;
+            >i {
+                border-left-color: $primary-color;
+            }
             * {
                 color: #eee;
             }
@@ -143,8 +144,6 @@ $column-gutter: 0;
 
     #addressbooksList {
         position: absolute;
-        overflow: auto;
-        overflow-x: hidden;
         top: $topbar-height;
         bottom: 0;
         background-color: #333;
@@ -156,6 +155,19 @@ $column-gutter: 0;
             margin-top: rem-calc(6);
             text-align: center;
             text-transform: uppercase;
+        }
+        .scrollview {
+            position: absolute;
+            overflow: auto;
+            overflow-x: hidden;
+            top: $topbar-height;
+            bottom: $topbar-height;
+        }
+        .buttonsToolbar {
+            border-top: $off-canvas-link-border-bottom;
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
         }
     }
 

@@ -148,32 +148,34 @@
         <div class="newItemsToolbar">
           <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
         </div>
-        <ul>
-          <li data-ng-repeat="folder in addressbooks"
-              data-ng-class="{_selected: addressbook.id==folder.id}"
-              data-ng-dblclick="edit($index)">
-            <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
-            <form data-ng-submit="save($index)">
-              <a data-ui-sref="addressbook({addressbookId: folder.id})"
-                 data-ng-click="select($index)"
-                 data-ng-show="editMode!=folder.id"
-                 data-ng-cloak="ng-cloak">{{folder.name}}</a>
-              <input class="folder-name" type="text"
-                     data-ng-model="folder.name"
-                     data-ng-show="editMode==folder.id"
-                     data-ng-cloak="ng-cloak"
-                     data-ng-blur="save($index)"
-                     data-sg-focus-on="addressBookName_{{$index}}"
-                     data-sg-escape="revertEditing($index)"/>
-            </form>
-            <span class="icon" data-ng-cloak="ng-cloak">
-              <a class="icon" href="#"
-                 data-dropdown-toggle="#addressbookProperties"
-                 data-options="align:right"
-                 data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a>
-            </span>
-          </li>
-        </ul>
+        <div class="scrollview">
+          <ul>
+            <li data-ng-repeat="folder in addressbooks"
+                data-ng-class="{_selected: addressbook.id==folder.id}"
+                data-ng-dblclick="edit($index)">
+              <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
+              <form data-ng-submit="save($index)">
+                <a data-ui-sref="addressbook({addressbookId: folder.id})"
+                   data-ng-click="select($index)"
+                   data-ng-show="editMode!=folder.id"
+                   data-ng-cloak="ng-cloak">{{folder.name}}</a>
+                <input class="folder-name" type="text"
+                       data-ng-model="folder.name"
+                       data-ng-show="editMode==folder.id"
+                       data-ng-cloak="ng-cloak"
+                       data-ng-blur="save($index)"
+                       data-sg-focus-on="addressBookName_{{$index}}"
+                       data-sg-escape="revertEditing($index)"/>
+              </form>
+              <span class="icon" data-ng-cloak="ng-cloak">
+                <a class="icon" href="#"
+                   data-dropdown-toggle="#addressbookProperties"
+                   data-options="align:right"
+                   data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a>
+              </span>
+            </li>
+          </ul>
+        </div>
         <div class="buttonsToolbar">
           <button data-ng-click="newAddressbook()" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
           <a href="#" class="button small" label:title="Subscribe to an Addressbook..."
@@ -323,6 +325,12 @@
     <script type="text/ng-template" id="cardEditor.html">
 
       <div class="editor">
+        <div class="header">
+          <h1 data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
+          <h6>{{card.$description()}}
+          <span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span>
+          </h6>
+        </div>
         <form name="cardForm" data-ng-show="card.$isCard()" data-ng-submit="save(cardForm)">
           <div class="buttonsToolbar">
             <span class="button tiny radius secondary" data-ng-click="cancel()"><i class="icon-arrow-left"><!-- cancel --></i> <var:string label:value="Cancel"/></span>
