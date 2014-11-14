@@ -40,6 +40,7 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Context.h>
+#import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -413,42 +414,129 @@ static NSString *inboxFolderName = @"INBOX";
   return folderType;
 }
 
-- (NSString *) _parentForFolder: (NSString *) folderName
-                    foldersList: (NSArray *) theFolders
+- (NSMutableDictionary *) _insertFolder: (NSString *) folderPath
+                            foldersList: (NSMutableArray *) theFolders
 {
   NSArray *pathComponents;
-  NSString *s;
-  int i;
+  NSMutableArray *folders;
+  NSMutableDictionary *currentFolder, *parentFolder, *folder;
+  NSString *currentFolderName, *currentPath, *fullName, *folderType;
+  SOGoUserManager *userManager;
+  int i, j, count;
+  BOOL last, isOtherUsersFolder, parentIsOtherUsersFolder;
 
-  pathComponents = [folderName pathComponents];
-  s = [[[pathComponents subarrayWithRange: NSMakeRange(0,[pathComponents count]-1)] componentsJoinedByString: @"/"] substringFromIndex: 1];
+  parentFolder = nil;
+  parentIsOtherUsersFolder = NO;
+  pathComponents = [folderPath pathComponents];
+  count = [pathComponents count];
 
-  for (i = 0; i < [theFolders count]; i++)
+  // Make sure all ancestors exist.
+  // The variable folderPath is something like '/INBOX/Junk' so pathComponents becomes ('/', 'INBOX', 'Junk').
+  // That's why we always ignore the first element
+  for (i = 1; i < count; i++)
     {
-      if ([s isEqualToString: [theFolders objectAtIndex: i]])
-        return s;
+      last = ((count - i) == 1);
+      folder = nil;
+      currentPath = [[[pathComponents subarrayWithRange: NSMakeRange(0,i+1)] componentsJoinedByString: @"/"] substringFromIndex: 2];
+
+      // Search for the current path in the children of the parent folder.
+      // For the first iteration, take the parent folder passed as argument.
+      if (parentFolder)
+        {
+          folders = [parentFolder objectForKey: @"children"];
+        }
+      else
+        {
+          folders = theFolders;
+        }
+
+      for (j = 0; j < [folders count]; j++)
+        {
+          currentFolder = [folders objectAtIndex: j];
+          if ([currentPath isEqualToString: [currentFolder objectForKey: @"path"]])
+            {
+              folder = currentFolder;
+              // Make sure all branches are ready to receive children
+              if (!last && ![folder objectForKey: @"children"])
+                {
+                  [folder setObject: [NSMutableArray array] forKey: @"children"];
+                }
+              break;
+            }
+        }
+
+      // Check if the current folder is the "Other users" folder (shared mailboxes)
+      currentFolderName = [[pathComponents objectAtIndex: i] stringByDecodingImap4FolderName];
+      if (otherUsersFolderName
+          && [currentFolderName caseInsensitiveCompare: otherUsersFolderName] == NSOrderedSame)
+        {
+          isOtherUsersFolder = YES;
+        }
+      else
+        {
+          isOtherUsersFolder = NO;
+        }
+
+      if (folder == nil)
+        {
+          // Folder was not found; create it and add it to the folders list
+
+          if (parentIsOtherUsersFolder)
+            {
+              // Parent folder is the "Other users" folder; translate the user's mailbox name
+              // to the full name of the person
+              userManager = [SOGoUserManager sharedUserManager];
+              fullName = [userManager getCNForUID: currentFolderName];
+              if (fullName)
+                currentFolderName = fullName;
+            }
+          else if (isOtherUsersFolder)
+            {
+              currentFolderName = [self labelForKey: @"OtherUsersFolderName"];
+            }
+          else if (sharedFoldersName
+                   && [currentFolderName caseInsensitiveCompare: sharedFoldersName] == NSOrderedSame)
+            {
+              currentFolderName = [self labelForKey: @"SharedFoldersName"];
+            }
+
+          if (last)
+            folderType = [self _folderType: currentPath];
+          else
+            folderType = @"additional";
+
+          folder = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                          currentPath, @"path",
+                                        folderType, @"type",
+                                        currentFolderName, @"name",
+                                        [NSMutableArray array], @"children",
+                                        nil];
+          // Either add this new folder to its parent or the list of root folders
+          [folders addObject: folder];
+        }
+
+      parentFolder = folder;
+      parentIsOtherUsersFolder = isOtherUsersFolder;
     }
-  
-  return nil;
+
+  return parentFolder;
 }
 
 //
-//
+// Return a tree representation of the mailboxes
 //
 - (NSArray *) allFoldersMetadata
 {
-  NSString *currentFolder, *currentDecodedFolder, *currentDisplayName, *currentFolderType, *login, *fullName, *parent;
-  NSMutableArray *pathComponents, *folders;
-  SOGoUserManager *userManager;
+  NSString *currentFolder;
+  NSMutableArray *folders;
   NSEnumerator *rawFolders;
-  NSDictionary *folderData;
   NSAutoreleasePool *pool;
   NSArray *allFolderPaths;
 
   allFolderPaths = [self allFolderPaths];
   rawFolders = [allFolderPaths objectEnumerator];
-
   folders = [NSMutableArray array];
+
   while ((currentFolder = [rawFolders nextObject]))
     {
       // Using a local pool to avoid using too many file descriptors. This could
@@ -457,55 +545,10 @@ static NSString *inboxFolderName = @"INBOX";
       // lots of LDAP connections during its execution.
       pool = [[NSAutoreleasePool alloc] init];
 
-      currentDecodedFolder = [currentFolder stringByDecodingImap4FolderName];
-      currentFolderType = [self _folderType: currentFolder];
+      // Insert folder into folders tree
+      [self _insertFolder: currentFolder
+              foldersList: folders];
 
-      // We translate the "Other Users" and "Shared Folders" namespaces.
-      // While we're at it, we also translate the user's mailbox names
-      // to the full name of the person.
-      if (otherUsersFolderName && [currentDecodedFolder hasPrefix: [NSString stringWithFormat: @"/%@", otherUsersFolderName]])
-        {
-          // We have a string like /Other Users/lmarcotte/... under Cyrus, but we could
-          // also have something like /shared under Dovecot. So we swap the username only
-          // if we have one, of course.
-          pathComponents = [NSMutableArray arrayWithArray: [currentDecodedFolder pathComponents]];
-
-          if ([pathComponents count] > 2) 
-            {
-              login = [pathComponents objectAtIndex: 2];
-              userManager = [SOGoUserManager sharedUserManager];
-              fullName = [userManager getCNForUID: login];
-              [pathComponents removeObjectsInRange: NSMakeRange(0,3)];
-
-              currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
-                                     [self labelForKey: @"OtherUsersFolderName"],
-                                     (fullName != nil ? fullName : login),
-                                     [pathComponents componentsJoinedByString: @"/"]];
-
-            }
-          else
-            {
-              currentDisplayName = [NSString stringWithFormat: @"/%@%@",
-                                     [self labelForKey: @"OtherUsersFolderName"],
-                                      [currentDecodedFolder substringFromIndex:
-                                        [otherUsersFolderName length]+1]];
-            }
-        }
-      else if (sharedFoldersName && [currentDecodedFolder hasPrefix: [NSString stringWithFormat: @"/%@", sharedFoldersName]])
-        currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
-                           [currentDecodedFolder substringFromIndex: [sharedFoldersName length]+1]];
-      else
-        currentDisplayName = currentDecodedFolder;
-
-      parent = [self _parentForFolder: currentFolder  foldersList: allFolderPaths];
-      
-      folderData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   currentFolder, @"path",
-                                 currentFolderType, @"type",
-                                 currentDisplayName, @"displayName",
-                                 parent, @"parent",
-                                 nil];
-      [folders addObject: folderData];
       [pool release];
     }
 
@@ -664,7 +707,7 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (NSDictionary *) imapFolderGUIDs
 {
-  NSDictionary *result, *nresult, *folderData;
+  NSDictionary *result, *nresult;
   NSMutableDictionary *folders;
   NGImap4Client *client;
   SOGoUserDefaults *ud;
@@ -688,7 +731,7 @@ static NSString *inboxFolderName = @"INBOX";
 
   e = [folderList objectEnumerator];
 
-  while (object = [e nextObject])
+  while ((object = [e nextObject]))
     {
       guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
 
