@@ -18,32 +18,6 @@
 
   <ion-nav-view><!-- main view --></ion-nav-view>
 
-  <script type="text/ng-template" id="menu.html">
-    <ion-side-menus>
-      <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable nav-title-slide-ios7">
-          <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"><!-- back --></i> Back</ion-nav-back-button>
-        </ion-nav-bar>
-        <ion-nav-view name="menuContent" animation="slide-left-right"><!-- content --></ion-nav-view>
-      </ion-side-menu-content>
-
-      <ion-side-menu side="left">
-        <header class="bar bar-header bar-stable">
-          <h1 class="title">{{UserLogin}}</h1>
-        </header>
-        <ion-content class="has-header">
-          <ion-list>
-            <ion-item class="nav-clear menu-close" href="#/app/addressbook">
-              <var:string label:value="Address Books"/>
-            </ion-item>
-          </ion-list>
-          <a class="button button-full button-assertive" href="#" data-ng-href="{{UserFolderURL}}logoff?theme=mobile"><var:string label:value="Disconnect"/></a>
-          <a class="button button-small button-outline button-stable button-block" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
-        </ion-content>
-      </ion-side-menu>
-    </ion-side-menus>
-  </script>
-
   <script type="text/ng-template" id="addressbooks.html">
     <ion-view title="Address Books">
       <ion-nav-buttons side="left">

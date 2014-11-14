@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container 
+<container
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xml="http://www.w3.org/XML/1998/namespace"
   xmlns:var="http://www.skyrix.com/od/binding"
@@ -21,47 +21,79 @@
     <script rsrc:src="js/vendor/ionic.bundle.js"><!-- ionic --></script>
 
     <!-- your app's js -->
-	  <script type="text/javascript">
-	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
-	    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
-	    var minimumSearchLength = <var:string value="minimumSearchLength"/>;
-	    <var:if condition="isSuperUser"
+    <script type="text/javascript">
+      var ApplicationBaseURL = '<var:string value="modulePath"/>';
+      var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
+      var minimumSearchLength = <var:string value="minimumSearchLength"/>;
+      <var:if condition="isSuperUser"
 	      >var IsSuperUser = true;
-	    </var:if>
-	    <var:if condition="isSuperUser" const:negate="YES"
+      </var:if>
+      <var:if condition="isSuperUser" const:negate="YES"
 	      >var IsSuperUser = false;
-	    </var:if>
-	    <var:if condition="usesCASAuthentication"
+      </var:if>
+      <var:if condition="usesCASAuthentication"
 	      >var usesCASAuthentication = true;
-	    </var:if>
-	    <var:if condition="usesCASAuthentication" const:negate="YES"
+      </var:if>
+      <var:if condition="usesCASAuthentication" const:negate="YES"
 	      >var usesCASAuthentication = false;
-	    </var:if>
-	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
+      </var:if>
+      <var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	      const:negate="YES"
 	      >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
-	      var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
-	      var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
-            </var:if>
-	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
-	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
-	  </script>
-	  <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/Common/ui-mobile.js"><!-- space --></script>
-  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
-      var:src="productJavaScriptURL"><!-- space --></script></var:if>
-  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
-      var:src="pageJavaScriptURL"><!-- space --></script></var:if>
-  <var:foreach list="additionalJSFiles" item="item"
-    ><script type="text/javascript" var:src="item"><!-- space --></script>
-  </var:foreach>
-  <var:foreach list="systemAdditionalJSFiles" item="item"
-    ><script type="text/javascript" var:src="item"><!-- space --></script>
-  </var:foreach>
+      var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
+      var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
+      </var:if>
+      <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
+      <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
+    </script>
+    <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
+    <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
+    <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+    <script type="text/javascript" rsrc:src="js/Common/ui-common.js"><!-- space --></script>
+    <script type="text/javascript" rsrc:src="js/Common/ui-mobile.js"><!-- space --></script>
+    <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
+                                    var:src="productJavaScriptURL"><!-- space --></script></var:if>
+    <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
+                                    var:src="pageJavaScriptURL"><!-- space --></script></var:if>
+    <var:foreach list="additionalJSFiles" item="item"><script type="text/javascript"
+                                    var:src="item"><!-- space --></script>
+    </var:foreach>
+    <var:foreach list="systemAdditionalJSFiles" item="item"><script type="text/javascript"
+                                    var:src="item"><!-- space --></script>
+    </var:foreach>
   </head>
 
   <body var:data-ng-app="angularModule">
+
+    <script type="text/ng-template" id="menu.html">
+      <ion-side-menus>
+        <ion-side-menu-content>
+          <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+            <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"><!-- back --></i> Back</ion-nav-back-button>
+          </ion-nav-bar>
+          <ion-nav-view name="menuContent" animation="slide-left-right"><!-- content --></ion-nav-view>
+        </ion-side-menu-content>
+
+        <ion-side-menu side="left">
+          <header class="bar bar-header bar-stable">
+            <h1 class="title">{{UserLogin}}</h1>
+          </header>
+          <ion-content class="has-header">
+            <ion-list>
+              <ion-item class="nav-clear menu-close" var:href="relativeMailPath">
+                <var:string label:value="Mail"/>
+              </ion-item>
+              <ion-item class="nav-clear menu-close" var:href="relativeContactsPath">
+                <var:string label:value="Address Books"/>
+              </ion-item>
+            </ion-list>
+            <a class="button button-full button-assertive" href="#" data-ng-href="{{UserFolderURL}}logoff?theme=mobile"><var:string label:value="Disconnect"/></a>
+            <a class="button button-small button-outline button-stable button-block" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
+          </ion-content>
+        </ion-side-menu>
+      </ion-side-menus>
+    </script>
+
     <var:component-content/>
   </body>
 </html>
