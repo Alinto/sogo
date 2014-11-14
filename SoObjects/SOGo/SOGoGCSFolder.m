@@ -1194,7 +1194,7 @@ static NSArray *childRecordFields = nil;
       qualifier = [EOQualifier qualifierWithQualifierFormat:
                                  @"c_lastmodified > %d and c_deleted == 1",
                                syncTokenInt];
-      fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
+      fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_lastmodified", @"c_deleted", nil];
       [mRecords addObjectsFromArray: [self _fetchFields: fields
                                           withQualifier: qualifier
                                           ignoreDeleted: NO]];
