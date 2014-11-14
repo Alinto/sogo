@@ -21,6 +21,7 @@ Bug fixes
  - fixed handling of event invitations on iOS/EAS with no organizer (#2978)
  - fixed corrupted png files (#2975)
  - improved dramatically the BSON decoding speed
+ - added WindowSize support for GCS collections when using EAS
 
 2.2.9a (2014-09-29)
 -------------------
