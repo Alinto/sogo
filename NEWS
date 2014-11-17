@@ -23,6 +23,7 @@ Bug fixes
  - improved dramatically the BSON decoding speed
  - added WindowSize support for GCS collections when using EAS
  - fixed IMAP search with non-ASCII folder names
+ - fixed extraction of email addresses when pasting text with tabs (#2945)
 
 2.2.9a (2014-09-29)
 -------------------
