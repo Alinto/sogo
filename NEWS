@@ -22,6 +22,7 @@ Bug fixes
  - fixed corrupted png files (#2975)
  - improved dramatically the BSON decoding speed
  - added WindowSize support for GCS collections when using EAS
+ - fixed IMAP search with non-ASCII folder names
 
 2.2.9a (2014-09-29)
 -------------------
