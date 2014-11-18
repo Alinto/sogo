@@ -46,6 +46,7 @@
 - (BOOL) synchroniseCache;
 - (void) synchronizeUpdatedFolder: (NSNumber *) lastModseq
                       withMapping: (NSMutableDictionary *) mapping;
+- (BOOL) synchroniseCacheForUID: (NSString *) messageUID;
 - (NSNumber *) modseqFromMessageChangeNumber: (NSString *) changeNum;
 - (NSString *) messageUIDFromMessageKey: (NSString *) messageKey;
 - (NSString *) changeNumberForMessageUID: (NSString *) messageUid;

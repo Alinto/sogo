@@ -734,6 +734,70 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   talloc_free(local_mem_ctx);
 }
 
+- (BOOL) synchroniseCacheForUID: (NSString *) messageUID
+{
+  /* Try to synchronise old UIDs in versions.plist cache using an
+     specific UID. It returns a boolean indicating if the
+     synchronisation were done.
+
+     It should be used as last resort, keeping synchroniseCache to main
+     sync entry point.
+  */
+  NSMutableDictionary *currentProperties, *messages, *messageEntry, *mapping;
+  NSArray *fetchResults;
+  uint64_t changeNumber;
+  NSDictionary *result;
+  NSNumber *modseq;
+  NSString *changeNumberStr;
+  NSData *changeKey;
+
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
+  messages = [currentProperties objectForKey: @"Messages"];
+  messageEntry = [messages objectForKey: messageUID];
+  if (!messageEntry)
+    {
+      [messages removeObjectForKey: messageUID];
+      changeNumber = [[self context] getNewChangeNumber];
+      fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
+                                                       parts: [NSArray arrayWithObject: @"modseq"]]
+                         objectForKey: @"fetch"];
+      if ([fetchResults count] == 1)
+        {
+          result = [fetchResults objectAtIndex: 0];
+          modseq = [result objectForKey: @"modseq"];
+          changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
+
+          /* Create new message entry in Messages dict */
+          messageEntry = [NSMutableDictionary new];
+          [messages setObject: messageEntry forKey: messageUID];
+          [messageEntry release];
+
+          /* Store the modseq and change number */
+          [messageEntry setObject: modseq forKey: @"modseq"];
+          [messageEntry setObject: changeNumberStr forKey: @"version"];
+
+          /* Store the change key */
+          changeKey = [self getReplicaKeyFromGlobCnt: changeNumber >> 16];
+          [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
+          /* Store the changeNumber -> modseq mapping */
+          mapping = [currentProperties objectForKey: @"VersionMapping"];
+          [mapping setObject: modseq forKey: changeNumberStr];
+
+          /* Save the message */
+          [versionsMessage save];
+          return YES;
+        }
+      else
+        {
+          return NO;
+        }
+    }
+  /* If message entry exists, then synchroniseCache did its job */
+  return YES;
+}
+
 - (NSNumber *) modseqFromMessageChangeNumber: (NSString *) changeNum
 {
   NSDictionary *mapping;

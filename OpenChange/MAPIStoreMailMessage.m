@@ -369,6 +369,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   uint64_t version = ULLONG_MAX;
   NSString *uid, *changeNumber;
+  BOOL synced;
 
   uid = [(MAPIStoreMailFolder *)
           container messageUIDFromMessageKey: [self nameInContainer]];
@@ -387,8 +388,19 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
             [self logWithFormat: @"got one"];
           else
             {
-              [self errorWithFormat: @"still nothing. We crash!"];
-              abort();
+              [self warnWithFormat: @"attempting to get change number"
+                    @" by synchronising this specific message..."];
+              synced = [(MAPIStoreMailFolder *) container synchroniseCacheForUID: uid];
+              if (synced)
+                {
+                  changeNumber = [(MAPIStoreMailFolder *) container
+                                     changeNumberForMessageUID: uid];
+                }
+              else
+                {
+                  [self errorWithFormat: @"still nothing. We crash!"];
+                  abort();
+                }
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;
