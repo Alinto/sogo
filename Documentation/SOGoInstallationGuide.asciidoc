@@ -258,13 +258,13 @@ In SOGo, the user's applications settings are stored
 in `/etc/sogo/sogo.conf`. You can use your favourite text editor to
 modify the file.
 
-The +sogo.conf+ file is a serialized _property list_. This simple format
+The `sogo.conf` file is a serialized _property list_. This simple format
 encapsulates four basic data types: arrays, dictionaries (or hashes),
 strings and numbers. Numbers are represented as-is, except for booleans
 which can take the unquoted values `YES` and `NO`. Strings are not
 mandatorily quoted, but doing so will avoid you many problems. A
 dictionary is a sequence of key and value pairs separated in their
-middle with a `=` sign. It starts with a `\{` and ends with a
+middle with a `=` sign. It starts with a `{` and ends with a
 corresponding `}`. Each value definition in a dictionary ends with a
 semicolon. An array is a chain of values starting with `(` and ending
 with `)`, where the values are separated with a `,`. Also, the file
