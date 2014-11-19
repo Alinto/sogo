@@ -311,7 +311,7 @@ from this guide.
 
 [NOTE]
 On Ubuntu 12.04, the Samba init scripts need to be modified to
-disable the upstart check. More more details, refer to:
+disable the upstart check. For more details, refer to:
 https://wiki.samba.org/index.php/Samba4/InitScript
 
 
