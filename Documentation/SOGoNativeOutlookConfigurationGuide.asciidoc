@@ -256,7 +256,9 @@ yum install samba \
             openchange \ 
             sogo-openchange-backend \ 
             openchange-ocsmanager \ 
-            openchange-rpcproxy
+            openchange-rpcproxy \
+            mysql-server \
+            MySQL-python
 ----
 
 Once the packages are installed, refer to the _Configuration_ chapter
@@ -426,12 +428,12 @@ OpenChange 2.2 stores its metadata in MySQL so you need to have it installed.
 
 First, create the OpenChange MySQL user:
 
----
+----
 $ mysql -u root -p
 mysql> CREATE USER 'openchange-user'@'localhost' IDENTIFIED BY 'openchange$123';
 mysql> GRANT ALL PRIVILEGES ON `openchange`.* TO 'openchange-user'@'localhost' WITH GRANT OPTION;
 mysql> FLUSH PRIVILEGES;
----
+----
 
 The Samba AD schema needs to be filled with additional object
 definitions by running the following commands: 
