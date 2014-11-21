@@ -5,6 +5,7 @@
 "Create a new event" = "Criar um novo evento";
 "Create a new task" = "Criar uma nova tarefa";
 "Edit this event or task" = "Editar este evento ou tarefa";
+"Print the current calendar view" = "Imprimir a visualização do calendário atual";
 "Delete this event or task" = "Apagar este evento ou tarefa";
 "Go to today" = "Vai para hoje";
 "Switch to day view" = "Visualizar Dia";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Nome deste Calendário";
 
 "new" = "Novo";
-"printview" = "Visualizar Impressão";
+"Print view" = "Visualização de Impressão";
 "edit" = "Editar";
 "delete" = "Apagar";
 "proposal" = "Proposta";
@@ -145,6 +146,20 @@
 "Hide already accepted and rejected appointments" = "Ocultar apontamentos já aceitos e rejeitados";
 "Show already accepted and rejected appointments" = "Exibir apontamentos já aceitos e rejeitados";
 
+/* Print view */
+
+"LIST" = "Lista";
+"Print Settings" = "Configurações de Impressão";
+"Title:" = "Título:";
+"Layout:" = "Layout:";
+"What to Print" = "O que imprimir";
+"Options" = "Opções";
+"Tasks with no due date" = "Tarefas sem data de vencimento";
+"Display working hours only" = "Exibir somente o horário de trabalho";
+"Completed tasks" = "Tarefas Completadas";
+"Display events and tasks colors" = "Exibir eventos e tarefas com cores";
+"Borders" = "Fronteiras";
+"Backgrounds" = "Segundo plano";
 
 /* Appointments */
 
@@ -225,8 +240,13 @@
 "view_future" = "Todos os Eventos Futuros";
 "view_selectedday" = "Dia Selecionado";
 
+"view_not_started" = "Tarefas não iniciadas";
+"view_overdue" = "Tarefas em atraso";
+"view_incomplete" = "Tarefas incompletas";
+
 "View:" = "Visão:";
-"Title or Description" = "Título ou Descrição";
+"Title, category or location" = "Título, categoria ou localização";
+"Entire content" = "Todo o conteúdo";
 
 "Search" = "Pesquisar";
 "Search attendees" = "Pesquisar participantes";
@@ -506,7 +526,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 
 "Links to this Calendar" = "Links para este Calendário";
 "Authenticated User Access" = "Acesso a Usuário Autenticado";
-"CalDAV URL" = "CalDAV url";
+"CalDAV URL" = "CalDAV URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
@@ -526,6 +546,8 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "tagWasRemoved" = "Se você remover este calendário da sincronização, será necessário sincronizar novamente seus dados no dispositivo móvel.\nContinuar?";
 "DestinationCalendarError" = "Os calendários de origem e destino são os mesmos. Por favor, tente copiar para outro calendário diferente.";
 "EventCopyError" = "A cópia falhou. Por favor, tente copiar para um calendário diferente.";
+"Please select at least one calendar" = "Por favor, selecione pelo menos um calendário";
+
 
 "Open Task..." = "Abrir Tarefa...";
 "Mark Completed" = "Marcar como Concluída";

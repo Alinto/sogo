@@ -5,6 +5,8 @@ Enhancements
  - no longer leaking database passwords in the logs (#2953)
  - added support for multiple calendars and address books over ActiveSync
  - updated timezone information (#2968)
+ - updated Brazilian Portuguese, Czech, Dutch, Finnish, French, German, Hungarian, Polish,
+   Russian, Spanish (Argentina), and Spanish (Spain) translations
 
 Bug fixes
  - fixed freebusy lookup with "Show time as busy" (#2930)

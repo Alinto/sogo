@@ -12,6 +12,7 @@
 "Forward" = "Desvío";
 "Password" = "Contraseña";
 "Categories" = "Categorías";
+"Appointments invitations" = "Invitaciones a eventos";
 "Name" = "Nombre";
 "Color" = "Color";
 "Add" = "Añadir";
@@ -104,6 +105,10 @@
 "firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
 "firstWeekOfYear_FirstFullWeek" = "Primera semana del año completa";
 
+"Prevent from being invited to appointments" = "No permitir que otros me inviten a eventos";
+"White list for appointment invitations:" = "Lista de excepciones para invitación a eventos:";
+"Contacts Names" = "Nombre de los contactos";
+
 /* Default Calendar */
 "Default calendar :" = "Calendario por defecto";
 "selectedCalendar" = "Calendario seleccionado";
@@ -130,15 +135,6 @@
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
 "Sort messages by threads" = "Ordenar mensajes por conversaciones";
 "When sending mail, add unknown recipients to my" = "Al enviar correos, agregar destinatarios desconocidos a mi";
-"Check for new mail:" = "Comprobar si hay nuevos correos: ";
-"refreshview_manually" = "Manualmente";
-"refreshview_every_minute" = "Cada minuto";
-"refreshview_every_2_minutes" = "Cada 2 minutos";
-"refreshview_every_5_minutes" = "Cada 5 minutos";
-"refreshview_every_10_minutes" = "Cada 10 minutos";
-"refreshview_every_20_minutes" = "Cada 20 minutos";
-"refreshview_every_30_minutes" = "Cada 30 minutos";
-"refreshview_once_per_hour" = "Cada hora";
 
 "Forward messages:" = "Reenviar mensajes:";
 "messageforward_inline" = "Incorporado";
@@ -235,6 +231,16 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View :" = "Actualizar la vista:";
+"refreshview_manually" = "Manualmente";
+"refreshview_every_minute" = "Cada minuto";
+"refreshview_every_2_minutes" = "Cada 2 minutos";
+"refreshview_every_5_minutes" = "Cada 5 minutos";
+"refreshview_every_10_minutes" = "Cada 10 minutos";
+"refreshview_every_20_minutes" = "Cada 20 minutos";
+"refreshview_every_30_minutes" = "Cada 30 minutos";
+"refreshview_once_per_hour" = "Cada hora";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";

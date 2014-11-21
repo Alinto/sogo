@@ -29,7 +29,7 @@
 /* Week */
 
 "Week" = "Semana";
-"this week" = "ésta semana";
+"this week" = "esta semana";
 
 "Week %d" = "Semana %d";
 
@@ -38,14 +38,14 @@
 
 /* Month */
 
-"this month" = "éste mes";
+"this month" = "este mes";
 
 "Previous Month" = "Mes anterior";
 "Next Month" = "Próximo mes";
 
 /* Year */
 
-"this year" = "éste año";
+"this year" = "este año";
 
 /* Menu */
 
@@ -155,7 +155,11 @@
 "What to Print" = "Qué imprimir";
 "Options" = "Opciones";
 "Tasks with no due date" = "Tareas sin fecha de vencimiento";
+"Display working hours only" = "Mostrar solo las horas laborables";
 "Completed tasks" = "Tareas completadas";
+"Display events and tasks colors" = "Mostrar los colores de los eventos y las tareas";
+"Borders" = "Bordes";
+"Backgrounds" = "Fondos";
 
 /* Appointments */
 
@@ -542,6 +546,8 @@ vtodo_class2 = "(Tarea confidencial)";
 "tagWasRemoved" = "Si quita este calendario de la sincronización, necesitará recargar los datos en su teléfono móvil.\n¿Continuar?";
 "DestinationCalendarError" = "El calendario de origen y el de destino son iguales. Por favor, intente copiar a otro calendario.";
 "EventCopyError" = "La copia falló. Por favor, intente copiar a un calendario distinto.";
+"Please select at least one calendar" = "Por favor, seleccione al menos un calendario";
+
 
 "Open Task..." = "Abrir tarea...";
 "Mark Completed" = "Marcar como completo";
