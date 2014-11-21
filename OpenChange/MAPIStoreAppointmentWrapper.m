@@ -1218,7 +1218,9 @@ static NSCharacterSet *hexCharacterSet = nil;
              inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
+  NSRange range;
   NSString *stringValue;
+  NSString *trimingString = @"\r\n\n";
 
   /* FIXME: there is a confusion in NGCards around "comment" and "description" */
   stringValue = [event comment];
@@ -1226,6 +1228,14 @@ static NSCharacterSet *hexCharacterSet = nil;
       && ![stringValue isEqualToString: @"\r\n"]
       && ![stringValue isEqualToString: @"\n"])
     {
+      /* Avoiding those trail weird characters at event description */
+      range = [stringValue rangeOfString: trimingString
+                                 options: NSBackwardsSearch];
+      if (range.location > 0)
+        {
+          stringValue = [stringValue substringToIndex: (NSMaxRange(range) -1)];
+        }
+
       rc = MAPISTORE_SUCCESS;
       *data = [stringValue asUnicodeInMemCtx: memCtx];
     }

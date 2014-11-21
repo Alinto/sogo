@@ -60,7 +60,7 @@ static NSMapTable *contextsTable = nil;
 }
 
 + (id) userContextWithUsername: (NSString *) username
-                andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+                andTDBIndexing: (struct indexing_context *) indexing;
 {
   id userContext;
 
@@ -68,7 +68,7 @@ static NSMapTable *contextsTable = nil;
   if (!userContext)
     {
       userContext = [[self alloc] initWithUsername: username
-                                    andTDBIndexing: indexingTdb];
+                                    andTDBIndexing: indexing];
       [userContext autorelease];
       [contextsTable setObject: userContext forKey: username];
     }
@@ -100,16 +100,12 @@ static NSMapTable *contextsTable = nil;
   return self;
 }
 
-- (NSString *) _readUserPassword: (NSString *) newUsername
+- (NSString *) _readPasswordFile: (NSString *) path
 {
-  NSString *password, *path;
+  NSString *password;
   NSData *content;
- 
-  password = nil;
-  
-  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
-                   @"/mapistore/%@/password", newUsername];
 
+  password = nil;
   content = [NSData dataWithContentsOfFile: path];
 
   if (content)
@@ -124,8 +120,26 @@ static NSMapTable *contextsTable = nil;
   return password;
 }
 
+- (NSString *) _readUserPassword: (NSString *) newUsername
+{
+  NSString *password, *path;
+
+  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
+                   @"/mapistore/%@/password", newUsername];
+
+  password = [self _readPasswordFile: path];
+  if (password == nil)
+    {
+      // Try to get master password
+      path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR @"/mapistore/master.password"];
+      password = [self _readPasswordFile: path];
+    }
+
+  return password;
+}
+
 - (id) initWithUsername: (NSString *) newUsername
-         andTDBIndexing: (struct tdb_wrap *) indexingTdb
+         andTDBIndexing: (struct indexing_context *) indexing
 {
   NSString *userPassword;
 
@@ -133,9 +147,9 @@ static NSMapTable *contextsTable = nil;
     {
       /* "username" will be retained by table */
       username = newUsername;
-      if (indexingTdb)
+      if (indexing)
         ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
-                                                 withIndexing: indexingTdb]);
+                                                 withIndexing: indexing]);
 
       authenticator = [MAPIStoreAuthenticator new];
       [authenticator setUsername: username];

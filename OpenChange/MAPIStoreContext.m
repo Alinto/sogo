@@ -100,7 +100,7 @@ static NSMutableDictionary *contextClassMapping;
 }
 
 + (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
-                                            withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                            withIndexing: (struct indexing_context *) indexing
                                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *list, *current;
@@ -112,7 +112,7 @@ static NSMutableDictionary *contextClassMapping;
   list = NULL;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: indexing];
   [userContext activateWithUser: [userContext sogoUser]];
 
   classes = GSObjCAllSubclassesOfClass (self);
@@ -121,7 +121,7 @@ static NSMutableDictionary *contextClassMapping;
     {
       currentClass = [classes objectAtIndex: count];
       current = [currentClass listContextsForUser: userName
-                                  withTDBIndexing: indexingTdb
+                                  withIndexing: indexing
                                          inMemCtx: memCtx];
       if (current)
         DLIST_CONCATENATE(list, current, void);
@@ -131,7 +131,7 @@ static NSMutableDictionary *contextClassMapping;
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return NULL;
@@ -216,7 +216,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
      connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct tdb_wrap *) indexingTdb
+     andTDBIndexing: (struct indexing_context *) indexing
 {
   MAPIStoreContext *context;
   Class contextClass;
@@ -239,7 +239,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
             {
               context = [[contextClass alloc] initFromURL: baseURL
                                        withConnectionInfo: newConnInfo
-                                           andTDBIndexing: indexingTdb];
+                                           andTDBIndexing: indexing];
               if (context)
                 {
                   [context autorelease];
@@ -272,7 +272,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
 - (id)   initFromURL: (NSURL *) newUrl
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
-      andTDBIndexing: (struct tdb_wrap *) indexingTdb
+      andTDBIndexing: (struct indexing_context *) indexing
 {
   NSString *username;
 
@@ -291,7 +291,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
       ASSIGN (userContext,
               [MAPIStoreUserContext userContextWithUsername: username
-                                             andTDBIndexing: indexingTdb]);
+                                             andTDBIndexing: indexing]);
 
 #if 0
       mapistore_mgmt_backend_register_user (newConnInfo,
@@ -374,17 +374,14 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
     {
       if ([objectURL hasPrefix: url])
         {
-          *path = [[objectURL substringFromIndex: 7]
-		    asUnicodeInMemCtx: memCtx];
-	  [self logWithFormat: @"found path '%s' for fmid %.16x",
-		*path, fmid];
+          *path = [[objectURL substringFromIndex: 7] asUnicodeInMemCtx: memCtx];
+          [self logWithFormat: @"found path '%s' for fmid 0x%.16"PRIx64"", *path, fmid];
           rc = MAPISTORE_SUCCESS;
         }
       else
         {
-	  [self logWithFormat: @"context (%@, %@) does not contain"
-		@" found fmid: 0x%.16x",
-		objectURL, url, fmid];
+          [self logWithFormat: @"context (%@, %@) does not contain "
+                               @"found fmid: 0x%.16"PRIx64"", objectURL, url, fmid];
           *path = NULL;
           rc = MAPISTORE_SUCCESS;
         }
@@ -534,7 +531,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
     {
       //[self warnWithFormat: @"no id exist yet for '%@', requesting one...",
       //      childURL];
-      openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
+      mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
 
@@ -597,9 +594,9 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   memCtx = talloc_zero(NULL, TALLOC_CTX);
   newFMIDs = [NSMutableArray arrayWithCapacity: max];
   
-  if (openchangedb_get_new_folderIDs (connInfo->oc_ctx,
-                                      memCtx, max, &numbers)
-      != MAPI_E_SUCCESS || numbers->cValues != max)
+  if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
+                                            memCtx, max, &numbers)
+      != MAPISTORE_SUCCESS || numbers->cValues != max)
     abort ();
   for (count = 0; count < max; count++)
     {

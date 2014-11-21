@@ -1,3 +1,34 @@
+2.2.10 (2014-11-21)
+-------------------
+
+Enhancements
+ - no longer leaking database passwords in the logs (#2953)
+ - added support for multiple calendars and address books over ActiveSync
+ - updated timezone information (#2968)
+ - updated Brazilian Portuguese, Czech, Dutch, Finnish, French, German, Hungarian, Polish,
+   Russian, Spanish (Argentina), and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.5
+
+Bug fixes
+ - fixed freebusy lookup with "Show time as busy" (#2930)
+ - don't escape <br>'s in a card's note field
+ - fixed folder's display name when subscribing to a folder
+ - fixed folder's display name when the active user subscribes another user to one of her/his folders
+ - fixed error with new user default sorting value for the mailer module (#2952)
+ - fixed ActiveSync PING command flooding the server (#2940)
+ - fixed many interop issues with Windows Phones over ActiveSync
+ - fixed automatic return receipts crash when not in the recepient list (#2965)
+ - fixed support for Sieve folder encoding parameter (#2622)
+ - fixed rename of subscribed addressbooks
+ - sanitize strings before escaping them when using EAS
+ - fixed handling of event invitations on iOS/EAS with no organizer (#2978)
+ - fixed corrupted png files (#2975)
+ - improved dramatically the BSON decoding speed
+ - added WindowSize support for GCS collections when using EAS
+ - fixed IMAP search with non-ASCII folder names
+ - fixed extraction of email addresses when pasting text with tabs (#2945)
+ - fixed Outlook attachment corruption issues when using AES (#2957)
+
 2.2.9a (2014-09-29)
 -------------------
 
@@ -11,7 +42,7 @@ New features
  - support for recurrent tasks (#2160)
  - support for alarms on recurrent events / tasks
 
-Enchancements
+Enhancements
  - alarms can now be snoozed for 1 day
  - better iOS/Mac OS X Calendar compability regarding alarms (#1920)
  - force default classification over CalDAV if none is set (#2326)
@@ -36,7 +67,7 @@ New features
  - new user settings for threads collapsing
  - IMAP global search support (#2670)
 
-Enchancements
+Enhancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
  - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
  - new option to print calendars events and tasks with a background color or with a border color

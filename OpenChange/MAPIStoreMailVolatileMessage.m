@@ -367,7 +367,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   msgData->recipients_count = max;
   msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient, max);
   current = 0;
-  for (type = 0; type < 4; type++)
+  for (type = MAPI_ORIG; type <= MAPI_BCC; type++)
     {
       recipients = [allRecipients objectForKey: recTypes[type]];
       recipientsMax = [recipients count];
@@ -541,7 +541,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
-  NSUInteger type, bccLimit;
+  enum ulRecipClass type, bccLimit;
   SOGoUser *activeUser;
   NSNumber *priority;
 
@@ -561,8 +561,8 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
         bccLimit = MAPI_BCC;
       else
         bccLimit = MAPI_CC;
-      bccLimit++;
-      for (type = MAPI_TO; type < bccLimit; type++)
+
+      for (type = MAPI_TO; type <= bccLimit; type++)
 	{
 	  recId = recTypes[type];
 	  list = MakeRecipientsList ([recipients objectForKey: recId]);
@@ -865,7 +865,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   NSMutableArray *recipientEmails;
   NSArray *list;
   NSString *recId, *from, *msgClass;
-  NSUInteger count;
+  enum ulRecipClass type;
   SOGoUser *activeUser;
   SOGoDomainDefaults *dd;
   NSException *error;
@@ -881,9 +881,9 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       
       recipientEmails = [NSMutableArray arrayWithCapacity: 32];
       recipients = [properties objectForKey: @"recipients"];
-      for (count = 0; count < 3; count++)
+      for (type = MAPI_ORIG; type <= MAPI_BCC; type++)
         {
-          recId = recTypes[count];
+          recId = recTypes[type];
           list = [recipients objectForKey: recId];
           [recipientEmails
             addObjectsFromArray: [list objectsForKey: @"email"

@@ -250,7 +250,7 @@ static EOAttribute *textColumn = nil;
     newParentPath = NULL;
 
   sql = [NSMutableString stringWithFormat: @"UPDATE %@"
-                         @" SET c_path = '%@'",
+                         @" SET c_path = '/%@'",
                          [self tableName],
                          newPath];
   if (newParentPath)
@@ -375,9 +375,8 @@ static EOAttribute *textColumn = nil;
   return record;
 }
 
-// get a list of all folders
-- (NSArray *) folderList: (NSString *) deviceId
-        newerThanVersion: (NSInteger) startVersion
+- (NSArray *) cacheEntriesForDeviceId: (NSString *) deviceId
+                     newerThanVersion: (NSInteger) startVersion
 {
   NSMutableArray *recordsOut;
   NSArray *records;
@@ -392,15 +391,21 @@ static EOAttribute *textColumn = nil;
 
   tableName = [self tableName];
   adaptor = [self tableChannelAdaptor];
-  pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@+folder%", deviceId]
+  pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@", deviceId]
                       forAttribute: textColumn];
 
   /* query */
   sql = [NSMutableString stringWithFormat:
-                           @"SELECT * FROM %@ WHERE c_path LIKE %@ AND c_deleted <> 1",
-                         tableName, pathValue];
+                           @"SELECT * FROM %@ WHERE c_type = %d AND c_deleted <> 1", tableName, objectType];
+
   if (startVersion > -1)
     [sql appendFormat: @" AND c_version > %d", startVersion];
+
+  if (deviceId) {
+    pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@%", deviceId]
+                      forAttribute: textColumn];
+    [sql appendFormat: @" AND c_path like %@", pathValue];
+  }
 
   /* execution */
   records = [self performSQLQuery: sql];

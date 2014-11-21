@@ -165,6 +165,13 @@
     <xsl:attribute name="text-decoration">underline</xsl:attribute>
   </xsl:attribute-set>
 
+  <!-- strong emphasis in bold -->
+  <xsl:template match="emphasis[@role='strong']">
+    <fo:inline font-family="Lato" font-weight="normal">
+      <xsl:apply-templates/>
+    </fo:inline>
+  </xsl:template>
+
   <!-- copyright in range instead of seperated years -->
   <xsl:param name="make.year.ranges" select="1" />
 

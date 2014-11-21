@@ -233,13 +233,12 @@ Installation
 This section will guide you through the installation of the native
 Microsoft Outlook compatibility layer SOGo offers.
 
-Red Hat Enterprise Linux v5 and v6
+Red Hat Enterprise Linux v6 x86_64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you are using Red Hat Enterprise Linux (or CentOS) version 5 or
-version 6, packages for Samba 4, OpenChange and SOGo and the SOGo
-OpenChange backend are available from SOGo's web site. Please follow the
-instructions from
+If you are using Red Hat Enterprise Linux version 6 x86_64, packages
+for Samba 4, OpenChange and SOGo and the SOGo OpenChange backend are
+available from SOGo's web site. Please follow the instructions from
 http://www.sogo.nu/english/downloads/backend_nightly.html.
 
 In order to satisfy certain dependencies, you should also add the EPEL
@@ -253,52 +252,47 @@ installation:
 
 ----
 yum clean all && yum makecache
-yum install samba4 \ 
+yum install samba \ 
             openchange \ 
             sogo-openchange-backend \ 
             openchange-ocsmanager \ 
-            openchange-rpcproxy
+            openchange-rpcproxy \
+            mysql-server \
+            MySQL-python
 ----
 
 Once the packages are installed, refer to the _Configuration_ chapter
 from this guide.
 
-Debian 6.0 (Squeeze) and Ubuntu 12.04 (Precise Pangolin)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[NOTE]
+Samba4/OpenChange are not available for now on CentOS 5 i386/x86_64,
+CentOS 6 i386 and CentOS 7.
 
-Samba 4, OpenChange, SOGo and the SOGo OpenChange backend are now
+Debian 7.0 (Wheezy) and Ubuntu 12.04 (Precise Pangolin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SOGo, OpenChange and the SOGo OpenChange backend are now
 available from SOGo's web site. Please follow the instructions from
-http://www.sogo.nu/english/downloads/backend_nightly.html to setup your
+http://www.sogo.nu/english/downloads/backend.html to setup your
 apt sources.
 
-Debian Squeeze ships an older version of some libraries required by
-Samba 4. In order to workaround this, users of this distribution will
-have to use the _squeeze-backports_ repository. To do so, create
+For Samba 4, you need to use the _wheezy-backports_ repository. To do so, create
 `/etc/apt/sources.list.d/backports.list`:
 
- deb http://backports.debian.org/debian-backports squeeze-backports main
+ deb http://http.debian.net/debian wheezy-backports main
 
-Then install the dependencies on Debian Squeeze, do:
+On Ubuntu 12.04, you will also have to add the Wheezy sources:
 
-----
-apt-get update
-apt-get install -t squeeze-backports libwbclient-dev samba-common smbclient libsmbclient libsmbclient-dev
-----
+ deb http://ftp.us.debian.org/debian wheezy main
+ deb http://security.debian.org/ wheezy/updates main
 
-Once ready, install the `samba4` package on top of an existing SOGo
+Then install Samba 4 on top of an existing SOGo
 installation:
 
 ----
 apt-get update
-apt-get install samba4
+apt-get -t wheezy-backports install samba samba-dev
 ----
-
-The current post installation script shipped with the Samba 4 package is
-far from perfect and might fail even on a fresh install. The following
-command is needed to let dpkg know that everything is fine about Samba 4
-if the post install script fails.
-
- sed --in-place 'N; s/Package: samba4\nStatus: install ok half-configured/Package: samba4\nStatus: install ok installed/;'  /var/lib/dpkg/status
 
 Once completed, install the packages related to OpenChange and the SOGo
 provider:
@@ -307,12 +301,52 @@ provider:
 apt-get install openchangeserver \ 
                 sogo-openchange \ 
                 openchangeproxy \ 
-                openchange-ocsmanager \ 
-                openchange-rpcproxy
+                python-ocsmanager \
+                mysql-server \
+                python-mysqldb
 ----
 
 Once the packages are installed, refer to the _Configuration_ chapter
 from this guide.
+
+[NOTE]
+On Ubuntu 12.04, the Samba init scripts need to be modified to
+disable the upstart check. For more details, refer to:
+https://wiki.samba.org/index.php/Samba4/InitScript
+
+
+Ubuntu 14.04 (Trusty Tahr)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For Ubuntu 14.04, you must not use the Debian Wheezy backports.
+
+Please follow the instructions from
+http://www.sogo.nu/english/downloads/backend.html to setup your
+apt sources.
+
+Then install Samba 4 on top of an existing SOGo
+installation:
+
+----
+apt-get update
+apt-get install samba samba-dev
+----
+
+Once completed, install the packages related to OpenChange and the SOGo
+provider:
+
+----
+apt-get install openchangeserver \ 
+                sogo-openchange \ 
+                openchangeproxy \ 
+                python-ocsmanager \
+                mysql-server \
+                python-mysqldb
+----
+
+Once the packages are installed, refer to the _Configuration_ chapter
+from this guide.
+
 
 Configuration
 -------------
@@ -349,16 +383,14 @@ You might consider changing the realm and domain used, to suit your
 enviroment.
 
 You might also have to
-remove `/etc/samba4/smb.conf` (or `/etc/samba/smb.conf` on Debian-based
-distributions) prior running this command.
+remove `/etc/samba/smb.conf` prior running this command.
 
 Add the following parameters to the `[global]` section of the
-`/etc/samba4/smb.conf` (`/samba/smb.conf` if you use a Debian-based
-distribution) configuration file:
+`/etc/samba/smb.conf` configuration file:
 
 ----
 ### Configuration required by OpenChange server ###
-dcerpc endpoint servers = +epmapper, +mapiproxy
+dcerpc endpoint servers = epmapper, mapiproxy, dnsserver
 dcerpc_mapiproxy:server = true
 dcerpc_mapiproxy:interfaces = exchange_emsmdb, exchange_nsp, exchange_ds_rfr
 ### Configuration required by OpenChange server ###
@@ -392,11 +424,22 @@ Your Samba 4 configuration file should look like this:
 OpenChange Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+OpenChange 2.2 stores its metadata in MySQL so you need to have it installed.
+
+First, create the OpenChange MySQL user:
+
+----
+$ mysql -u root -p
+mysql> CREATE USER 'openchange-user'@'localhost' IDENTIFIED BY 'openchange$123';
+mysql> GRANT ALL PRIVILEGES ON `openchange`.* TO 'openchange-user'@'localhost' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+----
+
 The Samba AD schema needs to be filled with additional object
 definitions by running the following commands: 
 
 ----
-openchange_provision
+openchange_provision --standalone
 
 NOTE: This operation can take several minutes
 [+] Step 1: Register Exchange OIDs
@@ -410,38 +453,59 @@ NOTE: This operation can take several minutes
 [+] Step 9: Add Exchange classes to Samba schema
 [+] Step 10: Add possSuperior attributes to Exchange classes
 [+] Step 11: Extend existing Samba classes and attributes
-[+] Step 12: Exchange Samba with Exchange configuration objects
+[+] Step 12: Generic Exchange configuration objects
+[+] Step 13: Finalize generic Exchange configuration objects
+[SUCCESS] Done!
+[+] Step 1: Exchange Samba registration
+[SUCCESS] Done!
+[+] Step 1: Register Exchange Samba as the main server
 [SUCCESS] Done!
 ----
 
-You can safely ignore the "`ERROR: no subClassOf 'serviceAdministrationPoint' for 'rRASAdministrationConnectionPoint'`" message when running the `openchange_provision` command.
-
-Provision the OpenChange database: 
+Create the OpenChange database: 
 
 ----
-openchange_provision --openchangedb
+openchange_provision --openchangedb --openchangedb-uri 'mysql://openchange-user:openchange$123@localhost/openchange'
 
 Setting up openchange db
 [+] Public Folders
 ===================
-        * Public Folder Root                       0x0100000000000001
-        * IPM_SUBTREE                              0x0200000000000001
-        * NON_IPM_SUBTREE                          0x0300000000000001
-        * EFORMS REGISTRY                          0x0400000000000001
-        * OFFLINE ADDRESS BOOK                     0x0500000000000001
-        * /o=First Organization/cn=addrlists/cn=oabs/cn=Default Offline Address Book 0x0600000000000001
-        * SCHEDULE+ FREE BUSY                      0x0700000000000001
-        * EX:/o=First Organization/ou=Exchange Administrative Group (UBUNTU-OC) 0x0800000000000001
-        * Events Root                              0x0900000000000001
+	* Public Folder Root                      : 0x0100000000000001 (72057594037927937)
+	* IPM_SUBTREE                             : 0x0200000000000001 (144115188075855873)
+	* NON_IPM_SUBTREE                         : 0x0300000000000001 (216172782113783809)
+	* EFORMS REGISTRY                         : 0x0400000000000001 (288230376151711745)
+	* OFFLINE ADDRESS BOOK                    : 0x0500000000000001 (360287970189639681)
+	* /o=First Organization/cn=addrlists/cn=oabs/cn=Default Offline Address Book: 0x0600000000000001 (432345564227567617)
+	* SCHEDULE+ FREE BUSY                     : 0x0700000000000001 (504403158265495553)
+	* EX:/o=first organization/ou=first administrative group: 0x0800000000000001 (576460752303423489)
+	* Events Root                             : 0x0900000000000001 (648518346341351425)
+----
+
+Finally, modify `/etc/samba/smb.conf` to specify OpenChange connection information
+for its indexing database. Add the following at the end of the `[global]` section:
+
+----
+mapistore:namedproperties = mysql
+namedproperties:mysql_user = openchange-user
+namedproperties:mysql_pass = openchange$123
+namedproperties:mysql_host = localhost
+namedproperties:mysql_db = openchange
+
+mapistore:indexing_backend = mysql://openchange-user:openchange$123@localhost/openchange
+mapiproxy:openchangedb = mysql://openchange-user:openchange$123@localhost/openchange
 ----
 
 On RHEL, make sure SELinux is disabled:
 
  setenforce 0
 
-Next, you can start Samba using the usual command :
+Next, you can start Samba using the usual command:
 
- /etc/init.d/samba4 start
+ /etc/init.d/samba start
+
+On upstart-based distributions, use:
+
+ start samba-ad-dc
 
 You can also launch the OpenChange web services:
 
@@ -503,6 +567,10 @@ On Debian-based distributions, do:
 
  update-rc.d apache2 defaults && /etc/init.d/apache2 restart
 
+[NOTE]
+Debian-based distributions are not supported anymore for
+OCSManager/rpcproxy. Support will soon resume.
+
 Name Service Configuration for Web Services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -540,14 +608,13 @@ samba-tool domain passwordsettings set --complexity=off
 samba-tool domain passwordsettings set --min-pwd-length=1
 samba-tool user add <username>
 samba-tool user setexpiry <username> --noexpiry
-# create user in openchange+ +openchange_newuser --create <username>
+# create user in openchange
+openchange_newuser --create <username>
 ----
 
 If you don't have a trust between your IMAP server and SOGo, you must at
 this point set the cleartext password of the newly created user in
-`/var/lib/samba4/private/mapistore/<username/password` (or
-`/var/lib/samba/private/mapistore/<username/password` on Debian-based
-distributions).
+`/var/lib/samba/private/mapistore/<username/password`.
 
 This per-user file contains the cleartext password of the user as a
 UTF-8 string, on a single line. This password will be used to

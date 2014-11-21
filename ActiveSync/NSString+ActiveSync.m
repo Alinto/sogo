@@ -35,8 +35,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSDate.h>
 
 #include <SOGo/NSString+Utilities.h>
+#include <SOGo/NSData+Crypto.h>
 
+#include <NGExtensions/NGBase64Coding.h>
 #include <NGExtensions/NSString+misc.h>
+
+static NSArray *easCommandCodes = nil;
+static NSArray *easCommandParameters = nil;
 
 @implementation NSString (ActiveSync)
 
@@ -61,9 +66,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *s;
 
-  s = [self stringByEscapingHTMLString];
+  s = [self safeString];
 
-  return [s safeString];
+  return [s stringByEscapingHTMLString];
 }
 
 - (int) activeSyncFolderType
@@ -134,11 +139,78 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString *) _valueForParameter: (NSString *) theParameter
 {
-  NSArray *components;
+  NSMutableArray *components;
   NSString *s;
   int i;
 
-  components = [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"];
+  components = [NSMutableArray arrayWithArray: [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"]];
+
+  // We handle BASE64 encoded queryStrings. See http://msdn.microsoft.com/en-us/library/ee160227%28v=exchg.80%29.aspx for details.
+  if ([components count] == 1)
+    {
+      NSString *deviceType, *parameterValue;
+      NSData *queryString;
+      
+      int cmd_code, deviceid_length, policy_length, devicetype_length, parameter_code, parameter_length, i;
+      const char* qs_bytes;
+     
+      queryString = [[components objectAtIndex: 0] dataByDecodingBase64];
+      qs_bytes = (const char*)[queryString bytes];
+
+      if (!easCommandCodes)
+        {
+          easCommandCodes = [NSArray arrayWithObjects:@"Sync", @"SendMail", @"SmartForward", @"SmartReply", @"GetAttachment", @"na", @"na", @"na", @"na",
+                                     @"FolderSync", @"FolderCreate", @"FolderDelete", @"FolderUpdate", @"MoveItems", @"GetItemEstimate", @"MeetingResponse",
+                                     @"Search", @"Settings", @"Ping", @"ItemOperations", @"Provision", @"ResolveRecipients", @"ValidateCert", nil];
+          RETAIN(easCommandCodes);
+        }
+
+      if (!easCommandParameters)
+        {
+          easCommandParameters = [NSArray arrayWithObjects:@"AttachmentName", @"CollectionId", @"na", @"ItemId", @"LongId", @"na", @"Occurrence", @"Options", @"User", nil];
+          RETAIN(easCommandParameters);
+        }
+
+      // Command code, 1 byte, ie.: cmd=
+      cmd_code = qs_bytes[1];
+      [components addObject: [NSString stringWithFormat: @"cmd=%@", [easCommandCodes objectAtIndex: cmd_code]]];
+
+      // Device ID length and Device ID (variable)
+      deviceid_length = qs_bytes[4];
+      [components addObject: [NSString stringWithFormat: @"deviceId=%@", [[NSData encodeDataAsHexString: [queryString subdataWithRange: NSMakeRange(5, deviceid_length)]] uppercaseString]]];
+
+      // Device type length and type (variable)
+      policy_length = qs_bytes[5+deviceid_length];
+      devicetype_length = qs_bytes[5+deviceid_length+1+policy_length];
+      deviceType = [[NSString alloc] initWithData: [queryString subdataWithRange: NSMakeRange(5+deviceid_length+1+policy_length+1, devicetype_length)]
+                                         encoding: NSASCIIStringEncoding];
+      AUTORELEASE(deviceType);
+
+      [components addObject: [NSString stringWithFormat: @"deviceType=%@", deviceType]];                                      
+
+      // Command Parameters
+      i = 5+deviceid_length+1+policy_length+1+devicetype_length;
+      
+      while (i < [queryString length])
+        {
+          parameter_code = qs_bytes[i];
+          parameter_length = qs_bytes[i+1];
+          parameterValue = [[NSString alloc] initWithData: [queryString subdataWithRange: NSMakeRange(i+1+1, parameter_length)]
+                                                 encoding: NSASCIIStringEncoding];
+          
+          AUTORELEASE(parameterValue);
+          
+          // parameter_code 7 == Options
+          // http://msdn.microsoft.com/en-us/library/ee237789(v=exchg.80).aspx
+          if (parameter_code == 7)
+            [components addObject: [NSString stringWithFormat: @"%@=%@", [easCommandParameters objectAtIndex: parameter_code],
+                                             ([parameterValue isEqualToString: @"\001"]) ? @"SaveInSent" : @"AcceptMultiPart"]];
+          else
+            [components addObject: [NSString stringWithFormat: @"%@=%@", [easCommandParameters objectAtIndex: parameter_code], parameterValue]];
+          
+          i = i + 1 + 1 + parameter_length;
+        }
+    }
   
   for (i = 0; i < [components count]; i++)
     {

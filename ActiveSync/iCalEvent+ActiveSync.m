@@ -127,7 +127,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
 
   if (!tz)
-    tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
+    tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
 
   [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
@@ -335,14 +335,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   //
-  //
-  //
-  if ((o = [theValues objectForKey: @"MeetingStatus"]))
-    {
-      [o intValue];
-    }
-
-  //
   // 0- normal, 1- personal, 2- private and 3-confidential
   //
   if ((o = [theValues objectForKey: @"Sensitivy"]))
@@ -361,14 +353,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self setAccessClass: @"PUBLIC"];
         }
     }
-
-  if ((o = [theValues objectForKey: @"TimeZone"]))
-    {
-      // Ugh, we ignore it for now.
-      userTimeZone = [[[context activeUser] userDefaults] timeZone];
-      tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
-      [(iCalCalendar *) parent addTimeZone: tz];
-    }
+  
+  // We ignore TimeZone sent by mobile devices for now.
+  // Some Windows devices don't send during event updates.
+  //if ((o = [theValues objectForKey: @"TimeZone"]))
+  //  {
+  userTimeZone = [[[context activeUser] userDefaults] timeZone];
+  tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
+  [(iCalCalendar *) parent addTimeZone: tz];
+  //}
   
   // FIXME: merge with iCalToDo
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
@@ -481,11 +474,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setOrganizer: person];
     }
 
+  //
+  // iOS is plain stupid here. It seends event invitations with no Organizer.
+  // We check this corner-case and if MeetingStatus == 1 (see http://msdn.microsoft.com/en-us/library/ee219342(v=exchg.80).aspx or details)
+  // and there's no organizer, we fake one.
+  //
+  if ((o = [theValues objectForKey: @"MeetingStatus"]))
+    {
+      if ([o intValue] == 1 && ![theValues objectForKey: @"Organizer_Email"])
+        {
+          iCalPerson *person;
+      
+          person = [iCalPerson elementWithTag: @"organizer"];
+          [person setEmail: [[[context activeUser] primaryIdentity] objectForKey: @"email"]];
+          [person setCn: [[context activeUser] cn]];
+          [person setPartStat: @"ACCEPTED"];
+          [self setOrganizer: person];
+        }
+    }
+  
+
   // Attendees - we don't touch the values if we're an attendee. This is gonna
   // be done automatically by the ActiveSync client when invoking MeetingResponse.
   if (![self userIsAttendee: [context activeUser]])
     {
-      if ((o = [theValues objectForKey: @"Attendees"]))
+      // Windows phones sens sometimes an empty Attendees tag.
+      // We check it's an array before processing it.
+      if ((o = [theValues objectForKey: @"Attendees"])&& [o isKindOfClass: [NSArray class]])
         {
           NSMutableArray *attendees;
           NSDictionary *attendee;

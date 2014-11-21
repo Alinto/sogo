@@ -36,9 +36,19 @@
 #import "MAPIStoreUserContext.h"
 #import <SOGo/SOGoCacheGCSObject.h>
 
-#import "NSObject+PropertyList.m"
+#import <SOGo/BSONCodec.h>
+#import "NSObject+PropertyList.h"
 
 Class MAPIStoreUserContextK, SOGoMAPIDBObjectK;
+
+static void
+DumpBSONData(NSData *data)
+{
+  NSDictionary *dvalue;
+  dvalue = [data BSONValue];
+  [dvalue displayWithIndentation:0];
+  printf("\n");
+}
 
 static void
 DbDumpObject (NSString *username, NSString *path)
@@ -55,8 +65,9 @@ DbDumpObject (NSString *username, NSString *path)
   record = [dbobject lookupRecord: path newerThanVersion: -1];
   if (record)
     {
+      printf("record found: %p\n", record);
       content = [[record objectForKey: @"c_content"] dataByDecodingBase64];
-      OCDumpPListData (content);
+      DumpBSONData(content);
     }
   else
     NSLog (@"record not found");
@@ -99,9 +110,12 @@ int main (int argc, char *argv[], char *envp[])
   SOGoMAPIDBObjectK = NSClassFromString (@"SOGoMAPIDBObject");
 
   arguments = [[NSProcessInfo processInfo] arguments];
-  if ([arguments count] > 2)
+  if ([arguments count] > 2) {
     DbDumpObject ([arguments objectAtIndex: 1],
                   [arguments objectAtIndex: 2]);
+  } else if ([arguments count] > 1) {
+    DumpBSONData([[arguments objectAtIndex:1] dataByDecodingBase64]);
+  }
 
   [pool release];
 

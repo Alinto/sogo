@@ -1,5 +1,14 @@
+# We disable OpenChange builds on el5 since it's prehistoric
+%define enable_openchange 1
+%{?el5:%define enable_openchange 0}
+%{?el7:%define enable_openchange 0}
+
+%ifarch %ix86
+%define enable_openchange 0
+%endif
+
 %{!?sogo_major_version: %global sogo_major_version %(/bin/echo %{sogo_version} | /bin/cut -f 1 -d .)}
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 %global oc_build_depends samba4 openchange
 %endif
 
@@ -19,7 +28,7 @@ Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       /usr
 AutoReqProv:  off
-Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached, memcached, tmpwatch
+Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached, memcached, tmpwatch, zip
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
 BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends}
 
@@ -33,8 +42,9 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 # saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
 %{?el5:%define saml2_cfg_opts ""}
-%{?!el5:Requires: lasso}
-%{?!el5:BuildRequires: lasso-devel}
+%{?el7:%define saml2_cfg_opts ""}
+%{?el6:Requires: lasso}
+%{?el6:BuildRequires: lasso-devel}
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -139,7 +149,7 @@ AutoReqProv:  off
 %description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 SOPE versit parsing library for iCal and VCard formats
 
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 %package openchange-backend
 Summary:      SOGo backend for OpenChange
 Group:        Productivity/Groupware
@@ -164,7 +174,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
+%if 0%{?el7}
+. /usr/lib64/GNUstep/Makefiles/GNUstep.sh
+%else
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
+%endif
 ./configure %saml2_cfg_opts
 
 case %{_target_platform} in
@@ -187,6 +201,8 @@ make CC="$cc" LDFLAGS="$ldflags" messages=yes
 
 # ****************************** install ******************************
 %install
+QA_SKIP_BUILD_ROOT=1
+export QA_SKIP_BUILD_ROOT
 
 case %{_target_platform} in
 ppc64-*)
@@ -260,8 +276,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
 %{_sbindir}/openchange_user_cleanup
-%{_libdir}/libSOGo.so.*
-%{_libdir}/libSOGoUI.so.*
+%{_libdir}/sogo/libSOGo.so*
+%{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
 %{_libdir}/GNUstep/SOGo/Appointments.SOGo
 %{_libdir}/GNUstep/SOGo/CommonUI.SOGo
@@ -275,7 +291,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/SOGo/SchedulerUI.SOGo
 
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Resources
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/Current
 %{_libdir}/GNUstep/SOGo/Templates
@@ -306,34 +322,34 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo-devel
 %{_includedir}/SOGo
 %{_includedir}/SOGoUI
-%{_libdir}/libSOGo.so
-%{_libdir}/libSOGoUI.so
+%{_libdir}/sogo/libSOGo.so*
+%{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/libSOGo.so
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/SOGo
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/sogo/SOGo
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/SOGo
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/libSOGo.so*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/sogo/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
-%{_libdir}/libGDLContentStore*.so.*
+%{_libdir}/sogo/libGDLContentStore*.so*
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
 %{_includedir}/GDLContentStore
-%{_libdir}/libGDLContentStore*.so
+%{_libdir}/sogo/libGDLContentStore*.so*
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards
-%{_libdir}/libNGCards.so.*
+%{_libdir}/sogo/libNGCards.so*
 %{_libdir}/GNUstep/SaxDrivers-*
 %{_libdir}/GNUstep/SaxMappings
 %{_libdir}/GNUstep/Libraries/Resources/NGCards
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 %{_includedir}/NGCards
-%{_libdir}/libNGCards.so
+%{_libdir}/sogo/libNGCards.so*
 
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 %files openchange-backend
 %defattr(-,root,root,-)
 %{_libdir}/GNUstep/SOGo/*.MAPIStore
@@ -371,73 +387,76 @@ fi
 
 # ********************************* changelog *************************
 %changelog
-* Wed Jan 15 2014 Jean Raby <jraby@inverse.ca>
+* Wed Oct 8 2014 Inverse inc. <support@inverse.ca>
+- fixed the library move to "sogo" app dir
+
+* Wed Jan 15 2014 Inverse inc. <support@inverse.ca>
 - New package: sogo-activesync
 - explicitly list all *.SOGo modules in sogo package
 - added dependency on sogo = %version for sogo-tool
 
-* Thu Apr 17 2013 Jean Raby <jraby@inverse.ca>
+* Thu Apr 17 2013 Inverse inc. <support@inverse.ca>
 - Install openchange_user_cleanup in sbindir instead of doc
 
-* Wed Apr 10 2013 Jean Raby <jraby@inverse.ca>
+* Wed Apr 10 2013 Inverse inc. <support@inverse.ca>
 - use %sogo_user instead of 'sogo'
 - install a sample sogo.conf in /etc/sogo
 
-* Tue Jan 22 2013 Jean Raby <jraby@inverse.ca>
+* Tue Jan 22 2013 Inverse inc. <support@inverse.ca>
 - Create the sogo user as a system user
 - Use %attr() to set directory permissions instead of chown/chmod
 
-* Mon Nov 12 2012 Jean Raby <jraby@inverse.ca>
+* Mon Nov 12 2012 Inverse inc. <support@inverse.ca>
 - Add missing dependency on lasso and lasso-devel
 
-* Mon Nov 05 2012 Jean Raby <jraby@inverse.ca>
+* Mon Nov 05 2012 Inverse inc. <support@inverse.ca>
 - Disable saml2 on rhel5 - glib2 too old
 
-* Fri Nov 02 2012 Jean Raby <jraby@inverse.ca>
+* Fri Nov 02 2012 Inverse inc. <support@inverse.ca>
 - Enable saml2
 
-* Tue Aug 28 2012 Jean Raby <jraby@inverse.ca>
+* Tue Aug 28 2012 Inverse inc. <support@inverse.ca>
 - Add openchange_cleanup.py and tweak it to work on RHEL5
 
-* Tue Jul 31 2012 Jean Raby <jraby@inverse.ca>
+* Tue Jul 31 2012 Inverse inc. <support@inverse.ca>
 - treat logrotate file as a config file
 
-* Fri May 24 2012 Jean Raby <jraby@inverse.ca>
+* Fri May 24 2012 Inverse inc. <support@inverse.ca>
 - %post: restart sogo if it was running before rpm install
 
-* Fri Mar 16 2012 Jean Raby <jraby@inverse.ca>
+* Fri Mar 16 2012 Inverse inc. <support@inverse.ca>
 - %post: update timestamp on imgs,css,js to let apache know the files changed
 
-* Fri Feb 16 2012 Jean Raby <jraby@inverse.ca>
+* Fri Feb 16 2012 Inverse inc. <support@inverse.ca>
 - Use globbing to include all sql upgrade scripts instead of listing them all
 
-* Tue Jan 10 2012 Jean Raby <jraby@inverse.ca>
+* Tue Jan 10 2012 Inverse inc. <support@inverse.ca>
 - /etc/cron.d/sogo
 
-* Thu Oct 27 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Thu Oct 27 2011 Inverse inc. <support@inverse.ca>
 - make build of sogo-openchange-backend conditional to sogo_version >= 2
 
-* Fri Oct 14 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Fri Oct 14 2011 Inverse inc. <support@inverse.ca>
 - adapted to gnustep-make 2.6
 - added sogo-openchange-backend
 
-* Tue Sep 28 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Tue Sep 28 2010 Inverse inc. <support@inverse.ca>
 - removed "README" from documentation
 
-* Fri Aug 20 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Fri Aug 20 2010 Inverse inc. <support@inverse.ca>
 - added sogo-ealarms-notify package
 
-* Tue Apr 06 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Tue Apr 06 2010 Inverse inc. <support@inverse.ca>
 - added sogo-slapd-sockd package
 
-* Thu Jul 31 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Thu Jul 31 2008 Inverse inc. <support@inverse.ca>
 - added dependencies on sopeXY-appserver, -core, -gdl1-contentstore and -ldap
 
-* Wed May 21 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Wed May 21 2008 Inverse inc. <support@inverse.ca>
 - removed installation of template and resource files, since it is now done by the upstream package
 
-* Tue Oct 4 2007 Francis Lachapelle <flachapelle@inverse.ca>
+* Tue Oct 4 2007 Inverse inc. <support@inverse.ca>
 - added package sope-gdl1-contentstore
 
-* Wed Jul 18 2007 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+* Wed Jul 18 2007 Inverse inc. <support@inverse.ca>
 - initial build

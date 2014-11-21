@@ -11,6 +11,8 @@
 #import <string.h>
 #import <objc/objc.h>
 
+static NSMutableDictionary *timezoneCache = nil;
+
 #define BSONTYPE(tag,className) [className class], [NSNumber numberWithChar: (tag)]
 
 #ifndef objc_msgSend
@@ -579,11 +581,38 @@ static NSDictionary *BSONTypes()
 
 + (id) BSONFragment: (NSData *) data at: (const void **) base ofType: (uint8_t) typeID
 {
-  NSString *v;
-
-  v = [NSString BSONFragment: data  at: base  ofType: 0x02];
+  NSTimeZone *tz;
+  NSString *key;
   
-  return [NSCalendarDate dateWithString: v
-                         calendarFormat: @"%Y-%m-%d %H:%M:%S %Z"];
+  unsigned int year, month, day, hour, minute, second;
+  char timezone[64];
+  const char *v;
+
+  if (!timezoneCache)
+    timezoneCache = [[NSMutableDictionary alloc] init];
+  
+  v = [[NSString BSONFragment: data  at: base  ofType: 0x02] cStringUsingEncoding: NSASCIIStringEncoding];
+
+  sscanf(v, "%d-%d-%d %d:%d:%d %s", &year, &month, &day, &hour, &minute, &second, timezone);
+
+  key = [NSString stringWithFormat: @"%s", timezone];
+
+  if (!(tz = [timezoneCache objectForKey: key]))
+    {
+      tz = [NSTimeZone timeZoneWithAbbreviation: key];
+
+      if (tz)
+        [timezoneCache setObject: tz  forKey: key];
+      else
+        NSLog(@"ERROR: timezone (%@) not found when deserializing BSON data", key);
+    }
+
+  return [NSCalendarDate dateWithYear: year
+                                month: month
+                                  day: day
+                                 hour: hour
+                               minute: minute
+                               second: second
+                             timeZone: tz];
 }
 @end

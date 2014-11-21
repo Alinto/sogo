@@ -67,15 +67,18 @@
 
 - (NSString *) _cardStringWithLabel: (NSString *) label
                               value: (NSString *) value
+               byEscapingHTMLString: (BOOL) escapeHTML
                        asLinkScheme: (NSString *) scheme
                  withLinkAttributes: (NSString *) attrs
 {
   NSMutableString *cardString;
 
   cardString = [NSMutableString stringWithCapacity: 80];
-  value = [[value stringByReplacingString: @"\r" withString: @""] stringByEscapingHTMLString];
+  value = [value stringByReplacingString: @"\r" withString: @""];
   if ([value length] > 0)
     {
+      if (escapeHTML)
+        value = [value stringByEscapingHTMLString];
       if ([scheme length] > 0)
         value = [NSString stringWithFormat: @"<a href=\"%@%@\" %@>%@</a>", scheme, value, attrs, value];
 
@@ -94,6 +97,7 @@
 {
   return [self _cardStringWithLabel: label
                               value: value
+               byEscapingHTMLString: YES
                        asLinkScheme: nil
                  withLinkAttributes: nil];
 }
@@ -104,6 +108,7 @@
 {
   return [self _cardStringWithLabel: label
                               value: value
+               byEscapingHTMLString: YES
                        asLinkScheme: scheme
                  withLinkAttributes: nil];
 }
@@ -144,6 +149,7 @@
 
   return [self _cardStringWithLabel: @"Email:"
                               value: email
+               byEscapingHTMLString: YES
                        asLinkScheme: @"mailto:"
                  withLinkAttributes: attrs];
 }
@@ -182,6 +188,7 @@
           
           [secondaryEmails addObject: [self _cardStringWithLabel: nil
                                                            value: email
+                                            byEscapingHTMLString: YES
                                                     asLinkScheme: @"mailto:"
                                               withLinkAttributes: attrs]];
         }
@@ -365,6 +372,7 @@
 
   return [self _cardStringWithLabel: nil
                               value: data
+               byEscapingHTMLString: YES
                        asLinkScheme: schema
                  withLinkAttributes: @"target=\"_blank\""];
 }
@@ -591,13 +599,18 @@
   note = [card note];
   if (note)
     {
+      note = [note stringByEscapingHTMLString];
       note = [note stringByReplacingString: @"\r\n"
                    withString: @"<br />"];
       note = [note stringByReplacingString: @"\n"
                    withString: @"<br />"];
     }
 
-  return [self _cardStringWithLabel: @"Note:" value: note];
+  return [self _cardStringWithLabel: @"Note:"
+                              value: note
+               byEscapingHTMLString: NO
+                       asLinkScheme: nil
+                 withLinkAttributes: nil];
 }
 
 /* hrefs */

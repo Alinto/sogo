@@ -710,7 +710,8 @@ static NSString *inboxFolderName = @"INBOX";
             }
         }
       
-      [folders setObject: guid forKey: [object substringFromIndex: 1]];
+      [folders setObject: [NSString stringWithFormat: @"folder%@", guid] forKey: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]]];
+
     }
   
   return folders;

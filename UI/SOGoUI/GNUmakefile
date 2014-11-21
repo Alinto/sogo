@@ -11,6 +11,8 @@ libSOGoUI_HEADER_FILES_DIR         = .
 libSOGoUI_HEADER_FILES_INSTALL_DIR = /SOGoUI
 libSOGoUI_INTERFACE_VERSION	   = $(MAJOR_VERSION).$(MINOR_VERSION)
 
+ADDITIONAL_LDFLAGS += -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
+
 libSOGoUI_HEADER_FILES +=	\
 	\
 	UIxJSClose.h		\
@@ -32,5 +34,6 @@ libSOGoUI_OBJC_FILES +=		\
 ifneq ($(FHS_INSTALL_ROOT),)
 GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
 endif
+GNUSTEP_TARGET_LDIR=sogo
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble

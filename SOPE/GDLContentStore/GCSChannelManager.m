@@ -276,7 +276,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   EOAdaptorChannel *channel;
   GCSChannelHandle *handle;
   NSCalendarDate *now, *lastFailure;
-  NSString *urlId;
+  NSString *urlId, *url;
 
   channel = nil;
   urlId = [_url gcsURLId];
@@ -304,10 +304,10 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
         }
       else
         {
+          url = [NSString stringWithFormat: @"%@://%@%@", [_url scheme], [_url host], [_url path]];
           if (debugPools)
             {
-              [self logWithFormat: @"DBPOOL: create new DB channel for URL: %@",
-                    [_url absoluteString]];
+              [self logWithFormat: @"DBPOOL: create new DB channel for %@", url];
             }
 
           /* create channel */
@@ -330,15 +330,13 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
                   if (lastFailure)
                     {
-                      [self logWithFormat: @"db for %@ is now back up",
-                            [_url absoluteString]];
+                      [self logWithFormat: @"db for %@ is now back up", url];
                       [lastFailures removeObjectForKey: urlId];
                     }
                 }
               else
                 {
-                  [self errorWithFormat: @"could not open channel %@ for URL: %@",
-                        channel, [_url absoluteString]];
+                  [self errorWithFormat: @"could not open channel %@ for %@", channel, url];
                   channel = nil;
                   [lastFailures setObject: now forKey: urlId];
                   [self warnWithFormat: @"  will prevent opening of this"

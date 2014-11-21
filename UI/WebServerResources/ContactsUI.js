@@ -1113,19 +1113,14 @@ function onAddressBooksMenuPrepareVisibility() {
 
         var menu = $("contactFoldersMenu").down("ul");;
         var listElements = menu.childNodesWithTag("li");
-        var modifyOption = listElements[0];
         var newListOption = listElements[3];
         var removeOption = listElements[5];
         var exportOption = listElements[7];
         var importOption = listElements[8];
         var sharingOption = listElements[listElements.length - 1];
 
-        // Disable the "Sharing" and "Modify" options when address book
-        // is not owned by user
+        // Disable the "Sharing" option when address book is not owned by user
         if (folderOwner == UserLogin || IsSuperUser) {
-            modifyOption.removeClassName("disabled"); // WARNING: will fail
-                                                      // for super users
-                                                      // anyway
             var aclEditing = selected[0].getAttribute("acl-editing");
             if (aclEditing && aclEditing == "available") {
                 sharingOption.removeClassName("disabled");
@@ -1147,8 +1142,7 @@ function onAddressBooksMenuPrepareVisibility() {
             newListOption.addClassName("disabled");
         }
 
-        /* Disable the "remove" and "export ab" options when address book is
-           public */
+        // Disable the "remove" and "export ab" options when address book is public
         if (folderOwner == "nobody") {
             exportOption.addClassName("disabled");
             importOption.addClassName("disabled");
@@ -1629,7 +1623,7 @@ function onContactsReload () {
 }
 
 function initRefreshViewCheckTimer() {
-  var refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+  var refreshViewCheck = typeof UserDefaults == 'undefined' ? false : UserDefaults["SOGoRefreshViewCheck"];
   if (refreshViewCheck && refreshViewCheck != "manually") {
     var interval;
     if (refreshViewCheck == "once_per_hour")

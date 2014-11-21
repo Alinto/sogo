@@ -45,7 +45,7 @@
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
@@ -72,7 +72,7 @@
                               inContainer: nil];
   [root setOwner: userName];
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: indexing];
   [userContext ensureFolderTableExists];
   [root setTableUrl: [userContext folderTableURL]];
   names = [root toManyRelationshipKeys];

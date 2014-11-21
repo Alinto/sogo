@@ -32,14 +32,10 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <SOGo/BSONCodec.h>
+#import "NSObject+PropertyList.h"
 
 const char *indentationStep = "  ";
 
-@interface NSObject (plext)
-
-- (void) displayWithIndentation: (NSInteger) anInt;
-
-@end
 
 @implementation NSObject (plext)
 
@@ -139,46 +135,3 @@ const char *indentationStep = "  ";
 
 @end
 
-static void
-OCDumpPListData (NSData *content)
-{
-  //NSDictionary *d;
-  //NSPropertyListFormat format;
-  //NSString *error = nil;
-  //const char *formatName;
-
-  //d = [NSPropertyListSerialization propertyListFromData: content
-  //                                     mutabilityOption: NSPropertyListImmutable
-  //                                               format: &format
-  //                                     errorDescription: &error];
-  //d = [content BSONValue];
-
-  // if (d)
-  //   {
-  //     switch (format)
-  //       {
-  //       case  NSPropertyListOpenStepFormat:
-  //         formatName = "OpenStep";
-  //         break;
-  //       case NSPropertyListXMLFormat_v1_0:
-  //         formatName = "XML";
-  //         break;
-  //       case NSPropertyListBinaryFormat_v1_0:
-  //         formatName = "Binary";
-  //         break;
-  //       case NSPropertyListGNUstepFormat:
-  //         formatName = "GNUstep";
-  //         break;
-  //       case NSPropertyListGNUstepBinaryFormat:
-  //         formatName = "GNUstep binary";
-  //         break;
-  //       default: formatName = "unknown";
-  //       }
-
-  //     printf ("File format is: %s\n", formatName);
-  //     [d displayWithIndentation: 0];
-  //     printf ("\n");
-  //   }
-  // else
-  //   printf ("an error occurred: %s\n", [error UTF8String]);
-}

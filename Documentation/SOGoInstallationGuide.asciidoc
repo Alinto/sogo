@@ -193,7 +193,7 @@ installation for a Red Hat or CentOS distribution.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
-SOGo can be installed using the+yum+utility. To do so, first create
+SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
 
@@ -258,13 +258,13 @@ In SOGo, the user's applications settings are stored
 in `/etc/sogo/sogo.conf`. You can use your favourite text editor to
 modify the file.
 
-The +sogo.conf+ file is a serialized _property list_. This simple format
+The `sogo.conf` file is a serialized _property list_. This simple format
 encapsulates four basic data types: arrays, dictionaries (or hashes),
 strings and numbers. Numbers are represented as-is, except for booleans
 which can take the unquoted values `YES` and `NO`. Strings are not
 mandatorily quoted, but doing so will avoid you many problems. A
 dictionary is a sequence of key and value pairs separated in their
-middle with a `=` sign. It starts with a `\{` and ends with a
+middle with a `=` sign. It starts with a `{` and ends with a
 corresponding `}`. Each value definition in a dictionary ends with a
 semicolon. An array is a chain of values starting with `(` and ending
 with `)`, where the values are separated with a `,`. Also, the file
@@ -1167,7 +1167,7 @@ keytool -import -keystore /etc/ssl/certs/java/cacerts  \
 
 *The certificate used by the CAS server must also be trusted by SOGo.*
 In case of a self-signed certificate, this means exporting tomcat's
-certificate using the +keytool+utility, converting it to PEM format and
+certificate using the `keytool` utility, converting it to PEM format and
 appending it to the `ca-certificates.crt` file (the name and location of
 that file differs between distributions). Basically:
 
@@ -1581,8 +1581,8 @@ Note that TLS is supported but SSL is not.
 
 |D |SOGoSieveFolderEncoding
 |Parameter used to specify which encoding is used for IMAP folder names
-in Sieve filters. Defaults to "UTF-7". The other possible value is
-"UTF-8".
+in Sieve filters. Defaults to `UTF-7`. The other possible value is
+`UTF-8`.
 
 |U |SOGoMailShowSubscribedFoldersOnly
 |Parameter used to specify if the Web interface should only show
@@ -1632,6 +1632,12 @@ cronjob `sogo-tmpwatch`.
 
 Defaults to `/var/spool/sogo`.
 
+|S |NGImap4DisableIMAP4Pooling
+|Disables IMAP pooling when set to `YES`. Enable pooling by setting to
+`NO` or using a caching proxy like imapproxy.
+
+The default value is `YES`.
+
 |S |NGImap4ConnectionStringSeparator
 |Parameter used to set the IMAP mailbox separator. Setting this will
 also have an impact on the mailbox separator used by Sieve filters.
@@ -1644,7 +1650,7 @@ SASL mechanism. Please note that feature might be limited at this time.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the
-name is a group name not a user name.
+name is a group name, not a user name.
 
 RFC4314 gives examples where group names are prefixed with `$`. Dovecot,
 for one, follows this scheme, and will, for example, apply permissions
@@ -1993,7 +1999,7 @@ Defaults to `NO` when unset.
 SOGo Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The complete SOGo configuration file+/etc/sogo/sogo.conf+should look
+The complete SOGo configuration file `/etc/sogo/sogo.conf` should look
 like this:
 
 ----
@@ -2325,7 +2331,7 @@ ActiveSync:
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before replying to a Ping command.
 
-If not set, it defaults to `5` seconds.
+If not set, it defaults to `10` seconds.
 
 |S |SOGoMaximumSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
@@ -2336,7 +2342,8 @@ If not set, it defaults to `30` seconds.
 |S |SOGoInternalSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before doing an internal check for data changes (add, delete, and
-update). This parameter must be lower than _SOGoMaximumSyncInterval_.
+update). This parameter must be lower than _SOGoMaximumSyncInterval_ and
+_SOGoMaximumPingInterval_.
 
 If not set, it defaults to `10` seconds.
 
@@ -2379,6 +2386,10 @@ see http://support.microsoft.com/kb/291621 for configuration
 instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 `YES` and the URL to use must be of the following format: 
 `http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb`
+* If you have very large mail folders (thousands of messages), you will
+need to adjust the word size of your IMAP server. In Dovecot, the parameter
+to increase is "imap_max_line_length" while under Cyrus IMAP Server, the
+parameter is "maxword". We suggest a buffer of 2MB.
 
 In order to use the SOGo ActiveSync support code in production
 environments, you need to get a proper usage license from Microsoft.

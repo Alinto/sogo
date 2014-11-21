@@ -9,12 +9,14 @@ import re
 import shutil
 import subprocess
 import sys
+from samba.param import LoadParm
 
 imaphost = '127.0.0.1'
 imapport = 143
 
-sambaprivate = '/var/lib/samba/private'
-mapistorefolder = "%s/mapistore" % (sambaprivate)
+samba_lp = LoadParm()
+sambaprivate = samba_lp.get("private dir")
+mapistorefolder = samba_lp.private_path("mapistore")
 sogoSysDefaultsFile = "/etc/sogo/sogo.conf"
 sogoUserDefaultsFile = os.path.expanduser("~sogo/GNUstep/Defaults/.GNUstepDefaults")
 
@@ -212,7 +214,7 @@ On RHEL, install it using 'yum install MySQL-python'"""
     c=conn.cursor()
     tablename="sogo_cache_folder_%s" % (username)
     c.execute("TRUNCATE TABLE %s" % tablename)
-    print "Table %s emptied"
+    print "Table %s emptied" % tablename
 
 
 def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
