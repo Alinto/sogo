@@ -15,7 +15,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -186,7 +186,7 @@
   if (![subject length])
     subject = @"";
 
-  return [[subject safeString] stringByEscapingHTMLString];
+  return subject;
 }
 
 - (BOOL) showToAddress 
@@ -252,34 +252,6 @@
 - (NSString *) messageUidString 
 {
   return [[[self message] valueForKey:@"uid"] stringValue];
-}
-
-- (NSString *) messageRowStyleClass 
-{
-  NSArray *flags;
-  NSString *cellClass = @"";
-
-  flags = [[self message] valueForKey:@"flags"];
-
-  if ([self isMessageDeleted])
-    cellClass = [cellClass stringByAppendingString: @"mailer_listcell_deleted "];
-
-  if (![self isMessageRead])
-    cellClass = [cellClass stringByAppendingString: @"mailer_unreadmail "];
-  
-  if ([flags containsObject: @"answered"])
-    {
-      if ([flags containsObject: @"$forwarded"])
-	cellClass = [cellClass stringByAppendingString: @"mailer_forwardedrepliedmailsubject"];
-      else
-	cellClass = [cellClass stringByAppendingString: @"mailer_repliedmailsubject"];
-    }
-  else if ([flags containsObject: @"$forwarded"])
-    cellClass = [cellClass stringByAppendingString: @"mailer_forwardedmailsubject"];
-  else
-    cellClass = [cellClass stringByAppendingString: @"mailer_readmailsubject"];
-
-  return cellClass;
 }
 
 - (BOOL) hasMessageAttachment 
@@ -462,8 +434,7 @@
 }
 
 /**
- * Returns a 
- of the messages threads as triples of
+ * Returns the messages threads as triples of
  * metadata, including the message UID, thread level and root position.
  * @param _sortedUIDs the interleaved arrays representation of the messages UIDs
  * @return an flatten array representation of the messages UIDs
@@ -576,23 +547,6 @@
   return index;
 }
 
-/* JavaScript */
-
-- (NSString *) msgRowID
-{
-  return [@"row_" stringByAppendingString:[self messageUidString]];
-}
-
-- (NSString *) msgIconReadImgID
-{
-  return [@"readdiv_" stringByAppendingString:[self messageUidString]];
-}
-
-- (NSString *) msgIconUnreadImgID
-{
-  return [@"unreaddiv_" stringByAppendingString:[self messageUidString]];
-}
-
 /* error redirects */
 
 /*
@@ -688,8 +642,8 @@
   response = [context response];
   requestContent = [[request contentAsString] objectFromJSONString];
   
-  [response setHeader: @"text/plain; charset=utf-8"
-                      forKey: @"content-type"];
+  [response setHeader: @"application/json; charset=utf-8"
+               forKey: @"content-type"];
 
   folder = [self clientObject];
   
@@ -709,7 +663,7 @@
   NSDictionary *msgs;
   NSMutableArray *headers, *msg;
   NSEnumerator *msgsList;
-  NSString *msgIconStatus, *msgDate;
+  NSString *msgDate;
   UIxEnvelopeAddressFormatter *addressFormatter;
   
   headers = [NSMutableArray arrayWithCapacity: [uids count]];
@@ -722,7 +676,7 @@
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];
 
-  msg = [NSMutableArray arrayWithObjects: @"To", @"Attachment", @"Flagged", @"Subject", @"From", @"Unread", @"Priority", @"Date", @"Size", @"rowClasses", @"labels", @"rowID", @"uid", nil];
+  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"Date", @"Size", @"Flags", @"uid", nil];
   [headers addObject: msg];
   while (message)
     {
@@ -757,23 +711,14 @@
       else
 	[msg addObject: @""];
 
-      // Attachment
-      if ([self hasMessageAttachment])
-	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\"/>", [self urlForResourceFilename: @"title_attachment_14x14.png"]]];
-      else
-	[msg addObject: @""];
+      // hasAttachment
+      [msg addObject: [NSNumber numberWithBool: [self hasMessageAttachment]]];
 
-      // Flagged
-      if ([self isMessageFlagged])
-	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"messageIsFlagged\">",
-				  [self urlForResourceFilename: @"flag.png"]]];
-      else
-	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\">",
-				  [self urlForResourceFilename: @"dot.png"]]];
+      // isFlagged
+      [msg addObject: [NSNumber numberWithBool: [self isMessageFlagged]]];
 
       // Subject
-      [msg addObject: [NSString stringWithFormat: @"<span>%@</span>",
-				[self messageSubject]]];
+      [msg addObject: [self messageSubject]];
       
       // From
       from = [[message objectForKey: @"envelope"] from];
@@ -783,18 +728,8 @@
 	[msg addObject: @""];
       
 
-      // Unread
-      if ([self isMessageRead])
-	msgIconStatus = @"dot.png";
-      else
-	msgIconStatus = @"unread.png";
-      
-      [msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\"/>",
-				[self urlForResourceFilename: msgIconStatus],
- 			       [self labelForKey: @"Mark Unread"],
- 			       [self labelForKey: @"Mark Read"],
- 			       [self labelForKey: @"Mark Unread"],
- 				[self msgIconReadImgID]]];
+      // isRead
+      [msg addObject: [NSNumber numberWithBool: [self isMessageRead]]];
       
       // Priority
       [msg addObject: [self messagePriority]];
@@ -807,15 +742,9 @@
 
       // Size
       [msg addObject: [[self sizeFormatter] stringForObjectValue: [message objectForKey: @"size"]]];
-      
-      // rowClasses
-      [msg addObject: [self messageRowStyleClass]];
 
       // labels
-      [msg addObject: [self msgLabels]];
-
-      // rowID
-      [msg addObject: [self msgRowID]];
+      [msg addObject: [message objectForKey: @"flags"]];
 
       // uid
       [msg addObject: [message objectForKey: @"uid"]];
@@ -844,28 +773,11 @@
   headers = [self getHeadersForUIDs: uids
 			   inFolder: [self clientObject]];
   response = [context response];
-  [response setHeader: @"text/plain; charset=utf-8"
+  [response setHeader: @"application/json; charset=utf-8"
 	    forKey: @"content-type"];
   [response appendContentString: [headers jsonRepresentation]];
 
   return response;
-}
-
-- (NSString *) msgLabels
-{
-  NSMutableArray *labels;
-  NSEnumerator *flags;
-  NSString *currentFlag;
-
-  labels = [NSMutableArray array];
-
-  flags = [[message objectForKey: @"flags"] objectEnumerator];
-  while ((currentFlag = [flags nextObject]))
-    {
-      [labels addObject: currentFlag];
-    }
-  
-  return [labels componentsJoinedByString: @" "];
 }
 
 @end

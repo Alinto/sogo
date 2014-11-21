@@ -77,7 +77,7 @@
         };
       };
       methods = {
-        uids = {
+        view = {
           protectedBy = "<public>";
           actionClass = "UIxMailListActions";
           actionName  = "getUIDs";
@@ -222,6 +222,7 @@
         view = {
           protectedBy = "View";
           pageName    = "UIxMailView";
+          actionName = "default";
         };
         sendMDN = {
           protectedBy = "View";
@@ -352,7 +353,7 @@
           actionClass = "UIxMailAccountActions";
           actionName  = "compose";
         };
-        mailboxes = {
+        view = {
           protectedBy = "View";
           actionClass = "UIxMailAccountActions";
           actionName = "listMailboxes";
