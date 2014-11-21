@@ -7,6 +7,7 @@ Enhancements
  - updated timezone information (#2968)
  - updated Brazilian Portuguese, Czech, Dutch, Finnish, French, German, Hungarian, Polish,
    Russian, Spanish (Argentina), and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.5
 
 Bug fixes
  - fixed freebusy lookup with "Show time as busy" (#2930)
