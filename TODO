@@ -11,3 +11,5 @@ the "authenticated" role in SOGo/SOPE. Also, we should reconsider the handling
 of the DAV:authenticated principal wrt the DAV ACL interface.
 - we should add support for DAV privilege descriptions
  -- wsourdeau@inverse.ca, Tue, 29 Apr 2008 12:05:17 -0400
+
+Add Thunderbird add-on or add-ons to Mozilla AMO  site.
