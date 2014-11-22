@@ -155,6 +155,10 @@ static NSArray *easCommandParameters = nil;
       const char* qs_bytes;
      
       queryString = [[components objectAtIndex: 0] dataByDecodingBase64];
+
+      if (![queryString length])
+        return nil;
+
       qs_bytes = (const char*)[queryString bytes];
 
       if (!easCommandCodes)
