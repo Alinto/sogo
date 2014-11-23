@@ -215,8 +215,9 @@
             <i class="icon-ion-search"><!-- search --></i><var:string label:value="Initiate a search"/>
           </div>
         </div>
-        <ul>
-          <li data-ng-repeat="currentCard in addressbook.cards"
+        <ul data-vs-repeat="56"
+            data-vs-scroll-parent="#contactsList">
+          <li ng-repeat="currentCard in addressbook.cards"
               data-ng-class="{_selected: card.id == currentCard.id}">
             <!-- <input type="checkbox" class="card-picture left"/> -->
             <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">

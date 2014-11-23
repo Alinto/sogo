@@ -46,6 +46,7 @@ module.exports = function(grunt) {
             '<%= src %>/angular-sanitize/angular-sanitize{,.min}.js{,.map}',
             '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
             '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
+            '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
             '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
             '<%= src %>/foundation/js/foundation{,.min}.js',
             '<%= src %>/ionic/release/js/ionic.bundle{,.min}.js',
