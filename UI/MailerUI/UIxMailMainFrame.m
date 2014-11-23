@@ -111,12 +111,11 @@
 
 - (NSString *) mailAccounts
 {
-  NSArray *accounts, *names;
+  NSArray *accounts;
 
   accounts = [[self clientObject] mailAccounts];
-  names = [accounts objectsForKey: @"name" notFoundMarker: nil];
 
-  return [names jsonRepresentation];
+  return [accounts jsonRepresentation];
 }
 
 - (NSString *) userNames
