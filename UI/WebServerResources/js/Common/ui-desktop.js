@@ -109,7 +109,7 @@
   }];
 
   /* Angular module instanciation */
-  angular.module('SOGo.UIDesktop', ['mm.foundation'])
+  angular.module('SOGo.UIDesktop', ['mm.foundation', 'RecursionHelper'])
 
   /* Factory registration in Angular module */
     .factory('sgDialog', Dialog.$factory)
@@ -128,20 +128,118 @@
       };
     })
 
-/*
- * sgDropdownContentToggle - Provides dropdown content functionality
- * @restrict class or attribute
- * @see https://github.com/pineconellc/angular-foundation/blob/master/src/dropdownToggle/dropdownToggle.js
- * @example:
+  /*
+   * sgFolderTree - Provides hierarchical folders tree
+   * @memberof SOGo.UIDesktop
+   * @restrict element
+   * @see https://github.com/marklagendijk/angular-recursion
+   * @example:
 
-   <a dropdown-toggle="#dropdown-content">My Dropdown Content</a>
-   <div id="dropdown-content" class="sg-dropdown-content">
-     <div>
-       <h1>Hello</h1>
-       <p>World!</p>
-     </div>
-   </div>
- */
+     <sg-folder-tree data-ng-repeat="folder in folders track by folder.id"
+                     data-sg-root="account"
+                     data-sg-folder="folder"
+                     data-sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+  */
+    .directive('sgFolderTree', function(RecursionHelper) {
+      return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+          root: '=sgRoot',
+          folder: '=sgFolder',
+          setFolder: '=sgSetFolder'
+        },
+        template:
+          '<div>' +
+          '  <li>' +
+          '    <span class="folder-container">' +
+          '      <span class="folder-content">' +
+          '        <i class="icon icon-ion-folder"></i>' +
+          '        <form>' +
+          '          <a data-ng-cloak="ng-cloak"' +
+          '             >{{folder.name}}</a>' +
+          '        </form>' +
+          '        <span class="icon ng-hide" data-ng-cloak="ng-cloak">' +
+          '          <a class="icon" href="#"' +
+          '             data-dropdown-toggle="#folderProperties"' +
+          '             data-options="align:right"><i class="icon-cog"></i></a>' +
+          '        </span>' +
+          '      </span>' +
+          '    </span>' +
+          '  </li>' +
+          '  <div>' +
+          '    <span ng-repeat="child in folder.children track by child.path">' +
+          '      <sg-folder-tree data-sg-root="root" data-sg-folder="child" data-sg-set-folder="setFolder"></sg-folder-tree>' +
+          '    </span>' +
+          '  </div>' +
+          '</div>',
+        compile: function(element) {
+          return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+            // Set CSS class for folder hierarchical level
+            var level = scope.folder.path.split('/').length - 1;
+            angular.element(iElement.find('i')[0]).addClass('childLevel' + level);
+
+            var link = iElement.find('a');
+            link.on('click', function() {
+              var list = iElement.parent();
+              while (list[0].tagName != 'UL') {
+                list = list.parent();
+              }
+              var items = list.find('li');
+
+              // Highlight element as "loading"
+              items.removeClass('_selected');
+              items.removeClass('_loading');
+              angular.element(iElement.find('li')[0]).addClass('_loading');
+
+              // Call external function
+              scope.setFolder(scope.root, scope.folder);
+            });
+            // TODO: rename folder on dbl-click
+            // link.on('dblclick', function() {
+            // });
+            scope.$on('sgSelectFolder', function(event, folderId) {
+              console.debug('select folder ' + folderId + ' = ' + scope.folder.id);
+              if (folderId == scope.folder.id) {
+              var list = iElement.parent();
+              while (list[0].tagName != 'UL') {
+                list = list.parent();
+              }
+              var items = list.find('li');
+
+                // Hightlight element as "selected"
+                angular.element(iElement.find('li')[0]).removeClass('_loading');
+                angular.element(iElement.find('li')[0]).addClass('_selected');
+
+                // Show options button
+                angular.forEach(items, function(element) {
+                  var li = angular.element(element);
+                  var spans = li.find('span');
+                  angular.element(spans[2]).addClass('ng-hide');
+                });
+                angular.element(iElement.find('span')[2]).removeClass('ng-hide');
+              }
+            });
+          });
+        }
+      };
+    })
+
+  /*
+   * sgDropdownContentToggle - Provides dropdown content functionality
+   * @memberof SOGo.UIDesktop
+   * @restrict class or attribute
+   * @see https://github.com/pineconellc/angular-foundation/blob/master/src/dropdownToggle/dropdownToggle.js
+   * @example:
+
+    <a dropdown-toggle="#dropdown-content">My Dropdown Content</a>
+    <div id="dropdown-content" class="sg-dropdown-content">
+      <div>
+        <h1>Hello</h1>
+        <p>World!</p>
+      </div>
+    </div>
+  */
     .directive('sgDropdownContentToggle', ['$document', '$window', '$location', '$position', function ($document, $window, $location, $position) {
       var openElement = null,
           closeMenu   = angular.noop;
@@ -244,15 +342,15 @@
       };
     }])
 
-/*
- * sgSubscribe - Common subscription widget
- * @restrict class or attribute
- * @param {String} sgSubscribe - the folder type
- * @param {Function} sgSubscribeOnSelect - the function to call when subscribing to a folder
- * @example:
+  /*
+   * sgSubscribe - Common subscription widget
+   * @restrict class or attribute
+   * @param {String} sgSubscribe - the folder type
+   * @param {Function} sgSubscribeOnSelect - the function to call when subscribing to a folder
+   * @example:
 
-   <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
- */
+    <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
+  */
     .directive('sgSubscribe', [function() {
       return {
         restrict: 'CA',
@@ -279,16 +377,16 @@
       };
     }])
 
-/*
- * sgUserTypeahead - Typeahead of users, used internally by sgSubscribe
- * @restrict attribute
- * @param {String} sgModel - the folder type
- * @param {Function} sgSubscribeOnSelect - the function to call when subscribing to a folder
- * @see https://github.com/pineconellc/angular-foundation/blob/master/src/typeahead/typeahead.js
- * @example:
+  /*
+   * sgUserTypeahead - Typeahead of users, used internally by sgSubscribe
+   * @restrict attribute
+   * @param {String} sgModel - the folder type
+   * @param {Function} sgSubscribeOnSelect - the function to call when subscribing to a folder
+   * @see https://github.com/pineconellc/angular-foundation/blob/master/src/typeahead/typeahead.js
+   * @example:
 
-   <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
- */
+    <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
+  */
     .directive('sgUserTypeahead', ['$parse', '$q', '$timeout', '$position', 'sgUser', function($parse, $q, $timeout, $position, User) {
       return {
         restrict: 'A',
