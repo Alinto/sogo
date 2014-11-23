@@ -6,7 +6,7 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'SOGo.Common', 'SOGo.UIDesktop'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'SOGo.Common', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -337,7 +337,7 @@
             .then(function(data) {
               var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $scope.card.id);
               if (i < 0) {
-                // Reload contacts list and show addressbook in which the card has been created
+                // New card; reload contacts list and show addressbook in which the card has been created
                 $rootScope.addressbook = AddressBook.$find(data.pid);
               }
               else {
