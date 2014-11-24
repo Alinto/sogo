@@ -150,7 +150,10 @@
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-sanitize.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/mm-foundation-tpls.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-vs-repeat.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/ui-common.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/ui-desktop.js"><!-- space --></script>
           <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
 	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
