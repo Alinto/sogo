@@ -477,6 +477,29 @@ $column-gutter: 0;
     width: 350px;
 }
 
+#addressbookLinks {
+    background-color: #fff;
+    width: 450px;
+    height: 135px;
+    cursor: none;
+
+    .title {
+        background-color: $secondary-color;
+        padding: $f-dropdown-list-padding;
+        text-transform: uppercase;
+    }
+
+    .subtitle {
+        background-color: #6F5A73;
+        padding: $f-dropdown-list-padding;
+    }
+
+    .value {
+        color: #000;
+        font-weight: bold;
+    }
+}
+
 .buttonsToolbar {
     text-align: right;
     .button {

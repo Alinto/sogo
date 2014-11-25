@@ -114,21 +114,21 @@
       <div id="addressbookProperties" class="f-dropdown icons-dropdown">
         <ul class="button-group">
           <li>
-            <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
+            <span class="button" data-sg-dropdown-content-toggle="#addressbookLinks"><i class="icon-hyperlink"><!-- links --></i></span>
           </li>
-          <li data-ng-hide="addressbook.isRemote">
+          <li>
             <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
           </li>
           <li data-ng-show="addressbook.isOwned">
             <span class="button" data-ng-click="share()"><i class="icon-share"><!-- share --></i></span>
           </li>
-          <li data-ng-hide="addressbook.isRemote">
+          <li>
             <span class="button" data-ng-click="importCards()"><i class="icon-file"><!-- import --></i></span>
           </li>
-          <li data-ng-hide="addressbook.isRemote">
+          <li>
             <span class="button" data-ng-click="exportCards()"><i class="icon-ion-ios7-upload-outline"><!-- export --></i></span>
           </li>
-          <li data-ng-hide="addressbook.isRemote">
+          <li>
             <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
           </li>
         </ul>
@@ -138,6 +138,22 @@
       <ul id="newListDrop" class="f-dropdown">
         <li><a class="tiny" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'list'})"><var:string label:value="New List"/></a></li>
       </ul>
+
+      <!-- dropdown menu for addressbook links -->
+      <div id="addressbookLinks" class="sg-dropdown-content joyride-tip-guide">
+        <span class="joyride-nub left"><!-- dropdown nub --></span>
+        <div class="joyride-content-wrapper">
+          <ul>
+            <li class="title"><var:string label:value="Links to this Address Book"/></li>
+            <li class="subtitle"><var:string label:value="CardDAV URL for Authenticated User Access"/></li>
+            <li class="value">{{addressbook.cardDavURL}}</li>
+            <var:if condition="isPublicAccessEnabled">
+              <li class="subtitle"><var:string label:value="CardDAV URL for Public Access"/></li>
+              <li class="value">{{addressbook.publicCardDavURL}}</li>
+            </var:if>
+          </ul>
+        </div>
+      </div>
 
       <!-- dropdown menu for subscriptions -->
       <div id="folderSubscribe" class="sg-dropdown-content"
@@ -171,7 +187,7 @@
                 <a class="icon" href="#"
                    data-dropdown-toggle="#addressbookProperties"
                    data-options="align:right"
-                   data-ng-show="addressbook.id==folder.id"><i class="icon-cog"><!-- options --></i></a>
+                   data-ng-show="currentFolderIsConfigurable(folder)"><i class="icon-cog"><!-- options --></i></a>
               </span>
             </li>
           </ul>

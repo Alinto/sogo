@@ -139,6 +139,9 @@
             }
           });
       };
+      $scope.currentFolderIsConfigurable = function(folder) {
+        return ($scope.addressbook.id == folder.id && !folder.isRemote);
+      };
       $scope.edit = function(i) {
         if (!$rootScope.addressbook.isRemote) {
           if (angular.isUndefined(i)) {
