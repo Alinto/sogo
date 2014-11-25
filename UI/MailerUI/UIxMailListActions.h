@@ -34,6 +34,7 @@
 {
   NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
   NSArray *messages;
+  NSCalendarDate *now;
   id message;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
