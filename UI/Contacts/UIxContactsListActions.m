@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2012 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2014 Inverse inc.
 
   This file is part of SOGo.
 
@@ -24,6 +23,7 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoSystemDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
@@ -179,6 +179,8 @@
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                          [[self clientObject] nameInContainer], @"id",
                        newContactsList, @"cards",
+                       [self cardDavURL], @"cardDavURL",
+                       [self publicCardDavURL], @"publicCardDavURL",
                        nil];
 
   result = [self responseWithStatus: 200
@@ -253,6 +255,42 @@
                                            reason: @"missing 'search' parameter"];  
 
   return result;
+}
+
+- (NSString *) cardDavURL
+{
+  NSString *davURL, *baseCardDAVURL;
+ 
+  davURL = @"";
+
+  if ([[self clientObject] respondsToSelector: @selector(realDavURL)]) 
+    davURL = [[[self clientObject] realDavURL] absoluteString];
+
+  if ([davURL hasSuffix: @"/"])
+    baseCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
+  else
+    baseCardDAVURL = davURL;
+  
+  return [NSString stringWithFormat: @"%@/", baseCardDAVURL];
+}
+
+- (NSString *) publicCardDavURL
+{
+  if ([[self clientObject] respondsToSelector: @selector(publicDavURL)] &&
+      [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess])
+    {
+      NSString *davURL, *basePublicCardDAVURL;
+
+      davURL = [[[self clientObject] publicDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+        basePublicCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        basePublicCardDAVURL = davURL;
+      
+      return [NSString stringWithFormat: @"%@/", basePublicCardDAVURL];
+    }
+
+  return @"";
 }
 
 @end /* UIxContactsListActions */
