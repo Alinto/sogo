@@ -102,7 +102,7 @@ LassoServerInContext (WOContext *context)
       filename = [sd SAML2PrivateKeyLocation];
       if (!filename)
         [NSException raise: NSInvalidArgumentException
-                    format: @"'SAML2PrivateKeyLocation' not set"];
+                    format: @"'SOGoSAML2PrivateKeyLocation' not set"];
       keyContent = [NSString stringWithContentsOfFile: filename];
       if (!keyContent)
         [NSException raise: NSGenericException
@@ -112,7 +112,7 @@ LassoServerInContext (WOContext *context)
       filename = [sd SAML2CertificateLocation];
       if (!filename)
         [NSException raise: NSInvalidArgumentException
-                    format: @"'SAML2CertificateLocation' not set"];
+                    format: @"'SOGoSAML2CertificateLocation' not set"];
       certContent = [NSString stringWithContentsOfFile: filename];
       if (!certContent)
         [NSException raise: NSGenericException
