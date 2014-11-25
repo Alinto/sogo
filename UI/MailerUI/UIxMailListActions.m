@@ -80,8 +80,10 @@
   if ((self = [super initWithRequest: newRequest]))
     {
       user = [[self context] activeUser];
+      ASSIGN (now, [NSCalendarDate calendarDate]);
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
+      [now setTimeZone: userTimeZone];
       sortByThread = [[user userDefaults] mailSortByThreads];
       folderType = 0;
       specificMessageNumber = 0;
@@ -119,7 +121,19 @@
   messageDate = [[message valueForKey: @"envelope"] date];
   [messageDate setTimeZone: userTimeZone];
 
-  return [dateFormatter formattedDateAndTime: messageDate];
+  if ([now dayOfCommonEra] == [messageDate dayOfCommonEra])
+    {
+      // Same day
+      return [dateFormatter formattedTime: messageDate];
+    }
+  else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] == 1)
+    {
+      return [self labelForKey: @"Yesterday"];
+    }
+  else
+    {
+      return [dateFormatter formattedDate: messageDate];
+    }
 }
 
 - (UIxMailSizeFormatter *) sizeFormatter
