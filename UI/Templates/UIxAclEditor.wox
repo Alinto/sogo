@@ -4,6 +4,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
   <div id="modalACL">
     <h2><var:string label:value="Access Rights"/> - <em>{{addressbook.name}}</em></h2>
@@ -54,9 +55,7 @@
       </li>
       <!-- right side -->
       <li id="AccessRightList" data-ng-show="selectedUser">
-        <div class="title">
-          {{selectedUser.$shortFormat()}}
-        </div>
+        <h1>{{selectedUser.$shortFormat({email: false})}}</h1>
         <div data-ng-include="'userRights.html'"><!-- load template from main wox --></div>
       </li>
     </ul>

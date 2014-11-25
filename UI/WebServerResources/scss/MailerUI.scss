@@ -1,0 +1,348 @@
+@import "settings";
+
+$module-color: #D04747; // red
+$module-secondary-color: #501B1B; // darker red
+$topbar-bg-color: $module-color;
+$topbar-link-bg-active-hover: scale-color($module-secondary-color, $lightness: -14%);
+$topbar-link-bg-active: $module-secondary-color;
+$topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
+
+@import "foundation";
+
+@mixin off-canvas-list {
+    list-style-type: none;
+    padding:0;
+    margin:0;
+    /* display: table; */
+    width: 100%;
+
+    li {
+        /*
+           +-----------------------------------------------+
+           + li                                            |
+           |+------+-----------------------------+--------+|
+           || i    | form                        | span   ||
+           |+------+-----------------------------+--------+|
+           +-----------------------------------------------+
+       */
+        /* display: table-row; */
+        transition: background 300ms ease;
+        label {
+            display: block;
+            padding: $off-canvas-label-padding;
+            color: $off-canvas-label-color;
+            text-transform: $off-canvas-label-text-transform;
+            font-size: $off-canvas-label-font-size;
+            font-weight: $off-canvas-label-font-weight;
+            background: $off-canvas-label-bg;
+            border-top: $off-canvas-label-border-top;
+            border-bottom: $off-canvas-label-border-bottom;
+            margin: $off-canvas-label-margin;
+        }
+        .folder-container {
+            display: table;
+            width: 100%;
+            .folder-content {
+                display: table-row;
+                >* {
+                    display: table-cell;
+                    padding: $off-canvas-link-padding;
+                    color: $off-canvas-link-color;
+                    /* border-bottom: $off-canvas-link-border-bottom; */
+                    //vertical-align: middle;
+                }
+            }
+            &:hover {
+                background: scale-color($tabbar-bg, $lightness: -30%);
+            }
+        }
+        >span {
+            //vertical-align: middle; // causes glitch when selecting row
+            border-left: 3px solid transparent;
+            //width: 2em;
+        }
+        .icon {
+            color: $off-canvas-label-color;
+            width: 1px;
+        }
+        form {
+            margin: 0;
+            padding-left: 0;
+            padding-right: 0;
+            * {
+                color: $off-canvas-link-color;
+                display: block;
+                width: 100%;
+                padding: 0;
+                //padding-left: $off-canvas-link-padding;
+            }
+            input {
+                border: 0;
+                color: #333 !important;
+                font-size: 1rem;
+                height: $off-canvas-link-padding/2+1rem;
+                margin: 0;
+            }
+        }
+        &._selected {
+            //background-color: #242424 !important;
+            //border: 0 !important;
+            >span {
+                border-left-color: $primary-color;
+            }
+            //* {
+            //    color: #eee;
+            //}
+        }
+        &._loading {
+            >span {
+                border-left-color: $off-canvas-label-color;
+            }
+        }
+    }
+}
+
+.folders-list {
+    @include off-canvas-wrap();
+    ul {
+        @include off-canvas-list();
+        >li >ul {
+            margin-left: 10px;
+        }
+    }
+}
+
+$i: 1;
+@while $i < 12 {
+    .folders-list ul li .folder-container .folder-content > .childLevel#{$i} { padding-left: 15px * $i; }
+    $i: $i + 1;
+}
+
+$total-columns: 13;
+$column-gutter: 0;
+
+#pageContent {
+    @include grid-row($behavior: nest);
+
+    #mailboxesList {
+        position: absolute;
+        overflow: auto;
+        overflow-x: hidden;
+        top: $topbar-height;
+        bottom: 0;
+        background-color: #333;
+        @include grid-column($columns:13); //, $collapse:true);
+        @media #{$medium-up} {
+            @include grid-column($columns:3);
+        }
+    }
+
+    #messagesList {
+        position: absolute;
+        overflow: auto;
+        overflow-x: hidden;
+        top: $topbar-height;
+        bottom: 0;
+        left: 23.07692%;
+        background-color: $f-dropdown-list-hover-bg;
+        @include grid-column($columns:13);
+        @media #{$medium-up} {
+            @include grid-column($columns:4);
+        }
+        ul {
+            margin: 0;
+            padding: 5px 0;
+            li {
+                list-style-type: none;
+                //border-bottom: $topbar-divider-border-bottom;
+                width: 100%;
+                height: 56px;
+                float: left;
+                clear: left;
+                //border: 2px solid #fff;
+                //-webkit-border-radius: 4px;
+                //-moz-border-radius: 4px;
+                //border-radius: 4px;
+                //transition: all 300ms ease;
+                background-color: $f-dropdown-list-hover-bg;
+                transition: background 300ms ease;
+                a {
+                    display: block;
+                    color: #666;
+                    //border-bottom: 1px dotted #ddd;
+                    //width: 100%;
+                    //font-size: $table-row-font-size;
+                    //line-height: $table-line-height;
+                    line-height: rem-calc(24);
+                    padding: $table-head-padding;
+                    //padding: rem-calc(8 10 18);
+                    //margin: 0 rem-calc(12);
+                    .name {
+                        margin: 0;
+                        //font-size: $table-head-font-size;
+                        //color: $table-head-font-color;
+                        font-weight: $table-head-font-weight;
+                    }
+                    div {
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+                    span {
+                        font-weight: normal;
+                        font-size: smaller;
+                    }
+                }
+                &.unread {
+                    a {
+                        .name,
+                        .subject {
+                            color: $table-head-font-color;
+                            /* font-weight: $table-head-font-weight; */
+                        }
+                    }
+                }
+                &:hover,
+                &:active {
+                    background-color: $f-dropdown-list-hover-bg;
+                    //background-color: scale-color($f-dropdown-list-hover-bg, $lightness: 28%);
+                    background-color: #fff;
+                }
+                &._selected,
+                &._selected span {
+                    //background-color: $module-light-color;
+                    //background-color: $sub-nav-active-bg-hover;
+                    //background-color: $f-dropdown-list-hover-bg;
+                    background-color: $module-color;
+                    background-color: #fff;
+                    //color: $module-color;
+                    //color: $module-secondary-color;
+                    .name {
+                        //color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    #messageView {
+        position: absolute;
+        top: $topbar-height;
+        bottom: 0;
+        left: 53.8461507692%;
+        overflow: auto;
+        overflow-x: hidden;
+        border-left: $topbar-divider-border-bottom;
+        padding: $table-head-padding;
+        padding-top: 0;
+        @include grid-column($columns:13);
+        @media #{$medium-up} {
+            @include grid-column($columns:6);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-left: rem-calc(12);
+            margin-top: 0;
+        }
+        h1 {
+            margin-bottom: 0;
+        }
+        .header {
+            background-color: $secondary-color;
+            padding-bottom: 0.2em;
+            h1, h6 {
+                color: #fff;
+            }
+            .label {
+                background-color: transparent;
+                border: 1px solid $primary-color;
+                border: 1px solid scale-color($primary-color, $lightness: 52%);
+                color: $primary-color;
+                color: scale-color($primary-color, $lightness: 52%);
+            }
+            label {
+                
+            }
+        }
+            /*
+                +-----------------------------------------------+
+                + .attr (13)                                    |
+                |+-------------+-------------------------------+|
+                || .key (4)    | .value (9)                    ||
+                |+-------------+-------------------------------+|
+                +-----------------------------------------------+
+            */
+            .attr {
+                @include grid-row($behavior:collapse);
+                .key {
+                    @include grid-column($columns:4);
+                    label {
+                        color: #999;
+                        margin-right: rem-calc(12);
+                    }
+                }
+                .value {
+                    @include grid-column($columns:9);
+                    &.single {
+                        @include grid-column($offset: 4, $columns:9);
+                    }
+                    div {
+                        a {
+                            color: #666;
+                            margin-left: 0.2em;
+                            &:hover {
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+            }
+            .buttonsToolbar {
+                margin-bottom: rem-calc(12);
+                background-color: #eee;
+                border-top: 2px solid #ddd;
+                .button {
+                    margin: 0.4em;
+                    &.alert {
+                        //display: $button-display;
+                        color: #fff;
+                    }
+                }
+            }
+
+            .mailer_mailcontent {
+                background-color: #fff;
+                padding: .5em;
+                overflow: auto;
+                .mailer_mailcontent TABLE {
+                    table-layout: auto;
+                }
+            }
+
+    }
+}
+
+h1 {
+    font-weight: lighter;
+}
+
+.buttonsToolbar {
+    text-align: right;
+    .button {
+        margin-bottom: 0;
+        font-size: 1.0em;
+    }
+    .folders-list & {
+        background-color: $tabbar-bg;
+        background-color: $off-canvas-bg;
+        text-align: center;
+        .button {
+            background-color: $tabbar-bg;
+            font-size: 1.5em;
+            transition: color 300ms ease;
+            color: scale-color($tabbar-bg, $lightness: 52%);
+            &:focus, &:hover {
+                color: $primary-color;
+                color: #fff;
+                //background-color: scale-color($tabbar-bg, $lightness: 13%);
+            }
+        }
+    }
+}

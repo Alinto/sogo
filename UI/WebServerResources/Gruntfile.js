@@ -16,6 +16,7 @@ module.exports = function(grunt) {
                     'css/app.css': 'scss/app.scss',
                     'css/SOGoRootPage.css': 'scss/SOGoRootPage.scss',
                     'css/ContactsUI.css': 'scss/ContactsUI.scss',
+                    'css/MailerUI.css': 'scss/MailerUI.scss',
                     'css/mobile.css': 'scss/mobile.scss'
                 }        
             }

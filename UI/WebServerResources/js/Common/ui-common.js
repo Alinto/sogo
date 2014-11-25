@@ -1,5 +1,5 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* JavaScript for common UI services for mobile theme */
+/* JavaScript for common UI services */
 
 (function() {
   'use strict';

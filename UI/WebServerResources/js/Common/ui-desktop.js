@@ -199,7 +199,6 @@
             // link.on('dblclick', function() {
             // });
             scope.$on('sgSelectFolder', function(event, folderId) {
-              console.debug('select folder ' + folderId + ' = ' + scope.folder.id);
               if (folderId == scope.folder.id) {
               var list = iElement.parent();
               while (list[0].tagName != 'UL') {
@@ -367,7 +366,6 @@
             });
           };
           $scope.selectFolder = function(folder) {
-            console.debug("select folder " + folder.displayName);
             $scope.onFolderSelect(folder);
           };
         }],

@@ -55,9 +55,10 @@
    * @memberof User.prototype
    * @return the fullname along with the email address
    */
-  User.prototype.$shortFormat = function() {
+  User.prototype.$shortFormat = function(options) {
     var fullname = this.cn || this.c_email;
-    if (this.c_email && fullname != this.c_email) {
+    var no_email = options && options.email === false;
+    if (!no_email && this.c_email && fullname != this.c_email) {
       fullname += ' (' + this.c_email + ')';
     }
     return fullname;

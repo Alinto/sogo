@@ -1,20 +1,19 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="title"
-  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages"
-  const:userSettingsKeys="Mail"
-  const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js,jquery-ui.js, UIxMailSearch.js"
-  const:cssFiles="UIxMailSearch.css">
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages"
+    const:userSettingsKeys="Mail"
+    const:jsFiles="Common/resource.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
-    var inboxData = <var:string value="inboxData" const:escapeHTML="NO"/>;
     var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO"/>;
   </script>
   <style type="text/css">
@@ -28,28 +27,12 @@
     { color: #fff;
       background-color: <var:string value="currentLabel.color"/> !important; }
   </var:foreach>
-  <var:if condition="horizontalDragHandleStyle">
-    DIV#verticalDragHandle, DIV#rightPanel
-     { left: <var:string value="horizontalDragHandleStyle" />; }
-    DIV#leftPanel
-     { width: <var:string value="horizontalDragHandleStyle" />; }
-  </var:if><var:if condition="verticalDragHandleStyle">
-    DIV#rightDragHandle, DIV#messageContent
-     { top: <var:string value="verticalDragHandleStyle" />; }
-  </var:if><var:if condition="singleWindowModeEnabled" const:negate="YES"><var:if condition="mailboxContentStyle">
-    DIV#mailboxContent
-     { height: <var:string value="mailboxContentStyle" />; }
-  </var:if></var:if><var:if condition="singleWindowModeEnabled">
-    DIV#mailboxContent
-     { height: auto;
-       bottom: 0px; }
-  </var:if>
   </style>
-  
+
   <div id="signatureFlagMessage" style="display: none" class="dialog right">
   </div>
-  
-  <div class="menu" id="accountIconMenu">
+
+  <div class="f-dropdown" id="accountIconMenu">
     <ul>
       <li><var:string label:value="Subscribe..." /></li>
       <li><var:string label:value="Get Messages for Account" /></li>
@@ -60,7 +43,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="inboxIconMenu">
+  <div class="f-dropdown" id="inboxIconMenu">
     <ul>
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
@@ -75,8 +58,8 @@
       <li><var:string label:value="Sharing..." /></li>
     </ul>
   </div>
-  
-  <div class="menu" id="trashIconMenu">
+
+  <div class="f-dropdown" id="trashIconMenu">
     <ul>
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
@@ -93,7 +76,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="mailboxIconMenu">
+  <div class="f-dropdown" id="mailboxIconMenu">
     <ul>
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
@@ -112,15 +95,15 @@
     </ul>
   </div>
 
-  <div class="menu" id="folderTypeMenu">
+  <div class="f-dropdown" id="folderTypeMenu">
     <ul>
       <li><var:string label:value="Sent Messages" /></li>
       <li><var:string label:value="Drafts" /></li>
       <li><var:string label:value="Deleted Messages" /></li>
     </ul>
   </div>
-  
-  <div class="menu" id="moveMailboxMenu">
+
+  <div class="f-dropdown" id="moveMailboxMenu">
     <ul>
       <var:foreach list="clientObject.mailAccounts" item="currentLabel">
         <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
@@ -128,7 +111,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="copyMailboxMenu">
+  <div class="f-dropdown" id="copyMailboxMenu">
     <ul>
       <var:foreach list="clientObject.mailAccounts" item="currentLabel">
         <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
@@ -136,7 +119,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="messageListMenu">
+  <div class="f-dropdown" id="messageListMenu">
     <ul>
       <li><var:string label:value="Open Message In New Window"/></li>
       <li><!-- separator --></li>
@@ -158,7 +141,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="messagesListMenu">
+  <div class="f-dropdown" id="messagesListMenu">
     <ul>
       <li><var:string label:value="Forward"/></li>
       <li><!-- separator --></li>
@@ -174,7 +157,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="messageContentMenu">
+  <div class="f-dropdown" id="messageContentMenu">
     <ul>
       <li><var:string label:value="Reply to Sender Only"/></li>
       <li><var:string label:value="Reply to All"/></li>
@@ -194,7 +177,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="label-menu">
+  <div class="f-dropdown" id="label-menu">
     <ul id="" class="choiceMenu">
       <li><var:string label:value="None" /></li>
       <li><!-- separator --></li>
@@ -204,7 +187,7 @@
     </ul>
   </div>
 
-  <div class="menu" id="mark-menu">
+  <div class="f-dropdown" id="mark-menu">
     <ul id="" class="choiceMenu">
       <li><var:string label:value="As Read" /></li>
       <li><var:string label:value="Thread As Read" /></li>
@@ -215,126 +198,101 @@
     </ul>
   </div>
 
-  <div class="menu" id="addressMenu">
+  <div class="f-dropdown" id="addressMenu">
     <ul>
       <li id="add_to_addressbook"><var:string label:value="Add to Address Book..."/></li>
       <li id="compose_mailto"><var:string label:value="Compose Mail To"/></li>
-      <!--<li id="create_filter"><var:string label:value="Create Filter From Message..."/></li>-->
     </ul>
   </div>
 
-  <div class="menu" id="imageMenu">
+  <div class="f-dropdown" id="imageMenu">
     <ul>
       <li id="save_image"><var:string label:value="Save Image"/></li>
     </ul>
   </div>
 
-  <div id="leftPanel">
-    <div class="titlediv"><var:string label:value="Folders" /></div>
-    <div id="folderTreeContent"><!-- space --></div>
-  </div>
+  <div data-ui-view="mailboxes"><!-- mailboxes list --></div>
 
-  <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
+  <script type="text/ng-template" id="mailboxes.html">
 
-  <div id="rightPanel">
-    <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
-
-   <div id="mailboxContent">
-
-<table id="messageListHeader" class="messageList" cellspacing="0">
-  <thead>
-    <tr class="tableview"
-      ><var:foreach list="columnsDisplayOrder" item="currentColumn">
-        <th var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
-          <var:if condition="currentColumn.value" const:value="Thread">
-            <entity name="nbsp"/>
-          </var:if>
-          <var:if condition="currentColumn.value" const:value="Flagged">
-            <entity name="nbsp"/>
-          </var:if>
-          <var:if condition="currentColumn.value" const:value="Attachment">
-            <img rsrc:src="title_attachment_14x14.png" label:title="$currentColumn.value" width="14"
-          	  height="14"/>
-          </var:if>
-          <var:if condition="currentColumn.value" const:value="Unread">
-            <img rsrc:src="title_read_14x14.png" label:title="$currentColumn.value" />
-          </var:if>
-          <var:if condition="currentColumn.value" const:value="Thread" const:negate="YES">
-            <var:if condition="currentColumn.value" const:value="Flagged" const:negate="YES">
-              <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
-                <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
-                  <var:string var:value="columnTitle" />
-                </var:if>
-              </var:if>
-            </var:if>
-          </var:if>
-        </th>
-      </var:foreach>
-      </tr>
-    <tr id="messageCountHeader" class="tableview"
-      ><th var:colspan="columnsDisplayCount" class="tbtv_navcell"
-	><entity name="nbsp"/></th
-	></tr
-      >
-  </thead>
-</table>
-
-<div id="mailboxList">
-  <table id="messageListBody" class="messageList" cellspacing="0">
-    <tbody>
-      <tr const:style="display: none;"
-        ><var:foreach list="columnsDisplayOrder" item="currentColumn"
-          ><var:if condition="currentColumn.value" const:value="Thread"
-            ><td class="messageThreadColumn"
-              ><!-- thread --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="Flagged"
-            ><td class="messageFlagColumn"
-              ><!-- flagged --></td
-          ></var:if>
-          <var:if condition="currentColumn.value" const:value="Attachment"
-            ><td class="messageAttachmentColumn"
-              ><!-- attachment --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="Subject"
-            ><td class="messageSubjectColumn"
-              ><!-- subject --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="From"
-            ><td class="messageAddressColumn"
-              ><!-- from --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="To"
-            ><td class="messageAddressColumn"
-              ><!-- to --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="Unread"
-            ><td class="messageUnreadColumn"
-              ><!-- unread --></td
-          ></var:if
-          ><var:if condition="currentColumn.value" const:value="Date"
-            ><td class="messageDateColumn"
-              ><!-- date --></td
-            ></var:if
-            ><var:if condition="currentColumn.value" const:value="Priority"
-              ><td class="messagePriorityColumn"
-                ><!-- priority --></td
-            ></var:if
-          ><var:if condition="currentColumn.value" const:value="Size"
-              ><td class="messageSizeColumn"
-                ><!-- size --></td
-                ></var:if>
-            </var:foreach>
-          </tr>
-    </tbody>
-  </table>
-</div>
+    <!-- dropdown menu for addressbook options button -->
+    <div id="folderProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
+      <ul class="button-group">
+        <li>
+          <span class="button"><i class="icon-hyperlink"><!-- links --></i></span>
+        </li>
+        <li data-ng-show="currentFolder.type == 'folder'">
+          <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
+        </li>
+        <li data-ng-show="currentFolder.type == 'folder'">
+          <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
+        </li>
+        <li data-ng-show="currentFolder.type == 'folder'">
+          <span class="button" data-ng-click="confirmDelete()"><i class="icon-trash"><!-- delete --></i></span>
+        </li>
+      </ul>
     </div>
-    <var:if condition="singleWindowModeEnabled" const:negate="YES"
-      ><div class="dragHandle" id="rightDragHandle"><!-- space --></div>
-      <div id="messageContent"><!-- space --></div
-    ></var:if>
-  </div>
 
-  <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+    <div id="mailboxesList" class="folders-list">
+      <ul data-ng-repeat="account in accounts">
+        <li><label>{{account.name}}</label></li>
+        <sg-folder-tree data-ng-repeat="folder in account.mailboxes track by folder.id"
+                        data-sg-root="account"
+                        data-sg-folder="folder"
+                        data-sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+      </ul>
+    </div>
+    <div data-ui-view="mailbox"><!-- messages list --></div>
+  </script>
+
+  <script type="text/ng-template" id="mailbox.html">
+    <div id="messagesList">
+      <ul data-vs-repeat="56"
+          data-vs-scroll-parent="#messagesList">
+        <li ng-repeat="currentMessage in mailbox.$messages"
+            data-ng-class="{unread: !currentMessage.isread, _selected: message.id == currentMessage.id}">
+          <a name="{{}}" data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: mailbox.path, messageId: currentMessage.uid})">
+            <div class="name">
+              {{currentMessage.from}}
+              <span class="right" data-ng-bind-html="currentMessage.date"><!-- date --></span>
+            </div>
+            <div class="subject">{{currentMessage.subject}}</div>
+            <i class="icon-ion-refresh"
+               data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div id="messageView" data-ui-view="message"><!-- message view --></div>
+  </script>
+
+  <script type="text/ng-template" id="message.html">
+    <div class="header">
+      <h1 data-ng-bind-html="message.from"><!-- sender --></h1>
+      <h6>
+        {{message.subject}}
+        <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
+      </h6>
+        <div class="attr">
+          <div class="key">
+            <label class="right"><var:string label:value="To"/></label>
+          </div>
+          <div class="value">
+            <span class="label radius" data-ng-repeat="addr in message.toAddresses">{{addr}}</span>
+          </div>
+        </div>
+    </div>
+    <div class="buttonsToolbar">
+      <span>
+        <a class="button tiny radius"
+           data-ui-sref="mail.acount.mailbox.messageEditor({accountId: account.id, mailboxId: mailbox.path, messageId: message.uid})"
+           data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
+        <span class="button tiny radius alert"
+              data-ng-click="delete(message)"><i class="icon-trash"><!-- delete --></i></span>
+      </span>
+    </div>
+
+    <div class="mailer_mailcontent"
+         data-ng-bind-html="message.$content()"><!-- msg --></div>
+  </script>
 </var:component>

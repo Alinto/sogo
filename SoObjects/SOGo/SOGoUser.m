@@ -786,7 +786,7 @@
                 forKey: @"Sent"];
   [mailboxes setObject: [_defaults trashFolderName]
                 forKey: @"Trash"];
-  [mailAccount setObject: mailboxes forKey: @"mailboxes"];
+  [mailAccount setObject: mailboxes forKey: @"specialMailboxes"];
   [mailboxes release];
 
   [mailAccounts addObject: mailAccount];
