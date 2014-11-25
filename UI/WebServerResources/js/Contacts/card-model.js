@@ -39,7 +39,7 @@
    */
   Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
     angular.extend(Card, {
-      $$resource: new Resource(Settings.baseURL),
+      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
       $timeout: $timeout
     });
 
@@ -411,10 +411,10 @@
    */
   Card.prototype.$unwrap = function(futureCardData) {
     var _this = this;
-    if (futureCardData) {
-      // Expose the promise
-      this.$futureCardData = futureCardData;
-    }
+
+    // Expose the promise
+    this.$futureCardData = futureCardData;
+
     // Resolve the promise
     this.$futureCardData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
@@ -435,7 +435,7 @@
    * @function $omit
    * @memberof Card.prototype
    * @desc Return a sanitized object used to send to the server.
-   * @param {boolean} deep - make a deep copy if true
+   * @param {Boolean} [deep] - make a deep copy if true
    * @return an object literal copy of the Card instance
    */
   Card.prototype.$omit = function(deep) {
