@@ -31,8 +31,8 @@
  * <uid>+defaults           value = NSDictionary instance > user's defaults
  * <uid>+settings           value = NSDictionary instance > user's settings
  * <uid>+attributes         value = NSMutableDictionary instance > user's LDAP attributes
- * <uid>+failedlogins       value =
- * <uid>+messagesubmissions value =
+ * <uid>+failedlogins       value = NSDictionary instance holding the failed count and the date of the first failed authentication
+ * <uid>+messagesubmissions value = NSDictionary instance holding the number of messages sent, and number of recipients
  * <uid>+dn                 value = NSString instance > cached user's DN
  * <object path>+acl        value = NSDictionary instance > ACLs on an object at specified path
  * <groupname>+<domain>     value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
@@ -40,8 +40,6 @@
  * cas-ticket:< >           value =
  * cas-pgtiou:< >           value =
  * session:< >              value =
- * <uid>+failedlogins       value = NSDictionary instance holding the failed count and the date of the first failed authentication
- * <uid>+messagesubmissions value = NSDictionary instance holding the number of messages sent, and number of recipients
  */
 
 
