@@ -6,7 +6,7 @@
   /**
    * @name AddressBook
    * @constructor
-   * @param {object} futureAddressBookData
+   * @param {object} futureAddressBookData - either an object literal or a promise
    */
   function AddressBook(futureAddressBookData) {
     // Data is immediately available
@@ -106,8 +106,8 @@
   /**
    * @memberOf AddressBook
    * @desc Subscribe to another user's addressbook and add it to the list of addressbooks.
-   * @param {String} uid - user id
-   * @param {String} path - path of folder for specified user
+   * @param {string} uid - user id
+   * @param {string} path - path of folder for specified user
    * @returns a promise of the HTTP query result
    */
   AddressBook.$subscribe = function(uid, path) {
@@ -193,6 +193,12 @@
     return this.$save();
   };
 
+  /**
+   * @function $delete
+   * @memberof AddressBook.prototype
+   * @desc Delete the addressbook from the server and the static list of addressbooks.
+   * @returns a promise of the HTTP operation
+   */
   AddressBook.prototype.$delete = function() {
     var _this = this,
         d = AddressBook.$q.defer(),
@@ -213,19 +219,36 @@
     return d.promise;
   };
 
+  /**
+   * @function $save
+   * @memberof AddressBook.prototype
+   * @desc Save the addressbook to the server. This currently can only affect the name of the addressbook.
+   * @returns a promise of the HTTP operation
+   */
   AddressBook.prototype.$save = function() {
     return AddressBook.$$resource.save(this.id, this.$omit()).then(function(data) {
       return data;
     });
   };
 
+  /**
+   * @function $getCard
+   * @memberof AddressBook.prototype
+   * @desc Fetch the card attributes from the server.
+   * @returns a promise of the HTTP operation
+   */
   AddressBook.prototype.$getCard = function(cardId) {
     return this.$id().then(function(addressbookId) {
       return AddressBook.$Card.$find(addressbookId, cardId);
     });
   };
 
-  // Unwrap a promise
+  /**
+   * @function $unwrap
+   * @memberof AddressBook.prototype
+   * @desc Unwrap a promise and instanciate new Card objects using received data.
+   * @param {promise} futureAddressBookData - a promise of the AddressBook's data
+   */
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
     var _this = this;
 
@@ -257,7 +280,12 @@
     });
   };
 
-  // $omit returns a sanitized object used to send to the server
+  /**
+   * @function $omit
+   * @memberof AddressBook.prototype
+   * @desc Return a sanitized object used to send to the server.
+   * @return an object literal copy of the Addressbook instance
+   */
   AddressBook.prototype.$omit = function() {
     var addressbook = {};
     angular.forEach(this, function(value, key) {
