@@ -759,19 +759,25 @@
 - (id <WOActionResults>) getHeadersAction
 {
   NSArray *uids, *headers;
+  NSDictionary *data;
   WORequest *request;
   WOResponse *response;
 
   request = [context request];
-  if ([request formValueForKey: @"uids"] == nil)
+  data = [[request contentAsString] objectFromJSONString];
+  if (![[data objectForKey: @"uids"] isKindOfClass: [NSArray class]]
+      || [[data objectForKey: @"uids"] count] == 0)
     {
-      return [NSException exceptionWithHTTPStatus: 404
-					   reason: @"No UID specified"];
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"No UID specified", @"error", nil];
+      return [self responseWithStatus: 404 /* Not Found */
+                                    andString: [data jsonRepresentation]];
     }
 
-  uids = [[request formValueForKey: @"uids"] componentsSeparatedByString: @","]; // Should we support ranges? ie "x-y"
+  uids = [data objectForKey: @"uids"];
   headers = [self getHeadersForUIDs: uids
 			   inFolder: [self clientObject]];
+
   response = [context response];
   [response setHeader: @"application/json; charset=utf-8"
 	    forKey: @"content-type"];
