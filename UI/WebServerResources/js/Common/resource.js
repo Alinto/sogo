@@ -118,6 +118,24 @@
   };
 
   /**
+   * @function post
+   * @memberof Resource.prototype
+   * @desc Post a resource attributes on the server.
+   * @return a promise
+   */
+  Resource.prototype.post = function(id, action, data) {
+    var deferred = this._q.defer(),
+        path = this._path + '/' + id + '/' + action;
+
+    this._http
+      .post(path, data)
+      .success(deferred.resolve)
+      .error(deferred.reject);
+
+    return deferred.promise;
+  };
+
+  /**
    * @function save
    * @memberof Resource.prototype
    * @desc Save a resource attributes on the server (post /save).
@@ -125,15 +143,9 @@
    */
   Resource.prototype.save = function(id, newValue, options) {
     var deferred = this._q.defer(),
-        action = (options && options.action)? options.action : 'save',
-        path = this._path + '/' + id + '/' + action;
+        action = (options && options.action)? options.action : 'save';
 
-    this._http
-      .post(path, newValue)
-      .success(deferred.resolve)
-      .error(deferred.reject);
-
-    return deferred.promise;
+    return this.post(id, action, newValue);
   };
 
   /**

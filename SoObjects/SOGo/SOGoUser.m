@@ -37,6 +37,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
+#import <Contacts/SOGoContactFolders.h>
 
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
@@ -761,7 +762,7 @@
                 forKey: @"Sent"];
   [mailboxes setObject: [_defaults trashFolderName]
                 forKey: @"Trash"];
-  [mailAccount setObject: mailboxes forKey: @"mailboxes"];
+  [mailAccount setObject: mailboxes forKey: @"specialMailboxes"];
   [mailboxes release];
 
   [mailAccounts addObject: mailAccount];
