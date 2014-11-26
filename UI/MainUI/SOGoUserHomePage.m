@@ -216,21 +216,22 @@
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
 
-  // Slices of 15 minutes. The +4 is to take into account that we can
-  // have a timezone change during the freebusy lookup.
-  intervals = interval / intervalSeconds + 4;
+  // Slices of 15 minutes. The +8 is to take into account that we can
+  // have a timezone change during the freebusy lookup. We have +4 at the
+  // beginning and +4 at the end.
+  intervals = interval / intervalSeconds + 8;
 
   // Build a bit string representation of the freebusy data for the period
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
-  [self _fillFreeBusyItems: freeBusyItems
+  [self _fillFreeBusyItems: (freeBusyItems+4)
                      count: intervals
 	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
              fromStartDate: startDate
                  toEndDate: endDate];
 
-  // Convert bit string to a NSArray
+  // Convert bit string to a NSArray. We also skip by the default the non-requested information.
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = 0; count < intervals; count++)
+  for (count = 4; count < (intervals-4); count++)
     {
       [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
     }
@@ -299,14 +300,16 @@
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   if ([[sd authenticationType] isEqualToString: @"cas"])
-    redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
-                                     andParameters: nil];
+    {
+      redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
+                                       andParameters: nil];
+    }
   else
     {
       container = [[self clientObject] container];
       redirectURL = [container baseURLInContext: context];
     }
-
+  
   return redirectURL;
 }
 
