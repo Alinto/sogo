@@ -1,8 +1,13 @@
 2.2.11 (2014-xx-xx)
 -------------------
 
+Enhancements
+ - Improved the SAML2 documentation
+
 Bug fixes
- - Now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute)
+ - Now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
+ - Added support for IdP-initiated SAML2 logout (#2377)
+ - We now generate SAML2 metadata on the fly (#2378) 
 
 2.2.10 (2014-11-21)
 -------------------

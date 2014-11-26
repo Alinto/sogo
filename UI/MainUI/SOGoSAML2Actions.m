@@ -33,6 +33,8 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/SOGoSAML2Session.h>
+#import <SOGo/SOGoSession.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 
 @interface SOGoSAML2Actions : WODirectAction
@@ -42,17 +44,73 @@
 
 - (WOResponse *) saml2MetadataAction
 {
+  NSString *metadata, *certContent;
+  SOGoSystemDefaults *sd;
   WOResponse *response;
-  NSString *metadata;
 
   response = [context response];
   [response setHeader: @"application/xml; charset=utf-8"
                forKey: @"content-type"];
 
-  metadata = [SOGoSAML2Session metadataInContext: context];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  
+  certContent = [NSString stringWithContentsOfFile: [sd SAML2CertificateLocation]];
+  
+  metadata = [SOGoSAML2Session metadataInContext: context
+                                     certificate: certContent];
+  
   [response setContentEncoding: NSUTF8StringEncoding];
   [response appendContentString: metadata];
 
+  return response;
+}
+
+- (WOResponse *) saml2SingleLogoutServiceAction
+{
+  NSString *userName, *value, *cookieName;
+  SOGoWebAuthenticator *auth;
+  WOResponse *response;
+  NSCalendarDate *date;
+  WOCookie *cookie;
+  NSArray *creds;
+   
+  userName = [[context activeUser] login];
+  [self logWithFormat: @"SAML2 IdP-initiated SLO for user '%@'", userName];
+
+  response = [context response];
+
+  if ([userName isEqualToString: @"anonymous"])
+    return response;
+  
+  cookie = nil;
+  
+  date = [NSCalendarDate calendarDate];
+  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+
+  // We cleanup the memecached/database session cache. We do this before
+  // invoking _logoutCookieWithDate: in order to obtain its value.
+  auth = [[SoApplication application] authenticatorInContext: context];
+  
+  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
+    {
+      cookieName = [auth cookieNameInContext: context];
+      value = [[context request] cookieValueForKey: cookieName];
+      creds = [auth parseCredentials: value];
+      
+      if ([creds count] > 1)
+        [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]];
+      
+      if ([cookieName length])
+        {
+          cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
+          [cookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
+          [cookie setExpires: [date yesterday]];
+        }
+    }
+  
+  if (cookie)
+    [response addCookie: cookie];
+  
   return response;
 }
 

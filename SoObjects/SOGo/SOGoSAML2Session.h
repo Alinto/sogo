@@ -39,7 +39,9 @@
   NSString *assertion;
 }
 
-+ (NSString *) metadataInContext: (WOContext *) context;
++ (NSString *) metadataInContext: (WOContext *) context
+                     certificate: (NSString *) certificate;
+
 + (NSString *) authenticationURLInContext: (WOContext *) context;
 
 + (SOGoSAML2Session *) SAML2SessionInContext: (WOContext *) context;

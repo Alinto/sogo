@@ -46,6 +46,28 @@
 
 #import "SOGoSAML2Session.h"
 
+@interface NSString (SOGoCertificateExtension)
+
+- (NSString *) cleanedUpCertificate;
+
+@end
+
+@implementation NSString (SOGoCertificateExtension)
+
+- (NSString *) cleanedUpCertificate
+{
+  NSMutableArray *a;
+
+  a = [NSMutableArray arrayWithArray: [self componentsSeparatedByString: @"\n"]];
+  [a removeObjectAtIndex: 0];
+  [a removeLastObject];
+  [a removeLastObject];  
+
+  return [a componentsJoinedByString: @""];
+}
+
+@end
+
 @interface WOContext (SOGoSAML2Extension)
 
 - (NSString *) SAML2ServerURLString;
@@ -117,7 +139,9 @@ LassoServerInContext (WOContext *context)
                     format: @"certificate file '%@' could not be read",
                      filename];
 
-      metadata = [SOGoSAML2Session metadataInContext: context];
+      metadata = [SOGoSAML2Session metadataInContext: context
+                                         certificate: certContent];
+      
       /* FIXME: enable key password in config ? */
       server = lasso_server_new_from_buffers ([metadata UTF8String],
                                               [keyContent UTF8String],
@@ -179,8 +203,10 @@ LassoServerInContext (WOContext *context)
 }
 
 + (NSString *) metadataInContext: (WOContext *) context
+                     certificate: (NSString *) certificate
 {
-  NSString *metadata, *serverURLString, *filename;
+  NSString *serverURLString, *filename;
+  NSMutableString *metadata;
   NSBundle *bundle;
 
   bundle = [NSBundle bundleForClass: self];
@@ -188,9 +214,16 @@ LassoServerInContext (WOContext *context)
   if (filename)
     {
       serverURLString = [context SAML2ServerURLString];
-      metadata = [[NSString stringWithContentsOfFile: filename]
-                   stringByReplacingString: @"%{base_url}"
-                                withString: serverURLString];
+
+      metadata = [NSMutableString stringWithContentsOfFile: filename];
+      [metadata replaceOccurrencesOfString: @"%{base_url}"
+                                withString: serverURLString
+                                   options: 0
+                                     range: NSMakeRange(0, [metadata length])];
+      [metadata replaceOccurrencesOfString: @"%{certificate}"
+                                withString: [certificate cleanedUpCertificate]
+                                   options: 0
+                                     range: NSMakeRange(0, [metadata length])];
     }
   else
     metadata = nil;
