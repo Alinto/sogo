@@ -120,6 +120,25 @@
       $urlRouterProvider.otherwise('/Mail');
     }])
 
+    .directive('sgFocusOn', function() {
+      return function(scope, elem, attr) {
+        scope.$on('sgFocusOn', function(e, name) {
+          if (name === attr.sgFocusOn) {
+            elem[0].focus();
+            elem[0].select();
+          }
+        });
+      };
+    })
+
+    .factory('sgFocus', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+      return function(name) {
+        $timeout(function() {
+          $rootScope.$broadcast('sgFocusOn', name);
+        });
+      }
+    }])
+
     .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Account, Mailbox, stateAccounts) {
       $scope.accounts = stateAccounts;
 
