@@ -1050,11 +1050,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Collection not found - next folderSync will do the cleanup
       //NSLog(@"Sync Collection not found %@ %@", collectionId, realCollectionId);
-      [theBuffer appendString: @"<Collection>"];
-      [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
-      [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
-      [theBuffer appendFormat: @"<Status>%d</Status>", 8];
-      [theBuffer appendString: @"</Collection>"];
+      //Outlook doesn't like following response
+      //[theBuffer appendString: @"<Collection>"];
+      //[theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
+      //[theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
+      //[theBuffer appendFormat: @"<Status>%d</Status>", 8];
+      //[theBuffer appendString: @"</Collection>"];
       
       return;
     }
