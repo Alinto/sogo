@@ -80,6 +80,7 @@
 - (NSString *) SAML2IdpMetadataLocation;
 - (NSString *) SAML2IdpPublicKeyLocation;
 - (NSString *) SAML2IdpCertificateLocation;
+- (NSString *) SAML2LoginAttribute;
 - (BOOL) SAML2LogoutEnabled;
 
 - (BOOL) enablePublicAccess;

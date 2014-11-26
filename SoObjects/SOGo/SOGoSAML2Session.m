@@ -1,8 +1,6 @@
 /* SOGoSAML2Session.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -215,7 +213,6 @@ LassoServerInContext (WOContext *context)
 
 - (void) _updateDataFromLogin
 {
-  // LassoSamlp2Response *response;
   LassoSaml2Assertion *saml2Assertion;
   GList *statementList, *attributeList;
   LassoSaml2AttributeStatement *statement;
@@ -223,10 +220,15 @@ LassoServerInContext (WOContext *context)
   LassoSaml2AttributeValue *value;
   LassoMiscTextNode *textNode;
   LassoSaml2NameID *nameIdentifier;
+  SOGoSystemDefaults *sd;
+  NSString *loginAttribue;
+  
   gchar *dump;
                   
-  saml2Assertion
-    = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+  saml2Assertion = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  loginAttribue = [sd SAML2LoginAttribute];
+  
   if (saml2Assertion)
     {
       /* deduce user login */
@@ -241,22 +243,42 @@ LassoServerInContext (WOContext *context)
           while (!login && attributeList)
             {
               attribute = LASSO_SAML2_ATTRIBUTE (attributeList->data);
-              if (strcmp (attribute->Name, "uid") == 0)
+              if (loginAttribue && (strcmp (attribute->Name, [loginAttribue UTF8String]) == 0))
                 {
                   value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
                   textNode = value->any->data;
+
+                  // If we got an @ sign in the value, it's most likely an email address
+                  // so we'll ask SOGoUserManager about this
                   login = [NSString stringWithUTF8String: textNode->content];
+
+                  if ([login rangeOfString: @"@"].location != NSNotFound)
+                    {
+                      login = [[SOGoUserManager sharedUserManager] getUIDForEmail: login];
+                    }
+                  
                   [login retain];
                 }
-              else if (strcmp (attribute->Name, "mail") == 0)
+              else if (!loginAttribue)
                 {
-                  value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
-                  textNode = value->any->data;
-                  login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
-                  [login retain];
+                  // We fallback on "standard" attributes such as "uid" and "mail"
+                  if (strcmp (attribute->Name, "uid") == 0)
+                    {
+                      value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                      textNode = value->any->data;
+                      login = [NSString stringWithUTF8String: textNode->content];
+                      [login retain];
+                    }
+                  else if (strcmp (attribute->Name, "mail") == 0)
+                    {
+                      value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                      textNode = value->any->data;
+                      login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
+                      [login retain];
+                    }
                 }
-              else
-                attributeList = attributeList->next;
+              
+              attributeList = attributeList->next;
             }
           statementList = statementList->next;
         }

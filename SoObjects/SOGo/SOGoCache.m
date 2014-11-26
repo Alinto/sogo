@@ -40,6 +40,7 @@
  * cas-ticket:< >           value =
  * cas-pgtiou:< >           value =
  * session:< >              value =
+ * saml2-login:< >          value =
  */
 
 
