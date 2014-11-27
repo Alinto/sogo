@@ -144,7 +144,6 @@
 
       $scope.setCurrentFolder = function(account, folder) {
         $rootScope.currentFolder = folder;
-        console.debug('setCurrentFolder ' + folder.type + ' ' + account.id + ' ' + encodeUriFilter(folder.path))
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
       };
 
@@ -156,7 +155,6 @@
     }])
 
     .controller('MailboxCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccount, stateMailbox, $timeout, $modal, focus, Dialog, Account, Mailbox) {
-      console.debug('MailboxCtrl ' + stateMailbox.path);
       $scope.account = stateAccount;
       $scope.mailbox = stateMailbox;
       $rootScope.currentFolder = stateMailbox;

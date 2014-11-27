@@ -240,6 +240,7 @@ $column-gutter: 0;
         h1, h2, h3, h4, h5, h6 {
             margin-left: rem-calc(12);
             margin-top: 0;
+            padding-top: rem-calc(12);
         }
         h1 {
             margin-bottom: 0;
@@ -247,7 +248,7 @@ $column-gutter: 0;
         .header {
             background-color: $secondary-color;
             padding-bottom: 0.2em;
-            h1, h6 {
+            h1, h4, h6 {
                 color: #fff;
             }
             .label {

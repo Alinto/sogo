@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2013 Inverse inc.
+  Copyright (C) 2005-2014 Inverse inc.
 
   This file is part of SOGo.
 
@@ -15,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -194,17 +193,23 @@ static NSString *mailETag = nil;
 - (NSArray *) formattedAddresses: (NSArray *) theAddresses
 {
   NSMutableArray *addresses;
-  NSFormatter *formatter;
-  NGImap4EnvelopeAddress *address;
+  NSMutableDictionary *metaAddress;
+  NSString *name, *address;
+  NGImap4EnvelopeAddress *envelopeAddress;
   int count, i;
 
-  formatter = [[self context] mailEnvelopeFullAddressFormatter];
   count = [theAddresses count];
   addresses = [NSMutableArray arrayWithCapacity: count];
   for (i = 0; i < count; i++)
     {
-      address = [theAddresses objectAtIndex: i];
-      [addresses addObject: [formatter stringForObjectValue: address]];
+      envelopeAddress = [theAddresses objectAtIndex: i];
+      address = [envelopeAddress baseEMail];
+      name = [envelopeAddress personalName];
+      metaAddress = [NSMutableDictionary dictionaryWithObject: address forKey: @"address"];
+      if (name)
+        [metaAddress setObject: name forKey: @"name"];
+
+      [addresses addObject: metaAddress];
     }
 
   return addresses;

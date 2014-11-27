@@ -254,7 +254,7 @@
           <a name="{{}}" data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: mailbox.path, messageId: currentMessage.uid})">
             <div class="name">
               {{currentMessage.from}}
-              <span class="right" data-ng-bind-html="currentMessage.date"><!-- date --></span>
+              <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
             </div>
             <div class="subject">{{currentMessage.subject}}</div>
             <i class="icon-ion-refresh"
@@ -268,19 +268,18 @@
 
   <script type="text/ng-template" id="message.html">
     <div class="header">
-      <h1 data-ng-bind-html="message.from"><!-- sender --></h1>
+      <h4 data-ng-bind="message.subject"><!-- subject --></h4>
+      <h6><var:string label:value="From"/> <a
+                data-ng-href="mailto:{{message.fromAddresses[0].address}}"
+                data-ng-bind="message.fromAddresses[0].full"><!-- from --></a></h6>
       <h6>
-        {{message.subject}}
+        <var:string label:value="To"/> <a
+                data-ng-href="mailto:{{message.toAddresses[0].address}}"
+                data-ng-bind="message.toAddresses[0].full"><!-- to --></a>
+      </h6>
+      <h6>
         <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
       </h6>
-        <div class="attr">
-          <div class="key">
-            <label class="right"><var:string label:value="To"/></label>
-          </div>
-          <div class="value">
-            <span class="label radius" data-ng-repeat="addr in message.toAddresses">{{addr}}</span>
-          </div>
-        </div>
     </div>
     <div class="buttonsToolbar">
       <span>

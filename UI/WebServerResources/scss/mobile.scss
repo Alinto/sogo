@@ -57,11 +57,38 @@ ion-content {
     }
 }
 
+ion-list {
+    &.small {
+        a {
+            padding-top: $padding-small-vertical !important;
+            padding-bottom: $padding-small-vertical !important;
+        }
+        h2, p {
+            font-size: $font-size-base;
+        }
+        p {
+            margin: 0 !important;
+        }
+    }
+}
+
 ion-item {
     small {
         display: block;
         color: $positive !important;
     }
+    .right {
+        float: right;
+    }
+    &[collection-repeat] {
+        width: 100%;
+    }
+}
+
+$i: 1;
+@while $i < 12 {
+    .item-complex.item-icon-left.childLevel#{$i} { padding-left: 10px * $i; }
+    $i: $i + 1;
 }
 /* Additional styles */
 
