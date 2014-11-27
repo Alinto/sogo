@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2014 Inverse inc.
 
   This file is part of SOGo
 
@@ -32,8 +31,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUserDefaults.h> /* for locale string constants */
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
@@ -59,6 +60,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 #import <UI/MailPartViewers/UIxMailSizeFormatter.h>
@@ -128,11 +130,20 @@
     }
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] == 1)
     {
+      // Yesterday
       return [self labelForKey: @"Yesterday"];
+    }
+  else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] < 7)
+    {
+      // Same week
+      WOResourceManager *resMgr = [[WOApplication application] resourceManager];
+      NSString *language = [[[context activeUser] userDefaults] language];
+      NSDictionary *locale = [resMgr localeForLanguageNamed: language];
+      return [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [messageDate dayOfWeek]];
     }
   else
     {
-      return [dateFormatter formattedDate: messageDate];
+      return [dateFormatter shortFormattedDate: messageDate];
     }
 }
 
@@ -690,7 +701,7 @@
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];
 
-  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"Date", @"Size", @"Flags", @"uid", nil];
+  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", nil];
   [headers addObject: msg];
   while (message)
     {
@@ -748,7 +759,7 @@
       // Priority
       [msg addObject: [self messagePriority]];
 
-      // Date
+      // Relative Date
       msgDate = [self messageDate];
       if (msgDate == nil)
 	msgDate = @"";

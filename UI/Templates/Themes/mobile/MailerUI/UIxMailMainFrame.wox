@@ -1,0 +1,93 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    const:jsFiles="Common/resource.js, Common/ui-common.js, Mailer/account-model.js, Mailer/mailbox-model.js, Mailer/message-model.js"
+    className="UIxPageFrame"
+    title="name">
+  <script type="text/javascript">
+    var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
+    var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
+    var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO"/>;
+  </script>
+
+  <ion-nav-view><!-- main view --></ion-nav-view>
+
+
+  <script type="text/ng-template" id="mailboxes.html">
+    <ion-view title="Mailboxes">
+      <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"><!-- menu toggle --></button>
+      </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty" ng-click="newMailbox()"><!-- new --></a>
+      </ion-nav-buttons>
+      <ion-content class="has-header">
+        <!-- sgFamilyTree -->
+        <ion-list ng-repeat="account in accounts">
+          <ion-item class="item-divider">{{account.name}}</ion-item>
+          <sg-folder-tree ng-repeat="folder in account.mailboxes track by folder.id"
+                          sg-root="account"
+                          sg-folder="folder"
+                          sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+        </ion-list>
+      </ion-content>
+    </ion-view>
+  </script>
+
+  <script type="text/ng-template" id="mailbox.html">
+    <ion-view title="{{mailbox.name}}">
+      <ion-nav-buttons side="right">
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty"><!-- edit --></a>
+      </ion-nav-buttons>
+      <ion-content class="has-header">
+        <ion-list>
+          <ion-item class="item-input">
+            <i class="icon ion-search placeholder-icon"><!-- search --></i>
+            <input type="text"
+                   placeholder="Search"
+                   data-ng-model="search.filter"
+                   data-ng-keyup="doSearch($event)"/>
+          </ion-item>
+        </ion-list>
+        <div class="scroll">
+        <ion-list class="small">
+          <ion-item class="item-icon-right" option-buttons="buttons"
+                    collection-repeat="message in mailbox.$messages"
+                    collection-item-height="52"
+                    ui-sref="app.mail.account.mailbox.message({accountId: account.id, mailboxId: mailbox.path, messageId: message.uid})">
+            <small class="right">{{message.relativedate}}</small>
+            <h2>{{message.from}}</h2>
+            <p>{{message.subject}}</p>
+            <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
+          </ion-item>
+        </ion-list>
+        </div>
+      </ion-content>
+    </ion-view>
+  </script>
+
+  <script type="text/ng-template" id="message.html">
+    <ion-view title="">
+      <ion-nav-buttons side="right">
+        <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty"><!-- new --></a>
+      </ion-nav-buttons>
+      <ion-content class="has-header" padding="10">
+        <h5>{{message.subject}}</h5>
+        <small><var:string label:value="From"/> <b><a data-ng-href="mailto:{{message.fromAddresses[0].address}}">{{message.fromAddresses[0].name}}</a></b>
+        <br/>
+        <var:string label:value="To"/> <b><a data-ng-href="mailto:{{message.toAddresses[0].address}}">{{message.toAddresses[0].name}}</a></b>
+        <br />
+        {{message.date}}</small>
+        <hr/>
+        <div data-ng-bind-html="message.$content()"><!-- msg --></div>
+      </ion-content>
+    </ion-view>
+  </script>
+
+</var:component>

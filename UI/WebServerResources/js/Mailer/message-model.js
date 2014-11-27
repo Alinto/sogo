@@ -101,6 +101,15 @@
       Message.$timeout(function() {
         angular.extend(_this, data);
         _this.id = _this.$absolutePath();
+        // Build long representation of email addresses
+        _.each(['from', 'to', 'cc', 'bcc', 'replyTo'], function(type) {
+          _.each(_this[type + 'Addresses'], function(data, i) {
+            if (data.name != data.address)
+              data.full = data.name + ' <' + data.address + '>';
+            else
+              data.full = '<' + data.address + '>';
+          });
+        });
         deferred.resolve(_this.content);
       });
     }, function(data) {
