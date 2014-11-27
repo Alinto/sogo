@@ -135,13 +135,17 @@
    * @desc Save the card to the server.
    */
   Card.prototype.$save = function() {
-    var action = 'saveAsContact';
+    var _this = this,
+        action = 'saveAsContact';
+
     if (this.tag == 'vlist') action = 'saveAsList';
-    //var action = 'saveAs' + this.tag.substring(1).capitalize();
+
     return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
                                 this.$omit(),
                                 { action: action })
       .then(function(data) {
+        // Make a copy of the data for an eventual reset
+        _this.$shadowData = _this.$omit(true);
         return data;
       });
   };
@@ -425,7 +429,7 @@
           if (o.email) o.emails = [{value: o.email}];
           _this.refs[i] = new Card(o);
         });
-        // Make a copy of the data in order for an eventual reset.
+        // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);
       });
     });
