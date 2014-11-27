@@ -63,7 +63,7 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
             padding: $off-canvas-link-padding;
             color: $off-canvas-link-color;
         }
-        .icon {
+        >i {
             //vertical-align: middle; // causes glitch when selecting row
             border-left: 3px solid transparent;
             width: 2em;
@@ -186,7 +186,7 @@ $column-gutter: 0;
             }
             ul {
                 margin: 0;
-                padding: 5px 0;
+                padding: 0;
                 li {
                     list-style-type: none;
                     //border-bottom: $topbar-divider-border-bottom;
@@ -526,20 +526,18 @@ $column-gutter: 0;
 
 .searchToolbar {
     @include grid-row($behavior:collapse);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: scale-color($f-dropdown-list-hover-bg, $lightness: -20%);
     .input-content {
-        @include grid-column($offset:0, $columns:11);
+        @include grid-column($offset:0, $columns:13);
         .input-search {
-            //display: flex;
-            display: table;
             width: 100%;
-            background-color: $input-bg-color;
-            border: $input-border-width $input-border-style $input-border-color;
-            @include radius($input-border-radius);
-            box-shadow: $input-box-shadow;
-            margin: 5px;
+            padding: 5px;
             i {
-                display: table-cell;
-                //min-width: rem-calc(24);
+                position: absolute;
+                top: 8px;
+                left: 0px;
                 width: rem-calc(24);
                 color: $clearing-caption-font-color;
                 font-size: rem-calc(18);
@@ -548,16 +546,17 @@ $column-gutter: 0;
                 vertical-align: middle;
             }
             input {
-                display: table-cell;
-                //transition: all 300ms ease;
-                //background-color: $secondary-color;
                 background-color: transparent;
                 border: 0;
                 box-shadow: none;
                 margin-bottom: 0;
-                /* &:focus { */
-                /*      border: 1px solid blue; */
-                /* } */
+                padding-left: 24px;
+                -webkit-transition: all 200ms linear;
+                -moz-transition: all 200ms linear;
+                transition: all 200ms linear;
+                &:focus {
+                    background-color: $input-bg-color;
+                }
             }
         }
     }
