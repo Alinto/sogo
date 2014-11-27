@@ -283,7 +283,7 @@ static BOOL debugLeaks;
 {
   id authenticator;
 
-  if (trustProxyAuthentication)
+  if (trustProxyAuthentication && [[context request] headerForKey: @"x-webobjects-remote-user"])
     authenticator = [SOGoProxyAuthenticator sharedSOGoProxyAuthenticator];
   else
     {
