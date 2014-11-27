@@ -37,7 +37,11 @@
   NSString *login;
   NSString *identifier;
   NSString *assertion;
+  NSString *identity;
+  NSString *session;
 }
+
++ (LassoServer *) lassoServerInContext: (WOContext *) context;
 
 + (NSString *) metadataInContext: (WOContext *) context
                      certificate: (NSString *) certificate;
@@ -54,6 +58,8 @@
 - (NSString *) login;
 - (NSString *) identifier;
 - (NSString *) assertion;
+- (NSString *) identity;
+- (NSString *) session;
 
 @end
 

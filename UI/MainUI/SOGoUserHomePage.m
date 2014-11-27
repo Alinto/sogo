@@ -33,7 +33,12 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
+
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
+#if defined(SAML2_CONFIG)
+#import <SOGo/SOGoSAML2Session.h>
+#endif
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoUser.h>
@@ -304,6 +309,47 @@
       redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
                                        andParameters: nil];
     }
+#if defined(SAML2_CONFIG)
+  else if ([[sd authenticationType] isEqualToString: @"saml2"])
+    {
+      NSString *username, *password, *domain, *value;
+      SOGoSAML2Session *saml2Session;
+      SOGoWebAuthenticator *auth;
+      LassoServer *server;
+      LassoLogout *logout;   
+      NSArray *creds;
+  
+      auth = [[self clientObject] authenticatorInContext: context];
+      value = [[context request] cookieValueForKey: [auth cookieNameInContext: context]];
+      creds = [auth parseCredentials: value];
+
+      value = [SOGoSession valueForSessionKey: [creds lastObject]];
+      
+      domain = nil;
+      
+      [SOGoSession decodeValue: value
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &username
+                        domain: &domain
+                      password: &password];
+
+      saml2Session = [SOGoSAML2Session SAML2SessionWithIdentifier: password
+                                                        inContext: context];
+      
+      server = [SOGoSAML2Session lassoServerInContext: context];
+      
+      logout = lasso_logout_new(server);
+
+      lasso_profile_set_session_from_dump(LASSO_PROFILE(logout), [[saml2Session session] UTF8String]);
+      lasso_profile_set_identity_from_dump(LASSO_PROFILE(logout), [[saml2Session session] UTF8String]);
+      lasso_logout_init_request(logout, NULL, LASSO_HTTP_METHOD_REDIRECT);
+      lasso_logout_build_request_msg(logout);
+      redirectURL = [NSString stringWithFormat: @"%s", LASSO_PROFILE(logout)->msg_url];
+
+      // We destroy our cache entry, the session will be taken care by the caller
+      [[SOGoCache sharedCache] removeSAML2LoginDumpsForIdentifier: password];
+    }      
+#endif
   else
     {
       container = [[self clientObject] container];

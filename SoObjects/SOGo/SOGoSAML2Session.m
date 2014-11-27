@@ -105,8 +105,7 @@ static NSMapTable *serverTable = nil;
   lasso_init ();
 }
 
-static LassoServer *
-LassoServerInContext (WOContext *context)
++ (LassoServer *) lassoServerInContext: (WOContext *) context
 {
   NSString *urlString, *metadata, *filename, *keyContent, *certContent,
     *idpKeyFilename, *idpCertFilename;
@@ -170,7 +169,7 @@ LassoServerInContext (WOContext *context)
   NSString *url;
   GList *providers;
 
-  server = LassoServerInContext (context);
+  server = [SOGoSAML2Session lassoServerInContext: context];
   tempLogin = lasso_login_new (server);
 
   providers = g_hash_table_get_keys (server->providers);
@@ -239,6 +238,8 @@ LassoServerInContext (WOContext *context)
       login = nil;
       identifier = nil;
       assertion = nil;
+      identity = nil;
+      session = nil;
     }
 
   return self;
@@ -350,7 +351,7 @@ LassoServerInContext (WOContext *context)
 
   if ((self = [self init]))
     {
-      server = LassoServerInContext (context);
+      server = [SOGoSAML2Session lassoServerInContext: context];
       lassoLogin = lasso_login_new (server);
       if (saml2Dump)
         {
@@ -358,12 +359,17 @@ LassoServerInContext (WOContext *context)
           ASSIGN (login, [saml2Dump objectForKey: @"login"]);
           ASSIGN (identifier, [saml2Dump objectForKey: @"identifier"]);
           ASSIGN (assertion, [saml2Dump objectForKey: @"assertion"]);
-          dump = [[saml2Dump objectForKey: @"identity"] UTF8String];
+
+          ASSIGN(identity, [saml2Dump objectForKey: @"identity"]);
+          dump = [identity UTF8String];
           if (dump)
             lasso_profile_set_identity_from_dump (profile, dump);
-          dump = [[saml2Dump objectForKey: @"session"] UTF8String];
+          
+          ASSIGN (session, [saml2Dump objectForKey: @"session"]);
+          dump = [session UTF8String];
           if (dump)
             lasso_profile_set_session_from_dump (profile, dump);
+          
           lasso_login_accept_sso (lassoLogin);
           // if (rc)
           //   [NSException raiseSAML2Exception: rc];
@@ -381,6 +387,9 @@ LassoServerInContext (WOContext *context)
   [login release];
   [identifier release];
   [assertion release];
+  [identity release];
+  [session release];
+  
   [super dealloc];
 }
 
@@ -433,13 +442,23 @@ LassoServerInContext (WOContext *context)
   return assertion;
 }
 
+- (NSString *) identity
+{
+  return identity;
+}
+
+- (NSString *) session
+{
+  return session;
+}
+
 - (void) processAuthnResponse: (NSString *) authnResponse
 {
   lasso_error_t rc;
   gchar *responseData, *dump;
   LassoProfile *profile;
-  LassoIdentity *identity;
-  LassoSession *session;
+  LassoIdentity *lasso_identity;
+  LassoSession *lasso_session;
   NSString *nsDump;
   NSMutableDictionary *saml2Dump;
 
@@ -463,22 +482,22 @@ LassoServerInContext (WOContext *context)
 
   profile = LASSO_PROFILE (lassoLogin);
 
-  session = lasso_profile_get_session (profile);
-  if (session)
+  lasso_session = lasso_profile_get_session (profile);
+  if (lasso_session)
     {
-      dump = lasso_session_dump (session);
+      dump = lasso_session_dump (lasso_session);
       nsDump = [NSString stringWithUTF8String: dump];
       [saml2Dump setObject: nsDump forKey: @"session"];
-      lasso_session_destroy (session);
+      lasso_session_destroy (lasso_session);
     }
 
-  identity = lasso_profile_get_identity (profile);
-  if (identity)
+  lasso_identity = lasso_profile_get_identity (profile);
+  if (lasso_identity)
     {
-      dump = lasso_identity_dump (identity);
+      dump = lasso_identity_dump (lasso_identity);
       nsDump = [NSString stringWithUTF8String: dump];
       [saml2Dump setObject: nsDump forKey: @"identity"];
-      lasso_identity_destroy (identity);
+      lasso_identity_destroy (lasso_identity);
     }
 
   [[SOGoCache sharedCache] setSaml2LoginDumps: saml2Dump

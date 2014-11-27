@@ -32,6 +32,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoSAML2Session.h>
 #import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -65,9 +66,12 @@
   return response;
 }
 
+//
+//
+//
 - (WOResponse *) saml2SingleLogoutServiceAction
 {
-  NSString *userName, *value, *cookieName;
+  NSString *userName, *value, *cookieName, *domain, *username, *password;
   SOGoWebAuthenticator *auth;
   WOResponse *response;
   NSCalendarDate *date;
@@ -96,6 +100,18 @@
       cookieName = [auth cookieNameInContext: context];
       value = [[context request] cookieValueForKey: cookieName];
       creds = [auth parseCredentials: value];
+
+      // We first delete our memcached entry
+      value = [SOGoSession valueForSessionKey: [creds lastObject]];
+      domain = nil;
+
+      [SOGoSession decodeValue: value
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &username
+                        domain: &domain
+                      password: &password];
+
+      [[SOGoCache sharedCache] removeSAML2LoginDumpsForIdentifier: password];
       
       if ([creds count] > 1)
         [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]];

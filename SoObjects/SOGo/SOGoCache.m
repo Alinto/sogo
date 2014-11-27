@@ -673,11 +673,13 @@ static memcached_st *handle = NULL;
     {
       key = [NSString stringWithFormat: @"cas-ticket:%@", ticket];
       [self removeValueForKey: key];
-      [self debugWithFormat: @"Removed session: %@", session];
+      [self debugWithFormat: @"Removed CAS session: %@", session];
     }
 }
 
+//
 // SAML2 support
+//
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier
 {
   NSString *key, *jsonString;
@@ -696,6 +698,16 @@ static memcached_st *handle = NULL;
   key = [NSString stringWithFormat: @"saml2-login:%@", identifier];
 
   [self setValue: [dump jsonRepresentation] forKey: key];
+}
+
+- (void) removeSAML2LoginDumpsForIdentifier: (NSString *) identifier
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"saml2-login:%@", identifier];
+
+  [self removeValueForKey: key];
+  [self debugWithFormat: @"Removed SAML2 session for identifier: %@", identifier];
 }
 
 //

@@ -453,7 +453,9 @@ the setup of your identity provider. Make sure this file is readable by the SOGo
 
 |S |SOGoSAML2LogoutEnabled
 |Boolean value indicated whether the "Logout" link is enabled when using
-SAML2 as authentication mechanism.
+SAML2 as authentication mechanism. When using this feature, SOGo will invoke
+the IdP to proceed with the logout procedure. When the user clicks on the logout
+button, a redirection will be made to the IdP to trigger the logout.
 
 |D |SOGoTimeZone
 |Parameter used to set a default time zone for users. The default
