@@ -4,10 +4,10 @@
 (function() {
     'use strict';
 
-    angular.module('SOGo.RootPage', ['SOGo.Authentication', 'SOGo.UIMobile', 'ionic'])
+    angular.module('SOGo.MainUI', ['SOGo.Authentication', 'SOGo.UIMobile', 'ionic'])
 
     .constant('sgSettings', {
-        'baseURL': ApplicationBaseURL
+        baseURL: ApplicationBaseURL
     })
 
     .run(function($ionicPlatform) {
@@ -28,17 +28,17 @@
         $stateProvider
 
             .state('app', {
-                url: "/app",
+                url: '/app',
                 abstract: true,
-                templateUrl: "menu.html",
+                templateUrl: 'menu.html',
                 controller: 'AppCtrl'
             })
 
             .state('app.login', {
-                url: "/login",
+                url: '/login',
                 views: {
-                    'menuContent': {
-                        templateUrl: "login.html",
+                    menuContent: {
+                        templateUrl: 'login.html',
                         controller: 'LoginCtrl'
                     }
                 }
