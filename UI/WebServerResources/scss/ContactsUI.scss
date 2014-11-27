@@ -63,10 +63,11 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
             padding: $off-canvas-link-padding;
             color: $off-canvas-link-color;
         }
-        >i {
+        >i,
+        >.icon {
             //vertical-align: middle; // causes glitch when selecting row
             border-left: 3px solid transparent;
-            width: 2em;
+            width: 1px;
         }
         form {
             margin: 0;
@@ -162,6 +163,8 @@ $column-gutter: 0;
             overflow-x: hidden;
             top: $topbar-height;
             bottom: $topbar-height;
+            right: 0;
+            left: 0;
         }
         .buttonsToolbar {
             border-top: $off-canvas-link-border-bottom;
