@@ -828,12 +828,12 @@ static NSString *inboxFolderName = @"INBOX";
   accounts = [user mailAccounts];
   accountIdx = [nameInContainer intValue];
   account = [accounts objectAtIndex: accountIdx];
-  folderName = [[account objectForKey: @"mailboxes"]
+  folderName = [[account objectForKey: @"specialMailboxes"]
                  objectForKey: purpose];
   if (!folderName && accountIdx > 0)
     {
       account = [accounts objectAtIndex: 0];
-      folderName = [[account objectForKey: @"mailboxes"]
+      folderName = [[account objectForKey: @"specialMailboxes"]
                      objectForKey: purpose];
     }
 
