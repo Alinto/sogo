@@ -112,6 +112,28 @@ $topbar-link-bg-hover: scale-color($module-color, $lightness: -14%);
     }
 }
 
+.f-dropdown {
+    width: auto;
+    max-width: 300px;
+    white-space: nowrap;
+    &.icons-dropdown {
+        height: inherit;
+        //background-color: $primary-color;
+        .button {
+            margin: 0;
+            padding: $f-dropdown-list-padding;
+            border-color: $primary-color;
+            //color: scale-color($secondary-color, $lightness: 52%);
+            color: #fff;    
+        }
+        background-color: $primary-color;
+        border-color: $primary-color;
+        &:before {
+            border-color: transparent transparent $primary-color transparent;
+        }
+    }
+}
+
 $i: 1;
 @while $i < 12 {
     .folders-list ul li .folder-container .folder-content > .childLevel#{$i} { padding-left: 15px * $i; }

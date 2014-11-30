@@ -34,9 +34,10 @@
               var promises = [];
               // Fetch list of mailboxes for each account
               angular.forEach(accounts, function(account, i) {
+                console.debug(i);
                 var mailboxes = account.$getMailboxes();
+                console.debug(mailboxes);
                 promises.push(mailboxes.then(function(objects) {
-                  accounts[i].mailboxes = objects;
                   return account;
                 }));
               });
@@ -81,7 +82,7 @@
                 }
                 return mailbox;
               };
-              return _find(stateAccount.mailboxes);
+              return _find(stateAccount.$mailboxes);
             }],
             stateMessages: ['stateMailbox', function(stateMailbox) {
               return stateMailbox.$update();
@@ -146,10 +147,28 @@
         $rootScope.currentFolder = folder;
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
       };
+      $scope.exportMails = function() {
+        window.location.href = ApplicationBaseURL + '/' + $rootScope.currentFolder.id + '/exportFolder';
+      };
+      $scope.confirmDelete = function() {
+        Dialog.confirm(l('Confirmation'), l('Do you really want to move this folder into the trash ?'))
+            .then(function(res) {
+              if (res) {
+                $rootScope.currentFolder.$delete()
+                  .then(function() {
+                    $rootScope.currentFolder = null;
+                  }, function(data, status) {
+                    Dialog.alert(l('An error occured while deleting the mailbox "%{0}".',
+                                   $rootScope.currentFolder.name),
+                                 l(data.error));
+                  });
+              }
+            });
+      };
 
-      if (_.isEmpty($state.params) && $scope.accounts.length > 0 && $scope.accounts[0].mailboxes.length > 0) {
+      if (_.isEmpty($state.params) && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
         var account = $scope.accounts[0];
-        var mailbox = account.mailboxes[0];
+        var mailbox = account.$mailboxes[0];
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
       }
     }])

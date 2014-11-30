@@ -50,7 +50,6 @@
               angular.forEach(accounts, function(account, i) {
                 var mailboxes = account.$getMailboxes();
                 promises.push(mailboxes.then(function(objects) {
-                  accounts[i].mailboxes = objects;
                   return account;
                 }));
               });
@@ -94,7 +93,7 @@
                 }
                 return mailbox;
               };
-              return _find(stateAccount.mailboxes);
+              return _find(stateAccount.$mailboxes);
             }],
             stateMessages: ['stateMailbox', function(stateMailbox) {
               return stateMailbox.$update();
@@ -130,18 +129,40 @@
       $scope.ApplicationBaseURL = ApplicationBaseURL;
     }])
 
-    .controller('MailboxesCtrl', ['$scope', '$http', '$state', 'sgAccount', 'sgMailbox', 'encodeUriFilter', 'stateAccounts', function($scope, $http, $state, Account, Mailbox, encodeUriFilter, stateAccounts) {
+    .controller('MailboxesCtrl', ['$scope', '$http', '$state', '$ionicActionSheet', 'sgAccount', 'sgMailbox', 'encodeUriFilter', 'stateAccounts', function($scope, $http, $state, $ionicActionSheet, Account, Mailbox, encodeUriFilter, stateAccounts) {
       $scope.accounts = stateAccounts
-
-      angular.forEach($scope.accounts, function(account, i) {
-        var mailboxes = account.$getMailboxes();
-        mailboxes.then(function(objects) {
-          $scope.accounts[i].mailboxes = objects;
-        });
-      });
 
       $scope.setCurrentFolder = function(account, folder) {
         $state.go('app.mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
+      };
+      $scope.edit = function(folder) {
+        $ionicActionSheet.show({
+          buttons: [
+            { text: l('Rename') },
+            { text: l('Set Access Rights') }
+          ],
+          destructiveText: l('Delete'),
+          cancelText: l('Cancel'),
+          buttonClicked: function(index) {
+            // TODO
+            return true;
+          },
+          destructiveButtonClicked: function() {
+            // Delete mailbox 
+            folder.$delete()
+              .then(function() {
+                folder = null;
+              }, function(data) {
+                Dialog.alert(l('An error occured while deleting the mailbox "%{0}".',
+                               folder.name),
+                             l(data.error));
+              });
+            return true;
+          }
+          // cancel: function() {
+          // },
+        });
+        $ionicListDelegate.closeOptionButtons();
       };
     }])
 
