@@ -8,8 +8,8 @@
    * @constructor
    * @param {object} futureMailboxData - either an object literal or a promise
    */
-  function Mailbox(accountId, futureMailboxData) {
-    this.accountId = accountId;
+  function Mailbox(account, futureMailboxData) {
+    this.$account = account;
     // Data is immediately available
     if (typeof futureMailboxData.then !== 'function') {
       angular.extend(this, futureMailboxData);
@@ -50,33 +50,55 @@
     .factory('sgMailbox', Mailbox.$factory);
 
   /**
+   * @function $delete
+   * @memberof Mailbox.prototype
+   * @desc Delete the mailbox from the server
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$delete = function() {
+    var _this = this,
+        d = Mailbox.$q.defer(),
+        promise;
+
+    promise = Mailbox.$$resource.remove(this.id);
+
+    promise.then(function() {
+      _this.$account.$getMailboxes();
+      d.resolve(true);
+    }, function(data, status) {
+      d.reject(data);
+    });
+    return d.promise;
+  };
+    
+  /**
    * @memberof Mailbox
    * @desc Fetch list of mailboxes of a specific account
-   * @param {string} accountId - the account ID
+   * @param {string} accountId - the account
    * @see {@link Account.$getMailboxes}
    */
-  Mailbox.$find = function(accountId) {
+  Mailbox.$find = function(account) {
     var path, futureMailboxData;
 
-    path = Mailbox.$absolutePath(accountId);
+    path = Mailbox.$absolutePath(account.id);
     futureMailboxData = this.$$resource.post(path, 'view', {sortingAttributes: {sort: 'date', asc: false}});
 
-    return Mailbox.$unwrapCollection(accountId, futureMailboxData); // a collection of mailboxes
+    return Mailbox.$unwrapCollection(account, futureMailboxData); // a collection of mailboxes
   };
 
   /**
    * @memberof Mailbox
    * @desc Unwrap to a collection of Mailbox instances.
-   * @param {string} accountId - the account ID
+   * @param {string} account - the account
    * @param {promise} futureMailboxData - a promise of the mailboxes metadata
    * @returns a promise of a collection of Mailbox objects
    */
-  Mailbox.$unwrapCollection = function(accountId, futureMailboxData) {
+  Mailbox.$unwrapCollection = function(account, futureMailboxData) {
     var collection = [],
         // Local recursive function
         createMailboxes = function(mailbox) {
           for (var i = 0; i < mailbox.children.length; i++) {
-            mailbox.children[i] = new Mailbox(accountId, mailbox.children[i]);
+            mailbox.children[i] = new Mailbox(account, mailbox.children[i]);
             createMailboxes(mailbox.children[i]);
           }
         };
@@ -86,7 +108,7 @@
       return Mailbox.$timeout(function() {
         // Each entry is spun up as a Mailbox instance
         angular.forEach(data.mailboxes, function(data, index) {
-          var mailbox = new Mailbox(accountId, data);
+          var mailbox = new Mailbox(account, data);
           createMailboxes(mailbox); // recursively create all sub-mailboxes
           collection.push(mailbox);
         });
@@ -123,7 +145,7 @@
    * @returns a string representing the path relative to the mail module
    */
   Mailbox.prototype.$id = function() {
-    return Mailbox.$absolutePath(this.accountId, this.path);
+    return Mailbox.$absolutePath(this.$account.id, this.path);
   };
 
   /**
@@ -245,7 +267,7 @@
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
 
-            msgs.push(new Mailbox.$Message(_this.accountId, _this.path, data));
+            msgs.push(new Mailbox.$Message(_this.$account.id, _this.path, data));
 
             return msgs;
           }, _this.$messages);

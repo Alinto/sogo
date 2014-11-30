@@ -31,7 +31,7 @@
         <!-- sgFamilyTree -->
         <ion-list ng-repeat="account in accounts">
           <ion-item class="item-divider">{{account.name}}</ion-item>
-          <sg-folder-tree ng-repeat="folder in account.mailboxes track by folder.id"
+          <sg-folder-tree ng-repeat="folder in account.$mailboxes track by folder.id"
                           sg-root="account"
                           sg-folder="folder"
                           sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>

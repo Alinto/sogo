@@ -66,7 +66,11 @@
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function() {
-    var mailboxes = Account.$Mailbox.$find(this.id);
+    var _this = this;
+
+    var mailboxes = Account.$Mailbox.$find(this).then(function(data) {
+      _this.$mailboxes = data;
+    });
 
     return mailboxes;
   };
