@@ -6,12 +6,14 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
+SAML2_CONFIG=--enable-saml2
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
 config.make: configure
 	dh_testdir
-	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT)
+	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT) $(SAML2_CONFIG)
 
 #Architecture
 build: build-arch
