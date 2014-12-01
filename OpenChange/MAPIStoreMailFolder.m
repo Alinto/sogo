@@ -855,8 +855,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       synced = [self synchroniseCacheForUID: messageUid];
       if (synced)
         messageEntry = [[[versionsMessage properties] objectForKey: @"Messages"] objectForKey: messageUid];
-      else
-        abort ();
+      if (!messageEntry)
+        {
+          [self errorWithFormat: @"still nothing. We crash!"];
+          abort ();
+        }
     }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
   
