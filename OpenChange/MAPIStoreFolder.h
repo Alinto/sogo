@@ -150,6 +150,7 @@
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
+- (MAPIStoreFolder *) rootContainer;
 
 /* subclasses */
 - (MAPIStoreMessage *) createMessage;
