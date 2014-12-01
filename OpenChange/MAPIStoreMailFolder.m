@@ -757,7 +757,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   messageEntry = [messages objectForKey: messageUID];
   if (!messageEntry)
     {
-      [messages removeObjectForKey: messageUID];
       changeNumber = [[self context] getNewChangeNumber];
       fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
                                                        parts: [NSArray arrayWithObject: @"modseq"]]
@@ -844,12 +843,24 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   NSMutableDictionary *messages, *messageEntry;
   NSString *messageUid;
+  BOOL synced;
 
   messageUid = [self messageUIDFromMessageKey: messageKey];
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   messageEntry = [messages objectForKey: messageUid];
   if (!messageEntry)
-    abort ();
+    {
+      [self warnWithFormat: @"attempting to synchronise to set the change key for "
+                            @"this message %@", messageKey];
+      synced = [self synchroniseCacheForUID: messageUid];
+      if (synced)
+        messageEntry = [[[versionsMessage properties] objectForKey: @"Messages"] objectForKey: messageUid];
+      if (!messageEntry)
+        {
+          [self errorWithFormat: @"still nothing. We crash!"];
+          abort ();
+        }
+    }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
   
   [versionsMessage save];
