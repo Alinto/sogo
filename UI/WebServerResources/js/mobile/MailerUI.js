@@ -129,7 +129,7 @@
       $scope.ApplicationBaseURL = ApplicationBaseURL;
     }])
 
-    .controller('MailboxesCtrl', ['$scope', '$http', '$state', '$ionicActionSheet', 'sgAccount', 'sgMailbox', 'encodeUriFilter', 'stateAccounts', function($scope, $http, $state, $ionicActionSheet, Account, Mailbox, encodeUriFilter, stateAccounts) {
+    .controller('MailboxesCtrl', ['$scope', '$http', '$state', '$ionicActionSheet', '$ionicListDelegate', 'sgAccount', 'sgMailbox', 'encodeUriFilter', 'stateAccounts', function($scope, $http, $state, $ionicActionSheet, $ionicListDelegate, Account, Mailbox, encodeUriFilter, stateAccounts) {
       $scope.accounts = stateAccounts
 
       $scope.setCurrentFolder = function(account, folder) {

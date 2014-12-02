@@ -34,7 +34,8 @@
           <sg-folder-tree ng-repeat="folder in account.$mailboxes track by folder.id"
                           sg-root="account"
                           sg-folder="folder"
-                          sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+                          sg-set-folder="setCurrentFolder"
+                          sg-edit="edit"><!-- tree --></sg-folder-tree>
         </ion-list>
       </ion-content>
     </ion-view>
