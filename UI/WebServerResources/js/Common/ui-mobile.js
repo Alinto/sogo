@@ -69,7 +69,8 @@
         scope: {
           root: '=sgRoot',
           folder: '=sgFolder',
-          setFolder: '=sgSetFolder'
+          setFolder: '=sgSetFolder',
+          edit: '=sgEdit'
         },
         template:
           '<ion-item option-buttons="buttons" class="item-icon-left item-icon-right"' +
