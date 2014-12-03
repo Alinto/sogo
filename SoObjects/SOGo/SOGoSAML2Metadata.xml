@@ -6,7 +6,7 @@
    AuthnRequestsSigned="true"
    WantAssertionsSigned="true"
    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-   <KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>%{certificate}</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor><KeyDescriptor use="encryption"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data>%{certificate}<ds:X509Certificate></ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor>
+   <KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>%{certificate}</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor><KeyDescriptor use="encryption"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>%{certificate}</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor>
    <SingleLogoutService
      Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
      Location="%{base_url}/saml2-sls" />
