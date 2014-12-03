@@ -1885,6 +1885,17 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                 inFolderURL: [self url]];
 }
 
+- (MAPIStoreFolder *) rootContainer
+{
+  /* Return the oldest ancestor, which does not have
+     container. If there is not container, it returns itself.
+  */
+  if (container)
+    return [container rootContainer];
+  else
+    return self;
+}
+
 - (NSDate *) creationTime
 {
   return [dbFolder creationDate];
