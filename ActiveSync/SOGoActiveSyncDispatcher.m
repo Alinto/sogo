@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncDispatcher.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
@@ -2329,20 +2330,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                           context: (id) theContext
 {
   id <DOMElement> documentElement;
+  NSAutoreleasePool *pool;
   id builder, dom;
   SEL aSelector;
 
   NSString *cmdName, *deviceId;
   NSData *d;
 
+  pool = [[NSAutoreleasePool alloc] init];
+    
   ASSIGN(context, theContext);
- 
+  
   // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
   [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
-
 
   cmdName = [[theRequest uri] command];
 
@@ -2379,6 +2382,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       d = [[theRequest content] wbxml2xml];
     }
+  
   documentElement = nil;
 
   if (!d)
@@ -2414,8 +2418,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
-   RELEASE(context);
-
+  RELEASE(context);
+  RELEASE(pool);
+    
   return nil;
 }
 

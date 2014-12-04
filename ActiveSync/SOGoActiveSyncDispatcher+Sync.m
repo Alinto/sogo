@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "SOGoActiveSyncDispatcher+Sync.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSProcessInfo.h>
@@ -114,22 +115,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                      forKey: (NSString *) theFolderKey
 {
   SOGoCacheGCSObject *o;
+  NSDictionary *values;
   NSString *key;
 
   key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theFolderKey];
-
+  values = [theFolderMetadata copy];
+  
   o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
   [o setObjectType: ActiveSyncFolderCacheObject];
   [o setTableUrl: [self folderTableURL]];
-  [o reloadIfNeeded];
+  //[o reloadIfNeeded];
 
   [[o properties] removeObjectForKey: @"SyncKey"];
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
   [[o properties] removeObjectForKey: @"MoreAvailable"];
 
-  [[o properties] addEntriesFromDictionary: theFolderMetadata];
+  [[o properties] addEntriesFromDictionary: values];
   [o save];
+  [values release];
 }
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey
@@ -534,6 +538,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
+  NSAutoreleasePool *pool;
   NSMutableString *s;
   
   BOOL more_available;
@@ -635,6 +640,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObjects: [[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending:YES], nil]];
+
         
         // Check for the WindowSize
         max = [allComponents count];
@@ -643,14 +649,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         for (i = 0; i < max; i++)
           {
+            pool = [[NSAutoreleasePool alloc] init];
+
             // Check for the WindowSize and slice accordingly
             if (return_count >= theWindowSize)
               {
                 more_available = YES;
 
                 // -1 to make sure that we miss no event in case there are more with the same c_lastmodified
-                *theLastServerKey = [NSString stringWithFormat: @"%d", [[component objectForKey: @"c_lastmodified"] intValue] - 1];
+                *theLastServerKey = [[NSString alloc] initWithFormat: @"%d", [[component objectForKey: @"c_lastmodified"] intValue] - 1];
 
+                DESTROY(pool);
                 break;
               }
 
@@ -747,6 +756,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Add>"];
 
                 return_count++;
+
+                DESTROY(pool);
               }
           } // for ...
 
@@ -763,6 +774,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         [self _setFolderMetadata: folderMetadata
                           forKey: [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]]];
+
+        RELEASE(*theLastServerKey);
       }
       break;
     case ActiveSyncMailFolder:
@@ -830,6 +843,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         for (; k < [allCacheObjects count]; k++)
           {
+            pool = [[NSAutoreleasePool alloc] init];
+            
             // Check for the WindowSize and slice accordingly
             if (return_count >= theWindowSize)
               {
@@ -837,8 +852,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 more_available = YES;
                 
                 lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? @"1" : [aCacheObject sequence]);
-                *theLastServerKey = [NSString stringWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
+                *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
                 //NSLog(@"Reached windowSize - lastUID will be: %@", *theLastServerKey);
+                DESTROY(pool);
                 break;
               }
             
@@ -919,7 +935,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   }
               }
 
-          }
+            DESTROY(pool);
+          } // for (; k < ...)
 
         if (more_available)
           {
@@ -933,6 +950,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
         
         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+        RELEASE(*theLastServerKey);
+        
       } // default:
       break;
     } // switch (folderType) ...
@@ -1119,11 +1138,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self processSyncGetChanges: theDocumentElement
                      inCollection: collection
                    withWindowSize: windowSize
-                   //withWindowSize: 5
                       withSyncKey: syncKey
                    withFolderType: folderType
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
-                   //withFilterType: [NSCalendarDate dateFromFilterType: @"7"]
                          inBuffer: changeBuffer
                     lastServerKey: &lastServerKey];
     }
@@ -1310,7 +1327,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   BOOL changeDetected;
   
   // We initialize our output buffer
-  output = [NSMutableString string];
+  output = [[NSMutableString alloc] init];
 
   [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -1366,8 +1383,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [output appendString: s];
 
   [output appendString: @"</Collections></Sync>"];
-      
-  d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  // Avoid overloading the autorelease pool here, as Sync command can
+  // generate fairly large responses.
+  d = [output dataUsingEncoding: NSUTF8StringEncoding];
+  RELEASE(output);
+
+  d = [d xml2wbxml];
 
   [theResponse setContent: d];
 }

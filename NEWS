@@ -3,6 +3,7 @@
 
 Enhancements
  - Improved the SAML2 documentation
+ - Radically reduced AES memory usage
 
 Bug fixes
  - Now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)

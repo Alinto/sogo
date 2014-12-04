@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
@@ -511,7 +510,6 @@ struct GlobalObjectId {
 //
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
-  NSAutoreleasePool *pool;
   NSData *d, *globalObjId;
   NSArray *attachmentKeys;
   NSMutableString *s;
@@ -704,10 +702,6 @@ struct GlobalObjectId {
   // Body - namespace 17
   preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
 
-  // Make use of a local pool here as _preferredBodyDataUsingType:nativeType: will consume
-  // a significant amout of RAM and file descriptors
-  pool = [[NSAutoreleasePool alloc] init];
-
   nativeBodyType = 1;
   d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
   
@@ -747,9 +741,7 @@ struct GlobalObjectId {
         }
       [s appendString: @"</Body>"];
     }
-
-  DESTROY(pool);
-
+  
   // Attachments -namespace 16
   attachmentKeys = [self fetchFileAttachmentKeys];
   if ([attachmentKeys count])
