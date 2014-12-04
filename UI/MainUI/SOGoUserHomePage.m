@@ -229,7 +229,7 @@
   // Build a bit string representation of the freebusy data for the period
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: (freeBusyItems+4)
-                     count: intervals
+                     count: (intervals-4)
 	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
              fromStartDate: startDate
                  toEndDate: endDate];

@@ -10,7 +10,8 @@ Bug fixes
  - Added support for IdP-initiated SAML2 logout (#2377)
  - We now generate SAML2 metadata on the fly (#2378) 
  - We now handle correctly the SOGo logout when using SAML (#2376 and #2379)
-
+ - Fixed freebusy lookups going off bounds for resources (#3010)
+ 
 2.2.10 (2014-11-21)
 -------------------
 
