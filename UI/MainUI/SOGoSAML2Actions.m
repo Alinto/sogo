@@ -73,6 +73,7 @@
 {
   NSString *userName, *value, *cookieName, *domain, *username, *password;
   SOGoWebAuthenticator *auth;
+  SOGoSystemDefaults *sd;
   WOResponse *response;
   NSCalendarDate *date;
   WOCookie *cookie;
@@ -81,7 +82,15 @@
   userName = [[context activeUser] login];
   [self logWithFormat: @"SAML2 IdP-initiated SLO for user '%@'", userName];
 
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
   response = [context response];
+
+  if ([sd SAML2LogoutURL])
+    {
+      [response setStatus: 302];
+      [response setHeader: [sd SAML2LogoutURL]  forKey: @"location"];
+    }
 
   if ([userName isEqualToString: @"anonymous"])
     return response;

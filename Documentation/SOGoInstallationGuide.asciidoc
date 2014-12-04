@@ -457,6 +457,11 @@ SAML2 as authentication mechanism. When using this feature, SOGo will invoke
 the IdP to proceed with the logout procedure. When the user clicks on the logout
 button, a redirection will be made to the IdP to trigger the logout.
 
+|S |SOGoSAML2LogoutURL
+|The URL to which redirect the user after the "Logout" link is clicked.
+SOGoSAML2LogoutEnabled must be set to YES. If unset, the user will be
+redirected to a blank page.
+
 |D |SOGoTimeZone
 |Parameter used to set a default time zone for users. The default
 timezone is set to UTC. The Olson database is a standard database that
