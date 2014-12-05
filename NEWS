@@ -11,6 +11,7 @@ Bug fixes
  - We now generate SAML2 metadata on the fly (#2378) 
  - We now handle correctly the SOGo logout when using SAML (#2376 and #2379)
  - Fixed freebusy lookups going off bounds for resources (#3010)
+ - Fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
  
 2.2.10 (2014-11-21)
 -------------------

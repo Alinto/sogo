@@ -1464,8 +1464,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           
           if (!dstMessageId)
             {
-              // FIXME: should we return 1 or 2 here?
-              [s appendFormat: @"<Status>%d</Status>", 2];
+              // Our destination message ID doesn't exist OR even our source message ID doesn't.
+              // This can happen if you Move items from your EAS client and immediately closes it
+              // before the server had the time to receive or process the query. Then, if that message
+              // is moved away by an other client behing the EAS' client back, it obvisouly won't find it.
+              // The issue the "result" will still be a success, but in fact, it's a failure. Cyrus generates
+              // this kind of query/response for an 'unkknown' message UID (696969) when trying to copy it
+              // over to the folder "Trash".
+              //
+              // 3 uid copy 696969 "Trash"
+              // 3 OK Completed
+              //
+              // See http://msdn.microsoft.com/en-us/library/gg651088(v=exchg.80).aspx for Status response codes.
+              //
+              [s appendFormat: @"<Status>%d</Status>", 1];
             }
           else
             { 
