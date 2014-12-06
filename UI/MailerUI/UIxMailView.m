@@ -226,7 +226,8 @@ static NSString *mailETag = nil;
 {
   id <WOActionResults> response;
   NSString *s;
-  NSDictionary *data;
+  NSMutableDictionary *data;
+  NSArray *addresses;
   SOGoMailObject *co;
   UIxEnvelopeAddressFormatter *addressFormatter;
 
@@ -272,12 +273,7 @@ static NSString *mailETag = nil;
                             andString: [data jsonRepresentation]];
     }
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys:
-                         [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]], @"from",
-                       [addressFormatter dictionariesForArray: [co toEnvelopeAddresses]], @"to",
-                       [addressFormatter dictionariesForArray: [co ccEnvelopeAddresses]], @"cc",
-                       [addressFormatter dictionariesForArray: [co bccEnvelopeAddresses]], @"bcc",
-                       [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]], @"reply-to",
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [self formattedDate], @"date",
                        [self messageSubject], @"subject",
                        [self attachmentAttrs], @"attachmentAttrs",
@@ -285,6 +281,17 @@ static NSString *mailETag = nil;
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
                        [[self generateResponse] contentAsString], @"content",
                        nil];
+  if ((addresses = [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]]))
+    [data setObject: addresses forKey: @"from"];
+  if ((addresses = [addressFormatter dictionariesForArray: [co toEnvelopeAddresses]]))
+    [data setObject: addresses forKey: @"to"];
+  if ((addresses = [addressFormatter dictionariesForArray: [co ccEnvelopeAddresses]]))
+    [data setObject: addresses forKey: @"cc"];
+  if ((addresses = [addressFormatter dictionariesForArray: [co bccEnvelopeAddresses]]))
+    [data setObject: addresses forKey: @"bcc"];
+  if ((addresses = [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]]))
+    [data setObject: addresses forKey: @"reply-to"];
+
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
 
