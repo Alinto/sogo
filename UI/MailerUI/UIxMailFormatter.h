@@ -30,7 +30,7 @@
   Formatters which render various mail related fields.
 */
 
-@class NSData, NSString, NSCalendarDate, NSTimeZone;
+@class NSData, NSString, NSCalendarDate, NSTimeZone, NGImap4EnvelopeAddress;
 
 @interface UIxMailFormatter : NSFormatter
 {
@@ -76,6 +76,8 @@
 - (id)initWithMaxLength:(unsigned int)_max generateFullEMail:(BOOL)_genFull;
 
 - (NSString *)stringForArray:(NSArray *)_addresses;
+- (NSDictionary *)dictionaryForEnvelopeAddress: (NGImap4EnvelopeAddress *)_address;
+- (NSArray *)dictionariesForArray: (NSArray *)_addresses;
 
 @end
 

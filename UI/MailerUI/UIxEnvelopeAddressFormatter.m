@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -81,28 +82,62 @@ static Class StrClass     = Nil;
   return [_address stringValue];
 }
 
+- (NSDictionary *) dictionaryForEnvelopeAddress: (NGImap4EnvelopeAddress *)_address {
+  NSMutableDictionary *meta;
+  NSString *s;
+
+  meta = [NSMutableDictionary dictionary];
+
+  s = [_address baseEMail];
+  if (s) [meta setObject: s forKey: @"address"];
+
+  s = [_address personalName];
+  if (s) [meta setObject: s forKey: @"name"];
+
+  return meta;
+}
+
+
 - (NSString *)stringForArray:(NSArray *)_addresses {
   NSMutableString *ms;
   unsigned i, count;
-  
+
   if ((count = [_addresses count]) == 0)
     return nil;
-  
+
   if (count == 1)
     return [self stringForObjectValue:[_addresses objectAtIndex:0]];
-  
+
   ms = [NSMutableString stringWithCapacity:16 * count];
   for (i = 0; i < count && [ms length] < [self maxLength]; i++) {
     NSString *s;
-    
+
     s = [self stringForObjectValue:[_addresses objectAtIndex:i]];
     if (s == nil)
       continue;
-    
+
     if ([ms length] > 0) [ms appendString:[self separator]];
     [ms appendString:s];
   }
   return ms;
+}
+
+- (NSArray *)dictionariesForArray:(NSArray *)_addresses {
+  NSMutableArray *a;
+  id address;
+  unsigned i, count;
+
+  if ((count = [_addresses count]) == 0)
+    return nil;
+
+  a = [NSMutableArray arrayWithCapacity: count];
+  for (i = 0; i < count; i++) {
+    address = [_addresses objectAtIndex: i];
+    if ([address isKindOfClass:EnvAddrClass])
+      [a addObject: [self dictionaryForEnvelopeAddress: address]];
+  }
+
+  return a;
 }
 
 /* formatter entry function */
