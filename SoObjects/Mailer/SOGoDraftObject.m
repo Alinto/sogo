@@ -1597,17 +1597,16 @@ static NSString    *userAgent      = nil;
 {
   NSString *s, *dateString;
   NGMutableHashMap *map;
-  NSArray *emails;
-  id from, replyTo;
+  id emails, from, replyTo;
   
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
   /* add recipients */
-  if ((emails = [headers objectForKey: @"to"]) != nil)
+  if ((emails = [headers objectForKey: @"to"]) != nil && [emails isKindOfClass: [NSArray class]])
     [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"to"];
-  if ((emails = [headers objectForKey: @"cc"]) != nil)
+  if ((emails = [headers objectForKey: @"cc"]) != nil && [emails isKindOfClass: [NSArray class]])
     [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"cc"];
-  if ((emails = [headers objectForKey: @"bcc"]) != nil)
+  if ((emails = [headers objectForKey: @"bcc"]) != nil && [emails isKindOfClass: [NSArray class]])
     [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"bcc"];
 
   /* add senders */
