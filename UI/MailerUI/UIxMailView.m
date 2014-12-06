@@ -57,6 +57,7 @@
 #import <MailPartViewers/UIxMailSizeFormatter.h>
 
 #import "WOContext+UIxMailer.h"
+#import "UIxMailFormatter.h"
 
 @interface UIxMailView : UIxComponent
 {
@@ -69,7 +70,6 @@
 
 - (BOOL) mailIsDraft;
 - (NSNumber *) shouldAskReceipt;
-- (NSArray *) formattedAddresses: (NSArray *) theAddresses;
 - (NSString *) formattedDate;
 
 @end
@@ -190,31 +190,6 @@ static NSString *mailETag = nil;
   return [UIxMailSizeFormatter sharedMailSizeFormatter];
 }
 
-- (NSArray *) formattedAddresses: (NSArray *) theAddresses
-{
-  NSMutableArray *addresses;
-  NSMutableDictionary *metaAddress;
-  NSString *name, *address;
-  NGImap4EnvelopeAddress *envelopeAddress;
-  int count, i;
-
-  count = [theAddresses count];
-  addresses = [NSMutableArray arrayWithCapacity: count];
-  for (i = 0; i < count; i++)
-    {
-      envelopeAddress = [theAddresses objectAtIndex: i];
-      address = [envelopeAddress baseEMail];
-      name = [envelopeAddress personalName];
-      metaAddress = [NSMutableDictionary dictionaryWithObject: address forKey: @"address"];
-      if (name)
-        [metaAddress setObject: name forKey: @"name"];
-
-      [addresses addObject: metaAddress];
-    }
-
-  return addresses;
-}
-
 - (NSString *) formattedDate
 {
   NSFormatter *formatter;
@@ -253,8 +228,10 @@ static NSString *mailETag = nil;
   NSString *s;
   NSDictionary *data;
   SOGoMailObject *co;
+  UIxEnvelopeAddressFormatter *addressFormatter;
 
   co = [self clientObject];
+  addressFormatter = [context mailEnvelopeAddressFormatter];
 
   /* check etag to see whether we really must rerender */
   /*
@@ -296,12 +273,13 @@ static NSString *mailETag = nil;
     }
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-                         [self formattedAddresses: [co fromEnvelopeAddresses]], @"fromAddresses",
-                       [self formattedAddresses: [co toEnvelopeAddresses]], @"toAddresses",
-                       [self formattedAddresses: [co ccEnvelopeAddresses]], @"ccAddresses",
-                       [self formattedAddresses: [co bccEnvelopeAddresses]], @"bccAddresses",
-                       [self formattedAddresses: [co replyToEnvelopeAddresses]], @"replyToAddresses",
+                         [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]], @"from",
+                       [addressFormatter dictionariesForArray: [co toEnvelopeAddresses]], @"to",
+                       [addressFormatter dictionariesForArray: [co ccEnvelopeAddresses]], @"cc",
+                       [addressFormatter dictionariesForArray: [co bccEnvelopeAddresses]], @"bcc",
+                       [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]], @"reply-to",
                        [self formattedDate], @"date",
+                       [self messageSubject], @"subject",
                        [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",

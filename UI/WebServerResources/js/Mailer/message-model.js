@@ -65,6 +65,21 @@
   };
 
   /**
+   * @function $shortAddress
+   * @memberof Message.prototype
+   * @desc Format the first address of a specific type with a short description.
+   * @returns a string of the name or the email of the envelope address type
+   */
+  Message.prototype.$shortAddress = function(type) {
+    var address = '';
+    if (this[type] && this[type].length > 0) {
+      address = this[type][0].name || this[type][0].email || '';
+    }
+
+    return address;
+  };
+
+  /**
    * @function $content
    * @memberof Message.prototype
    * @desc Fetch the message body along with other metadata such as the list of attachments.
@@ -102,9 +117,9 @@
         angular.extend(_this, data);
         _this.id = _this.$absolutePath();
         // Build long representation of email addresses
-        _.each(['from', 'to', 'cc', 'bcc', 'replyTo'], function(type) {
-          _.each(_this[type + 'Addresses'], function(data, i) {
-            if (data.name != data.address)
+        _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
+          _.each(_this[type], function(data, i) {
+            if (data.name && data.name != data.address)
               data.full = data.name + ' <' + data.address + '>';
             else
               data.full = '<' + data.address + '>';
