@@ -251,9 +251,9 @@
           data-vs-scroll-parent="#messagesList">
         <li ng-repeat="currentMessage in mailbox.$messages"
             data-ng-class="{unread: !currentMessage.isread, _selected: message.id == currentMessage.id}">
-          <a name="{{}}" data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: mailbox.path, messageId: currentMessage.uid})">
+          <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
             <div class="name">
-              {{currentMessage.from}}
+              {{currentMessage.$shortAddress('from')}}
               <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
             </div>
             <div class="subject">{{currentMessage.subject}}</div>
@@ -268,23 +268,23 @@
 
   <script type="text/ng-template" id="message.html">
     <div class="header">
-      <h4 data-ng-bind="message.subject"><!-- subject --></h4>
-      <h6><var:string label:value="From"/> <a
-                data-ng-href="mailto:{{message.fromAddresses[0].address}}"
-                data-ng-bind="message.fromAddresses[0].full"><!-- from --></a></h6>
+      <h2 data-ng-bind="message.subject"><!-- subject --></h2>
       <h6>
-        <var:string label:value="To"/> <a
-                data-ng-href="mailto:{{message.toAddresses[0].address}}"
-                data-ng-bind="message.toAddresses[0].full"><!-- to --></a>
+        <a data-ng-href="mailto:{{message.from[0].address}}"
+           data-ng-bind="message.from[0].full"><!-- from --></a>
+        -
+        <a data-ng-href="mailto:{{message.to[0].address}}"
+           data-ng-bind="message.to[0].full"><!-- to --></a>
       </h6>
-      <h6>
+      <p class="flags">
         <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
-      </h6>
+      </p>
+      <h6 data-ng-bind="message.date"><!-- date --></h6>
     </div>
     <div class="buttonsToolbar">
       <span>
         <a class="button tiny radius"
-           data-ui-sref="mail.acount.mailbox.messageEditor({accountId: account.id, mailboxId: mailbox.path, messageId: message.uid})"
+           data-ui-sref="mail.account.mailbox.messageEditor({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
            data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
         <span class="button tiny radius alert"
               data-ng-click="delete(message)"><i class="icon-trash"><!-- delete --></i></span>

@@ -56,33 +56,33 @@
                    data-ng-keyup="doSearch($event)"/>
           </ion-item>
         </ion-list>
-        <div class="scroll">
         <ion-list class="small">
           <ion-item class="item-icon-right" option-buttons="buttons"
-                    collection-repeat="message in mailbox.$messages"
+                    collection-repeat="currentMessage in mailbox.$messages"
                     collection-item-height="52"
-                    ui-sref="app.mail.account.mailbox.message({accountId: account.id, mailboxId: mailbox.path, messageId: message.uid})">
-            <small class="right">{{message.relativedate}}</small>
-            <h2>{{message.from}}</h2>
-            <p>{{message.subject}}</p>
+                    ui-sref="app.mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
+            <small class="right">{{currentMessage.relativedate}}</small>
+            <h2>{{currentMessage.$shortAddress('from')}}</h2>
+            <p>{{currentMessage.subject}}</p>
+            <i class="icon ion-looping"
+               data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
             <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
           </ion-item>
         </ion-list>
-        </div>
       </ion-content>
     </ion-view>
   </script>
 
   <script type="text/ng-template" id="message.html">
-    <ion-view title="">
+    <ion-view title="{{message.from[0].name}}">
       <ion-nav-buttons side="right">
         <a class="button button-clear button-positive button-icon icon ion-ios7-plus-empty"><!-- new --></a>
       </ion-nav-buttons>
       <ion-content class="has-header" padding="10">
         <h5>{{message.subject}}</h5>
-        <small><var:string label:value="From"/> <b><a data-ng-href="mailto:{{message.fromAddresses[0].address}}">{{message.fromAddresses[0].name}}</a></b>
-        <br/>
-        <var:string label:value="To"/> <b><a data-ng-href="mailto:{{message.toAddresses[0].address}}">{{message.toAddresses[0].name}}</a></b>
+        <small><a data-ng-href="mailto:{{message.from[0].address}}">{{message.from[0].name}}</a>
+        -
+        <a data-ng-href="mailto:{{message.to[0].address}}">{{message.to[0].name}}</a>
         <br />
         {{message.date}}</small>
         <hr/>

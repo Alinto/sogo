@@ -159,13 +159,15 @@ $column-gutter: 0;
         }
     }
 
-    #messagesList {
+    #messagesList, #messageEditor {
         position: absolute;
         overflow: auto;
         overflow-x: hidden;
         top: $topbar-height;
         bottom: 0;
         left: 23.07692%;
+    }
+    #messagesList {
         background-color: $f-dropdown-list-hover-bg;
         @include grid-column($columns:13);
         @media #{$medium-up} {
@@ -260,17 +262,21 @@ $column-gutter: 0;
             @include grid-column($columns:6);
         }
         h1, h2, h3, h4, h5, h6 {
-            margin-left: rem-calc(12);
-            margin-top: 0;
+            margin: 0;
             padding-top: rem-calc(12);
         }
         h1 {
             margin-bottom: 0;
         }
+        h2 {
+            font-weight: lighter;
+        }
         .header {
             background-color: $secondary-color;
+            padding-left: rem-calc(12);
+            padding-right: rem-calc(12);
             padding-bottom: 0.2em;
-            h1, h4, h6 {
+            h1, h2, h4, h6 {
                 color: #fff;
             }
             .label {
@@ -280,8 +286,8 @@ $column-gutter: 0;
                 color: $primary-color;
                 color: scale-color($primary-color, $lightness: 52%);
             }
-            label {
-                
+            .flags {
+                float: right;
             }
         }
             /*
@@ -339,6 +345,9 @@ $column-gutter: 0;
                 }
             }
 
+    }
+    #messageEditor {
+        right: 0;
     }
 }
 
