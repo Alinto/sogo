@@ -1,6 +1,9 @@
 2.2.11 (2014-xx-xx)
 -------------------
 
+New features
+ - sogo-tool can now be used to manage EAS metadata for all devices
+
 Enhancements
  - Improved the SAML2 documentation
  - Radically reduced AES memory usage

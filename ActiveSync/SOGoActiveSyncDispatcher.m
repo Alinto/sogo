@@ -908,6 +908,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [o reloadIfNeeded];
               
          [[o properties ]  setObject: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1] forKey: @"displayName"];
+
+         // clean cache content to avoid stale data
+         [[o properties] removeObjectForKey: @"SyncKey"];
+         [[o properties] removeObjectForKey: @"SyncCache"];
+         [[o properties] removeObjectForKey: @"DateCache"];
+         [[o properties] removeObjectForKey: @"MoreAvailable"];
+         [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
          [o save];
               
          command_count++;
@@ -951,11 +958,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
        // Decide between add and change
        if (![[o properties ]  objectForKey: @"displayName"] || first_sync)
-          operation = @"Add";
+         operation = @"Add";
        else  if (![[[o properties ]  objectForKey: @"displayName"] isEqualToString:  [[folders objectAtIndex:fi] displayName]])
-               operation = @"Update";
-             else 
-               operation = nil;
+         operation = @"Update";
+       else 
+         operation = nil;
           
        if (operation)
          {
@@ -983,6 +990,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                [o setTableUrl: [self folderTableURL]];
                [o reloadIfNeeded];
                [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+
+               if ([operation isEqualToString: @"Add"])
+                 {
+                   // clean cache content to avoid stale data
+                   [[o properties] removeObjectForKey: @"SyncKey"];
+                   [[o properties] removeObjectForKey: @"SyncCache"];
+                   [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"MoreAvailable"];
+                   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                 }
+
                [o save];
              } 
            else
@@ -994,6 +1012,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                command_count++;
 
                [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+
+               if ([operation isEqualToString: @"Add"])
+                 {
+                   // clean cache content to avoid stale data
+                   [[o properties] removeObjectForKey: @"SyncKey"];
+                   [[o properties] removeObjectForKey: @"SyncCache"];
+                   [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"MoreAvailable"];
+                   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                 }
+
                [o save];
              }
          }

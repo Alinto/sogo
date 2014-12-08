@@ -1118,7 +1118,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       *changeDetected = YES;
       
       if (!([[self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]]  objectForKey: @"displayName"]))
-        status = 13;  // need folderSync
+        status = 12;  // need folderSync
       else 
         status = 3;   // do a complete resync 
     }
