@@ -130,6 +130,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
   [[o properties] removeObjectForKey: @"MoreAvailable"];
+  [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
 
   [[o properties] addEntriesFromDictionary: values];
   [o save];

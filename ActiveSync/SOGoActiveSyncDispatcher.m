@@ -130,6 +130,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface SOGoActiveSyncDispatcher (Sync)
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
+- (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata forKey: (NSString *) theFolderKey;
 
 @end
 
@@ -1398,7 +1399,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processMoveItems: (id <DOMElement>) theDocumentElement
                inResponse: (WOResponse *) theResponse
 {
-  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId;
+  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId, *nameInCache, *currentFolder;
+  NSMutableDictionary *folderMetadata, *prevSuccessfulMoveItemsOps, *newSuccessfulMoveItemsOps;
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   id <DOMElement> aMoveOperation;
   NSArray *moveOperations;
@@ -1407,6 +1409,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSData *d; 
   int i;
   
+  currentFolder = nil;
+
   moveOperations = (id)[theDocumentElement getElementsByTagName: @"Move"];
   
   s = [NSMutableString string];
@@ -1422,6 +1426,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       srcMessageId = [[(id)[aMoveOperation getElementsByTagName: @"SrcMsgId"] lastObject] textValue];
       srcFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] realCollectionIdWithFolderType: &srcFolderType];
       dstFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] realCollectionIdWithFolderType: &dstFolderType];
+
+      if (srcFolderType == ActiveSyncMailFolder)
+        nameInCache = [NSString stringWithFormat: @"folder%@", [[[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL] substringFromIndex: 5]];
+      else
+        nameInCache = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL];
+      
+      if (![nameInCache isEqualToString: currentFolder])
+        {
+          folderMetadata = [self _folderMetadataForKey: nameInCache];
+          prevSuccessfulMoveItemsOps = [folderMetadata objectForKey: @"SuccessfulMoveItemsOps"];
+          newSuccessfulMoveItemsOps = [NSMutableDictionary dictionary] ;
+          currentFolder = nameInCache;
+        }
       
       [s appendString: @"<Response>"];
 
@@ -1477,7 +1494,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               //
               // See http://msdn.microsoft.com/en-us/library/gg651088(v=exchg.80).aspx for Status response codes.
               //
-              [s appendFormat: @"<Status>%d</Status>", 1];
+              if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                {
+                  // Previous move failed operation but we can recover the dstMessageId from previous request
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                  [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]];
+                  [s appendFormat: @"<Status>%d</Status>", 3];
+                  [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+                }
+              else
+                {
+                  [s appendFormat: @"<Status>%d</Status>", 1];
+                }
             }
           else
             { 
@@ -1506,6 +1534,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
               [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
               [s appendFormat: @"<Status>%d</Status>", 3];
+
+              // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+              [newSuccessfulMoveItemsOps setObject: dstMessageId  forKey: srcMessageId];
             }
 
         }
@@ -1549,11 +1580,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
                       [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
                       [s appendFormat: @"<Status>%d</Status>", 3];
+
+                      // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+                      [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
                     } 
                   else
                     {
-                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
-                      [s appendFormat: @"<Status>%d</Status>", 1];
+                      if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                        {
+                          // Move failed but we can recover the dstMessageId from previous request
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
+                          [s appendFormat: @"<Status>%d</Status>", 3];
+                          [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+                        }
+                      else
+                        {
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<Status>%d</Status>", 1];
+                        }
                     }
                 } 
               else 
@@ -1570,6 +1615,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       
       [s appendString: @"</Response>"];
+
+      [folderMetadata removeObjectForKey: @"SuccessfulMoveItemsOps"];
+      [folderMetadata setObject: newSuccessfulMoveItemsOps forKey: @"SuccessfulMoveItemsOps"];
+      [self _setFolderMetadata: folderMetadata forKey: nameInCache];
     }
   
   [s appendString: @"</MoveItems>"];
