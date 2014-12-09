@@ -2556,7 +2556,7 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 2013 is also supported.
 
 The Microsoft ActiveSync server URL is generally something
-like: `http://localhost/Microsoft-Active-Sync`.
+like: `http://localhost/Microsoft-Server-ActiveSync`.
 
 Upgrading
 ---------
