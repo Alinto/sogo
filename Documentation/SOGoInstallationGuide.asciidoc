@@ -273,6 +273,11 @@ is not required, only recommended. Block comments are delimited by `/*`
 and `*/` and can span multiple lines while line comments must start with
 `//`.
 
+The configuration must be contained in a root dictionary, thus be completely
+wrapped within curly brackets `{ [configuration] }`. If SOGo refuses to
+start due to syntax errors in its configuration file, `plparse` is helpful
+for finding these, as it indicates the line containing the problem.
+
 Preferences Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -425,29 +430,42 @@ Defaults to `YES` when unset.
 |The location of the SSL private key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
 provider. This file must be generated for each running SOGo service
-(rather than host).
+(rather than host). Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2CertiticateLocation
 |The location of the SSL certificate file. This file must be generated
-for each running SOGo service.
+for each running SOGo service. Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpMetadataLocation
 |The location of the metadata file that describes the services available
-on the SAML2 identify provider.
+on the SAML2 identify provider. The content of this file is usually generated
+directly by your SAML 2.0 IdP solution. For example, using SimpleSAMLphp, you
+can get the metadata directly from https://MYSERVER/simplesaml/saml2/idp/metadata.php
+Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpPublicKeyLocation
 |The location of the SSL public key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
 provider. This file should be part of the setup of your identity
-provider.
+provider. Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpCertificateLocation
 |The location of the SSL certificate file. This file should be part of
-the setup of your identity provider.
+the setup of your identity provider. Make sure this file is readable by the SOGo user.
+
+|S |SOGoSAML2LoginAttribute
+|The attribute provided by the IdP to identify the user in SOGo.
 
 |S |SOGoSAML2LogoutEnabled
 |Boolean value indicated whether the "Logout" link is enabled when using
-SAML2 as authentication mechanism.
+SAML2 as authentication mechanism. When using this feature, SOGo will invoke
+the IdP to proceed with the logout procedure. When the user clicks on the logout
+button, a redirection will be made to the IdP to trigger the logout.
+
+|S |SOGoSAML2LogoutURL
+|The URL to which redirect the user after the "Logout" link is clicked.
+SOGoSAML2LogoutEnabled must be set to YES. If unset, the user will be
+redirected to a blank page.
 
 |D |SOGoTimeZone
 |Parameter used to set a default time zone for users. The default
@@ -1230,12 +1248,31 @@ documentation of your identity provider and the SAML2 configuration keys
 that are listed above for proper setup. Once a SOGo instance is
 configured properly, the metadata for that instance can be retrieved
 from `http://<hostname>/SOGo/saml2-metadata` for registration with the
-identity provider.
+identity provider. SOGo will dynamically generate the metadata based on
+the SOGoSAML2CertificateLocation's content and the SOGo server name.
+
+When using SimpleSAMLphp, make sure the convert OID to names by modifying your
+`metadata/saml20-idp-hosted.php` to contain something like this:
+
+----
+        'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+        'authproc' => array(
+                100 => array('class' => 'core:AttributeMap', 'oid2name'),
+        ),
+----
+
+If you want to test the IdP-initiated logout using SimpleSAMLphp, you can do so by opening
+the following URL:
+
+----
+https://idp.example.org/simplesaml/saml2/idp/SingleLogoutService.php?ReturnTo=www.sogo.nu
+----
 
 In order to relay authentication information to your IMAP server and if
 you make use of the CrudeSAML SASL plugin, you need to make sure that
 _NGImap4AuthMechanism_ is configured to use the `SAML` mechanism. If you
 make use of the CrudeSAML PAM plugin, this value may be left empty.
+
 
 Database Configuration
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -2524,7 +2561,7 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 2013 is also supported.
 
 The Microsoft ActiveSync server URL is generally something
-like: `http://localhost/Microsoft-Active-Sync`.
+like: `http://localhost/Microsoft-Server-ActiveSync`.
 
 Upgrading
 ---------

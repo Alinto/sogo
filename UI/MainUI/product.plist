@@ -133,6 +133,11 @@
           actionClass = "SOGoSAML2Actions"; 
           actionName = "saml2SignOnPOST";
         };
+        saml2-sls = {
+          protectedBy = "<public>";
+          actionClass = "SOGoSAML2Actions"; 
+          actionName = "saml2SingleLogoutService";
+        };
         /*  saml2-signon-redirect = {
             protectedBy = "<public>";
             actionClass = "SOGoSAML2Actions"; 

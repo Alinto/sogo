@@ -86,15 +86,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       return nil;
     }
 
-  data = [[NSData alloc] initWithBytes: xml  length: xml_len];
+  data = [NSData dataWithBytesNoCopy: xml  length: xml_len  freeWhenDone: YES];
 
 #if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.decoded"  atomically: YES];
 #endif
 
-  free(xml);
-
-  return AUTORELEASE(data);
+  return data;
 }
 
 
@@ -138,15 +136,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       return nil;
     }
 
-  data = [[NSData alloc] initWithBytes: wbxml  length: wbxml_len];
+  data = [NSData dataWithBytesNoCopy: wbxml  length: wbxml_len  freeWhenDone: YES];
 
 #if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.encoded"  atomically: YES];
 #endif
 
-  free(wbxml);
   wbxml_conv_xml2wbxml_destroy(conv);
-  
-  return AUTORELEASE(data);
+
+  return data;
 }
 @end

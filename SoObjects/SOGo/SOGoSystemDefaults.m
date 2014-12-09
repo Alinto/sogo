@@ -511,6 +511,16 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoSAML2LogoutEnabled"];
 }
 
+- (NSString *) SAML2LogoutURL
+{
+  return [self stringForKey: @"SOGoSAML2LogoutURL"];
+}
+
+- (NSString *) SAML2LoginAttribute
+{
+  return [self stringForKey: @"SOGoSAML2LoginAttribute"];
+}
+
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];

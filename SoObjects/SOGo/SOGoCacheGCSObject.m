@@ -36,6 +36,7 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -96,8 +97,27 @@ static EOAttribute *textColumn = nil;
 
 - (void) dealloc
 {
+  //NSLog(@"SOGoCacheGCSObject: -dealloc for name: %@", nameInContainer);
   [tableUrl release];
   [super dealloc];
+}
+
++ (id) objectWithName: (NSString *) key  inContainer: (id) theContainer
+{
+  SOGoCache *cache;
+  id o;
+
+  cache = [SOGoCache sharedCache];
+  o = [cache objectNamed: key  inContainer: theContainer];
+
+  if (!o)
+    {
+      o = [super objectWithName: key  inContainer: theContainer];
+      //NSLog(@"Caching object with key: %@", key);
+      [cache registerObject: o withName: key inContainer: theContainer];
+    }
+
+  return o;
 }
 
 - (void) setTableUrl: (NSURL *) newTableUrl

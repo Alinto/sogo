@@ -6,9 +6,8 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
 
-# NOTYET
 #ifeq ($(DIST_CODENAME), squeeze)
-#  SAML2_CONFIG=--enable-saml2
+SAML2_CONFIG=--enable-saml2
 #endif
 
 include /etc/GNUstep/GNUstep.conf

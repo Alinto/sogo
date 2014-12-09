@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncDispatcher.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
@@ -129,6 +130,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface SOGoActiveSyncDispatcher (Sync)
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
+- (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata forKey: (NSString *) theFolderKey;
 
 @end
 
@@ -906,6 +908,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [o reloadIfNeeded];
               
          [[o properties ]  setObject: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1] forKey: @"displayName"];
+
+         // clean cache content to avoid stale data
+         [[o properties] removeObjectForKey: @"SyncKey"];
+         [[o properties] removeObjectForKey: @"SyncCache"];
+         [[o properties] removeObjectForKey: @"DateCache"];
+         [[o properties] removeObjectForKey: @"MoreAvailable"];
+         [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
          [o save];
               
          command_count++;
@@ -949,11 +958,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
        // Decide between add and change
        if (![[o properties ]  objectForKey: @"displayName"] || first_sync)
-          operation = @"Add";
+         operation = @"Add";
        else  if (![[[o properties ]  objectForKey: @"displayName"] isEqualToString:  [[folders objectAtIndex:fi] displayName]])
-               operation = @"Update";
-             else 
-               operation = nil;
+         operation = @"Update";
+       else 
+         operation = nil;
           
        if (operation)
          {
@@ -981,6 +990,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                [o setTableUrl: [self folderTableURL]];
                [o reloadIfNeeded];
                [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+
+               if ([operation isEqualToString: @"Add"])
+                 {
+                   // clean cache content to avoid stale data
+                   [[o properties] removeObjectForKey: @"SyncKey"];
+                   [[o properties] removeObjectForKey: @"SyncCache"];
+                   [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"MoreAvailable"];
+                   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                 }
+
                [o save];
              } 
            else
@@ -992,6 +1012,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                command_count++;
 
                [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+
+               if ([operation isEqualToString: @"Add"])
+                 {
+                   // clean cache content to avoid stale data
+                   [[o properties] removeObjectForKey: @"SyncKey"];
+                   [[o properties] removeObjectForKey: @"SyncCache"];
+                   [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"MoreAvailable"];
+                   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                 }
+
                [o save];
              }
          }
@@ -1397,7 +1428,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processMoveItems: (id <DOMElement>) theDocumentElement
                inResponse: (WOResponse *) theResponse
 {
-  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId;
+  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId, *nameInCache, *currentFolder;
+  NSMutableDictionary *folderMetadata, *prevSuccessfulMoveItemsOps, *newSuccessfulMoveItemsOps;
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   id <DOMElement> aMoveOperation;
   NSArray *moveOperations;
@@ -1406,6 +1438,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSData *d; 
   int i;
   
+  currentFolder = nil;
+
   moveOperations = (id)[theDocumentElement getElementsByTagName: @"Move"];
   
   s = [NSMutableString string];
@@ -1421,6 +1455,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       srcMessageId = [[(id)[aMoveOperation getElementsByTagName: @"SrcMsgId"] lastObject] textValue];
       srcFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] realCollectionIdWithFolderType: &srcFolderType];
       dstFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] realCollectionIdWithFolderType: &dstFolderType];
+
+      if (srcFolderType == ActiveSyncMailFolder)
+        nameInCache = [NSString stringWithFormat: @"folder%@", [[[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL] substringFromIndex: 5]];
+      else
+        nameInCache = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL];
+      
+      if (![nameInCache isEqualToString: currentFolder])
+        {
+          folderMetadata = [self _folderMetadataForKey: nameInCache];
+          prevSuccessfulMoveItemsOps = [folderMetadata objectForKey: @"SuccessfulMoveItemsOps"];
+          newSuccessfulMoveItemsOps = [NSMutableDictionary dictionary] ;
+          currentFolder = nameInCache;
+        }
       
       [s appendString: @"<Response>"];
 
@@ -1463,8 +1510,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           
           if (!dstMessageId)
             {
-              // FIXME: should we return 1 or 2 here?
-              [s appendFormat: @"<Status>%d</Status>", 2];
+              // Our destination message ID doesn't exist OR even our source message ID doesn't.
+              // This can happen if you Move items from your EAS client and immediately closes it
+              // before the server had the time to receive or process the query. Then, if that message
+              // is moved away by an other client behing the EAS' client back, it obvisouly won't find it.
+              // The issue the "result" will still be a success, but in fact, it's a failure. Cyrus generates
+              // this kind of query/response for an 'unkknown' message UID (696969) when trying to copy it
+              // over to the folder "Trash".
+              //
+              // 3 uid copy 696969 "Trash"
+              // 3 OK Completed
+              //
+              // See http://msdn.microsoft.com/en-us/library/gg651088(v=exchg.80).aspx for Status response codes.
+              //
+              if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                {
+                  // Previous move failed operation but we can recover the dstMessageId from previous request
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                  [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]];
+                  [s appendFormat: @"<Status>%d</Status>", 3];
+                  [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+                }
+              else
+                {
+                  [s appendFormat: @"<Status>%d</Status>", 1];
+                }
             }
           else
             { 
@@ -1493,6 +1563,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
               [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
               [s appendFormat: @"<Status>%d</Status>", 3];
+
+              // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+              [newSuccessfulMoveItemsOps setObject: dstMessageId  forKey: srcMessageId];
             }
 
         }
@@ -1536,11 +1609,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
                       [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
                       [s appendFormat: @"<Status>%d</Status>", 3];
+
+                      // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+                      [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
                     } 
                   else
                     {
-                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
-                      [s appendFormat: @"<Status>%d</Status>", 1];
+                      if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                        {
+                          // Move failed but we can recover the dstMessageId from previous request
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
+                          [s appendFormat: @"<Status>%d</Status>", 3];
+                          [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+                        }
+                      else
+                        {
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<Status>%d</Status>", 1];
+                        }
                     }
                 } 
               else 
@@ -1557,6 +1644,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       
       [s appendString: @"</Response>"];
+
+      [folderMetadata removeObjectForKey: @"SuccessfulMoveItemsOps"];
+      [folderMetadata setObject: newSuccessfulMoveItemsOps forKey: @"SuccessfulMoveItemsOps"];
+      [self _setFolderMetadata: folderMetadata forKey: nameInCache];
     }
   
   [s appendString: @"</MoveItems>"];
@@ -2329,20 +2420,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                           context: (id) theContext
 {
   id <DOMElement> documentElement;
+  NSAutoreleasePool *pool;
   id builder, dom;
   SEL aSelector;
 
   NSString *cmdName, *deviceId;
   NSData *d;
 
+  pool = [[NSAutoreleasePool alloc] init];
+    
   ASSIGN(context, theContext);
- 
+  
   // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
   [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
-
 
   cmdName = [[theRequest uri] command];
 
@@ -2379,6 +2472,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       d = [[theRequest content] wbxml2xml];
     }
+  
   documentElement = nil;
 
   if (!d)
@@ -2414,8 +2508,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
-   RELEASE(context);
-
+  RELEASE(context);
+  RELEASE(pool);
+    
   return nil;
 }
 

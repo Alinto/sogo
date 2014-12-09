@@ -664,7 +664,7 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (NSDictionary *) imapFolderGUIDs
 {
-  NSDictionary *result, *nresult, *folderData;
+  NSDictionary *result, *nresult, *namespaceDict;
   NSMutableDictionary *folders;
   NGImap4Client *client;
   SOGoUserDefaults *ud;
@@ -684,16 +684,26 @@ static NSString *inboxFolderName = @"INBOX";
   folders = [NSMutableDictionary dictionary];
 
   client = [[self imap4Connection] client];
+  namespaceDict = [client namespace];
+
   result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
 
   e = [folderList objectEnumerator];
 
-  while (object = [e nextObject])
+  while ((object = [e nextObject]))
     {
       guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
 
       if (!guid)
         {
+          // Don't generate a GUID for "Other users" and "Shared" namespace folders - user foldername instead
+          if ([[object substringFromIndex: 1] isEqualToString: [[[[namespaceDict objectForKey: @"other users"] lastObject] objectForKey: @"prefix"] substringFromIndex: 1]] ||
+              [[object substringFromIndex: 1] isEqualToString: [[[[namespaceDict objectForKey: @"shared"] lastObject] objectForKey: @"prefix"] substringFromIndex: 1]])
+            {
+              [folders setObject: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]] forKey: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]]];
+              continue;
+            }
+
           guid = [[NSProcessInfo processInfo] globallyUniqueString];
           nresult = [client annotation: [object substringFromIndex: 1] entryName: @"/comment" attributeName: @"value.priv" attributeValue: guid];
           
