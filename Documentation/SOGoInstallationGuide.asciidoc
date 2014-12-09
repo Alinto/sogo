@@ -273,6 +273,11 @@ is not required, only recommended. Block comments are delimited by `/*`
 and `*/` and can span multiple lines while line comments must start with
 `//`.
 
+The configuration must be contained in a root dictionary, thus be completely
+wrapped within curly brackets `{ [configuration] }`. If SOGo refuses to
+start due to syntax errors in its configuration file, `plparse` is helpful
+for finding these, as it indicates the line containing the problem.
+
 Preferences Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~
 
