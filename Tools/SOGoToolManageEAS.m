@@ -110,9 +110,11 @@ typedef enum
   NSString *urlString, *ocFSTableName, *deviceId;
   NSURL *folderTableURL;
   NSMutableArray *parts;
-  
+  NSArray *entries;
+  id cacheEntry;
+ 
   BOOL rc;
-  int max;
+  int i, max;
   
   max = [sanitizedArguments count];
   rc = NO;
@@ -156,9 +158,13 @@ typedef enum
           [oc setObjectType: ActiveSyncGlobalCacheObject];
 
           [oc setTableUrl: folderTableURL];
+          entries = [oc cacheEntriesForDeviceId: nil newerThanVersion: -1];
 
-          for (id cacheEntry in [oc cacheEntriesForDeviceId: nil newerThanVersion: -1])
-            fprintf(stdout,"%s\n", [[cacheEntry substringFromIndex: 1] UTF8String]);
+          for (i = 0; i < [entries count]; i++)
+            {
+              cacheEntry = [entries objectAtIndex: i];
+              fprintf(stdout,"%s\n", [[cacheEntry substringFromIndex: 1] UTF8String]);
+            }
 
           rc = YES;
           break;
@@ -173,21 +179,23 @@ typedef enum
               [oc setObjectType: ActiveSyncFolderCacheObject];
 
               [oc setTableUrl: folderTableURL];
+              entries = [oc cacheEntriesForDeviceId: deviceId newerThanVersion: -1];
 
-              for (id cacheEntry in [oc cacheEntriesForDeviceId: deviceId newerThanVersion: -1]) {
-                fprintf(stdout,"Folder Key: %s\n", [[cacheEntry substringFromIndex: 1] UTF8String]);
+              for (i = 0; i < [entries count]; i++)
+                {
+                  cacheEntry = [entries objectAtIndex: i];
+                  fprintf(stdout,"Folder Key: %s\n", [[cacheEntry substringFromIndex: 1] UTF8String]);
 
-                foc = [SOGoCacheGCSObject objectWithName: [cacheEntry substringFromIndex: 1] inContainer: nil];
-                [foc setObjectType: ActiveSyncFolderCacheObject];
-                [foc setTableUrl: folderTableURL];
+                  foc = [SOGoCacheGCSObject objectWithName: [cacheEntry substringFromIndex: 1] inContainer: nil];
+                  [foc setObjectType: ActiveSyncFolderCacheObject];
+                  [foc setTableUrl: folderTableURL];
 
-                [foc reloadIfNeeded];
+                  [foc reloadIfNeeded];
 
-                fprintf(stdout, "   Folder Name: %s\n\n", [[[foc properties] objectForKey: @"displayName"] UTF8String]);
+                  fprintf(stdout, "   Folder Name: %s\n\n", [[[foc properties] objectForKey: @"displayName"] UTF8String]);
 
-                if (verbose)
-                  fprintf(stdout, "   metadata Name: %s\n\n", [[[foc properties] description] UTF8String]);
-
+                  if (verbose)
+                    fprintf(stdout, "   metadata Name: %s\n\n", [[[foc properties] description] UTF8String]);
               }
 
               rc = YES;
