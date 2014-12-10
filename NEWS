@@ -1,3 +1,9 @@
+2.2.11a (2014-12-10)
+--------------------
+
+Bug fixes
+ - Make sure all address books returned using EAS are GCS ones
+
 2.2.11 (2014-12-09)
 -------------------
 

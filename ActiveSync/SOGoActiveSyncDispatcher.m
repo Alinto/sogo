@@ -1003,7 +1003,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                [o save];
              } 
-           else
+           else if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoContactGCSFolder class]])
              {
                type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 9 : 14);
                [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
