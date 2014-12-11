@@ -293,10 +293,10 @@
     <div class="header">
       <h2 data-ng-bind="message.subject"><!-- subject --></h2>
       <h6>
-        <a data-ng-href="mailto:{{message.from[0].address}}"
+        <a data-ng-href="mailto:{{message.from[0].email}}"
            data-ng-bind="message.from[0].full"><!-- from --></a>
         -
-        <a data-ng-href="mailto:{{message.to[0].address}}"
+        <a data-ng-href="mailto:{{message.to[0].email}}"
            data-ng-bind="message.to[0].full"><!-- to --></a>
       </h6>
       <p class="flags">
