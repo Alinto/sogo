@@ -89,7 +89,7 @@ static Class StrClass     = Nil;
   meta = [NSMutableDictionary dictionary];
 
   s = [_address baseEMail];
-  if (s) [meta setObject: s forKey: @"address"];
+  if (s) [meta setObject: s forKey: @"email"];
 
   s = [_address personalName];
   if (s) [meta setObject: s forKey: @"name"];
