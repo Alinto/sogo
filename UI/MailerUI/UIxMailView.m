@@ -51,6 +51,8 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGoUI/UIxComponent.h>
 #import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
@@ -275,12 +277,13 @@ static NSString *mailETag = nil;
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [self formattedDate], @"date",
-                       [self messageSubject], @"subject",
                        [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
                        [[self generateResponse] contentAsString], @"content",
                        nil];
+  if ([self messageSubject])
+    [data setObject: [self messageSubject] forKey: @"subject"];
   if ((addresses = [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"from"];
   if ((addresses = [addressFormatter dictionariesForArray: [co toEnvelopeAddresses]]))
@@ -291,6 +294,20 @@ static NSString *mailETag = nil;
     [data setObject: addresses forKey: @"bcc"];
   if ((addresses = [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"reply-to"];
+
+  if ([self mailIsDraft])
+    {
+      SOGoMailAccount *account;
+      SOGoDraftsFolder *folder;
+      SOGoDraftObject *newMail;
+
+      account = [co mailAccountFolder];
+      folder = [account draftsFolderInContext: context];
+      newMail = [folder newDraft];
+      [newMail fetchMailForEditing: co];
+      [newMail storeInfo];
+      [data setObject: [newMail nameInContainer] forKey: @"draftId"];
+    }
 
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];

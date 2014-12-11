@@ -6,7 +6,7 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -34,9 +34,7 @@
               var promises = [];
               // Fetch list of mailboxes for each account
               angular.forEach(accounts, function(account, i) {
-                console.debug(i);
                 var mailboxes = account.$getMailboxes();
-                console.debug(mailboxes);
                 promises.push(mailboxes.then(function(objects) {
                   return account;
                 }));
@@ -90,10 +88,10 @@
           }
         })
         .state('mail.account.mailbox.message', {
-          url: "/:messageId",
+          url: '/:messageId',
           views: {
             message: {
-              templateUrl: "message.html",
+              templateUrl: 'message.html',
               controller: 'MessageCtrl'
             }
           },
@@ -102,24 +100,46 @@
               var message = _.find(stateMessages, function(messageObject) {
                 return messageObject.uid == $stateParams.messageId;
               });
-              return message;
+
+              return message.$update();
+            }]
+          }
+        })
+        .state('mail.account.mailbox.message.editMessage', {
+          url: '/edit',
+          views: {
+            'mailbox@mail': {
+              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              controller: 'MessageEditorCtrl'
+            }
+          }
+        })
+        .state('mail.newMessage', {
+          url: '/new',
+          views: {
+            mailbox: {
+              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              controller: 'MessageEditorCtrl'
+            }
+          },
+          resolve: {
+            stateMessage: ['stateAccounts', function(stateAccounts) {
+              if (stateAccounts.length > 0) {
+                return stateAccounts[0].$newMessage();
+              }
             }]
           }
         });
-        // .state('mailbox.newMessage', {
-        //   url: "/new",
-        //   templateUrl: "messageEditor.html",
-        //   controller: 'MessageCtrl'
-        // })
-        // .state('mailbox.editMessage', {
-        //   url: "/:messageId/edit",
-        //   templateUrl: "messageEditor.html",
-        //   controller: 'MessageCtrl'
-        // });
 
       // if none of the above states are matched, use this as the fallback
       $urlRouterProvider.otherwise('/Mail');
     }])
+
+    .run(function($rootScope) {
+      $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+        console.log(event, current, previous, rejection)
+      })
+    })
 
     .directive('sgFocusOn', function() {
       return function(scope, elem, attr) {
@@ -166,7 +186,7 @@
             });
       };
 
-      if (_.isEmpty($state.params) && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
+      if ($state.current.name == 'mail' && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
         var account = $scope.accounts[0];
         var mailbox = account.$mailboxes[0];
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
@@ -182,8 +202,38 @@
       });
     }])
 
-    .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
+    .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', '$modal', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, $modal, encodeUriFilter, focus, Dialog, Account, Mailbox) {
       $rootScope.message = stateMessage;
+      $scope.doDelete = function() {
+        stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
+          // Remove card from list of addressbook
+          stateMailbox.$messages = _.reject(stateMailbox.$messages, function(o) {
+            return o.uid == stateMessage.uid;
+          });
+          // Remove card object from scope
+          $rootScope.message = null;
+          $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) });
+        });
+      };
+    }])
+
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
+      if (angular.isDefined(stateMessage)) {
+        $scope.message = stateMessage;
+        // Flatten addresses as strings
+        _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
+          if ($scope.message[type])
+            $scope.message[type] = _.pluck($scope.message[type], 'full').join(', ');
+        });
+      }
+      $scope.identities = _.flatten(_.pluck(stateAccounts, 'identities'));
+      $scope.send = function(message) {
+        message.$send().then(function(data) {
+          console.debug('success ' + JSON.stringify(data, undefined, 2));
+        }, function(data) {
+          console.debug('failure ' + JSON.stringify(data, undefined, 2));
+        });
+      };
     }]);
 
 })();

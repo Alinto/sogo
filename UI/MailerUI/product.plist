@@ -337,6 +337,10 @@
           protectedBy = "View";
           pageName    = "UIxMailSearch";
         };
+        editorTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxMailEditor";
+        };
       };
     };
 
@@ -388,13 +392,10 @@
         };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-        };
         edit = {
           protectedBy = "View";
           pageName    = "UIxMailEditor";
+          actionName = "edit";
         };
         save = {
           protectedBy = "View";

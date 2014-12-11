@@ -107,19 +107,48 @@
   /**
    * @function $content
    * @memberof Message.prototype
-   * @desc Fetch the message body along with other metadata such as the list of attachments.
-   * @returns the HTML representation of the body or a promise of the HTTP operation
+   * @desc Get the message body as accepted by SCE (Angular Strict Contextual Escaping).
+   * @returns the HTML representation of the body
    */
   Message.prototype.$content = function() {
-    var futureMessageData;
+    return Message.$sce.trustAs('html', this.content);
+  };
 
-    if (this.$futureMessageData) {
-      return Message.$sce.trustAs('html', this.content);
-    }
+  /**
+   * @function $update
+   * @memberof Message.prototype
+   * @desc Fetch the message body along with other metadata such as the list of attachments.
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.$update = function() {
+    var futureMessageData;
 
     futureMessageData = Message.$$resource.fetch(this.id, 'view');
 
     return this.$unwrap(futureMessageData);
+  };
+
+  Message.prototype.$save = function() {
+    var data = this.$omit();
+    Message.$log.debug(JSON.stringify(data, undefined, 2));
+
+    return Message.$$resource.save(this.$absolutePath({asDraft: true}), data);
+  };
+
+  Message.prototype.$send = function() {
+    var data = this.$omit(),
+        deferred = Message.$q.defer();
+
+    Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
+      if (data.status == 'success') {
+        deferred.resolve(data);
+      }
+      else {
+        deferred.reject(data);
+      }
+    });
+
+    return deferred.promise;
   };
 
   /**
@@ -152,6 +181,30 @@
     });
 
     return deferred.promise;
+  };
+
+  /**
+   * @function $omit
+   * @memberof Message.prototype
+   * @desc Return a sanitized object used to send to the server.
+   * @return an object literal copy of the Message instance
+   */
+  Message.prototype.$omit = function() {
+    var message = {};
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key[0] != '$') {
+        message[key] = value;
+      }
+    });
+
+    // Format addresses as arrays
+    _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
+      if (message[type])
+        message[type] = _.invoke(message[type].split(','), 'trim');
+    });
+
+    //Message.$log.debug(JSON.stringify(message, undefined, 2));
+    return message;
   };
 
 })();

@@ -348,6 +348,9 @@ $column-gutter: 0;
     }
     #messageEditor {
         right: 0;
+        textarea {
+            height: 20em;
+        }
     }
 }
 

@@ -8,9 +8,9 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages"
+    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
     const:userSettingsKeys="Mail"
-    const:jsFiles="Common/resource.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js">
+    const:jsFiles="Common/resource.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
@@ -234,13 +234,36 @@
     </div>
 
     <div id="mailboxesList" class="folders-list">
-      <ul data-ng-repeat="account in accounts">
-        <li><label>{{account.name}}</label></li>
-        <sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id"
-                        data-sg-root="account"
-                        data-sg-folder="folder"
-                        data-sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
-      </ul>
+      <div class="newItemsToolbar">
+        <a class="button tiny radius split" data-ui-sref="mail.newMessage()"><var:string label:value="Compose"/><span data-dropdown-toggle="#draftsDrop"></span></a><br/>
+      </div>
+      <div class="scrollView">
+        <ul data-ng-repeat="account in accounts track by account.id">
+          <li><label>{{account.name}}</label></li>
+          <li data-ng-repeat="folder in account.$flattenMailboxes() track by folder.path"
+              data-ng-class="{_selected: folder.id == currentFolder.id}"
+              data-ng-click="setCurrentFolder(account, folder)">
+            <span class="folder-container">
+              <span class="folder-content">
+                <i class="icon icon-ion-folder"
+                   data-ng-class="'childLevel' + folder.level"><!-- folder --></i>
+                <form>
+                  <a data-ng-cloak="ng-cloak">{{folder.name}}</a>
+                </form>
+                <span class="icon ng-hide" data-ng-cloak="ng-cloak">
+                  <a class="icon" href="#"
+                     data-dropdown-toggle="#folderProperties"
+                     data-options="align:right"><i class="icon-cog"><!-- options --></i></a>
+                </span>
+              </span>
+            </span>
+          </li>
+          <!--<sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id"
+                          data-sg-root="account"
+                          data-sg-folder="folder"
+                          data-sg-set-folder="setCurrentFolder"> tree </sg-folder-tree>-->
+        </ul>
+      </div>
     </div>
     <div data-ui-view="mailbox"><!-- messages list --></div>
   </script>
@@ -249,7 +272,7 @@
     <div id="messagesList">
       <ul data-vs-repeat="56"
           data-vs-scroll-parent="#messagesList">
-        <li ng-repeat="currentMessage in mailbox.$messages"
+        <li ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
             data-ng-class="{unread: !currentMessage.isread, _selected: message.id == currentMessage.id}">
           <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
             <div class="name">
@@ -284,14 +307,15 @@
     <div class="buttonsToolbar">
       <span>
         <a class="button tiny radius"
-           data-ui-sref="mail.account.mailbox.messageEditor({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
+           data-ui-sref="mail.account.mailbox.message.editMessage({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
            data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
         <span class="button tiny radius alert"
-              data-ng-click="delete(message)"><i class="icon-trash"><!-- delete --></i></span>
+              data-ng-click="doDelete(message)"><i class="icon-trash"><!-- delete --></i></span>
       </span>
     </div>
 
     <div class="mailer_mailcontent"
          data-ng-bind-html="message.$content()"><!-- msg --></div>
   </script>
+
 </var:component>

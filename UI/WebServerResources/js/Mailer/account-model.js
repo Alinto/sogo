@@ -12,7 +12,13 @@
     // Data is immediately available
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
-      Account.$log.debug('Account:' + JSON.stringify(futureAccountData, undefined, 2));
+      _.each(this.identities, function(identity) {
+        if (identity.fullName)
+          identity.full = identity.fullName + ' <' + identity.email + '>';
+        else
+          identity.full = '<' + identity.email + '>';
+      });
+      Account.$log.debug('Account: ' + JSON.stringify(futureAccountData, undefined, 2));
     }
     else {
       // The promise will be unwrapped first
@@ -25,13 +31,14 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Account constructor
    */
-  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMailbox', function($q, $timeout, $log, Settings, Resource, Mailbox) {
+  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMailbox', 'sgMessage', function($q, $timeout, $log, Settings, Resource, Mailbox, Message) {
     angular.extend(Account, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.baseURL, Settings.activeUser),
-      $Mailbox: Mailbox
+      $Mailbox: Mailbox,
+      $Message: Message
     });
 
     return Account; // return constructor
@@ -66,13 +73,95 @@
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function() {
-    var _this = this;
+    var _this = this,
+        deferred = Account.$q.defer();
 
-    var mailboxes = Account.$Mailbox.$find(this).then(function(data) {
-      _this.$mailboxes = data;
+    if (this.$mailboxes) {
+      deferred.resolve(this.$mailboxes);
+    }
+    else {
+      Account.$Mailbox.$find(this).then(function(data) {
+        _this.$mailboxes = data;
+        deferred.resolve(_this.$mailboxes);
+      });
+    }
+
+    return deferred.promise;
+  };
+
+  Account.prototype.$flattenMailboxes = function() {
+    var _this = this,
+        allMailboxes = [],
+        _visit = function(level, mailboxes) {
+          _.each(mailboxes, function(o) {
+            allMailboxes.push({ id: o.id, path: o.path, name: o.name, level: level });
+            if (o.children && o.children.length > 0) {
+              _visit(level+1, o.children);
+            }
+          });
+        };
+
+    if (this.$$flattenMailboxes) {
+      allMailboxes = this.$$flattenMailboxes;
+    }
+    else {
+      _visit(0, this.$mailboxes);
+      _this.$$flattenMailboxes = allMailboxes;
+    }
+
+    return allMailboxes;
+  };
+
+  Account.prototype.$getMailboxByType = function(type) {
+    var mailbox,
+        // Recursive find function
+        _find = function(mailboxes) {
+          var mailbox = _.find(mailboxes, function(o) {
+            return o.type == type;
+          });
+          if (!mailbox) {
+            angular.forEach(mailboxes, function(o) {
+              if (!mailbox && o.children && o.children.length > 0) {
+                mailbox = _find(o.children);
+              }
+            });
+          }
+          return mailbox;
+        };
+    mailbox = _find(this.mailboxes);
+
+    console.debug(mailbox);
+    console.debug(this.specialMailboxes);
+  };
+
+  /**
+   * @function $newMessage
+   * @memberof Account.prototype
+   * @desc Prepare a new Message object associated to the appropriate mailbox.
+   * @returns a promise of the HTTP operations
+   */
+  Account.prototype.$newMessage = function() {
+    var _this = this,
+        deferred = Account.$q.defer(),
+        message;
+
+    // Query account for draft folder and draft UID
+    Account.$$resource.fetch(this.id, 'compose').then(function(data) {
+      message = new Account.$Message(data.accountId, data.mailboxPath, data);
+      // Fetch draft initial data
+      Account.$$resource.fetch(message.id, 'edit').then(function(data) {
+        Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
+        angular.extend(message, data);
+        message.$formatFullAddresses();
+        deferred.resolve(message);
+      }, function(data) {
+        deferred.reject(data);
+      });
+    }, function(data) {
+      deferred.reject(data);
     });
 
-    return mailboxes;
+    return deferred.promise;
   };
 
 })();
