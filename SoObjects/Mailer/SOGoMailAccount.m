@@ -402,11 +402,11 @@ static NSString *inboxFolderName = @"INBOX";
 
   if ([folderName isEqualToString: [NSString stringWithFormat: @"/%@", inboxFolderName]])
     folderType = @"inbox";
-  else if ([folderName isEqualToString: [NSString stringWithFormat: @"/%@", [self draftsFolderNameInContext: context]]])
+  else if ([folderName isEqualToString: [self draftsFolderNameInContext: context]])
     folderType = @"draft";
-  else if ([folderName isEqualToString: [NSString stringWithFormat: @"/%@", [self sentFolderNameInContext: context]]])
+  else if ([folderName isEqualToString: [self sentFolderNameInContext: context]])
     folderType = @"sent";
-  else if ([folderName isEqualToString: [NSString stringWithFormat: @"/%@", [self trashFolderNameInContext: context]]])
+  else if ([folderName isEqualToString: [self trashFolderNameInContext: context]])
     folderType = @"trash";
   else
     folderType = @"folder";
