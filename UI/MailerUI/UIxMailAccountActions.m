@@ -72,9 +72,11 @@
 
 - (WOResponse *) composeAction
 {
-  NSString *urlBase, *url, *value, *signature, *nl;
+  NSString *value, *signature, *nl;
   SOGoDraftObject *newDraftMessage;
   NSMutableDictionary *headers;
+  NSDictionary *data;
+  NSString *accountName, *mailboxName, *messageName;
   SOGoDraftsFolder *drafts;
   id mailTo;
   BOOL save;
@@ -118,12 +120,16 @@
   if (save)
     [newDraftMessage storeInfo];
 
-  urlBase = [newDraftMessage baseURLInContext: context];
-  url = [urlBase composeURLWithAction: @"edit"
-                           parameters: nil
-                              andHash: NO];
+  accountName = [[self clientObject] nameInContainer];
+  mailboxName = [drafts relativeImap4Name];
+  messageName = [newDraftMessage nameInContainer];
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         accountName, @"accountId",
+                       mailboxName, @"mailboxPath",
+                       messageName, @"uid", nil];
 
-  return [self redirectToLocation: url];  
+  return [self responseWithStatus: 201
+                        andString: [data jsonRepresentation]];
 }
 
 - (WOResponse *) _performDelegationAction: (SEL) action

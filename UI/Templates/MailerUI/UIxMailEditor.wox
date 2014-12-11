@@ -1,131 +1,30 @@
-<?xml version='1.0' standalone='yes'?>
-<!DOCTYPE var:component>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="panelTitle"
-  const:popup="YES"
-  const:userDefaultsKeys="SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailSignature"
-  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js,jquery-ui.js,jquery.fileupload.js,jquery.iframe-transport.js"
-  const:cssFiles="jquery.fileupload.css">
-  <script type="text/javascript">
-    var mailIsReply = <var:string value="isMailReply"/>;
-    var sourceUID = <var:string value="sourceUID"/>;
-    var sourceFolder = '<var:string value="sourceFolder" const:escapeHTML="NO"/>';
-    var localeCode = '<var:string value="localeCode"/>';
-  </script>
-
-  <div class="popupMenu" id="contactsMenu">
-    <ul><!-- space --></ul>
-  </div>
-
-  <div class="menu" id="optionsMenu">
-    <ul class="choiceMenu">
-      <li><var:string label:value="Return Receipt"/></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Priority"/></li>
-    </ul>
-  </div>
-
-  <div class="menu" id="priorityMenu">
-    <ul id="itemPriorityList" class="choiceMenu">
-      <var:foreach list="priorityClasses" item="item">
-	<li var:priority="item"><var:string
-	    var:value="itemPriorityText" /></li>
-      </var:foreach>
-    </ul>
-  </div>
-
-  <div id="contacts" style="display: none;">
-  <div id="leftPanel">
-    <div id="contactsSearch">
-      <label><var:string label:value="Address Book:" /></label>
-      <var:popup const:name="contactFolder" const:id="contactFolder"
-	list="contactFolders"
-	item="currentFolder"
-        string="currentContactFolderName"
-        value="currentContactFolderId"
-	/>
-      <label><var:string label:value="Search For:"/></label>
-      <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-      <div id="contactsListContent">
-      <table id="contactsList" cellspacing="0">
-	<thead>
-	  <tr class="tableview">
-	    <!-- localize -->
-	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
-		><img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"
-		/><var:string label:value="Name"
-	    /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
-	    ><var:string label:value="Email"/></td
-	    ></tr>
-	</thead>
-	<tbody id="contactsListTbody">
-
-      <var:foreach list="personalContactInfos" item="currentContact">
-        <tr var:class="currentContactClasses"
-          var:categories="currentContact.c_categories"
-          var:id="currentContact.c_name"
-          var:contactname="currentContact.c_cn">
-          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
-        </tr>
-      </var:foreach>
-
-	</tbody>
-      </table>
-    </div>
-
-    <div class="contactSelection">
-      <var:component className="UIxContactsMailerSelection" />
-    </div>
-
-    </div>
-  </div>
-    
-  <div class="dragHandle" id="hiddenDragHandle"><!-- space --></div>
-  </div>
-
-  <div id="rightPanel">
-  <form href="save" name="pageform" enctype="multipart/form-data" autocomplete="off">
-    <input type="hidden" name="priority" id="priority" var:value="priority"/>
-    <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
-    <input type="hidden" name="isHTML" id="isHTML" var:value="isHTML"/>
-
-    <div id="headerArea">
-      <span class="headerField" const:id="fromField"><var:string label:value="From" />:</span>
-      <var:popup const:name="from" const:id="fromSelect"
-	list="fromEMails"
-	item="item"
-	selection="from"
-	/><br />
-      <div>
-	<var:component className="UIxMailToSelection"
-	  to="to" cc="cc" bcc="bcc" />
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
+  <div id="messageEditor">
+    <form>
+      <label><var:string label:value="From"/>
+      <select name="from"
+              data-ng-model="message.from"
+              data-ng-options="identity.full as identity.full for identity in identities"><!-- from --></select></label>
+      <label><var:string label:value="To"/>
+      <input type="text" name="to" ng-model="message.to"/></label>
+      <label><var:string label:value="Subject"/>
+      <input type="text" name="subject" ng-model="message.subject"/></label>
+      <textarea name="content" var:class="editorClass" ng-model="message.content"/>
+      <div class="buttonsToolbar">
+        <span>
+          <a class="button tiny radius"
+             data-ng-click="message.$save()"><i class="icon-disk"><!-- send --></i> <var:string label:value="Save"/></a>
+          <a class="button tiny radius"
+             data-ng-click="send(message)"><i class="icon-mail"><!-- send --></i> <var:string label:value="Send"/></a>
+        </span>
       </div>
-      <div id="subjectRow">
-        <span class="headerField"><var:string label:value="Subject"/>:</span>
-        <input name="subject" type="text" class="textField" var:value="subject"/>
-      </div>
-      <div id="fileupload">
-        <ul id="attachments">
-          <li class="attachButton"><span class="button fileinput-button"><span><img rsrc:src="title_attachment_14x14.png" /> <var:string label:value="Attach"/></span><input id="fileUpload" type="file" name="attachments" tabindex="-1" multiple="multiple"/></span></li>
-          <var:foreach list="attachmentAttrs" item="attachment"
-          ><li class="progressDone" var:data-filename="attachment.filename">
-            <i class="icon-attachment"><!-- icon --></i><a var:href="attachment.url" target="_new"><var:string value="attachment.filename"/></a><span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter" />)</span>
-          </li></var:foreach>
-        </ul>
-      </div>
-    </div><!-- #headerArea -->
-    <textarea id="text" name="text" rows="25" style="display:none" var:value="text"/>
-  </form>
+    </form>
   </div>
-
-  <div id="dropZone" style="display: none;"><!-- dropzone --></div>
-</var:component>
+</container>

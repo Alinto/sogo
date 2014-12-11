@@ -75,13 +75,13 @@
    * @memberof Mailbox
    * @desc Fetch list of mailboxes of a specific account
    * @param {string} accountId - the account
+   * @return a promise of the HTTP operation
    * @see {@link Account.$getMailboxes}
    */
   Mailbox.$find = function(account) {
     var path, futureMailboxData;
 
-    path = Mailbox.$absolutePath(account.id);
-    futureMailboxData = this.$$resource.post(path, 'view', {sortingAttributes: {sort: 'date', asc: false}});
+    futureMailboxData = this.$$resource.post(account.id, 'view', {sortingAttributes: {sort: 'date', asc: false}});
 
     return Mailbox.$unwrapCollection(account, futureMailboxData); // a collection of mailboxes
   };
@@ -206,7 +206,17 @@
     }
     return loaded;
   };
-  
+
+  /**
+   * @function $deleteMessages
+   * @memberof Mailbox.prototype
+   * @desc Delete multiple messages from mailbox.
+   * @return a promise of the HTTP operation
+   */
+  Mailbox.prototype.$deleteMessages = function(uids) {
+    return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
+  };
+
   /**
    * @function $omit
    * @memberof Mailbox.prototype

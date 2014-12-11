@@ -234,9 +234,9 @@
   SOGoMailFolder *co;
   SOGoMailAccount *account;
   SOGoUserSettings *us;
+  WORequest *request;
   WOResponse *response;
-  NSArray *uids;
-  NSString *value;
+  id uids;
   NSDictionary *data;
   BOOL withTrash;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
@@ -244,14 +244,14 @@
   NSMutableArray *mailboxThreadsCollapsed;
   int i;
 
-  co = [self clientObject];
-  value = [[context request] formValueForKey: @"uid"];
-  withTrash = ![[[context request] formValueForKey: @"withoutTrash"] boolValue];
   response = nil;
+  request = [context request];
+  co = [self clientObject];
+  data = [[request contentAsString] objectFromJSONString];
+  withTrash = ![[data objectForKey: @"withoutTrash"] boolValue];
 
-  if ([value length] > 0)
+  if ((uids = [data objectForKey: @"uids"]) && [uids isKindOfClass: [NSArray class]] && [uids length] > 0)
     {
-      uids = [value componentsSeparatedByString: @","];
       response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: &withTrash inContext: context];
       if (!response)
         {
@@ -289,7 +289,8 @@
   else
     {
       response = [self responseWithStatus: 500];
-      [response appendContentString: @"Missing 'uid' parameter."];
+      data = [NSDictionary dictionaryWithObject: @"Missing 'uids' parameter." forKey: @"error"];
+      [response appendContentString: [data jsonRepresentation]];
     }
 
   return response;
