@@ -959,6 +959,16 @@ static NSArray *reminderValues = nil;
   [userDefaults setMailDisplayRemoteInlineImages: newType];
 }
 
+- (void) setAutoSave: (NSString *) theValue
+{
+  [userDefaults setMailAutoSave: theValue];
+}
+
+- (NSString *) autoSave
+{
+  return [userDefaults mailAutoSave];
+}
+
 /* mail autoreply (vacation) */
 
 - (BOOL) isSieveScriptsEnabled
