@@ -18,6 +18,7 @@
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
       angular.extend(this, futureMessageData);
       this.id = this.$absolutePath();
+      this.$formatFullAddresses();
     }
     else {
       // The promise will be unwrapped first
@@ -52,16 +53,40 @@
    * @desc Build the path of the message
    * @returns a string representing the path relative to the mail module
    */
-  Message.prototype.$absolutePath = function() {
+  Message.prototype.$absolutePath = function(options) {
     var path;
 
     path = _.map(this.mailboxPath.split('/'), function(component) {
       return 'folder' + component.asCSSIdentifier();
     });
     path.splice(0, 0, this.accountId); // insert account ID
-    path.push(this.uid); // add message UID
+    if (options && options.asDraft && this.draftId) {
+      path.push(this.draftId); // add draft ID
+    }
+    else {
+      path.push(this.uid); // add message UID
+    }
 
     return path.join('/');
+  };
+
+  /**
+   * @function $formatFullAddresses
+   * @memberof Message.prototype
+   * @desc Preformat all sender and recipients addresses with a complete description (name <email>).
+   */
+  Message.prototype.$formatFullAddresses = function() {
+    var _this = this;
+
+    // Build long representation of email addresses
+    _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
+      _.each(_this[type], function(data, i) {
+        if (data.name && data.name != data.email)
+          data.full = data.name + ' <' + data.email + '>';
+        else
+          data.full = '<' + data.email + '>';
+      });
+    });
   };
 
   /**
@@ -116,16 +141,8 @@
       Message.$timeout(function() {
         angular.extend(_this, data);
         _this.id = _this.$absolutePath();
-        // Build long representation of email addresses
-        _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-          _.each(_this[type], function(data, i) {
-            if (data.name && data.name != data.address)
-              data.full = data.name + ' <' + data.address + '>';
-            else
-              data.full = '<' + data.address + '>';
-          });
-        });
-        deferred.resolve(_this.content);
+        _this.$formatFullAddresses();
+        deferred.resolve(_this);
       });
     }, function(data) {
       angular.extend(_this, data);
