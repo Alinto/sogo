@@ -1,9 +1,6 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,15 +176,6 @@
   if (new != [calendar showCalendarTasks])
     reloadTasks = YES;
   [calendar setShowCalendarTasks: new];
-}
-
-- (BOOL) userIsOwner
-{
-  NSString *userLogin;
-
-  userLogin = [[context activeUser] login];
-
-  return ([userLogin isEqualToString: [calendar ownerInContext: context]]);
 }
 
 - (BOOL) isPublicAccessEnabled
