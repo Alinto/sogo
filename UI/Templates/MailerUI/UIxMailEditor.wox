@@ -15,7 +15,8 @@
       <label><var:string label:value="To"/>
       <tags-input type="text" name="to"
                   ng-model="message.editable.to"
-                  label:placeholder="Add a recipient"><!-- to --></tags-input></label>
+                  label:placeholder="Add a recipient">
+      <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
       <label><var:string label:value="Subject"/>
       <input type="text" name="subject" ng-model="message.editable.subject"/></label>
       <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>

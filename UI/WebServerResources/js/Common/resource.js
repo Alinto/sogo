@@ -19,6 +19,8 @@
       _activeUser: activeUser
     });
     angular.extend(this, options);
+    // Trim trailing slash
+    this._path = this._path.replace(/\/$/, '');
   }
 
   /**

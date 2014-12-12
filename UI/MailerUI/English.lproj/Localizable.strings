@@ -111,6 +111,7 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
+"Add a recipient" = "Add a recipient";
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 

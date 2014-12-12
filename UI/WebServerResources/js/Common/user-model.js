@@ -19,7 +19,7 @@
   User.factory = ['$q', 'sgSettings', 'sgResource', function($q, Settings, Resource) {
     angular.extend(User, {
       $q: $q,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser)
+      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser)
     });
 
     return User;
@@ -34,7 +34,7 @@
   /**
    * @memberof User
    * @desc Search for users that match a string.
-   * @param {String} search - a string used to performed the search
+   * @param {string} search - a string used to performed the search
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search) {
@@ -57,9 +57,10 @@
    */
   User.prototype.$shortFormat = function(options) {
     var fullname = this.cn || this.c_email;
+    var email = this.c_email;
     var no_email = options && options.email === false;
-    if (!no_email && this.c_email && fullname != this.c_email) {
-      fullname += ' (' + this.c_email + ')';
+    if (!no_email && email && fullname != email) {
+      fullname += ' (' + email + ')';
     }
     return fullname;
   };
@@ -68,7 +69,7 @@
    * @function $acl
    * @memberof User.prototype
    * @desc Fetch the user rights associated to a specific folder and populate the 'rights' attribute.
-   * @param {String} the folder ID
+   * @param {string} the folder ID
    * @return a promise
    */
   User.prototype.$acl = function(folderId) {
@@ -154,7 +155,7 @@
    * @function $resetRights
    * @memberof User.prototype
    * @desc Restore initial rights or disable all rights
-   * @param {Boolean} [zero] - reset all rights to zero when true
+   * @param {boolean} [zero] - reset all rights to zero when true
    */
   User.prototype.$resetRights = function(zero) {
     var _this = this;
@@ -173,8 +174,8 @@
   /**
    * @function $folders
    * @memberof User.prototype
-   * @desc Retrive the list of folders of a specific type
-   * @param {String} type - either 'contact' or 'calendar'
+   * @desc Retrieve the list of folders of a specific type
+   * @param {string} type - either 'contact' or 'calendar'
    * @return a promise of the HTTP query result or the cached result
    */
   User.prototype.$folders = function(type) {
