@@ -39,8 +39,10 @@ module.exports = function(grunt) {
         var options = {
             'src':        'bower_components',
             'js_dest':    'js/vendor/',
-            'fonts_dest': 'fonts/'
+            'fonts_dest': 'fonts/',
+            'css_dest':   'css/'
         };
+        grunt.log.subhead('Copying JavaScript files');
         var js = [
             '<%= src %>/angular/angular{,.min}.js{,.map}',
             '<%= src %>/angular-animate/angular-animate{,.min}.js{,.map}',
@@ -48,6 +50,8 @@ module.exports = function(grunt) {
             '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
             '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
             '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
+            '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
+            '<%= src %>/ng-tags-input/ng-tags-input{,.min}.js',
             '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
             '<%= src %>/foundation/js/foundation{,.min}.js',
             '<%= src %>/ionic/release/js/ionic.bundle{,.min}.js',
@@ -63,6 +67,7 @@ module.exports = function(grunt) {
                 grunt.log.ok("copy " + src + " => " + dest);
             }
         }
+        grunt.log.subhead('Copying font files');
         var fonts = grunt.file.expand(
             grunt.template.process('<%= src %>/ionic/release/fonts/ionicons.*',
                                    {data: options})
@@ -71,6 +76,18 @@ module.exports = function(grunt) {
             var src = fonts[i];
             var paths = src.split('/');
             var dest = options.fonts_dest + paths[paths.length-1];
+            grunt.file.copy(src, dest);
+            grunt.log.ok("copy " + src + " => " + dest);
+        }
+        grunt.log.subhead('Copying CSS files');
+        var css = grunt.file.expand(
+            grunt.template.process('<%= src %>/ng-tags-input/ng-tags-input*.css',
+                                   {data: options})
+        );
+        for (var i = 0; i < css.length; i++) {
+            var src = css[i];
+            var paths = src.split('/');
+            var dest = options.css_dest + paths[paths.length-1];
             grunt.file.copy(src, dest);
             grunt.log.ok("copy " + src + " => " + dest);
         }

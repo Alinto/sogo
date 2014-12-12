@@ -8,6 +8,7 @@
     "angular-foundation": "~0.3",
     "angular-recursion": "~1.0",
     "angular-vs-repeat": ">=1.0",
+    "ng-tags-input": "~2.0",
     "foundation": ">5.3",
     "ionic": "1.0.0-beta.11",
     "underscore": "~1.6"

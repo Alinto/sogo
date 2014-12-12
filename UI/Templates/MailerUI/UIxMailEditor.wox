@@ -10,13 +10,14 @@
     <form>
       <label><var:string label:value="From"/>
       <select name="from"
-              data-ng-model="message.from"
-              data-ng-options="identity.full as identity.full for identity in identities"><!-- from --></select></label>
+              data-ng-model="message.editable.from"
+              data-ng-options="identity for identity in identities"><!-- from --></select></label>
       <label><var:string label:value="To"/>
-      <input type="text" name="to" ng-model="message.to"/></label>
+      <tags-input type="text" name="to"
+                  ng-model="message.editable.to"><!-- to --></tags-input></label>
       <label><var:string label:value="Subject"/>
-      <input type="text" name="subject" ng-model="message.subject"/></label>
-      <textarea name="content" var:class="editorClass" ng-model="message.content"/>
+      <input type="text" name="subject" ng-model="message.editable.subject"/></label>
+      <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
       <div class="buttonsToolbar">
         <span>
           <a class="button tiny radius"

@@ -84,7 +84,7 @@
   NSString *sourceFolder;
   NSString *text;
   NSMutableArray *fromEMails;
-  NSDictionary *from;
+  NSString *from;
   SOGoMailFolder *sentFolder;
   BOOL isHTML;
 
@@ -114,7 +114,7 @@ static NSArray *infoKeys = nil;
                                 @"from", @"inReplyTo",
                                 @"replyTo",
                                 @"priority", @"receipt",
-                                @"content", nil];
+                                @"text", nil];
 }
 
 - (id) init
@@ -245,21 +245,20 @@ static NSArray *infoKeys = nil;
   ASSIGN (from, newFrom);
 }
 
-- (NSDictionary *) _emailFromIdentity: (NSDictionary *) identity
+- (NSString *) _emailFromIdentity: (NSDictionary *) identity
 {
-  static NSArray *keys = nil;
+  NSString *fullName, *format;
 
-  if (!keys)
-    {
-      keys = [NSArray arrayWithObjects: @"email", @"fullName", nil];
-      [keys retain];
-    }
+  fullName = [identity objectForKey: @"fullName"];
+  if ([fullName length])
+    format = @"%{fullName} <%{email}>";
+  else
+    format = @"%{email}";
 
-  return [NSDictionary dictionaryWithObjects: [identity objectsForKeys: keys notFoundMarker: [NSNull null]]
-                                     forKeys: [NSArray arrayWithObjects: @"email", @"name", nil]];
+  return [identity keysWithFormat: format];
 }
 
-- (NSDictionary *) from
+- (NSString *) from
 {
   NSDictionary *identity;
 
@@ -412,7 +411,7 @@ static NSArray *infoKeys = nil;
 {
   NSArray *identities;
   int count, max;
-  NSDictionary *email;
+  NSString *email;
   SOGoMailAccount *account;
 
   if (!fromEMails)
@@ -453,7 +452,7 @@ static NSArray *infoKeys = nil;
   [self setTo: [filteredParams objectForKey: @"to"]];
   [self setCc: [filteredParams objectForKey: @"cc"]];
   [self setBcc: [filteredParams objectForKey: @"bcc"]];
-  [self setText: [filteredParams objectForKey: @"content"]];
+  [self setText: [filteredParams objectForKey: @"text"]];
 
   return filteredParams;
 }
@@ -713,9 +712,9 @@ static NSArray *infoKeys = nil;
   [self setSourceFolder: [co sourceFolder]];
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [NSArray arrayWithObject: [self from]], @"from",
+                                 [self from], @"from",
                               [self localeCode], @"locale",
-                              text, @"content",
+                              text, @"text",
                               nil];
   if ((value = [self replyTo]))
     [data setObject: value forKey: @"replyTo"];
