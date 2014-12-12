@@ -5,8 +5,9 @@
   'use strict';
 
   angular.module('SOGo.Common', []);
+  angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -229,7 +230,7 @@
       };
     }])
 
-    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
       if (angular.isDefined(stateMessage)) {
         $scope.message = stateMessage;
       }
@@ -241,6 +242,13 @@
         }, function(data) {
           console.debug('failure ' + JSON.stringify(data, undefined, 2));
         });
+      };
+      $scope.userFilter = function($query) {
+        var deferred = $q.defer();
+        AddressBook.$filterAll($query).then(function(results) {
+          deferred.resolve(_.invoke(results, '$shortFormat'));
+        });
+        return deferred.promise;
       };
     }]);
 

@@ -18,7 +18,7 @@
         this.$unwrap(newAddressBookData);
       }
       else if (this.id) {
-        this.$acl = new AddressBook.$$Acl(this.id);
+        this.$acl = new AddressBook.$$Acl('Contacts/' + this.id);
       }
     }
     else {
@@ -36,7 +36,7 @@
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser.folderURL + '/Contacts', Settings.activeUser),
       $Card: Card,
       $$Acl: Acl,
       activeUser: Settings.activeUser
@@ -48,6 +48,27 @@
   /* Factory registration in Angular module */
   angular.module('SOGo.ContactsUI')
     .factory('sgAddressBook', AddressBook.$factory);
+
+  /**
+   * @memberof AddressBook
+   * @desc Search for cards among all addressbooks matching some criterias.
+   * @param {string} search - the search string to match
+   * @param {hash} [options] - additional options to the query (excludeGroups and excludeLists)
+   * @returns a collection of Cards instances
+   */
+  AddressBook.$filterAll = function(search, options) {
+    var params = {search: search};
+
+    angular.extend(params, options);
+    return AddressBook.$$resource.fetch(null, 'allContactSearch', params).then(function(response) {
+      var results = [];
+      angular.forEach(response.contacts, function(data) {
+        var card = new AddressBook.$Card(data);
+        results.push(card);
+      });
+      return results;
+    });
+  };
 
   /**
    * @memberof AddressBook
@@ -270,7 +291,7 @@
           _this.cards[i] = new AddressBook.$Card(o);
         });
         // Instanciate Acl object
-        _this.$acl = new AddressBook.$$Acl(_this.id);
+        _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
       });
     }, function(data) {
       AddressBook.$timeout(function() {
