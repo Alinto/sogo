@@ -73,7 +73,7 @@
   /**
    * @function $formatFullAddresses
    * @memberof Message.prototype
-   * @desc Preformat all sender and recipients addresses with a complete description (name <email>).
+   * @desc Format all sender and recipients addresses with a complete description (name <email>).
    */
   Message.prototype.$formatFullAddresses = function() {
     var _this = this;
@@ -115,9 +115,30 @@
   };
 
   /**
+   * @function $editableContent
+   * @memberof Message.prototype
+   * @desc Fetch the editable message body along with other metadat such as the recipients.
+   * @returns the HTML representation of the body
+   */
+  Message.prototype.$editableContent = function() {
+    var _this = this,
+        deferred = Message.$q.defer();
+
+    Message.$$resource.fetch(this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
+      _this.editable = data;
+      deferred.resolve(data.text);
+    }, function(data) {
+      deferred.reject();
+    });
+
+    return deferred.promise;
+  };
+
+  /**
    * @function $update
    * @memberof Message.prototype
-   * @desc Fetch the message body along with other metadata such as the list of attachments.
+   * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$update = function() {
@@ -128,16 +149,43 @@
     return this.$unwrap(futureMessageData);
   };
 
+  /**
+   * @function $save
+   * @memberof Message.prototype
+   * @desc Save the message to the server.
+   * @returns a promise of the HTTP operation
+   */
   Message.prototype.$save = function() {
-    var data = this.$omit();
-    Message.$log.debug(JSON.stringify(data, undefined, 2));
+    var data = this.editable;
+
+    // Flatten recipient addresses
+    _.each(['to', 'cc', 'bcc', 'reply-to'], function(type) {
+      if (data[type]) {
+        data[type] = _.pluck(data[type], 'text');
+      }
+    });
+    Message.$log.debug('save = ' + JSON.stringify(data, undefined, 2));
 
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data);
   };
 
+  /**
+   * @function $send
+   * @memberof Message.prototype
+   * @desc Send the message.
+   * @returns a promise of the HTTP operation
+   */
   Message.prototype.$send = function() {
-    var data = this.$omit(),
+    var data = angular.copy(this.editable),
         deferred = Message.$q.defer();
+
+    // Flatten recipient addresses
+    _.each(['to', 'cc', 'bcc', 'reply-to'], function(type) {
+      if (data[type]) {
+        data[type] = _.pluck(data[type], 'text');
+      }
+    });
+    Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
     Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
       if (data.status == 'success') {

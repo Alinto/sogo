@@ -229,7 +229,7 @@
       };
     }])
 
-    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
       if (angular.isDefined(stateMessage)) {
         $scope.message = stateMessage;
       }
@@ -237,7 +237,7 @@
       $scope.send = function(message) {
         message.$send().then(function(data) {
           $rootScope.message = null;
-          $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) });
+          $state.go('mail');
         }, function(data) {
           console.debug('failure ' + JSON.stringify(data, undefined, 2));
         });

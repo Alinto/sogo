@@ -151,8 +151,7 @@
       // Fetch draft initial data
       Account.$$resource.fetch(message.id, 'edit').then(function(data) {
         Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
-        angular.extend(message, data);
-        message.$formatFullAddresses();
+        message.editable = data;
         deferred.resolve(message);
       }, function(data) {
         deferred.reject(data);
