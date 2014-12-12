@@ -6,7 +6,7 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -18,7 +18,7 @@
       }
    })
 
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'tagsInputConfigProvider', function($stateProvider, $urlRouterProvider, tagsInputConfigProvider) {
       $stateProvider
         .state('mail', {
           url: '/Mail',
@@ -112,6 +112,11 @@
               templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
               controller: 'MessageEditorCtrl'
             }
+          },
+          resolve: {
+            stateContent: ['stateMessage', function(stateMessage) {
+              return stateMessage.$editableContent();
+            }]
           }
         })
         .state('mail.newMessage', {
@@ -133,6 +138,13 @@
 
       // if none of the above states are matched, use this as the fallback
       $urlRouterProvider.otherwise('/Mail');
+
+      // Set default configuration for tags input
+      tagsInputConfigProvider.setDefaults('tagsInput', {
+        addOnComma: false,
+        replaceSpacesWithDashes: false,
+        allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
+      });
     }])
 
     .run(function($rootScope) {
@@ -220,16 +232,12 @@
     .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox) {
       if (angular.isDefined(stateMessage)) {
         $scope.message = stateMessage;
-        // Flatten addresses as strings
-        _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-          if ($scope.message[type])
-            $scope.message[type] = _.pluck($scope.message[type], 'full').join(', ');
-        });
       }
-      $scope.identities = _.flatten(_.pluck(stateAccounts, 'identities'));
+      $scope.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
       $scope.send = function(message) {
         message.$send().then(function(data) {
-          console.debug('success ' + JSON.stringify(data, undefined, 2));
+          $rootScope.message = null;
+          $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) });
         }, function(data) {
           console.debug('failure ' + JSON.stringify(data, undefined, 2));
         });

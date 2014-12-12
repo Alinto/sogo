@@ -10,7 +10,8 @@
     title="title"
     const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
     const:userSettingsKeys="Mail"
-    const:jsFiles="Common/resource.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
+    const:jsFiles="Common/resource.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js"
+    const:cssFiles="ng-tags-input.css">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
