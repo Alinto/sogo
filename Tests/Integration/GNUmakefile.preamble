@@ -16,4 +16,4 @@ ADDITIONAL_LIB_DIRS += \
 	-L/usr/local/lib/sogo -L/usr/lib/sogo -L/usr/lib64/sogo -lEOControl -lNGStreams -lNGMime -lNGExtensions
 
 
-ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -Wl,--rpath,$(GNUSTEP_SYSTEM_LIBRARIES)/sogo
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
