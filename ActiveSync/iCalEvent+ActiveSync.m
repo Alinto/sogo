@@ -76,13 +76,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
-  NSArray *attendees;
+  NSArray *attendees, *categories;
 
   iCalPerson *organizer, *attendee;
   iCalTimeZone *tz;
   id o;
 
-  int v;
+  int v, i;
 
   NSTimeZone *userTimeZone;
   userTimeZone = [[[context activeUser] userDefaults] timeZone];
@@ -223,12 +223,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
     v = 2;
-  if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
+  else if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
     v = 3;
   else
     v = 0;
 
   [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
+
+  categories = [self categories];
+
+  if ([categories count])
+    {
+      [s appendFormat: @"<Categories xmlns=\"Calendar:\">"];
+      for (i = 0; i < [categories count]; i++)
+        {
+          [s appendFormat: @"<Category xmlns=\"Calendar:\">%@</Category>", [[categories objectAtIndex: i] activeSyncRepresentationInContext: context]];
+        }
+      [s appendFormat: @"</Categories>"];
+    }
+
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO: improve this to handle more alarm types
@@ -337,7 +350,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   // 0- normal, 1- personal, 2- private and 3-confidential
   //
-  if ((o = [theValues objectForKey: @"Sensitivy"]))
+  if ((o = [theValues objectForKey: @"Sensitivity"]))
     {
       switch ([o intValue])
         {
@@ -353,7 +366,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self setAccessClass: @"PUBLIC"];
         }
     }
-  
+
+  // Categories
+  if ((o = [theValues objectForKey: @"Categories"]) && [o length])
+    [self setCategories: o];
+
   // We ignore TimeZone sent by mobile devices for now.
   // Some Windows devices don't send during event updates.
   //if ((o = [theValues objectForKey: @"TimeZone"]))
