@@ -7,6 +7,7 @@ New features
 
 Enhancements
  - updated CKEditor to version 4.4.6 and added the 'Source Area' plugin
+ - avoid testing for IMAP ANNOTATION when X-GUID is available
 
 Bug fixes
  - Fix for privacy and categories for EAS (#3022)
