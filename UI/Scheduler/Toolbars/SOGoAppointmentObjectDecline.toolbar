@@ -1,7 +1,0 @@
-( /* the toolbar groups -*-cperl-*- */
-  ( { link = "#";
-      isSafe = NO;
-      label = "decline";
-      onclick = "return modifyEvent(this, 'decline');";
-      image = "tb-mail-stop-flat-24x24.png"; } )
-)

@@ -1391,7 +1391,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         participationStatus = @"DECLINED";
       
       [appointmentObject changeParticipationStatus: participationStatus
-                                      withDelegate: nil];
+                                      withDelegate: nil
+                                             alarm: nil];
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
