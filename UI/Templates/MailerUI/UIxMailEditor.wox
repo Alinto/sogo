@@ -19,6 +19,18 @@
       <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
       <label><var:string label:value="Subject"/>
       <input type="text" name="subject" ng-model="message.editable.subject"/></label>
+      <label><var:string label:value="Attachments"/>
+      <input type="file"
+             data-nv-file-select="nv-file-select"
+             data-uploader="uploader"/></label>
+      <ul>
+        <li ng-repeat="item in message.editable.attachmentAttrs">
+          <span ng-bind="item.filename"><!-- filename --></span>
+        </li>
+        <li ng-repeat="item in uploader.queue">
+          <span ng-bind="item.file.name"><!-- filename --></span> (<span ng-bind="item.file.progress"><!-- progress --></span>)
+        </li>
+      </ul>
       <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
       <div class="buttonsToolbar">
         <span>

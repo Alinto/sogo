@@ -10,9 +10,9 @@
    * @param {string} mailboxPath - an array of the mailbox path components
    * @param {object} futureAddressBookData - either an object literal or a promise
    */
-  function Message(accountId, mailboxPath, futureMessageData) {
+  function Message(accountId, mailbox, futureMessageData) {
     this.accountId = accountId;
-    this.mailboxPath = mailboxPath;
+    this.$mailbox = mailbox;
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
@@ -56,7 +56,7 @@
   Message.prototype.$absolutePath = function(options) {
     var path;
 
-    path = _.map(this.mailboxPath.split('/'), function(component) {
+    path = _.map(this.$mailbox.path.split('/'), function(component) {
       return 'folder' + component.asCSSIdentifier();
     });
     path.splice(0, 0, this.accountId); // insert account ID
@@ -68,6 +68,25 @@
     }
 
     return path.join('/');
+  };
+
+  /**
+   * @function $setUID
+   * @memberof Message.prototype
+   * @desc Change the UID of the message. This happens when saving a draft.
+   * @param {number} uid - the new message UID
+   */
+  Message.prototype.$setUID = function(uid) {
+    var oldUID = this.uid || -1;
+
+    if (oldUID != uid) {
+      this.uid = uid;
+      this.id = this.$absolutePath();
+      if (oldUID > -1) {
+        this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
+        this.$mailbox.uidsMap[oldUID] = null;
+      }
+    }
   };
 
   /**
@@ -117,20 +136,22 @@
   /**
    * @function $editableContent
    * @memberof Message.prototype
-   * @desc Fetch the editable message body along with other metadat such as the recipients.
+   * @desc First, fetch the draft ID that corresponds to the temporary draft object on the SOGo server.
+   * Secondly, fetch the editable message body along with other metadata such as the recipients.
    * @returns the HTML representation of the body
    */
   Message.prototype.$editableContent = function() {
     var _this = this,
         deferred = Message.$q.defer();
 
-    Message.$$resource.fetch(this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
-      Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
-      _this.editable = data;
-      deferred.resolve(data.text);
-    }, function(data) {
-      deferred.reject();
-    });
+    Message.$$resource.fetch(this.id, 'edit').then(function(data) {
+      angular.extend(_this, data);
+      Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+        Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
+        _this.editable = data;
+        deferred.resolve(data.text);
+      }, deferred.reject);
+    }, deferred.reject);
 
     return deferred.promise;
   };
@@ -156,7 +177,8 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$save = function() {
-    var data = this.editable;
+    var _this = this,
+        data = this.editable;
 
     // Flatten recipient addresses
     _.each(['to', 'cc', 'bcc', 'reply-to'], function(type) {
@@ -166,7 +188,11 @@
     });
     Message.$log.debug('save = ' + JSON.stringify(data, undefined, 2));
 
-    return Message.$$resource.save(this.$absolutePath({asDraft: true}), data);
+    return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
+      Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
+      _this.$setUID(response.uid);
+      _this.$update(); // fetch a new viewable version of the message
+    });
   };
 
   /**

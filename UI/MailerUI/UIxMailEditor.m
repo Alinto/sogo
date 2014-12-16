@@ -113,7 +113,7 @@ static NSArray *infoKeys = nil;
                                   @"subject", @"to", @"cc", @"bcc", 
                                 @"from", @"inReplyTo",
                                 @"replyTo",
-                                @"priority", @"receipt",
+                                @"priority", @"receipt", @"isHTML",
                                 @"text", nil];
 }
 
@@ -439,7 +439,7 @@ static NSArray *infoKeys = nil;
   [self setValuesForKeysWithDictionary:_info];
 }
 
-- (NSDictionary *) storeInfo
+- (NSDictionary *) infoFromRequest
 {
   WORequest *request;
   NSDictionary *params, *filteredParams;
@@ -452,6 +452,7 @@ static NSArray *infoKeys = nil;
   [self setTo: [filteredParams objectForKey: @"to"]];
   [self setCc: [filteredParams objectForKey: @"cc"]];
   [self setBcc: [filteredParams objectForKey: @"bcc"]];
+  [self setIsHTML: [[filteredParams objectForKey: @"isHTML"] boolValue]];
   [self setText: [filteredParams objectForKey: @"text"]];
 
   return filteredParams;
@@ -592,46 +593,53 @@ static NSArray *infoKeys = nil;
   WORequest *request;
   NSEnumerator *allAttachments;
   NSDictionary *attrs, *filenames;
-  NGMimeType *mimeType;
   id httpBody;
   SOGoDraftObject *co;
 
   error = nil;
   request = [context request];
 
-  mimeType = [[request httpRequest] contentType];
-  if ([[mimeType type] isEqualToString: @"multipart"])
-    {
-      httpBody = [[request httpRequest] body];
-      filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
+  httpBody = [[request httpRequest] body];
+  filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
 
-      co = [self clientObject];
-      allAttachments = [filenames objectEnumerator];
-      while ((attrs = [allAttachments nextObject]) && !error)
-        {
-          error = [co saveAttachment: (NSData *) [attrs objectForKey: @"body"]
-                        withMetadata: attrs];
-          // Keep the name of the last attachment saved
-          ASSIGN(currentAttachment, [attrs objectForKey: @"filename"]);
-        }
+  co = [self clientObject];
+  allAttachments = [filenames objectEnumerator];
+  while ((attrs = [allAttachments nextObject]) && !error)
+    {
+      error = [co saveAttachment: (NSData *) [attrs objectForKey: @"body"]
+                    withMetadata: attrs];
+      // Keep the name of the last attachment saved
+      ASSIGN(currentAttachment, [attrs objectForKey: @"filename"]);
     }
 
   return error;
 }
 
-- (NSException *) _saveFormInfo
+/**
+ * Save received data to the filesystem, either the attached files or the message itself.
+ */
+- (NSException *) _saveRequestInfo
 {
   NSDictionary *info;
   NSException *error;
+  NGMimeType *mimeType;
+  WORequest *request;
   SOGoDraftObject *co;
+
+  error = nil;
+  request = [context request];
+  mimeType = [[request httpRequest] contentType];
 
   co = [self clientObject];
   [co fetchInfo];
 
-  error = [self _saveAttachments];
-  if (!error)
+  if ([[mimeType type] isEqualToString: @"multipart"])
     {
-      info = [self storeInfo];
+      error = [self _saveAttachments];
+    }
+  else if ([[mimeType subType] isEqualToString: @"json"])
+    {
+      info = [self infoFromRequest];
       [co setHeaders: info];
       [co setIsHTML: isHTML];
       [co setText: (isHTML ? [NSString stringWithFormat: @"<html>%@</html>", text] : text)];;
@@ -712,8 +720,9 @@ static NSArray *infoKeys = nil;
   [self setSourceFolder: [co sourceFolder]];
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [self from], @"from",
+                              [self from], @"from",
                               [self localeCode], @"locale",
+                              [NSNumber numberWithBool: [self isHTML]], @"isHTML",
                               text, @"text",
                               nil];
   if ((value = [self replyTo]))
@@ -740,19 +749,33 @@ static NSArray *infoKeys = nil;
 {
   id result;
   NSArray *attrs;
+  NSDictionary *data;
+  SOGoDraftObject *co;
 
+  co = [self clientObject];
   [self setIsHTML: [self isHTML]];
-  result = [self _saveFormInfo];
+
+  result = [self _saveRequestInfo];
   if (!result)
     {
-      result = [[self clientObject] save];
+      // Save message to IMAP server
+      result = [co save];
     }
   if (!result)
     {
+      // Save new UID to plist
+      [self setSourceUID: [co IMAP4ID]];
+      [co storeInfo];
+
+      // Prepare response
       attachmentAttrs = nil;
       attrs = [self attachmentAttrs];
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [self sourceUID], @"uid",
+                           attrs, @"lastAttachmentAttrs",
+                           nil];
       result = [self responseWithStatus: 200
-                              andString: [attrs jsonRepresentation]];
+                              andString: [data jsonRepresentation]];
     }
   else
     result = [self failedToSaveFormResponse: [result reason]];
@@ -826,8 +849,8 @@ static NSArray *infoKeys = nil;
 
   co = [self clientObject];
 
-  /* first, save form data */
-  error = [self _saveFormInfo];
+  // First, save form data to filesystem
+  error = [self _saveRequestInfo];
   if (!error)
     {
       error = [self validateForSend];

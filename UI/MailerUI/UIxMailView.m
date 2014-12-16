@@ -295,20 +295,6 @@ static NSString *mailETag = nil;
   if ((addresses = [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"reply-to"];
 
-  if ([self mailIsDraft])
-    {
-      SOGoMailAccount *account;
-      SOGoDraftsFolder *folder;
-      SOGoDraftObject *newMail;
-
-      account = [co mailAccountFolder];
-      folder = [account draftsFolderInContext: context];
-      newMail = [folder newDraft];
-      [newMail fetchMailForEditing: co];
-      [newMail storeInfo];
-      [data setObject: [newMail nameInContainer] forKey: @"draftId"];
-    }
-
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
 
