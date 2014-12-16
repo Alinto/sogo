@@ -104,17 +104,17 @@ typedef enum
 
 - (BOOL) run
 {
-  NSString *userId;
-  SOGoManageEASCommand cmd;
+  NSString *urlString, *deviceId, *userId;
+  NSMutableString *ocFSTableName;
   SOGoCacheGCSObject *oc, *foc;
-  NSString *urlString, *ocFSTableName, *deviceId;
   NSURL *folderTableURL;
   NSMutableArray *parts;
   NSArray *entries;
   id cacheEntry;
- 
-  BOOL rc;
+
+  SOGoManageEASCommand cmd;
   int i, max;
+  BOOL rc;
   
   max = [sanitizedArguments count];
   rc = NO;
@@ -141,10 +141,12 @@ typedef enum
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. We strip the '-' character in case we have
              this in the domain part - like foo@bar-zot.com */
-          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [[[user loginInDomain] asCSSIdentifier]
-                                      stringByReplacingOccurrencesOfString: @"-"
-                                                                withString: @"_"]];
+          ocFSTableName = [NSMutableString stringWithFormat: @"sogo_cache_folder_%@",
+                                           [[user loginInDomain] asCSSIdentifier]];
+          [ocFSTableName replaceOccurrencesOfString: @"-"
+                                         withString: @"_"
+                                            options: 0
+                                              range: NSMakeRange(0, [ocFSTableName length])];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];

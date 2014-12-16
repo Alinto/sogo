@@ -2,17 +2,18 @@
 -------------------
 
 New features
- - Allow including or not freebusy info from subscribed calendars
- - Now possible to set an autosave timer for draft messages
- - Now possible to set alarms on event invitations (#76)
+ - allow including or not freebusy info from subscribed calendars
+ - now possible to set an autosave timer for draft messages
+ - now possible to set alarms on event invitations (#76)
 
 Enhancements
  - updated CKEditor to version 4.4.6 and added the 'Source Area' plugin
  - avoid testing for IMAP ANNOTATION when X-GUID is available (#3018)
 
 Bug fixes
- - Fix for privacy and categories for EAS (#3022)
- - Correctly set MeetingStatus for EAS on iOS devices
+ - fix for privacy and categories for EAS (#3022)
+ - correctly set MeetingStatus for EAS on iOS devices
+ - Ubuntu Lucid fixes for EAS
  
 2.2.11a (2014-12-10)
 --------------------
