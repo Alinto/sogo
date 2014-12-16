@@ -145,10 +145,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
         }
     }
-   else
-    {
-      meetingStatus = 0;  // appointment
-    }
   
   // Attendees
   attendees = [self attendees];
@@ -181,6 +177,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [s appendString: @"</Attendee>"];
         }
       [s appendString: @"</Attendees>"];
+    }
+   else
+    {
+      meetingStatus = 0;  // appointment
     }
   
   // This depends on the 'NEEDS-ACTION' parameter.
