@@ -1,6 +1,6 @@
 /* UIxMailActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserSettings.h>
@@ -223,13 +224,14 @@
 }
 
 /* SOGoDraftObject */
-- (WOResponse *) editAction
+- (id <WOActionResults>) editAction
 {
+  id <WOActionResults> response;
   SOGoMailAccount *account;
   SOGoMailObject *co;
   SOGoDraftsFolder *folder;
   SOGoDraftObject *newMail;
-  NSString *newLocation;
+  NSDictionary *data;
 
   co = [self clientObject];
   account = [co mailAccountFolder];
@@ -238,10 +240,13 @@
   [newMail fetchMailForEditing: co];
   [newMail storeInfo];
 
-  newLocation = [NSString stringWithFormat: @"%@/edit",
-			  [newMail baseURLInContext: context]];
+  data = [NSDictionary dictionaryWithObject: [newMail nameInContainer]
+                                     forKey: @"draftId"];
 
-  return [self redirectToLocation: newLocation];
+  response = [self responseWithStatus: 200
+                            andString: [data jsonRepresentation]];
+
+  return response;
 }
 
 - (id) deleteAction
