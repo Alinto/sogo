@@ -128,10 +128,37 @@
           }
           return mailbox;
         };
-    mailbox = _find(this.mailboxes);
+    mailbox = _find(this.$mailboxes);
 
     console.debug(mailbox);
     console.debug(this.specialMailboxes);
+  };
+
+  /**
+   * @function $getMailboxByPath
+   * @memberof Account.prototype
+   * @desc Recursively find a mailbox using its path
+   * @returns a promise of the HTTP operation
+   */
+  Account.prototype.$getMailboxByPath = function(path) {
+    var mailbox = null,
+        // Recursive find function
+        _find = function(mailboxes) {
+          var mailbox = _.find(mailboxes, function(o) {
+            return o.path == path;
+          });
+          if (!mailbox) {
+            angular.forEach(mailboxes, function(o) {
+              if (!mailbox && o.children && o.children.length > 0) {
+                mailbox = _find(o.children);
+              }
+            });
+          }
+          return mailbox;
+        };
+    mailbox = _find(this.$mailboxes);
+
+    return mailbox;
   };
 
   /**
@@ -146,10 +173,11 @@
         message;
 
     // Query account for draft folder and draft UID
-    Account.$$resource.fetch(this.id, 'compose').then(function(data) {
-      message = new Account.$Message(data.accountId, data.mailboxPath, data);
+    Account.$$resource.fetch(this.id.toString(), 'compose').then(function(data) {
+      Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
+      message = new Account.$Message(data.accountId, _this.$getMailboxByPath(data.mailboxPath), data);
       // Fetch draft initial data
-      Account.$$resource.fetch(message.id, 'edit').then(function(data) {
+      Account.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
         message.editable = data;
         deferred.resolve(message);
