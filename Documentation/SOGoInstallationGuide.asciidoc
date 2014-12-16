@@ -80,6 +80,12 @@ and others) 
 * SMTP server (Postfix, Sendmail and others)
 * IMAP server (Courier, Cyrus IMAP Server, Dovecot and others)
 
+If you plan to use ActiveSync, an IMAP server supporting the ACL,
+UIDPLUS, QRESYNC, ANNOTATE (or X-GUID) IMAP extensions is required,
+such as Cyrus IMAP version 2.4 or later, or Dovecot version
+2.1 or later. If your current IMAP server does not support these
+extensions, you can use Dovecot's proxying capabilities.
+
 In this guide, we assume that all those components are running on the
 same server (i.e., `localhost` or `127.0.0.1`) that SOGo will be
 installed on.
