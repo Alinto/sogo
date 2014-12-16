@@ -10,7 +10,8 @@ Enhancements
 
 Bug fixes
  - Fix for privacy and categories for EAS (#3022)
-
+ - Correctly set MeetingStatus for EAS on iOS devices
+ 
 2.2.11a (2014-12-10)
 --------------------
 

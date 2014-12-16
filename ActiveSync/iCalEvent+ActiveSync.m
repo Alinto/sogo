@@ -82,7 +82,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   iCalTimeZone *tz;
   id o;
 
-  int v, i;
+  int v, i, meetingStatus;
 
   NSTimeZone *userTimeZone;
   userTimeZone = [[[context activeUser] userDefaults] timeZone];
@@ -134,6 +134,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
     {
+      meetingStatus = 1;  // meeting and the user is the meeting organizer.
       o = [organizer rfc822Email];
       if ([o length])
         {
@@ -143,6 +144,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           if ([o length])
             [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
         }
+    }
+   else
+    {
+      meetingStatus = 0;  // appointment
     }
   
   // Attendees
@@ -186,17 +191,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       int attendee_status;
 
+      meetingStatus = 3; // event is a meeting, and the user is not the meeting organizer
+
       attendee = [self userAsAttendee: [context activeUser]];
       attendee_status = [self _attendeeStatus: attendee];
   
       [s appendFormat: @"<ResponseRequested xmlns=\"Calendar:\">%d</ResponseRequested>", 1];
       [s appendFormat: @"<ResponseType xmlns=\"Calendar:\">%d</ResponseType>", attendee_status];
-      [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", 3];
       [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Calendar:\">%d</DisallowNewTimeProposal>", 1];
       
       // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
       [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
     }
+
+  [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", meetingStatus];
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
