@@ -5,6 +5,9 @@ form[name="editform"]
   right: 0;
   bottom: 0; }
 
+form[name="editform"] #eventView
+{ padding: 1em; }
+
 SELECT#calendarList,
 SELECT#categoryList,
 SELECT#priorityList,

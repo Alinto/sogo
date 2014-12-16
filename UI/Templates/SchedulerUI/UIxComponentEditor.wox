@@ -290,7 +290,7 @@
     </div>
     <var:if condition="hasAttendees">
     <div id="attendeesDiv">
-      <label id="attendeesLabel" class="title"><var:string label:value="Attendees:" />
+      <label class="title"><var:string label:value="Attendees:" />
         <span class="content headerContent"><!-- line --></span>
       </label>
       <label id="attendeesLabel">
