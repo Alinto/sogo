@@ -249,7 +249,7 @@
     var fullname = this.$fullname(),
         email = this.$preferredEmail(partial);
     if (email && email != fullname)
-      fullname += ' (' + email + ')';
+      fullname += ' <' + email + '>';
     return fullname;
   };
 
