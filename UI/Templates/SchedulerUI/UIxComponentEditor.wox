@@ -187,10 +187,9 @@
   <div class="popupMenu" id="contactsMenu">
     <ul></ul>
   </div>
-        <label class="calendarName"><var:string var:value="componentCalendarName" />
-        </label>
-    <div id="eventView">
-      <div id="generalDiv">
+  <div id="eventView">
+    <label class="calendarName"><var:string var:value="componentCalendarName" /></label>
+    <div id="generalDiv">
     <label class="title titleNoSpace"><var:string label:value="General:" />
       <span class="content headerContent"><!-- line --></span>
     </label>
@@ -291,7 +290,7 @@
     </div>
     <var:if condition="hasAttendees">
     <div id="attendeesDiv">
-      <label class="title"><var:string label:value="Attendees:" />
+      <label id="attendeesLabel" class="title"><var:string label:value="Attendees:" />
         <span class="content headerContent"><!-- line --></span>
       </label>
       <label id="attendeesLabel">
