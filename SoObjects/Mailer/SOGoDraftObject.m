@@ -641,7 +641,6 @@ static NSString    *userAgent      = nil;
           [imap4URL release];
           imap4URL = nil;
         }
-      [self storeInfo];
     }
   else
     error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
@@ -927,8 +926,6 @@ static NSString    *userAgent      = nil;
 
   [self setText: [sourceMail contentForEditing]];
   [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
-
-  [self storeInfo];
 }
 
 //
