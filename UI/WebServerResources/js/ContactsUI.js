@@ -41,7 +41,7 @@
           url: '/:contactType/new',
           views: {
             card: {
-              templateUrl: 'cardEditor.html',
+              templateUrl: 'contactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
               controller: 'CardCtrl'
             }
           },
