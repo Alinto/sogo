@@ -426,3 +426,15 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
 }
 
 @end
+
+@interface UIxContactViewTemplate : UIxComponent
+@end
+
+@implementation UIxContactViewTemplate
+@end
+
+@interface UIxContactEditorTemplate : UIxComponent
+@end
+
+@implementation UIxContactEditorTemplate
+@end

@@ -47,6 +47,10 @@
           pageName    = "UIxContactFoldersView"; 
           actionName  = "checkRights";
         };
+        contactEditorTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxContactEditorTemplate";
+        };
         userFoldersTemplate = {
           protectedBy = "View";
           pageName    = "UIxContactsUserFolders"; 

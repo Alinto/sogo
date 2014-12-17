@@ -337,6 +337,10 @@
           protectedBy = "View";
           pageName    = "UIxMailSearch";
         };
+        viewerTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxMailViewTemplate";
+        };
         editorTemplate = {
           protectedBy = "View";
           pageName    = "UIxMailEditor";
