@@ -282,7 +282,7 @@ struct GlobalObjectId {
                          performed: b];
         }
     }
-  else if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+  else if ([thePart isKindOfClass: [NGMimeBodyPart class]] || [thePart isKindOfClass: [NGMimeMessage class]])
     {
       NGMimeFileData *fdata;
       id body;
@@ -366,8 +366,7 @@ struct GlobalObjectId {
 
   if (message)
     {
-      [self _sanitizedMIMEPart: [message body]
-                     performed: &b];
+      [self _sanitizedMIMEPart: message  performed: &b];
 
       if (b)
         {

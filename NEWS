@@ -15,6 +15,7 @@ Bug fixes
  - correctly set MeetingStatus for EAS on iOS devices
  - Ubuntu Lucid fixes for EAS
  - fix calendar reminders for future events (#3008)
+ - make sure all text parts are UTF-8 re-encoded for Outlook 2013 over EAS (#3003)
  
 2.2.11a (2014-12-10)
 --------------------
