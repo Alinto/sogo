@@ -74,7 +74,7 @@
         })
         .state('addressbook.card.editor', {
           url: '/edit',
-          templateUrl: 'cardEditor.html',
+          templateUrl: 'contactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
           controller: 'CardCtrl'
         });
 

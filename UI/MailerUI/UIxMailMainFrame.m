@@ -174,28 +174,6 @@
   return [u hasSuffix:@"/"] ? @"view" : @"#";
 }
 
-- (NSString *) inboxData
-{
-  SOGoMailAccounts *accounts;
-  SOGoMailAccount *account;
-  SOGoMailFolder *inbox;
-  NSDictionary *data;
-  UIxMailListActions *actions;
-
-  [self _setupContext];
-  
-#warning this code is dirty: we should not invoke UIxMailListActions from here!
-  actions = [[[UIxMailListActions new] initWithRequest: [context request]] autorelease];
-  accounts = [self clientObject];
-  
-  account = [accounts lookupName: @"0" inContext: context acquire: NO];
-  inbox = [account inboxFolderInContext: context];
-
-  data = [actions getUIDsInFolder: inbox withHeaders: YES];
-
-  return [data jsonRepresentation];
-}
-
 - (id <WOActionResults>) composeAction
 {
   id contact;
@@ -731,3 +709,15 @@
 }
 
 @end /* UIxMailMainFrame */
+
+@interface UIxMailFolderTemplate : UIxComponent
+@end
+
+@implementation UIxMailFolderTemplate
+@end
+
+@interface UIxMailViewTemplate : UIxComponent
+@end
+
+@implementation UIxMailViewTemplate
+@end

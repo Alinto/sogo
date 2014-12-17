@@ -1,0 +1,34 @@
+<?xml version='1.0' standalone='yes'?>
+<container
+   xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:var="http://www.skyrix.com/od/binding"
+   xmlns:const="http://www.skyrix.com/od/constant"
+   xmlns:rsrc="OGo:url"
+   xmlns:label="OGo:label"
+   xmlns:uix="OGo:uix">
+  <div class="header">
+    <h2 data-ng-bind="message.subject"><!-- subject --></h2>
+    <h6>
+      <a data-ng-href="mailto:{{message.from[0].email}}"
+         data-ng-bind="message.from[0].full"><!-- from --></a>
+      -
+      <a data-ng-href="mailto:{{message.to[0].email}}"
+         data-ng-bind="message.to[0].full"><!-- to --></a>
+    </h6>
+    <p class="flags">
+      <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
+    </p>
+    <h6 data-ng-bind="message.date"><!-- date --></h6>
+  </div>
+  <div class="buttonsToolbar">
+    <span>
+      <a class="button tiny radius"
+         data-ui-sref="mail.account.mailbox.message.editMessage({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
+         data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
+      <span class="button tiny radius alert"
+            data-ng-click="doDelete(message)"><i class="icon-trash"><!-- delete --></i></span>
+    </span>
+  </div>
+  <div class="mailer_mailcontent"
+       data-ng-bind-html="message.$content()"><!-- msg --></div>
+</container>

@@ -1,0 +1,28 @@
+<?xml version='1.0' standalone='yes'?>
+<container
+   xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:var="http://www.skyrix.com/od/binding"
+   xmlns:const="http://www.skyrix.com/od/constant"
+   xmlns:rsrc="OGo:url"
+   xmlns:label="OGo:label"
+   xmlns:uix="OGo:uix">
+  <div id="messagesList">
+    <ul data-vs-repeat="56"
+        data-vs-scroll-parent="#messagesList">
+      <li ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
+          data-ng-class="{unread: !currentMessage.isread}">
+        <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
+           data-ui-sref-active="_selected">
+          <div class="name">
+            {{currentMessage.$shortAddress('from')}}
+            <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
+          </div>
+          <div class="subject">{{currentMessage.subject}}</div>
+          <i class="icon-ion-refresh"
+             data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div id="messageView" data-ui-view="message"><!-- message view --></div>
+</container>
