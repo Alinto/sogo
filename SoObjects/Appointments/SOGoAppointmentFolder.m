@@ -2831,8 +2831,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       return nil;
     }
 
-  sql =  [NSString stringWithFormat: @"((c_nextalarm <= %u) AND (c_nextalarm >= %u)) OR ((c_nextalarm > 0) AND (c_enddate > %u))",
-		   [_endUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue]];
+  sql = [NSString stringWithFormat: @"((c_nextalarm <= %u) AND (c_nextalarm >= %u)) OR ((c_nextalarm > 0) AND (c_nextalarm <= %u) AND (c_enddate > %u))",
+                  [_endUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
   records = [folder fetchFields: nameFields matchingQualifier: qualifier];
   
