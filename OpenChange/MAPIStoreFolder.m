@@ -29,6 +29,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoFolder.h>
@@ -235,6 +236,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if ([[self folderKeys] containsObject: folderKey])
     {
       woContext = [[self userContext] woContext];
+      /* We activate the user for the context using the root folder
+         context as there are times where the active user is not
+         matching with the one stored in the application context
+         and SOGo object is storing cached data with the wrong user */
+      [[self userContext] activateWithUser: [woContext activeUser]];
       sogoFolder = [sogoObject lookupName: folderKey inContext: woContext
                                   acquire: NO];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
