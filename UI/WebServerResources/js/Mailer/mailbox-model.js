@@ -149,12 +149,12 @@
   };
 
   /**
-   * @function $update
+   * @function $reload
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox.
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$update = function() {
+  Mailbox.prototype.$reload = function() {
     var futureMailboxData;
 
     futureMailboxData = Mailbox.$$resource.post(this.id, 'view', {sortingAttributes: {sort: 'date', asc: false}});
