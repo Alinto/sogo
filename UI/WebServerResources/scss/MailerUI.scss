@@ -215,6 +215,9 @@ $column-gutter: 0;
                         font-weight: normal;
                         font-size: smaller;
                     }
+                    &._selected {
+                        background-color: #fff;
+                    }
                 }
                 &.unread {
                     a {
@@ -227,22 +230,7 @@ $column-gutter: 0;
                 }
                 &:hover,
                 &:active {
-                    background-color: $f-dropdown-list-hover-bg;
-                    //background-color: scale-color($f-dropdown-list-hover-bg, $lightness: 28%);
                     background-color: #fff;
-                }
-                &._selected,
-                &._selected span {
-                    //background-color: $module-light-color;
-                    //background-color: $sub-nav-active-bg-hover;
-                    //background-color: $f-dropdown-list-hover-bg;
-                    background-color: $module-color;
-                    background-color: #fff;
-                    //color: $module-color;
-                    //color: $module-secondary-color;
-                    .name {
-                        //color: #fff;
-                    }
                 }
             }
         }

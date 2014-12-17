@@ -157,12 +157,12 @@
   };
 
   /**
-   * @function $update
+   * @function $reload
    * @memberof Message.prototype
    * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$update = function() {
+  Message.prototype.$reload = function() {
     var futureMessageData;
 
     futureMessageData = Message.$$resource.fetch(this.id, 'view');
@@ -191,7 +191,7 @@
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
-      _this.$update(); // fetch a new viewable version of the message
+      _this.$reload(); // fetch a new viewable version of the message
     });
   };
 
@@ -247,6 +247,13 @@
         _this.$formatFullAddresses();
         deferred.resolve(_this);
       });
+      if (!_this.isread) {
+        Message.$$resource.fetch(_this.id, 'markMessageRead').then(function() {
+          Message.$timeout(function() {
+            _this.isread = true;
+          });
+        });
+      }
     }, function(data) {
       angular.extend(_this, data);
       _this.isError = true;

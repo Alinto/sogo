@@ -96,7 +96,7 @@
               return _find(stateAccount.$mailboxes);
             }],
             stateMessages: ['stateMailbox', function(stateMailbox) {
-              return stateMailbox.$update();
+              return stateMailbox.$reload();
             }]
           }
         })

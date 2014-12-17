@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -84,7 +84,7 @@
               return _find(stateAccount.$mailboxes);
             }],
             stateMessages: ['stateMailbox', function(stateMailbox) {
-              return stateMailbox.$update();
+              return stateMailbox.$reload();
             }]
           }
         })
@@ -97,12 +97,15 @@
             }
           },
           resolve: {
-            stateMessage: ['$stateParams', 'stateMailbox', 'stateMessages', function($stateParams, stateMailbox, stateMessages) {
+            stateMessage: ['$stateParams', '$state', 'stateMailbox', 'stateMessages', function($stateParams, $state, stateMailbox, stateMessages) {
               var message = _.find(stateMessages, function(messageObject) {
                 return messageObject.uid == $stateParams.messageId;
               });
 
-              return message.$update();
+              if (message)
+                return message.$reload();
+              else
+                $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
             }]
           }
         })
@@ -230,7 +233,7 @@
       };
     }])
 
-    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
       if (angular.isDefined(stateMessage)) {
         $scope.message = stateMessage;
       }
@@ -250,6 +253,22 @@
         });
         return deferred.promise;
       };
+      $scope.uploader = new FileUploader({
+        url: stateMessage.$absolutePath({asDraft: true}) + '/save',
+        autoUpload: true,
+        alias: 'attachments',
+        onProgressItem: function(item, progress) {
+          console.debug(item); console.debug(progress);
+        },
+        onSuccessItem: function(item, response, status, headers) {
+          stateMessage.$setUID(response.uid);
+          stateMessage.$reload();
+          console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+        },
+        onErrorItem: function(item, response, status, headers) {
+          console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
+        }
+      });
     }]);
 
 })();
