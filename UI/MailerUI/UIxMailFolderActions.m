@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,34 +53,44 @@
 
 @implementation UIxMailFolderActions
 
-- (WOResponse *) createFolderAction
+- (id <WOActionResults>) createFolderAction
 {
   SOGoMailFolder *co, *newFolder;
+  WORequest *request;
   WOResponse *response;
-  NSString *folderName;
+  NSDictionary *params, *jsonResponse;
+  NSString *folderName, *encodedFolderName, *errorFormat;
 
   co = [self clientObject];
 
-  folderName = [[context request] formValueForKey: @"name"];
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  folderName = [params objectForKey: @"name"];
   if ([folderName length] > 0)
     {
-      folderName = [folderName stringByEncodingImap4FolderName];
-      newFolder
-        = [co lookupName: [NSString stringWithFormat: @"folder%@", folderName]
-               inContext: context
-                 acquire: NO];
+      encodedFolderName = [folderName stringByEncodingImap4FolderName];
+      newFolder = [co lookupName: [NSString stringWithFormat: @"folder%@", encodedFolderName]
+                       inContext: context
+                         acquire: NO];
       if ([newFolder create])
-        response = [self responseWith204];
+        {
+          response = [self responseWith204];
+        }
       else
         {
-          response = [self responseWithStatus: 500];
-          [response appendContentString: @"Unable to create folder."];
+          errorFormat = [self labelForKey: @"The folder with name \"%@\" could not be created."];
+          jsonResponse = [NSDictionary dictionaryWithObject: [NSString stringWithFormat: errorFormat, folderName]
+                                                     forKey: @"error"];
+          response = [self responseWithStatus: 500
+                                    andString: [jsonResponse jsonRepresentation]];
         }
     }
   else
     {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Missing 'name' parameter."];
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."]
+                                                 forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [jsonResponse jsonRepresentation]];
     }
 
   return response;  
@@ -712,7 +722,6 @@
   WOResponse *response;
   WORequest *request;
   SOGoMailFolder *co;
-  NSException *error;
   NSArray *msgUIDs;
   NSMutableArray *flags;
   NSString *operation;
