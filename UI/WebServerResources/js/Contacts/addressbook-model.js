@@ -53,7 +53,7 @@
    * @memberof AddressBook
    * @desc Search for cards among all addressbooks matching some criterias.
    * @param {string} search - the search string to match
-   * @param {hash} [options] - additional options to the query (excludeGroups and excludeLists)
+   * @param {object} [options] - additional options to the query (excludeGroups and excludeLists)
    * @returns a collection of Cards instances
    */
   AddressBook.$filterAll = function(search, options) {
@@ -82,9 +82,11 @@
     addressbook.isOwned = this.activeUser.isSuperUser || addressbook.owner == this.activeUser.login;
     addressbook.isSubscription = addressbook.owner != this.activeUser.login;
     sibling = _.find(this.$addressbooks, function(o) {
-      return (o.isRemote || (o.id != 'personal'
-                             && o.isSubscription === addressbook.isSubscription
-                             && o.name.localeCompare(addressbook.name) === 1));
+      return (o.isRemote
+              || (!addressbook.isSubscription && o.isSubscription)
+              || (o.id != 'personal'
+                  && o.isSubscription === addressbook.isSubscription
+                  && o.name.localeCompare(addressbook.name) === 1));
     });
     i = sibling ? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
     this.$addressbooks.splice(i, 0, addressbook);
@@ -161,7 +163,7 @@
    * @memberof AddressBook.prototype
    * @desc Search for cards matching some criterias
    * @param {string} search - the search string to match
-   * @param {hash} [options] - additional options to the query
+   * @param {object} [options] - additional options to the query
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options) {
