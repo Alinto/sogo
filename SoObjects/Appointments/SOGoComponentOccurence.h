@@ -25,6 +25,7 @@
 
 @class NSException;
 
+@class iCalAlarm;
 @class iCalCalendar;
 @class iCalPerson;
 @class iCalRepeatableEntityObject;
@@ -37,7 +38,8 @@
 - (BOOL) isNew;
 
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
-                               withDelegate: (iCalPerson *) delegate;
+                               withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm;
 
 @end
 

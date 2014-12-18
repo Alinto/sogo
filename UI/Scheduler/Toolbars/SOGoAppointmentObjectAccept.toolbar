@@ -1,7 +1,0 @@
-( /* the toolbar groups -*-cperl-*- */
-  ( { link = "#";
-      isSafe = NO;
-      label = "accept";
-      onclick = "return modifyEvent(this, 'accept');";
-      image = "tb-ab-properties-flat-24x24.png"; } )
-)

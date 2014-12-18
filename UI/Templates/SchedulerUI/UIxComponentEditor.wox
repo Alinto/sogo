@@ -182,14 +182,14 @@
     </div>
   </form>
   </var:if>
+
   <var:if condition="eventIsReadOnly">
   <div class="popupMenu" id="contactsMenu">
     <ul></ul>
   </div>
-        <label class="calendarName"><var:string var:value="componentCalendarName" />
-        </label>
-    <div id="eventView">
-      <div id="generalDiv">
+  <div id="eventView">
+    <label class="calendarName"><var:string var:value="componentCalendarName" /></label>
+    <div id="generalDiv">
     <label class="title titleNoSpace"><var:string label:value="General:" />
       <span class="content headerContent"><!-- line --></span>
     </label>
@@ -234,7 +234,10 @@
     ></span>
     </label>
   </var:if>
+   
   <var:if condition="userHasRSVP">
+    <form var:href="rsvpURL" name="rsvpform">
+
     <label><var:string label:value="Reply:" />
       <span class="content"><var:popup list="replyList" item="item"
           const:name="replyList"
@@ -250,7 +253,40 @@
                 <input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" /> -->
       </span>
     </label>
-  </var:if>
+
+     <input type="hidden" name="reminderQuantity"
+	    id="reminderQuantity"
+	    var:value="reminderQuantity"/>
+     <input type="hidden" name="reminderUnit"
+	    id="reminderUnit"
+	    var:value="reminderUnit"/>
+     <input type="hidden" name="reminderRelation"
+	    id="reminderRelation"
+	    var:value="reminderRelation"/>
+     <input type="hidden" name="reminderReference"
+	    id="reminderReference"
+	    var:value="reminderReference"/>
+     <input type="hidden" name="reminderAction"
+	    id="reminderAction"
+	    var:value="reminderAction"/>
+     <input type="hidden" name="reminderEmailOrganizer"
+	    id="reminderEmailOrganizer"
+	    var:value="reminderEmailOrganizer"/>
+     <input type="hidden" name="reminderEmailAttendees"
+	    id="reminderEmailAttendees"
+	    var:value="reminderEmailAttendees"/>
+    
+    <label><var:string label:value="Reminder:" />
+    <span class="content"><var:popup list="reminderList" item="item"
+         const:disabledValue="-"
+         label:noSelectionString="reminder_NONE"
+          const:name="reminderList"
+	 const:id="reminderList"
+         string="itemReminderText" var:selection="reminder"
+         /> <a href="#" id="reminderHref" style="display: none;"
+             ><var:string label:value="Edit"/></a></span></label>
+    </form>
+    </var:if>
     </div>
     <var:if condition="hasAttendees">
     <div id="attendeesDiv">

@@ -51,6 +51,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <Appointments/iCalAlarm+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -225,7 +226,7 @@ iRANGE(2);
   [attendee release];
   [jsonAttendees release];
   [calendarList release];
-
+  
   [reminder release];
   [reminderQuantity release];
   [reminderUnit release];
@@ -683,12 +684,16 @@ iRANGE(2);
 	  ASSIGN (ownerAsAttendee, [component findAttendeeWithEmail: (id)ownerEmail]);
 	}
     }
-//   /* cycles */
-//   if ([component isRecurrent])
-//     {
-//       rrule = [[component recurrenceRules] objectAtIndex: 0];
-//       [self adjustCycleControlsForRRule: rrule];
-//     }
+}
+
+- (void) setRSVPURL: (NSString *) theURL
+{
+  rsvpURL = theURL;
+}
+
+- (NSString *) rsvpURL
+{
+  return rsvpURL;
 }
 
 - (void) setSaveURL: (NSString *) newSaveURL
@@ -2168,40 +2173,7 @@ RANGE(2);
     }
 }
 
-- (void) _appendAttendees: (NSArray *) attendees
-             toEmailAlarm: (iCalAlarm *) alarm
-{
-  NSMutableArray *aAttendees;
-  int count, max;
-  iCalPerson *currentAttendee, *aAttendee;
 
-  max = [attendees count];
-  aAttendees = [NSMutableArray arrayWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      currentAttendee = [attendees objectAtIndex: count];
-      aAttendee = [iCalPerson elementWithTag: @"attendee"];
-      [aAttendee setCn: [currentAttendee cn]];
-      [aAttendee setEmail: [currentAttendee rfc822Email]];
-      [aAttendees addObject: aAttendee];
-    }
-  [alarm setAttendees: aAttendees];
-}
-
-- (void) _appendOrganizerToEmailAlarm: (iCalAlarm *) alarm
-{
-  NSString *uid;
-  NSDictionary *ownerIdentity;
-  iCalPerson *aAttendee;
-
-  uid = [[self clientObject] ownerInContext: context];
-  ownerIdentity = [[SOGoUser userWithLogin: uid roles: nil]
-                    defaultIdentity];
-  aAttendee = [iCalPerson elementWithTag: @"attendee"];
-  [aAttendee setCn: [ownerIdentity objectForKey: @"fullName"]];
-  [aAttendee setEmail: [ownerIdentity objectForKey: @"email"]];
-  [alarm addChild: aAttendee];
-}
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
@@ -2236,68 +2208,43 @@ RANGE(2);
     [component removeAllAlarms];
   else
     {
-      iCalTrigger *aTrigger;
       iCalAlarm *anAlarm;
       NSString *aValue;
       NSUInteger index;
 
-      anAlarm = [iCalAlarm new];
-
       index = [reminderItems indexOfObject: reminder];
-
-      aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
-      [aTrigger setValueType: @"DURATION"];
-      [anAlarm setTrigger: aTrigger];
-      
       aValue = [reminderValues objectAtIndex: index];
-      if ([aValue length]) {
-	// Predefined alarm
-        [anAlarm setAction: @"DISPLAY"];
-	[aTrigger setSingleValue: aValue forKey: @""];
-      }
-      else {
-	// Custom alarm
-        if ([reminderAction length] > 0 && [reminderUnit length] > 0)
-          {
-            [anAlarm setAction: [reminderAction uppercaseString]];
-            if ([reminderAction isEqualToString: @"email"])
-              {
-                [anAlarm removeAllAttendees];
-                if (reminderEmailAttendees)
-                  [self _appendAttendees: [component attendees]
-                        toEmailAlarm: anAlarm];
-                if (reminderEmailOrganizer)
-                  [self _appendOrganizerToEmailAlarm: anAlarm];
-                [anAlarm setSummary: [component summary]];
-                [anAlarm setComment: [component comment]];
-              }
-            
-            if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
-              aValue = [NSString stringWithString: @"-P"];
-            else
-              aValue = [NSString stringWithString: @"P"];
-            
-            if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
-                [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
-              aValue = [aValue stringByAppendingString: @"T"];
-            
-            aValue = [aValue stringByAppendingFormat: @"%i%@",			 
-                             [reminderQuantity intValue],
-                             [reminderUnit substringToIndex: 1]];
-            [aTrigger setSingleValue: aValue forKey: @""];
-            [aTrigger setRelationType: reminderRelation];
-          }
-        else
-          {
-            [anAlarm release];
-            anAlarm = nil;
-          }
-      }
+
+      // Predefined alarm
+      if ([aValue length])
+        {
+          iCalTrigger *aTrigger;
+
+          anAlarm = [[[iCalAlarm alloc] init] autorelease];
+          aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+          [aTrigger setValueType: @"DURATION"];
+          [anAlarm setTrigger: aTrigger];
+          [anAlarm setAction: @"DISPLAY"];
+          [aTrigger setSingleValue: aValue forKey: @""];
+        }
+      else
+        {
+          // Custom alarm
+          anAlarm = [iCalAlarm alarmForEvent: component
+                                       owner: [[self clientObject] ownerInContext: context]
+                                      action: reminderAction
+                                        unit: reminderUnit
+                                    quantity: reminderQuantity
+                                   reference: reminderReference
+                            reminderRelation: reminderRelation
+                              emailAttendees: reminderEmailAttendees
+                              emailOrganizer: reminderEmailOrganizer];
+        }
+      
       if (anAlarm)
         {
           [component removeAllAlarms];
           [component addToAlarms: anAlarm];
-          [anAlarm release];
         }
     }
   
@@ -2595,6 +2542,11 @@ RANGE(2);
   [response appendContentString: content];
 
   return response;
+}
+
++ (NSArray *) reminderValues
+{
+  return reminderValues;
 }
 
 @end

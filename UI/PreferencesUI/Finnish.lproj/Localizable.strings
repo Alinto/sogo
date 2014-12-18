@@ -153,6 +153,9 @@
 "displayremoteinlineimages_never" = "Ei koskaan";
 "displayremoteinlineimages_always" = "Aina";
 
+"Auto save every" = "Tallenna automaattisesti";
+"minutes" = "minuutin välein";
+
 /* Contact */
 "Personal Address Book" = "Henkilökohtainen osoitekirja";
 "Collected Address Book" = "Keratty osoitekirja";

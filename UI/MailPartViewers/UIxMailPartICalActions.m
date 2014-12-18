@@ -248,6 +248,7 @@
     {
       response = (WOResponse*)[eventObject changeParticipationStatus: newStatus
 							withDelegate: delegate
+                                                               alarm: nil
 						     forRecurrenceId: [chosenEvent recurrenceId]];
 //      if (ex)
 //	response = ex; //[self responseWithStatus: 500];

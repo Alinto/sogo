@@ -11,6 +11,7 @@
   componentCalendar="componentCalendar"
   eventIsReadOnly="eventIsReadOnly"
   var:component="event"
+  var:rsvpURL="rsvpURL"
   var:saveURL="saveURL">
 
   <var:if condition="eventIsReadOnly" const:negate="YES">

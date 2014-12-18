@@ -215,6 +215,7 @@
   they should be siblings or SOGoComponentOccurence the parent class of SOGoCalendarComponent...
 - (NSException *) changeParticipationStatus: (NSString *) newStatus
                                withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
 {
   NSCalendarDate *date;
 
@@ -222,6 +223,7 @@
 
   return [container changeParticipationStatus: newStatus
                                  withDelegate: delegate
+                                        alarm: alarm
                               forRecurrenceId: date];
 }
 

@@ -1391,7 +1391,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         participationStatus = @"DECLINED";
       
       [appointmentObject changeParticipationStatus: participationStatus
-                                      withDelegate: nil];
+                                      withDelegate: nil
+                                             alarm: nil];
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -2516,8 +2517,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSURL *) folderTableURL
 {
-  NSString *urlString, *ocFSTableName;
+  NSMutableString *ocFSTableName;
   NSMutableArray *parts;
+  NSString *urlString;
   SOGoUser *user;
 
   if (!folderTableURL)
@@ -2536,10 +2538,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. We strip the '-' character in case we have
              this in the domain part - like foo@bar-zot.com */
-          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [[[user loginInDomain] asCSSIdentifier] 
-                                      stringByReplacingOccurrencesOfString: @"-"
-                                                                withString: @"_"]];
+          ocFSTableName = [NSMutableString stringWithFormat: @"sogo_cache_folder_%@",
+                                           [[user loginInDomain] asCSSIdentifier]];
+          [ocFSTableName replaceOccurrencesOfString: @"-"
+                                         withString: @"_"
+                                            options: 0
+                                              range: NSMakeRange(0, [ocFSTableName length])];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];

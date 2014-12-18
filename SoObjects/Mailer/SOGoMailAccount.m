@@ -673,7 +673,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSString *guid;
   id object;
   
-  BOOL subscribedOnly;
+  BOOL subscribedOnly, hasAnnotatemore;
 
   ud = [[context activeUser] userDefaults];
   subscribedOnly = [ud mailShowSubscribedFoldersOnly];
@@ -685,14 +685,21 @@ static NSString *inboxFolderName = @"INBOX";
 
   client = [[self imap4Connection] client];
   namespaceDict = [client namespace];
+  hasAnnotatemore = [self hasCapability: @"annotatemore"];
 
-  result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
+  if (hasAnnotatemore)
+     result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
+  else
+     result = [client lstatus: @"*" flags: [NSArray arrayWithObjects: @"x-guid", nil]];
 
   e = [folderList objectEnumerator];
 
   while ((object = [e nextObject]))
     {
-      guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
+      if (hasAnnotatemore)
+         guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
+      else
+         guid = [[[result objectForKey: @"status"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"x-guid"];
 
       if (!guid)
         {
@@ -708,22 +715,13 @@ static NSString *inboxFolderName = @"INBOX";
           nresult = [client annotation: [object substringFromIndex: 1] entryName: @"/comment" attributeName: @"value.priv" attributeValue: guid];
           
           if (![[nresult objectForKey: @"result"] boolValue])
-            {
-              // Need to implement X-GUID query for Dovecot - this requires modification in SOPE to support following command:
-              // 1 list "" "*" return (status (x-guid)) -> this would avoid firing a command per folder to IMAP
-              nresult = [client status: [object substringFromIndex: 1] flags: [NSArray arrayWithObject: @"x-guid"]];
-              guid = [nresult objectForKey: @"x-guid"];
-              if (!guid)
-                {
-                  guid = [NSString stringWithFormat: @"%@", [object substringFromIndex: 1]];
-                }
-            }
+             guid = [NSString stringWithFormat: @"%@", [object substringFromIndex: 1]];
         }
-      
+
       [folders setObject: [NSString stringWithFormat: @"folder%@", guid] forKey: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]]];
 
     }
-  
+
   return folders;
 }
 

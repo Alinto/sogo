@@ -52,9 +52,6 @@ SchedulerUI_RESOURCE_FILES += \
 SchedulerUI_RESOURCE_FILES += \
 	Toolbars/SOGoAppointmentFolders.toolbar \
 	Toolbars/SOGoAppointmentObject.toolbar \
-	Toolbars/SOGoAppointmentObjectAccept.toolbar \
-	Toolbars/SOGoAppointmentObjectDecline.toolbar \
-	Toolbars/SOGoAppointmentObjectAcceptOrDecline.toolbar \
 	Toolbars/SOGoTaskObject.toolbar \
 	Toolbars/SOGoComponentClose.toolbar \
 	Toolbars/SOGoEmpty.toolbar

@@ -54,9 +54,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
+  NSArray *categories;
   id o;
 
-  int v;
+  int v, i;
 
   s = [NSMutableString string];
 
@@ -96,9 +97,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Reminder - FIXME
   [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
   
-  // Sensitivity - FIXME
-  [s appendFormat: @"<Sensitivity xmlns=\"Tasks:\">%d</Sensitivity>", 0];
-  
+  if ([[self accessClass] isEqualToString: @"PRIVATE"])
+    v = 2;
+  else if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
+    v = 3;
+  else
+    v = 0;
+
+  categories = [self categories];
+
+  if ([categories count])
+    {
+      [s appendFormat: @"<Categories xmlns=\"Tasks:\">"];
+      for (i = 0; i < [categories count]; i++)
+        {
+          [s appendFormat: @"<Category xmlns=\"Tasks:\">%@</Category>", [[categories objectAtIndex: i] activeSyncRepresentationInContext: context]];
+        }
+      [s appendFormat: @"</Categories>"];
+    }
+
   // Subject
   o = [self summary];
   if ([o length])
@@ -106,11 +123,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [self comment]))
     {
+      // It is very important here to NOT set <Truncated>0</Truncated> in the response,
+      // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
-      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
       [s appendFormat: @"<Data>%@</Data>", o];
       [s appendString: @"</Body>"];
     }
@@ -182,6 +200,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [self setPriority: @"9"];
     }
 
+  //
+  // 0- normal, 1- personal, 2- private and 3-confidential
+  //
+  if ((o = [theValues objectForKey: @"Sensitivity"]))
+    {
+      switch ([o intValue])
+        {
+        case 2:
+          [self setAccessClass: @"PRIVATE"];
+          break;
+        case 3:
+          [self setAccessClass: @"CONFIDENTIAL"];
+          break;
+        case 0:
+        case 1:
+        default:
+          [self setAccessClass: @"PUBLIC"];
+        }
+    }
+
+  // Categories
+  if ((o = [theValues objectForKey: @"Categories"]) && [o length])
+    [self setCategories: o];
 
   if ((o = [theValues objectForKey: @"ReminderTime"]))
     {

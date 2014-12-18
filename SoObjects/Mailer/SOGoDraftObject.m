@@ -629,7 +629,7 @@ static NSString    *userAgent      = nil;
   
   folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
   result = [client append: message toFolder: folder
-                withFlags: [NSArray arrayWithObjects: @"seen", @"draft", nil]];
+                withFlags: [NSArray arrayWithObjects: @"draft", nil]];
   if ([[result objectForKey: @"result"] boolValue])
     {
       if (IMAP4ID > -1)
