@@ -70,13 +70,14 @@
    * @function $getMailboxes
    * @memberof Account.prototype
    * @desc Fetch the list of mailboxes for the current account.
+   * @param {object} [options] - force a reload
    * @returns a promise of the HTTP operation
    */
-  Account.prototype.$getMailboxes = function() {
+  Account.prototype.$getMailboxes = function(options) {
     var _this = this,
         deferred = Account.$q.defer();
 
-    if (this.$mailboxes) {
+    if (this.$mailboxes && !(options && options.reload)) {
       deferred.resolve(this.$mailboxes);
     }
     else {
@@ -159,6 +160,26 @@
     mailbox = _find(this.$mailboxes);
 
     return mailbox;
+  };
+
+  /**
+   * @function $newMailbox
+   * @memberof Account.prototype
+   * @desc Create a new mailbox on the server and refresh the list of mailboxes.
+   * @returns a promise of the HTTP operations
+   */
+  Account.prototype.$newMailbox = function(path, name) {
+    var _this = this,
+        deferred = Account.$q.defer();
+
+    Account.$$resource.post(path, 'createFolder', {name: name}).then(function() {
+      _this.$getMailboxes({reload: true});
+      deferred.resolve();
+    }, function(response) {
+      deferred.reject(response.error);
+    });
+
+    return deferred.promise;
   };
 
   /**

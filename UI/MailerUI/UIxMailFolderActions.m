@@ -187,6 +187,7 @@
   NGImap4Connection *connection;
   NSException *error;
   NSURL *srcURL, *destURL;
+  NSDictionary *jsonResponse;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
 
@@ -202,8 +203,10 @@
     error = [connection moveMailboxAtURL: srcURL toURL: destURL];
     if (error)
       {
-        response = [self responseWithStatus: 500];
-        [response appendContentString: @"Unable to move folder."];
+        jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder."]
+                                                 forKey: @"error"];
+        response = [self responseWithStatus: 500
+                                  andString: [jsonResponse jsonRepresentation]];
       }
     else
       {
@@ -232,8 +235,10 @@
   }
   else
   {
-    response = [self responseWithStatus: 500];
-    [response appendContentString: @"Unable to move folder."];
+    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder."]
+                                               forKey: @"error"];
+    response = [self responseWithStatus: 500
+                              andString: [jsonResponse jsonRepresentation]];
   }
 
   return response;

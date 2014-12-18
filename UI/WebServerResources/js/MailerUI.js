@@ -179,6 +179,15 @@
     .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Account, Mailbox, stateAccounts) {
       $scope.accounts = stateAccounts;
 
+      $scope.newFolder = function(parentFolder) {
+        Dialog.prompt(l('New folder'),
+                      l('Enter the new name of your folder :'))
+          .then(function(name) {
+            if (name && name.length > 0) {
+              parentFolder.$newMailbox(parentFolder.id, name);
+            }
+          });
+      };
       $scope.setCurrentFolder = function(account, folder) {
         $rootScope.currentFolder = folder;
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
