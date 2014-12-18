@@ -22,7 +22,7 @@ Bug fixes
 --------------------
 
 Bug fixes
- - Make sure all address books returned using EAS are GCS ones
+ - make sure all address books returned using EAS are GCS ones
 
 2.2.11 (2014-12-09)
 -------------------
@@ -31,16 +31,16 @@ New features
  - sogo-tool can now be used to manage EAS metadata for all devices
 
 Enhancements
- - Improved the SAML2 documentation
- - Radically reduced AES memory usage
+ - improved the SAML2 documentation
+ - radically reduced AES memory usage
 
 Bug fixes
- - Now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
- - Added support for IdP-initiated SAML2 logout (#2377)
- - We now generate SAML2 metadata on the fly (#2378) 
- - We now handle correctly the SOGo logout when using SAML (#2376 and #2379)
- - Fixed freebusy lookups going off bounds for resources (#3010)
- - Fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
+ - now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
+ - added support for IdP-initiated SAML2 logout (#2377)
+ - we now generate SAML2 metadata on the fly (#2378)
+ - we now handle correctly the SOGo logout when using SAML (#2376 and #2379)
+ - fixed freebusy lookups going off bounds for resources (#3010)
+ - fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
  
 2.2.10 (2014-11-21)
 -------------------
