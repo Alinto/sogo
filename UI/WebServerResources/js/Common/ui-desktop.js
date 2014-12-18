@@ -143,36 +143,28 @@
     .directive('sgFolderTree', function(RecursionHelper) {
       return {
         restrict: 'E',
-        replace: true,
         scope: {
           root: '=sgRoot',
           folder: '=sgFolder',
           setFolder: '=sgSetFolder'
         },
         template:
-          '<div>' +
-          '  <li>' +
-          '    <span class="folder-container">' +
-          '      <span class="folder-content">' +
-          '        <i class="icon icon-ion-folder"></i>' +
-          '        <form>' +
-          '          <a data-ng-cloak="ng-cloak"' +
-          '             >{{folder.name}}</a>' +
-          '        </form>' +
-          '        <span class="icon ng-hide" data-ng-cloak="ng-cloak">' +
-          '          <a class="icon" href="#"' +
-          '             data-dropdown-toggle="#folderProperties"' +
-          '             data-options="align:right"><i class="icon-cog"></i></a>' +
-          '        </span>' +
+          '<li>' +
+          '  <span class="folder-container">' +
+          '    <span class="folder-content">' +
+          '      <i class="icon icon-ion-folder"></i>' +
+          '      <form>' +
+          '        <a data-ng-cloak="ng-cloak">{{folder.name}}</a>' +
+          '      </form>' +
+          '      <span class="icon ng-hide" data-ng-cloak="ng-cloak">' +
+          '        <a class="icon" href="#"' +
+          '           data-dropdown-toggle="#folderProperties"' +
+          '           data-options="align:right"><i class="icon-cog"></i></a>' +
           '      </span>' +
           '    </span>' +
-          '  </li>' +
-          '  <div>' +
-          '    <span ng-repeat="child in folder.children track by child.path">' +
-          '      <sg-folder-tree data-sg-root="root" data-sg-folder="child" data-sg-set-folder="setFolder"></sg-folder-tree>' +
-          '    </span>' +
-          '  </div>' +
-          '</div>',
+          '  </span>' +
+          '</li>' +
+          '<sg-folder-tree ng-repeat="child in folder.children track by child.path" data-sg-root="root" data-sg-folder="child" data-sg-set-folder="setFolder"></sg-folder-tree>',
         compile: function(element) {
           return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
             // Set CSS class for folder hierarchical level

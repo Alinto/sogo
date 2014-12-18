@@ -400,7 +400,7 @@ static NSString *inboxFolderName = @"INBOX";
 {
   NSString *folderType;
 
-  if ([folderName isEqualToString: [NSString stringWithFormat: @"/%@", inboxFolderName]])
+  if ([folderName isEqualToString: inboxFolderName])
     folderType = @"inbox";
   else if ([folderName isEqualToString: [self draftsFolderNameInContext: context]])
     folderType = @"draft";
@@ -408,6 +408,10 @@ static NSString *inboxFolderName = @"INBOX";
     folderType = @"sent";
   else if ([folderName isEqualToString: [self trashFolderNameInContext: context]])
     folderType = @"trash";
+  else if ([folderName isEqualToString: otherUsersFolderName])
+    folderType = @"otherUsers";
+  else if ([folderName isEqualToString: sharedFoldersName])
+    folderType = @"shared";
   else
     folderType = @"folder";
 

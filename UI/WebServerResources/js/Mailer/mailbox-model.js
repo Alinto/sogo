@@ -13,7 +13,15 @@
     // Data is immediately available
     if (typeof futureMailboxData.then !== 'function') {
       angular.extend(this, futureMailboxData);
-      this.id = this.$id();
+      if (this.name && !this.path) {
+        // Create a new mailbox on the server
+        var newMailboxData = Mailbox.$$resource.create('createFolder', this.name);
+        this.$unwrap(newMailboxData);
+      }
+      else {
+        this.id = this.$id();
+        this.isEditable = this.$isEditable();
+      }
     }
     else {
       // The promise will be unwrapped first
@@ -49,28 +57,6 @@
   /* Factory registration in Angular module */
     .factory('sgMailbox', Mailbox.$factory);
 
-  /**
-   * @function $delete
-   * @memberof Mailbox.prototype
-   * @desc Delete the mailbox from the server
-   * @returns a promise of the HTTP operation
-   */
-  Mailbox.prototype.$delete = function() {
-    var _this = this,
-        d = Mailbox.$q.defer(),
-        promise;
-
-    promise = Mailbox.$$resource.remove(this.id);
-
-    promise.then(function() {
-      _this.$account.$getMailboxes();
-      d.resolve(true);
-    }, function(data, status) {
-      d.reject(data);
-    });
-    return d.promise;
-  };
-    
   /**
    * @memberof Mailbox
    * @desc Fetch list of mailboxes of a specific account
@@ -205,6 +191,38 @@
       }
     }
     return loaded;
+  };
+
+  /**
+   * @function $isEditable
+   * @memberof Mailbox.prototype
+   * @desc Checks if the mailbox is editable based on its type.
+   * @returns true if the mailbox is not a special folder.
+   */
+  Mailbox.prototype.$isEditable = function() {
+    return _.contains(['folder', 'inbox', 'draft', 'sent', 'trash'], this.type);
+  };
+
+  /**
+   * @function $delete
+   * @memberof Mailbox.prototype
+   * @desc Delete the mailbox from the server
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$delete = function() {
+    var _this = this,
+        d = Mailbox.$q.defer(),
+        promise;
+
+    promise = Mailbox.$$resource.remove(this.id);
+
+    promise.then(function() {
+      _this.$account.$getMailboxes({reload: true});
+      d.resolve(true);
+    }, function(data, status) {
+      d.reject(data);
+    });
+    return d.promise;
   };
 
   /**
