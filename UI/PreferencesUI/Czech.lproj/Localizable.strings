@@ -153,6 +153,9 @@
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
 
+"Auto save every" = "Automaticky uložit každých";
+"minutes" = "minut";
+
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";
 "Collected Address Book" = "Sebrané kontakty";
