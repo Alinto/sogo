@@ -219,16 +219,19 @@
     <!-- dropdown menu for addressbook options button -->
     <div id="folderProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
       <ul class="button-group">
-        <li data-ng-show="currentFolder.type == 'folder'">
+        <li data-ng-show="currentFolder.isEditable">
           <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
         </li>
-        <li data-ng-show="currentFolder.type == 'folder'">
+        <li data-ng-show="currentFolder.isEditable">
+          <span class="button" data-ng-click="newFolder(currentFolder)"><i class="icon-plus"><!-- new mailbox --></i></span>
+        </li>
+        <li data-ng-show="currentFolder.isEditable">
           <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
         </li>
         <li>
           <span class="button" data-ng-click="exportMails()"><i class="icon-ion-ios7-upload-outline"><!-- export --></i></span>
         </li>
-        <li data-ng-show="currentFolder.type == 'folder'">
+        <li data-ng-show="currentFolder.isEditable">
           <span class="button" data-ng-click="confirmDelete()"><i class="icon-trash"><!-- delete --></i></span>
         </li>
       </ul>

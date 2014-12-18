@@ -236,6 +236,16 @@
   };
 
   /**
+   * @function $newMailbox
+   * @memberof Account.prototype
+   * @desc Create a new mailbox on the server and refresh the list of mailboxes.
+   * @returns a promise of the HTTP operations
+   */
+  Mailbox.prototype.$newMailbox = function(path, name) {
+    return this.$account.$newMailbox(path, name);
+  };
+
+  /**
    * @function $omit
    * @memberof Mailbox.prototype
    * @desc Return a sanitized object used to send to the server.
