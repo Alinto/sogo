@@ -1,4 +1,55 @@
-2.2.10 (2014-xx-xx)
+2.2.12a (2014-12-19)
+--------------------
+
+Bug fixes
+ - fix empty HTML mails being sent (#3034)
+
+2.2.12 (2014-12-18)
+-------------------
+
+New features
+ - allow including or not freebusy info from subscribed calendars
+ - now possible to set an autosave timer for draft messages
+ - now possible to set alarms on event invitations (#76)
+
+Enhancements
+ - updated CKEditor to version 4.4.6 and added the 'Source Area' plugin
+ - avoid testing for IMAP ANNOTATION when X-GUID is available (#3018)
+ - updated Czech, Dutch, Finnish, French, German, Polish and Spanish (Spain) translations
+
+Bug fixes
+ - fix for privacy and categories for EAS (#3022)
+ - correctly set MeetingStatus for EAS on iOS devices
+ - Ubuntu Lucid fixes for EAS
+ - fix calendar reminders for future events (#3008)
+ - make sure all text parts are UTF-8 re-encoded for Outlook 2013 over EAS (#3003)
+ - fix task description truncation affecting WP8 phones over EAS (#3028)
+ 
+2.2.11a (2014-12-10)
+--------------------
+
+Bug fixes
+ - make sure all address books returned using EAS are GCS ones
+
+2.2.11 (2014-12-09)
+-------------------
+
+New features
+ - sogo-tool can now be used to manage EAS metadata for all devices
+
+Enhancements
+ - improved the SAML2 documentation
+ - radically reduced AES memory usage
+
+Bug fixes
+ - now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
+ - added support for IdP-initiated SAML2 logout (#2377)
+ - we now generate SAML2 metadata on the fly (#2378)
+ - we now handle correctly the SOGo logout when using SAML (#2376 and #2379)
+ - fixed freebusy lookups going off bounds for resources (#3010)
+ - fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
+ 
+2.2.10 (2014-11-21)
 -------------------
 
 Enhancements
