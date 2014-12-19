@@ -443,7 +443,7 @@
           us = [user userSettings];
           moduleSettings = [us objectForKey:@"Calendar"];
           
-          // Check if the user prevented his account from beeing invited to events
+          // Check if the user prevented their account from beeing invited to events
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
@@ -1093,7 +1093,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           else
             {
               // We must REMOVE any SENT-BY here. This is important since if A accepted
-              // the event for B and then, B changes by himself his participation status,
+              // the event for B and then, B changes by theirself their participation status,
               // we don't want to keep the previous SENT-BY attribute there.
               [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
             }
@@ -1191,7 +1191,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       else
         {
           // We must REMOVE any SENT-BY here. This is important since if A accepted
-          // the event for B and then, B changes by himself his participation status,
+          // the event for B and then, B changes by theirself their participation status,
           // we don't want to keep the previous SENT-BY attribute there.
           [(NSMutableDictionary *)[attendee attributes] removeObjectForKey: @"SENT-BY"];
         }
@@ -1208,7 +1208,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               
               delegatedUID = [otherDelegate uid];
               if (delegatedUID)
-                // Delegate attendee is a local user; remove event from his calendar
+                // Delegate attendee is a local user; remove event from their calendar
                 [self _removeEventFromUID: delegatedUID
                                     owner: [theOwnerUser login]
                          withRecurrenceId: [event recurrenceId]];
@@ -1240,7 +1240,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [event addToAttendees: delegate];
           
           if (delegatedUID)
-            // Delegate attendee is a local user; add event to his calendar
+            // Delegate attendee is a local user; add event to their calendar
             [self _addOrUpdateEvent: event
                              forUID: delegatedUID
                               owner: [theOwnerUser login]];

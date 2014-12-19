@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> has modified your access rights for his <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder.
+<var:string value="currentUserName" const:escapeHTML="NO"/> has modified your access rights for their <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder.
 <!--
 You can subscribe directly to that folder by following this link:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES

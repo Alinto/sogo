@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> has removed you from the access list for his <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder.
+<var:string value="currentUserName" const:escapeHTML="NO"/> has removed you from the access list for their <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder.
 <!--
 You can unsubscribe directly to that folder by following this link:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
