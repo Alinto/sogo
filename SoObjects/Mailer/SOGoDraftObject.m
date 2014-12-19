@@ -1217,13 +1217,13 @@ static NSString    *userAgent      = nil;
   
   if (!isHTML)
     {
-      [map setObject: contentTypeValue  forKey: @"content-type"];
+      [message setHeader: contentTypeValue  forKey: @"content-type"];
       body = text;
     }
   else
     {
       body = [[[NGMimeMultipartBody alloc] initWithPart: message] autorelease];
-      [map addObject: MultiAlternativeType forKey: @"content-type"];
+      [message setHeader: MultiAlternativeType forKey: @"content-type"];
 
       // Get the text part from it and add it
       [body addBodyPart: [self plainTextBodyPartForText]];
