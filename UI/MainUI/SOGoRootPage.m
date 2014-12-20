@@ -361,7 +361,7 @@
 
   if (login)
     {
-      /* We redirect the user to his "homepage" when newLocation could not be
+      /* We redirect the user to their "homepage" when newLocation could not be
          deduced from the "cas-location" cookie and the current action is not a
          login callback (ticket != nil).  */
       if (!newLocation || !ticket)

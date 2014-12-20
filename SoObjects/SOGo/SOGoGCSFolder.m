@@ -302,7 +302,7 @@ static NSArray *childRecordFields = nil;
 }
 
 /* This method fetches the display name defined by the owner, but is also the
-   fallback when a subscriber has not redefined the display name yet in his
+   fallback when a subscriber has not redefined the display name yet in their
    environment. */
 - (NSString *) _displayNameFromOwner
 {
@@ -895,7 +895,7 @@ static NSArray *childRecordFields = nil;
       allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
 
       // We remove the active user from the group (if present) in order to
-      // not subscribe him to his own resource!
+      // not subscribe him to their own resource!
       [allUsers removeObject: [context activeUser]];
     }
   else
