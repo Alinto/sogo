@@ -2481,7 +2481,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
       if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
-        return [NSException exceptionWithHTTPStatus: 500];
+        {
+          RELEASE(context);
+          RELEASE(pool);
+          return [NSException exceptionWithHTTPStatus: 500];
+        }
     }
 
   if (d)
