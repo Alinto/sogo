@@ -400,9 +400,9 @@
     {
       currentUID = [currentAttendee uid];
       if (currentUID)
-	      [self _addOrUpdateEvent: newEvent
-			                   forUID: currentUID
-			                    owner: owner];
+        [self _addOrUpdateEvent: newEvent
+                         forUID: currentUID
+                          owner: owner];
     }
 
   [self sendEMailUsingTemplateNamed: @"Update"
@@ -734,7 +734,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // the modification was actually NOT made on the master event
   if ([theEvent recurrenceId])
     return;
-
+  
   events = [[theEvent parent] events];
   
   for (i = 0; i < [events count]; i++)
@@ -743,12 +743,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if ([e recurrenceId])
         for (j = 0; j < [theAttendees count]; j++)
           if (shouldAdd)
-	          [e addToAttendees: [theAttendees objectAtIndex: j]];
-      else
-        [e removeFromAttendees: [theAttendees objectAtIndex: j]];
+            [e addToAttendees: [theAttendees objectAtIndex: j]];
+          else
+            [e removeFromAttendees: [theAttendees objectAtIndex: j]];
     }
 }
-		       
+
 //
 //
 //
@@ -803,14 +803,17 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // We insert the attendees in all exception occurences, if
   // the attendees were added to the master event.
   [self _addOrDeleteAttendees: addedAttendees
-	inRecurrenceExceptionsForEvent: newEvent
-			                       add: YES];
+        inRecurrenceExceptionsForEvent: newEvent
+                          add: YES];
 
   if ([changes sequenceShouldBeIncreased])
     {
       [newEvent increaseSequence];
+      
       // Update attendees calendars and send them an update
-      // notification by email
+      // notification by email. We ignore the newly added
+      // attendees as we don't want to send them invitation
+      // update emails
       [self _handleSequenceUpdateInEvent: newEvent
                        ignoringAttendees: addedAttendees
                             fromOldEvent: oldEvent];
