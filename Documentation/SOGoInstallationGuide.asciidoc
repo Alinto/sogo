@@ -2390,6 +2390,15 @@ _SOGoMaximumPingInterval_.
 
 If not set, it defaults to `10` seconds.
 
+|S |SOGoMaximumSyncResponseSize
+|Parameter used to overwrite the maximum response size during
+a Sync operation. The value is in kilobytes. Setting this to 512
+means the response size will be of 524288 bytes or less. Note that
+if you set the value too low and a mail message (or any other object)
+surpasses it, it will still be synced but only this item will be.
+
+Defaults to `0`, which means no overwrite is performed.
+
 |S |SOGoMaximumSyncWindowSize
 |Parameter used to overwrite the maximum number of items returned during
 a Sync operation.

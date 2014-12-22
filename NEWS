@@ -6,6 +6,8 @@ Bug fixes
 
 Enhancements
  - initial support for empty sync request/response for EAS
+ - added the SOGoMaximumSyncResponseSize EAS configuration parameter to
+   support memory-limited sync response sizes
 
 2.2.12a (2014-12-19)
 --------------------

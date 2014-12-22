@@ -636,4 +636,16 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self integerForKey: @"SOGoMaximumSyncWindowSize"];
 }
 
+- (int) maximumSyncResponseSize
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumSyncResponseSize"];
+
+  if (v > 0)
+    v = v * 1024;
+  
+  return v;
+}
+
 @end

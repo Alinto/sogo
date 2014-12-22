@@ -531,6 +531,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSyncGetChanges: (id <DOMElement>) theDocumentElement
                   inCollection: (id) theCollection
                 withWindowSize: (unsigned int) theWindowSize
+       withMaxSyncResponseSize: (unsigned int) theMaxSyncResponseSize
                    withSyncKey: (NSString *) theSyncKey
                 withFolderType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                 withFilterType: (NSCalendarDate *) theFilterType
@@ -562,7 +563,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   dateCache = [folderMetadata objectForKey: @"DateCache"];
 
   if ((theFolderType == ActiveSyncMailFolder || theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder) && 
-      !([folderMetadata  objectForKey: @"MoreAvailable"]) && // previous sync operation reached the windowSize 
+      !([folderMetadata objectForKey: @"MoreAvailable"]) && // previous sync operation reached the windowSize or maximumSyncReponseSize
       !([theSyncKey isEqualToString: @"-1"]) &&  // new sync operation
       theFilterType)
     {
@@ -590,7 +591,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               softdelete_count++;
             }
           
-          if (softdelete_count >= theWindowSize)
+          if (softdelete_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
             {
               [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
               [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
@@ -653,7 +654,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             pool = [[NSAutoreleasePool alloc] init];
 
             // Check for the WindowSize and slice accordingly
-            if (return_count >= theWindowSize)
+            if (return_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
               {
                 more_available = YES;
 
@@ -668,7 +669,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             deleted = [[component objectForKey: @"c_deleted"] intValue];
 
             if (!deleted && ![[component objectForKey: @"c_component"] isEqualToString: component_name])
-              continue;
+              {
+                DESTROY(pool);
+                continue;
+              }
             
             uid = [[component objectForKey: @"c_name"] sanitizedServerIdWithType: theFolderType];
             
@@ -692,10 +696,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 if (![syncCache objectForKey: uid])
                   updated = NO;
                 else if ([[component objectForKey: @"c_lastmodified"] intValue] == [[syncCache objectForKey: uid] intValue])
-                       continue;
+                  {
+                    DESTROY(pool);
+                    continue;
+                  }
                 
                 return_count++;
-
+                
 	        sogoObject = [theCollection lookupName: [uid sanitizedServerIdWithType: theFolderType]
                                              inContext: context
                                                acquire: 0];
@@ -704,7 +711,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   componentObject = [sogoObject vCard];
                 else
                   componentObject = [sogoObject component: NO  secure: NO];                
-                
                 
                 //
                 // We do NOT synchronize NEW events that are in fact, invitations
@@ -740,8 +746,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     // no need to set dateCache for Contacts
                     if ((theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder))
                       [dateCache setObject: [componentObject startDate] ? [componentObject startDate] :  [NSCalendarDate date] forKey: uid]; // FIXME: need to set proper date for recurring events - softDelete
-
-                  [s appendString: @"<Add xmlns=\"AirSync:\">"];
+                    
+                    [s appendString: @"<Add xmlns=\"AirSync:\">"];
                   }
                 
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
@@ -829,7 +835,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           found_in_cache = NO;
 
-        
         if (found_in_cache)
           k = j+1;
         else
@@ -847,7 +852,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             pool = [[NSAutoreleasePool alloc] init];
             
             // Check for the WindowSize and slice accordingly
-            if (return_count >= theWindowSize)
+            if (return_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
               {
                 NSString *lastSequence;
                 more_available = YES;
@@ -1047,6 +1052,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSyncCollection: (id <DOMElement>) theDocumentElement
                       inBuffer: (NSMutableString *) theBuffer
                 changeDetected: (BOOL *) changeDetected
+           maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey;
   SOGoMicrosoftActiveSyncFolderType folderType;
@@ -1076,7 +1082,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //[theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
       //[theBuffer appendFormat: @"<Status>%d</Status>", 8];
       //[theBuffer appendString: @"</Collection>"];
-      
       return;
     }
   
@@ -1139,6 +1144,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self processSyncGetChanges: theDocumentElement
                      inCollection: collection
                    withWindowSize: windowSize
+          withMaxSyncResponseSize: theMaxSyncResponseSize
                       withSyncKey: syncKey
                    withFolderType: folderType
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
@@ -1324,9 +1330,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSArray *allCollections;
   NSData *d;
 
-  int i, j, defaultInterval, heartbeatInterval, internalInterval;
+  int i, j, defaultInterval, heartbeatInterval, internalInterval, maxSyncResponseSize;
   BOOL changeDetected;
   
+  changeDetected = NO;
+
+  maxSyncResponseSize = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncResponseSize];
+
   // We initialize our output buffer
   output = [[NSMutableString alloc] init];
 
@@ -1376,7 +1386,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           aCollection = [allCollections objectAtIndex: j];
           
-          [self processSyncCollection: aCollection  inBuffer: s  changeDetected: &changeDetected];
+          [self processSyncCollection: aCollection
+                             inBuffer: s
+                       changeDetected: &changeDetected
+                  maxSyncResponseSize: maxSyncResponseSize];
         }
 
       if (changeDetected)
