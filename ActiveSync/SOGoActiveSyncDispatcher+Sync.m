@@ -1333,6 +1333,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [output appendString: @"<Sync xmlns=\"AirSync:\">"];
+
+  //
+  // We don't support yet empty Sync requests. See: http://msdn.microsoft.com/en-us/library/ee203280(v=exchg.80).aspx
+  // We return '13' - see http://msdn.microsoft.com/en-us/library/gg675457(v=exchg.80).aspx
+  //
+  if (!theDocumentElement || [[(id)[theDocumentElement getElementsByTagName: @"Partial"] lastObject] textValue])
+    {
+      [output appendString: @"<Status>13</Status>"];
+      [output appendString: @"</Sync>"];
+      d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      [theResponse setContent: d];
+      return;
+    }
   
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
@@ -1378,21 +1391,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  // We always return the last generated response.
-  // If we only return <Sync><Collections/></Sync>,
-  // iOS powered devices will simply crash.
-  [output appendString: s];
+  // Only send a response if there are changes otherwise send an empty response.
+  if (changeDetected)
+    {
+      // We always return the last generated response.
+      // If we only return <Sync><Collections/></Sync>,
+      // iOS powered devices will simply crash.
+      [output appendString: s];
 
-  [output appendString: @"</Collections></Sync>"];
+      [output appendString: @"</Collections></Sync>"];
+
+      d = [output dataUsingEncoding: NSUTF8StringEncoding];
+      d = [d xml2wbxml];
+      [theResponse setContent: d];
+    }
 
   // Avoid overloading the autorelease pool here, as Sync command can
   // generate fairly large responses.
-  d = [output dataUsingEncoding: NSUTF8StringEncoding];
   RELEASE(output);
-
-  d = [d xml2wbxml];
-
-  [theResponse setContent: d];
 }
 
 @end

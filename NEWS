@@ -1,3 +1,12 @@
+2.2.13 (2014-12-xx)
+-------------------
+
+Bug fixes
+ - fix contact description truncation on WP8 phones (#3028)
+
+Enhancements
+ - initial support for empty sync request/response for EAS
+
 2.2.12a (2014-12-19)
 --------------------
 
