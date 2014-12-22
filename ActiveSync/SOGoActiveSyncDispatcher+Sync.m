@@ -738,17 +738,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   }                
 
                 [syncCache setObject: [component objectForKey: @"c_lastmodified"] forKey: uid];
+
+                // No need to set dateCache for Contacts
+                if ((theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder))
+                  {
+                    NSCalendarDate *d;
+
+                    if ([[component objectForKey: @"c_cycleenddate"] intValue])
+                      d = [NSCalendarDate dateWithTimeIntervalSince1970: [[component objectForKey: @"c_cycleenddate"] intValue]];
+                    else if ([[component objectForKey: @"c_enddate"] intValue])
+                      d = [NSCalendarDate dateWithTimeIntervalSince1970: [[component objectForKey: @"c_enddate"] intValue]];
+                    else
+                      d = [NSCalendarDate distantFuture];
+
+                    [dateCache setObject: d forKey: uid];
+                  }
                 
                 if (updated)
                   [s appendString: @"<Change xmlns=\"AirSync:\">"];
                 else
-                  {
-                    // no need to set dateCache for Contacts
-                    if ((theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder))
-                      [dateCache setObject: [componentObject startDate] ? [componentObject startDate] :  [NSCalendarDate date] forKey: uid]; // FIXME: need to set proper date for recurring events - softDelete
-                    
-                    [s appendString: @"<Add xmlns=\"AirSync:\">"];
-                  }
+                  [s appendString: @"<Add xmlns=\"AirSync:\">"];
                 
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
