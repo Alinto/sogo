@@ -537,8 +537,9 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                                   NSDictionary *mailProperties, BOOL withBcc,
                                   struct mapistore_connection_info *connInfo)
 {
+  NSData *senderEntryId;
   NSMutableString *subject;
-  NSString *from, *recId, *messageId, *subjectData;
+  NSString *from, *recId, *messageId, *subjectData, *recipientsStr;
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
@@ -575,7 +576,86 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
         [headers setObjects: list forKey: @"from"];
     }
   else
-    NSLog (@"message without recipients");
+    {
+      NSLog (@"Message without recipients."
+             @"Guessing recipients from PidTagSenderEntryId, PidTagOriginalDisplayTo"
+             @"and PidTagOriginalCc");
+      senderEntryId = [mailProperties objectForKey: MAPIPropertyKey (PR_SENDER_ENTRYID)];
+      if (senderEntryId)
+        {
+          struct Binary_r bin32;
+          struct AddressBookEntryId *addrBookEntryId;
+          NSString *username;
+          NSMutableDictionary *fromRecipient;
+
+          fromRecipient = [NSMutableDictionary dictionaryWithCapacity: 2];
+
+          bin32.cb = [senderEntryId length];
+          bin32.lpb = (uint8_t *) [senderEntryId bytes];
+          addrBookEntryId = get_AddressBookEntryId (connInfo->sam_ctx, &bin32);
+          if (addrBookEntryId && [[NSString stringWithGUID: &addrBookEntryId->ProviderUID]
+                                   hasSuffix: @"08002b2fe182"])
+            {
+              /* TODO: better way to distinguish local and other ones */
+              username = MAPIStoreSamDBUserAttribute (connInfo->sam_ctx, @"legacyExchangeDN",
+                                                      [NSString stringWithUTF8String: addrBookEntryId->X500DN], @"sAMAccountName");
+              if (username)
+                {
+                  SOGoUser *fromUser;
+
+                  fromUser = [SOGoUser userWithLogin: [username lowercaseString]];
+                  [fromRecipient setObject: [fromUser cn] forKey: @"fullName"];
+                  [fromRecipient setObject: [[fromUser allEmails] objectAtIndex: 0]
+                                    forKey: @"email"];
+                }
+              else
+                  [fromRecipient setObject: [NSString stringWithUTF8String: addrBookEntryId->X500DN]
+                                    forKey: @"email"];
+
+            }
+          else
+            {
+              /* Try with One-Off EntryId */
+              struct OneOffEntryId *oneOffEntryId;
+
+              oneOffEntryId = get_OneOffEntryId (connInfo->sam_ctx, &bin32);
+              if (oneOffEntryId && [[NSString stringWithGUID: &oneOffEntryId->ProviderUID]
+                                     hasSuffix: @"00dd010f5402"])
+                {
+                  [fromRecipient setObject: [NSString stringWithUTF8String: oneOffEntryId->DisplayName.lpszW]
+                                    forKey: @"fullName"];
+                  [fromRecipient setObject: [NSString stringWithUTF8String: oneOffEntryId->EmailAddress.lpszW]
+                                    forKey: @"email"];
+                }
+              talloc_free (oneOffEntryId);
+            }
+          talloc_free (addrBookEntryId);
+
+          if ([[fromRecipient allKeys] count] > 0)
+            {
+              list = MakeRecipientsList ([NSArray arrayWithObjects: fromRecipient, nil]);
+              if ([list count])
+                [headers setObjects: list forKey: @"from"];
+            }
+
+        }
+
+      recipientsStr = [mailProperties objectForKey: MAPIPropertyKey (PidTagOriginalDisplayTo)];
+      if (recipientsStr)
+        {
+          list = [recipientsStr componentsSeparatedByString:@", "];
+          if ([list count])
+            [headers setObjects: list forKey: @"to"];
+        }
+
+      recipientsStr = [mailProperties objectForKey: MAPIPropertyKey (PidTagOriginalDisplayCc)];
+      if (recipientsStr)
+        {
+          list = [recipientsStr componentsSeparatedByString:@", "];
+          if ([list count])
+            [headers setObjects: list forKey: @"cc"];
+        }
+    }
 
   subject = [NSMutableString stringWithCapacity: 128];
   subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
