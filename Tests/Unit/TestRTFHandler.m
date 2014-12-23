@@ -32,18 +32,27 @@
 @implementation TestRTFHandler
 
 
-- (NSString *) rtf2html: (NSString *) rtf
+- (NSString *) rtf2html: (NSData *) rtf
 {
+  NSString *html;
   if (!rtf) return @"nil";
-  NSData *data = [rtf dataUsingEncoding: NSUTF8StringEncoding];
-  RTFHandler *handler = [[RTFHandler alloc] initWithData: data];
+  RTFHandler *handler = [[RTFHandler alloc] initWithData: rtf];
   NSMutableData *data2 = [handler parse];
-  NSString *html = [[NSString alloc] initWithData: data2
-                                     encoding: NSUTF8StringEncoding];
+  html = [[NSString alloc] initWithData: data2 encoding: NSUTF8StringEncoding];
+  if (html == nil) {
+    html = [[NSString alloc] initWithData: data2 encoding: NSASCIIStringEncoding];
+  }
+  if (html == nil) {
+    html = [[NSString alloc] initWithData: data2 encoding: NSISOLatin1StringEncoding];
+  }
+  if (html == nil) {
+    NSString *error = [NSString stringWithFormat: @"Couldn't convert parsed data"];
+    testWithMessage(false, error);
+  }
   return html;
 }
 
-- (NSString *) get_zentyal_crash_contents_of: (unsigned int) number
+- (NSData *) get_zentyal_crash_contents_of: (unsigned int) number
 {
     NSString *file_path = [NSString stringWithFormat: @"Fixtures/zentyal_crash_%u.rtf", number];
 
@@ -52,9 +61,7 @@
         testWithMessage(false, error);
     }
 
-    return [NSString stringWithContentsOfFile: file_path
-                     encoding: NSUTF8StringEncoding
-                     error: NULL];
+    return [NSData dataWithContentsOfFile: file_path];
 }
 
 - (void) test_does_not_crash: (unsigned int) number
@@ -71,7 +78,8 @@
 
 - (void) test_zentyal_crash_2089
 {
-  NSString *out = nil, *error = nil, *in = nil, *expected = nil;
+  NSData *in = nil;
+  NSString *out = nil, *error = nil, *expected = nil;
 
   in = [self get_zentyal_crash_contents_of: 2089];
   expected = @"<html><meta charset='utf-8'><body><font color=\"#000000\">Lorem Ipsum</font></body></html>";
