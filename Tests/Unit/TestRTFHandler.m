@@ -89,4 +89,9 @@
   testWithMessage([out isEqualToString: expected], error);
 }
 
+- (void) test_zentyal_crash_6330
+{
+  [self test_does_not_crash: 6330];
+}
+
 @end
