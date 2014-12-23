@@ -43,10 +43,6 @@
 
 @implementation SOGoMailBaseObject
 
-#if 0
-static BOOL debugOn = YES;
-#endif
-
 - (id) initWithImap4URL: (NSURL *) _url
 	    inContainer: (id) _container
 {

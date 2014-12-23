@@ -123,6 +123,9 @@
   return label;
 }
 
+//
+//  Set SOGoDebugLeaks = YES in your defaults to enable.
+//
 + (void) memoryStatistics
 {
   Class *classList = GSDebugAllocationClassList ();
