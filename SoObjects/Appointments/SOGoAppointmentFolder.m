@@ -511,7 +511,7 @@ static Class iCalEventK = nil;
 
   if ([self isSubscription])
     {
-      // If the user has not yet set an include/not include fb information...
+      // If the user has not yet set an include/not include fb information let's EXCLUDE it.
       if (!excludeFromFreeBusy)
         return NO;
       else
@@ -519,12 +519,14 @@ static Class iCalEventK = nil;
     }
   else if (is_owner)
     {
+      // We are the owner but we haven't included/excluded freebusy info, let's INCLUDE it.
       if (!excludeFromFreeBusy)
         return YES;
       else
         return ![excludeFromFreeBusy boolValue];
     }
-  
+
+  // It's not a subscribtion and we aren't the owner. Let's INCLUDE the freebusy info.
   return YES;
 }
 
