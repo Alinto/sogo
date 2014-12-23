@@ -492,6 +492,9 @@ static Class iCalEventK = nil;
 //
 // If the user is NOT the owner of the calendar, by default we exclude the freebusy information.
 //
+// We must include the freebusy information of other users if we are actually looking at their freebusy information
+// but we aren't necessarily subscribed to their calendars.
+//
 - (BOOL) includeInFreeBusy
 {
   NSNumber *excludeFromFreeBusy;
@@ -500,16 +503,29 @@ static Class iCalEventK = nil;
   
   userLogin = [[context activeUser] login];
   is_owner = [userLogin isEqualToString: [self ownerInContext: context]];
-    
+  
   // Check if the owner (not the active user) has excluded the calendar from her/his free busy data.
   excludeFromFreeBusy
     = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
 				  forUser: [SOGoUser userWithLogin: userLogin]];
 
-  if (!excludeFromFreeBusy && !is_owner)
-    return NO;
+  if ([self isSubscription])
+    {
+      // If the user has not yet set an include/not include fb information...
+      if (!excludeFromFreeBusy)
+        return NO;
+      else
+        return ![excludeFromFreeBusy boolValue];
+    }
+  else if (is_owner)
+    {
+      if (!excludeFromFreeBusy)
+        return YES;
+      else
+        return ![excludeFromFreeBusy boolValue];
+    }
   
-  return ![excludeFromFreeBusy boolValue];
+  return YES;
 }
 
 - (void) setIncludeInFreeBusy: (BOOL) newInclude
