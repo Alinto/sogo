@@ -26,6 +26,7 @@
 // Useful macros
 //
 #define ADVANCE _bytes++; _current_pos++;
+#define ADVANCE_N(N) _bytes += (N); _current_pos += (N);
 #define REWIND _bytes--; _current_pos--;
 
 
@@ -663,8 +664,46 @@ const unsigned short ansicpg874[256] = {
 //
 - (void) parsePicture
 {
-  // Do the same as -parseStyleSheet for now, that is, ignore everything.
-  [self parseStyleSheet];
+  // Ignore everything. But we cannot parse it blindly because it could have
+  // binary data with '}' and '{' bytes, so disasters can happen and they will
+  unsigned int count = 0;
+  const char *cw;
+
+  do
+    {
+      if (*_bytes == '\\')
+        {
+          unsigned int binary_size, len = 0, cw_len;
+          cw = [self parseControlWord: &len];
+          cw_len = strlen("bin");
+          if (strncmp(cw, "bin", cw_len) == 0 && len > cw_len)
+            {
+              NSString *s;
+              s = [[NSString alloc] initWithBytesNoCopy: (void *) cw + cw_len
+                                                 length: len - cw_len
+                                               encoding: NSASCIIStringEncoding
+                                           freeWhenDone: NO];
+              [s autorelease];
+              binary_size = [s intValue];
+              ADVANCE_N(binary_size);
+            }
+          else if (len > 0)
+            {
+              ADVANCE_N(len);
+            }
+          else
+            {
+              ADVANCE;
+            }
+        }
+      else
+        {
+          if (*_bytes == '{') count++;
+          if (*_bytes == '}') count--;
+          ADVANCE;
+        }
+    }
+  while (count > 0);
 }
 
 //
