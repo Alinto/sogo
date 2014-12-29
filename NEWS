@@ -4,6 +4,7 @@
 Bug fixes
  - fix contact description truncation on WP8 phones (#3028)
  - fix freebusy information not always returned
+ - fix tz issue when the user one was different from the system one with EAS
 
 Enhancements
  - initial support for empty sync request/response for EAS

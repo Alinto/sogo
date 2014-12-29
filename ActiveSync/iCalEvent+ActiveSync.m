@@ -332,7 +332,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   iCalTimeZone *tz;
   id o;
 
-  NSInteger tzOffset;
   BOOL isAllDay;
   
   if ((o = [theValues objectForKey: @"UID"]))
@@ -384,10 +383,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Some Windows devices don't send during event updates.
   //if ((o = [theValues objectForKey: @"TimeZone"]))
   //  {
-  userTimeZone = [[[context activeUser] userDefaults] timeZone];
-  tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
-  [(iCalCalendar *) parent addTimeZone: tz];
-  //}
+  //  }
+  //else
+    {
+      // We haven't received a timezone, let's use the user's timezone
+      // specified in SOGo for now.
+      userTimeZone = [[[context activeUser] userDefaults] timeZone];
+      tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
+      [(iCalCalendar *) parent addTimeZone: tz];
+    }
   
   // FIXME: merge with iCalToDo
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
@@ -402,21 +406,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
       [start setTimeZone: tz];
 
-      if (isAllDay)
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
+       if (isAllDay)
+         {
           [start setDate: o];
           [start setTimeZone: nil];
         }
       else
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [start setDateTime: o];
         }
     }
@@ -429,19 +425,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (isAllDay)
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [end setDate: o];
           [end setTimeZone: nil];
         }
       else
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [end setDateTime: o];
         }
     }
