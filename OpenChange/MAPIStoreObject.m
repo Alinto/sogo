@@ -256,6 +256,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
     {
       cValue = aRow->lpProps + counter;
       value = NSObjectFromSPropValue (cValue);
+      if (value == nil)
+        continue;
+
       switch (cValue->ulPropTag & 0xffff)
         {
         case PT_STRING8:
