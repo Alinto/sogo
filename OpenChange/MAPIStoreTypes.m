@@ -154,8 +154,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 // #define	PT_I8			0x14
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
-      result = [NSNull null];
-      abort();
+      result = nil;
       NSLog (@"%s: object type not handled: %d (0x%.4x)",
              __PRETTY_FUNCTION__, valueType, valueType);
     }
@@ -250,8 +249,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_I8			0x14
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
-      result = [NSNull null];
-      abort();
+      result = nil;
       NSLog (@"%s: object type not handled: %d (0x%.4x)",
              __PRETTY_FUNCTION__, valueType, valueType);
     }
