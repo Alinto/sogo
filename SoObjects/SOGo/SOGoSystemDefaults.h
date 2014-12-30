@@ -99,6 +99,7 @@
 - (int) maximumSyncInterval;
 - (int) internalSyncInterval;
 - (int) maximumSyncWindowSize;
+- (int) maximumSyncResponseSize;
 
 @end
 

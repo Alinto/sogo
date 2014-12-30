@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSCalendarDate.h>
 #include <Foundation/NSData.h>
 #include <Foundation/NSDate.h>
+#include <Foundation/NSTimeZone.h>
 
 #include <SOGo/NSString+Utilities.h>
 #include <SOGo/NSData+Crypto.h>
@@ -127,13 +128,17 @@ static NSArray *easCommandParameters = nil;
 //
 - (NSCalendarDate *) calendarDate
 {
+  NSString *s;
   id o;
 
-  o = [NSCalendarDate dateWithString: self  calendarFormat: @"%Y%m%dT%H%M%SZ"];
+  // We force parsing in the GMT timezone. If we don't do that, the date will be parsed
+  // in the default timezone.
+  s = [NSString stringWithFormat: @"%@ GMT", self];
+  o = [NSCalendarDate dateWithString: s  calendarFormat: @"%Y%m%dT%H%M%SZ %Z"];
 
   if (!o)
-    o = [NSCalendarDate dateWithString: self  calendarFormat: @"%Y-%m-%dT%H:%M:%S.%FZ"];
-  
+    o = [NSCalendarDate dateWithString: s  calendarFormat: @"%Y-%m-%dT%H:%M:%S.%FZ %Z"];
+ 
   return o;
 }
 

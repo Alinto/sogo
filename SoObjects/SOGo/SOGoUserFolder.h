@@ -31,7 +31,7 @@
     Child objects: 
       'Calendar': SOGoAppointmentFolder
   
-  The SOGoUserFolder is the "home directory" of the user where all his 
+  The SOGoUserFolder is the "home directory" of the user where all their 
   processing starts. It is the 'znek' in such a path:
     /SOGo/so/znek/Calendar
 */

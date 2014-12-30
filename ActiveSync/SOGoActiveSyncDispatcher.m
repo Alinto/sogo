@@ -793,10 +793,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    {
      cKey = [allKeys objectAtIndex: i];
 
-     // ignore invalid folder in cache caused by fs code bugs
-     if ([cKey isEqualToString:@"(null)"])
-        continue;
-
      // if a cache entry is not found in imapGUIDs its either an imap which has been deleted or its an other folder type which can be checked via lookupName.
      if (![imapGUIDs allKeysForObject: cKey])
        {
@@ -807,7 +803,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [o setTableUrl: [self folderTableURL]];
          [o reloadIfNeeded];
 
-         if ([cKey hasPrefix: @"folder"]) 
+         if ([cKey hasPrefix: @"folder"] || [cKey isEqualToString:@"(null)"])
            {
              [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [[NSString stringWithFormat: @"mail/%@", [cKey substringFromIndex: 6]] stringByEscapingURL]] ;
              command_count++;
@@ -849,6 +845,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      folderMetadata = [allFoldersMetadata objectAtIndex: i];
        
      nameInCache = [NSString stringWithFormat: @"folder%@",  [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]];
+
+     // we have no guid - ignore the folder
+     if (![imapGUIDs objectForKey: nameInCache])
+       continue;
+
      serverId = [NSString stringWithFormat: @"mail/%@",  [[imapGUIDs objectForKey: nameInCache] substringFromIndex: 6]];
      name = [folderMetadata objectForKey: @"displayName"];
           
@@ -2480,8 +2481,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
-      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame)
-        return [NSException exceptionWithHTTPStatus: 500];
+      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
+        {
+          RELEASE(context);
+          RELEASE(pool);
+          return [NSException exceptionWithHTTPStatus: 500];
+        }
     }
 
   if (d)

@@ -302,7 +302,7 @@ static NSArray *childRecordFields = nil;
 }
 
 /* This method fetches the display name defined by the owner, but is also the
-   fallback when a subscriber has not redefined the display name yet in his
+   fallback when a subscriber has not redefined the display name yet in their
    environment. */
 - (NSString *) _displayNameFromOwner
 {
@@ -895,7 +895,7 @@ static NSArray *childRecordFields = nil;
       allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
 
       // We remove the active user from the group (if present) in order to
-      // not subscribe him to his own resource!
+      // not subscribe him to their own resource!
       [allUsers removeObject: [context activeUser]];
     }
   else
@@ -1165,7 +1165,14 @@ static NSArray *childRecordFields = nil;
   int syncTokenInt;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
-         @"c_creationdate", @"c_lastmodified", nil];
+                           @"c_creationdate", @"c_lastmodified", nil];
+
+  if ([[self folderType] isEqualToString: @"Appointment"])
+    {
+      [fields addObject: @"c_enddate"];
+      [fields addObject: @"c_cycleenddate"];
+    }
+
   addFields = [[properties allValues] objectEnumerator];
   while ((currentField = [addFields nextObject]))
     if ([currentField length])
@@ -1181,7 +1188,9 @@ static NSArray *childRecordFields = nil;
       if (theStartDate)
         {
           EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                                           @"c_creationdate > %d", (int)[theStartDate timeIntervalSince1970]];
+                                                           @"(c_enddate > %d OR c_enddate = NULL) OR (c_iscycle = 1 and (c_cycleenddate > %d OR c_cycleenddate = NULL))",
+                                                         (int)[theStartDate timeIntervalSince1970],
+                                                         (int)[theStartDate timeIntervalSince1970]];
           
           qualifier = [[EOAndQualifier alloc] initWithQualifiers: sinceDateQualifier, qualifier,
                                               nil];
@@ -1211,7 +1220,9 @@ static NSArray *childRecordFields = nil;
       if (theStartDate)
         {
           EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                                           @"c_creationdate > %d", (int)[theStartDate timeIntervalSince1970]];
+                                                           @"(c_enddate > %d OR c_enddate = NULL) OR (c_iscycle = 1 and (c_cycleenddate > %d OR c_cycleenddate = NULL))",
+                                                         (int)[theStartDate timeIntervalSince1970],
+                                                         (int)[theStartDate timeIntervalSince1970]];
           
           qualifier = [[EOAndQualifier alloc] initWithQualifiers: sinceDateQualifier, qualifier,
                                               nil];

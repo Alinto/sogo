@@ -143,8 +143,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   iCalTimeZone *tz;
   id o;
 
-  NSInteger tzOffset;
-
   userTimeZone = [[[context activeUser] userDefaults] timeZone];
   tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
   [(iCalCalendar *) parent addTimeZone: tz];
@@ -165,10 +163,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       o = [o calendarDate];
       completed = (iCalDateTime *) [self uniqueChildWithTag: @"completed"];
-      //tzOffset = [[o timeZone] secondsFromGMTForDate: o];
-      //o = [o dateByAddingYears: 0 months: 0 days: 0
-      //                   hours: 0 minutes: 0
-      //                 seconds: -tzOffset];
       [completed setDate: o];
       [self setStatus: @"COMPLETED"];
     }
@@ -177,15 +171,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       iCalDateTime *due;
      
-
       o = [o calendarDate];
       due = (iCalDateTime *) [self uniqueChildWithTag: @"due"];
       [due setTimeZone: tz];
-      
-      tzOffset = [userTimeZone secondsFromGMTForDate: o];
-      o = [o dateByAddingYears: 0 months: 0 days: 0
-                         hours: 0 minutes: 0
-                       seconds: tzOffset];
       [due setDateTime: o];
     }
 
