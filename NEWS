@@ -1,10 +1,11 @@
-2.2.13 (2014-12-30)
+2.2.14 (2015-MM-DD)
 -------------------
 
 Bug fixes
- - fix contact description truncation on WP8 phones (#3028)
- - fix freebusy information not always returned
- - fix tz issue when the user one was different from the system one with EAS
+ - fixed calendar selection in event and task editors (#3049, #3050)
+
+2.2.13 (2014-12-30)
+-------------------
 
 Enhancements
  - initial support for empty sync request/response for EAS
@@ -12,11 +13,16 @@ Enhancements
    support memory-limited sync response sizes
  - we now not only use the creation date for event's cutoff date (EAS)
 
+Bug fixes
+ - fixed contact description truncation on WP8 phones (#3028)
+ - fixed freebusy information not always returned
+ - fixed tz issue when the user one was different from the system one with EAS
+
 2.2.12a (2014-12-19)
 --------------------
 
 Bug fixes
- - fix empty HTML mails being sent (#3034)
+ - fixed empty HTML mails being sent (#3034)
 
 2.2.12 (2014-12-18)
 -------------------
@@ -32,12 +38,12 @@ Enhancements
  - updated Czech, Dutch, Finnish, French, German, Polish and Spanish (Spain) translations
 
 Bug fixes
- - fix for privacy and categories for EAS (#3022)
+ - fixed for privacy and categories for EAS (#3022)
  - correctly set MeetingStatus for EAS on iOS devices
  - Ubuntu Lucid fixes for EAS
- - fix calendar reminders for future events (#3008)
+ - fixed calendar reminders for future events (#3008)
  - make sure all text parts are UTF-8 re-encoded for Outlook 2013 over EAS (#3003)
- - fix task description truncation affecting WP8 phones over EAS (#3028)
+ - fixed task description truncation affecting WP8 phones over EAS (#3028)
  
 2.2.11a (2014-12-10)
 --------------------

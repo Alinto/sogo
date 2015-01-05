@@ -8,7 +8,6 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
-  componentCalendar="componentCalendar"
   eventIsReadOnly="eventIsReadOnly"
   var:component="event"
   var:rsvpURL="rsvpURL"
