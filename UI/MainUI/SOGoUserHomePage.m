@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@
   isResource = [user isResource];
 
   // Don't fetch freebusy information if the user is of type 'resource' and has unlimited bookings
-  if (!isResource || maxBookings > 0)
+  if (!isResource || maxBookings != 0)
     {
       for (recordCount = 0; recordCount < recordMax; recordCount++)
         {
@@ -189,6 +189,9 @@
     }
 }
 
+//
+//
+//
 - (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
                             toEndDate: (NSCalendarDate *) endDate
                           forFreeBusy: (SOGoFreeBusyObject *) fb

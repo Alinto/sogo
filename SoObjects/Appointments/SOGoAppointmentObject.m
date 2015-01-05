@@ -637,10 +637,10 @@
           
           if ([fbInfo count])
             {
-              // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
+              // If we always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
               // is imposed) or if numberOfSimultaneousBookings is greater than the number of
               // overlapping events
-              if ([user numberOfSimultaneousBookings] == 0 ||
+              if ([user numberOfSimultaneousBookings] <= 0 ||
                   [user numberOfSimultaneousBookings] > [fbInfo count])
                 {
                   if (currentAttendee)

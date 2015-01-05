@@ -911,7 +911,8 @@ resource if the entry has the calendarresource objectClass set.
 to which a resource can be part of at any point in time.
 
 If this is set to `0`, or if the attribute is missing, it means no
-limit.
+limit. If set to `-1`, no limit is imposed but the resource will
+be marked as busy the first time it is booked.
 
 |filter (optional)
 |The filter to use for LDAP queries, it should be defined as an
@@ -1476,7 +1477,8 @@ case, SOGo will consider the returned entry to be a resource.
 which a resource can be part of at any point in time.
 
 If this is set to `0`, or if the attribute is missing, it means no
-limit.
+limit. If set to `-1`, no limit is imposed but the resource will
+be marked as busy the first time it is booked.
 
 |DomainFieldName (optional)
 |If set, SOGo will use the value of that field as the domain associated
