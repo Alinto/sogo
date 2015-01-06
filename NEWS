@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - fixed calendar selection in event and task editors (#3049, #3050)
+ - check for resources existence when listing subscribed ones (#3054)
 
 2.2.13 (2014-12-30)
 -------------------
