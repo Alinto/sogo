@@ -83,6 +83,7 @@
       this.uid = uid;
       this.id = this.$absolutePath();
       if (oldUID > -1) {
+        // For new messages, $mailbox doesn't exist
         this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
         this.$mailbox.uidsMap[oldUID] = null;
       }
@@ -168,6 +169,39 @@
     futureMessageData = Message.$$resource.fetch(this.id, 'view');
 
     return this.$unwrap(futureMessageData);
+  };
+
+  /**
+   * @function $reply
+   * @memberof Message.prototype
+   * @desc Prepare a new Message object as the reply of the current message and associated to the draft mailbox.
+   * @see {@link Account.$newMessage}
+   * @returns a promise of the HTTP operations
+   */
+  Message.prototype.$reply = function() {
+    var _this = this,
+        deferred = Message.$q.defer(),
+        mailbox,
+        message;
+
+    // Query server for draft folder and draft UID
+    Message.$$resource.fetch(this.id, 'reply').then(function(data) {
+      Message.$log.debug('New reply: ' + JSON.stringify(data, undefined, 2));
+      mailbox = _this.$mailbox.$account.$getMailboxByPath(data.mailboxPath);
+      message = new Message(data.accountId, mailbox, data);
+      // Fetch draft initial data
+      Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+        Message.$log.debug('New reply: ' + JSON.stringify(data, undefined, 2));
+        message.editable = data;
+        deferred.resolve(message);
+      }, function(data) {
+        deferred.reject(data);
+      });
+    }, function(data) {
+      deferred.reject(data);
+    });
+
+    return deferred.promise;
   };
 
   /**
