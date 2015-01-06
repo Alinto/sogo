@@ -17,6 +17,11 @@
                   ng-model="message.editable.to"
                   label:placeholder="Add a recipient">
       <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
+      <label><var:string label:value="Cc"/>
+      <tags-input type="text" name="cc"
+                  ng-model="message.editable.cc"
+                  label:placeholder="Add a recipient">
+      <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
       <label><var:string label:value="Subject"/>
       <input type="text" name="subject" ng-model="message.editable.subject"/></label>
       <label><var:string label:value="Attachments"/>
