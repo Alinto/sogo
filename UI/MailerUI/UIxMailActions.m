@@ -21,6 +21,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -86,26 +87,36 @@
 {
   SOGoMailAccount *account;
   SOGoMailObject *co;
-  SOGoDraftsFolder *folder;
+  SOGoDraftsFolder *drafts;
   SOGoDraftObject *newMail;
   SOGoUserDefaults *ud;
-  NSString *newLocation;
+  NSString *accountName, *mailboxName, *messageName;
+  NSDictionary *data;
   BOOL htmlComposition;
 
   co = [self clientObject];
   account = [co mailAccountFolder];
-  folder = [account draftsFolderInContext: context];
-  newMail = [folder newDraft];
+  drafts = [account draftsFolderInContext: context];
+  newMail = [drafts newDraft];
   ud = [[context activeUser] userDefaults];
   htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
 
   [newMail setIsHTML: htmlComposition];
   [newMail fetchMailForForwarding: co];
 
-  newLocation = [NSString stringWithFormat: @"%@/edit",
-			  [newMail baseURLInContext: context]];
+  accountName = [account nameInContainer];
+  mailboxName = [drafts relativeImap4Name];
+  messageName = [newMail nameInContainer];
 
-  return [self redirectToLocation: newLocation];
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         accountName, @"accountId",
+                       mailboxName, @"mailboxPath",
+                       messageName, @"draftId",
+                       // Message was saved ([SOGoDraftObject fetchMailForForwarding:]) so IMAP ID exists
+                       [NSNumber numberWithInt: [newMail IMAP4ID]], @"uid", nil];
+
+  return [self responseWithStatus: 201
+                        andString: [data jsonRepresentation]];
 }
 
 /* active message */
