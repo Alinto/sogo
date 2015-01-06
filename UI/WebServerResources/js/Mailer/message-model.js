@@ -131,6 +131,7 @@
    * @returns the HTML representation of the body
    */
   Message.prototype.$content = function() {
+    this.hasUnsafeContent = (this.content.indexOf(' unsafe-') > -1);
     return Message.$sce.trustAs('html', this.content);
   };
 

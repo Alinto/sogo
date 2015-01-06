@@ -33,6 +33,9 @@
          data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
       <span class="button tiny radius alert"
             data-ng-click="doDelete(message)"><i class="icon-trash"><!-- delete --></i></span>
+      <span class="button tiny radius"
+            data-ng-show="message.hasUnsafeContent"
+            data-ng-click="loadImages()"><var:string label:value="Load Images"/></span>
     </span>
   </div>
   <div class="mailer_mailcontent"
