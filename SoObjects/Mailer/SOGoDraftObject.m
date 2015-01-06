@@ -1004,11 +1004,11 @@ static NSString    *userAgent      = nil;
               withMetadata: attachment];
     }
 
-  [self storeInfo];
-
   // Save the message to the IMAP store so the user can eventually view the attached file(s)
   // from the Web interface
   [self save];
+
+  [self storeInfo];
 }
 
 /* accessors */
