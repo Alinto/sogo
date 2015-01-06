@@ -48,20 +48,28 @@
 {
   SOGoMailAccount *account;
   SOGoMailObject *co;
-  SOGoDraftsFolder *folder;
+  SOGoDraftsFolder *drafts;
   SOGoDraftObject *newMail;
-  NSString *newLocation;
+  NSString *accountName, *mailboxName, *messageName;
+  NSDictionary *data;
 
   co = [self clientObject];
   account = [co mailAccountFolder];
-  folder = [account draftsFolderInContext: context];
-  newMail = [folder newDraft];
+  drafts = [account draftsFolderInContext: context];
+  newMail = [drafts newDraft];
   [newMail fetchMailForReplying: co toAll: toAll];
 
-  newLocation = [NSString stringWithFormat: @"%@/edit",
-			  [newMail baseURLInContext: context]];
+  accountName = [account nameInContainer];
+  mailboxName = [drafts relativeImap4Name];
+  messageName = [newMail nameInContainer];
 
-  return [self redirectToLocation: newLocation];
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         accountName, @"accountId",
+                       mailboxName, @"mailboxPath",
+                       messageName, @"draftId", nil];
+
+  return [self responseWithStatus: 201
+                        andString: [data jsonRepresentation]];
 }
 
 - (WOResponse *) replyAction
