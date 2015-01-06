@@ -97,7 +97,7 @@
             }
           },
           resolve: {
-            stateMessage: ['$stateParams', '$state', 'stateMailbox', 'stateMessages', function($stateParams, $state, stateMailbox, stateMessages) {
+            stateMessage: ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages', function(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
               var message = _.find(stateMessages, function(messageObject) {
                 return messageObject.uid == $stateParams.messageId;
               });
@@ -105,11 +105,12 @@
               if (message)
                 return message.$reload();
               else
+                // Message not found
                 $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
             }]
           }
         })
-        .state('mail.account.mailbox.message.editMessage', {
+        .state('mail.account.mailbox.message.edit', {
           url: '/edit',
           views: {
             'mailbox@mail': {
@@ -121,6 +122,15 @@
             stateContent: ['stateMessage', function(stateMessage) {
               return stateMessage.$editableContent();
             }]
+          }
+        })
+        .state('mail.account.mailbox.message.reply', {
+          url: '/reply',
+          views: {
+            'mailbox@mail': {
+              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              controller: 'MessageEditorCtrl'
+            }
           }
         })
         .state('mail.newMessage', {
@@ -243,7 +253,12 @@
     }])
 
     .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
-      if (angular.isDefined(stateMessage)) {
+      if ($state.current.url == '/reply') {
+        stateMessage.$reply().then(function(msgObject) {
+          $scope.message = msgObject;
+        });
+      }
+      else if (angular.isDefined(stateMessage)) {
         $scope.message = stateMessage;
       }
       $scope.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');

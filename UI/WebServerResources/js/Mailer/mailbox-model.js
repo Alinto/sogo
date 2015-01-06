@@ -48,6 +48,10 @@
     return Mailbox; // return constructor
   }];
 
+  /**
+   * @module SOGo.MailerUI
+   * @desc Factory registration of Card in Angular module.
+   */
   angular.module('SOGo.MailerUI')
   /* Factory constants */
     .constant('sgMailbox_PRELOAD', {
