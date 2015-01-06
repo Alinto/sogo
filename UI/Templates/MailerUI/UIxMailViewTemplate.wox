@@ -23,7 +23,11 @@
   <div class="buttonsToolbar">
     <span>
       <a class="button tiny radius"
-         data-ui-sref="mail.account.mailbox.message.reply({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"><i class="icon-reply"><!-- reply --></i></a>
+         data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"><i class="icon-reply"><!-- reply --></i></a>
+      <a class="button tiny radius"
+         data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="icon-reply"><!-- reply all --></i></a>
+      <a class="button tiny radius"
+         data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="icon-reply"><!-- forward --></i></a>
       <a class="button tiny radius"
          data-ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
          data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>

@@ -124,8 +124,8 @@
             }]
           }
         })
-        .state('mail.account.mailbox.message.reply', {
-          url: '/reply',
+        .state('mail.account.mailbox.message.action', {
+          url: '/{actionName:(?:reply|replyall|forward)}',
           views: {
             'mailbox@mail': {
               templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
@@ -253,8 +253,18 @@
     }])
 
     .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
-      if ($state.current.url == '/reply') {
+      if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
+          $scope.message = msgObject;
+        });
+      }
+      else if ($stateParams.actionName == 'replyall') {
+        stateMessage.$replyAll().then(function(msgObject) {
+          $scope.message = msgObject;
+        });
+      }
+      else if ($stateParams.actionName == 'forward') {
+        stateMessage.$forward().then(function(msgObject) {
           $scope.message = msgObject;
         });
       }
