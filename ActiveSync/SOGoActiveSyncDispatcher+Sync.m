@@ -773,8 +773,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                 return_count++;
 
-                DESTROY(pool);
               }
+
+            DESTROY(pool);
           } // for ...
 
         if (more_available)
