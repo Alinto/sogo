@@ -53,6 +53,16 @@
 
 @implementation UIxMailFolderActions
 
+/**
+ * @api {post} /so/:username/Mail/:accountId/:parentMailboxPath/createFolder Create a mailbox
+ * @apiVersion 1.0.0
+ * @apiName PostCreateFolder
+ * @apiGroup Mail
+ *
+ * @apiParam {String} name Name of the mailbox
+ *
+ * @apiError (Error 500) {Object} error The error message
+ */
 - (id <WOActionResults>) createFolderAction
 {
   SOGoMailFolder *co, *newFolder;
@@ -96,18 +106,31 @@
   return response;  
 }
 
+/**
+ * @api {post} /so/:username/Mail/:accountId/:mailboxPath/renameFolder Rename a mailbox
+ * @apiVersion 1.0.0
+ * @apiName PostRenameFolder
+ * @apiGroup Mail
+ *
+ * @apiParam {String} name Name of the mailbox
+ *
+ * @apiSuccess (Success 200) {String} path  New mailbox path relative to account
+ * @apiError   (Error 500) {Object} error   The error message
+ */
 - (WOResponse *) renameFolderAction
 {
   SOGoMailFolder *co;
   SOGoUserSettings *us;
+  WORequest *request;
   WOResponse *response;
   NSException *error;
-  NSString *newFolderName, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
-  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSString *newFolderName, *newFolderPath, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
+  NSMutableDictionary *params, *moduleSettings, *threadsCollapsed, *message;
   NSArray *values;
 
   co = [self clientObject];
-  //Prepare the variables need to verify if the current folder have any collapsed threads saved in userSettings
+
+  // Prepare the variables need to verify if the current folder have any collapsed threads saved in userSettings
   us = [[context activeUser] userSettings];
   moduleSettings = [us objectForKey: @"Mail"];
   threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
@@ -115,29 +138,50 @@
   currentAccount = [[co container] nameInContainer];
   keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
 
-  newFolderName = [[context request] formValueForKey: @"name"];
-  newKeyForMsgUIDs = [[NSString stringWithFormat:@"/%@/folder%@", currentAccount, newFolderName] asCSSIdentifier];
-  error = [co renameTo: newFolderName];
-  if (error)
+  // Retrieve new folder name from JSON payload
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  newFolderName = [params objectForKey: @"name"];
+
+  if (!newFolderName || [newFolderName length] == 0)
     {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Unable to rename folder."];
+      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing name parameter"]
+                                            forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [message jsonRepresentation]];
     }
   else
     {
-      // Verify if the current folder have any collapsed threads save under it old name and adjust the folderName
-      if (threadsCollapsed)
+      newKeyForMsgUIDs = [[NSString stringWithFormat:@"/%@/folder%@", currentAccount, newFolderName] asCSSIdentifier];
+      error = [co renameTo: newFolderName];
+      if (error)
         {
-          if ([threadsCollapsed objectForKey:keyForMsgUIDs])
-            {
-              values = [NSArray arrayWithArray:[threadsCollapsed objectForKey:keyForMsgUIDs]];
-              [threadsCollapsed setObject:values forKey:newKeyForMsgUIDs];
-              [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
-              [us synchronize];
-            }
+          message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to rename folder."]
+                                                forKey: @"error"];
+          response = [self responseWithStatus: 500
+                                    andString: [message jsonRepresentation]];
         }
-      response = [self responseWith204];
+      else
+        {
+          // Verify if the current folder have any collapsed threads save under it old name and adjust the folderName
+          if (threadsCollapsed)
+            {
+              if ([threadsCollapsed objectForKey:keyForMsgUIDs])
+                {
+                  values = [NSArray arrayWithArray:[threadsCollapsed objectForKey:keyForMsgUIDs]];
+                  [threadsCollapsed setObject:values forKey:newKeyForMsgUIDs];
+                  [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+                  [us synchronize];
+                }
+            }
+          newFolderPath = [[[co imap4URL] path] substringFromIndex: 1]; // remove slash at beginning of path
+          message = [NSDictionary dictionaryWithObject: newFolderPath
+                                                forKey: @"path"];
+          response = [self responseWithStatus: 200
+                                    andString: [message jsonRepresentation]];
+        }
     }
+
   return response;
 }
 
