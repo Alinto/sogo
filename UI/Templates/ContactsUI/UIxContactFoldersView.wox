@@ -172,9 +172,9 @@
         <div class="newItemsToolbar">
           <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
         </div>
-        <div class="scrollview">
+        <div class="scrollView">
           <ul>
-            <li data-ng-repeat="folder in addressbooks"
+            <li data-ng-repeat="folder in addressbooks track by folder.id"
                 data-ng-class="{_selected: addressbook.id==folder.id}"
                 data-ng-dblclick="edit($index)">
               <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
@@ -241,7 +241,7 @@
         </div>
         <ul data-vs-repeat="56"
             data-vs-scroll-parent="#contactsList">
-          <li ng-repeat="currentCard in addressbook.cards"
+          <li ng-repeat="currentCard in addressbook.cards track by currentCard.id"
               data-ng-class="{_selected: card.id == currentCard.id}">
             <!-- <input type="checkbox" class="card-picture left"/> -->
             <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
