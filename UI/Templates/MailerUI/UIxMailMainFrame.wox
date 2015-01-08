@@ -216,11 +216,11 @@
 
   <script type="text/ng-template" id="mailboxes.html">
 
-    <!-- dropdown menu for addressbook options button -->
+    <!-- dropdown menu for mailbox options button -->
     <div id="folderProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
       <ul class="button-group">
         <li data-ng-show="currentFolder.isEditable">
-          <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
+          <span class="button" data-ng-click="editFolder(currentFolder)"><i class="icon-pencil"><!-- rename --></i></span>
         </li>
         <li data-ng-show="currentFolder.isEditable">
           <span class="button" data-ng-click="newFolder(currentFolder)"><i class="icon-plus"><!-- new mailbox --></i></span>
@@ -251,7 +251,7 @@
           <sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id"
                           data-sg-root="account"
                           data-sg-folder="folder"
-                          data-sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+                          data-sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
         </ul>
       </div>
     </div>

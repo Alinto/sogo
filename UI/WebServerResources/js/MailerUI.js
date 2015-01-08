@@ -163,28 +163,9 @@
 
     .run(function($rootScope) {
       $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-        console.log(event, current, previous, rejection)
+        console.error(event, current, previous, rejection)
       })
     })
-
-    .directive('sgFocusOn', function() {
-      return function(scope, elem, attr) {
-        scope.$on('sgFocusOn', function(e, name) {
-          if (name === attr.sgFocusOn) {
-            elem[0].focus();
-            elem[0].select();
-          }
-        });
-      };
-    })
-
-    .factory('sgFocus', ['$rootScope', '$timeout', function($rootScope, $timeout) {
-      return function(name) {
-        $timeout(function() {
-          $rootScope.$broadcast('sgFocusOn', name);
-        });
-      }
-    }])
 
     .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Account, Mailbox, stateAccounts) {
       $scope.accounts = stateAccounts;
@@ -197,6 +178,9 @@
               parentFolder.$newMailbox(parentFolder.id, name);
             }
           });
+      };
+      $scope.editFolder = function(folder) {
+        $rootScope.$broadcast('sgEditFolder', folder.id);
       };
       $scope.setCurrentFolder = function(account, folder) {
         $rootScope.currentFolder = folder;
@@ -221,7 +205,22 @@
             });
       };
 
+      // Register listeners
+      $scope.$on('sgRevertFolder', function(event, folderId) {
+        if (folderId == $scope.currentFolder.id) {
+          $scope.currentFolder.$reset();
+          event.stopPropagation();
+        }
+      });
+      $scope.$on('sgSaveFolder', function(event, folderId) {
+        if (folderId == $scope.currentFolder.id) {
+          $scope.currentFolder.$rename();
+          event.stopPropagation();
+        }
+      });
+
       if ($state.current.name == 'mail' && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
+        // Redirect to first mailbox of first account if no mailbox is selected
         var account = $scope.accounts[0];
         var mailbox = account.$mailboxes[0];
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });

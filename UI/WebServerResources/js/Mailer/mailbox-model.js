@@ -21,6 +21,8 @@
       else {
         this.id = this.$id();
         this.isEditable = this.$isEditable();
+        // Make a copy of the data for an eventual reset
+        this.$shadowData = this.$omit();
       }
     }
     else {
@@ -127,7 +129,7 @@
 
     return path.join('/');
   };
-  
+
   /**
    * @function $id
    * @memberof Mailbox.prototype
@@ -208,6 +210,77 @@
   };
 
   /**
+   * @function $rename
+   * @memberof AddressBook.prototype
+   * @desc Rename the addressbook and keep the list sorted
+   * @param {string} name - the new name
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$rename = function() {
+    var _this = this,
+        findParent,
+        deferred = Mailbox.$q.defer(),
+        parent,
+        children,
+        i;
+
+    // Local recursive function
+    findParent = function(parent, children) {
+      var parentMailbox = null,
+          mailbox = _.find(children, function(o) {
+            return o.path == _this.path;
+          });
+      if (mailbox) {
+        parentMailbox = parent;
+      }
+      else {
+        angular.forEach(children, function(o) {
+          if (!parentMailbox && o.children && o.children.length > 0) {
+            parentMailbox = findParent(o, o.children);
+          }
+        });
+      }
+      return parentMailbox;
+    };
+
+    // Find mailbox parent
+    parent = findParent(null, this.$account.$mailboxes);
+    if (parent == null)
+      children = this.$account.$mailboxes;
+    else
+      children = parent.children;
+
+    // Find index of mailbox among siblings
+    i = _.indexOf(_.pluck(children, 'id'), this.id);
+
+    this.$save().then(function(data) {
+      var sibling;
+      angular.extend(_this, data); // update the path attribute
+      _this.id = _this.$id();
+
+      // Move mailbox among its siblings according to its new name
+      children.splice(i, 1);
+      sibling = _.find(children, function(o) {
+        Mailbox.$log.debug(o.name + ' ? ' + _this.name);
+        return (o.type == 'folder' && o.name.localeCompare(_this.name) > 0);
+      });
+      if (sibling) {
+        i = _.indexOf(_.pluck(children, 'id'), sibling.id);
+      }
+      else {
+        i = children.length;
+      }
+      children.splice(i, 0, _this);
+
+      deferred.resolve();
+    }, function(data) {
+      deferred.reject(data);
+    });
+
+    return deferred.promise;
+  };
+
+  /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server
@@ -215,18 +288,18 @@
    */
   Mailbox.prototype.$delete = function() {
     var _this = this,
-        d = Mailbox.$q.defer(),
+        deferred = Mailbox.$q.defer(),
         promise;
 
     promise = Mailbox.$$resource.remove(this.id);
 
     promise.then(function() {
       _this.$account.$getMailboxes({reload: true});
-      d.resolve(true);
+      deferred.resolve(true);
     }, function(data, status) {
-      d.reject(data);
+      deferred.reject(data);
     });
-    return d.promise;
+    return deferred.promise;
   };
 
   /**
@@ -237,6 +310,43 @@
    */
   Mailbox.prototype.$deleteMessages = function(uids) {
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
+  };
+
+  /**
+   * @function $reset
+   * @memberof Mailbox.prototype
+   * @desc Reset the original state the mailbox's data.
+   */
+  Mailbox.prototype.$reset = function() {
+    var _this = this;
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key != 'children' && key[0] != '$') {
+        delete _this[key];
+      }
+    });
+    angular.extend(this, this.$shadowData);
+    this.$shadowData = this.$omit();
+  };
+
+  /**
+   * @function $save
+   * @memberof Mailbox.prototype
+   * @desc Save the mailbox to the server. This currently can only affect the name of the mailbox.
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$save = function() {
+    var _this = this;
+
+    return Mailbox.$$resource.save(this.id, this.$omit()).then(function(data) {
+      // Make a copy of the data for an eventual reset
+      _this.$shadowData = _this.$omit();
+      Mailbox.$log.debug(JSON.stringify(data, undefined, 2));
+      return data;
+    }, function(data) {
+      Mailbox.$log.error(JSON.stringify(data, undefined, 2));
+      // Restore previous version
+      _this.$reset();
+    });
   };
 
   /**
@@ -360,5 +470,5 @@
       });
     });
   };
-  
+
 })();

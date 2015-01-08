@@ -115,11 +115,16 @@
     .factory('sgDialog', Dialog.$factory)
 
   /**
-   * @desc A directive evaluated when the escape key is pressed.
+   * sgEscape - A directive evaluated when the escape key is pressed
+   * @memberof SOGo.UIDesktop
+   * @example:
+
+     <input type="text"
+            sg-escape="revertEditing($index)" />
    */
     .directive('sgEscape', function() {
       var ESCAPE_KEY = 27;
-      return function (scope, elem, attrs) {
+      return function(scope, elem, attrs) {
         elem.bind('keydown', function (event) {
           if (event.keyCode === ESCAPE_KEY) {
             scope.$apply(attrs.sgEscape);
@@ -128,17 +133,54 @@
       };
     })
 
+  /**
+   * sgFocusOn - A directive that sets the focus on its element when the specified string is broadcasted
+   * @memberof SOGo.UIDesktop
+   * @see {@link SOGo.UIDesktop.sgFocus}
+   * @example:
+
+     <input type="text"
+            sg-focus-on="username" />
+   */
+    .directive('sgFocusOn', function() {
+      return function(scope, elem, attr) {
+        scope.$on('sgFocusOn', function(e, name) {
+          if (name === attr.sgFocusOn) {
+            elem[0].focus();
+            elem[0].select();
+          }
+        });
+      };
+    })
+
+  /**
+   * sgFocus - A service to set the focus on the element associated to a specific string
+   * @memberof SOGo.UIDesktop
+   * @param {string} name - the string identifier of the element
+   * @see {@link SOGo.UIDesktop.sgFocusOn}
+   */
+    .factory('sgFocus', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+      return function(name) {
+        $timeout(function() {
+          $rootScope.$broadcast('sgFocusOn', name);
+        });
+      }
+    }])
+
   /*
    * sgFolderTree - Provides hierarchical folders tree
    * @memberof SOGo.UIDesktop
    * @restrict element
+   * @param {object} sgRoot
+   * @param {object} sgFolder
+   * @param {function} sgSetFolder
    * @see https://github.com/marklagendijk/angular-recursion
    * @example:
 
-     <sg-folder-tree data-ng-repeat="folder in folders track by folder.id"
-                     data-sg-root="account"
-                     data-sg-folder="folder"
-                     data-sg-set-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+     <sg-folder-tree ng-repeat="folder in folders track by folder.id"
+                     sg-root="account"
+                     sg-folder="folder"
+                     sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
   */
     .directive('sgFolderTree', function(RecursionHelper) {
       return {
@@ -146,15 +188,19 @@
         scope: {
           root: '=sgRoot',
           folder: '=sgFolder',
-          setFolder: '=sgSetFolder'
+          selectFolder: '=sgSelectFolder'
         },
         template:
           '<li>' +
           '  <span class="folder-container">' +
           '    <span class="folder-content">' +
           '      <i class="icon icon-ion-folder"></i>' +
-          '      <form>' +
-          '        <a data-ng-cloak="ng-cloak">{{folder.name}}</a>' +
+          '      <form data-ng-submit="save()">' +
+          '        <a>{{folder.name}}</a>' +
+          '        <input type="text" class="folder-name ng-hide"' +
+          '               data-ng-model="folder.name"' +
+          '               data-ng-blur="save()"' +
+          '               data-sg-escape="revert()"/>' +
           '      </form>' +
           '      <span class="icon ng-hide" data-ng-cloak="ng-cloak">' +
           '        <a class="icon" href="#"' +
@@ -164,39 +210,69 @@
           '    </span>' +
           '  </span>' +
           '</li>' +
-          '<sg-folder-tree ng-repeat="child in folder.children track by child.path" data-sg-root="root" data-sg-folder="child" data-sg-set-folder="setFolder"></sg-folder-tree>',
+          '<sg-folder-tree ng-repeat="child in folder.children track by child.path"' +
+          '                data-sg-root="root"' +
+          '                data-sg-folder="child"' +
+          '                data-sg-select-folder="selectFolder"></sg-folder-tree>',
         compile: function(element) {
           return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+            var level, link, input, edit;
+
             // Set CSS class for folder hierarchical level
-            var level = scope.folder.path.split('/').length - 1;
+            level = scope.folder.path.split('/').length - 1;
             angular.element(iElement.find('i')[0]).addClass('childLevel' + level);
 
-            var link = iElement.find('a');
+            // Select dynamic elements
+            link = angular.element(iElement.find('a')[0]);
+            input = iElement.find('input')[0];
+
+            var edit = function() {
+                link.addClass('ng-hide');
+                angular.element(input).removeClass('ng-hide');
+                input.focus();
+                input.select();
+            };
+
+            // jQLite listeners
+
+            // click - call the directive's external function sgSelectFolder
             link.on('click', function() {
-              var list = iElement.parent();
-              while (list[0].tagName != 'UL') {
-                list = list.parent();
+              var list, items;
+              if (!scope.mode.selected) {
+                list = iElement.parent();
+                while (list[0].tagName != 'UL') {
+                  list = list.parent();
+                }
+                items = list.find('li');
+
+                // Highlight element as "loading"
+                items.removeClass('_selected');
+                items.removeClass('_loading');
+                angular.element(iElement.find('li')[0]).addClass('_loading');
+
+                // Call external function
+                scope.selectFolder(scope.root, scope.folder);
               }
-              var items = list.find('li');
-
-              // Highlight element as "loading"
-              items.removeClass('_selected');
-              items.removeClass('_loading');
-              angular.element(iElement.find('li')[0]).addClass('_loading');
-
-              // Call external function
-              scope.setFolder(scope.root, scope.folder);
             });
-            // TODO: rename folder on dbl-click
-            // link.on('dblclick', function() {
-            // });
+
+            // dblclick - enter edit mode
+            link.on('dblclick', function() {
+              edit();
+            });
+
+            // Broadcast listeners
+
+            // sgSelectFolder - broadcasted when the folder has been successfully loaded
             scope.$on('sgSelectFolder', function(event, folderId) {
               if (folderId == scope.folder.id) {
-              var list = iElement.parent();
-              while (list[0].tagName != 'UL') {
-                list = list.parent();
-              }
-              var items = list.find('li');
+                var list = iElement.parent(),
+                    items;
+
+                scope.mode.selected = true;
+                while (list[0].tagName != 'UL') {
+                  list = list.parent();
+                }
+                items = list.find('li');
 
                 // Hightlight element as "selected"
                 angular.element(iElement.find('li')[0]).removeClass('_loading');
@@ -210,7 +286,33 @@
                 });
                 angular.element(iElement.find('span')[2]).removeClass('ng-hide');
               }
+              else {
+                scope.mode.selected = false;
+              }
             });
+
+            // sgEditFolder - broadcasted when the user wants to rename the folder
+            scope.$on('sgEditFolder', function(event, folderId) {
+              if (scope.mode.selected && folderId == scope.folder.id) {
+                edit();
+              }
+            });
+
+            // Local scope variables and functions
+
+            scope.mode = { selected: false };
+
+            scope.save = function() {
+              if (link.hasClass('ng-hide')) {
+                angular.element(input).addClass('ng-hide');
+                link.removeClass('ng-hide');
+                scope.$emit('sgSaveFolder', scope.folder.id);
+              }
+            };
+
+            scope.revert = function() {
+              scope.$emit('sgRevertFolder', scope.folder.id);
+            };
           });
         }
       };
