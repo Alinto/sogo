@@ -82,25 +82,6 @@
       $urlRouterProvider.otherwise('/personal');
     }])
 
-    .directive('sgFocusOn', function() {
-      return function(scope, elem, attr) {
-        scope.$on('sgFocusOn', function(e, name) {
-          if (name === attr.sgFocusOn) {
-            elem[0].focus();
-            elem[0].select();
-          }
-        });
-      };
-    })
-
-    .factory('sgFocus', ['$rootScope', '$timeout', function($rootScope, $timeout) {
-      return function(name) {
-        $timeout(function() {
-          $rootScope.$broadcast('sgFocusOn', name);
-        });
-      }
-    }])
-
     .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$modal', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, stateAddressbooks, stateAddressbook) {
       var currentAddressbook;
 
@@ -140,7 +121,7 @@
           });
       };
       $scope.currentFolderIsConfigurable = function(folder) {
-        return ($scope.addressbook.id == folder.id && !folder.isRemote);
+        return ($scope.addressbook && $scope.addressbook.id == folder.id && !folder.isRemote);
       };
       $scope.edit = function(i) {
         if (!$rootScope.addressbook.isRemote) {
@@ -236,7 +217,7 @@
             $scope.removeUser = function(user) {
               stateAddressbook.$acl.$removeUser(user.uid).then(function() {
                 if (user.uid == $scope.selectedUser.uid) {
-                  delete $scope.selectedUser;
+                  $scope.selectedUser = null;
                 }
               }, function(data, status) {
                 Dialog.alert(l('Warning'), l('An error occured please try again.'))
@@ -360,7 +341,7 @@
         $scope.card.$reset();
         if ($scope.card.isNew) {
           // Cancelling the creation of a card
-          delete $scope.card;
+          $scope.card = null;
           $state.go('addressbook', { addressbookId: $scope.addressbook.id });
         }
         else {
@@ -381,7 +362,8 @@
                     return o.id == card.id;
                   });
                   // Remove card object from scope
-                  delete $scope.card;
+                  $scope.card = null;
+                  $state.go('addressbook', { addressbookId: $scope.addressbook.id });
                 }, function(data, status) {
                   Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                                card.$fullname()));
