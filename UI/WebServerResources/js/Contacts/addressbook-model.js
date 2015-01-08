@@ -32,11 +32,12 @@
    * @desc The factory we'll use to register with Angular
    * @returns the AddressBook constructor
    */
-  AddressBook.$factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgCard', 'sgAcl', function($q, $timeout, Settings, Resource, Card, Acl) {
+  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgCard', 'sgAcl', function($q, $timeout, $log, Settings, Resource, Card, Acl) {
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
-      $$resource: new Resource(Settings.activeUser.folderURL + '/Contacts', Settings.activeUser),
+      $log: $log,
+      $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
       $Card: Card,
       $$Acl: Acl,
       activeUser: Settings.activeUser
@@ -204,7 +205,7 @@
   /**
    * @function $rename
    * @memberof AddressBook.prototype
-   * @desc Rename the addressbook
+   * @desc Rename the addressbook and keep the list sorted
    * @param {string} name - the new name
    * @returns a promise of the HTTP operation
    */
@@ -296,10 +297,12 @@
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
       });
     }, function(data) {
-      AddressBook.$timeout(function() {
-        angular.extend(_this, data);
-        _this.isError = true;
-      });
+      _this.isError = true;
+      if (angular.isObject(data)) {
+        AddressBook.$timeout(function() {
+          angular.extend(_this, data);
+        });
+      }
     });
   };
 
