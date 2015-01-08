@@ -113,22 +113,30 @@
       <!-- dropdown menu for addressbook options button -->
       <div id="addressbookProperties" class="f-dropdown icons-dropdown">
         <ul class="button-group">
-          <li>
-            <span class="button" data-sg-dropdown-content-toggle="#addressbookLinks"><i class="icon-hyperlink"><!-- links --></i></span>
+          <li label:data-tooltip="Links to this Address Book"
+              data-tooltip-popup-delay="500">
+            <span class="button"
+                  data-sg-dropdown-content-toggle="#addressbookLinks"><i class="icon-hyperlink"><!-- links --></i></span>
           </li>
-          <li>
+          <li label:data-tooltip="Rename"
+              data-tooltip-popup-delay="500">
             <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
           </li>
-          <li data-ng-show="addressbook.isOwned">
+          <li data-ng-show="addressbook.isOwned"
+              label:data-tooltip="Sharing..."
+              data-tooltip-popup-delay="500">
             <span class="button" data-ng-click="share()"><i class="icon-share"><!-- share --></i></span>
           </li>
-          <li>
+          <li label:data-tooltip="Import Cards"
+              data-tooltip-popup-delay="500">
             <span class="button" data-ng-click="importCards()"><i class="icon-file"><!-- import --></i></span>
           </li>
-          <li>
+          <li label:data-tooltip="Export"
+              data-tooltip-popup-delay="500">
             <span class="button" data-ng-click="exportCards()"><i class="icon-ion-ios7-upload-outline"><!-- export --></i></span>
           </li>
-          <li>
+          <li label:data-tooltip="Delete"
+              data-tooltip-popup-delay="500">
             <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
           </li>
         </ul>
@@ -193,8 +201,8 @@
           </ul>
         </div>
         <div class="buttonsToolbar">
-          <button data-ng-click="newAddressbook()" class="button small" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
-          <a href="#" class="button small" label:title="Subscribe to an Addressbook..."
+          <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
+          <a href="#" class="button" label:title="Subscribe to an Addressbook..."
              data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth"><!-- subscribe --></i></a>
         </div>
         <!--<var:if condition="hasContactSelectionButtons">
