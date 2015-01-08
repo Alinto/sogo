@@ -733,7 +733,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         partstat = [attendee participationStatus];
                         
                         if (partstat == iCalPersonPartStatNeedsAction)
-                          continue;
+                          {
+                            DESTROY(pool);
+                            continue;
+                          }
                       }
                   }                
 
@@ -772,11 +775,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Add>"];
 
                 return_count++;
-
               }
 
             DESTROY(pool);
-          } // for ...
+          } // for (i = 0; i < max; i++) ...
 
         if (more_available)
           {
@@ -806,7 +808,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         int j, k, return_count;
         BOOL found_in_cache;
-
 
         allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         max = [allMessages count];
