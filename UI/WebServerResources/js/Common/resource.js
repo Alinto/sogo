@@ -76,7 +76,10 @@
       params: params
     })
       .success(deferred.resolve)
-      .error(deferred.reject);
+      .error(function(data, status) {
+        if (status == 404)
+          return deferred.reject();
+      });
 
     return deferred.promise;
   };
