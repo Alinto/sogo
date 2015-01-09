@@ -39,7 +39,7 @@
    */
   Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
     angular.extend(Card, {
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
       $timeout: $timeout
     });
 
