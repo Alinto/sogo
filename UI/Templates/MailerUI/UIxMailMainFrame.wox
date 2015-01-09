@@ -30,6 +30,7 @@
   </var:foreach>
   </style>
 
+  <!--
   <div id="signatureFlagMessage" style="display: none" class="dialog right">
   </div>
 
@@ -49,12 +50,12 @@
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
       <li><var:string label:value="Subscribe..." /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Mark Folder Read" /></li>
       <li><var:string label:value="New Folder..." /></li>
       <li><var:string label:value="Compact This Folder" /></li>
       <li><var:string label:value="Export This Folder" /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Search Messages..." /></li>
       <li><var:string label:value="Sharing..." /></li>
     </ul>
@@ -65,13 +66,13 @@
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
       <li><var:string label:value="Subscribe..." /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Mark Folder Read" /></li>
       <li><var:string label:value="New Subfolder..." /></li>
       <li><var:string label:value="Compact This Folder" /></li>
       <li><var:string label:value="Archive This Folder" /></li>
       <li><var:string label:value="Empty Trash" /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Search Messages..." /></li>
       <li><var:string label:value="Sharing..." /></li>
     </ul>
@@ -82,7 +83,7 @@
       <li><var:string label:value="Open in New Mail Window" /></li>
       <li><var:string label:value="Copy Folder Location" /></li>
       <li><var:string label:value="Subscribe..." /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Mark Folder Read" /></li>
       <li><var:string label:value="New Subfolder..." /></li>
       <li><var:string label:value="Rename Folder..." /></li>
@@ -90,7 +91,7 @@
       <li><var:string label:value="Archive This Folder" /></li>
       <li><var:string label:value="Delete Folder" /></li>
       <li><var:string label:value="Use This Folder For" /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Search Messages..." /></li>
       <li><var:string label:value="Sharing..." /></li>
     </ul>
@@ -123,17 +124,17 @@
   <div class="f-dropdown" id="messageListMenu">
     <ul>
       <li><var:string label:value="Open Message In New Window"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Reply to Sender Only"/></li>
       <li><var:string label:value="Reply to All"/></li>
       <li><var:string label:value="Forward"/></li>
       <li><var:string label:value="Edit As New..."/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Move To"/></li>
       <li><var:string label:value="Copy To"/></li>
       <li><var:string label:value="Label"/></li>
       <li><var:string label:value="Mark"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Save As..."/></li>
       <li><var:string label:value="View Message Source"/></li>
       <li><var:string label:value="Print Preview"/></li>
@@ -145,12 +146,12 @@
   <div class="f-dropdown" id="messagesListMenu">
     <ul>
       <li><var:string label:value="Forward"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Move To"/></li>
       <li><var:string label:value="Copy To"/></li>
       <li><var:string label:value="Label"/></li>
       <li><var:string label:value="Mark"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Save As..."/></li>
       <li><var:string label:value="Print Preview"/></li>
       <li><var:string label:value="Print..."/></li>
@@ -166,10 +167,10 @@
       <li><var:string label:value="Edit As New..."/></li>
       <li><var:string label:value="Move To"/></li>
       <li><var:string label:value="Copy To"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Label"/></li>
       <li><var:string label:value="Mark"/></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Save As..."/></li>
       <li><var:string label:value="View Message Source"/></li>
       <li><var:string label:value="Print Preview"/></li>
@@ -181,7 +182,7 @@
   <div class="f-dropdown" id="label-menu">
     <ul id="" class="choiceMenu">
       <li><var:string label:value="None" /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <var:foreach list="availableLabels" item="currentLabel">
         <li var:class="currentLabel.name.asCSSIdentifier" var:data-name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
       </var:foreach>
@@ -194,7 +195,7 @@
       <li><var:string label:value="Thread As Read" /></li>
       <li><var:string label:value="As Read By Date..." /></li>
       <li><var:string label:value="All Read" /></li>
-      <li><!-- separator --></li>
+      <li> separator </li>
       <li><var:string label:value="Flag" /></li>
     </ul>
   </div>
@@ -211,8 +212,9 @@
       <li id="save_image"><var:string label:value="Save Image"/></li>
     </ul>
   </div>
+  -->
 
-  <div data-ui-view="mailboxes"><!-- mailboxes list --></div>
+  <div ui-view="mailboxes" layout="row" layout-fill="layout-fill"><!-- mailboxes list --></div>
 
   <script type="text/ng-template" id="mailboxes.html">
 
@@ -237,25 +239,51 @@
       </ul>
     </div>
 
-    <div id="mailboxesList" class="folders-list">
-      <div class="newItemsToolbar">
-        <a class="button tiny radius split" data-ui-sref="mail.newMessage()"><var:string label:value="Compose"/><span data-dropdown-toggle="#draftsDrop"></span></a><br/>
-      </div>
-      <div class="scrollView">
-        <ul data-ng-repeat="account in accounts track by account.id">
-          <li>
-            <label>{{account.name}}
-            <button class="icon" label:title="New Folder..."
-               data-ng-click="newFolder(account)"><i class="icon-plus"><!-- new --></i></button></label>
-          </li>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
+      <div style="text-align: center; position: absolute; top: 0; width: 100%; z-index: 100;">[ZONE DE NAVIGATION]</div>
+      <md-toolbar class="md-tall" layout-align="end start">
+        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+          <span class="md-flex">user@domain</span>
+        </h2>
+      </md-toolbar>
+      <md-content md-scroll-y="md-scroll-y" class="md-padding" ng-controller="LeftCtrl">
+        <md-button ng-click="close()" class="md-primary" hide-gt-md="hide-gt-md">Close</md-button>
+        <md-list ng-repeat="account in accounts track by account.id">
+          <md-item>
+            <md-item-content>
+              <div class="md-tile-content">
+                <md-button><h3>{{account.name}}</h3></md-button>
+              </div>
+            </md-item-content>
+          </md-item>
           <sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id"
                           data-sg-root="account"
                           data-sg-folder="folder"
                           data-sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
-        </ul>
-      </div>
-    </div>
-    <div data-ui-view="mailbox"><!-- messages list --></div>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+
+    <!--<div class="newItemsToolbar">
+        <a class="button tiny radius split" data-ui-sref="mail.newMessage()"><var:string label:value="Compose"/><span data-dropdown-toggle="#draftsDrop"></span></a><br/>
+        </div>-->
+
+    <main layout="column" layout-fill="layout-fill">
+      <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-warn">
+        <div class="md-toolbar-tools">
+          <span flex="flex">
+            <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
+            <div class="display-1" style="font-size: 2em; font-weight: 300">
+              [[Calendar]]
+            </div>
+          </span>
+          <span class="sd-toolbar">
+            <span>search</span>
+          </span>
+        </div>
+      </md-toolbar>
+      <md-content layout="row" layout-md="column" layout-sm="column" layout-fill="layout-fill" flex="flex" class="md-padding" ui-view="mailbox"><!-- messages list --></md-content>
+    </main>
   </script>
 
   <script type="text/ng-template" id="mailbox.html">

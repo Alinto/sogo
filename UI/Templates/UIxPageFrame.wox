@@ -20,13 +20,11 @@
 	<meta name="author" content="SKYRIX Software AG/Inverse inc." />
 	<meta name="robots" content="stop" />
 	<meta name="build" var:content="buildDate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link href="mailto:support@inverse.ca" rev="made" />
 	<link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
-	<link type="text/css" rel="stylesheet" rsrc:href="css/app.css" />
 	<link type="text/css" rel="stylesheet" rsrc:href="css/icons.css"/>
-	<var:if condition="hasProductSpecificCSS"
-	  ><link type="text/css" rel="stylesheet" var:href="productCSSURL"
-	    /></var:if>
+	<link type="text/css" rel="stylesheet" rsrc:href="css/angular-material.css"/>
 	<var:if condition="hasPageSpecificCSS"
 	  ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
 	    /></var:if>
@@ -40,7 +38,7 @@
            </var:if-ie>
       </head>
 
-      <body var:data-ng-app="angularModule" var:class="bodyClasses"
+      <body style="overflow: hidden" var:data-ng-app="angularModule" var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
 	  ><var:if condition="singleWindowModeEnabled"
           ><div id="popupFrame" style="display: none;"><iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe></div></var:if
@@ -57,8 +55,8 @@
               ></var:if
             ><var:if condition="isPopup" const:negate="YES"
 	    ><var:if condition="isUIxDebugEnabled"
-	      ><div id="logConsole"><!-- space --></div></var:if>
-              <nav class="top-bar">
+	      ><!-- space --></var:if>
+              <!-- <nav class="top-bar">
                 <section class="top-bar-section">
               <var:if condition="canLogoff">
                 <ul class="right">
@@ -70,7 +68,7 @@
                       <li><a href="?theme=mobile"><var:string label:value="Mobile Version"/></a></li>
                     </ul>
                   </li>
-                  <li class="divider hide-for-small"><!-- divider --></li>
+                  <li class="divider hide-for-small"> divider </li>
                   <li>
                     <a id="logoff" var:href="logoffPath"><var:string label:value="Disconnect"/></a>
                   </li>
@@ -113,11 +111,15 @@
               </var:if>
             </ul>
           </section>
-	    </nav>
+	    </nav>-->
 	  </var:if>
-          <!-- <var:component className="UIxToolbar" var:toolbar="toolbar"/>-->
 
-	  <div id="pageContent"><var:component-content/></div>
+          <div class="container" layout="row" layout-fill="layout-fill">
+            <var:component-content/>
+          </div>
+          <md-toolbar class="" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
+            <span>[BOTTOM BAR]</span>
+          </md-toolbar>
 
 	  <script type="text/javascript">
 	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
@@ -145,14 +147,18 @@
 	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
 	  </script>
 	  <script type="text/javascript" rsrc:src="js/vendor/underscore-min.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/hammer.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-animate.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-sanitize.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-aria.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="js/vendor/angular-material.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/mm-foundation-tpls.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="js/vendor/angular-vs-repeat.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/Common/ui.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/ui-common.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/ui-desktop.js"><!-- space --></script>
           <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"

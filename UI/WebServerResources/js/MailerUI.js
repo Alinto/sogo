@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UI', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -62,8 +62,12 @@
         })
         .state('mail.account.mailbox', {
           url: '/:mailboxId',
-          templateUrl: 'mailbox.html',
-          controller: 'MailboxCtrl',
+          views: {
+            'mailbox@mail': {
+              templateUrl: 'mailbox.html',
+              controller: 'MailboxCtrl'
+            }
+          },
           resolve: {
             stateMailbox: ['$stateParams', 'stateAccount', 'decodeUriFilter', function($stateParams, stateAccount, decodeUriFilter) {
               var mailboxId = decodeUriFilter($stateParams.mailboxId);
