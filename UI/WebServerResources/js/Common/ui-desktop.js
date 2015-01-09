@@ -191,7 +191,7 @@
           selectFolder: '=sgSelectFolder'
         },
         template:
-          '<li>' +
+          '<md-item>' +
           '  <span class="folder-container">' +
           '    <span class="folder-content">' +
           '      <i class="icon icon-ion-folder"></i>' +
@@ -209,7 +209,7 @@
           '      </span>' +
           '    </span>' +
           '  </span>' +
-          '</li>' +
+          '</md-item>' +
           '<sg-folder-tree ng-repeat="child in folder.children track by child.path"' +
           '                data-sg-root="root"' +
           '                data-sg-folder="child"' +
@@ -240,15 +240,15 @@
               var list, items;
               if (!scope.mode.selected) {
                 list = iElement.parent();
-                while (list[0].tagName != 'UL') {
+                while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('li');
+                items = list.find('md-item');
 
                 // Highlight element as "loading"
                 items.removeClass('_selected');
                 items.removeClass('_loading');
-                angular.element(iElement.find('li')[0]).addClass('_loading');
+                angular.element(iElement.find('md-item')[0]).addClass('_loading');
 
                 // Call external function
                 scope.selectFolder(scope.root, scope.folder);
@@ -269,14 +269,14 @@
                     items;
 
                 scope.mode.selected = true;
-                while (list[0].tagName != 'UL') {
+                while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('li');
+                items = list.find('md-item');
 
                 // Hightlight element as "selected"
-                angular.element(iElement.find('li')[0]).removeClass('_loading');
-                angular.element(iElement.find('li')[0]).addClass('_selected');
+                angular.element(iElement.find('md-item')[0]).removeClass('_loading');
+                angular.element(iElement.find('md-item')[0]).addClass('_selected');
 
                 // Show options button
                 angular.forEach(items, function(element) {
