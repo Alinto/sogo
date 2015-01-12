@@ -2413,24 +2413,21 @@ have unexpected behaviour with various ActiveSync clients.
 
 Please be aware of the following limitations:
 
-* Currently, only the personal calendar and address book are
-synchronized. Adding support for all folders is planned.
 * When creating an Outlook 2013 profile, you must actually kill Outlook
 before the end of the creation process. See http://www.vionblog.com/connect-zimbra-community-with-outlook-2013
 for a procedure example.
 * Outlook 2013 does not search the GAL. One possible alternative
 solution is to configure Outlook to use a LDAP server (over SSL) with
-authentication. Alternatively, when supporting more than just the
-personal address book, we'll also be able to expose the LDAP/SQL based
-address books in SOGo over ActiveSync.
+authentication. Outlook 2013 also does not seem to support multiple
+address books over ActiveSync.
 * Make sure you do not use a self-signed certificate. While this will
 work, Outlook will work intermittently as it will raise popups for
 certificate validation, sometimes in background, preventing the user to
 see the warning and thus, preventing any synchronization to happen.
 * ActiveSync clients keep connections open for a while. Each connection
 will grab a hold on a sogod process so you will need a lot of processes
-to handle many clients. This limitation will eventually be overcome in
-SOGo.
+to handle many clients. Make sure you tune your SOGo server when having
+lots of ActiveSync clients.
 * Repetitive events with occurrences exceptions are currently not
 supported.
 * Outlook 2013 Autodiscovery is currently not supported.
@@ -2452,7 +2449,7 @@ user base.
 
 To contact Microsoft, please visit:
 
-http://www.microsoft.com/en-us/legal/intellectualproperty/IPLicensing/Programs/exchangeactivesyncprotocol.aspx
+http://www.microsoft.com/en-us/legal/intellectualproperty/
  
 and send an email to iplicreq@microsoft.com
 
