@@ -56,69 +56,43 @@
             ><var:if condition="isPopup" const:negate="YES"
 	    ><var:if condition="isUIxDebugEnabled"
 	      ><!-- space --></var:if>
-              <!-- <nav class="top-bar">
-                <section class="top-bar-section">
-              <var:if condition="canLogoff">
-                <ul class="right">
-                  <li class="name has-dropdown">
-                    <a data-dropdown-toggle="#userOptionsDrop"><var:if condition="userHasVacationEnabled">
-                      <img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" />
-                    </var:if><var:string var:value="userIdentification"/></a>
-                    <ul id="userOptionsDrop" class="f-dropdown">
-                      <li><a href="?theme=mobile"><var:string label:value="Mobile Version"/></a></li>
-                    </ul>
-                  </li>
-                  <li class="divider hide-for-small"> divider </li>
-                  <li>
-                    <a id="logoff" var:href="logoffPath"><var:string label:value="Disconnect"/></a>
-                  </li>
-                </ul>
-              </var:if>
-              <ul>
-	      <var:if condition="userHasCalendarAccess">
-		<var:if condition="isCalendar">
-		  <li class="active"><a href="#"><var:string label:value="Calendar" /></a></li>
-		</var:if>
-		<var:if condition="isCalendar" const:negate="YES">
-		  <li><a var:href="relativeCalendarPath"><var:string label:value="Calendar" /></a></li>
-		</var:if>
-	      </var:if>
-	      <var:if condition="isContacts">
-		<li class="active"><a href="#"><var:string label:value="Address Book"/></a></li>
-	      </var:if>
-	      <var:if condition="isContacts" const:negate="YES">
-		<li><a var:href="relativeContactsPath"><var:string label:value="Address Book" /></a></li>
-	      </var:if>
-	      <var:if condition="userHasMailAccess">
-		<var:if condition="isMail">
-		    <li class="active"><a href="#"><var:string label:value="Mail"/></a></li>
-		</var:if>
-		<var:if condition="isMail" const:negate="YES">
-		  <li><a var:href="relativeMailPath"><var:string label:value="Mail" /></a></li>
-		</var:if>
-	      </var:if>
-	      <li><a var:href="relativePreferencesPath"><var:string label:value="Preferences" /></a></li>
-	      <var:if condition="isSuperUser">
-		<var:if condition="isAdministration">
-		  <li class="active"><var:string label:value="Administration"/></li>
-		</var:if>
-		<var:if condition="isAdministration" const:negate="YES">
-		  <li><a var:href="relativeAdministrationPath"><var:string label:value="Administration" /></a></li>
-		</var:if>
-	      </var:if>
-	      <var:if condition="isUIxDebugEnabled">
-                <li><a href="#"><var:string label:value="Log Console (dev.)" /></a></li>
-              </var:if>
-            </ul>
-          </section>
-	    </nav>-->
 	  </var:if>
 
           <div class="container" layout="row" layout-fill="layout-fill">
             <var:component-content/>
           </div>
-          <md-toolbar class="" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
-            <span>[BOTTOM BAR]</span>
+          <md-toolbar layout="row" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
+            <var:if condition="userHasCalendarAccess">
+	      <var:if condition="isCalendar">
+		<md-button class="active"><a href="#"><var:string label:value="Calendar" /></a></md-button>
+	      </var:if>
+	      <var:if condition="isCalendar" const:negate="YES">
+		<md-button><a var:href="relativeCalendarPath"><var:string label:value="Calendar" /></a></md-button>
+	      </var:if>
+	    </var:if>
+	    <var:if condition="isContacts">
+	      <md-button class="active"><a href="#"><var:string label:value="Address Book"/></a></md-button>
+	    </var:if>
+	    <var:if condition="isContacts" const:negate="YES">
+	      <md-button><a var:href="relativeContactsPath"><var:string label:value="Address Book" /></a></md-button>
+	    </var:if>
+	    <var:if condition="userHasMailAccess">
+	      <var:if condition="isMail">
+		<md-button class="active"><a href="#"><var:string label:value="Mail"/></a></md-button>
+	      </var:if>
+	      <var:if condition="isMail" const:negate="YES">
+		<md-button><a var:href="relativeMailPath"><var:string label:value="Mail" /></a></md-button>
+	      </var:if>
+	    </var:if>
+	    <md-button><a var:href="relativePreferencesPath"><var:string label:value="Preferences" /></a></md-button>
+	    <var:if condition="isSuperUser">
+	      <var:if condition="isAdministration">
+		<md-button class="active"><var:string label:value="Administration"/></md-button>
+	      </var:if>
+	      <var:if condition="isAdministration" const:negate="YES">
+		<md-button><a var:href="relativeAdministrationPath"><var:string label:value="Administration" /></a></md-button>
+	      </var:if>
+	    </var:if>
           </md-toolbar>
 
 	  <script type="text/javascript">
