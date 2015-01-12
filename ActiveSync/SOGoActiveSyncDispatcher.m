@@ -2159,6 +2159,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NGMimeMessage *message;
   NSException *error;
   NSData *data;
+  NGMutableHashMap *map;
+  NGMimeMessage *messageToSend;
+  NGMimeMessageGenerator *generator;
+  NSDictionary *identity;
+  NSString *fullName, *email;
   
   // We get the mail's data
   data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
@@ -2167,6 +2172,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: data];
   RELEASE(parser);
+
+  map = [NGHashMap hashMapWithDictionary: [message headers]];
+
+  identity = [[context activeUser] primaryIdentity];
+
+  fullName = [identity objectForKey: @"fullName"];
+  email = [identity objectForKey: @"email"];
+  if ([fullName length])
+    [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
+  else
+    [map setObject: email forKey: @"from"];
+
+  messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+
+  [messageToSend setBody: [message body]];
+
+  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+  data = [generator generateMimeFromPart: messageToSend];
   
   error = [self _sendMail: data
                recipients: [message allRecipients]
@@ -2295,6 +2318,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NSException *error;
 
       id body, bodyFromSmartForward;
+      NSString *fullName, *email;
+      NSDictionary *identity;
 
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -2317,6 +2342,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // "smart forwarded" message.
       map = [NGHashMap hashMapWithDictionary: [messageFromSmartForward headers]];
       [map setObject: @"multipart/mixed"  forKey: @"content-type"];
+
+      identity = [[context activeUser] primaryIdentity];
+
+      fullName = [identity objectForKey: @"fullName"];
+      email = [identity objectForKey: @"email"];
+      if ([fullName length])
+        [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
+      else
+        [map setObject: email forKey: @"from"];
 
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
