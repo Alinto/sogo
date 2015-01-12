@@ -3,6 +3,7 @@
 
 Enhancements
  - MultipleBookingsFieldName can be set to -1 to show busy status when booked at least once 
+ - handle multipart objects in EAS/ItemOperations
 
 Bug fixes
  - fixed calendar selection in event and task editors (#3049, #3050)

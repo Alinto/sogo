@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -1215,71 +1216,136 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *fileReference, *realCollectionId; 
   NSMutableString *s;
+  NSArray *fetchRequests;
+  id aFetch;
+  int i;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
 
-  fileReference = [[[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
+  s = [NSMutableString string];
 
-  realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<ItemOperations xmlns=\"ItemOperations:\">"];
+  [s appendString: @"<Status>1</Status>"];
+  [s appendString: @"<Response>"];
+
+  fetchRequests = (id)[theDocumentElement getElementsByTagName: @"Fetch"];
   
-  if (folderType == ActiveSyncMailFolder)
+  if ([fetchRequests count])
     {
-      id currentFolder, currentCollection, currentBodyPart;
-      NSString *folderName, *messageName, *pathToPart;
-      SOGoMailAccounts *accountsFolder;
-      SOGoUserFolder *userFolder;
-      SOGoMailObject *mailObject;
+      NSMutableData *bytes, *parts;
+      NSMutableArray *partLength;
       NSData *d;
 
-      NSRange r1, r2;
+      bytes = [NSMutableData data];
+      parts = [NSMutableData data];
+      partLength = [NSMutableArray array];
 
-      r1 = [realCollectionId rangeOfString: @"/"];
-      r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
+      for (i = 0; i < [fetchRequests count]; i++)
+        {
+          aFetch = [fetchRequests objectAtIndex: i];
+          fileReference = [[[(id)[aFetch getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
+          realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
+
+          if (folderType == ActiveSyncMailFolder)
+            {
+              id currentFolder, currentCollection, currentBodyPart;
+              NSString *folderName, *messageName, *pathToPart;
+              SOGoMailAccounts *accountsFolder;
+              SOGoUserFolder *userFolder;
+              SOGoMailObject *mailObject;
+
+              NSRange r1, r2;
+
+              r1 = [realCollectionId rangeOfString: @"/"];
+              r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
       
-      folderName = [realCollectionId substringToIndex: r1.location];
-      messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
-      pathToPart = [realCollectionId substringFromIndex: r2.location+1];
-      
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+              folderName = [realCollectionId substringToIndex: r1.location];
+              messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
+              pathToPart = [realCollectionId substringFromIndex: r2.location+1];
 
-      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
-                                          inContext: context
-                                            acquire: NO];
-      
-      mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
-      currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
+              userFolder = [[context activeUser] homeFolderInContext: context];
+              accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+              currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
 
+              currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
+                                                  inContext: context
+                                                    acquire: NO];
 
-      s = [NSMutableString string];
-      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-      [s appendString: @"<ItemOperations xmlns=\"ItemOperations:\">"];
-      [s appendString: @"<Status>1</Status>"];
-      [s appendString: @"<Response>"];
+              mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
+              currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
 
-      [s appendString: @"<Fetch>"];
-      [s appendString: @"<Status>1</Status>"];
-      [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
-      [s appendString: @"<Properties>"];
+              [s appendString: @"<Fetch>"];
+              [s appendString: @"<Status>1</Status>"];
+              [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
+              [s appendString: @"<Properties>"];
 
-      [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
-      [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context]];
+              [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
 
-      [s appendString: @"</Properties>"];
-      [s appendString: @"</Fetch>"];
+              if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
+                {
+                  [s appendFormat: @"<Part>%d</Part>", i+1];
+                  [partLength addObject: [NSNumber numberWithInteger: [[currentBodyPart fetchBLOB] length]]];
+                  [parts  appendData:[currentBodyPart fetchBLOB]];
+                }
+              else
+                {
+                  [s appendFormat: @"<Range>0-%d</Range>", [[[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context] length]-1];
+                  [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context]];
+                }
 
+              [s appendString: @"</Properties>"];
+              [s appendString: @"</Fetch>"];
+            }
+          else
+            {
+              [theResponse setStatus: 500];
+              return;
+            }
+        }
 
       [s appendString: @"</Response>"];
       [s appendString: @"</ItemOperations>"];
-  
+
       d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-      [theResponse setContent: d];
-    }
-  else
-    {
-      [theResponse setStatus: 500];
+
+      if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
+        {
+          uint32_t PartCount;
+          uint32_t Offset;
+          uint32_t Len;
+
+          // 2.2.2.9.1.1 - MultiPartResponse -- http://msdn.microsoft.com/en-us/library/jj663270%28v=exchg.80%29.aspx
+          PartCount = [partLength count] + 1;
+          Offset = ((PartCount) * 2) * 4 + 4;
+          Len = [d length];
+
+          [bytes appendBytes: &PartCount  length: 4];
+          [bytes appendBytes: &Offset  length: 4];
+          [bytes appendBytes: &Len  length: 4];
+
+          // 2.2.2.9.1.1.1 - PartMetaData -- http://msdn.microsoft.com/en-us/library/jj663267%28v=exchg.80%29.aspx
+          for (i = 0; i < [fetchRequests count]; i++)
+            {
+              Offset = Offset + Len;
+              Len = [[partLength objectAtIndex:i] intValue];
+              [bytes appendBytes: &Offset  length: 4];
+              [bytes appendBytes: &Len  length: 4];
+            }
+
+          // First part - webxml
+          [bytes appendData: d];
+
+          // Subsequent parts - requested data
+          [bytes appendData: parts];
+
+          [theResponse setContent: bytes];
+        }
+      else
+        {
+          [theResponse setContent: d];
+        }
     }
 }
 
@@ -2538,19 +2604,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // Ping or Sync command with empty body
       cmdName = [NSString stringWithFormat: @"process%@:inResponse:", cmdName];
     }
-  
+
   aSelector = NSSelectorFromString(cmdName);
+
+  // The -processItemOperations: method will generate a multipart response when Content-Type is application/vnd.ms-sync.multipart
+  if ([[theRequest headerForKey: @"MS-ASAcceptMultiPart"] isEqualToString:@"T"])
+    [theResponse setHeader: @"application/vnd.ms-sync.multipart"  forKey: @"Content-Type"];
+  else 
+    [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
 
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
 
-  [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
   RELEASE(context);
   RELEASE(pool);
-    
+
   return nil;
 }
 
