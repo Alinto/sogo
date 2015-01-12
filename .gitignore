@@ -17,3 +17,4 @@ UI/WebServerResources/js/vendor/
 ._*
 Documentation/*.docbook
 Documentation/*.pdf
+.idea
