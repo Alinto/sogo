@@ -9,6 +9,7 @@ Bug fixes
  - check for resources existence when listing subscribed ones (#3054)
  - correctly recognize Apple Calendar on Yosemite (#2960) 
  - fixed two potential autorelease pool leak (#3026 and #3051)
+ - fixed birthday offset in EAS
 
 2.2.13 (2014-12-30)
 -------------------
