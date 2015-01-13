@@ -214,7 +214,7 @@
   </div>
   -->
 
-  <div ui-view="mailboxes" layout="row" layout-fill="layout-fill"><!-- mailboxes list --></div>
+  <div ui-view="mailboxes" layout="row" style="max-height: 100%"><!-- mailboxes list --></div>
 
   <script type="text/ng-template" id="mailboxes.html">
 
