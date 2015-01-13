@@ -58,9 +58,9 @@
 	      ><!-- space --></var:if>
 	  </var:if>
 
-          <div class="container" layout="row" layout-fill="layout-fill">
+
             <var:component-content/>
-          </div>
+
           <md-toolbar layout="row" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
             <var:if condition="userHasCalendarAccess">
 	      <var:if condition="isCalendar">
