@@ -54,10 +54,14 @@
 @implementation UIxMailFolderActions
 
 /**
- * @api {post} /so/:username/Mail/:accountId/:parentMailboxPath/createFolder Create a mailbox
+ * @api {post} /so/:username/Mail/:accountId/:parentMailboxPath/createFolder Create mailbox
  * @apiVersion 1.0.0
  * @apiName PostCreateFolder
  * @apiGroup Mail
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Mail/0/folderINBOX/createFolder \
+ *          -H "Content-Type: application/json" \
+ *          -d '{ "name": "test" }'
  *
  * @apiParam {String} name Name of the mailbox
  *
@@ -92,7 +96,7 @@
           jsonResponse = [NSDictionary dictionaryWithObject: [NSString stringWithFormat: errorFormat, folderName]
                                                      forKey: @"error"];
           response = [self responseWithStatus: 500
-                                    andString: [jsonResponse jsonRepresentation]];
+                        andJSONRepresentation: jsonResponse];
         }
     }
   else
@@ -100,14 +104,14 @@
       jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."]
                                                  forKey: @"error"];
       response = [self responseWithStatus: 500
-                                andString: [jsonResponse jsonRepresentation]];
+                    andJSONRepresentation: jsonResponse];
     }
 
   return response;  
 }
 
 /**
- * @api {post} /so/:username/Mail/:accountId/:mailboxPath/renameFolder Rename a mailbox
+ * @api {post} /so/:username/Mail/:accountId/:mailboxPath/renameFolder Rename mailbox
  * @apiVersion 1.0.0
  * @apiName PostRenameFolder
  * @apiGroup Mail

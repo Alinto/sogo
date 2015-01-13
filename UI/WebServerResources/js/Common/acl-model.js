@@ -46,10 +46,10 @@
       deferred.resolve(this.users);
     }
     else {
-      return Acl.$$resource.fetch(this.folderId, 'acls').then(function(users) {
+      return Acl.$$resource.fetch(this.folderId, 'acls').then(function(response) {
         _this.users = [];
         // console.debug(JSON.stringify(users, undefined, 2));
-        angular.forEach(users, function(data) {
+        angular.forEach(response.users, function(data) {
           user = new Acl.$User(data);
           user.canSubscribeUser = user.isSubscribed;
           user.wasSubscribed = user.isSubscribed;
