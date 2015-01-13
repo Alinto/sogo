@@ -480,10 +480,28 @@
   return jsonResponse;
 }
 
+/**
+ * @api {get} /so/:username/usersSearch?search=:search Search for users
+ * @apiVersion 1.0.0
+ * @apiName GetUsersSearch
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/usersSearch?search=john
+ *
+ * @apiParam {String} search Substring to match against username or email address
+ *
+ * @apiSuccess (Success 200) {Object[]} users        List of matching users
+ * @apiSuccess (Success 200) {String} users.uid      User ID
+ * @apiSuccess (Success 200) {String} users.c_email  Main email address
+ * @apiSuccess (Success 200) {String} users.cn       Common name
+ * @apiSuccess (Success 200) {Number} users.isGroup  1 if the user is a group
+ * @apiError   (Error 400) {Object} error            The error message
+ */
 - (id <WOActionResults>) usersSearchAction
 {
   NSMutableArray *users;
   NSArray *currentUsers;
+  NSDictionary *message;
   NSString *contact, *domain, *uidDomain;
   NSEnumerator *visibleDomains;
   id <WOActionResults> result;
@@ -512,11 +530,15 @@
               [users addObjectsFromArray: currentUsers];
             }
         }
-      result = [self responseWithStatus: 200 andJSONRepresentation: users];
+      result = [self responseWithStatus: 200
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: users forKey: @"users"]];
     }
   else
-    result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'search' parameter"];
+    {
+      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing search parameter"]
+                                          forKey: @"error"];
+      result = [self responseWithStatus: 400 andJSONRepresentation: message];
+    }
 
   return result;
 }
@@ -530,15 +552,34 @@
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"Content-Type"];
 
-  [response appendContentString: [folders JSONRepresentation]];
+  [response appendContentString: [[NSDictionary dictionaryWithObject: folders
+                                                              forKey: @"folders"] JSONRepresentation]];
 
   return response;
 }
 
+/**
+ * @api {get} /so/:username/foldersSearch?type=:type Search for folders
+ * @apiVersion 1.0.0
+ * @apiName GetFoldersSearch
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/foldersSearch?type=contact
+ *
+ * @apiParam {String} type Either 'calendar' or 'contact'
+ *
+ * @apiSuccess (Success 200) {Object[]} folders           List of matching folders
+ * @apiSuccess (Success 200) {String} folders.name        Path of folder
+ * @apiSuccess (Success 200) {String} folders.displayName Human readable name
+ * @apiSuccess (Success 200) {String} folders.owner       Username of owner
+ * @apiSuccess (Success 200) {String} folders.type        Either 'calendar' or 'contact'
+ * @apiError   (Error 400) {Object} error                 The error message
+ */
 - (id <WOActionResults>) foldersSearchAction
 {
   NSString *folderType;
   NSArray *folders;
+  NSDictionary *message;
   id <WOActionResults> result;
   SOGoUserFolder *userFolder;
 
@@ -552,8 +593,11 @@
       result = [self _foldersResponseForResults: folders];
     }
   else
-    result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'type' parameter"];
+    {
+      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing type parameter"]
+                                          forKey: @"error"];
+      result = [self responseWithStatus: 400 andJSONRepresentation: message];
+    }
   
   return result;
 }

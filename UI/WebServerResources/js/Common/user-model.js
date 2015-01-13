@@ -39,9 +39,9 @@
    */
   User.$filter = function(search) {
     var param = {search: search};
-    return User.$$resource.fetch(null, 'usersSearch', param).then(function(users) {
+    return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results = [];
-      angular.forEach(users, function(data) {
+      angular.forEach(response.users, function(data) {
         console.debug(JSON.stringify(data, undefined, 2));
         var user = new User(data);
         results.push(user);
@@ -186,9 +186,9 @@
       deferred.resolve(this.$$folders);
     }
     else {
-      User.$$resource.userResource(this.uid).fetch(null, 'foldersSearch', param).then(function(data) {
-        _this.$$folders = data;
-        deferred.resolve(data);
+      User.$$resource.userResource(this.uid).fetch(null, 'foldersSearch', param).then(function(response) {
+        _this.$$folders = response.folders;
+        deferred.resolve(response.folders);
         return data;
       });
     }

@@ -39,6 +39,16 @@
 
 @implementation UIxObjectActions
 
+/**
+ * @api {get} /so/:username/:folderPath/addUserInAcls?uid=:uid Add user to ACLs
+ * @apiVersion 1.0.0
+ * @apiName GetAddUserInAcls
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/addUserInAcls?uid=sogo2
+ *
+ * @apiParam {String} uid User ID
+ */
 - (WOResponse *) addUserInAclsAction
 {
   WOResponse *response;
@@ -57,6 +67,16 @@
   return response;
 }
 
+/**
+ * @api {get} /so/:username/:folderPath/removeUserFromAcls?uid=:uid Remove user from ACLs
+ * @apiVersion 1.0.0
+ * @apiName GetRemoveUserFromAcls
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/removeUserInAcls?uid=sogo2
+ *
+ * @apiParam {String} uid User ID
+ */
 - (WOResponse *) removeUserFromAclsAction
 {
   WOResponse *response;

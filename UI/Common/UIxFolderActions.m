@@ -205,6 +205,18 @@
   return [self _realFolderActivation: NO];
 }
 
+/**
+ * @api {get} /so/:username/:folderPath/newguid Generate new ID
+ * @apiVersion 1.0.0
+ * @apiName GetNewGUID
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/newguid
+ *
+ * @apiSuccess (Success 200) {String} pid Folder ID (element's parent)
+ * @apiSuccess (Success 200) {String} id  New element ID
+ * @apiError   (Error 500) {Object} error The error message
+ */
 - (WOResponse *) newguidAction
 {
   NSString *objectId, *folderId;
@@ -413,13 +425,24 @@
   return response;
 }
 
+/**
+ * @api {get} /so/:username/:folderPath/subscribeUsers?uids=:uids Subscribe user(s)
+ * @apiVersion 1.0.0
+ * @apiName GetSubscribeUsers
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/subscribeUsers?uids=sogo2,sogo3
+ *
+ * @apiParam {String} uids Comma-separated list of user IDs
+ *
+ * @apiError (Error 400) {Object} error The error message
+ */
 - (id <WOActionResults>) subscribeUsersAction
 {
   id <WOActionResults> response;
   NSString *uids;
   NSArray *userIDs;
   SOGoGCSFolder *folder;
-  NSException *ex;
   int count, max;
   
   uids = [[context request] formValueForKey: @"uids"];
@@ -432,16 +455,12 @@
         [folder subscribeUserOrGroup: [userIDs objectAtIndex: count]
 			    reallyDo: YES
                             response: nil];
-      ex = nil;
+      response = [self responseWith204];
     }
   else
-    ex = [NSException exceptionWithHTTPStatus: 400
-                                       reason: @"missing 'uids' parameter"];
-  
-  if (ex)
-    response = (id <WOActionResults>) ex;
-  else
-    response = [self responseWith204];
+    response = [self responseWithStatus: 400
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: @"missing 'uids' parameter"
+                                                                     forKey: @"error"]];
   
   return response;
 }
