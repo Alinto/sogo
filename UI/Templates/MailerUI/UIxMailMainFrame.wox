@@ -269,6 +269,7 @@
 
     <main layout="column" layout-fill="layout-fill">
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-warn">
+        <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
         <div class="md-toolbar-tools">
           <span flex="flex">
             <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
@@ -276,12 +277,12 @@
               [[Calendar]]
             </div>
           </span>
-          <span class="sd-toolbar">
+          <span class="sd-toolbar-tools">
             <span>search</span>
           </span>
         </div>
       </md-toolbar>
-      <md-content layout="row" flex="flex" class="md-padding" ui-view="mailbox"><!-- messages list --></md-content>
+      <md-content layout="row" flex="flex" ui-view="mailbox"><!-- messages list --></md-content>
     </main>
   </script>
 
