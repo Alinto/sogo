@@ -38,8 +38,9 @@
            </var:if-ie>
       </head>
 
-      <body style="overflow: hidden" var:data-ng-app="angularModule" var:class="bodyClasses"
-	><var:if condition="isCompatibleBrowser"
+	  <!--FIXME : repport in-line styling in style definitions -->
+      <body style="overflow: hidden; padding-bottom:64px;" var:data-ng-app="angularModule" var:class="bodyClasses"
+><var:if condition="isCompatibleBrowser"
 	  ><var:if condition="singleWindowModeEnabled"
           ><div id="popupFrame" style="display: none;"><iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe></div></var:if
           ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
