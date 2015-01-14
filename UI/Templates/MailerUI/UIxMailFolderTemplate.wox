@@ -6,9 +6,9 @@
    xmlns:rsrc="OGo:url"
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
-    <md-content md-scroll-y="md-scroll-y" style="width: 250px" id="messagesList">
-      <md-list data-n0-vs-repeat="56"
-               data-n0-vs-scroll-parent="#messagesList">
+    <md-content md-scroll-y="md-scroll-y" flex="33" id="messagesList">
+      <md-list data-vs-repeat="56"
+               data-vs-scroll-parent="#messagesList">
         <md-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
                  data-ng-class="{unread: !currentMessage.isread}">
           <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
@@ -24,5 +24,5 @@
         </md-item>
       </md-list>
     </md-content>
-    <md-content flex="flex" data-ui-view="message"><!-- message view --></md-content>
+    <md-content flex="66" data-ui-view="message"><!-- message view --></md-content>
 </container>
