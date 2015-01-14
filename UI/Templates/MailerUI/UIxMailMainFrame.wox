@@ -213,8 +213,8 @@
     </ul>
   </div>
   -->
-
-  <div ui-view="mailboxes" layout="row" layout-fill="layout-fill"><!-- mailboxes list --></div>
+  <!--FIXME : repport in-line styling in style definitions -->
+  <div ui-view="mailboxes" layout="row" style="max-height: 100%"><!-- mailboxes list --></div>
 
   <script type="text/ng-template" id="mailboxes.html">
 
@@ -240,7 +240,6 @@
     </div>
 
     <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
-      <div style="text-align: center; position: absolute; top: 0; width: 100%; z-index: 100;">[ZONE DE NAVIGATION]</div>
       <md-toolbar class="md-tall" layout-align="end start">
         <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
           <span class="md-flex">user@domain</span>
@@ -270,6 +269,7 @@
 
     <main layout="column" layout-fill="layout-fill">
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-warn">
+        <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
         <div class="md-toolbar-tools">
           <span flex="flex">
             <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
@@ -277,12 +277,12 @@
               [[Calendar]]
             </div>
           </span>
-          <span class="sd-toolbar">
+          <span class="sd-toolbar-tools">
             <span>search</span>
           </span>
         </div>
       </md-toolbar>
-      <md-content layout="row" layout-md="column" layout-sm="column" layout-fill="layout-fill" flex="flex" class="md-padding" ui-view="mailbox"><!-- messages list --></md-content>
+      <md-content layout="row" flex="flex" ui-view="mailbox"><!-- messages list --></md-content>
     </main>
   </script>
 

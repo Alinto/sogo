@@ -38,8 +38,9 @@
            </var:if-ie>
       </head>
 
-      <body style="overflow: hidden" var:data-ng-app="angularModule" var:class="bodyClasses"
-	><var:if condition="isCompatibleBrowser"
+	  <!--FIXME : repport in-line styling in style definitions -->
+      <body style="overflow: hidden; padding-bottom:64px;" var:data-ng-app="angularModule" var:class="bodyClasses"
+><var:if condition="isCompatibleBrowser"
 	  ><var:if condition="singleWindowModeEnabled"
           ><div id="popupFrame" style="display: none;"><iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe></div></var:if
           ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
@@ -58,42 +59,43 @@
 	      ><!-- space --></var:if>
 	  </var:if>
 
-          <div class="container" layout="row" layout-fill="layout-fill">
+
             <var:component-content/>
-          </div>
-          <md-toolbar layout="row" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
-            <var:if condition="userHasCalendarAccess">
-	      <var:if condition="isCalendar">
-		<md-button class="active"><a href="#"><var:string label:value="Calendar" /></a></md-button>
-	      </var:if>
-	      <var:if condition="isCalendar" const:negate="YES">
-		<md-button><a var:href="relativeCalendarPath"><var:string label:value="Calendar" /></a></md-button>
-	      </var:if>
-	    </var:if>
-	    <var:if condition="isContacts">
-	      <md-button class="active"><a href="#"><var:string label:value="Address Book"/></a></md-button>
-	    </var:if>
-	    <var:if condition="isContacts" const:negate="YES">
-	      <md-button><a var:href="relativeContactsPath"><var:string label:value="Address Book" /></a></md-button>
-	    </var:if>
-	    <var:if condition="userHasMailAccess">
-	      <var:if condition="isMail">
-		<md-button class="active"><a href="#"><var:string label:value="Mail"/></a></md-button>
-	      </var:if>
-	      <var:if condition="isMail" const:negate="YES">
-		<md-button><a var:href="relativeMailPath"><var:string label:value="Mail" /></a></md-button>
-	      </var:if>
-	    </var:if>
-	    <md-button><a var:href="relativePreferencesPath"><var:string label:value="Preferences" /></a></md-button>
-	    <var:if condition="isSuperUser">
-	      <var:if condition="isAdministration">
-		<md-button class="active"><var:string label:value="Administration"/></md-button>
-	      </var:if>
-	      <var:if condition="isAdministration" const:negate="YES">
-		<md-button><a var:href="relativeAdministrationPath"><var:string label:value="Administration" /></a></md-button>
-	      </var:if>
-	    </var:if>
-          </md-toolbar>
+<!--FIXME : make sure the .md-button.md-default-theme[disabled] is "contrast aware" disabled labels are actualy almost invisible -->
+<!--FIXME : repport in-line styling in style definitions -->
+	  <md-toolbar layout="row" layout-align="center center" style="background-color:#212121; position: fixed; bottom: 0px; left: 0px; width: 100%; z-index: 100">
+		  <var:if condition="userHasCalendarAccess">
+			  <var:if condition="isCalendar">
+				  <md-button ng-disabled="true"><var:string label:value="Calendar" /></md-button>
+			  </var:if>
+			  <var:if condition="isCalendar" const:negate="YES">
+				  <md-button var:data-ng-href="relativeCalendarPath"><var:string label:value="Calendar" /></md-button>
+			  </var:if>
+		  </var:if>
+		  <var:if condition="isContacts">
+			  <md-button ng-disabled="true"><var:string label:value="Address Book"/></md-button>
+		  </var:if>
+		  <var:if condition="isContacts" const:negate="YES">
+			  <md-button var:data-ng-href="relativeContactsPath"><var:string label:value="Address Book" /></md-button>
+		  </var:if>
+		  <var:if condition="userHasMailAccess">
+			  <var:if condition="isMail">
+				  <md-button ng-disabled="true"><var:string label:value="Mail"/></md-button>
+			  </var:if>
+			  <var:if condition="isMail" const:negate="YES">
+				  <md-button var:data-ng-href="relativeMailPath"><var:string label:value="Mail" /></md-button>
+			  </var:if>
+		  </var:if>
+		  <md-button var:data-ng-href="relativePreferencesPath"><var:string label:value="Preferences" /></md-button>
+		  <var:if condition="isSuperUser">
+			  <var:if condition="isAdministration">
+				  <md-button ng-disabled="true"><var:string label:value="Administration"/></md-button>
+			  </var:if>
+			  <var:if condition="isAdministration" const:negate="YES">
+				  <md-button var:data-ng-href="relativeAdministrationPath"><var:string label:value="Administration" /></md-button>
+			  </var:if>
+		  </var:if>
+	  </md-toolbar>
 
 	  <script type="text/javascript">
 	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
