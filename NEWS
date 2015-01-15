@@ -12,6 +12,7 @@ Bug fixes
  - fixed two potential autorelease pool leak (#3026 and #3051)
  - fixed birthday offset in EAS
  - fixed From's full name over EAS
+ - fixed potential issue when handling multiple Add/Change/Delete/Fetch EAS commands (#3057)
 
 2.2.13 (2014-12-30)
 -------------------

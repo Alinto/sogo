@@ -1019,7 +1019,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               if ([[element tagName] isEqualToString: @"Add"])
                 {
                   // Add
-                  [self processSyncAddCommand: aCommand
+                  [self processSyncAddCommand: element
                                  inCollection: theCollection
                                      withType: theFolderType
                                      inBuffer: theBuffer];
@@ -1028,7 +1028,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Change"])
                 {
                   // Change
-                  [self processSyncChangeCommand: aCommand
+                  [self processSyncChangeCommand: element
                                     inCollection: theCollection
                                         withType: theFolderType
                                         inBuffer: theBuffer];
@@ -1037,7 +1037,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Delete"])
                 {
                   // Delete
-                  [self processSyncDeleteCommand: aCommand
+                  [self processSyncDeleteCommand: element
                                     inCollection: theCollection
                                         withType: theFolderType
                                         inBuffer: theBuffer];
@@ -1046,7 +1046,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Fetch"])
                 {
                   // Fetch
-                  [self processSyncFetchCommand: aCommand
+                  [self processSyncFetchCommand: element
                                    inCollection: theCollection
                                        withType: theFolderType
                                        inBuffer: theBuffer];
