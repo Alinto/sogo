@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
@@ -245,12 +244,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   struct SPropValue *cValue;
   NSUInteger counter;
   NSMutableDictionary *newProperties;
-  NSTimeZone *tz;
-  NSInteger tzOffset;
   id value;
-
-  tz = nil;
-  tzOffset = 0;
 
   newProperties = [NSMutableDictionary dictionaryWithCapacity: aRow->cValues];
   for (counter = 0; counter < aRow->cValues; counter++)
@@ -267,16 +261,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
           [self warnWithFormat:
                   @"attempting to set string property as PR_STRING8: %.8x",
                 cValue->ulPropTag];
-          break;
-        case PT_SYSTIME:
-          if (!tz)
-            {
-              tz = [[self userContext] timeZone];
-              tzOffset = -[tz secondsFromGMT];
-            }
-          value = [value addYear: 0 month: 0 day: 0
-                            hour: 0 minute: 0 second: tzOffset];
-          [value setTimeZone: tz];
           break;
         }
       [newProperties setObject: value

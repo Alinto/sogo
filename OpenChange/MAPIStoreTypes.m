@@ -119,6 +119,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       break;
     case PT_SYSTIME:
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
+      [result setTimeZone: utcTZ];
       break;
     case PT_BINARY:
     case PT_SVREID:
