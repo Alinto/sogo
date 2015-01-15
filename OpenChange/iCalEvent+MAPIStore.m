@@ -207,16 +207,7 @@
   value
     = [properties objectForKey: MAPIPropertyKey (PidLidExceptionReplaceTime)];
   if (value)
-    {
-      if (!isAllDay)
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
-        }
-      [self setRecurrenceId: value];
-    }
+    [self setRecurrenceId: value];
  
   // start
   value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
@@ -241,13 +232,7 @@
           [start setTimeZone: nil];
         }
       else
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
           [start setDateTime: value];
-        }
     }
 
   /* end */
@@ -273,13 +258,7 @@
           [end setTimeZone: nil];
         }
       else
-        {
-          tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
           [end setDateTime: value];
-        }
     }
 
   /* priority */
