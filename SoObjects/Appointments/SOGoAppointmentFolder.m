@@ -926,11 +926,6 @@ static Class iCalEventK = nil;
   dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
   [record setObject: dateSecs forKey: @"c_enddate"];
   
-  // The first instance date is added to the dictionary so it can
-  // be used by UIxCalListingActions to compute the DST offset.
-  date = [theFirstCycle startDate];
-  [record setObject: date forKey: @"cycleStartDate"];
-  
   return record;
 }
 
@@ -1103,9 +1098,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
       [newRecord setObject: dateSecs forKey: @"c_recurrence_id"];
       [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"c_iscycle"];
-      // The first instance date is added to the dictionary so it can
-      // be used by UIxCalListingActions to compute the DST offset.
-      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
+
       // We identified the record as an exception.
       [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isException"];
 

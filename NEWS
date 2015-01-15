@@ -13,6 +13,7 @@ Bug fixes
  - fixed birthday offset in EAS
  - fixed From's full name over EAS
  - fixed potential issue when handling multiple Add/Change/Delete/Fetch EAS commands (#3057)
+ - fixed wrong timezone calculation on recurring events
 
 2.2.13 (2014-12-30)
 -------------------
