@@ -940,7 +940,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
   codepage = [Codepages getCodepageFromName: headerCharset];
   if (!codepage)
-    codepage = [Codepages getCodepageFromName: @"utf-8"];
+    {
+      [self warnWithFormat: @"Couldn't find codepage from `%@`. "
+                            @"Using UTF-8 by default", headerCharset];
+      codepage = [Codepages getCodepageFromName: @"utf-8"];
+    }
 
   *data = MAPILongValue(memCtx, [codepage intValue]);
 
