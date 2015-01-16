@@ -173,9 +173,35 @@
   if (dateDayOfWeek > dayOfWeek && pos < 0)
     pos++;
 
-  /* We check if the day of hte week is identical. This is important because if they
+  /* We check if the days of the week are identical. This is important because if they
      are, "pos" actually includes the first day of tmpDate which means we must decrement
-     pos by 1 */
+     pos by 1. This happens for example in the eastern timezone (America/Montreal)
+     in 2015. We have:
+
+     BEGIN:VTIMEZONE
+     TZID:America/Montreal
+     X-LIC-LOCATION:America/Montreal
+     BEGIN:DAYLIGHT
+     TZOFFSETFROM:-0500
+     TZOFFSETTO:-0400
+     TZNAME:EDT
+     DTSTART:19700308T020000
+     RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+     END:DAYLIGHT
+     BEGIN:STANDARD
+     TZOFFSETFROM:-0400
+     TZOFFSETTO:-0500
+     TZNAME:EST
+     DTSTART:19701101T020000
+     RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+     END:STANDARD
+     END:VTIMEZONE
+     
+     The time changes occure on a Sunday, but in March, the 1st is a Sunday itself and in November
+     the 1st is also a Sunday. If we don't decrement "pos" by one, tmpDate (which is set to March or November 1st
+     because of "day: 1" will have 14 more days added for March and 7 more days added for November - which will
+     effectively shift the time change by a whole week.
+  */
   if (dayOfWeek == dateDayOfWeek)
     pos--;
 
