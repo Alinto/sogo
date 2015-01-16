@@ -22,7 +22,7 @@ $sg-rem-value: $sg-rem-base-value !default;
 $sg-sp-scale-factor: $sg-rem-value / $sg-rem-base-value !global;
 
 // Font-size basic scale (from Google)
-// nice-to-have : generate with a loop
+// NiceToHave : generate with a loop
 $sg-typo-scale: (
   12,
   14,

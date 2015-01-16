@@ -6,7 +6,7 @@
    xmlns:rsrc="OGo:url"
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
-    <md-content md-scroll-y="md-scroll-y" flex="flex" style="min-width: 300px;" id="messagesList">
+    <md-content flex="40" style="min-width: 300px;" id="messagesList">
         <!--dirty fix for vs-repeat-->
         <style>
             .vs-repeat-repeated-element {
@@ -39,6 +39,6 @@
       </md-list>
     </md-content>
 
-    <md-content class="md-padding" flex="flex" data-ui-view="message"><!-- message view --></md-content>
+    <div layout="column" flex="60" data-ui-view="message"><!-- message view --></div>
 
 </container>
