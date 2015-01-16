@@ -1,0 +1,24 @@
+<div ng-controller="AppCtrl" class="full" layout="column" layout-margin>
+  <p class="inset">
+    Open a dialog over the app's content. Press escape or click outside to close the dialog.
+  </p>
+
+  <div layout="column" layout-align="center" >
+    <md-button class="md-primary" ng-click="showAlert($event)">
+      Alert Dialog
+    </md-button>
+    <div class="gap"></div>
+    <md-button class="md-primary" ng-click="showConfirm($event)">
+      Confirm Dialog
+    </md-button>
+    <div class="gap"></div>
+    <md-button class="md-primary" ng-click="showAdvanced($event)">
+      Custom Dialog
+    </md-button>
+  </div>
+  
+  <br/>
+  <b layout="row" layout-align="center center" layout-margin>
+    {{alert}}
+  </b>
+</div>

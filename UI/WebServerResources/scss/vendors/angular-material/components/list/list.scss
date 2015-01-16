@@ -1,0 +1,103 @@
+$list-h3-font-size: 1.1em !default;
+$list-h3-margin: 0 0 3px 0 !default;
+$list-h3-font-weight: 400 !default;
+$list-h4-font-size: 0.9em !default;
+$list-h4-font-weight: 400 !default;
+$list-h4-margin: 0 0 3px 0 !default;
+$list-p-font-size: 0.75em !default;
+$list-p-margin: 0 0 3px 0 !default;
+
+$list-padding-top: $baseline-grid !default;
+$list-padding-right: 0px !default;
+$list-padding-left: 0px !default;
+$list-padding-bottom: $baseline-grid !default;
+
+$item-padding-top: 0px !default;
+$item-padding-right: 0px !default;
+$item-padding-left: 0px !default;
+$item-padding-bottom: 0px !default;
+
+md-list {
+  padding: $list-padding-top $list-padding-right $list-padding-bottom $list-padding-left;
+}
+
+md-item {
+
+}
+
+md-item-content {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  box-sizing: border-box;
+
+  position: relative;
+
+  padding: $item-padding-top $item-padding-right $item-padding-bottom $item-padding-left;
+}
+
+/**
+ * The left tile for a list item.
+ */
+.md-tile-left {
+  min-width: 56px;
+  margin-right: -16px;
+  // for dev only
+  height: 56px;
+  background-color: grey;
+}
+
+/**
+ * The center content tile for a list item.
+ */
+.md-tile-content {
+  flex: 1;
+
+  padding: $baseline-grid * 2;
+  text-overflow: ellipsis;
+
+  h3  {
+    margin: $list-h3-margin;
+    font-weight: $list-h3-font-weight;
+    font-size: $list-h3-font-size;
+  }
+  h4 {
+    margin: $list-h4-margin;
+    font-weight: $list-h4-font-weight;
+    font-size: $list-h4-font-size;
+  }
+  p {
+    margin: $list-p-margin;
+    font-size: $list-p-font-size;
+  }
+}
+.sg {
+  &-tile-content {
+    @extend .md-tile-content;
+    margin-left: $layout-gutter-width; // dirty fix for vs-repeat damages
+    .name  {
+      margin: $list-h3-margin;
+      font-weight: $list-h3-font-weight;
+      font-size: $list-h3-font-size;
+    }
+    .subject {
+      margin: $list-h4-margin;
+      font-weight: $list-h4-font-weight;
+      font-size: $list-h4-font-size;
+      // dirty fix for vs-repeat damages
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    p {
+      margin: $list-p-margin;
+      font-size: $list-p-font-size;
+    }
+  }
+}
+/**
+ * The right tile for a list item.
+ */
+.md-tile-right {
+  padding-right: $item-padding-right;
+}

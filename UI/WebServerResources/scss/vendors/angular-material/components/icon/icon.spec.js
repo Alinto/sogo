@@ -1,0 +1,2 @@
+describe('mdIcon directive', function() {
+});

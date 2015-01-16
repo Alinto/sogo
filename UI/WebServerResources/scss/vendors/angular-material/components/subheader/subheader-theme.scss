@@ -1,0 +1,14 @@
+.md-subheader.md-THEME_NAME-theme {
+  color: '{{ foreground-2-0.23 }}';
+  background-color: '{{background-hue-3}}';
+
+  &.md-primary {
+    color: '{{primary-color}}'
+  }
+  &.md-accent {
+    color: '{{accent-color}}'
+  }
+  &.md-warn {
+    color: '{{warn-color}}'
+  }
+}

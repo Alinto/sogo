@@ -1,0 +1,44 @@
+// SOGo by Inverse
+// sogo.nu
+// version 3.alpha
+//
+
+//
+// UTILITIES FUNCTIONS
+//
+
+// Strip Unit - From Foundation
+// Removes the unit (e.g. px, em, rem) from a value, returning the number only.
+//
+// @param {number} $num - Number to strip unit from.
+// @return The same number, sans unit.
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+/// sp|dp to px
+// Google's Material design specs are in 'sp' or 'dp' which are not css units
+// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels' (same as dp, but will be scaled by the user's font size preference)
+// Android gives a 160dpi  base value to 'sp' and 'dp', but Google's examples seems to use 'sp' as 'px'
+// We define a scaling factor in case we need to adjust
+// 'sp' is scale to 1 css-px for a rem-base-value of 16px (default)
+// 'dp' is scale to 1 css-px according to scaling factor
+//
+// sp-to-px converts a 'sp' value  to css-pixel value. Units, if specified will be stripped
+// dp-to-px converts a 'dp' value  to css-pixel value. Units, if specified will be stripped
+//
+// @param {number} $value - sp or dp value to convert.
+//
+// @return {number} in px.
+//
+@function dp-to-px($value)  {
+  $value: strip-unit($value) * strip-unit($sg-dp-scale-factor) * 1px;
+  @if ($value == 0sp) { $value: 0; } // Turn 0rem into 0
+  @return $value;
+}
+@function sp-to-px($value)  {
+  $value: strip-unit($value) * $sg-sp-scale-factor * 1px;
+  @if ($value == 0sp) { $value: 0; } // Turn 0sp into 0
+  @return $value;
+}
+

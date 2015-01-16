@@ -268,7 +268,7 @@
         </div>-->
 
     <main layout="column" layout-fill="layout-fill">
-      <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-warn">
+      <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-grey">
         <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
         <div class="md-toolbar-tools">
           <span flex="flex">
