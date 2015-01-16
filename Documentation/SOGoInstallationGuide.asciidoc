@@ -999,7 +999,9 @@ context as Dovecot stores in its database.
 |passwordPolicy
 |If set to `YES`, SOGo will use the extended LDAP Password Policies
 attributes. If you LDAP server does not support those and you activate
-this feature, every LDAP requests will fail.
+this feature, every LDAP requests will fail. Note that some LDAP servers
+require LDAP/SSL for password policies to work. This is the case for
+example with 389 Directory Server.
 
 |isAddressBook
 |If set to `YES`, this LDAP source is used as a shared address book
