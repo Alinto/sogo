@@ -34,6 +34,10 @@ md-toolbar {
     }
   }
 
+  &.md-toolbar-small {
+    min-height: $baseline-grid * 6;
+  }
+
   .md-indent {
     margin-left: $toolbar-indent-margin;
   }
