@@ -1,0 +1,61 @@
+$tabs-color-palette: $primary-color-palette !default;
+$tabs-header-background-color: map-get($tabs-color-palette, '500') !default;
+$tabs-inactive-color: map-get($tabs-color-palette, '100') !default;
+$tabs-active-color: $primary-color-palette-contrast-color !default;
+$tabs-disabled-color: $foreground-quarternary-color !default;
+$tabs-highlight-color: $primary-color-palette-contrast-color !default;
+
+md-tabs.md-THEME_NAME-theme {
+  .md-header {
+    background-color: '{{primary-color}}';
+  }
+
+  &.md-accent {
+    .md-header {
+      background-color: '{{accent-color}}';
+    }
+
+    md-tab:not([disabled]) {
+      color: '{{accent-100}}';
+      &.active {
+        color: '{{accent-contrast}}';
+      }
+    }
+  }
+
+  &.md-warn {
+    .md-header {
+      background-color: '{{warn-color}}';
+    }
+
+    md-tab:not([disabled]) {
+      color: '{{warn-100}}';
+      &.active {
+        color: '{{warn-contrast}}';
+      }
+    }
+  }
+
+
+  md-tabs-ink-bar {
+    color: $tabs-highlight-color;
+    background: $tabs-highlight-color;
+  }
+
+  md-tab {
+    color: '{{primary-100}}';
+    &.active {
+      color: '{{primary-contrast}}';
+    }
+    &[disabled] {
+      color: '{{foreground-4}}';
+    }
+    &:focus {
+      color: '{{primary-contrast}}';
+      background-color: '{{primary-contrast-0.1}}';
+    }
+    .md-ripple-container {
+      color: $tabs-highlight-color;
+    }
+  }
+}

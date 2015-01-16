@@ -1,0 +1,84 @@
+$button-border-radius: 3px !default;
+$button-fab-border-radius: 50% !default;
+
+.md-button.md-THEME_NAME-theme {
+  border-radius: $button-border-radius;
+
+  &:not([disabled]) {
+    &:hover, 
+    &:focus {
+      background-color: '{{background-500-0.2}}';
+    }
+  }
+
+  &.md-primary {
+    color: '{{primary-color}}';
+    &.md-raised,
+    &.md-fab {
+      color: '{{primary-contrast}}';
+      background-color: '{{primary-color}}';
+      &:not([disabled]) {
+        &:hover, 
+        &:focus {
+          background-color: '{{primary-600}}';
+        }
+      }
+    }
+  }
+
+  &.md-fab {
+    border-radius: $button-fab-border-radius;
+  }
+
+  &.md-raised,
+  &.md-fab {
+    color: '{{background-contrast}}';
+    background-color: '{{background-500-0.185}}';
+    &:not([disabled]) {
+      &:hover, 
+      &:focus {
+        background-color: '{{background-500-0.3}}';
+      }
+    }
+  }
+
+  &.md-warn {
+    color: '{{warn-color}}';
+
+    &.md-raised,
+    &.md-fab {
+      color: '{{warn-contrast}}';
+      background-color: '{{warn-color}}';
+      &:not([disabled]) {
+        &:hover, 
+        &:focus {
+          background-color: '{{warn-700}}';
+        }
+      }
+    }
+  }
+
+  &.md-accent {
+    color: '{{accent-color}}';
+
+    &.md-raised,
+    &.md-fab {
+      color: '{{accent-contrast}}';
+      background-color: '{{accent-color}}';
+      &:not([disabled]) {
+        &:hover, 
+        &:focus {
+          background-color: '{{accent-700}}';
+        }
+      }
+    }
+  }
+
+  &[disabled],
+  &.md-raised[disabled],
+  &.md-fab[disabled] {
+    color: '{{foreground-3}}';
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+}

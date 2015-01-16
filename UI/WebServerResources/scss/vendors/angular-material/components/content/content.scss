@@ -1,0 +1,28 @@
+md-content {
+
+  display: block;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &[md-scroll-xy] {
+  }
+
+  &.md-padding {
+    padding: 8px;
+  }
+}
+
+@media (min-width: $layout-breakpoint-sm) {
+  md-content.md-padding {
+    padding: 16px;
+  }
+}

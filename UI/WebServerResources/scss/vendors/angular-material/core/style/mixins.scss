@@ -1,0 +1,19 @@
+@mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
+  -webkit-margin-before: $before;
+  -webkit-margin-after: $after;
+  -webkit-margin-start: $start;
+  -webkit-margin-end: $end;
+}
+
+@mixin not-selectable($value:none) {
+  user-select: $value;
+}
+
+@mixin input-placeholder-color($color) {
+  &::-webkit-input-placeholder,
+  &::-moz-placeholder, /* Firefox 19+ */
+  &:-moz-placeholder, /* Firefox 18- */
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+}

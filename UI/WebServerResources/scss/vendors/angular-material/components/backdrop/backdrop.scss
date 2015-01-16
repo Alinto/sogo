@@ -1,0 +1,36 @@
+md-backdrop {
+  z-index: $z-index-backdrop;
+  &.md-dialog-backdrop {
+    z-index: $z-index-dialog - 1;
+  }
+  &.md-bottom-sheet-backdrop {
+    z-index: $z-index-bottom-sheet - 1;
+  }
+  &.md-sidenav-backdrop {
+    z-index: $z-index-sidenav - 1;
+  }
+
+  background-color: rgba(0,0,0,0);
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  &.ng-enter {
+    animation: $swift-ease-out-timing-function mdBackdropFadeIn 0.5s both;
+  }
+  &.ng-leave {
+    animation: $swift-ease-in-timing-function mdBackdropFadeOut 0.2s both;
+  }
+}
+
+@keyframes mdBackdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mdBackdropFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

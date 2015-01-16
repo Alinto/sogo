@@ -1,0 +1,33 @@
+
+<form ng-submit="submit()" ng-controller="AppCtrl" >
+    <p>Selected Value: <span class="radioValue">{{ data.group1 }}</span> </p>
+
+    <md-radio-group ng-model="data.group1">
+
+      <md-radio-button value="Apple" aria-label="Label 1">Apple</md-radio-button>
+      <md-radio-button value="Banana"> Banana </md-radio-button>
+      <md-radio-button value="Mango" aria-label="Label 3">Mango</md-radio-button>
+
+    </md-radio-group>
+
+    <hr />
+
+    <p>Selected Value: <span class="radioValue">{{ data.group2 }}</span></p>
+
+    <md-radio-group ng-model="data.group2">
+
+        <md-radio-button ng-repeat="d in radioData"
+                         ng-value="d.value"
+                         ng-disabled=" d.isDisabled "
+                         aria-label="{{ d.label }}">
+            {{ d.label }}
+        </md-radio-button>
+
+    </md-radio-group>
+
+    <p>
+      <md-button ng-click="addItem()">Add</md-button>
+      <md-button ng-click="removeItem()">Remove</md-button>
+    </p>
+
+</form>

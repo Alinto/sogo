@@ -1,0 +1,309 @@
+/**
+*
+* SOGo v3
+* ng-Material overrides and project variables
+* typography - definitions from http://www.google.com/design/spec/style/typography.html#typography-standard-styles
+**/
+
+// Google's Material design specs are in 'sp' or 'dp' which are not css units
+// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels' (same as dp, but will be scaled by the user's font size preference)
+// Android gives a 160dpi  base value to 'sp' and 'dp', but Google's examples seems to use 'sp' as 'px'
+// We define a scaling factor in case we need to adjust
+// 'sp' is scale to 1 css-px for a rem-base-value of 16px (default)
+// 'dp' is scale to 1 css-px according to scaling factor
+
+$sg-dp-scale-factor: 1 !global;
+
+// rem specification (in 'px')
+$sg-rem-base-value: 16 !global;
+$sg-rem-value: $sg-rem-base-value !default;
+
+// We assume that user define rem value to get legible font-size
+$sg-sp-scale-factor: $sg-rem-value / $sg-rem-base-value !global;
+
+// Font-size basic scale (from Google)
+// nice-to-have : generate with a loop
+$sg-typo-scale: (
+  12,
+  14,
+  16,
+  20,
+  24,
+  34,
+  45,
+  56,
+  112
+) !global;
+
+@function sg-font-size($nb) {
+  $size: nth($sg-typo-scale, $nb);
+  $sg-font-size: sp-to-px($size);
+  @return $sg-font-size;
+}
+// Basic typographic classes
+
+$sg-font-size-1 :sp-to-px(1);
+
+$h1-font-size-base: 2em !default;
+$h1-margin-base: 0.67em 0 !default;
+
+$h2-font-size-base: 1.5em !default;
+$h2-margin-base: 0.83em 0 !default;
+
+$h3-font-size-base: 1.17em !default;
+$h3-margin-base: 1em 0 !default;
+
+$h4-font-size-base: 1em !default;
+$h4-margin-base: 1.33em 0 !default;
+
+$h5-font-size-base: 0.83em !default;
+$h5-margin-base: 1.67em 0 !default;
+
+$h6-font-size-base: 0.75em !default;
+$h6-margin-base: 2.33em 0 !default;
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:focus {
+  outline: none;
+}
+
+html, body {
+  height: 100%;
+  color: $foreground-primary-color;
+  background: $background-color-base;
+
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  p {
+    line-height: 1.846;
+  }
+
+  h3 {
+    display: block;
+    @include margin-selectors();
+    font-size: 1.17em;
+    font-weight: bold;
+  }
+}
+
+button,
+select,
+html,
+textarea,
+input {
+  font-family: $font-family;
+}
+
+body {
+  font-size: sg-font-size(2);
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+.inset {
+  padding: 10px;
+}
+
+button {
+  font-family: $font-family;
+}
+
+a,
+a:-webkit-any-link {
+  background: transparent;
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: $h1-font-size-base;
+  margin: $h1-margin-base;
+}
+h2 {
+  font-size: $h2-font-size-base;
+  margin: $h2-margin-base;
+}
+h3 {
+  font-size: $h3-font-size-base;
+  margin: $h3-margin-base;
+}
+h4 {
+  font-size: $h4-font-size-base;
+  margin: $h4-margin-base;
+}
+h5 {
+  font-size: $h5-font-size-base;
+  margin: $h5-margin-base;
+}
+h6 {
+  font-size: $h6-font-size-base;
+  margin: $h6-margin-base;
+}
+
+select,
+button,
+textarea,
+input {
+  margin: 0;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+// Fix Android 4.0 button bugs
+input[type="reset"],
+input[type="submit"],
+html input[type="button"],
+button {
+  cursor: pointer;
+  -webkit-appearance: button;
+
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+textarea {
+  vertical-align: top;
+  overflow: auto;
+}
+
+input {
+  &[type="radio"],
+  &[type="checkbox"] {
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  &[type="search"] {
+    -webkit-appearance: textfield;
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.md-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.md-shadow-bottom-z-1 {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.md-shadow-bottom-z-2 {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+.md-shadow-animated.md-shadow {
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * A container inside of a rippling element (eg a button),
+ * which contains all of the individual ripples
+ */
+.md-ripple-container {
+  pointer-events: none;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.55s $swift-ease-out-timing-function;
+}
+
+.md-ripple {
+  position: absolute;
+  transform: scale(0);
+  transform-origin: 50% 50%;
+  opacity: 0;
+  border-radius: 50%;
+  &.md-ripple-placed {
+    transition: left 0.9s $swift-ease-out-timing-function,
+                top 0.9s $swift-ease-out-timing-function,
+                margin 0.65s $swift-ease-out-timing-function,
+                border 0.65s $swift-ease-out-timing-function,
+                width 0.65s $swift-ease-out-timing-function,
+                height 0.65s $swift-ease-out-timing-function,
+                opacity 0.65s $swift-ease-out-timing-function,
+                transform 0.65s $swift-ease-out-timing-function;
+  }
+  &.md-ripple-scaled {
+    transform: scale(1);
+  }
+  &.md-ripple-active, &.md-ripple-full, &.md-ripple-visible {
+    opacity: 0.20;
+  }
+}
+
+md-tab {
+  > .md-ripple-container {
+    .md-ripple {
+      box-sizing: content-box;
+      background-color: transparent !important;
+      border-width: 0;
+      border-style: solid;
+      opacity: 0.20;
+      transform: none !important;
+      &.md-ripple-placed {}
+      &.md-ripple-scaled {}
+      &.md-ripple-active, &.md-ripple-full, &.md-ripple-visible {
+        opacity: 0.20;
+      }
+    }
+  }
+}
+
+@function map-to-string($map) {
+  $map-str: '{';
+  $keys: map-keys($map);
+  $len: length($keys);
+  @for $i from 1 through $len {
+    $key: nth($keys, $i);
+    $value: map-get($map, $key);
+    $map-str: $map-str + '_' + $key + '_: _' + map-get($map, $key) + '_';
+    @if $i != $len {
+      $map-str: $map-str + ',';
+    }
+  }
+  @return $map-str + '}';
+}
+.md-color-palette-definition {
+  $content-rule: '{';
+  $map-str: '';
+  $keys: map-keys($colors);
+  $len: length($keys);
+  @for $i from 1 through $len {
+    $key: nth($keys, $i);
+    $value: map-get($colors, $key);
+    $content-rule: $content-rule + '_' + $key + '_: ' + map-to-string($value);
+    @if $i != $len {
+      $content-rule: $content-rule + ',';
+    }
+  }
+  $content-rule: $content-rule + '}';
+  background-image: url("data:image/svg+xml;utf8,#{$content-rule}");
+  display: none;
+}

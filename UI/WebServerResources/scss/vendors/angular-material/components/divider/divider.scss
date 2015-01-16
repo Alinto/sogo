@@ -1,0 +1,9 @@
+md-divider {
+  display: block;
+  border-top: 1px solid;
+  margin: 0;
+
+  &[md-inset] {
+    margin-left: $baseline-grid * 9; // fix for vs-repeat
+  }
+}
