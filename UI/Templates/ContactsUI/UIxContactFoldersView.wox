@@ -16,6 +16,7 @@
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO"/>;
   </script>
 
+  <!--
   <div id="uploadDialog" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
@@ -38,7 +39,7 @@
   <div id="uploadResults" data-dropdown-content="dropdown-content" class="f-dropdown">
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
-      <p id="uploadResultsContent"><!-- empty --></p>
+      <p id="uploadResultsContent">!- empty -</p>
       <p><a href="#" class="button" const:id="uploadOK">
       <span><var:string label:value="Done" /></span></a></p>
       <hr/>
@@ -48,21 +49,22 @@
   <ul class="f-dropdown" data-dropdown-content="dropdown-content" id="contactMenu">
     <li><var:string label:value="Properties" /></li>
     <li><var:string label:value="Categories" /></li>
-    <li><!-- separator --></li>
+    <li>!- separator -</li>
     <li><var:string label:value="Write" /></li>
     <li><var:string label:value="Instant Message" /></li>
-    <li><!-- separator --></li>
+    <li>!- separator -</li>
     <li><var:string label:value="Delete" /></li>
-    <li><!-- separator --></li>
+    <li>!- separator -</li>
     <li><var:string label:value="Move To" /></li>
     <li><var:string label:value="Copy To" /></li>
     <li><var:string label:value="Export" /></li>
     <li><var:string label:value="View Raw Source" /></li>
-  </ul>
+    </ul>
+    -->
 
   <div>
 
-    <div data-ui-view="addressbooks"><!-- addressbooks list --></div>
+    <div data-ui-view="addressbooks" layout="row" style="max-height: 100%"><!-- addressbooks list --></div>
 
     <!-- modal for addressbook sharing options -->
     <script type="text/ng-template" id="userRights.html">
@@ -142,14 +144,15 @@
         </ul>
       </div>
 
-      <!-- dropdown menu for new card split button -->
+      <!-- dropdown menu for new card split button
       <ul id="newListDrop" class="f-dropdown">
         <li><a class="tiny" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'list'})"><var:string label:value="New List"/></a></li>
       </ul>
+      -->
 
-      <!-- dropdown menu for addressbook links -->
+      <!-- dropdown menu for addressbook links
       <div id="addressbookLinks" class="sg-dropdown-content joyride-tip-guide">
-        <span class="joyride-nub left"><!-- dropdown nub --></span>
+        <span class="joyride-nub left">!- dropdown nub -</span>
         <div class="joyride-content-wrapper">
           <ul>
             <li class="title"><var:string label:value="Links to this Address Book"/></li>
@@ -162,21 +165,30 @@
           </ul>
         </div>
       </div>
+      -->
 
-      <!-- dropdown menu for subscriptions -->
+      <!-- dropdown menu for subscriptions
       <div id="folderSubscribe" class="sg-dropdown-content"
            data-sg-subscribe="contact"
-           data-sg-subscribe-on-select="subscribeToFolder"><!-- subscription dropdown --></div>
+           data-sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
+      -->
 
-      <div id="addressbooksList" class="folders-list">
-        <div class="newItemsToolbar">
+      <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
+        <md-toolbar class="md-tall" layout-align="end start">
+          <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+            <span class="md-flex">{{activeUser.identification}}</span>
+          </h2>
+        </md-toolbar>
+        <md-content md-scroll-y="md-scroll-y" class="md-padding" ng-controller="LeftCtrl">
+          <md-button ng-click="close()" class="md-primary" hide-gt-md="hide-gt-md">Close</md-button>
+        <!--<div class="newItemsToolbar">
           <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
-        </div>
-        <div class="scrollView">
-          <ul>
-            <li data-ng-repeat="folder in addressbooks track by folder.id"
-                data-ng-class="{_selected: addressbook.id==folder.id}"
-                data-ng-dblclick="edit($index)">
+        </div>-->
+        <md-list>
+          <md-item ng-repeat="folder in addressbooks track by folder.id"
+                   ng-class="{_selected: addressbook.id==folder.id}"
+                   ng-dblclick="edit($index)">
+            <md-item-content>
               <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
               <form data-ng-submit="save($index)">
                 <a data-ui-sref="addressbook({addressbookId: folder.id})"
@@ -197,75 +209,83 @@
                    data-options="align:right"
                    data-ng-show="currentFolderIsConfigurable(folder)"><i class="icon-cog"><!-- options --></i></a>
               </span>
-            </li>
-          </ul>
-        </div>
-        <div class="buttonsToolbar">
-          <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus"><!-- new --></i></button>
+            </md-item-content>
+          </md-item>
+        </md-list>
+        <!--<div class="buttonsToolbar">
+          <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus">!- new -></i></button>
           <a href="#" class="button" label:title="Subscribe to an Addressbook..."
-             data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth"><!-- subscribe --></i></a>
-        </div>
-        <!--<var:if condition="hasContactSelectionButtons">
-          <div class="contactSelection">
-            <var:component value="selectorComponent" />
-          </div>
-        </var:if>-->
-      </div>
+             data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth">!- subscribe -</i></a>
+        </div>-->
+        </md-content>
+      </md-sidenav>
 
-      <div class="dragHandle" id="dragHandle"><!-- space --></div>
-
-      <div id="rightPanel">
-
-      <div id="contactsList">
-        <div class="buttonsToolbar searchToolbar">
-          <div class="input-content">
-            <div class="input-search">
-              <i class="icon-ion-search"><!-- search --></i>
-              <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
-            </div>
+      <main layout="column" layout-fill="layout-fill">
+        <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-grey">
+          <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
+          <div class="md-toolbar-tools" ng-controller="toggleCtrl">
+            <span flex="flex">
+              <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
+              <div class="display-1" style="font-size: 2em; font-weight: 300">
+                [[Contacts]]
+              </div>
+            </span>
+            <span class="sd-toolbar-tools">
+              <span>search</span>
+            </span>
           </div>
-          <!--<div class="input-options">
-              <a href="#" class="button"><i class="icon-cog"><!- options -></i></a>
-              </div>-->
-        </div>
-        <div data-ng-switch="search.status">
-          <div data-ng-switch-when="min-char" class="alert-bg">
-            <i class="icon-warning"><!-- warn --></i><var:string label:value="Please enter at least three characters"/>
-          </div>
-          <div data-ng-switch-when="no-result" class="alert-bg">
-            <i class="icon-ion-search"><!-- no result --></i><var:string label:value="No matching card"/>
-          </div>
-          <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
-            <i class="icon-ion-search"><!-- search --></i><var:string label:value="Initiate a search"/>
-          </div>
-        </div>
-        <ul data-vs-repeat="56"
-            data-vs-scroll-parent="#contactsList">
-          <li ng-repeat="currentCard in addressbook.cards track by currentCard.id"
-              data-ng-class="{_selected: card.id == currentCard.id}">
-            <!-- <input type="checkbox" class="card-picture left"/> -->
-            <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
-              <span class="card-picture" data-ng-switch="currentCard.tag">
-                <i data-ng-switch-when="vcard" data-ng-class="{'icon-ion-ios7-person': currentCard.photoURL == undefined}" ><!-- card --></i>
-                <i data-ng-switch-when="vlist" data-ng-class="icon-ion-ios7-people"><!-- list --></i>
-              </span>
-              <div class="name" data-ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-              <div><span data-ng-show="currentCard.emails"><i class="icon-ion-ios7-email-outline"><!-- email --></i> {{currentCard.$preferredEmail()}}</span><var:entity const:name="nbsp" /></div>
-            </a>
-          </li>
-        </ul>
-      </div>
+        </md-toolbar>
+        <md-content layout="row" flex="flex">
+          <md-content md-scroll-y="md-scroll-y" flex="flex" style="min-width: 300px;" id="contactsList">
+            <!-- Search field & special results
+                 <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
+                 <div data-ng-switch="search.status">
+                 <div data-ng-switch-when="min-char" class="alert-bg">
+                 <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
+                 </div>
+                 <div data-ng-switch-when="no-result" class="alert-bg">
+                 <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
+                 </div>
+                 <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
+                 <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
+                 </div>
+                 </div>
+            -->
+            <!--dirty fix for vs-repeat-->
+            <style>
+              .vs-repeat-repeated-element {
+              width: 100%;
+              }
+            </style>
+            <md-list data-vs-repeat="72"
+                     data-vs-scroll-parent="#contactsList">
+              <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id"
+                       ng-class="{_selected: card.id == currentCard.id}">
+                <md-item-content>
+                  <div class="md-tile-left">
+                    <!--avatar-->
+                    <!-- currentCard.tag = vcard || vlist -->
+                  </div>
+                  <div class="sg-tile-content">
+                    <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
+                      <div class="name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                      <div class="subject">{{currentCard.$preferredEmail()}}</div>
+                    </a>
+                  </div>
+                </md-item-content>
+                <md-divider md-inset="true" ng-if="!$last"><!--divider--></md-divider>
+              </md-item>
+            </md-list>
+          </md-content>
+          <md-content class="md-padding" flex="flex" data-ui-view="card"><!-- card view --></md-content>
+        </md-content>
+      </main>
 
-      <div id="contactView" data-ui-view="card"><!-- card state view --></div>
-
-      </div>
     </script><!-- addressbooks.html -->
 
     <script type="text/ng-template" id="card.html">
       <var:component className="UIxContactViewTemplate"/>
     </script>
-
-    <!--<div class="dragHandle" id="rightDragHandle"></div>-->
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
   </div>
