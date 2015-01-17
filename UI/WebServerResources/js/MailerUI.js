@@ -13,6 +13,7 @@
       baseURL: ApplicationBaseURL,
       activeUser: {
         login: UserLogin,
+        identification: UserIdentification,
         language: UserLanguage,
         folderURL: UserFolderURL,
         isSuperUser: IsSuperUser
@@ -171,7 +172,8 @@
       })
     })
 
-    .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Account, Mailbox, stateAccounts) {
+    .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, stateAccounts) {
+      $scope.activeUser = Settings.activeUser;
       $scope.accounts = stateAccounts;
 
       $scope.newFolder = function(parentFolder) {

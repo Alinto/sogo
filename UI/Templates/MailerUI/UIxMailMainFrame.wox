@@ -242,7 +242,7 @@
     <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
       <md-toolbar class="md-tall" layout-align="end start">
         <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-          <span class="md-flex">user@domain</span>
+          <span class="md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
       <md-content md-scroll-y="md-scroll-y" class="md-padding" ng-controller="LeftCtrl">
