@@ -11,7 +11,15 @@
 (function() {
   'use strict';
   angular.module('SOGo.UI', ['ngMaterial' ])
-  .controller('toggleCtrl', ['$scope', '$timeout', '$mdSidenav', '$log', function($scope, $timeout, $mdSidenav, $log) {
+
+    .config(function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+        .primaryColor('grey', {
+          'default': '800'
+        });
+    })
+
+    .controller('toggleCtrl', ['$scope', '$timeout', '$mdSidenav', '$log', function($scope, $timeout, $mdSidenav, $log) {
       $scope.toggleLeft = function() {
         $mdSidenav('left').toggle()
                           .then(function(){
