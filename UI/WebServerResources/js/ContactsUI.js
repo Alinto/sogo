@@ -6,12 +6,13 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'SOGo.Common', 'SOGo.UIDesktop'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
       activeUser: {
         login: UserLogin,
+        identification: UserIdentification,
         language: UserLanguage,
         folderURL: UserFolderURL,
         isSuperUser: IsSuperUser
