@@ -71,21 +71,21 @@
 				  <md-button ng-disabled="true"><var:string label:value="Calendar" /></md-button>
 			  </var:if>
 			  <var:if condition="isCalendar" const:negate="YES">
-				  <md-button var:data-ng-href="relativeCalendarPath"><var:string label:value="Calendar" /></md-button>
+				  <md-button var:href="relativeCalendarPath"><var:string label:value="Calendar" /></md-button>
 			  </var:if>
 		  </var:if>
 		  <var:if condition="isContacts">
 			  <md-button ng-disabled="true"><var:string label:value="Address Book"/></md-button>
 		  </var:if>
 		  <var:if condition="isContacts" const:negate="YES">
-			  <md-button var:data-ng-href="relativeContactsPath"><var:string label:value="Address Book" /></md-button>
+			  <md-button var:href="relativeContactsPath"><var:string label:value="Address Book" /></md-button>
 		  </var:if>
 		  <var:if condition="userHasMailAccess">
 			  <var:if condition="isMail">
 				  <md-button ng-disabled="true"><var:string label:value="Mail"/></md-button>
 			  </var:if>
 			  <var:if condition="isMail" const:negate="YES">
-				  <md-button var:data-ng-href="relativeMailPath"><var:string label:value="Mail" /></md-button>
+				  <md-button var:href="relativeMailPath"><var:string label:value="Mail" /></md-button>
 			  </var:if>
 		  </var:if>
 		  <md-button var:data-ng-href="relativePreferencesPath"><var:string label:value="Preferences" /></md-button>
@@ -94,7 +94,7 @@
 				  <md-button ng-disabled="true"><var:string label:value="Administration"/></md-button>
 			  </var:if>
 			  <var:if condition="isAdministration" const:negate="YES">
-				  <md-button var:data-ng-href="relativeAdministrationPath"><var:string label:value="Administration" /></md-button>
+				  <md-button var:href="relativeAdministrationPath"><var:string label:value="Administration" /></md-button>
 			  </var:if>
 		  </var:if>
 	  </md-toolbar>
