@@ -270,7 +270,7 @@
     <main layout="column" layout-fill="layout-fill">
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-grey">
         <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" ng-controller="toggleCtrl">
           <span flex="flex">
             <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
             <div class="display-1" style="font-size: 2em; font-weight: 300">
