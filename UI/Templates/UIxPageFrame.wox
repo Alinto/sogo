@@ -115,11 +115,12 @@
 	    <var:if condition="usesCASAuthentication" const:negate="YES"
 	      >var usesCASAuthentication = false;
 	    </var:if>
-	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
-	      const:negate="YES"
-	      >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
-	      var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
-	      var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
+            <var:if condition="shortUserNameForDisplay" const:value="anonymous"
+              const:negate="YES"
+              >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
+              var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
+              var UserIdentification = '<var:string value="userIdentification" const:escapeHTML="NO"/>';
+              var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
             </var:if>
 	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
 	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>

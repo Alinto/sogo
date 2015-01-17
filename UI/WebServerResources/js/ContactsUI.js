@@ -83,8 +83,10 @@
       $urlRouterProvider.otherwise('/personal');
     }])
 
-    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$modal', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, stateAddressbooks, stateAddressbook) {
+    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$modal', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
       var currentAddressbook;
+
+      $scope.activeUser = Settings.activeUser;
 
       // Resolved objects
       $scope.addressbooks = stateAddressbooks;
