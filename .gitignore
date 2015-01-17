@@ -2,13 +2,13 @@ config.make
 tags
 *._*
 */obj/
-*._*
 */*/obj/
 */*/*/obj/
 */*/*.SOGo/
+*.pyc
 *.sax
-*.wox/
 *.swp
+*.wox/
 SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
 Tests/*/config.py
@@ -17,8 +17,6 @@ UI/WebServerResources/js/vendor/
 UI/WebServerResources/bower_components/
 UI/WebServerResources/node_modules/
 UI/WebServerResources/scss/.sass-cache/
-*.pyc
-._*
 Documentation/*.docbook
 Documentation/*.pdf
 .idea
