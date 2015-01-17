@@ -164,13 +164,6 @@
         allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
       });
     }])
-    //todo : define complete custom themes (light and dark) with SOGo green as accent-color
-      .config(function($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryColor('grey', {
-              'default': '800'
-            });
-      })
 
     .run(function($rootScope) {
       $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
