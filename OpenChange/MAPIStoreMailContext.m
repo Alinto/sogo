@@ -126,7 +126,11 @@ MakeDisplayFolderName (NSString *folderName)
   trashName = [NSString stringWithFormat: @"folder%@",
                        [unprefixedFolders componentsJoinedByString: @"/folder"]];
 
-  urlBase = [NSString stringWithFormat: @"sogo://%@:%@@mail/", userName, userName];
+  urlBase = [NSString stringWithFormat: @"sogo://%@:%@@mail/",
+                      [userName stringByReplacingOccurrencesOfString: @"@"
+                                withString: @"%40"],
+                      [userName stringByReplacingOccurrencesOfString: @"@"
+                                withString: @"%40"]];
   for (count = 0; count < 3; count++)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
@@ -199,7 +203,10 @@ MakeDisplayFolderName (NSString *folderName)
                                  inContainer: accountFolder];
   if ([newFolder create])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
-                             userName, userName,
+                             [userName stringByReplacingOccurrencesOfString: @"@"
+                                       withString: @"%40"],
+                             [userName stringByReplacingOccurrencesOfString: @"@"
+                                       withString: @"%40"],
                              [[folderName stringByEncodingImap4FolderName] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     mapistoreURI = nil;
@@ -275,8 +282,12 @@ MakeDisplayFolderName (NSString *folderName)
                         componentsSeparatedByString: @"/"];
   folderName = [NSString stringWithFormat: @"folder%@",
                          [unprefixedFolders componentsJoinedByString: @"/folder"]];
-  url = [NSString stringWithFormat: @"sogo://%@:%@@outbox/%@", userName,
-                  userName, folderName];
+  url = [NSString stringWithFormat: @"sogo://%@:%@@outbox/%@",
+                  [userName stringByReplacingOccurrencesOfString: @"@"
+                            withString: @"%40"],
+                  [userName stringByReplacingOccurrencesOfString: @"@"
+                            withString: @"%40"],
+                  folderName];
 
   context = talloc_zero (memCtx, struct mapistore_contexts_list);
   context->url = [url asUnicodeInMemCtx: context];

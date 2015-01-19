@@ -45,7 +45,8 @@
 
   context = talloc_zero(memCtx, struct mapistore_contexts_list);
   context->url = talloc_asprintf (context, "sogo://%s@notes/",
-                                  [userName UTF8String]);
+                                  [[userName stringByReplacingOccurrencesOfString: @"@"
+                                             withString: @"%40"] UTF8String]);
   // context->name = "Notes personnelles";
   context->main_folder = true;
   context->role = MAPISTORE_NOTES_ROLE;
