@@ -474,7 +474,9 @@ rtf2html (NSData *compressedRTF)
   MAPIStoreMessage *mainMessage;
 
   //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
-  
+
+  containerTables = nil;
+  max = 0;
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   userIsOwner = [[context activeUser] isEqual: ownerUser];

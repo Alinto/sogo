@@ -539,6 +539,7 @@ const unsigned short ansicpg874[256] = {
 
   fontTable = [[[RTFFontTable alloc] init] autorelease];
   fontName = nil;
+  fontInfo = nil;
   count = 0;
  
   do
@@ -723,6 +724,7 @@ const unsigned short ansicpg874[256] = {
   fontTable = nil;
   colorTable = nil;
   charset = NULL;
+  formattingOptions = nil;
 
   _html = [[NSMutableData alloc] init];
   [_html appendBytes: "<html><meta charset='utf-8'><body>"  length: 34];

@@ -138,6 +138,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   MAPIStoreMapping *mapping;
   NSRange slashRange;
 
+  pathComponent = nil;
+
   if (isMove && [targetFolder isKindOfClass: MAPIStoreDBFolderK])
     {
       path = [sogoObject path];

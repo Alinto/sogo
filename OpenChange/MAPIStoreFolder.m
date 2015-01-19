@@ -102,6 +102,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger lastPartIdx;
   MAPIStoreUserContext *userContext;
 
+  parts = 0;
+  lastPartIdx = 0;
   folderURL = [NSURL URLWithString: [self url]];
   /* note: -[NSURL path] returns an unescaped representation */
   path = [folderURL path];
@@ -233,6 +235,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   SOGoFolder *sogoFolder;
   WOContext *woContext;
 
+  childFolder = nil;
   if ([[self folderKeys] containsObject: folderKey])
     {
       woContext = [[self userContext] woContext];

@@ -164,6 +164,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   int i;
 
   nameInContainer = nil;
+  rc = MAPISTORE_ERROR;
 
   folderName = nil;
   for (i = 0; !folderName && i < aRow->cValues; i++)
@@ -1003,6 +1004,8 @@ _parseIMAPRange (const unichar *uniString, NSArray **UIDsP)
   uint32_t currentUid, rangeMin;
   BOOL done = NO, inRange = NO;
 
+  rangeMin = 0;
+  currentUid = 0;
   UIDs = [NSMutableArray array];
   while (!done)
     {
