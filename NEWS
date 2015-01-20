@@ -1,4 +1,4 @@
-2.2.14 (2015-MM-DD)
+2.2.14 (2015-01-20)
 -------------------
 
 Enhancements
@@ -9,7 +9,7 @@ Bug fixes
  - fixed calendar selection in event and task editors (#3049, #3050)
  - check for resources existence when listing subscribed ones (#3054)
  - correctly recognize Apple Calendar on Yosemite (#2960) 
- - fixed two potential autorelease pool leak (#3026 and #3051)
+ - fixed two potential autorelease pool leaks (#3026 and #3051)
  - fixed birthday offset in EAS
  - fixed From's full name over EAS
  - fixed potential issue when handling multiple Add/Change/Delete/Fetch EAS commands (#3057)
