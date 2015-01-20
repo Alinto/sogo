@@ -733,7 +733,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         partstat = [attendee participationStatus];
                         
                         if (partstat == iCalPersonPartStatNeedsAction)
-                          continue;
+                          {
+                            DESTROY(pool);
+                            continue;
+                          }
                       }
                   }                
 
@@ -772,10 +775,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Add>"];
 
                 return_count++;
-
-                DESTROY(pool);
               }
-          } // for ...
+
+            DESTROY(pool);
+          } // for (i = 0; i < max; i++) ...
 
         if (more_available)
           {
@@ -805,7 +808,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         int j, k, return_count;
         BOOL found_in_cache;
-
 
         allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         max = [allMessages count];
@@ -1017,7 +1019,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               if ([[element tagName] isEqualToString: @"Add"])
                 {
                   // Add
-                  [self processSyncAddCommand: aCommand
+                  [self processSyncAddCommand: element
                                  inCollection: theCollection
                                      withType: theFolderType
                                      inBuffer: theBuffer];
@@ -1026,7 +1028,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Change"])
                 {
                   // Change
-                  [self processSyncChangeCommand: aCommand
+                  [self processSyncChangeCommand: element
                                     inCollection: theCollection
                                         withType: theFolderType
                                         inBuffer: theBuffer];
@@ -1035,7 +1037,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Delete"])
                 {
                   // Delete
-                  [self processSyncDeleteCommand: aCommand
+                  [self processSyncDeleteCommand: element
                                     inCollection: theCollection
                                         withType: theFolderType
                                         inBuffer: theBuffer];
@@ -1044,7 +1046,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else if ([[element tagName] isEqualToString: @"Fetch"])
                 {
                   // Fetch
-                  [self processSyncFetchCommand: aCommand
+                  [self processSyncFetchCommand: element
                                    inCollection: theCollection
                                        withType: theFolderType
                                        inBuffer: theBuffer];

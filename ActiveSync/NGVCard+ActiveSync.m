@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
 
@@ -230,7 +231,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"Birthday"]))
     {
       o = [o calendarDate];
-      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d" timeZone: nil locale: nil]];
     }
 
   //

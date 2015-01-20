@@ -1,6 +1,6 @@
 /* WORequest+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,10 +127,14 @@
 	 || [self isAppleDAVWithSubstring: @"iOS/"];
 }
 
+//
+// Mac+OS+X/10.10.1 (14B25) CalendarAgent/315
+//
 - (BOOL) isICal
 {
   return ([self isAppleDAVWithSubstring: @"Mac OS X/10."]
           || [self isAppleDAVWithSubstring: @"Mac_OS_X/"]
+          || [self isAppleDAVWithSubstring: @"Mac+OS+X/"]
           || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
 }
 

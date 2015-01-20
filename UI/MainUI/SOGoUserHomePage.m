@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,8 +103,8 @@
   maxBookings = [user numberOfSimultaneousBookings];
   isResource = [user isResource];
 
-  // Don't fetch freebusy information if the user is of type 'resource' and has unlimited bookings
-  if (!isResource || maxBookings > 0)
+  // Fetch freebusy information if the user is NOT a resource or if multiplebookings isn't unlimited
+  if (!isResource || maxBookings != 0)
     {
       for (recordCount = 0; recordCount < recordMax; recordCount++)
         {
@@ -167,10 +167,10 @@
                   endInterval += (delta/60/15);
 
                   // Update bit string representation
-                  // If the user is a resource, keep the sum of overlapping events
+                  // If the user is a resource with restristed amount of bookings, keep the sum of overlapping events
                   for (count = startInterval; count < endInterval; count++)
                     {
-                      *(items + count) = isResource ? *(items + count) + 1 : 1;
+                      *(items + count) = (isResource && maxBookings > 0) ? *(items + count) + 1 : 1;
                     }
                 }
             }
@@ -189,6 +189,9 @@
     }
 }
 
+//
+//
+//
 - (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
                             toEndDate: (NSCalendarDate *) endDate
                           forFreeBusy: (SOGoFreeBusyObject *) fb

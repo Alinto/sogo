@@ -1,8 +1,6 @@
 /* SOGoParentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -294,7 +292,13 @@ static SoSecurityManager *sm = nil;
   subscribedFolder
     = [subFolderClass folderWithSubscriptionReference: sourceKey
 		      inContainer: self];
+
+  // We check with -ocsFolderForPath if the folder also exists in the database.
+  // This is important because user A could delete folder X, and user B has subscribed to it.
+  // If the "default roles" are enabled for calendars/address books, -validatePersmission:.. will
+  // work (grabbing the default role) and the deleted resource will be incorrectly returned.
   if (subscribedFolder
+      && [subscribedFolder ocsFolderForPath: [subscribedFolder ocsPath]]
       && ![sm validatePermission: SOGoPerm_AccessObject
 			onObject: subscribedFolder
 		       inContext: context])

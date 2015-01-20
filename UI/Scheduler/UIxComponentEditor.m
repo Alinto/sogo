@@ -1428,7 +1428,8 @@ iRANGE(2);
 
 - (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
 {
-  ASSIGN(componentCalendar, _componentCalendar);
+  if (_componentCalendar)
+    ASSIGN(componentCalendar, _componentCalendar);
 }
 
 /* priorities */
