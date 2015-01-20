@@ -367,13 +367,15 @@
   NSString *status, *priority, *tzName;
   NSCalendarDate *now;
   NSInteger tzOffset;
+  NSTimeZone *userTZ;
   double doubleValue;
 
   vToDo = [sogoObject component: YES secure: NO];
   vCalendar = [vToDo parent];
   [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
 
-  tzName = [[[self userContext] timeZone] name];
+  userTZ = [[self userContext] timeZone];
+  tzName = [userTZ name];
   tz = [iCalTimeZone timeZoneForName: tzName];
   [vCalendar addTimeZone: tz];
 
@@ -428,6 +430,13 @@
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
       [date setTimeZone: tz];
+      /* The property is set to user's local time zone.
+         See: [MS-OXOTASK] 2.2.2.2.4
+         TODO: Ignore when the PT_SYSTIME is 0x5AE980E0*/
+      tzOffset = [userTZ secondsFromGMTForDate: value];
+      value = [value dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: 0
+                               seconds: -tzOffset];
       [date setDateTime: value];
     }
   
@@ -437,6 +446,13 @@
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
       [date setTimeZone: tz];
+      /* The property is set to user's local time zone.
+         See: [MS-OXOTASK] 2.2.2.2.5
+         TODO: Ignore when the PT_SYSTIME is 0x5AE980E0*/
+      tzOffset = [userTZ secondsFromGMTForDate: value];
+      value = [value dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: 0
+                               seconds: -tzOffset];
       [date setDateTime: value];
     }
 
@@ -445,7 +461,9 @@
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"completed"];
-      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+      /* The property is set to midnight in local time zone converted to UTC:
+         See: [MS-OXOTASK] 2.2.2.2.9 */
+      tzOffset = [userTZ secondsFromGMTForDate: value];
       value = [value dateByAddingYears: 0 months: 0 days: 0
                                  hours: 0 minutes: 0
                                seconds: -tzOffset];
