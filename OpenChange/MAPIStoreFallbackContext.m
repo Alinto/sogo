@@ -55,7 +55,10 @@
   NSString *baseURL, *url, *name;
   MAPIStoreUserContext *userContext;
 
-  baseURL = [NSString stringWithFormat: @"sogo://%@@fallback/", userName];
+  baseURL = [NSString stringWithFormat: @"sogo://%@@fallback/",
+                      [userName stringByReplacingOccurrencesOfString: @"@"
+                                withString: @"%40"]];
+
 
   context = talloc_zero (memCtx, struct mapistore_contexts_list);
   context->url = [baseURL asUnicodeInMemCtx: context];
@@ -99,7 +102,10 @@
                           forUser: (NSString *) userName
 {
   return [NSString stringWithFormat: @"sogo://%@@fallback/0x%.16"PRIx64"/",
-                   userName, (unsigned long long) fid];
+                   [userName stringByReplacingOccurrencesOfString: @"@"
+                             withString: @"%40"],
+                   (unsigned long long) fid];
+
 }
 
 @end
