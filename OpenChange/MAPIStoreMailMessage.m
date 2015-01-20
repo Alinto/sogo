@@ -133,6 +133,7 @@ static Class NSExceptionK;
   [bodyContent release];
   [headerMimeType release];
   [headerCharset release];
+  [headerEncoding release];
   [appointmentWrapper release];
   [super dealloc];
 }
