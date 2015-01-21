@@ -2214,6 +2214,9 @@ md-tab > .md-ripple-container .md-ripple {
 [flex-order="9"] {
   order: 9; }
 
+.view[layout=row] {
+  max-height: 100%; }
+
 /* Angular-material components local overrides */
 md-list {
   padding: 8px 0px 8px 0px; }

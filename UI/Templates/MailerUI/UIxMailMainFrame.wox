@@ -214,7 +214,7 @@
   </div>
   -->
   <!--FIXME : repport in-line styling in style definitions -->
-  <div ui-view="mailboxes" layout="row" style="max-height: 100%"><!-- mailboxes list --></div>
+  <div class="view" ui-view="mailboxes" layout="row"><!-- mailboxes list --></div>
 
   <script type="text/ng-template" id="mailboxes.html">
 
