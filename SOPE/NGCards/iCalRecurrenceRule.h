@@ -75,6 +75,7 @@ extern NSString *iCalWeekDayString[];
 - (void) setFrequency: (iCalRecurrenceFrequency) _frequency;
 - (iCalRecurrenceFrequency) frequency;
 - (iCalRecurrenceFrequency) valueForFrequency: (NSString *) value;
+- (NSString *) frequencyForValue: (iCalRecurrenceFrequency) freq;
 
 - (void) setRepeatInterval: (int) _repeatInterval;
 - (int) repeatInterval;
