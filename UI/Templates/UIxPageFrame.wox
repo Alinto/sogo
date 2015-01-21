@@ -63,7 +63,7 @@
 
             <var:component-content/>
 <!--FIXME : make sure the .md-button.md-default-theme[disabled] is "contrast aware" disabled labels are actualy almost invisible -->
-<!--FIXME : repport in-line styling in style definitions -->
+
 	  <md-toolbar class="sg-bottombar" layout="row" layout-align="center center">
 		  <var:if condition="userHasCalendarAccess">
 			  <var:if condition="isCalendar">
