@@ -183,7 +183,7 @@
   return response;
 }
 
-- (id <WOActionResults>) defaultAction
+- (id <WOActionResults>) userRightsAction
 {
   id <WOActionResults> response;
   NSDictionary *jsonResponse;

@@ -65,50 +65,11 @@
     <div data-ui-view="addressbooks" layout="row" class="view"><!-- addressbooks list --></div>
 
     <!-- modal for addressbook sharing options -->
-    <script type="text/ng-template" id="userRights.html">
-      <div class="addressbookUserRights">
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox"
-                     data-ng-checked="selectedUser.rights.canViewObjects"
-                     data-ng-model="selectedUser.rights.canViewObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="This person can read the cards of this addressbook."/>
-            </label>
-          </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
-            <label>
-              <input type="checkbox"
-                     data-ng-checked="selectedUser.rights.canCreateObjects"
-                     data-ng-model="selectedUser.rights.canCreateObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="This person can add cards to this addressbook."/>
-            </label>
-          </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
-            <label>
-              <input type="checkbox"
-                     data-ng-checked="selectedUser.rights.canEditObjects"
-                     data-ng-model="selectedUser.rights.canEditObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="This person can edit the cards of this addressbook."/>
-            </label>
-          </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
-            <label>
-              <input type="checkbox"
-                     data-ng-checked="selectedUser.rights.canEraseObjects"
-                     data-ng-model="selectedUser.rights.canEraseObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="This person can erase cards from this addressbook."/>
-            </label>
-          </li>
-        </ul>
-      </div>
+    <script type="text/ng-template" id="UIxUserRightsEditor">
+      <var:component className="UIxContactsUserRightsEditor"/>
     </script>
 
-    <script type="text/ng-template" id="addressbooks.html">
+    <script type="text/ng-template" id="UIxContactFoldersView">
 
       <!-- dropdown menu for addressbook options button -->
       <div id="addressbookProperties" class="f-dropdown icons-dropdown">
@@ -279,9 +240,9 @@
         </md-content>
       </main>
 
-    </script><!-- addressbooks.html -->
+    </script><!-- UIxContactFoldersView -->
 
-    <script type="text/ng-template" id="card.html">
+    <script type="text/ng-template" id="UIxContactViewTemplate">
       <var:component className="UIxContactViewTemplate"/>
     </script>
 
