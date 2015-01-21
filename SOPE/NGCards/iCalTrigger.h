@@ -34,6 +34,8 @@
 
 - (NSCalendarDate *) nextAlarmDate;
 
+- (NSDictionary *) asDictionary;
+
 @end
 
 #endif /* __NGCards_iCalTrigger_H__ */
