@@ -1,0 +1,22 @@
+///
+///
+/// @filename _extends.scss
+/// @project SOGo
+/// @version 3.alpha
+/// @module bottombar
+///
+/// botttombar extends
+///
+///
+
+.sg-bottombar {
+  @extends md-toolbar;
+
+  background-color:#212121; // fixme : use a variable
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  // todo : implement a setting map and a getter for every z-index
+  // NiceToHave : implement init map and function
+  z-index: 100;
+}

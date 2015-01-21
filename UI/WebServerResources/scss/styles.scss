@@ -28,9 +28,11 @@
 /* Local overrides from angular-material src */
 // fixme : refactor all this to meet our practices
 // ------------------------------------------------------------------------------
+@import 'core/variables';
 @import 'core/mixins';
 @import 'core/structure';
 @import 'core/layout';
+
 
 
 // Icons -
@@ -48,7 +50,11 @@
 @import 'components/list/list.scss';
 @import 'components/divider/divider.scss';
 @import 'components/toolbar/toolbar.scss';
+@import 'components/bottombar/bottombar.scss';
 
+// core styles - need to be after components till settings are correctly implemented
+// ------------------------------------------------------------------------------
+@import 'core/base_styles/base_style';
 
 // Make sure this is last to override anything else
 @import 'shame';

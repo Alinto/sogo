@@ -1,0 +1,16 @@
+/**
+ *
+ * @filename _base_styles.scss
+ * @project SOGo
+ * @version 3.alpha
+ *
+ * Define basic general styles for base elements
+ *
+ *
+ */
+
+
+body,
+.main { // see if '.main' fit the purposes
+  padding-bottom: $toolbar-height; // padding to compensate for the bottom bar
+}
