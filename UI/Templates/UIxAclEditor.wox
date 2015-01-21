@@ -56,7 +56,13 @@
       <!-- right side -->
       <li id="AccessRightList" data-ng-show="selectedUser">
         <h1>{{selectedUser.$shortFormat({email: false})}}</h1>
-        <div data-ng-include="'userRights.html'"><!-- load template from main wox --></div>
+        <div data-ng-include="'UIxUserRightsEditor'">
+          <!--
+              Load ng-template #UIxUserRightsEditor from main module wox. Inner wox templates are:
+              - UI/Templates/ContactsUI/UIxContactsUserRightsEditor.wox
+              - UI/Templates/MailerUI/UIxMailUserRightsEditor.wox
+              - UI/Templates/SchedulerUI/UIxCalUserRightsEditor.wox
+          --></div>
       </li>
     </ul>
   </div>

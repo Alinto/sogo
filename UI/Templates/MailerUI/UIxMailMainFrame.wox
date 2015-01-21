@@ -216,7 +216,7 @@
   <!--FIXME : repport in-line styling in style definitions -->
   <div class="view" ui-view="mailboxes" layout="row"><!-- mailboxes list --></div>
 
-  <script type="text/ng-template" id="mailboxes.html">
+  <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- dropdown menu for mailbox options button -->
     <div id="folderProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
@@ -286,11 +286,11 @@
     </main>
   </script>
 
-  <script type="text/ng-template" id="mailbox.html">
+  <script type="text/ng-template" id="UIxMailFolderTemplate">
     <var:component className="UIxMailFolderTemplate"/>
   </script>
 
-  <script type="text/ng-template" id="message.html">
+  <script type="text/ng-template" id="UIxMailViewTemplate">
     <var:component className="UIxMailViewTemplate"/>
   </script>
 

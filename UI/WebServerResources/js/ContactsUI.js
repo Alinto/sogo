@@ -25,7 +25,7 @@
           url: '/:addressbookId',
           views: {
             addressbooks: {
-              templateUrl: 'addressbooks.html',
+              templateUrl: 'UIxContactFoldersView', // UI/Templates/Contacts/UIxContactFoldersView.wox
               controller: 'AddressBookCtrl'
             }
           },
@@ -42,7 +42,7 @@
           url: '/:contactType/new',
           views: {
             card: {
-              templateUrl: 'contactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
+              templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
               controller: 'CardCtrl'
             }
           },
@@ -70,12 +70,12 @@
         })
         .state('addressbook.card.view', {
           url: '/view',
-          templateUrl: 'card.html',
+          templateUrl: 'UIxContactViewTemplate', // UI/Templates/Contacts/UIxContactViewTemplate.wox
           controller: 'CardCtrl'
         })
         .state('addressbook.card.editor', {
           url: '/edit',
-          templateUrl: 'contactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
+          templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
           controller: 'CardCtrl'
         });
 
@@ -188,7 +188,7 @@
       };
       $scope.share = function() {
         var modal = $modal.open({
-          templateUrl: stateAddressbook.id + '/aclsTemplate', // UI/Templates/UIxAclEditor.wox
+          templateUrl: stateAddressbook.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
           resolve: {
             modalUsers: function() {
               return stateAddressbook.$acl.$users();

@@ -47,11 +47,11 @@
           pageName    = "UIxContactFoldersView"; 
           actionName  = "checkRights";
         };
-        contactEditorTemplate = {
+        UIxContactEditorTemplate = {
           protectedBy = "View";
           pageName    = "UIxContactEditorTemplate";
         };
-        userFoldersTemplate = {
+        UIxContactsUserFolders = {
           protectedBy = "View";
           pageName    = "UIxContactsUserFolders"; 
         };
@@ -118,9 +118,14 @@
           actionClass = "UIxContactFolderActions";
           actionName  = "import";
         };
+        UIxContactsUserRightsEditor = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxContactsUserRightsEditor";
+        };
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxContactsUserRightsEditor";
+          actionName  = "userRights";
         };
         saveUserRights = {
           protectedBy = "Change Permissions";

@@ -26,7 +26,7 @@
           url: '/Mail',
           views: {
             mailboxes: {
-              templateUrl: 'mailboxes.html',
+              templateUrl: 'UIxMailMainFrame', // UI/Templates/MailerUI/UIxMailMainFrame.wox
               controller: 'MailboxesCtrl'
             }
           },
@@ -65,7 +65,7 @@
           url: '/:mailboxId',
           views: {
             'mailbox@mail': {
-              templateUrl: 'mailbox.html',
+              templateUrl: 'UIxMailFolderTemplate', // UI/Templates/MailerUI/UIxMailFolderTemplate.wox
               controller: 'MailboxCtrl'
             }
           },
@@ -97,7 +97,7 @@
           url: '/:messageId',
           views: {
             message: {
-              templateUrl: 'message.html',
+              templateUrl: 'UIxMailViewTemplate', // UI/Templates/MailerUI/UIxMailViewTemplate.wox
               controller: 'MessageCtrl'
             }
           },
@@ -119,7 +119,7 @@
           url: '/edit',
           views: {
             'mailbox@mail': {
-              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
               controller: 'MessageEditorCtrl'
             }
           },
@@ -133,7 +133,7 @@
           url: '/{actionName:(?:reply|replyall|forward)}',
           views: {
             'mailbox@mail': {
-              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
               controller: 'MessageEditorCtrl'
             }
           }
@@ -142,7 +142,7 @@
           url: '/new',
           views: {
             mailbox: {
-              templateUrl: 'editorTemplate', // UI/Templates/MailerUI/UIxMailEditor.wox
+              templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
               controller: 'MessageEditorCtrl'
             }
           },
