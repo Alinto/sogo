@@ -1,3 +1,13 @@
+
+// todo : implement path variables for seamless imports
+// Ex. $css-path: '../css/
+// functions can provides aliases to
+
+// palettes import -
+// ------------------------------------------------------------------------------
+// fixme : consolidate all settings and imports in a decent 'settings' file
+@import '../themes/color-palette'; // fixme : clarify if it is deeded or assure by javascript
+
 // Font Variables
 $font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif !default;
 $font-family: Ubuntu, 'Helvetica Neue', sans-serif; //override
