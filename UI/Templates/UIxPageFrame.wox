@@ -26,7 +26,7 @@
 	<link type="text/css" rel="stylesheet" rsrc:href="css/icons.css"/>
 	<link type="text/css" rel="stylesheet" rsrc:href="css/angular-material.css"/>
 	  <link type="text/css" rel="stylesheet" rsrc:href="css/themes/grey-theme.css"/>
-	  <link type="text/css" rel="stylesheet" rsrc:href="css/components.css"/>
+	  <link type="text/css" rel="stylesheet" rsrc:href="css/styles.css"/>
 	<var:if condition="hasPageSpecificCSS"
 	  ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
 	    /></var:if>
