@@ -1,8 +1,6 @@
 /* iCalByDayMask.h - this file is part of SOPE
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,6 +69,7 @@ typedef iCalWeekOccurrence iCalWeekOccurrences[7];
 
 - (NSString *) asRuleString;
 - (NSString *) asRuleStringWithIntegers;
+- (NSArray *) asRuleArray;
 
 @end
 

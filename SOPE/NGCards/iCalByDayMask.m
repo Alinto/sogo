@@ -1,8 +1,6 @@
 /* iCalByDayMask.m - this file is part of SOPE
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +19,9 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import "iCalByDayMask.h"
 
@@ -342,6 +342,29 @@
   [s deleteSuffix: @","];
 
   return s;
+}
+
+- (NSArray *) asRuleArray
+{
+  NSMutableArray *rules;
+  NSMutableDictionary *rule;
+  int i;
+
+  rules = [NSMutableArray array];
+  for (i = 0; i < 7; i++)
+    {
+      if (days[i])
+	{
+	  rule = [NSMutableDictionary dictionary];
+	  if (days[i] != iCalWeekOccurrenceAll)
+            [rule setObject: [NSNumber numberWithInt: [self _iCalWeekOccurrenceIntValue: days[i]]]
+                     forKey: @"occurrence"];
+	  [rule setObject: iCalWeekDayString[i]
+                   forKey: @"day"];
+	  [rules addObject: rule];
+	}
+    }
+  return rules;
 }
 
 @end /* iCalByDayMask */
