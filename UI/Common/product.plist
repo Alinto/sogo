@@ -53,6 +53,7 @@
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxUserRightsEditor";
+          actionName  = "userRights";
         };
         saveUserRights = {
           protectedBy = "Change Permissions";
@@ -64,7 +65,7 @@
           pageName    = "UIxAclEditor";
           actionName  = "acls";
         };
-        aclsTemplate = {
+        UIxAclEditor = {
           protectedBy = "ReadAcls";
           pageName    = "UIxAclEditor";
         };
