@@ -1,6 +1,6 @@
 /* iCalRepeatableEntityObject+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,10 @@
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
+#import <NGCards/iCalByDayMask.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
 #import <NGCards/iCalTimeZone.h>
@@ -67,6 +69,44 @@
     }
 
   return ma;
+}
+
+/**
+ * @see [iCalEntityObject+SOGo attributes]
+ * @see [UIxAppointmentEditor viewAction]
+ */
+- (NSDictionary *) attributes
+{
+  NSMutableDictionary *data, *repeat;
+  NSArray *rules;
+  NSString *frequency;
+  iCalRecurrenceRule *rule;
+
+  data = [NSMutableDictionary dictionaryWithDictionary: [super attributes]];
+
+  rules = [self recurrenceRules];
+  if ([rules count] > 0)
+    {
+      rule = [rules objectAtIndex: 0];
+      frequency = [rule frequencyForValue: [rule frequency]];
+
+      repeat = [NSMutableDictionary dictionary];
+      [repeat setObject: [frequency lowercaseString] forKey: @"frequency"];
+      [repeat setObject: [NSNumber numberWithInt: [rule repeatInterval]] forKey: @"interval"];
+      if ([rule repeatCount])
+        [repeat setObject: [NSNumber numberWithInt: [rule repeatCount]] forKey: @"count"];
+      if ([rule untilDate])
+        [repeat setObject: [NSNumber numberWithUnsignedInt: [[rule untilDate] timeIntervalSince1970]] forKey: @"until"];
+      if ([[rule byDay] length])
+        [repeat setObject: [[rule byDayMask] asRuleArray] forKey: @"days"];
+      if ([[rule byMonthDay] count])
+        [repeat setObject: [rule byMonthDay] forKey: @"monthdays"];
+      if ([[rule byMonth] count])
+        [repeat setObject: [rule byMonth] forKey: @"months"];
+      [data setObject: repeat forKey: @"repeat"];
+    }
+
+  return data;
 }
 
 - (NSString *) cycleInfo

@@ -34,6 +34,8 @@ extern NSNumber *iCalDistantFutureNumber;
 
 + (void) initializeSOGoExtensions;
 
+- (NSDictionary *) attributes;
+
 - (BOOL) userIsAttendee: (SOGoUser *) user;
 - (BOOL) userIsOrganizer: (SOGoUser *) user;
 

@@ -1,6 +1,6 @@
 /* iCalEntityObject+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,20 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSURL.h>
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTrigger.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
+#import <NGCards/NSString+NGCards.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -61,6 +65,141 @@ NSNumber *iCalDistantFutureNumber = nil;
       /* INT_MAX due to Postgres constraint */
       iCalDistantFutureNumber = [[NSNumber numberWithUnsignedInt: INT_MAX] retain];
     }
+}
+
+/**
+ * @see [UIxAppointmentEditor viewAction]
+ */
+- (NSDictionary *) attributes
+{
+  NSArray *elements;
+  NSMutableArray *attendees, *categories;
+  NSDictionary *organizerData;
+  NSMutableDictionary *data, *attendeeData, *alarmData;
+  NSEnumerator *attendeesList;
+  iCalPerson *organizer, *currentAttendee;
+  iCalAlarm *alarm;
+  iCalTrigger *trigger;
+  id value;
+  unsigned int i, max;
+
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [[self tag] lowercaseString], @"component",
+                              [self summary], @"summary",
+                              [self priority], @"priority",
+                              nil];
+
+  value = [self location];
+  if (value) [data setObject: value forKey: @"location"];
+  if ([self comment]) [data setObject: [self comment] forKey: @"comment"];
+  if ([self attach]) [data setObject: [[self attach] absoluteString] forKey: @"attachUrl"];
+  if ([self accessClass]) [data setObject: [self accessClass] forKey: @"classification"];
+  if ([self status]) [data setObject: [self status] forKey: @"status"];
+  if ([self createdBy]) [data setObject: [self createdBy] forKey: @"createdBy"];
+
+  // Categories
+  elements = [self childrenWithTag: @"categories"];
+  max = [elements count];
+  if (max > 0)
+    {
+      categories = [NSMutableArray arrayWithCapacity: max];
+      for (i = 0; i < max; i++)
+        {
+          [categories addObject: [[elements objectAtIndex: i] flattenedValuesForKey: @""]];
+        }
+      [data setObject: categories forKey: @"categories"];
+    }
+
+  // Send appointment notifications
+  value = [self firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
+  [data setObject: [NSNumber numberWithBool: (value? 1:0)] forKey: @"sendAppointmentNotifications"];
+
+  // Organizer
+  organizer = [self organizer];
+  if (organizer)
+    {
+      organizerData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [organizer rfc822Email], @"email",
+                                    [organizer cnWithoutQuotes], @"name",
+                                    nil];
+      [data setObject: organizerData forKey: @"organizer"];
+    }
+
+
+  // Attendees
+  attendees = [NSMutableArray array];
+  attendeesList = [[self attendees] objectEnumerator];
+  while ((currentAttendee = [attendeesList nextObject]))
+    {
+      attendeeData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                            [currentAttendee rfc822Email], @"email",
+                                          [currentAttendee cnWithoutQuotes], @"name",
+                                          nil];
+      if ([currentAttendee uid]) [attendeeData setObject: [currentAttendee uid] forKey: @"uid"];
+      // TODO: restore support for MS Exchange
+      // uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
+      // if (uid != nil)
+      //   [currentAttendeeData setObject: uid
+      //   			forKey: @"uid"];
+      // else
+      //   {
+      //     domain = [[context activeUser] domain];
+      //     contacts = [um fetchContactsMatching: [currentAttendee rfc822Email] inDomain: domain];
+      //     if ([contacts count] == 1)
+      //       {
+      //         contact = [contacts lastObject];
+      //         source = [contact objectForKey: @"source"];
+      //         if ([source conformsToProtocol: @protocol (SOGoDNSource)] &&
+      //             [[(NSObject <SOGoDNSource>*) source MSExchangeHostname] length])
+      //           {
+      //             uid = [NSString stringWithFormat: @"%@:%@", [[context activeUser] login],
+      //                         [contact valueForKey: @"c_uid"]];
+      //             [currentAttendeeData setObject: uid forKey: @"uid"];
+      //           }
+      //       }
+      //   }
+      [attendeeData setObject: [[currentAttendee partStat] lowercaseString] forKey: @"status"];
+      [attendeeData setObject: [[currentAttendee role] lowercaseString] forKey: @"role"];
+      if ([[currentAttendee delegatedTo] length])
+	[attendeeData setObject: [[currentAttendee delegatedTo] rfc822Email] forKey: @"delegatedTo"];
+      if ([[currentAttendee delegatedFrom] length])
+	[attendeeData setObject: [[currentAttendee delegatedFrom] rfc822Email] forKey: @"delegatedFrom"];
+
+      [attendees addObject: attendeeData];
+    }
+  if ([attendees count])
+    [data setObject: attendees forKey: @"attendees"];
+
+  // Alarm
+  if ([self hasAlarms])
+    {
+      alarm = [self firstSupportedAlarm]; // only consider the first alarm with a supported action
+      trigger = [alarm trigger];
+      if (![[trigger valueType] length] || [[trigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+        {
+          alarmData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                             [[alarm action] lowercaseString], @"action",
+                                           nil];
+          [alarmData addEntriesFromDictionary: [trigger asDictionary]];
+          attendees = [NSMutableArray array];
+          attendeesList = [[alarm attendees] objectEnumerator];
+          while ((currentAttendee = [attendeesList nextObject]))
+            {
+              attendeeData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                    [currentAttendee rfc822Email], @"email",
+                                                  [currentAttendee cnWithoutQuotes], @"name",
+                                                  nil];
+              if ([currentAttendee uid]) [attendeeData setObject: [currentAttendee uid] forKey: @"uid"];
+              [attendees addObject: attendeeData];
+            }
+          if ([attendees count])
+            [alarmData setObject: attendees forKey: @"attendees"];
+
+          [data setObject: alarmData forKey: @"alarm"];
+        }
+    }
+
+  return data;
 }
 
 - (BOOL) userIsAttendee: (SOGoUser *) user
