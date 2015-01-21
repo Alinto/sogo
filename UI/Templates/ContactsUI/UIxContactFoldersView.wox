@@ -62,9 +62,7 @@
     </ul>
     -->
 
-  <div>
-
-    <div data-ui-view="addressbooks" layout="row" style="max-height: 100%"><!-- addressbooks list --></div>
+    <div data-ui-view="addressbooks" layout="row" class="view"><!-- addressbooks list --></div>
 
     <!-- modal for addressbook sharing options -->
     <script type="text/ng-template" id="userRights.html">
@@ -288,5 +286,5 @@
     </script>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
-  </div>
+
 </var:component>
