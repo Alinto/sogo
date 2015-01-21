@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import "iCalEvent.h"
@@ -50,6 +51,75 @@
 - (NSString *) relationType
 {
   return [self value: 0 ofAttribute: @"related"];
+}
+
+- (NSDictionary *) asDictionary
+{
+  NSDictionary *data;
+  NSString *duration, *relation, *reference, *quantity, *unit;
+  NSUInteger i;
+  unichar c;
+
+  data = nil;
+  if (![[self valueType] length] ||
+      [[self valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+    {
+      relation = [[self relationType] uppercaseString];
+      duration = [self flattenedValuesForKey: @""];
+      i = 0;
+      c = [duration characterAtIndex: i];
+      if (c == '-')
+        {
+          reference = @"BEFORE";
+          i++;
+        }
+      else
+        {
+          reference = @"AFTER";
+        }
+      c = [duration characterAtIndex: i];
+      if (c == 'P')
+        {
+          quantity = @"";
+          unit = @"";
+          // Parse duration -- ignore first character (P)
+          for (i++; i < [duration length]; i++)
+            {
+              c = [duration characterAtIndex: i];
+              if (c == 't' || c == 'T')
+                // time -- ignore character
+                continue;
+              else if (isdigit (c))
+                quantity = [quantity stringByAppendingFormat: @"%c", c];
+              else
+                {
+                  switch (c)
+                    {
+                    case 'D': /* day  */
+                      unit = @"DAYS";
+                      break;
+                    case 'H': /* hour */
+                      unit = @"HOURS";
+                      break;
+                    case 'M': /* min  */
+                      unit = @"MINUTES";
+                      break;
+                    default:
+                      NSLog(@"Cannot process duration unit: '%c'", c);
+                      break;
+                    }
+                }
+            }
+	}
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             relation, @"relation",
+                           reference, @"reference",
+                           quantity, @"quantity",
+                           unit, @"unit",
+                           nil];
+    }
+
+  return data;
 }
 
 - (NSCalendarDate *) nextAlarmDate
