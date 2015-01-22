@@ -1,6 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -308,14 +308,41 @@ static NSArray *tasksFields = nil;
   }
 }
 
+/**
+ * Split participants information into arrays and return the string representation of
+ * their states (0: needs-action, 1: accepted, etc).
+ *
+ * @see [iCalPerson descriptionForParticipationStatus:]
+ */
+- (void) _fixParticipants: (NSMutableDictionary *) theRecord
+{
+  NSArray *mails, *states;
+  NSMutableArray *statesDescription;
+  iCalPersonPartStat stat;
+  NSUInteger count, max;
+
+  mails = [[theRecord objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+  states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+  max = [mails count];
+  statesDescription = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      stat = [[states objectAtIndex: count] intValue];
+      [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
+    }
+
+  [theRecord setObject: mails forKey: @"c_partmails"];
+  [theRecord setObject: statesDescription forKey: @"c_partstates"];
+}
+
 - (NSArray *) _fetchFields: (NSArray *) fields
         forComponentOfType: (NSString *) component
 {
   NSEnumerator *folders, *currentInfos;
   NSMutableDictionary *newInfo;
-  NSMutableArray *infos, *newInfoForComponent, *quickInfos, *allInfos, *quickInfosName;
+  NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *filters, *iCalString;
+  NSString *owner, *role, *calendarName, *iCalString;
   NSRange match;
   iCalCalendar *calendar;
   iCalObject *master;
@@ -324,8 +351,7 @@ static NSArray *tasksFields = nil;
   SOGoUser *ownerUser;
   
   BOOL isErasable, folderIsRemote, quickInfosFlag = NO;
-  id currentInfo;
-  int i, count;
+  int i;
   
   infos = [NSMutableArray array];
   marker = [NSNull null];
@@ -437,8 +463,7 @@ static NSArray *tasksFields = nil;
                 }
 	      if ([fields containsObject: @"ownerIsOrganizer"])
                 {
-                  // Identifies whether the active user is the organizer
-                  // of this event.
+                  // Identifies whether the owner is the organizer of this event.
                   NSString *c_orgmail;
                   c_orgmail = [newInfo objectForKey: @"c_orgmail"];
           
@@ -449,13 +474,8 @@ static NSArray *tasksFields = nil;
                     [newInfo setObject: [NSNumber numberWithInt: 0]
                                 forKey: @"ownerIsOrganizer"];
                 }
-	      if (isErasable)
-                [newInfo setObject: [NSNumber numberWithInt: 1]
-                            forKey: @"erasable"];
-	      else
-                [newInfo setObject: [NSNumber numberWithInt: 0]
-                            forKey: @"erasable"];
-        
+              [newInfo setObject: [NSNumber numberWithBool: isErasable]
+                          forKey: @"erasable"];
 	      [newInfo setObject: [currentFolder nameInContainer]
                           forKey: @"c_folder"];
               [newInfo setObject: [currentFolder ownerInContext: context]
@@ -465,23 +485,21 @@ static NSArray *tasksFields = nil;
                 calendarName = @"";
               [newInfo setObject: calendarName
                           forKey: @"calendarName"];
+
+              // Fix empty title
               if (![[newInfo objectForKey: @"c_title"] length])
                 [self _fixComponentTitle: newInfo withType: component];
 
 	      // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
               [self _fixDates: newInfo];
-              newInfoForComponent = [NSMutableArray arrayWithArray: [newInfo objectsForKeys: fields
-                                                                             notFoundMarker: marker]];
-              // Escape HTML
-              count = [newInfoForComponent count];
-              for (i = 0; i < count; i++)
-                {
-                  currentInfo = [newInfoForComponent objectAtIndex: i];
-                  if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
-                    [newInfoForComponent replaceObjectAtIndex: i withObject: [currentInfo stringByEscapingHTMLString]];
-                }
-              [infos addObject: newInfoForComponent];
+
+              // Split linefeed-delimited list of participants emails and statuses
+              if ([fields containsObject: @"c_partmails"])
+                [self _fixParticipants: newInfo];
+
+              [infos addObject: [newInfo objectsForKeys: fields
+                                         notFoundMarker: marker]];
             }
         }
     }
@@ -493,12 +511,7 @@ static NSArray *tasksFields = nil;
 
 - (WOResponse *) _responseWithData: (id) data
 {
-  WOResponse *response;
-  
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [data jsonRepresentation]];
-  
-  return response;
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 - (NSString *) _formattedDateForSeconds: (unsigned int) seconds
@@ -519,27 +532,37 @@ static NSArray *tasksFields = nil;
   return formattedDate;
 }
 
-//
-// We return:
-//
-// [[calendar name (full path), complete Event ID (full path), Fire date (UTC)], ..]
-//
-// Called when each module is loaded or whenever a calendar component is created, modified, deleted
-// or whenever there's a {un}subscribe to a calendar.
-//
-// Workflow :
-//
-// - for ALL subscribed and ACTIVE calendars
-//  - returns alarms that will occur in the next 48 hours or the non-triggered alarms
-//    for non-completed events
-//
+/**
+ * @api {get} /so/:username/Calendar/alarmslist Get alarms
+ * @apiVersion 1.0.0
+ * @apiName GetAlarmsList
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/alarmslist?browserTime=1286668800
+ * @apiDescription Called when each module is loaded or whenever a calendar component is created, modified, deleted
+ * or whenever there's a {un}subscribe to a calendar.
+ *
+ * Workflow :
+ *
+ * - for ALL subscribed and ACTIVE calendars
+ *  - returns alarms that will occur in the next 48 hours or the non-triggered alarms
+ *    for non-completed events
+ *
+ * @apiParam {Number} [browserTime] Epoch time of browser
+ *
+ * @apiSuccess (Success 200) {String[]} fields                   List of fields for each event definition
+ * @apiSuccess (Success 200) {String[]} alarms                   List of events
+ * @apiSuccess (Success 200) {String} alarms.c_folder            Calendar ID
+ * @apiSuccess (Success 200) {String} alarms.c_name              Event UID
+ * @apiSuccess (Success 200) {String} alarms.c_nextalarm         Epoch time of event's next alarm
+ */
 - (WOResponse *) alarmsListAction
 {
   SOGoAppointmentFolder *currentFolder;
   SOGoAppointmentFolders *clientObject;
   NSMutableArray *allAlarms;
+  NSDictionary *data;
   NSEnumerator *folders;
-  WOResponse *response;
   unsigned int browserTime, laterTime;
   
   // We look for alarms in the next 48 hours
@@ -572,12 +595,12 @@ static NSArray *tasksFields = nil;
             }
         }
     }
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSArray arrayWithObjects: @"c_folder", @"c_name", @"c_nextalarm", nil], @"fields",
+                       allAlarms, @"alarms", nil];
   
-  
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [allAlarms jsonRepresentation]];
-  
-  return response;
+  return [self _responseWithData: data];
 }
 
 - (void) checkFilterValue
@@ -596,11 +619,51 @@ static NSArray *tasksFields = nil;
   }
 }
 
+/**
+ * @api {get} /so/:username/Calendar/eventslist Get events
+ * @apiVersion 1.0.0
+ * @apiName GetEventsList
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/eventslist?day=20141201\&filterpopup=view_selectedday
+ *
+ * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
+ * @apiParam {String} [sort] Sort field. Either title, end, location, or calendarName.
+ * @apiParam {Number} [day] Selected day (YYYYMMDD)
+ * @apiParam {String} [filterpopup] Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_future, view_selectedday, or view_all
+ *
+ * @apiSuccess (Success 200) {String[]} fields                   List of fields for each event definition
+ * @apiSuccess (Success 200) {String[]} events                   List of events
+ * @apiSuccess (Success 200) {String} events.c_name              Event UID
+ * @apiSuccess (Success 200) {String} events.c_folder            Calendar ID
+ * @apiSuccess (Success 200) {String} events.calendarName        Human readable name of calendar
+ * @apiSuccess (Success 200) {Number} events.c_status            0: Cancelled, 1: Normal, 2: Tentative
+ * @apiSuccess (Success 200) {String} events.c_title             Title
+ * @apiSuccess (Success 200) {String} events.c_startdate         Epoch time of start date
+ * @apiSuccess (Success 200) {String} events.c_enddate           Epoch time of end date
+ * @apiSuccess (Success 200) {String} events.c_location          Event's location
+ * @apiSuccess (Success 200) {Number} events.c_isallday          1 if event lasts all day
+ * @apiSuccess (Success 200) {Number} events.c_classification    0: Public, 1: Private, 2: Confidential
+ * @apiSuccess (Success 200) {String} events.c_category          Category
+ * @apiSuccess (Success 200) {String[]} events.c_partmails       Participants email addresses
+ * @apiSuccess (Success 200) {String[]} events.c_partstates      Participants states
+ * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
+ * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic
+ * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
+ * @apiSuccess (Success 200) {String} events.c_recurrence_id     Recurrence ID if event is cyclic
+ * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
+ * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
+ * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
+ * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
+ * @apiSuccess (Success 200) {String} events.formatted_startdate Localized start date
+ * @apiSuccess (Success 200) {String} events.formatted_enddate   Localized end date
+ */
 - (WOResponse *) eventsListAction
 {
   NSArray *oldEvent;
+  NSDictionary *data;
   NSEnumerator *events;
-  NSMutableArray *newEvents, *newEvent;
+  NSMutableArray *fields, *newEvents, *newEvent;
   unsigned int interval;
   BOOL isAllDay;
   NSString *sort, *ascending;
@@ -640,7 +703,14 @@ static NSArray *tasksFields = nil;
   if (![ascending boolValue])
     [newEvents reverseArray];
   
-  return [self _responseWithData: newEvents];
+  // Fields names
+  fields = [NSMutableArray arrayWithArray: eventsFields];
+  [fields addObject: @"formatted_startdate"];
+  [fields addObject: @"formatted_enddate"];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys: fields, @"fields", newEvents, @"events", nil];
+
+  return [self _responseWithData: data];
 }
 
 static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsigned int start,
@@ -1058,7 +1128,6 @@ _computeBlocksPosition (NSArray *blocks)
   NSString *fUID;
   NSNumber *isActive;
   unsigned int count, foldersCount;
-  int max=0, i;
   
   co = [self clientObject];
   folders = [co subFolders];
@@ -1076,10 +1145,58 @@ _computeBlocksPosition (NSArray *blocks)
   return selectedCalendars;
 }
 
+/**
+ * @api {get} /so/:username/Calendar/eventsblocks Get events blocks
+ * @apiVersion 1.0.0
+ * @apiName GetEventsBlocks
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/eventsblocks?day=20141201\&popupfilter=view_selectedday
+ *
+ * @apiParam {Number} [sd] Period start date (YYYYMMDD)
+ * @apiParam {Number} [ed] Period end date (YYYYMMDD)
+ * @apiParam {String} [view] Formatting view. Either dayview, multicolumndayview, weekview or monthview.
+ *
+ * @apiSuccess (Success 200) {String[]} eventsFields             List of fields for each event definition
+ * @apiSuccess (Success 200) {String[]} events                   List of events
+ * @apiSuccess (Success 200) {String} events.c_name              Event UID
+ * @apiSuccess (Success 200) {String} events.c_folder            Calendar ID
+ * @apiSuccess (Success 200) {String} events.calendarName        Human readable name of calendar
+ * @apiSuccess (Success 200) {Number} events.c_status            0: Cancelled, 1: Normal, 2: Tentative
+ * @apiSuccess (Success 200) {String} events.c_title             Title
+ * @apiSuccess (Success 200) {String} events.c_startdate         Epoch time of start date
+ * @apiSuccess (Success 200) {String} events.c_enddate           Epoch time of end date
+ * @apiSuccess (Success 200) {String} events.c_location          Event's location
+ * @apiSuccess (Success 200) {Number} events.c_isallday          1 if event lasts all day
+ * @apiSuccess (Success 200) {Number} events.c_classification    0: Public, 1: Private, 2: Confidential
+ * @apiSuccess (Success 200) {String} events.c_category          Category
+ * @apiSuccess (Success 200) {String[]} events.c_partmails       Participants email addresses
+ * @apiSuccess (Success 200) {String[]} events.c_partstates      Participants states
+ * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
+ * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic
+ * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
+ * @apiSuccess (Success 200) {String} events.c_recurrence_id     Recurrence ID if event is cyclic
+ * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
+ * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
+ * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
+ * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
+ * @apiSuccess (Success 200) {Object[]} blocks
+ * @apiSuccess (Success 200) {Number} blocks.nbr
+ * @apiSuccess (Success 200) {Number} blocks.start
+ * @apiSuccess (Success 200) {Number} blocks.position
+ * @apiSuccess (Success 200) {Number} blocks.length
+ * @apiSuccess (Success 200) {Number} blocks.siblings
+ * @apiSuccess (Success 200) {Number} blocks.realSiblings
+ * @apiSuccess (Success 200) {Object[]} allDayBlocks
+ * @apiSuccess (Success 200) {Number} allDayBlocks.nbr
+ * @apiSuccess (Success 200) {Number} allDayBlocks.start
+ * @apiSuccess (Success 200) {Number} allDayBlocks.length
+ */
 - (WOResponse *) eventsBlocksAction
 {
   int count, max;
-  NSArray *events, *event, *eventsBlocks;
+  NSArray *events, *event;
+  NSDictionary *eventsBlocks;
   NSMutableArray *allDayBlocks, *blocks, *currentDay, *calendars, *eventsByCalendars, *eventsForCalendar;
   NSNumber *eventNbr;
   BOOL isAllDay;
@@ -1102,7 +1219,11 @@ _computeBlocksPosition (NSArray *blocks)
           [eventsForCalendar addObject: [events objectAtIndex:j]];
         }
       }
-      eventsBlocks = [NSArray arrayWithObjects:eventsForCalendar, allDayBlocks, blocks, nil];
+      eventsBlocks = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     eventsFields, @"eventsFields",
+                                   eventsForCalendar, @"events",
+                                   allDayBlocks, @"allDayBlocks",
+                                   blocks, @"blocks", nil];
       max = [eventsForCalendar count];
       for (count = 0; count < max; count++)
       {
@@ -1129,7 +1250,11 @@ _computeBlocksPosition (NSArray *blocks)
   else
   {
     [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
-    eventsBlocks = [NSArray arrayWithObjects: events, allDayBlocks, blocks, nil];
+    eventsBlocks = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   eventsFields, @"eventsFields",
+                                 events, @"events",
+                                 allDayBlocks, @"allDayBlocks",
+                                 blocks, @"blocks", nil];
     max = [events count];
     for (count = 0; count < max; count++)
     {
@@ -1171,8 +1296,7 @@ _computeBlocksPosition (NSArray *blocks)
     if (endDateStamp)
     {
       now = [NSCalendarDate calendarDate];
-      taskDate
-	    = [NSCalendarDate dateWithTimeIntervalSince1970: endDateStamp];
+      taskDate = [NSCalendarDate dateWithTimeIntervalSince1970: endDateStamp];
       [taskDate setTimeZone: userTimeZone];
       if ([taskDate earlierDate: now] == taskDate)
         statusClass = @"overdue";
@@ -1191,9 +1315,45 @@ _computeBlocksPosition (NSArray *blocks)
   return statusClass;
 }
 
+/**
+ * @api {get} /so/:username/Calendar/taskslist Get tasks
+ * @apiVersion 1.0.0
+ * @apiName GetTasksList
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/taskslist?filterpopup=view_all
+ *
+ * @apiParam {Number} [show-completed] Show completed tasks when set to 1. Defaults to ignore completed tasks.
+ * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
+ * @apiParam {Boolean} [sort] Sort field. Either title, priority, end, location, category, or calendarname.
+ * @apiParam {Number} [day] Selected day (YYYYMMDD)
+ * @apiParam {String} [filterpopup] Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_overdue, view_incomplete, view_not_started, or view_all
+ * @apiParam {Boolean} [setud] Save 'show-completed' parameter in user's settings
+ *
+ * @apiSuccess (Success 200) {String[]} fields                List of fields for each event definition
+ * @apiSuccess (Success 200) {String[]} tasks                 List of events
+ * @apiSuccess (Success 200) {String} tasks.c_name            Todo UID
+ * @apiSuccess (Success 200) {String} tasks.c_folder          Calendar ID
+ * @apiSuccess (Success 200) {String} tasks.calendarName      Human readable name of calendar
+ * @apiSuccess (Success 200) {Number} tasks.c_status          0: Needs-action, 1: Completed, 2: In-process, 3: Cancelled
+ * @apiSuccess (Success 200) {String} tasks.c_title           Title
+ * @apiSuccess (Success 200) {String} tasks.c_enddate         End date (epoch time)
+ * @apiSuccess (Success 200) {Number} tasks.c_classification  0: Public, 1: Private, 2: Confidential
+ * @apiSuccess (Success 200) {String} tasks.c_location        Location
+ * @apiSuccess (Success 200) {String} tasks.c_category        Category
+ * @apiSuccess (Success 200) {Number} tasks.editable          1 if task is editable by the active user
+ * @apiSuccess (Success 200) {Number} tasks.erasable          1 if task is erasable by the active user
+ * @apiSuccess (Success 200) {String} tasks.c_priority        Priority (0-9)
+ * @apiSuccess (Success 200) {String} tasks.c_owner           Username of owner
+ * @apiSuccess (Success 200) {String} tasks.c_recurrence_id   Recurrence ID if task is cyclic
+ * @apiSuccess (Success 200) {Number} tasks.isException       1 if task is cyclic and an exception
+ * @apiSuccess (Success 200) {String} tasks.status            Either completed, overdue, duetoday, or duelater
+ * @apiSuccess (Success 200) {String} tasks.formatted_enddate Localized end date
+ */
 - (WOResponse *) tasksListAction
 {
-  NSMutableArray *filteredTasks, *filteredTask;
+  NSDictionary *data;
+  NSMutableArray *filteredTasks, *filteredTask, *fields;
   NSString *sort, *ascending;
   NSString *statusFlag, *tasksView;
   SOGoUserSettings *us;
@@ -1239,6 +1399,8 @@ _computeBlocksPosition (NSArray *blocks)
       if (endDateStamp > 0)
         [filteredTask addObject: [self _formattedDateForSeconds: endDateStamp
                                                       forAllDay: NO]];
+      else
+        [filteredTask addObject: [NSNull null]];
       
       if (([tasksView isEqualToString:@"view_today"]  ||
            [tasksView isEqualToString:@"view_next7"]  ||
@@ -1275,8 +1437,15 @@ _computeBlocksPosition (NSArray *blocks)
   ascending = [[context request] formValueForKey: @"asc"];
   if (![ascending boolValue])
     [filteredTasks reverseArray];
-  
-  return [self _responseWithData: filteredTasks];
+
+  // Fields names
+  fields = [NSMutableArray arrayWithArray: tasksFields];
+  [fields addObject: @"status"];
+  [fields addObject: @"formatted_enddate"];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys: fields, @"fields", filteredTasks, @"tasks", nil];
+
+  return [self _responseWithData: data];
 }
 
 - (WOResponse *) activeTasksAction

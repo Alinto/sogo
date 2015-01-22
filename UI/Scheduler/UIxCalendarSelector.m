@@ -1,8 +1,6 @@
 /* UIxCalendarSelector.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,14 +166,30 @@ _intValueFromHex (NSString *hexString)
   return ((brightness < 144) ? @"white" : @"black");
 }
 
+/**
+ * @api {get} /so/:username/Calendar/:calendarId/calendarslist Get calendars
+ * @apiVersion 1.0.0
+ * @apiName GetCalendarsList
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/calendarslist
+ *
+ * @apiSuccess (Success 200) {Object[]} calendars List of calendars
+ * @apiSuccess (Success 200) {String} id          Calendar ID
+ * @apiSuccess (Success 200) {String} displayName Human readable name
+ * @apiSuccess (Success 200) {String} owner       User ID of owner
+ * @apiSuccess (Success 200) {String} color       Calendar's hex color code
+ * @apiSuccess (Success 200) {Number} active      1 if the calendar is enabled
+ * @apiSuccess (Success 200) {Number} activeTasks Number of incompleted tasks
+ */
 - (WOResponse *) calendarsListAction
 {
+  NSDictionary *data;
   WOResponse *response;
 
-  response = [self responseWithStatus: 200];
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"content-type"];
-  [response appendContentString: [[self calendars] jsonRepresentation]];
+  data = [NSDictionary dictionaryWithObject: [self calendars]
+                                     forKey: @"calendars"];
+  response = [self responseWithStatus: 200 andJSONRepresentation: data];
 
   return response;
 }
