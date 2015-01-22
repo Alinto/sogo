@@ -77,7 +77,7 @@ static NSString *mailETag = nil;
                                SOGO_MAJOR_VERSION,
                                SOGO_MINOR_VERSION,
                                SOGO_SUBMINOR_VERSION];
-  NSLog (@"Note: using constant etag for mail viewer: '%@'", mailETag);
+  //NSLog (@"Note: using constant etag for mail viewer: '%@'", mailETag);
 }
 
 - (void) dealloc
