@@ -144,43 +144,55 @@
 }
 
 /**
- * Retrieve the addressbook contacts with respect to the sort and
- * search criteria.
- * @return a JSON array of dictionaries representing the contacts.
+ * @api {get} /so/:username/Contacts/:addressbookId/view List cards
+ * @apiVersion 1.0.0
+ * @apiName GetContactsList
+ * @apiGroup Contacts
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/view?search=name_or_address\&value=Bob
+ *
+ * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
+ * @apiParam {String} [sort] Sort field. Either c_cn, c_mail, c_screenname, c_o, or c_telephonenumber.
+ * @apiParam {String} [search] Field criteria. Either name_or_address, category, or organization.
+ * @apiParam {String} [value] String to match
+ *
+ * @apiSuccess (Success 200) {String} id Address book         ID
+ * @apiSuccess (Success 200) {String} [publicCardDavURL]      Public CardDAV URL of the address book
+ * @apiSuccess (Success 200) {String} cardDavURL              CardDAV URL of the address book
+ * @apiSuccess (Success 200) {Object[]} [cards]               Matching cards
+ * @apiSuccess (Success 200) {String} cards.id                Card ID
+ * @apiSuccess (Success 200) {String} cards.c_name            Card ID
+ * @apiSuccess (Success 200) {String} cards.tag               Either vcard or vlist
+ * @apiSuccess (Success 200) {String} cards.c_component       Either vcard or vlist
+ * @apiSuccess (Success 200) {String} cards.c_cn              Fullname
+ * @apiSuccess (Success 200) {String} cards.givenname         Fullname
+ * @apiSuccess (Success 200) {String} cards.c_givenname       Firstname
+ * @apiSuccess (Success 200) {String} cards.sn                Firstname
+ * @apiSuccess (Success 200) {String} cards.c_sn              Lastname
+ * @apiSuccess (Success 200) {String} cards.c_screenname      Screenname
+ * @apiSuccess (Success 200) {String} cards.c_o               Organization name
+ * @apiSuccess (Success 200) {Object} cards.emails            Preferred email address
+ * @apiSuccess (Success 200) {String} cards.emails.type       Type (e.g., home or work)
+ * @apiSuccess (Success 200) {String} cards.emails.value      Email address
+ * @apiSuccess (Success 200) {String} cards.c_mail            Preferred email address
+ * @apiSuccess (Success 200) {String} cards.c_telephonenumber Preferred telephone number
+ * @apiSuccess (Success 200) {String} cards.c_categories      Comma-separated list of categories
+ *
+ * See [SOGoContactGCSFolder fixupContactRecord:]
  */
 - (id <WOActionResults>) contactsListAction
 {
   id <WOActionResults> result;
-  id currentInfo;
   NSDictionary *data;
   NSArray *contactsList;
-  NSEnumerator *contactsListEnumerator, *keysEnumerator;
-  NSMutableArray *newContactsList;
-  NSMutableDictionary *currentContactDictionary;
-  NSString *key;
 
   contactsList = [self contactInfos];
-  contactsListEnumerator = [contactsList objectEnumerator];
-  newContactsList = [NSMutableArray arrayWithCapacity: [contactsList count]];
-
-  // Escape HTML
-  while ((currentContactDictionary = [contactsListEnumerator nextObject]))
-    {
-      keysEnumerator = [currentContactDictionary keyEnumerator];
-      while ((key = [keysEnumerator nextObject]))
-        {
-          currentInfo = [currentContactDictionary objectForKey: key];
-          if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
-            [currentContactDictionary setObject: currentInfo forKey: key];
-        }
-      [newContactsList addObject: currentContactDictionary];
-    }
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                          [[self clientObject] nameInContainer], @"id",
-                       newContactsList, @"cards",
                        [self cardDavURL], @"cardDavURL",
                        [self publicCardDavURL], @"publicCardDavURL",
+                       contactsList, @"cards",
                        nil];
 
   result = [self responseWithStatus: 200
