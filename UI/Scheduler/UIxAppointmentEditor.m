@@ -435,15 +435,79 @@
                andString: [jsonResponse jsonRepresentation]];
 }
 
+/**
+ * @api {get} /so/:username/Calendar/:calendarId/:eventId/view Get event
+ * @apiVersion 1.0.0
+ * @apiName GetEventView
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/71B6-54904400-1-7C308500.ics/view
+ *
+ * @apiParam {Number} [resetAlarm] Mark alarm as triggered if set to 1
+ * @apiParam {Number} [snoozeAlarm] Snooze the alarm for this number of minutes
+ *
+ * @apiSuccess (Success 200) {String} id                      Event ID
+ * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
+ * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
+ * @apiSuccess (Success 200) {String} startDate               Formatted start date
+ * @apiSuccess (Success 200) {String} startTime               Formatted start time
+ * @apiSuccess (Success 200) {String} endDate                 Formatted end date
+ * @apiSuccess (Success 200) {String} endTime                 Formatted end time
+ * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
+ * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
+ * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
+ *
+ * From [iCalEntityObject+SOGo attributes]
+ *
+ * @apiSuccess (Success 200) {String} component               "vevent"
+ * @apiSuccess (Success 200) {String} summary                 Summary
+ * @apiSuccess (Success 200) {String} location                Location
+ * @apiSuccess (Success 200) {String} comment                 Comment
+ * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
+ * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {String[]} [categories]          Categories
+ * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
+ * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
+ * @apiSuccess (Success 200) {String} organizer.email         Organizer's email address
+ * @apiSuccess (Success 200) {Object[]} [attendees]           List of attendees
+ * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
+ * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
+ * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
+ * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
+ * @apiSuccess (Success 200) {String} [attendees.role]        Attendee's role
+ * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
+ * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
+ * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
+ * @apiSuccess (Success 200) {String} alarm.action            Either display or email
+ * @apiSuccess (Success 200) {String} alarm.quantity          Quantity of units
+ * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
+ * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
+ * @apiSuccess (Success 200) {Object[]} [alarm.attendees]     List of attendees
+ * @apiSuccess (Success 200) {String} [alarm.attendees.name]  Attendee's name
+ * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
+ * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
+ *
+ * From [iCalRepeatableEntityObject+SOGo attributes]
+ *
+ * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
+ * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
+ * @apiSuccess (Success 200) {Number} repeat.interval         Intervals the recurrence rule repeats
+ * @apiSuccess (Success 200) {String} [repeat.count]          Number of occurrences at which to range-bound the recurrence
+ * @apiSuccess (Success 200) {String} [repeat.until]          A Unix epoch value that bounds the recurrence rule in an inclusive manner
+ * @apiSuccess (Success 200) {Number[]} [repeat.days]         List of days of the week
+ * @apiSuccess (Success 200) {String} repeat.days.day         Day of the week (SU, MO, TU, WE, TH, FR, SA)
+ * @apiSuccess (Success 200) {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (valures are -5 to 5)
+ * @apiSuccess (Success 200) {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
+ * @apiSuccess (Success 200) {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
+ */
 - (id <WOActionResults>) viewAction
 {
-  WOResponse *result;
-  NSDictionary *data;
+  NSMutableDictionary *data;
   NSCalendarDate *eventStartDate, *eventEndDate;
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
-  NSString *created_by;
   iCalAlarm *anAlarm;
 
   BOOL resetAlarm;
@@ -451,7 +515,6 @@
 
   [self event];
 
-  result = [self responseWithStatus: 200];
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
   eventStartDate = [event startDate];
@@ -468,12 +531,10 @@
       [componentCalendar retain];
     }
 
-  created_by = [event createdBy];
-  
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
   // user clicks on "Snooze for" X minutes, when the popup is being displayed.
-  // If either is set to yes, we must find the right alarm.
+  // If either is set, we must find the right alarm.
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
   
@@ -503,23 +564,23 @@
         }
     }
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys:
-                       [[componentCalendar displayName] stringByEscapingHTMLString], @"calendar",
-                       [event tag], @"component",
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                         [co nameInContainer], @"id",
+                       [componentCalendar nameInContainer], @"pid",
+                       [componentCalendar displayName], @"calendar",
                        [dateFormatter formattedDate: eventStartDate], @"startDate",
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
                        [dateFormatter formattedDate: eventEndDate], @"endDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
-                       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
-                       [[event summary] stringByEscapingHTMLString], @"summary",
-                       [[event location] stringByEscapingHTMLString], @"location",
-		       [created_by stringByEscapingHTMLString], @"created_by",
-                       [[[event comment] stringByEscapingHTMLString] stringByDetectingURLs], @"description",
+                       [NSNumber numberWithBool: [event isAllDay]], @"isAllDay",
+                       [NSNumber numberWithBool: ![event isOpaque]], @"isTransparent",
                        nil];
-  
-  [result appendContentString: [data jsonRepresentation]];
 
-  return result;
+  // Add attributes from iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
+  [data addEntriesFromDictionary: [event attributes]];
+
+  // Return JSON representation
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
@@ -545,7 +606,7 @@
   signed int offset;
   id o;
   
-  [self event];  
+  [self event];
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
   if (isAllDay)

@@ -1,6 +1,6 @@
 /* UIxTaskEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -390,13 +391,77 @@
   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
 }
 
+/**
+ * @api {get} /so/:username/Calendar/:calendarId/:todoId/view Get task
+ * @apiVersion 1.0.0
+ * @apiName GetTaskView
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/1A5-53489200-2D-6BD99880.ics/view
+ *
+ * @apiParam {Number} [resetAlarm] Mark alarm as triggered if set to 1
+ * @apiParam {Number} [snoozeAlarm] Snooze the alarm for this number of minutes
+ *
+ * @apiSuccess (Success 200) {String} id                      Todo ID
+ * @apiSuccess (Success 200) {String} pid                     Calendar ID (todo's folder)
+ * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
+ * @apiSuccess (Success 200) {String} startDate               Formatted start date
+ * @apiSuccess (Success 200) {String} startTime               Formatted start time
+ * @apiSuccess (Success 200) {String} dueDate                 Formatted due date
+ * @apiSuccess (Success 200) {String} dueTime                 Formatted due time
+ * @apiSuccess (Success 200) {NSNumber} percentComplete       Percent completion
+ *
+ * From [iCalEntityObject+SOGo attributes]
+ *
+ * @apiSuccess (Success 200) {String} component               "vtodo"
+ * @apiSuccess (Success 200) {String} summary                 Summary
+ * @apiSuccess (Success 200) {String} location                Location
+ * @apiSuccess (Success 200) {String} comment                 Comment
+ * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
+ * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {String[]} [categories]          Categories
+ * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
+ * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
+ * @apiSuccess (Success 200) {String} organizer.email         Organizer's email address
+ * @apiSuccess (Success 200) {Object[]} [attendees]           List of attendees
+ * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
+ * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
+ * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
+ * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
+ * @apiSuccess (Success 200) {String} [attendees.role]        Attendee's role
+ * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
+ * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
+ * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
+ * @apiSuccess (Success 200) {String} alarm.action            Either display or email
+ * @apiSuccess (Success 200) {String} alarm.quantity          Quantity of units
+ * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
+ * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
+ * @apiSuccess (Success 200) {Object[]} [alarm.attendees]     List of attendees
+ * @apiSuccess (Success 200) {String} [alarm.attendees.name]  Attendee's name
+ * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
+ * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
+ *
+ * From [iCalRepeatableEntityObject+SOGo attributes]
+ *
+ * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
+ * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
+ * @apiSuccess (Success 200) {Number} repeat.interval         Intervals the recurrence rule repeats
+ * @apiSuccess (Success 200) {String} [repeat.count]          Number of occurrences at which to range-bound the recurrence
+ * @apiSuccess (Success 200) {String} [repeat.until]          A Unix epoch value that bounds the recurrence rule in an inclusive manner
+ * @apiSuccess (Success 200) {Number[]} [repeat.days]         List of days of the week
+ * @apiSuccess (Success 200) {String} repeat.days.day         Day of the week (SU, MO, TU, WE, TH, FR, SA)
+ * @apiSuccess (Success 200) {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (valures are -5 to 5)
+ * @apiSuccess (Success 200) {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
+ * @apiSuccess (Success 200) {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
+ */
 - (id <WOActionResults>) viewAction
 {
-  WOResponse *result;
-  NSDictionary *data;
+  NSMutableDictionary *data;
   NSCalendarDate *startDate, *dueDate;
-  SOGoCalendarComponent *co;
   NSTimeZone *timeZone;
+  SOGoCalendarComponent *co;
+  SOGoAppointmentFolder *thisFolder;
   SOGoUserDefaults *ud;
   iCalAlarm *anAlarm;
   BOOL resetAlarm;
@@ -405,8 +470,8 @@
   [self todo];
 
   co = [self clientObject];
+  thisFolder = [co container];
 
-  result = [self responseWithStatus: 200];
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
   startDate = [todo startDate];
@@ -426,10 +491,10 @@
       iCalToDo *master;
 
       master = todo;
-      [[co container] findEntityForClosestAlarm: &todo
-                                       timezone: timeZone
-                                      startDate: &startDate
-                                        endDate: &dueDate];
+      [thisFolder findEntityForClosestAlarm: &todo
+                                   timezone: timeZone
+                                  startDate: &startDate
+                                    endDate: &dueDate];
 
       anAlarm = [todo firstDisplayOrAudioAlarm];
 
@@ -449,21 +514,22 @@
     }
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   
-  data = [NSDictionary dictionaryWithObjectsAndKeys:
-		       [todo tag], @"component",
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                         [co nameInContainer], @"id",
+                       [thisFolder nameInContainer], @"pid",
+                       [thisFolder displayName], @"calendar",
 		       (startDate? (id)[dateFormatter formattedDate: startDate] : (id)@""), @"startDate",
 		       (startDate? (id)[dateFormatter formattedTime: startDate] : (id)@""), @"startTime",
 		       (dueDate? (id)[dateFormatter formattedDate: dueDate] : (id)@""), @"dueDate",
 		       (dueDate? (id)[dateFormatter formattedTime: dueDate] : (id)@""), @"dueTime",
-		       ([todo hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
-		       [todo summary], @"summary",
-		       [todo location], @"location",
-		       [todo comment], @"description",
+                       [NSNumber numberWithInt: [[todo percentComplete] intValue]], @"percentComplete",
 		       nil];
   
-  [result appendContentString: [data jsonRepresentation]];
+  // Add attributes from iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
+  [data addEntriesFromDictionary: [todo attributes]];
 
-  return result;
+  // Return JSON representation
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
