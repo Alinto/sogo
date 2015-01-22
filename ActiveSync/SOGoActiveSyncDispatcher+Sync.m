@@ -57,6 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/NGVCard.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NSString+Imap4.h>
@@ -287,9 +288,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncMailFolder:
             default:
               {
-                // FIXME
-                //continue;
-                NSLog(@"BLARG!");
+                // FIXME - what to do?
+                [self errorWithFormat: @"Fatal error occured - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
                 abort();
               }
             }
@@ -1405,12 +1405,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (changeDetected)
         {
-          NSLog(@"Change detected, we push the content.");
+          [self logWithFormat: @"Change detected, we push the content."];
           break;
         }
       else
         {
-          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
           sleep(internalInterval);
         }
     }

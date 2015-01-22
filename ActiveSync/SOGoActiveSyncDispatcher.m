@@ -59,6 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NGImap4Client.h>
@@ -1872,13 +1873,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       if ([foldersWithChanges count])
         {
-          NSLog(@"Change detected, we push the content.");
+          [self logWithFormat: @"Change detected, we push the content."];
           status = 2;
           break;
         }
       else
         {
-          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
           sleep(internalInterval);
         }
     }
