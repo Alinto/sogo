@@ -137,6 +137,14 @@
   return [self _subscribeAction: NO];
 }
 
+/**
+ * @api {get} /so/:username/:folderPath/canAccessContent Test access rights
+ * @apiVersion 1.0.0
+ * @apiName GetCanAccessContent
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/canAccessContent
+ */
 - (WOResponse *) canAccessContentAction
 {
   /* We want this action to be authorized managed by the SOPE's internal acl
