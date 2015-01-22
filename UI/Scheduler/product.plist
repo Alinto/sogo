@@ -174,16 +174,6 @@
           pageName    = "UIxCalUserRightsEditor";
           actionName  = "saveUserRights";
         };
-        newevent = {
-          protectedBy = "<public>";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "new";
-        };
-        newtask = { 
-          protectedBy = "<public>";
-          pageName    = "UIxTaskEditor"; 
-          actionName  = "new";
-        };
       };
     };
 

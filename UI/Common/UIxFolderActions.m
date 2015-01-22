@@ -1,6 +1,6 @@
 /* UIxFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,11 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+
+#import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/SOGoContactSourceFolder.h>
+
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -240,6 +244,15 @@
 	{
           folderId = @"personal";
 	}
+      // Append meaningful extension to objects of calendars and addressbooks
+      if ([co isKindOfClass: [SOGoContactGCSFolder class]])
+        {
+          objectId = [NSString stringWithFormat: @"%@.vcf", objectId];
+        }
+      else if ([co isKindOfClass: [SOGoAppointmentFolder class]])
+        {
+          objectId = [NSString stringWithFormat: @"%@.ics", objectId];
+        }
       data = [NSDictionary dictionaryWithObjectsAndKeys: objectId, @"id", folderId, @"pid", nil];
       response = [self responseWithStatus: 200
                                 andString: [data jsonRepresentation]];

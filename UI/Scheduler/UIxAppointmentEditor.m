@@ -325,36 +325,6 @@
   return self;
 }
 
-- (id <WOActionResults>) newAction
-{
-  NSString *objectId, *method, *uri;
-  id <WOActionResults> result;
-  SOGoAppointmentFolder *co;
-  SoSecurityManager *sm;
-
-  co = [self clientObject];
-  objectId = [co globallyUniqueObjectId];
-  if ([objectId length])
-    {
-      sm = [SoSecurityManager sharedSecurityManager];
-      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                         onObject: co
-                        inContext: context])
-        method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
-                           [co soURL], objectId] ;
-      else
-        method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.ics/editAsAppointment",
-                           [self userFolderPath], objectId];
-      uri = [self completeHrefForMethod: method];
-      result = [self redirectToLocation: uri];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
-                          reason: @"could not create a unique ID"];
-
-  return result;
-}
-
 - (void) _adjustRecurrentRules
 {
   iCalRecurrenceRule *rule;
