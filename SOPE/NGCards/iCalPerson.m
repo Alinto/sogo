@@ -25,6 +25,48 @@
 
 @implementation iCalPerson
 
++ (NSString *) descriptionForParticipationStatus: (iCalPersonPartStat) _status
+{
+  NSString *stat;
+
+  switch (_status) {
+    case iCalPersonPartStatUndefined:
+      stat = @"";
+      break;
+    case iCalPersonPartStatAccepted:
+      stat = @"ACCEPTED";
+      break;
+    case iCalPersonPartStatDeclined:
+      stat = @"DECLINED";
+      break;
+    case iCalPersonPartStatTentative:
+      stat = @"TENTATIVE";
+      break;
+    case iCalPersonPartStatDelegated:
+      stat = @"DELEGATED";
+      break;
+    case iCalPersonPartStatCompleted:
+      stat = @"COMPLETED";
+      break;
+    case iCalPersonPartStatInProcess:
+      stat = @"IN-PROCESS";
+      break;
+    case iCalPersonPartStatExperimental:
+    case iCalPersonPartStatOther:
+//       [NSException raise:NSInternalInconsistencyException
+//                    format:@"Attempt to set meaningless "
+//                           @"participationStatus (%d)!", _status];
+      stat = nil; /* keep compiler happy */
+      break;
+    default:
+      stat = @"NEEDS-ACTION";
+      break;
+  }
+
+  return stat;
+}
+
+
 /* accessors */
 
 - (void) setCn: (NSString *) _s
@@ -132,44 +174,13 @@
 {
   NSString *stat;
 
-  switch (_status) {
-    case iCalPersonPartStatUndefined:
-      stat = @"";
-      break;
-    case iCalPersonPartStatAccepted:
-      stat = @"ACCEPTED";
-      break;
-    case iCalPersonPartStatDeclined:
-      stat = @"DECLINED";
-      break;
-    case iCalPersonPartStatTentative:
-      stat = @"TENTATIVE";
-      break;
-    case iCalPersonPartStatDelegated:
-      stat = @"DELEGATED";
-      break;
-    case iCalPersonPartStatCompleted:
-      stat = @"COMPLETED";
-      break;
-    case iCalPersonPartStatInProcess:
-      stat = @"IN-PROCESS";
-      break;
-    case iCalPersonPartStatExperimental:
-    case iCalPersonPartStatOther:
-//       [NSException raise:NSInternalInconsistencyException
-//                    format:@"Attempt to set meaningless "
-//                           @"participationStatus (%d)!", _status];
-      stat = nil; /* keep compiler happy */
-      break;
-    default:
-      stat = @"NEEDS-ACTION";
-      break;
-  }
+  stat = [iCalPerson descriptionForParticipationStatus: _status];
+
   if (stat)
     [self setPartStat:stat];
 }
 
-- (iCalPersonPartStat)participationStatus {
+- (iCalPersonPartStat) participationStatus {
   NSString *stat;
   
   stat = [[self partStat] uppercaseString];

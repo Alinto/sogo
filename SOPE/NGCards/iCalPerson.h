@@ -44,6 +44,8 @@ typedef enum {
 
 @interface iCalPerson : CardElement
 
++ (NSString *) descriptionForParticipationStatus: (iCalPersonPartStat) _status;
+
 /* accessors */
 
 - (void)setCn:(NSString *)_s;
