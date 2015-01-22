@@ -1,6 +1,6 @@
 /* UIxMailUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,6 +166,22 @@
 - (BOOL) userIsAdministrator
 {
   return [userRights containsObject: SOGoMailRole_Administrator];
+}
+
+- (NSDictionary *) userRightsForObject
+{
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSNumber numberWithBool:[self userCanReadMails]], @"userCanReadMails",
+                           [NSNumber numberWithBool:[self userCanMarkMailsRead]], @"userCanMarkMailsRead",
+                           [NSNumber numberWithBool:[self userCanWriteMails]], @"userCanWriteMails",
+                           [NSNumber numberWithBool:[self userCanInsertMails]], @"userCanInsertMails",
+                           [NSNumber numberWithBool:[self userCanPostMails]], @"userCanPostMails",
+                           [NSNumber numberWithBool:[self userCanCreateSubfolders]], @"userCanCreateSubfolders",
+                           [NSNumber numberWithBool:[self userCanEraseMails]], @"userCanEraseMails",
+                           [NSNumber numberWithBool:[self userCanRemoveFolder]], @"userCanRemoveFolder",
+                           [NSNumber numberWithBool:[self userCanExpungeFolder]], @"userCanExpungeFolder",
+                           [NSNumber numberWithBool:[self userIsAdministrator]], @"userIsAdministrator",
+                       nil];
 }
 
 - (void) updateRights
