@@ -183,6 +183,21 @@
   return response;
 }
 
+/**
+ * @api {get} /so/:username/:folderPath/acls Get ACLs
+ * @apiVersion 1.0.0
+ * @apiName GetAcls
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/acls
+ *
+ * @apiSuccess (Success 200) {Object[]} users             List of users with ACL for the folder
+ * @apiSuccess (Success 200) {String} users.uid           User ID
+ * @apiSuccess (Success 200) {String} users.userClass     Either 'normal-user', 'normal-group' or 'public-access'
+ * @apiSuccess (Success 200) {Number} users.isSubscribed  1 if the user is subscribed to the folder
+ * @apiSuccess (Success 200) {String} [users.cn]          User fullname
+ * @apiSuccess (Success 200) {String} [users.c_email]     User main email address
+ */
 - (id <WOActionResults>) userRightsAction
 {
   id <WOActionResults> response;
