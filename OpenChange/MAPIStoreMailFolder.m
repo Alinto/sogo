@@ -637,16 +637,18 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults = [(SOGoMailFolder *) sogoObject
                          fetchUIDsOfVanishedItems: lastModseqNbr];
       max = [fetchResults count];
-      changeNumbers = [[self context] getNewChangeNumbers: max];
+
       changeNumber = nil;
       for (count = 0; count < max; count++)
         {
           uid = [[fetchResults objectAtIndex: count] stringValue];
           if ([messages objectForKey: uid])
             {
-              newChangeNum = [[changeNumbers objectAtIndex: count]
-                               unsignedLongLongValue];
-              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+              if (!changeNumber)
+                {
+                  newChangeNum = [[self context] getNewChangeNumber];
+                  changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+                }
               [messages removeObjectForKey: uid];
               [self logWithFormat: @"Removed message entry for UID %@", uid];
             }
