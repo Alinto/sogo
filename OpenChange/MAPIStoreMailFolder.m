@@ -762,7 +762,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   messageEntry = [messages objectForKey: messageUID];
   if (!messageEntry)
     {
-      changeNumber = [[self context] getNewChangeNumber];
       fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
                                                        parts: [NSArray arrayWithObject: @"modseq"]]
                          objectForKey: @"fetch"];
@@ -770,6 +769,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         {
           result = [fetchResults objectAtIndex: 0];
           modseq = [result objectForKey: @"modseq"];
+          changeNumber = [[self context] getNewChangeNumber];
           changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
 
           /* Create new message entry in Messages dict */
