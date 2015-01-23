@@ -661,6 +661,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         {
           [currentProperties setObject: changeNumber
                                 forKey: @"SyncLastDeleteChangeNumber"];
+          [mapping setObject: lastModseq forKey: changeNumber];
           foundChange = YES;
         }
     }
