@@ -637,16 +637,18 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults = [(SOGoMailFolder *) sogoObject
                          fetchUIDsOfVanishedItems: lastModseqNbr];
       max = [fetchResults count];
-      changeNumbers = [[self context] getNewChangeNumbers: max];
+
       changeNumber = nil;
       for (count = 0; count < max; count++)
         {
           uid = [[fetchResults objectAtIndex: count] stringValue];
           if ([messages objectForKey: uid])
             {
-              newChangeNum = [[changeNumbers objectAtIndex: count]
-                               unsignedLongLongValue];
-              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+              if (!changeNumber)
+                {
+                  newChangeNum = [[self context] getNewChangeNumber];
+                  changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+                }
               [messages removeObjectForKey: uid];
               [self logWithFormat: @"Removed message entry for UID %@", uid];
             }
@@ -659,6 +661,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         {
           [currentProperties setObject: changeNumber
                                 forKey: @"SyncLastDeleteChangeNumber"];
+          [mapping setObject: lastModseq forKey: changeNumber];
           foundChange = YES;
         }
     }
@@ -759,7 +762,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   messageEntry = [messages objectForKey: messageUID];
   if (!messageEntry)
     {
-      changeNumber = [[self context] getNewChangeNumber];
       fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
                                                        parts: [NSArray arrayWithObject: @"modseq"]]
                          objectForKey: @"fetch"];
@@ -767,6 +769,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         {
           result = [fetchResults objectAtIndex: 0];
           modseq = [result objectForKey: @"modseq"];
+          changeNumber = [[self context] getNewChangeNumber];
           changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
 
           /* Create new message entry in Messages dict */
@@ -799,13 +802,43 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return YES;
 }
 
+
 - (NSNumber *) modseqFromMessageChangeNumber: (NSString *) changeNum
 {
   NSDictionary *mapping;
   NSNumber *modseq;
+  NSEnumerator *enumerator;
+  id key;
+  uint64_t found, target, current, replica_id, current_cn;
+  NSString *closestChangeNum;
 
   mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
   modseq = [mapping objectForKey: changeNum];
+  if (modseq) return modseq;
+
+  // Not found from stored change numbers for this folder.
+  // Get the closest modseq for the change number given.
+  // O(n) cost but will be unusual behaviour.
+  target = exchange_globcnt([changeNum unsignedLongLongValue] >> 16);
+  replica_id = [changeNum unsignedLongLongValue] & 0xFFFF;
+  found = 0;
+  enumerator  = [mapping keyEnumerator];
+  while ((key = [enumerator nextObject]))
+    {
+      current_cn = [(NSString *)key unsignedLongLongValue];
+      if ((current_cn & 0xFFFF) != replica_id)
+        continue;
+      current = exchange_globcnt(current_cn >> 16);
+      if (current < target && current > found)
+        found = current;
+    }
+
+  if (found)
+    {
+      closestChangeNum = [NSString stringWithUnsignedLongLong:
+                                   (exchange_globcnt(found) << 16 | replica_id)];
+      modseq = [mapping objectForKey: closestChangeNum];
+    }
 
   return modseq;
 }
