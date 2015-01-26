@@ -10,6 +10,7 @@
     "angular-vs-repeat": "~1",
     "angular-file-upload": "~1",
     "angular-material": "~0.7.0",
+    "material-design-fonticons": "~1",
     "ng-tags-input": "~2",
     "compass-mixins": "~0.12.3",
     "foundation": ">5.3",
