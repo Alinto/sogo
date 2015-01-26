@@ -1,18 +1,27 @@
+///
+///
+/// @filename _icon.scss
+/// @project SOGo
+/// @version 3.alpha
+///
+/// Main icon module file extends Bower component
+///
+///
 
-md-icon {
-  margin: auto;
-  padding: 0;
-  display: inline-block;
-  margin-top: 5px;
-  background-repeat: no-repeat no-repeat;
-  pointer-events: none;
-}
-svg, object {
-  fill: currentColor;
-  color: currentColor;
-}
+@import 'extends';
+/**
+  MD-ICONS
+  Usage: place Material Design Iconic Font icons on almost any elemnt using the Prefix md-icon
+  and the icon's name (http://zavoloklom.github.io/material-design-iconic-font/icons.html)
+  exemple : <i class="md-icon-more-horiz></i>
 
-md-class-icon {
-  // display: block;
-  // margin: 0 auto;
-}
+  To increase icon sizes relative to their container, append lg, 2x, 3x, 4x, or 5x to the icon class.
+  exemple : <i class="md-icon-more-horiz-2x></i>
+
+  To arbitrarily rotate and flip icons, use the md-icon-rotate-* and md-icon-flip-* classes.
+
+  Other features at : http://zavoloklom.github.io/material-design-iconic-font/examples.html
+*/
+
+
+
