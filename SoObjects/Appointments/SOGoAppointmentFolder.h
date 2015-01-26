@@ -65,6 +65,7 @@ typedef enum {
   NSMutableDictionary *uidToFilename;
   NSMutableDictionary *aclMatrix;
   NSMutableArray *stripFields;
+  NSString *baseCalDAVURL, *basePublicCalDAVURL;
   int davCalendarStartTimeLimit;
   int davTimeLimitSeconds;
   int davTimeHalfLimitSeconds;
@@ -73,6 +74,7 @@ typedef enum {
 }
 
 - (BOOL) isActive;
+- (BOOL) isWebCalendar;
 
 - (NSString *) calendarColor;
 - (void) setCalendarColor: (NSString *) newColor;
@@ -128,6 +130,13 @@ typedef enum {
 
 - (NSString *) baseURLForAptWithUID: (NSString *) _uid
                           inContext: (id) _ctx;
+
+- (NSString *) calDavURL;
+- (NSString *) webDavICSURL;
+- (NSString *) webDavXMLURL;
+- (NSString *) publicCalDavURL;
+- (NSString *) publicWebDavICSURL;
+- (NSString *) publicWebDavXMLURL;
 
 /* folder management */
 

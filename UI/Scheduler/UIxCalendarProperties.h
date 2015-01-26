@@ -1,9 +1,6 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2008-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,36 +27,11 @@
 @interface UIxCalendarProperties : UIxComponent
 {
   SOGoAppointmentFolder *calendar;
-  NSString *baseCalDAVURL, *basePublicCalDAVURL;
-  BOOL reloadTasks;
 }
-
-- (NSString *) calendarName;
-- (void) setCalendarName: (NSString *) newName;
-
-- (NSString *) calendarColor;
-- (void) setCalendarColor: (NSString *) newColor;
-
-- (BOOL) showCalendarAlarms;
-- (void) setShowCalendarAlarms: (BOOL) new;
-
-- (BOOL) synchronizeCalendar;
-- (void) setSynchronizeCalendar: (BOOL) new;
 
 - (NSString *) originalCalendarSyncTag;
 - (NSString *) allCalendarSyncTags;
 - (BOOL) mustSynchronize;
-- (NSString *) calendarSyncTag;
 - (void) setCalendarSyncTag: (NSString *) newTag;
-
-/* notifications */
-- (BOOL) notifyOnPersonalModifications;
-- (void) setNotifyOnPersonalModifications: (BOOL) b;
-- (BOOL) notifyOnExternalModifications;
-- (void) setNotifyOnExternalModifications: (BOOL) b;
-- (BOOL) notifyUserOnPersonalModifications;
-- (void) setNotifyUserOnPersonalModifications: (BOOL) b;
-- (NSString *) notifiedUserOnPersonalModifications;
-- (void) setNotifiedUserOnPersonalModifications: (NSString *) theUser;
 
 @end
