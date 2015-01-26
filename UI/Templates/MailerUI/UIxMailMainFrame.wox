@@ -1,33 +1,39 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
 <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    title="title"
-    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
-    const:userSettingsKeys="Mail"
-    const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js"
-    const:cssFiles="ng-tags-input.css">
-  <script type="text/javascript">
-    var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
-    var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
-    var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO"/>;
+    xmlns = "http://www.w3.org/1999/xhtml"
+    xmlns:var = "http://www.skyrix.com/od/binding"
+    xmlns:const = "http://www.skyrix.com/od/constant"
+    className = "UIxPageFrame"
+    title = "title"
+    const:userDefaultsKeys = "SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
+    const:userSettingsKeys = "Mail"
+    const:jsFiles = "Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js"
+    const:cssFiles = "ng-tags-input.css">
+  <script type = "text/javascript">
+    var mailAccounts =<var:string value = "mailAccounts" const:escapeHTML = "NO" />;
+    var userNames =<var:string value = "userNames" const:escapeHTML = "NO" />;
+    var unseenCountFolders =<var:string value = "unseenCountFolders" const:escapeHTML = "NO" />;
   </script>
-  <style type="text/css">
-  <var:foreach list="availableLabels" item="currentLabel">
-    #label-menu LI.<var:string value="currentLabel.name.asCSSIdentifier"/>,
-    TABLE.messageList TR[labels~=<var:string const:value='"' const:escapeHTML="NO"
-    /><var:string value="currentLabel.name"/><var:string const:value='"' const:escapeHTML="NO"/>] TD
-    { color: <var:string value="currentLabel.color"/>; }
-    TABLE.messageList TR[labels~=<var:string const:value='"' const:escapeHTML="NO"
-    /><var:string value="currentLabel.name"/><var:string const:value='"' const:escapeHTML="NO"/>]._selected TD
-    { color: #fff;
-      background-color: <var:string value="currentLabel.color"/> !important; }
-  </var:foreach>
+  <style type = "text/css">
+    <var:foreach list = "availableLabels" item = "currentLabel">
+      #label-menu LI.<var:string value = "currentLabel.name.asCSSIdentifier" />,
+      TABLE.messageList TR[labels~=
+      <var:string const:value = '"' const:escapeHTML = "NO"
+          />
+      <var:string value = "currentLabel.name" />
+      <var:string const:value = '"' const:escapeHTML = "NO" />] TD
+      { color:<var:string value = "currentLabel.color" />; }
+      TABLE.messageList TR[labels~=
+      <var:string const:value = '"' const:escapeHTML = "NO"
+          />
+      <var:string value = "currentLabel.name" />
+      <var:string const:value = '"' const:escapeHTML = "NO" />]._selected TD
+      { color: #fff;
+      background-color:
+      <var:string value = "currentLabel.color" />
+      !important; }
+    </var:foreach>
   </style>
 
   <!--
@@ -214,51 +220,64 @@
   </div>
   -->
   <!--FIXME : repport in-line styling in style definitions -->
-  <div class="view" ui-view="mailboxes" layout="row"><!-- mailboxes list --></div>
+  <div class = "view" ui-view = "mailboxes" layout = "row"><!-- mailboxes list --></div>
 
-  <script type="text/ng-template" id="UIxMailMainFrame">
+  <script type = "text/ng-template" id = "UIxMailMainFrame">
 
     <!-- dropdown menu for mailbox options button -->
-    <div id="folderProperties" class="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
-      <ul class="button-group">
-        <li data-ng-show="currentFolder.isEditable">
-          <span class="button" data-ng-click="editFolder(currentFolder)"><i class="icon-pencil"><!-- rename --></i></span>
+    <div id = "folderProperties" class = "f-dropdown icons-dropdown" data-dropdown-content = "dropdown-content">
+      <ul class = "button-group">
+        <li data-ng-show = "currentFolder.isEditable">
+          <span class = "button" data-ng-click = "editFolder(currentFolder)">
+            <i class = "icon-pencil"><!-- rename --></i>
+          </span>
         </li>
-        <li data-ng-show="currentFolder.isEditable">
-          <span class="button" data-ng-click="newFolder(currentFolder)"><i class="icon-plus"><!-- new mailbox --></i></span>
+        <li data-ng-show = "currentFolder.isEditable">
+          <span class = "button" data-ng-click = "newFolder(currentFolder)">
+            <i class = "icon-plus"><!-- new mailbox --></i>
+          </span>
         </li>
-        <li data-ng-show="currentFolder.isEditable">
-          <span class="button" data-ng-click="share()"><i class="icon-earth"><!-- share --></i></span>
+        <li data-ng-show = "currentFolder.isEditable">
+          <span class = "button" data-ng-click = "share()">
+            <i class = "icon-earth"><!-- share --></i>
+          </span>
         </li>
         <li>
-          <span class="button" data-ng-click="exportMails()"><i class="icon-ion-ios7-upload-outline"><!-- export --></i></span>
+          <span class = "button" data-ng-click = "exportMails()">
+            <i class = "icon-ion-ios7-upload-outline"><!-- export --></i>
+          </span>
         </li>
-        <li data-ng-show="currentFolder.isEditable">
-          <span class="button" data-ng-click="confirmDelete()"><i class="icon-trash"><!-- delete --></i></span>
+        <li data-ng-show = "currentFolder.isEditable">
+          <span class = "button" data-ng-click = "confirmDelete()">
+            <i class = "icon-trash"><!-- delete --></i>
+          </span>
         </li>
       </ul>
     </div>
 
-    <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
-      <md-toolbar class="md-tall" layout-align="end start">
-        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-          <span class="md-flex">{{activeUser.identification}}</span>
+    <md-sidenav class = "md-sidenav-left md-whiteframe-z1" md-component-id = "left"
+        md-is-locked-open = "$media('gt-md')" layout = "column">
+      <md-toolbar class = "md-tall" layout-align = "end start">
+        <h2 class = "md-toolbar-tools md-toolbar-tools-bottom">
+          <span class = "md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
-      <md-content md-scroll-y="md-scroll-y" class="md-padding" ng-controller="LeftCtrl">
-        <md-button ng-click="close()" class="md-primary" hide-gt-md="hide-gt-md">Close</md-button>
-        <md-list ng-repeat="account in accounts track by account.id">
+      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl">
+        <md-button ng-click = "close()" class = "md-primary" hide-gt-md = "hide-gt-md">Close</md-button>
+        <md-list ng-repeat = "account in accounts track by account.id">
           <md-item>
             <md-item-content>
-              <div class="md-tile-content">
-                <md-button><h3>{{account.name}}</h3></md-button>
+              <div class = "md-tile-content">
+                <md-button>
+                  <h3>{{account.name}}</h3>
+                </md-button>
               </div>
             </md-item-content>
           </md-item>
-          <sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id"
-                          data-sg-root="account"
-                          data-sg-folder="folder"
-                          data-sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+          <sg-folder-tree data-ng-repeat = "folder in account.$mailboxes track by folder.id"
+              data-sg-root = "account"
+              data-sg-folder = "folder"
+              data-sg-select-folder = "setCurrentFolder"><!-- tree --></sg-folder-tree>
         </md-list>
       </md-content>
     </md-sidenav>
@@ -267,31 +286,33 @@
         <a class="button tiny radius split" data-ui-sref="mail.newMessage()"><var:string label:value="Compose"/><span data-dropdown-toggle="#draftsDrop"></span></a><br/>
         </div>-->
 
-    <main layout="column" layout-fill="layout-fill">
-      <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-grey">
+    <main layout = "column" layout-fill = "layout-fill">
+      <md-toolbar layout = "row" layout-align = "space-between start" class = "md-tall md-grey">
         <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
-        <div class="md-toolbar-tools" ng-controller="toggleCtrl">
-          <span flex="flex">
-            <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
-            <div class="display-1" style="font-size: 2em; font-weight: 300">
+        <div class = "md-toolbar-tools" ng-controller = "toggleCtrl">
+          <span flex = "flex">
+            <md-button ng-click = "toggleLeft()" class = "md-primary" hide-gt-md = "hide-gt-md">
+              <span class = "icon-ic_menu_24px"></span>
+            </md-button>
+            <div class = "display-1" style = "font-size: 2em; font-weight: 300">
               [[Calendar]]
             </div>
           </span>
-          <span class="sd-toolbar-tools">
+          <span class = "sd-toolbar-tools">
             <span>search</span>
           </span>
         </div>
       </md-toolbar>
-      <md-content layout="row" flex="flex" ui-view="mailbox"><!-- messages list --></md-content>
+      <md-content layout = "row" flex = "flex" ui-view = "mailbox"><!-- messages list --></md-content>
     </main>
   </script>
 
-  <script type="text/ng-template" id="UIxMailFolderTemplate">
-    <var:component className="UIxMailFolderTemplate"/>
+  <script type = "text/ng-template" id = "UIxMailFolderTemplate">
+    <var:component className = "UIxMailFolderTemplate" />
   </script>
 
-  <script type="text/ng-template" id="UIxMailViewTemplate">
-    <var:component className="UIxMailViewTemplate"/>
+  <script type = "text/ng-template" id = "UIxMailViewTemplate">
+    <var:component className = "UIxMailViewTemplate" />
   </script>
 
 </var:component>

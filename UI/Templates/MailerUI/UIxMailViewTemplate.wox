@@ -1,50 +1,60 @@
 <?xml version='1.0' standalone='yes'?>
 <container
-   xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:var="http://www.skyrix.com/od/binding"
-   xmlns:const="http://www.skyrix.com/od/constant"
-   xmlns:rsrc="OGo:url"
-   xmlns:label="OGo:label"
-   xmlns:uix="OGo:uix">
-<md-toolbar class="md-toolbar-small md-hue-1 buttonsToolbar">
-    <span layout="row" flex="flex" layout-align="space-around center">
-        <a class="button tiny radius"
-           data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"><i class="icon-reply"><!-- reply --></i></a>
-        <a class="button tiny radius"
-           data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="icon-reply"><!-- reply all --></i></a>
-        <a class="button tiny radius"
-           data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="icon-reply"><!-- forward --></i></a>
-        <a class="button tiny radius"
-           data-ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
-           data-ng-show="message.isDraft"><i class="icon-pencil"><!-- edit --></i></a>
-        <span class="button tiny radius alert"
-              data-ng-click="doDelete(message)"><i class="icon-trash"><!-- delete --></i></span>
-        <span class="button tiny radius"
-              data-ng-show="message.hasUnsafeContent"
-              data-ng-click="loadImages()"><var:string label:value="Load Images"/></span>
+    xmlns = "http://www.w3.org/1999/xhtml"
+    xmlns:var = "http://www.skyrix.com/od/binding"
+    xmlns:label = "OGo:label"
+    >
+  <md-toolbar class = "md-toolbar-small md-hue-1 buttonsToolbar">
+    <span layout = "row" flex = "flex" layout-align = "space-around center">
+      <a class = "button tiny radius"
+          data-ui-sref = "mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})">
+        <i class = "icon-reply"><!-- reply --></i>
+      </a>
+      <a class = "button tiny radius"
+          data-ui-sref = "mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})">
+        <i class = "icon-reply"><!-- reply all --></i>
+      </a>
+      <a class = "button tiny radius"
+          data-ui-sref = "mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})">
+        <i class = "icon-reply"><!-- forward --></i>
+      </a>
+      <a class = "button tiny radius"
+          data-ui-sref = "mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
+          data-ng-show = "message.isDraft">
+        <i class = "icon-pencil"><!-- edit --></i>
+      </a>
+      <span class = "button tiny radius alert"
+          data-ng-click = "doDelete(message)">
+        <i class = "icon-trash"><!-- delete --></i>
+      </span>
+      <span class = "button tiny radius"
+          data-ng-show = "message.hasUnsafeContent"
+          data-ng-click = "loadImages()">
+        <var:string label:value = "Load Images" />
+      </span>
     </span>
-</md-toolbar>
-<md-content md-scroll-y="md-scroll-y"  class="md-padding">
-    <header class="header">
-    <!--todo : default headings don't suit. Define new styles-->
-    <h3 data-ng-bind="message.subject"><!-- subject --></h3>
-<div layout="row" layout-align="space-between center">
-    <h5>
-      <a data-ng-href="mailto:{{message.from[0].email}}"
-         data-ng-bind="message.from[0].full"><!-- from --></a>
-    </h5>
-    <h6 data-ng-bind="message.date"><!-- date --></h6>
-</div>
-    <h5>
-        <a data-ng-href="mailto:{{message.to[0].email}}"
-         data-ng-bind="message.to[0].full"><!-- to --></a>
-    </h5>
-    <p class="flags">
-      <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
-    </p>
-</header>
+  </md-toolbar>
+  <md-content md-scroll-y = "md-scroll-y" class = "md-padding">
+    <header class = "header">
+      <!--todo : default headings don't suit. Define new styles-->
+      <h3 data-ng-bind = "message.subject"><!-- subject --></h3>
+      <div layout = "row" layout-align = "space-between center">
+        <h5>
+          <a data-ng-href = "mailto:{{message.from[0].email}}"
+              data-ng-bind = "message.from[0].full"><!-- from --></a>
+        </h5>
+        <h6 data-ng-bind = "message.date"><!-- date --></h6>
+      </div>
+      <h5>
+        <a data-ng-href = "mailto:{{message.to[0].email}}"
+            data-ng-bind = "message.to[0].full"><!-- to --></a>
+      </h5>
+      <p class = "flags">
+        <span class = "label radius" data-ng-repeat = "flag in message.flags">{{flag}}</span>
+      </p>
+    </header>
 
-  <div class="mailer_mailcontent"
-       data-ng-bind-html="message.$content()"><!-- msg --></div>
-</md-content>
+    <div class = "mailer_mailcontent"
+        data-ng-bind-html = "message.$content()"><!-- msg --></div>
+  </md-content>
 </container>
