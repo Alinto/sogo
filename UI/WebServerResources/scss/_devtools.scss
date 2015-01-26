@@ -1,0 +1,24 @@
+///
+//
+// @filename _devtools.scss
+//
+// NOT FOR PRODUCTION
+// Add some utilties when the class "dev" is append to html
+//
+
+html.dev {
+  // displays a grid-columns transparent guide
+  &.guide::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(90deg,rgba(0, 255, 255, 0.10) 0, rgba(0, 255, 255, 0.10) 80%, rgba(0, 0, 0, 0.0) 80%);
+    background-size: (8 * $baseline-grid) (8 * $baseline-grid);
+    background-repeat-x: repeat;
+    width: 100%;
+    height: 100%;
+    content: " ";
+    z-index: 1000;
+  }
+}

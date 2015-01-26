@@ -12,7 +12,7 @@
   <var:if condition = "hideFrame" const:negate = "YES"
       >
     <html const:xmlns = "http://www.w3.org/1999/xhtml"
-        xml:lang = "en" const:lang = "en">
+        xml:lang = "en" const:lang = "en" class="">
       <head>
         <title>
           <var:string value = "title" />
