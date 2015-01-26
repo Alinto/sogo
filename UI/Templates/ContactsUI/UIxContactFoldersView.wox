@@ -1,19 +1,17 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE var:component>
 <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    xmlns:rsrc="OGo:url"
-    const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
-    className="UIxPageFrame"
-    title="name"
-    var:popup="isPopup">
-  <script type="text/javascript">
-    var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO"/>;
+    xmlns = "http://www.w3.org/1999/xhtml"
+    xmlns:var = "http://www.skyrix.com/od/binding"
+    xmlns:const = "http://www.skyrix.com/od/constant"
+    xmlns:label = "OGo:label"
+    const:userDefaultsKeys = "SOGoContactsCategories"
+    const:jsFiles = "Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    className = "UIxPageFrame"
+    title = "name"
+    var:popup = "isPopup">
+  <script type = "text/javascript">
+    var contactFolders =<var:string value = "contactFolders" const:escapeHTML = "NO" />;
   </script>
 
   <!--
@@ -64,43 +62,55 @@
 
   <div>
 
-    <div data-ui-view="addressbooks" layout="row" style="max-height: 100%"><!-- addressbooks list --></div>
+    <div data-ui-view = "addressbooks" layout = "row" style = "max-height: 100%"><!-- addressbooks list --></div>
 
     <!-- modal for addressbook sharing options -->
-    <script type="text/ng-template" id="UIxUserRightsEditor">
-      <var:component className="UIxContactsUserRightsEditor"/>
+    <script type = "text/ng-template" id = "UIxUserRightsEditor">
+      <var:component className = "UIxContactsUserRightsEditor" />
     </script>
 
-    <script type="text/ng-template" id="UIxContactFoldersView">
+    <script type = "text/ng-template" id = "UIxContactFoldersView">
 
       <!-- dropdown menu for addressbook options button -->
-      <div id="addressbookProperties" class="f-dropdown icons-dropdown">
-        <ul class="button-group">
-          <li label:data-tooltip="Links to this Address Book"
-              data-tooltip-popup-delay="500">
-            <span class="button"
-                  data-sg-dropdown-content-toggle="#addressbookLinks"><i class="icon-hyperlink"><!-- links --></i></span>
+      <div id = "addressbookProperties" class = "f-dropdown icons-dropdown">
+        <ul class = "button-group">
+          <li label:data-tooltip = "Links to this Address Book"
+              data-tooltip-popup-delay = "500">
+            <span class = "button"
+                data-sg-dropdown-content-toggle = "#addressbookLinks">
+              <i class = "icon-hyperlink"><!-- links --></i>
+            </span>
           </li>
-          <li label:data-tooltip="Rename"
-              data-tooltip-popup-delay="500">
-            <span class="button" data-ng-click="edit()"><i class="icon-pencil"><!-- rename --></i></span>
+          <li label:data-tooltip = "Rename"
+              data-tooltip-popup-delay = "500">
+            <span class = "button" data-ng-click = "edit()">
+              <i class = "icon-pencil"><!-- rename --></i>
+            </span>
           </li>
-          <li data-ng-show="addressbook.isOwned"
-              label:data-tooltip="Sharing..."
-              data-tooltip-popup-delay="500">
-            <span class="button" data-ng-click="share()"><i class="icon-share"><!-- share --></i></span>
+          <li data-ng-show = "addressbook.isOwned"
+              label:data-tooltip = "Sharing..."
+              data-tooltip-popup-delay = "500">
+            <span class = "button" data-ng-click = "share()">
+              <i class = "icon-share"><!-- share --></i>
+            </span>
           </li>
-          <li label:data-tooltip="Import Cards"
-              data-tooltip-popup-delay="500">
-            <span class="button" data-ng-click="importCards()"><i class="icon-file"><!-- import --></i></span>
+          <li label:data-tooltip = "Import Cards"
+              data-tooltip-popup-delay = "500">
+            <span class = "button" data-ng-click = "importCards()">
+              <i class = "icon-file"><!-- import --></i>
+            </span>
           </li>
-          <li label:data-tooltip="Export"
-              data-tooltip-popup-delay="500">
-            <span class="button" data-ng-click="exportCards()"><i class="icon-ion-ios7-upload-outline"><!-- export --></i></span>
+          <li label:data-tooltip = "Export"
+              data-tooltip-popup-delay = "500">
+            <span class = "button" data-ng-click = "exportCards()">
+              <i class = "icon-ion-ios7-upload-outline"><!-- export --></i>
+            </span>
           </li>
-          <li label:data-tooltip="Delete"
-              data-tooltip-popup-delay="500">
-            <span class="button" data-ng-click="confirmDelete(addressbook)"><i class="icon-trash"><!-- delete --></i></span>
+          <li label:data-tooltip = "Delete"
+              data-tooltip-popup-delay = "500">
+            <span class = "button" data-ng-click = "confirmDelete(addressbook)">
+              <i class = "icon-trash"><!-- delete --></i>
+            </span>
           </li>
         </ul>
       </div>
@@ -134,70 +144,75 @@
            data-sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
       -->
 
-      <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
-        <md-toolbar class="md-tall" layout-align="end start">
-          <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-            <span class="md-flex">{{activeUser.identification}}</span>
+      <md-sidenav class = "md-sidenav-left md-whiteframe-z1" md-component-id = "left" md-is-locked-open = "$media('gt-md')" layout = "column">
+        <md-toolbar class = "md-tall" layout-align = "end start">
+          <h2 class = "md-toolbar-tools md-toolbar-tools-bottom">
+            <span class = "md-flex">{{activeUser.identification}}</span>
           </h2>
         </md-toolbar>
-        <md-content md-scroll-y="md-scroll-y" class="md-padding" ng-controller="LeftCtrl">
-          <md-button ng-click="close()" class="md-primary" hide-gt-md="hide-gt-md">Close</md-button>
-        <!--<div class="newItemsToolbar">
-          <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
-        </div>-->
-        <md-list>
-          <md-item ng-repeat="folder in addressbooks track by folder.id"
-                   ng-class="{_selected: addressbook.id==folder.id}"
-                   ng-dblclick="edit($index)">
-            <md-item-content>
-              <i class="icon" data-ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
-              <form data-ng-submit="save($index)">
-                <a data-ui-sref="addressbook({addressbookId: folder.id})"
-                   data-ng-click="select($index)"
-                   data-ng-show="editMode!=folder.id"
-                   data-ng-cloak="ng-cloak">{{folder.name}}</a>
-                <input class="folder-name" type="text"
-                       data-ng-model="folder.name"
-                       data-ng-show="editMode==folder.id"
-                       data-ng-cloak="ng-cloak"
-                       data-ng-blur="save($index)"
-                       data-sg-focus-on="addressBookName_{{$index}}"
-                       data-sg-escape="revertEditing($index)"/>
-              </form>
-              <span class="icon" data-ng-cloak="ng-cloak">
-                <a class="icon" href="#"
-                   data-dropdown-toggle="#addressbookProperties"
-                   data-options="align:right"
-                   data-ng-show="currentFolderIsConfigurable(folder)"><i class="icon-cog"><!-- options --></i></a>
-              </span>
-            </md-item-content>
-          </md-item>
-        </md-list>
-        <!--<div class="buttonsToolbar">
-          <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus">!- new -></i></button>
-          <a href="#" class="button" label:title="Subscribe to an Addressbook..."
-             data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth">!- subscribe -</i></a>
-        </div>-->
+        <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl">
+          <md-button ng-click = "close()" class = "md-primary" hide-gt-md = "hide-gt-md">Close</md-button>
+          <!--<div class="newItemsToolbar">
+            <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
+          </div>-->
+          <md-list>
+            <md-item ng-repeat = "folder in addressbooks track by folder.id"
+                ng-class = "{_selected: addressbook.id==folder.id}"
+                ng-dblclick = "edit($index)">
+              <md-item-content>
+                <i class = "icon" data-ng-class = "{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
+                <form data-ng-submit = "save($index)">
+                  <a data-ui-sref = "addressbook({addressbookId: folder.id})"
+                      data-ng-click = "select($index)"
+                      data-ng-show = "editMode!=folder.id"
+                      data-ng-cloak = "ng-cloak">{{folder.name}}
+                  </a>
+                  <input class = "folder-name" type = "text"
+                      data-ng-model = "folder.name"
+                      data-ng-show = "editMode==folder.id"
+                      data-ng-cloak = "ng-cloak"
+                      data-ng-blur = "save($index)"
+                      data-sg-focus-on = "addressBookName_{{$index}}"
+                      data-sg-escape = "revertEditing($index)" />
+                </form>
+                <span class = "icon" data-ng-cloak = "ng-cloak">
+                  <a class = "icon" href = "#"
+                      data-dropdown-toggle = "#addressbookProperties"
+                      data-options = "align:right"
+                      data-ng-show = "currentFolderIsConfigurable(folder)">
+                    <i class = "icon-cog"><!-- options --></i>
+                  </a>
+                </span>
+              </md-item-content>
+            </md-item>
+          </md-list>
+          <!--<div class="buttonsToolbar">
+            <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus">!- new -></i></button>
+            <a href="#" class="button" label:title="Subscribe to an Addressbook..."
+               data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth">!- subscribe -</i></a>
+          </div>-->
         </md-content>
       </md-sidenav>
 
-      <main layout="column" layout-fill="layout-fill">
-        <md-toolbar layout="row" layout-align="space-between start" class="md-tall md-grey">
+      <main layout = "column" layout-fill = "layout-fill">
+        <md-toolbar layout = "row" layout-align = "space-between start" class = "md-tall md-grey">
           <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
-          <div class="md-toolbar-tools" ng-controller="toggleCtrl">
-            <span flex="flex">
-              <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md"><span class="icon-ic_menu_24px"></span></md-button>
-              <div class="display-1" style="font-size: 2em; font-weight: 300">
+          <div class = "md-toolbar-tools" ng-controller = "toggleCtrl">
+            <span flex = "flex">
+              <md-button ng-click = "toggleLeft()" class = "md-primary" hide-gt-md = "hide-gt-md">
+                <span class = "icon-ic_menu_24px"></span>
+              </md-button>
+              <div class = "display-1" style = "font-size: 2em; font-weight: 300">
                 [[Contacts]]
               </div>
             </span>
-            <span class="sd-toolbar-tools">
+            <span class = "sd-toolbar-tools">
               <span>search</span>
             </span>
           </div>
         </md-toolbar>
-        <md-content layout="row" flex="flex">
-          <md-content md-scroll-y="md-scroll-y" flex="flex" style="min-width: 300px;" id="contactsList">
+        <md-content layout = "row" flex = "flex">
+          <md-content md-scroll-y = "md-scroll-y" flex = "flex" style = "min-width: 300px;" id = "contactsList">
             <!-- Search field & special results
                  <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
                  <div data-ng-switch="search.status">
@@ -218,36 +233,37 @@
               width: 100%;
               }
             </style>
-            <md-list data-vs-repeat="72"
-                     data-vs-scroll-parent="#contactsList">
-              <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id"
-                       ng-class="{_selected: card.id == currentCard.id}">
+            <md-list data-vs-repeat = "72"
+                data-vs-scroll-parent = "#contactsList">
+              <md-item ng-repeat = "currentCard in addressbook.cards track by currentCard.id"
+                  ng-class = "{_selected: card.id == currentCard.id}">
                 <md-item-content>
-                  <div class="md-tile-left">
+                  <div class = "md-tile-left">
                     <!--avatar-->
                     <!-- currentCard.tag = vcard || vlist -->
                   </div>
-                  <div class="sg-tile-content">
-                    <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
-                      <div class="name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                      <div class="subject">{{currentCard.$preferredEmail()}}</div>
+                  <div class = "sg-tile-content">
+                    <a data-ui-sref = "addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
+                      <div class = "name" ng-bind-html = "currentCard.$fullname()"><!-- cn --></div>
+                      <div class = "subject">{{currentCard.$preferredEmail()}}</div>
                     </a>
                   </div>
                 </md-item-content>
-                <md-divider md-inset="true" ng-if="!$last"><!--divider--></md-divider>
+                <md-divider md-inset = "true" ng-if = "!$last"><!--divider--></md-divider>
               </md-item>
             </md-list>
           </md-content>
-          <md-content class="md-padding" flex="flex" data-ui-view="card"><!-- card view --></md-content>
+          <md-content class = "md-padding" flex = "flex" data-ui-view = "card"><!-- card view --></md-content>
         </md-content>
       </main>
 
-    </script><!-- UIxContactFoldersView -->
+    </script>
+    <!-- UIxContactFoldersView -->
 
-    <script type="text/ng-template" id="UIxContactViewTemplate">
-      <var:component className="UIxContactViewTemplate"/>
+    <script type = "text/ng-template" id = "UIxContactViewTemplate">
+      <var:component className = "UIxContactViewTemplate" />
     </script>
 
-    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+    <var:string value = "errorAlertJavaScript" const:escapeHTML = "NO" />
   </div>
 </var:component>

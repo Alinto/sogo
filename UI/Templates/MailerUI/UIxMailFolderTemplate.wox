@@ -1,44 +1,40 @@
 <?xml version='1.0' standalone='yes'?>
 <container
-   xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:var="http://www.skyrix.com/od/binding"
-   xmlns:const="http://www.skyrix.com/od/constant"
-   xmlns:rsrc="OGo:url"
-   xmlns:label="OGo:label"
-   xmlns:uix="OGo:uix">
-    <md-content flex="40" style="min-width: 300px;" id="messagesList">
-        <!--dirty fix for vs-repeat-->
-        <style>
-            .vs-repeat-repeated-element {
-                width: 100%;
-            }
-        </style>
-      <md-list data-vs-repeat="72"
-               data-vs-scroll-parent="#messagesList">
-        <md-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
-                 data-ng-class="{unread: !currentMessage.isread}">
-            <md-item-content>
-                <div class="md-tile-left">
-                    <!--avatar-->
-                </div>
-                <div class="sg-tile-content">
-                    <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
-                       data-ui-sref-active="_selected">
-                        <div class="name">
-                            {{currentMessage.$shortAddress('from')}}
-                            <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-                        </div>
-                        <div class="subject">{{currentMessage.subject}}</div>
-                        <i class="icon-ion-refresh"
-                           data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
-                    </a>
-                </div>
-            </md-item-content>
-            <md-divider md-inset="true" ng-if="!$last"><!--divider--></md-divider>
-        </md-item>
-      </md-list>
-    </md-content>
+    xmlns = "http://www.w3.org/1999/xhtml"
+    >
+  <md-content flex = "40" style = "min-width: 300px;" id = "messagesList">
+    <!--dirty fix for vs-repeat-->
+    <style>
+      .vs-repeat-repeated-element {
+      width: 100%;
+      }
+    </style>
+    <md-list data-vs-repeat = "72"
+        data-vs-scroll-parent = "#messagesList">
+      <md-item ng-repeat = "currentMessage in mailbox.$messages track by currentMessage.id"
+          data-ng-class = "{unread: !currentMessage.isread}">
+        <md-item-content>
+          <div class = "md-tile-left">
+            <!--avatar-->
+          </div>
+          <div class = "sg-tile-content">
+            <a data-ui-sref = "mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
+                data-ui-sref-active = "_selected">
+              <div class = "name">
+                {{currentMessage.$shortAddress('from')}}
+                <span class = "right" data-ng-bind-html = "currentMessage.relativedate"><!-- date --></span>
+              </div>
+              <div class = "subject">{{currentMessage.subject}}</div>
+              <i class = "icon-ion-refresh"
+                  data-ng-hide = "mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+            </a>
+          </div>
+        </md-item-content>
+        <md-divider md-inset = "true" ng-if = "!$last"><!--divider--></md-divider>
+      </md-item>
+    </md-list>
+  </md-content>
 
-    <div layout="column" flex="60" data-ui-view="message"><!-- message view --></div>
+  <div layout = "column" flex = "60" data-ui-view = "message"><!-- message view --></div>
 
 </container>
