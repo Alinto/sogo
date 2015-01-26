@@ -150,7 +150,7 @@
           protectedBy = "Access Contents Information";
           pageName    = "UIxCalendarProperties"; 
         };
-        saveProperties = { 
+        save = {
           protectedBy = "Access Contents Information";
           pageName = "UIxCalendarProperties";
           actionName = "saveProperties";
