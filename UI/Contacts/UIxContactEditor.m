@@ -505,44 +505,43 @@ static Class SOGoContactGCSEntryK = Nil;
  * @apiName PostData
  * @apiGroup Contacts
  * @apiExample {curl} Example usage:
- *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/1BC8-52F53F80-1-38C52040.vcf/view
+ *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/1BC8-52F53F80-1-38C52040.vcf/save
  *
- * @apiSuccess (Success 200) {String} id                   Card ID
- * @apiSuccess (Success 200) {String} pid                  Address book ID (card's container)
- * @apiSuccess (Success 200) {String} tag                  Either vcard or vlist
- * @apiSuccess (Success 200) {String} givenname            Firstname
- * @apiSuccess (Success 200) {String} nickname             Nickname
- * @apiSuccess (Success 200) {String} sn                   Lastname
- * @apiSuccess (Success 200) {String} fn                   Fullname
- * @apiSuccess (Success 200) {String} tz                   Timezone
- * @apiSuccess (Success 200) {String} note                 Note
- * @apiSuccess (Success 200) {String[]} allCategories      All available categories
- * @apiSuccess (Success 200) {Object[]} categories         Categories assigned to the card
- * @apiSuccess (Success 200) {String} categories.value     Category name
- * @apiSuccess (Success 200) {Object[]} addresses          Postal addresses
- * @apiSuccess (Success 200) {String} addresses.type       Type (e.g., home or work)
- * @apiSuccess (Success 200) {String} addresses.postoffice Post office box
- * @apiSuccess (Success 200) {String} addresses.street     Street address
- * @apiSuccess (Success 200) {String} addresses.street2    Extended address (e.g., apartment or suite number)
- * @apiSuccess (Success 200) {String} addresses.locality   Locality (e.g., city)
- * @apiSuccess (Success 200) {String} addresses.region     Region (e.g., state or province)
- * @apiSuccess (Success 200) {String} addresses.postalcode Postal code
- * @apiSuccess (Success 200) {String} addresses.country    Country name
- * @apiSuccess (Success 200) {Object[]} emails             Email addresses
- * @apiSuccess (Success 200) {String} emails.type          Type (e.g., home or work)
- * @apiSuccess (Success 200) {String} emails.value         Email address
- * @apiSuccess (Success 200) {Object[]} phones             Phone numbers
- * @apiSuccess (Success 200) {String} phones.type          Type (e.g., mobile or work)
- * @apiSuccess (Success 200) {String} phones.value         Phone number
- * @apiSuccess (Success 200) {Object[]} urls               URLs
- * @apiSuccess (Success 200) {String} urls.type            Type (e.g., personal or work)
- * @apiSuccess (Success 200) {String} urls.value           URL
+ * @apiParam {String} id                   Card ID
+ * @apiParam {String} pid                  Address book ID (card's container)
+ * @apiParam {String} tag                  Either vcard or vlist
+ * @apiParam {String} givenname            Firstname
+ * @apiParam {String} nickname             Nickname
+ * @apiParam {String} sn                   Lastname
+ * @apiParam {String} fn                   Fullname
+ * @apiParam {String} tz                   Timezone
+ * @apiParam {String} note                 Note
+ * @apiParam {String[]} allCategories      All available categories
+ * @apiParam {Object[]} categories         Categories assigned to the card
+ * @apiParam {String} categories.value     Category name
+ * @apiParam {Object[]} addresses          Postal addresses
+ * @apiParam {String} addresses.type       Type (e.g., home or work)
+ * @apiParam {String} addresses.postoffice Post office box
+ * @apiParam {String} addresses.street     Street address
+ * @apiParam {String} addresses.street2    Extended address (e.g., apartment or suite number)
+ * @apiParam {String} addresses.locality   Locality (e.g., city)
+ * @apiParam {String} addresses.region     Region (e.g., state or province)
+ * @apiParam {String} addresses.postalcode Postal code
+ * @apiParam {String} addresses.country    Country name
+ * @apiParam {Object[]} emails             Email addresses
+ * @apiParam {String} emails.type          Type (e.g., home or work)
+ * @apiParam {String} emails.value         Email address
+ * @apiParam {Object[]} phones             Phone numbers
+ * @apiParam {String} phones.type          Type (e.g., mobile or work)
+ * @apiParam {String} phones.value         Phone number
+ * @apiParam {Object[]} urls               URLs
+ * @apiParam {String} urls.type            Type (e.g., personal or work)
+ * @apiParam {String} urls.value           URL
  */
 - (id <WOActionResults>) saveAction
 {
   SOGoContentObject <SOGoContactObject> *co;
   WORequest *request;
-  WOResponse *response;
   NSDictionary *params, *data;
 
   co = [self clientObject];
@@ -558,10 +557,8 @@ static Class SOGoContactGCSEntryK = Nil;
                          [[co container] nameInContainer], @"pid",
                          [co nameInContainer], @"id",
                          nil];
-  response = [self responseWithStatus: 200
-                            andString: [data jsonRepresentation]];
 
-  return response;
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 - (id) writeAction
