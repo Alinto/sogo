@@ -20,3 +20,4 @@ UI/WebServerResources/scss/.sass-cache/
 Documentation/*.docbook
 Documentation/*.pdf
 .idea
+doc
