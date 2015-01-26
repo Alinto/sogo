@@ -1250,7 +1250,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NGImap4Connection *connection;
   NGImap4Client *client;
   NSString *newURL, *parentDBFolderPath, *childKey, *folderIMAPName,
-    *urlNamePart, *newFolderIMAPName;
+    *urlNamePart, *newFolderIMAPName, *newFolderDBName;
   NSException *error;
   MAPIStoreMapping *mapping;
   NSDictionary *result;
@@ -1263,7 +1263,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       targetSOGoFolder = [targetFolder sogoObject];
       if (isMove)
         {
-          urlNamePart = [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+          /* Mimetise [SOGoMailFolderK imap4URLString] */
+          urlNamePart = [[newFolderName stringByEncodingImap4FolderName] stringByEscapingURL];
           newFolderURL = [NSURL URLWithString: urlNamePart
                                 relativeToURL: [targetSOGoFolder imap4URL]];
           error = [[sogoObject imap4Connection]
@@ -1275,8 +1276,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
             {
               rc = MAPISTORE_SUCCESS;
               mapping = [self mapping];
+              newFolderDBName = [[newFolderName stringByEncodingImap4FolderName] asCSSIdentifier];
               newURL = [NSString stringWithFormat: @"%@folder%@/",
-                                 [targetFolder url], urlNamePart];
+                                 [targetFolder url], newFolderDBName];
               [mapping updateID: [self objectId] withURL: newURL];
               parentDBFolderPath = [[targetFolder dbFolder] path];
               if (!parentDBFolderPath)
@@ -1284,7 +1286,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
               [dbFolder changePathTo: [NSString stringWithFormat:
                                                   @"%@/folder%@",
                                                 parentDBFolderPath,
-                                                newFolderName]];
+                                                newFolderDBName]];
             }
         }
       else
