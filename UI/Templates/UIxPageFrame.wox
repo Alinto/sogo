@@ -165,7 +165,7 @@
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-animate.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-sanitize.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-aria.js"><!-- space --></script>
-          <script type = "text/javascript" rsrc:src = "js/vendor/angular-material.js"><!-- space --></script>
+          <script type = "text/javascript" rsrc:src = "bower_components/angular-material/angular-material.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-ui-router.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/mm-foundation-tpls.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-recursion.js"><!-- space --></script>
