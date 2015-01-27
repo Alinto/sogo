@@ -423,6 +423,63 @@ $color-blue-grey: (
   'contrastDarkColors': 50 100 200 300
 );
 
+// SOGo Green
+// ----------------------------
+$color-sogo-green: (
+    '50': #eaf5e9,
+    '100': #cbe5c8,
+    '200': #aad6a5,
+    '300': #88c781,
+    '400': #66b86a,
+    '500': #56b04c,
+    '600': #4da143,
+    '700': #388e3c,
+    '800': #367d2e,
+    '900': #225e1b,
+    'A100': #b9f6ca,
+    'A200': #69f0ae,
+    'A400': #00e676,
+    'A700': #00c853,
+    'contrastDefaultColor': dark,
+    'contrastLightColors': 500 600 700 800 900
+);
+
+$color-vintage-blue: (
+    '50': #f0faf9,
+    '100': #e1f5f3,
+    '200': #ceebe8,
+    '300': #bfe0dd,
+    '400': #b2d6d3,
+    '500': #a1ccc8,
+    '600': #8ebfbb,
+    '700': #7db3b0,
+    '800': #639997,
+    '900': #4d8080,
+    'A100': #d4f7fa,
+    'A200': #c3f5fa,
+    'A400': #53e3f0,
+    'A700': #00b0c0,
+    'contrastDefaultColor': light,
+    'contrastDarkColors': 50 100 200,
+'contrastLightColors': 300 400 500 600 700 800 900 A100 A200 A400 A700
+
+);
+
+$color-paper: (
+    '50': #fcf7f8,
+    '100': #f7f1dc,
+    '200': #ede5ca,
+    '300': #e6d8ba,
+    '400': #e2d2a3,
+    '500': #d6c48d,
+    '600': #baa870,
+    '700': #857545,
+    '800': #524517,
+    '900': #433809,
+    'contrastDefaultColor': dark,
+    'contrastLightColors': 500 600 700 800 900
+);
+
 $colors: (
   'red': $color-red,
   'pink': $color-pink,
@@ -433,7 +490,7 @@ $colors: (
   'light-blue': $color-light-blue,
   'cyan': $color-cyan,
   'teal': $color-teal,
-  'green': $color-green,
+  //'green': $color-green,
   'light-green': $color-light-green,
   'lime': $color-lime,
   'yellow': $color-yellow,
@@ -442,6 +499,10 @@ $colors: (
   'deep-orange': $color-deep-orange,
   'brown': $color-brown,
   'grey': $color-grey,
-  'blue-grey': $color-blue-grey
+  'blue-grey': $color-blue-grey,
+  'paper': $color-paper,
+  'vintage-blue': $color-vintage-blue,
+  // redefine green with sogo-green
+  'green': $color-sogo-green
 );
 

@@ -133,8 +133,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 html, body {
   height: 100%;
-  color: rgba(0, 0, 0, 0.87);
-  background: #ffffff;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
@@ -290,10 +288,6 @@ md-tab > .md-ripple-container .md-ripple {
   transform: none !important; }
   md-tab > .md-ripple-container .md-ripple.md-ripple-active, md-tab > .md-ripple-container .md-ripple.md-ripple-full, md-tab > .md-ripple-container .md-ripple.md-ripple-visible {
     opacity: 0.20; }
-
-.md-color-palette-definition {
-  background-image: url("data:image/svg+xml;utf8,{_red_: {_50_: _#ffebee_,_100_: _#ffcdd2_,_200_: _#ef9a9a_,_300_: _#e57373_,_400_: _#ef5350_,_500_: _#f44336_,_600_: _#e53935_,_700_: _#d32f2f_,_800_: _#c62828_,_900_: _#b71c1c_,_A100_: _#ff8a80_,_A200_: _#ff5252_,_A400_: _#ff1744_,_A700_: _#d50000_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 300 400 A100_},_pink_: {_50_: _#fce4ec_,_100_: _#f8bbd0_,_200_: _#f48fb1_,_300_: _#f06292_,_400_: _#ec407a_,_500_: _#e91e63_,_600_: _#d81b60_,_700_: _#c2185b_,_800_: _#ad1457_,_900_: _#880E4F_,_A100_: _#ff80ab_,_A200_: _#ff4081_,_A400_: _#f50057_,_A700_: _#c51162_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 300 400 A100_},_purple_: {_50_: _#f3e5f5_,_100_: _#e1bee7_,_200_: _#ce93d8_,_300_: _#ba68c8_,_400_: _#ab47bc_,_500_: _#9c27b0_,_600_: _#8e24aa_,_700_: _#7b1fa2_,_800_: _#6a1b9a_,_900_: _#4a148c_,_A100_: _#ea80fc_,_A200_: _#e040fb_,_A400_: _#d500f9_,_A700_: _#aa00ff_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 A100_},_deep-purple_: {_50_: _#ede7f6_,_100_: _#d1c4e9_,_200_: _#b39ddb_,_300_: _#9575cd_,_400_: _#7e57c2_,_500_: _#673ab7_,_600_: _#5e35b1_,_700_: _#512da8_,_800_: _#4527a0_,_900_: _#311b92_,_A100_: _#b388ff_,_A200_: _#7c4dff_,_A400_: _#651fff_,_A700_: _#6200ea_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 A100_},_indigo_: {_50_: _#e8eaf6_,_100_: _#c5cae9_,_200_: _#9fa8da_,_300_: _#7986cb_,_400_: _#5c6bc0_,_500_: _#3f51b5_,_600_: _#3949ab_,_700_: _#303f9f_,_800_: _#283593_,_900_: _#1a237e_,_A100_: _#8c9eff_,_A200_: _#536dfe_,_A400_: _#3d5afe_,_A700_: _#304ffe_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 A100_},_blue_: {_50_: _#e3f2fd_,_100_: _#bbdefb_,_200_: _#90caf9_,_300_: _#64b5f6_,_400_: _#42a5f5_,_500_: _#2196f3_,_600_: _#1e88e5_,_700_: _#1976d2_,_800_: _#1565c0_,_900_: _#0d47a1_,_A100_: _#82b1ff_,_A200_: _#448aff_,_A400_: _#2979ff_,_A700_: _#2962ff_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _100 200 300 400 A100_},_light-blue_: {_50_: _#e1f5fe_,_100_: _#b3e5fc_,_200_: _#81d4fa_,_300_: _#4fc3f7_,_400_: _#29b6f6_,_500_: _#03a9f4_,_600_: _#039be5_,_700_: _#0288d1_,_800_: _#0277bd_,_900_: _#01579b_,_A100_: _#80d8ff_,_A200_: _#40c4ff_,_A400_: _#00b0ff_,_A700_: _#0091ea_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _500 600 700 800 900 A700_},_cyan_: {_50_: _#e0f7fa_,_100_: _#b2ebf2_,_200_: _#80deea_,_300_: _#4dd0e1_,_400_: _#26c6da_,_500_: _#00bcd4_,_600_: _#00acc1_,_700_: _#0097a7_,_800_: _#00838f_,_900_: _#006064_,_A100_: _#84ffff_,_A200_: _#18ffff_,_A400_: _#00e5ff_,_A700_: _#00b8d4_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _500 600 700 800 900_},_teal_: {_50_: _#e0f2f1_,_100_: _#b2dfdb_,_200_: _#80cbc4_,_300_: _#4db6ac_,_400_: _#26a69a_,_500_: _#009688_,_600_: _#00897b_,_700_: _#00796b_,_800_: _#00695c_,_900_: _#004d40_,_A100_: _#a7ffeb_,_A200_: _#64ffda_,_A400_: _#1de9b6_,_A700_: _#00bfa5_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _500 600 700 800 900_},_green_: {_50_: _#e8f5e9_,_100_: _#c8e6c9_,_200_: _#a5d6a7_,_300_: _#81c784_,_400_: _#66bb6a_,_500_: _#4caf50_,_600_: _#43a047_,_700_: _#388e3c_,_800_: _#2e7d32_,_900_: _#1b5e20_,_A100_: _#b9f6ca_,_A200_: _#69f0ae_,_A400_: _#00e676_,_A700_: _#00c853_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _500 600 700 800 900_},_light-green_: {_50_: _#f1f8e9_,_100_: _#dcedc8_,_200_: _#c5e1a5_,_300_: _#aed581_,_400_: _#9ccc65_,_500_: _#8bc34a_,_600_: _#7cb342_,_700_: _#689f38_,_800_: _#558b2f_,_900_: _#33691e_,_A100_: _#ccff90_,_A200_: _#b2ff59_,_A400_: _#76ff03_,_A700_: _#64dd17_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _800 900_},_lime_: {_50_: _#f9fbe7_,_100_: _#f0f4c3_,_200_: _#e6ee9c_,_300_: _#dce775_,_400_: _#d4e157_,_500_: _#cddc39_,_600_: _#c0ca33_,_700_: _#afb42b_,_800_: _#9e9d24_,_900_: _#827717_,_A100_: _#f4ff81_,_A200_: _#eeff41_,_A400_: _#c6ff00_,_A700_: _#aeea00_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _900_},_yellow_: {_50_: _#fffde7_,_100_: _#fff9c4_,_200_: _#fff59d_,_300_: _#fff176_,_400_: _#ffee58_,_500_: _#ffeb3b_,_600_: _#fdd835_,_700_: _#fbc02d_,_800_: _#f9a825_,_900_: _#f57f17_,_A100_: _#ffff8d_,_A200_: _#ffff00_,_A400_: _#ffea00_,_A700_: _#ffd600_,_contrastDefaultColor_: _dark_},_amber_: {_50_: _#fff8e1_,_100_: _#ffecb3_,_200_: _#ffe082_,_300_: _#ffd54f_,_400_: _#ffca28_,_500_: _#ffc107_,_600_: _#ffb300_,_700_: _#ffa000_,_800_: _#ff8f00_,_900_: _#ff6f00_,_A100_: _#ffe57f_,_A200_: _#ffd740_,_A400_: _#ffc400_,_A700_: _#ffab00_,_contrastDefaultColor_: _dark_},_orange_: {_50_: _#fff3e0_,_100_: _#ffe0b2_,_200_: _#ffcc80_,_300_: _#ffb74d_,_400_: _#ffa726_,_500_: _#ff9800_,_600_: _#fb8c00_,_700_: _#f57c00_,_800_: _#ef6c00_,_900_: _#e65100_,_A100_: _#ffd180_,_A200_: _#ffab40_,_A400_: _#ff9100_,_A700_: _#ff6d00_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _800 900_},_deep-orange_: {_50_: _#fbe9e7_,_100_: _#ffccbc_,_200_: _#ffab91_,_300_: _#ff8a65_,_400_: _#ff7043_,_500_: _#ff5722_,_600_: _#f4511e_,_700_: _#e64a19_,_800_: _#d84315_,_900_: _#bf360c_,_A100_: _#ff9e80_,_A200_: _#ff6e40_,_A400_: _#ff3d00_,_A700_: _#dd2c00_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 300 400 A100 A200_},_brown_: {_50_: _#efebe9_,_100_: _#d7ccc8_,_200_: _#bcaaa4_,_300_: _#a1887f_,_400_: _#8d6e63_,_500_: _#795548_,_600_: _#6d4c41_,_700_: _#5d4037_,_800_: _#4e342e_,_900_: _#3e2723_,_A100_: _#d7ccc8_,_A200_: _#bcaaa4_,_A400_: _#8d6e63_,_A700_: _#5d4037_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200_},_grey_: {_0_: _#ffffff_,_50_: _#fafafa_,_100_: _#f5f5f5_,_200_: _#eeeeee_,_300_: _#e0e0e0_,_400_: _#bdbdbd_,_500_: _#9e9e9e_,_600_: _#757575_,_700_: _#616161_,_800_: _#424242_,_900_: _#212121_,_1000_: _#000000_,_A100_: _#ffffff_,_A200_: _#eeeeee_,_A400_: _#bdbdbd_,_A700_: _#616161_,_contrastDefaultColor_: _dark_,_contrastLightColors_: _600 700 800 900_},_blue-grey_: {_50_: _#eceff1_,_100_: _#cfd8dc_,_200_: _#b0bec5_,_300_: _#90a4ae_,_400_: _#78909c_,_500_: _#607d8b_,_600_: _#546e7a_,_700_: _#455a64_,_800_: _#37474f_,_900_: _#263238_,_A100_: _#cfd8dc_,_A200_: _#b0bec5_,_A400_: _#78909c_,_A700_: _#455a64_,_contrastDefaultColor_: _light_,_contrastDarkColors_: _50 100 200 300_}}");
-  display: none; }
 
 /* Sizes:
   0    <= size <= 600  Phone
@@ -4752,13 +4746,25 @@ md-toolbar {
   .md-toolbar-tools .md-button {
     font-size: 14px; }
 
-.sg-bottombar {
+md-toolbar.sg-bottombar {
   @extends md-toolbar;
-  background-color: #212121;
+  background-color: #121212;
   position: fixed;
   bottom: 0px;
   left: 0px;
   z-index: 100; }
+
+sg-bottombar.md-THEME_NAME-theme {
+  background-color: #121212;
+  color: '{{primary-contrast}}'; }
+  sg-bottombar.md-THEME_NAME-theme .md-button {
+    color: '{{primary-contrast}}'; }
+  sg-bottombar.md-THEME_NAME-theme.md-accent {
+    background-color: '{{accent-color}}';
+    color: '{{accent-contrast}}'; }
+  sg-bottombar.md-THEME_NAME-theme.md-warn {
+    background-color: '{{warn-color}}';
+    color: '{{warn-contrast}}'; }
 
 /**
  *
@@ -4779,8 +4785,7 @@ html.dev.guide::after {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: transparent;
-  background-image: linear-gradient(90deg, rgba(0, 255, 255, 0) 0, rgba(0, 255, 255, 0) 62px, cyan 63px);
+  background-image: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0, rgba(0, 255, 255, 0.1) 80%, transparent 80%);
   background-size: 64px 64px;
   background-repeat-x: repeat;
   width: 100%;

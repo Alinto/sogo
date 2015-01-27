@@ -7,10 +7,10 @@
 /// botttombar extends
 ///
 
-.sg-bottombar {
+md-toolbar.sg-bottombar { // overclafied to compensate for the injected css
   @extends md-toolbar;
 
-  background-color:#212121; // fixme : use a variable
+  background-color:$bottombar-color;
   position: fixed;
   bottom: 0px;
   left: 0px;

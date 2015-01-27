@@ -27,7 +27,6 @@
         <link rel = "shortcut icon" var:href = "siteFavicon" type = "image/x-icon" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "css/icons.css" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "css/angular-material.css" />
-        <link type = "text/css" rel = "stylesheet" rsrc:href = "css/themes/grey-theme.css" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "css/styles.css" />
         <var:if condition = "hasPageSpecificCSS"
             >

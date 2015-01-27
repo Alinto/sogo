@@ -1,5 +1,5 @@
-md-toolbar.md-THEME_NAME-theme {
-  background-color: '{{primary-color}}';
+sg-bottombar.md-THEME_NAME-theme {
+  background-color: $bottombar-color;
   color: '{{primary-contrast}}';
 
   .md-button {

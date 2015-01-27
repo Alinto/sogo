@@ -24,10 +24,10 @@
           <i class = "icon-undo"><!-- reset --></i>
           <var:string label:value = "Reset" />
         </span>
-        <button class = "button tiny radius" type = "submit">
+        <md-button class = "button tiny radius" type = "submit">
           <i class = "icon-checkmark"><!-- save --></i>
           <var:string label:value = "Save" />
-        </button>
+        </md-button>
       </div>
       <md-input-container>
         <div class = "action">
