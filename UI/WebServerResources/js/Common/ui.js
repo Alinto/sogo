@@ -89,6 +89,7 @@
           'contrastLightColors': '500 600 700 800 900'
         });
         // Default theme definition
+        // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
         $mdThemingProvider.theme('default')
           .primaryColor('vintage-blue', {
               'default': '300',
