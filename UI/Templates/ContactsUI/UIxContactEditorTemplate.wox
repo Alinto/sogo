@@ -1,10 +1,5 @@
 <?xml version='1.0' standalone='yes'?>
-<container
-    xmlns = "http://www.w3.org/1999/xhtml"
-    xmlns:var = "http://www.skyrix.com/od/binding"
-    xmlns:const = "http://www.skyrix.com/od/constant"
-    xmlns:label = "OGo:label"
-    >
+<container xmlns = "http://www.w3.org/1999/xhtml" xmlns:var = "http://www.skyrix.com/od/binding" xmlns:const = "http://www.skyrix.com/od/constant" xmlns:label = "OGo:label">
   <md-content md-scroll-y = "true">
     <div class = "editor md-padding">
       <div class = "header">
@@ -30,9 +25,7 @@
         </md-button>
       </div>
       <md-input-container>
-        <div class = "action">
-          <var:entity const:name = "" />
-        </div>
+          <var:entity const:name = "nbsp" />
         <label>
           <var:string label:value = "Display" />
         </label>
@@ -86,25 +79,23 @@
 
       <!-- org units -->
 
-      <div class = "section">
+      <fieldset class = "section">
         <div class = "attr" data-ng-repeat = "unit in card.orgUnits">
           <div class = "action">
             <span class = "button alert icon" data-ng-click = "card.$delete('orgUnits', $index)">
               <i class = "icon-minus"><!-- remove --></i>
             </span>
           </div>
+        <md-input-container>
           <div class = "key">
-            <md-input-container>
             <label class = "right inline">
               <var:string label:value = "Organization Unit" />
             </label>
           </div>
           <div class = "value">
-            <input type = "text" label:placeholder = "unit" data-ng-model = "unit.value"
-                data-sg-focus-on = "orgUnit_{{$index}}" />
-          </md-input-container>
-
-        </div>
+            <input type = "text" label:placeholder = "unit" data-ng-model = "unit.value" data-sg-focus-on = "orgUnit_{{$index}}" />
+          </div>
+        </md-input-container>
       </div>
       <div class = "attr">
         <div class = "value single">
@@ -114,7 +105,7 @@
           </span>
         </div>
       </div>
-    </div>
+    </fieldset>
     <!-- birthday -->
     <div class = "attr">
       <div class = "action">
@@ -143,10 +134,7 @@
           </label>
         </div>
         <div class = "value">
-          <input type = "text" label:placeholder = "category"
-              data-ng-model = "category.value"
-              data-sg-focus-on = "category_{{$index}}"
-              data-typeahead = "cat for cat in card.allCategories | filter:$viewValue" />
+          <input type = "text" label:placeholder = "category" data-ng-model = "category.value" data-sg-focus-on = "category_{{$index}}" data-typeahead = "cat for cat in card.allCategories | filter:$viewValue" />
         </div>
       </div>
       <div class = "attr">
@@ -172,8 +160,7 @@
           </select>
         </div>
         <div class = "value">
-          <input type = "email" label:placeholder = "email address" data-ng-model = "email.value"
-              data-sg-focus-on = "email_{{$index}}" />
+          <input type = "email" label:placeholder = "email address" data-ng-model = "email.value" data-sg-focus-on = "email_{{$index}}" />
         </div>
       </div>
       <div class = "attr">
@@ -199,8 +186,7 @@
           </select>
         </div>
         <div class = "value">
-          <input type = "text" label:placeholder = "phone number" data-ng-model = "phone.value"
-              data-sg-focus-on = "phone_{{$index}}" />
+          <input type = "text" label:placeholder = "phone number" data-ng-model = "phone.value" data-sg-focus-on = "phone_{{$index}}" />
         </div>
       </div>
       <div class = "attr">
@@ -252,8 +238,7 @@
           </select>
         </div>
         <div class = "value compact">
-          <input type = "text" label:placeholder = "street" data-ng-model = "address.street"
-              data-sg-focus-on = "address_{{$index}}" />
+          <input type = "text" label:placeholder = "street" data-ng-model = "address.street" data-sg-focus-on = "address_{{$index}}" />
           <input type = "text" data-ng-model = "address.street2" />
           <input type = "text" label:placeholder = "Postoffice" data-ng-model = "address.postoffice" />
           <input type = "text" label:placeholder = "City" data-ng-model = "address.locality" />
@@ -343,11 +328,7 @@
           </label>
         </div>
         <div class = "value">
-          <input type = "text" label:placeholder = "email address"
-              data-ng-model = "ref.email"
-              data-sg-focus-on = "ref_{{$index}}"
-              data-typeahead = "card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})"
-              data-typeahead-on-select = "card.$updateMember($index, $model, $item)" />
+          <input type = "text" label:placeholder = "email address" data-ng-model = "ref.email" data-sg-focus-on = "ref_{{$index}}" data-typeahead = "card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})" data-typeahead-on-select = "card.$updateMember($index, $model, $item)" />
         </div>
       </div>
       <div class = "attr">
