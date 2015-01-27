@@ -13,9 +13,26 @@
   angular.module('SOGo.UI', ['ngMaterial'])
 
       .config(function ($mdThemingProvider) {
-        // sogo-green extends the green palette, we put the extend in a var
-        // to use it in a custom named paelette
-        var sogoGreenSwatch = $mdThemingProvider.extendPalette('green', {
+// The default red paletette for warn-color
+        $mdThemingProvider.definePalette('red', {
+          '50': '#ffebee',
+          '100': '#ffcdd2',
+          '200': '#ef9a9a',
+          '300': '#e57373',
+          '400': '#ef5350',
+          '500': '#f44336',
+          '600': '#e53935',
+          '700': '#d32f2f',
+          '800': '#c62828',
+          '900': '#b71c1c',
+          'A100': '#ff8a80',
+          'A200': '#ff5252',
+          'A400': '#ff1744',
+          'A700': '#d50000',
+          'contrastDefaultColor': 'light',
+          'contrastDarkColors': '50 100 200 300 400 A100'
+        });
+        $mdThemingProvider.definePalette('sogo-green', {
           '50': 'eaf5e9',
           '100': 'cbe5c8',
           '200': 'aad6a5',
@@ -25,23 +42,14 @@
           '600': '4da143',
           '700': '388e3c',
           '800': '367d2e',
-          '900': '225e1b'
-        });
-        var paperSwatch = $mdThemingProvider.extendPalette('grey', {
-          '50': 'fcf7f8',
-          '100': 'f7f1dc',
-          '200': 'ede5ca',
-          '300': 'e6d8ba',
-          '400': 'e2d2a3',
-          '500': 'd6c48d',
-          '600': 'baa870',
-          '700': '857545',
-          '800': '524517',
-          '900': '433809',
+          '900': '225e1b',
+          'A100': '#b9f6ca',
+          'A200': '#69f0ae',
+          'A400': '#00e676',
+          'A700': '#00c853',
           'contrastDefaultColor': 'dark',
-          'contrastLightColors': ['500', '600', '700', '800', '900']
+          'contrastLightColors': '500 600 700 800 900'
         });
-        $mdThemingProvider.definePalette('sogo-green', sogoGreenSwatch);
         $mdThemingProvider.definePalette('vintage-blue', {
           '50': 'f0faf9',
           '100': 'e1f5f3',
@@ -61,7 +69,25 @@
           'contrastDarkColors': ['50', '100', '200'],
           'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
         });
-        $mdThemingProvider.definePalette('paper', paperSwatch);
+        $mdThemingProvider.definePalette('paper', {
+          '50': 'fcf7f8',
+          '100': 'f7f1dc',
+          '200': 'ede5ca',
+          '300': 'e6d8ba',
+          '400': 'e2d2a3',
+          '500': 'd6c48d',
+          '600': 'baa870',
+          '700': '857545',
+          '800': '524517',
+          '900': '433809',
+          '1000': '#000000',
+          'A100': '#ffffff',
+          'A200': '#eeeeee',
+          'A400': '#bdbdbd',
+          'A700': '#616161',
+          'contrastDefaultColor': 'dark',
+          'contrastLightColors': '500 600 700 800 900'
+        });
         // Default theme definition
         $mdThemingProvider.theme('default')
           .primaryColor('vintage-blue', {
@@ -71,7 +97,12 @@
               'hue-3': '700'
             })
           .accentColor('sogo-green')
-          .backgroundColor('paper');
+          .backgroundColor('paper', {
+              'default': '600',
+              'hue-1': '200',
+              'hue-2': '50',
+              'hue-3': '100'
+            });
       })
 
       .controller('toggleCtrl', ['$scope', '$timeout', '$mdSidenav', '$log', function ($scope, $timeout, $mdSidenav, $log) {

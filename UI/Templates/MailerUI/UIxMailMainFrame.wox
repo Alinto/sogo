@@ -262,7 +262,7 @@
           <span class = "md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
-      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl">
+      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl" flex="1 1 100%">
         <md-button ng-click = "close()" class = "md-primary" hide-gt-md = "hide-gt-md">Close</md-button>
         <md-list ng-repeat = "account in accounts track by account.id">
           <md-item>
