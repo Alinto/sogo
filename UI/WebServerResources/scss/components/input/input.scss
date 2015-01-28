@@ -91,3 +91,9 @@ md-input-container {
     background-repeat: repeat-x;
   }
 }
+md-input-container .bgroup {
+  display: block;
+}
+.bgroup b {
+  left-margin: -1.25em;
+}

@@ -24,7 +24,7 @@
   @each $selector in $selectors {
     .md-#{$selector} {
 // no syntax error here
-      @extend [#{$selector}] !optional
+      @extend #{'['$selector']'} !optional
     }
   }
 }

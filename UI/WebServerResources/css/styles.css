@@ -2383,6 +2383,9 @@ md-tab > .md-ripple-container .md-ripple {
   [layout="column"] > [flex-gt-lg="66"], [layout="column"] > [flex-gt-lg="67"] {
     flex: 0 0 66.66%;
     max-height: 66.66%; } }
+.md-flex {
+  flex: 1 1 auto; }
+
 @font-face {
   font-family: 'Material Design Iconic Font';
   src: url("../bower_components/material-design-iconic-font/fonts/Material-Design-Iconic-Font.eot?v=1.0.1");
@@ -4882,58 +4885,6 @@ md-toolbar {
   .md-toolbar-tools .md-button {
     font-size: 14px; }
 
-md-toolbar {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 2;
-  font-size: 1.3em;
-  min-height: 64px;
-  width: 100%; }
-  md-toolbar.md-tall {
-    height: 128px;
-    min-height: 128px;
-    max-height: 128px; }
-  md-toolbar.md-medium-tall {
-    height: 88px;
-    min-height: 88px;
-    max-height: 88px; }
-    md-toolbar.md-medium-tall .md-toolbar-tools {
-      height: 48px;
-      min-height: 48px;
-      max-height: 48px; }
-  md-toolbar.md-toolbar-small {
-    min-height: 48px; }
-  md-toolbar .md-indent {
-    margin-left: 64px; }
-
-.md-toolbar-tools {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  height: 64px;
-  min-height: 100%;
-  max-height: 64px;
-  font-size: inherit;
-  font-weight: normal;
-  padding: 0 16px;
-  margin: 0; }
-  .md-toolbar-tools > * {
-    font-size: inherit; }
-  .md-toolbar-tools h2, .md-toolbar-tools h3 {
-    font-weight: normal; }
-  .md-toolbar-tools a {
-    color: inherit;
-    text-decoration: none; }
-  .md-toolbar-tools .fill-height {
-    display: flex;
-    align-items: center; }
-  .md-toolbar-tools .md-tools {
-    margin-left: auto; }
-  .md-toolbar-tools .md-button {
-    font-size: 14px; }
-
 md-toolbar.sg-bottombar {
   @extends md-toolbar;
   background-color: #121212;
@@ -4953,6 +4904,71 @@ sg-bottombar.md-THEME_NAME-theme {
   sg-bottombar.md-THEME_NAME-theme.md-warn {
     background-color: '{{warn-color}}';
     color: '{{warn-contrast}}'; }
+
+md-input-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: 2px;
+  /* 
+   * The .md-input class is added to the input/textarea 
+   */ }
+  md-input-container textarea,
+  md-input-container input[type="text"],
+  md-input-container input[type="password"],
+  md-input-container input[type="datetime"],
+  md-input-container input[type="datetime-local"],
+  md-input-container input[type="date"],
+  md-input-container input[type="month"],
+  md-input-container input[type="time"],
+  md-input-container input[type="week"],
+  md-input-container input[type="number"],
+  md-input-container input[type="email"],
+  md-input-container input[type="url"],
+  md-input-container input[type="search"],
+  md-input-container input[type="tel"],
+  md-input-container input[type="color"] {
+    /* remove default appearance from all input/textarea */
+    -moz-appearance: none;
+    -webkit-appearance: none; }
+  md-input-container textarea {
+    resize: none;
+    overflow: hidden; }
+  md-input-container label {
+    order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    z-index: 1;
+    transform: translate3d(0, 24px, 0) scale(1);
+    transform-origin: left top;
+    transition: all cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s; }
+  md-input-container .md-input {
+    flex: 1;
+    order: 2;
+    display: block;
+    background: none;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    border-width: 0 0 1px 0;
+    line-height: 26px;
+    -ms-flex-preferred-size: 26px; }
+    md-input-container .md-input:focus {
+      outline: none; }
+  md-input-container.md-input-focused label, md-input-container.md-input-has-value label {
+    transform: translate3d(0, 4px, 0) scale(0.75); }
+  md-input-container.md-input-focused .md-input {
+    padding-bottom: 0px;
+    border-width: 0 0 2px 0; }
+  md-input-container .md-input[disabled] {
+    background-position: 0 bottom;
+    background-size: 3px 1px;
+    background-repeat: repeat-x; }
+
+md-input-container .bgroup {
+  display: block; }
+
+.bgroup b {
+  left-margin: -1.25em; }
 
 /**
  *

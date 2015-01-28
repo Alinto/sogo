@@ -67,7 +67,7 @@
 
     Templates script tag wrappers goes next
   -->
-  <!-- fixme : consitently prefix attributes with or without data prefix-->
+  <!-- fixme : consistently prefix attributes with or without data prefix-->
   <main class="view md-layout-fill" data-ui-view="addressbooks" layout="row"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
@@ -188,8 +188,8 @@
       </md-content>
     </md-sidenav>
 
-    <main layout = "column" layout-fill = "layout-fill">
-      <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
+    <section layout="column" class="md-layout-fill">
+    <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
       <div class="md-toolbar-tools" ng-controller="toggleCtrl">
         <span flex="flex">
           <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md">
@@ -204,51 +204,45 @@
         </span>
       </div>
     </md-toolbar>
-      <md-content layout="row" class="md-flex">
-        <md-content md-scroll-y = "md-scroll-y" class = "md-flex" style = "min-width: 300px;" id = "contactsList">
-          <!-- Search field & special results
-               <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
-               <div data-ng-switch="search.status">
-               <div data-ng-switch-when="min-char" class="alert-bg">
-               <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
-               </div>
-               <div data-ng-switch-when="no-result" class="alert-bg">
-               <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
-               </div>
-               <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
-               <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
-               </div>
-               </div>
-          -->
-          <!--dirty fix for vs-repeat-->
-          <style>
-            .vs-repeat-repeated-element {
-            width: 100%;
-            }
-          </style>
-          <md-list data-vs-repeat = "72"
-              data-vs-scroll-parent = "#contactsList">
-            <md-item ng-repeat = "currentCard in addressbook.cards track by currentCard.id"
-                ng-class = "{_selected: card.id == currentCard.id}">
-              <md-item-content>
-                <div class = "md-tile-left">
-                  <!--avatar-->
-                  <!-- currentCard.tag = vcard || vlist -->
-                </div>
-                <div class = "sg-tile-content">
-                  <a data-ui-sref = "addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
-                    <div class = "name" ng-bind-html = "currentCard.$fullname()"><!-- cn --></div>
-                    <div class = "subject">{{currentCard.$preferredEmail()}}</div>
-                  </a>
-                </div>
-              </md-item-content>
-              <md-divider md-inset = "true" ng-if = "!$last"><!--divider--></md-divider>
-            </md-item>
-          </md-list>
-        </md-content>
-        <md-content class = "md-padding md-flex" data-ui-view = "card"><!-- card view --></md-content>
+    <md-content layout="row" class="md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex" style="min-width: 300px;" id="contactsList">
+        <!-- Search field & special results
+             <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
+             <div data-ng-switch="search.status">
+             <div data-ng-switch-when="min-char" class="alert-bg">
+             <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
+             </div>
+             <div data-ng-switch-when="no-result" class="alert-bg">
+             <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
+             </div>
+             <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
+             <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
+             </div>
+             </div>
+        --><!--dirty fix for vs-repeat-->
+        <style>
+          .vs-repeat-repeated-element { width: 100%; }
+        </style>
+        <md-list data-vs-repeat="72" data-vs-scroll-parent="#contactsList">
+          <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id" ng-class="{_selected: card.id == currentCard.id}">
+            <md-item-content>
+              <div class="md-tile-left">
+                <!--avatar--><!-- currentCard.tag = vcard || vlist -->
+              </div>
+              <div class="sg-tile-content">
+                <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
+                  <div class="name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                  <div class="subject">{{currentCard.$preferredEmail()}}</div>
+                </a>
+              </div>
+            </md-item-content>
+            <md-divider md-inset="true" ng-if="!$last"><!--divider--></md-divider>
+          </md-item>
+        </md-list>
       </md-content>
-    </main>
+      <md-content class="md-padding md-flex" data-ui-view="card"><!-- card view --></md-content>
+    </md-content>
+  </section>
 
   </script>
     <!-- modal for addressbook sharing options -->
