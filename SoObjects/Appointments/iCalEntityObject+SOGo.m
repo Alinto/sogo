@@ -73,7 +73,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 - (NSDictionary *) attributes
 {
   NSArray *elements;
-  NSMutableArray *attendees, *categories;
+  NSMutableArray *attendees;
   NSDictionary *organizerData;
   NSMutableDictionary *data, *attendeeData, *alarmData;
   NSEnumerator *attendeesList;
@@ -81,7 +81,6 @@ NSNumber *iCalDistantFutureNumber = nil;
   iCalAlarm *alarm;
   iCalTrigger *trigger;
   id value;
-  unsigned int i, max;
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[self tag] lowercaseString], @"component",
@@ -93,22 +92,14 @@ NSNumber *iCalDistantFutureNumber = nil;
   if (value) [data setObject: value forKey: @"location"];
   if ([self comment]) [data setObject: [self comment] forKey: @"comment"];
   if ([self attach]) [data setObject: [[self attach] absoluteString] forKey: @"attachUrl"];
-  if ([self accessClass]) [data setObject: [self accessClass] forKey: @"classification"];
+  if ([self accessClass]) [data setObject: [[self accessClass] lowercaseString] forKey: @"classification"];
   if ([self status]) [data setObject: [self status] forKey: @"status"];
   if ([self createdBy]) [data setObject: [self createdBy] forKey: @"createdBy"];
 
   // Categories
-  elements = [self childrenWithTag: @"categories"];
-  max = [elements count];
-  if (max > 0)
-    {
-      categories = [NSMutableArray arrayWithCapacity: max];
-      for (i = 0; i < max; i++)
-        {
-          [categories addObject: [[elements objectAtIndex: i] flattenedValuesForKey: @""]];
-        }
-      [data setObject: categories forKey: @"categories"];
-    }
+  elements = [self categories];
+  if ([elements count])
+    [data setObject: elements forKey: @"categories"];
 
   // Send appointment notifications
   value = [self firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
