@@ -35,6 +35,6 @@
     </md-list>
   </md-content>
 
-  <div layout = "column" flex = "60" data-ui-view = "message"><!-- message view --></div>
+  <div layout="column" flex="60" data-ui-view="message"><!-- message view --></div>
 
 </container>
