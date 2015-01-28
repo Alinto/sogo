@@ -455,6 +455,10 @@ static NSData* _sanitizeContent(NSData *theData)
             {
               if (*currentChar == '{')
                 inCSSDeclaration = YES;
+              if (*currentChar == '}')
+                // CSS syntax error: ending declaration character while not in a CSS declaration.
+                // Ignore eveything from last CSS declaration.
+                start = currentChar + 1;
               else if (*currentChar == ',')
                 hasEmbeddedCSS = NO;
               else if (!hasEmbeddedCSS)
