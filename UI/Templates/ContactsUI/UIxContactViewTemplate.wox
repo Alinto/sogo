@@ -5,97 +5,97 @@
     xmlns:const = "http://www.skyrix.com/od/constant"
     xmlns:label = "OGo:label"
     >
-  <div class = "viewer">
-    <div class = "header">
-      <h1 data-ng-bind-html = "card.$fullname()"><!-- fullname --></h1>
+  <div class="viewer">
+    <div class="header">
+      <h1 data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
       <h6>{{card.$description()}}
-        <span class = "label radius" data-ng-repeat = "category in card.categories">{{category.value}}</span>
+        <span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span>
       </h6>
     </div>
-    <div class = "buttonsToolbar">
-      <span data-ng-show = "addressbook.isEditable">
-        <a class = "button tiny radius" data-ui-sref = "addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
-          <i class = "icon-pencil"><!-- edit --></i>
+    <div class="buttonsToolbar">
+      <span data-ng-show="addressbook.isEditable">
+        <a class="button tiny radius" data-ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+          <i class="icon-pencil"><!-- edit --></i>
         </a>
-        <span class = "button tiny radius alert" data-ng-click = "confirmDelete(card)">
-          <i class = "icon-trash"><!-- delete --></i>
+        <span class="button tiny radius alert" data-ng-click="confirmDelete(card)">
+          <i class="icon-trash"><!-- delete --></i>
         </span>
       </span>
     </div>
-    <div class = "attr" data-ng-show = "card.birthday">
-      <div class = "key">
-        <label class = "right">
-          <var:string label:value = "Birthday" />
+    <div class="attr" data-ng-show="card.birthday">
+      <div class="key">
+        <label class="right">
+          <var:string label:value="Birthday" />
         </label>
       </div>
-      <div class = "value">
+      <div class="value">
         <span>{{card.$birthday() | date}}</span>
       </div>
     </div>
-    <div class = "section" data-ng-repeat = "ref in card.refs track by ref.reference">
+    <div class="section" data-ng-repeat="ref in card.refs track by ref.reference">
       <!-- list members -->
-      <div class = "attr">
-        <div class = "value single">
-          <a data-ui-sref = "addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">{{ref.$fullname()}}</a>
-          <div data-ng-show = "ref.email">
-            <a href = "mailto:{{ref.email}}">
-              <i class = "icon-ion-ios7-email-outline"><!-- email --></i>
+      <div class="attr">
+        <div class="value single">
+          <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">{{ref.$fullname()}}</a>
+          <div data-ng-show="ref.email">
+            <a href="mailto:{{ref.email}}">
+              <i class="icon-ion-ios7-email-outline"><!-- email --></i>
               {{ref.email}}
             </a>
           </div>
         </div>
       </div>
     </div>
-    <div class = "section" data-ng-show = "card.emails.length > 0">
-      <div class = "attr" data-ng-repeat = "email in card.emails">
-        <div class = "key">
-          <label class = "right"><var:entity const:name = "nbsp" />{{email.type}}
+    <div class="section" data-ng-show="card.emails.length > 0">
+      <div class="attr" data-ng-repeat="email in card.emails">
+        <div class="key">
+          <label class="right"><var:entity const:name="nbsp" />{{email.type}}
           </label>
         </div>
-        <div class = "value">
-          <a href = "mailto:{{email.value}}">{{email.value}}</a>
+        <div class="value">
+          <a href="mailto:{{email.value}}">{{email.value}}</a>
         </div>
       </div>
     </div>
-    <div class = "section" data-ng-show = "card.phones.length > 0">
-      <div class = "attr" data-ng-repeat = "phone in card.phones">
-        <div class = "key">
-          <label class = "right">{{phone.type}}</label>
+    <div class="section" data-ng-show="card.phones.length > 0">
+      <div class="attr" data-ng-repeat="phone in card.phones">
+        <div class="key">
+          <label class="right">{{phone.type}}</label>
         </div>
-        <div class = "value">
-          <a href = "tel:{{phone.value}}">{{phone.value}}</a>
+        <div class="value">
+          <a href="tel:{{phone.value}}">{{phone.value}}</a>
         </div>
       </div>
     </div>
-    <div class = "section" data-ng-show = "card.urls">
-      <div class = "attr" data-ng-repeat = "url in card.urls">
-        <div class = "key">
-          <label class = "right"><var:entity const:name = "nbsp" />{{url.type}}
+    <div class="section" data-ng-show="card.urls">
+      <div class="attr" data-ng-repeat="url in card.urls">
+        <div class="key">
+          <label class="right"><var:entity const:name="nbsp" />{{url.type}}
           </label>
         </div>
-        <div class = "value">
-          <a href = "#" data-ng-href = "{{url.value}}">{{url.value}}</a>
+        <div class="value">
+          <a href="#" data-ng-href="{{url.value}}">{{url.value}}</a>
         </div>
       </div>
     </div>
-    <div class = "section" data-ng-show = "card.addresses">
-      <div class = "attr" data-ng-repeat = "address in card.addresses">
-        <div class = "key">
-          <label class = "right">{{address.type}}</label>
+    <div class="section" data-ng-show="card.addresses">
+      <div class="attr" data-ng-repeat="address in card.addresses">
+        <div class="key">
+          <label class="right">{{address.type}}</label>
         </div>
-        <div class = "value">
-          <div data-sg-address = "address"><!-- address --></div>
+        <div class="value">
+          <div data-sg-address="address"><!-- address --></div>
         </div>
       </div>
     </div>
-    <div class = "attr" data-ng-show = "card.note">
-      <div class = "key">
-        <label class = "right">
-          <var:string label:value = "Note" />
+    <div class="attr" data-ng-show="card.note">
+      <div class="key">
+        <label class="right">
+          <var:string label:value="Note" />
         </label>
       </div>
-      <div class = "value">
-        <div data-ng-bind-html = "card.note"><!-- note --></div>
+      <div class="value">
+        <div data-ng-bind-html="card.note"><!-- note --></div>
       </div>
     </div>
   </div>

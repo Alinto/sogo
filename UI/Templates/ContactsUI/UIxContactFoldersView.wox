@@ -68,7 +68,7 @@
     Templates script tag wrappers goes next
   -->
   <!-- fixme : consitently prefix attributes with or without data prefix-->
-    <main class="view" data-ui-view = "addressbooks" layout="row" layout-fill="layout-fill"><!-- addressbooks list --></main>
+  <main class="view md-layout-fill" data-ui-view="addressbooks" layout="row"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type = "text/ng-template" id = "UIxContactFoldersView">
@@ -152,11 +152,8 @@
           <span class = "md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
-      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl" flex="flex">
-        <md-button ng-click = "close()" class = "md-primary" hide-gt-md = "hide-gt-md">Close</md-button>
-        <!--<div class="newItemsToolbar">
-          <a class="button tiny radius split" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><var:string label:value="New Card"/><span data-dropdown-toggle="#newListDrop"></span></a><br/>
-        </div>-->
+      <md-content md-scroll-y="md-scroll-y" class="md-padding md-flex" ng-controller="LeftCtrl">
+        <md-button ng-click="close()" class="md-primary md-hide-gt-md">Close</md-button>
         <md-list>
           <md-item ng-repeat = "folder in addressbooks track by folder.id"
               ng-class = "{_selected: addressbook.id==folder.id}"
@@ -188,33 +185,27 @@
             </md-item-content>
           </md-item>
         </md-list>
-        <!--<div class="buttonsToolbar">
-          <button data-ng-click="newAddressbook()" class="button" label:title="New Addressbook..."><i class="icon-plus">!- new -></i></button>
-          <a href="#" class="button" label:title="Subscribe to an Addressbook..."
-             data-sg-dropdown-content-toggle="#folderSubscribe"><i class="icon-earth">!- subscribe -</i></a>
-        </div>-->
       </md-content>
     </md-sidenav>
 
     <main layout = "column" layout-fill = "layout-fill">
-      <md-toolbar layout = "row" layout-align = "space-between start" class = "md-tall">
-        <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
-        <div class = "md-toolbar-tools" ng-controller = "toggleCtrl">
-          <span flex = "flex">
-            <md-button ng-click = "toggleLeft()" class = "md-primary" hide-gt-md = "hide-gt-md">
-              <span class = "icon-ic_menu_24px"></span>
-            </md-button>
-            <div class = "display-1" style = "font-size: 2em; font-weight: 300">
-              [[Contacts]]
-            </div>
-          </span>
-          <span class = "sd-toolbar-tools">
-            <span>search</span>
-          </span>
-        </div>
-      </md-toolbar>
-      <md-content layout = "row" flex = "flex">
-        <md-content md-scroll-y = "md-scroll-y" flex = "flex" style = "min-width: 300px;" id = "contactsList">
+      <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
+      <div class="md-toolbar-tools" ng-controller="toggleCtrl">
+        <span flex="flex">
+          <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md">
+            <span class="icon-ic_menu_24px"></span>
+          </md-button>
+          <div class="display-1" style="font-size: 2em; font-weight: 300">
+            [[Contacts]]
+          </div>
+        </span>
+        <span class="sd-toolbar-tools">
+          <span>search</span>
+        </span>
+      </div>
+    </md-toolbar>
+      <md-content layout="row" class="md-flex">
+        <md-content md-scroll-y = "md-scroll-y" class = "md-flex" style = "min-width: 300px;" id = "contactsList">
           <!-- Search field & special results
                <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
                <div data-ng-switch="search.status">
@@ -255,7 +246,7 @@
             </md-item>
           </md-list>
         </md-content>
-        <md-content class = "md-padding" flex = "flex" data-ui-view = "card"><!-- card view --></md-content>
+        <md-content class = "md-padding md-flex" data-ui-view = "card"><!-- card view --></md-content>
       </md-content>
     </main>
 

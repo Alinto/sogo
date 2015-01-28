@@ -81,7 +81,7 @@
           <var:component-content />
 
 <!-- BOTTOM-BAR -->
-          <md-toolbar class = "sg-bottombar" layout = "row" layout-align = "center center" hide-sm="hide-sm"> <!--todo : transform show/hide attributes to classes. Adjust body padding accordingly to bottombar visibility (in media query) -->
+          <md-toolbar class="sg-bottombar md-hide-sm" layout="row" layout-align="center center">
             <var:if condition = "userHasCalendarAccess">
               <var:if condition = "isCalendar">
                 <md-button ng-disabled = "true">
