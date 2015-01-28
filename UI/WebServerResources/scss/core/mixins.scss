@@ -17,3 +17,14 @@
     color: $color;
   }
 }
+// Utility to compensate for the the xml mandatory attribute values
+// Creates classes extending layout attributes with no values
+// ----------------------------------------------------------------
+@mixin attributesToClasses($selectors) {
+  @each $selector in $selectors {
+    .md-#{$selector} {
+// no syntax error here
+      @extend [#{$selector}] !optional
+    }
+  }
+}
