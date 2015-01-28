@@ -1,3 +1,9 @@
+2.2.15 (2015-XX-XX)
+-------------------
+
+Enhancements
+ - improved handling of EAS Push when no heartbeat is provided
+
 2.2.14 (2015-01-20)
 -------------------
 
