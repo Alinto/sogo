@@ -219,11 +219,18 @@
     </ul>
   </div>
   -->
-  <!--FIXME : repport in-line styling in style definitions -->
-  <div class = "view" ui-view = "mailboxes" layout = "row"><!-- mailboxes list --></div>
+<!--
+  MAIN CONTENT ROW
+  Content of the application view injected injected in the element bellow
+  MUST be the first html element after body
+  SHOULD  be a main tag (with role="main")
 
+  Templates script tag wrappers goes next
+-->
+  <main class="view" ui-view="mailboxes" layout="row" layout-fill="layout-fill"><!-- mailboxes list --></main>
+
+  <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type = "text/ng-template" id = "UIxMailMainFrame">
-
     <!-- dropdown menu for mailbox options button -->
     <div id = "folderProperties" class = "f-dropdown icons-dropdown" data-dropdown-content = "dropdown-content">
       <ul class = "button-group">
@@ -255,6 +262,7 @@
       </ul>
     </div>
 
+<!-- Sidenav -->
     <md-sidenav class = "md-sidenav-left md-whiteframe-z1" md-component-id = "left"
         md-is-locked-open = "$media('gt-md')" layout = "column">
       <md-toolbar class = "md-tall" layout-align = "end start">
@@ -262,7 +270,7 @@
           <span class = "md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
-      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl" flex="1 1 100%">
+      <md-content md-scroll-y = "md-scroll-y" class = "md-padding" ng-controller = "LeftCtrl" flex="flex">
         <md-button ng-click = "close()" class = "md-primary" hide-gt-md = "hide-gt-md">Close</md-button>
         <md-list ng-repeat = "account in accounts track by account.id">
           <md-item>
@@ -285,8 +293,8 @@
     <!--<div class="newItemsToolbar">
         <a class="button tiny radius split" data-ui-sref="mail.newMessage()"><var:string label:value="Compose"/><span data-dropdown-toggle="#draftsDrop"></span></a><br/>
         </div>-->
-
-    <main layout = "column" layout-fill = "layout-fill">
+<!-- Main section -->
+    <section layout = "column" layout-fill = "layout-fill">
       <md-toolbar layout = "row" layout-align = "space-between start" class = "md-tall md-grey">
         <!--fixme : md-toolbar-tools height is inconsistently defined, in former version it was 64px (basic toolbar height), here it's 100% -->
         <div class = "md-toolbar-tools" ng-controller = "toggleCtrl">
@@ -304,7 +312,7 @@
         </div>
       </md-toolbar>
       <md-content layout = "row" flex = "flex" ui-view = "mailbox"><!-- messages list --></md-content>
-    </main>
+    </section>
   </script>
 
   <script type = "text/ng-template" id = "UIxMailFolderTemplate">

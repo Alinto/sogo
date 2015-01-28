@@ -76,9 +76,10 @@
             <var:if condition = "isUIxDebugEnabled"
                 ><!-- space --></var:if>
           </var:if>
+<!-- MAIN CONTENT ROW -->
 
           <var:component-content />
-          <!--FIXME : make sure the .md-button.md-default-theme[disabled] is "contrast aware" disabled labels are actualy almost invisible -->
+
 <!-- BOTTOM-BAR -->
           <md-toolbar class = "sg-bottombar" layout = "row" layout-align = "center center" hide-sm="hide-sm"> <!--todo : transform show/hide attributes to classes. Adjust body padding accordingly to bottombar visibility (in media query) -->
             <var:if condition = "userHasCalendarAccess">

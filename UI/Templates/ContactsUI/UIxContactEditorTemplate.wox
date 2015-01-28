@@ -1,29 +1,17 @@
 <?xml version='1.0' standalone='yes'?>
 <container xmlns = "http://www.w3.org/1999/xhtml" xmlns:var = "http://www.skyrix.com/od/binding" xmlns:const = "http://www.skyrix.com/od/constant" xmlns:label = "OGo:label">
+
   <md-content md-scroll-y = "true">
-    <div class = "editor md-padding">
-      <div class = "header">
+    <div class = "editor md-padding" style="padding-bottom: 72px">
+      <hgroup class = "header">
         <h1 data-ng-bind-html = "card.$fullname()"><!-- fullname --></h1>
         <h6>{{card.$description()}}
           <span class = "label radius" data-ng-repeat = "category in card.categories">{{category.value}}</span>
         </h6>
-      </div>
+      </hgroup>
 
       <form name = "cardForm" data-ng-show = "card.$isCard()" data-ng-submit = "save(cardForm)">
-      <div class = "buttonsToolbar">
-        <span class = "button tiny radius secondary" data-ng-click = "cancel()">
-          <i class = "icon-arrow-left"><!-- cancel --></i>
-          <var:string label:value = "Cancel" />
-        </span>
-        <span class = "button tiny radius secondary" data-ng-click = "reset()">
-          <i class = "icon-undo"><!-- reset --></i>
-          <var:string label:value = "Reset" />
-        </span>
-        <md-button class = "button tiny radius" type = "submit">
-          <i class = "icon-checkmark"><!-- save --></i>
-          <var:string label:value = "Save" />
-        </md-button>
-      </div>
+
       <md-input-container>
           <var:entity const:name = "nbsp" />
         <label>
@@ -270,8 +258,22 @@
         <textarea data-ng-model = "card.note"><!-- note --></textarea>
       </div>
     </div>
+    <fieldset class = "sg-buttongroup">
+      <span class = "button tiny radius secondary" data-ng-click = "cancel()">
+        <i class = "icon-arrow-left"><!-- cancel --></i>
+        <var:string label:value = "Cancel" />
+      </span>
+      <span class = "button tiny radius secondary" data-ng-click = "reset()">
+        <i class = "icon-undo"><!-- reset --></i>
+        <var:string label:value = "Reset" />
+      </span>
+      <md-button class = "button tiny radius" type = "submit">
+        <i class = "icon-checkmark"><!-- save --></i>
+        <var:string label:value = "Save" />
+      </md-button>
+    </fieldset>
   </form>
-  <form name = "listForm" data-ng-show = "card.$isList()" data-ng-submit = "save(listForm)">
+      <form name = "listForm" data-ng-show = "card.$isList()" data-ng-submit = "save(listForm)">
     <div class = "buttonsToolbar">
       <span class = "button tiny radius secondary" data-ng-click = "cancel()">
         <i class = "icon-arrow-left"><!-- cancel --></i>
@@ -341,6 +343,7 @@
       </div>
     </div>
   </form>
-</md-content>
+    </div>
+  </md-content>
 
     </container>
