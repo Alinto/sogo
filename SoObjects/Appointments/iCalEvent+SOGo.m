@@ -313,4 +313,20 @@
     }
 }
   
+/**
+ * @see [iCalEntityObject+SOGo attributes]
+ * @see [UIxAppointmentEditor viewAction]
+ */
+- (NSDictionary *) attributes
+{
+  NSMutableDictionary *data;
+
+  data = [NSMutableDictionary dictionaryWithDictionary: [super attributes]];
+
+  [data setObject: [NSNumber numberWithBool: [self isAllDay]] forKey: @"isAllDay"];
+  [data setObject: [NSNumber numberWithBool: ![self isOpaque]] forKey: @"isTransparent"];
+
+  return data;
+}
+
 @end

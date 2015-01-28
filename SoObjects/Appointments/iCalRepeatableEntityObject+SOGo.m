@@ -73,6 +73,7 @@
 
 /**
  * @see [iCalEntityObject+SOGo attributes]
+ * @see [iCalEvent+SOGo attributes]
  * @see [UIxAppointmentEditor viewAction]
  */
 - (NSDictionary *) attributes

@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -200,27 +200,25 @@
   ASSIGN (componentCalendar, _componentCalendar);
 }
 
+- (NSString *) formattedDateString: (NSCalendarDate *) date
+{
+  char buf[22];
+  NSNumber *day, *month, *year;
+
+  day = [NSNumber numberWithInt: [date dayOfMonth]];
+  month = [NSNumber numberWithInt: [date monthOfYear]];
+  year = [NSNumber numberWithInt: [date yearOfCommonEra]];
+
+  sprintf(buf, "%04d-%02d-%02d",
+          [year intValue],
+          [month intValue],
+          [day intValue]);
+
+  return [NSString stringWithCString:buf];
+}
+
+
 /* read-only event */
-- (NSString *) aptStartDateText
-{
-  return [dateFormatter formattedDate: aptStartDate];
-}
-
-- (NSString *) aptStartDateTimeText
-{
-  return [dateFormatter formattedDateAndTime: aptStartDate];
-}
-
-- (NSString *) aptEndDateText
-{
-  return [dateFormatter formattedDate: aptEndDate];
-}
-
-- (NSString *) aptEndDateTimeText
-{
-  return [dateFormatter formattedDateAndTime: aptEndDate];
-}
-
 - (BOOL) startDateIsEqualToEndDate
 {
   return [aptStartDate isEqualToDate: aptEndDate];
@@ -586,9 +584,11 @@
  * @apiSuccess (Success 200) {String} id                      Event ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
- * @apiSuccess (Success 200) {String} startDate               Formatted start date
+ * @apiSuccess (Success 200) {String} startDate               Start date (YYYY-MM-DD)
+ * @apiSuccess (Success 200) {String} localizedStartDate      Formatted start date
  * @apiSuccess (Success 200) {String} startTime               Formatted start time
- * @apiSuccess (Success 200) {String} endDate                 Formatted end date
+ * @apiSuccess (Success 200) {String} endDate                 End date (YYYY-MM-DD)
+ * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} endTime                 Formatted end time
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
@@ -600,8 +600,10 @@
  * @apiSuccess (Success 200) {String} summary                 Summary
  * @apiSuccess (Success 200) {String} location                Location
  * @apiSuccess (Success 200) {String} comment                 Comment
+ * @apiSuccess (Success 200) {String} [attachUrl]             Attached URL
  * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
  * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {NSString} classification        Either public, confidential or private
  * @apiSuccess (Success 200) {String[]} [categories]          Categories
  * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
  * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
@@ -705,30 +707,19 @@
                          [co nameInContainer], @"id",
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
-                       [dateFormatter formattedDate: eventStartDate], @"startDate",
+                       [self formattedDateString: eventStartDate], @"startDate",
+                       [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
-                       [dateFormatter formattedDate: eventEndDate], @"endDate",
+                       [self formattedDateString: eventEndDate], @"endDate",
+                       [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
-                       [NSNumber numberWithBool: [event isAllDay]], @"isAllDay",
-                       [NSNumber numberWithBool: ![event isOpaque]], @"isTransparent",
                        nil];
 
-  // Add attributes from iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
+  // Add attributes from iCalEvent+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
   [data addEntriesFromDictionary: [event attributes]];
 
   // Return JSON representation
   return [self responseWithStatus: 200 andJSONRepresentation: data];
-}
-
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-                           inContext: (WOContext*) context
-{
-  NSString *actionName;
-
-  actionName = [[request requestHandlerPath] lastPathComponent];
-
-  return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
-          && ([actionName hasPrefix: @"save"] || [actionName hasPrefix: @"rsvp"]));
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
