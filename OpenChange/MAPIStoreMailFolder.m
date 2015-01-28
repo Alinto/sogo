@@ -1286,7 +1286,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
               [dbFolder changePathTo: [NSString stringWithFormat:
                                                   @"%@/folder%@",
                                                 parentDBFolderPath,
-                                                newFolderDBName]];
+                                                newFolderDBName]
+                      intoNewContainer: [targetFolder dbFolder]];
             }
         }
       else
