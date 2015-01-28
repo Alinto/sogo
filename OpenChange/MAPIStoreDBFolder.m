@@ -152,7 +152,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       targetPath = [[targetFolder sogoObject] path];
       newPath = [NSString stringWithFormat: @"%@/%@",
                           targetPath, pathComponent];
-      [dbFolder changePathTo: newPath];
+      [dbFolder changePathTo: newPath
+            intoNewContainer: [targetFolder dbFolder]];
       
       mapping = [self mapping];
       newURL = [NSString stringWithFormat: @"%@%@/",
