@@ -3,6 +3,7 @@
 
 Enhancements
  - improved handling of EAS Push when no heartbeat is provided
+ - no longer need to kill Outlook 2013 when creating EAS profiles (#3076)
 
 2.2.14 (2015-01-20)
 -------------------
