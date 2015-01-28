@@ -1835,16 +1835,25 @@ ReservedBlockEE2Size: 00 00 00 00
   NSArray *alarms;
   NSUInteger count, max;
   iCalAlarm *currentAlarm;
-  NSString *action;
+  NSString *action, *webstatus;
 
   alarms = [event alarms];
   max = [alarms count];
   for (count = 0; !alarm && count < max; count++)
     {
       currentAlarm = [alarms objectAtIndex: count];
-      action = [[currentAlarm action] lowercaseString];
-      if (!action || [action isEqualToString: @"display"])
-        ASSIGN (alarm, currentAlarm);
+
+      // Only handle 'display' alarms
+      action = [currentAlarm action];
+      if ([action caseInsensitiveCompare: @"display"] != NSOrderedSame)
+        continue;
+
+      // Ignore alarms already triggered
+      webstatus = [[currentAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+      if ([webstatus caseInsensitiveCompare: @"triggered"] == NSOrderedSame)
+        continue;
+
+      ASSIGN (alarm, currentAlarm);
     }
 
   alarmSet = YES;
