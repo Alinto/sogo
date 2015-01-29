@@ -4760,17 +4760,20 @@ md-tab > .md-ripple-container .md-ripple {
 
   Other features at : http://zavoloklom.github.io/material-design-iconic-font/examples.html
 */
-md-sidenav md-list md-item-content:hover {
-  background-color: #ede5ca;
-  cursor: pointer; }
-md-sidenav md-list md-item-content.sg-active {
-  color: #00b0c0; }
-md-sidenav md-list md-item-content.sg-loading {
-  color: #a1ccc8; }
-md-sidenav md-list md-item-content .sg-item-name {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap; }
+md-sidenav md-list md-item-content {
+  transition: background-color 0.2s ease-out, color 0.5s linear; }
+  md-sidenav md-list md-item-content:hover {
+    background-color: #ede5ca;
+    cursor: pointer; }
+  md-sidenav md-list md-item-content.sg-active {
+    color: #00b0c0; }
+  md-sidenav md-list md-item-content.sg-loading {
+    color: #a1ccc8; }
+  md-sidenav md-list md-item-content .sg-item-name {
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
 
 md-item-content .childLevel1 {
   padding-left: 15px; }
