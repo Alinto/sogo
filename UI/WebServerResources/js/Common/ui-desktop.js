@@ -214,23 +214,22 @@
         },
         template:
           '<md-item>' +
-          '  <span class="folder-container">' +
-          '    <span class="folder-content">' +
-          '      <i class="icon icon-ion-folder"></i>' +
-          '      <form data-ng-submit="save()">' +
-          '        <a>{{folder.name}}</a>' +
-          '        <input type="text" class="folder-name ng-hide"' +
-          '               data-ng-model="folder.name"' +
-          '               data-ng-blur="save()"' +
-          '               data-sg-escape="revert()"/>' +
-          '      </form>' +
-          '      <span class="icon ng-hide" data-ng-cloak="ng-cloak">' +
-          '        <a class="icon" href="#"' +
-          '           data-dropdown-toggle="#folderProperties"' +
-          '           data-options="align:right"><i class="icon-cog"></i></a>' +
-          '      </span>' +
+          '  <md-item-content>' +
+          '    <i class="md-icon-folder-open"></i>' +
+          '    <a class="md-flex md-tile-content sg-item-name">{{folder.name}}</a>' +
+          '    <md-input-container class="md-flex md-tile-content ng-hide">'+
+          '      <input type="text"' +
+          '             ng-model="folder.name"' +
+          '             ng-blur="save()"' +
+          '             sg-enter="save()"' +
+          '             sg-escape="revert()"/>' +
+          '    </md-input-container>' +
+          '    <span class="icon ng-hide" ng-cloak="ng-cloak">' +
+          '      <a class="icon" href="#"' +
+          '         dropdown-toggle="#folderProperties"' +
+          '         options="align:right"><i class="md-icon-more-vert"></i></a>' +
           '    </span>' +
-          '  </span>' +
+          '  </md-item-content>' +
           '</md-item>' +
           '<sg-folder-tree ng-repeat="child in folder.children track by child.path"' +
           '                data-sg-root="root"' +
@@ -238,7 +237,7 @@
           '                data-sg-select-folder="selectFolder"></sg-folder-tree>',
         compile: function(element) {
           return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
-            var level, link, input, edit;
+            var level, link, inputContainer, input, edit;
 
             // Set CSS class for folder hierarchical level
             level = scope.folder.path.split('/').length - 1;
@@ -246,11 +245,12 @@
 
             // Select dynamic elements
             link = angular.element(iElement.find('a')[0]);
+            inputContainer = angular.element(iElement.find('md-input-container'));
             input = iElement.find('input')[0];
 
             var edit = function() {
                 link.addClass('ng-hide');
-                angular.element(input).removeClass('ng-hide');
+                inputContainer.removeClass('ng-hide');
                 input.focus();
                 input.select();
             };
@@ -265,12 +265,12 @@
                 while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('md-item');
+                items = list.find('md-item-content');
 
                 // Highlight element as "loading"
-                items.removeClass('_selected');
-                items.removeClass('_loading');
-                angular.element(iElement.find('md-item')[0]).addClass('_loading');
+                items.removeClass('sg-active');
+                items.removeClass('sg-loading');
+                angular.element(iElement.find('md-item-content')[0]).addClass('sg-loading');
 
                 // Call external function
                 scope.selectFolder(scope.root, scope.folder);
@@ -294,19 +294,19 @@
                 while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('md-item');
+                items = list.find('md-item-content');
 
                 // Hightlight element as "selected"
-                angular.element(iElement.find('md-item')[0]).removeClass('_loading');
-                angular.element(iElement.find('md-item')[0]).addClass('_selected');
+                angular.element(iElement.find('md-item-content')[0]).removeClass('sg-loading');
+                angular.element(iElement.find('md-item-content')[0]).addClass('sg-active');
 
                 // Show options button
                 angular.forEach(items, function(element) {
                   var li = angular.element(element);
                   var spans = li.find('span');
-                  angular.element(spans[2]).addClass('ng-hide');
+                  angular.element(spans[0]).addClass('ng-hide');
                 });
-                angular.element(iElement.find('span')[2]).removeClass('ng-hide');
+                angular.element(iElement.find('span')[0]).removeClass('ng-hide');
               }
               else {
                 scope.mode.selected = false;
@@ -326,7 +326,7 @@
 
             scope.save = function() {
               if (link.hasClass('ng-hide')) {
-                angular.element(input).addClass('ng-hide');
+                inputContainer.addClass('ng-hide');
                 link.removeClass('ng-hide');
                 scope.$emit('sgSaveFolder', scope.folder.id);
               }
