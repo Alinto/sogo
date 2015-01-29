@@ -1,6 +1,8 @@
 md-sidenav {
     md-list {
         md-item-content {
+            transition: background-color 0.2s ease-out,
+                        color 0.5s linear;
             &:hover {
                 background-color: #ede5ca; // paper 200
                 cursor: pointer;
@@ -12,6 +14,7 @@ md-sidenav {
                 color: #a1ccc8; // vintage-blue 500
             }
             .sg-item-name {
+                text-align: left;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
