@@ -115,6 +115,28 @@
     .factory('sgDialog', Dialog.$factory)
 
   /**
+   * sgEnter - A directive evaluated when the enter key is pressed
+   * @memberof SOGo.UIDesktop
+   * @example:
+
+     <input type="text"
+            sg-enter="save($index)" />
+   */
+    .directive('sgEnter', function() {
+      var ENTER_KEY = 13;
+      return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
+          if (event.which === ENTER_KEY) {
+            scope.$apply(function() {
+              scope.$eval(attrs.sgEnter);
+            });
+            event.preventDefault();
+          }
+        });
+      };
+    })
+
+  /**
    * sgEscape - A directive evaluated when the escape key is pressed
    * @memberof SOGo.UIDesktop
    * @example:
@@ -125,7 +147,7 @@
     .directive('sgEscape', function() {
       var ESCAPE_KEY = 27;
       return function(scope, elem, attrs) {
-        elem.bind('keydown', function (event) {
+        elem.bind('keydown', function(event) {
           if (event.keyCode === ESCAPE_KEY) {
             scope.$apply(attrs.sgEscape);
           }
