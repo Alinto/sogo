@@ -216,7 +216,7 @@
           '<md-item>' +
           '  <md-item-content>' +
           '    <i class="md-icon-folder-open"></i>' +
-          '    <a class="md-flex md-tile-content sg-item-name">{{folder.name}}</a>' +
+          '    <button class="md-button md-flex md-tile-content sg-item-name">{{folder.name}}</button>' +
           '    <md-input-container class="md-flex md-tile-content ng-hide">'+
           '      <input type="text"' +
           '             ng-model="folder.name"' +
@@ -241,10 +241,10 @@
 
             // Set CSS class for folder hierarchical level
             level = scope.folder.path.split('/').length - 1;
-            angular.element(iElement.find('i')[0]).addClass('childLevel' + level);
+            angular.element(iElement.find('i')[0]).addClass('sg-child-level-' + level);
 
             // Select dynamic elements
-            link = angular.element(iElement.find('a')[0]);
+            link = angular.element(iElement.find('button')[0]);
             inputContainer = angular.element(iElement.find('md-input-container'));
             input = iElement.find('input')[0];
 
