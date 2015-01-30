@@ -1,9 +1,10 @@
-2.2.15 (2015-XX-XX)
+2.2.15 (2015-01-30)
 -------------------
 
 Enhancements
  - improved handling of EAS Push when no heartbeat is provided
  - no longer need to kill Outlook 2013 when creating EAS profiles (#3076)
+ - improved server-side CSS cleaner (#3040)
 
 2.2.14 (2015-01-20)
 -------------------
