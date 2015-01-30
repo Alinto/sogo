@@ -4,21 +4,13 @@ module.exports = function(grunt) {
 
         sass: {
             options: {
-                includePaths: ['bower_components/foundation/scss',
-                               'bower_components/ionic/scss']
+                loadPath: ['scss'],
+                style: 'expanded'
             },
             dist: {
-                options: {
-                    // outputStyle: 'compressed'
-                    outputStyle: 'expanded'
-                },
                 files: {
-                    'css/app.css': 'scss/app.scss',
-                    'css/SOGoRootPage.css': 'scss/SOGoRootPage.scss',
-                    'css/ContactsUI.css': 'scss/ContactsUI.scss',
-                    'css/MailerUI.css': 'scss/MailerUI.scss',
-                    'css/mobile.css': 'scss/mobile.scss'
-                }        
+                    'css/styles.css': 'scss/styles.scss'
+                }
             }
         },
 
@@ -32,7 +24,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.task.registerTask('static', function() {
@@ -84,8 +76,7 @@ module.exports = function(grunt) {
         }
         grunt.log.subhead('Copying CSS files');
         var css = [
-            '<%= src %>/ng-tags-input/ng-tags-input*.css',
-            '<%= src %>/angular-material/angular-material*.css'
+            '<%= src %>/ng-tags-input/ng-tags-input*.css'
         ];
         for (var j = 0; j < css.length; j++) {
             var files = grunt.file.expand(grunt.template.process(css[j], {data: options}))
