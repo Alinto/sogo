@@ -6,6 +6,7 @@ Enhancements
  - no longer need to kill Outlook 2013 when creating EAS profiles (#3076)
  - improved server-side CSS cleaner (#3040)
  - unified the logging messages in sogo.log file (#2534/#3063)
+ - updated Brazilian (Portuguese) and Hungarian translations
 
 2.2.14 (2015-01-20)
 -------------------

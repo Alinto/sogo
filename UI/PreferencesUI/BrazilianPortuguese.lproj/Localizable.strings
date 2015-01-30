@@ -153,6 +153,9 @@
 "displayremoteinlineimages_never" = "Nunca";
 "displayremoteinlineimages_always" = "Sempre";
 
+"Auto save every" = "Auto salvar cada";
+"minutes" = "minutos";
+
 /* Contact */
 "Personal Address Book" = "Catálogo Pessoal";
 "Collected Address Book" = "Catálogo Coletado";
