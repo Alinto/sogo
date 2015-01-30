@@ -224,6 +224,12 @@
         children,
         i;
 
+    if (this.name == this.$shadowData.name) {
+      // Name hasn't changed
+      deferred.resolve();
+      return deferred.promise;
+    }
+
     // Local recursive function
     findParent = function(parent, children) {
       var parentMailbox = null,
