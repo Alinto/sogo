@@ -112,7 +112,7 @@
           actionClass = "UIxMailFolderActions";
           actionName = "createFolder";
         };
-        renameFolder = {
+        save = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "renameFolder";
