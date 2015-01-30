@@ -14,8 +14,8 @@ $md-icon-src-path: "../../../bower_components/material-design-iconic-font/scss/"
 @import "../../../bower_components/material-design-iconic-font/scss/_variables";
 // variables in source are not defaulted, we MUST override here
 // relative (to css) path for src fonts
-$md-font-path: "../bower_components/material-design-iconic-font/fonts";
-// the source file declare "md" !!!
+$md-font-path: "../fonts";
+// Set style directive prefix to "md-icon-"
 $md-css-prefix: md-icon;
 @import "../../../bower_components/material-design-iconic-font/scss/_mixins";
 @import "../../../bower_components/material-design-iconic-font/scss/_path";

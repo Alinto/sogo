@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             '<%= src %>/underscore/underscore-min.{js,map}'
         ];
         for (var j = 0; j < js.length; j++) {
-            var files = grunt.file.expand(grunt.template.process(js[j], {data: options}))
+            var files = grunt.file.expand(grunt.template.process(js[j], {data: options}));
             for (var i = 0; i < files.length; i++) {
                 var src = files[i];
                 var paths = src.split('/');
@@ -63,31 +63,34 @@ module.exports = function(grunt) {
             }
         }
         grunt.log.subhead('Copying font files');
-        var fonts = grunt.file.expand(
-            grunt.template.process('<%= src %>/ionic/release/fonts/ionicons.*',
-                                   {data: options})
-        );
-        for (var i = 0; i < fonts.length; i++) {
-            var src = fonts[i];
-            var paths = src.split('/');
-            var dest = options.fonts_dest + paths[paths.length-1];
-            grunt.file.copy(src, dest);
-            grunt.log.ok("copy " + src + " => " + dest);
+        var fonts = [
+            '<%= src %>/ionic/release/fonts/ionicons.*',
+            '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*'
+        ];
+        for (var j = 0; j < fonts.length; j++) {
+            var files = grunt.file.expand(grunt.template.process(fonts[j], {data: options}));
+            for (var i = 0; i < files.length; i++) {
+                var src = files[i];
+                var paths = src.split('/');
+                var dest = options.fonts_dest + paths[paths.length-1];
+                grunt.file.copy(src, dest);
+                grunt.log.ok("copy " + src + " => " + dest);
+            }
         }
         grunt.log.subhead('Copying CSS files');
         var css = [
             '<%= src %>/ng-tags-input/ng-tags-input*.css'
         ];
         for (var j = 0; j < css.length; j++) {
-            var files = grunt.file.expand(grunt.template.process(css[j], {data: options}))
-              for (var i = 0; i < files.length; i++) {
-                  var src = files[i];
-                  var paths = src.split('/');
-                  var dest = options.css_dest + paths[paths.length-1];
-                  grunt.file.copy(src, dest);
-                  grunt.log.ok("copy " + src + " => " + dest);
-              }
-          }
+            var files = grunt.file.expand(grunt.template.process(css[j], {data: options}));
+            for (var i = 0; i < files.length; i++) {
+                var src = files[i];
+                var paths = src.split('/');
+                var dest = options.css_dest + paths[paths.length-1];
+                grunt.file.copy(src, dest);
+                grunt.log.ok("copy " + src + " => " + dest);
+            }
+        }
     });
     grunt.task.registerTask('build', ['static', 'sass']);
     grunt.task.registerTask('default', ['build','watch']);
