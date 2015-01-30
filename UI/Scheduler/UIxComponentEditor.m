@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -594,7 +594,7 @@ iRANGE(2);
 			      ASSIGN (reminderUnit, @"MINUTES");
 			      break;
 			    default:
-			      NSLog(@"Cannot process duration unit: '%c'", c);
+			      //NSLog(@"Cannot process duration unit: '%c'", c);
 			      break;
 			    }
 			}
@@ -1887,7 +1887,9 @@ RANGE(2);
 	  [component setAttendees: newAttendees];
 	}
       else
-	NSLog(@"Error scanning following JSON:\n%@", json);  
+        {
+	  //NSLog(@"Error scanning following JSON:\n%@", json);  
+        }
     }
 }
 

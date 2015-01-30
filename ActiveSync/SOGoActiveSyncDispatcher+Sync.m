@@ -57,6 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/NGVCard.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NSString+Imap4.h>
@@ -287,9 +288,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncMailFolder:
             default:
               {
-                // FIXME
-                //continue;
-                NSLog(@"BLARG!");
+                // FIXME - what to do?
+                [self errorWithFormat: @"Fatal error occured - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
                 abort();
               }
             }
@@ -1065,13 +1065,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 changeDetected: (BOOL *) changeDetected
            maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey, *syncKeyInCache;
   SOGoMicrosoftActiveSyncFolderType folderType;
   id collection, value;
   
   NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
   unsigned int windowSize, v, status;
+  NSMutableDictionary *folderMetadata;
   
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
@@ -1186,6 +1187,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
     }
  
+  folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]];
+
   // If we got any changes or if we have applied any commands
   // let's regenerate our SyncKey based on the collection tag.
   if ([changeBuffer length] || [commandsBuffer length])
@@ -1196,7 +1199,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           // Use the SyncKey saved by processSyncGetChanges - if processSyncGetChanges is not called (because of getChanges=false)
           // SyncKey has the value of the previous sync operation.
-          davCollectionTag = [[self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]]  objectForKey: @"SyncKey"];
+          davCollectionTag = [folderMetadata objectForKey: @"SyncKey"];
           
           if (!davCollectionTag)
             davCollectionTag = [collection davCollectionTag];
@@ -1206,8 +1209,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else
     {
-      if (folderType == ActiveSyncMailFolder && [syncKey isEqualToString: @"-1"])
-        davCollectionTag = [collection davCollectionTag];
+      // Make sure that client is updated with the right syncKey. - This keeps vtodo's and vevent's syncKey in sync.
+      syncKeyInCache = [folderMetadata  objectForKey: @"SyncKey"];
+      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]))
+        {
+          davCollectionTag = syncKeyInCache;
+          *changeDetected = YES;
+        }
     }
 
   // Generate the response buffer
@@ -1228,7 +1236,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // MoreAvailable breaks Windows Mobile devices if not between <Status> and <Commands>
   // https://social.msdn.microsoft.com/Forums/en-US/040b254e-f47e-4cc1-a397-6d8393cdb819/airsyncmoreavailable-breaks-windows-mobile-devices-what-am-i-doing-wrong?forum=os_exchangeprotocols
-  if ([[self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]]  objectForKey: @"MoreAvailable"])
+  if ([folderMetadata objectForKey: @"MoreAvailable"])
     [theBuffer appendString: @"<MoreAvailable/>"];
 
   [theBuffer appendString: commandsBuffer];
@@ -1373,6 +1381,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   defaultInterval = [defaults maximumSyncInterval];
   internalInterval = [defaults internalSyncInterval];
 
+  // If the request doesn't contain "HeartbeatInterval" there is no reason to delay the response.
+  if (heartbeatInterval == 0)
+     heartbeatInterval = internalInterval = 1;
+
   // We check to see if our heartbeat interval falls into the supported ranges.
   if (heartbeatInterval > defaultInterval || heartbeatInterval < 1)
     {
@@ -1389,7 +1401,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
 
   // We enter our loop detection change
-  for (i = 0; i < (defaultInterval/internalInterval); i++)
+  for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
       s = [NSMutableString string];
 
@@ -1405,13 +1417,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (changeDetected)
         {
-          NSLog(@"Change detected, we push the content.");
+          [self logWithFormat: @"Change detected, we push the content."];
           break;
+        }
+      else if (heartbeatInterval > 1)
+        {
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
+          sleep(internalInterval);
         }
       else
         {
-          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
-          sleep(internalInterval);
+          break;
         }
     }
 

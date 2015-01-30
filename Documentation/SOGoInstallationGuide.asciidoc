@@ -2417,9 +2417,6 @@ have unexpected behaviour with various ActiveSync clients.
 
 Please be aware of the following limitations:
 
-* When creating an Outlook 2013 profile, you must actually kill Outlook
-before the end of the creation process. See http://www.vionblog.com/connect-zimbra-community-with-outlook-2013
-for a procedure example.
 * Outlook 2013 does not search the GAL. One possible alternative
 solution is to configure Outlook to use a LDAP server (over SSL) with
 authentication. Outlook 2013 also does not seem to support multiple

@@ -11,6 +11,8 @@
 #import <string.h>
 #import <objc/objc.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 static NSMutableDictionary *timezoneCache = nil;
 
 #define BSONTYPE(tag,className) [className class], [NSNumber numberWithChar: (tag)]
@@ -604,7 +606,7 @@ static NSDictionary *BSONTypes()
       if (tz)
         [timezoneCache setObject: tz  forKey: key];
       else
-        NSLog(@"ERROR: timezone (%@) not found when deserializing BSON data", key);
+        [self errorWithFormat: @"BSON error: timezone (%@) not found when deserializing BSON data", key];
     }
 
   return [NSCalendarDate dateWithYear: year

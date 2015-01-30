@@ -153,6 +153,9 @@
 "displayremoteinlineimages_never" = "Soha";
 "displayremoteinlineimages_always" = "Mindig";
 
+"Auto save every" = "Automatikus mentés gyakorisága";
+"minutes" = "perc";
+
 /* Contact */
 "Personal Address Book" = "Személyes címjegyzék";
 "Collected Address Book" = "Összegyűjtöt címek jegyzéke";

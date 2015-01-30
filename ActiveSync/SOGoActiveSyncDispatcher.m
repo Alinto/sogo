@@ -59,6 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NGImap4Client.h>
@@ -1805,30 +1806,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // We build the list of folders to "ping". When the payload is empty, we use the list
   // of "cached" folders.
-  allCollections = (id)[theDocumentElement getElementsByTagName: @"Folders"];
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Folder"];
   allFoldersID = [NSMutableArray array];
 
   if (![allCollections count])
     {
-      SOGoMailAccounts *accountsFolder;
-      SOGoMailAccount *accountFolder;
-      SOGoUserFolder *userFolder;
-      NSArray *allValues;
+      // We received an empty Ping request. Return status '3' to ask client to resend the request with complete body.
+      s = [NSMutableString string];
+      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+      [s appendString: @"<Ping xmlns=\"Ping:\">"];
+      [s appendString: @"<Status>3</Status>"];
+      [s appendString: @"</Ping>"];
 
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
-      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
 
-      allValues = [[accountFolder imapFolderGUIDs] allValues];
-      
-      for (i = 0; i < [allValues count]; i++)
-        [allFoldersID addObject: [NSString stringWithFormat: @"mail/%@", [[allValues objectAtIndex: i] substringFromIndex: 6]]];
+      [theResponse setContent: d];
 
-      
-      // FIXME: handle multiple GCS collecitons
-      [allFoldersID addObject: @"vcard/personal"];
-      [allFoldersID addObject: @"vevent/personal"];
-      [allFoldersID addObject: @"vtodo/personal"];
+      return;
     }
   else
     {      
@@ -1872,13 +1867,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       if ([foldersWithChanges count])
         {
-          NSLog(@"Change detected, we push the content.");
+          [self logWithFormat: @"Change detected, we push the content."];
           status = 2;
           break;
         }
       else
         {
-          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
           sleep(internalInterval);
         }
     }
@@ -2617,7 +2612,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
-  [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
+  [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
   RELEASE(context);
   RELEASE(pool);

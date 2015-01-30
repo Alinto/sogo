@@ -436,7 +436,7 @@ static NSArray *infoKeys = nil;
 - (NSDictionary *) storeInfo
 {
   [self debugWithFormat:@"storing info ..."];
-  return [self valuesForKeys: infoKeys];
+  return [self dictionaryWithValuesForKeys: infoKeys];
 }
 
 /* contacts search */
