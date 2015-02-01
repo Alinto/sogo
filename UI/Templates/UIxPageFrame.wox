@@ -25,7 +25,6 @@
         <meta name = "viewport" content = "width=device-width, initial-scale=1" />
         <link href = "mailto:support@inverse.ca" rev = "made" />
         <link rel = "shortcut icon" var:href = "siteFavicon" type = "image/x-icon" />
-        <link type = "text/css" rel = "stylesheet" rsrc:href = "css/icons.css" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "bower_components/angular-material/angular-material.css" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "css/styles.css" />
         <var:if condition = "hasPageSpecificCSS"
