@@ -6,6 +6,7 @@
 * and will generate a (too)) long css file because of the overrides
 *
 **/
+
 @import 'core/variables'; // Will be replace by a complete 'config.scss file
 
 // Compass import - comment-out if needed
@@ -19,7 +20,7 @@
 
 // Fonts
 // ------------------------------------------------------------------------------
-@import '../fonts/ubuntu'; // Actually this is a symLink to 'css/ubuntu.css'
+//@import '../fonts/ubuntu'; // Actually this is a symLink to 'css/ubuntu.css'
 
 // CORE elements
 // ------------------------------------------------------------------------------
@@ -51,6 +52,7 @@
 @import 'components/divider/divider.scss';
 @import 'components/bottombar/bottombar.scss';
 @import 'components/input/input.scss';
+@import 'components/button/button';
 
 
 // core styles - need to be after components till settings are correctly implemented
