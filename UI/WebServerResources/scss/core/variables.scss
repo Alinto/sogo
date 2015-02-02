@@ -1,7 +1,8 @@
 
-// todo : implement path variables for seamless imports
-// Ex. $css-path: '../css/
-// functions can provides aliases to
+// Path variables for seamless imports
+// ----------------------------------------------------------------------------
+$version: '3.alpha';
+
 
 // palettes import -
 // ------------------------------------------------------------------------------
@@ -9,8 +10,7 @@
 @import '../themes/color-palette'; // fixme : clarify if it is deeded or assure by javascript
 
 // Font Variables
-$font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif !default;
-$font-family: Ubuntu, 'Helvetica Neue', sans-serif; //override
+$font-family: 'Fira sans', 'Helvetica Neue', sans-serif !default;
 //$dark-theme: false !default;
 //$foreground-color-palette: $color-grey !default;
 $primary-color: map-get($color-vintage-blue, 'A700') !default;

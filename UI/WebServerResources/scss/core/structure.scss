@@ -6,20 +6,18 @@
 **/
 
 // Google's Material design specs are in 'sp' or 'dp' which are not css units
-// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels' (same as dp, but will be scaled by the user's font size preference)
+// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels'
+// (same as dp, but will be scaled by the user's font size preference)
 // Android gives a 160dpi  base value to 'sp' and 'dp', but Google's examples seems to use 'sp' as 'px'
 // We define a scaling factor in case we need to adjust
-// 'sp' is scale to 1 css-px for a rem-base-value of 16px (default)
-// 'dp' is scale to 1 css-px according to scaling factor
+// 'sp' equals 1/16rem, wich represents 1 css pixel
+// 'dp' is scale to 1 css-px according
 
-$sg-dp-scale-factor: 1 !global;
-
-// rem specification (in 'px')
+// We assume users are setting browser's base font-size according to their needs
+// The default rem size in use for most browsers is 16 css pixels
+// Body font size is defined as 100%, so it won't cahge users'settings
 $sg-rem-base-value: 16 !global;
-$sg-rem-value: $sg-rem-base-value !default;
-
-// We assume that user define rem value to get legible font-size
-$sg-sp-scale-factor: $sg-rem-value / $sg-rem-base-value !global;
+$sg-sp-value: (1 / $sg-rem-base-value) !default; // sp value
 
 // Font-size basic scale (from Google)
 // NiceToHave : generate with a loop
@@ -35,31 +33,42 @@ $sg-typo-scale: (
   112
 ) !global;
 
-@function sg-font-size($nb) {
-  $size: nth($sg-typo-scale, $nb);
-  $sg-font-size: sp-to-px($size);
-  @return $sg-font-size;
+// todo: fix that
+@function sg-font-sizes($size-list: $sg-typo-scale, $prefix: '$sg-font-size') {
+  @for $n from 1 to length($size-list) {
+    @return '#{$prefix}-#{$n}: sp-to-px( nth($size-list, $n) )';
+  }
 }
-// Basic typographic classes
 
-$sg-font-size-1 :sp-to-px(1);
+// Basic typographic sizes
+// Fixme: add a rounding function
 
-$h1-font-size-base: 2em !default;
+$sg-font-size-1: sp-to-px( nth($sg-typo-scale, 1) );
+$sg-font-size-2: sp-to-px( nth($sg-typo-scale, 2) );
+$sg-font-size-3: sp-to-px( nth($sg-typo-scale, 3) );
+$sg-font-size-4: sp-to-px( nth($sg-typo-scale, 4) );
+$sg-font-size-5: sp-to-px( nth($sg-typo-scale, 5) );
+$sg-font-size-6: sp-to-px( nth($sg-typo-scale, 6) );
+$sg-font-size-7: sp-to-px( nth($sg-typo-scale, 7) );
+$sg-font-size-8: sp-to-px( nth($sg-typo-scale, 8) );
+$sg-font-size-9: sp-to-px( nth($sg-typo-scale, 9) );
+
+$h1-font-size-base: $sg-font-size-9 !default;
 $h1-margin-base: 0.67em 0 !default;
 
-$h2-font-size-base: 1.5em !default;
+$h2-font-size-base: $sg-font-size-8 !default;
 $h2-margin-base: 0.83em 0 !default;
 
-$h3-font-size-base: 1.17em !default;
+$h3-font-size-base: $sg-font-size-7 !default;
 $h3-margin-base: 1em 0 !default;
 
-$h4-font-size-base: 1em !default;
+$h4-font-size-base: $sg-font-size-6 !default;
 $h4-margin-base: 1.33em 0 !default;
 
-$h5-font-size-base: 0.83em !default;
+$h5-font-size-base: $sg-font-size-5 !default;
 $h5-margin-base: 1.67em 0 !default;
 
-$h6-font-size-base: 0.75em !default;
+$h6-font-size-base: $sg-font-size-4 !default;
 $h6-margin-base: 2.33em 0 !default;
 
 *,
@@ -104,7 +113,7 @@ input {
 }
 
 body {
-  font-size: sg-font-size(2);
+  font-size: 100%;
   margin: 0;
   padding: 0;
   outline: none;
