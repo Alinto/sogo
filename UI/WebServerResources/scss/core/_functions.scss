@@ -2,7 +2,6 @@
 // sogo.nu
 // version 3.alpha
 //
-
 //
 // UTILITIES FUNCTIONS
 //
@@ -37,7 +36,7 @@
   @return $value;
 }
 @function sp-to-px($value)  {
-  $value: strip-unit($value) * $sg-sp-scale-factor * 1px;
+  $value: strip-unit($value) * $sg-sp-value * 16px;
   @if ($value == 0sp) { $value: 0; } // Turn 0sp into 0
   @return $value;
 }
