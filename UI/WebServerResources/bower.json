@@ -13,6 +13,7 @@
     "material-design-iconic-font": "~1",
     "ng-tags-input": "~2",
     "compass-mixins": "~0.12.3",
+    "fira": ">=0",
     "foundation": ">5.3",
     "ionic": "1.0.0-beta.14",
     "underscore": "~1"

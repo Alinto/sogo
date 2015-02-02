@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         sass: {
             options: {
                 loadPath: ['scss'],
-                style: 'expanded'
+                style: 'nested'
             },
             dist: {
                 files: {
@@ -65,7 +65,8 @@ module.exports = function(grunt) {
         grunt.log.subhead('Copying font files');
         var fonts = [
             '<%= src %>/ionic/release/fonts/ionicons.*',
-            '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*'
+            '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*',
+            '<%= src %>/fira/{eot,ttf,woff}/*'
         ];
         for (var j = 0; j < fonts.length; j++) {
             var files = grunt.file.expand(grunt.template.process(fonts[j], {data: options}));
