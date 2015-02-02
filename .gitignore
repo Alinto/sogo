@@ -9,6 +9,7 @@ tags
 *.sax
 *.swp
 *.wox/
+*.css
 SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
 Tests/*/config.py
