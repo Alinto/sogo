@@ -1,3 +1,126 @@
+2.2.15 (2015-01-30)
+-------------------
+
+Enhancements
+ - improved handling of EAS Push when no heartbeat is provided
+ - no longer need to kill Outlook 2013 when creating EAS profiles (#3076)
+ - improved server-side CSS cleaner (#3040)
+ - unified the logging messages in sogo.log file (#2534/#3063)
+ - updated Brazilian (Portuguese) and Hungarian translations
+
+2.2.14 (2015-01-20)
+-------------------
+
+Enhancements
+ - MultipleBookingsFieldName can be set to -1 to show busy status when booked at least once 
+ - handle multipart objects in EAS/ItemOperations
+
+Bug fixes
+ - fixed calendar selection in event and task editors (#3049, #3050)
+ - check for resources existence when listing subscribed ones (#3054)
+ - correctly recognize Apple Calendar on Yosemite (#2960) 
+ - fixed two potential autorelease pool leaks (#3026 and #3051)
+ - fixed birthday offset in EAS
+ - fixed From's full name over EAS
+ - fixed potential issue when handling multiple Add/Change/Delete/Fetch EAS commands (#3057)
+ - fixed wrong timezone calculation on recurring events
+
+2.2.13 (2014-12-30)
+-------------------
+
+Enhancements
+ - initial support for empty sync request/response for EAS
+ - added the SOGoMaximumSyncResponseSize EAS configuration parameter to
+   support memory-limited sync response sizes
+ - we now not only use the creation date for event's cutoff date (EAS)
+
+Bug fixes
+ - fixed contact description truncation on WP8 phones (#3028)
+ - fixed freebusy information not always returned
+ - fixed tz issue when the user one was different from the system one with EAS
+
+2.2.12a (2014-12-19)
+--------------------
+
+Bug fixes
+ - fixed empty HTML mails being sent (#3034)
+
+2.2.12 (2014-12-18)
+-------------------
+
+New features
+ - allow including or not freebusy info from subscribed calendars
+ - now possible to set an autosave timer for draft messages
+ - now possible to set alarms on event invitations (#76)
+
+Enhancements
+ - updated CKEditor to version 4.4.6 and added the 'Source Area' plugin
+ - avoid testing for IMAP ANNOTATION when X-GUID is available (#3018)
+ - updated Czech, Dutch, Finnish, French, German, Polish and Spanish (Spain) translations
+
+Bug fixes
+ - fixed for privacy and categories for EAS (#3022)
+ - correctly set MeetingStatus for EAS on iOS devices
+ - Ubuntu Lucid fixes for EAS
+ - fixed calendar reminders for future events (#3008)
+ - make sure all text parts are UTF-8 re-encoded for Outlook 2013 over EAS (#3003)
+ - fixed task description truncation affecting WP8 phones over EAS (#3028)
+ 
+2.2.11a (2014-12-10)
+--------------------
+
+Bug fixes
+ - make sure all address books returned using EAS are GCS ones
+
+2.2.11 (2014-12-09)
+-------------------
+
+New features
+ - sogo-tool can now be used to manage EAS metadata for all devices
+
+Enhancements
+ - improved the SAML2 documentation
+ - radically reduced AES memory usage
+
+Bug fixes
+ - now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
+ - added support for IdP-initiated SAML2 logout (#2377)
+ - we now generate SAML2 metadata on the fly (#2378)
+ - we now handle correctly the SOGo logout when using SAML (#2376 and #2379)
+ - fixed freebusy lookups going off bounds for resources (#3010)
+ - fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
+ 
+2.2.10 (2014-11-21)
+-------------------
+
+Enhancements
+ - no longer leaking database passwords in the logs (#2953)
+ - added support for multiple calendars and address books over ActiveSync
+ - updated timezone information (#2968)
+ - updated Brazilian Portuguese, Czech, Dutch, Finnish, French, German, Hungarian, Polish,
+   Russian, Spanish (Argentina), and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.5
+
+Bug fixes
+ - fixed freebusy lookup with "Show time as busy" (#2930)
+ - don't escape <br>'s in a card's note field
+ - fixed folder's display name when subscribing to a folder
+ - fixed folder's display name when the active user subscribes another user to one of her/his folders
+ - fixed error with new user default sorting value for the mailer module (#2952)
+ - fixed ActiveSync PING command flooding the server (#2940)
+ - fixed many interop issues with Windows Phones over ActiveSync
+ - fixed automatic return receipts crash when not in the recepient list (#2965)
+ - fixed support for Sieve folder encoding parameter (#2622)
+ - fixed rename of subscribed addressbooks
+ - sanitize strings before escaping them when using EAS
+ - fixed handling of event invitations on iOS/EAS with no organizer (#2978)
+ - fixed corrupted png files (#2975)
+ - improved dramatically the BSON decoding speed
+ - added WindowSize support for GCS collections when using EAS
+ - fixed IMAP search with non-ASCII folder names
+ - fixed extraction of email addresses when pasting text with tabs (#2945)
+ - fixed Outlook attachment corruption issues when using AES (#2957)
+
 2.2.9a (2014-09-29)
 -------------------
 
@@ -11,7 +134,7 @@ New features
  - support for recurrent tasks (#2160)
  - support for alarms on recurrent events / tasks
 
-Enchancements
+Enhancements
  - alarms can now be snoozed for 1 day
  - better iOS/Mac OS X Calendar compability regarding alarms (#1920)
  - force default classification over CalDAV if none is set (#2326)
@@ -36,7 +159,7 @@ New features
  - new user settings for threads collapsing
  - IMAP global search support (#2670)
 
-Enchancements
+Enhancements
  - major refactoring of the GCS component saving code (dropped OGoContentStore)
  - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
  - new option to print calendars events and tasks with a background color or with a border color

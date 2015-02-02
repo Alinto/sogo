@@ -80,6 +80,12 @@ and others) 
 * SMTP server (Postfix, Sendmail and others)
 * IMAP server (Courier, Cyrus IMAP Server, Dovecot and others)
 
+If you plan to use ActiveSync, an IMAP server supporting the ACL,
+UIDPLUS, QRESYNC, ANNOTATE (or X-GUID) IMAP extensions is required,
+such as Cyrus IMAP version 2.4 or later, or Dovecot version
+2.1 or later. If your current IMAP server does not support these
+extensions, you can use Dovecot's proxying capabilities.
+
 In this guide, we assume that all those components are running on the
 same server (i.e., `localhost` or `127.0.0.1`) that SOGo will be
 installed on.
@@ -193,7 +199,7 @@ installation for a Red Hat or CentOS distribution.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
-SOGo can be installed using the+yum+utility. To do so, first create
+SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
 
@@ -258,13 +264,13 @@ In SOGo, the user's applications settings are stored
 in `/etc/sogo/sogo.conf`. You can use your favourite text editor to
 modify the file.
 
-The +sogo.conf+ file is a serialized _property list_. This simple format
+The `sogo.conf` file is a serialized _property list_. This simple format
 encapsulates four basic data types: arrays, dictionaries (or hashes),
 strings and numbers. Numbers are represented as-is, except for booleans
 which can take the unquoted values `YES` and `NO`. Strings are not
 mandatorily quoted, but doing so will avoid you many problems. A
 dictionary is a sequence of key and value pairs separated in their
-middle with a `=` sign. It starts with a `\{` and ends with a
+middle with a `=` sign. It starts with a `{` and ends with a
 corresponding `}`. Each value definition in a dictionary ends with a
 semicolon. An array is a chain of values starting with `(` and ending
 with `)`, where the values are separated with a `,`. Also, the file
@@ -272,6 +278,11 @@ generally follows a C-style indentation for clarity but this indentation
 is not required, only recommended. Block comments are delimited by `/*`
 and `*/` and can span multiple lines while line comments must start with
 `//`.
+
+The configuration must be contained in a root dictionary, thus be completely
+wrapped within curly brackets `{ [configuration] }`. If SOGo refuses to
+start due to syntax errors in its configuration file, `plparse` is helpful
+for finding these, as it indicates the line containing the problem.
 
 Preferences Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~
@@ -425,29 +436,42 @@ Defaults to `YES` when unset.
 |The location of the SSL private key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
 provider. This file must be generated for each running SOGo service
-(rather than host).
+(rather than host). Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2CertiticateLocation
 |The location of the SSL certificate file. This file must be generated
-for each running SOGo service.
+for each running SOGo service. Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpMetadataLocation
 |The location of the metadata file that describes the services available
-on the SAML2 identify provider.
+on the SAML2 identify provider. The content of this file is usually generated
+directly by your SAML 2.0 IdP solution. For example, using SimpleSAMLphp, you
+can get the metadata directly from https://MYSERVER/simplesaml/saml2/idp/metadata.php
+Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpPublicKeyLocation
 |The location of the SSL public key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
 provider. This file should be part of the setup of your identity
-provider.
+provider. Make sure this file is readable by the SOGo user.
 
 |S |SOGoSAML2IdpCertificateLocation
 |The location of the SSL certificate file. This file should be part of
-the setup of your identity provider.
+the setup of your identity provider. Make sure this file is readable by the SOGo user.
+
+|S |SOGoSAML2LoginAttribute
+|The attribute provided by the IdP to identify the user in SOGo.
 
 |S |SOGoSAML2LogoutEnabled
 |Boolean value indicated whether the "Logout" link is enabled when using
-SAML2 as authentication mechanism.
+SAML2 as authentication mechanism. When using this feature, SOGo will invoke
+the IdP to proceed with the logout procedure. When the user clicks on the logout
+button, a redirection will be made to the IdP to trigger the logout.
+
+|S |SOGoSAML2LogoutURL
+|The URL to which redirect the user after the "Logout" link is clicked.
+SOGoSAML2LogoutEnabled must be set to YES. If unset, the user will be
+redirected to a blank page.
 
 |D |SOGoTimeZone
 |Parameter used to set a default time zone for users. The default
@@ -887,7 +911,8 @@ resource if the entry has the calendarresource objectClass set.
 to which a resource can be part of at any point in time.
 
 If this is set to `0`, or if the attribute is missing, it means no
-limit.
+limit. If set to `-1`, no limit is imposed but the resource will
+be marked as busy the first time it is booked.
 
 |filter (optional)
 |The filter to use for LDAP queries, it should be defined as an
@@ -974,7 +999,9 @@ context as Dovecot stores in its database.
 |passwordPolicy
 |If set to `YES`, SOGo will use the extended LDAP Password Policies
 attributes. If you LDAP server does not support those and you activate
-this feature, every LDAP requests will fail.
+this feature, every LDAP requests will fail. Note that some LDAP servers
+require LDAP/SSL for password policies to work. This is the case for
+example with 389 Directory Server.
 
 |isAddressBook
 |If set to `YES`, this LDAP source is used as a shared address book
@@ -1167,7 +1194,7 @@ keytool -import -keystore /etc/ssl/certs/java/cacerts  \
 
 *The certificate used by the CAS server must also be trusted by SOGo.*
 In case of a self-signed certificate, this means exporting tomcat's
-certificate using the +keytool+utility, converting it to PEM format and
+certificate using the `keytool` utility, converting it to PEM format and
 appending it to the `ca-certificates.crt` file (the name and location of
 that file differs between distributions). Basically:
 
@@ -1230,12 +1257,31 @@ documentation of your identity provider and the SAML2 configuration keys
 that are listed above for proper setup. Once a SOGo instance is
 configured properly, the metadata for that instance can be retrieved
 from `http://<hostname>/SOGo/saml2-metadata` for registration with the
-identity provider.
+identity provider. SOGo will dynamically generate the metadata based on
+the SOGoSAML2CertificateLocation's content and the SOGo server name.
+
+When using SimpleSAMLphp, make sure the convert OID to names by modifying your
+`metadata/saml20-idp-hosted.php` to contain something like this:
+
+----
+        'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+        'authproc' => array(
+                100 => array('class' => 'core:AttributeMap', 'oid2name'),
+        ),
+----
+
+If you want to test the IdP-initiated logout using SimpleSAMLphp, you can do so by opening
+the following URL:
+
+----
+https://idp.example.org/simplesaml/saml2/idp/SingleLogoutService.php?ReturnTo=www.sogo.nu
+----
 
 In order to relay authentication information to your IMAP server and if
 you make use of the CrudeSAML SASL plugin, you need to make sure that
 _NGImap4AuthMechanism_ is configured to use the `SAML` mechanism. If you
 make use of the CrudeSAML PAM plugin, this value may be left empty.
+
 
 Database Configuration
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1433,7 +1479,10 @@ case, SOGo will consider the returned entry to be a resource.
 which a resource can be part of at any point in time.
 
 If this is set to `0`, or if the attribute is missing, it means no
-limit.
+limit and the resource will always be marked as free. If set to `-1`,
+no limit is imposed but the resource will be marked as busy the first
+time it is booked. If greater than 0, the resource will get marked as
+busy once it reaches the value.
 
 |DomainFieldName (optional)
 |If set, SOGo will use the value of that field as the domain associated
@@ -1581,8 +1630,8 @@ Note that TLS is supported but SSL is not.
 
 |D |SOGoSieveFolderEncoding
 |Parameter used to specify which encoding is used for IMAP folder names
-in Sieve filters. Defaults to "UTF-7". The other possible value is
-"UTF-8".
+in Sieve filters. Defaults to `UTF-7`. The other possible value is
+`UTF-8`.
 
 |U |SOGoMailShowSubscribedFoldersOnly
 |Parameter used to specify if the Web interface should only show
@@ -1632,6 +1681,12 @@ cronjob `sogo-tmpwatch`.
 
 Defaults to `/var/spool/sogo`.
 
+|S |NGImap4DisableIMAP4Pooling
+|Disables IMAP pooling when set to `YES`. Enable pooling by setting to
+`NO` or using a caching proxy like imapproxy.
+
+The default value is `YES`.
+
 |S |NGImap4ConnectionStringSeparator
 |Parameter used to set the IMAP mailbox separator. Setting this will
 also have an impact on the mailbox separator used by Sieve filters.
@@ -1644,7 +1699,7 @@ SASL mechanism. Please note that feature might be limited at this time.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the
-name is a group name not a user name.
+name is a group name, not a user name.
 
 RFC4314 gives examples where group names are prefixed with `$`. Dovecot,
 for one, follows this scheme, and will, for example, apply permissions
@@ -1993,7 +2048,7 @@ Defaults to `NO` when unset.
 SOGo Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The complete SOGo configuration file+/etc/sogo/sogo.conf+should look
+The complete SOGo configuration file `/etc/sogo/sogo.conf` should look
 like this:
 
 ----
@@ -2325,7 +2380,7 @@ ActiveSync:
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before replying to a Ping command.
 
-If not set, it defaults to `5` seconds.
+If not set, it defaults to `10` seconds.
 
 |S |SOGoMaximumSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
@@ -2336,9 +2391,19 @@ If not set, it defaults to `30` seconds.
 |S |SOGoInternalSyncInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will
 wait before doing an internal check for data changes (add, delete, and
-update). This parameter must be lower than _SOGoMaximumSyncInterval_.
+update). This parameter must be lower than _SOGoMaximumSyncInterval_ and
+_SOGoMaximumPingInterval_.
 
 If not set, it defaults to `10` seconds.
+
+|S |SOGoMaximumSyncResponseSize
+|Parameter used to overwrite the maximum response size during
+a Sync operation. The value is in kilobytes. Setting this to 512
+means the response size will be of 524288 bytes or less. Note that
+if you set the value too low and a mail message (or any other object)
+surpasses it, it will still be synced but only this item will be.
+
+Defaults to `0`, which means no overwrite is performed.
 
 |S |SOGoMaximumSyncWindowSize
 |Parameter used to overwrite the maximum number of items returned during
@@ -2352,24 +2417,18 @@ have unexpected behaviour with various ActiveSync clients.
 
 Please be aware of the following limitations:
 
-* Currently, only the personal calendar and address book are
-synchronized. Adding support for all folders is planned.
-* When creating an Outlook 2013 profile, you must actually kill Outlook
-before the end of the creation process. See http://www.vionblog.com/connect-zimbra-community-with-outlook-2013
-for a procedure example.
 * Outlook 2013 does not search the GAL. One possible alternative
 solution is to configure Outlook to use a LDAP server (over SSL) with
-authentication. Alternatively, when supporting more than just the
-personal address book, we'll also be able to expose the LDAP/SQL based
-address books in SOGo over ActiveSync.
+authentication. Outlook 2013 also does not seem to support multiple
+address books over ActiveSync.
 * Make sure you do not use a self-signed certificate. While this will
 work, Outlook will work intermittently as it will raise popups for
 certificate validation, sometimes in background, preventing the user to
 see the warning and thus, preventing any synchronization to happen.
 * ActiveSync clients keep connections open for a while. Each connection
 will grab a hold on a sogod process so you will need a lot of processes
-to handle many clients. This limitation will eventually be overcome in
-SOGo.
+to handle many clients. Make sure you tune your SOGo server when having
+lots of ActiveSync clients.
 * Repetitive events with occurrences exceptions are currently not
 supported.
 * Outlook 2013 Autodiscovery is currently not supported.
@@ -2379,6 +2438,10 @@ see http://support.microsoft.com/kb/291621 for configuration
 instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 `YES` and the URL to use must be of the following format: 
 `http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb`
+* If you have very large mail folders (thousands of messages), you will
+need to adjust the word size of your IMAP server. In Dovecot, the parameter
+to increase is "imap_max_line_length" while under Cyrus IMAP Server, the
+parameter is "maxword". We suggest a buffer of 2MB.
 
 In order to use the SOGo ActiveSync support code in production
 environments, you need to get a proper usage license from Microsoft.
@@ -2387,7 +2450,7 @@ user base.
 
 To contact Microsoft, please visit:
 
-http://www.microsoft.com/en-us/legal/intellectualproperty/IPLicensing/Programs/exchangeactivesyncprotocol.aspx
+http://www.microsoft.com/en-us/legal/intellectualproperty/
  
 and send an email to iplicreq@microsoft.com
 
@@ -2513,7 +2576,7 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 2013 is also supported.
 
 The Microsoft ActiveSync server URL is generally something
-like: `http://localhost/Microsoft-Active-Sync`.
+like: `http://localhost/Microsoft-Server-ActiveSync`.
 
 Upgrading
 ---------

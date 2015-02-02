@@ -59,8 +59,10 @@ static NGCardsSaxHandler *sax = nil;
           [parser setErrorHandler:sax];
         }
       else
-        NSLog(@"ERROR(%s): did not find a parser for text/x-vcard!",
-              __PRETTY_FUNCTION__);
+        {
+          //NSLog(@"ERROR(%s): did not find a parser for text/x-vcard!",
+          //      __PRETTY_FUNCTION__);
+        }
     }
   
   return parser;
@@ -170,8 +172,8 @@ static NGCardsSaxHandler *sax = nil;
 	{
 	  if (![aChild isKindOfClass: mappedClass])
 	    {
-	      NSLog (@"warning: new child to entity '%@': '%@' converted to '%@'",
-		     tag, childTag, NSStringFromClass(mappedClass));
+	      //NSLog (@"warning: new child to entity '%@': '%@' converted to '%@'",
+	      //	     tag, childTag, NSStringFromClass(mappedClass));
 	      newChild = [aChild elementWithClass: mappedClass];
 	    }
 	}

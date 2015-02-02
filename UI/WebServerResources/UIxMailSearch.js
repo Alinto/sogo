@@ -30,7 +30,7 @@ function onSearchClick() {
             }
         }
 
-        for (i = 0; i < filterRows.length; i++){
+        for (i = 0; i < filterRows.length; i++) {
             // Get the information from every filter row before triggering the AJAX call
             var filter = {};
             var searchByOptions = filterRows[i].down(".searchByList").options;
@@ -72,47 +72,47 @@ function searchMails() {
     var optionsList = $("mailAccountsList").options;
     var nbOptions = optionsList.length;
     var selectedIndex = optionsList.selectedIndex;
-    var accountNumber, accountUser, folderPath, folderName;
+    var accountNumber, folderPath, folderName;
     var mailAccountIndex = mailAccounts.indexOf(searchParams.searchLocation);
+    var root = false;
 
     if (mailAccountIndex != -1) {
         accountNumber = "/" + mailAccountIndex;
-        folderName = accountNumber + "/folderINBOX";
-        accountUser = userNames[mailAccountIndex];
-        folderPath = accountUser;
+        folderName = "INBOX";
+        folderPath = accountNumber + "/folderINBOX";
+        root = true;
     }
     else {
         var searchLocation = searchParams.searchLocation.split("/");
-        accountUser = searchLocation[0];
-        accountNumber = "/" + userNames.indexOf(accountUser);
+        accountNumber = "/" + userNames.indexOf(searchLocation[0]);       
+        folderName = optionsList[optionsList.selectedIndex].text.split("/").pop();
 
-        var position = searchLocation.length;
-        folderName = accountNumber + "/folder" + searchLocation[1].asCSSIdentifier();
-        for (i = 2; i < position; i++)
-            folderName += "/folder" + searchLocation[i];
-
-        folderPath = optionsList[selectedIndex].innerHTML;
+        var paths = optionsList[optionsList.selectedIndex].value.split("/");
+        folderPath = accountNumber;
+        for (j = 1; j < paths.length; j++) {
+            folderPath += "/folder" + paths[j];
+        }
     }
 
     var subfolders = [];
     if (searchParams.subfolder === true) {
-        for (i = 0; i < nbOptions; i++) {
-            if ((optionsList[i].innerHTML.search(folderPath) != -1) && (i != selectedIndex)) {
-                var splitArray = optionsList[i].innerHTML.split("/");
-                // Remove the user information since it is not required
-                splitArray.splice(0, 1);
-                var subfolder = [];
-                var level = splitArray.length;
-                for(j = 0; j < level; j++) {
-                    subfolder += "/folder" + splitArray[j];
-                }
-                subfolders.push(accountNumber + subfolder);
+        for (i = 1; i < nbOptions; i++) {
+            var paths = optionsList[i].value.split("/");
+            var subfolder = accountNumber;
+            for (j = 1; j < paths.length; j++) {
+                subfolder += "/folder" + paths[j];
+            }
+
+            if (root || subfolder.indexOf(folderPath) == 0) {
+                var keypair = {"folderPath" : subfolder,
+                               "folderName" : optionsList[i].text.split("/").pop() };
+                subfolders.push(keypair);
             }
         }
     }
 
-    var urlstr = (ApplicationBaseURL + folderName + "/uids");
-    var callbackData = {"folderName" : folderName, "subfolders" : subfolders, "newSearch" : true};
+    var urlstr = (ApplicationBaseURL + folderPath + "/uids");
+    var callbackData = {"folderName" : folderName, "folderPath" : folderPath, "subfolders" : subfolders, "newSearch" : true};
     var object = {"filters":searchParams.filters, "sortingAttributes":{"match":searchParams.filterMatching}};
     var content = Object.toJSON(object);
     document.searchMailsAjaxRequest = triggerAjaxRequest(urlstr, searchMailsCallback, callbackData, content, {"content-type": "application/json"});
@@ -130,8 +130,6 @@ function searchMailsCallback(http) {
             for (var x = count; x >= 0; x--){
                 $(oldEntries[x]).remove();
             }
-
-
         }
 
         // ["To", "Attachment", "Flagged", "Subject", "From", "Unread", "Priority", "Date", "Size", "rowClasses", "labels", "rowID", "uid"]
@@ -143,7 +141,7 @@ function searchMailsCallback(http) {
                 var row = document.createElement("tr");
                 Element.addClassName(row, "resultsRow");
                 row.setAttribute("uid", response.headers[i][12]);
-                row.setAttribute("folderName", http.callbackData.folderName);
+                row.setAttribute("folderPath", http.callbackData.folderPath);
 
                 var cell1 = document.createElement("td");
                 Element.addClassName(cell1, "td_table_1");
@@ -168,10 +166,7 @@ function searchMailsCallback(http) {
                 var cell5 = document.createElement("td");
                 Element.addClassName(cell5, "td_table_5");
                 cell5.setAttribute("colspan", "2");
-                var folderPath = http.callbackData.folderName.split("/");
-                var folderLocation = folderPath[folderPath.length - 1]; // get the last element of the array (location)
-                folderLocation = folderLocation.substr(6); // strip down the prefix folder
-                cell5.innerHTML = folderLocation;
+                cell5.innerHTML = http.callbackData.folderName;
                 row.appendChild(cell5);
 
                 table.appendChild(row);
@@ -192,12 +187,13 @@ function searchMailsCallback(http) {
         }
 
         if (http.callbackData.subfolders.length > 0) {
-            var folderName = http.callbackData.subfolders[0];
+            var folderName = http.callbackData.subfolders[0].folderName;
+            var folderPath = http.callbackData.subfolders[0].folderPath;
             var subfolders = http.callbackData.subfolders;
             subfolders.splice(0, 1);
 
-            var urlstr = (ApplicationBaseURL + folderName + "/uids");
-            var callbackData = {"folderName" : folderName, "subfolders" : subfolders, "newSearch" : false};
+            var urlstr = (ApplicationBaseURL + folderPath + "/uids");
+            var callbackData = {"folderName" : folderName, "folderPath" : folderPath, "subfolders" : subfolders, "newSearch" : false};
 
             // TODO - need to add these following contents ; asc, no-headers, sort
             var object = {"filters":searchParams.filters, "sortingAttributes":{"match":searchParams.filterMatching}};
@@ -338,10 +334,10 @@ function onOpenClick(event) {
 // This function is linked with the openButton and the doubleClick on a message
     var selectedRow = $("searchMailFooter").down("._selected");
     var msguid = selectedRow.getAttribute("uid");
-    var folderName = selectedRow.getAttribute("folderName");
+    var folderPath = selectedRow.getAttribute("folderPath");
     var accountUser = userNames[0];
 
-    var url = "/SOGo/so/" + accountUser + "/Mail" + folderName + "/" + msguid + "/popupview";
+    var url = "/SOGo/so/" + accountUser + "/Mail" + folderPath + "/" + msguid + "/popupview";
     if (selectedRow) {
         openMessageWindow(msguid, url);
     }

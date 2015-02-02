@@ -93,7 +93,7 @@
     element = [elements objectAtIndex: 0];
   else
     {
-      NSLog(@"ERROR: given calendar contains no elements: %@", self);
+      //NSLog(@"ERROR: given calendar contains no elements: %@", self);
       element = nil;
     }
 

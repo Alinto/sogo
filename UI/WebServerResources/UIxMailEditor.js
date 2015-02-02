@@ -11,6 +11,15 @@ var MailEditor = {
     textFirstFocus: true
 };
 
+var autoSaveTimer;
+
+function refreshDraftsFolder() {
+    if (window.opener && window.opener.open && !window.opener.closed) {
+        var nodes = window.opener.$("mailboxTree").select("DIV[datatype=draft]");
+        window.opener.getUnseenCountForFolder(nodes[0].readAttribute("dataname"));
+    }
+}
+
 function onContactAdd(button) {
     var div = $("contacts");
     if (div.visible()) {
@@ -167,6 +176,8 @@ function onPostComplete(http) {
             if (p && p.refreshMessage)
                 p.refreshMessage(jsonResponse["sourceFolder"],
                                  jsonResponse["sourceMessageID"]);
+            
+            refreshDraftsFolder();
             onCloseButtonClick();
         }
         else {
@@ -239,8 +250,7 @@ function clickedEditorSave() {
     triggerAjaxRequest(document.pageform.action, function (http) {
             if (http.readyState == 4) {
                 if (http.status == 200) {
-                    if (window.opener && window.opener.open && !window.opener.closed)
-                        window.opener.refreshFolderByType('draft');
+                    refreshDraftsFolder();
                 }
                 else {
                     var response = http.responseText.evalJSON(true);
@@ -373,6 +383,24 @@ function initAddresses() {
         });
 }
 
+function initAutoSaveTimer() {
+    var autoSave = UserDefaults["SOGoMailAutoSave"];
+
+    if (autoSave) {
+        var interval;
+
+        interval = parseInt(autoSave) * 60;
+            
+        autoSaveTimer = window.setInterval(onAutoSaveCallback,
+                                           interval * 1000);
+    }
+}
+
+function onAutoSaveCallback(event) {
+    clickedEditorSave();
+}
+
+
 /* Overwrite function of MailerUI.js */
 function configureDragHandle() {
     var handle = $("hiddenDragHandle");
@@ -477,7 +505,8 @@ function initMailEditor() {
     configureAttachments();
   
     initAddresses();
-
+    initAutoSaveTimer();
+    
     var focusField = textarea;
     if (!mailIsReply) {
         focusField = $("addr_0");

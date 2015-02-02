@@ -511,6 +511,16 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoSAML2LogoutEnabled"];
 }
 
+- (NSString *) SAML2LogoutURL
+{
+  return [self stringForKey: @"SOGoSAML2LogoutURL"];
+}
+
+- (NSString *) SAML2LoginAttribute
+{
+  return [self stringForKey: @"SOGoSAML2LoginAttribute"];
+}
+
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];
@@ -592,7 +602,7 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   v = [self integerForKey: @"SOGoMaximumPingInterval"];
 
   if (!v)
-    v = 5;
+    v = 10;
 
   return v;
 }
@@ -624,6 +634,18 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 - (int) maximumSyncWindowSize
 {
   return [self integerForKey: @"SOGoMaximumSyncWindowSize"];
+}
+
+- (int) maximumSyncResponseSize
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumSyncResponseSize"];
+
+  if (v > 0)
+    v = v * 1024;
+  
+  return v;
 }
 
 @end

@@ -67,8 +67,8 @@ typedef enum {
 - (NSDictionary *) lookupRecord: (NSString *) path
                newerThanVersion: (NSInteger) startVersion;
 
-- (NSArray *) folderList: (NSString *) deviceId
-        newerThanVersion: (NSInteger) startVersion;
+- (NSArray *) cacheEntriesForDeviceId: (NSString *) deviceId
+                     newerThanVersion: (NSInteger) startVersion;
 
 - (void) setObjectType: (SOGoCacheObjectType) newObjectType;
 - (SOGoCacheObjectType) objectType; /* message, fai, folder */

@@ -7,7 +7,11 @@ DIV.appointmentLabel
 
 DIV#eventView
 { overflow: hidden;
-  padding: .5em; }
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0; }
+
+DIV#eventView > DIV
+{ padding: 1em; }
 
 DIV.appointmentRightLabel
 { display: inline;

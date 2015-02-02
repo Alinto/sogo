@@ -76,15 +76,17 @@ struct SYSTEMTIME {
   byMonth = [rrule byMonth];
   if ([byMonth count] > 0)
     {
+      tzData->wYear = 0;
       tzData->wMonth = [[byMonth objectAtIndex: 0] intValue];
       mask = [rrule byDayMask];
       tzData->wDayOfWeek = [mask firstDay];
-      tzData->wDay = [mask firstOccurrence];
+      tzData->wDay = ([mask firstOccurrence] == -1) ? 5 : [mask firstOccurrence];
 
       dateValue = [self startDate];
       tzData->wHour = [dateValue hourOfDay];
       tzData->wMinute = [dateValue minuteOfHour];
       tzData->wSecond = [dateValue secondOfMinute];
+      tzData->wMilliseconds = 0;
     }
 }
 

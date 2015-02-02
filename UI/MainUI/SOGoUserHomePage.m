@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,12 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
+
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
+#if defined(SAML2_CONFIG)
+#import <SOGo/SOGoSAML2Session.h>
+#endif
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoUser.h>
@@ -98,8 +103,8 @@
   maxBookings = [user numberOfSimultaneousBookings];
   isResource = [user isResource];
 
-  // Don't fetch freebusy information if the user is of type 'resource' and has unlimited bookings
-  if (!isResource || maxBookings > 0)
+  // Fetch freebusy information if the user is NOT a resource or if multiplebookings isn't unlimited
+  if (!isResource || maxBookings != 0)
     {
       for (recordCount = 0; recordCount < recordMax; recordCount++)
         {
@@ -162,10 +167,10 @@
                   endInterval += (delta/60/15);
 
                   // Update bit string representation
-                  // If the user is a resource, keep the sum of overlapping events
+                  // If the user is a resource with restristed amount of bookings, keep the sum of overlapping events
                   for (count = startInterval; count < endInterval; count++)
                     {
-                      *(items + count) = isResource ? *(items + count) + 1 : 1;
+                      *(items + count) = (isResource && maxBookings > 0) ? *(items + count) + 1 : 1;
                     }
                 }
             }
@@ -184,6 +189,9 @@
     }
 }
 
+//
+//
+//
 - (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
                             toEndDate: (NSCalendarDate *) endDate
                           forFreeBusy: (SOGoFreeBusyObject *) fb
@@ -215,19 +223,23 @@
                             timeZone: [endDate timeZone]];
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
-  intervals = interval / intervalSeconds; /* slices of 15 minutes */
+
+  // Slices of 15 minutes. The +8 is to take into account that we can
+  // have a timezone change during the freebusy lookup. We have +4 at the
+  // beginning and +4 at the end.
+  intervals = interval / intervalSeconds + 8;
 
   // Build a bit string representation of the freebusy data for the period
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
-  [self _fillFreeBusyItems: freeBusyItems
-                     count: intervals
+  [self _fillFreeBusyItems: (freeBusyItems+4)
+                     count: (intervals-4)
 	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
              fromStartDate: startDate
                  toEndDate: endDate];
 
-  // Convert bit string to a NSArray
+  // Convert bit string to a NSArray. We also skip by the default the non-requested information.
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = 0; count < intervals; count++)
+  for (count = 4; count < (intervals-4); count++)
     {
       [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
     }
@@ -296,14 +308,57 @@
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   if ([[sd authenticationType] isEqualToString: @"cas"])
-    redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
-                                     andParameters: nil];
+    {
+      redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
+                                       andParameters: nil];
+    }
+#if defined(SAML2_CONFIG)
+  else if ([[sd authenticationType] isEqualToString: @"saml2"])
+    {
+      NSString *username, *password, *domain, *value;
+      SOGoSAML2Session *saml2Session;
+      SOGoWebAuthenticator *auth;
+      LassoServer *server;
+      LassoLogout *logout;   
+      NSArray *creds;
+  
+      auth = [[self clientObject] authenticatorInContext: context];
+      value = [[context request] cookieValueForKey: [auth cookieNameInContext: context]];
+      creds = [auth parseCredentials: value];
+
+      value = [SOGoSession valueForSessionKey: [creds lastObject]];
+      
+      domain = nil;
+      
+      [SOGoSession decodeValue: value
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &username
+                        domain: &domain
+                      password: &password];
+
+      saml2Session = [SOGoSAML2Session SAML2SessionWithIdentifier: password
+                                                        inContext: context];
+      
+      server = [SOGoSAML2Session lassoServerInContext: context];
+      
+      logout = lasso_logout_new(server);
+
+      lasso_profile_set_session_from_dump(LASSO_PROFILE(logout), [[saml2Session session] UTF8String]);
+      lasso_profile_set_identity_from_dump(LASSO_PROFILE(logout), [[saml2Session session] UTF8String]);
+      lasso_logout_init_request(logout, NULL, LASSO_HTTP_METHOD_REDIRECT);
+      lasso_logout_build_request_msg(logout);
+      redirectURL = [NSString stringWithFormat: @"%s", LASSO_PROFILE(logout)->msg_url];
+
+      // We destroy our cache entry, the session will be taken care by the caller
+      [[SOGoCache sharedCache] removeSAML2LoginDumpsForIdentifier: password];
+    }      
+#endif
   else
     {
       container = [[self clientObject] container];
       redirectURL = [container baseURLInContext: context];
     }
-
+  
   return redirectURL;
 }
 

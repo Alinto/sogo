@@ -683,12 +683,12 @@ class DAVCalendarAclTest(DAVAclTest):
             if right == "r":
                 exp_event = event_template % {"class": icsClass,
                                               "filename": filename,
-                                              "organizer_line": "ORGANIZER:mailto:nobody@somewhere.com\n",
+                                              "organizer_line": "ORGANIZER;CN=nobody@somewhere.com:mailto:nobody@somewhere.com\n",
                                               "attendee_line": att_line}
             else:
                 exp_event = event_template % {"class": icsClass,
                                               "filename": filename,
-                                              "organizer_line": "ORGANIZER:mailto:someone@nowhere.com\n",
+                                              "organizer_line": "ORGANIZER;CN=someone@nowhere.com:mailto:someone@nowhere.com\n",
                                               "attendee_line": att_line}
             event = self._getEvent(event_class, True)
             ics_diff = utilities.ics_compare(exp_event, event)

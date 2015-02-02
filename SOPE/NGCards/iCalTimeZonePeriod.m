@@ -156,13 +156,15 @@
   [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
                                    month: [[[rrule byMonth] objectAtIndex: 0] intValue]
-                                     day: 1 hour: [tzStart hourOfDay]
+                                     day: 1
+                                    hour: [tzStart hourOfDay]
                                   minute: [tzStart minuteOfHour] second: 0
                                 timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
+
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
                          day: 0 hour: 0 minute: 0
                       second: 0];
-  
+
   /* If the day of the time change is "-XSU", we need to determine whether the
      first day of next month is in the same week. In practice, as most time
      changes occurs on sundays, it will be false only when that first day is a
@@ -171,10 +173,42 @@
   if (dateDayOfWeek > dayOfWeek && pos < 0)
     pos++;
 
+  /* We check if the days of the week are identical. This is important because if they
+     are, "pos" actually includes the first day of tmpDate which means we must decrement
+     pos by 1. This happens for example in the eastern timezone (America/Montreal)
+     in 2015. We have:
+
+     BEGIN:VTIMEZONE
+     TZID:America/Montreal
+     X-LIC-LOCATION:America/Montreal
+     BEGIN:DAYLIGHT
+     TZOFFSETFROM:-0500
+     TZOFFSETTO:-0400
+     TZNAME:EDT
+     DTSTART:19700308T020000
+     RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+     END:DAYLIGHT
+     BEGIN:STANDARD
+     TZOFFSETFROM:-0400
+     TZOFFSETTO:-0500
+     TZNAME:EST
+     DTSTART:19701101T020000
+     RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+     END:STANDARD
+     END:VTIMEZONE
+     
+     The time changes occure on a Sunday, but in March, the 1st is a Sunday itself and in November
+     the 1st is also a Sunday. If we don't decrement "pos" by one, tmpDate (which is set to March or November 1st
+     because of "day: 1" will have 14 more days added for March and 7 more days added for November - which will
+     effectively shift the time change by a whole week.
+  */
+  if (dayOfWeek == dateDayOfWeek)
+    pos--;
+
   offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
                         hour: 0 minute: 0 second: 0];
-  
+
   return tmpDate;
 }
 

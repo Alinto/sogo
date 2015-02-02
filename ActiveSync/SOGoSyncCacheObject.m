@@ -55,7 +55,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o setUID: theUID];
   [o setSequence: theSequence];
   
-  return o;
+  return [o autorelease];
 }
 
 - (void) dealloc

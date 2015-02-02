@@ -38,6 +38,7 @@
   id item;
   id attendee;
 
+  NSString *rsvpURL;
   NSString *saveURL;
   NSMutableArray *calendarList;
   NSDictionary *organizerProfile;
@@ -62,7 +63,7 @@
   NSString *dateFormat;
 
   NSMutableDictionary *jsonAttendees;
-
+  
   NSString *reminder;
   NSString *reminderQuantity;
   NSString *reminderUnit;
@@ -183,6 +184,8 @@
 - (NSString *) completeURIForMethod: (NSString *) _method;
 - (BOOL) isWriteableClientObject;
 - (NSException *) validateObjectForStatusChange;
+
++ (NSArray *) reminderValues;
 
 @end
 

@@ -1,8 +1,6 @@
 /* SOGoMailer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -215,7 +213,7 @@
     }
   NS_HANDLER
     {
-      NSLog(@"Could not connect to the SMTP server %@ on port %d", host, port);
+      [self errorWithFormat: @"Could not connect to the SMTP server %@ on port %d", host, port];
       result = [NSException exceptionWithHTTPStatus: 500
 					     reason: @"cannot send message:"
 			    @" (smtp) error when connecting"];

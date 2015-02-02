@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #include <wbxml/wbxml.h>
 #include <wbxml/wbxml_conv.h>
@@ -48,7 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
   [self writeToFile: path  atomically: YES];
-  NSLog(@"Original data written to: %@", path);
+  [self errorWithFormat: @"Original data written to: %@", path];
 }
 
 //
@@ -81,20 +82,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
   if (ret != WBXML_OK)
     {
-      NSLog(@"wbxml2xmlFromContent: failed: %s\n", wbxml_errors_string(ret));
+      [self errorWithFormat: @"wbxml2xmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       return nil;
     }
 
-  data = [[NSData alloc] initWithBytes: xml  length: xml_len];
+  data = [NSData dataWithBytesNoCopy: xml  length: xml_len  freeWhenDone: YES];
 
 #if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.decoded"  atomically: YES];
 #endif
 
-  free(xml);
-
-  return AUTORELEASE(data);
+  return data;
 }
 
 
@@ -116,7 +115,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if (ret != WBXML_OK)
     {
-      NSLog(@"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret));
+      [self logWithFormat: @"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       return nil;
     }
@@ -131,22 +130,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if (ret != WBXML_OK)
     {
-      NSLog(@"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret));
+      [self errorWithFormat: @"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       free(wbxml);
       wbxml_conv_xml2wbxml_destroy(conv);
       return nil;
     }
 
-  data = [[NSData alloc] initWithBytes: wbxml  length: wbxml_len];
+  data = [NSData dataWithBytesNoCopy: wbxml  length: wbxml_len  freeWhenDone: YES];
 
 #if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.encoded"  atomically: YES];
 #endif
 
-  free(wbxml);
   wbxml_conv_xml2wbxml_destroy(conv);
-  
-  return AUTORELEASE(data);
+
+  return data;
 }
 @end

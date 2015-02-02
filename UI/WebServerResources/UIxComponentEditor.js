@@ -386,26 +386,22 @@ function onPopupReminderWindow(event) {
 }
 
 function onOkButtonClick (e) {
-    var item = $("replyList");
-    var value = parseInt(item.options[item.selectedIndex].value);
-    var action = "";
-    var parameters = "";
-  
-    if (value == 0)
-        action = 'accept';
-    else if (value == 1)
-        action = 'decline';
-    else if (value == 2)
-        action = 'needsaction';
-    else if (value == 3)
-        action = 'tentative';
-    else if (value == 4) {
-        var url = ApplicationBaseURL + "/" + activeCalendar + "/" + activeComponent;
-        delegateInvitation(url, modifyEventCallback);
-    }
+    
+    var jsonData = Form.serialize(document.forms['rsvpform'], true);
 
-    if (action != "")
-        modifyEvent (item, action, parameters);
+    var input = $("delegatedTo");
+    if (input && input.readAttribute("uid") != null) {
+        jsonData['delegatedTo'] = input.readAttribute("uid");
+    }
+    
+    triggerAjaxRequest(document.forms['rsvpform'].readAttribute("action"),
+                       modifyEventCallback,
+                       null,
+                       Object.toJSON(jsonData),
+                       { "content-type": "application/json"}
+                       );
+    
+    return false;
 }
 
 function onCancelButtonClick (e) {

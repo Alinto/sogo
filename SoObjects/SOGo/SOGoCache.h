@@ -132,6 +132,7 @@
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier;
 - (void) setSaml2LoginDumps: (NSDictionary *) dump
               forIdentifier: (NSString *) identifier;
+- (void) removeSAML2LoginDumpsForIdentifier: (NSString *) identifier;
 
 //
 // ACL caching support

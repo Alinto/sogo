@@ -400,9 +400,9 @@
     {
       currentUID = [currentAttendee uid];
       if (currentUID)
-	      [self _addOrUpdateEvent: newEvent
-			                   forUID: currentUID
-			                    owner: owner];
+        [self _addOrUpdateEvent: newEvent
+                         forUID: currentUID
+                          owner: owner];
     }
 
   [self sendEMailUsingTemplateNamed: @"Update"
@@ -443,7 +443,7 @@
           us = [user userSettings];
           moduleSettings = [us objectForKey:@"Calendar"];
           
-          // Check if the user prevented his account from beeing invited to events
+          // Check if the user prevented their account from beeing invited to events
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
@@ -637,10 +637,10 @@
           
           if ([fbInfo count])
             {
-              // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
+              // If we always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
               // is imposed) or if numberOfSimultaneousBookings is greater than the number of
               // overlapping events
-              if ([user numberOfSimultaneousBookings] == 0 ||
+              if ([user numberOfSimultaneousBookings] <= 0 ||
                   [user numberOfSimultaneousBookings] > [fbInfo count])
                 {
                   if (currentAttendee)
@@ -734,7 +734,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // the modification was actually NOT made on the master event
   if ([theEvent recurrenceId])
     return;
-
+  
   events = [[theEvent parent] events];
   
   for (i = 0; i < [events count]; i++)
@@ -743,12 +743,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if ([e recurrenceId])
         for (j = 0; j < [theAttendees count]; j++)
           if (shouldAdd)
-	          [e addToAttendees: [theAttendees objectAtIndex: j]];
-      else
-        [e removeFromAttendees: [theAttendees objectAtIndex: j]];
+            [e addToAttendees: [theAttendees objectAtIndex: j]];
+          else
+            [e removeFromAttendees: [theAttendees objectAtIndex: j]];
     }
 }
-		       
+
 //
 //
 //
@@ -803,14 +803,17 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // We insert the attendees in all exception occurences, if
   // the attendees were added to the master event.
   [self _addOrDeleteAttendees: addedAttendees
-	inRecurrenceExceptionsForEvent: newEvent
-			                       add: YES];
+        inRecurrenceExceptionsForEvent: newEvent
+                          add: YES];
 
   if ([changes sequenceShouldBeIncreased])
     {
       [newEvent increaseSequence];
+      
       // Update attendees calendars and send them an update
-      // notification by email
+      // notification by email. We ignore the newly added
+      // attendees as we don't want to send them invitation
+      // update emails
       [self _handleSequenceUpdateInEvent: newEvent
                        ignoringAttendees: addedAttendees
                             fromOldEvent: oldEvent];
@@ -1093,7 +1096,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           else
             {
               // We must REMOVE any SENT-BY here. This is important since if A accepted
-              // the event for B and then, B changes by himself his participation status,
+              // the event for B and then, B changes by theirself their participation status,
               // we don't want to keep the previous SENT-BY attribute there.
               [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
             }
@@ -1191,7 +1194,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       else
         {
           // We must REMOVE any SENT-BY here. This is important since if A accepted
-          // the event for B and then, B changes by himself his participation status,
+          // the event for B and then, B changes by theirself their participation status,
           // we don't want to keep the previous SENT-BY attribute there.
           [(NSMutableDictionary *)[attendee attributes] removeObjectForKey: @"SENT-BY"];
         }
@@ -1208,7 +1211,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               
               delegatedUID = [otherDelegate uid];
               if (delegatedUID)
-                // Delegate attendee is a local user; remove event from his calendar
+                // Delegate attendee is a local user; remove event from their calendar
                 [self _removeEventFromUID: delegatedUID
                                     owner: [theOwnerUser login]
                          withRecurrenceId: [event recurrenceId]];
@@ -1240,7 +1243,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [event addToAttendees: delegate];
           
           if (delegatedUID)
-            // Delegate attendee is a local user; add event to his calendar
+            // Delegate attendee is a local user; add event to their calendar
             [self _addOrUpdateEvent: event
                              forUID: delegatedUID
                               owner: [theOwnerUser login]];
@@ -1309,6 +1312,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   return ex;
 }
 
+//
+//
+//
 - (NSDictionary *) _caldavSuccessCodeWithRecipient: (NSString *) recipient
 {
   NSMutableArray *element;
@@ -1391,9 +1397,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (NSException *) changeParticipationStatus: (NSString *) status
                                withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
 {
   return [self changeParticipationStatus: status
                             withDelegate: delegate
+                                   alarm: alarm
                          forRecurrenceId: nil];
 }
 
@@ -1402,6 +1410,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (NSException *) changeParticipationStatus: (NSString *) _status
                                withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
                             forRecurrenceId: (NSCalendarDate *) _recurrenceId
 {
   iCalCalendar *calendar;
@@ -1479,7 +1488,18 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // Over DAV, it'll be handled directly in PUTAction:
               if (![context request] || [[context request] handledByDefaultHandler]
                                      || [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
-                ex = [self saveCalendar: [event parent]];
+                {
+                  // If an alarm was specified, let's use it. This would happen if an attendee accepts/declines/etc. an
+                  // event invitation and also sets an alarm along the way. This would happen ONLY from the web interface.
+                  [event removeAllAlarms];
+
+                  if (alarm)
+                    {
+                      [event addToAlarms: alarm];
+                    }
+                  
+                  ex = [self saveCalendar: [event parent]];
+                }
             }
         }
       else
@@ -1512,17 +1532,17 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [v caseInsensitiveCompare: @"CLIENT"] == NSOrderedSame)
         b = NO;
     }
-      
-      //
-      // If we have to deal with Thunderbird/Lightning, we always send invitation
-      // reponses, as Lightning v2.6 (at least this version) sets SCHEDULE-AGENT
-      // to NONE/CLIENT when responding to an external invitation received by
-      // SOGo - so no invitation responses are ever sent by Lightning. See
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
-      //
-      userAgents = [[context request] headersForKey: @"User-Agent"];
-      
+  
+  //
+  // If we have to deal with Thunderbird/Lightning, we always send invitation
+  // reponses, as Lightning v2.6 (at least this version) sets SCHEDULE-AGENT
+  // to NONE/CLIENT when responding to an external invitation received by
+  // SOGo - so no invitation responses are ever sent by Lightning. See
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
+  //
+  userAgents = [[context request] headersForKey: @"User-Agent"];
+  
   for (i = 0; i < [userAgents count]; i++)
     {
       if ([[userAgents objectAtIndex: i] rangeOfString: @"Thunderbird"].location != NSNotFound &&
@@ -1532,7 +1552,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           break;
         }
     }
-
 
   return b;
 }
@@ -1594,7 +1613,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       // The current user deletes the occurence; let the organizer know that
       // the user has declined this occurence.
-      [self changeParticipationStatus: @"DECLINED" withDelegate: nil
+      [self changeParticipationStatus: @"DECLINED"
+                         withDelegate: nil
+                                alarm: nil
                       forRecurrenceId: recurrenceId];
       send_receipt = NO;
     }
@@ -1768,6 +1789,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
  * Verify vCalendar for any inconsistency or missing attributes.
  * Currently only check if the events have an end date or a duration.
  * We also check for the default transparency parameters.
+ * We also check for broken ORGANIZER such as "ORGANIZER;:mailto:sogo3@example.com"
  * @param rq the HTTP PUT request
  */
 - (void) _adjustEventsInRequestCalendar: (iCalCalendar *) rqCalendar
@@ -1792,7 +1814,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
         }
 
-      
+      if ([event organizer] && ![[[event organizer] cn] length])
+        {
+          [[event organizer] setCn: [[event organizer] rfc822Email]];
+        }
     }
 }
 
@@ -2157,12 +2182,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                 {
                   [self changeParticipationStatus: @"DECLINED"
                                      withDelegate: nil // FIXME (specify delegate?)
+                                            alarm: nil
                                   forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
                 }
               else if (attendee)
                 {
                   [self changeParticipationStatus: [attendee partStat]
                                      withDelegate: delegate
+                                            alarm: nil
                                   forRecurrenceId: recurrenceId];
                 }
               // All attendees and the organizer field were removed. Apple iCal does

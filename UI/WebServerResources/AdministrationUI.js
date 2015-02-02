@@ -153,15 +153,11 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     else
         icon += 'calendar-folder-16x16.png';
     var folderId = user + ":" + folder.name.substr(1);
-    var name = folder.displayName.escapeHTML(); // name has the format "Folername (Firstname Lastname <email>)"
-    var pos = name.lastIndexOf(' (');
-    if (pos > -1)
-        name = name.substring(0, pos); // strip the part with fullname and email
+    var name = folder.displayName.escapeHTML();
     var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
                              folder.type + '-folder', '', '', icon, icon);
     node._ls = isLast;
     var content = tree.node(node, (nodeId + subId), null);
-    content._formattedName = folder.formattedName;
 
     return content;
 }

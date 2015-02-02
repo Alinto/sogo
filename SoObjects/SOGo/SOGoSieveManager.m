@@ -1,6 +1,6 @@
 /* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2014 Inverse inc.
+ * Copyright (C) 2010-2015 Inverse inc.
  *
  * Author: Inverse <info@inverse.ca>
  *
@@ -31,6 +31,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGStreams/NGInternetSocketAddress.h>
 #import <NGImap4/NGSieveClient.h>
 
@@ -717,7 +718,7 @@ static NSString *sieveScriptName = @"sogo";
   client = [[NGSieveClient alloc] initWithURL: url];
 
   if (!client) {
-    NSLog(@"Sieve connection failed on %@", [url description]);
+    [self errorWithFormat: @"Sieve connection failed on %@", [url description]];
     return nil;
   }
 
@@ -738,19 +739,19 @@ static NSString *sieveScriptName = @"sogo";
 
   if (!connected)
     {
-      NSLog(@"Sieve connection failed on %@", [url description]);
+      [self errorWithFormat: @"Sieve connection failed on %@", [url description]];
       return nil;
     }
 
   if (![[result valueForKey:@"result"] boolValue] && !theUsername && !thePassword) {
-    NSLog(@"failure. Attempting with a renewed password (no authname supported)");
+    [self logWithFormat: @"failure. Attempting with a renewed password (no authname supported)"];
     password = [theAccount imap4PasswordRenewed: YES];
     result = [client login: login  password: password];
   }
 
   if (![[result valueForKey:@"result"] boolValue]) {
-    NSLog(@"Could not login '%@' on Sieve server: %@: %@",
-	  login, client, result);
+    [self logWithFormat: @"Could not login '%@' on Sieve server: %@: %@",
+	  login, client, result];
     [client closeConnection];
     return nil;
   }
@@ -823,7 +824,7 @@ static NSString *sieveScriptName = @"sogo";
     }
   else
     {
-      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
+      [self errorWithFormat: @"Sieve generation failure: %@", [self lastScriptError]];
       [client closeConnection];
       return NO;
     }
@@ -913,7 +914,7 @@ static NSString *sieveScriptName = @"sogo";
   result = [client deleteScript: sieveScriptName];
   
   if (![[result valueForKey:@"result"] boolValue]) {
-    NSLog(@"WARNING: Could not delete Sieve script - continuing...: %@", result);
+    [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
   }
 
   // We put and activate the script only if we actually have a script
@@ -923,14 +924,14 @@ static NSString *sieveScriptName = @"sogo";
       result = [client putScript: sieveScriptName  script: script];
       
       if (![[result valueForKey:@"result"] boolValue]) {
-        NSLog(@"Could not upload Sieve script: %@", result);
+        [self logWithFormat: @"Could not upload Sieve script: %@", result];
         [client closeConnection];	
         return NO;
       }
       
       result = [client setActiveScript: sieveScriptName];
       if (![[result valueForKey:@"result"] boolValue]) {
-        NSLog(@"Could not enable Sieve script: %@", result);
+        [self logWithFormat: @"Could not enable Sieve script: %@", result];
         [client closeConnection];
         return NO;
       }

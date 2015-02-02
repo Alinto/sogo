@@ -107,7 +107,7 @@
           actionName  = "subscribeUsers";
         };
         renameFolder = {
-          protectedBy = "Change Permissions";
+          protectedBy = "Access Contents Information";
           actionClass = "UIxFolderActions";
           actionName  = "renameFolder";
         };

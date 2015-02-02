@@ -80,7 +80,9 @@
 - (NSString *) SAML2IdpMetadataLocation;
 - (NSString *) SAML2IdpPublicKeyLocation;
 - (NSString *) SAML2IdpCertificateLocation;
+- (NSString *) SAML2LoginAttribute;
 - (BOOL) SAML2LogoutEnabled;
+- (NSString *) SAML2LogoutURL;
 
 - (BOOL) enablePublicAccess;
 
@@ -97,6 +99,7 @@
 - (int) maximumSyncInterval;
 - (int) internalSyncInterval;
 - (int) maximumSyncWindowSize;
+- (int) maximumSyncResponseSize;
 
 @end
 

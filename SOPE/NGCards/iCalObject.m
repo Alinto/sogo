@@ -59,8 +59,8 @@ static NSTimeZone *defTZ = nil;
     [self takeValue:_value forXKey:_key];
   }
   else {
-    NSLog(@"0x%08x[%@]: ignoring attempt to set unbound key '%@'",
-	  self, NSStringFromClass([self class]), _key);
+    //NSLog(@"0x%08x[%@]: ignoring attempt to set unbound key '%@'",
+    //	  self, NSStringFromClass([self class]), _key);
   }
 }
 

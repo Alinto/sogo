@@ -389,6 +389,9 @@
                 const:name="displayRemoteInlineImages"
                 string="itemDisplayRemoteInlineImagesText"
                 selection="userDisplayRemoteInlineImages"/></dd>
+              <dt><var:string label:value="Auto save every"/></dt>
+              <dd><input const:name="autoSave" const:id="autoSave"
+              type="text" autocomplete="off" var:value="autoSave"/><var:string label:value="minutes"/></dd>
             </dl>
             
             <div class="tabsContainer" id="mailOptionsTabs">

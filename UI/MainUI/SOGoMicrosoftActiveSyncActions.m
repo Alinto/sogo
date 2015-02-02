@@ -21,6 +21,8 @@
 
 #import <Foundation/NSBundle.h>
 
+#import <SOGo/SOGoCache.h>
+#import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoFolder.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -54,13 +56,17 @@
 
   ex = [dispatcher dispatchRequest: request  inResponse: response  context: context];
 
+  //[[self class] memoryStatistics];
+
   if (ex)
     {
       return [NSException exceptionWithHTTPStatus: 500];
     }
 
   RELEASE(dispatcher);
-      
+
+  [[SOGoCache sharedCache] killCache];
+
   return response;
 }
 

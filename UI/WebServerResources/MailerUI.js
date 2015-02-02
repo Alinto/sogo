@@ -843,7 +843,7 @@ function composeNewMessage() {
 function openMailbox(mailbox, reload) {
     if (mailbox != Mailer.currentMailbox || reload) {
         var url = ApplicationBaseURL + encodeURI(mailbox.unescapeHTML());
-        var urlParams = {};
+        var urlParams = {filters: [], sortingAttributes: {}};
 
         if (!reload) {
             var messageContent = $("messageContent");

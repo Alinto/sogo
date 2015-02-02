@@ -529,20 +529,6 @@ function onMenuRawEvent(event) {
     openGenericWindow.delay(0.1, url);
 }
 
-function modifyEvent(sender, modification, parameters) {
-    var currentLocation = '' + window.location;
-    var arr = currentLocation.split("/");
-    arr[arr.length-1] = modification;
-
-    document.modifyEventAjaxRequest = triggerAjaxRequest(arr.join("/"),
-                                                         modifyEventCallback,
-                                                         modification,
-                                                         parameters,
-                                                         { "Content-type": "application/x-www-form-urlencoded" });
-
-    return false;
-}
-
 function closeInvitationWindow() {
     var closeDiv = document.createElement("div");
     document.body.appendChild(closeDiv);

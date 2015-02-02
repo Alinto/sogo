@@ -679,7 +679,7 @@ function onMailIdentitySignatureClick(event) {
                                  { height: "150px",
                                    toolbar: [['Bold', 'Italic', '-', 'Link',
                                               'Font','FontSize','-','TextColor',
-                                              'BGColor']
+                                              'BGColor'], ['Source']
                                             ],
                                    language: localeCode,
                                    scayt_sLang: localeCode });

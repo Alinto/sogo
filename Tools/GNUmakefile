@@ -4,6 +4,8 @@ include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
+ADDITIONAL_LDFLAGS += -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
+
 ###
 SOGO_TOOL = sogo-tool
 $(SOGO_TOOL)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
@@ -20,7 +22,8 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemoveDoubles.m \
 	SOGoToolRenameUser.m \
 	SOGoToolRestore.m \
-	SOGoToolUserPreferences.m
+	SOGoToolUserPreferences.m \
+	SOGoToolManageEAS.m
 TOOL_NAME += $(SOGO_TOOL)
 
 ###

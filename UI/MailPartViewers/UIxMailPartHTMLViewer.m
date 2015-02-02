@@ -272,7 +272,7 @@ static NSData* _sanitizeContent(NSData *theData)
                       if ([tag caseInsensitiveCompare: found_tag] == NSOrderedSame)
                         {
                           // Remove the leading slash
-                          NSLog(@"Found void tag with invalid leading slash: </%@>", found_tag);
+                          //NSLog(@"Found void tag with invalid leading slash: </%@>", found_tag);
                           i--;
                           [d replaceBytesInRange: NSMakeRange(i, 1)
                                        withBytes: NULL
@@ -455,6 +455,10 @@ static NSData* _sanitizeContent(NSData *theData)
             {
               if (*currentChar == '{')
                 inCSSDeclaration = YES;
+              if (*currentChar == '}')
+                // CSS syntax error: ending declaration character while not in a CSS declaration.
+                // Ignore eveything from last CSS declaration.
+                start = currentChar + 1;
               else if (*currentChar == ',')
                 hasEmbeddedCSS = NO;
               else if (!hasEmbeddedCSS)

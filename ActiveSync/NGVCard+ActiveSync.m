@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
 
@@ -193,11 +194,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [self note]))
     {
+      // It is very important here to NOT set <Truncated>0</Truncated> in the response,
+      // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
-      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
       [s appendFormat: @"<Data>%@</Data>", o];
       [s appendString: @"</Body>"];
     }
@@ -222,14 +224,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self setNote: o];
 
   // Categories
-  if ((o = [theValues objectForKey: @"Categories"]))
+  if ((o = [theValues objectForKey: @"Categories"]) && [o length])
     [self setCategories: o];
 
   // Birthday
   if ((o = [theValues objectForKey: @"Birthday"]))
     {
       o = [o calendarDate];
-      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d" timeZone: nil locale: nil]];
     }
 
   //

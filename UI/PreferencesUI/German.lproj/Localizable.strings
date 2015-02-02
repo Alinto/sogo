@@ -12,6 +12,7 @@
 "Forward" = "Weiterleitung";
 "Password" = "Passwort";
 "Categories" = "Kategorien";
+"Appointments invitations" = "Einladungen zu Terminen";
 "Name" = "Name";
 "Color" = "Farbe";
 "Add" = "Hinzufügen";
@@ -151,6 +152,9 @@
 "Display remote inline images" = "Entfernte eingebettete Bilder anzeigen";
 "displayremoteinlineimages_never" = "Niemals";
 "displayremoteinlineimages_always" = "Immer";
+
+"Auto save every" = "Automatisch speichern alle";
+"minutes" = "Minuten";
 
 /* Contact */
 "Personal Address Book" = "Persönliches Adressbuch";
