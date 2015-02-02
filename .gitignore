@@ -17,8 +17,11 @@ UI/WebServerResources/.bowerrc
 UI/WebServerResources/js/vendor/
 UI/WebServerResources/bower_components/
 UI/WebServerResources/node_modules/
+UI/WebServerResources/.sass-cache/
 UI/WebServerResources/scss/.sass-cache/
+UI/WebServerResources/css/
 Documentation/*.docbook
 Documentation/*.pdf
 .idea
 doc
+UI/WebServerResources/scss/.sass-cache
