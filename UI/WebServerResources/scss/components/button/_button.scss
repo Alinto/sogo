@@ -1,0 +1,12 @@
+/*! _button.scss */
+///
+/// Project SOGo
+/// Version 3.alpha
+/// Component button
+///
+/// Definitions for button extends
+///
+@import 'extends';
+.sg-active button {
+  color: $primary-color;
+}
