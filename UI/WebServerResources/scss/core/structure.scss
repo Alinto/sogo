@@ -15,7 +15,7 @@
 
 // We assume users are setting browser's base font-size according to their needs
 // The default rem size in use for most browsers is 16 css pixels
-// Body font size is defined as 100%, so it won't cahge users'settings
+// Body font size is defined as 100%, so it won't changege users'settings
 $sg-rem-base-value: 16 !global;
 $sg-sp-value: (1 / $sg-rem-base-value) !default; // sp value
 
@@ -43,33 +43,33 @@ $sg-typo-scale: (
 // Basic typographic sizes
 // Fixme: add a rounding function
 
-$sg-font-size-1: sp-to-px( nth($sg-typo-scale, 1) );
-$sg-font-size-2: sp-to-px( nth($sg-typo-scale, 2) );
-$sg-font-size-3: sp-to-px( nth($sg-typo-scale, 3) );
-$sg-font-size-4: sp-to-px( nth($sg-typo-scale, 4) );
-$sg-font-size-5: sp-to-px( nth($sg-typo-scale, 5) );
-$sg-font-size-6: sp-to-px( nth($sg-typo-scale, 6) );
-$sg-font-size-7: sp-to-px( nth($sg-typo-scale, 7) );
-$sg-font-size-8: sp-to-px( nth($sg-typo-scale, 8) );
-$sg-font-size-9: sp-to-px( nth($sg-typo-scale, 9) );
+$sg-font-size-1: nth($sg-typo-scale, 1) * 1px;
+$sg-font-size-2: nth($sg-typo-scale, 2) * 1px;
+$sg-font-size-3: nth($sg-typo-scale, 3) * 1px;
+$sg-font-size-4: nth($sg-typo-scale, 4) * 1px;
+$sg-font-size-5: nth($sg-typo-scale, 5) * 1px;
+$sg-font-size-6: nth($sg-typo-scale, 6) * 1px;
+$sg-font-size-7: nth($sg-typo-scale, 7) * 1px;
+$sg-font-size-8: nth($sg-typo-scale, 8) * 1px;
+$sg-font-size-9: nth($sg-typo-scale, 9) * 1px;
 
-$h1-font-size-base: $sg-font-size-9 !default;
-$h1-margin-base: 0.67em 0 !default;
+$h1-font-size-base: $sg-font-size-9;
+$h1-margin-base: 0.67em 0;
 
-$h2-font-size-base: $sg-font-size-8 !default;
+$h2-font-size-base: $sg-font-size-8;
 $h2-margin-base: 0.83em 0 !default;
 
-$h3-font-size-base: $sg-font-size-7 !default;
-$h3-margin-base: 1em 0 !default;
+$h3-font-size-base: $sg-font-size-7;
+$h3-margin-base: 1em 0;
 
-$h4-font-size-base: $sg-font-size-6 !default;
-$h4-margin-base: 1.33em 0 !default;
+$h4-font-size-base: $sg-font-size-6;
+$h4-margin-base: 1.33em 0;
 
-$h5-font-size-base: $sg-font-size-5 !default;
-$h5-margin-base: 1.67em 0 !default;
+$h5-font-size-base: $sg-font-size-5;
+$h5-margin-base: 1.67em 0;
 
-$h6-font-size-base: $sg-font-size-4 !default;
-$h6-margin-base: 2.33em 0 !default;
+$h6-font-size-base: $sg-font-size-4;
+$h6-margin-base: 2.33em 0;
 
 *,
 *:before,
@@ -94,13 +94,6 @@ html, body {
 
   p {
     line-height: 1.846;
-  }
-
-  h3 {
-    display: block;
-    @include margin-selectors();
-    font-size: 1.17em;
-    font-weight: bold;
   }
 }
 
@@ -143,7 +136,11 @@ h2 {
   font-size: $h2-font-size-base;
   margin: $h2-margin-base;
 }
-h3 {
+// Ad html selector to prevent angular-material.css from overriding our definition
+// fixme: remove this for production
+html h3 {
+  display: block;
+  @include margin-selectors();
   font-size: $h3-font-size-base;
   margin: $h3-margin-base;
 }
