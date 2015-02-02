@@ -142,6 +142,7 @@ html h3 {
   display: block;
   @include margin-selectors();
   font-size: $h3-font-size-base;
+  font-weight: 400;
   margin: $h3-margin-base;
 }
 h4 {
