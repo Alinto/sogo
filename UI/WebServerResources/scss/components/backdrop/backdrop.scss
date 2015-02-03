@@ -1,3 +1,5 @@
+@import 'extends';
+
 md-backdrop {
   z-index: $z-index-backdrop;
   &.md-dialog-backdrop {
