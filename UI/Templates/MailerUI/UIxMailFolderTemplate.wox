@@ -20,11 +20,11 @@
           <div class = "sg-tile-content">
             <a data-ui-sref = "mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
                 data-ui-sref-active = "_selected">
-              <div class = "name">
+              <div class = "sg-md-subhead-multi">
                 {{currentMessage.$shortAddress('from')}}
                 <span class = "right" data-ng-bind-html = "currentMessage.relativedate"><!-- date --></span>
               </div>
-              <div class = "subject">{{currentMessage.subject}}</div>
+              <div class = "sg-md-body-multi">{{currentMessage.subject}}</div>
               <i class = "icon-ion-refresh"
                   data-ng-hide = "mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
             </a>

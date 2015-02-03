@@ -140,7 +140,9 @@
 // We assume users are setting browser's base font-size according to their needs
 // The default rem size in use for most browsers is 16 css pixels
 // Body font size is defined as 100%, so it won't changege users'settings
-
+$md-prefix : 'sg-md';
+/// @alias $md-prefix
+$md: $md-prefix;
 $sg-rem-Base-value: 16 !global;
 $sg-sp-value: (1 / $sg-rem-Base-value) !default; // sp value
 
@@ -221,27 +223,28 @@ $h6-margin-Base: 2.33em 0;
 
 /// Gogle Material Design Standard styles
 /// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
+/// Some specification class names are counterintuitive. We provide some aliases
 //  -------------------------------------------------------------------------------------------------
-.sg-md {
-  &-.caption {
+
+  .#{$md}-caption {
     font-size: $sg-font-size-1;
     line-height: $sg-line-height-1;
     font-weight: $sg-font-regular;
     white-space: nowrap;
     }
-  &-.menu {
+  .#{$md}-menu {
     font-size: $sg-font-size-2;
     line-height: $sg-line-height-1;
     font-weight: $sg-font-medium;
     white-space: nowrap;}
-  &-.button {
+  .#{$md}-button {
     font-size: $sg-font-size-2;
     line-height: $sg-line-height-1;
     font-weight: $sg-font-medium;
     white-space: nowrap;
     text-transform: capitalize;
   }
-  &-.body-1 {
+  .#{$md}-body-1 {
     font-size: $sg-font-size-1;
     line-height: $sg-line-height-2;
     font-weight: $sg-font-regular;
@@ -249,10 +252,10 @@ $h6-margin-Base: 2.33em 0;
     margin-bottom: $sg-line-height-2;
   }
   /// @alias .body-1
-  &-.body-multi {
-    @extend .body-1;
+  .#{$md}-body-multi {
+    @extend .#{$md}-body-1;
   }
-  &-.body-2 {
+  .#{$md}-body-2 {
     $lineHeight : $sg-line-height-2 + $sg-md-baseline;
     font-size: $sg-font-size-1;
     line-height: $lineHeight;
@@ -260,7 +263,11 @@ $h6-margin-Base: 2.33em 0;
     margin-top: ($lineHeight * -1);
     margin-bottom: $lineHeight;
   }
-  &-.subhead-1 {
+  /// @alias .body-2
+  .#{$md}-body-solo {
+    @extend .#{$md}-body-2;
+  }
+  .#{$md}-subhead-1 {
     $lineHeight : $sg-line-height-3;
     font-size: $sg-font-size-3;
     line-height: $lineHeight;
@@ -268,7 +275,11 @@ $h6-margin-Base: 2.33em 0;
     margin-top: ($lineHeight * -1);
     margin-bottom: $lineHeight;
   }
-  &-.subhead-2 {
+  /// @alias .subhead-1
+  .#{$md}-subhead-multi {
+    @extend .#{$md}-subhead-1;
+  }
+  .#{$md}-subhead-2 {
     $lineHeight : $sg-line-height-3 + $sg-md-baseline;
     font-size: $sg-font-size-3;
     line-height: $lineHeight;
@@ -276,14 +287,18 @@ $h6-margin-Base: 2.33em 0;
     margin-top: ($lineHeight * -1);
     margin-bottom: $lineHeight;
   }
-  &-.title {
+  /// @alias .subhead-2
+  .#{$md}-subhead-solo {
+    @extend .#{$md}-subhead-2;
+  }
+  .#{$md}-title {
     $lineHeight : $sg-line-height-4;
     font-size: $sg-font-size-4;
     line-height: $lineHeight;
     font-weight: $sg-font-medium;
     white-space: nowrap;
   }
-  &-.headline {
+  .#{$md}-headline {
     $lineHeight : $sg-line-height-5;
     font-size: $sg-font-size-5;
     line-height: $lineHeight;
@@ -291,7 +306,7 @@ $h6-margin-Base: 2.33em 0;
     margin-top: ($lineHeight * -1);
     margin-bottom: $lineHeight;
   }
-  &-.display-1 {
+  .#{$md}-display-1 {
     $lineHeight : $sg-line-height-6;
     font-size: $sg-font-size-6;
     line-height: $lineHeight;
@@ -299,27 +314,35 @@ $h6-margin-Base: 2.33em 0;
     margin-top: ($lineHeight * -1);
     margin-bottom: $lineHeight;
   }
-  &-.display-2 {
+  .#{$md}-display-2 {
     $lineHeight: $sg-line-height-7;
     font-size: $sg-font-size-7;
     line-height: $lineHeight;
     font-weight: $sg-font-regular;
     white-space: nowrap;
   }
-  &-.display-3 {
+  .#{$md}-display-3 {
     $lineHeight : $sg-line-height-8;
     font-size: $sg-font-size-8;
     line-height: $lineHeight;
     font-weight: $sg-font-regular;
     white-space: nowrap;
   }
-  &-.display-4 {
+  .#{$md}-display-4 {
     $lineHeight : $sg-line-height-9;
     font-size: $sg-font-size-9;
     line-height: $lineHeight;
     font-weight: $sg-font-light;
     white-space: nowrap;
   }
-}
-/// Some specification class names are counterintuitive. Here are some aliases
-// ----------------------------------------------------------------------------
+
+  a,
+  a:hover,
+  a:active,
+  a:visited,
+  link {
+    color: inherit;
+    text-decoration: none;
+    border: none;
+    outline: none;
+  }
