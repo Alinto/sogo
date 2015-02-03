@@ -8,10 +8,12 @@
       width: 100%;
       }
     </style>
+    <header class="md-background sg-md-subheader">
+      <h2 class="sg-md-subhead-solo md-primary md-hue-3">Unread Messages</h2>
+    </header>
 
     <md-list data-vs-repeat = "72"
         data-vs-scroll-parent = "#messagesList">
-      <!--<md-subheader class="md-default-theme md-primary md-hue-3">Unread Messages</md-subheader>-->
       <md-item ng-repeat = "currentMessage in mailbox.$messages track by currentMessage.id"
           data-ng-class = "{unread: !currentMessage.isread}">
         <md-item-content>
