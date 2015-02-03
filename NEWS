@@ -1,3 +1,9 @@
+2.2.16 (2015-02-DD)
+-------------------
+
+Bug fixes
+ - (regression) fixed sending a message when mail module is not active (#3088)
+
 2.2.15 (2015-01-30)
 -------------------
 
