@@ -10,13 +10,20 @@
 // avoid overspecifying
 // todo: create new classes and refactor templates markup
 [id='messagesList'] {
+  border-top: 44px solid transparent;   // padding for the header.subheader,
+  border-bottom: 2px solid transparent; //close to a hack
+
   md-item-content {
     padding: $layout-gutter-width;
+  }
+  .sg-md-subhead-solo {
+    margin: 0;
   }
 }
 .sg-tile-content {
   padding: 0 0 0 $layout-gutter-width;
-  .sg-md-subhead-multi {
+  .sg-md-subhead-multi,
+  .sg-md-subhead-solo {
     margin: 0;
   }
   .sg-md-body-multi {

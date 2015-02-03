@@ -38,6 +38,7 @@ $bottombar-color: #212121;
 // ------------------------------
 
 $baseline-grid:            8px !default;
+$sg-md-grid-pitch: 8 * $baseline-grid;
 $layout-breakpoint-sm:     600px !default;
 $layout-breakpoint-md:     960px !default;
 $layout-breakpoint-lg:     1200px !default;
