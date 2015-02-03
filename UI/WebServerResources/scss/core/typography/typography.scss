@@ -1,0 +1,325 @@
+/*! typography.scss - */
+////
+/// SOGo
+/// Version: #{$Version}
+/// Module: typography
+///
+/// Main typography module file define basic typographic styles
+////
+
+// Fonts declaration
+// ----------------------------------------------------------------------------
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-Hair.eot');
+  src: url('fonts/FiraSans-Hair.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-Hair.woff') format('woff'),
+  url('fonts/FiraSans-Hair.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-Book.eot');
+  src: url('fonts/FiraSans-Book.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-Book.woff') format('woff'),
+  url('fonts/FiraSans-Book.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-Light.eot');
+  src: url('fonts/FiraSans-Light.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-Light.woff') format('woff'),
+  url('fonts/FiraSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-Regular.eot');
+  src: url('fonts/FiraSans-Regular.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-Regular.woff') format('woff'),
+  url('fonts/FiraSans-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-Thin.eot');
+  src: url('fonts/FiraSans-Thin.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-Thin.woff') format('woff'),
+  url('fonts/FiraSans-Thin.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-medium.eot');
+  src: url('fonts/FiraSans-medium.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-medium.woff') format('woff'),
+  url('fonts/FiraSans-medium.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-HairItalic.eot');
+  src: url('fonts/FiraSans-HairItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-HairItalic.woff2') format('woff2'),
+  url('fonts/FiraSans-HairItalic.woff') format('woff'),
+  url('fonts/FiraSans-HairItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-BookItalic.eot');
+  src: url('fonts/FiraSans-BookItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-BookItalic.woff') format('woff'),
+  url('fonts/FiraSans-BookItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-LightItalic.eot');
+  src: url('fonts/FiraSans-LightItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-LightItalic.woff') format('woff'),
+  url('fonts/FiraSans-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-RegularItalic.eot');
+  src: url('fonts/FiraSans-RegularItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-RegularItalic.woff') format('woff'),
+  url('fonts/FiraSans-RegularItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-ThinItalic.eot');
+  src: url('fonts/FiraSans-ThinItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-ThinItalic.woff') format('woff'),
+  url('fonts/FiraSans-ThinItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fira sans';
+  src: url('fonts/FiraSans-mediumItalic.eot');
+  src: url('fonts/FiraSans-mediumItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/FiraSans-mediumItalic.woff') format('woff'),
+  url('fonts/FiraSans-mediumItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+// Google's Material design specs are in 'sp' or 'dp' which are not css units
+// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels'
+// (same as dp, but will be scaled by the user's font size preference)
+// Android gives a 160dpi  base value to 'sp' and 'dp', but Google's examples seems to use 'sp' as 'px'
+// We define a scaling factor in case we need to adjust
+// 'sp' equals 1/16rem, wich represents 1 css pixel
+// 'dp' is scale to 1 css-px according
+
+// We assume users are setting browser's base font-size according to their needs
+// The default rem size in use for most browsers is 16 css pixels
+// Body font size is defined as 100%, so it won't changege users'settings
+
+$sg-rem-Base-value: 16 !global;
+$sg-sp-value: (1 / $sg-rem-Base-value) !default; // sp value
+
+$sg-md-baseline: 4px;
+
+// Font-size basic scale (from Google)
+// NiceToHave : generate with a loop
+$sg-typo-scale: (
+    12,
+    14,
+    16,
+    20,
+    24,
+    34,
+    45,
+    56,
+    112
+) !global;
+
+// todo: fix that
+@function sg-font-sizes($size-List: $sg-typo-scale, $prefix: '$sg-font-size') {
+  @for $n from 1 to length($size-List) {
+    @return '#{$prefix}-#{$n}: sp-to-px( nth($size-List, $n) )';
+  }
+}
+
+// Basic typographic sizes
+// ----------------------------------------------------------------------------
+$sg-font-size-1: nth($sg-typo-scale, 1) * 1px;
+$sg-font-size-2: nth($sg-typo-scale, 2) * 1px;
+$sg-font-size-3: nth($sg-typo-scale, 3) * 1px;
+$sg-font-size-4: nth($sg-typo-scale, 4) * 1px;
+$sg-font-size-5: nth($sg-typo-scale, 5) * 1px;
+$sg-font-size-6: nth($sg-typo-scale, 6) * 1px;
+$sg-font-size-7: nth($sg-typo-scale, 7) * 1px;
+$sg-font-size-8: nth($sg-typo-scale, 8) * 1px;
+$sg-font-size-9: nth($sg-typo-scale, 9) * 1px;
+
+// Basic line heights
+// ----------------------------------------------------------------------------
+$sg-line-height-1: $sg-font-size-1 + $sg-md-baseline;
+$sg-line-height-2: 20px;
+$sg-line-height-3: 24px;
+$sg-line-height-4: $sg-font-size-4 + $sg-md-baseline;
+$sg-line-height-5: 32px;
+$sg-line-height-6: 40px;
+$sg-line-height-7: $sg-font-size-7 + $sg-md-baseline;
+$sg-line-height-8: $sg-font-size-8 + $sg-md-baseline;
+$sg-line-height-9: $sg-font-size-9 + $sg-md-baseline;
+// Font weights
+// Google Material Design specifications strongly recommend to avoid bold
+// font weight. Here are some variables to define weights more conveniently
+// ----------------------------------------------------------------------------
+$sg-font-light: 200;
+$sg-font-regular: 400;
+$sg-font-medium: 600;
+$sg-font-Bold: $sg-font-medium;
+
+// h elements definitions
+// ----------------------------------------------------------------------------
+$h1-font-size-Base: $sg-font-size-9;
+$h1-margin-Base: 0.67em 0;
+
+$h2-font-size-Base: $sg-font-size-8;
+$h2-margin-Base: 0.83em 0;
+
+$h3-font-size-Base: $sg-font-size-7;
+$h3-margin-Base: 1em 0;
+
+$h4-font-size-Base: $sg-font-size-6;
+$h4-margin-Base: 1.33em 0;
+
+$h5-font-size-Base: $sg-font-size-5;
+$h5-margin-Base: 1.67em 0;
+
+$h6-font-size-Base: $sg-font-size-4;
+$h6-margin-Base: 2.33em 0;
+
+/// Gogle Material Design Standard styles
+/// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
+//  -------------------------------------------------------------------------------------------------
+.sg-md {
+  &-.caption {
+    font-size: $sg-font-size-1;
+    line-height: $sg-line-height-1;
+    font-weight: $sg-font-regular;
+    white-space: nowrap;
+    }
+  &-.menu {
+    font-size: $sg-font-size-2;
+    line-height: $sg-line-height-1;
+    font-weight: $sg-font-medium;
+    white-space: nowrap;}
+  &-.button {
+    font-size: $sg-font-size-2;
+    line-height: $sg-line-height-1;
+    font-weight: $sg-font-medium;
+    white-space: nowrap;
+    text-transform: capitalize;
+  }
+  &-.body-1 {
+    font-size: $sg-font-size-1;
+    line-height: $sg-line-height-2;
+    font-weight: $sg-font-regular;
+    margin-top: ($sg-line-height-2 * -1);
+    margin-bottom: $sg-line-height-2;
+  }
+  /// @alias .body-1
+  &-.body-multi {
+    @extend .body-1;
+  }
+  &-.body-2 {
+    $lineHeight : $sg-line-height-2 + $sg-md-baseline;
+    font-size: $sg-font-size-1;
+    line-height: $lineHeight;
+    font-weight: $sg-font-medium;
+    margin-top: ($lineHeight * -1);
+    margin-bottom: $lineHeight;
+  }
+  &-.subhead-1 {
+    $lineHeight : $sg-line-height-3;
+    font-size: $sg-font-size-3;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    margin-top: ($lineHeight * -1);
+    margin-bottom: $lineHeight;
+  }
+  &-.subhead-2 {
+    $lineHeight : $sg-line-height-3 + $sg-md-baseline;
+    font-size: $sg-font-size-3;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    margin-top: ($lineHeight * -1);
+    margin-bottom: $lineHeight;
+  }
+  &-.title {
+    $lineHeight : $sg-line-height-4;
+    font-size: $sg-font-size-4;
+    line-height: $lineHeight;
+    font-weight: $sg-font-medium;
+    white-space: nowrap;
+  }
+  &-.headline {
+    $lineHeight : $sg-line-height-5;
+    font-size: $sg-font-size-5;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    margin-top: ($lineHeight * -1);
+    margin-bottom: $lineHeight;
+  }
+  &-.display-1 {
+    $lineHeight : $sg-line-height-6;
+    font-size: $sg-font-size-6;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    margin-top: ($lineHeight * -1);
+    margin-bottom: $lineHeight;
+  }
+  &-.display-2 {
+    $lineHeight: $sg-line-height-7;
+    font-size: $sg-font-size-7;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    white-space: nowrap;
+  }
+  &-.display-3 {
+    $lineHeight : $sg-line-height-8;
+    font-size: $sg-font-size-8;
+    line-height: $lineHeight;
+    font-weight: $sg-font-regular;
+    white-space: nowrap;
+  }
+  &-.display-4 {
+    $lineHeight : $sg-line-height-9;
+    font-size: $sg-font-size-9;
+    line-height: $lineHeight;
+    font-weight: $sg-font-light;
+    white-space: nowrap;
+  }
+}
+/// Some specification class names are counterintuitive. Here are some aliases
+// ----------------------------------------------------------------------------
