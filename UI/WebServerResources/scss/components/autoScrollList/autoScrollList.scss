@@ -1,0 +1,31 @@
+////
+/// SOGo
+/// Version: #{$Version}
+/// Module: autoScrollList
+/// Main definitions for autoScrollList
+////
+@import 'extends';
+
+// The only selector for vs-repeat lists is this id, we use attributes selector to
+// avoid overspecifying
+// todo: create new classes and refactor templates markup
+[id='messagesList'] {
+  md-item-content {
+    padding: $layout-gutter-width;
+  }
+}
+.sg-tile-content {
+  .sg-md-subhead-multi {
+    padding: 0 0 0 $layout-gutter-width;
+    margin: 0;
+  }
+  .sg-md-body-multi {
+    margin: 0;
+  }
+  a {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
