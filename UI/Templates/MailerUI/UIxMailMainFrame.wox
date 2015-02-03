@@ -266,7 +266,7 @@
     <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
       <md-toolbar class="md-tall" layout-align="end start">
         <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-          <span class="md-flex">{{activeUser.identification}}</span>
+          <span class="sg-md-title md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-padding" ng-controller="LeftCtrl">
@@ -276,7 +276,7 @@
             <md-item-content>
               <div class="md-tile-content">
                 <md-button>
-                  <h3>{{account.name}}</h3>
+                  <span>{{account.name}}</span>
                 </md-button>
               </div>
             </md-item-content>
@@ -294,7 +294,7 @@
             <md-button ng-click="toggleLeft()" class="md-primary md-hide-gt-md">
               <span class="icon-ic_menu_24px"></span>
             </md-button>
-            <div class="display-1" style="font-size: 2em; font-weight: 300">
+            <div class="sg-md-display-1">
               [[Calendar]]
             </div>
           </span>
