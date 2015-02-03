@@ -21,7 +21,7 @@ $foreground-primary-color: rgba($primary-color, 0.87);//override
 //$foreground-tertiary-color: rgba($foreground-base-color, 0.26) !default;
 //$foreground-quarternary-color: rgba($foreground-base-color, 0.12) !default;
 //$foreground-text-shadow: none !default;
-
+$bottombar-color: #212121;
 
 //$input-border-color: $foreground-secondary-color !default;
 //$input-disabled-border-color: $foreground-tertiary-color !default;
@@ -32,8 +32,7 @@ $foreground-primary-color: rgba($primary-color, 0.87);//override
 //$primary-color-palette: $color-light-blue !default;
 //$warn-color-palette: $color-red !default;
 //$primary-color-palette-contrast-color: white !default;
-//todo ; create grey map
-$bottombar-color: #121212;
+//todo ; create grey map$bottombar-color: #121212;
 
 // Layout
 // ------------------------------
