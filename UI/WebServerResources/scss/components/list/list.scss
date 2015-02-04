@@ -8,7 +8,6 @@
 .sg {
   &-tile-content {
     @extend .md-tile-content;
-    margin-left: $layout-gutter-width; // dirty fix for vs-repeat damages
     .name  {
       margin: $list-h3-margin;
       font-weight: $list-h3-font-weight;
@@ -37,7 +36,22 @@
 }
 // The right tile for a list item (avatar container)
 // ----------------------------------------------------------------------------
-.md-tile-left {
+
+.md-tile-left,
+.md-tile-right {
   border-radius: 100%;
-  min-height: 56px;
+  padding: $layout-gutter-width;
+  width: $sg-md-grid-pitch + $baseline-grid;
+  height: $sg-md-grid-pitch + $baseline-grid;
+  background-clip: content-box;
+  margin-left: -$layout-gutter-width;
+}
+.md-tile-right {
+  margin-right: -$layout-gutter-width;
+}
+.md-tile-left:before {
+  content: "\f251";
+  font-family: 'Material Design Iconic Font';
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.26);
 }

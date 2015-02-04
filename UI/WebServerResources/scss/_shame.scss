@@ -13,3 +13,15 @@
 // 4. Try and clean shame.css up when you have some down time.
 //    Even better, get a tech-debt story in which you can dedicate actual sprint time to it.
 //
+
+// 1. Component : autoScrollList
+// 2. Suddently, the date span of the first list item of the messagae-list do not
+//    justify to the extreme right of his container (flex-box)
+//    After more than an hour spent analysing trying to find differences with other
+//    list element. I still can't find any.
+// 3. I decide to apply a minimal width to the left element until I found a culprit.
+
+.sg-tile-content .sg-md-subhead-multi, 
+.sg-tile-content .sg-md-subhead-solo {
+  min-width: 50%;
+}
