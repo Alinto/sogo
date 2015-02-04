@@ -10,7 +10,7 @@
  */
 (function () {
   'use strict';
-  angular.module('SOGo.UI', ['ngMaterial'])
+  angular.module('SOGo.UI', ['ngMaterial', 'mdColors'])
 
       .config(function ($mdThemingProvider) {
 
@@ -119,7 +119,9 @@
                 $log.debug("close RIGHT is done");
               });
         };
-      });
+      })
+
+  .controller('ColorController', ColorController);
 
 })();
 
