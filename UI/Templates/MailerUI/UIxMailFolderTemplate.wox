@@ -2,34 +2,34 @@
 <container
     xmlns = "http://www.w3.org/1999/xhtml"
     >
-  <md-content class="md-whiteframe-z2" flex ="40" style="min-width: 300px; position: relative;" id = "messagesList">
+  <md-content class="md-whiteframe-z2" flex="40" style="min-width: 300px; position: relative;" id="messagesList">
     <style>
       .vs-repeat-repeated-element {
-      width: 100%;
+        width: 100%;
       }
     </style>
     <header class="md-background sg-md-subheader sg-avatar-left">
       <h2 class="sg-md-subhead-solo md-primary md-hue-3">Unread Messages</h2>
     </header>
 
-    <md-list data-vs-repeat = "72"
-        data-vs-scroll-parent = "#messagesList">
-      <md-item ng-repeat = "currentMessage in mailbox.$messages track by currentMessage.id"
-          data-ng-class = "{unread: !currentMessage.isread}">
+    <md-list data-vs-repeat="72"
+        data-vs-scroll-parent="#messagesList">
+      <md-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
+          data-ng-class="{unread: !currentMessage.isread}">
         <md-item-content>
-          <div class = "md-tile-left">
+          <div class="md-tile-left">
             <!--avatar-->
           </div>
-          <div class = "sg-tile-content">
-            <a data-ui-sref = "mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
-                data-ui-sref-active = "_selected">
-              <div class = "sg-md-subhead-multi">
+          <div class="sg-tile-content">
+            <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
+                data-ui-sref-active="_selected">
+              <div class="sg-md-subhead-multi">
                 {{currentMessage.$shortAddress('from')}}
               </div>
-              <span class = "right" data-ng-bind-html = "currentMessage.relativedate"><!-- date --></span>
-              <div class = "sg-md-body-multi">{{currentMessage.subject}}</div>
-              <i class = "icon-ion-refresh"
-                  data-ng-hide = "mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+              <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
+              <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
+              <i class="icon-ion-refresh"
+                  data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
             </a>
           </div>
         </md-item-content>

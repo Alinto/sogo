@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="myPlunk" ng-strict-di="">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MD Template</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body ng-controller="AppController as vm">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <span>Hello angular {{vm.version}}</span>
+        </div>
+    </md-toolbar>
+
+
+    <md-card>
+        <h2 class='md-bg-500 title md-hue-1'>Color Pallete Sample</h2>
+
+        <md-card-content>
+            <p>This is a sample that goes with <a href="https://github.com/angular/material/issues/1269">this github issue</a></p>
+
+            <select ng-model='vm.th.theme' ng-options='color for color in vm.th.themes' ng-change='vm.th.loadColors(vm.th.theme);'>
+            </select>
+
+            <div>
+                <h4>Select a color-theme above!</h4>
+                <p>This wil override the md-bg-[colorname] and md-fg-[colorname] css-rules.</p>
+            </div>
+
+            <table>
+
+                <tr>
+                    <th>color</th>
+                    <th>className</th>
+                    <th>result</th>
+                    <th>classname</th>
+                    <th>result</th>
+                </tr>
+
+                <tr ng-repeat='color in vm.th.colors'>
+                    <td>{{color.color}}</td>
+                    <td>md-fg-{{color.color}}:</td>
+                    <td>
+                        <div class="md-fg-{{color.color}}">Foreground</div>
+                    </td>
+                    <td>md-bg-{{color.color}}:</td>
+                    <td>
+                        <div class="md-bg-{{color.color}}">Background</div>
+                    </td>
+                </tr>
+
+            </table>
+            <p>Those color will be available application wide, and will not change with local themes.</p>
+        </md-card-content>
+    </md-card>
+
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-aria.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-messages.min.js"></script>
+    <script src="//code.angularjs.org/1.3.10/i18n/angular-locale_nl-nl.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.js"></script>
+    <script src="colors.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
