@@ -13,3 +13,19 @@
   width: 390px; // todo : convert this in grid-pitch
   transform: translateY(-100%); // Compensate the container top-margin
 }
+.sg-md-subheader {
+  font-size: $sg-font-size-2;
+  font-weight: $sg-font-medium;
+}
+.sg-md-subheader > * {
+  font-size: inherit;
+  font-weight: inherit;
+}
+.sg-md-subheader.sg-avatar {
+  &-left {
+    padding-left: $sg-md-grid-pitch + $baseline-grid;
+  }
+  &-right {
+    padding-left: $baseline-grid * 2;
+  }
+}
