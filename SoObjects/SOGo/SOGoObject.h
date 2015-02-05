@@ -83,6 +83,8 @@
 
 - (BOOL) isInPublicZone;
 
+- (BOOL) doesRetainContainer;
+
 /* accessors */
 
 - (void) setContext: (WOContext *) newContext;

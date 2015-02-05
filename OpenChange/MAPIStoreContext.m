@@ -276,6 +276,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
   NSString *username;
 
+  if (newConnInfo == NULL)
+    {
+      return nil;
+    }
+
   if ((self = [self init]))
     {
       ASSIGN (contextUrl, newUrl);
@@ -367,8 +372,9 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSString *objectURL, *url;
   // TDB_DATA key, dbuf;
 
-  url = [[contextUrl absoluteString]
-            stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  url = [contextUrl absoluteString];
+  // FIXME transform percent escapes but not for user part of the url
+  //stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
   objectURL = [[userContext mapping] urlFromID: fmid];
   if (objectURL)
     {
@@ -549,7 +555,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
   uint64_t newVersionNumber;
 
-  if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, &newVersionNumber)
+  if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, connInfo->username, &newVersionNumber)
       != MAPI_E_SUCCESS)
     abort ();
 
@@ -566,9 +572,9 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
   memCtx = talloc_zero(NULL, TALLOC_CTX);
   newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
-  
+
   if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
-                                          memCtx, max, &numbers)
+                                          memCtx, connInfo->username, max, &numbers)
       != MAPI_E_SUCCESS || numbers->cValues != max)
     abort ();
   for (count = 0; count < max; count++)

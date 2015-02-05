@@ -474,7 +474,9 @@ rtf2html (NSData *compressedRTF)
   MAPIStoreMessage *mainMessage;
 
   //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
-  
+
+  containerTables = nil;
+  max = 0;
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   userIsOwner = [[context activeUser] isEqual: ownerUser];
@@ -795,7 +797,7 @@ rtf2html (NSData *compressedRTF)
   TALLOC_CTX *localMemCtx;
   char *prefix, *normalizedSubject;
 
-  localMemCtx = talloc_zero (NULL, TALLOC_CTX);
+  localMemCtx = talloc_zero (memCtx, TALLOC_CTX);
   if ([self getProperty: (void **) &prefix
                 withTag: PidTagSubjectPrefix
                inMemCtx: localMemCtx]
@@ -806,6 +808,8 @@ rtf2html (NSData *compressedRTF)
                 inMemCtx: localMemCtx];
   if (rc == MAPISTORE_SUCCESS)
     *data = talloc_asprintf (memCtx, "%s%s", prefix, normalizedSubject);
+
+  talloc_free(localMemCtx);
 
   return rc;
 }

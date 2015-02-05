@@ -308,6 +308,14 @@ Class SOGoCacheGCSObjectK = Nil;
   [super changePathTo: newPath];
 }
 
+- (void) changePathTo: (NSString *) newPath intoNewContainer: (id) newContainer
+{
+  [self changePathTo: newPath];
+  container = newContainer;
+  if ([self doesRetainContainer])
+    [container retain];
+}
+
 // - (NSArray *) toOneRelationshipKeysMatchingQualifier: (EOQualifier *) qualifier
 //                                     andSortOrderings: (NSArray *) sortOrderings
 // {

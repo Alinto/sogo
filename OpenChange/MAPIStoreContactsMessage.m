@@ -723,6 +723,27 @@
   return rc;
 }
 
+- (int) getPidTagWeddingAnniversary: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSCalendarDate *dateValue;
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-anniversary"]
+                  flattenedValuesForKey: @""];
+  if (stringValue && ! [stringValue isEqualToString: @""])
+    {
+      dateValue = [NSCalendarDate dateWithString: stringValue
+                                  calendarFormat: @"%Y-%m-%d"];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 //
 // Decomposed fullname getters
 //
@@ -1171,6 +1192,15 @@ fromProperties: (NSDictionary *) attachmentProps
   if (value)
     {
       [newCard setBday: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+    }
+
+  /* wedding anniversary */
+  value = [properties objectForKey: MAPIPropertyKey(PidTagWeddingAnniversary)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-ms-anniversary"]
+        setSingleValue: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]
+                forKey: @""];
     }
 
   /* photo */

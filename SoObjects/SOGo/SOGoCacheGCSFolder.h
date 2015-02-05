@@ -49,6 +49,8 @@
              andSortOrderings: (NSArray *) sortOrderings;
 
 - (void) changePathTo: (NSString *) newPath;
+- (void) changePathTo: (NSString *) newPath
+     intoNewContainer: (id) newContainer;
 
 @end
 

@@ -49,11 +49,15 @@
 - (NSString *) urlFromID: (uint64_t) idKey;
 
 - (uint64_t) idFromURL: (NSString *) url;
+- (uint64_t) idFromURL: (NSString *) url
+         isSoftDeleted: (bool *) softDeleted;
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
 - (void) registerURLs: (NSArray *) urlString
               withIDs: (NSArray *) idNbrs;
 - (void) unregisterURLWithID: (uint64_t) idNbr;
+- (void) unregisterURLWithID: (uint64_t) idNbr
+                    andFlags: (uint8_t) flags;
 - (void) updateID: (uint64_t) idNbr
           withURL: (NSString *) urlString;
 

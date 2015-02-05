@@ -73,6 +73,7 @@
 /* batch-mode helpers */
 - (NSString *) bodyContentPartKey;
 - (void) setBodyContentFromRawData: (NSData *) rawContent;
+- (BOOL) read; /* Unseen from sogoObject */
 
 @end
 

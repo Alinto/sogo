@@ -791,11 +791,20 @@ static NSCharacterSet *hexCharacterSet = nil;
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  NSCalendarDate *dateValue;
+  NSCalendarDate *dateValue, *start;
 
   if ([event isRecurrent])
     {
-      dateValue = [[event startDate] hour: 0 minute: 0 second: 0];
+      /* [MS-OXOCAL] For a recurring series, this property specifies
+         midnight in the user's machine time zone, on the date of the
+         first instance, then is persisted in UTC. */
+      start = [event startDate];
+      dateValue = [NSCalendarDate dateWithYear: [start yearOfCommonEra]
+                                         month: [start monthOfYear]
+                                           day: [start dayOfMonth]
+                                          hour: 0 minute: 0 second: 0
+                                      timeZone: timeZone];
+      [dateValue setTimeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
@@ -894,7 +903,7 @@ static NSCharacterSet *hexCharacterSet = nil;
         }
       else
         dateValue = [NSCalendarDate dateWithYear: 4500 month: 8 day: 31
-                                            hour: 23 minute: 59 second: 59
+                                            hour: 23 minute: 59 second: 00
                                         timeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
@@ -1231,7 +1240,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       /* Avoiding those trail weird characters at event description */
       range = [stringValue rangeOfString: trimingString
                                  options: NSBackwardsSearch];
-      if (range.location > 0)
+      if (range.location != NSNotFound)
         {
           stringValue = [stringValue substringToIndex: (NSMaxRange(range) -1)];
         }
@@ -1826,16 +1835,25 @@ ReservedBlockEE2Size: 00 00 00 00
   NSArray *alarms;
   NSUInteger count, max;
   iCalAlarm *currentAlarm;
-  NSString *action;
+  NSString *action, *webstatus;
 
   alarms = [event alarms];
   max = [alarms count];
   for (count = 0; !alarm && count < max; count++)
     {
       currentAlarm = [alarms objectAtIndex: count];
-      action = [[currentAlarm action] lowercaseString];
-      if (!action || [action isEqualToString: @"display"])
-        ASSIGN (alarm, currentAlarm);
+
+      // Only handle 'display' alarms
+      action = [currentAlarm action];
+      if ([action caseInsensitiveCompare: @"display"] != NSOrderedSame)
+        continue;
+
+      // Ignore alarms already triggered
+      webstatus = [[currentAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+      if ([webstatus caseInsensitiveCompare: @"triggered"] == NSOrderedSame)
+        continue;
+
+      ASSIGN (alarm, currentAlarm);
     }
 
   alarmSet = YES;

@@ -39,7 +39,7 @@
 #import <SOGo/BSONCodec.h>
 #import "NSObject+PropertyList.h"
 
-Class MAPIStoreUserContextK, SOGoMAPIDBObjectK;
+Class MAPIStoreUserContextK, SOGoCacheGCSObjectK;
 
 static void
 DumpBSONData(NSData *data)
@@ -60,7 +60,7 @@ DbDumpObject (NSString *username, NSString *path)
 
   ctx = [MAPIStoreUserContextK userContextWithUsername: username
                                         andTDBIndexing: NULL];
-  dbobject = [SOGoMAPIDBObjectK new];
+  dbobject = [SOGoCacheGCSObjectK new];
   [dbobject setTableUrl: [ctx folderTableURL]];
   record = [dbobject lookupRecord: path newerThanVersion: -1];
   if (record)
@@ -107,7 +107,7 @@ int main (int argc, char *argv[], char *envp[])
   [loader loadProducts: [NSArray arrayWithObject: BACKEND_BUNDLE_NAME]];
 
   MAPIStoreUserContextK = NSClassFromString (@"MAPIStoreUserContext");
-  SOGoMAPIDBObjectK = NSClassFromString (@"SOGoMAPIDBObject");
+  SOGoCacheGCSObjectK = NSClassFromString (@"SOGoCacheGCSObject");
 
   arguments = [[NSProcessInfo processInfo] arguments];
   if ([arguments count] > 2) {

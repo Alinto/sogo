@@ -55,8 +55,6 @@ static NSArray *privilegedTagNames = nil;
 
 - (void) dealloc
 {
-  if (content)
-    free (content);
   [self reset];
   [cards release];
   [currentGroup release];
