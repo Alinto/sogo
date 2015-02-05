@@ -3,6 +3,7 @@
 
 Bug fixes
  - (regression) fixed sending a message when mail module is not active (#3088)
+ - mail lables with blanks are not handled correctly (#3078)
 
 2.2.15 (2015-01-30)
 -------------------
