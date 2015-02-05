@@ -173,7 +173,6 @@
           <script type = "text/javascript" rsrc:src = "js/Common/ui.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/Common/ui-common.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/Common/ui-desktop.js"><!-- space --></script>
-          <script type = "text/javascript" rsrc:src = "md-colors/colors.js"><!-- space --></script>
 
           <var:if condition = "hasProductSpecificJavaScript">
             <script type = "text/javascript"

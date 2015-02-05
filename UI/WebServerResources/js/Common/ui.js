@@ -10,7 +10,7 @@
  */
 (function () {
   'use strict';
-  angular.module('SOGo.UI', ['ngMaterial', 'mdColors'])
+  angular.module('SOGo.UI', ['ngMaterial'])
 
       .config(function ($mdThemingProvider) {
 
@@ -25,10 +25,10 @@
           '700': '388e3c',
           '800': '367d2e',
           '900': '225e1b',
-          'A100': '#b9f6ca',
-          'A200': '#69f0ae',
-          'A400': '#00e676',
-          'A700': '#00c853',
+          'A100': 'b9f6ca',
+          'A200': '69f0ae',
+          'A400': '00e676',
+          'A700': '00c853',
           'contrastDefaultColor': 'dark',
           'contrastLightColors': '500 600 700 800 900'
         });
@@ -62,11 +62,11 @@
           '700': '857545',
           '800': '524517',
           '900': '433809',
-          '1000': '#000000',
-          'A100': '#ffffff',
-          'A200': '#eeeeee',
-          'A400': '#bdbdbd',
-          'A700': '#616161',
+          '1000': '000000',
+          'A100': 'ffffff',
+          'A200': 'eeeeee',
+          'A400': 'bdbdbd',
+          'A700': '616161',
           'contrastDefaultColor': 'dark',
           'contrastLightColors': '500 600 700 800 900'
         });
@@ -119,9 +119,7 @@
                 $log.debug("close RIGHT is done");
               });
         };
-      })
-
-  .controller('ColorController', ColorController);
+      });
 
 })();
 
