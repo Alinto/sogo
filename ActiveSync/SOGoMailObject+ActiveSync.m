@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGMime/NGMimeBodyPart.h>
@@ -56,6 +57,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
+
+#import <Mailer/SOGoMailLabel.h>
+
+#import <SOGo/SOGoUserDefaults.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
@@ -774,6 +779,27 @@ struct GlobalObjectId {
   [s appendString: @"<Flag xmlns=\"Email:\">"];
   [s appendFormat: @"<FlagStatus>%d</FlagStatus>", ([self flagged] ? 2 : 0)];
   [s appendString: @"</Flag>"];
+
+
+  // Categroies/Labels
+  NSEnumerator *categories;
+  categories = [[[self fetchCoreInfos] objectForKey: @"flags"] objectEnumerator];
+
+  if (categories)
+    {
+      NSString *currentFlag;
+      NSDictionary *v;
+
+      v = [[[context activeUser] userDefaults] mailLabelsColors];
+
+      [s appendFormat: @"<Categories xmlns=\"Email:\">"];
+      while ((currentFlag = [categories nextObject]))
+        {
+          if ([[v objectForKey: currentFlag] objectAtIndex:0])
+            [s appendFormat: @"<Category>%@</Category>", [[[v objectForKey: currentFlag] objectAtIndex:0] activeSyncRepresentationInContext: context]];
+        }
+      [s appendFormat: @"</Categories>"];
+    }
   
   // FIXME - support these in the future
   //[s appendString: @"<ConversationId xmlns=\"Email2:\">foobar</ConversationId>"];
@@ -835,6 +861,65 @@ struct GlobalObjectId {
         [self addFlags: @"seen"];
       else
         [self removeFlags: @"seen"];;
+    }
+
+  if ((o = [theValues objectForKey: @"Categories"]))
+    {
+      NSEnumerator *categories;
+      NSString *currentFlag;
+      NSDictionary *v;
+
+      v = [[[context activeUser] userDefaults] mailLabelsColors];
+
+      // add categories/labels sent from client
+      if ([o isKindOfClass: [NSArray class]])
+        {
+          NSEnumerator *enumerator;
+          NSMutableArray *labels;
+          NSEnumerator *flags;
+          id key;
+
+          labels = [NSMutableArray array];
+
+          enumerator = [v keyEnumerator];
+          flags = [o objectEnumerator];
+
+          while ((currentFlag = [flags nextObject]))
+            {
+              while ((key = [enumerator nextObject]))
+                {
+                  if (([currentFlag isEqualToString:[[v objectForKey:key] objectAtIndex:0]]))
+                    {
+                      [labels addObject: key];
+                      break;
+                    }
+                }
+            }
+
+          [self addFlags: [labels componentsJoinedByString: @" "]];
+        }
+
+      categories = [[[self fetchCoreInfos] objectForKey: @"flags"] objectEnumerator];
+
+      // remove all categories/labels from server which were not it the list sent from client
+      if (categories)
+        {
+          while ((currentFlag = [categories nextObject]))
+            {
+              // only deal with lables and don't touch flags like seen and flagged
+              if (([v objectForKey: currentFlag]))
+                {
+                  if (![o isKindOfClass: [NSArray class]])
+                    {
+                      [self removeFlags: currentFlag];
+                    }
+                  else if (([o indexOfObject: [[v objectForKey:currentFlag] objectAtIndex:0]] == NSNotFound))
+                    {
+                      [self removeFlags: currentFlag];
+                    }
+                }
+            }
+        }
     }
 }
 

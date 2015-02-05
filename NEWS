@@ -1,6 +1,9 @@
 2.2.16 (2015-02-DD)
 -------------------
 
+Enhancements
+ - added support for email categories using EAS (#2995)
+
 Bug fixes
  - (regression) fixed sending a message when mail module is not active (#3088)
  - mail lables with blanks are not handled correctly (#3078)

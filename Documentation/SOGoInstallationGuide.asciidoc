@@ -2421,6 +2421,10 @@ Please be aware of the following limitations:
 solution is to configure Outlook to use a LDAP server (over SSL) with
 authentication. Outlook 2013 also does not seem to support multiple
 address books over ActiveSync.
+* To successfully synchronize Outlook email categories, a corresponding
+mail label (Preferences->Mail Options) has to be created manually in SOGo
+for each label defined in Outlook. The name in SOGo and in Outlook must be
+identical.
 * Make sure you do not use a self-signed certificate. While this will
 work, Outlook will work intermittently as it will raise popups for
 certificate validation, sometimes in background, preventing the user to
