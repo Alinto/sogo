@@ -1243,6 +1243,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   struct SRow folderRow;
   struct SPropValue nameProperty;
   MAPIStoreMailFolder *newFolder;
+  SOGoMailAccount *accountFolder;
   SOGoMailFolder *targetSOGoFolder;
   NSMutableArray *uids;
   NSArray *childKeys;
@@ -1255,7 +1256,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   MAPIStoreMapping *mapping;
   NSDictionary *result;
 
-  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
+  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK] || (!targetFolder && isMove))
     {
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
@@ -1263,10 +1264,23 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       targetSOGoFolder = [targetFolder sogoObject];
       if (isMove)
         {
-          /* Mimetise [SOGoMailFolderK imap4URLString] */
-          urlNamePart = [[newFolderName stringByEncodingImap4FolderName] stringByEscapingURL];
-          newFolderURL = [NSURL URLWithString: urlNamePart
-                                relativeToURL: [targetSOGoFolder imap4URL]];
+          newFolderDBName = [[newFolderName stringByEncodingImap4FolderName] asCSSIdentifier];
+          if (targetSOGoFolder)
+            {
+              /* Mimetise [SOGoMailFolderK imap4URLString] */
+              urlNamePart = [[newFolderName stringByEncodingImap4FolderName] stringByEscapingURL];
+              newFolderURL = [NSURL URLWithString: urlNamePart
+                                    relativeToURL: [targetSOGoFolder imap4URL]];
+            }
+          else
+            {
+              /* Mimetise what createRootSecondaryFolderWithFID does */
+              accountFolder = [[[self userContext] rootFolders] objectForKey: @"mail"];
+              targetSOGoFolder = [SOGoMailFolder objectWithName: [NSString stringWithFormat: @"folder%@",
+                                                                           newFolderDBName]
+                                                    inContainer: accountFolder];
+              newFolderURL = [targetSOGoFolder imap4URL];
+            }
           error = [[sogoObject imap4Connection]
                       moveMailboxAtURL: folderURL
                                  toURL: newFolderURL];
@@ -1276,18 +1290,29 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
             {
               rc = MAPISTORE_SUCCESS;
               mapping = [self mapping];
-              newFolderDBName = [[newFolderName stringByEncodingImap4FolderName] asCSSIdentifier];
-              newURL = [NSString stringWithFormat: @"%@folder%@/",
-                                 [targetFolder url], newFolderDBName];
+              if (targetFolder)
+                newURL = [NSString stringWithFormat: @"%@folder%@/",
+                                   [targetFolder url], newFolderDBName];
+              else
+                newURL = [NSString stringWithFormat: @"sogo://%@:%@@mail/folder%@/",
+                                   [[self userContext] username], [[self userContext] username],
+                                   newFolderDBName];
               [mapping updateID: [self objectId] withURL: newURL];
-              parentDBFolderPath = [[targetFolder dbFolder] path];
-              if (!parentDBFolderPath)
-                parentDBFolderPath = @"";
-              [dbFolder changePathTo: [NSString stringWithFormat:
-                                                  @"%@/folder%@",
-                                                parentDBFolderPath,
-                                                newFolderDBName]
-                      intoNewContainer: [targetFolder dbFolder]];
+              if (targetFolder)
+                {
+                  parentDBFolderPath = [[targetFolder dbFolder] path];
+                  if (!parentDBFolderPath)
+                    parentDBFolderPath = @"";
+                  [dbFolder changePathTo: [NSString stringWithFormat:
+                                                      @"%@/folder%@",
+                                                    parentDBFolderPath,
+                                                    newFolderDBName]
+                        intoNewContainer: [targetFolder dbFolder]];
+                }
+              else
+                [dbFolder changePathTo: [NSString stringWithFormat:
+                                                    @"/mail/folder%@", newFolderDBName]
+                      intoNewContainer: nil];
             }
         }
       else
