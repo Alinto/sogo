@@ -25,7 +25,6 @@
         <meta name = "viewport" content = "width=device-width, initial-scale=1" />
         <link href = "mailto:support@inverse.ca" rev = "made" />
         <link rel = "shortcut icon" var:href = "siteFavicon" type = "image/x-icon" />
-        <link type = "text/css" rel = "stylesheet" rsrc:href = "bower_components/angular-material/angular-material.css" />
         <link type = "text/css" rel = "stylesheet" rsrc:href = "css/styles.css" />
         <var:if condition = "hasPageSpecificCSS"
             >
@@ -165,7 +164,7 @@
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-animate.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-sanitize.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-aria.js"><!-- space --></script>
-          <script type = "text/javascript" rsrc:src = "bower_components/angular-material/angular-material.js"><!-- space --></script>
+          <script type = "text/javascript" rsrc:src = "js/vendor/angular-material.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-ui-router.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/mm-foundation-tpls.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-recursion.js"><!-- space --></script>
