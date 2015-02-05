@@ -17,11 +17,6 @@
 // ------------------------------------------------------------------------------
 @import 'core/reset';
 
-
-// Fonts
-// ------------------------------------------------------------------------------
-//@import '../fonts/ubuntu'; // Actually this is a symLink to 'css/ubuntu.css'
-
 // CORE elements
 // ------------------------------------------------------------------------------
 @import 'core/functions';
@@ -35,30 +30,64 @@
 @import 'core/layout';
 @import 'core/typography/typography';
 
-
-
-// Material Design Iconic Font 1.0.1 (http://zavoloklom.github.io/material-design-iconic-font/)
+// Original angular-material components
 // ------------------------------------------------------------------------------
+@import 'components/backdrop/backdrop.scss';
+@import 'components/bottomSheet/bottomSheet.scss';
+@import 'components/button/button';
+@import 'components/card/card.scss';
+@import 'components/checkbox/checkbox.scss';
+@import 'components/content/content.scss';
+@import 'components/dialog/dialog.scss';
+@import 'components/divider/divider.scss';
 @import 'components/icon/icon.scss';
+@import 'components/input/input.scss';
+@import 'components/list/list.scss';
+@import 'components/autoScrollList/autoScrollList.scss';
+@import 'components/progressCircular/progressCircular.scss';
+@import 'components/progressLinear/progressLinear.scss';
+@import 'components/radioButton/radio-button.scss';
+@import 'components/sidenav/sidenav.scss';
+@import 'components/slider/slider.scss';
+@import 'components/sticky/sticky.scss';
+@import 'components/subheader/subheader.scss';
+@import 'components/switch/switch.scss';
+@import 'components/tabs/tabs.scss';
+@import 'components/textField/textField.scss';
+@import 'components/toast/toast.scss';
+@import 'components/toolbar/toolbar.scss';
+@import 'components/bottombar/bottombar.scss';
+@import 'components/tooltip/tooltip.scss';
+@import 'components/whiteframe/whiteframe.scss';
 
+// Theme
+//@import '../angular-material/src/components/backdrop/backdrop-theme.scss';
+//@import '../angular-material/src/components/bottomSheet/bottomSheet-theme.scss';
+//@import '../angular-material/src/components/button/button-theme.scss';
+//@import '../angular-material/src/components/card/card-theme.scss';
+//@import '../angular-material/src/components/checkbox/checkbox-theme.scss';
+//@import '../angular-material/src/components/content/content-theme.scss';
+//@import '../angular-material/src/components/dialog/dialog-theme.scss';
+//@import '../angular-material/src/components/divider/divider-theme.scss';
+//@import '../angular-material/src/components/input/input-theme.scss';
+//@import '../angular-material/src/components/progressCircular/progressCircular-theme.scss';
+//@import '../angular-material/src/components/progressLinear/progressLinear-theme.scss';
+//@import '../angular-material/src/components/radioButton/radio-button-theme.scss';
+//@import '../angular-material/src/components/sidenav/sidenav-theme.scss';
+//@import '../angular-material/src/components/slider/slider-theme.scss';
+//@import '../angular-material/src/components/subheader/subheader-theme.scss';
+//@import '../angular-material/src/components/switch/switch-theme.scss';
+//@import '../angular-material/src/components/tabs/tabs-theme.scss';
+//@import '../angular-material/src/components/textField/textField-theme.scss';
+//@import '../angular-material/src/components/toast/toast-theme.scss';
+//@import '../angular-material/src/components/toolbar/toolbar-theme.scss';
+//@import '../angular-material/src/components/tooltip/tooltip-theme.scss';
 
 // @import '../angular-material/src/core/style/color-palette.scss';
 
 // COMPONENTS
 // todo : configure manual and glob imports
 @import 'views/view';
-
-/* Angular-material components local overrides */
-@import 'components/list/list.scss';
-@import 'components/autoScrollList/autoScrollList.scss';
-@import 'components/divider/divider.scss';
-@import 'components/bottombar/bottombar.scss';
-@import 'components/input/input.scss';
-@import 'components/button/button';
-@import 'components/backdrop/backdrop.scss';
-@import 'components/subheader/subheader.scss';
-@import 'components/whiteframe/whiteframe.scss';
-
 
 // core styles - need to be after components till settings are correctly implemented
 // ------------------------------------------------------------------------------
