@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.MainUI', ['SOGo.Authentication'])
+  angular.module('SOGo.MainUI', ['SOGo.Authentication', 'SOGo.UI'])
 
     .controller('loginController', ['$scope', 'Authentication', function($scope, Authentication) {
       $scope.warning = false;
