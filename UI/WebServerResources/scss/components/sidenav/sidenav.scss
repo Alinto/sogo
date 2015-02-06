@@ -101,11 +101,65 @@ md-sidenav {
     width: 85%;
   }
 }
+
+// MAIN SIDENAV, actually to the left
+// ----------------------------------------------------------------------------
 .md-sidenav-left {
-  border-right: 1px solid sg-color($sogoPaper, 500);
   & md-content,
   & md-toolbar {
     background-color: inherit;
   }
 }
 
+// MAILER Folder tree (in the left sidenav
+// ---------------------------------------
+$i: 1;
+@while $i < 12 {
+  md-item-content .sg-child-level-#{$i} { padding-left: 2em * $i; }
+  $i: $i + 1;
+}
+
+// Folder and mailboxes icons
+// ---------------------------------------
+  [class*="sg-child-level"] {
+    margin-right: 1em;
+  };
+// This hack is so BAD I'm ashame putting it in the shame file
+// -----------------------------------------------------------
+// Folder tree's controler function are very intricate, the way
+// elements are marked as 'active reminds me of good old time JQuery
+// There must be a more straigthforward, angular-way to swap classes
+// selection, but I don't wan't to mess in that script.
+// Here's the hack : on selection I use the parent > child selector to
+// change the definition of the icon's class. Yes, this means that
+// md-icon-folder:before as the value of md-icon-folder:before:before,
+// and this is wrong !
+
+.sg-active i.md-icon-folder:before {
+  @extend .md-icon-folder-open:before;
+}
+
+.md-sidenav-left {
+
+  md-item-content {
+    line-height: $sg-line-height-6; // 40px eg. display-1
+    padding: 0 $mg;
+    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
+    &:hover {
+      background-color: sg-color($sogoPaper, 500);
+      cursor: pointer;
+    }
+    &.sg-active {
+      color: sg-color($sogoBlue, 800);
+    }
+    &.sg-loading {
+      color: sg-color($sogoBlue, 500);
+    }
+    .sg-item-name {
+      text-align: left;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

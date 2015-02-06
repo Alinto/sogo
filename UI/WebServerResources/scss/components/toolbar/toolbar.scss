@@ -4,3 +4,34 @@ md-toolbar {
   z-index: 20;
   box-shadow: none;
 }
+header {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  display: flex;
+}
+hgroup {
+  align-items: center;
+  flex: 1 1 auto;
+  &h3 {
+    margin-bottom: 0;
+  }
+}
+.sg-icon-bar {
+  font-size: $sg-font-size-5;
+  color: $colorGray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: ($pitch);
+  height:(3 * $pitch);
+  margin-right: $mg * -1;
+    }
+.sg-icon-bar *.button {
+  display: block;
+  margin: 0 auto;
+  width: (2 * $mg);
+}
+
+

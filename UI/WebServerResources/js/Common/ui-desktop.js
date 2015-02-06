@@ -215,8 +215,8 @@
         template:
           '<md-item>' +
           '  <md-item-content>' +
-          '    <i class="md-icon-folder-open"></i>' +
-          '    <button class="md-button md-flex md-tile-content sg-item-name">{{folder.name}}</button>' +
+          '    <i class="md-icon-folder"></i>' +
+          '    <button class="md-button md-flex sg-item-name">{{folder.name}}</button>' +
           '    <md-input-container class="md-flex md-tile-content ng-hide">'+
           '      <input type="text"' +
           '             ng-model="folder.name"' +

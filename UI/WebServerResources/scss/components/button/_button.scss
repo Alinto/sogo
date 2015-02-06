@@ -7,6 +7,17 @@
 /// Definitions for button extends
 ///
 @import 'extends';
-.sg-active button {
-  color: $primary-color;
+
+// Buttons for the sidenav folder tree
+// ------------------------------------
+sg-folder-tree .md-button {
+  outline: none;
+  color: inherit;
+  font-size: sg-size(button);
+  padding: 0;
+  -webkit-font-smoothing: auto;
+
+}
+.sg-active .md-button {
+  color: sg-color($sogoBlue, 800);
 }

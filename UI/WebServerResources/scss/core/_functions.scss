@@ -53,6 +53,6 @@
 /// (caption, body, button, menu, subhead, title, headline, display-1, display-2, display-3, display-4 ; ther's also shortcut aliases : d1, d2, d3, d4)
 /// @return : type size
 @function sg-size($size) {
-  @return map-get($typeSize, $size);
+  @return (map-get($typeSize, $size) * 1px);
 }
 

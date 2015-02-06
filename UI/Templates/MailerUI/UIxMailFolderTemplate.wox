@@ -23,20 +23,25 @@
           <div class="sg-tile-content">
             <a data-ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
                 data-ui-sref-active="_selected">
-              <div class="sg-md-subhead-multi">
-                {{currentMessage.$shortAddress('from')}}
+              <div class="sg-md-subhead-multi subject">
+                {{currentMessage.subject}}
               </div>
-              <span class="right" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-              <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
+              <span class="right msg-date" data-ng-bind-html="currentMessage.relativedate"><!-- date --></span>
+              <div class="sg-md-body-multi name">{{currentMessage.$shortAddress('from')}}</div>
               <i class="icon-ion-refresh"
                   data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
             </a>
+          </div>
+          <div class="sg-tile-icons">
+            <a><i class="md-icon-star"> </i></a>
+            <a><i class="md-icon-flag"> </i></a>
+            <a><i class="md-icon-attach-file disable"> </i></a>
           </div>
         </md-item-content>
       </md-item>
     </md-list>
   </md-content>
 
-  <div layout="column" flex="60" data-ui-view="message"><!-- message view --></div>
+  <div layout="column" data-ui-view="message"><!-- message view --></div>
 
 </container>

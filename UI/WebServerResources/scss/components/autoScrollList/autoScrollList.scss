@@ -9,18 +9,61 @@
 // The only selector for vs-repeat lists is this id, we use attributes selector to
 // avoid overspecifying
 // todo: create new classes and refactor templates markup
+// ----------------------------------------------------------------------------
 [id='messagesList'] {
   border-top: 44px solid transparent;   // padding for the header.subheader,
   border-bottom: 2px solid transparent; //close to a hack
   z-index: 10;
 
+  // In use in MAILER messages list but re-usable
+  // --------------------------------------------
   md-item-content {
-    padding: $layout-gutter-width;
+    padding: 0 0 0 $mg;
+    margin: $mg 0;
+    transition: all 0.35s $swift-ease-in-timing-function 0.15s;
+    &:hover {
+      background-color: sg-color($sogoPaper, 300);
+      color: sg-color($sogoBlue, 800);
+      cursor: pointer;
+    }
+    &:active {
+      color: sg-color($sogoBlue, 800);
+    }
+    &:focus {
+      background-color: sg-color($sogoBlue, 100);
+    }
   }
   .sg-md-subhead-solo {
     margin: 0;
   }
 }
+
+.sg {
+  &-tile-content {
+    @extend .md-tile-content;
+    .name  {
+      font-weight: $sg-font-light;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .subject {
+      font-weight: $sg-font-medium;
+      // dirty fix for vs-repeat damages
+      max-width: 75%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    p {
+      margin: $list-p-margin;
+      font-size: sg-size(body);
+    }
+    .msg-date {
+      font-size: sg-size(body);
+    }
+  }
+}
+
 .sg-tile-content {
   padding: 0 0 0 $layout-gutter-width;
   .sg-md-subhead-multi,
@@ -33,6 +76,7 @@
   a {
     display: flex;
     flex-direction: row;
+    align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
   }

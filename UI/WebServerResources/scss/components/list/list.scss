@@ -4,30 +4,29 @@
 /// Module: List
 /// Main definitions for List
 ////
+
 @import 'extends';
-.sg {
-  &-tile-content {
-    @extend .md-tile-content;
-    .name  {
-      margin: $list-h3-margin;
-      font-weight: $list-h3-font-weight;
-      font-size: $list-h3-font-size;
-    }
-    .subject {
-      margin: $list-h4-margin;
-      font-weight: $list-h4-font-weight;
-      font-size: $list-h4-font-size;
-      // dirty fix for vs-repeat damages
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    p {
-      margin: $list-p-margin;
-      font-size: $list-p-font-size;
-    }
-  }
-}
+// List variables
+// ----------------------------------------------------------------------------
+//$list-h3-font-size: 1.1em !default;
+//$list-h3-margin: 0 0 3px 0 !default;
+//$list-h3-font-weight: 400 !default;
+//$list-h4-font-size: 0.9em !default;
+//$list-h4-font-weight: 400 !default;
+//$list-h4-margin: 0 0 3px 0 !default;
+//$list-p-font-size: 0.75em !default;
+//$list-p-margin: 0 0 3px 0 !default;
+//
+//$list-padding-top: $baseline-grid !default;
+//$list-padding-right: 0px !default;
+//$list-padding-left: 0px !default;
+//$list-padding-bottom: $baseline-grid !default;
+//
+//$item-padding-top: 0px !default;
+//$item-padding-right: 0px !default;
+//$item-padding-left: 0px !default;
+//$item-padding-bottom: 0px !default;
+
 
 // The right tile for a list item.
 // ----------------------------------------------------------------------------
@@ -49,6 +48,23 @@
 .md-tile-right {
   margin-right: -$layout-gutter-width;
 }
+// Overqualifying to override a rule in source
+div.md-tile-left {
+  min-width: $sg-md-grid-pitch + $baseline-grid;
+}
+.sg-tile-icons {
+  font-size: $sg-font-size-1;
+  color: $colorGray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: (2 * $mg);
+  height:(7 * $line);
+
+}
+// Avatar placeholder
+// ------------------------------------
 .md-tile-left:before {
   content: "\f251";
   font-family: 'Material Design Iconic Font';
