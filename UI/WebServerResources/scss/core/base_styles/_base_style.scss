@@ -14,3 +14,12 @@ main {
   background-color: sg-color($sogoPaper, 200);
   padding-bottom: $toolbar-height; // padding to compensate for the bottom bar
 }
+
+.sg-logo {
+  background-image: url("../img/sogo-full.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: 16px;
+  height: 7 * $bl;
+  min-width: 18 * $bl;
+}

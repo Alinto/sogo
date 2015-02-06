@@ -102,6 +102,7 @@ md-sidenav {
   }
 }
 .md-sidenav-left {
+  border-right: 1px solid sg-color($sogoPaper, 500);
   & md-content,
   & md-toolbar {
     background-color: inherit;
