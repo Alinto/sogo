@@ -1,48 +1,55 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
 <var:component
-  className="UIxPageFrame"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  const:jsFiles="Common/SOGoAuthentication.js"
-  const:popup="YES"
-  ><var:string var:value="doctype" const:escapeHTML="NO"/>
+    className="UIxPageFrame"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    const:jsFiles="Common/SOGoAuthentication.js"
+    const:popup="YES"
+    ><var:string var:value="doctype" const:escapeHTML="NO"/>
+
+<md-content md-scroll-y="true">
   <div>
-  <div id="aboutBox" style="display:none;">
-    <div>
-      <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
-      <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
-      <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
-      <img const:alt="Inverse" rsrc:src="img/inverse.png"/>
-      <p class="links"><a href="http://sogo.nu/" target="_new">sogo.nu</a> / 
-      <a href="http://inverse.ca/" target="_new">inverse.ca</a></p>
-    <p><a id="aboutClose" href="#" class="button">
+    <div id="aboutBox" style="display:none;">
+      <div>
+        <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
+        <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
+        <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
+        <img const:alt="Inverse" rsrc:src="img/inverse.png"/>
+        <p class="links"><a href="http://sogo.nu/" target="_new">sogo.nu</a> / 
+        <a href="http://inverse.ca/" target="_new">inverse.ca</a></p>
+        <p><a id="aboutClose" href="#" class="button">
         <span><var:string label:value="OK" /></span></a></p>
+      </div>
     </div>
-  </div>
-  <nav class="top-bar">
-    <section class="top-bar-section">
-      <ul class="right">
-        <li><a href="#"><var:string label:value="About" /></a></li>
-      </ul>
-    </section>
-  </nav>
-  <div id="login">
-    <div id="logo">
-      <img const:alt="*" id="splash" rsrc:src="img/sogo-logo.png"/>
-    </div>
-    <form name="loginForm" data-ng-controller="loginController" data-ng-submit="login(creds)">
-      <var:if condition="hasLoginSuffix"><input type="hidden" data-ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
-      <div data-ng-show="warning" data-ng-cloak="ng-cloak" data-alert="data-alert" class="alert-box radius warning">{{warning}}</div>
-	<label><var:string label:value="Username:"/>
-	<input type="text" data-ng-model="creds.username" var:data-ng-init="cookieUsername" required="required" />
-        </label>
-	<label><var:string label:value="Password:"/>
-	<input type="password" data-ng-model="creds.password" required="required" />
-        </label>
+    <nav class="top-bar">
+      <section class="top-bar-section">
+        <ul class="right">
+          <li><a href="#"><var:string label:value="About" /></a></li>
+        </ul>
+      </section>
+    </nav>
+    <div id="login">
+      <div id="logo">
+        <img const:alt="*" id="splash" rsrc:src="img/sogo-logo.png"/>
+      </div>
+      <form name="loginForm" data-ng-controller="loginController" data-ng-submit="login(creds)">
+        <var:if condition="hasLoginSuffix"><input type="hidden" data-ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
+        <div data-ng-show="warning" data-ng-cloak="ng-cloak" data-alert="data-alert" class="alert-box radius warning">{{warning}}</div>
+        <md-input-container>
+          <label><var:string label:value="Username:"/>
+          </label>
+	  <input type="text" data-ng-model="creds.username" var:data-ng-init="cookieUsername" required="required" />
+        </md-input-container>
+        <md-input-container>
+	  <label><var:string label:value="Password:"/>
+          </label>
+	  <input type="password" data-ng-model="creds.password" required="required" />
+        </md-input-container>
+
 	<label><var:string label:value="Language:"/>
 	<var:popup const:name="language"
                    const:data-ng-model="creds.language"
@@ -53,7 +60,7 @@
 		   label:noSelectionString="choose"
 		   />
         </label>
-      <var:if condition="hasLoginDomains">
+        <var:if condition="hasLoginDomains">
 	  <label><var:string label:value="Domain:"/><br/>
 	  <var:popup const:name="domain"
                      const:data-ng-model="creds.domain"
@@ -64,14 +71,17 @@
 		     string="item"
 		     />
           </label>
-      </var:if>
-	<label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin" data-ng-model="creds.rememberLogin"/> <var:string label:value="Remember username"/></label>
+        </var:if>
+        <md-checkbox data-ng-model="creds.rememberLogin">
+          <label><var:string label:value="Remember username"/></label>
+        </md-checkbox>
 	<label>
-	  <button type="submit" class="small" data-ng-disabled='!loginForm.$valid'>
-	  <var:string label:value="Connect" /></button>
+	  <md-button type="submit" class="small" data-ng-disabled='!loginForm.$valid'>
+	  <var:string label:value="Connect" /></md-button>
 	</label>
-      <label id="animation"><!-- busy.gif! --></label>
-    </form>
+        <label id="animation"><!-- busy.gif! --></label>
+      </form>
+    </div>
   </div>
-  </div>
+</md-content>
 </var:component>

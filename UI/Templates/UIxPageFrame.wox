@@ -78,7 +78,8 @@
 
           <var:component-content />
 
-<!-- BOTTOM-BAR -->
+          <!-- BOTTOM-BAR -->
+          <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
           <md-toolbar class="sg-bottombar md-hide-sm" layout="row" layout-align="center center">
             <var:if condition = "userHasCalendarAccess">
               <var:if condition = "isCalendar">
@@ -130,7 +131,8 @@
               </var:if>
             </var:if>
           </md-toolbar>
-
+          </var:if>
+          
           <!-- Javascripot imports -->
           <script type = "text/javascript">
             var ApplicationBaseURL = '<var:string value = "modulePath" />';
