@@ -217,27 +217,27 @@ $sg-line-height-9: $sg-font-size-9 + $sg-md-typo-baseline;
 $sg-font-light: 200;
 $sg-font-regular: 400;
 $sg-font-medium: 600;
-$sg-font-Bold: $sg-font-medium;
+$sg-font-bold: $sg-font-medium;
 
 // h elements definitions
 // ----------------------------------------------------------------------------
 $h1-font-size-Base: $sg-font-size-9;
-$h1-margin-Base: 0.67em 0;
+//$h1-margin-Base: 0.67em 0;
 
 $h2-font-size-Base: $sg-font-size-8;
-$h2-margin-Base: 0.83em 0;
+//$h2-margin-Base: 0.83em 0;
 
 $h3-font-size-Base: $sg-font-size-7;
-$h3-margin-Base: 1em 0;
+//$h3-margin-Base: 1em 0;
 
 $h4-font-size-Base: $sg-font-size-6;
-$h4-margin-Base: 1.33em 0;
+//$h4-margin-Base: 1.33em 0;
 
 $h5-font-size-Base: $sg-font-size-5;
-$h5-margin-Base: 1.67em 0;
+//$h5-margin-Base: 1.67em 0;
 
 $h6-font-size-Base: $sg-font-size-4;
-$h6-margin-Base: 2.33em 0;
+//$h6-margin-Base: 2.33em 0;
 
 /// Gogle Material Design Standard styles
 /// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
@@ -263,11 +263,9 @@ $h6-margin-Base: 2.33em 0;
     text-transform: capitalize;
   }
   .#{$md}-body-1 {
-    font-size: $sg-font-size-1;
+    font-size: $sg-font-size-2;
     line-height: $sg-line-height-2;
     font-weight: $sg-font-regular;
-    margin-top: ($sg-line-height-2 * -1);
-    margin-bottom: $sg-line-height-2;
   }
   /// @alias .body-1
   .#{$md}-body-multi {
@@ -275,7 +273,7 @@ $h6-margin-Base: 2.33em 0;
   }
   .#{$md}-body-2 {
     $lineHeight : $sg-line-height-2 + $sg-md-typo-baseline;
-    font-size: $sg-font-size-1;
+    font-size: $sg-font-size-2;
     line-height: $lineHeight;
     font-weight: $sg-font-medium;
     margin-top: ($lineHeight * -1);
@@ -321,8 +319,8 @@ $h6-margin-Base: 2.33em 0;
     font-size: $sg-font-size-5;
     line-height: $lineHeight;
     font-weight: $sg-font-regular;
-    margin-top: ($lineHeight * -1);
-    margin-bottom: $lineHeight;
+    margin-top: 0;
+    margin-bottom: $line;
   }
   .#{$md}-display-1 {
     $lineHeight : $sg-line-height-6;

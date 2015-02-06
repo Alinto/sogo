@@ -1,40 +1,27 @@
-md-sidenav {
-    md-list {
-        md-item-content {
-            transition: background-color 0.2s ease-out,
-                        color 0.5s linear;
-            &:hover {
-                background-color: #ede5ca; // paper 200
-                cursor: pointer;
-            }
-            &.sg-active {
-                color: #00b0c0; // vintage-blue A700
-            }
-            &.sg-loading {
-                color: #a1ccc8; // vintage-blue 500
-            }
-            .sg-item-name {
-                text-align: left;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-            }
-        }
-    }
-}
 
-$i: 1;
-@while $i < 12 {
-    md-item-content .sg-child-level-#{$i} { padding-left: 15px * $i; }
-    $i: $i + 1;
-}
+
+
 [id="messagesList"] {
-  max-width: grid-step(6);
+  max-width: grid-step(7);
   flex: 1 1 auto;
 
 }
 [data-ui-view="message"] {
   max-width: grid-step(8);
+}
+
+.msg-header-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.msg-header-group .sg-md-body-multi.name,
+.msg-date {
+  padding: $mg 0 0 $mg;
+}
+.mailer_mailcontent {
+  @extend .sg-md-body-multi;
 }
 //$total-columns: 13;
 //$column-gutter: 0;
