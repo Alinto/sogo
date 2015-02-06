@@ -3,14 +3,12 @@
 .sg-md-subheader {
     padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
     position: fixed;
-    background-color: rgb(247,241,220); // default theme background
-    z-index: 58;
-    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+    background-color: transparent;
+    z-index: auto;
 }
 // WIdth for message list
 // ----------------------------------------------------------------------------
 [id = "messagesList"] .sg-md-subheader {
-  width: 390px; // todo : convert this in grid-pitch
   transform: translateY(-100%); // Compensate the container top-margin
 }
 .sg-md-subheader {
@@ -20,12 +18,4 @@
 .sg-md-subheader > * {
   font-size: inherit;
   font-weight: inherit;
-}
-.sg-md-subheader.sg-avatar {
-  &-left {
-    padding-left: $sg-md-grid-pitch + $baseline-grid;
-  }
-  &-right {
-    padding-left: $baseline-grid * 2;
-  }
-}
+};

@@ -41,3 +41,18 @@
   @return $value;
 }
 
+/// Utility fonction to easily get any hue from any palette anyware
+/// More easy to remember than variable names
+@function sg-color($color, $hue) {
+  @return map-get($color, $hue);
+}
+
+/// Utility fonction to easily get font size from typographic scale
+/// More easy to remember than variable names.
+/// @usage : provide type-size from the Material design typographic scale
+/// (caption, body, button, menu, subhead, title, headline, display-1, display-2, display-3, display-4 ; ther's also shortcut aliases : d1, d2, d3, d4)
+/// @return : type size
+@function sg-size($size) {
+  @return map-get($typeSize, $size);
+}
+
