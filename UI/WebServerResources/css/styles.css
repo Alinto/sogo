@@ -8316,7 +8316,7 @@ md-tooltip {
 .md-whiteframe-z1 {
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
 
-.md-whiteframe-z2, [id='messagesList'] {
+.md-whiteframe-z2 {
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2); }
 
 .md-whiteframe-z3 {
@@ -8375,6 +8375,13 @@ md-item-content .sg-child-level-10 {
 
 md-item-content .sg-child-level-11 {
   padding-left: 165px; }
+
+[id="messagesList"] {
+  max-width: 384px;
+  flex: 1 1 auto; }
+
+[data-ui-view="message"] {
+  max-width: 512px; }
 
 .view[layout=row] {
   max-height: 100%; }

@@ -28,7 +28,14 @@ $i: 1;
     md-item-content .sg-child-level-#{$i} { padding-left: 15px * $i; }
     $i: $i + 1;
 }
+[id="messagesList"] {
+  max-width: grid-step(6);
+  flex: 1 1 auto;
 
+}
+[data-ui-view="message"] {
+  max-width: grid-step(8);
+}
 //$total-columns: 13;
 //$column-gutter: 0;
 
