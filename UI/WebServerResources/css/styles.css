@@ -7427,8 +7427,10 @@ md-sidenav {
 @media (max-width: 320px) {
   md-sidenav {
     width: 85%; } }
-.md-sidenav-left md-content, md-sidenav md-content, .md-sidenav-left md-toolbar, md-sidenav md-toolbar {
-  background-color: inherit; }
+.md-sidenav-left, md-sidenav {
+  border-right: 1px solid #d6c48d; }
+  .md-sidenav-left md-content, md-sidenav md-content, .md-sidenav-left md-toolbar, md-sidenav md-toolbar {
+    background-color: inherit; }
 
 /*! slider/_extends.scss - */
 @keyframes sliderFocusThumb {
@@ -8399,6 +8401,14 @@ md-item-content .sg-child-level-11 {
 main {
   background-color: #ede5ca;
   padding-bottom: 64px; }
+
+.sg-logo {
+  background-image: url("../img/sogo-full.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: 16px;
+  height: 56px;
+  min-width: 144px; }
 
 .sg-tile-content .sg-md-subhead-multi,
 .sg-tile-content .sg-md-subhead-solo {
