@@ -180,6 +180,24 @@ $sg-font-size-6: nth($sg-typo-scale, 6) * 1px;
 $sg-font-size-7: nth($sg-typo-scale, 7) * 1px;
 $sg-font-size-8: nth($sg-typo-scale, 8) * 1px;
 $sg-font-size-9: nth($sg-typo-scale, 9) * 1px;
+// In a convenient map
+$typeSize: (
+  caption:  12,
+  body: 14,
+  button: 14,
+  subhead: 16,
+  title: 20,
+  headline: 24,
+  display-1: 34,
+  d1: 34,
+  display-2: 45,
+  d2: 45,
+  display-3: 56,
+  d3: 56,
+  display-4: 112,
+  d4: 112
+);
+
 
 // Basic line heights
 // ----------------------------------------------------------------------------

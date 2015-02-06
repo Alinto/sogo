@@ -91,7 +91,7 @@ $sogoGreen: (
   A400: #00e676,
   A700: #00c853
 );
-$vintageBlue: (
+$sogoBlue: (
   50: #f0faf9,
   100:#e1f5f3,
   200:#ceebe8,
@@ -396,7 +396,7 @@ $colorBlueGrey900:  nth($paletteBlueGrey, 10);
     };
   };
 }
-@include colors($vintageBlue, 'sogoBlue');
+@include colors($sogoBlue, 'sogoBlue');
 @include colors($sogoGreen, 'sogoGreen');
 @include colors($sogoPaper, 'sogoPaper');
 

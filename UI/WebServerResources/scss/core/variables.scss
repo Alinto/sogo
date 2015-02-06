@@ -7,43 +7,46 @@ $version: '3.alpha';
 // palettes import -
 // ------------------------------------------------------------------------------
 // fixme : consolidate all settings and imports in a decent 'settings' file
-@import '../themes/color-palette'; // fixme : clarify if it is deeded or assure by javascript
+//@import '../themes/color-palette'; // fixme : clarify if it is needed or assure by javascript
+@import 'components/palette';        // fixme : The maps in color-palettes are more js then scss
 
 // Font Variables
 $font-family: 'Fira sans', 'Helvetica Neue', sans-serif !default;
-//$dark-theme: false !default;
-//$foreground-color-palette: $color-grey !default;
-$primary-color: map-get($color-vintage-blue, 'A700') !default;
-//$foreground-primary-color: rgba($foreground-base-color, 0.73) !default;
 
+$primary-color: sg-color($sogoBlue, 300) !default;
+//$foreground-primary-color: rgba($foreground-base-color, 0.73) !default;
 $foreground-primary-color: rgba($primary-color, 0.87);//override
-//$foreground-secondary-color: rgba($foreground-base-color, 0.54) !default;
-//$foreground-tertiary-color: rgba($foreground-base-color, 0.26) !default;
-//$foreground-quarternary-color: rgba($foreground-base-color, 0.12) !default;
-//$foreground-text-shadow: none !default;
+
 $bottombar-color: #212121;
 
-//$input-border-color: $foreground-secondary-color !default;
-//$input-disabled-border-color: $foreground-tertiary-color !default;
-//
-//$background-color-palette: $color-paper !default;
-//$background-color-base: map-get($background-color-palette, '200') !default;
-//
-//$primary-color-palette: $color-light-blue !default;
-//$warn-color-palette: $color-red !default;
-//$primary-color-palette-contrast-color: white !default;
-//todo ; create grey map$bottombar-color: #121212;
+
 
 // Layout
 // ------------------------------
 
 $baseline-grid:            8px !default;
+// shortcut aliases for $baseline-grid
+$bl: $baseline-grid;
+$line: $baseline-grid;
 $sg-md-grid-pitch: 8 * $baseline-grid;
+// shortcut alias for $sg-md-grid-pitch
+$pitch: $sg-md-grid-pitch;
+// Google specifies dimensions in grid pitch
+// This is a small utility function
+// Return dimension in px
+@function grid-step($nb) {
+  @return ($pitch * $nb)
+}
+
+// Margins
+$layout-gutter-width:      ($baseline-grid * 2) !default;
+$md-base-margin: $layout-gutter-width;
+// alias
+$mg: $layout-gutter-width;
+
 $layout-breakpoint-sm:     600px !default;
 $layout-breakpoint-md:     960px !default;
 $layout-breakpoint-lg:     1200px !default;
-$layout-gutter-width:      ($baseline-grid * 2) !default;
-
 
 // App bar variables
 $app-bar-height: 64px;
@@ -63,7 +66,6 @@ $whiteframe-shadow-z4: 0px 16px 28px 0 rgba(0,0,0,0.22) !default;
 $whiteframe-zindex-z4: 4 !default;
 $whiteframe-shadow-z5: 0px 27px 24px 0 rgba(0,0,0,0.2) !default;
 $whiteframe-zindex-z5: 5 !default;
-
 
 
 // Z-indexes
