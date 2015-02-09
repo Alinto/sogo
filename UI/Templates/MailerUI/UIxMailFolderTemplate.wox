@@ -33,9 +33,9 @@
             </a>
           </div>
           <div class="sg-tile-icons">
-            <a><i class="md-icon-star"> </i></a>
-            <a><i class="md-icon-flag"> </i></a>
-            <a><i class="md-icon-attach-file disable"> </i></a>
+            <!--<a><i class="md-icon-star"> </i></a>-->
+            <i class="md-icon-flag" ng-show="currentMessage.isflagged"> </i>
+            <i class="md-icon-attach-file disable" ng-show="currentMessage.hasattachment"> </i>
           </div>
         </md-item-content>
       </md-item>
