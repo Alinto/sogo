@@ -1329,27 +1329,27 @@ The following table describes the parameters that were set:
 
 [cols="3,47,50a"]
 |=======================================================================
-|D |SOGoProfileURL
+|S |SOGoProfileURL
 |Parameter used to set the database URL so that SOGo can retrieve user
 profiles.
 
 For MySQL, set the database URL to something like:
 `mysql://sogo:sogo@localhost:3306/sogo/sogo_user_profile`.
 
-|D |OCSFolderInfoURL
+|S |OCSFolderInfoURL
 |Parameter used to set the database URL so that SOGo can retrieve the
 location of user folders (address books and calendars).
 
 For Oracle, set the database URL to something like:
 `oracle://sogo:sogo@localhost:1526/sogo/sogo_folder_info`.
 
-|D |OCSSessionsFolderURL
+|S |OCSSessionsFolderURL
 |Parameter used to set the database URL so that SOGo can store and
 retrieve secured user sessions information. For PostgreSQL, the database
 URL could be set to something like:
 `postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder`.
 
-|D |OCSEMailAlarmsFolderURL
+|S |OCSEMailAlarmsFolderURL
 |Parameter used to set the database URL for email-based alarms (that can
 be set on events and tasks). This parameter is relevant only if
 _SOGoEnableEMailAlarms_ is set to `YES`. For PostgreSQL, the database
