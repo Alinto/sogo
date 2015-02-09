@@ -159,7 +159,10 @@ function addressFieldChanged(event) {
     if (addresses.length > 0) {
         var first = true;
         for (var i = 0; i < addresses.length; i++) {
-            var words = addresses[i].split(' ');
+            var words = addresses[i]
+                .replace('\t', ' ')
+                .replace(/,(?! )/, ', ')
+                .split(' ');
             var phrase = new Array();
             for (var j = 0; j < words.length; j++) {
                 var word = words[j].strip().replace(/<(.+)>/, "$1").replace(',', '');

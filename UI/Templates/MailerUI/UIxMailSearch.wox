@@ -24,7 +24,12 @@
       <tr>
         <td id="mailAccountsCell">
           <label><var:string label:value="Search messages in:" /></label>
-          <var:popup const:id="mailAccountsList" list="mailAccountsList" item="item" />
+          <var:popup const:id="mailAccountsList"
+                     list="mailAccountsList"
+                     item="item"
+                     string="currentFolderDisplayName"
+                     value="currentFolderPath"
+                     />
         </td>
         <td id="headerButtons">
           <a class="button" name="search" id="searchButton" onclick="onSearchClick()">

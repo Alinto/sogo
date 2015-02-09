@@ -12,6 +12,7 @@
 "Forward" = "Továbbítás";
 "Password" = "Jelszó";
 "Categories" = "Kategóriák";
+"Appointments invitations" = "Találkozó meghívók";
 "Name" = "Név";
 "Color" = "Szín";
 "Add" = "Hozzáadás";
@@ -151,6 +152,9 @@
 "Display remote inline images" = "Távoli beágyazott képek megjelenítése";
 "displayremoteinlineimages_never" = "Soha";
 "displayremoteinlineimages_always" = "Mindig";
+
+"Auto save every" = "Automatikus mentés gyakorisága";
+"minutes" = "perc";
 
 /* Contact */
 "Personal Address Book" = "Személyes címjegyzék";

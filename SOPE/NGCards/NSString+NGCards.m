@@ -276,7 +276,9 @@
 	}
     }
   else
-    NSLog(@"Cannot parse iCal duration value: '%@'", self);
+    {
+      //NSLog(@"Cannot parse iCal duration value: '%@'", self);
+    }
 
   if (isNegative)
     ti = -ti;

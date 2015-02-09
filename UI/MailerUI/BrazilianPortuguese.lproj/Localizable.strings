@@ -13,6 +13,7 @@
 "Print"       = "Imprimir";
 "Stop"        = "Parar";
 "Write"       = "Escrever";
+"Search"      = "Pesquisar";
 
 "Send" = "Enviar";
 "Contacts" = "Contatos";
@@ -41,6 +42,7 @@
 "Attachment" = "Anexos";
 "Unread" = "Não Lido";
 "Flagged" = "Sinalizado";
+"Search multiple mailboxes" = "Pesquisar múltiplas caixas de correio";
 
 /* Main Frame  */
 
@@ -79,7 +81,7 @@
 "Remove this folder" = "Apagar esta pasta";
 "Erase mails from this folder" = "Apagar emails desta pasta";
 "Expunge this folder" = "Expurgar esta pasta";
-"Archive This Folder" = "Archive This Folder";
+"Export This Folder" = "Exportar esta pasta";
 "Modify the acl of this folder" = "Modificar os direitos desta pasta";
 
 "Saved Messages.zip" = "Mensagens Salvas.zip";
@@ -94,14 +96,16 @@
 "To"            = "Para";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	= "Responder-Para";
+"Reply-To"	    = "Responder-Para";
 "Add address"   = "Adicionar endereço";
+"Body"          = "Corpo";
 
-"Attachments:" = "Anexos:";
 "Open" = "Abrir";
 "Select All" = "Selecionar Tudo";
 "Attach Web Page..." = "Anexar Página Web...";
-"Attach File(s)..." = "Anexar Arquivo(s)...";
+"file" = "arquivo";
+"files" = "arquivos";
+"Save all" = "Salvar tudo";
 
 "to"            = "Para";
 "cc"            = "Cc";
@@ -236,6 +240,18 @@
 "As Not Junk" = "Como Não é Lixo Eletrônico";
 "Run Junk Mail Controls" = "Executar Controle de Lixo Eletrônico";
 
+"Search messages in:" = "Pesquisar mensagens em:";
+"Search" = "Pesquisar";
+"Search subfolders" = "Pesquisar sub-pastas";
+"Match any of the following" = "Combinar qualquer uma das seguintes";
+"Match all of the following" = "Combinar todas as seguintes";
+"contains" = "contêm";
+"does not contain" = "não contêm";
+"No matches found" = "Nenhuma combinação encontrada";
+"results found" = "Resultados encontrados";
+"result found" = "Resultado encontrado";
+"Please specify at least one filter" = "Por favor, especifique pelo menos um filtro";
+
 /* Folder operations */
 "Name :" = "Nome :";
 "Enter the new name of your folder :"
@@ -278,6 +294,9 @@
 "error_missingsubject" = "Está faltando o Assunto";
 "error_missingrecipients" = "Sem destinatários selecionados";
 "Send Anyway" = "Enviar assim mesmo";
+"Error while saving the draft:" = "Erro ao salvar o rascunho:";
+"Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Este arquivo está sendo carregado. Fechando a janela irá interromper o processo.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";

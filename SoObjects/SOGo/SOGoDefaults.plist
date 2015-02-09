@@ -68,6 +68,8 @@
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
 
+    SOGoMailAutoSave = "5";
+
     SOGoCalendarDefaultCategoryColor = "#aaa";
     SOGoCalendarShouldDisplayWeekend = YES;
     SOGoCalendarEventsDefaultClassification = "PUBLIC";

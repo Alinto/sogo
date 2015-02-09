@@ -113,16 +113,14 @@
               ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
               ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
               /></span></div>
-            <var:if condition="userIsOwner"
-              ><div
+            <div
                 ><label><input type="checkbox" const:class="checkBox"
                   name="includeInFreeBusy"
                   id="includeInFreeBusy"
                   var:checked="includeInFreeBusy"
                   /><var:string label:value="Include in free-busy"
                   /></label
-                ></div
-              ></var:if>
+                ></div>
           </fieldset>
           <fieldset>
             <legend><var:string label:value="Synchronization"/></legend>

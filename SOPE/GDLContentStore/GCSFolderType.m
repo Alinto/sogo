@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
 
@@ -147,7 +148,7 @@
   if ([keys count] == 0)
     return folderQualifier;
 
-  bindings = [_folder valuesForKeys:keys];
+  bindings = [_folder dictionaryWithValuesForKeys:keys];
   return [folderQualifier qualifierWithBindings:bindings
 			  requiresAllVariables:NO];
 }

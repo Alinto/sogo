@@ -1069,7 +1069,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSException *error;
 
   if ([self imap4Connection])
-    error = [imap4 deleteMailboxAtURL: [self imap4URL]];
+    {
+      error = [imap4 deleteMailboxAtURL: [self imap4URL]];
+      if (!error)
+        [[imap4 client] unsubscribe: [[self imap4URL] path]];
+    }
   else
     error = [NSException exceptionWithName: @"SOGoMailException"
                                     reason: @"IMAP connection is invalid"

@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSDebug.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
@@ -120,6 +121,35 @@
     label = key;
   
   return label;
+}
+
+//
+//  Set SOGoDebugLeaks = YES in your defaults to enable.
+//
++ (void) memoryStatistics
+{
+  Class *classList = GSDebugAllocationClassList ();
+  Class *pointer;
+  int i, count, total, peak;
+  NSString *className;
+
+  pointer = classList;
+  i = 0;
+ 
+  printf("Class  count  total  peak\n");
+  while (pointer[i] != NULL)
+    {
+      className = NSStringFromClass (pointer[i]);
+      count = GSDebugAllocationCount (pointer[i]);
+      total = GSDebugAllocationTotal (pointer[i]);
+      peak = GSDebugAllocationPeak (pointer[i]);
+     
+      printf("%s  %d  %d  %d\n", [className UTF8String], count, total, peak);
+      i++;
+    }
+  NSZoneFree(NSDefaultMallocZone(), classList);
+
+  printf("Done!\n");
 }
 
 @end

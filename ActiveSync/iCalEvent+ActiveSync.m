@@ -76,13 +76,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
-  NSArray *attendees;
+  NSArray *attendees, *categories;
 
   iCalPerson *organizer, *attendee;
   iCalTimeZone *tz;
   id o;
 
-  int v;
+  int v, i, meetingStatus;
 
   NSTimeZone *userTimeZone;
   userTimeZone = [[[context activeUser] userDefaults] timeZone];
@@ -127,13 +127,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
 
   if (!tz)
-    tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
+    tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
 
   [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
   // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
     {
+      meetingStatus = 1;  // meeting and the user is the meeting organizer.
       o = [organizer rfc822Email];
       if ([o length])
         {
@@ -159,7 +160,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [s appendString: @"<Attendee xmlns=\"Calendar:\">"];
 
           attendee = [attendees objectAtIndex: i];
-          [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [attendee rfc822Email]];
+          [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [[attendee rfc822Email] activeSyncRepresentationInContext: context]];
           [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [[attendee cn] activeSyncRepresentationInContext: context]];
           
           attendee_status = [self _attendeeStatus: attendee];
@@ -177,6 +178,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       [s appendString: @"</Attendees>"];
     }
+   else
+    {
+      meetingStatus = 0;  // appointment
+    }
   
   // This depends on the 'NEEDS-ACTION' parameter.
   // This will trigger the SendMail command
@@ -186,17 +191,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       int attendee_status;
 
+      meetingStatus = 3; // event is a meeting, and the user is not the meeting organizer
+
       attendee = [self userAsAttendee: [context activeUser]];
       attendee_status = [self _attendeeStatus: attendee];
   
       [s appendFormat: @"<ResponseRequested xmlns=\"Calendar:\">%d</ResponseRequested>", 1];
       [s appendFormat: @"<ResponseType xmlns=\"Calendar:\">%d</ResponseType>", attendee_status];
-      [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", 3];
       [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Calendar:\">%d</DisallowNewTimeProposal>", 1];
       
       // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
       [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
     }
+
+  [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", meetingStatus];
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
@@ -223,12 +231,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
     v = 2;
-  if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
+  else if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
     v = 3;
   else
     v = 0;
 
   [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
+
+  categories = [self categories];
+
+  if ([categories count])
+    {
+      [s appendFormat: @"<Categories xmlns=\"Calendar:\">"];
+      for (i = 0; i < [categories count]; i++)
+        {
+          [s appendFormat: @"<Category xmlns=\"Calendar:\">%@</Category>", [[categories objectAtIndex: i] activeSyncRepresentationInContext: context]];
+        }
+      [s appendFormat: @"</Categories>"];
+    }
+
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO: improve this to handle more alarm types
@@ -250,11 +271,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   o = [self comment];
   if ([o length])
     {
+      // It is very important here to NOT set <Truncated>0</Truncated> in the response,
+      // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
-      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
       [s appendFormat: @"<Data>%@</Data>", o];
       [s appendString: @"</Body>"];
     }
@@ -310,7 +332,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   iCalTimeZone *tz;
   id o;
 
-  NSInteger tzOffset;
   BOOL isAllDay;
   
   if ((o = [theValues objectForKey: @"UID"]))
@@ -335,17 +356,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   //
-  //
-  //
-  if ((o = [theValues objectForKey: @"MeetingStatus"]))
-    {
-      [o intValue];
-    }
-
-  //
   // 0- normal, 1- personal, 2- private and 3-confidential
   //
-  if ((o = [theValues objectForKey: @"Sensitivy"]))
+  if ((o = [theValues objectForKey: @"Sensitivity"]))
     {
       switch ([o intValue])
         {
@@ -362,9 +375,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  if ((o = [theValues objectForKey: @"TimeZone"]))
+  // Categories
+  if ((o = [theValues objectForKey: @"Categories"]) && [o length])
+    [self setCategories: o];
+
+  // We ignore TimeZone sent by mobile devices for now.
+  // Some Windows devices don't send during event updates.
+  //if ((o = [theValues objectForKey: @"TimeZone"]))
+  //  {
+  //  }
+  //else
     {
-      // Ugh, we ignore it for now.
+      // We haven't received a timezone, let's use the user's timezone
+      // specified in SOGo for now.
       userTimeZone = [[[context activeUser] userDefaults] timeZone];
       tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
       [(iCalCalendar *) parent addTimeZone: tz];
@@ -383,21 +406,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
       [start setTimeZone: tz];
 
-      if (isAllDay)
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
+       if (isAllDay)
+         {
           [start setDate: o];
           [start setTimeZone: nil];
         }
       else
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [start setDateTime: o];
         }
     }
@@ -410,19 +425,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (isAllDay)
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [end setDate: o];
           [end setTimeZone: nil];
         }
       else
         {
-          tzOffset = [userTimeZone secondsFromGMTForDate: o];
-          o = [o dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: tzOffset];
           [end setDateTime: o];
         }
     }
@@ -481,11 +488,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setOrganizer: person];
     }
 
+  //
+  // iOS is plain stupid here. It seends event invitations with no Organizer.
+  // We check this corner-case and if MeetingStatus == 1 (see http://msdn.microsoft.com/en-us/library/ee219342(v=exchg.80).aspx or details)
+  // and there's no organizer, we fake one.
+  //
+  if ((o = [theValues objectForKey: @"MeetingStatus"]))
+    {
+      if ([o intValue] == 1 && ![theValues objectForKey: @"Organizer_Email"])
+        {
+          iCalPerson *person;
+      
+          person = [iCalPerson elementWithTag: @"organizer"];
+          [person setEmail: [[[context activeUser] primaryIdentity] objectForKey: @"email"]];
+          [person setCn: [[context activeUser] cn]];
+          [person setPartStat: @"ACCEPTED"];
+          [self setOrganizer: person];
+        }
+    }
+  
+
   // Attendees - we don't touch the values if we're an attendee. This is gonna
   // be done automatically by the ActiveSync client when invoking MeetingResponse.
   if (![self userIsAttendee: [context activeUser]])
     {
-      if ((o = [theValues objectForKey: @"Attendees"]))
+      // Windows phones sens sometimes an empty Attendees tag.
+      // We check it's an array before processing it.
+      if ((o = [theValues objectForKey: @"Attendees"])&& [o isKindOfClass: [NSArray class]])
         {
           NSMutableArray *attendees;
           NSDictionary *attendee;

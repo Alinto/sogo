@@ -241,6 +241,11 @@
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "save";
         };
+        rsvpAppointment = {
+          protectedBy = "RespondToComponent";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "rsvp";
+        };
         saveAsAppointment = {
           protectedBy = "ModifyComponent";
           pageName    = "UIxAppointmentEditor"; 
@@ -255,31 +260,6 @@
           protectedBy = "ViewAllComponent";
           actionClass = "UIxComponentEditor";
           actionName  = "raw";
-        };
-        accept = { 
-          protectedBy = "RespondToComponent";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "accept";
-        };
-        decline = { 
-          protectedBy = "RespondToComponent";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "decline";
-        };
-        delegate = {
-          protectedBy = "RespondToComponent";
-          pageName = "UIxAppointmentEditor";
-          actionName  = "delegate";
-        };
-        tentative = { 
-          protectedBy = "RespondToComponent";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "tentative";
-        };
-        needsaction = { 
-          protectedBy = "RespondToComponent";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "needsAction";
         };
         adjust = {
           protectedBy = "ModifyComponent";

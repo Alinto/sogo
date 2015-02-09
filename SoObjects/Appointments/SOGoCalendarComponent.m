@@ -644,8 +644,8 @@
   // As much as we can, we try to use c_name == c_uid in order
   // to avoid tricky scenarios with some CalDAV clients. For example,
   // if Alice invites Bob (both use SOGo) and Bob accepts the invitation
-  // using Lightning before having refreshed his calendar, he'll end up
-  // with a duplicate of the event in his database tables.
+  // using Lightning before having refreshed their calendar, they'll end up
+  // with a duplicate of the event in their database tables.
   if (isNew)
     {
       newUid = nameInContainer;

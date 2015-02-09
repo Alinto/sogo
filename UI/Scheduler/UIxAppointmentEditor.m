@@ -51,6 +51,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalAlarm+SOGo.h>
 #import <Appointments/iCalCalendar+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
@@ -80,7 +81,7 @@
       isTransparent = NO;
       sendAppointmentNotifications = YES;
       componentCalendar = nil;
-
+      
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     }
@@ -111,6 +112,11 @@
   return event;
 }
 
+- (NSString *) rsvpURL
+{
+  return [NSString stringWithFormat: @"%@/rsvpAppointment",
+                   [[self clientObject] baseURL]];
+}
 - (NSString *) saveURL
 {
   return [NSString stringWithFormat: @"%@/saveAsAppointment",
@@ -390,6 +396,137 @@
     }
 }
 
+//
+//
+//
+- (id <WOActionResults>) rsvpAction
+{
+  iCalPerson *delegatedAttendee;
+  NSDictionary *message;
+  WOResponse *response;
+  WORequest *request;
+  iCalAlarm *anAlarm;
+  NSString *status;
+  
+  int replyList, reminderList;
+  
+  request = [context request];
+  message = [[request contentAsString] objectFromJSONString];
+
+  delegatedAttendee = nil;
+  anAlarm = nil;
+  status = nil;
+
+  replyList = [[message objectForKey: @"replyList"] intValue];
+
+  switch (replyList)
+    {
+    case 0:
+      status =  @"ACCEPTED";
+      break;
+
+    case 1:
+      status = @"DECLINED";
+      break;
+
+    case 2:
+      status = @"NEEDS-ACTION";
+      break;
+
+    case 3:
+      status = @"TENTATIVE";
+      break;
+
+    case 4:
+    default:
+      {
+        NSString *delegatedEmail, *delegatedUid;
+        SOGoUser *user;
+        
+        status = @"DELEGATED";
+        delegatedEmail = [[message objectForKey: @"delegatedTo"] stringByTrimmingSpaces];
+
+        if ([delegatedEmail length])
+          {
+            user = [context activeUser];
+            delegatedAttendee = [iCalPerson new];
+            [delegatedAttendee autorelease];
+            [delegatedAttendee setEmail: delegatedEmail];
+            delegatedUid = [delegatedAttendee uid];
+            if (delegatedUid)
+              {
+                SOGoUser *delegatedUser;
+                delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+                [delegatedAttendee setCn: [delegatedUser cn]];
+              }
+            
+            [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
+            [delegatedAttendee setRsvp: @"TRUE"];
+            [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
+            [delegatedAttendee setDelegatedFrom:
+                     [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
+          }
+        else
+          return [NSException exceptionWithHTTPStatus: 400
+                                               reason: @"missing 'to' parameter"];
+      }
+      break;
+    }
+
+  // Extract the user alarm, if any
+  reminderList = [[message objectForKey: @"reminderList"] intValue];
+
+  if ([[message objectForKey: @"reminderList"] isEqualToString: @"WONoSelectionString"] || reminderList == 5 || reminderList == 10 || reminderList == 14)
+    {
+      // No selection, wipe alarm which will be done in changeParticipationStatus...
+    }
+  else if (reminderList == 15)
+    {
+      // Custom
+      anAlarm = [iCalAlarm alarmForEvent: [self event]
+                                   owner: [[self clientObject] ownerInContext: context]
+                                  action: [message objectForKey: @"reminderAction"]
+                                    unit: [message objectForKey: @"reminderUnit"]
+                                quantity: [message objectForKey: @"reminderQuantity"]
+                               reference: [message objectForKey: @"reminderReference"]
+                        reminderRelation: [message objectForKey: @"reminderRelation"]
+                          emailAttendees: [[message objectForKey: @"reminderEmailAttendees"] boolValue]
+                          emailOrganizer: [[message objectForKey: @"reminderEmailOrganizer"] boolValue]];
+    }
+  else
+    {
+      // Standard
+      NSString *aValue;
+      
+      aValue = [[UIxComponentEditor reminderValues] objectAtIndex: reminderList];
+
+      // Predefined alarm
+      if ([aValue length])
+        {
+          iCalTrigger *aTrigger;
+
+          anAlarm = [[[iCalAlarm alloc] init] autorelease];
+          aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+          [aTrigger setValueType: @"DURATION"];
+          [anAlarm setTrigger: aTrigger];
+          [anAlarm setAction: @"DISPLAY"];
+          [aTrigger setSingleValue: aValue forKey: @""];
+        }
+    }  
+
+  response = (WOResponse *)[[self clientObject] changeParticipationStatus: status
+                                                             withDelegate: delegatedAttendee
+                                                                    alarm: anAlarm];
+
+  if (!response)
+    response = [self responseWith204];
+  
+  return response;
+}
+
+//
+//
+//
 - (id <WOActionResults>) saveAction
 {
   SOGoAppointmentFolder *previousCalendar;
@@ -560,7 +697,7 @@
   actionName = [[request requestHandlerPath] lastPathComponent];
 
   return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
-          && [actionName hasPrefix: @"save"]);
+          && ([actionName hasPrefix: @"save"] || [actionName hasPrefix: @"rsvp"]));
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
@@ -635,83 +772,6 @@
   else if (sendAppointmentNotifications && o)
     [event removeChild: o];
   
-}
-
-- (id) _statusChangeAction: (NSString *) newStatus
-{
-  [[self clientObject] changeParticipationStatus: newStatus
-                                    withDelegate: nil];
-
-  return [self responseWith204];
-}
-
-- (id) acceptAction
-{
-  return [self _statusChangeAction: @"ACCEPTED"];
-}
-
-- (id) declineAction
-{
-  return [self _statusChangeAction: @"DECLINED"];
-}
-
-- (id) needsActionAction
-{
-  return [self _statusChangeAction: @"NEEDS-ACTION"];
-}
-
-- (id) tentativeAction
-{
-  return [self _statusChangeAction: @"TENTATIVE"];
-}
-
-- (id) delegateAction
-{
-//  BOOL receiveUpdates;
-  NSString *delegatedEmail, *delegatedUid;
-  iCalPerson *delegatedAttendee;
-  SOGoUser *user;
-  WORequest *request;
-  WOResponse *response;
-
-  response = nil;
-  request = [context request];
-  delegatedEmail = [request formValueForKey: @"to"];
-  if ([delegatedEmail length])
-    {
-      user = [context activeUser];
-      delegatedAttendee = [iCalPerson new];
-      [delegatedAttendee autorelease];
-      [delegatedAttendee setEmail: delegatedEmail];
-      delegatedUid = [delegatedAttendee uid];
-      if (delegatedUid)
-        {
-          SOGoUser *delegatedUser;
-          delegatedUser = [SOGoUser userWithLogin: delegatedUid];
-          [delegatedAttendee setCn: [delegatedUser cn]];
-        }
-      
-      [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
-      [delegatedAttendee setRsvp: @"TRUE"];
-      [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
-      [delegatedAttendee setDelegatedFrom:
-               [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
-      
-//      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
-//      if (receiveUpdates)
-//      [delegatedAttendee setRole: @"NON-PARTICIPANT"];
-
-      response = (WOResponse*)[[self clientObject] changeParticipationStatus: @"DELEGATED"
-                                                   withDelegate: delegatedAttendee];
-    }
-  else
-    response = [NSException exceptionWithHTTPStatus: 400
-                                             reason: @"missing 'to' parameter"];
-
-  if (!response)
-    response = [self responseWith204];
-
-  return response;
 }
 
 @end

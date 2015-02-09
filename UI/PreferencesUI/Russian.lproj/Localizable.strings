@@ -12,6 +12,7 @@
 "Forward" = "Переслать";
 "Password" = "Пароль";
 "Categories" = "Категории";
+"Appointments invitations" = "Цель приглашения";
 "Name" = "Имя";
 "Color" = "Цвет";
 "Add" = "Добавить";
@@ -90,10 +91,10 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Неделя начинается с :";
-"Day start time :" = "Рабочий день начинается в :";
+"Week begins on :" = "Неделя начинается с:";
+"Day start time :" = "Рабочий день начинается в:";
 "Day end time :" = "Рабочий день заканчивается в :";
-"Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
+"Day start time must be prior to day end time." = "Время начала дня должно быть перед временем его окончания.";
 "Show time as busy outside working hours" = "Показывать время, как занятое, если оно за границами рабочего времени.";
 "First week of year :" = "Первая неделя года :";
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
@@ -124,8 +125,8 @@
 "reminder_2_HOURS_BEFORE" = "2 часа";
 "reminder_5_HOURS_BEFORE" = "5 часа";
 "reminder_15_HOURS_BEFORE" = "15 часов";
-"reminder_1_DAY_BEFORE" = "1 день";
-"reminder_2_DAYS_BEFORE" = "2 дня";
+"reminder_1_DAY_BEFORE" = "1 день назад";
+"reminder_2_DAYS_BEFORE" = "2 дня назад";
 "reminder_1_WEEK_BEFORE" = "За 1 неделю";
 
 /* Mailer */
@@ -145,7 +146,7 @@
 "And place my signature" = "И поместить мою подпись";
 "signatureplacement_above" = "под ответом";
 "signatureplacement_below" = "под цитируемым текстом письма";
-"Compose messages in" = "Compose messages in";
+"Compose messages in" = "Составлять сообщения в";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 "Display remote inline images" = "Показать встроенные изображения из сети";
@@ -159,11 +160,11 @@
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";
 
-"Server Name:" = "Server Name:";
-"Port:" = "Port:";
+"Server Name:" = "Имя сервера:";
+"Port:" = "Порт:";
 "Encryption:" = "Шифрование:";
 "None" = "Нет";
-"User Name:" = "User Name:";
+"User Name:" = "Имя пользователя:";
 "Password:" = "Пароль:";
 
 "Full Name:" = "Full Name:";
@@ -173,7 +174,7 @@
 "(Click to create)" = "(Click to create)";
 
 "Signature" = "Подпись";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Введите вашу подпись ниже:";
 
 "Please specify a valid sender address." = "Пожалуйста укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста укажите правильный адрес для ответа.";
@@ -194,7 +195,7 @@
 "PRIVATE_item" = "Private";
 
 /* Event+task categories */
-"category_none" = "None";
+"category_none" = "Нет";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
 
 /* Default module */
@@ -202,10 +203,10 @@
 "Contacts" = "Адресная книга";
 "Mail" = "Почта";
 "Last" = "Последнее использование";
-"Default Module :" = "Модуль по умолчанию :";
+"Default Module :" = "Модуль по умолчанию:";
 "SOGo Version :" = "Версия SOGo:";
 
-"Language :" = "Язык :";
+"Language :" = "Язык:";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";
@@ -271,12 +272,12 @@
 "Untitled Filter" = "Фильтр без названия";
 
 "Subject" = "Subject";
-"From" = "From";
+"From" = "От";
 "To" = "To";
 "Cc" = "Cc";
 "To or Cc" = "To or Cc";
-"Size (Kb)" = "Size (Kb)";
-"Header" = "Header";
+"Size (Kb)" = "Размер (кБ)";
+"Header" = "Заголовок";
 "Body" = "Тело письма";
 "Flag the message with:" = "Пометить сообщение с:";
 "Discard the message" = "Уничтожить сообщение";

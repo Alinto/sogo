@@ -106,7 +106,7 @@
                                 acquire: NO];
       if ([test isKindOfClass: [NSException class]])
         {
-          NSLog (@"%@ not found", [card reference]);
+          //NSLog (@"%@ not found", [card reference]);
           cardCopy = [card copy];
           [invalid addObject: cardCopy];
           [cardCopy release];

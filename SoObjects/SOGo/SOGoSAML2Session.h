@@ -1,8 +1,6 @@
 /* SOGoSAML2Session.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +37,15 @@
   NSString *login;
   NSString *identifier;
   NSString *assertion;
+  NSString *identity;
+  NSString *session;
 }
 
-+ (NSString *) metadataInContext: (WOContext *) context;
++ (LassoServer *) lassoServerInContext: (WOContext *) context;
+
++ (NSString *) metadataInContext: (WOContext *) context
+                     certificate: (NSString *) certificate;
+
 + (NSString *) authenticationURLInContext: (WOContext *) context;
 
 + (SOGoSAML2Session *) SAML2SessionInContext: (WOContext *) context;
@@ -54,6 +58,8 @@
 - (NSString *) login;
 - (NSString *) identifier;
 - (NSString *) assertion;
+- (NSString *) identity;
+- (NSString *) session;
 
 @end
 

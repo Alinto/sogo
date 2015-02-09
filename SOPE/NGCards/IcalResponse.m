@@ -54,7 +54,7 @@
 
 - (BOOL)appendLine:(NSString *)_line {
   if (self->isFinished) {
-    NSLog(@"WARNING[%s]: already finished!", __PRETTY_FUNCTION__);
+    //NSLog(@"WARNING[%s]: already finished!", __PRETTY_FUNCTION__);
     return NO;
   }
   // limit length to 75 chars

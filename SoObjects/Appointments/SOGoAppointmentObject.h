@@ -30,6 +30,7 @@
 
 @class WORequest;
 
+@class iCalAlarm;
 @class iCalEvent;
 @class iCalCalendar;
 
@@ -38,9 +39,12 @@
 @interface SOGoAppointmentObject : SOGoCalendarComponent
 
 - (NSException *) changeParticipationStatus: (NSString *) status
-                               withDelegate: (iCalPerson *) delegate;
+                               withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm;
+
 - (NSException *) changeParticipationStatus: (NSString *) status
                                withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
 
 //

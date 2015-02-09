@@ -23,12 +23,11 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalFolderActions.m		\
 					\
 	UIxCalView.m			\
-  	UIxCalViewPrint.m 		\
+	UIxCalViewPrint.m 		\
 	UIxCalDayView.m			\
 	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
-	UIxAptTableView.m		\
 					\
 	UIxCalListingActions.m		\
 	UIxCalMainActions.m		\
@@ -53,9 +52,6 @@ SchedulerUI_RESOURCE_FILES += \
 SchedulerUI_RESOURCE_FILES += \
 	Toolbars/SOGoAppointmentFolders.toolbar \
 	Toolbars/SOGoAppointmentObject.toolbar \
-	Toolbars/SOGoAppointmentObjectAccept.toolbar \
-	Toolbars/SOGoAppointmentObjectDecline.toolbar \
-	Toolbars/SOGoAppointmentObjectAcceptOrDecline.toolbar \
 	Toolbars/SOGoTaskObject.toolbar \
 	Toolbars/SOGoComponentClose.toolbar \
 	Toolbars/SOGoEmpty.toolbar
@@ -72,6 +68,7 @@ SchedulerUI_RESOURCE_FILES +=		\
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LDFLAGS += -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

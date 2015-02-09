@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
@@ -67,8 +66,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/NSString+Mail.h>
 #include <Mailer/SOGoMailBodyPart.h>
-
 #include <SOGo/SOGoUser.h>
+#include <SOGo/NSString+Utilities.h>
 
 typedef struct {
   uint32_t dwLowDateTime;
@@ -283,7 +282,7 @@ struct GlobalObjectId {
                          performed: b];
         }
     }
-  else if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+  else if ([thePart isKindOfClass: [NGMimeBodyPart class]] || [thePart isKindOfClass: [NGMimeMessage class]])
     {
       NGMimeFileData *fdata;
       id body;
@@ -323,6 +322,11 @@ struct GlobalObjectId {
 
           if (s)
             {
+              // We sanitize the content immediately, in case we have non-UNICODE safe
+              // characters that would be re-encoded later in HTML entities and thus,
+              // ignore afterwards.
+              s = [s safeString];
+
               body = [s dataUsingEncoding: NSUTF8StringEncoding];
             }
 
@@ -362,8 +366,7 @@ struct GlobalObjectId {
 
   if (message)
     {
-      [self _sanitizedMIMEPart: [message body]
-                     performed: &b];
+      [self _sanitizedMIMEPart: message  performed: &b];
 
       if (b)
         {
@@ -506,7 +509,6 @@ struct GlobalObjectId {
 //
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
-  NSAutoreleasePool *pool;
   NSData *d, *globalObjId;
   NSArray *attachmentKeys;
   NSMutableString *s;
@@ -699,10 +701,6 @@ struct GlobalObjectId {
   // Body - namespace 17
   preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
 
-  // Make use of a local pool here as _preferredBodyDataUsingType:nativeType: will consume
-  // a significant amout of RAM and file descriptors
-  pool = [[NSAutoreleasePool alloc] init];
-
   nativeBodyType = 1;
   d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
   
@@ -742,9 +740,7 @@ struct GlobalObjectId {
         }
       [s appendString: @"</Body>"];
     }
-
-  DESTROY(pool);
-
+  
   // Attachments -namespace 16
   attachmentKeys = [self fetchFileAttachmentKeys];
   if ([attachmentKeys count])

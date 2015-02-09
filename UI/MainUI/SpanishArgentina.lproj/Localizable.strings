@@ -10,9 +10,9 @@
 "Connect" = "Conectar";
 
 "Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";
-"cookiesNotEnabled" = "No se puede conectar dado que su navegador no acepta cookies. Por favor, habilite las cookies en la configuración de su navegador y pruebe de nuevo.";
+"cookiesNotEnabled" = "No se puede conectar debido a que su navegador no acepta cookies. Por favor, habilite las cookies en la configuración de su navegador y pruebe de nuevo.";
 
-"browserNotCompatible" = "Hemos detectado que éste sistema no soporta su versión del navegador. Recomendamos usar Firefox. Haga click en el siguiente enlace para descargar la versión más reciente de este navegador.";
+"browserNotCompatible" = "Hemos detectado que éste sistema no soporta la versión de su navegador. Recomendamos usar Firefox. Haga click en el siguiente enlace para descargar la versión más reciente de este navegador.";
 "alternativeBrowsers" = "Como alternativa, también puede usar uno se los siguientes navegadores compatibles: ";
 "alternativeBrowserSafari" = "Como alternativa, puede usar Safari.";
 "Download" = "Descarga";
@@ -44,7 +44,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Acerca de";
-"AboutBox" = "Desarrollado por Inverse, SOGo es un servidor groupware (software colaborativo) con todas las características necesarias con un focus para simlicidad y capacidad de ampliación.<br/><br/>\nSOGo facilita una interface web rica basada en AJAX Web y soporta una multitud de clientes a través del soporte de protocolos estándares como CalDAV y CardDAV.<br/><br/>\nSOGo esta distribuido bajo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o siguiente, y partes bajo la licencia GNU LGPL versión 2. Esto es software libre: esta autorizado el cambio y la redistribución del mismo. No hay garantías, dentro del límite de la ley.<br/><br/>\nVer <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para las diferentes opciones de soporte.";
+"AboutBox" = "SOGo, una herramienta desarrollada por Inverse, es un servidor con múltiples funcionalidades para facilitar el trabajo en grupo. El enfoque de SOGo es la sencillez y la escalabilidad.<br/><br/>\nSOGo provee una potente interfaz Web basada en AJAX y soporta una amplia variedad de clientes nativos mediante el uso de protocólos estándar como CalDAV y CarDAV.<br/><br/>\nSOGO se distribuye bajo la licencia <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o superior. Algunas partes se distribuyen bajo la licencia GNU LGPL version 2. SOGo es software libre: Usted es libre de modificarlo y redistribuirlo. SOGo se distribuye SIN NINGUNA GARANTIA según los alcances permitidos por la ley.<br/><br/>\nConsulte <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para conocer varias opciones de soporte.";
 
 "Your account was locked due to too many failed attempts." = "Su cuenta ha sido bloqueada debido a un número excesivo de errores de conexión.";
 "Your account was locked due to an expired password." = "Su cuenta ha sido bloqueada debido a una contraseña caducada.";

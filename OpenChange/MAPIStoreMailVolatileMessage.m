@@ -900,7 +900,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   messageBody = MakeMessageBody (properties, attachmentParts, &contentType);
   if (messageBody)
     {
-      [headers setObject: contentType forKey: @"content-type"];
+      [message setHeader: contentType forKey: @"content-type"];
       [message setBody: messageBody];
     }
 

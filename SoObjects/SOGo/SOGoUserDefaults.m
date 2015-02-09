@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2013 Inverse inc.
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -508,7 +508,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoMailComposeMessageType"];
 }
 
-- (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
+- (void) setMailDisplayRemoteInlineImages: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailDisplayRemoteInlineImages"];
 }
@@ -516,6 +516,23 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSString *) mailDisplayRemoteInlineImages;
 {
   return [self stringForKey: @"SOGoMailDisplayRemoteInlineImages"];
+}
+
+- (void) setMailAutoSave: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailAutoSave"];
+}
+
+- (NSString *) mailAutoSave
+{
+  NSString *s;
+
+  s = [self stringForKey: @"SOGoMailAutoSave"];
+
+  if ([s intValue] == 0)
+    s = @"5";
+  
+  return s;
 }
 
 - (void) setMailMessageForwarding: (NSString *) newValue

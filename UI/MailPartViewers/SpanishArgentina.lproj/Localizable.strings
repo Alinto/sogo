@@ -31,7 +31,7 @@ Tentative = "Tentativo";
 "delegated from" = "delegado de";
 
 reply_info_no_attendee = "Ha recibido una respuesta a una invitación de evento pero el remitente no aparece como un participante.";
-reply_info = "Esta es la respuesta a una invitación a un evento hecha que Usted ha organizado.";
+reply_info = "Esta es la respuesta a una invitación a un evento que Usted ha organizado.";
 
 "to" = "para";
 

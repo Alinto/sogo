@@ -245,7 +245,7 @@ static BOOL debugLeaks;
 	}
       else
 	{
-	  NSLog (@"No value specified for '%@'", *urlString);
+	  [self errorWithFormat: @"No value specified for '%@'", *urlString];
 	  ok = NO;
 	}
     }
@@ -283,7 +283,7 @@ static BOOL debugLeaks;
 {
   id authenticator;
 
-  if (trustProxyAuthentication)
+  if (trustProxyAuthentication && [[context request] headerForKey: @"x-webobjects-remote-user"])
     authenticator = [SOGoProxyAuthenticator sharedSOGoProxyAuthenticator];
   else
     {
@@ -441,7 +441,7 @@ static BOOL debugLeaks;
   if (debugLeaks)
     {
       if (debugOn)
-        NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+        [self logWithFormat: @"allocated classes:\n%s", GSDebugAllocationList (YES)];
       else
         {
           debugOn = YES;

@@ -40,6 +40,7 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Context.h>
+#import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -664,53 +665,67 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (NSDictionary *) imapFolderGUIDs
 {
-  NSDictionary *result, *nresult, *folderData;
+  NSDictionary *result, *nresult, *namespaceDict;
   NSMutableDictionary *folders;
   NGImap4Client *client;
-  SOGoUserDefaults *ud;
   NSArray *folderList;
   NSEnumerator *e;
   NSString *guid;
   id object;
   
-  BOOL subscribedOnly;
+  BOOL hasAnnotatemore;
 
-  ud = [[context activeUser] userDefaults];
-  subscribedOnly = [ud mailShowSubscribedFoldersOnly];
-
-  folderList = [[self imap4Connection] allFoldersForURL: [self imap4URL]
-                               onlySubscribedFolders: subscribedOnly];
+  folderList = [self allFolderPaths];
 
   folders = [NSMutableDictionary dictionary];
 
   client = [[self imap4Connection] client];
-  result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
+  namespaceDict = [client namespace];
+  hasAnnotatemore = [self hasCapability: @"annotatemore"];
 
+  if (hasAnnotatemore)
+    result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
+  else
+    result = [client lstatus: @"*" flags: [NSArray arrayWithObjects: @"x-guid", nil]];
+  
   e = [folderList objectEnumerator];
-
-  while (object = [e nextObject])
+  
+  while ((object = [e nextObject]))
     {
-      guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
-
+      if (hasAnnotatemore)
+        guid = [[[[result objectForKey: @"FolderList"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"/comment"] objectForKey: @"value.priv"];
+      else
+        guid = [[[result objectForKey: @"status"] objectForKey: [object substringFromIndex: 1]] objectForKey: @"x-guid"];
+      
       if (!guid)
         {
-          guid = [[NSProcessInfo processInfo] globallyUniqueString];
-          nresult = [client annotation: [object substringFromIndex: 1] entryName: @"/comment" attributeName: @"value.priv" attributeValue: guid];
-          
-          if (![[nresult objectForKey: @"result"] boolValue])
+          // Don't generate a GUID for "Other users" and "Shared" namespace folders - user foldername instead
+          if ([[object substringFromIndex: 1] isEqualToString: [[[[namespaceDict objectForKey: @"other users"] lastObject] objectForKey: @"prefix"] substringFromIndex: 1]] ||
+              [[object substringFromIndex: 1] isEqualToString: [[[[namespaceDict objectForKey: @"shared"] lastObject] objectForKey: @"prefix"] substringFromIndex: 1]])
             {
-              // Need to implement X-GUID query for Dovecot - this requires modification in SOPE to support following command:
-              // 1 list "" "*" return (status (x-guid)) -> this would avoid firing a command per folder to IMAP
-              nresult = [client status: [object substringFromIndex: 1] flags: [NSArray arrayWithObject: @"x-guid"]];
-              guid = [nresult objectForKey: @"x-guid"];
-              if (!guid)
-                {
-                  guid = [NSString stringWithFormat: @"%@", [object substringFromIndex: 1]];
-                }
+              [folders setObject: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]] forKey: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]]];
+              continue;
             }
+          
+          // if folder doesn't exists - ignore it
+          nresult = [client status: [object substringFromIndex: 1]
+                             flags: [NSArray arrayWithObject: @"UIDVALIDITY"]];
+          if (![[nresult valueForKey: @"result"] boolValue])
+            continue;
+          
+          if (hasAnnotatemore)
+            {
+              guid = [[NSProcessInfo processInfo] globallyUniqueString];
+              nresult = [client annotation: [object substringFromIndex: 1] entryName: @"/comment" attributeName: @"value.priv" attributeValue: guid];
+            }
+          
+          // setannotation failed or annotatemore is not available
+          if (![[nresult objectForKey: @"result"] boolValue] || !hasAnnotatemore)
+            guid = [NSString stringWithFormat: @"%@", [object substringFromIndex: 1]];
         }
       
-      [folders setObject: guid forKey: [object substringFromIndex: 1]];
+      [folders setObject: [NSString stringWithFormat: @"folder%@", guid] forKey: [NSString stringWithFormat: @"folder%@", [object substringFromIndex: 1]]];
+      
     }
   
   return folders;

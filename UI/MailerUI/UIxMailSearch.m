@@ -40,26 +40,38 @@
 - (void) dealloc
 {
   [item release];
+  [super dealloc];
 }
 
-- (void) setItem: (NSString *) newItem
+- (void) setItem: (id) newItem
 {
   ASSIGN(item, newItem);
 }
 
-- (NSString *) item
+- (id) item
 {
   return item;
 }
 
+- (NSString *) currentFolderDisplayName
+{
+  return [[item allValues] lastObject];
+}
+
+- (NSString *) currentFolderPath
+{
+  return [[item allKeys] lastObject];
+}
+
 - (NSArray *) mailAccountsList
 {
-  SOGoMailAccount *mAccount;
+  NSDictionary *accountName, *mailbox;
+  NSString *userName, *aString;
   SOGoMailAccounts *mAccounts;
-  NSString *userName, *option, *aString;
+  SOGoMailAccount *mAccount;
   NSArray *accountFolders;
   NSMutableArray *mailboxes;
-  NSDictionary *accountName;
+
   int nbMailboxes, nbMailAccounts, i, j;
   
   // Number of accounts linked with the current user
@@ -78,13 +90,16 @@
   
       // Number of mailboxes inside the current account
       nbMailboxes = [accountFolders count];
-      [mailboxes addObject:accountName];
+      [mailboxes addObject: [NSDictionary dictionaryWithObject: accountName  forKey: accountName]];
+
       for (j = 0; j < nbMailboxes; j++)
         {
-          option = [NSString stringWithFormat:@"%@%@", userName, [[accountFolders objectAtIndex:j] objectForKey:@"displayName"]];
-          [mailboxes addObject:option];
+          mailbox = [NSDictionary dictionaryWithObject: [NSString stringWithFormat:@"%@%@", userName, [[accountFolders objectAtIndex:j] objectForKey: @"displayName"]]
+                                                forKey: [[accountFolders objectAtIndex:j] objectForKey: @"path"]];
+          [mailboxes addObject: mailbox];
         }
     }
+
   return mailboxes;
 }
 

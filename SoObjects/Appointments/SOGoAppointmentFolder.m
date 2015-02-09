@@ -487,16 +487,47 @@ static Class iCalEventK = nil;
                     inCategory: @"FolderSynchronize"];
 }
 
+//
+// If the user is the owner of the calendar, by default we include the freebusy information.
+//
+// If the user is NOT the owner of the calendar, by default we exclude the freebusy information.
+//
+// We must include the freebusy information of other users if we are actually looking at their freebusy information
+// but we aren't necessarily subscribed to their calendars.
+//
 - (BOOL) includeInFreeBusy
 {
   NSNumber *excludeFromFreeBusy;
-
+  NSString *userLogin;
+  BOOL is_owner;
+  
+  userLogin = [[context activeUser] login];
+  is_owner = [userLogin isEqualToString: [self ownerInContext: context]];
+  
   // Check if the owner (not the active user) has excluded the calendar from her/his free busy data.
   excludeFromFreeBusy
     = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
-				  forUser: [SOGoUser userWithLogin: [self ownerInContext: context]]];
+				  forUser: [SOGoUser userWithLogin: userLogin]];
 
-  return ![excludeFromFreeBusy boolValue];
+  if ([self isSubscription])
+    {
+      // If the user has not yet set an include/not include fb information let's EXCLUDE it.
+      if (!excludeFromFreeBusy)
+        return NO;
+      else
+        return ![excludeFromFreeBusy boolValue];
+    }
+  else if (is_owner)
+    {
+      // We are the owner but we haven't included/excluded freebusy info, let's INCLUDE it.
+      if (!excludeFromFreeBusy)
+        return YES;
+      else
+        return ![excludeFromFreeBusy boolValue];
+    }
+
+  // It's not a subscribtion and we aren't the owner. Let's INCLUDE the freebusy info.
+  return YES;
 }
 
 - (void) setIncludeInFreeBusy: (BOOL) newInclude
@@ -895,11 +926,6 @@ static Class iCalEventK = nil;
   dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
   [record setObject: dateSecs forKey: @"c_enddate"];
   
-  // The first instance date is added to the dictionary so it can
-  // be used by UIxCalListingActions to compute the DST offset.
-  date = [theFirstCycle startDate];
-  [record setObject: date forKey: @"cycleStartDate"];
-  
   return record;
 }
 
@@ -1072,9 +1098,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
       [newRecord setObject: dateSecs forKey: @"c_recurrence_id"];
       [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"c_iscycle"];
-      // The first instance date is added to the dictionary so it can
-      // be used by UIxCalListingActions to compute the DST offset.
-      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
+
       // We identified the record as an exception.
       [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isException"];
 
@@ -2818,8 +2842,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       return nil;
     }
 
-  sql =  [NSString stringWithFormat: @"((c_nextalarm <= %u) AND (c_nextalarm >= %u)) OR ((c_nextalarm > 0) AND (c_enddate > %u))",
-		   [_endUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue]];
+  sql = [NSString stringWithFormat: @"((c_nextalarm <= %u) AND (c_nextalarm >= %u)) OR ((c_nextalarm > 0) AND (c_nextalarm <= %u) AND (c_enddate > %u))",
+                  [_endUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
   records = [folder fetchFields: nameFields matchingQualifier: qualifier];
   

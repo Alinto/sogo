@@ -12,6 +12,7 @@
 "Forward" = "Edelleenlähetys";
 "Password" = "Salasana";
 "Categories" = "Luokat";
+"Appointments invitations" = "Kalenterikutsut";
 "Name" = "Nimi";
 "Color" = "Väri";
 "Add" = "Lisää";
@@ -151,6 +152,9 @@
 "Display remote inline images" = "Näytä etäsisällön kuvat";
 "displayremoteinlineimages_never" = "Ei koskaan";
 "displayremoteinlineimages_always" = "Aina";
+
+"Auto save every" = "Tallenna automaattisesti";
+"minutes" = "minuutin välein";
 
 /* Contact */
 "Personal Address Book" = "Henkilökohtainen osoitekirja";

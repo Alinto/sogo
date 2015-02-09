@@ -40,6 +40,8 @@
 - (NSString *) labelForKey: (NSString *) key
                  inContext: (WOContext *) context;
 
++ (void) memoryStatistics;
+
 @end
 
 #endif /* NSOBJECT+UTILITIES_H */

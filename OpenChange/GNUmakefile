@@ -141,7 +141,7 @@ $(DBMSGREADER_TOOL)_OBJC_FILES += \
 	NSObject+PropertyList.m
 
 $(DBMSGREADER_TOOL)_LIB_DIRS += \
-	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	-L../SoObjects/SOGo/SOGo.framework/sogo -lSOGo \
 	-L../SOPE/GDLContentStore/obj/ -lGDLContentStore \
 	-L../SOPE/NGCards/obj/ -lNGCards \
 	-lNGObjWeb
@@ -165,12 +165,12 @@ LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy -lWEExte
 
 $(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
 $(MAPISTORESOGO)_LIB_DIRS += \
-        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo -lgnustep-base -lobjc -lNGObjWeb \
+        -L../SoObjects/SOGo/SOGo.framework/sogo/ -lSOGo -lgnustep-base -lobjc -lNGObjWeb \
 	$(LIBMAPI_LIBS) \
 	$(LIBMAPISTORE_LIBS)
 
 $(SOGOBACKEND)_LIB_DIRS += \
-        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+        -L../SoObjects/SOGo/SOGo.framework/sogo/ -lSOGo \
 	$(LIBMAPI_LIBS) \
 	$(LIBMAPISTORE_LIBS)
 
@@ -182,6 +182,8 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
+
+ADDITIONAL_LDFLAGS += -Wl,--rpath,$(SOGO_SYSLIBDIR)/sogo
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

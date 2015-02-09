@@ -1,8 +1,6 @@
 /* SOGoSAML2Session.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +46,28 @@
 
 #import "SOGoSAML2Session.h"
 
+@interface NSString (SOGoCertificateExtension)
+
+- (NSString *) cleanedUpCertificate;
+
+@end
+
+@implementation NSString (SOGoCertificateExtension)
+
+- (NSString *) cleanedUpCertificate
+{
+  NSMutableArray *a;
+
+  a = [NSMutableArray arrayWithArray: [self componentsSeparatedByString: @"\n"]];
+  [a removeObjectAtIndex: 0];
+  [a removeLastObject];
+  [a removeLastObject];  
+
+  return [a componentsJoinedByString: @""];
+}
+
+@end
+
 @interface WOContext (SOGoSAML2Extension)
 
 - (NSString *) SAML2ServerURLString;
@@ -85,8 +105,7 @@ static NSMapTable *serverTable = nil;
   lasso_init ();
 }
 
-static LassoServer *
-LassoServerInContext (WOContext *context)
++ (LassoServer *) lassoServerInContext: (WOContext *) context
 {
   NSString *urlString, *metadata, *filename, *keyContent, *certContent,
     *idpKeyFilename, *idpCertFilename;
@@ -102,7 +121,7 @@ LassoServerInContext (WOContext *context)
       filename = [sd SAML2PrivateKeyLocation];
       if (!filename)
         [NSException raise: NSInvalidArgumentException
-                    format: @"'SAML2PrivateKeyLocation' not set"];
+                    format: @"'SOGoSAML2PrivateKeyLocation' not set"];
       keyContent = [NSString stringWithContentsOfFile: filename];
       if (!keyContent)
         [NSException raise: NSGenericException
@@ -112,14 +131,16 @@ LassoServerInContext (WOContext *context)
       filename = [sd SAML2CertificateLocation];
       if (!filename)
         [NSException raise: NSInvalidArgumentException
-                    format: @"'SAML2CertificateLocation' not set"];
+                    format: @"'SOGoSAML2CertificateLocation' not set"];
       certContent = [NSString stringWithContentsOfFile: filename];
       if (!certContent)
         [NSException raise: NSGenericException
                     format: @"certificate file '%@' could not be read",
                      filename];
 
-      metadata = [SOGoSAML2Session metadataInContext: context];
+      metadata = [SOGoSAML2Session metadataInContext: context
+                                         certificate: certContent];
+      
       /* FIXME: enable key password in config ? */
       server = lasso_server_new_from_buffers ([metadata UTF8String],
                                               [keyContent UTF8String],
@@ -148,7 +169,7 @@ LassoServerInContext (WOContext *context)
   NSString *url;
   GList *providers;
 
-  server = LassoServerInContext (context);
+  server = [SOGoSAML2Session lassoServerInContext: context];
   tempLogin = lasso_login_new (server);
 
   providers = g_hash_table_get_keys (server->providers);
@@ -181,8 +202,10 @@ LassoServerInContext (WOContext *context)
 }
 
 + (NSString *) metadataInContext: (WOContext *) context
+                     certificate: (NSString *) certificate
 {
-  NSString *metadata, *serverURLString, *filename;
+  NSString *serverURLString, *filename;
+  NSMutableString *metadata;
   NSBundle *bundle;
 
   bundle = [NSBundle bundleForClass: self];
@@ -190,9 +213,16 @@ LassoServerInContext (WOContext *context)
   if (filename)
     {
       serverURLString = [context SAML2ServerURLString];
-      metadata = [[NSString stringWithContentsOfFile: filename]
-                   stringByReplacingString: @"%{base_url}"
-                                withString: serverURLString];
+
+      metadata = [NSMutableString stringWithContentsOfFile: filename];
+      [metadata replaceOccurrencesOfString: @"%{base_url}"
+                                withString: serverURLString
+                                   options: 0
+                                     range: NSMakeRange(0, [metadata length])];
+      [metadata replaceOccurrencesOfString: @"%{certificate}"
+                                withString: [certificate cleanedUpCertificate]
+                                   options: 0
+                                     range: NSMakeRange(0, [metadata length])];
     }
   else
     metadata = nil;
@@ -208,6 +238,8 @@ LassoServerInContext (WOContext *context)
       login = nil;
       identifier = nil;
       assertion = nil;
+      identity = nil;
+      session = nil;
     }
 
   return self;
@@ -215,7 +247,6 @@ LassoServerInContext (WOContext *context)
 
 - (void) _updateDataFromLogin
 {
-  // LassoSamlp2Response *response;
   LassoSaml2Assertion *saml2Assertion;
   GList *statementList, *attributeList;
   LassoSaml2AttributeStatement *statement;
@@ -223,10 +254,15 @@ LassoServerInContext (WOContext *context)
   LassoSaml2AttributeValue *value;
   LassoMiscTextNode *textNode;
   LassoSaml2NameID *nameIdentifier;
+  SOGoSystemDefaults *sd;
+  NSString *loginAttribue;
+  
   gchar *dump;
                   
-  saml2Assertion
-    = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+  saml2Assertion = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  loginAttribue = [sd SAML2LoginAttribute];
+  
   if (saml2Assertion)
     {
       /* deduce user login */
@@ -241,22 +277,42 @@ LassoServerInContext (WOContext *context)
           while (!login && attributeList)
             {
               attribute = LASSO_SAML2_ATTRIBUTE (attributeList->data);
-              if (strcmp (attribute->Name, "uid") == 0)
+              if (loginAttribue && (strcmp (attribute->Name, [loginAttribue UTF8String]) == 0))
                 {
                   value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
                   textNode = value->any->data;
+
+                  // If we got an @ sign in the value, it's most likely an email address
+                  // so we'll ask SOGoUserManager about this
                   login = [NSString stringWithUTF8String: textNode->content];
+
+                  if ([login rangeOfString: @"@"].location != NSNotFound)
+                    {
+                      login = [[SOGoUserManager sharedUserManager] getUIDForEmail: login];
+                    }
+                  
                   [login retain];
                 }
-              else if (strcmp (attribute->Name, "mail") == 0)
+              else if (!loginAttribue)
                 {
-                  value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
-                  textNode = value->any->data;
-                  login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
-                  [login retain];
+                  // We fallback on "standard" attributes such as "uid" and "mail"
+                  if (strcmp (attribute->Name, "uid") == 0)
+                    {
+                      value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                      textNode = value->any->data;
+                      login = [NSString stringWithUTF8String: textNode->content];
+                      [login retain];
+                    }
+                  else if (strcmp (attribute->Name, "mail") == 0)
+                    {
+                      value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                      textNode = value->any->data;
+                      login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
+                      [login retain];
+                    }
                 }
-              else
-                attributeList = attributeList->next;
+              
+              attributeList = attributeList->next;
             }
           statementList = statementList->next;
         }
@@ -295,7 +351,7 @@ LassoServerInContext (WOContext *context)
 
   if ((self = [self init]))
     {
-      server = LassoServerInContext (context);
+      server = [SOGoSAML2Session lassoServerInContext: context];
       lassoLogin = lasso_login_new (server);
       if (saml2Dump)
         {
@@ -303,12 +359,17 @@ LassoServerInContext (WOContext *context)
           ASSIGN (login, [saml2Dump objectForKey: @"login"]);
           ASSIGN (identifier, [saml2Dump objectForKey: @"identifier"]);
           ASSIGN (assertion, [saml2Dump objectForKey: @"assertion"]);
-          dump = [[saml2Dump objectForKey: @"identity"] UTF8String];
+
+          ASSIGN(identity, [saml2Dump objectForKey: @"identity"]);
+          dump = [identity UTF8String];
           if (dump)
             lasso_profile_set_identity_from_dump (profile, dump);
-          dump = [[saml2Dump objectForKey: @"session"] UTF8String];
+          
+          ASSIGN (session, [saml2Dump objectForKey: @"session"]);
+          dump = [session UTF8String];
           if (dump)
             lasso_profile_set_session_from_dump (profile, dump);
+          
           lasso_login_accept_sso (lassoLogin);
           // if (rc)
           //   [NSException raiseSAML2Exception: rc];
@@ -326,6 +387,9 @@ LassoServerInContext (WOContext *context)
   [login release];
   [identifier release];
   [assertion release];
+  [identity release];
+  [session release];
+  
   [super dealloc];
 }
 
@@ -378,13 +442,23 @@ LassoServerInContext (WOContext *context)
   return assertion;
 }
 
+- (NSString *) identity
+{
+  return identity;
+}
+
+- (NSString *) session
+{
+  return session;
+}
+
 - (void) processAuthnResponse: (NSString *) authnResponse
 {
   lasso_error_t rc;
   gchar *responseData, *dump;
   LassoProfile *profile;
-  LassoIdentity *identity;
-  LassoSession *session;
+  LassoIdentity *lasso_identity;
+  LassoSession *lasso_session;
   NSString *nsDump;
   NSMutableDictionary *saml2Dump;
 
@@ -408,22 +482,22 @@ LassoServerInContext (WOContext *context)
 
   profile = LASSO_PROFILE (lassoLogin);
 
-  session = lasso_profile_get_session (profile);
-  if (session)
+  lasso_session = lasso_profile_get_session (profile);
+  if (lasso_session)
     {
-      dump = lasso_session_dump (session);
+      dump = lasso_session_dump (lasso_session);
       nsDump = [NSString stringWithUTF8String: dump];
       [saml2Dump setObject: nsDump forKey: @"session"];
-      lasso_session_destroy (session);
+      lasso_session_destroy (lasso_session);
     }
 
-  identity = lasso_profile_get_identity (profile);
-  if (identity)
+  lasso_identity = lasso_profile_get_identity (profile);
+  if (lasso_identity)
     {
-      dump = lasso_identity_dump (identity);
+      dump = lasso_identity_dump (lasso_identity);
       nsDump = [NSString stringWithUTF8String: dump];
       [saml2Dump setObject: nsDump forKey: @"identity"];
-      lasso_identity_destroy (identity);
+      lasso_identity_destroy (lasso_identity);
     }
 
   [[SOGoCache sharedCache] setSaml2LoginDumps: saml2Dump

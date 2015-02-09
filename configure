@@ -270,7 +270,7 @@ genConfigMake() {
   fi
 
   cfgwrite "HOSTNAME=${HOSTNAME}"
-  cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
+  cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_SYSTEM_LIBRARIES}"
   cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo"
   cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
   cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_LIBDIR}/WebServerResources"

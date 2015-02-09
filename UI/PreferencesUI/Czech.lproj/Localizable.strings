@@ -12,6 +12,7 @@
 "Forward" = "Přeposílání";
 "Password" = "Heslo";
 "Categories" = "Kategorie";
+"Appointments invitations" = "Pozvání na schůzky";
 "Name" = "Jméno";
 "Color" = "Barva";
 "Add" = "Přidat";
@@ -151,6 +152,9 @@
 "Display remote inline images" = "Zobrazit vzdálené inline obrázky";
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
+
+"Auto save every" = "Automaticky uložit každých";
+"minutes" = "minut";
 
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";

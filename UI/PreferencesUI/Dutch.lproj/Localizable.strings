@@ -12,6 +12,7 @@
 "Forward" = "Doorsturen";
 "Password" = "Wachtwoord";
 "Categories" = "Categorieën";
+"Appointments invitations" = "Uitnodigingen voor afspraken";
 "Name" = "Naam";
 "Color" = "Kleur";
 "Add" = "Toevoegen";
@@ -151,6 +152,9 @@
 "Display remote inline images" = "Externe afbeeldingen tonen";
 "displayremoteinlineimages_never" = "Nooit";
 "displayremoteinlineimages_always" = "Altijd";
+
+"Auto save every" = "Automatisch opslaan elke";
+"minutes" = "minuten";
 
 /* Contact */
 "Personal Address Book" = "Persoonlijk adresboek";
