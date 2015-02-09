@@ -29,6 +29,7 @@
 "Days between responses :" = "Days between responses:";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Disable auto reply on" = "Disable auto reply on";
+"Always send vacation message response" = "Always send vacation message response";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
 "Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";

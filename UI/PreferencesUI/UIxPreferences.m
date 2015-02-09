@@ -1127,6 +1127,30 @@ static NSArray *reminderValues = nil;
   return ignore;
 }
 
+//
+// See http://sogo.nu/bugs/view.php?id=2332 for details
+//
+- (void) setAlwaysSend: (BOOL) ignoreLists
+{
+  [vacationOptions setObject: [NSNumber numberWithBool: ignoreLists]
+		      forKey: @"alwaysSend"];
+}
+
+- (BOOL) alwaysSend
+{
+  NSNumber *obj;
+  BOOL ignore;
+
+  obj = [vacationOptions objectForKey: @"alwaysSend"];
+
+  if (obj == nil)
+    ignore = NO; // defaults to NO
+  else
+    ignore = [obj boolValue];
+
+  return ignore;
+}
+
 - (BOOL) enableVacationEndDate
 {
   return [[vacationOptions objectForKey: @"endDateEnabled"] boolValue];

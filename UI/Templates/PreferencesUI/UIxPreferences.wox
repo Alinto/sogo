@@ -600,7 +600,7 @@
                     <var:string label:value="Add default email addresses" /></span></a>
                   </span>
                 </label><br/>
-                
+
                 <label><var:string label:value="Days between responses :"/>
                   <var:popup list="daysBetweenResponsesList" item="item"
                   const:id="daysBetweenResponsesList"
@@ -623,8 +623,14 @@
                 date="vacationEndDate"
                 const:dayStartHour="0"
                 const:dayEndHour="23"
-                />
-                
+                /><br/>
+
+                <label><input type="checkbox"
+                  const:name="alwaysSend"
+                  const:id="alwaysSend"
+                  var:checked="alwaysSend" />
+                  <var:string label:value="Always send vacation message response" /></label><br/>
+
               </div>
             </div>
             </var:if
