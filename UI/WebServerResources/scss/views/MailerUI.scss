@@ -9,17 +9,38 @@
 [data-ui-view="message"] {
   max-width: grid-step(8);
 }
-
+.msg-header {
+  padding-bottom: $mg;
+}
 .msg-header-group {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+
+
+  [layout="row"] + [layout="row"] {
+    margin-top: -1 * 1em;
+  }
 }
-.msg-header-group .sg-md-body-multi.name,
+.msg-header-group .sg-md-body-multi.name {}
 .msg-date {
-  padding: $mg 0 0 $mg;
+  margin: $mg 0;
+  text-align: right;
 }
+
+.msg-header label {
+  font-size: sg-size(caption) - 1; // -1px to compensate for the uppercase and simulate Small caps
+  text-transform: uppercase;
+  margin-right: $mg;
+  width: ($pitch + $bl);
+  text-align: right;
+  line-height: $sg-line-height-2;
+  font-weight: 600;
+  color: $colorGray;
+}
+
 .mailer_mailcontent {
   @extend .sg-md-body-multi;
 }

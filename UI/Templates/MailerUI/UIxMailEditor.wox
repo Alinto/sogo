@@ -8,26 +8,53 @@
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
   <div id="messageEditor">
     <form>
-      <label><var:string label:value="From"/>
-      <select name="from"
-              data-ng-model="message.editable.from"
-              data-ng-options="identity for identity in identities"><!-- from --></select></label>
-      <label><var:string label:value="To"/>
-      <tags-input type="text" name="to"
-                  ng-model="message.editable.to"
-                  label:placeholder="Add a recipient">
-      <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
-      <label><var:string label:value="Cc"/>
-      <tags-input type="text" name="cc"
-                  ng-model="message.editable.cc"
-                  label:placeholder="Add a recipient">
-      <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete></tags-input></label>
-      <label><var:string label:value="Subject"/>
-      <input type="text" name="subject" ng-model="message.editable.subject"/></label>
-      <label><var:string label:value="Attachments"/>
-      <input type="file"
-             data-nv-file-select="nv-file-select"
-             data-uploader="uploader"/></label>
+
+        <label>
+          <var:string label:value="From"/>
+        </label>
+        <select name="from"
+                data-ng-model="message.editable.from"
+                data-ng-options="identity for identity in identities"><!-- from --></select>
+
+
+      <md-input-container>
+        <label>
+          <var:string label:value="To"/>
+          <input type="text" name="to"
+                      ng-model="message.editable.to"
+                      label:placeholder="Add a recipient">
+            <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
+          </input>
+        </label>
+      </md-input-container>
+
+      <md-input-container>
+        <label>
+          <var:string label:value="Cc"/>
+        </label>
+          <input type="text" name="cc"
+                      ng-model="message.editable.cc"
+                      label:placeholder="Add a recipient">
+            <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
+          </input>
+      </md-input-container>
+
+      <md-input-container>
+        <label>
+          <var:string label:value="Subject"/>
+        </label>
+          <input type="text" name="subject" ng-model="message.editable.subject"/>
+      </md-input-container>
+
+      <md-input-container>
+        <label>
+          <var:string label:value="Attachments"/>
+        </label>
+          <input type="file"
+                 data-nv-file-select="nv-file-select"
+                 data-uploader="uploader"/>
+      </md-input-container>
+
       <ul>
         <li ng-repeat="item in message.editable.attachmentAttrs">
           <span ng-bind="item.filename"><!-- filename --></span>
@@ -36,7 +63,10 @@
           <span ng-bind="item.file.name"><!-- filename --></span> (<span ng-bind="item.file.progress"><!-- progress --></span>)
         </li>
       </ul>
-      <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
+
+        <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
+
+
       <div class="buttonsToolbar">
         <span>
           <a class="button tiny radius"

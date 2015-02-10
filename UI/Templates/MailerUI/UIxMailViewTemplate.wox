@@ -8,22 +8,32 @@
    xmlns:uix="OGo:uix">
 
 <md-content md-scroll-y="md-scroll-y"  class="md-padding">
-    <header class="header">
+    <header class="msg-header">
       <hgroup>
         <h3 class="sg-md-headline" data-ng-bind="message.subject"><!-- subject --></h3>
         <div class="msg-header-group">
-          <div class="md-tile-left">
-            <!--avatar-->
+          <div layout="row" layout-align="start center">
+            <label>
+              <var:string label:value="From"/>
+            </label>
+            <div class="sg-avatar">
+              <!--avatar-->
+            </div>
+            <div class="sg-md-body-multi name">
+              <a data-ng-href="mailto:{{message.from[0].email}}" data-ng-bind="message.from[0].full"><!-- from --></a>
+            </div>
           </div>
-          <div class="sg-md-body-multi name">
-            <a data-ng-href="mailto:{{message.from[0].email}}" data-ng-bind="message.from[0].full"><!-- from --></a>
+
+          <div layout="row" layout-align="start center">
+            <label>
+              <var:string label:value="To"/>
+            </label>
+            <div class="sg-md-body-multi">
+              <a data-ng-href="mailto:{{message.to[0].email}}" data-ng-bind="message.to[0].full"><!-- to --></a>
+            </div>
           </div>
-          <div class="msg-date sg-md-body-multi"><span data-ng-bind="message.date"><!-- date --></span></div>
         </div>
 
-        <div>
-          <a data-ng-href="mailto:{{message.to[0].email}}" data-ng-bind="message.to[0].full"><!-- to --></a>
-        </div>
         <p class="flags">
           <span class="label radius" data-ng-repeat="flag in message.flags">{{flag}}</span>
         </p>
@@ -46,7 +56,8 @@
               data-ng-click="loadImages()"><var:string label:value="Load Images"/></span>
       </div>
     </header>
-
+  <md-divider><!-- divider --></md-divider>
+  <div class="msg-date sg-md-body-multi"><span data-ng-bind="message.date"><!-- date --></span></div>
   <div class="mailer_mailcontent"
        data-ng-bind-html="message.$content()"><!-- msg --></div>
 </md-content>

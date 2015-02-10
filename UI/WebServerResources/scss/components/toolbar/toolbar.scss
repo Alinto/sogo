@@ -18,20 +18,17 @@ hgroup {
   }
 }
 .sg-icon-bar {
-  font-size: $sg-font-size-5;
+  font-size: $sg-font-size-3;
   color: $colorGray;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: ($pitch);
-  height:(3 * $pitch);
-  margin-right: $mg * -1;
+  height:(2 * $pitch);
+  margin-left: $mg;
     }
 .sg-icon-bar *.button {
   display: block;
-  margin: 0 auto;
-  width: (2 * $mg);
 }
 
 

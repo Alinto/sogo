@@ -81,3 +81,7 @@
     flex-wrap: wrap;
   }
 }
+.sg-avatar {
+  @extend .md-tile-left;
+  margin-right: 0;
+}
