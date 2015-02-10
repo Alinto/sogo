@@ -39,10 +39,10 @@
 + (id) byDayMaskWithDays: (iCalWeekOccurrences) theDays
 {
   id o;
-  
+
   o = [[self alloc] initWithDays: theDays];
   AUTORELEASE(o);
-  
+
   return o;
 }
 
@@ -62,7 +62,7 @@
 {
   id o;
   iCalWeekOccurrences d;
-  
+
   d[iCalWeekDaySunday] = 0;
   d[iCalWeekDayMonday] = iCalWeekOccurrenceAll;
   d[iCalWeekDayTuesday] = iCalWeekOccurrenceAll;
@@ -72,7 +72,7 @@
   d[iCalWeekDaySaturday] = 0;
   o = [[self alloc] initWithDays: d];
   AUTORELEASE(o);
-  
+
   return o;
 }
 
@@ -102,7 +102,7 @@
   if (self)
     {
       memset(days, 0, 7 * sizeof(iCalWeekOccurrence));
-      
+
       if ([byDayRule length] > 0)
 	{
 	  values = [byDayRule componentsSeparatedByString: @","];
@@ -120,7 +120,7 @@
 
 		  [value getCharacters: chars
 				 range: NSMakeRange(valueLength - 2, 2)];
-		  
+
 		  switch (chars[0])
 		    {
 		    case 'M': day = iCalWeekDayMonday;
@@ -142,7 +142,7 @@
 			day = iCalWeekDaySunday;
 		      break;
 		    }
-		  
+
 		  if (day != iCalWeekDayUnknown)
 		    {
 		      c = [value characterAtIndex: 0];
@@ -157,15 +157,15 @@
 			  digitStart = 1;
 			  c = [value characterAtIndex: 1];
 			}
-		      
+
 		      i = digitStart;
-		      
+
 		      while (i < valueLength && isdigit(c))
 			{
 			  i++;
 			  c = [value characterAtIndex: i];
 			}
-		      
+
 		      if (i != digitStart)
 			order = [[value substringWithRange: NSMakeRange(digitStart, (i - digitStart))] intValue];
 
@@ -186,7 +186,123 @@
 	    }
 	}
     }
-  
+
+  return self;
+}
+
++ (id) byDayMaskWithDaysAndOccurences: (NSArray *) values
+{
+  id o;
+
+  o = [[self alloc] initWithDaysAndOccurences: values];
+  AUTORELEASE(o);
+
+  return o;
+}
+
+- (id) initWithDaysAndOccurences: (NSArray *) values
+{
+  unsigned int count, max;
+  NSString *value;
+  unichar c, chars[2];
+  unsigned int valueLength, i, digitStart, order;
+  iCalWeekDay day;
+  id mask;
+  BOOL reverse;
+
+  self = [super init];
+
+  if (self)
+    {
+      memset(days, 0, 7 * sizeof(iCalWeekOccurrence));
+
+      max = [values count];
+      for (count = 0; count < max; count++)
+        {
+          mask = [values objectAtIndex: count];
+          if (![mask isKindOfClass: [NSDictionary class]])
+            continue;
+          value = [[mask objectForKey: @"day"] uppercaseString];
+          valueLength = [value length];
+          if (valueLength > 1)
+            {
+              day = iCalWeekDayUnknown;
+              reverse = NO;
+              digitStart = 0;
+              order = 0;
+
+              [value getCharacters: chars
+                             range: NSMakeRange(0, valueLength)];
+
+              switch (chars[0])
+                {
+                case 'M': day = iCalWeekDayMonday;
+                  break;
+                case 'W': day = iCalWeekDayWednesday;
+                  break;
+                case 'F': day = iCalWeekDayFriday;
+                  break;
+                case 'T':
+                  if (chars[1] == 'U')
+                    day = iCalWeekDayTuesday;
+                  else if (chars[1] == 'H')
+                    day = iCalWeekDayThursday;
+                  break;
+                case 'S':
+                  if (chars[1] == 'A')
+                    day = iCalWeekDaySaturday;
+                  else if (chars[1] == 'U')
+                    day = iCalWeekDaySunday;
+                  break;
+                }
+
+              if (day != iCalWeekDayUnknown)
+                {
+                  value = [mask objectForKey: @"occurence"];
+                  valueLength = [value length];
+                  if (valueLength > 0)
+                    {
+                      c = [value characterAtIndex: 0];
+                      if (c == '-')
+                        {
+                          digitStart = 1;
+                          reverse = YES;
+                        }
+                      else if (c == '+')
+                        {
+                          digitStart = 1;
+                        }
+
+                      i = digitStart;
+                      while (i < valueLength)
+                        {
+                          c = [value characterAtIndex: i];
+                          i++;
+                          if (!isdigit(c))
+                            break;
+                        }
+
+                      if (i != digitStart)
+                        order = [[value substringWithRange: NSMakeRange(digitStart, (i - digitStart))] intValue];
+                    }
+
+                  if (order > 0 && order < 6)
+                    {
+                      order = pow (2, order - 1);
+                      if (reverse)
+                        order = order << 5;
+                      days[day] |= order;
+                      //NSLog(@"*** iCalByDayMask [%i] %@ : day = %i, order = %i, result = %i", count, byDayRule, day, order, days[day]);
+                    }
+                  else
+                    {
+                      days[day] = iCalWeekOccurrenceAll;
+                    }
+                }
+	    }
+	}
+    }
+
   return self;
 }
 
@@ -214,7 +330,7 @@
       withWeekNumber: (int) week
 {
   unsigned int absWeek, order;
-  
+
   absWeek = abs (week);
   order = 0;
   if (absWeek > 0 && absWeek < 6)
@@ -223,7 +339,7 @@
       if (week < 0)
 	order = order << 5;
     }
-  
+
   return ((days[weekDay] & order) > 0);
 }
 
@@ -249,7 +365,7 @@
       if (days[i])
         day = i;
     }
-  
+
   return day;
 }
 
@@ -260,10 +376,10 @@
 
   occurrence = 0;
   day = [self firstDay];
-  
+
   if (day > -1 && days[day] != iCalWeekOccurrenceAll)
     occurrence = [self _iCalWeekOccurrenceIntValue: days[day]];
-  
+
   return occurrence;
 }
 
@@ -323,7 +439,7 @@
 	  [rules addObject: rule];
 	}
     }
-  
+
   return [rules componentsJoinedByString: @","];
 }
 
