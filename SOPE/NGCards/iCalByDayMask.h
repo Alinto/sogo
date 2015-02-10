@@ -53,6 +53,8 @@ typedef iCalWeekOccurrence iCalWeekOccurrences[7];
 - (id) initWithDays: (iCalWeekOccurrences) theDays;
 + (id) byDayMaskWithRuleString: (NSString *) byDayRule;
 - (id) initWithRuleString: (NSString *) byDayRule;
++ (id) byDayMaskWithDaysAndOccurences: (NSArray *) values;
+- (id) initWithDaysAndOccurences: (NSArray *) values;
 
 - (BOOL) occursOnDay: (iCalWeekDay) weekDay;
 - (BOOL) occursOnDay: (iCalWeekDay) weekDay
