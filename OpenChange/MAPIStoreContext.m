@@ -51,6 +51,7 @@
 #import "MAPIStoreContext.h"
 
 #undef DEBUG
+#include <dlinklist.h>
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <util/attr.h>
