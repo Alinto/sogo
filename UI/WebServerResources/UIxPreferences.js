@@ -79,7 +79,7 @@ function savePreferences(sender) {
             }
        
         // We check if we can only to internal/external addresses.
-        var constraints = parseInt($("forwardConstraints").value);
+        var constraints = parseInt(forwardConstraints);
         
         if (constraints > 0) {
             // We first extract the list of 'known domains' to SOGo
