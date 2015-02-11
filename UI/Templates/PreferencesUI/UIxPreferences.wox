@@ -654,6 +654,10 @@
                   const:id="forwardKeepCopy"
                   var:checked="forwardKeepCopy" />
                   <var:string label:value="Keep a copy" /></label><br/>
+
+                  <input type="hidden"
+                    const:id="forwardConstraints"
+                    var:value="forwardConstraints" />
               </div>
             </div>
           </var:if>

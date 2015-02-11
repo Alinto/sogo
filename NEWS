@@ -3,6 +3,7 @@
 
 New features
  - now possible for SOGo to change the sambaNTPassword/sambaLMPassword
+ - now possible to limit automatic forwards to internal/external domains
 
 Enhancements
  - added support for email categories using EAS (#2995)

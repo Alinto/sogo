@@ -1792,6 +1792,12 @@ host.
 
 Defaults to `NO` when unset.
 
+|D |SOGoForwardConstraints
+|Parameter used to set constraints on possible addresses used when
+automatically forwarding mails. When set to `0` (default), no constraint
+is enforced. When set to `1`, only internal domains can be used. When
+set to `2`, only external domains can be used.
+
 |D |SOGoSieveScriptsEnabled
 |Parameter used to activate the edition from the preferences windows of
 server-side mail filters. Requires Sieve script support on the IMAP
