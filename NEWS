@@ -1,6 +1,9 @@
 2.2.16 (2015-02-DD)
 -------------------
 
+New features
+ - now possible for SOGo to change the sambaNTPassword/sambaLMPassword
+
 Enhancements
  - added support for email categories using EAS (#2995)
  - now possible to always send vacation messages (#2332)

@@ -1,7 +1,7 @@
 /* NSString+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012 Inverse inc.
+ * Copyright (C) 2012-2015 Inverse inc.
  *
  * Author: Nicolas Höft
  *         Inverse inc.
@@ -28,6 +28,8 @@
 #import "NSString+Crypto.h"
 #import "NSData+Crypto.h"
 #import <NGExtensions/NGBase64Coding.h>
+
+#include "lmhash.h"
 
 @implementation NSString (SOGoCryptoExtension)
 
@@ -90,7 +92,8 @@
   encodingAndScheme = [NSString getDefaultEncodingForScheme: scheme];
 
   pass = [self substringWithRange: range];
-  // return array with [scheme, password, encoding]
+  
+  // Returns an array with [scheme, password, encoding]
   return [NSArray arrayWithObjects: [encodingAndScheme objectAtIndex: 1], pass, [encodingAndScheme objectAtIndex: 0], nil];
 }
 
@@ -103,7 +106,7 @@
  * @return YES if the passwords are identical using this encryption scheme
  */
 - (BOOL) isEqualToCrypted: (NSString *) cryptedPassword
-         withDefaultScheme: (NSString *) theScheme
+        withDefaultScheme: (NSString *) theScheme
 {
   NSArray *passInfo;
   NSString *selfCrypted;
@@ -193,7 +196,7 @@
  */
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                                withSalt: (NSData *) theSalt
-                          andEncoding: (keyEncoding) userEncoding
+                            andEncoding: (keyEncoding) userEncoding
 {
   keyEncoding dataEncoding;
   NSData* cryptedData;
@@ -229,7 +232,7 @@
     {
        // base64 encoding
       NSString *s = [[NSString alloc] initWithData: [cryptedData dataByEncodingBase64WithLineLength: 1024]
-                encoding: NSASCIIStringEncoding];
+                                          encoding: NSASCIIStringEncoding];
       return [s autorelease];
     }
 
@@ -277,7 +280,8 @@
     }
 
   // in order to keep backwards-compatibility, hex encoding is used for sha1 here
-  if ([passwordScheme caseInsensitiveCompare: @"md5"] == NSOrderedSame ||
+  if ([passwordScheme caseInsensitiveCompare: @"md4"] == NSOrderedSame ||
+      [passwordScheme caseInsensitiveCompare: @"md5"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"plain-md5"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"sha"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"cram-md5"] == NSOrderedSame)
@@ -294,6 +298,7 @@
     {
       encoding = encBase64;
     }
+
   return [NSArray arrayWithObjects: [NSNumber numberWithInt: encoding], trueScheme, nil];
 }
 
@@ -306,7 +311,7 @@
 {
   NSData *cryptData;
   cryptData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  return [NSData encodeDataAsHexString: [cryptData asSHA1] ];
+  return [NSData encodeDataAsHexString: [cryptData asSHA1]];
 }
 
 /**
@@ -318,7 +323,36 @@
 {
   NSData *cryptData;
   cryptData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  return [NSData encodeDataAsHexString: [cryptData asMD5] ];
+  return [NSData encodeDataAsHexString: [cryptData asMD5]];
+}
+
+/**
+ * Encrypts the data using the NT-hash password scheme.
+ *
+ * @return If successful, NT-hash encrypted and with hex encoded string
+ */
+- (NSString *) asNTHash
+{
+  NSData *d;
+
+  d = [self dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
+
+  return [[NSData encodeDataAsHexString: [d asMD4]] uppercaseString];
+}
+
+/**
+ * Encrypts the data using the LM-hash password scheme.
+ *
+ * @return If successful, LM-hash encrypted and with hex encoded string
+ */
+- (NSString *) asLMHash
+{
+  NSData *d;
+
+  // See http://en.wikipedia.org/wiki/LM_hash#Algorithm
+  d = [[self uppercaseString] dataUsingEncoding: NSWindowsCP1252StringEncoding];
+  
+  return [[NSData encodeDataAsHexString: [d asLM]] uppercaseString];
 }
 
 @end

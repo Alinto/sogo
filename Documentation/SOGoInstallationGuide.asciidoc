@@ -1003,6 +1003,14 @@ this feature, every LDAP requests will fail. Note that some LDAP servers
 require LDAP/SSL for password policies to work. This is the case for
 example with 389 Directory Server.
 
+|updateSambaNTLMPasswords
+|If set to `YES`, SOGo will automatically update the sambaNTPassword
+and sambaLMPassword attributes when changing passwords. The attributes
+must be called sambaNTPassword and sambaLMPassword. You must also make
+sure the correct ACL is set in your LDAP server to allow users to change
+their own sambaNTPassword and sambaLMPassword password attributes.
+Defaults to `NO` when unset.
+
 |isAddressBook
 |If set to `YES`, this LDAP source is used as a shared address book
 (with read-only access). Note that if set to `NO`, autocompletion will

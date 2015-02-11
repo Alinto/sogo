@@ -1,7 +1,7 @@
 /* NSData+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012 Inverse inc.
+ * Copyright (C) 2012-2015 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers
  *
  * Author: Nicolas Höft
@@ -39,12 +39,14 @@
 #include <stdint.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/crypto.h>
+#define MD4_DIGEST_LENGTH 16
 #define MD5_DIGEST_LENGTH 16
 #define SHA_DIGEST_LENGTH 20
 #define SHA256_DIGEST_LENGTH 32
 #define SHA512_DIGEST_LENGTH 64
 #elif defined(HAVE_OPENSSL)
 #include <openssl/evp.h>
+#include <openssl/md4.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
 #else
@@ -145,7 +147,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  * @return Pseudo-random binary data with length theLength or nil, if an error occured
  */
 + (NSData *) generateSaltForLength: (unsigned int) theLength
-                withBase64: (BOOL) doBase64
+                        withBase64: (BOOL) doBase64
 {
   char *buf;
   int fd;
@@ -177,7 +179,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  * @return Binary data from the encryption by the specified scheme. On error the funciton returns nil.
  */
 - (NSData *) asCryptedPassUsingScheme: (NSString *) passwordScheme
-                               withSalt: (NSData *) theSalt
+                             withSalt: (NSData *) theSalt
 {
   if ([passwordScheme caseInsensitiveCompare: @"none"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"plain"] == NSOrderedSame ||
@@ -192,6 +194,10 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   else if ([passwordScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame)
     {
       return [self asMD5CryptUsingSalt: theSalt];
+    }
+  else if ([passwordScheme caseInsensitiveCompare: @"md4"] == NSOrderedSame)
+    {
+      return [self asMD4];
     }
   else if ([passwordScheme caseInsensitiveCompare: @"md5"] == NSOrderedSame ||
            [passwordScheme caseInsensitiveCompare: @"plain-md5"] == NSOrderedSame ||
@@ -235,6 +241,49 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   return nil;
 }
 
+- (NSData *) asLM
+{
+  NSData *out;
+  
+  unsigned char buf[14];
+  unsigned char *o;
+  unsigned int len;
+  
+  memset(buf, 0, 14);
+  len = ([self length] >= 14 ? 14 : [self length]);
+  [self getBytes: buf  length: len];
+
+  o = malloc(16*sizeof(unsigned char));
+
+  auth_LMhash(o, buf, len);
+
+  out = [NSData dataWithBytes: o  length: 16];
+  free(o);
+
+  return out;
+}
+
+/**
+ * Hash the data with MD4. Uses openssl functions to generate it.
+ *
+ * @return Binary data from MD4 hashing. On error the funciton returns nil.
+ */
+- (NSData *) asMD4
+{
+  unsigned char md4[MD4_DIGEST_LENGTH];
+  memset(md4, 0, MD4_DIGEST_LENGTH);
+
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+  
+  md4_buffer([self bytes], [self length], md4);
+#elif defined(HAVE_OPENSSL)
+  MD4([self bytes], [self length], md4);
+#endif
+
+  return [NSData dataWithBytes: md4  length: MD4_DIGEST_LENGTH];
+}
 
 /**
  * Hash the data with MD5. Uses openssl functions to generate it
