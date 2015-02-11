@@ -227,6 +227,10 @@ struct GlobalObjectId {
       type = [part valueForKey: @"type"];
       subtype = [part valueForKey: @"subtype"];
       
+      // Don't select an attachment as body
+      if ([[[part valueForKey: @"disposition"] valueForKey: @"type"] isEqualToString: @"attachment"])
+         continue;
+
       if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"html"])
         htmlKey = key;
       else if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"plain"])
@@ -439,7 +443,7 @@ struct GlobalObjectId {
             {
               s = [s htmlToText];
             }
-          
+
           d = [s dataUsingEncoding: NSUTF8StringEncoding];
         }
       else if ([type isEqualToString: @"multipart"])
@@ -734,7 +738,13 @@ struct GlobalObjectId {
       len = [content length];
       
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-      [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
+
+      // Set the correct type if client requested text/html but we got text/plain
+      if (preferredBodyType == 2 && nativeBodyType == 1)
+         [s appendString: @"<Type>1</Type>"];
+      else
+         [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
+
       [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
       [s appendFormat: @"<Preview></Preview>"];
 
