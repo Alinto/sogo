@@ -9,36 +9,80 @@
 [data-ui-view="message"] {
   max-width: grid-step(8);
 }
+
+// Message view header
+// Could be made into a more generic component
+// ----------------------------------------------------------------------------
 .msg-header {
-  padding-bottom: $mg;
+//  padding-bottom: $mg; We should add a padding class to preserve genericity
 }
-.msg-header-group {
+
+.msg-header-content {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-
-
-
-  [layout="row"] + [layout="row"] {
-    margin-top: -1 * 1em;
-  }
 }
-.msg-header-group .sg-md-body-multi.name {}
+
+.msg-body {
+  padding-top: $mg;
+}
+
 .msg-date {
-  margin: $mg 0;
   text-align: right;
 }
+// sg-md title don't fit in message headers
+.sg-md-title-msg {
+  @extend .sg-md-title;
+  margin: 0;
+  margin-bottom: $line;
+  font-weight: $sg-font-regular;
+  white-space: normal;
+}
 
-.msg-header label {
-  font-size: sg-size(caption) - 1; // -1px to compensate for the uppercase and simulate Small caps
-  text-transform: uppercase;
-  margin-right: $mg;
-  width: ($pitch + $bl);
-  text-align: right;
-  line-height: $sg-line-height-2;
-  font-weight: 600;
+// Component: PseudoField
+// This component mimics the presentation of form fields according to Google's
+// Material Design specs (www.google.com/design/spec/components/text-fields.html)
+// It's used in message headers but could --and should-- be reused
+// The PseudoField element serves as a container for it's two children:
+// --label and --inputLike
+//
+// Typical use:
+// <div class="PseudoField">
+//   <label class="PseudoField-label">Some text</label>
+//   <p class="PseudoField-inputLike">Other input-like text</p>
+// </div>
+//
+// ----------------------------------------------------------------------------
+
+.PseudoField {
+  display: block; // Should be (reset to ?) a plain block element
+}
+.PseudoField-label {
+  display: inline-block;
+  margin-top: $mg;
+  font-size: sg-size(caption);
+  line-height: $sg-line-height-1; // 16px;
+  font-weight: $sg-font-bold;
   color: $colorGray;
+}
+.PseudoField-inputLike {
+  display: block;
+  padding: $line 0;
+  margin-bottom: $line;
+  font-size: sg-size(subhead);
+  line-height: 1;
+}
+.PseudoField-inputLike--underline {
+  @extend .PseudoField-inputLike;
+  border-bottom: 1px solid $colorGrayLight;
+}
+// The specs dimensions are too large to fit with angular-material
+// Here's a modifier
+.PseudoField--compact {
+  .PseudoField-label {
+    margin-top: 0;
+  }
 }
 
 .mailer_mailcontent {
