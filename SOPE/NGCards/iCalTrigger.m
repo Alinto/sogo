@@ -22,6 +22,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import "iCalEvent.h"
 #import "iCalTrigger.h"
@@ -114,7 +115,7 @@
       data = [NSDictionary dictionaryWithObjectsAndKeys:
                              relation, @"relation",
                            reference, @"reference",
-                           quantity, @"quantity",
+                           [NSNumber numberWithInt: [quantity intValue]], @"quantity",
                            unit, @"unit",
                            nil];
     }
