@@ -20,7 +20,7 @@
   md-item-content {
     padding: 0 0 0 $mg;
     margin: $mg 0;
-    transition: all 0.35s $swift-ease-in-timing-function 0.15s;
+    transition: all 0.20s $swift-ease-in-timing-function 0.12s;
     &:hover {
       background-color: sg-color($sogoPaper, 300);
       color: sg-color($sogoBlue, 800);

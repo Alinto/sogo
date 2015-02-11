@@ -6,7 +6,7 @@ md-toolbar {
 }
 header {
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: space-between;
   display: flex;
 }
@@ -24,8 +24,7 @@ hgroup {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height:(2 * $pitch);
-  margin-left: $mg;
+  margin: 0 0 $mg $mg;
     }
 .sg-icon-bar *.button {
   display: block;
