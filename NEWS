@@ -9,6 +9,7 @@ Enhancements
  - added support for email categories using EAS (#2995)
  - now possible to always send vacation messages (#2332)
  - added EAS best practices to the documentation
+ - improved fetching of text parts over EAS
 
 Bug fixes
  - (regression) fixed sending a message when mail module is not active (#3088)

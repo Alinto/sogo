@@ -209,6 +209,7 @@ struct GlobalObjectId {
 //
 //
 - (NSData *) _preferredBodyDataInMultipartUsingType: (int) theType
+                                    nativeTypeFound: (int *) theNativeTypeFound
 {
   NSString *encoding, *key, *plainKey, *htmlKey, *type, *subtype;
   NSDictionary *textParts, *part;
@@ -238,11 +239,22 @@ struct GlobalObjectId {
     }
 
   key = nil;
+  *theNativeTypeFound = 1;
 
-  if (theType == 2)
-    key = htmlKey;
-  else if (theType == 1)
+  if (theType == 2 && htmlKey)
+    {
+      key = htmlKey;
+      *theNativeTypeFound = 2;
+    }
+  else if (theType == 1 && plainKey)
     key = plainKey;
+  else if (theType == 2 && plainKey)
+    key = plainKey;
+  else if (theType == 1 && htmlKey)
+    {
+      key = htmlKey;
+      *theNativeTypeFound = 2;
+    }
 
   if (key)
     {
@@ -263,6 +275,10 @@ struct GlobalObjectId {
         charset = @"us-ascii";
       
       s = [NSString stringWithData: d  usingEncodingNamed: charset];
+
+      if (theType == 1 && *theNativeTypeFound == 2)
+        s = [s htmlToText];
+
       d = [s dataUsingEncoding: NSUTF8StringEncoding];
     }
 
@@ -448,7 +464,7 @@ struct GlobalObjectId {
         }
       else if ([type isEqualToString: @"multipart"])
         {
-          d = [self _preferredBodyDataInMultipartUsingType: theType];
+          d = [self _preferredBodyDataInMultipartUsingType: theType nativeTypeFound: theNativeType];
         }
     }
   else if (theType == 4)
