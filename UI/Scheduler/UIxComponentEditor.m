@@ -254,8 +254,6 @@ static NSArray *reminderValues = nil;
     categoryLabels = [[self labelForKey: @"category_labels"]
                        componentsSeparatedByString: @","];
   categoryList = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
-  if ([category length] && ![categoryLabels containsObject: category])
-    [categoryList addObject: category];
   [categoryList addObjectsFromArray:
                   [categoryLabels sortedArrayUsingSelector:
                                     @selector (localizedCaseInsensitiveCompare:)]];
