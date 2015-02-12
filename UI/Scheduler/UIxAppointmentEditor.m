@@ -33,6 +33,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <NGCards/iCalAlarm.h>
@@ -72,15 +73,6 @@
 
   if ((self = [super init]))
     {
-      aptStartDate = nil;
-      aptEndDate = nil;
-      item = nil;
-      event = nil;
-      isAllDay = NO;
-      isTransparent = NO;
-      sendAppointmentNotifications = YES;
-      componentCalendar = nil;
-
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     }
@@ -90,111 +82,16 @@
 
 - (void) dealloc
 {
-  [item release];
-  [[event parent] release];
-  [aptStartDate release];
-  [aptEndDate release];
   [dateFormatter release];
-  [componentCalendar release];
   [super dealloc];
 }
 
-/* template values */
 - (iCalEvent *) event
 {
-  if (!event)
-    {
-      event = (iCalEvent *) [[self clientObject] occurence];
-      [[event parent] retain];
-    }
-
-  return event;
+  return (iCalEvent *) component;
 }
 
-- (NSString *) saveURL
-{
-  return [NSString stringWithFormat: @"%@/saveAsAppointment",
-                   [[self clientObject] baseURL]];
-}
-
-/* icalendar values */
-- (BOOL) isAllDay
-{
-  NSString *hm;
-
-  hm = [self queryParameterForKey: @"hm"];
-
-  return (isAllDay
-          || [hm isEqualToString: @"allday"]);
-}
-
-- (void) setIsAllDay: (BOOL) newIsAllDay
-{
-  isAllDay = newIsAllDay;
-}
-
-- (BOOL) isTransparent
-{
-  return isTransparent;
-}
-
-- (void) setIsTransparent: (BOOL) newIsTransparent
-{
-  isTransparent = newIsTransparent;
-}
-
-- (void) setSendAppointmentNotifications: (BOOL) theBOOL
-{
-  sendAppointmentNotifications = theBOOL;
-}
-
-- (BOOL) sendAppointmentNotifications
-{
-  return sendAppointmentNotifications;
-}
-
-
-- (void) setAptStartDate: (NSCalendarDate *) newAptStartDate
-{
-  ASSIGN (aptStartDate, newAptStartDate);
-}
-
-- (NSCalendarDate *) aptStartDate
-{
-  return aptStartDate;
-}
-
-- (void) setAptEndDate: (NSCalendarDate *) newAptEndDate
-{
-  ASSIGN (aptEndDate, newAptEndDate);
-}
-
-- (NSCalendarDate *) aptEndDate
-{
-  return aptEndDate;
-}
-
-- (void) setItem: (NSString *) newItem
-{
-  ASSIGN (item, newItem);
-}
-
-- (NSString *) item
-{
-  return item;
-}
-
-- (SOGoAppointmentFolder *) componentCalendar
-{
-  return componentCalendar;
-}
-
-- (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
-{
-  ASSIGN (componentCalendar, _componentCalendar);
-}
-
-- (NSString *) formattedDateString: (NSCalendarDate *) date
+- (NSString *) _dateString: (NSCalendarDate *) date
 {
   char buf[22];
   NSNumber *day, *month, *year;
@@ -211,14 +108,7 @@
   return [NSString stringWithCString:buf];
 }
 
-
-/* read-only event */
-- (BOOL) startDateIsEqualToEndDate
-{
-  return [aptStartDate isEqualToDate: aptEndDate];
-}
-
-/* actions */
+/*
 - (NSCalendarDate *) newStartDate
 {
   NSCalendarDate *newStartDate, *now;
@@ -256,7 +146,9 @@
 
   return newStartDate;
 }
+*/
 
+/*
 - (id <WOActionResults>) defaultAction
 {
   NSCalendarDate *startDate, *endDate;
@@ -310,7 +202,7 @@
           endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                        seconds:-offset];
         }
-      isTransparent = ![event isOpaque]; 
+      isTransparent = ![event isOpaque];
       sendAppointmentNotifications = ([event firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"] ? NO : YES);
     }
 
@@ -322,15 +214,18 @@
 
   return self;
 }
+*/
 
 - (void) _adjustRecurrentRules
 {
+  iCalEvent *event;
   iCalRecurrenceRule *rule;
   NSEnumerator *rules;
   NSCalendarDate *untilDate;
   SOGoUserDefaults *ud;
   NSTimeZone *timeZone;
-  
+
+  event = [self event];
   rules = [[event recurrenceRules] objectEnumerator];
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
@@ -358,63 +253,151 @@
     }
 }
 
+/**
+ * @api {post} /so/:username/Calendar/:calendarId/:appointmentId/save Save event
+ * @apiVersion 1.0.0
+ * @apiName PostEventSave
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/71B6-54904400-1-7C308500.ics/save \
+ *          -H 'Content-Type: application/json' \
+ *          -d '{ "summary": "Meeting", "startDate": "2015-01-28", "startTime": "10:00", \
+ *                "endDate": "2015-01-28", "endTime": "12:00" }'
+ *
+ * Save in [iCalEvent+SOGo setAttributes:inContext:]
+ *
+ * @apiParam {String} startDate               Start date (YYYY-MM-DD)
+ * @apiParam {String} startTime               Start time (HH:MM)
+ * @apiParam {String} endDate                 End date (YYYY-MM-DD)
+ * @apiParam {String} endTime                 End time (HH:MM)
+ * @apiParam {Number} [isAllDay]              1 if event is all-day
+ * @apiParam {Number} isTransparent           1 if the event is not opaque
+ *
+ * Save in [iCalEntityObject+SOGo setAttributes:inContext:]
+ *
+ * @apiParam {Number} [sendAppointmentNotifications] 0 if notifications must not be sent
+ * @apiParam {String} [summary]               Summary
+ * @apiParam {String} [location]              Location
+ * @apiParam {String} [comment]               Comment
+ * @apiParam {String} [status]                Status
+ * @apiParam {String} [attachUrl]             Attached URL
+ * @apiParam {Number} [priority]              Priority
+ * @apiParam {NSString} [classification]      Either public, confidential or private
+ * @apiParam {String[]} [categories]          Categories
+ * @apiParam {Object[]} [attendees]           List of attendees
+ * @apiParam {String} [attendees.name]        Attendee's name
+ * @apiParam {String} attendees.email         Attendee's email address
+ * @apiParam {String} [attendees.uid]         System user ID
+ * @apiParam {String} attendees.status        Attendee's participation status
+ * @apiParam {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
+ * @apiParam {String} [attendees.delegatedTo] User that the original request was delegated to
+ * @apiParam {String} [attendees.delegatedFrom] User the request was delegated from
+ * @apiParam {Object[]} [alarm]               Alarm definition
+ * @apiParam {String} alarm.action            Either display or email
+ * @apiParam {Number} alarm.quantity          Quantity of units
+ * @apiParam {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiParam {String} alarm.reference         Either BEFORE or AFTER
+ * @apiParam {String} alarm.relation          Either START or END
+ * @apiParam {Boolean} [alarm.attendees]      Alert attendees by email if true and action is email
+ * @apiParam {Object} [alarm.organizer]       Alert organizer at this email address if action is email
+ * @apiParam {String} [alarm.organizer.name]  Attendee's name
+ * @apiParam {String} alarm.organizer.email   Attendee's email address
+ *
+ * Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]
+ *
+ * @apiParam {Object} [repeat]                Recurrence rule definition
+ * @apiParam {String} repeat.frequency        Either daily, every weekday, weekly, bi-weekly, monthly, or yearly
+ * @apiParam {Number} repeat.interval         Intervals the recurrence rule repeats
+ * @apiParam {String} [repeat.count]          Number of occurrences at which to range-bound the recurrence
+ * @apiParam {String} [repeat.until]          A date (YYYY-MM-DD) that bounds the recurrence rule in an inclusive manner
+ * @apiParam {Object[]} [repeat.days]         List of days of the week (by day mask)
+ * @apiParam {String} [repeat.days.day]       Day of the week (SU, MO, TU, WE, TH, FR, SA)
+ * @apiParam {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (values are -5 to 5)
+ * @apiParam {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
+ * @apiParam {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
+ *
+ * Save in [UIxComponentEditor setAttributes:]
+ *
+ * @apiParam {Object} [organizer]             Appointment organizer
+ * @apiParam {String} organizer.name          Organizer's name
+ * @apiParam {String} organizer.email         Organizer's email address
+ *
+ * @apiError (Error 500) {Object} error The error message
+ */
 - (id <WOActionResults>) saveAction
 {
+  NSDictionary *params;
+  NSString *jsonResponse;
+  NSException *ex;
+  iCalEvent *event;
   SOGoAppointmentFolder *previousCalendar;
   SOGoAppointmentObject *co;
-  NSString *jsonResponse;
   SoSecurityManager *sm;
-  NSException *ex;
+  WORequest *request;
 
+  event = [self event];
   co = [self clientObject];
   if ([co isKindOfClass: [SOGoAppointmentOccurence class]])
     co = [co container];
   previousCalendar = [co container];
   sm = [SoSecurityManager sharedSecurityManager];
+
   ex = nil;
-
-  if ([event hasRecurrenceRules])
-    [self _adjustRecurrentRules];
-
-  if ([co isNew])
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  if (params == nil)
     {
-      if (componentCalendar
-          && ![[componentCalendar ocsPath]
-                isEqualToString: [previousCalendar ocsPath]])
-        {
-          // New event in a different calendar -- make sure the user can
-          // write to the selected calendar since the rights were verified
-          // on the calendar specified in the URL, not on the selected
-          // calendar of the popup menu.
-          if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                   onObject: componentCalendar
-                   inContext: context])
-            co = [componentCalendar lookupName: [co nameInContainer]
-                                    inContext: context
-                                    acquire: NO];
-        }
-      
-      // Save the event.
-      ex = [co saveComponent: event];
+      ex = [NSException exceptionWithName: @"JSONParsingException"
+                                   reason: @"Can't parse JSON string"
+                                 userInfo: nil];
     }
   else
     {
-      // The event was modified -- save it.
-      ex = [co saveComponent: event];
+      [self setAttributes: params];
 
-      if (componentCalendar
-          && ![[componentCalendar ocsPath]
-                isEqualToString: [previousCalendar ocsPath]])
+      if ([event hasRecurrenceRules])
+        [self _adjustRecurrentRules];
+
+      if ([co isNew])
         {
-          // The event was moved to a different calendar.
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                   onObject: previousCalendar
-                   inContext: context])
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
             {
+              // New event in a different calendar -- make sure the user can
+              // write to the selected calendar since the rights were verified
+              // on the calendar specified in the URL, not on the selected
+              // calendar of the popup menu.
               if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                       onObject: componentCalendar
-                       inContext: context])
-                ex = [co moveToFolder: componentCalendar];
+                                 onObject: componentCalendar
+                                inContext: context])
+                co = [componentCalendar lookupName: [co nameInContainer]
+                                         inContext: context
+                                           acquire: NO];
+            }
+
+          // Save the event.
+          ex = [co saveComponent: event];
+        }
+      else
+        {
+          // The event was modified -- save it.
+          ex = [co saveComponent: event];
+
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
+            {
+              // The event was moved to a different calendar.
+              if (![sm validatePermission: SoPerm_DeleteObjects
+                                 onObject: previousCalendar
+                                inContext: context])
+                {
+                  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                                     onObject: componentCalendar
+                                    inContext: context])
+                    ex = [co moveToFolder: componentCalendar];
+                }
             }
         }
     }
@@ -428,9 +411,9 @@
   else
     jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"success", @"status", nil];
-  
+
   return [self responseWithStatus: 200
-               andString: [jsonResponse jsonRepresentation]];
+            andJSONRepresentation: jsonResponse];
 }
 
 /**
@@ -453,35 +436,41 @@
  * @apiSuccess (Success 200) {String} endDate                 End date (YYYY-MM-DD)
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} endTime                 Formatted end time
+ *
+ * From [iCalEvent+SOGo attributes]
+ *
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
- * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  *
  * From [iCalEntityObject+SOGo attributes]
  *
+ * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  * @apiSuccess (Success 200) {String} component               "vevent"
  * @apiSuccess (Success 200) {String} summary                 Summary
- * @apiSuccess (Success 200) {String} location                Location
- * @apiSuccess (Success 200) {String} comment                 Comment
+ * @apiSuccess (Success 200) {String} [location]              Location
+ * @apiSuccess (Success 200) {String} [comment]               Comment
+ * @apiSuccess (Success 200) {String} [status]                Status
  * @apiSuccess (Success 200) {String} [attachUrl]             Attached URL
- * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
+ * @apiSuccess (Success 200) {String} [createdBy]             Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
  * @apiSuccess (Success 200) {Number} priority                Priority
- * @apiSuccess (Success 200) {NSString} classification        Either public, confidential or private
+ * @apiSuccess (Success 200) {NSString} [classification]      Either public, confidential or private
  * @apiSuccess (Success 200) {String[]} [categories]          Categories
  * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
- * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
+ * @apiSuccess (Success 200) {String} [organizer.name]        Organizer's name
  * @apiSuccess (Success 200) {String} organizer.email         Organizer's email address
+ * @apiSuccess (Success 200) {String} [organizer.uid]         Organizer's user ID
+ * @apiSuccess (Success 200) {String} [organizer.sentBy]      Email address of user that is acting on behalf of the calendar owner
  * @apiSuccess (Success 200) {Object[]} [attendees]           List of attendees
  * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
  * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
  * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
  * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
- * @apiSuccess (Success 200) {String} [attendees.role]        Attendee's role
+ * @apiSuccess (Success 200) {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
  * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
  * @apiSuccess (Success 200) {String} alarm.action            Either display or email
- * @apiSuccess (Success 200) {String} alarm.quantity          Quantity of units
+ * @apiSuccess (Success 200) {Number} alarm.quantity          Quantity of units
  * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
  * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
  * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
@@ -497,9 +486,9 @@
  * @apiSuccess (Success 200) {Number} repeat.interval         Intervals the recurrence rule repeats
  * @apiSuccess (Success 200) {String} [repeat.count]          Number of occurrences at which to range-bound the recurrence
  * @apiSuccess (Success 200) {String} [repeat.until]          A Unix epoch value that bounds the recurrence rule in an inclusive manner
- * @apiSuccess (Success 200) {Number[]} [repeat.days]         List of days of the week
+ * @apiSuccess (Success 200) {Object[]} [repeat.days]         List of days of the week (by day mask)
  * @apiSuccess (Success 200) {String} repeat.days.day         Day of the week (SU, MO, TU, WE, TH, FR, SA)
- * @apiSuccess (Success 200) {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (valures are -5 to 5)
+ * @apiSuccess (Success 200) {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (values are -5 to 5)
  * @apiSuccess (Success 200) {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
  * @apiSuccess (Success 200) {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
  */
@@ -511,11 +500,14 @@
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
   iCalAlarm *anAlarm;
+  iCalEvent *event;
 
   BOOL resetAlarm;
   unsigned int snoozeAlarm;
 
-  [self event];
+  // [self component];
+  // [self componentCalendar];
+  event = [self event];
 
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
@@ -524,14 +516,6 @@
   [eventStartDate setTimeZone: timeZone];
   [eventEndDate setTimeZone: timeZone];
   co = [self clientObject];
-  
-  if (!componentCalendar)
-    {
-      componentCalendar = [co container];
-      if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
-        componentCalendar = [componentCalendar container];
-      [componentCalendar retain];
-    }
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
@@ -539,7 +523,7 @@
   // If either is set, we must find the right alarm.
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
-  
+
   if (resetAlarm || snoozeAlarm)
     {
       iCalEvent *master;
@@ -549,7 +533,7 @@
                                           timezone: timeZone
                                          startDate: &eventStartDate
                                            endDate: &eventEndDate];
-      
+
       anAlarm = [event firstDisplayOrAudioAlarm];
 
       if (resetAlarm)
@@ -557,7 +541,7 @@
           iCalTrigger *aTrigger;
 
           aTrigger = [anAlarm trigger];
-          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];          
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
           [co saveComponent: master];
         }
       else if (snoozeAlarm)
@@ -570,10 +554,10 @@
                          [co nameInContainer], @"id",
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
-                       [self formattedDateString: eventStartDate], @"startDate",
+                       [self _dateString: eventStartDate], @"startDate",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
-                       [self formattedDateString: eventEndDate], @"endDate",
+                       [self _dateString: eventEndDate], @"endDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
                        nil];
@@ -583,80 +567,6 @@
 
   // Return JSON representation
   return [self responseWithStatus: 200 andJSONRepresentation: data];
-}
-
-- (void) takeValuesFromRequest: (WORequest *) _rq
-                     inContext: (WOContext *) _ctx
-{
-  int nbrDays;
-  iCalDateTime *startDate;
-  iCalTimeZone *tz;
-  NSCalendarDate *allDayStartDate;
-  NSTimeZone *timeZone;
-  SOGoUserDefaults *ud;
-  signed int offset;
-  id o;
-  
-  [self event];
-  [super takeValuesFromRequest: _rq inContext: _ctx];
-
-  if (isAllDay)
-    {
-      nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
-                 / 86400) + 1;
-      // Convert all-day start date to GMT (floating date)
-      ud = [[context activeUser] userDefaults];
-      timeZone = [ud timeZone];
-      offset = [timeZone secondsFromGMTForDate: aptStartDate];
-      allDayStartDate = [aptStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                seconds:offset];
-      [event setAllDayWithStartDate: allDayStartDate
-                           duration: nbrDays];
-    }
-  else
-    {
-      [event setStartDate: aptStartDate];
-      [event setEndDate: aptEndDate];
-    }
-  
-  if (!isAllDay)
-    {
-      // Make sure there's a vTimeZone associated to the event unless it
-      // is an all-day event.
-      startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
-      if (![startDate timeZone])
-        {
-          ud = [[context activeUser] userDefaults];
-          tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-          if ([[event parent] addTimeZone: tz])
-            {
-              [startDate setTimeZone: tz];
-              [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
-            }
-        }
-    }
-  else if (![[self clientObject] isNew])
-    {
-      // Remove the vTimeZone when dealing with an all-day event.
-      startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
-      tz = [startDate timeZone];
-      if (tz)
-        {
-          [startDate setTimeZone: nil];
-          [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: nil];
-          [[event parent] removeChild: tz];
-        }
-    }
-
-  [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];
-
-  o = [event firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
-
-  if (!sendAppointmentNotifications && !o)
-    [event addChild: [CardElement simpleElementWithTag: @"X-SOGo-Send-Appointment-Notifications"  value: @"NO"]];
-  else if (sendAppointmentNotifications && o)
-    [event removeChild: o];
-  
 }
 
 - (id) _statusChangeAction: (NSString *) newStatus
@@ -712,13 +622,13 @@
           delegatedUser = [SOGoUser userWithLogin: delegatedUid];
           [delegatedAttendee setCn: [delegatedUser cn]];
         }
-      
+
       [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
       [delegatedAttendee setRsvp: @"TRUE"];
       [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
       [delegatedAttendee setDelegatedFrom:
                [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
-      
+
 //      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
 //      if (receiveUpdates)
 //      [delegatedAttendee setRole: @"NON-PARTICIPANT"];

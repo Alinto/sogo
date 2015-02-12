@@ -44,8 +44,10 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "iCalPerson+SOGo.h"
 
@@ -70,17 +72,22 @@ NSNumber *iCalDistantFutureNumber = nil;
 /**
  * @see [UIxAppointmentEditor viewAction]
  */
-- (NSDictionary *) attributes
+- (NSDictionary *) attributesInContext: (WOContext *) context
 {
   NSArray *elements;
   NSMutableArray *attendees;
-  NSDictionary *organizerData;
-  NSMutableDictionary *data, *attendeeData, *alarmData;
+  NSDictionary *contactData;
+  NSMutableDictionary *data, *organizerData, *attendeeData, *alarmData;
   NSEnumerator *attendeesList;
+  NSString *uid, *domain, *sentBy;
+  NSObject <SOGoSource> *source;
+  SOGoUserManager *um;
   iCalPerson *organizer, *currentAttendee;
   iCalAlarm *alarm;
   iCalTrigger *trigger;
   id value;
+
+  um = [SOGoUserManager sharedUserManager];
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[self tag] lowercaseString], @"component",
@@ -90,32 +97,45 @@ NSNumber *iCalDistantFutureNumber = nil;
 
   value = [self location];
   if (value) [data setObject: value forKey: @"location"];
-  if ([self comment]) [data setObject: [self comment] forKey: @"comment"];
-  if ([self attach]) [data setObject: [[self attach] absoluteString] forKey: @"attachUrl"];
-  if ([self accessClass]) [data setObject: [[self accessClass] lowercaseString] forKey: @"classification"];
-  if ([self status]) [data setObject: [self status] forKey: @"status"];
-  if ([self createdBy]) [data setObject: [self createdBy] forKey: @"createdBy"];
+
+  value = [self comment];
+  if (value) [data setObject: value forKey: @"comment"];
+
+  value = [self attach];
+  if (value) [data setObject: [value absoluteString] forKey: @"attachUrl"];
+
+  value = [self accessClass];
+  if (value) [data setObject: [value lowercaseString] forKey: @"classification"];
+
+  value = [self status];
+  if (value) [data setObject: value forKey: @"status"];
+
+  value = [self createdBy];
+  if (value) [data setObject: value forKey: @"createdBy"];
 
   // Categories
   elements = [self categories];
   if ([elements count])
     [data setObject: elements forKey: @"categories"];
 
-  // Send appointment notifications
+  // Send appointment notifications when the custom tag is *not* set
   value = [self firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
-  [data setObject: [NSNumber numberWithBool: (value? 1:0)] forKey: @"sendAppointmentNotifications"];
+  [data setObject: [NSNumber numberWithBool: (value? 0:1)] forKey: @"sendAppointmentNotifications"];
 
   // Organizer
   organizer = [self organizer];
   if (organizer)
     {
-      organizerData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      [organizer rfc822Email], @"email",
-                                    [organizer cnWithoutQuotes], @"name",
-                                    nil];
+      organizerData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                             [organizer rfc822Email], @"email",
+                                           [organizer cnWithoutQuotes], @"name",
+                                           nil];
+      uid = [organizer uid];
+      if ([uid length]) [organizerData setObject: uid forKey: @"uid"];
+      sentBy = [organizer sentBy];
+      if ([sentBy length]) [organizerData setObject: sentBy forKey: @"sentBy"];
       [data setObject: organizerData forKey: @"organizer"];
     }
-
 
   // Attendees
   attendees = [NSMutableArray array];
@@ -126,29 +146,28 @@ NSNumber *iCalDistantFutureNumber = nil;
                                             [currentAttendee rfc822Email], @"email",
                                           [currentAttendee cnWithoutQuotes], @"name",
                                           nil];
-      if ([currentAttendee uid]) [attendeeData setObject: [currentAttendee uid] forKey: @"uid"];
-      // TODO: restore support for MS Exchange
-      // uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
-      // if (uid != nil)
-      //   [currentAttendeeData setObject: uid
-      //   			forKey: @"uid"];
-      // else
-      //   {
-      //     domain = [[context activeUser] domain];
-      //     contacts = [um fetchContactsMatching: [currentAttendee rfc822Email] inDomain: domain];
-      //     if ([contacts count] == 1)
-      //       {
-      //         contact = [contacts lastObject];
-      //         source = [contact objectForKey: @"source"];
-      //         if ([source conformsToProtocol: @protocol (SOGoDNSource)] &&
-      //             [[(NSObject <SOGoDNSource>*) source MSExchangeHostname] length])
-      //           {
-      //             uid = [NSString stringWithFormat: @"%@:%@", [[context activeUser] login],
-      //                         [contact valueForKey: @"c_uid"]];
-      //             [currentAttendeeData setObject: uid forKey: @"uid"];
-      //           }
-      //       }
-      //   }
+      if ((uid = [currentAttendee uid]))
+        {
+          [attendeeData setObject: uid forKey: @"uid"];
+        }
+      else
+        {
+          // Search for attendee in global contacts sources that are associated with a MS Exchange server
+          domain = [[context activeUser] domain];
+          elements = [um fetchContactsMatching: [currentAttendee rfc822Email] inDomain: domain];
+          if ([elements count] == 1)
+            {
+              contactData = [elements lastObject];
+              source = [contactData objectForKey: @"source"];
+              if ([source conformsToProtocol: @protocol (SOGoDNSource)] &&
+                  [[(NSObject <SOGoDNSource>*) source MSExchangeHostname] length])
+                {
+                  uid = [NSString stringWithFormat: @"%@:%@", [[context activeUser] login],
+                          [contactData valueForKey: @"c_uid"]];
+                  [attendeeData setObject: uid forKey: @"uid"];
+                }
+            }
+        }
       [attendeeData setObject: [[currentAttendee partStat] lowercaseString] forKey: @"status"];
       [attendeeData setObject: [[currentAttendee role] lowercaseString] forKey: @"role"];
       if ([[currentAttendee delegatedTo] length])
@@ -191,6 +210,218 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
 
   return data;
+}
+
+- (void) _setAttendees: (NSArray *) attendees
+{
+  NSMutableArray *newAttendees;
+  NSUInteger count, max;
+  NSString *currentEmail;
+  iCalPerson *currentAttendee;
+  NSString *role, *partstat;
+  NSDictionary *currentData;
+
+  if (attendees)
+    {
+      newAttendees = [NSMutableArray array];
+      max = [attendees count];
+      for (count = 0; count < max; count++)
+        {
+          currentData = [attendees objectAtIndex: count];
+          currentEmail = [currentData objectForKey: @"email"];
+          if ([currentEmail length] > 0)
+            {
+              role = [[currentData objectForKey: @"role"] uppercaseString];
+              if (!role)
+                role = @"REQ-PARTICIPANT";
+              if ([role isEqualToString: @"NON-PARTICIPANT"])
+                partstat = @"";
+              else
+                {
+                  partstat = [[currentData objectForKey: @"partstat"] uppercaseString];
+                  if (!partstat)
+                    partstat = @"NEEDS-ACTION";
+                }
+              currentAttendee = [self findAttendeeWithEmail: currentEmail];
+              if (!currentAttendee)
+                {
+                  currentAttendee = [iCalPerson elementWithTag: @"attendee"];
+                  [currentAttendee setCn: [currentData objectForKey: @"name"]];
+                  [currentAttendee setEmail: currentEmail];
+                }
+              [currentAttendee
+                    setRsvp: ([role isEqualToString: @"NON-PARTICIPANT"]
+                              ? @"FALSE"
+                              : @"TRUE")];
+              [currentAttendee setRole: role];
+              [currentAttendee setPartStat: partstat];
+              [newAttendees addObject: currentAttendee];
+            }
+        }
+      [self setAttendees: newAttendees];
+    }
+}
+
+- (void) _appendAttendeesToEmailAlarm: (iCalAlarm *) alarm
+{
+  NSArray *attendees;
+  NSMutableArray *aAttendees;
+  int count, max;
+  iCalPerson *currentAttendee, *aAttendee;
+
+  attendees = [self attendees];
+  max = [attendees count];
+  aAttendees = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentAttendee = [attendees objectAtIndex: count];
+      aAttendee = [iCalPerson elementWithTag: @"attendee"];
+      [aAttendee setCn: [currentAttendee cn]];
+      [aAttendee setEmail: [currentAttendee rfc822Email]];
+      [aAttendees addObject: aAttendee];
+    }
+  [alarm setAttendees: aAttendees];
+}
+
+- (void) _setAlarm: (NSDictionary *) alarm
+{
+  iCalTrigger *aTrigger;
+  iCalAlarm *anAlarm;
+  NSString *aValue, *reminderAction, *reminderUnit, *reminderQuantity, *reminderReference, *reminderRelation;
+
+  anAlarm = [iCalAlarm new];
+
+  aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+  [aTrigger setValueType: @"DURATION"];
+  [anAlarm setTrigger: aTrigger];
+
+  reminderAction = [alarm objectForKey: @"action"];
+  reminderUnit = [alarm objectForKey: @"unit"];
+  reminderQuantity = [alarm objectForKey: @"quantity"];
+  if ([reminderAction length] > 0 && [reminderUnit length] > 0)
+    {
+      reminderReference = [alarm objectForKey: @"reference"];
+      reminderRelation = [alarm objectForKey: @"relation"];
+      [anAlarm setAction: [reminderAction uppercaseString]];
+      if ([reminderAction isEqualToString: @"email"])
+        {
+          NSString *name, *email;
+          iCalPerson *aAttendee;
+          id emailOrganizer;
+
+          [anAlarm removeAllAttendees];
+
+          if ([[alarm objectForKey: @"attendees"] boolValue])
+            [self _appendAttendeesToEmailAlarm: anAlarm];
+
+          emailOrganizer = [alarm objectForKey: @"organizer"];
+          if ([emailOrganizer isKindOfClass: [NSDictionary class]])
+            {
+              name = [emailOrganizer objectForKey: @"name"];
+              email = [emailOrganizer objectForKey: @"email"];
+              if ([name length] && [email length])
+                {
+                  aAttendee = [iCalPerson elementWithTag: @"attendee"];
+                  [aAttendee setCn: name];
+                  [aAttendee setEmail: email];
+                  [anAlarm addChild: aAttendee];
+                }
+            }
+          [anAlarm setSummary: [self summary]];
+          [anAlarm setComment: [self comment]];
+        }
+
+      if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
+        aValue = [NSString stringWithString: @"-P"];
+      else
+        aValue = [NSString stringWithString: @"P"];
+
+      if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
+          [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
+        aValue = [aValue stringByAppendingString: @"T"];
+
+      aValue = [aValue stringByAppendingFormat: @"%i%@",
+                       [reminderQuantity intValue],
+                [reminderUnit substringToIndex: 1]];
+      [aTrigger setSingleValue: aValue forKey: @""];
+      [aTrigger setRelationType: reminderRelation];
+    }
+  else
+    {
+      [anAlarm release];
+      anAlarm = nil;
+    }
+
+  // If there was an unsupported alarm defined in the event, it will be deleted.
+  [self removeAllAlarms];
+  if (anAlarm)
+    {
+      [self addToAlarms: anAlarm];
+      [anAlarm release];
+    }
+}
+
+/**
+ * @see [UIxAppointmentEditor saveAction]
+ */
+- (void) setAttributes: (NSDictionary *) data
+             inContext: (WOContext *) context
+{
+  id o, sendAppointmentNotifications;
+
+  o = [data objectForKey: @"summary"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setSummary: o];
+
+  o = [data objectForKey: @"priority"];
+  if ([o isKindOfClass: [NSNumber class]])
+    [self setPriority: [NSString stringWithFormat: @"%d", [o intValue]]];
+
+  o = [data objectForKey: @"location"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setLocation: o];
+
+  o = [data objectForKey: @"comment"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setComment: [o stringByReplacingString: @"\r\n" withString: @"\n"]];
+
+  o = [data objectForKey: @"attachUrl"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setAttach: o];
+
+  o = [data objectForKey: @"classification"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setAccessClass: [o uppercaseString]];
+
+  o = [data objectForKey: @"status"];
+  if ([o isKindOfClass: [NSString class]])
+    [self setStatus: o];
+
+  o = [data objectForKey: @"categories"];
+  if ([o isKindOfClass: [NSArray class]])
+    [self setCategories: o];
+
+  o = [data objectForKey: @"sendAppointmentNotifications"];
+  if ([o isKindOfClass: [NSNumber class]])
+    {
+      sendAppointmentNotifications = [self firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
+      if (!sendAppointmentNotifications && ![o boolValue])
+        [self addChild: [CardElement simpleElementWithTag: @"X-SOGo-Send-Appointment-Notifications" value: @"NO"]];
+      else if (sendAppointmentNotifications && [o boolValue])
+        [self removeChild: sendAppointmentNotifications];
+    }
+
+  o = [data objectForKey: @"attendees"];
+  if ([o isKindOfClass: [NSArray class]])
+    [self _setAttendees: o];
+
+  o = [data objectForKey: @"alarm"];
+  if ([o isKindOfClass: [NSDictionary class]])
+    [self _setAlarm: o];
+
+  // Other attributes depend on the client object and therefore are set in [UIxComponentEditor setAttributes:]:
+  // - organizer & "created-by"
+  // - timestamps (creation/modification)
 }
 
 - (BOOL) userIsAttendee: (SOGoUser *) user
@@ -243,10 +474,11 @@ NSNumber *iCalDistantFutureNumber = nil;
 
   if ([mail length])
     return [user hasEmail: mail];
-  
+
   return NO;
 }
 
+/*
 - (NSArray *) attendeeUIDs
 {
   NSEnumerator *attendees;
@@ -266,6 +498,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 
   return uids;
 }
+*/
 
 #warning this method should be implemented in a category of iCalToDo
 - (BOOL) isStillRelevant
@@ -282,11 +515,11 @@ NSNumber *iCalDistantFutureNumber = nil;
 
   NSArray *events;
   int i, count;
-  
+
   newCalendar = [parent mutableCopy];
   [newCalendar autorelease];
   [newCalendar setMethod: method];
-  
+
   events = [newCalendar childrenWithTag: tag];
   count = [events count];
   if (count > 1)
@@ -379,19 +612,39 @@ NSNumber *iCalDistantFutureNumber = nil;
   return priorityNumber;
 }
 
-- (NSString *) createdBy
+- (NSDictionary *) createdBy
 {
-  NSString *created_by;
+  NSString *created_by, *created_by_name, *login;
+  NSDictionary *createdByData;
+  SOGoUser *user;
 
+  created_by_name = nil;
+  createdByData = nil;
   created_by = [[self firstChildWithTag: @"X-SOGo-Component-Created-By"] flattenedValuesForKey: @""];
-  
-  // We consider "SENT-BY" in case our custom header isn't found
+
   if (![created_by length])
     {
+      // We consider "SENT-BY" in case our custom header isn't found
       created_by = [[self organizer] sentBy];
     }
 
-  return created_by;
+  if ([created_by length])
+    {
+      login = [[SOGoUserManager sharedUserManager] getUIDForEmail: created_by];
+      if (login)
+        {
+          user = [SOGoUser userWithLogin: login];
+          if (user)
+            created_by_name = [user cn];
+        }
+
+      createdByData = [NSDictionary dictionaryWithObjectsAndKeys: created_by, @"email",
+                                    created_by_name, @"name",
+                                    nil];
+    }
+
+  return createdByData;
+;
 }
 
 //
@@ -478,20 +731,20 @@ NSNumber *iCalDistantFutureNumber = nil;
           NSCalendarDate *start, *end;
           NGCalendarDateRange *range;
           NSMutableArray *alarms;
-          
+
           alarms = [NSMutableArray array];
           start = [NSCalendarDate date];
           end = [start addYear:1 month:0 day:0 hour:0 minute:0 second:0];
           range = [NGCalendarDateRange calendarDateRangeWithStartDate: start
                                                               endDate: end];
-          
+
           // Always check if container is defined. If not, that means this method
           // call was reentrant.
           if (theContainer)
             {
               NSTimeInterval now;
               int i, v, delta, c_startdate, c_nextalarm;
-              
+
               //
               // Here is the logic:
               //
@@ -506,12 +759,12 @@ NSNumber *iCalDistantFutureNumber = nil;
               // If we don't have a match, we pick the event for which its trigger is the closest to the c_nextalarm.
               //
               nextAlarmDate = nil;
-              
+
               [theContainer flattenCycleRecord: (id)row
                                       forRange: range
                                      intoArray: alarms
                                   withCalendar: [self parent]];
-              
+
               // We pickup the closest one from now. We remove the actual reminder (ie., 15 mins before - plus 1 minute for roundups)
               // so we don't pickup the same alarm over and over. This could happen if our alarm popups and the user clicks on "Cancel".
               // In case of a repetitive event, we want to pickup the next one (next day for example), and not the one that has just
@@ -523,11 +776,11 @@ NSNumber *iCalDistantFutureNumber = nil;
                   c_startdate = [[[alarms objectAtIndex: i] objectForKey: @"c_startdate"] intValue];
                   c_nextalarm = [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue];
                   delta = (c_startdate - now - (c_startdate - c_nextalarm)) - 60;
-                  
+
                   // If value is not initialized, we grab it right away
                   if (!v && delta > 0)
                     v = delta;
-                  
+
                   // If we found a smaller delta than before, use it.
                   if (v > 0 && delta > 0 && delta <= v)
                     {
@@ -538,10 +791,10 @@ NSNumber *iCalDistantFutureNumber = nil;
                         o = [[self parent] eventWithRecurrenceID: [[alarms objectAtIndex: i] objectForKey: @"c_recurrence_id"]];
                       else
                         o = [[self parent] todoWithRecurrenceID: [[alarms objectAtIndex: i] objectForKey: @"c_recurrence_id"]];
-                      
+
                       if (!o)
                         o = self;
-                      
+
                       if ([[o alarms] count])
                         {
                           anAlarm = [self firstDisplayOrAudioAlarm];
@@ -551,7 +804,7 @@ NSNumber *iCalDistantFutureNumber = nil;
                               if (!webstatus
                                   || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
                                       != NSOrderedSame))
-                                
+
                                 v = delta;
                               nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
                             }
@@ -565,7 +818,7 @@ NSNumber *iCalDistantFutureNumber = nil;
             } // if (theContainer)
         }
     }
-  
+
   if ([nextAlarmDate isNotNull])
     [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
             forKey: @"c_nextalarm"];
