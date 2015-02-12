@@ -243,26 +243,24 @@ static NSArray *reminderValues = nil;
 //}
 
 // TODO: Expose this method to the JSON API or centralize in UIxPreferences
-// - (NSArray *) categoryList
-// {
-//   NSMutableArray *categoryList;
-//   NSArray *categoryLabels;
-//   SOGoUserDefaults *defaults;
+- (NSArray *) categoryList
+{
+  NSMutableArray *categoryList;
+  NSArray *categoryLabels;
+  SOGoUserDefaults *defaults;
 
-//   defaults = [[context activeUser] userDefaults];
-//   categoryLabels = [defaults calendarCategories];
-//   if (!categoryLabels)
-//     categoryLabels = [[self labelForKey: @"category_labels"]
-//                        componentsSeparatedByString: @","];
-//   categoryList = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
-//   if ([category length] && ![categoryLabels containsObject: category])
-//     [categoryList addObject: category];
-//   [categoryList addObjectsFromArray:
-//                   [categoryLabels sortedArrayUsingSelector:
-//                                     @selector (localizedCaseInsensitiveCompare:)]];
+  defaults = [[context activeUser] userDefaults];
+  categoryLabels = [defaults calendarCategories];
+  if (!categoryLabels)
+    categoryLabels = [[self labelForKey: @"category_labels"]
+                       componentsSeparatedByString: @","];
+  categoryList = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
+  [categoryList addObjectsFromArray:
+                  [categoryLabels sortedArrayUsingSelector:
+                                    @selector (localizedCaseInsensitiveCompare:)]];
 
-//   return categoryList;
-// }
+  return categoryList;
+}
 
 //- (NSArray *) repeatList
 //{
