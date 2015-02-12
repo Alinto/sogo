@@ -58,7 +58,7 @@
 
   <div class="msg-body">
     <div class="msg-date sg-md-body-multi">
-      <date data-ng-bind="message.date"><!-- date --></date>
+      <time datetime="message.date" data-ng-bind="message.date"><!-- date --></time>
     </div>
     <div class="mailer_mailcontent"
          data-ng-bind-html="message.$content()"><!-- msg --></div>
