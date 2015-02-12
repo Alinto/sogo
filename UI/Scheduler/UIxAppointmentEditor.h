@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,42 +24,13 @@
 #import <SOGoUI/UIxComponent.h>
 
 @class iCalEvent;
-@class NSString;
 
-@interface UIxAppointmentEditor : UIxComponent
+@interface UIxAppointmentEditor : UIxComponentEditor
 {
-  iCalEvent *event;
-  BOOL isAllDay, isTransparent, sendAppointmentNotifications;
-  NSCalendarDate *aptStartDate;
-  NSCalendarDate *aptEndDate;
-  NSString *item;
-  SOGoAppointmentFolder *componentCalendar;
   SOGoDateFormatter *dateFormatter;
 }
 
-/* template values */
-- (NSString *) saveURL;
 - (iCalEvent *) event;
-
-/* icalendar values */
-- (void) setIsAllDay: (BOOL) newIsAllDay;
-- (BOOL) isAllDay;
-
-- (void) setIsTransparent: (BOOL) newIsOpaque;
-- (BOOL) isTransparent;
-
-- (void) setSendAppointmentNotifications: (BOOL) theBOOL;
-- (BOOL) sendAppointmentNotifications;
-
-- (void) setAptStartDate: (NSCalendarDate *) newAptStartDate;
-- (NSCalendarDate *) aptStartDate;
-
-- (void) setAptEndDate: (NSCalendarDate *) newAptEndDate;
-- (NSCalendarDate *) aptEndDate;
-
-- (NSString *) aptStartDateText;
-- (NSString *) aptStartDateTimeText;
-- (NSString *) aptEndDateTimeText;
 
 @end
 

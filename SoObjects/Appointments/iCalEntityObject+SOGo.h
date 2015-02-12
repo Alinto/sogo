@@ -35,7 +35,7 @@ extern NSNumber *iCalDistantFutureNumber;
 
 + (void) initializeSOGoExtensions;
 
-- (NSDictionary *) attributes;
+- (NSDictionary *) attributesInContext: (WOContext *) context;
 - (void) setAttributes: (NSDictionary *) data
              inContext: (WOContext *) context;
 
@@ -44,7 +44,6 @@ extern NSNumber *iCalDistantFutureNumber;
 
 - (iCalPerson *) userAsAttendee: (SOGoUser *) user;
 
-- (NSArray *) attendeeUIDs;
 - (BOOL) isStillRelevant;
 
 - (id) itipEntryWithMethod: (NSString *) method;
@@ -52,7 +51,7 @@ extern NSNumber *iCalDistantFutureNumber;
 - (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
 
 - (int) priorityNumber;
-- (NSString *) createdBy;
+- (NSDictionary *) createdBy;
 
 - (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
 			    withOffset: (int) offset

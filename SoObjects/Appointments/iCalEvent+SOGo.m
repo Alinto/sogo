@@ -1,6 +1,6 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,14 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalEvent.h>
@@ -35,6 +37,10 @@
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
+
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
+#import <SoObjects/SOGo/WOContext+SOGo.h>
 
 #import "SOGoAppointmentFolder.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -47,7 +53,7 @@
 {
   NSCalendarDate *now, *lastRecurrence;
   BOOL isStillRelevent;
-  
+
   now = [NSCalendarDate calendarDate];
 
   if ([self isRecurrent])
@@ -57,7 +63,7 @@
     }
   else
     isStillRelevent = ([[self endDate] earlierDate: now] == now);
-  
+
   return isStillRelevent;
 }
 
@@ -114,8 +120,8 @@
   row = [NSMutableDictionary dictionaryWithCapacity:8];
 
   [row setObject: @"vevent" forKey: @"c_component"];
- 
-  if ([uid isNotNull]) 
+
+  if ([uid isNotNull])
     [row setObject:uid forKey: @"c_uid"];
   else
     [self logWithFormat: @"WARNING: could not extract a uid from event!"];
@@ -168,11 +174,11 @@
 					  forAllDay: isAllDay]
 	      forKey: @"c_enddate"];
     }
-  
+
   if ([self isRecurrent])
     {
       NSCalendarDate *date;
-      
+
       date = [self lastPossibleRecurrenceStartDate];
       if (!date)
 	{
@@ -194,7 +200,7 @@
   if ([status isNotNull])
     {
       int code = 1;
- 
+
       if ([status isEqualToString: @"TENTATIVE"])
 	code = 2;
       else if ([status isEqualToString: @"CANCELLED"])
@@ -214,12 +220,12 @@
   if (organizer)
     {
       NSString *email;
- 
+
       email = [organizer valueForKey: @"rfc822Email"];
       if (email)
 	[row setObject:email forKey: @"c_orgmail"];
     }
- 
+
   /* construct partstates */
   count = [attendees count];
   partstates = [[NSMutableString alloc] initWithCapacity:count * 2];
@@ -227,7 +233,7 @@
     {
       iCalPerson *p;
       iCalPersonPartStat stat;
- 
+
       p = [attendees objectAtIndex:i];
       stat = [p participationStatus];
       if (i)
@@ -263,7 +269,7 @@
 }
 
 /**
- * Shift the "until dates" of the recurrence rules of the event 
+ * Shift the "until dates" of the recurrence rules of the event
  * with respect to the previous end date of the event.
  * @param previousEndDate the previous end date of the event
  */
@@ -312,12 +318,65 @@
 	}
     }
 }
-  
+
+// From [UIxDatePicker takeValuesFromRequest:inContext:]
+- (NSCalendarDate *) _dateFromString: (NSString *) dateString
+                           inContext: (WOContext *) context
+{
+  NSInteger dateTZOffset, userTZOffset;
+  NSTimeZone *systemTZ, *userTZ;
+  SOGoUserDefaults *ud;
+  NSCalendarDate *date;
+
+  date = [NSCalendarDate dateWithString: dateString
+                         calendarFormat: @"%Y-%m-%d"];
+  if (!date)
+    [self warnWithFormat: @"Could not parse dateString: '%@'", dateString];
+
+  // We must adjust the date timezone because "dateWithString:..." uses the
+  // system timezone, which can be different from the user's. */
+  ud = [[context activeUser] userDefaults];
+  systemTZ = [date timeZone];
+  dateTZOffset = [systemTZ secondsFromGMTForDate: date];
+  userTZ = [ud timeZone];
+  userTZOffset = [userTZ secondsFromGMTForDate: date];
+  if (dateTZOffset != userTZOffset)
+    date = [date dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: (dateTZOffset - userTZOffset)];
+  [date setTimeZone: userTZ];
+
+  return date;
+}
+
+// From [UIxTimeDatePicker takeValuesFromRequest:inContext:]
+- (void) _adjustDate: (NSCalendarDate **) date
+      withTimeString: (NSString *) timeString
+           inContext: (WOContext *) context
+{
+  unsigned _year, _month, _day, _hour, _minute;
+  SOGoUserDefaults *ud;
+  NSArray *_time;
+
+  _year = [*date yearOfCommonEra];
+  _month  = [*date monthOfYear];
+  _day    = [*date dayOfMonth];
+  _time = [timeString componentsSeparatedByString: @":"];
+  _hour = [[_time objectAtIndex: 0] intValue];
+  _minute = [[_time objectAtIndex: 1] intValue];
+
+  ud = [[context activeUser] userDefaults];
+  *date = [NSCalendarDate dateWithYear: _year month: _month day: _day
+                                 hour: _hour minute: _minute second: 0
+                             timeZone: [ud timeZone]];
+}
+
 /**
+ * @see [iCalRepeatableEntityObject+SOGo attributes]
  * @see [iCalEntityObject+SOGo attributes]
  * @see [UIxAppointmentEditor viewAction]
  */
-- (NSDictionary *) attributes
+- (NSDictionary *) attributesInContext: (WOContext *) context
 {
   NSMutableDictionary *data;
 
@@ -327,6 +386,102 @@
   [data setObject: [NSNumber numberWithBool: ![self isOpaque]] forKey: @"isTransparent"];
 
   return data;
+}
+
+/**
+ * @see [iCalRepeatableEntityObject+SOGo setAttributes:inContext:]
+ * @see [iCalEntityObject+SOGo setAttributes:inContext:]
+ * @see [UIxAppointmentEditor saveAction]
+ */
+- (void) setAttributes: (NSDictionary *) data
+             inContext: (WOContext *) context
+{
+  NSCalendarDate *aptStartDate, *aptEndDate, *allDayStartDate;
+  NSTimeZone *timeZone;
+  NSInteger offset, nbrDays;
+  iCalDateTime *startDate;
+  iCalTimeZone *tz;
+  SOGoUserDefaults *ud;
+  BOOL isAllDay;
+  id o;
+
+  [super setAttributes: data inContext: context];
+
+  aptStartDate = aptEndDate = nil;
+
+  // Handle start/end dates
+  o = [data objectForKey: @"startDate"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    aptStartDate = [self _dateFromString: o inContext: context];
+
+  o = [data objectForKey: @"startTime"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    [self _adjustDate: &aptStartDate withTimeString: o inContext: context];
+
+  o = [data objectForKey: @"endDate"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    aptEndDate = [self _dateFromString: o inContext: context];
+
+  o = [data objectForKey: @"endTime"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    [self _adjustDate: &aptEndDate withTimeString: o inContext: context];
+
+  o = [data objectForKey: @"isTransparent"];
+  if ([o isKindOfClass: [NSNumber class]])
+    [self setTransparency: ([o boolValue]? @"TRANSPARENT" : @"OPAQUE")];
+
+  isAllDay = [[data objectForKey: @"isAllDay"] boolValue];
+
+  if (aptStartDate && aptEndDate)
+    {
+      if (isAllDay)
+        {
+          nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate]) / 86400) + 1;
+          // Convert all-day start date to GMT (floating date)
+          ud = [[context activeUser] userDefaults];
+          timeZone = [ud timeZone];
+          offset = [timeZone secondsFromGMTForDate: aptStartDate];
+          allDayStartDate = [aptStartDate dateByAddingYears: 0 months: 0 days: 0
+                                                      hours: 0 minutes: 0
+                                                    seconds: offset];
+          [self setAllDayWithStartDate: allDayStartDate
+                              duration: nbrDays];
+        }
+      else
+        {
+          [self setStartDate: aptStartDate];
+          [self setEndDate: aptEndDate];
+        }
+    }
+
+  if (!isAllDay)
+    {
+      // Make sure there's a vTimeZone associated to the event unless it
+      // is an all-day event.
+      startDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+      if (![startDate timeZone])
+        {
+          ud = [[context activeUser] userDefaults];
+          tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+          if ([[self parent] addTimeZone: tz])
+            {
+              [startDate setTimeZone: tz];
+              [(iCalDateTime *)[self uniqueChildWithTag: @"dtend"] setTimeZone: tz];
+            }
+        }
+    }
+  else //  if (![[self clientObject] isNew])
+    {
+      // Remove the vTimeZone when dealing with an all-day event.
+      startDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+      tz = [startDate timeZone];
+      if (tz)
+        {
+          [startDate setTimeZone: nil];
+          [(iCalDateTime *)[self uniqueChildWithTag: @"dtend"] setTimeZone: nil];
+          [[self parent] removeChild: tz];
+        }
+    }
 }
 
 @end
