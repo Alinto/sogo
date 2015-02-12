@@ -7,19 +7,23 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
   <div id="messageEditor">
+<md-content class="md-padding">
     <form>
       <div class="PseudoField">
         <label class="PseudoField-label">
           <var:string label:value="From"/>
         </label>
-        <select name="from"
-                data-ng-model="message.editable.from"
-                data-ng-options="identity for identity in identities"><!-- from --></select>
+        <div class="pseudoInput-text">
+          <select name="from"
+                  data-ng-model="message.editable.from"
+                  data-ng-options="identity for identity in identities"><!-- from --></select>
+        </div>
+
       </div>
 
       <div class="PseudoField">
         <label class="PseudoField-label">
-         <var:string label:value="To"/>
+          <var:string label:value="To"/>
         </label>
         <div class="pseudoInput-text">
           <tags-input type="text" name="to"
@@ -47,7 +51,7 @@
           <var:string label:value="Subject"/>
         </label>
 
-          <input type="text" name="subject" ng-model="message.editable.subject" />
+        <input type="text" name="subject" ng-model="message.editable.subject"/>
 
       </md-input-container>
 
@@ -67,18 +71,27 @@
           <span ng-bind="item.filename"><!-- filename --></span>
         </li>
         <li ng-repeat="item in uploader.queue">
-          <span ng-bind="item.file.name"><!-- filename --></span> (<span ng-bind="item.file.progress"><!-- progress --></span>)
+          <span ng-bind="item.file.name"><!-- filename --></span>
+          (<span ng-bind="item.file.progress"><!-- progress --></span>)
         </li>
       </ul>
       <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
       <div class="buttonsToolbar">
         <span>
           <a class="button tiny radius"
-             data-ng-click="message.$save()"><i class="icon-disk"><!-- send --></i> <var:string label:value="Save"/></a>
+             data-ng-click="message.$save()">
+            <i class="icon-disk"><!-- send --></i>
+            <var:string label:value="Save"/>
+          </a>
           <a class="button tiny radius"
-             data-ng-click="send(message)"><i class="icon-mail"><!-- send --></i> <var:string label:value="Send"/></a>
+             data-ng-click="send(message)">
+            <i class="icon-mail"><!-- send --></i>
+            <var:string label:value="Send"/>
+          </a>
         </span>
       </div>
     </form>
   </div>
-</container>
+</md-content>
+
+    </container>
