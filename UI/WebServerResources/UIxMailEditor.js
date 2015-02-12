@@ -14,7 +14,7 @@ var MailEditor = {
 var autoSaveTimer;
 
 function refreshDraftsFolder() {
-    if (window.opener && window.opener.open && !window.opener.closed) {
+    if (window.opener && window.opener.getUnseenCountForFolder) {
         var nodes = window.opener.$("mailboxTree").select("DIV[datatype=draft]");
         window.opener.getUnseenCountForFolder(nodes[0].readAttribute("dataname"));
     }

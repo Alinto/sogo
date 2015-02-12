@@ -712,18 +712,25 @@
   WORequest *request;
   SOGoMailFolder *co;
   NSException *error;
-  NSArray *msgUIDs, *flags;
+  NSArray *msgUIDs;
+  NSMutableArray *flags;
   NSString *operation;
   NSDictionary *content, *result;
   BOOL addOrRemove;
   NGImap4Client *client;
 
+  int i;
+
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
-  flags = [NSArray arrayWithObject:[content objectForKey:@"flags"]];
+  flags = [NSMutableArray arrayWithObject:[content objectForKey:@"flags"]];
   msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
   operation = [content objectForKey:@"operation"];
   addOrRemove = ([operation isEqualToString:@"add"]? YES: NO);
+
+  // We unescape our flags
+  for (i = [flags count]-1; i >= 0; i--)
+    [flags replaceObjectAtIndex: i  withObject: [[flags objectAtIndex: i] fromCSSIdentifier]];
 
   co = [self clientObject];
   client = [[co imap4Connection] client];

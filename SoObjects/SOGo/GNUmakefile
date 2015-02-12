@@ -77,11 +77,10 @@ SOGo_HEADER_FILES = \
 	WORequest+SOGo.h		\
 	WOResourceManager+SOGo.h	\
 	WOResponse+SOGo.h		\
-	WOContext+SOGo.h	\
+	WOContext+SOGo.h		\
 	\
 	SOGoCredentialsFile.h
 
-# daemon tool
 all::
 	@touch SOGoBuild.m
 
@@ -156,10 +155,11 @@ SOGo_OBJC_FILES = \
 	WORequest+SOGo.m		\
 	WOResourceManager+SOGo.m	\
 	WOResponse+SOGo.m		\
-	WOContext+SOGo.m	\
+	WOContext+SOGo.m		\
 	\
 	SOGoCredentialsFile.m
 
+SOGo_C_FILES = lmhash.c
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \

@@ -70,11 +70,42 @@ function savePreferences(sender) {
 
     if ($("enableForward") && $("enableForward").checked) {
         var addresses = $("forwardAddress").value.split(",");
+
+        // We check if all addresses are valid
         for (var i = 0; i < addresses.length && sendForm; i++)
             if (!emailRE.test(addresses[i].strip())) {
                 showAlertDialog(_("Please specify an address to which you want to forward your messages."));
                 sendForm = false;
             }
+       
+        // We check if we can only to internal/external addresses.
+        var constraints = parseInt(forwardConstraints);
+        
+        if (constraints > 0) {
+            // We first extract the list of 'known domains' to SOGo
+            var defaultAddresses = $("defaultEmailAddresses").value.split(/, */);
+            var domains = new Array();
+            
+            defaultAddresses.each(function(adr) {
+                var domain = adr.split("@")[1];
+                if (domain) {
+                    domains.push(domain.toLowerCase());
+                }
+            });
+
+            // We check if we're allowed or not to forward based on the domain defaults
+            for (var i = 0; i < addresses.length && sendForm; i++) {
+                var domain = addresses[i].split("@")[1].toLowerCase();
+                if (domains.indexOf(domain) < 0 && constraints == 1) {
+                    showAlertDialog(_("You are not allowed to forward your messages to an external email address."));
+                    sendForm = false;
+                }
+                else if (domains.indexOf(domain) >= 0 && constraints == 2) {
+                    showAlertDialog(_("You are not allowed to forward your messages to an internal email address."));
+                    sendForm = false;
+                }
+            }
+        }
     }
 
     if (typeof sieveCapabilities != "undefined") {

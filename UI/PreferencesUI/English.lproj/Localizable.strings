@@ -29,6 +29,7 @@
 "Days between responses :" = "Days between responses:";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Disable auto reply on" = "Disable auto reply on";
+"Always send vacation message response" = "Always send vacation message response";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
 "Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Keep a copy";
 "Please specify an address to which you want to forward your messages."
 = "Please specify an address to which you want to forward your messages.";
+"You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
+"You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
+
 
 /* d & t */
 "Current Time Zone :" = "Current Time Zone:";

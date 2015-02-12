@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1127,6 +1127,30 @@ static NSArray *reminderValues = nil;
   return ignore;
 }
 
+//
+// See http://sogo.nu/bugs/view.php?id=2332 for details
+//
+- (void) setAlwaysSend: (BOOL) ignoreLists
+{
+  [vacationOptions setObject: [NSNumber numberWithBool: ignoreLists]
+		      forKey: @"alwaysSend"];
+}
+
+- (BOOL) alwaysSend
+{
+  NSNumber *obj;
+  BOOL ignore;
+
+  obj = [vacationOptions objectForKey: @"alwaysSend"];
+
+  if (obj == nil)
+    ignore = NO; // defaults to NO
+  else
+    ignore = [obj boolValue];
+
+  return ignore;
+}
+
 - (BOOL) enableVacationEndDate
 {
   return [[vacationOptions objectForKey: @"endDateEnabled"] boolValue];
@@ -1212,6 +1236,15 @@ static NSArray *reminderValues = nil;
 - (BOOL) forwardKeepCopy
 {
   return [[forwardOptions objectForKey: @"keepCopy"] boolValue];
+}
+
+- (NSString *) forwardConstraints
+{
+  SOGoDomainDefaults *dd;
+  
+  dd = [[context activeUser] domainDefaults];
+
+  return [NSString stringWithFormat: @"%d", [dd forwardConstraints]];
 }
 
 /* main */

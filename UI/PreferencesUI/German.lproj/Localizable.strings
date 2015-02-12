@@ -29,6 +29,7 @@
 "Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten:";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
+"Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen.";
 "Your vacation message must not end with a single dot on a line." = "Ihre Abwesenheitsnachricht darf nicht mit einem alleinstehenden Punkt in einer Zeile enden.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Eine Kopie behalten";
 "Please specify an address to which you want to forward your messages."
 = "Bitte Adresse angeben, an die Ihre Nachrichten weitergeleitet werden sollen.";
+"You are not allowed to forward your messages to an external email address." = "Es ist Ihnen nicht erlaubt, Ihre Nachrichten an externe E-Mail-Adressen weiterzuleiten.";
+"You are not allowed to forward your messages to an internal email address." = "Es ist Ihnen nicht erlaubt, Ihre Nachrichten an interne E-Mail-Adressen weiterzuleiten.";
+
 
 /* d & t */
 "Current Time Zone :" = "Aktuelle Zeitzone:";
