@@ -327,8 +327,6 @@ $h6-margin-Base: 0;
     font-size: $sg-font-size-6;
     line-height: $lineHeight;
     font-weight: $sg-font-regular;
-    margin-top: ($lineHeight * -1);
-    margin-bottom: $lineHeight;
   }
   .#{$md}-display-2 {
     $lineHeight: $sg-line-height-7;
