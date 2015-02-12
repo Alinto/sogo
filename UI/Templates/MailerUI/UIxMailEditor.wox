@@ -22,16 +22,16 @@
       </div>
 
       <div class="PseudoField">
-        <label class="PseudoField-label">
+        <label class="PseudoField-label" ng-class="{focused: to.hasFocus}">
           <var:string label:value="To"/>
         </label>
-        <div class="PseudoField-inputLike">
+
           <tags-input type="text" name="to"
                       ng-model="message.editable.to"
                       label:placeholder="Add a recipient">
             <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
           </tags-input>
-        </div>
+
       </div>
       <div class="PseudoField">
         <label class="PseudoField-label">
@@ -77,18 +77,16 @@
       </ul>
       <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
       <div class="buttonsToolbar">
-        <span>
-          <a class="button tiny radius"
+        <div layout="row" layout-align="end center">
+          <md-button
              data-ng-click="message.$save()">
-            <i class="icon-disk"><!-- send --></i>
             <var:string label:value="Save"/>
-          </a>
-          <a class="button tiny radius"
+          </md-button>
+          <md-button class="fg-sogoBlue-700"
              data-ng-click="send(message)">
-            <i class="icon-mail"><!-- send --></i>
             <var:string label:value="Send"/>
-          </a>
-        </span>
+          </md-button>
+        </div>
       </div>
     </form>
   </div>

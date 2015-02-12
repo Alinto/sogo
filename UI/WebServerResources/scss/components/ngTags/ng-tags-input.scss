@@ -7,42 +7,58 @@ tags-input *, tags-input *:before, tags-input *:after {
   box-sizing: border-box;
 }
 tags-input .host {
-  @extend .PseudoField-inputLike;
   position: relative;
+
 }
 tags-input .host:active {
   outline: none;
 }
 
 tags-input .tags {
+  @extend .PseudoField-inputLike;
+  padding: 0;
+  line-height: 2 * $mg;
   word-wrap: break-word;
   cursor: text;
-
+  border-bottom: 1px solid $colorGrayLight;
+  transition: $swift-ease-out;
 }
 tags-input .tags.focused {
+  border-bottom: 2px solid sg-color($sogoBlue, 700);
+}
 
+tags-input/deep/#inner-editor {
+  color: $colorGrayLight;
+  line-height: inherit;
+}
+:root/deep/#placeholder,
+:root/deep/[pseudo="-webkit-input-placeholder"] {
+  color: $colorGrayLight;
+  height: $mg;
+  font: inherit;
+  line-height: inherit;
+  padding: 0;
 }
 tags-input .tags .tag-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
+// Trying to make it chip-like
 tags-input .tags .tag-item {
   margin: 2px;
-  padding: 0 5px;
+  padding: $line $mg;
   display: inline-block;
   float: left;
-  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  height: 26px;
-  line-height: 25px;
-  border: 1px solid #acacac;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(top, #f0f9ff 0%, #cbebff 47%, #a1dbff 100%);
-  background: linear-gradient(to bottom, #f0f9ff 0%, #cbebff 47%, #a1dbff 100%);
+  height: (4 * $line);
+  font-size: sg-size(body);
+  line-height: (2 * $line);
+  border: none;
+  border-radius: (2 * $line);
+  background-color: sg-color($sogoPaper, 400);
 }
 tags-input .tags .tag-item.selected {
-  background: -webkit-linear-gradient(top, #febbbb 0%, #fe9090 45%, #ff5c5c 100%);
-  background: linear-gradient(to bottom, #febbbb 0%, #fe9090 45%, #ff5c5c 100%);
+
 }
 tags-input .tags .tag-item .remove-button {
   margin: 0 0 0 5px;
@@ -51,7 +67,6 @@ tags-input .tags .tag-item .remove-button {
   background: none;
   cursor: pointer;
   vertical-align: middle;
-  font: bold 16px Arial, sans-serif;
   color: #585858;
 }
 tags-input .tags .tag-item .remove-button:active {
@@ -78,16 +93,17 @@ tags-input.ng-invalid .tags {
 }
 
 tags-input .autocomplete {
-  margin-top: 5px;
+  margin-top: 0;
   position: absolute;
   padding: 5px 0;
   z-index: 999;
   width: 100%;
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: none;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  top: 100%;
 }
 tags-input .autocomplete .suggestion-list {
   margin: 0;
@@ -100,20 +116,18 @@ tags-input .autocomplete .suggestion-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: black;
   background-color: white;
 }
 tags-input .autocomplete .suggestion-item.selected {
   color: white;
-  background-color: #0097cf;
+  background-color: sg-color($sogoBlue, 300);
 }
 tags-input .autocomplete .suggestion-item.selected em {
   color: white;
-  background-color: #0097cf;
+  background-color: sg-color($sogoBlue, 700);
 }
 tags-input .autocomplete .suggestion-item em {
-  font: normal bold 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: black;
+  color: $colorGrayDark;
   background-color: white;
 }

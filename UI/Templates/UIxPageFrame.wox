@@ -82,31 +82,31 @@
           <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
           <md-toolbar class="sg-bottombar md-hide-sm" layout="row" layout-align="center center">
             <var:if condition = "userHasCalendarAccess">
-              <var:if condition = "isCalendar">
-                <md-button ng-disabled = "true">
-                  <var:string label:value = "Calendar" />
+              <var:if condition="isCalendar">
+                <md-button ng-disabled="true">
+                  <var:string label:value="Calendar"/>
                 </md-button>
               </var:if>
-              <var:if condition = "isCalendar" const:negate = "YES">
-                <md-button var:href = "relativeCalendarPath">
-                  <var:string label:value = "Calendar" />
+              <var:if condition="isCalendar" const:negate="YES">
+                <md-button var:href="relativeCalendarPath">
+                  <var:string label:value="Calendar"/>
                 </md-button>
               </var:if>
             </var:if>
-            <var:if condition = "isContacts">
-              <md-button ng-disabled = "true">
-                <var:string label:value = "Address Book" />
+            <var:if condition="isContacts">
+              <md-button ng-disabled="true">
+                <var:string label:value="Address Book"/>
               </md-button>
             </var:if>
-            <var:if condition = "isContacts" const:negate = "YES">
-              <md-button var:href = "relativeContactsPath">
-                <var:string label:value = "Address Book" />
+            <var:if condition="isContacts" const:negate="YES">
+              <md-button var:href="relativeContactsPath">
+                <var:string label:value="Address Book"/>
               </md-button>
             </var:if>
-            <var:if condition = "userHasMailAccess">
-              <var:if condition = "isMail">
-                <md-button ng-disabled = "true">
-                  <var:string label:value = "Mail" />
+            <var:if condition="userHasMailAccess">
+              <var:if condition="isMail">
+                <md-button ng-disabled="true">
+                  <var:string label:value="Mail"/>
                 </md-button>
               </var:if>
               <var:if condition = "isMail" const:negate = "YES">
