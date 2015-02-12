@@ -16,7 +16,8 @@ Bug fixes
  - (regression) fixed sending a message when mail module is not active (#3088)
  - mail lables with blanks are not handled correctly (#3078)
  - fixed BlackBerry issues sending multiple mails over EAS (#3095)
- - fixed plain/text mails showing on one line on Android/EAS (#3055) 
+ - fixed plain/text mails showing on one line on Android/EAS (#3055)
+ - fixed exception in sogo-tool when parsing arguments of a set operation
 
 2.2.15 (2015-01-30)
 -------------------
