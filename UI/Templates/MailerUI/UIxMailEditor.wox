@@ -13,7 +13,7 @@
         <label class="PseudoField-label">
           <var:string label:value="From"/>
         </label>
-        <div class="pseudoInput-text">
+        <div class="PseudoField-inputLike">
           <select name="from"
                   data-ng-model="message.editable.from"
                   data-ng-options="identity for identity in identities"><!-- from --></select>
@@ -25,7 +25,7 @@
         <label class="PseudoField-label">
           <var:string label:value="To"/>
         </label>
-        <div class="pseudoInput-text">
+        <div class="PseudoField-inputLike">
           <tags-input type="text" name="to"
                       ng-model="message.editable.to"
                       label:placeholder="Add a recipient">
@@ -37,7 +37,7 @@
         <label class="PseudoField-label">
           <var:string label:value="Cc"/>
         </label>
-        <div class="pseudoInput-text">
+        <div class="PseudoField-inputLike">
           <tags-input type="text" name="cc"
                       ng-model="message.editable.cc"
                       label:placeholder="Add a recipient">
