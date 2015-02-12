@@ -22,7 +22,7 @@
       </div>
 
       <div class="PseudoField">
-        <label class="PseudoField-label" ng-class="{focused: to.hasFocus}">
+        <label class="PseudoField-label">
           <var:string label:value="To"/>
         </label>
 
@@ -50,9 +50,7 @@
         <label>
           <var:string label:value="Subject"/>
         </label>
-
         <input type="text" name="subject" ng-model="message.editable.subject"/>
-
       </md-input-container>
 
       <div class="PseudoField">
