@@ -6,8 +6,19 @@
 ////
 
 [id=messageEditor] {
-  width: 13 *$pitch;
+  width: (13 * $pitch + $mg); // 13 cols + 1margin for scrollbar
   margin: 0 auto;
+  overflow: auto;
   background-color: sg-color($sogoPaper, 100);
-
+}
+.buttonsToolbar {
+  padding: $mg 0;
+  button {
+    min-width: 5em;
+    margin: 1em 0 1em 1em;
+  }
+}
+// CKE is overqualifying... let's use an ID
+#cke_content {
+  margin-top: $mg;
 }
