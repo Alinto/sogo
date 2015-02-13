@@ -13,6 +13,10 @@
 
 <md-content md-scroll-y="true">
   <div data-ng-controller="loginController">
+
+    <script type="text/javascript">
+      var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
+    </script>
     <!--   <div id="aboutBox" style="display:none;">
       <div>
         <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
@@ -42,7 +46,7 @@
         <md-input-container>
           <label><var:string label:value="Username:"/>
           </label>
-	  <input type="text" data-ng-model="creds.username" var:data-ng-init='cookieUsername' required="required" />
+	  <input type="text" data-ng-model="creds.username" required="required" />
         </md-input-container>
         <md-input-container>
 	  <label><var:string label:value="Password:"/>
