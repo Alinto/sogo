@@ -12,8 +12,8 @@
     ><var:string var:value="doctype" const:escapeHTML="NO"/>
 
 <md-content md-scroll-y="true">
-  <div>
-    <div id="aboutBox" style="display:none;">
+  <div data-ng-controller="loginController">
+    <!--   <div id="aboutBox" style="display:none;">
       <div>
         <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
         <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
@@ -24,14 +24,14 @@
         <p><a id="aboutClose" href="#" class="button">
         <span><var:string label:value="OK" /></span></a></p>
       </div>
-    </div>
-    <nav class="top-bar">
+    </div> -->
+    <!-- <nav class="top-bar">
       <section class="top-bar-section">
         <ul class="right">
           <li><a href="#"><var:string label:value="About" /></a></li>
         </ul>
       </section>
-    </nav>
+    </nav> -->
     <div id="login">
       <div id="logo">
         <img const:alt="*" id="splash" rsrc:src="img/sogo-logo.png"/>
@@ -42,7 +42,7 @@
         <md-input-container>
           <label><var:string label:value="Username:"/>
           </label>
-	  <input type="text" data-ng-model="creds.username" var:data-ng-init="cookieUsername" required="required" />
+	  <input type="text" data-ng-model="creds.username" var:data-ng-init='cookieUsername' required="required" />
         </md-input-container>
         <md-input-container>
 	  <label><var:string label:value="Password:"/>
@@ -72,15 +72,24 @@
 		     />
           </label>
         </var:if>
+        <!--
         <md-checkbox data-ng-model="creds.rememberLogin">
           <label><var:string label:value="Remember username"/></label>
-        </md-checkbox>
-	<label>
-	  <md-button type="submit" class="small" data-ng-disabled='!loginForm.$valid'>
+          </md-checkbox> -->
+          <!-- <label> -->
+	  <md-button type="submit" class="md-raised md-primary" data-ng-disabled='!loginForm.$valid'>
 	  <var:string label:value="Connect" /></md-button>
-	</label>
+	<!-- </label> -->
+        <md-switch data-ng-model="creds.rememberLogin">
+          <var:string label:value="Remember username"/>
+        </md-switch>
         <label id="animation"><!-- busy.gif! --></label>
       </form>
+      <md-toolbar>
+        <md-button ng-click="showAbout()">
+          About
+        </md-button>
+      </md-toolbar>
     </div>
   </div>
 </md-content>
