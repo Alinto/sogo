@@ -8,7 +8,7 @@
 
     .controller('loginController', ['$scope', '$mdDialog', 'Authentication', function($scope, $mdDialog, Authentication) {
       $scope.warning = false;
-      $scope.creds = { username: null, password: null };
+      $scope.creds = { username: cookieUsername, password: null };
       $scope.login = function(creds) {
         $scope.warning = false;
         Authentication.login(creds)
