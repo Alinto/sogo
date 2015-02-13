@@ -144,7 +144,8 @@ $i: 1;
   md-item-content {
     line-height: $sg-line-height-6; // 40px eg. display-1
     padding: 0 $mg;
-    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
+    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
+                color 0.5s linear;
     &:hover {
       background-color: sg-color($sogoPaper, 500);
       cursor: pointer;
