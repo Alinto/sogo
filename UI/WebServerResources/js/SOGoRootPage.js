@@ -6,7 +6,7 @@
 
   angular.module('SOGo.MainUI', ['SOGo.Authentication', 'SOGo.UI'])
 
-    .controller('loginController', ['$scope', 'Authentication', function($scope, Authentication) {
+    .controller('loginController', ['$scope', '$mdDialog', 'Authentication', function($scope, $mdDialog, Authentication) {
       $scope.warning = false;
       $scope.creds = { username: null, password: null };
       $scope.login = function(creds) {
@@ -18,6 +18,19 @@
             $scope.warning = msg.error;
           });
         return false;
+      };
+      $scope.showAbout = function() {
+          var alert;
+          alert = $mdDialog.alert({
+              title: 'About SOGo',
+              content: 'This is SOGo v3!',
+              ok: 'OK'
+          });
+          $mdDialog
+              .show( alert )
+              .finally(function() {
+                  alert = undefined;
+              });
       };
     }]);
 })();
