@@ -81,7 +81,7 @@
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 
-static Class NSArrayK;
+static Class NSArrayK, MAPIStoreAppointmentWrapperK;
 
 @implementation SOGoAppointmentObject (MAPIStoreExtension)
 
@@ -97,6 +97,7 @@ static Class NSArrayK;
 + (void) initialize
 {
   NSArrayK = [NSArray class];
+  MAPIStoreAppointmentWrapperK = [MAPIStoreAppointmentWrapper class];
 }
 
 + (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
@@ -205,10 +206,23 @@ static Class NSArrayK;
   [super dealloc];
 }
 
-/* getters */
+- (MAPIStoreAppointmentWrapper *) _appointmentWrapper
 {
+  NSUInteger i, max;
+  id proxy;
+  max = [proxies count];
+  for (i = 0; i < max; i++) {
+    proxy = [proxies objectAtIndex: i];
+    if ([proxy isKindOfClass: MAPIStoreAppointmentWrapperK])
+      {
+        return proxy;
+      }
+  }
+  return nil;
 }
 
+
+/* getters */
 - (int) getPidTagMessageClass: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -321,10 +335,8 @@ static Class NSArrayK;
     }
   else
     {
-      /* HACK: we know the first (and only) proxy is our appointment wrapper
-         instance, but this might not always be true */
-      [[proxies objectAtIndex: 0] fillMessageData: msgData
-                                  inMemCtx: memCtx];
+      [[self _appointmentWrapper] fillMessageData: msgData
+                                         inMemCtx: memCtx];
     }
 
   *dataPtr = msgData;
