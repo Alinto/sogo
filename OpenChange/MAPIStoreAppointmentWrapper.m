@@ -45,6 +45,7 @@
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -1241,6 +1242,22 @@ static NSCharacterSet *hexCharacterSet = nil;
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidNameKeywords: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* See [MS-OXCICAL] Section 2.1.3.1.1.20.3 */
+  NSArray *categories;
+
+  categories = [event categories];
+  if (categories)
+    {
+      *data = [categories asMVUnicodeInMemCtx: memCtx];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (int) getPidTagBody: (void **) data

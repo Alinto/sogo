@@ -305,6 +305,12 @@
   if (class)
     [self setAccessClass: class];
 
+  /* Categories */
+  /* See [MS-OXCICAL] Section 2.1.3.1.1.20.3 */
+  value = [properties objectForKey: MAPIPropertyKey (PidNameKeywords)];
+  if (value)
+    [self setCategories: value];
+
   /* show time as free/busy/tentative/out of office. Possible values are:
      0x00000000 - olFree
      0x00000001 - olTentative
