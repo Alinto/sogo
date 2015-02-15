@@ -348,6 +348,38 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return [self getYes: data inMemCtx: memCtx];
 }
 
+/* This three methods: getPidTagNormalizedSubject,
+   getPidTagSensitivity and getPidTagImportance are implemented in
+   MAPIStoreMessage base class, then the proxy method is not reached
+   (see MAPIStoreObject).
+*/
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagNormalizedSubject: data inMemCtx: memCtx];
+
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagImportance: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagImportance: data inMemCtx: memCtx];
+
+  *data = MAPILongValue (memCtx, 1);
+
+  return MAPISTORE_SUCCESS;
+}
+
+
 - (NSString *) _uidFromGlobalObjectId: (TALLOC_CTX *) memCtx 
 {
   NSData *objectId;
