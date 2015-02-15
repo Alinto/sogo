@@ -1200,11 +1200,31 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
+- (int) getPidTagSensitivity: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  // normal = 0, personal?? = 1, private = 2, confidential = 3
-  return [self getLongZero: data inMemCtx: memCtx];
+  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
+  uint32_t v;
+  NSString *accessClass;
+
+  accessClass = [event accessClass];
+  if (accessClass)
+    {
+      if ([accessClass isEqualToString: @"X-PERSONAL"])
+        v = 0x1;
+      else if ([accessClass isEqualToString: @"PRIVATE"])
+        v = 0x2;
+      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+        v = 0x3;
+      else
+        v = 0x0;  /* PUBLIC */
+    }
+  else
+      v = 0x0;  /* PUBLIC */
+
+  *data = MAPILongValue (memCtx, v);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidTagImportance: (void **) data

@@ -365,6 +365,18 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
+- (int) getPidTagSensitivity: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagSensitivity: data inMemCtx: memCtx];
+
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
 - (int) getPidTagImportance: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
