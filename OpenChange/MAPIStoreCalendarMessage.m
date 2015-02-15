@@ -206,10 +206,7 @@ static Class NSArrayK;
 }
 
 /* getters */
-- (int) getPidLidFInvited: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagMessageClass: (void **) data
