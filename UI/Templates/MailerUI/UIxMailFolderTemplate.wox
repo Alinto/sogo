@@ -2,13 +2,13 @@
 <container
     xmlns = "http://www.w3.org/1999/xhtml"
     >
-  <md-content style="min-width: 300px; position: relative;" id="messagesList">
+  <md-content style="position: relative;" id="messagesList">
     <style>
       .vs-repeat-repeated-element {
         width: 100%;
       }
     </style>
-    <header class="sg-md-subheader sg-avatar-left">
+    <header class="sg-md-subheader">
       <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Unread Messages</h2>
     </header>
 

@@ -51,6 +51,8 @@ $layout-breakpoint-lg:     1200px !default;
 // App bar variables
 $app-bar-height: 64px;
 
+$messageList-width: grid-step(7);
+
 $toast-height: $baseline-grid * 3 !default;
 $toast-margin: $baseline-grid * 1 !default;
 

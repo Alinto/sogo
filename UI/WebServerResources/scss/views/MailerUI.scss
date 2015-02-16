@@ -1,8 +1,6 @@
 
-
-
 [id="messagesList"] {
-  max-width: grid-step(7);
+  max-width:$messageList-width;
   flex: 1 1 auto;
 
 }
