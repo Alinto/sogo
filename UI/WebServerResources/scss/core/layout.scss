@@ -16,3 +16,13 @@ flex, flex-sm, flex-gt-sm, flex-md, flex-gt-md, flex-lg, flex-gt-lg, hide, hide-
 .md-flex {
   flex: 1 1 auto;
 }
+
+@for $i from 1 to 20 {
+  .cols-#{$i} {
+  max-width: grid-step($i);
+  flex: 1 1 auto;
+  }
+  .cols-#{$i}.spacer {
+    width: grid-step($i);
+  }
+}

@@ -4,6 +4,10 @@ md-toolbar {
   z-index: 20;
   box-shadow: none;
 }
+.md-toolbar-tools.md-toolbar-tools-bottom {
+  height: (5 * $line);
+  max-height: (5 * $line);
+}
 header {
   flex-direction: row;
   align-items: stretch;
@@ -17,6 +21,10 @@ hgroup {
     margin-bottom: 0;
   }
 }
+.toolbar-main .md-button {
+  color: inherit;
+  font-size: sg-size(headline);
+}
 .sg-icon-bar {
   font-size: $sg-font-size-3;
   color: $colorGray;
@@ -28,6 +36,22 @@ hgroup {
     }
 .sg-icon-bar *.button {
   display: block;
+}
+.sg-toolbar-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  &-1 {
+    order: 1;
+    max-width: $messageList-width;
+  }
+  &-2 {
+    order: 2;
+  }
+  &-3 {
+    order: 3;
+  }
 }
 
 
