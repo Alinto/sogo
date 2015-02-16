@@ -784,7 +784,7 @@ rtf2html (NSData *compressedRTF)
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSensitivity: (void **) data // TODO -> subclass in calendar
+- (int) getPidTagSensitivity: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];

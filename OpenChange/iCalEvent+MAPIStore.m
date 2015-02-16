@@ -140,7 +140,7 @@
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSTimeZone *userTimeZone;
-  NSString *priority;
+  NSString *priority, *class = nil;
   NSUInteger responseStatus = 0;
   NSInteger tzOffset;
   SOGoUser *ownerUser;
@@ -280,6 +280,30 @@
   else
     priority = @"0"; // None
   [self setPriority: priority];
+
+  /* class */
+  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
+  value = [properties objectForKey: MAPIPropertyKey(PR_SENSITIVITY)];
+  if (value)
+    {
+      switch ([value intValue])
+        {
+        case 1:
+          class = @"X-PERSONAL";
+          break;
+        case 2:
+          class = @"PRIVATE";
+          break;
+        case 3:
+          class = @"CONFIDENTIAL";
+          break;
+        default:  /* 0 as well */
+          class = @"PUBLIC";
+        }
+    }
+
+  if (class)
+    [self setAccessClass: class];
 
   /* show time as free/busy/tentative/out of office. Possible values are:
      0x00000000 - olFree

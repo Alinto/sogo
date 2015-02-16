@@ -81,7 +81,7 @@
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 
-static Class NSArrayK;
+static Class NSArrayK, MAPIStoreAppointmentWrapperK;
 
 @implementation SOGoAppointmentObject (MAPIStoreExtension)
 
@@ -97,6 +97,7 @@ static Class NSArrayK;
 + (void) initialize
 {
   NSArrayK = [NSArray class];
+  MAPIStoreAppointmentWrapperK = [MAPIStoreAppointmentWrapper class];
 }
 
 + (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
@@ -205,13 +206,23 @@ static Class NSArrayK;
   [super dealloc];
 }
 
-/* getters */
-- (int) getPidLidFInvited: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (MAPIStoreAppointmentWrapper *) _appointmentWrapper
 {
-  return [self getYes: data inMemCtx: memCtx];
+  NSUInteger i, max;
+  id proxy;
+  max = [proxies count];
+  for (i = 0; i < max; i++) {
+    proxy = [proxies objectAtIndex: i];
+    if ([proxy isKindOfClass: MAPIStoreAppointmentWrapperK])
+      {
+        return proxy;
+      }
+  }
+  return nil;
 }
 
+
+/* getters */
 - (int) getPidTagMessageClass: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -324,99 +335,62 @@ static Class NSArrayK;
     }
   else
     {
-      /* HACK: we know the first (and only) proxy is our appointment wrapper
-         instance, but this might not always be true */
-      [[proxies objectAtIndex: 0] fillMessageData: msgData
-                                  inMemCtx: memCtx];
+      [[self _appointmentWrapper] fillMessageData: msgData
+                                         inMemCtx: memCtx];
     }
 
   *dataPtr = msgData;
 }
-
-/* sender representing */
-// - (int) getPidTagSentRepresentingEmailAddress: (void **) data
-//                                      inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagSentRepresentingAddressType: (void **) data
-//                                     inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getSMTPAddrType: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagSentRepresentingName: (void **) data
-//                              inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagSenderName: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagSentRepresentingEntryId: (void **) data
-//                                 inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
-// }
-
-/* attendee */
-// - (int) getPidTagReceivedByAddressType: (void **) data
-//                        inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [appointmentWrapper getPidTagReceivedByAddressType: data
-//                                                    inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedByEmailAddress: (void **) data
-//                            inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [appointmentWrapper getPidTagReceivedByEmailAddress: data
-//                                                        inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedByName: (void **) data
-//                    inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [appointmentWrapper getPidTagReceivedByName: data
-//                                                inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedByEntryId: (void **) data
-//                       inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [appointmentWrapper getPidTagReceivedByEntryId: data
-//                                                   inMemCtx: memCtx];
-// }
-
-// /* attendee representing */
-// - (int) getPidTagReceivedRepresentingEmailAddress: (void **) data
-//                                  inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagReceivedByEmailAddress: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedRepresentingAddressType: (void **) data
-//                              inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getSMTPAddrType: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedRepresentingName: (void **) data
-//                          inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagReceivedByName: data inMemCtx: memCtx];
-// }
-
-// - (int) getPidTagReceivedRepresentingEntryId: (void **) data
-//                             inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   return [self getPidTagReceivedByEntryId: data inMemCtx: memCtx];
-// }
 
 - (int) getPidTagResponseRequested: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
+
+/* This three methods: getPidTagNormalizedSubject,
+   getPidTagSensitivity and getPidTagImportance are implemented in
+   MAPIStoreMessage base class, then the proxy method is not reached
+   (see MAPIStoreObject).
+*/
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagNormalizedSubject: data inMemCtx: memCtx];
+
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagSensitivity: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagSensitivity: data inMemCtx: memCtx];
+
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagImportance: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+
+  appointmentWrapper = [self _appointmentWrapper];
+  if (appointmentWrapper)
+    return [appointmentWrapper getPidTagImportance: data inMemCtx: memCtx];
+
+  *data = MAPILongValue (memCtx, 1);
+
+  return MAPISTORE_SUCCESS;
+}
+
 
 - (NSString *) _uidFromGlobalObjectId: (TALLOC_CTX *) memCtx 
 {
