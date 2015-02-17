@@ -45,6 +45,7 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalDateTime.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoContentObject.h>
@@ -56,7 +57,6 @@
 #import <Appointments/iCalCalendar+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
-#import <Appointments/iCalRepeatableEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentOccurence.h>
@@ -90,23 +90,6 @@
 - (iCalEvent *) event
 {
   return (iCalEvent *) component;
-}
-
-- (NSString *) _dateString: (NSCalendarDate *) date
-{
-  char buf[22];
-  NSNumber *day, *month, *year;
-
-  day = [NSNumber numberWithInt: [date dayOfMonth]];
-  month = [NSNumber numberWithInt: [date monthOfYear]];
-  year = [NSNumber numberWithInt: [date yearOfCommonEra]];
-
-  sprintf(buf, "%04d-%02d-%02d",
-          [year intValue],
-          [month intValue],
-          [day intValue]);
-
-  return [NSString stringWithCString:buf];
 }
 
 /*
@@ -634,8 +617,6 @@
   BOOL resetAlarm;
   unsigned int snoozeAlarm;
 
-  // [self component];
-  // [self componentCalendar];
   event = [self event];
 
   ud = [[context activeUser] userDefaults];
@@ -683,16 +664,14 @@
                          [co nameInContainer], @"id",
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
-                       [self _dateString: eventStartDate], @"startDate",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
-                       [self _dateString: eventEndDate], @"endDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
                        nil];
 
   // Add attributes from iCalEvent+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
-  [data addEntriesFromDictionary: [event attributes]];
+  [data addEntriesFromDictionary: [event attributesInContext: context]];
 
   // Return JSON representation
   return [self responseWithStatus: 200 andJSONRepresentation: data];

@@ -41,6 +41,8 @@
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/WOContext+SOGo.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
+
 #import "iCalRepeatableEntityObject+SOGo.h"
 
 @implementation iCalRepeatableEntityObject (SOGoExtensions)
@@ -82,12 +84,15 @@
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
-  NSMutableDictionary *data, *repeat;
   NSArray *rules;
+  NSCalendarDate *untilDate;
+  NSMutableDictionary *data, *repeat;
   NSString *frequency;
+  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
   iCalRecurrenceRule *rule;
 
-  data = [NSMutableDictionary dictionaryWithDictionary: [super attributes]];
+  data = [NSMutableDictionary dictionaryWithDictionary: [super attributesInContext: context]];
 
   rules = [self recurrenceRules];
   if ([rules count] > 0)
@@ -100,8 +105,13 @@
       [repeat setObject: [NSNumber numberWithInt: [rule repeatInterval]] forKey: @"interval"];
       if ([rule repeatCount])
         [repeat setObject: [NSNumber numberWithInt: [rule repeatCount]] forKey: @"count"];
-      if ([rule untilDate])
-        [repeat setObject: [NSNumber numberWithUnsignedInt: [[rule untilDate] timeIntervalSince1970]] forKey: @"until"];
+      if ((untilDate = [rule untilDate]))
+        {
+          ud = [[context activeUser] userDefaults];
+          timeZone = [ud timeZone];
+          [untilDate setTimeZone: timeZone];
+          [repeat setObject: [untilDate iso8601DateString] forKey: @"until"];
+        }
       if ([[rule byDay] length])
         [repeat setObject: [[rule byDayMask] asRuleArray] forKey: @"days"];
       if ([[rule byMonthDay] count])
