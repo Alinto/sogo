@@ -42,6 +42,8 @@
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/WOContext+SOGo.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
+
 #import "SOGoAppointmentFolder.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
 
@@ -313,58 +315,6 @@
     }
 }
 
-// From [UIxDatePicker takeValuesFromRequest:inContext:]
-- (NSCalendarDate *) _dateFromString: (NSString *) dateString
-                           inContext: (WOContext *) context
-{
-  NSInteger dateTZOffset, userTZOffset;
-  NSTimeZone *systemTZ, *userTZ;
-  SOGoUserDefaults *ud;
-  NSCalendarDate *date;
-
-  date = [NSCalendarDate dateWithString: dateString
-                         calendarFormat: @"%Y-%m-%d"];
-  if (!date)
-    [self warnWithFormat: @"Could not parse dateString: '%@'", dateString];
-
-  // We must adjust the date timezone because "dateWithString:..." uses the
-  // system timezone, which can be different from the user's. */
-  ud = [[context activeUser] userDefaults];
-  systemTZ = [date timeZone];
-  dateTZOffset = [systemTZ secondsFromGMTForDate: date];
-  userTZ = [ud timeZone];
-  userTZOffset = [userTZ secondsFromGMTForDate: date];
-  if (dateTZOffset != userTZOffset)
-    date = [date dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: (dateTZOffset - userTZOffset)];
-  [date setTimeZone: userTZ];
-
-  return date;
-}
-
-// From [UIxTimeDatePicker takeValuesFromRequest:inContext:]
-- (void) _adjustDate: (NSCalendarDate **) date
-      withTimeString: (NSString *) timeString
-           inContext: (WOContext *) context
-{
-  unsigned _year, _month, _day, _hour, _minute;
-  SOGoUserDefaults *ud;
-  NSArray *_time;
-
-  _year = [*date yearOfCommonEra];
-  _month  = [*date monthOfYear];
-  _day    = [*date dayOfMonth];
-  _time = [timeString componentsSeparatedByString: @":"];
-  _hour = [[_time objectAtIndex: 0] intValue];
-  _minute = [[_time objectAtIndex: 1] intValue];
-
-  ud = [[context activeUser] userDefaults];
-  *date = [NSCalendarDate dateWithYear: _year month: _month day: _day
-                                 hour: _hour minute: _minute second: 0
-                             timeZone: [ud timeZone]];
-}
-
 /**
  * @see [iCalRepeatableEntityObject+SOGo attributes]
  * @see [iCalEntityObject+SOGo attributes]
@@ -372,9 +322,22 @@
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
+  NSCalendarDate *eventStartDate, *eventEndDate;
   NSMutableDictionary *data;
+  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
 
-  data = [NSMutableDictionary dictionaryWithDictionary: [super attributes]];
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
+  eventStartDate = [self startDate];
+  eventEndDate = [self endDate];
+  [eventStartDate setTimeZone: timeZone];
+  [eventEndDate setTimeZone: timeZone];
+
+  data = [NSMutableDictionary dictionaryWithDictionary: [super attributesInContext: context]];
+
+  [data setObject: [eventStartDate iso8601DateString] forKey: @"startDate"];
+  [data setObject: [eventEndDate iso8601DateString] forKey: @"endDate"];
 
   [data setObject: [NSNumber numberWithBool: [self isAllDay]] forKey: @"isAllDay"];
   [data setObject: [NSNumber numberWithBool: ![self isOpaque]] forKey: @"isTransparent"];
@@ -406,19 +369,19 @@
   // Handle start/end dates
   o = [data objectForKey: @"startDate"];
   if ([o isKindOfClass: [NSString class]] && [o length])
-    aptStartDate = [self _dateFromString: o inContext: context];
+    aptStartDate = [self dateFromString: o inContext: context];
 
   o = [data objectForKey: @"startTime"];
   if ([o isKindOfClass: [NSString class]] && [o length])
-    [self _adjustDate: &aptStartDate withTimeString: o inContext: context];
+    [self adjustDate: &aptStartDate withTimeString: o inContext: context];
 
   o = [data objectForKey: @"endDate"];
   if ([o isKindOfClass: [NSString class]] && [o length])
-    aptEndDate = [self _dateFromString: o inContext: context];
+    aptEndDate = [self dateFromString: o inContext: context];
 
   o = [data objectForKey: @"endTime"];
   if ([o isKindOfClass: [NSString class]] && [o length])
-    [self _adjustDate: &aptEndDate withTimeString: o inContext: context];
+    [self adjustDate: &aptEndDate withTimeString: o inContext: context];
 
   o = [data objectForKey: @"isTransparent"];
   if ([o isKindOfClass: [NSNumber class]])

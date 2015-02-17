@@ -53,6 +53,12 @@ extern NSNumber *iCalDistantFutureNumber;
 - (int) priorityNumber;
 - (NSDictionary *) createdBy;
 
+- (NSCalendarDate *) dateFromString: (NSString *) dateString
+                          inContext: (WOContext *) context;
+- (void) adjustDate: (NSCalendarDate **) date
+     withTimeString: (NSString *) timeString
+          inContext: (WOContext *) context;
+
 - (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
 			    withOffset: (int) offset
 			     forAllDay: (BOOL) allDay;
