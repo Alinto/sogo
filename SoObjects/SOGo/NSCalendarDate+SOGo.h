@@ -37,6 +37,7 @@
 
 - (NSString *) shortDateString;
 - (NSString *) rfc822DateString;
+- (NSString *) iso8601DateString;
 
 + (id) distantFuture;
 + (id) distantPast;
