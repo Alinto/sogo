@@ -21,6 +21,8 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
+
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import "NSCalendarDate+SOGo.h"
@@ -113,6 +115,34 @@ static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
 	      timeZoneShift];
 }
 
+- (NSString *) iso8601DateString
+{
+  char buf[22];
+  int timeZoneHourShift, timeZoneMinuteShift, tzSeconds;
+  NSNumber *day, *month, *year, *hour, *minute;
+
+  day = [NSNumber numberWithInt: [self dayOfMonth]];
+  month = [NSNumber numberWithInt: [self monthOfYear]];
+  year = [NSNumber numberWithInt: [self yearOfCommonEra]];
+  hour = [NSNumber numberWithInt: [self hourOfDay]];
+  minute = [NSNumber numberWithInt: [self minuteOfHour]];
+
+  tzSeconds = [[self timeZone] secondsFromGMT];
+  timeZoneHourShift = (tzSeconds / 3600);
+  tzSeconds -= timeZoneHourShift * 3600;
+  timeZoneMinuteShift = tzSeconds / 60;
+
+  sprintf(buf, "%04d-%02d-%02dT%02d:%02d%+.2d:%02d",
+          [year intValue],
+          [month intValue],
+          [day intValue],
+          [hour intValue],
+          [minute intValue],
+          timeZoneHourShift,
+          timeZoneMinuteShift);
+
+  return [NSString stringWithCString:buf];
+}
 
 #define secondsOfDistantFuture 1073741823.0
 #define secondsOfDistantPast -1073741823.0
