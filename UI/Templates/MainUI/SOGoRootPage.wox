@@ -11,7 +11,7 @@
     const:popup="YES"
     ><var:string var:value="doctype" const:escapeHTML="NO"/>
 
-<md-content md-scroll-y="true">
+<md-content md-scroll-y="true" layout="center center">
   <div data-ng-controller="loginController">
 
     <script type="text/javascript">
