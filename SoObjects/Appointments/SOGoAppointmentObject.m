@@ -39,6 +39,7 @@
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGCards/iCalToDo.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
