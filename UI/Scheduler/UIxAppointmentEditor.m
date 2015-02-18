@@ -542,12 +542,12 @@
  * @apiSuccess (Success 200) {String} id                      Event ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
- * @apiSuccess (Success 200) {String} startDate               Start date (YYYY-MM-DD)
+ * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedStartDate      Formatted start date
- * @apiSuccess (Success 200) {String} startTime               Formatted start time
- * @apiSuccess (Success 200) {String} endDate                 End date (YYYY-MM-DD)
+ * @apiSuccess (Success 200) {String} [localizedStartTime]    Formatted start time
+ * @apiSuccess (Success 200) {String} endDate                 End date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
- * @apiSuccess (Success 200) {String} endTime                 Formatted end time
+ * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
  *
  * From [iCalEvent+SOGo attributes]
  *
@@ -606,6 +606,7 @@
  */
 - (id <WOActionResults>) viewAction
 {
+  BOOL isAllDay;
   NSMutableDictionary *data;
   NSCalendarDate *eventStartDate, *eventEndDate;
   NSTimeZone *timeZone;
@@ -618,14 +619,18 @@
   unsigned int snoozeAlarm;
 
   event = [self event];
+  co = [self clientObject];
 
+  isAllDay = [event isAllDay];
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
   eventStartDate = [event startDate];
   eventEndDate = [event endDate];
-  [eventStartDate setTimeZone: timeZone];
-  [eventEndDate setTimeZone: timeZone];
-  co = [self clientObject];
+  if (!isAllDay)
+    {
+      [eventStartDate setTimeZone: timeZone];
+      [eventEndDate setTimeZone: timeZone];
+    }
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
@@ -665,10 +670,14 @@
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
-                       [dateFormatter formattedTime: eventStartDate], @"startTime",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
-                       [dateFormatter formattedTime: eventEndDate], @"endTime",
                        nil];
+
+  if (!isAllDay)
+    {
+      [data setObject: [dateFormatter formattedTime: eventStartDate] forKey: @"localizedStartTime"];
+      [data setObject: [dateFormatter formattedTime: eventEndDate] forKey: @"localizedEndTime"];
+    }
 
   // Add attributes from iCalEvent+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
   [data addEntriesFromDictionary: [event attributesInContext: context]];
