@@ -37,6 +37,7 @@
 
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoAppointmentFolder.h"
 
@@ -110,7 +111,7 @@ NSNumber *iCalDistantFutureNumber = nil;
   if (value) [data setObject: [value lowercaseString] forKey: @"classification"];
 
   value = [self status];
-  if (value) [data setObject: value forKey: @"status"];
+  if (value) [data setObject: [value lowercaseString] forKey: @"status"];
 
   value = [self createdBy];
   if (value) [data setObject: value forKey: @"createdBy"];
@@ -449,7 +450,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 
   o = [data objectForKey: @"status"];
   if ([o isKindOfClass: [NSString class]])
-    [self setStatus: o];
+    [self setStatus: [o uppercaseString]];
 
   o = [data objectForKey: @"categories"];
   if ([o isKindOfClass: [NSArray class]])
