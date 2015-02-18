@@ -37,7 +37,9 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalDateTime.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
@@ -58,15 +60,7 @@
 
   if ((self = [super init]))
     {
-      taskStartDate = nil;
-      taskDueDate = nil;
-      statusDate = nil;
-      hasStartDate = NO;
-      hasDueDate = NO;
-      status = nil;
-      statusPercent = nil;
       item = nil;
-      todo = nil;
 
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
@@ -77,26 +71,14 @@
 
 - (void) dealloc
 {
-  [taskStartDate release];
-  [taskDueDate release];
-  [statusDate release];
-  [status release];
-  [statusPercent release];
   [dateFormatter release];
-  [[todo parent] release];
   [super dealloc];
 }
 
 /* template values */
 - (iCalToDo *) todo
 {
-  if (!todo)
-    {
-      todo = (iCalToDo *) [[self clientObject] occurence];
-      [[todo parent] retain];
-    }
-
-  return todo;
+  return (iCalToDo *) component;
 }
 
 - (NSString *) saveURL
@@ -106,150 +88,61 @@
 }
 
 /* icalendar values */
-- (void) setTaskStartDate: (NSCalendarDate *) newTaskStartDate
-{
-  ASSIGN (taskStartDate, newTaskStartDate);
-}
 
-- (NSCalendarDate *) taskStartDate
-{
-  return taskStartDate;
-}
+// - (NSArray *) statusList
+// {
+//   static NSArray *statusItems = nil;
 
-- (void) setHasStartDate: (BOOL) newHasStartDate
-{
-  hasStartDate = newHasStartDate;
-}
+//   if (!statusItems)
+//     {
+//       statusItems = [NSArray arrayWithObjects: @"NEEDS-ACTION",
+//                              @"IN-PROCESS",
+//                              @"COMPLETED",
+//                              @"CANCELLED",
+//                              nil];
+//       [statusItems retain];
+//     }
 
-- (BOOL) hasStartDate
-{
-  return hasStartDate;
-}
+//   return statusItems;
+// }
 
-- (BOOL) startDateDisabled
-{
-  return !hasStartDate;
-}
+// - (NSString *) itemStatusText
+// {
+//   if (!item)
+//     {
+//       item = status;
+//       if (!item)
+// 	item = @"NOT-SPECIFIED";
+//     }
+//   return [self labelForKey: [NSString stringWithFormat: @"status_%@", item]];
+// }
 
-- (void) setTaskDueDate: (NSCalendarDate *) newTaskDueDate
-{
-  ASSIGN (taskDueDate, newTaskDueDate);
-}
+// - (BOOL) statusDateDisabled
+// {
+//   return !([status isEqualToString: @"COMPLETED"] || statusDate);
+// }
 
-- (NSCalendarDate *) taskDueDate
-{
-  return taskDueDate;
-}
-
-- (void) setHasDueDate: (BOOL) newHasDueDate
-{
-  hasDueDate = newHasDueDate;
-}
-
-- (BOOL) hasDueDate
-{
-  return hasDueDate;
-}
-
-- (BOOL) dueDateDisabled
-{
-  return !hasDueDate;
-}
-
-- (NSArray *) statusList
-{
-  static NSArray *statusItems = nil;
-
-  if (!statusItems)
-    {
-      statusItems = [NSArray arrayWithObjects: @"NEEDS-ACTION",
-                             @"IN-PROCESS",
-                             @"COMPLETED",
-                             @"CANCELLED",
-                             nil];
-      [statusItems retain];
-    }
-
-  return statusItems;
-}
-
-- (NSString *) itemStatusText
-{
-  if (!item)
-    {
-      item = status;
-      if (!item)
-	item = @"NOT-SPECIFIED";
-    }
-  return [self labelForKey: [NSString stringWithFormat: @"status_%@", item]];
-}
-
-- (void) setItem: (NSString *) newItem
-{
-  item = newItem;
-}
-
-- (NSString *) item
-{
-  return item;
-}
-
-- (NSString *) status
-{
-  return status;
-}
-
-- (void) setStatus: (NSString *) newStatus
-{
-  status = newStatus;
-}
-
-- (void) setStatusDate: (NSCalendarDate *) newStatusDate
-{
-  ASSIGN (statusDate, newStatusDate);
-}
-
-- (NSCalendarDate *) statusDate
-{
-  return statusDate;
-}
-
-- (BOOL) statusDateDisabled
-{
-  return !([status isEqualToString: @"COMPLETED"] || statusDate);
-}
-
-- (BOOL) statusPercentDisabled
-{
-  return ([status length] == 0 || [status isEqualToString: @"CANCELLED"]);
-}
-
-- (void) setStatusPercent: (NSString *) newStatusPercent
-{
-  ASSIGN (statusPercent, newStatusPercent);
-}
-
-- (NSString *) statusPercent
-{
-  return statusPercent;
-}
+// - (BOOL) statusPercentDisabled
+// {
+//   return ([status length] == 0 || [status isEqualToString: @"CANCELLED"]);
+// }
 
 /* viewing read-only tasks */
 
-- (NSString *) taskStartDateTimeText
-{
-  return [dateFormatter formattedDateAndTime: taskStartDate];
-}
+// - (NSString *) taskStartDateTimeText
+// {
+//   return [dateFormatter formattedDateAndTime: taskStartDate];
+// }
 
-- (NSString *) taskDueDateTimeText
-{
-  return [dateFormatter formattedDateAndTime: taskDueDate];
-}
+// - (NSString *) taskDueDateTimeText
+// {
+//   return [dateFormatter formattedDateAndTime: taskDueDate];
+// }
 
-- (NSString *) statusDateText
-{
-  return [dateFormatter formattedDate: statusDate];
-}
+// - (NSString *) statusDateText
+// {
+//   return [dateFormatter formattedDate: statusDate];
+// }
 
 /* actions */
 - (NSCalendarDate *) newStartDate
@@ -290,114 +183,208 @@
   return newStartDate;
 }
 
-- (id <WOActionResults>) defaultAction
-{
-  NSCalendarDate *startDate, *dueDate;
-  NSString *duration;
-  NSTimeZone *timeZone;
-  SOGoUserDefaults *ud;
-  unsigned int minutes;
+// - (id <WOActionResults>) defaultAction
+// {
+//   NSCalendarDate *startDate, *dueDate;
+//   NSString *duration;
+//   NSTimeZone *timeZone;
+//   SOGoUserDefaults *ud;
+//   iCalToDo *todo;
+//   unsigned int minutes;
 
-  ud = [[context activeUser] userDefaults];
-  timeZone = [ud timeZone];
-  [self todo];
-  if (todo)
-    {
-      startDate = [todo startDate];
-      dueDate = [todo due];
-      if (startDate)
-        hasStartDate = YES;
-      else
-        startDate = [self newStartDate];
-      if (dueDate)
-        hasDueDate = YES;
-      else
-        dueDate = [self newStartDate];
+//   ud = [[context activeUser] userDefaults];
+//   timeZone = [ud timeZone];
+//   todo = [self todo];
+//   if (todo)
+//     {
+//       startDate = [todo startDate];
+//       dueDate = [todo due];
+//       if (startDate)
+//         hasStartDate = YES;
+//       else
+//         startDate = [self newStartDate];
+//       if (dueDate)
+//         hasDueDate = YES;
+//       else
+//         dueDate = [self newStartDate];
       
-      ASSIGN (statusDate, [todo completed]);
-      [statusDate setTimeZone: timeZone];
+//       ASSIGN (statusDate, [todo completed]);
+//       [statusDate setTimeZone: timeZone];
 
-      ASSIGN (status, [todo status]);
+//       ASSIGN (status, [todo status]);
       
-      if ([status length] == 0 && statusDate)
-	{
-          ASSIGN(status, @"COMPLETED");
-	}
-      else
-	{
-	  ASSIGN (statusDate, [self newStartDate]);
-	}
-      ASSIGN (statusPercent, [todo percentComplete]);
-    }
-  else
-    {
-      startDate = [self newStartDate];
-      duration = [self queryParameterForKey:@"dur"];
-      if ([duration length] > 0)
-	minutes = [duration intValue];
-      else
-	minutes = 60;
-      dueDate = [startDate dateByAddingYears: 0 months: 0 days: 0
-			   hours: 0 minutes: minutes seconds: 0];
-      hasStartDate = NO;
-      hasDueDate = NO;
-      ASSIGN (statusDate, [self newStartDate]);
-      ASSIGN (status, @"");
-      ASSIGN (statusPercent, @"");
-    }
+//       if ([status length] == 0 && statusDate)
+//         {
+//           ASSIGN(status, @"COMPLETED");
+//         }
+//       else
+//         {
+//           ASSIGN (statusDate, [self newStartDate]);
+//         }
+//       ASSIGN (statusPercent, [todo percentComplete]);
+//     }
+//   else
+//     {
+//       startDate = [self newStartDate];
+//       duration = [self queryParameterForKey:@"dur"];
+//       if ([duration length] > 0)
+//         minutes = [duration intValue];
+//       else
+//         minutes = 60;
+//       dueDate = [startDate dateByAddingYears: 0 months: 0 days: 0
+//         		   hours: 0 minutes: minutes seconds: 0];
+//       hasStartDate = NO;
+//       hasDueDate = NO;
+//       ASSIGN (statusDate, [self newStartDate]);
+//       ASSIGN (status, @"");
+//       ASSIGN (statusPercent, @"");
+//     }
 
-  [startDate setTimeZone: timeZone];
-  ASSIGN (taskStartDate, startDate);
-  
-  [dueDate setTimeZone: timeZone];
-  ASSIGN (taskDueDate, dueDate);
+//   /* here comes the code for initializing repeat, reminder and isAllDay... */
 
-  /* here comes the code for initializing repeat, reminder and isAllDay... */
+//   return self;
+// }
 
-  return self;
-}
-
-#warning this method could be replaced with a method common with UIxAppointmentEditor...
+/**
+ * @api {post} /so/:username/Calendar/:calendarId/:todoId/save Save todo
+ * @apiVersion 1.0.0
+ * @apiName PostToDoSave
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/2142-54198E00-F-821E450.ics/save \
+ *          -H 'Content-Type: application/json' \
+ *          -d '{ "Summary": "Todo", "startDate": "2015-01-28", "startTime": "10:00", \
+ *                "dueDate": "2015-01-28", "status": "in-process", "percentComplete": 25 }'
+ *
+ * @apiParam {String} [startDate]             Start date (YYYY-MM-DD)
+ * @apiParam {String} [startTime]             Start time (HH:MM)
+ * @apiParam {String} [dueDate]               End date (YYYY-MM-DD)
+ * @apiParam {String} [dueTime]               End time (HH:MM)
+ * @apiParam {String} [completedDate]         End date (YYYY-MM-DD)
+ * @apiParam {String} [completedTime]         End time (HH:MM)
+ * @apiParam {Number} percentComplete         Percent completion (0-100)
+ *
+ * Save in [iCalEntityObject+SOGo setAttributes:inContext:]
+ *
+ * @apiParam {Number} [sendAppointmentNotifications] 0 if notifications must not be sent
+ * @apiParam {String} [summary]               Summary
+ * @apiParam {String} [location]              Location
+ * @apiParam {String} [comment]               Comment
+ * @apiParam {String} [status]                Status (needs-action, in-process, completed, or cancelled)
+ * @apiParam {String} [attachUrl]             Attached URL
+ * @apiParam {Number} [priority]              Priority
+ * @apiParam {NSString} [classification]      Either public, confidential or private
+ * @apiParam {String[]} [categories]          Categories
+ * @apiParam {Object[]} [attendees]           List of attendees
+ * @apiParam {String} [attendees.name]        Attendee's name
+ * @apiParam {String} attendees.email         Attendee's email address
+ * @apiParam {String} [attendees.uid]         System user ID
+ * @apiParam {String} attendees.status        Attendee's participation status
+ * @apiParam {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
+ * @apiParam {String} [attendees.delegatedTo] User that the original request was delegated to
+ * @apiParam {String} [attendees.delegatedFrom] User the request was delegated from
+ * @apiParam {Object[]} [alarm]               Alarm definition
+ * @apiParam {String} alarm.action            Either display or email
+ * @apiParam {Number} alarm.quantity          Quantity of units
+ * @apiParam {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiParam {String} alarm.reference         Either BEFORE or AFTER
+ * @apiParam {String} alarm.relation          Either START or END
+ * @apiParam {Boolean} [alarm.attendees]      Alert attendees by email if true and action is email
+ * @apiParam {Object} [alarm.organizer]       Alert organizer at this email address if action is email
+ * @apiParam {String} [alarm.organizer.name]  Attendee's name
+ * @apiParam {String} alarm.organizer.email   Attendee's email address
+ *
+ * Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]
+ *
+ * @apiParam {Object} [repeat]                Recurrence rule definition
+ * @apiParam {String} repeat.frequency        Either daily, every weekday, weekly, bi-weekly, monthly, or yearly
+ * @apiParam {Number} repeat.interval         Intervals the recurrence rule repeats
+ * @apiParam {String} [repeat.count]          Number of occurrences at which to range-bound the recurrence
+ * @apiParam {String} [repeat.until]          A date (YYYY-MM-DD) that bounds the recurrence rule in an inclusive manner
+ * @apiParam {Object[]} [repeat.days]         List of days of the week (by day mask)
+ * @apiParam {String} [repeat.days.day]       Day of the week (SU, MO, TU, WE, TH, FR, SA)
+ * @apiParam {Number} [repeat.days.occurence] Occurrence of a specific day within the monthly or yearly rule (values are -5 to 5)
+ * @apiParam {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
+ * @apiParam {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
+ *
+ * Save in [UIxComponentEditor setAttributes:]
+ *
+ * @apiParam {Object} [organizer]             Appointment organizer
+ * @apiParam {String} organizer.name          Organizer's name
+ * @apiParam {String} organizer.email         Organizer's email address
+ *
+ * @apiError (Error 500) {Object} error The error message
+ */
 - (id <WOActionResults>) saveAction
 {
-  NSString *newCalendar;
+  NSDictionary *params;
+  NSException *ex;
+  NSString *newCalendar, *jsonResponse;
   SOGoAppointmentFolder *thisFolder, *newFolder;
   SOGoTaskObject *co;
   SoSecurityManager *sm;
+  WORequest *request;
+  iCalToDo *todo;
 
+  todo = [self todo];
   co = [self clientObject];
-  [co saveComponent: todo];
 
-  newCalendar = [self queryParameterForKey: @"moveToCalendar"];
-  if ([newCalendar length])
+  ex = nil;
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  if (params == nil)
     {
-      sm = [SoSecurityManager sharedSecurityManager];
+      ex = [NSException exceptionWithName: @"JSONParsingException"
+                                   reason: @"Can't parse JSON string"
+                                 userInfo: nil];
+    }
+  else
+    {
+      [self setAttributes: params];
+      ex = [co saveComponent: todo];
 
-      thisFolder = [co container];
-      if (![sm validatePermission: SoPerm_DeleteObjects
-	       onObject: thisFolder
-	       inContext: context])
-	{
-	  newFolder = [[thisFolder container] lookupName: newCalendar
-                                               inContext: context
-                                                 acquire: NO];
-	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-		   onObject: newFolder
-		   inContext: context])
-            [co moveToFolder: newFolder];
-	}
+      newCalendar = [self queryParameterForKey: @"moveToCalendar"];
+      if ([newCalendar length])
+        {
+          sm = [SoSecurityManager sharedSecurityManager];
+
+          thisFolder = [co container];
+          if (![sm validatePermission: SoPerm_DeleteObjects
+                             onObject: thisFolder
+                            inContext: context])
+            {
+              newFolder = [[thisFolder container] lookupName: newCalendar
+                                                   inContext: context
+                                                     acquire: NO];
+              if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                                 onObject: newFolder
+                                inContext: context])
+                [co moveToFolder: newFolder];
+            }
+        }
     }
 
-  return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
+  if (ex)
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"failure", @"status",
+                                 [ex reason],
+                                 @"message",
+                                 nil];
+  else
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"success", @"status", nil];
+
+  return [self responseWithStatus: 200
+            andJSONRepresentation: jsonResponse];
 }
 
 /**
- * @api {get} /so/:username/Calendar/:calendarId/:todoId/view Get task
+ * @api {get} /so/:username/Calendar/:calendarId/:todoId/view Get todo
  * @apiVersion 1.0.0
- * @apiName GetTaskView
+ * @apiName GetToDoView
  * @apiGroup Calendar
  * @apiExample {curl} Example usage:
- *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/1A5-53489200-2D-6BD99880.ics/view
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/2142-54198E00-F-821E450.ics/view
  *
  * @apiParam {Number} [resetAlarm] Mark alarm as triggered if set to 1
  * @apiParam {Number} [snoozeAlarm] Snooze the alarm for this number of minutes
@@ -405,11 +392,16 @@
  * @apiSuccess (Success 200) {String} id                      Todo ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (todo's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
- * @apiSuccess (Success 200) {String} startDate               Formatted start date
- * @apiSuccess (Success 200) {String} startTime               Formatted start time
- * @apiSuccess (Success 200) {String} dueDate                 Formatted due date
- * @apiSuccess (Success 200) {String} dueTime                 Formatted due time
- * @apiSuccess (Success 200) {NSNumber} percentComplete       Percent completion
+ * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
+ * @apiSuccess (Success 200) {String} localizedStartDate      Formatted start date
+ * @apiSuccess (Success 200) {String} localizedStartTime      Formatted start time
+ * @apiSuccess (Success 200) {String} dueDate                 Due date (ISO8601)
+ * @apiSuccess (Success 200) {String} localizedDueDate        Formatted due date
+ * @apiSuccess (Success 200) {String} localizedDueTime        Formatted due time
+ * @apiSuccess (Success 200) {String} completedDate           Completed date (ISO8601)
+ * @apiSuccess (Success 200) {String} completedTime           Formatted completed time
+ * @apiSuccess (Success 200) {String} status                  Status (needs-action, in-process, completed, or cancelled)
+ * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
  *
  * From [iCalEntityObject+SOGo attributes]
  *
@@ -458,26 +450,36 @@
 - (id <WOActionResults>) viewAction
 {
   NSMutableDictionary *data;
-  NSCalendarDate *startDate, *dueDate;
+  NSCalendarDate *startDate, *dueDate, *completedDate;
   NSTimeZone *timeZone;
   SOGoCalendarComponent *co;
   SOGoAppointmentFolder *thisFolder;
   SOGoUserDefaults *ud;
   iCalAlarm *anAlarm;
-  BOOL resetAlarm;
-  BOOL snoozeAlarm;
+  iCalToDo *todo;
+  BOOL resetAlarm, snoozeAlarm;
+  BOOL isAllDayStartDate, isAllDayDueDate;
 
-  [self todo];
+  todo = [self todo];
 
   co = [self clientObject];
   thisFolder = [co container];
 
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
+
   startDate = [todo startDate];
-  [startDate setTimeZone: timeZone];
+  isAllDayStartDate = [(iCalDateTime *) [todo uniqueChildWithTag: @"dtstart"] isAllDay];
+  if (!isAllDayStartDate)
+    [startDate setTimeZone: timeZone];
+
   dueDate = [todo due];
-  [dueDate setTimeZone: timeZone];
+  isAllDayDueDate = [(iCalDateTime *) [todo uniqueChildWithTag: @"due"] isAllDay];
+  if (!isAllDayDueDate)
+    [dueDate setTimeZone: timeZone];
+
+  completedDate = [todo completed];
+  [completedDate setTimeZone: timeZone];
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
@@ -512,99 +514,114 @@
           [co snoozeAlarm: snoozeAlarm];
         }
     }
-  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                          [co nameInContainer], @"id",
                        [thisFolder nameInContainer], @"pid",
                        [thisFolder displayName], @"calendar",
-		       (startDate? (id)[dateFormatter formattedDate: startDate] : (id)@""), @"startDate",
-		       (startDate? (id)[dateFormatter formattedTime: startDate] : (id)@""), @"startTime",
-		       (dueDate? (id)[dateFormatter formattedDate: dueDate] : (id)@""), @"dueDate",
-		       (dueDate? (id)[dateFormatter formattedTime: dueDate] : (id)@""), @"dueTime",
-                       [NSNumber numberWithInt: [[todo percentComplete] intValue]], @"percentComplete",
 		       nil];
-  
-  // Add attributes from iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
-  [data addEntriesFromDictionary: [todo attributes]];
+
+  if (startDate)
+    {
+      [data setObject: [dateFormatter formattedDate: startDate] forKey: @"localizedStartDate"];
+      if (!isAllDayStartDate)
+        [data setObject: [dateFormatter formattedTime: startDate] forKey: @"localizedStartTime"];
+    }
+  if (dueDate)
+    {
+      [data setObject: [dateFormatter formattedDate: dueDate] forKey: @"localizedDueDate"];
+      if (!isAllDayDueDate)
+        [data setObject: [dateFormatter formattedTime: dueDate] forKey: @"localizedDueTime"];
+    }
+
+  if (completedDate)
+    {
+      [data setObject: [dateFormatter formattedDate: completedDate] forKey: @"localizedCompletedDate"];
+      [data setObject: [dateFormatter formattedTime: completedDate] forKey: @"localizedCompletedTime"];
+    }
+
+  // Add attributes from iCalToDo+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
+  [data addEntriesFromDictionary: [todo attributesInContext: context]];
 
   // Return JSON representation
   return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-                           inContext: (WOContext*) context
-{
-  NSString *actionName;
+// - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+//                            inContext: (WOContext*) context
+// {
+//   NSString *actionName;
 
-  actionName = [[request requestHandlerPath] lastPathComponent];
+//   actionName = [[request requestHandlerPath] lastPathComponent];
 
-  return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
-	  && [actionName hasPrefix: @"save"]);
-}
+//   return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
+// 	  && [actionName hasPrefix: @"save"]);
+// }
 
-- (void) takeValuesFromRequest: (WORequest *) _rq
-                     inContext: (WOContext *) _ctx
-{
-  SOGoUserDefaults *ud;
-  iCalTimeZone *tz;
+// - (void) takeValuesFromRequest: (WORequest *) _rq
+//                      inContext: (WOContext *) _ctx
+// {
+//   SOGoUserDefaults *ud;
+//   iCalTimeZone *tz;
+//   iCalToDo *todo;
 
-  [self todo];
+//   todo = [self todo];
 
-  [super takeValuesFromRequest: _rq inContext: _ctx];
+//   [super takeValuesFromRequest: _rq inContext: _ctx];
 
-  if (hasStartDate)
-    [todo setStartDate: taskStartDate];
-  else
-    {
-      [todo setStartDate: nil];
-      [todo removeAllAlarms];
-    }
+//   if (hasStartDate)
+//     [todo setStartDate: taskStartDate];
+//   else
+//     {
+//       [todo setStartDate: nil];
+//       [todo removeAllAlarms];
+//     }
 
-  if (hasDueDate)
-    [todo setDue: taskDueDate];
-  else
-      [todo setDue: nil];
+//   if (hasDueDate)
+//     [todo setDue: taskDueDate];
+//   else
+//       [todo setDue: nil];
 
-  if ([status isEqualToString: @"COMPLETED"])
-    [todo setCompleted: statusDate];
-  else
-    [todo setCompleted: nil];
-  if ([status length] > 0)
-    {
-      [todo setStatus: status];
-      [todo setPercentComplete: statusPercent];
-    }
-  else
-    {
-      [todo setStatus: @""];
-      [todo setPercentComplete: @""];
-    }
+//   if ([status isEqualToString: @"COMPLETED"])
+//     [todo setCompleted: statusDate];
+//   else
+//     [todo setCompleted: nil];
+//   if ([status length] > 0)
+//     {
+//       [todo setStatus: status];
+//       [todo setPercentComplete: statusPercent];
+//     }
+//   else
+//     {
+//       [todo setStatus: @""];
+//       [todo setPercentComplete: @""];
+//     }
 
-  if ([[self clientObject] isNew])
-    {
-      ud = [[context activeUser] userDefaults];
-      tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+//   if ([[self clientObject] isNew])
+//     {
+//       ud = [[context activeUser] userDefaults];
+//       tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
       
-      if (hasStartDate || hasDueDate)
-	{
-	  [[todo parent] addTimeZone: tz];
-	}
+//       if (hasStartDate || hasDueDate)
+// 	{
+// 	  [[todo parent] addTimeZone: tz];
+// 	}
 
-      if (hasStartDate)
-	[(iCalDateTime *)[todo uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+//       if (hasStartDate)
+// 	[(iCalDateTime *)[todo uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
 
-      if (hasDueDate)
-	[(iCalDateTime *)[todo uniqueChildWithTag: @"due"] setTimeZone: tz];
-    }
+//       if (hasDueDate)
+// 	[(iCalDateTime *)[todo uniqueChildWithTag: @"due"] setTimeZone: tz];
+//     }
 
-}
+// }
 
 - (id) changeStatusAction
 {
   NSString *newStatus;
+  iCalToDo *todo;
 
-  [self todo];
+  todo = [self todo];
   if (todo)
     {
       newStatus = [self queryParameterForKey: @"status"];
