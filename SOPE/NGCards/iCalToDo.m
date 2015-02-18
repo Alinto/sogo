@@ -65,6 +65,12 @@
 		    setDateTime: newDueDate];
 }
 
+- (void) setAllDayDue: (NSCalendarDate *) newDueDate
+{
+  [(iCalDateTime *) [self uniqueChildWithTag: @"due"]
+                    setDate: newDueDate];
+}
+
 - (NSCalendarDate *) due
 {
   return [(iCalDateTime *) [self uniqueChildWithTag: @"due"]

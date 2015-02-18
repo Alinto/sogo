@@ -27,16 +27,198 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
+#import <NGCards/iCalAlarm.h>
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTrigger.h>
+
+#import <SoObjects/SOGo/WOContext+SOGo.h>
+
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
 
 #import "iCalToDo+SOGo.h"
 
 @implementation iCalToDo (SOGoExtensions)
+
+- (NSDictionary *) attributesInContext: (WOContext *) context
+{
+  BOOL isAllDayStartDate, isAllDayDueDate;
+  NSCalendarDate *startDate, *dueDate, *completedDate;
+  NSMutableDictionary *data;
+  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
+
+  startDate = [self startDate];
+  isAllDayStartDate = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] isAllDay];
+  if (!isAllDayStartDate)
+    [startDate setTimeZone: timeZone];
+
+  dueDate = [self due];
+  isAllDayDueDate = [(iCalDateTime *) [self uniqueChildWithTag: @"due"] isAllDay];
+  if (!isAllDayDueDate)
+    [dueDate setTimeZone: timeZone];
+
+  completedDate = [self completed];
+  [completedDate setTimeZone: timeZone];
+
+  data = [NSMutableDictionary dictionaryWithDictionary: [super attributesInContext: context]];
+
+  if (startDate)
+    [data setObject: [startDate iso8601DateString] forKey: @"startDate"];
+  if (dueDate)
+    [data setObject: [dueDate iso8601DateString] forKey: @"dueDate"];
+  if (completedDate)
+    [data setObject: [completedDate iso8601DateString] forKey: @"completedDate"];
+
+  if ([[self percentComplete] length])
+    [data setObject: [NSNumber numberWithInt: [[self percentComplete] intValue]] forKey: @"percentComplete"];
+
+  return data;
+}
+
+/**
+ * @see [iCalRepeatableEntityObject+SOGo setAttributes:inContext:]
+ * @see [iCalEntityObject+SOGo setAttributes:inContext:]
+ * @see [UIxAppointmentEditor saveAction]
+ */
+- (void) setAttributes: (NSDictionary *) data
+             inContext: (WOContext *) context
+{
+  BOOL isAllDayStartDate, isAllDayDueDate;
+  NSCalendarDate *startDate, *dueDate, *completedDate;
+  NSInteger percent;
+  SOGoUserDefaults *ud;
+  iCalDateTime *todoStartDate, *todoDueDate;
+  iCalTimeZone *tz;
+  id o;
+
+  [super setAttributes: data inContext: context];
+
+  startDate = dueDate = completedDate = nil;
+
+  // Handle start date
+  isAllDayStartDate = YES;
+  o = [data objectForKey: @"startDate"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    startDate = [self dateFromString: o inContext: context];
+
+  o = [data objectForKey: @"startTime"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    {
+      isAllDayStartDate = NO;
+      [self adjustDate: &startDate withTimeString: o inContext: context];
+    }
+
+  if (startDate)
+    [self setStartDate: startDate];
+  else
+    {
+      [self setStartDate: nil];
+      [self removeAllAlarms];
+    }
+
+  // Handle due date
+  isAllDayDueDate = YES;
+  o = [data objectForKey: @"dueDate"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    dueDate = [self dateFromString: o inContext: context];
+
+  o = [data objectForKey: @"dueTime"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    {
+      isAllDayDueDate = NO;
+      [self adjustDate: &dueDate withTimeString: o inContext: context];
+    }
+
+  if (dueDate)
+    if (isAllDayDueDate)
+      [self setAllDayDue: dueDate];
+    else
+      [self setDue: dueDate];
+  else
+    [self setDue: nil];
+
+  // Handle time zone
+  todoStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+  todoDueDate = (iCalDateTime *)[self uniqueChildWithTag: @"due"];
+  tz = [todoStartDate timeZone];
+  if (!tz)
+    tz = [todoDueDate timeZone];
+
+  if (isAllDayStartDate && isAllDayDueDate)
+    {
+      if (tz)
+        [[self parent] removeChild: tz];
+      [todoStartDate setTimeZone: nil];
+      [todoDueDate setTimeZone: nil];
+    }
+  else
+    {
+      if (!tz)
+        {
+          ud = [[context activeUser] userDefaults];
+          tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+        }
+      if (tz)
+        {
+          [[self parent] addTimeZone: tz];
+          if (todoStartDate)
+            {
+              if (isAllDayStartDate)
+                [todoStartDate setTimeZone: nil];
+              else if (![todoStartDate timeZone])
+                [todoStartDate setTimeZone: tz];
+            }
+          if (todoDueDate)
+            {
+              if (isAllDayDueDate)
+                [todoDueDate setTimeZone: nil];
+              else if (![todoDueDate timeZone])
+                [todoDueDate setTimeZone: tz];
+            }
+        }
+    }
+
+  // Handle completed date
+  o = [data objectForKey: @"completedDate"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    completedDate = [self dateFromString: o inContext: context];
+
+  o = [data objectForKey: @"completedTime"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
+    [self adjustDate: &completedDate withTimeString: o inContext: context];
+
+  o = [self status];
+  if ([o length])
+    {
+      if ([o isEqualToString: @"COMPLETED"] && completedDate)
+        // As specified in RFC5545, the COMPLETED property must use UTC time
+        [self setCompleted: completedDate];
+      else
+        [self setCompleted: nil];
+    }
+
+  // Percent complete
+  o = [data objectForKey: @"percentComplete"];
+  if ([o isKindOfClass: [NSNumber class]])
+    {
+      percent = [o intValue];
+      if (percent >= 0 && percent <= 100)
+        [self setPercentComplete: [NSString stringWithFormat: @"%i", percent]];
+    }
+  else
+    [self setPercentComplete: @""];
+}
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
@@ -53,7 +235,7 @@
   iCalAccessClass accessClass;
 
   /* extract values */
- 
+
   startDate = [self startDate];
   dueDate = [self due];
   uid = [self uid];
@@ -78,7 +260,7 @@
 
   [row setObject: @"vtodo" forKey: @"c_component"];
 
-  if ([uid isNotNull]) 
+  if ([uid isNotNull])
     [row setObject:uid forKey: @"c_uid"];
   else
     [self logWithFormat: @"WARNING: could not extract a uid from event!"];
@@ -96,7 +278,7 @@
   [row setObject: title forKey: @"c_title"];
   if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
- 
+
   if ([startDate isNotNull])
     date = [self quickRecordDateAsNumber: startDate
 		 withOffset: 0 forAllDay: NO];
@@ -146,12 +328,12 @@
   if (organizer)
     {
       NSString *email;
- 
+
       email = [organizer valueForKey: @"rfc822Email"];
       if (email)
 	[row setObject:email forKey: @"c_orgmail"];
     }
- 
+
   /* construct partstates */
   count = [attendees count];
   partstates = [[NSMutableString alloc] initWithCapacity:count * 2];
@@ -159,7 +341,7 @@
     {
       iCalPerson *p;
       iCalPersonPartStat stat;
- 
+
       p = [attendees objectAtIndex:i];
       stat = [p participationStatus];
       if(i != 0)
@@ -171,7 +353,7 @@
 
   /* handle alarms */
   [self updateNextAlarmDateInRow: row  forContainer: theContainer];
-  
+
   categories = [self categories];
   if ([categories count] > 0)
     [row setObject: [categories componentsJoinedByString: @","]

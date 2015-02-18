@@ -39,6 +39,7 @@
 - (NSString *) percentComplete;
 
 - (void) setDue: (NSCalendarDate *) _date;
+- (void) setAllDayDue: (NSCalendarDate *) _date;
 - (NSCalendarDate *) due;
 
 - (void) setCompleted: (NSCalendarDate *) _date;

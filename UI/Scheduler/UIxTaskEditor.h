@@ -1,8 +1,6 @@
 /* UIxTaskEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,34 +26,12 @@
 @class iCalToDo;
 @class NSString;
 
-@interface UIxTaskEditor : UIxComponent
+@interface UIxTaskEditor : UIxComponentEditor
 {
-  iCalToDo *todo;
-  NSCalendarDate *taskStartDate;
-  NSCalendarDate *taskDueDate;
-  NSCalendarDate *statusDate;
-  NSString *status;
-  NSString *statusPercent;
-  BOOL hasStartDate;
-  BOOL hasDueDate;
-  NSString *item;
   SOGoDateFormatter *dateFormatter;
 }
 
-/* template values */
-- (NSString *) saveURL;
 - (iCalToDo *) todo;
-
-/* icalendar values */
-- (void) setTaskStartDate: (NSCalendarDate *) _date;
-- (NSCalendarDate *) taskStartDate;
-
-- (void) setTaskDueDate: (NSCalendarDate *) _date;
-- (NSCalendarDate *) taskDueDate;
-
-- (NSString *) taskStartDateTimeText;
-- (NSString *) taskDueDateTimeText;
-- (NSString *) statusDateText;
 
 @end
 
