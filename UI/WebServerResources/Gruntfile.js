@@ -13,7 +13,19 @@ module.exports = function(grunt) {
                 }
             }
         },
-
+        postcss: {
+          options: {
+            map: false,
+            processors: [
+              require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss
+              // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
+              //require('csswring').postcss
+            ]
+          },
+          dist: {
+            src: 'css/styles.css'
+          }
+        },
         watch: {
             grunt: { files: ['Gruntfile.js'] },
 
@@ -25,6 +37,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.task.registerTask('static', function() {
@@ -79,7 +92,7 @@ module.exports = function(grunt) {
         }
         grunt.log.subhead('Copying CSS files');
         var css = [
-            '<%= src %>/ng-tags-input/ng-tags-input*.css'
+            '<%= src %>/ng-tags-input/ng-tags-input*.css' // This is no longer needed, ng-tags css is integrated to scss
         ];
         for (var j = 0; j < css.length; j++) {
             var files = grunt.file.expand(grunt.template.process(css[j], {data: options}));
@@ -94,4 +107,4 @@ module.exports = function(grunt) {
     });
     grunt.task.registerTask('build', ['static', 'sass']);
     grunt.task.registerTask('default', ['build','watch']);
-}
+};
