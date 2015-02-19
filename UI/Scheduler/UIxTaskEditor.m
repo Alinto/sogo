@@ -60,7 +60,7 @@
 
   if ((self = [super init]))
     {
-      item = nil;
+      // item = nil;
 
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
