@@ -1,11 +1,13 @@
 
 [id="messagesList"] {
+  width:$messageList-width;
   max-width:$messageList-width;
   flex: 1 1 auto;
 
 }
 [data-ui-view="message"] {
-  max-width: grid-step(8);
+  width: grid-step(9);
+  max-width: grid-step(9);
 }
 
 // Message view header
@@ -13,6 +15,10 @@
 // ----------------------------------------------------------------------------
 .msg-header {
 //  padding-bottom: $mg; We should add a padding class to preserve genericity
+}
+
+[id = "messagesList"] .sg-md-subheader {
+  transform: translateY(-100%); // Compensate the container top-margin
 }
 
 .msg-header-content {
@@ -56,6 +62,8 @@
 
 .PseudoField {
   display: block; // Should be (reset to ?) a plain block element
+  padding: 0 2px;
+
 }
 .PseudoField-label {
   display: inline-block;
@@ -67,7 +75,7 @@
 }
 .PseudoField-inputLike {
   display: block;
-  padding: $line 0;
+  padding: $line 0 0 0;
   margin-bottom: $line;
   font-size: sg-size(subhead);
   line-height: 1;
@@ -75,6 +83,12 @@
 .PseudoField-inputLike--underline {
   @extend .PseudoField-inputLike;
   border-bottom: 1px solid $colorGrayLight;
+  &:focus,
+  &:active,
+  &:hover {
+    margin-bottom: ($line - 1);
+    border-bottom: 2px solid sg-color($sogoBlue, 700);
+  }
 }
 // The specs dimensions are too large to fit with angular-material
 // Here's a modifier
@@ -84,6 +98,18 @@
   }
 }
 
+input/deep/#inner-editor {
+  color: $colorGrayLight;
+  line-height: inherit;
+}
+:root/deep/#placeholder,
+:root/deep/[pseudo="-webkit-input-placeholder"] {
+  color: $colorGrayLight;
+  height: $mg;
+  font: inherit;
+  line-height: inherit;
+  padding: 0;
+}
 .mailer_mailcontent {
   @extend .sg-md-body-multi;
 }

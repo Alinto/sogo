@@ -19,6 +19,12 @@
   }
 }
 // CKE is overqualifying... let's use an ID
-#cke_content {
+#cke_content,
+textarea.ck-editor{
   margin-top: $mg;
+}
+// Plain text editor
+textarea.ck-editor {
+  width: 100%;
+  min-height: 320px;
 }

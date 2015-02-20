@@ -13,11 +13,12 @@
         <label class="PseudoField-label">
           <var:string label:value="From"/>
         </label>
-        <div class="PseudoField-inputLike">
-          <select name="from"
-                  data-ng-model="message.editable.from"
-                  data-ng-options="identity for identity in identities"><!-- from --></select>
-        </div>
+        <!--<div class="PseudoField-inputLike">-->
+          <md-select name="from"
+                  data-ng-model="message.editable.from">
+                  <md-option ng-value="identity" data-ng-repeat="identity in identities">{{identity}}</md-option>
+          </md-select>
+        <!--</div>-->
 
       </div>
 
@@ -28,7 +29,8 @@
 
           <tags-input type="text" name="to"
                       ng-model="message.editable.to"
-                      label:placeholder="Add a recipient">
+                      label:placeholder="Add a recipient"
+                      ng-focus="angular.element().triggerHandler('focus')">
             <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
           </tags-input>
 
@@ -80,7 +82,7 @@
              data-ng-click="message.$save()">
             <var:string label:value="Save"/>
           </md-button>
-          <md-button class="fg-sogoBlue-700"
+          <md-button class="fg-sogoBlue-700 md-primary md-hue-3"
              data-ng-click="send(message)">
             <var:string label:value="Send"/>
           </md-button>

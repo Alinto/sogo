@@ -146,13 +146,14 @@
          data-sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
     -->
 <!-- Sidenav -->
-    <md-sidenav class = "md-sidenav-left md-whiteframe-z1" md-component-id = "left" md-is-locked-open = "$media('gt-md')" layout = "column">
-      <md-toolbar class = "md-tall" layout-align = "end start">
-        <h2 class = "md-toolbar-tools md-toolbar-tools-bottom">
-          <span class = "md-flex">{{activeUser.identification}}</span>
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
+      <md-toolbar class="md-tall" layout-align="end start">
+        <span class="sg-logo"> </span>
+        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+          <span class="sg-md-title md-flex">{{activeUser.identification}}</span>
         </h2>
       </md-toolbar>
-      <md-content md-scroll-y="md-scroll-y" class="md-padding md-flex" ng-controller="LeftCtrl">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex" ng-controller="LeftCtrl">
         <md-button ng-click="close()" class="md-primary md-hide-gt-md">Close</md-button>
         <md-list>
           <md-item ng-repeat = "folder in addressbooks track by folder.id"
@@ -189,68 +190,89 @@
     </md-sidenav>
 
     <section layout="column" class="md-layout-fill">
-    <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-      <div class="md-toolbar-tools" ng-controller="toggleCtrl">
-        <span flex="flex">
-          <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md">
-            <span class="icon-ic_menu_24px"></span>
-          </md-button>
-          <div class="display-1" style="font-size: 2em; font-weight: 300">
-            [[Contacts]]
+      <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
+          <div class="sg-toolbar-group-1">
+            <md-button ng-click="toggleLeft()" class="md-hide-gt-md">
+              <span class="md-icon-menu"></span>
+            </md-button>
+
+            <div class="sg-md-display-3">
+              15
+            </div>
           </div>
-        </span>
-        <span class="sd-toolbar-tools">
-          <span>search</span>
-        </span>
+          <div class="sg-toolbar-group-2">
+            <span class="md-icon-search"></span>
+          </div>
+        </div>
+        <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
+          <div class="cols-7" layout="row" layout-align="space-between center" style="padding-right: 16px">
+            <div class="md-icon-search"><!-- search-field --></div>
+            <div class="sg-toolbar-group">
+              <span>ALL
+                <span class="md-icon-arrow-drop-down"><!-- sort drop-down --></span>
+              </span>
+              <span class="md-icon-create"><!-- icon --></span>
+            </div>
+          </div>
+          <div class="spacer cols-8"><!-- spacer --></div>
+        </div>
+      </md-toolbar>
+
+      <div layout="row" class="md-flex" layout-align="space-between">
+
+        <md-content style="position: relative;" id="contactsList">
+          <style>
+            .vs-repeat-repeated-element {
+            width: 100%;
+            }
+          </style>
+          <header class="sg-md-subheader">
+            <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
+          </header>
+          <!-- Search field & special results
+               <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
+               <div data-ng-switch="search.status">
+               <div data-ng-switch-when="min-char" class="alert-bg">
+               <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
+               </div>
+               <div data-ng-switch-when="no-result" class="alert-bg">
+               <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
+               </div>
+               <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
+               <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
+               </div>
+               </div>
+          -->
+          <md-list data-vs-repeat="72" data-vs-scroll-parent="#contactsList">
+            <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id"
+                     ng-class="{_selected: card.id == currentCard.id}">
+              <md-item-content>
+                <div class="md-tile-left">
+                  <!--avatar--><!-- currentCard.tag = vcard || vlist -->
+                </div>
+                <div class="sg-tile-content">
+                  <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
+                    <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                    <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail()}}</div>
+                  </a>
+                </div>
+              </md-item-content>
+            </md-item>
+          </md-list>
+        </md-content>
+        <md-content class="md-padding md-flex" data-ui-view="card"><!-- card view --></md-content>
       </div>
-    </md-toolbar>
-    <md-content layout="row" class="md-flex">
-      <md-content md-scroll-y="md-scroll-y" class="md-flex" style="min-width: 300px;" id="contactsList">
-        <!-- Search field & special results
-             <input type="text" placeholder="Search" data-ng-model="search.filter" data-ng-keyup="doSearch($event)" />
-             <div data-ng-switch="search.status">
-             <div data-ng-switch-when="min-char" class="alert-bg">
-             <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
-             </div>
-             <div data-ng-switch-when="no-result" class="alert-bg">
-             <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
-             </div>
-             <div data-ng-switch-when="remote-addressbook" data-ng-show="addressbook.cards.length == 0" class="alert-bg">
-             <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
-             </div>
-             </div>
-        --><!--dirty fix for vs-repeat-->
-        <style>
-          .vs-repeat-repeated-element { width: 100%; }
-        </style>
-        <md-list data-vs-repeat="72" data-vs-scroll-parent="#contactsList">
-          <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id" ng-class="{_selected: card.id == currentCard.id}">
-            <md-item-content>
-              <div class="md-tile-left">
-                <!--avatar--><!-- currentCard.tag = vcard || vlist -->
-              </div>
-              <div class="sg-tile-content">
-                <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
-                  <div class="name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                  <div class="subject">{{currentCard.$preferredEmail()}}</div>
-                </a>
-              </div>
-            </md-item-content>
-            <md-divider md-inset="true" ng-if="!$last"><!--divider--></md-divider>
-          </md-item>
-        </md-list>
-      </md-content>
-      <md-content class="md-padding md-flex" data-ui-view="card"><!-- card view --></md-content>
-    </md-content>
-  </section>
+
+    </section>
 
   </script>
     <!-- modal for addressbook sharing options -->
-    <script type = "text/ng-template" id = "UIxUserRightsEditor">
-      <var:component className = "UIxContactsUserRightsEditor" />
+    <script type = "text/ng-template" id="UIxUserRightsEditor">
+      <var:component className="UIxContactsUserRightsEditor" />
     </script>
     <script type = "text/ng-template" id = "UIxContactViewTemplate">
-      <var:component className = "UIxContactViewTemplate" />
+      <var:component className="UIxContactViewTemplate" />
     </script>
 
     <var:string value = "errorAlertJavaScript" const:escapeHTML = "NO" />
