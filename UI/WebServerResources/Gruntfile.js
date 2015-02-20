@@ -58,7 +58,6 @@ module.exports = function(grunt) {
             '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
             '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
             '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
-            '<%= src %>/hammerjs/hammer{,.min}.js{,.map}',
             '<%= src %>/ng-tags-input/ng-tags-input{,.min}.js',
             '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
             '<%= src %>/foundation/js/foundation{,.min}.js',

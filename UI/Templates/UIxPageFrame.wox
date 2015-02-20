@@ -161,7 +161,6 @@
             <var:string value = "productLocalizableStrings" const:escapeHTML = "NO" />
           </script>
           <script type = "text/javascript" rsrc:src = "js/vendor/underscore-min.js"><!-- space --></script>
-          <script type = "text/javascript" rsrc:src = "js/vendor/hammer.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-animate.js"><!-- space --></script>
           <script type = "text/javascript" rsrc:src = "js/vendor/angular-sanitize.js"><!-- space --></script>
