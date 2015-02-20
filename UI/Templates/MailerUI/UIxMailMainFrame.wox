@@ -288,7 +288,7 @@
     </md-sidenav>
 
 <!-- Main section -->
-    <section layout="column" layout-fill="layout-fill">
+    <section layout="column" class="md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
           <div class="sg-toolbar-group-1">

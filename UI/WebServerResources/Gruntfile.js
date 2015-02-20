@@ -15,11 +15,11 @@ module.exports = function(grunt) {
         },
         postcss: {
           options: {
-            map: false,
+            map: true,
             processors: [
-              require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss
+              require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss,
               // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
-              //require('csswring').postcss
+              require('csswring').postcss
             ]
           },
           dist: {

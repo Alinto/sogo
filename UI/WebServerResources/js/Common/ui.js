@@ -77,7 +77,7 @@
               'default': '300',
               'hue-1': '100',
               'hue-2': '400',
-              'hue-3': '700'
+              'hue-3': 'A700'
             })
           .accentColor('sogo-green')
           .backgroundColor('paper', {

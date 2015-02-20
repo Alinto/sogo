@@ -10,7 +10,8 @@
 // avoid overspecifying
 // todo: create new classes and refactor templates markup
 // ----------------------------------------------------------------------------
-[id='messagesList'] {
+[id='messagesList'],
+[id='contactsList'] {
   border-top: 44px solid transparent;   // padding for the header.subheader,
   border-bottom: 2px solid transparent; //close to a hack
   z-index: 10;
@@ -41,12 +42,14 @@
 .sg {
   &-tile-content {
     @extend .md-tile-content;
-    .name  {
+    .name,
+    .contact-email {
       font-weight: $sg-font-light;
       margin-top: 0;
       margin-bottom: 0;
     }
-    .subject {
+    .subject,
+    .contact-name {
       font-weight: $sg-font-medium;
       // dirty fix for vs-repeat damages
       max-width: 75%;

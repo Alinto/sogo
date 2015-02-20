@@ -221,23 +221,48 @@ $sg-font-bold: $sg-font-medium;
 
 // h elements definitions
 // ----------------------------------------------------------------------------
-$h1-font-size-Base: $sg-font-size-9;
-$h1-margin-Base: 0;
+$h1-font-size-base: $sg-font-size-9;
+$h1-margin-base: 0;
 
-$h2-font-size-Base: $sg-font-size-8;
-$h2-margin-Base: 0;
+$h2-font-size-base: $sg-font-size-8;
+$h2-margin-base: 0;
 
-$h3-font-size-Base: $sg-font-size-7;
-$h3-margin-Base: 0;
+$h3-font-size-base: $sg-font-size-7;
+$h3-margin-base: 0;
 
-$h4-font-size-Base: $sg-font-size-6;
-$h4-margin-Base: 0;
+$h4-font-size-base: $sg-font-size-6;
+$h4-margin-base: 0;
 
-$h5-font-size-Base: $sg-font-size-5;
-$h5-margin-Base: 0;
+$h5-font-size-base: $sg-font-size-5;
+$h5-margin-base: 0;
 
-$h6-font-size-Base: $sg-font-size-4;
-$h6-margin-Base: 0;
+$h6-font-size-base: $sg-font-size-4;
+$h6-margin-base: 0;
+
+h1 {
+  font-size: $h1-font-size-base;
+  margin: $h1-margin-base;
+}
+h2 {
+  font-size: $h2-font-size-base;
+  margin: $h2-margin-base;
+}
+h3 {
+  font-size: $h3-font-size-base;
+  margin: $h3-margin-base;
+}
+h4 {
+  font-size: $h4-font-size-base;
+  margin: $h4-margin-base;
+}
+h5 {
+  font-size: $h5-font-size-base;
+  margin: $h5-margin-base;
+}
+h6 {
+  font-size: $h6-font-size-base;
+  margin: $h6-margin-base;
+}
 
 /// Gogle Material Design Standard styles
 /// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
