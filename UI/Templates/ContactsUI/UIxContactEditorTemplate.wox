@@ -140,7 +140,7 @@
             <i class="md-icon-remove-circle md-flex"
                data-ng-click="card.$delete('categories', $index)"><!-- remove --></i>
             <div class="key">
-              <label class="PseudoField-label" class="md-flex">
+              <label class="PseudoField-label md-flex">
                 <var:string label:value="Category"/>
               </label>
             </div>
@@ -322,7 +322,7 @@
         <var:entity const:name="nbsp"/>
       </div>
       <div class="key">
-        <label class="PseudoField-label" class="right inline">
+        <label class="PseudoField-label right inline">
           <var:string label:value="Note"/>
         </label>
       </div>
@@ -366,7 +366,7 @@
           <var:entity const:name="nbsp"/>
         </div>
         <div class="key">
-          <label class="PseudoField-label" class="right inline">
+          <label class="PseudoField-label right inline">
             <var:string label:value="Display"/>
           </label>
         </div>
@@ -379,7 +379,7 @@
           <var:entity const:name="nbsp"/>
         </div>
         <div class="key">
-          <label class="PseudoField-label" class="right inline">
+          <label class="PseudoField-label right inline">
             <var:string label:value="Nickname"/>
           </label>
         </div>
@@ -397,7 +397,7 @@
           </span>
         </div>
         <div class="key">
-          <label class="PseudoField-label" class="right inline">
+          <label class="PseudoField-label right inline">
             <var:string label:value="Member"/>
           </label>
         </div>
