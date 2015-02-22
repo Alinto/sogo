@@ -28,7 +28,7 @@
       </header>
 
 
-      <section class="content" data-ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+      <section class="content">
 
         <div class="attr" data-ng-show="card.birthday">
           <div class="key">

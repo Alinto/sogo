@@ -10,7 +10,7 @@
         </h6>
       </hgroup>
   <form name="cardForm" data-ng-show="card.$isCard()" data-ng-submit="save(cardForm)">
-      <div class="PseudoField">
+      <md-input-container class="PseudoField">
         <var:entity const:name="nbsp"/>
         <label class="PseudoField-label">
           <var:string label:value="Display"/>
@@ -18,8 +18,8 @@
         <p class="PseudoField-inputLike--underline">
           <input type="text" ng-maxlength="30" data-ng-model="card.fn"/>
         </p>
-      </div>
-      <div class="PseudoField">
+      </md-input-container>
+      <md-input-container class="PseudoField">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
@@ -29,7 +29,7 @@
         <p class="PseudoField-inputLike--underline">
           <input type="text" data-ng-model="card.givenname"/>
         </p>
-      </div>
+      </md-input-container>
       <div class="PseudoField">
         <div class="action">
           <var:entity const:name="nbsp"/>
@@ -86,25 +86,22 @@
             <i class="md-icon-remove-circle-outline"><!-- remove --></i>
           </span>
         </div>
-        <div class="PseudoField">
+        <md-input-container class="PseudoField">
           <div class="key">
             <label class="PseudoField-label">
               <var:string label:value="Organization Unit"/>
             </label>
           </div>
           <div class="value">
-            <p class="PseudoField-inputLike--underline">
               <input type="text" label:placeholder="unit" data-ng-model="unit.value"
                      data-sg-focus-on="orgUnit_{{$index}}"/>
-            </p>
-
           </div>
-        </div>
+        </md-input-container>
       </div>
       <div class="attr">
         <div class="value single">
           <span class="button secondary outline tiny" data-ng-click="addOrgUnit()">
-            <i class="md-icon-add-circle-outline"><!-- new --></i>
+            <i class="md-icon-add"><!-- new --></i>
             <var:string label:value="Add Organizational Unit"/>
           </span>
         </div>
@@ -137,7 +134,7 @@
         <div class="attr" data-ng-repeat="category in card.categories">
 
           <div class="PseudoField">
-            <i class="md-icon-remove-circle md-flex"
+            <i class="md-icon-remove-circle-outline"
                data-ng-click="card.$delete('categories', $index)"><!-- remove --></i>
             <div class="key">
               <label class="PseudoField-label md-flex">
@@ -157,7 +154,7 @@
         <div class="attr">
           <div class="value single">
             <span class="button secondary outline tiny" data-ng-click="addCategory()">
-              <i class="md-icon-add-circle-outline"><!-- new --></i>
+              <i class="md-icon-add"><!-- new --></i>
               <var:string label:value="New Category"/>
             </span>
           </div>
@@ -178,6 +175,7 @@
           <select class="text-right" data-ng-model="email.type" data-ng-options="type for type in allEmailTypes">
             <!-- email types -->
           </select>
+
         </div>
         <div class="value">
           <p class="PseudoField-inputLike--underline">
@@ -189,7 +187,7 @@
       <div class="attr">
         <div class="value single">
           <span class="button secondary outline tiny" data-ng-click="addEmail()">
-            <i class="md-icon-add-circle-outline"><!-- new --></i>
+            <i class="md-icon-add"><!-- new --></i>
             <var:string label:value="New Email Address"/>
           </span>
         </div>
@@ -220,7 +218,7 @@
         <div class="attr">
           <div class="value single">
             <span class="button secondary outline tiny" data-ng-click="addPhone()">
-              <i class="md-icon-add-circle-outline"><!-- new --></i>
+              <i class="md-icon-add"><!-- new --></i>
               <var:string label:value="New Phone Number"/>
             </span>
           </div>
@@ -251,7 +249,7 @@
         <div class="attr">
           <div class="value single">
             <span class="button secondary outline tiny" data-ng-click="addUrl()">
-              <i class="md-icon-add-circle-outline"><!-- new --></i>
+              <i class="md-icon-add"><!-- new --></i>
               <var:string label:value="New URL"/>
             </span>
           </div>
@@ -308,7 +306,7 @@
         <div class="attr">
           <div class="value single">
             <span class="button secondary outline tiny" data-ng-click="addAddress()">
-              <i class="md-icon-add-circle-outline"><!-- new --></i>
+              <i class="md-icon-add"><!-- new --></i>
               <var:string label:value="New Address"/>
             </span>
           </div>
@@ -411,7 +409,7 @@
       <div class="attr">
         <div class="value single">
           <span class="button outline secondary tiny" data-ng-click="addMember()">
-            <i class="md-icon-add-circle-outline"><!-- new --></i>
+            <i class="md-icon-add"><!-- new --></i>
             <var:string label:value="Add Member"/>
           </span>
         </div>
