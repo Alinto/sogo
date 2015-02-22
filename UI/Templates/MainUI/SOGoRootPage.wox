@@ -10,8 +10,14 @@
     const:jsFiles="Common/SOGoAuthentication.js"
     const:popup="YES"
     ><var:string var:value="doctype" const:escapeHTML="NO"/>
-
-<md-content md-scroll-y="true" layout="center center">
+  <!--
+    MAIN CONTENT ROW
+    Content of the application view injected injected in the element bellow
+    MUST be the first html element after body
+    SHOULD  be a main tag (with role="main")
+  -->
+  <main class="view md-layout-fill md-layout-padding" ui-view="login" layout="row" layout-align="center start">
+<md-content class="md-padding" md-scroll-y="true">
   <div data-ng-controller="loginController">
 
     <script type="text/javascript">
@@ -38,9 +44,9 @@
     </nav> -->
     <div id="login">
       <div id="logo">
-        <img const:alt="*" id="splash" rsrc:src="img/sogo-logo.png"/>
+        <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
       </div>
-      <form name="loginForm" data-ng-controller="loginController" data-ng-submit="login(creds)">
+      <form name="loginForm" layout="column" data-ng-controller="loginController" data-ng-submit="login(creds)">
         <var:if condition="hasLoginSuffix"><input type="hidden" data-ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
         <div data-ng-show="warning" data-ng-cloak="ng-cloak" data-alert="data-alert" class="alert-box radius warning">{{warning}}</div>
         <md-input-container>
@@ -98,4 +104,5 @@
     </div>
   </div>
 </md-content>
+</main>
 </var:component>

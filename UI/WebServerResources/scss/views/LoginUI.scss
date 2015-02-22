@@ -1,0 +1,10 @@
+/*! loginUI.scss */
+
+
+[ui-view="login"] > md-content {
+  width: grid-step(5);
+}
+
+[id=logo] img {
+  max-width: 100%;
+}
