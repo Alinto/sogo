@@ -15,7 +15,7 @@ tags-input .host:active {
 }
 
 tags-input .tags {
-  @extend .Pseudo-input-field;
+  @extend .pseudo-input-field;
   padding: 0;
   line-height: 2 * $mg;
   word-wrap: break-word;

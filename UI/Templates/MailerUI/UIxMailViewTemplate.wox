@@ -12,20 +12,20 @@
 
       <div class="msg-header-content">
         <h3 class="sg-md-title-msg" data-ng-bind="message.subject"><!-- subject --></h3>
-        <div class="PseudoField--compact">
-          <label class="PseudoField-label">
+        <div class="pseudo-input-container--compact">
+          <label class="pseudo-input-label">
             <var:string label:value="From"/>
           </label>
-          <div class="PseudoField-inputLike">
+          <div class="pseudo-input-field">
             <a data-ng-href="mailto:{{message.from[0].email}}" data-ng-bind="message.from[0].full"><!-- from --></a>
           </div>
         </div>
 
-        <div class="Pseudo-input-container--compact">
-          <label class="PseudoField-label">
+        <div class="pseudo-input-container--compact">
+          <label class="pseudo-input-label">
             <var:string label:value="To"/>
           </label>
-          <div class="PseudoField-inputLike">
+          <div class="pseudo-input-field">
             <a data-ng-href="mailto:{{message.to[0].email}}" data-ng-bind="message.to[0].full"><!-- to --></a>
           </div>
         </div>
