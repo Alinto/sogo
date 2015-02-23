@@ -1,0 +1,192 @@
+/*! pseudo-input.scss */
+
+
+/// Component: Pseudo-input
+/// This component mimics the presentation of form fields according to Google's
+/// Material Design specs (www.google.com/design/spec/components/text-fields.html)
+/// It's used in message headers but could --and should-- be reused
+/// The Pseudo-input-container element serves as a... container for it's two children:
+/// -label and -input-field
+///
+/// Typical use:
+/// <div class="Pseudo-input-container">
+///   <label class="Pseudo-input-label">Some text</label>
+///   <p class="Pseudo-input-field">Other input-like text</p>
+/// </div>
+///
+/// ----------------------------------------------------------------------------
+
+// md-input variables we might use
+// ----------------------------------------------------------------------------
+$input-container-padding: 2px !default;
+
+$input-label-default-offset: 24px !default;
+$input-label-default-scale: 1.0 !default;
+$input-label-float-offset: 4px !default;
+$input-label-float-scale: 0.75 !default;
+
+$input-border-width-default: 1px !default;
+$input-border-width-focused: 2px !default;
+$input-line-height: 26px !default;
+$input-padding-top: 2px !default;
+
+.Pseudo-input-container {
+  display: block; // Should be (reset to ?) a plain block element
+  padding: 0 2px;
+
+}
+
+.Pseudo-input-label {
+  display: inline-block;
+  margin-top: $mg;
+  color: $colorGrayLight;
+  font-weight: $sg-font-regular; // 16px;
+  font-size: sg-size(caption);
+  line-height: $sg-line-height-1;
+}
+
+.Pseudo-input-field {
+  display: block;
+  margin-bottom: $line;
+  padding: $line 0 0 0;
+  font-size: sg-size(subhead);
+  line-height: 1;
+}
+
+.Pseudo-input-field--underline {
+  @extend .Pseudo-input-field;
+  border-bottom: 1px solid $colorGrayLighter;
+  &:focus,
+  &:active,
+  &:hover {
+    margin-bottom: ($line - 1);
+    border-bottom: 2px solid sg-color($sogoBlue, 500);
+  }
+}
+
+// The specs dimensions are too large to fit with angular-material
+// Here's a modifier
+.Pseudo-input-container--compact {
+  .Pseudo-input-label {
+    margin-top: 0;
+  }
+}
+
+input /deep/ #inner-editor {
+  color: $colorGrayLight;
+  line-height: inherit;
+}
+
+:root /deep/ #placeholder,
+:root /deep/ [pseudo="-webkit-input-placeholder"] {
+  padding: 0;
+  height: $mg;
+  color: $colorGrayLight;
+  font: inherit;
+  line-height: inherit;
+}
+
+md-input-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: $input-container-padding;
+
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="color"] {
+    /* remove default appearance from all input/textarea */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+  textarea {
+    resize: none;
+    overflow: hidden;
+  }
+
+  label {
+    order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    z-index: 1;
+    transform: translate3d(0, $input-label-default-offset, 0) scale($input-label-default-scale);
+    transform-origin: left top;
+    transition: all $swift-ease-out-timing-function 0.2s;
+  }
+
+  /* 
+   * The .md-input class is added to the input/textarea 
+   */
+  .md-input {
+    flex: 1;
+    order: 2;
+    display: block;
+
+    background: none;
+    padding-top: $input-padding-top;
+    padding-bottom: $input-border-width-focused - $input-border-width-default;
+    border-width: 0 0 $input-border-width-default 0;
+    line-height: $input-line-height;
+    -ms-flex-preferred-size: $input-line-height; //IE fix
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &.md-input-focused,
+  &.md-input-has-value {
+    label {
+      transform: translate3d(0,$input-label-float-offset,0) scale($input-label-float-scale);
+    }
+  }
+  &.md-input-focused {
+    .md-input {
+      padding-bottom: 0px; // Increase border width by 1px, decrease padding by 1
+      border-width: 0 0 $input-border-width-focused 0;
+    }
+  }
+
+  .md-input[disabled] {
+    background-position: 0 bottom;
+    // This background-size is coordinated with a linear-gradient set in input-theme.scss
+    // to create a dotted line under the input. 
+    background-size: 3px 1px;
+    background-repeat: repeat-x;
+  }
+}
+md-input-container .bgroup {
+  display: block;
+}
+.bgroup b {
+  left-margin: -1.25em;
+}
+
+.PseudoField input {
+  flex: 1;
+  order: 2;
+  display: block;
+
+  background: none;
+  padding-top: $input-padding-top;
+  padding-bottom: 0;
+  border-width: 0 0 $input-border-width-default 0;
+  line-height: $input-line-height;
+  -ms-flex-preferred-size: $input-line-height; //IE fix
+
+  &:focus {
+    outline: none;
+  }
+}

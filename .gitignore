@@ -27,3 +27,5 @@ Documentation/*.pdf
 .idea
 doc
 UI/WebServerResources/scss/.sass-cache
+.scss-lint-config.yml_
+.dat3015.0b5
