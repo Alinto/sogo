@@ -45,27 +45,27 @@
   white-space: normal;
 }
 
-// Component: PseudoField
+// Component: Pseudo-input
 // This component mimics the presentation of form fields according to Google's
 // Material Design specs (www.google.com/design/spec/components/text-fields.html)
 // It's used in message headers but could --and should-- be reused
-// The PseudoField element serves as a container for it's two children:
-// --label and --inputLike
+// The Pseudo-input-container element serves as a... container for it's two children:
+// -label and -input-field
 //
 // Typical use:
-// <div class="PseudoField">
-//   <label class="PseudoField-label">Some text</label>
-//   <p class="PseudoField-inputLike">Other input-like text</p>
+// <div class="Pseudo-input-container">
+//   <label class="Pseudo-input-label">Some text</label>
+//   <p class="Pseudo-input-field">Other input-like text</p>
 // </div>
 //
 // ----------------------------------------------------------------------------
 
-.PseudoField {
+.Pseudo-input-container {
   display: block; // Should be (reset to ?) a plain block element
   padding: 0 2px;
 
 }
-.PseudoField-label {
+.Pseudo-input-label {
   display: inline-block;
   margin-top: $mg;
   font-size: sg-size(caption);
@@ -73,27 +73,27 @@
   font-weight: $sg-font-regular;
   color: $colorGrayLight;
 }
-.PseudoField-inputLike {
+.Pseudo-input-field {
   display: block;
   padding: $line 0 0 0;
   margin-bottom: $line;
   font-size: sg-size(subhead);
   line-height: 1;
 }
-.PseudoField-inputLike--underline {
-  @extend .PseudoField-inputLike;
-  border-bottom: 1px solid $colorGrayLight;
+.Pseudo-input-field--underline {
+  @extend .Pseudo-input-field;
+  border-bottom: 1px solid $colorGrayLighter;
   &:focus,
   &:active,
   &:hover {
     margin-bottom: ($line - 1);
-    border-bottom: 2px solid sg-color($sogoBlue, 700);
+    border-bottom: 2px solid sg-color($sogoBlue, 500);
   }
 }
 // The specs dimensions are too large to fit with angular-material
 // Here's a modifier
-.PseudoField--compact {
-  .PseudoField-label {
+.Pseudo-input-container--compact {
+  .Pseudo-input-label {
     margin-top: 0;
   }
 }

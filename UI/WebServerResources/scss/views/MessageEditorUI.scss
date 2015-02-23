@@ -28,7 +28,7 @@ textarea.ck-editor{
   margin-top: $mg;
 }
 // Plain text editor
-textarea.ck-editor {
+[id=messageEditor] textarea {
   width: 100%;
-  min-height: 320px;
+  min-height: grid-step(3);
 }

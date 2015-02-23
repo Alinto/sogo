@@ -9,11 +9,11 @@
   <div id="messageEditor">
 <md-content class="md-padding">
     <form>
-      <div class="PseudoField">
-        <label class="PseudoField-label">
+      <div class="Pseudo-input-container">
+        <label class="Pseudo-input-label">
           <var:string label:value="From"/>
         </label>
-        <!--<div class="PseudoField-inputLike">-->
+        <!--<div class="Pseudo-input-field">-->
           <md-select name="from"
                   data-ng-model="message.editable.from">
                   <md-option ng-value="identity" data-ng-repeat="identity in identities">{{identity}}</md-option>
@@ -22,8 +22,8 @@
 
       </div>
 
-      <div class="PseudoField">
-        <label class="PseudoField-label">
+      <div class="Pseudo-input-container">
+        <label class="Pseudo-input-label">
           <var:string label:value="To"/>
         </label>
 
@@ -35,8 +35,8 @@
           </tags-input>
 
       </div>
-      <div class="PseudoField">
-        <label class="PseudoField-label">
+      <div class="Pseudo-input-container">
+        <label class="Pseudo-input-label">
           <var:string label:value="Cc"/>
         </label>
         <div class="PseudoField-inputLike">
@@ -55,8 +55,8 @@
         <input type="text" name="subject" ng-model="message.editable.subject"/>
       </md-input-container>
 
-      <div class="PseudoField">
-        <label class="PseudoField-label">
+      <div class="Pseudo-input-container">
+        <label class="Pseudo-input-label">
           <var:string label:value="Attachments"/>
         </label>
         <div class="pseudoInput-text">
