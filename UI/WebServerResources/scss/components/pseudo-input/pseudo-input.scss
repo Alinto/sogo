@@ -1,17 +1,17 @@
 /*! pseudo-input.scss */
 
 
-/// Component: Pseudo-input
+/// Component: pseudo-input
 /// This component mimics the presentation of form fields according to Google's
 /// Material Design specs (www.google.com/design/spec/components/text-fields.html)
 /// It's used in message headers but could --and should-- be reused
-/// The Pseudo-input-container element serves as a... container for it's two children:
+/// The pseudo-input-container element serves as a... container for it's two children:
 /// -label and -input-field
 ///
 /// Typical use:
-/// <div class="Pseudo-input-container">
-///   <label class="Pseudo-input-label">Some text</label>
-///   <p class="Pseudo-input-field">Other input-like text</p>
+/// <div class="pseudo-input-container">
+///   <label class="pseudo-input-label">Some text</label>
+///   <p class="pseudo-input-field">Other input-like text</p>
 /// </div>
 ///
 /// ----------------------------------------------------------------------------
@@ -30,13 +30,13 @@ $input-border-width-focused: 2px !default;
 $input-line-height: 26px !default;
 $input-padding-top: 2px !default;
 
-.Pseudo-input-container {
+.pseudo-input-container {
   display: block; // Should be (reset to ?) a plain block element
   padding: 0 2px;
 
 }
 
-.Pseudo-input-label {
+.pseudo-input-label {
   display: inline-block;
   margin-top: $mg;
   color: $colorGrayLight;
@@ -45,7 +45,7 @@ $input-padding-top: 2px !default;
   line-height: $sg-line-height-1;
 }
 
-.Pseudo-input-field {
+.pseudo-input-field {
   display: block;
   margin-bottom: $line;
   padding: $line 0 0 0;
@@ -53,8 +53,8 @@ $input-padding-top: 2px !default;
   line-height: 1;
 }
 
-.Pseudo-input-field--underline {
-  @extend .Pseudo-input-field;
+.pseudo-input-field--underline {
+  @extend .pseudo-input-field;
   border-bottom: 1px solid $colorGrayLighter;
   &:focus,
   &:active,
@@ -66,8 +66,8 @@ $input-padding-top: 2px !default;
 
 // The specs dimensions are too large to fit with angular-material
 // Here's a modifier
-.Pseudo-input-container--compact {
-  .Pseudo-input-label {
+.pseudo-input-container--compact {
+  .pseudo-input-label {
     margin-top: 0;
   }
 }
