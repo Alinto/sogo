@@ -81,6 +81,12 @@
 
   blob = [mapiRecurrenceData asBinaryInMemCtx: memCtx];
   pattern = get_AppointmentRecurrencePattern (memCtx, blob);
+
+  if (pattern == NULL) {
+    [self logWithFormat: @"Error parsing recurrence pattern. No changes in event recurrence will be done"];
+    return;
+  }
+
   [(iCalCalendar *) parent
     setupRecurrenceWithMasterEntity: self
               fromRecurrencePattern: &pattern->RecurrencePattern];
