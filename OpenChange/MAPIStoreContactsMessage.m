@@ -170,6 +170,21 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagProfession: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[sogoObject vCard] role];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getPidTagCompanyName: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -744,6 +759,86 @@
   return rc;
 }
 
+- (int) getPidTagSpouseName: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
+		  flattenedValuesForKey: @""];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagManagerName: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-manager"]
+		  flattenedValuesForKey: @""];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagAssistant: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-assistant"]
+		  flattenedValuesForKey: @""];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagOfficeLocation: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
+		  flattenedValuesForKey: @""];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidFreeBusyLocation: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
+		  flattenedValuesForKey: @""];
+  if (stringValue)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 //
 // Decomposed fullname getters
 //
@@ -1154,11 +1249,17 @@ fromProperties: (NSDictionary *) attachmentProps
 
 
   //
-  // job title, nickname, company name, deparment, work url, im address/screen name and birthday
+  // job title, profession, nickname, company name, deparment, work url, im address/screen name and birthday
   //
   value = [properties objectForKey: MAPIPropertyKey(PR_TITLE_UNICODE)];
   if (value)
     [newCard setTitle: value];
+
+  value = [properties objectForKey: MAPIPropertyKey(PR_PROFESSION_UNICODE)];
+  if (value)
+    {
+      [newCard setRole: value];
+    }
 
   value = [properties objectForKey: MAPIPropertyKey(PR_NICKNAME_UNICODE)];
   if (value)
@@ -1194,13 +1295,50 @@ fromProperties: (NSDictionary *) attachmentProps
       [newCard setBday: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]];
     }
 
-  /* wedding anniversary */
+  //
+  // wedding anniversary, spouse's name, manager's name, assistant's name, office location, freebusy location
+  //
   value = [properties objectForKey: MAPIPropertyKey(PidTagWeddingAnniversary)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-ms-anniversary"]
         setSingleValue: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]
                 forKey: @""];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey(PR_SPOUSE_NAME_UNICODE)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-ms-spouse"]
+	setSingleValue: value forKey: @""];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey(PR_MANAGER_NAME_UNICODE)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-ms-manager"]
+	setSingleValue: value forKey: @""];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey(PR_ASSISTANT_UNICODE)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-ms-assistant"]
+	setSingleValue: value forKey: @""];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey(PR_OFFICE_LOCATION_UNICODE)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-ms-office"]
+	setSingleValue: value forKey: @""];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey(PidLidFreeBusyLocation)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"fburl"]
+	setSingleValue: value forKey: @""];
     }
 
   /* photo */
