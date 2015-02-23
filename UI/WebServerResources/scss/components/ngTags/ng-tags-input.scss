@@ -15,16 +15,16 @@ tags-input .host:active {
 }
 
 tags-input .tags {
-  @extend .PseudoField-inputLike;
+  @extend .Pseudo-input-field;
   padding: 0;
   line-height: 2 * $mg;
   word-wrap: break-word;
   cursor: text;
-  border-bottom: 1px solid $colorGrayLight;
+  border-bottom: 1px solid $colorGrayLighter;
   transition: $swift-ease-out;
 }
 tags-input .tags.focused {
-  border-bottom: 2px solid sg-color($sogoBlue, 700);
+  border-bottom: 2px solid sg-color($sogoBlue, 500);
 }
 
 tags-input/deep/#inner-editor {
@@ -32,7 +32,7 @@ tags-input/deep/#inner-editor {
   line-height: inherit;
 }
 :root/deep/#placeholder,
-:root/deep/[pseudo="-webkit-input-placeholder"] {
+:root/deep/::-webkit-input-placeholder {
   color: $colorGrayLight;
   height: $mg;
   font: inherit;

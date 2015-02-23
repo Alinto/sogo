@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="PseudoField--compact">
+        <div class="Pseudo-input-container--compact">
           <label class="PseudoField-label">
             <var:string label:value="To"/>
           </label>
