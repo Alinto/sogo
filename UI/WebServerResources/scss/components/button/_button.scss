@@ -21,3 +21,16 @@ sg-folder-tree .md-button {
 .sg-active .md-button {
   color: sg-color($sogoBlue, 800);
 }
+// Custom icon-buttons
+// ----------------------------------------------------------------------------
+button.icon {
+  font-size: sg-size('title');
+  color: $colorGray;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+  background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+  color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+  transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    color: sg-color($sogoBlue, 500);
+  }
+}

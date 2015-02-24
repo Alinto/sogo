@@ -4,99 +4,67 @@
   <md-content md-scroll-y="true" class="md-padding">
     <div class="editor md-padding" style="padding-bottom: 72px">
       <hgroup class="header">
-        <h1 class="sg-md-display-1" data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-        <h6>{{card.$description()}}
-          <span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span>
+        <h1 class="sg-md-display-2--light" data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
+        <h6 class="sg-md-display-2-subheader">{{card.$description()}}
+          <span data-ng-repeat="category in card.categories">{{category.value}}</span>
         </h6>
       </hgroup>
   <form name="cardForm" data-ng-show="card.$isCard()" data-ng-submit="save(cardForm)">
-      <md-input-container class="pseudo-input">
+      <md-input-container>
         <var:entity const:name="nbsp"/>
         <label class="pseudo-input-label">
           <var:string label:value="Display"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" ng-maxlength="30" data-ng-model="card.fn"/>
-        </p>
       </md-input-container>
-      <md-input-container class="pseudo-input">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <label class="pseudo-input-label">
+      <md-input-container>
+                 <label class="pseudo-input-label">
           <var:string label:value="Firstname"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.givenname"/>
-        </p>
       </md-input-container>
-      <div class="pseudo-input">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <label class="pseudo-input-label">
+      <md-input-container>
+                 <label class="pseudo-input-label">
           <var:string label:value="Lastname"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.sn"/>
-        </p>
-      </div>
-      <div class="pseudo-input">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <label class="pseudo-input-label">
+      </md-input-container>
+      <md-input-container>
+                 <label class="pseudo-input-label">
           <var:string label:value="Nickname"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.nickname"/>
-        </p>
-
-      </div>
-      <div class="pseudo-input">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <label class="pseudo-input-label">
+      </md-input-container>
+      <md-input-container>
+                 <label class="pseudo-input-label">
           <var:string label:value="Organization"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.org"/>
-        </p>
-
-      </div>
-      <div class="pseudo-input">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <label class="pseudo-input-label">
+      </md-input-container>
+      <md-input-container>
+                 <label class="pseudo-input-label">
           <var:string label:value="Title"/>
         </label>
-        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.title"/>
-        </p>
-
-      </div>
+      </md-input-container>
 
       <!-- org units -->
-    <div class="pseudo-input">
+
       <div class="attr" data-ng-repeat="unit in card.orgUnits">
-        <div class="action">
-          <span class="button alert icon" data-ng-click="card.$delete('orgUnits', $index)">
-            <i class="md-icon-remove-circle-outline"><!-- remove --></i>
-          </span>
-        </div>
-        <md-input-container class="pseudo-input">
-          <div class="key">
+
+        <div layout="row" layout-align="center end">
+          <md-input-container>
             <label class="pseudo-input-label">
               <var:string label:value="Organization Unit"/>
             </label>
-          </div>
-          <div class="value">
-              <input type="text" label:placeholder="unit" data-ng-model="unit.value"
-                     data-sg-focus-on="orgUnit_{{$index}}"/>
-          </div>
-        </md-input-container>
+            <input type="text" data-ng-model="unit.value"
+                   data-sg-focus-on="orgUnit_{{$index}}"/>
+          </md-input-container>
+            <md-button class="icon" data-ng-click="card.$delete('orgUnits', $index)">
+              <i class="md-icon-remove-circle"><!-- remove --></i>
+            </md-button>
+        </div>
+
       </div>
       <div class="attr">
         <div class="value single">
@@ -106,26 +74,15 @@
           </span>
         </div>
       </div>
-    </div>
+
     
     <!-- birthday -->
-    <div class="pseudo-input">
-      <div class="attr">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <div class="key">
+    <md-input-container>
           <label class="pseudo-input-label">
             <var:string label:value="Birthday"/>
           </label>
-        </div>
-        <div class="value">
-          <p class="pseudo-input-inputLike--underline">
             <input type="date" data-ng-model="card.birthday"/>
-          </p>
-        </div>
-      </div>
-    </div>
+    </md-input-container>
 
     <!-- categories -->
     <div class="pseudo-input">
@@ -137,7 +94,7 @@
             <i class="md-icon-remove-circle-outline"
                data-ng-click="card.$delete('categories', $index)"><!-- remove --></i>
             <div class="key">
-              <label class="pseudo-input-label md-flex">
+              <label class=" md-flex">
                 <var:string label:value="Category"/>
               </label>
             </div>
@@ -320,7 +277,7 @@
         <var:entity const:name="nbsp"/>
       </div>
       <div class="key">
-        <label class="pseudo-input-label right inline">
+        <label class=" right inline">
           <var:string label:value="Note"/>
         </label>
       </div>
@@ -360,11 +317,8 @@
     </div>
     <div class="section">
       <div class="attr">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <div class="key">
-          <label class="pseudo-input-label right inline">
+                 <div class="key">
+          <label class=" right inline">
             <var:string label:value="Display"/>
           </label>
         </div>
@@ -373,11 +327,8 @@
         </div>
       </div>
       <div class="attr">
-        <div class="action">
-          <var:entity const:name="nbsp"/>
-        </div>
-        <div class="key">
-          <label class="pseudo-input-label right inline">
+                 <div class="key">
+          <label class=" right inline">
             <var:string label:value="Nickname"/>
           </label>
         </div>
@@ -395,7 +346,7 @@
           </span>
         </div>
         <div class="key">
-          <label class="pseudo-input-label right inline">
+          <label class=" right inline">
             <var:string label:value="Member"/>
           </label>
         </div>
