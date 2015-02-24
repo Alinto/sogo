@@ -39,7 +39,7 @@
         <label class="pseudo-input-label">
           <var:string label:value="Cc"/>
         </label>
-        <div class="PseudoField-inputLike">
+        <div class="pseudo-input-inputLike">
           <tags-input type="text" name="cc"
                       ng-model="message.editable.cc"
                       label:placeholder="Add a recipient">

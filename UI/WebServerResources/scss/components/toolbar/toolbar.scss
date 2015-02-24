@@ -10,7 +10,7 @@ md-toolbar {
 }
 header {
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: stretch;
   justify-content: space-between;
   display: flex;

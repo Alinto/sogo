@@ -10,85 +10,85 @@
         </h6>
       </hgroup>
   <form name="cardForm" data-ng-show="card.$isCard()" data-ng-submit="save(cardForm)">
-      <md-input-container class="PseudoField">
+      <md-input-container class="pseudo-input">
         <var:entity const:name="nbsp"/>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Display"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" ng-maxlength="30" data-ng-model="card.fn"/>
         </p>
       </md-input-container>
-      <md-input-container class="PseudoField">
+      <md-input-container class="pseudo-input">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Firstname"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.givenname"/>
         </p>
       </md-input-container>
-      <div class="PseudoField">
+      <div class="pseudo-input">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Lastname"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.sn"/>
         </p>
       </div>
-      <div class="PseudoField">
+      <div class="pseudo-input">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Nickname"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.nickname"/>
         </p>
 
       </div>
-      <div class="PseudoField">
+      <div class="pseudo-input">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Organization"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.org"/>
         </p>
 
       </div>
-      <div class="PseudoField">
+      <div class="pseudo-input">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
-        <label class="PseudoField-label">
+        <label class="pseudo-input-label">
           <var:string label:value="Title"/>
         </label>
-        <p class="PseudoField-inputLike--underline">
+        <p class="pseudo-input-inputLike--underline">
           <input type="text" data-ng-model="card.title"/>
         </p>
 
       </div>
 
       <!-- org units -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
       <div class="attr" data-ng-repeat="unit in card.orgUnits">
         <div class="action">
           <span class="button alert icon" data-ng-click="card.$delete('orgUnits', $index)">
             <i class="md-icon-remove-circle-outline"><!-- remove --></i>
           </span>
         </div>
-        <md-input-container class="PseudoField">
+        <md-input-container class="pseudo-input">
           <div class="key">
-            <label class="PseudoField-label">
+            <label class="pseudo-input-label">
               <var:string label:value="Organization Unit"/>
             </label>
           </div>
@@ -109,18 +109,18 @@
     </div>
     
     <!-- birthday -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
       <div class="attr">
         <div class="action">
           <var:entity const:name="nbsp"/>
         </div>
         <div class="key">
-          <label class="PseudoField-label">
+          <label class="pseudo-input-label">
             <var:string label:value="Birthday"/>
           </label>
         </div>
         <div class="value">
-          <p class="PseudoField-inputLike--underline">
+          <p class="pseudo-input-inputLike--underline">
             <input type="date" data-ng-model="card.birthday"/>
           </p>
         </div>
@@ -128,21 +128,21 @@
     </div>
 
     <!-- categories -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
 
         <!-- if there's some categories, here they are (this is sort of a template) -->
         <div class="attr" data-ng-repeat="category in card.categories">
 
-          <div class="PseudoField">
+          <div class="pseudo-input">
             <i class="md-icon-remove-circle-outline"
                data-ng-click="card.$delete('categories', $index)"><!-- remove --></i>
             <div class="key">
-              <label class="PseudoField-label md-flex">
+              <label class="pseudo-input-label md-flex">
                 <var:string label:value="Category"/>
               </label>
             </div>
             <div class="value">
-              <p class="PseudoField-inputLike--underline">
+              <p class="pseudo-input-inputLike--underline">
                 <input type="text" label:placeholder="category" data-ng-model="category.value"
                        data-sg-focus-on="category_{{$index}}" />
                        <!--data-typeahead="cat for cat in card.allCategories | filter:$viewValue"/>-->
@@ -163,7 +163,7 @@
     </div>
 
     <!-- emails -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
     <div class="section">
       <div class="attr" data-ng-repeat="email in card.emails">
         <div class="action">
@@ -178,7 +178,7 @@
 
         </div>
         <div class="value">
-          <p class="PseudoField-inputLike--underline">
+          <p class="pseudo-input-inputLike--underline">
             <input type="email" label:placeholder="email address" data-ng-model="email.value"
                    data-sg-focus-on="email_{{$index}}"/>
           </p>
@@ -195,7 +195,7 @@
     </div>
     </div>
     <!-- phones -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="phone in card.phones">
           <div class="action">
@@ -209,7 +209,7 @@
             </select>
           </div>
           <div class="value">
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="phone number" data-ng-model="phone.value"
                      data-sg-focus-on="phone_{{$index}}"/>
             </p>
@@ -227,7 +227,7 @@
     </div>
 
     <!-- urls -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="url in card.urls">
           <div class="action">
@@ -241,7 +241,7 @@
             </select>
           </div>
           <div class="value">
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="url" label:placeholder="URL" data-ng-model="url.value" data-sg-focus-on="url_{{$index}}"/>
             </p>
           </div>
@@ -258,7 +258,7 @@
     </div>
 
     <!-- addresses -->
-    <div class="PseudoField">
+    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="address in card.addresses">
           <div class="action">
@@ -272,32 +272,32 @@
             </select>
           </div>
           <div class="value compact">
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="street" data-ng-model="address.street"
                      data-sg-focus-on="address_{{$index}}"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" data-ng-model="address.street2"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="Postoffice" data-ng-model="address.postoffice"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="City" data-ng-model="address.locality"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="Region" data-ng-model="address.region"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="Country" data-ng-model="address.country"/>
             </p>
 
-            <p class="PseudoField-inputLike--underline">
+            <p class="pseudo-input-inputLike--underline">
               <input type="text" label:placeholder="Postal Code" data-ng-model="address.postalcode"/>
             </p>
 
@@ -320,7 +320,7 @@
         <var:entity const:name="nbsp"/>
       </div>
       <div class="key">
-        <label class="PseudoField-label right inline">
+        <label class="pseudo-input-label right inline">
           <var:string label:value="Note"/>
         </label>
       </div>
@@ -364,7 +364,7 @@
           <var:entity const:name="nbsp"/>
         </div>
         <div class="key">
-          <label class="PseudoField-label right inline">
+          <label class="pseudo-input-label right inline">
             <var:string label:value="Display"/>
           </label>
         </div>
@@ -377,7 +377,7 @@
           <var:entity const:name="nbsp"/>
         </div>
         <div class="key">
-          <label class="PseudoField-label right inline">
+          <label class="pseudo-input-label right inline">
             <var:string label:value="Nickname"/>
           </label>
         </div>
@@ -395,7 +395,7 @@
           </span>
         </div>
         <div class="key">
-          <label class="PseudoField-label right inline">
+          <label class="pseudo-input-label right inline">
             <var:string label:value="Member"/>
           </label>
         </div>

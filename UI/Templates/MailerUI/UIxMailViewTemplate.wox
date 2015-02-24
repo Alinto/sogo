@@ -33,7 +33,7 @@
 
 <!--      <p class="flags">
         &lt;!&ndash; Todo: change the text for an icon (conditional ?) The read/unread flag doesn't make sense at his place&ndash;&gt;
-        <span class="PseudoField-label" data-ng-repeat="flag in message.flags">{{flag}}</span>
+        <span class="pseudo-input-label" data-ng-repeat="flag in message.flags">{{flag}}</span>
       </p>
 -->
 
