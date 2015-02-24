@@ -214,7 +214,8 @@ $sg-line-height-9: $sg-font-size-9 + $sg-md-typo-baseline;
 // Google Material Design specifications strongly recommend to avoid bold
 // font weight. Here are some variables to define weights more conveniently
 // ----------------------------------------------------------------------------
-$sg-font-light: 200;
+$sg-font-thin: 200;
+$sg-font-light: 300;
 $sg-font-regular: 400;
 $sg-font-medium: 600;
 $sg-font-bold: $sg-font-medium;
@@ -360,6 +361,12 @@ h6 {
     font-weight: $sg-font-regular;
     white-space: nowrap;
   }
+  .#{$md}-display-2--light {
+       $lineHeight: $sg-line-height-7;
+       font-size: $sg-font-size-7;
+       line-height: $lineHeight;
+       font-weight: $sg-font-light;
+   }
   .#{$md}-display-3 {
     $lineHeight : $sg-line-height-8;
     font-size: $sg-font-size-8;
@@ -374,7 +381,11 @@ h6 {
     font-weight: $sg-font-light;
     white-space: nowrap;
   }
-
+  .#{$md}-display-2-subheader {
+    @extend .#{$md}-title;
+    margin-bottom: $mg;
+    font-weight: $sg-font-thin;
+  }
   a,
   a:hover,
   a:active,
