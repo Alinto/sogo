@@ -44,6 +44,12 @@ $input-padding-top: 2px !default;
   font-size: sg-size(caption);
   line-height: $sg-line-height-1;
 }
+// md overqualifies so we are
+.md-input-focused label.pseudo-input-label,
+.md-input-has-value label.pseudo-input-label {
+  transform: translate3d(0, 4px, 0) scale(1);
+  margin-top: $mg;
+}
 
 .pseudo-input-field {
   display: block;
@@ -86,10 +92,21 @@ input /deep/ #inner-editor {
   line-height: inherit;
 }
 
+input::-webkit-datetime-edit,
+:root /deep/ div#date-time-edit {
+  opacity: 0;
+}
+
+.md-input-focused input::-webkit-datetime-edit,
+.md-input-focused /deep/ div#date-time-edit {
+  opacity: 1;
+}
+
 md-input-container {
   display: flex;
   position: relative;
   flex-direction: column;
+  flex: 1 1 auto;
   padding: $input-container-padding;
 
   textarea,
