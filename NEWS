@@ -1,3 +1,9 @@
+2.2.17 (2015-02-xx)
+-------------------
+
+Bug fixes
+ - fixed login issue after password change (#2601)
+
 2.2.16 (2015-02-12)
 -------------------
 
