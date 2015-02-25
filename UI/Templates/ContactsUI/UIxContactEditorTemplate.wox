@@ -123,9 +123,9 @@
       <div class="attr" data-ng-repeat="email in card.emails">
 
         <div class="md-layout-margin" layout="row" layout-align="space-between end">
-          <select class="md-select" data-ng-model="email.type" data-ng-options="type for type in allEmailTypes">
-            <!-- email types -->
-          </select>
+          <md-select ng-model="email.type">
+            <md-option ng-repeat="type in allEmailTypes" ng-value="type">{{ type }}</md-option>
+          </md-select>
           <md-input-container>
             <label class="pseudo-input-label"><var:string label:value="New Email Address"/></label>
             <input type="email" data-ng-model="email.value"
