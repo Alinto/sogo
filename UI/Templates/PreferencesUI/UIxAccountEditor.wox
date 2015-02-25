@@ -1,0 +1,120 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    const:popup="YES"
+    >
+  <md-dialog>
+    <md-content>
+      <script type="text/javascript">
+        var accountId = '<var:string value="accountId"/>';
+      </script>
+      <form id="mainForm" var:href="ownPath">
+
+        <md-input-container>
+          <label><var:string label:value="Account Name:"/></label>
+          <input type="text" required="required" ng-model="account.name"/>
+        </md-input-container>
+
+        <md-input-container>
+          <label><var:string label:value="Server Name:"/></label>
+          <input type="text" required="required" ng-model="account.serverName"/>
+        </md-input-container>
+
+        <md-input-container>
+          <label><var:string label:value="Port:"/></label>
+          <input type="text" required="required"
+                 ng-model="account.port"/>
+        </md-input-container>
+
+        <md-radio-group ng-model="account.encryption">
+          <label><var:string label:value="Encryption:"/></label>
+          <md-radio-button value="none"><var:string label:value="None"/></md-radio-button>
+          <md-radio-button value="ssl"><var:string label:value="SSL"/></md-radio-button>
+          <md-radio-button value="tls"><var:string label:value="TLS"/></md-radio-button>
+        </md-radio-group>
+
+        <md-input-container>
+          <label><var:string label:value="User Name:"/></label>
+          <input type="text" required="required" ng-model="account.userName"/>
+        </md-input-container>
+
+        <md-input-container>
+          <label><var:string label:value="Password:"/></label>
+          <input type="text" required="required" ng-model="account.password"/>
+        </md-input-container>
+
+        <script type="text/javascript">
+          var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
+        </script>
+
+        <md-input-container>
+          <label><var:string label:value="Full Name:"/></label>
+          <input type="text" required="required" ng-model="account.identities[0].fullName"/>
+        </md-input-container>
+
+        <md-input-container>
+          <label><var:string label:value="Email:"/></label>
+          <input type="text" required="required" ng-model="account.identities[0].email"/>
+        </md-input-container>
+
+        <md-input-container>
+          <label><var:string label:value="Reply To Email:"/></label>
+          <input type="text" ng-model="account.identities[0].replyTo"/>
+        </md-input-container>
+
+        <!-- FIXME -->
+        <md-input-container>
+          <label><var:string label:value="Signature:"/></label>
+        <input type="text" ng-model="account.identities[0].signature" />
+      </md-input-container>
+
+        <md-radio-group ng-model="account.receipts.receiptAction">
+          <label><var:string label:value="When I receive a request for a return receipt:"/></label>
+          <md-radio-button value="ignore"><var:string label:value="Never send a return receipt"/></md-radio-button>
+          <md-radio-button value="allow"><var:string label:value="Allow return receipts for some messages"/></md-radio-button>
+        </md-radio-group>
+
+        <label>
+          <var:string label:value="If I'm not in the To or Cc of the message:"/>
+          <md-select ng-model="account.receipts.receiptNonRecipientAction">
+            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+          </md-select>
+        </label>
+
+        <label>
+          <var:string  label:value="If the sender is outside my domain:"/>
+          <md-select ng-model="account.receipts.receiptOutsideDomainAction">
+            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+          </md-select>
+        </label>
+
+        <label>
+          <var:string label:value="In all other cases:"/>
+          <md-select ng-model="account.receipts.receiptAnyAction">
+            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+          </md-select>
+        </label>
+
+   <div class="md-actions" layout="row">
+      <md-button type="button" ng-click="cancel()">Cancel</md-button>
+      <md-button type="button" class="md-primary" ng-click="save()">Save</md-button>
+      </div>
+
+      </form>
+    </md-content>
+  </md-dialog>
+</var:component>

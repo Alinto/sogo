@@ -42,7 +42,7 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser),
       $Message: Message,
       PRELOAD: PRELOAD
     });

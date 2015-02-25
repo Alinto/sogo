@@ -1,4 +1,4 @@
-/* UIxFilterEditor.m - this file is part of SOGo
+/* UIxAccountEditor.m - this file is part of SOGo
  *
  * Copyright (C) 2010-2015 Inverse inc.
  *
@@ -32,15 +32,14 @@
 
 #import <SOGoUI/UIxComponent.h>
 
-@interface UIxFilterEditor : UIxComponent
+@interface UIxAccountEditor : UIxComponent
 {
-  NSString *filterId;
-  NSDictionary *labels;
+  NSString *accountId;
 }
 
 @end
 
-@implementation UIxFilterEditor
+@implementation UIxAccountEditor
 
 - (id) init
 {
@@ -48,8 +47,7 @@
   
   if (self)
     {
-      filterId = nil;
-      labels = nil;
+      accountId = nil;
     }
 
   return self;
@@ -57,22 +55,20 @@
 
 - (void) dealloc
 {
-  RELEASE(filterId);
-  RELEASE(labels);
+  RELEASE(accountId);
   [super dealloc];
 }
 
 
-/* convert and save */
 - (BOOL) _validateFilterId
 {
   NSCharacterSet *digits;
   BOOL rc;
-
+  
   digits = [NSCharacterSet decimalDigitCharacterSet];
-  rc = ([filterId isEqualToString: @"new"]
-        || [[filterId stringByTrimmingCharactersInSet: digits] length] == 0);
-
+  rc = ([accountId isEqualToString: @"new"]
+        || [[accountId stringByTrimmingCharactersInSet: digits] length] == 0);
+  
   return rc;
 }
 
@@ -82,40 +78,25 @@
   WORequest *request;
 
   request = [context request];
-  ASSIGN (filterId, [request formValueForKey: @"filter"]);
-  if (filterId)
+  ASSIGN (accountId, [request formValueForKey: @"account"]);
+  if (accountId)
     {
       if ([self _validateFilterId])
         result = self;
       else
         result = [self responseWithStatus: 403
-                                andString: @"Bad value for 'filter'"];
+                                andString: @"Bad value for 'account'"];
     }
   else
     result = [self responseWithStatus: 403
-                            andString: @"Missing 'filter' parameter"];
+                            andString: @"Missing 'account' parameter"];
 
   return result;
 }
 
-- (NSString *) filterId
+- (NSString *) accountId
 {
-  return filterId;
-}
-
-- (NSString *) labels
-{
-  if (!labels)
-    {
-      ASSIGN(labels, [[[context activeUser] userDefaults] mailLabelsColors]);
-    }
-  
-  return [labels jsonRepresentation];
-}
-
-- (NSString *) sieveFolderEncoding
-{
-  return [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
+  return accountId;
 }
 
 @end

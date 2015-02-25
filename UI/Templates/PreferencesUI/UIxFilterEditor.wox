@@ -11,6 +11,8 @@
   title="title"
   const:popup="YES"
   >
+  <md-dialog>
+  <md-content>
   <script type="text/javascript">
     var filterId = '<var:string value="filterId"/>';
     var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
@@ -18,48 +20,125 @@
   </script>
   <form id="mainForm" var:href="ownPath">
     <div id="filterNameContainer" class="container">
-      <label><var:string label:value="Filter name:"
-          /><input const:name="filterName" class="textField" type="text"
-          var:value="filterName"/></label><br/>
+      <md-input-container>
+        <label><var:string label:value="Filter name:"/></label>
+        <input const:name="filterName" type="text" ng-model="filter.name"/>
+      </md-input-container>
     </div>
     <div id="filterMatchContainer" class="container">
       <var:string label:value="For incoming messages that"/>
-      <select const:name="matchType" const:id="matchType"
-        ><option const:value="all"
-          ><var:string label:value="match all of the following rules:"
-            /></option
-          ><option const:value="any"
-          ><var:string label:value="match any of the following rules:"
-            /></option
-        ><option const:value="allmessages"
-          ><var:string label:value="match all messages"
-            /></option
-          ></select>
+      <md-select const:name="matchType" const:id="matchType" ng-model="filter.match">
+        <md-option const:value="all">
+          <var:string label:value="match all of the following rules:"/>
+        </md-option>
+        <md-option const:value="any">
+          <var:string label:value="match any of the following rules:"/>
+        </md-option>
+        <md-option const:value="allmessages">
+          <var:string label:value="match all messages"/>
+        </md-option>
+      </md-select>
     </div>
 
+    <!-- CONDITIONS -->
     <div id="filterRulesContainer" class="container">
-      <div id="filterRules"><!-- empty --></div>
-      <div class="bottomToolbar"
-        ><a const:id="ruleAdd" class="bottomButton" href="#">
-          <span><img rsrc:src="add-icon.png" label:title="Add" />
-          </span></a
-          ><a const:id="ruleDelete" class="bottomButton" href="#">
-          <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-          </span></a
-          ></div>
+      <div id="filterRules"><!-- empty -->
+        <md-list>
+          <md-item ng-repeat="rule in filter.rules">
+            <md-item-content>
+              <md-select ng-model="rule.field">
+                <md-option ng-value="key" ng-repeat="(key, value) in fieldLabels">{{ value }}</md-option>
+              </md-select>
+
+              <input type="text" ng-show="rule.field ==
+                                                      'header'" ng-model="rule.custom_header"/>
+
+              <md-select ng-show="rule.field =='size'" ng-model="rule.operator">
+                <md-option ng-value="key" ng-repeat="(key, value) in numberOperatorLabels">
+                  {{ value }}
+                </md-option>
+              </md-select>
+
+              <md-select ng-show="rule.field !='size'" ng-model="rule.operator">
+                <md-option ng-value="key" ng-repeat="(key, value) in textOperatorLabels">
+                  {{ value }}
+                </md-option>
+              </md-select>
+
+              <input type="text" ng-model="rule.value"/>
+
+              <md-button ng-click="removeMailFilterRule($index)" type="button">
+                <div class="md-icon-remove"><!-- delete --></div>
+              </md-button>
+
+            </md-item-content>
+          </md-item>
+        </md-list>
+      </div>
+
+        <md-button ng-click="addMailFilterRule($event)" type="button">
+          <div class="md-icon-add"><!-- create --></div>
+        </md-button>
     </div>
-    <!-- <div id="splitter" class="dragHandle"></div> -->
+
+    <!-- ACTIONS -->
     <div id="filterActionsContainer" class="container">
       <var:string label:value="Perform these actions:"/><br/>
       <div id="filterActions"><!-- empty --></div>
-      <div class="bottomToolbar"
-        ><a const:id="actionAdd" class="bottomButton" href="#">
-          <span><img rsrc:src="add-icon.png" label:title="Add" />
-          </span></a
-          ><a const:id="actionDelete" class="bottomButton" href="#">
-          <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-          </span></a
-          ></div>
+
+        <md-list>
+          <md-item ng-repeat="action in filter.actions">
+            <md-item-content>
+              <md-select ng-model="action.method">
+                <md-option ng-value="key" ng-repeat="(key, value) in methodLabels">{{ value }}</md-option>
+              </md-select>
+
+              <!-- FORWARD MESSAGE TO -->
+              <input type="text" ng-show="action.method == 'redirect'" ng-model="action.argument"/>
+
+              <!-- DISCARD -->
+              <!-- nada -->
+
+              <!-- KEEP -->
+              <!-- nada -->
+
+              <!-- SEND REJECT MESSAGE -->
+              <input type="text" ng-show="action.method == 'reject'" ng-model="action.argument"/>
+
+              <!-- FILE INTO -->
+              <md-select ng-show="action.method == 'fileinto'" ng-model="action.argument">
+                <md-option ng-value="item.path" ng-repeat="item in mailboxes">
+                  {{ item.name }}
+                </md-option>
+              </md-select>
+
+              <!-- FLAG WITH -->
+              <md-select ng-show="action.method == 'addflag'" ng-model="action.argument" >
+                <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
+              </md-select>
+
+              <!-- STOP -->
+              <!-- nada -->
+
+
+              <md-button ng-click="removeMailFilterAction($index)" type="button">
+                <div class="md-icon-remove"><!-- delete --></div>
+              </md-button>
+
+            </md-item-content>
+          </md-item>
+        </md-list>
+
+      <md-button ng-click="addMailFilterAction($event)" type="button">
+        <div class="md-icon-add"><!-- create --></div>
+      </md-button>
     </div>
+
+    <div class="md-actions" layout="row">
+      <md-button type="button" ng-click="cancel()">Cancel</md-button>
+      <md-button type="button" class="md-primary" ng-click="save()">Save</md-button>
+      </div>
   </form>
+  </md-content>
+  </md-dialog>
 </var:component>
