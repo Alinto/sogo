@@ -36,13 +36,18 @@ $input-padding-top: 2px !default;
 
 }
 
-.pseudo-input-label {
+.pseudo-input-label,
+.button-label {
   display: inline-block;
   margin-top: $mg;
   color: $colorGrayLight;
   font-weight: $sg-font-regular; // 16px;
   font-size: sg-size(caption);
   line-height: $sg-line-height-1;
+}
+.pseudo-input-label--no-margin,
+.button-label {
+  margin-top: 0;
 }
 // md overqualifies so we are
 .md-input-focused label.pseudo-input-label,
@@ -98,7 +103,8 @@ input::-webkit-datetime-edit,
 }
 
 .md-input-focused input::-webkit-datetime-edit,
-.md-input-focused /deep/ div#date-time-edit {
+.md-input-focused /deep/ div#date-time-edit,
+.md-input-has-value input::-webkit-datetime-edit {
   opacity: 1;
 }
 

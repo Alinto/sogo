@@ -26,3 +26,10 @@ flex, flex-sm, flex-gt-sm, flex-md, flex-gt-md, flex-lg, flex-gt-lg, hide, hide-
     width: grid-step($i);
   }
 }
+
+// Rows are included in padded containers, margins are used for vertical spacing
+// ----------------------------------------------------------------------------
+[layout="row"].md-layout-margin {
+  margin-right: 0;
+  margin-left: 0;
+}
