@@ -207,7 +207,9 @@
         </div>
         <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
           <div class="cols-7" layout="row" layout-align="space-between center" style="padding-right: 16px">
-            <div class="md-icon-search"><!-- search-field --></div>
+            <span class="md-icon-search"><!-- icon search --></span>
+            <input name="folderSearch" type="search" label:placeholder="Search"
+                   ng-model="search.filter" ng-keyup="doSearch($event)"/>
             <div class="sg-toolbar-group">
               <span>ALL
                 <span class="md-icon-arrow-drop-down"><!-- sort drop-down --></span>
