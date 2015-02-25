@@ -121,21 +121,20 @@
 
     <div class="section">
       <div class="attr" data-ng-repeat="email in card.emails">
-        <div class="action">
-          <span class="button alert icon" data-ng-click="card.$delete('emails', $index)">
-            <i class="md-icon-remove-circle-outline"><!-- remove --></i>
-          </span>
-        </div>
 
+        <div class="md-layout-margin" layout="row" layout-align="space-between end">
           <select class="md-select" data-ng-model="email.type" data-ng-options="type for type in allEmailTypes">
             <!-- email types -->
           </select>
-
-
-        <md-input-container>
-          <input type="email" label:placeholder="email address" data-ng-model="email.value"
-                 data-sg-focus-on="email_{{$index}}"/>
-        </md-input-container>
+          <md-input-container>
+            <label class="pseudo-input-label"><var:string label:value="New Email Address"/></label>
+            <input type="email" data-ng-model="email.value"
+                   data-sg-focus-on="email_{{$index}}"/>
+          </md-input-container>
+          <md-button class="icon" data-ng-click="card.$delete('emails', $index)">
+            <i class="md-icon-remove-circle"><!-- remove --></i>
+          </md-button>
+        </div>
 
 
       </div>
