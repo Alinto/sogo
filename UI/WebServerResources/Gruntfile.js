@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         sass: {
             options: {
                 loadPath: ['scss'],
-                style: 'nested'
+                style: 'expanded'
             },
             dist: {
                 files: {
@@ -59,9 +59,6 @@ module.exports = function(grunt) {
             '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
             '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
             '<%= src %>/ng-tags-input/ng-tags-input{,.min}.js',
-            '<%= src %>/angular-foundation/mm-foundation-tpls{,.min}.js',
-            '<%= src %>/foundation/js/foundation{,.min}.js',
-            '<%= src %>/ionic/release/js/ionic.bundle{,.min}.js',
             '<%= src %>/underscore/underscore-min.{js,map}'
         ];
         for (var j = 0; j < js.length; j++) {
