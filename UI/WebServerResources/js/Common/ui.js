@@ -52,7 +52,7 @@
           'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
         });
         $mdThemingProvider.definePalette('paper', {
-          '50': 'fcf7f8',
+          '50': 'fcfbf8',
           '100': 'f7f1dc',
           '200': 'ede5ca',
           '300': 'e6d8ba',
@@ -68,7 +68,7 @@
           'A400': 'bdbdbd',
           'A700': '616161',
           'contrastDefaultColor': 'dark',
-          'contrastLightColors': '500 600 700 800 900'
+          'contrastLightColors': '800 900'
         });
         // Default theme definition
         // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
@@ -81,7 +81,7 @@
             })
           .accentColor('sogo-green')
           .backgroundColor('paper', {
-              'default': '600',
+              'default': '500',
               'hue-1': '200',
               'hue-2': '50',
               'hue-3': '100'
