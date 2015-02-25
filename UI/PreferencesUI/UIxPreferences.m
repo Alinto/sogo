@@ -1844,4 +1844,10 @@ static NSArray *reminderValues = nil;
   return (mailCustomFromEnabled ? @"true" : @"false");
 }
 
+- (id <WOActionResults>) saveAction
+{
+  //return [self responseWithStatus: 200 andJSONRepresentation: data];
+  return [self responseWithStatus: 200];
+}
+
 @end

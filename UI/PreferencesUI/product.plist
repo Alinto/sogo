@@ -15,9 +15,13 @@
         };
       };
       methods = {
-        preferences = {
+        Preferences = {
           protectedBy = "View";
           pageName = "UIxPreferences";
+        };
+        editAccount = {
+          protectedBy = "View";
+          pageName = "UIxAccountEditor";
         };
         editFilter = {
           protectedBy = "View";
@@ -36,6 +40,11 @@
           protectedBy = "View";
           actionClass = "UIxJSONPreferences";
           actionName = "jsonSettings";
+        };
+        save = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxPreferences";
+          actionName  = "save";
         };
       };
     };

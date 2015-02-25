@@ -164,7 +164,7 @@
 
 - (NSString *) relativePreferencesPath
 {
-  return [self relativePathToUserFolderSubPath: @"preferences"];
+  return [self relativePathToUserFolderSubPath: @"Preferences/"];
 }
 
 - (NSString *) relativeAdministrationPath
@@ -464,6 +464,11 @@
 - (BOOL) isMail
 {
   return [self _moduleIs: @"MailerUI"];
+}
+
+- (BOOL) isPreferences
+{
+  return [self _moduleIs: @"PreferencesUI"];
 }
 
 - (BOOL) isAdministration
