@@ -3,6 +3,7 @@
 
 Bug fixes
  - fixed login issue after password change (#2601)
+ - fixed potential encoding issue using EAS and 8-bit mails (#3116)
 
 2.2.16 (2015-02-12)
 -------------------

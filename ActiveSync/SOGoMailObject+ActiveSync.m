@@ -469,9 +469,10 @@ struct GlobalObjectId {
     }
   else if (theType == 4)
     {
-      // We sanitize the content *ONLY* for Outlook clients. Outlook has strange issues
+      // We sanitize the content *ONLY* for Outlook clients and if the content-transfer-encoding is 8bit. Outlook has strange issues
       // with quoted-printable/base64 encoded text parts. It just doesn't decode them.
-      if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+      encoding = [[self lookupInfoForBodyPart: @""] objectForKey: @"encoding"];
+      if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"] || ([encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame))
         d = [self _sanitizedMIMEMessage];
       else
         d = [self content];
