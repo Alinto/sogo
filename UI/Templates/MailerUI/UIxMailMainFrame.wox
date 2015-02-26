@@ -1,37 +1,37 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
 <var:component
-    xmlns = "http://www.w3.org/1999/xhtml"
-    xmlns:var = "http://www.skyrix.com/od/binding"
-    xmlns:const = "http://www.skyrix.com/od/constant"
-    className = "UIxPageFrame"
-    title = "title"
-    const:userDefaultsKeys = "SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
-    const:userSettingsKeys = "Mail"
-    const:jsFiles = "Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js">
-    <!--const:cssFiles = "ng-tags-input.css">-->
-  <script type = "text/javascript">
-    var mailAccounts =<var:string value = "mailAccounts" const:escapeHTML = "NO" />;
-    var userNames =<var:string value = "userNames" const:escapeHTML = "NO" />;
-    var unseenCountFolders =<var:string value = "unseenCountFolders" const:escapeHTML = "NO" />;
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    className="UIxPageFrame"
+    title="title"
+    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
+    const:userSettingsKeys="Mail"
+    const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js">
+    <!--const:cssFiles="ng-tags-input.css">-->
+  <script type="text/javascript">
+    var mailAccounts =<var:string value="mailAccounts" const:escapeHTML="NO" />;
+    var userNames =<var:string value="userNames" const:escapeHTML="NO" />;
+    var unseenCountFolders =<var:string value="unseenCountFolders" const:escapeHTML="NO" />;
   </script>
-  <style type = "text/css">
-    <var:foreach list = "availableLabels" item = "currentLabel">
-      #label-menu LI.<var:string value = "currentLabel.name.asCSSIdentifier" />,
+  <style type="text/css">
+    <var:foreach list="availableLabels" item="currentLabel">
+      #label-menu LI.<var:string value="currentLabel.name.asCSSIdentifier" />,
       TABLE.messageList TR[labels~=
-      <var:string const:value = '"' const:escapeHTML = "NO"
+      <var:string const:value = '"' const:escapeHTML="NO"
           />
-      <var:string value = "currentLabel.name" />
-      <var:string const:value = '"' const:escapeHTML = "NO" />] TD
-      { color:<var:string value = "currentLabel.color" />; }
+      <var:string value="currentLabel.name" />
+      <var:string const:value = '"' const:escapeHTML="NO" />] TD
+      { color:<var:string value="currentLabel.color" />; }
       TABLE.messageList TR[labels~=
-      <var:string const:value = '"' const:escapeHTML = "NO"
+      <var:string const:value = '"' const:escapeHTML="NO"
           />
-      <var:string value = "currentLabel.name" />
-      <var:string const:value = '"' const:escapeHTML = "NO" />]._selected TD
+      <var:string value="currentLabel.name" />
+      <var:string const:value = '"' const:escapeHTML="NO" />]._selected TD
       { color: #fff;
       background-color:
-      <var:string value = "currentLabel.color" />
+      <var:string value="currentLabel.color" />
       !important; }
     </var:foreach>
   </style>
@@ -230,33 +230,33 @@
   <main class="view md-layout-fill" ui-view="mailboxes" layout="row"><!-- mailboxes list --></main>
 
 <!-- TEMPLATE SCRIPT WRAPPER -->
-  <script type = "text/ng-template" id="UIxMailMainFrame">
+  <script type="text/ng-template" id="UIxMailMainFrame">
     <!-- dropdown menu for mailbox options button -->
     <div id="folderProperties" class ="f-dropdown icons-dropdown" dropdown-content="dropdown-content">
-      <ul class = "button-group">
-        <li ng-show = "currentFolder.isEditable">
-          <span class = "button" ng-click = "editFolder(currentFolder)">
-            <i class = "icon-pencil"><!-- rename --></i>
+      <ul class="button-group">
+        <li ng-show="currentFolder.isEditable">
+          <span class="button" ng-click="editFolder(currentFolder)">
+            <i class="icon-pencil"><!-- rename --></i>
           </span>
         </li>
-        <li ng-show = "currentFolder.isEditable">
-          <span class = "button" ng-click = "newFolder(currentFolder)">
-            <i class = "icon-plus"><!-- new mailbox --></i>
+        <li ng-show="currentFolder.isEditable">
+          <span class="button" ng-click="newFolder(currentFolder)">
+            <i class="icon-plus"><!-- new mailbox --></i>
           </span>
         </li>
-        <li ng-show = "currentFolder.isEditable">
-          <span class = "button" ng-click = "share()">
-            <i class = "icon-earth"><!-- share --></i>
+        <li ng-show="currentFolder.isEditable">
+          <span class="button" ng-click="share()">
+            <i class="icon-earth"><!-- share --></i>
           </span>
         </li>
         <li>
-          <span class = "button" ng-click = "exportMails()">
-            <i class = "icon-ion-ios7-upload-outline"><!-- export --></i>
+          <span class="button" ng-click="exportMails()">
+            <i class="icon-ion-ios7-upload-outline"><!-- export --></i>
           </span>
         </li>
-        <li ng-show = "currentFolder.isEditable">
-          <span class = "button" ng-click = "confirmDelete()">
-            <i class = "icon-trash"><!-- delete --></i>
+        <li ng-show="currentFolder.isEditable">
+          <span class="button" ng-click="confirmDelete()">
+            <i class="icon-trash"><!-- delete --></i>
           </span>
         </li>
       </ul>
@@ -322,12 +322,12 @@
     </section>
   </script>
 
-  <script type = "text/ng-template" id = "UIxMailFolderTemplate">
-    <var:component className = "UIxMailFolderTemplate" />
+  <script type="text/ng-template" id="UIxMailFolderTemplate">
+    <var:component className="UIxMailFolderTemplate" />
   </script>
 
-  <script type = "text/ng-template" id = "UIxMailViewTemplate">
-    <var:component className = "UIxMailViewTemplate" />
+  <script type="text/ng-template" id="UIxMailViewTemplate">
+    <var:component className="UIxMailViewTemplate" />
   </script>
 
 </var:component>

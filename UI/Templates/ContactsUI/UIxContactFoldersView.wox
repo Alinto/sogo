@@ -1,17 +1,17 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE var:component>
 <var:component
-    xmlns = "http://www.w3.org/1999/xhtml"
-    xmlns:var = "http://www.skyrix.com/od/binding"
-    xmlns:const = "http://www.skyrix.com/od/constant"
-    xmlns:label = "OGo:label"
-    const:userDefaultsKeys = "SOGoContactsCategories"
-    const:jsFiles = "Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
-    className = "UIxPageFrame"
-    title = "name"
-    var:popup = "isPopup">
-  <script type = "text/javascript">
-    var contactFolders =<var:string value = "contactFolders" const:escapeHTML = "NO" />;
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    const:userDefaultsKeys="SOGoContactsCategories"
+    const:jsFiles="Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    className="UIxPageFrame"
+    title="name"
+    var:popup="isPopup">
+  <script type="text/javascript">
+    var contactFolders =<var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
 
   <!--
@@ -71,47 +71,47 @@
   <main class="view md-layout-fill" ui-view="addressbooks" layout="row"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
-  <script type = "text/ng-template" id = "UIxContactFoldersView">
+  <script type="text/ng-template" id="UIxContactFoldersView">
 
     <!-- dropdown menu for addressbook options button -->
-    <div id = "addressbookProperties" class = "f-dropdown icons-dropdown">
-      <ul class = "button-group">
-        <li label:tooltip = "Links to this Address Book"
-            tooltip-popup-delay = "500">
-          <span class = "button"
-              sg-dropdown-content-toggle = "#addressbookLinks">
-            <i class = "icon-hyperlink"><!-- links --></i>
+    <div id="addressbookProperties" class="f-dropdown icons-dropdown">
+      <ul class="button-group">
+        <li label:tooltip="Links to this Address Book"
+            tooltip-popup-delay="500">
+          <span class="button"
+              sg-dropdown-content-toggle="#addressbookLinks">
+            <i class="icon-hyperlink"><!-- links --></i>
           </span>
         </li>
-        <li label:tooltip = "Rename"
-            tooltip-popup-delay = "500">
-          <span class = "button" ng-click = "edit()">
-            <i class = "icon-pencil"><!-- rename --></i>
+        <li label:tooltip="Rename"
+            tooltip-popup-delay="500">
+          <span class="button" ng-click="edit()">
+            <i class="icon-pencil"><!-- rename --></i>
           </span>
         </li>
-        <li ng-show = "addressbook.isOwned"
-            label:tooltip = "Sharing..."
-            tooltip-popup-delay = "500">
-          <span class = "button" ng-click = "share()">
-            <i class = "icon-share"><!-- share --></i>
+        <li ng-show="addressbook.isOwned"
+            label:tooltip="Sharing..."
+            tooltip-popup-delay="500">
+          <span class="button" ng-click="share()">
+            <i class="icon-share"><!-- share --></i>
           </span>
         </li>
-        <li label:tooltip = "Import Cards"
-            tooltip-popup-delay = "500">
-          <span class = "button" ng-click = "importCards()">
-            <i class = "icon-file"><!-- import --></i>
+        <li label:tooltip="Import Cards"
+            tooltip-popup-delay="500">
+          <span class="button" ng-click="importCards()">
+            <i class="icon-file"><!-- import --></i>
           </span>
         </li>
-        <li label:tooltip = "Export"
-            tooltip-popup-delay = "500">
-          <span class = "button" ng-click = "exportCards()">
-            <i class = "icon-ion-ios7-upload-outline"><!-- export --></i>
+        <li label:tooltip="Export"
+            tooltip-popup-delay="500">
+          <span class="button" ng-click="exportCards()">
+            <i class="icon-ion-ios7-upload-outline"><!-- export --></i>
           </span>
         </li>
-        <li label:tooltip = "Delete"
-            tooltip-popup-delay = "500">
-          <span class = "button" ng-click = "confirmDelete(addressbook)">
-            <i class = "icon-trash"><!-- delete --></i>
+        <li label:tooltip="Delete"
+            tooltip-popup-delay="500">
+          <span class="button" ng-click="confirmDelete(addressbook)">
+            <i class="icon-trash"><!-- delete --></i>
           </span>
         </li>
       </ul>
@@ -156,31 +156,31 @@
       <md-content md-scroll-y="md-scroll-y" class="md-flex" ng-controller="LeftCtrl">
         <md-button ng-click="close()" class="md-primary md-hide-gt-md">Close</md-button>
         <md-list>
-          <md-item ng-repeat = "folder in addressbooks track by folder.id"
-              ng-class = "{_selected: addressbook.id==folder.id}"
-              ng-dblclick = "edit($index)">
+          <md-item ng-repeat="folder in addressbooks track by folder.id"
+              ng-class="{_selected: addressbook.id==folder.id}"
+              ng-dblclick="edit($index)">
             <md-item-content>
-              <i class = "icon" ng-class = "{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
-              <form ng-submit = "save($index)">
-                <a ui-sref = "addressbook({addressbookId: folder.id})"
-                    ng-click = "select($index)"
-                    ng-show = "editMode!=folder.id"
-                    ng-cloak = "ng-cloak">{{folder.name}}
+              <i class="icon" ng-class="{'icon-earth': folder.isRemote, 'icon-address-book': folder.isEditable}"><!-- icon --></i>
+              <form ng-submit="save($index)">
+                <a ui-sref="addressbook({addressbookId: folder.id})"
+                    ng-click="select($index)"
+                    ng-show="editMode!=folder.id"
+                    ng-cloak="ng-cloak">{{folder.name}}
                 </a>
-                <input class = "folder-name" type = "text"
-                    ng-model = "folder.name"
-                    ng-show = "editMode==folder.id"
-                    ng-cloak = "ng-cloak"
-                    ng-blur = "save($index)"
-                    sg-focus-on = "addressBookName_{{$index}}"
-                    sg-escape = "revertEditing($index)" />
+                <input class="folder-name" type="text"
+                    ng-model="folder.name"
+                    ng-show="editMode==folder.id"
+                    ng-cloak="ng-cloak"
+                    ng-blur="save($index)"
+                    sg-focus-on="addressBookName_{{$index}}"
+                    sg-escape="revertEditing($index)" />
               </form>
-              <span class = "icon" ng-cloak = "ng-cloak">
-                <a class = "icon" href = "#"
-                    dropdown-toggle = "#addressbookProperties"
-                    options = "align:right"
-                    ng-show = "currentFolderIsConfigurable(folder)">
-                  <i class = "icon-cog"><!-- options --></i>
+              <span class="icon" ng-cloak="ng-cloak">
+                <a class="icon" href="#"
+                    dropdown-toggle="#addressbookProperties"
+                    options="align:right"
+                    ng-show="currentFolderIsConfigurable(folder)">
+                  <i class="icon-cog"><!-- options --></i>
                 </a>
               </span>
             </md-item-content>
@@ -273,13 +273,13 @@
 
   </script>
     <!-- modal for addressbook sharing options -->
-    <script type = "text/ng-template" id="UIxUserRightsEditor">
+    <script type="text/ng-template" id="UIxUserRightsEditor">
       <var:component className="UIxContactsUserRightsEditor" />
     </script>
-    <script type = "text/ng-template" id = "UIxContactViewTemplate">
+    <script type="text/ng-template" id="UIxContactViewTemplate">
       <var:component className="UIxContactViewTemplate" />
     </script>
 
-    <var:string value = "errorAlertJavaScript" const:escapeHTML = "NO" />
+    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
 
 </var:component>

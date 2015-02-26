@@ -1,6 +1,6 @@
 <?xml version='1.0' standalone='yes'?>
 <container
-    xmlns = "http://www.w3.org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
     >
   <md-content style="position: relative;" id="messagesList">
     <style>
