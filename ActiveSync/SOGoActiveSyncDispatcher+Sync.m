@@ -1211,7 +1211,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Make sure that client is updated with the right syncKey. - This keeps vtodo's and vevent's syncKey in sync.
       syncKeyInCache = [folderMetadata  objectForKey: @"SyncKey"];
-      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]))
+      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]) && ![davCollectionTag isEqualToString: @"-1"])
         {
           davCollectionTag = syncKeyInCache;
           *changeDetected = YES;

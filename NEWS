@@ -10,6 +10,7 @@ Bug fixes
  - fixed tasks disappearing issue with RoadSync
  - use the correct body element for events for EAS 2.5 clients
  - SmartReply improvements for missing body attributes
+ - do not use syncKey from cache when davCollectionTag = -1
 
 2.2.16 (2015-02-12)
 -------------------
