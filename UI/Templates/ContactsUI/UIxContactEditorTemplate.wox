@@ -54,11 +54,8 @@
       </md-input-container>
     </div>
 
-
     <!-- org units -->
-
       <div class="attr" data-ng-repeat="unit in card.orgUnits">
-
         <div layout="row" layout-align="center end">
           <md-input-container>
             <label class="pseudo-input-label">
@@ -90,9 +87,7 @@
     </md-input-container>
 
     <!-- categories -->
-        <!-- if there's some categories, here they are (this is sort of a template) -->
         <div class="attr" data-ng-repeat="category in card.categories">
-
           <div layout="row" layout-align="center end">
             <md-input-container>
               <label class="pseudo-input-label">
@@ -118,16 +113,14 @@
         </div>
 
     <!-- emails -->
-
     <div class="section">
       <div class="attr" data-ng-repeat="email in card.emails">
-
         <div class="md-layout-margin" layout="row" layout-align="space-between end">
           <md-select ng-model="email.type">
             <md-option ng-repeat="type in allEmailTypes" ng-value="type">{{ type }}</md-option>
           </md-select>
           <md-input-container>
-            <label class="pseudo-input-label"><var:string label:value="New Email Address"/></label>
+            <label class="pseudo-input-label"><var:string label:value="Email Address"/></label>
             <input type="email" data-ng-model="email.value"
                    data-sg-focus-on="email_{{$index}}"/>
           </md-input-container>
@@ -136,166 +129,179 @@
           </md-button>
         </div>
 
-
       </div>
-      <div class="attr">
-        <div class="value single">
-          <span class="button secondary outline tiny" data-ng-click="addEmail()">
-            <i class="md-icon-add"><!-- new --></i>
-            <var:string label:value="New Email Address"/>
-          </span>
-        </div>
+      <div class="md-layout-margin" layout="row" layout-align="start center">
+        <md-button class="icon" data-ng-click="addEmail()">
+          <i class="md-icon-add-circle"><!-- new --></i>
+        </md-button>
+        <label class="button-label">
+          <var:string label:value="New Email Address"/>
+        </label>
       </div>
     </div>
 
     <!-- phones -->
-    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="phone in card.phones">
-          <div class="action">
-            <span class="button alert icon" data-ng-click="card.$delete('phones', $index)">
-              <i class="md-icon-remove-circle-outline"><!-- remove --></i>
-            </span>
-          </div>
-          <div class="key">
-            <select class="text-right" data-ng-model="phone.type" data-ng-options="type for type in allTelTypes">
-              <!-- phone types -->
-            </select>
-          </div>
-          <div class="value">
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="phone number" data-ng-model="phone.value"
+          <div layout="row" layout-align="center end">
+            <md-select data-ng-model="phone.type">
+              <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
+            </md-select>
+            <md-input-container>
+              <label class="pseudo-input-label">
+                <var:string label:value="Phone Number"/>
+              </label>
+              <input type="text" data-ng-model="phone.value"
                      data-sg-focus-on="phone_{{$index}}"/>
-            </p>
+            </md-input-container>
+            <md-button class="icon" data-ng-click="card.$delete('phones', $index)">
+              <i class="md-icon-remove-circle"><!-- remove --></i>
+            </md-button>
           </div>
         </div>
-        <div class="attr">
-          <div class="value single">
-            <span class="button secondary outline tiny" data-ng-click="addPhone()">
-              <i class="md-icon-add"><!-- new --></i>
-              <var:string label:value="New Phone Number"/>
-            </span>
-          </div>
+
+        <div class="md-layout-margin" layout="row" layout-align="start center">
+          <md-button class="icon" data-ng-click="addPhone()">
+            <i class="md-icon-add-circle"><!-- new --></i>
+          </md-button>
+          <label class="button-label">
+            <var:string label:value="New Phone Number"/>
+          </label>
         </div>
       </div>
-    </div>
 
     <!-- urls -->
-    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="url in card.urls">
-          <div class="action">
+          <div layout="row" layout-align="center end">
+              <md-select class="text-right" data-ng-model="url.type">
+                <md-option ng-repeat="type in allUrlTypes" value="type">{{ type }}</md-option>
+              </md-select>
+            <md-input-container>
+              <label class="pseudo-input-label">
+                <var:string label:value="URL"/>
+              </label>
+                <input type="url" data-ng-model="url.value" data-sg-focus-on="url_{{$index}}"/>
+            </md-input-container>
             <span class="button alert icon" data-ng-click="card.$delete('urls', $index)">
               <i class="md-icon-remove-circle-outline"><!-- remove --></i>
             </span>
           </div>
-          <div class="key">
-            <select class="text-right" data-ng-model="url.type" data-ng-options="type for type in allUrlTypes">
-              <!-- url types -->
-            </select>
-          </div>
-          <div class="value">
-            <p class="pseudo-input-inputLike--underline">
-              <input type="url" label:placeholder="URL" data-ng-model="url.value" data-sg-focus-on="url_{{$index}}"/>
-            </p>
-          </div>
         </div>
-        <div class="attr">
-          <div class="value single">
-            <span class="button secondary outline tiny" data-ng-click="addUrl()">
-              <i class="md-icon-add"><!-- new --></i>
-              <var:string label:value="New URL"/>
-            </span>
-          </div>
+        <div class="md-layout-margin" layout="row" layout-align="start center">
+          <md-button class="icon" data-ng-click="addUrl()">
+            <i class="md-icon-add-circle"><!-- new --></i>
+          </md-button>
+          <label class="button-label">
+            <var:string label:value="New URL"/>
+          </label>
         </div>
       </div>
-    </div>
 
     <!-- addresses -->
-    <div class="pseudo-input">
       <div class="section">
         <div class="attr" data-ng-repeat="address in card.addresses">
-          <div class="action">
-            <span class="button alert icon" data-ng-click="card.$delete('addresses', $index)">
-              <i class="md-icon-remove-circle-outline"><!-- remove --></i>
-            </span>
+
+
+          <div layout="row" layout-align="start end">
+            <md-select data-ng-model="address.type">
+              <md-option ng-repeat="type in allAddressTypes" ng-value="type">{{ type }}</md-option>
+            </md-select>
+            <p>
+              <var:string label:value="Address"/>
+            </p>
           </div>
-          <div class="key">
-            <select class="text-right" data-ng-model="address.type" data-ng-options="type for type in allAddressTypes">
-              <!-- address types -->
-            </select>
-          </div>
-          <div class="value compact">
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="street" data-ng-model="address.street"
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="street"/>
+              </label>
+              <input type="text" data-ng-model="address.street"
                      data-sg-focus-on="address_{{$index}}"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
+            </md-input-container>
+            <md-input-container>
+              <label>
+                <var:string label:value=""/>
+              </label>
               <input type="text" data-ng-model="address.street2"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="Postoffice" data-ng-model="address.postoffice"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="City" data-ng-model="address.locality"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="Region" data-ng-model="address.region"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="Country" data-ng-model="address.country"/>
-            </p>
-
-            <p class="pseudo-input-inputLike--underline">
-              <input type="text" label:placeholder="Postal Code" data-ng-model="address.postalcode"/>
-            </p>
-
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="Postoffice"/>
+              </label>
+              <input type="text" data-ng-model="address.postoffice"/>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="City"/>
+              </label>
+              <input type="text" data-ng-model="address.locality"/>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="Region"/>
+              </label>
+              <input type="text" data-ng-model="address.region"/>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="Country"/>
+              </label>
+              <input type="text" data-ng-model="address.country"/>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="center end">
+            <md-input-container>
+              <label>
+                <var:string label:value="Postal Code"/>
+              </label>
+              <input type="text" data-ng-model="address.postalcode"/>
+            </md-input-container>
+            <md-button class="icon" data-ng-click="card.$delete('addresses', $index)">
+              <i class="md-icon-remove-circle"><!-- remove --></i>
+            </md-button>
           </div>
         </div>
-        <div class="attr">
-          <div class="value single">
-            <span class="button secondary outline tiny" data-ng-click="addAddress()">
-              <i class="md-icon-add"><!-- new --></i>
-              <var:string label:value="New Address"/>
-            </span>
-          </div>
+        <div class="md-layout-margin" layout="row" layout-align="start center">
+          <md-button class="icon" data-ng-click="addAddress()">
+            <i class="md-icon-add-circle"><!-- new --></i>
+          </md-button>
+          <label class="button-label">
+            <var:string label:value="New Address"/>
+          </label>
         </div>
       </div>
-    </div>
+
 
     <!-- note -->
-    <div class="attr">
-      <div class="action">
-        <var:entity const:name="nbsp"/>
-      </div>
-      <div class="key">
+      <md-input-container>
         <label class=" right inline">
           <var:string label:value="Note"/>
         </label>
-      </div>
-      <div class="value">
         <textarea data-ng-model="card.note"><!-- note --></textarea>
-      </div>
-    </div>
-    <fieldset class="sg-buttongroup">
-      <span class="button tiny radius secondary" data-ng-click="cancel()">
-        <i class="icon-arrow-left"><!-- cancel --></i>
+      </md-input-container>
+
+
+
+    <div  class="fieldset md-layout-margin" layout="row" layout-align="end center">
+      <md-button class="md-primary md-hue-3" data-ng-click="cancel()">
         <var:string label:value="Cancel"/>
-      </span>
-      <span class="button tiny radius secondary" data-ng-click="reset()">
-        <i class="icon-undo"><!-- reset --></i>
+      </md-button>
+      <md-button class="md-accent" data-ng-click="reset()">
         <var:string label:value="Reset"/>
-      </span>
-      <md-button class="button tiny radius" type="submit">
-        <i class="icon-checkmark"><!-- save --></i>
+      </md-button>
+      <md-button class="md-accent md-hue-3" type="submit">
         <var:string label:value="Save"/>
       </md-button>
-    </fieldset>
+    </div>
   </form>
   <form name="listForm" data-ng-show="card.$isList()" data-ng-submit="save(listForm)">
     <div class="buttonsToolbar">
@@ -365,6 +371,6 @@
     </div>
   </form>
 </div>
-    </md-content>
+</md-content>
 
 </container>
