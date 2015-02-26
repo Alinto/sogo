@@ -5,6 +5,7 @@ Bug fixes
  - fixed login issue after password change (#2601)
  - fixed potential encoding issue using EAS and 8-bit mails (#3116)
  - multiple collections support for GetItemEstimate using EAS
+ - fixed empty sync responses for EAS 2.5 and 12.0 clients
 
 2.2.16 (2015-02-12)
 -------------------

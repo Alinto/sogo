@@ -1431,8 +1431,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  // Only send a response if there are changes otherwise send an empty response.
-  if (changeDetected)
+
+  // Only send a response if there are changes or MS-ASProtocolVersion is either 2.5 or 12.0 oterwise send an empty response.
+  if (changeDetected || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"12.0"])
     {
       // We always return the last generated response.
       // If we only return <Sync><Collections/></Sync>,
