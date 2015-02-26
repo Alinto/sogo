@@ -38,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSString+misc.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -48,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
+
 
 @implementation iCalToDo (ActiveSync)
 
@@ -62,11 +64,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   s = [NSMutableString string];
 
   // Complete
-  o = [self completed];
-  [s appendFormat: @"<Complete xmlns=\"Tasks:\">%d</Complete>", (o ? 1 : 0)];
+  [s appendFormat: @"<Complete xmlns=\"Tasks:\">%d</Complete>", [[self status] isEqualToString: @"COMPLETED"] ? 1 : 0];
   
   // DateCompleted
-  if (o)
+  if ((o = [self completed]))
     [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [o activeSyncRepresentationInContext: context]];
   
   // Start date
@@ -97,12 +98,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Reminder - FIXME
   [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
   
+  // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
     v = 2;
   else if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
     v = 3;
   else
     v = 0;
+
+  [s appendFormat: @"<Sensitivity xmlns=\"Tasks:\">%d</Sensitivity>", v];
 
   categories = [self categories];
 
@@ -126,11 +130,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // It is very important here to NOT set <Truncated>0</Truncated> in the response,
       // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
-      [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-      [s appendFormat: @"<Type>%d</Type>", 1]; 
-      [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
-      [s appendFormat: @"<Data>%@</Data>", o];
-      [s appendString: @"</Body>"];
+
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+        {
+          [s appendFormat: @"<Body xmlns=\"Tasks:\">%@</Body>", o];
+          [s appendString: @"<BodyTruncated xmlns=\"Tasks:\">0</BodyTruncated>"];
+        }
+      else
+        {
+          [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+          [s appendFormat: @"<Type>%d</Type>", 1];
+          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
+          [s appendFormat: @"<Data>%@</Data>", o];
+          [s appendString: @"</Body>"];
+        }
     }
   
   return s;
@@ -152,9 +165,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self setSummary: o];
 
   // FIXME: merge with iCalEvent
-  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
-    [self setComment: o];
-  
+  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+    {
+      if ((o = [theValues objectForKey: @"Body"]))
+        [self setComment: o];
+    }
+  else
+    {
+      if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
+        [self setComment: o];
+    }
   
   if ([[theValues objectForKey: @"Complete"] intValue] &&
       ((o = [theValues objectForKey: @"DateCompleted"])) )
@@ -166,6 +186,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [completed setDate: o];
       [self setStatus: @"COMPLETED"];
     }
+  else
+   {
+     [self setStatus: @"IN-PROCESS"];
+     [self setCompleted: nil];
+   }
 
   if ((o = [theValues objectForKey: @"DueDate"]))
     {
@@ -173,6 +198,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      
       o = [o calendarDate];
       due = (iCalDateTime *) [self uniqueChildWithTag: @"due"];
+      [due setTimeZone: tz];
+      [due setDateTime: o];
+    }
+
+  if ((o = [theValues objectForKey: @"StartDate"]))
+    {
+      iCalDateTime *due;
+
+      o = [o calendarDate];
+      due = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
       [due setTimeZone: tz];
       [due setDateTime: o];
     }
