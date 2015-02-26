@@ -11,36 +11,36 @@
           <li>
             <label>
               <input type="checkbox" name="canViewObjects"
-                     data-ng-checked="selectedUser.rights.canViewObjects"
-                     data-ng-model="selectedUser.rights.canViewObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
+                     ng-checked="selectedUser.rights.canViewObjects"
+                     ng-model="selectedUser.rights.canViewObjects"
+                     ng-change="confirmChange(selectedUser)" />
               <var:string label:value="This person can read the cards of this addressbook." />
             </label>
           </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
+          <li ng-hide="selectedUser.$isAnonymous()">
             <label>
               <input type="checkbox" name="canCreateObjects"
-                     data-ng-checked="selectedUser.rights.canCreateObjects"
-                     data-ng-model="selectedUser.rights.canCreateObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
+                     ng-checked="selectedUser.rights.canCreateObjects"
+                     ng-model="selectedUser.rights.canCreateObjects"
+                     ng-change="confirmChange(selectedUser)" />
               <var:string label:value="This person can add cards to this addressbook." />
             </label>
           </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
+          <li ng-hide="selectedUser.$isAnonymous()">
             <label>
               <input type="checkbox" name="canEditObjects"
-                     data-ng-checked="selectedUser.rights.canEditObjects"
-                     data-ng-model="selectedUser.rights.canEditObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
+                     ng-checked="selectedUser.rights.canEditObjects"
+                     ng-model="selectedUser.rights.canEditObjects"
+                     ng-change="confirmChange(selectedUser)" />
               <var:string label:value="This person can edit the cards of this addressbook." />
             </label>
           </li>
-          <li data-ng-hide="selectedUser.$isAnonymous()">
+          <li ng-hide="selectedUser.$isAnonymous()">
             <label>
               <input type="checkbox" name="canEraseObjects"
-                     data-ng-checked="selectedUser.rights.canEraseObjects"
-                     data-ng-model="selectedUser.rights.canEraseObjects"
-                     data-ng-change="confirmChange(selectedUser)" />
+                     ng-checked="selectedUser.rights.canEraseObjects"
+                     ng-model="selectedUser.rights.canEraseObjects"
+                     ng-change="confirmChange(selectedUser)" />
               <var:string label:value="This person can erase cards from this addressbook." />
             </label>
           </li>

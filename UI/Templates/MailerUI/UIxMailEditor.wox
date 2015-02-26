@@ -15,8 +15,8 @@
         </label>
         <!--<div class="pseudo-input-field">-->
           <md-select name="from"
-                  data-ng-model="message.editable.from">
-                  <md-option ng-value="identity" data-ng-repeat="identity in identities">{{identity}}</md-option>
+                  ng-model="message.editable.from">
+                  <md-option ng-value="identity" ng-repeat="identity in identities">{{identity}}</md-option>
           </md-select>
         <!--</div>-->
 
@@ -31,7 +31,7 @@
                       ng-model="message.editable.to"
                       label:placeholder="Add a recipient"
                       ng-focus="angular.element().triggerHandler('focus')">
-            <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
+            <auto-complete source="userFilter($query)"><!-- to --></auto-complete>
           </tags-input>
 
       </div>
@@ -43,7 +43,7 @@
           <tags-input type="text" name="cc"
                       ng-model="message.editable.cc"
                       label:placeholder="Add a recipient">
-            <auto-complete data-source="userFilter($query)"><!-- to --></auto-complete>
+            <auto-complete source="userFilter($query)"><!-- to --></auto-complete>
           </tags-input>
         </div>
       </div>
@@ -61,8 +61,8 @@
         </label>
         <div class="pseudoInput-text">
           <input type="file"
-                 data-nv-file-select="nv-file-select"
-                 data-uploader="uploader"/>
+                 nv-file-select="nv-file-select"
+                 uploader="uploader"/>
         </div>
       </div>
 
@@ -79,11 +79,11 @@
       <div class="buttonsToolbar">
         <div layout="row" layout-align="end center">
           <md-button
-             data-ng-click="message.$save()">
+             ng-click="message.$save()">
             <var:string label:value="Save"/>
           </md-button>
           <md-button class="fg-sogoBlue-700 md-primary md-hue-3"
-             data-ng-click="send(message)">
+             ng-click="send(message)">
             <var:string label:value="Send"/>
           </md-button>
         </div>

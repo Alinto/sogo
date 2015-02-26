@@ -63,7 +63,7 @@
     </var:foreach>
   </head>
 
-  <body var:data-ng-app="angularModule">
+  <body var:ng-app="angularModule">
 
     <script type="text/ng-template" id="menu.html">
       <ion-side-menus>
@@ -87,8 +87,8 @@
                 <var:string label:value="Address Books"/>
               </ion-item>
             </ion-list>
-            <a class="button button-full button-assertive" href="#" data-ng-href="{{UserFolderURL}}logoff?theme=mobile"><var:string label:value="Disconnect"/></a>
-            <a class="button button-small button-outline button-stable button-block" data-ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
+            <a class="button button-full button-assertive" href="#" ng-href="{{UserFolderURL}}logoff?theme=mobile"><var:string label:value="Disconnect"/></a>
+            <a class="button button-small button-outline button-stable button-block" ng-href="{{ApplicationBaseURL}}"><var:string label:value="Desktop Version"/></a>
           </ion-content>
         </ion-side-menu>
       </ion-side-menus>

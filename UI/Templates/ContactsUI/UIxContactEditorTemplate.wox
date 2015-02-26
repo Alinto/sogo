@@ -4,18 +4,18 @@
   <md-content md-scroll-y="true" class="md-padding">
     <div class="editor md-padding" style="padding-bottom: 72px">
       <hgroup class="header">
-        <h1 class="sg-md-display-2--light" data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
+        <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
         <h6 class="sg-md-display-2-subheader">{{card.$description()}}
-          <span data-ng-repeat="category in card.categories">{{category.value}}</span>
+          <span ng-repeat="category in card.categories">{{category.value}}</span>
         </h6>
       </hgroup>
-  <form name="cardForm" data-ng-show="card.$isCard()" data-ng-submit="save(cardForm)">
+  <form name="cardForm" ng-show="card.$isCard()" ng-submit="save(cardForm)">
       <md-input-container>
         <var:entity const:name="nbsp"/>
         <label class="pseudo-input-label">
           <var:string label:value="Display"/>
         </label>
-          <input type="text" ng-maxlength="30" data-ng-model="card.fn"/>
+          <input type="text" ng-maxlength="30" ng-model="card.fn"/>
       </md-input-container>
 <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles-->
     <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
@@ -23,19 +23,19 @@
         <label class="pseudo-input-label">
           <var:string label:value="Firstname"/>
         </label>
-        <input type="text" data-ng-model="card.givenname"/>
+        <input type="text" ng-model="card.givenname"/>
       </md-input-container>
       <md-input-container flex="40">
         <label class="pseudo-input-label">
           <var:string label:value="Lastname"/>
         </label>
-        <input type="text" data-ng-model="card.sn"/>
+        <input type="text" ng-model="card.sn"/>
       </md-input-container>
       <md-input-container flex="20">
         <label class="pseudo-input-label">
           <var:string label:value="Nickname"/>
         </label>
-        <input type="text" data-ng-model="card.nickname"/>
+        <input type="text" ng-model="card.nickname"/>
       </md-input-container>
     </div>
 
@@ -44,33 +44,33 @@
         <label class="pseudo-input-label">
           <var:string label:value="Organization"/>
         </label>
-        <input type="text" data-ng-model="card.org"/>
+        <input type="text" ng-model="card.org"/>
       </md-input-container>
       <md-input-container>
         <label class="pseudo-input-label">
           <var:string label:value="Title"/>
         </label>
-        <input type="text" data-ng-model="card.title"/>
+        <input type="text" ng-model="card.title"/>
       </md-input-container>
     </div>
 
     <!-- org units -->
-      <div class="attr" data-ng-repeat="unit in card.orgUnits">
+      <div class="attr" ng-repeat="unit in card.orgUnits">
         <div layout="row" layout-align="center end">
           <md-input-container>
             <label class="pseudo-input-label">
               <var:string label:value="Organization Unit"/>
             </label>
-            <input type="text" data-ng-model="unit.value"
-                   data-sg-focus-on="orgUnit_{{$index}}"/>
+            <input type="text" ng-model="unit.value"
+                   sg-focus-on="orgUnit_{{$index}}"/>
           </md-input-container>
-            <md-button class="icon" data-ng-click="card.$delete('orgUnits', $index)">
+            <md-button class="icon" ng-click="card.$delete('orgUnits', $index)">
               <i class="md-icon-remove-circle"><!-- remove --></i>
             </md-button>
         </div>
       </div>
     <div class="md-layout-margin" layout="row" layout-align="start center">
-      <md-button class="icon" data-ng-click="addOrgUnit()">
+      <md-button class="icon" ng-click="addOrgUnit()">
         <i class="md-icon-add-circle"><!-- plus icon button--></i>
       </md-button>
       <label class="button-label">
@@ -83,28 +83,28 @@
           <label class="pseudo-input-label--no-margin">
             <var:string label:value="Birthday"/>
           </label>
-            <input type="date" data-ng-model="card.birthday"/>
+            <input type="date" ng-model="card.birthday"/>
     </md-input-container>
 
     <!-- categories -->
-        <div class="attr" data-ng-repeat="category in card.categories">
+        <div class="attr" ng-repeat="category in card.categories">
           <div layout="row" layout-align="center end">
             <md-input-container>
               <label class="pseudo-input-label">
                 <var:string label:value="Category"/>
               </label>
-              <input type="text" data-ng-model="category.value"
-                     data-sg-focus-on="category_{{$index}}"/>
-              <!--data-typeahead="cat for cat in card.allCategories | filter:$viewValue"/>-->
+              <input type="text" ng-model="category.value"
+                     sg-focus-on="category_{{$index}}"/>
+              <!--typeahead="cat for cat in card.allCategories | filter:$viewValue"/>-->
             </md-input-container>
-            <md-button class="icon" data-ng-click="card.$delete('categories', $index)">
+            <md-button class="icon" ng-click="card.$delete('categories', $index)">
               <i class="md-icon-remove-circle"><!-- remove --></i>
             </md-button>
           </div>
         </div>
         <!-- New category button-group -->
         <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="icon" data-ng-click="addCategory()">
+            <md-button class="icon" ng-click="addCategory()">
               <i class="md-icon-add-circle"><!-- new --></i>
             </md-button>
             <label class="button-label">
@@ -114,24 +114,24 @@
 
     <!-- emails -->
     <div class="section">
-      <div class="attr" data-ng-repeat="email in card.emails">
+      <div class="attr" ng-repeat="email in card.emails">
         <div class="md-layout-margin" layout="row" layout-align="space-between end">
           <md-select ng-model="email.type">
             <md-option ng-repeat="type in allEmailTypes" ng-value="type">{{ type }}</md-option>
           </md-select>
           <md-input-container>
             <label class="pseudo-input-label"><var:string label:value="Email Address"/></label>
-            <input type="email" data-ng-model="email.value"
-                   data-sg-focus-on="email_{{$index}}"/>
+            <input type="email" ng-model="email.value"
+                   sg-focus-on="email_{{$index}}"/>
           </md-input-container>
-          <md-button class="icon" data-ng-click="card.$delete('emails', $index)">
+          <md-button class="icon" ng-click="card.$delete('emails', $index)">
             <i class="md-icon-remove-circle"><!-- remove --></i>
           </md-button>
         </div>
 
       </div>
       <div class="md-layout-margin" layout="row" layout-align="start center">
-        <md-button class="icon" data-ng-click="addEmail()">
+        <md-button class="icon" ng-click="addEmail()">
           <i class="md-icon-add-circle"><!-- new --></i>
         </md-button>
         <label class="button-label">
@@ -142,27 +142,27 @@
 
     <!-- phones -->
       <div class="section">
-        <div class="attr" data-ng-repeat="phone in card.phones">
+        <div class="attr" ng-repeat="phone in card.phones">
           <div layout="row" layout-align="center end">
             <i class="md-icon-phone md-icon-lg cols-1"><!--icon--></i>
-            <md-select data-ng-model="phone.type">
+            <md-select ng-model="phone.type">
               <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
             <md-input-container>
               <label class="pseudo-input-label">
                 <var:string label:value="Phone Number"/>
               </label>
-              <input type="text" data-ng-model="phone.value"
-                     data-sg-focus-on="phone_{{$index}}"/>
+              <input type="text" ng-model="phone.value"
+                     sg-focus-on="phone_{{$index}}"/>
             </md-input-container>
-            <md-button class="icon" data-ng-click="card.$delete('phones', $index)">
+            <md-button class="icon" ng-click="card.$delete('phones', $index)">
               <i class="md-icon-remove-circle"><!-- remove --></i>
             </md-button>
           </div>
         </div>
 
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" data-ng-click="addPhone()">
+          <md-button class="icon" ng-click="addPhone()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -173,24 +173,24 @@
 
     <!-- urls -->
       <div class="section">
-        <div class="attr" data-ng-repeat="url in card.urls">
+        <div class="attr" ng-repeat="url in card.urls">
           <div layout="row" layout-align="center end">
-              <md-select class="text-right" data-ng-model="url.type">
+              <md-select class="text-right" ng-model="url.type">
                 <md-option ng-repeat="type in allUrlTypes" value="type">{{ type }}</md-option>
               </md-select>
             <md-input-container>
               <label class="pseudo-input-label">
                 <var:string label:value="URL"/>
               </label>
-                <input type="url" data-ng-model="url.value" data-sg-focus-on="url_{{$index}}"/>
+                <input type="url" ng-model="url.value" sg-focus-on="url_{{$index}}"/>
             </md-input-container>
-            <span class="button alert icon" data-ng-click="card.$delete('urls', $index)">
+            <span class="button alert icon" ng-click="card.$delete('urls', $index)">
               <i class="md-icon-remove-circle-outline"><!-- remove --></i>
             </span>
           </div>
         </div>
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" data-ng-click="addUrl()">
+          <md-button class="icon" ng-click="addUrl()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -201,11 +201,11 @@
 
     <!-- addresses -->
       <div class="section">
-        <div class="attr" data-ng-repeat="address in card.addresses">
+        <div class="attr" ng-repeat="address in card.addresses">
 
 
           <div layout="row" layout-align="start end">
-            <md-select data-ng-model="address.type">
+            <md-select ng-model="address.type">
               <md-option ng-repeat="type in allAddressTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
             <p>
@@ -217,14 +217,14 @@
               <label>
                 <var:string label:value="street"/>
               </label>
-              <input type="text" data-ng-model="address.street"
-                     data-sg-focus-on="address_{{$index}}"/>
+              <input type="text" ng-model="address.street"
+                     sg-focus-on="address_{{$index}}"/>
             </md-input-container>
             <md-input-container>
               <label>
                 <var:string label:value=""/>
               </label>
-              <input type="text" data-ng-model="address.street2"/>
+              <input type="text" ng-model="address.street2"/>
             </md-input-container>
           </div>
           <div layout="row" layout-align="center end">
@@ -232,7 +232,7 @@
               <label>
                 <var:string label:value="Postoffice"/>
               </label>
-              <input type="text" data-ng-model="address.postoffice"/>
+              <input type="text" ng-model="address.postoffice"/>
             </md-input-container>
           </div>
           <div layout="row" layout-align="center end">
@@ -240,7 +240,7 @@
               <label>
                 <var:string label:value="City"/>
               </label>
-              <input type="text" data-ng-model="address.locality"/>
+              <input type="text" ng-model="address.locality"/>
             </md-input-container>
           </div>
           <div layout="row" layout-align="center end">
@@ -248,7 +248,7 @@
               <label>
                 <var:string label:value="Region"/>
               </label>
-              <input type="text" data-ng-model="address.region"/>
+              <input type="text" ng-model="address.region"/>
             </md-input-container>
           </div>
           <div layout="row" layout-align="center end">
@@ -256,7 +256,7 @@
               <label>
                 <var:string label:value="Country"/>
               </label>
-              <input type="text" data-ng-model="address.country"/>
+              <input type="text" ng-model="address.country"/>
             </md-input-container>
           </div>
           <div layout="row" layout-align="center end">
@@ -264,15 +264,15 @@
               <label>
                 <var:string label:value="Postal Code"/>
               </label>
-              <input type="text" data-ng-model="address.postalcode"/>
+              <input type="text" ng-model="address.postalcode"/>
             </md-input-container>
-            <md-button class="icon" data-ng-click="card.$delete('addresses', $index)">
+            <md-button class="icon" ng-click="card.$delete('addresses', $index)">
               <i class="md-icon-remove-circle"><!-- remove --></i>
             </md-button>
           </div>
         </div>
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" data-ng-click="addAddress()">
+          <md-button class="icon" ng-click="addAddress()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -287,16 +287,16 @@
         <label class=" right inline">
           <var:string label:value="Note"/>
         </label>
-        <textarea data-ng-model="card.note"><!-- note --></textarea>
+        <textarea ng-model="card.note"><!-- note --></textarea>
       </md-input-container>
 
 
 
     <div  class="fieldset md-layout-margin" layout="row" layout-align="end center">
-      <md-button class="md-primary md-hue-3" data-ng-click="cancel()">
+      <md-button class="md-primary md-hue-3" ng-click="cancel()">
         <var:string label:value="Cancel"/>
       </md-button>
-      <md-button class="md-accent" data-ng-click="reset()">
+      <md-button class="md-accent" ng-click="reset()">
         <var:string label:value="Reset"/>
       </md-button>
       <md-button class="md-accent md-hue-3" type="submit">
@@ -304,13 +304,13 @@
       </md-button>
     </div>
   </form>
-  <form name="listForm" data-ng-show="card.$isList()" data-ng-submit="save(listForm)">
+  <form name="listForm" ng-show="card.$isList()" ng-submit="save(listForm)">
     <div class="buttonsToolbar">
-      <span class="button tiny radius secondary" data-ng-click="cancel()">
+      <span class="button tiny radius secondary" ng-click="cancel()">
         <i class="icon-arrow-left"><!-- cancel --></i>
         <var:string label:value="Cancel"/>
       </span>
-      <span class="button tiny radius secondary" data-ng-click="reset()">
+      <span class="button tiny radius secondary" ng-click="reset()">
         <i class="icon-undo"><!-- reset --></i>
         <var:string label:value="Reset"/>
       </span>
@@ -327,7 +327,7 @@
           </label>
         </div>
         <div class="value">
-          <input type="text" data-ng-model="card.fn"/>
+          <input type="text" ng-model="card.fn"/>
         </div>
       </div>
       <div class="attr">
@@ -337,15 +337,15 @@
           </label>
         </div>
         <div class="value">
-          <input type="text" data-ng-model="card.nickname"/>
+          <input type="text" ng-model="card.nickname"/>
         </div>
       </div>
     </div>
     <!-- list members -->
     <div class="section">
-      <div class="attr" data-ng-repeat="ref in card.refs">
+      <div class="attr" ng-repeat="ref in card.refs">
         <div class="action">
-          <span class="button alert icon" data-ng-click="card.$delete('refs', $index)">
+          <span class="button alert icon" ng-click="card.$delete('refs', $index)">
             <i class="md-icon-remove-circle-outline"><!-- remove --></i>
           </span>
         </div>
@@ -355,15 +355,15 @@
           </label>
         </div>
         <div class="value">
-          <input type="text" label:placeholder="email address" data-ng-model="ref.email"
-                 data-sg-focus-on="ref_{{$index}}"
-                 data-typeahead="card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})"
-                 data-typeahead-on-select="card.$updateMember($index, $model, $item)"/>
+          <input type="text" label:placeholder="email address" ng-model="ref.email"
+                 sg-focus-on="ref_{{$index}}"
+                 typeahead="card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})"
+                 typeahead-on-select="card.$updateMember($index, $model, $item)"/>
         </div>
       </div>
       <div class="attr">
         <div class="value single">
-          <span class="button outline secondary tiny" data-ng-click="addMember()">
+          <span class="button outline secondary tiny" ng-click="addMember()">
             <i class="md-icon-add"><!-- new --></i>
             <var:string label:value="Add Member"/>
           </span>

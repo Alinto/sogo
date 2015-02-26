@@ -11,13 +11,13 @@
   <header class="msg-header">
 
       <div class="msg-header-content">
-        <h3 class="sg-md-title-msg" data-ng-bind="message.subject"><!-- subject --></h3>
+        <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
         <div class="pseudo-input-container--compact">
           <label class="pseudo-input-label">
             <var:string label:value="From"/>
           </label>
           <div class="pseudo-input-field">
-            <a data-ng-href="mailto:{{message.from[0].email}}" data-ng-bind="message.from[0].full"><!-- from --></a>
+            <a ng-href="mailto:{{message.from[0].email}}" ng-bind="message.from[0].full"><!-- from --></a>
           </div>
         </div>
 
@@ -26,42 +26,42 @@
             <var:string label:value="To"/>
           </label>
           <div class="pseudo-input-field">
-            <a data-ng-href="mailto:{{message.to[0].email}}" data-ng-bind="message.to[0].full"><!-- to --></a>
+            <a ng-href="mailto:{{message.to[0].email}}" ng-bind="message.to[0].full"><!-- to --></a>
           </div>
         </div>
       </div>
 
 <!--      <p class="flags">
         &lt;!&ndash; Todo: change the text for an icon (conditional ?) The read/unread flag doesn't make sense at his place&ndash;&gt;
-        <span class="pseudo-input-label" data-ng-repeat="flag in message.flags">{{flag}}</span>
+        <span class="pseudo-input-label" ng-repeat="flag in message.flags">{{flag}}</span>
       </p>
 -->
 
     <div class="sg-icon-bar">
         <a class="button tiny radius"
-            data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"><i class="md-icon-reply"><!-- reply --></i></a>
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"><i class="md-icon-reply"><!-- reply --></i></a>
         <a class="button tiny radius"
-            data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i></a>
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i></a>
         <a class="button tiny radius"
-            data-ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i></a>
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i></a>
         <a class="button tiny radius"
-            data-ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
-            data-ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i></a>
+            ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
+            ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i></a>
         <span class="button tiny radius alert"
-            data-ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i></span>
+            ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i></span>
       <span class="button tiny radius"
-            data-ng-show="message.hasUnsafeContent"
-            data-ng-click="loadImages()"><var:string label:value="Load Images"/></span>
+            ng-show="message.hasUnsafeContent"
+            ng-click="loadImages()"><var:string label:value="Load Images"/></span>
     </div>
   </header>
   <md-divider><!-- divider --></md-divider>
 
   <div class="msg-body">
     <div class="msg-date sg-md-body-multi">
-      <time datetime="message.date" data-ng-bind="message.date"><!-- date --></time>
+      <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
     </div>
     <div class="mailer_mailcontent"
-         data-ng-bind-html="message.$content()"><!-- msg --></div>
+         ng-bind-html="message.$content()"><!-- msg --></div>
   </div>
 
 </md-content>

@@ -13,7 +13,7 @@
     <var:if condition="isMultiColumnView">
       <div class="calendarLabels">
         <var:foreach list="calendarsToDisplay" item="currentCalendar">
-          <div class="calendarsToDisplay" var:data-folder="currentCalendar.folder">
+          <div class="calendarsToDisplay" var:folder="currentCalendar.folder">
             <var:string value="labelForCalendar"/>
           </div>
         </var:foreach>

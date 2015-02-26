@@ -12,18 +12,18 @@
           <!--avatar--><!-- currentCard.tag = vcard || vlist -->
         </div>
         <div class="msg-header-content">
-          <h1 class="sg-md-display-2--light" data-ng-bind-html="card.$fullname()"><!-- fullname --></h1>
+          <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader">{{card.$description()}}
-            <span class="label radius" data-ng-repeat="category in card.categories">{{category.value}}</span>
+            <span class="label radius" ng-repeat="category in card.categories">{{category.value}}</span>
           </h6>
         </div>
         <div class="sg-icon-bar">
-          <span data-ng-show="addressbook.isEditable">
-            <a class="button tiny radius" data-ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+          <span ng-show="addressbook.isEditable">
+            <a class="button tiny radius" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
               <i class="md-icon-create"><!-- edit --></i>
             </a>
           </span>
-          <span class="button tiny radius alert" data-ng-click="confirmDelete(card)">
+          <span class="button tiny radius alert" ng-click="confirmDelete(card)">
             <i class="md-icon-delete"><!-- delete --></i>
           </span>
         </div>
@@ -31,7 +31,7 @@
       <md-divider class="md-inset"><!-- divider --></md-divider>
       <section class="msg-body">
 
-        <div class="pseudo-input-container" data-ng-show="card.birthday">
+        <div class="pseudo-input-container" ng-show="card.birthday">
           <div class="key">
             <label class="pseudo-input-label">
               <var:string label:value="Birthday"/>
@@ -42,16 +42,16 @@
           </div>
         </div>
 
-        <div class="section" data-ng-repeat="ref in card.refs track by ref.reference">
+        <div class="section" ng-repeat="ref in card.refs track by ref.reference">
           <!-- list members -->
 
           <div class="pseudo-input-container">
             <div class="value single">
-              <a data-ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">
+              <a ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">
                 {{ref.$fullname()}}
               </a>
-              <div data-ng-show="ref.email">
-                <a data-ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
+              <div ng-show="ref.email">
+                <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
                   <i class="md-icon-mail"><!-- email --></i>
                   {{ref.email}}
                 </a>
@@ -60,7 +60,7 @@
           </div>
 
           <div class="section">
-            <div class="pseudo-input-container" data-ng-repeat="email in card.emails">
+            <div class="pseudo-input-container" ng-repeat="email in card.emails">
               <div class="key">
                 <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}
                 </label>
@@ -75,8 +75,8 @@
         </div>
 
 
-        <div class="section" data-ng-show="card.phones.length > 0">
-          <div class="pseudo-input-container" data-ng-repeat="phone in card.phones">
+        <div class="section" ng-show="card.phones.length > 0">
+          <div class="pseudo-input-container" ng-repeat="phone in card.phones">
             <div class="key">
               <label class="pseudo-input-label">{{phone.type}}</label>
             </div>
@@ -87,37 +87,37 @@
 
           </div>
         </div>
-        <div class="section" data-ng-show="card.urls">
-          <div class="pseudo-input-container" data-ng-repeat="url in card.urls">
+        <div class="section" ng-show="card.urls">
+          <div class="pseudo-input-container" ng-repeat="url in card.urls">
             <div class="key">
               <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}
               </label>
             </div>
 
             <div class="pseudo-input-field">
-              <a href="#" data-ng-href="{{url.value}}">{{url.value}}</a>
+              <a href="#" ng-href="{{url.value}}">{{url.value}}</a>
             </div>
 
           </div>
         </div>
-        <div class="section" data-ng-show="card.addresses">
-          <div class="pseudo-input-container" data-ng-repeat="address in card.addresses">
+        <div class="section" ng-show="card.addresses">
+          <div class="pseudo-input-container" ng-repeat="address in card.addresses">
             <div class="key">
               <label class="pseudo-input-label">{{address.type}}</label>
             </div>
             <div class="pseudo-input-field">
-              <div data-sg-address="address"><!-- address --></div>
+              <div sg-address="address"><!-- address --></div>
             </div>
           </div>
         </div>
-        <div class="pseudo-input-container" data-ng-show="card.note">
+        <div class="pseudo-input-container" ng-show="card.note">
           <div class="key">
             <label class="pseudo-input-label">
               <var:string label:value="Note"/>
             </label>
           </div>
           <div class="pseudo-input-field">
-            <div data-ng-bind-html="card.note"><!-- note --></div>
+            <div ng-bind-html="card.note"><!-- note --></div>
           </div>
         </div>
       </section>

@@ -16,16 +16,16 @@
   <!--
       <div id="mainMenu">
       <ul>
-      <li data-ng-class="{_selected: $state.is('general')}" data-ui-sref="general">
+      <li ng-class="{_selected: $state.is('general')}" ui-sref="general">
       <i class="icon-cog"> </i><var:string label:value="General" /></li>
       <var:if condition="userHasCalendarAccess">
-      <li data-ng-class="{_selected: state.is('calendars')}" data-ui-sref="calendars">
+      <li ng-class="{_selected: state.is('calendars')}" ui-sref="calendars">
       <i class="icon-calendar2"> </i><var:string label:value="Calendars" /></li>
       </var:if>
-      <li data-ng-class="{_selected: state.is('addressbooks')}" data-ui-sref="addressbooks">
+      <li ng-class="{_selected: state.is('addressbooks')}" ui-sref="addressbooks">
       <i class="icon-address-book"> </i><var:string label:value="Address Book" /></li>
       <var:if condition="userHasMailAccess">
-      <li data-ng-class="{_selected: state.is('mailer')}" data-ui-sref="mailer">
+      <li ng-class="{_selected: state.is('mailer')}" ui-sref="mailer">
       <i class="icon-mail3"> </i><var:string label:value="Mailer" /></li>
       </var:if>
       </ul>
@@ -34,7 +34,7 @@
 
   <!--
       <div id="container">
-      <div id="viewer" data-ui-view="preferences"> </div>
+      <div id="viewer" ui-view="preferences"> </div>
       </div>
   -->
   <section layout="row" flex="flex">
@@ -106,7 +106,7 @@
 
       <script type="text/ng-template" id="preferences.html">
         <form name="preferencesForm"
-              data-ng-submit="save()">
+              ng-submit="save()">
           <div ui-view="module"><!-- view --></div>
           <md-button class="button tiny radius" type="submit">
             <var:string label:value="Save" />
@@ -847,7 +847,7 @@
 
                   <div class="value">
                     <p class="PseudoField-inputLike--underline">
-                      <input type="date" data-ng-model="preferences.defaults.Vacation.endDate"/>
+                      <input type="date" ng-model="preferences.defaults.Vacation.endDate"/>
                     </p>
                   </div>
 

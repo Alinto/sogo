@@ -190,7 +190,7 @@
       <li><var:string label:value="None" /></li>
       <li> separator </li>
       <var:foreach list="availableLabels" item="currentLabel">
-        <li var:class="currentLabel.name.asCSSIdentifier" var:data-name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
+        <li var:class="currentLabel.name.asCSSIdentifier" var:name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
       </var:foreach>
     </ul>
   </div>
@@ -232,30 +232,30 @@
 <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type = "text/ng-template" id="UIxMailMainFrame">
     <!-- dropdown menu for mailbox options button -->
-    <div id="folderProperties" class ="f-dropdown icons-dropdown" data-dropdown-content="dropdown-content">
+    <div id="folderProperties" class ="f-dropdown icons-dropdown" dropdown-content="dropdown-content">
       <ul class = "button-group">
-        <li data-ng-show = "currentFolder.isEditable">
-          <span class = "button" data-ng-click = "editFolder(currentFolder)">
+        <li ng-show = "currentFolder.isEditable">
+          <span class = "button" ng-click = "editFolder(currentFolder)">
             <i class = "icon-pencil"><!-- rename --></i>
           </span>
         </li>
-        <li data-ng-show = "currentFolder.isEditable">
-          <span class = "button" data-ng-click = "newFolder(currentFolder)">
+        <li ng-show = "currentFolder.isEditable">
+          <span class = "button" ng-click = "newFolder(currentFolder)">
             <i class = "icon-plus"><!-- new mailbox --></i>
           </span>
         </li>
-        <li data-ng-show = "currentFolder.isEditable">
-          <span class = "button" data-ng-click = "share()">
+        <li ng-show = "currentFolder.isEditable">
+          <span class = "button" ng-click = "share()">
             <i class = "icon-earth"><!-- share --></i>
           </span>
         </li>
         <li>
-          <span class = "button" data-ng-click = "exportMails()">
+          <span class = "button" ng-click = "exportMails()">
             <i class = "icon-ion-ios7-upload-outline"><!-- export --></i>
           </span>
         </li>
-        <li data-ng-show = "currentFolder.isEditable">
-          <span class = "button" data-ng-click = "confirmDelete()">
+        <li ng-show = "currentFolder.isEditable">
+          <span class = "button" ng-click = "confirmDelete()">
             <i class = "icon-trash"><!-- delete --></i>
           </span>
         </li>
@@ -282,7 +282,7 @@
               </div>
             </md-item-content>
           </md-item>
-          <sg-folder-tree data-ng-repeat="folder in account.$mailboxes track by folder.id" data-sg-root="account" data-sg-folder="folder" data-sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
+          <sg-folder-tree ng-repeat="folder in account.$mailboxes track by folder.id" sg-root="account" sg-folder="folder" sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
         </md-list>
       </md-content>
     </md-sidenav>
