@@ -2364,7 +2364,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id value;
 
   folderId = [[(id)[theDocumentElement getElementsByTagName: @"FolderId"] lastObject] textValue];
+
+  // if folderId is not there try to get it from URL
+  if (!folderId)
+    {
+     folderId = [[[context request] uri] collectionid];
+    }
+
   itemId = [[(id)[theDocumentElement getElementsByTagName: @"ItemId"] lastObject] textValue];
+
+  // if itemId is not there try to get it from URL
+  if (!itemId)
+    {
+     itemId = [[[context request] uri] itemid];
+    }
+
   realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
@@ -2562,7 +2576,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
   // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
   //
-  if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame ||
+  if (([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame ||
+      [cmdName caseInsensitiveCompare: @"SmartReply"] == NSOrderedSame ||
+      [cmdName caseInsensitiveCompare: @"SmartForward"] == NSOrderedSame) &&
       [[theRequest headerForKey: @"content-type"] caseInsensitiveCompare: @"message/rfc822"] == NSOrderedSame)
     {
       NSString *s, *xml;
@@ -2580,7 +2596,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           s = [theRequest contentAsString];
         }
       
-      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><SendMail xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></SendMail>", [s stringByEncodingBase64]];
+      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><%@ xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></%@>", cmdName, [s stringByEncodingBase64], cmdName];
+
 
       
       d = [xml dataUsingEncoding: NSASCIIStringEncoding];

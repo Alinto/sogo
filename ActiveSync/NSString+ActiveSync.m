@@ -298,6 +298,31 @@ static NSArray *easCommandParameters = nil;
   return s;
 }
 
+- (NSString *) itemid
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"ITEMID="];
+
+  if (!s)
+    s = @"Unknown";
+
+  return s;
+}
+
+- (NSString *) collectionid
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"COLLECTIONID="];
+
+  if (!s)
+    s = @"Unknown";
+
+  return s;
+}
+
+
 //
 // FIXME: combine with our OpenChange code.
 //
