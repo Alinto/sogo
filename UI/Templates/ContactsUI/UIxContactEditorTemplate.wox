@@ -144,6 +144,7 @@
       <div class="section">
         <div class="attr" data-ng-repeat="phone in card.phones">
           <div layout="row" layout-align="center end">
+            <i class="md-icon-phone md-icon-lg cols-1"><!--icon--></i>
             <md-select data-ng-model="phone.type">
               <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
