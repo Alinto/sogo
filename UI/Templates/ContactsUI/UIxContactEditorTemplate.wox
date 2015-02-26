@@ -70,7 +70,7 @@
         </div>
       </div>
     <div class="md-layout-margin" layout="row" layout-align="start center">
-      <md-button class="icon" ng-click="addOrgUnit()">
+      <md-button class="icon" type="button" ng-click="addOrgUnit($event)">
         <i class="md-icon-add-circle"><!-- plus icon button--></i>
       </md-button>
       <label class="button-label">
@@ -104,7 +104,7 @@
         </div>
         <!-- New category button-group -->
         <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="icon" ng-click="addCategory()">
+            <md-button class="icon" type="button" ng-click="addCategory()">
               <i class="md-icon-add-circle"><!-- new --></i>
             </md-button>
             <label class="button-label">
@@ -131,7 +131,7 @@
 
       </div>
       <div class="md-layout-margin" layout="row" layout-align="start center">
-        <md-button class="icon" ng-click="addEmail()">
+        <md-button class="icon" type="button" ng-click="addEmail()">
           <i class="md-icon-add-circle"><!-- new --></i>
         </md-button>
         <label class="button-label">
@@ -162,7 +162,7 @@
         </div>
 
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" ng-click="addPhone()">
+          <md-button class="icon" type="button" ng-click="addPhone()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -190,7 +190,7 @@
           </div>
         </div>
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" ng-click="addUrl()">
+          <md-button class="icon" type="button" ng-click="addUrl()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -272,7 +272,7 @@
           </div>
         </div>
         <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="icon" ng-click="addAddress()">
+          <md-button class="icon" type="button" ng-click="addAddress()">
             <i class="md-icon-add-circle"><!-- new --></i>
           </md-button>
           <label class="button-label">
@@ -363,7 +363,7 @@
       </div>
       <div class="attr">
         <div class="value single">
-          <span class="button outline secondary tiny" ng-click="addMember()">
+          <span class="button outline secondary tiny" type="button" ng-click="addMember()">
             <i class="md-icon-add"><!-- new --></i>
             <var:string label:value="Add Member"/>
           </span>
