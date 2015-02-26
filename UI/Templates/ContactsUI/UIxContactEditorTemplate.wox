@@ -116,7 +116,7 @@
     <div class="section">
       <div class="attr" ng-repeat="email in card.emails">
         <div class="md-layout-margin" layout="row" layout-align="space-between end">
-          <md-select ng-model="email.type">
+          <md-select ng-model="email.type" label:placeholder="Type">
             <md-option ng-repeat="type in allEmailTypes" ng-value="type">{{ type }}</md-option>
           </md-select>
           <md-input-container>
@@ -145,7 +145,7 @@
         <div class="attr" ng-repeat="phone in card.phones">
           <div layout="row" layout-align="center end">
             <i class="md-icon-phone md-icon-lg cols-1"><!--icon--></i>
-            <md-select ng-model="phone.type">
+            <md-select ng-model="phone.type" label:placeholder="Type">
               <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
             <md-input-container>
@@ -175,7 +175,7 @@
       <div class="section">
         <div class="attr" ng-repeat="url in card.urls">
           <div layout="row" layout-align="center end">
-              <md-select class="text-right" ng-model="url.type">
+              <md-select ng-model="url.type" label:placeholder="Type">
                 <md-option ng-repeat="type in allUrlTypes" value="type">{{ type }}</md-option>
               </md-select>
             <md-input-container>
@@ -205,7 +205,7 @@
 
 
           <div layout="row" layout-align="start end">
-            <md-select ng-model="address.type">
+            <md-select ng-model="address.type" label:placeholder="Type">
               <md-option ng-repeat="type in allAddressTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
             <p>
