@@ -754,23 +754,31 @@ struct GlobalObjectId {
     
       len = [content length];
       
-      [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-
-      // Set the correct type if client requested text/html but we got text/plain
-      if (preferredBodyType == 2 && nativeBodyType == 1)
-         [s appendString: @"<Type>1</Type>"];
-      else
-         [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
-
-      [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
-      [s appendFormat: @"<Preview></Preview>"];
-
-      if (!truncated)
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
         {
-          [s appendFormat: @"<Data>%@</Data>", content];
-          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+          [s appendFormat: @"<Body xmlns=\"Email:\">%@</Body>", content];
+          [s appendFormat: @"<BodyTruncated xmlns=\"Email:\">%d</BodyTruncated>", truncated];
         }
-      [s appendString: @"</Body>"];
+      else
+       {
+          [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+
+          // Set the correct type if client requested text/html but we got text/plain
+          if (preferredBodyType == 2 && nativeBodyType == 1)
+             [s appendString: @"<Type>1</Type>"];
+          else
+             [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
+
+          [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
+          [s appendFormat: @"<Preview></Preview>"];
+
+          if (!truncated)
+            {
+              [s appendFormat: @"<Data>%@</Data>", content];
+              [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+            }
+          [s appendString: @"</Body>"];
+       }
     }
   
   // Attachments -namespace 16
