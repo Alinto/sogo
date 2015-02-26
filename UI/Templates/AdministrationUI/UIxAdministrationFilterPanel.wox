@@ -5,10 +5,10 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-    <div class="filterPanel" data-search="admin">
+    <div class="filterPanel" search="admin">
       <div class="menu" id="searchMenu">
         <ul class="choiceMenu">
-          <li data-option="name_or_address"><var:string
+          <li option="name_or_address"><var:string
             label:value="Name or Email"/></li>
         </ul>
       </div>

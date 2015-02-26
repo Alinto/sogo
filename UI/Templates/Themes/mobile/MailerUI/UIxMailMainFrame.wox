@@ -52,8 +52,8 @@
             <i class="icon ion-search placeholder-icon"><!-- search --></i>
             <input type="text"
                    placeholder="Search"
-                   data-ng-model="search.filter"
-                   data-ng-keyup="doSearch($event)"/>
+                   ng-model="search.filter"
+                   ng-keyup="doSearch($event)"/>
           </ion-item>
         </ion-list>
         <ion-list class="small">
@@ -65,7 +65,7 @@
             <h2>{{currentMessage.$shortAddress('from')}}</h2>
             <p>{{currentMessage.subject}}</p>
             <i class="icon ion-looping"
-               data-ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+               ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
             <i class="icon ion-ios7-arrow-right"><!-- right arrow icon --></i>
           </ion-item>
         </ion-list>
@@ -80,13 +80,13 @@
       </ion-nav-buttons>
       <ion-content class="has-header" padding="10">
         <h5>{{message.subject}}</h5>
-        <small><a data-ng-href="mailto:{{message.from[0].address}}">{{message.from[0].name}}</a>
+        <small><a ng-href="mailto:{{message.from[0].address}}">{{message.from[0].name}}</a>
         -
-        <a data-ng-href="mailto:{{message.to[0].address}}">{{message.to[0].name}}</a>
+        <a ng-href="mailto:{{message.to[0].address}}">{{message.to[0].name}}</a>
         <br />
         {{message.date}}</small>
         <hr/>
-        <div data-ng-bind-html="message.$content()"><!-- msg --></div>
+        <div ng-bind-html="message.$content()"><!-- msg --></div>
       </ion-content>
     </ion-view>
   </script>

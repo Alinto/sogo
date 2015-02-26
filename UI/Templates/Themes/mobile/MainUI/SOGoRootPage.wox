@@ -12,7 +12,7 @@
     title="name"
     var:popup="isPopup">
 
-  <body data-ng-app="SOGo.RootPage">
+  <body ng-app="SOGo.RootPage">
 
   <ion-nav-view><!-- main view --></ion-nav-view>
 
@@ -33,7 +33,7 @@
           <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
           <img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>
           <a class="button button-positive button-block button-clear" href="http://inverse.ca/" target="_new">inverse.ca</a>
-          <a data-ng-href="{{ApplicationBaseURL}}?theme=desktop" class="button button-small button-outline button-stable button-block"><var:string label:value="Desktop Version"/></a>
+          <a ng-href="{{ApplicationBaseURL}}?theme=desktop" class="button button-small button-outline button-stable button-block"><var:string label:value="Desktop Version"/></a>
         </ion-content>
       </ion-side-menu>
     </ion-side-menus>
@@ -45,7 +45,7 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"><!-- menu toggle --></button>
       </ion-nav-buttons>
       <ion-content class="has-header">
-        <form name="loginForm" data-ng-submit="login(creds)">
+        <form name="loginForm" ng-submit="login(creds)">
         <ion-list>
           <ion-item class="item-input item-floating-label">
             <span class="input-label"><var:string label:value="Username"/></span>
@@ -58,7 +58,7 @@
           <ion-item class="item-input item-select">
             <div class="input-label"><var:string label:value="Language"/></div>
             <var:popup const:name="language"
-                       const:data-ng-model="creds.language"
+                       const:ng-model="creds.language"
 		       list="languages"
 		       item="item"
 		       var:value="item"
@@ -67,7 +67,7 @@
 		       />
           </ion-item>
         </ion-list>
-        <ion-checkbox data-ng-model="creds.rememberLogin"><var:string label:value="Remember username"/></ion-checkbox>
+        <ion-checkbox ng-model="creds.rememberLogin"><var:string label:value="Remember username"/></ion-checkbox>
         <p class="padding"><input class="button button-block button-positive" type="submit" label:value="Connect"/></p>
         </form>
       </ion-content>

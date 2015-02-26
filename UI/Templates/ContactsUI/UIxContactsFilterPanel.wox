@@ -5,13 +5,13 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-    <div class="filterPanel" data-search="contacts">
+    <div class="filterPanel" search="contacts">
       <div class="menu" id="searchMenu">
         <ul id="searchOptions" class="choiceMenu">
-          <li data-option="name_or_address"><var:string
+          <li option="name_or_address"><var:string
             label:value="Name or Email"/></li>
-          <li data-option="category"><var:string label:value="Category"/></li>
-          <li data-option="organization"><var:string label:value="Organization"/></li>
+          <li option="category"><var:string label:value="Category"/></li>
+          <li option="organization"><var:string label:value="Organization"/></li>
         </ul>
       </div>
       <span class="searchBox" style="float: right;">

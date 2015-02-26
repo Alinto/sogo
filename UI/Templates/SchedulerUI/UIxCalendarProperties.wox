@@ -110,7 +110,7 @@
               /></span></div>
             <div><span class="label"><var:string label:value="Color:"/></span
             ><span class="content"
-              ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
+              ><div id="colorButton" class="colorBox" var:color="calendarColor"><!-- space --></div
               ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
               /></span></div>
             <var:if condition="userIsOwner"

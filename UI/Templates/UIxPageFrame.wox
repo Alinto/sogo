@@ -43,7 +43,7 @@
         </var:if-ie>
       </head>
 
-      <body var:data-ng-app = "angularModule" var:class = "bodyClasses">
+      <body var:ng-app = "angularModule" var:class = "bodyClasses">
         <var:if condition = "isCompatibleBrowser">
           <var:if condition = "singleWindowModeEnabled">
             <div id = "popupFrame" style = "display: none;">
@@ -115,7 +115,7 @@
                 </md-button>
               </var:if>
             </var:if>
-            <md-button var:data-ng-href = "relativePreferencesPath">
+            <md-button var:ng-href = "relativePreferencesPath">
               <var:string label:value = "Preferences" />
             </md-button>
             <var:if condition = "isSuperUser">
