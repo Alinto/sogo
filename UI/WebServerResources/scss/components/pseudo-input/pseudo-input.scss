@@ -35,6 +35,17 @@ $input-padding-top: 2px !default;
   padding: 0 2px;
 
 }
+.sg-search-field-container {
+  margin-bottom: 12px;
+  color: white;
+  label {
+    color: inherit;
+  }
+  input {
+    color: inherit;
+    border: none;
+  }
+}
 
 .pseudo-input-label,
 .button-label {
@@ -45,6 +56,7 @@ $input-padding-top: 2px !default;
   font-size: sg-size(caption);
   line-height: $sg-line-height-1;
 }
+
 .pseudo-input-label--no-margin,
 .button-label {
   margin-top: 0;
