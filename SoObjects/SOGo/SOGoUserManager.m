@@ -595,10 +595,11 @@ static Class NSNullK;
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr
 {
-  NSString *jsonUser;
+  NSString *jsonUser, *userLogin;
   NSMutableDictionary *currentUser;
   BOOL didChange;
- 
+  SOGoSystemDefaults *sd;
+
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   currentUser = [jsonUser objectFromJSONString];
 
@@ -611,9 +612,7 @@ static Class NSNullK;
       didChange = YES;
 
       if (!currentUser)
-	{
-	  currentUser = [NSMutableDictionary dictionary];
-	}
+        currentUser = [NSMutableDictionary dictionary];
 
       // It's important to cache the password here as we might have cached the
       // user's entry in -contactInfosForUserWithUIDorEmail: and if we don't
@@ -621,9 +620,13 @@ static Class NSNullK;
       // cached for the user unless its entry expires from memcached's
       // internal cache.
       [currentUser setObject: [newPassword asSHA1String] forKey: @"password"];
-      [[SOGoCache sharedCache]
-        setUserAttributes: [currentUser jsonRepresentation]
-	forLogin: login];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([sd enableDomainBasedUID])
+        userLogin = [NSString stringWithFormat: @"%@@%@", login, domain];
+      else
+        userLogin = login;
+      [[SOGoCache sharedCache] setUserAttributes: [currentUser jsonRepresentation]
+                                        forLogin: userLogin];
     }
     else
       didChange = NO;
