@@ -147,6 +147,7 @@ $sg-rem-Base-value: 16 !global;
 $sg-sp-value: (1 / $sg-rem-Base-value) !default; // sp value
 
 $sg-md-typo-baseline: 4px;
+$sg-base-line-height: 1.3;
 
 // Font-size basic scale (from Google)
 // NiceToHave : generate with a loop
@@ -265,134 +266,153 @@ h6 {
   margin: $h6-margin-base;
 }
 
+// Base styles
+// ----------------------------------------------------------------------------
+html p {
+  font-size: inherit;
+  line-height: $sg-base-line-height;
+}
+
+
 /// Gogle Material Design Standard styles
 /// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
 /// Some specification class names are counterintuitive. We provide some aliases
 //  -------------------------------------------------------------------------------------------------
 
-  .#{$md}-caption {
-    font-size: $sg-font-size-1;
-    line-height: $sg-line-height-1;
-    font-weight: $sg-font-regular;
-    white-space: nowrap;
-    }
-  .#{$md}-menu {
-    font-size: $sg-font-size-2;
-    line-height: $sg-line-height-1;
-    font-weight: $sg-font-medium;
-    white-space: nowrap;}
-  .#{$md}-button {
-    font-size: $sg-font-size-2;
-    line-height: $sg-line-height-1;
-    font-weight: $sg-font-medium;
-    white-space: nowrap;
-    text-transform: capitalize;
+.#{$md}-caption {
+  font-size: $sg-font-size-1;
+  line-height: $sg-line-height-1;
+  font-weight: $sg-font-regular;
+  white-space: nowrap;
   }
-  .#{$md}-body-1 {
-    font-size: $sg-font-size-2;
-    line-height: $sg-line-height-2;
-    font-weight: $sg-font-regular;
-  }
-  /// @alias .body-1
-  .#{$md}-body-multi {
-    @extend .#{$md}-body-1;
-  }
-  .#{$md}-body-2 {
-    $lineHeight : $sg-line-height-2 + $sg-md-typo-baseline;
-    font-size: $sg-font-size-2;
-    line-height: $lineHeight;
-    font-weight: $sg-font-medium;
-    margin-top: ($lineHeight * -1);
-    margin-bottom: $lineHeight;
-  }
-  /// @alias .body-2
-  .#{$md}-body-solo {
-    @extend .#{$md}-body-2;
-  }
-  .#{$md}-subhead-1 {
-    $lineHeight : $sg-line-height-3;
-    font-size: $sg-font-size-3;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-    margin-top: ($lineHeight * -1);
-    margin-bottom: $lineHeight;
-  }
-  /// @alias .subhead-1
-  .#{$md}-subhead-multi {
-    @extend .#{$md}-subhead-1;
-  }
-  .#{$md}-subhead-2 {
-    $lineHeight : $sg-line-height-3 + $sg-md-typo-baseline;
-    font-size: $sg-font-size-3;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-    margin-top: ($lineHeight * -1);
-    margin-bottom: $lineHeight;
-  }
-  /// @alias .subhead-2
-  .#{$md}-subhead-solo {
-    @extend .#{$md}-subhead-2;
-  }
-  .#{$md}-title {
-    $lineHeight : $sg-line-height-4;
-    font-size: $sg-font-size-4;
-    line-height: $lineHeight;
-    font-weight: $sg-font-medium;
-    white-space: nowrap;
-  }
-  .#{$md}-headline {
-    $lineHeight : $sg-line-height-5;
-    font-size: $sg-font-size-5;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-    margin-top: 0;
-    margin-bottom: $line;
-  }
-  .#{$md}-display-1 {
-    $lineHeight : $sg-line-height-6;
-    font-size: $sg-font-size-6;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-  }
-  .#{$md}-display-2 {
-    $lineHeight: $sg-line-height-7;
-    font-size: $sg-font-size-7;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-    white-space: nowrap;
-  }
-  .#{$md}-display-2--light {
-       $lineHeight: $sg-line-height-7;
-       font-size: $sg-font-size-7;
-       line-height: $lineHeight;
-       font-weight: $sg-font-light;
-   }
-  .#{$md}-display-3 {
-    $lineHeight : $sg-line-height-8;
-    font-size: $sg-font-size-8;
-    line-height: $lineHeight;
-    font-weight: $sg-font-regular;
-    white-space: nowrap;
-  }
-  .#{$md}-display-4 {
-    $lineHeight : $sg-line-height-9;
-    font-size: $sg-font-size-9;
-    line-height: $lineHeight;
-    font-weight: $sg-font-light;
-    white-space: nowrap;
-  }
-  .#{$md}-display-2-subheader {
-    @extend .#{$md}-title;
-    margin-bottom: $mg;
-    font-weight: $sg-font-thin;
-  }
-  a,
-  a:hover,
-  a:active,
-  a:visited,
-  link {
-    color: inherit;
-    text-decoration: none;
-    border: none;
-    outline: none;
-  }
+.#{$md}-menu {
+  font-size: $sg-font-size-2;
+  line-height: $sg-line-height-1;
+  font-weight: $sg-font-medium;
+  white-space: nowrap;}
+.#{$md}-button {
+  font-size: $sg-font-size-2;
+  line-height: $sg-line-height-1;
+  font-weight: $sg-font-medium;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+.#{$md}-body-1 {
+  font-size: $sg-font-size-2;
+  line-height: $sg-line-height-2;
+  font-weight: $sg-font-regular;
+}
+/// @alias .body-1
+.#{$md}-body-multi {
+  @extend .#{$md}-body-1;
+}
+.#{$md}-body-2 {
+  $lineHeight : $sg-line-height-2 + $sg-md-typo-baseline;
+  font-size: $sg-font-size-2;
+  line-height: $lineHeight;
+  font-weight: $sg-font-medium;
+  margin-top: ($lineHeight * -1);
+  margin-bottom: $lineHeight;
+}
+/// @alias .body-2
+.#{$md}-body-solo {
+  @extend .#{$md}-body-2;
+}
+.#{$md}-subhead-1 {
+  $lineHeight : $sg-line-height-3;
+  font-size: $sg-font-size-3;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+  margin-top: ($lineHeight * -1);
+  margin-bottom: $lineHeight;
+}
+/// @alias .subhead-1
+.#{$md}-subhead-multi {
+  @extend .#{$md}-subhead-1;
+}
+.#{$md}-subhead-2 {
+  $lineHeight : $sg-line-height-3 + $sg-md-typo-baseline;
+  font-size: $sg-font-size-3;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+  margin-top: ($lineHeight * -1);
+  margin-bottom: $lineHeight;
+}
+/// @alias .subhead-2
+.#{$md}-subhead-solo {
+  @extend .#{$md}-subhead-2;
+}
+.#{$md}-title {
+  $lineHeight : $sg-line-height-4;
+  font-size: $sg-font-size-4;
+  line-height: $lineHeight;
+  font-weight: $sg-font-medium;
+  white-space: nowrap;
+}
+.#{$md}-headline {
+  $lineHeight : $sg-line-height-5;
+  font-size: $sg-font-size-5;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+  margin-top: 0;
+  margin-bottom: $line;
+}
+.#{$md}-display-1 {
+  $lineHeight : $sg-line-height-6;
+  font-size: $sg-font-size-6;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+}
+.#{$md}-display-2 {
+  $lineHeight: $sg-line-height-7;
+  font-size: $sg-font-size-7;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+  white-space: nowrap;
+}
+.#{$md}-display-2--light {
+     $lineHeight: $sg-line-height-7;
+     font-size: $sg-font-size-7;
+     line-height: $lineHeight;
+     font-weight: $sg-font-light;
+ }
+.#{$md}-display-3 {
+  $lineHeight : $sg-line-height-8;
+  font-size: $sg-font-size-8;
+  line-height: $lineHeight;
+  font-weight: $sg-font-regular;
+  white-space: nowrap;
+}
+.#{$md}-display-4 {
+  $lineHeight : $sg-line-height-9;
+  font-size: $sg-font-size-9;
+  line-height: $lineHeight;
+  font-weight: $sg-font-light;
+  white-space: nowrap;
+}
+.#{$md}-display-2-subheader {
+  @extend .#{$md}-title;
+  margin-bottom: $mg;
+  font-weight: $sg-font-thin;
+  white-space: normal;
+}
+
+// Date bloc in use on the toolbar
+// ----------------------------------------------------------------------------
+.sg-date-group {
+  height: $pitch;
+  font-size: sg-size(button);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+a,
+a:hover,
+a:active,
+a:visited,
+link {
+  color: inherit;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}

@@ -31,6 +31,10 @@ $line: $baseline-grid;
 $sg-md-grid-pitch: 8 * $baseline-grid;
 // shortcut alias for $sg-md-grid-pitch
 $pitch: $sg-md-grid-pitch;
+$touch-zone-width: 48px;
+// shortcyut alias for $touch-zone-width
+$touch-zone: $touch-zone-width;
+
 // Google specifies dimensions in grid pitch
 // This is a small utility function
 // Return dimension in px
@@ -49,9 +53,10 @@ $layout-breakpoint-md:     960px !default;
 $layout-breakpoint-lg:     1200px !default;
 
 // App bar variables
-$app-bar-height: 64px;
+$app-bar-height: $sg-md-grid-pitch;
 
-$messageList-width: grid-step(7);
+$listView-width: grid-step(6);
+$detailView-width: grid-step(8);
 
 $toast-height: $baseline-grid * 3 !default;
 $toast-margin: $baseline-grid * 1 !default;

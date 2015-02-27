@@ -30,7 +30,8 @@
     &:active {
       color: sg-color($sogoBlue, 800);
     }
-    &:focus {
+    &:focus,
+    &._selected {
       background-color: sg-color($sogoBlue, 100);
     }
   }

@@ -1,16 +1,15 @@
 /*! ContactUI.scss */
 
-[id="contactsList"] {
-  width: $messageList-width;
-  max-width:$messageList-width;
-  flex: 1 0 auto;
+[id ="contactsList"] {
+  flex: 0 0 $listView-width;
 }
 
 [id = "contactsList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
 // md is overqualifying, we have to do the same to override
-md-content[data-ui-view="card"] {
+md-content[ui-view="card"] {
+ flex: 0 0 $detailView-width;
   background-color: sg-color($sogoPaper, 200);
 }
 
