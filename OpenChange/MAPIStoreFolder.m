@@ -29,6 +29,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoFolder.h>
@@ -52,6 +53,7 @@
 #import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
 #import "SOGoCacheGCSObject+MAPIStore.h"
+#import <Mailer/SOGoMailObject.h>
 
 #include <gen_ndr/exchange.h>
 
@@ -100,6 +102,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger lastPartIdx;
   MAPIStoreUserContext *userContext;
 
+  parts = 0;
+  lastPartIdx = 0;
   folderURL = [NSURL URLWithString: [self url]];
   /* note: -[NSURL path] returns an unescaped representation */
   path = [folderURL path];
@@ -231,9 +235,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   SOGoFolder *sogoFolder;
   WOContext *woContext;
 
+  childFolder = nil;
   if ([[self folderKeys] containsObject: folderKey])
     {
       woContext = [[self userContext] woContext];
+      /* We activate the user for the context using the root folder
+         context as there are times where the active user is not
+         matching with the one stored in the application context
+         and SOGo object is storing cached data with the wrong user */
+      [[self userContext] activateWithUser: [woContext activeUser]];
       sogoFolder = [sogoObject lookupName: folderKey inContext: woContext
                                   acquire: NO];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
@@ -278,6 +288,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       msgObject = [sogoObject lookupName: messageKey
                                inContext: nil
                                  acquire: NO];
+      /* If the lookup in the indexing table works, but the IMAP does
+         not have the message, then the message does not exist in this
+         folder */
+      if (msgObject && [msgObject isKindOfClass: [SOGoMailObject class]]
+          && ! [(SOGoMailObject *)msgObject doesMailExist])
+        return nil;
       if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
         {
           [msgObject setContext: [[self userContext] woContext]];
@@ -433,16 +449,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (void) deleteFolderImpl
+- (int) deleteFolder
 {
   // TODO: raise exception in case underlying delete fails?
   // [propsMessage delete];
   [dbFolder delete];
-}
-
-- (int) deleteFolder
-{
-  [self deleteFolderImpl];
 
   [self cleanupCaches];
 
@@ -502,6 +513,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             }
           else
             rc = MAPISTORE_ERR_DENIED;
+        }
+      else
+        {
+          /* Unregistering from indexing table as the backend says the
+             object was not found */
+          [mapping unregisterURLWithID: mid];
         }
     }
 
@@ -568,8 +585,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
 
+  /* flags that control the behaviour of the operation
+     (MAPISTORE_SOFT_DELETE or MAPISTORE_PERMANENT_DELETE) */
   [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16llx  flags: %d", mid, flags];
-  
+
   mapping = [self mapping];
   childURL = [mapping urlFromID: mid];
   if (childURL)
@@ -646,7 +665,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                               notifyChangesForChild: message];
                     }
                   [self logWithFormat: @"successfully deleted object at URL: %@", childURL];
-                  [mapping unregisterURLWithID: mid];
+                  /* Ensure we are respecting flags parameter */
+                  [mapping unregisterURLWithID: mid andFlags: flags];
                   [self cleanupCaches];
                   rc = MAPISTORE_SUCCESS;
                 }
@@ -676,6 +696,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   //TALLOC_CTX *memCtx;
   struct SRow aRow;
   struct SPropValue property;
+  uint8_t deleteFlags;
 
   [self logWithFormat: @"-moveCopyMessageWithMID: 0x%.16llx .. withMID: 0x%.16llx .. wantCopy: %d", srcMid, targetMid, wantCopy];
 
@@ -706,7 +727,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
   [destMsg save: memCtx];
   if (!wantCopy)
-    rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: 0];
+    /* We want to keep mid for restoring/shared data to work if mids are different. */
+    deleteFlags = (srcMid == targetMid) ? MAPISTORE_PERMANENT_DELETE : MAPISTORE_SOFT_DELETE;
+    rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: deleteFlags];
 
  end:
   //talloc_free (memCtx);
@@ -845,7 +868,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               if (isMove)
                 {
                   fmid = [mapping idFromURL: [message url]];
-                  [self deleteMessageWithMID: fmid andFlags: 0];
+                  [self deleteMessageWithMID: fmid andFlags: MAPISTORE_PERMANENT_DELETE];
                   [mapping registerURL: [targetMessage url]
                                 withID: fmid];
                 }
@@ -866,7 +889,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               if (isMove)
                 {
                   fmid = [mapping idFromURL: [message url]];
-                  [self deleteMessageWithMID: fmid andFlags: 0];
+                  [self deleteMessageWithMID: fmid andFlags: MAPISTORE_PERMANENT_DELETE];
                   [mapping registerURL: [targetMessage url]
                                 withID: fmid];
                 }
@@ -893,16 +916,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             }
 
           if (isMove)
-            {
-              fmid = [mapping idFromURL: [self url]];
-              [mapping unregisterURLWithID: fmid];
-              [self deleteFolderImpl];
-              [mapping registerURL: [newFolder url]
-                            withID: fmid];
-            }
+              [self deleteFolder];
+
           [targetFolder cleanupCaches];
         }
       [self cleanupCaches];
+
+      /* We perform the mapping operations at the
+         end as objectId is required to be available
+         until the caches are cleaned up */
+      if (isMove && rc == MAPISTORE_SUCCESS)
+        {
+          fmid = [mapping idFromURL: [self url]];
+          [mapping unregisterURLWithID: fmid];
+          [mapping registerURL: [newFolder url]
+                        withID: fmid];
+        }
+
     }
   else
     rc = MAPISTORE_ERR_DENIED;
@@ -946,6 +976,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *baseURL, *URL, *key;
   NSArray *newIDs;
   uint64_t idNbr;
+  bool softDeleted;
   
   baseURL = [self url];
 
@@ -956,8 +987,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     {
       key = [keys objectAtIndex: count];
       URL = [NSString stringWithFormat: @"%@%@", baseURL, key];
-      idNbr = [mapping idFromURL: URL];
-      if (idNbr == NSNotFound)
+      idNbr = [mapping idFromURL: URL isSoftDeleted: &softDeleted];
+      if (idNbr == NSNotFound && !softDeleted)
         [missingURLs addObject: URL];
     }
 
@@ -1088,6 +1119,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   struct UI8Array_r *fmids;
   uint64_t fmid;
+  bool softDeleted;
 
   keys = [self getDeletedKeysFromChangeNumber: changeNum andCN: &cnNbr
                                   inTableType: tableType];
@@ -1114,10 +1146,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
         {
           url = [NSString stringWithFormat: format,
                           baseURL, [keys objectAtIndex: count]];
-          fmid = [mapping idFromURL: url];
+          fmid = [mapping idFromURL: url isSoftDeleted: &softDeleted];
           if (fmid != NSNotFound) /* if no fmid is returned, then the object
                                      "never existed" in the OpenChange
-                                     databases */
+                                     databases. Soft-deleted messages are returned back */
             {
               fmids->lpui8[fmids->cValues] = fmid;
               fmids->cValues++;
@@ -1862,6 +1894,17 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   return [[self context] idForObjectWithKey: childKey
                                 inFolderURL: [self url]];
+}
+
+- (MAPIStoreFolder *) rootContainer
+{
+  /* Return the oldest ancestor, which does not have
+     container. If there is not container, it returns itself.
+  */
+  if (container)
+    return [container rootContainer];
+  else
+    return self;
 }
 
 - (NSDate *) creationTime

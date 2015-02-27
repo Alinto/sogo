@@ -40,6 +40,7 @@
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 
+#import "Codepages.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -368,6 +369,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   uint64_t version = ULLONG_MAX;
   NSString *uid, *changeNumber;
+  BOOL synced;
 
   uid = [(MAPIStoreMailFolder *)
           container messageUIDFromMessageKey: [self nameInContainer]];
@@ -386,8 +388,19 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
             [self logWithFormat: @"got one"];
           else
             {
-              [self errorWithFormat: @"still nothing. We crash!"];
-              abort();
+              [self warnWithFormat: @"attempting to get change number"
+                    @" by synchronising this specific message..."];
+              synced = [(MAPIStoreMailFolder *) container synchroniseCacheForUID: uid];
+              if (synced)
+                {
+                  changeNumber = [(MAPIStoreMailFolder *) container
+                                     changeNumberForMessageUID: uid];
+                }
+              else
+                {
+                  [self errorWithFormat: @"still nothing. We crash!"];
+                  abort();
+                }
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;
@@ -923,15 +936,17 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagInternetCodepage: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  /* ref:
-     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
-  
-     minimal list that should be handled:
-     us-ascii: 20127
-     iso-8859-1: 28591
-     iso-8859-15: 28605
-     utf-8: 65001 */
-  *data = MAPILongValue(memCtx, 65001);
+  NSNumber *codepage;
+
+  codepage = [Codepages getCodepageFromName: headerCharset];
+  if (!codepage)
+    {
+      [self warnWithFormat: @"Couldn't find codepage from `%@`. "
+                            @"Using UTF-8 by default", headerCharset];
+      codepage = [Codepages getCodepageFromName: @"utf-8"];
+    }
+
+  *data = MAPILongValue(memCtx, [codepage intValue]);
 
   return MAPISTORE_SUCCESS;
 }
@@ -1597,6 +1612,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       else /* 0: unflagged, 1: follow up complete */
         [sogoObject removeFlags: @"\\Flagged"];
     }
+}
+
+- (BOOL) read
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return [sogoObject read];
 }
 
 @end

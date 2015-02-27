@@ -140,7 +140,7 @@
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSTimeZone *userTimeZone;
-  NSString *priority;
+  NSString *priority, *class = nil;
   NSUInteger responseStatus = 0;
   NSInteger tzOffset;
   SOGoUser *ownerUser;
@@ -207,16 +207,7 @@
   value
     = [properties objectForKey: MAPIPropertyKey (PidLidExceptionReplaceTime)];
   if (value)
-    {
-      if (!isAllDay)
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
-        }
-      [self setRecurrenceId: value];
-    }
+    [self setRecurrenceId: value];
  
   // start
   value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
@@ -241,13 +232,7 @@
           [start setTimeZone: nil];
         }
       else
-        {
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
           [start setDateTime: value];
-        }
     }
 
   /* end */
@@ -273,13 +258,7 @@
           [end setTimeZone: nil];
         }
       else
-        {
-          tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-          value = [value dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: tzOffset];
           [end setDateTime: value];
-        }
     }
 
   /* priority */
@@ -301,6 +280,36 @@
   else
     priority = @"0"; // None
   [self setPriority: priority];
+
+  /* class */
+  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
+  value = [properties objectForKey: MAPIPropertyKey(PR_SENSITIVITY)];
+  if (value)
+    {
+      switch ([value intValue])
+        {
+        case 1:
+          class = @"X-PERSONAL";
+          break;
+        case 2:
+          class = @"PRIVATE";
+          break;
+        case 3:
+          class = @"CONFIDENTIAL";
+          break;
+        default:  /* 0 as well */
+          class = @"PUBLIC";
+        }
+    }
+
+  if (class)
+    [self setAccessClass: class];
+
+  /* Categories */
+  /* See [MS-OXCICAL] Section 2.1.3.1.1.20.3 */
+  value = [properties objectForKey: MAPIPropertyKey (PidNameKeywords)];
+  if (value)
+    [self setCategories: value];
 
   /* show time as free/busy/tentative/out of office. Possible values are:
      0x00000000 - olFree

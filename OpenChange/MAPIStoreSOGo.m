@@ -1693,7 +1693,10 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
       username = [NSString stringWithUTF8String: (user ? user : "*")];
       /* Do proper directory lookup here */
       directory = [NSString stringWithUTF8String: (folder ? folder : "*")];
-      partialURLString = [NSString stringWithFormat: @"sogo://%@:*@%@", username, directory];
+      partialURLString = [NSString stringWithFormat: @"sogo://%@:*@%@",
+                                   [username stringByReplacingOccurrencesOfString: @"@"
+                                             withString: @"%40"],
+                                   directory];
     }
   if (![partialURLString hasSuffix: @"/"])
     partialURLString = [partialURLString stringByAppendingString: @"/"];

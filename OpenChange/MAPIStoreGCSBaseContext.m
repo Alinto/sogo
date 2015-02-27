@@ -82,7 +82,9 @@
                                                    andTDBIndexing: indexing];
       parentFolder = [[userContext rootFolders] objectForKey: moduleName];
       baseUrl = [NSString stringWithFormat: @"sogo://%@@%@/",
-                          userName, moduleName];
+                          [userName stringByReplacingOccurrencesOfString: @"@"
+                                    withString: @"%40"],
+                          moduleName];
 
       subfolders = [parentFolder subFolders];
       max = [subfolders count];
@@ -127,7 +129,9 @@
   if (![parentFolder newFolderWithName: folderName
                        nameInContainer: &nameInContainer])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@@%@/%@/",
-                             userName, moduleName, nameInContainer];
+                             [userName stringByReplacingOccurrencesOfString: @"@"
+                                       withString: @"%40"],
+                             moduleName, nameInContainer];
   else
     mapistoreURI = nil;
   [MAPIApp setUserContext: nil];

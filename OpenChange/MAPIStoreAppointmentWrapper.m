@@ -45,6 +45,7 @@
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -791,11 +792,20 @@ static NSCharacterSet *hexCharacterSet = nil;
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  NSCalendarDate *dateValue;
+  NSCalendarDate *dateValue, *start;
 
   if ([event isRecurrent])
     {
-      dateValue = [[event startDate] hour: 0 minute: 0 second: 0];
+      /* [MS-OXOCAL] For a recurring series, this property specifies
+         midnight in the user's machine time zone, on the date of the
+         first instance, then is persisted in UTC. */
+      start = [event startDate];
+      dateValue = [NSCalendarDate dateWithYear: [start yearOfCommonEra]
+                                         month: [start monthOfYear]
+                                           day: [start dayOfMonth]
+                                          hour: 0 minute: 0 second: 0
+                                      timeZone: timeZone];
+      [dateValue setTimeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
@@ -894,7 +904,7 @@ static NSCharacterSet *hexCharacterSet = nil;
         }
       else
         dateValue = [NSCalendarDate dateWithYear: 4500 month: 8 day: 31
-                                            hour: 23 minute: 59 second: 59
+                                            hour: 23 minute: 59 second: 00
                                         timeZone: utcTZ];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
@@ -1191,11 +1201,31 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
+- (int) getPidTagSensitivity: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  // normal = 0, personal?? = 1, private = 2, confidential = 3
-  return [self getLongZero: data inMemCtx: memCtx];
+  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
+  uint32_t v;
+  NSString *accessClass;
+
+  accessClass = [event accessClass];
+  if (accessClass)
+    {
+      if ([accessClass isEqualToString: @"X-PERSONAL"])
+        v = 0x1;
+      else if ([accessClass isEqualToString: @"PRIVATE"])
+        v = 0x2;
+      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+        v = 0x3;
+      else
+        v = 0x0;  /* PUBLIC */
+    }
+  else
+      v = 0x0;  /* PUBLIC */
+
+  *data = MAPILongValue (memCtx, v);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidTagImportance: (void **) data
@@ -1212,6 +1242,22 @@ static NSCharacterSet *hexCharacterSet = nil;
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidNameKeywords: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* See [MS-OXCICAL] Section 2.1.3.1.1.20.3 */
+  NSArray *categories;
+
+  categories = [event categories];
+  if (categories)
+    {
+      *data = [categories asMVUnicodeInMemCtx: memCtx];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (int) getPidTagBody: (void **) data
@@ -1231,7 +1277,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       /* Avoiding those trail weird characters at event description */
       range = [stringValue rangeOfString: trimingString
                                  options: NSBackwardsSearch];
-      if (range.location > 0)
+      if (range.location != NSNotFound)
         {
           stringValue = [stringValue substringToIndex: (NSMaxRange(range) -1)];
         }
@@ -1826,16 +1872,25 @@ ReservedBlockEE2Size: 00 00 00 00
   NSArray *alarms;
   NSUInteger count, max;
   iCalAlarm *currentAlarm;
-  NSString *action;
+  NSString *action, *webstatus;
 
   alarms = [event alarms];
   max = [alarms count];
   for (count = 0; !alarm && count < max; count++)
     {
       currentAlarm = [alarms objectAtIndex: count];
-      action = [[currentAlarm action] lowercaseString];
-      if (!action || [action isEqualToString: @"display"])
-        ASSIGN (alarm, currentAlarm);
+
+      // Only handle 'display' alarms
+      action = [currentAlarm action];
+      if ([action caseInsensitiveCompare: @"display"] != NSOrderedSame)
+        continue;
+
+      // Ignore alarms already triggered
+      webstatus = [[currentAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+      if ([webstatus caseInsensitiveCompare: @"triggered"] == NSOrderedSame)
+        continue;
+
+      ASSIGN (alarm, currentAlarm);
     }
 
   alarmSet = YES;
