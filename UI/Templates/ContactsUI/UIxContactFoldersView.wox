@@ -221,7 +221,7 @@
                          ng-model="search.filter">
                 <md-option value="all">ALL</md-option>
               </md-select>
-              <span class="md-icon-create"><!-- icon --></span>
+              <md-button class="icon" data-ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-create"><!--icon--></i></md-button>
             </div>
           </div>
           <div class="spacer cols-8"><!-- spacer --></div>
