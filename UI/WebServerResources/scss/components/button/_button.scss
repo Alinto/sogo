@@ -34,3 +34,8 @@ button.icon {
     color: sg-color($sogoBlue, 500);
   }
 }
+.sg-button-navicon {
+  width: $touch-zone;
+  height: $touch-zone;
+  margin-left: ($mg * -1);
+}

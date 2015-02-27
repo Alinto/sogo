@@ -1,13 +1,10 @@
 
 [id="messagesList"] {
-  width:$messageList-width;
-  max-width:$messageList-width;
-  flex: 1 1 auto;
+  flex: 0 0 $listView-width;
 
 }
-[data-ui-view="message"] {
-  width: grid-step(9);
-  max-width: grid-step(9);
+[ui-view="message"] {
+  flex: 0 0 $detailView-width;
 }
 
 // Message view header

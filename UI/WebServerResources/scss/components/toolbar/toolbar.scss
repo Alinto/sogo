@@ -45,7 +45,7 @@ hgroup {
   justify-content: space-between;
   &-1 {
     order: 1;
-    max-width: $messageList-width;
+    max-width: $listView-width;
   }
   &-2 {
     order: 2;

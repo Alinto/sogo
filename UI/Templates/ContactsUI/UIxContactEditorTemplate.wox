@@ -144,7 +144,6 @@
       <div class="section">
         <div class="attr" ng-repeat="phone in card.phones">
           <div layout="row" layout-align="center end">
-            <i class="md-icon-phone md-icon-lg cols-1"><!--icon--></i>
             <md-select ng-model="phone.type" label:placeholder="Type">
               <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
@@ -202,17 +201,10 @@
     <!-- addresses -->
       <div class="section">
         <div class="attr" ng-repeat="address in card.addresses">
-
-
-          <div layout="row" layout-align="start end">
+          <div layout="row" layout-align="center end">
             <md-select ng-model="address.type" label:placeholder="Type">
               <md-option ng-repeat="type in allAddressTypes" ng-value="type">{{ type }}</md-option>
             </md-select>
-            <p>
-              <var:string label:value="Address"/>
-            </p>
-          </div>
-          <div layout="row" layout-align="center end">
             <md-input-container>
               <label>
                 <var:string label:value="street"/>
@@ -293,13 +285,13 @@
 
 
     <div  class="fieldset md-layout-margin" layout="row" layout-align="end center">
-      <md-button class="md-primary md-hue-3" ng-click="cancel()">
+      <md-button class="" ng-click="cancel()">
         <var:string label:value="Cancel"/>
       </md-button>
-      <md-button class="md-accent" ng-click="reset()">
+      <md-button class="" ng-click="reset()">
         <var:string label:value="Reset"/>
       </md-button>
-      <md-button class="md-accent md-hue-3" type="submit">
+      <md-button class="md-primary md-hue-3" type="submit">
         <var:string label:value="Save"/>
       </md-button>
     </div>
