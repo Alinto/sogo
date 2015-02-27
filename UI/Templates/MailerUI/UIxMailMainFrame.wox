@@ -316,8 +316,8 @@
             </md-input-container>
 
             <div class="sg-toolbar-group">
-              <md-select class="sg-toolbar-sort md-contrast-light" label:placeholder="All">ALL
-
+              <md-select class="sg-toolbar-sort md-contrast-light" ng-model="search.criteria">
+                <md-option value="all">ALL</md-option>
               </md-select>
               <span class="md-icon-create"><!-- icon --></span>
             </div>
