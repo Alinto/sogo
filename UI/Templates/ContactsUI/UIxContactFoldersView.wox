@@ -191,30 +191,30 @@
 
     <section layout="column" class="md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
-          <div class="sg-toolbar-group-1" layout="row">
-            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon">
-              <span class="md-icon-menu"></span>
-            </md-button>
-            <div class="sg-date-group" layout="column" layout-align="center end">
-              <p class="sg-day">monday</p>
-              <p class="sg-month">january</p>
-              <p class="sg-year">2015</p>
-            </div>
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
+        <div class="sg-toolbar-group-1" layout="row">
+          <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon">
+            <span class="md-icon-menu"></span>
+          </md-button>
+          <div class="sg-date-group" layout="column" layout-align="center end">
+            <p class="sg-day">monday</p>
+            <p class="sg-month">january</p>
+            <p class="sg-year">2015</p>
+          </div>
 
-            <p class="sg-md-display-3">15</p>
-          </div>
-          <div class="sg-toolbar-group-2">
-            <span class="md-icon-search"></span>
-          </div>
+          <p class="sg-md-display-3">15</p>
         </div>
-        <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
-          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px">
-            <md-input-container class="sg-search-field-container">
-              <label style="color: white"><i class="md-icon-search"><!--icon--></i>Search</label>
-              <input name="folderSearch" type="search"
-                     ng-model="search.filter" ng-keyup="doSearch($event)" style="color: white"/>
-            </md-input-container>
+        <div class="sg-toolbar-group-2">
+          <span class="md-icon-search"></span>
+        </div>
+      </div>
+      <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
+        <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px">
+          <md-input-container class="sg-search-field-container">
+            <label style="color: white"><i class="md-icon-search"><!--icon--></i>Search</label>
+            <input name="folderSearch" type="search"
+                   ng-model="search.filter" ng-keyup="doSearch($event)" style="color: white"/>
+          </md-input-container>
 
             <div class="sg-toolbar-group">
               <md-select class="sg-toolbar-sort md-contrast-light" label:placeholder="All"
@@ -224,9 +224,10 @@
               <span class="md-icon-create"><!-- icon --></span>
             </div>
           </div>
-          <div class="spacer cols-8"><!-- spacer --></div>
         </div>
-      </md-toolbar>
+        <div class="spacer cols-8"><!-- spacer --></div>
+      </div>
+    </md-toolbar>
 
       <div layout="row" class="md-flex" layout-align="space-between">
 
@@ -254,9 +255,10 @@
                </div>
           -->
           <md-list vs-repeat="72" vs-scroll-parent="#contactsList">
-            <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id"
-                     ng-class="{_selected: card.id == currentCard.id}">
-              <md-item-content>
+            <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id">
+              <md-item-content
+                  ng-class="{_selected: card.id == currentCard.id}"
+                  ng-click="select($index)">
                 <div class="md-tile-left">
                   <!--avatar--><!-- currentCard.tag = vcard || vlist -->
                 </div>
