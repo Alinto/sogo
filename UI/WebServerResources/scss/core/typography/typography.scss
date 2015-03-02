@@ -406,6 +406,12 @@ html p {
   text-transform: uppercase;
 }
 
+.sg-date-today {
+  font-size: $pitch;
+  line-height: 1;
+  font-weight: $sg-font-light;
+}
+
 a,
 a:hover,
 a:active,

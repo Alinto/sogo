@@ -301,7 +301,7 @@
               <p class="sg-year">2015</p>
             </div>
 
-            <p class="sg-md-display-3">15</p>
+            <p class="sg-md-display-3 sg-date-today">15</p>
           </div>
           <div class="sg-toolbar-group-2">
             <span class="md-icon-search"></span>
