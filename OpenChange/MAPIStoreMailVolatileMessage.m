@@ -30,6 +30,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+Encoding.h>
@@ -42,6 +43,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoCacheObject.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
@@ -62,13 +64,13 @@
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import <SOGo/SOGoCacheObject.h>
 
 #import "MAPIStoreMailVolatileMessage.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
+#include <mapistore/mapistore_nameid.h>
 
 static Class NSNumberK = Nil;
 
@@ -532,13 +534,85 @@ QuoteSpecials (NSString *address)
 }
 
 static inline void
+FillMessageHeadersFromSharingProperties (NGMutableHashMap *headers, NSDictionary *mailProperties)
+{
+  /* Store the *important* properties related with a sharing object as
+     MIME eXtension headers. See [MS-OXSHARE] Section 2.2 for details
+     about the properties */
+
+  id value;
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingCapabilities)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-Capabilities"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingFlavor)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-Flavor"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingInitiatorEntryId)];
+  if (value)
+    [headers setObject: [[value stringByEncodingBase64] stringByReplacingOccurrencesOfString: @"\n"
+                                                                                  withString: @""]
+                forKey: @"X-MS-Sharing-InitiatorEntryId"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingInitiatorName)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-InitiatorName"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingInitiatorSmtp)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-InitiatorSmtp"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingLocalType)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-LocalType"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingProviderName)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-ProviderName"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingRemoteName)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-RemoteName"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingRemoteStoreUid)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-RemoteStoreUid"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingRemoteUid)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-RemoteUid"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingResponseTime)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-ResponseTime"];
+
+  value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingResponseType)];
+  if (value)
+    [headers setObject: value
+                forKey: @"X-MS-Sharing-ResponseType"];
+
+}
+
+static inline void
 FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                                   NSDictionary *mailProperties, BOOL withBcc,
                                   struct mapistore_connection_info *connInfo)
 {
   NSData *senderEntryId;
   NSMutableString *subject;
-  NSString *from, *recId, *messageId, *subjectData, *recipientsStr;
+  NSString *from, *recId, *messageId, *subjectData, *recipientsStr, *msgClass;
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
@@ -690,6 +764,13 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
     {
       [headers addObject: @"5 (Lowest)"  forKey: @"X-Priority"];
     }
+
+  msgClass = [mailProperties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
+  if ([msgClass isEqualToString: @"IPM.Sharing"])
+    {
+      FillMessageHeadersFromSharingProperties (headers, mailProperties);
+    }
+
 }
 
 static NSArray *
@@ -939,12 +1020,12 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   id <SOGoAuthenticator> authenticator;
 
   msgClass = [properties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
-  if ([msgClass isEqualToString: @"IPM.Note"]) /* we skip invitation replies */
+  if ([msgClass isEqualToString: @"IPM.Note"] || [msgClass isEqualToString: @"IPM.Sharing"]) /* we skip invitation replies */
     {
       /* send mail */
 
       messageData = [self _generateMailDataWithBcc: NO];
-      
+
       recipientEmails = [NSMutableArray arrayWithCapacity: 32];
       recipients = [properties objectForKey: @"recipients"];
       for (type = MAPI_ORIG; type <= MAPI_BCC; type++)
