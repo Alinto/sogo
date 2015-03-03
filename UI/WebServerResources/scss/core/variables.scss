@@ -21,18 +21,22 @@ $bottombar-color: #212121;
 
 
 
-// Layout
+// Layout and grid
 // ------------------------------
 
 $baseline-grid: 8px !default;
 // shortcut aliases for $baseline-grid
 $bl: $baseline-grid;
 $line: $baseline-grid;
+
 $sg-md-grid-pitch: 8 * $baseline-grid;
 // shortcut alias for $sg-md-grid-pitch
 $pitch: $sg-md-grid-pitch;
+
+// touch and pointers
+// ----------------------------------------------------------------------------
 $touch-zone-width: 48px;
-// shortcyut alias for $touch-zone-width
+// shortcut alias for $touch-zone-width
 $touch-zone: $touch-zone-width;
 
 // Google specifies dimensions in grid pitch

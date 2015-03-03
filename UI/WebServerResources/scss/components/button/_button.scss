@@ -1,11 +1,11 @@
 /*! _button.scss */
-///
+////
 /// Project SOGo
 /// Version 3.alpha
 /// Component button
 ///
-/// Definitions for button extends
-///
+/// Definitions for buttons (based on md-buttons)
+////
 @import 'extends';
 
 // Buttons for the sidenav folder tree
@@ -21,19 +21,75 @@ sg-folder-tree .md-button {
 .sg-active .md-button {
   color: sg-color($sogoBlue, 800);
 }
-// Custom icon-buttons
-// ----------------------------------------------------------------------------
-button.icon {
-  font-size: sg-size('title');
-  color: $colorGray;
-  transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-  background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-  color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-  transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+///
+/// iconButton
+/// according to Material design specs:
+/// @link www.google.com/design/spec/style/icons.html#icons-system-icons
+/// @link www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-touch-target-size
+/// @link www.google.com/design/spec/layout/structure.html#structure-app-bar
+/// @require angular-material/components/button
+///
+/// Buttons here defined are project-wide, so we don't use mixin but variables
+/// ----------------------------------------------------------------------------
+
+// Variables
+$iconButton-size: $touch-zone-width;
+$iconButton-icon-size: sg-size(title);
+$iconButton-icon-padding: 2px;
+$iconButton-size-cursor-coarse: $iconButton-size;
+// Could be use to scale-down buttons if desktop layout suffers too much from touch-size
+$iconButton-size-cursor-fine: $iconButton-size;
+// convenient wrapper for padding calculation
+$iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) / 2;
+$iconButton-hover-scale: 1.25;
+$iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-function;
+
+// Classes
+.iconButton {
+  padding: $iconButton-padding;
+  background-color: transparent;
+  color: inherit;
   &:hover {
-    color: sg-color($sogoBlue, 500);
+    background-color: transparent;
+    [class ^= md-icon],
+    [class *= md-icon-] {
+      transform: scale($iconButton-hover-scale);
+    }
+  }
+  [class ^= md-icon],
+  [class *= md-icon-] {
+    padding: $iconButton-icon-padding;
+    color: curentColor;
+    font-size: $iconButton-icon-size;
+    transition: $iconButton-transition;
   }
 }
+
+// Containers have padding, we compensate to align according to specs
+.iconButton:last-child {
+  margin-right: ($iconButton-padding * -1);
+  margin-end: ($iconButton-padding * -1);
+  -moz-margin-end: ($iconButton-padding * -1);
+  -webkit-margin-end: ($iconButton-padding * -1);
+}
+.iconButton:first-child {
+  margin-left: ($iconButton-padding * -1);
+  margin-start: ($iconButton-padding * -1);
+  -moz-margin-start: ($iconButton-padding * -1);
+  -webkit-margin-start: ($iconButton-padding * -1);
+}
+.iconButton:only-child {
+  margin-start: ($iconButton-padding * -1);
+  -moz-margin-start: ($iconButton-padding * -1);
+  -webkit-margin-start: ($iconButton-padding * -1);
+}
+
+
+// angular-material is overspecifying so we are
+.md-button.md-default-theme:not([disabled]).iconButton {
+  @extend .iconButton;
+}
+
 .sg-button-navicon {
   width: $touch-zone;
   height: $touch-zone;
