@@ -178,55 +178,99 @@ rtf2html (NSData *compressedRTF)
                           andColumns: (struct SPropTagArray *) columns
 {
   NSMutableDictionary *recipientProperties;
+  enum MAPITAGS prop_tag;
+  char *displayName = NULL;
+  char *email = NULL;
+  enum MAPI_OBJTYPE object_type = 0;
+  char *smtpAddress = NULL;
   SOGoUser *recipientUser;
   NSUInteger count;
+  NSString *recipientEmail = nil;
+  NSString *recipientFullName = nil;
   id value;
 
   recipientProperties = [NSMutableDictionary dictionaryWithCapacity: columns->cValues + 2];
+
+  for (count = 0; count < columns->cValues; count++)
+    {
+      prop_tag = columns->aulPropTag[count];
+      switch(prop_tag) {
+      case PidTagDisplayName:   
+        displayName = recipient->data[count];  
+        break;
+      case PidTagEmailAddress:
+        email = recipient->data[count];
+        break;
+      case PidTagObjectType:
+        object_type = *((uint8_t*) recipient->data[count]);
+        break;
+      case PidTagSmtpAddress:
+        smtpAddress = recipient->data[count];
+        break;
+      default:
+        break;
+      }
+
+      if (recipient->data[count])
+        {
+          value = NSObjectFromValuePointer (prop_tag,
+                                            recipient->data[count]);
+          if (value) 
+              [recipientProperties setObject: value
+                                      forKey: MAPIPropertyKey (prop_tag)];
+        }
+    }
 
   if (recipient->username)
     {
       value = [NSString stringWithUTF8String: recipient->username];
       [recipientProperties setObject: value forKey: @"x500dn"];
+    }
 
+  if (object_type == MAPI_MAILUSER && recipient->username)
+    {
+      /* values from user object have priority uppon the data passed for the client */
       recipientUser = [SOGoUser userWithLogin: [value lowercaseString]];
       if (recipientUser)
         {
           value = [recipientUser cn];
           if ([value length] > 0)
-            [recipientProperties setObject: value forKey: @"fullName"];
+            recipientFullName = value;
+          
           value = [[recipientUser allEmails] objectAtIndex: 0];
           if ([value length] > 0)
-            [recipientProperties setObject: value forKey: @"email"];
-        }
-    }
-  else
-    {
-      if (recipient->data[0])
-        {
-          value = [NSString stringWithUTF8String: recipient->data[0]];
-          if ([value length] > 0)
-            [recipientProperties setObject: value forKey: @"fullName"];
-        }
-      if (recipient->data[1])
-        {
-          value = [NSString stringWithUTF8String: recipient->data[1]];
-          if ([value length] > 0)
-            [recipientProperties setObject: value forKey: @"email"];
-        }
+            recipientEmail = value;
+        } 
     }
 
-  for (count = 0; count < columns->cValues; count++)
+  /* If we do not have values from the user object we try to get them from the parameters */
+  if (!recipientFullName && displayName) 
     {
-      if (recipient->data[count])
-        {
-          value = NSObjectFromValuePointer (columns->aulPropTag[count],
-                                            recipient->data[count]);
-          if (value)
-            [recipientProperties setObject: value
-                                    forKey: MAPIPropertyKey (columns->aulPropTag[count])];
-        }
+      value = [NSString stringWithUTF8String: displayName];
+      if ([value length] > 0)
+          recipientFullName = value;
     }
+
+  if (!recipientEmail && email) 
+    {
+      value = [NSString stringWithUTF8String: email];
+      if ([value length] > 0)
+        recipientEmail = value;
+    }
+
+  if (!recipientEmail && smtpAddress)
+    {
+      value = [NSString stringWithUTF8String: smtpAddress];
+      if ([value length] > 0)
+          recipientEmail = value;
+    }
+
+  /* Now we can set the properties if we have them */
+  if (recipientFullName) 
+    [recipientProperties setObject: recipientFullName forKey: @"fullName"];
+
+  if (recipientEmail)
+    [recipientProperties setObject: recipientEmail forKey: @"email"];  
 
   return recipientProperties;
 }
