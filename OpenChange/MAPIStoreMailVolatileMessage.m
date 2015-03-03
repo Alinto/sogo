@@ -536,6 +536,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                                   NSDictionary *mailProperties, BOOL withBcc,
                                   struct mapistore_connection_info *connInfo)
 {
+  BOOL fromResolved = NO;
   NSData *senderEntryId;
   NSMutableString *subject;
   NSString *from, *recId, *messageId, *subjectData, *recipientsStr;
@@ -572,13 +573,15 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
       list = MakeRecipientsList ([recipients objectForKey: @"orig"]);
       if ([list count])
-        [headers setObjects: list forKey: @"from"];
+        {
+          [headers setObjects: list forKey: @"from"];
+          fromResolved = YES;
+        }
     }
-  else
+
+  if (!fromResolved)
     {
-      NSLog (@"Message without recipients."
-             @"Guessing recipients from PidTagSenderEntryId, PidTagOriginalDisplayTo"
-             @"and PidTagOriginalCc");
+      NSLog (@"Message without an orig from, try to guess it from PidTagSenderEntryId");
       senderEntryId = [mailProperties objectForKey: MAPIPropertyKey (PR_SENDER_ENTRYID)];
       if (senderEntryId)
         {
@@ -638,7 +641,12 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
             }
 
         }
+    }
 
+  if (!recipients)
+    {
+      NSLog (@"Message without recipients."
+             @"Guessing recipients from PidTagOriginalDisplayTo and PidTagOriginalCc");
       recipientsStr = [mailProperties objectForKey: MAPIPropertyKey (PidTagOriginalDisplayTo)];
       if (recipientsStr)
         {
