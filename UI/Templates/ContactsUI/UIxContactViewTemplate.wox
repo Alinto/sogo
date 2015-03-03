@@ -19,13 +19,13 @@
         </div>
         <div class="sg-icon-bar">
           <span ng-show="addressbook.isEditable">
-            <a class="button tiny radius" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+            <md-button class="iconButton" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
               <i class="md-icon-create"><!-- edit --></i>
-            </a>
+            </md-button>
           </span>
-          <span class="button tiny radius alert" ng-click="confirmDelete(card)">
+          <md-button class="iconButton" ng-click="confirmDelete(card)">
             <i class="md-icon-delete"><!-- delete --></i>
-          </span>
+          </md-button>
         </div>
       </header>
       <md-divider class="md-inset"><!-- divider --></md-divider>

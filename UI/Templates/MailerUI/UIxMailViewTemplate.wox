@@ -38,20 +38,30 @@
 -->
 
     <div class="sg-icon-bar">
-        <a class="button tiny radius"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"><i class="md-icon-reply"><!-- reply --></i></a>
-        <a class="button tiny radius"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i></a>
-        <a class="button tiny radius"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i></a>
-        <a class="button tiny radius"
+      <!-- todo: Replace md-tooltip values by localizable string variable -->
+        <md-button class="iconButton"
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})">
+          <md-tooltip md-direction="left">Reply to the message</md-tooltip>
+          <i class="md-icon-reply"><!-- reply --></i>
+        </md-button>
+        <md-button class="iconButton"
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i>
+        </md-button>
+        <md-button class="iconButton"
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i>
+        </md-button>
+        <md-button class="iconButton"
             ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
-            ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i></a>
-        <span class="button tiny radius alert"
-            ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i></span>
-      <span class="button tiny radius"
+            ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i>
+        </md-button>
+        <md-button class="iconButton"
+            ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i>
+        </md-button>
+      <md-button class="iconButton"
             ng-show="message.hasUnsafeContent"
-            ng-click="loadImages()"><var:string label:value="Load Images"/></span>
+            ng-click="loadImages()"><var:string label:value="Load Images"/>
+        <i class="md-icon-image"><!--icon--></i>
+      </md-button>
     </div>
   </header>
   <md-divider><!-- divider --></md-divider>
