@@ -915,6 +915,28 @@ static Class NSNullK;
   return currentUser;
 }
 
+/**
+ * Fetch the contact information identified by the specified UID in the global addressbooks.
+ */
+- (NSDictionary *) fetchContactWithUID: (NSString *) uid
+                              inDomain: (NSString *) domain
+{
+  NSMutableArray *contacts;
+  NSEnumerator *sources;
+  NSString *sourceID;
+  id currentSource;
+
+  contacts = [NSMutableArray array];
+  sources = [[self addressBookSourceIDsInDomain: domain] objectEnumerator];
+  while ((sourceID = [sources nextObject]))
+    {
+      currentSource = [_sources objectForKey: sourceID];
+      [contacts addObject: [currentSource lookupContactEntry: uid]];
+    }
+
+  return [[self _compactAndCompleteContacts: [contacts objectEnumerator]] lastObject];
+}
+
 - (NSArray *) _compactAndCompleteContacts: (NSEnumerator *) contacts
 {
   NSMutableDictionary *compactContacts, *returnContact;

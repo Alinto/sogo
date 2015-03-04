@@ -62,17 +62,14 @@
   SOGoUserManager *um;
   NSString *domain;
   NSDictionary *contactInfos;
-  NSArray *contacts;
 
   um = [SOGoUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
   if (contactInfos == nil)
     {
+      // Search among global addressbooks
       domain = [[context activeUser] domain];
-      [um fetchContactsMatching: uid inDomain: domain];
-      contacts = [um fetchContactsMatching: uid inDomain: domain];
-      if ([contacts count] == 1)
-          contactInfos = [contacts lastObject];
+      contactInfos = [um fetchContactWithUID: uid inDomain: domain];
     }
 
   /* iCal.app compatibility:
@@ -279,7 +276,6 @@
   if ([uid length])
     {
       SOGoUserManager *um;
-      NSArray *contacts;
       NSString *domain, *email;
       NSDictionary *contact;
       MSExchangeFreeBusy *exchangeFreeBusy;
@@ -287,10 +283,9 @@
 
       um = [SOGoUserManager sharedUserManager];
       domain = [[context activeUser] domain];
-      contacts = [um fetchContactsMatching: uid inDomain: domain];
-      if ([contacts count] == 1)
+      contact = [um fetchContactWithUID: uid inDomain: domain];
+      if (contact)
         {
-          contact = [contacts lastObject];
           email = [contact valueForKey: @"c_email"];
           source = [contact objectForKey: @"source"];
           if ([email length]

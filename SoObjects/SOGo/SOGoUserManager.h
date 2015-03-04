@@ -65,10 +65,13 @@
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
                                             inDomain: (NSString *) domain;
+- (NSDictionary *) fetchContactWithUID: (NSString *) uid
+                              inDomain: (NSString *) domain;
 - (NSArray *) fetchContactsMatching: (NSString *) match
                            inDomain: (NSString *) domain;
 - (NSArray *) fetchUsersMatching: (NSString *) filter
                         inDomain: (NSString *) domain;
+- (NSArray *) _compactAndCompleteContacts: (NSEnumerator *) contacts;
 
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;
