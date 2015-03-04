@@ -921,20 +921,29 @@ static Class NSNullK;
 - (NSDictionary *) fetchContactWithUID: (NSString *) uid
                               inDomain: (NSString *) domain
 {
+  NSDictionary *contact;
   NSMutableArray *contacts;
   NSEnumerator *sources;
   NSString *sourceID;
   id currentSource;
 
   contacts = [NSMutableArray array];
+  contact = nil;
   sources = [[self addressBookSourceIDsInDomain: domain] objectEnumerator];
   while ((sourceID = [sources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
-      [contacts addObject: [currentSource lookupContactEntry: uid]];
+      contact = [currentSource lookupContactEntry: uid];
+      if (contact)
+        [contacts addObject: contact];
     }
 
-  return [[self _compactAndCompleteContacts: [contacts objectEnumerator]] lastObject];
+  if ([contacts count])
+    contact = [[self _compactAndCompleteContacts: [contacts objectEnumerator]] lastObject];
+  else
+    contact = nil;
+
+  return contact;
 }
 
 - (NSArray *) _compactAndCompleteContacts: (NSEnumerator *) contacts
