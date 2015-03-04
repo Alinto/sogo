@@ -37,6 +37,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
+#import <Contacts/SOGoContactFolders.h>
 
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
