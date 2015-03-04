@@ -271,7 +271,6 @@
         </h2>
       </md-toolbar>
       <md-content md-scroll-y="md-scroll-y" class="md-flex" ng-controller="LeftCtrl">
-        <md-button ng-click="close()" class="md-primary md-hide-gt-md">Close</md-button>
         <md-list ng-repeat="account in accounts track by account.id">
           <md-item>
             <md-item-content>
