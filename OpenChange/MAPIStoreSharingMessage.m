@@ -147,14 +147,47 @@
 - (int) getPidLidSharingFlavor: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
+  /* See [MS-OXSHARE] Section 2.2.2.5 for details */
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
-  id value;
+  id value, auxValue;
 
   value = [properties objectForKey: @"x-ms-sharing-flavor"];
   if (value)
     {
       *data = MAPILongValue (memCtx, [value intValue]);
       rc = MAPISTORE_SUCCESS;
+    }
+  else
+    {
+      /* Guess its value required by old clients based on other properties */
+      value = [properties objectForKey: @"x-ms-sharing-capabilities"];
+      if (value)
+        {
+          if ([value intValue] == 0x40290)  /* Special folder */
+            {
+              value = [properties objectForKey: @"x-ms-sharing-responsetime"];
+              auxValue = [properties objectForKey: @"x-ms-sharing-remotename"];
+              if (value)  /* A sharing request */
+                {
+                  if (auxValue)
+                    *data = MAPILongValue (memCtx, 0x20710);
+                  else
+                    *data = MAPILongValue (memCtx, 0x20500);
+                }
+              else
+                {
+                  if (auxValue)  /* It SHOULD be an invitation or response acceptance */
+                    *data = MAPILongValue (memCtx, 0x20310);
+                  else
+                    *data = MAPILongValue (memCtx, 0x23310);
+                }
+            }
+          else
+            {
+              *data = MAPILongValue (memCtx, 0x310);
+            }
+          rc = MAPISTORE_SUCCESS;
+        }
     }
 
   return rc;
