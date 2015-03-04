@@ -113,7 +113,6 @@
 + (void) handleLogoutRequest: (NSString *) logoutRequest
 {
   CASLogoutRequest *rq;
-  SOGoCache *cache;
   NSBundle *bundle;
   NSString *mapFile, *sessionIndex;
 
