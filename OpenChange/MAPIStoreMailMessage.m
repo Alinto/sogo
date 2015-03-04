@@ -154,6 +154,30 @@ static Class NSExceptionK;
   return [sogoObject date];
 }
 
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  BOOL listedProperties[65536];
+  NSUInteger count;
+  uint16_t propId;
+
+  if (mailIsSharingObject)
+    {
+      memset (listedProperties, NO, 65536 * sizeof (BOOL));
+      [super getAvailableProperties: propertiesP inMemCtx: memCtx];
+      for (count = 0; count < (*propertiesP)->cValues; count++)
+        {
+          propId = ((*propertiesP)->aulPropTag[count] >> 16) & 0xffff;
+          listedProperties[propId] = YES;
+        }
+      [MAPIStoreSharingMessage fillAvailableProperties: *propertiesP
+                                        withExclusions: listedProperties];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return [super getAvailableProperties: propertiesP inMemCtx: memCtx];
+}
+
 static NSComparisonResult
 _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
