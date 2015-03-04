@@ -263,7 +263,7 @@
     </div>
 
 <!-- Sidenav -->
-    <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <md-toolbar class="md-tall" layout-align="end start">
         <span class="sg-logo"> </span>
         <h2 class="md-toolbar-tools md-toolbar-tools-bottom">

@@ -40,7 +40,8 @@
     <div class="sg-icon-bar">
       <!-- todo: Replace md-tooltip values by localizable string variable -->
         <md-button class="iconButton"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})">
+            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"
+            aria-label="reply">
           <md-tooltip md-direction="left">Reply to the message</md-tooltip>
           <i class="md-icon-reply"><!-- reply --></i>
         </md-button>

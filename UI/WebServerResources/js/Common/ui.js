@@ -73,14 +73,14 @@
         // Default theme definition
         // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
         $mdThemingProvider.theme('default')
-          .primaryColor('vintage-blue', {
+          .primaryPalette('vintage-blue', {
               'default': '300',
               'hue-1': '100',
               'hue-2': '400',
               'hue-3': 'A700'
             })
-          .accentColor('sogo-green')
-          .backgroundColor('paper', {
+          .accentPalette('sogo-green')
+          .backgroundPalette('paper', {
               'default': '500',
               'hue-1': '200',
               'hue-2': '50',
