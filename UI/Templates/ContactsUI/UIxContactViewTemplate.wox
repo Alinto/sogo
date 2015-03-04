@@ -19,11 +19,11 @@
         </div>
         <div class="sg-icon-bar">
           <span ng-show="addressbook.isEditable">
-            <md-button class="iconButton" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+            <md-button class="iconButton" aria-label="Edit" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
               <i class="md-icon-create"><!-- edit --></i>
             </md-button>
           </span>
-          <md-button class="iconButton" ng-click="confirmDelete(card)">
+          <md-button class="iconButton" aria-label="Delete" ng-click="confirmDelete(card)">
             <i class="md-icon-delete"><!-- delete --></i>
           </md-button>
         </div>

@@ -192,7 +192,7 @@
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
           <div class="sg-toolbar-group-1" layout="row">
-            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon">
+            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon" aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
             <div class="sg-date-group" layout="column" layout-align="center end">
@@ -204,7 +204,7 @@
             <p class="sg-md-display-3 sg-date-today">15</p>
           </div>
           <div class="sg-toolbar-group-2">
-            <md-button class="iconButton">
+            <md-button class="iconButton" aria-label="Search">
               <i class="md-icon-search"><!--icon--></i>
             </md-button>
           </div>
@@ -222,7 +222,7 @@
                          ng-model="search.filter">
                 <md-option value="all">ALL</md-option>
               </md-select>
-              <md-button class="iconButton" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-create"><!--icon--></i></md-button>
+              <md-button class="iconButton" aria-label="New Contact" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-create"><!--icon--></i></md-button>
             </div>
           </div>
           <div class="spacer cols-8"><!-- spacer --></div>

@@ -45,20 +45,20 @@
           <md-tooltip md-direction="left">Reply to the message</md-tooltip>
           <i class="md-icon-reply"><!-- reply --></i>
         </md-button>
-        <md-button class="iconButton"
+        <md-button class="iconButton" aria-label="Reply All"
             ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i>
         </md-button>
-        <md-button class="iconButton"
+        <md-button class="iconButton" aria-label="Forward"
             ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i>
         </md-button>
-        <md-button class="iconButton"
+        <md-button class="iconButton" aria-label="Edit"
             ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
             ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i>
         </md-button>
-        <md-button class="iconButton"
+        <md-button class="iconButton" aria-label="Delete"
             ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i>
         </md-button>
-      <md-button class="iconButton"
+      <md-button class="iconButton" aria-label="Load Images"
             ng-show="message.hasUnsafeContent"
             ng-click="loadImages()"><var:string label:value="Load Images"/>
         <i class="md-icon-image"><!--icon--></i>
