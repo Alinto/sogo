@@ -5,6 +5,7 @@ Enhancements
  - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
 
 Bug fixes
+ - Fix exception modifications import in recurrence series
  - Sent mails are not longer in Drafts folder using Outlook
  - Fix server side crash parsing rtf emails with images (with word97 format)
 

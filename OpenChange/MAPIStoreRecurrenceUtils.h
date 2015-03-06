@@ -25,6 +25,8 @@
 
 #include <talloc.h>
 
+#import <Foundation/NSTimeZone.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
@@ -41,7 +43,10 @@
 @interface iCalCalendar (MAPIStoreRecurrence)
 
 - (void) setupRecurrenceWithMasterEntity: (iCalRepeatableEntityObject *) entity
-                   fromRecurrencePattern: (struct RecurrencePattern *) rp;
+                   fromRecurrencePattern: (struct RecurrencePattern *) rp
+                          withExceptions: (struct ExceptionInfo *) exInfos
+                       andExceptionCount: (uint16_t) exInfoCount
+                              inTimeZone: (NSTimeZone *) tz;
 
 @end
 

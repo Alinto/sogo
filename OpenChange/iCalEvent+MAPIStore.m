@@ -74,6 +74,7 @@
 @implementation iCalEvent (MAPIStoreProperties)
 
 - (void) _setupEventRecurrence: (NSData *) mapiRecurrenceData
+                    inTimeZone: (NSTimeZone *) tz
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct Binary_r *blob;
@@ -87,9 +88,12 @@
     return;
   }
 
-  [(iCalCalendar *) parent
-    setupRecurrenceWithMasterEntity: self
-              fromRecurrencePattern: &pattern->RecurrencePattern];
+  [(iCalCalendar *) parent setupRecurrenceWithMasterEntity: self
+                                     fromRecurrencePattern: &pattern->RecurrencePattern
+                                            withExceptions: pattern->ExceptionInfo
+                                         andExceptionCount: pattern->ExceptionCount
+                                                inTimeZone: tz
+   ];
   //talloc_free (blob);
 }
 
@@ -362,7 +366,7 @@
   value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
   if (value)
-    [self _setupEventRecurrence: value  inMemCtx: memCtx];
+    [self _setupEventRecurrence: value inTimeZone: userTimeZone inMemCtx: memCtx];
 
   /* alarm */
   [self _setupEventAlarmFromProperties: properties];
