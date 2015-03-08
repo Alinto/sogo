@@ -46,31 +46,36 @@
       <div id="logo">
         <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
       </div>
+
       <form name="loginForm" layout="column" ng-controller="loginController" ng-submit="login(creds)">
         <var:if condition="hasLoginSuffix"><input type="hidden" ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
         <div ng-show="warning" ng-cloak="ng-cloak" alert="alert" class="alert-box radius warning">{{warning}}</div>
         <md-input-container>
-          <label><var:string label:value="Username:"/>
+          <label>
+            <var:string label:value="Username:"/>
           </label>
-	  <input type="text" ng-model="creds.username" required="required" />
+          <input type="text" ng-model="creds.username" required="required" />
         </md-input-container>
         <md-input-container>
-	  <label><var:string label:value="Password:"/>
+          <label>
+            <var:string label:value="Password:"/>
           </label>
-	  <input type="password" ng-model="creds.password" required="required" />
+          <input type="password" ng-model="creds.password" required="required" />
         </md-input-container>
+        <div layout="row" layout-align="start end">
+          <label class="login-lang">
+            <var:string label:value="Language:"/>
+          </label>
+          <md-select ng-model="creds.language" label:placeholder="choose">
+            <var:foreach list="languages" item="item">
+              <md-option var:value="item">
+                <var:string value="languageText"/>
+              </md-option>
+            </var:foreach>
+          </md-select>
+        </div>
 
-	<label><var:string label:value="Language:"/>
 
-        <md-select ng-model="creds.language" label:placeholder="choose">
-          <var:foreach list="languages" item="item">
-            <md-option var:value="item">
-              <var:string value="languageText"/>
-            </md-option>
-          </var:foreach>
-        </md-select>
-
-        </label>
         <var:if condition="hasLoginDomains">
 	  <label><var:string label:value="Domain:"/><br/>
 	  <var:popup const:name="domain"
@@ -88,9 +93,15 @@
           <label><var:string label:value="Remember username"/></label>
           </md-checkbox> -->
           <!-- <label> -->
-	  <md-button type="submit" class="md-raised md-primary" ng-disabled='!loginForm.$valid'>
-	  <var:string label:value="Connect" /></md-button>
-	<!-- </label> -->
+        <div class="fieldset" layout="row" layout-align="end center">
+          <md-button type="submit" class="md-primary" ng-disabled='!loginForm.$valid'>
+            <span>
+              <var:string label:value="Connect"/>
+            </span>
+          </md-button>
+        </div>
+
+        <!-- </label> -->
         <md-switch ng-model="creds.rememberLogin">
           <var:string label:value="Remember username"/>
         </md-switch>
