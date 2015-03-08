@@ -272,7 +272,7 @@
             </md-item>
           </md-list>
         </md-content>
-        <md-content class="md-padding md-flex" ui-view="card"><!-- card view --></md-content>
+        <md-content class="md-padding md-flex" ui-view="card" layout="row" layout-align="center start"><!-- card view --></md-content>
       </div>
 
     </section>

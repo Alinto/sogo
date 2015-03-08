@@ -28,12 +28,11 @@ hgroup {
 }
 .sg-icon-bar {
   font-size: $sg-font-size-3;
-  color: $colorGray;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  margin: 0 0 $mg $mg;
+  margin: 0 0 0 $mg;
     }
 .sg-icon-bar *.button {
   display: block;
