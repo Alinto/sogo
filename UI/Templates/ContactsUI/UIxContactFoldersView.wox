@@ -147,11 +147,13 @@
     -->
 <!-- Sidenav -->
     <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
-      <md-toolbar class="md-tall" layout-align="end start">
+      <md-toolbar class="md-tall" layout-align="start start">
         <span class="sg-logo"> </span>
-        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-          <span class="sg-md-title md-flex">{{activeUser.identification}}</span>
-        </h2>
+        <div class="md-toolbar-tools md-toolbar-tools-bottom">
+          <p class="sg-md-title md-flex">{{activeUser.identification}}</p>
+          <!--fixme: correct this data-binding -->
+          <p class="md-sg-subhead-1">{{account.name}}</p>
+        </div>
       </md-toolbar>
       <md-content md-scroll-y="md-scroll-y" class="md-flex" ng-controller="LeftCtrl">
         <md-list>
@@ -192,7 +194,7 @@
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
           <div class="sg-toolbar-group-1" layout="row">
-            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon" aria-label="Toggle Menu">
+            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
             <div class="sg-date-group" layout="column" layout-align="center end">

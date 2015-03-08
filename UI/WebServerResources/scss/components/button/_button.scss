@@ -35,6 +35,7 @@ sg-folder-tree .md-button {
 // Variables
 $iconButton-size: $touch-zone-width;
 $iconButton-icon-size: sg-size(title);
+$iconButton-menu-size: sg-size(headline);
 $iconButton-icon-padding: 2px;
 $iconButton-size-cursor-coarse: $iconButton-size;
 // Could be use to scale-down buttons if desktop layout suffers too much from touch-size
@@ -43,6 +44,7 @@ $iconButton-size-cursor-fine: $iconButton-size;
 $iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) / 2;
 $iconButton-hover-scale: 1.25;
 $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-function;
+
 
 // Classes
 .iconButton {
@@ -94,4 +96,8 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
   width: $touch-zone;
   height: $touch-zone;
   margin-left: ($mg * -1);
+}
+// angular-material is overspecifying so we are and so we have to continue
+.sg-button-navicon.iconButton span.md-icon-menu {
+  font-size: $iconButton-menu-size;
 }

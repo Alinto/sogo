@@ -1,8 +1,10 @@
 @import 'extends';
 
 md-toolbar {
+  // todo: create variables scaled z-index
   z-index: 20;
   box-shadow: none;
+  font-size: initial;
 }
 .md-toolbar-tools.md-toolbar-tools-bottom {
   height: (5 * $line);

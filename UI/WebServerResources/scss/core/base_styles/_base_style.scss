@@ -19,7 +19,7 @@ main {
   background-image: url("../img/sogo-full.svg");
   background-size: contain;
   background-repeat: no-repeat;
-  margin-left: 16px;
+  margin: $bl 0 0 $mg;
   height: 7 * $bl;
   min-width: 18 * $bl;
 }

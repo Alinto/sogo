@@ -21,8 +21,7 @@
             <!--avatar-->
           </div>
           <div class="sg-tile-content">
-            <a ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
-                >
+            <a ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
               <div class="sg-md-subhead-multi subject">
                 {{currentMessage.subject}}
               </div>
