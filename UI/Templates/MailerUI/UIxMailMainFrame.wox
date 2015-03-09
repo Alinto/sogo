@@ -323,8 +323,7 @@
                          ng-model="search.criteria">
                 <md-option value="all">ALL</md-option>
               </md-select>
-              <!--todo: add action url-->
-              <md-button class="iconButton" aria-label="create" ui-sref="">
+              <md-button class="iconButton" aria-label="create" ui-sref="mail.newMessage()">
                 <i class="md-icon-create"><!-- icon --></i>
               </md-button>
 
