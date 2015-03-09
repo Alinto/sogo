@@ -325,15 +325,25 @@
       rp->RecurFrequency = RecurFrequency_Weekly;
       rp->PatternType = PatternType_Week;
       rp->Period = repeatInterval;
+
+      dayOfWeek = [startDate dayOfWeek];
+
       mask = 0;
       byDayMask = [self byDayMask];
-      for (count = 0; count < 7; count++)
-        if ([byDayMask occursOnDay: count])
-          mask |= 1 << count;
+      if (byDayMask)
+        {
+          for (count = 0; count < 7; count++)
+            if ([byDayMask occursOnDay: count])
+              mask |= 1 << count;
+        }
+      else
+        {
+          /* Set the recurrence pattern using start date */
+          mask |= 1 << dayOfWeek;
+        }
       rp->PatternTypeSpecific.WeekRecurrencePattern = mask;
 
       /* FirstDateTime */
-      dayOfWeek = [startDate dayOfWeek];
       if (dayOfWeek)
         beginOfWeek = [startDate dateByAddingYears: 0 months: 0
                                               days: -dayOfWeek
