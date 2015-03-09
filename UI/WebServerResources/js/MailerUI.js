@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UI', 'SOGo.UICommon', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -172,7 +172,7 @@
       })
     })
 
-    .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$modal', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, $modal, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, stateAccounts) {
+    .controller('MailboxesCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgAccount', 'sgMailbox', 'stateAccounts', function($scope, $rootScope, $stateParams, $state, $timeout, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, stateAccounts) {
       $scope.activeUser = Settings.activeUser;
       $scope.accounts = stateAccounts;
 
@@ -233,7 +233,7 @@
       }
     }])
 
-    .controller('MailboxCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccount, stateMailbox, $timeout, $modal, focus, Dialog, Account, Mailbox) {
+    .controller('MailboxCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccount, stateMailbox, $timeout, focus, Dialog, Account, Mailbox) {
       $scope.account = stateAccount;
       $scope.mailbox = stateMailbox;
       $rootScope.currentFolder = stateMailbox;
@@ -242,7 +242,7 @@
       });
     }])
 
-    .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', '$modal', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, $modal, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+    .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {
       $rootScope.message = stateMessage;
       $scope.loadImages = function() {
         // Load external resources
@@ -273,7 +273,7 @@
       };
     }])
 
-    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', '$modal', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, $modal, focus, Dialog, Account, Mailbox, AddressBook) {
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, focus, Dialog, Account, Mailbox, AddressBook) {
       if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
           $scope.message = msgObject;

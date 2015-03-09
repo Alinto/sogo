@@ -12,7 +12,7 @@
   <var:if condition="hideFrame" const:negate="YES"
       >
     <html const:xmlns="http://www.w3.org/1999/xhtml"
-        xml:lang="en" const:lang="en" class="">
+          xml:lang="en" const:lang="en">
       <head>
         <title>
           <var:string value="title" />
@@ -167,12 +167,10 @@
           <script type="text/javascript" rsrc:src="js/vendor/angular-aria.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-material.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/vendor/mm-foundation-tpls.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-vs-repeat.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/ui.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/Common/ui-common.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/ui-desktop.js"><!-- space --></script>
 
           <var:if condition="hasProductSpecificJavaScript">

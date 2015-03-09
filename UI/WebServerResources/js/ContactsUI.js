@@ -6,7 +6,7 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'mm.foundation', 'vs-repeat', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -83,7 +83,7 @@
       $urlRouterProvider.otherwise('/personal');
     }])
 
-    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$modal', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
       var currentAddressbook;
 
       $scope.activeUser = Settings.activeUser;
@@ -354,26 +354,23 @@
       };
       $scope.confirmDelete = function(card) {
         Dialog.confirm(l('Warning'),
-                       l('Are you sure you want to delete the card of <em>%{0}</em>?', card.$fullname()))
-          .then(function(res) {
-            if (res) {
-              // User confirmed the deletion
-              card.$delete()
-                .then(function() {
-                  // Remove card from list of addressbook
-                  $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
-                    return o.id == card.id;
-                  });
-                  // Remove card object from scope
-                  $scope.card = null;
-                  $state.go('addressbook', { addressbookId: $scope.addressbook.id });
-                }, function(data, status) {
-                  Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
-                                               card.$fullname()));
+                       l('Are you sure you want to delete the card of %{0}?', card.$fullname()))
+          .then(function() {
+            // User confirmed the deletion
+            card.$delete()
+              .then(function() {
+                // Remove card from list of addressbook
+                $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
+                  return o.id == card.id;
                 });
-            }
+                // Remove card object from scope
+                $scope.card = null;
+                $state.go('addressbook', { addressbookId: $scope.addressbook.id });
+              }, function(data, status) {
+                Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
+                                             card.$fullname()));
+              });
           });
       };
     }]);
-
 })();

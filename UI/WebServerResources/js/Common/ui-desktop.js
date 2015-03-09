@@ -44,27 +44,16 @@
    * 'OK' button
    */
   Dialog.confirm = function(title, content) {
-    var d = this.$q.defer();
-    this.$modal.open({
-      template:
-        '<h2 data-ng-bind-html="title"></h2>' +
-        '<p data-ng-bind-html="content"></p>' +
-        '<a class="button button-primary" ng-click="confirm()">' + l('OK') + '</a>' +
-        '<a class="button button-secondary" ng-click="closeModal()">' + l('Cancel') + '</a>' +
-        '<span class="close-reveal-modal" ng-click="closeModal()"><i class="icon-close"></i></span>',
-      windowClass: 'small',
-      controller: function($scope, $modalInstance) {
-        $scope.title = title;
-        $scope.content = content;
-        $scope.closeModal = function() {
-          $modalInstance.close();
-          d.resolve(false);
-        };
-        $scope.confirm = function() {
-          $modalInstance.close();
-          d.resolve(true);
-        };
-      }
+    var d = this.$q.defer(),
+        confirm = this.$modal.confirm()
+        .title(title)
+        .content(content)
+        .ok(l('OK'))
+        .cancel(l('Cancel'));
+    this.$modal.show(confirm).then(function() {
+      d.resolve();
+    }, function() {
+      d.reject();
     });
     return d.promise;
   };
@@ -102,14 +91,14 @@
    * @memberof Dialog
    * @desc The factory we'll register as sgDialog in the Angular module SOGo.UIDesktop
    */
-  Dialog.$factory = ['$modal', '$q', function($modal, $q) {
-    angular.extend(Dialog, { $modal: $modal, $q: $q });
+  Dialog.$factory = ['$q', '$mdDialog', function($q, $mdDialog) {
+    angular.extend(Dialog, { $q: $q , $modal: $mdDialog });
 
     return Dialog; // return constructor
   }];
 
   /* Angular module instanciation */
-  angular.module('SOGo.UIDesktop', ['mm.foundation', 'RecursionHelper'])
+  angular.module('SOGo.UIDesktop', ['ngMaterial', 'RecursionHelper'])
 
   /* Factory registration in Angular module */
     .factory('sgDialog', Dialog.$factory)
@@ -355,6 +344,7 @@
       </div>
     </div>
   */
+  /*
     .directive('sgDropdownContentToggle', ['$document', '$window', '$location', '$position', function ($document, $window, $location, $position) {
       var openElement = null,
           closeMenu   = angular.noop;
@@ -456,6 +446,7 @@
         }
       };
     }])
+  */
 
   /*
    * sgSubscribe - Common subscription widget
@@ -501,7 +492,7 @@
 
     <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
   */
-    .directive('sgUserTypeahead', ['$parse', '$q', '$timeout', '$position', 'sgUser', function($parse, $q, $timeout, $position, User) {
+    .directive('sgUserTypeahead', ['$parse', '$q', '$timeout', 'sgUser', function($parse, $q, $timeout, User) {
       return {
         restrict: 'A',
         require: 'ngModel',
