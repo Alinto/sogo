@@ -272,7 +272,7 @@
           <p class="md-sg-subhead-1">{{account.name}}</p>
         </div>
       </md-toolbar>
-      <md-content md-scroll-y="md-scroll-y" class="md-flex" ng-controller="LeftCtrl">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list ng-repeat="account in accounts track by account.id">
           <md-item>
             <md-item-content>
