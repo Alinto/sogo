@@ -13,6 +13,7 @@ Bug fixes
  - do not use syncKey from cache when davCollectionTag = -1
  - use correct mail attachment elements for EAS 2.5 clients
  - fixed contacts lookup by UID in freebusy
+ - reduced telephone number to a single value in JSON response of contacts list
 
 2.2.16 (2015-02-12)
 -------------------
