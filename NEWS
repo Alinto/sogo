@@ -8,6 +8,7 @@ Enhancements
  - Appointment color and importance work now between Outlooks
 
 Bug fixes
+ - Fix sender on importing email messages like event invitations
  - Fix Outlook crashes when modifying the view of a folder
  - Fix server side crash when reading some recurrence appointments
 
