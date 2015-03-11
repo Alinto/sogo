@@ -186,6 +186,14 @@
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
 
+- (int) getPidTagContainerClass: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPF.Appointment" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPidTagDefaultPostMessageClass: (void **) data
                                 inMemCtx: (TALLOC_CTX *) memCtx
 {

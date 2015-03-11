@@ -51,6 +51,7 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreSamDBUtils.h"
+#import "MAPIStoreSharingMessage.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 
@@ -115,6 +116,7 @@ static Class NSExceptionK;
     {
       mimeKey = nil;
       mailIsEvent = NO;
+      mailIsSharingObject = NO;
       headerCharset = nil;
       headerEncoding = nil;
       headerMimeType = nil;
@@ -151,6 +153,30 @@ static Class NSExceptionK;
 - (NSDate *) lastModificationTime
 {
   return [sogoObject date];
+}
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  BOOL listedProperties[65536];
+  NSUInteger count;
+  uint16_t propId;
+
+  if (mailIsSharingObject)
+    {
+      memset (listedProperties, NO, 65536 * sizeof (BOOL));
+      [super getAvailableProperties: propertiesP inMemCtx: memCtx];
+      for (count = 0; count < (*propertiesP)->cValues; count++)
+        {
+          propId = ((*propertiesP)->aulPropTag[count] >> 16) & 0xffff;
+          listedProperties[propId] = YES;
+        }
+      [MAPIStoreSharingMessage fillAvailableProperties: *propertiesP
+                                        withExclusions: listedProperties];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return [super getAvailableProperties: propertiesP inMemCtx: memCtx];
 }
 
 static NSComparisonResult
@@ -202,9 +228,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (void) _fetchHeaderData
 {
+  MAPIStoreSharingMessage *sharingMessage;
   NSMutableArray *keys;
   NSArray *acceptedTypes;
   NSDictionary *messageData, *partHeaderData, *parameters;
+  NSString *sharingHeader;
 
   acceptedTypes = [NSArray arrayWithObjects: @"text/calendar",
                            @"application/ics",
@@ -229,6 +257,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
         mailIsEvent = YES;
+      else
+        {
+          sharingHeader = [[sogoObject mailHeaders] objectForKey: @"x-ms-sharing-localtype"];
+          if (sharingHeader)
+            {
+              mailIsSharingObject = YES;
+              /* It is difficult to subclass this in folder class, that's why
+                 a sharing object is a proxy in a mail message */
+              sharingMessage = [[MAPIStoreSharingMessage alloc]
+                                 initWithMailHeaders: [sogoObject mailHeaders]
+                                   andConnectionInfo: [[self context] connectionInfo]];
+              [self addProxy: sharingMessage];
+              [sharingMessage release];
+            }
+        }
     }
 
   headerSetup = YES;
@@ -518,6 +561,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (mailIsEvent)
     [[self _appointmentWrapper] getPidTagMessageClass: data
                                              inMemCtx: memCtx];
+  else if (mailIsSharingObject)
+    *data = talloc_strdup (memCtx, "IPM.Sharing");
   else
     *data = talloc_strdup (memCtx, "IPM.Note");
 

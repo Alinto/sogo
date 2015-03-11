@@ -110,6 +110,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	MAPIStoreFallbackContext.m \
 	\
+	MAPIStoreSharingMessage.m \
+	\
 	NSArray+MAPIStore.m \
 	NSData+MAPIStore.m \
 	NSDate+MAPIStore.m \

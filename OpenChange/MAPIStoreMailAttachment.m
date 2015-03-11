@@ -163,8 +163,15 @@
 - (int) getPidTagDisplayName: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[bodyInfo objectForKey: @"description"]
-            asUnicodeInMemCtx: memCtx];
+  NSString *fileName;
+
+  fileName = [self _fileName];
+  if ([fileName isEqualToString: @"sharing_metadata.xml"])
+    /* Required to disallow user from seeing the attachment by default */
+    *data = [@"sharing_metadata.xml" asUnicodeInMemCtx: memCtx];
+  else
+    *data = [[bodyInfo objectForKey: @"description"]
+              asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -181,11 +188,17 @@
 - (int) getPidTagAttachMimeTag: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *mimeTag;
+  NSString *mimeTag, *fileName;
 
-  mimeTag = [NSString stringWithFormat: @"%@/%@",
-                [bodyInfo objectForKey: @"type"],
-                [bodyInfo objectForKey: @"subtype"]];
+  fileName = [self _fileName];
+  if ([fileName isEqualToString: @"sharing_metadata.xml"])
+    /* Required by [MS-OXWSMSHR] Section 3.1.1 */
+    mimeTag = [NSString stringWithFormat: @"application/x-sharing-metadata-xml"];
+  else
+    mimeTag = [NSString stringWithFormat: @"%@/%@",
+                  [bodyInfo objectForKey: @"type"],
+                  [bodyInfo objectForKey: @"subtype"]];
+
   *data = [[mimeTag lowercaseString] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
