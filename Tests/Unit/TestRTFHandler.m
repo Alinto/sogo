@@ -94,4 +94,9 @@
   [self test_does_not_crash: 6330];
 }
 
+- (void) test_zentyal_crash_8346
+{
+  [self test_does_not_crash: 8346];
+}
+
 @end
