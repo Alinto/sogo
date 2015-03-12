@@ -836,6 +836,7 @@ const unsigned short ansicpg874[256] = {
 
               formattingOptions->color_index = color_index;
               colorDef = [colorTable colorDefAtIndex: color_index];
+              if (!colorDef) continue;
 
               v = malloc(23*sizeof(char));
               memset(v, 0, 23);
