@@ -1660,12 +1660,4 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     }
 }
 
-- (BOOL) read
-{
-  if (!headerSetup)
-    [self _fetchHeaderData];
-
-  return [sogoObject read];
-}
-
 @end
