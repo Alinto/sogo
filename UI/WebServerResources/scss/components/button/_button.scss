@@ -66,26 +66,24 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
     transition: $iconButton-transition;
   }
 }
-
-// Containers have padding, we compensate to align according to specs
-.iconButton:last-child {
-  margin-right: ($iconButton-padding * -1);
-  margin-end: ($iconButton-padding * -1);
-  -moz-margin-end: ($iconButton-padding * -1);
-  -webkit-margin-end: ($iconButton-padding * -1);
-}
-.iconButton:first-child {
-  margin-left: ($iconButton-padding * -1);
-  margin-start: ($iconButton-padding * -1);
-  -moz-margin-start: ($iconButton-padding * -1);
-  -webkit-margin-start: ($iconButton-padding * -1);
-}
-.iconButton:only-child {
-  margin-start: ($iconButton-padding * -1);
-  -moz-margin-start: ($iconButton-padding * -1);
-  -webkit-margin-start: ($iconButton-padding * -1);
+// Icon-bars are for iconButtons, by default they're vertical and at the right
+// the modifier class is to reflect those values and leave place to other versions
+.sg-icon-bar--vertical {
+  font-size: $sg-font-size-3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  // Containers have padding, we compensate to align according to specs
+  margin: 0 ($iconButton-padding * -1) 0 $mg;
 }
 
+// NiceToHave: some horizontal or left hand side variant
+
+
+.sg-icon-bar *.button {
+  display: block;
+}
 
 // angular-material is overspecifying so we are
 .md-button.md-default-theme:not([disabled]).iconButton {
@@ -98,6 +96,8 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
   margin-left: ($mg * -1);
 }
 // angular-material is overspecifying so we are and so we have to continue
-.sg-button-navicon.iconButton span.md-icon-menu {
+.sg-button-navicon.iconButton span.md-icon-menu,
+.sg-button-navicon.iconButton i[class|="md-icon"] {
+  padding: 0;
   font-size: $iconButton-menu-size;
 }

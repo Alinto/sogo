@@ -37,7 +37,7 @@
       </p>
 -->
 
-    <div class="sg-icon-bar">
+    <div class="sg-icon-bar--vertical">
       <!-- todo: Replace md-tooltip values by localizable string variable -->
         <md-button class="iconButton"
             ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"

@@ -265,13 +265,25 @@
 <!-- Sidenav -->
     <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <md-toolbar class="md-tall" layout-align="start start">
-        <span class="sg-logo"> </span>
-        <div class="md-toolbar-tools md-toolbar-tools-bottom">
-          <p class="sg-md-title md-flex">{{activeUser.identification}}</p>
-          <!--fixme: correct this data-binding -->
-          <p class="md-sg-subhead-1">{{account.name}}</p>
+        <div class="md-toolbar-tools" layout="row">
+          <md-button class="iconButton sg-button-navicon">
+            <i class="md-icon-apps"><!--icon--></i>
+          </md-button>
+          <span class="sg-logo"><!--logo.svg--></span>
+        </div>
+        <div class="md-toolbar-tools" layout="row">
+          <div layout="column">
+            <p class="sg-md-title">{{activeUser.identification}}</p>
+            <!--fixme: implement this with the proper model and actions -->
+            <md-select class="sg-logout" ng-model="accounts.options" label:placeholder="sogo1@inverse.ca">
+              <md-option >sogo1@inverse.ca</md-option>
+              <md-option >connect an other account</md-option>
+              <md-option >logout</md-option>
+            </md-select>
+          </div>
         </div>
       </md-toolbar>
+
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list ng-repeat="account in accounts track by account.id">
           <md-item>
@@ -291,12 +303,12 @@
 <!-- Main section -->
     <section layout="column" class="md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start" ng-controller="toggleCtrl">
           <div class="sg-toolbar-group-1" layout="row">
             <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
-            <div class="sg-date-group" layout="column" layout-align="center end">
+            <div class="sg-date-group" layout="column" layout-align="space-between end">
               <p class="sg-day">monday</p>
               <p class="sg-month">january</p>
               <p class="sg-year">2015</p>

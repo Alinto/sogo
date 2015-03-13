@@ -9,8 +9,23 @@ md-select {
 md-select.md-default-theme.sg-toolbar-sort {
   margin: 0 $bl 4px 0;
   color: $colorWhite;
+
   md-select-label.md-select-label {
     border: none;
     color: inherit;
   }
+}
+
+md-select.md-default-theme.sg-logout {
+  margin-top: 0;
+  color: $colorWhite;
+
+  // angular material overqualifies, so we are
+  md-select-label.md-select-label,
+  md-select-label.md-select-label.md-placeholder,
+  md-select-label.md-select-label * {
+    border: none;
+    color: $colorWhite;
+  }
+
 }

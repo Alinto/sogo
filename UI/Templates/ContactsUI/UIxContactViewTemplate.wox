@@ -17,7 +17,7 @@
             <span class="label radius" ng-repeat="category in card.categories">{{category.value}}</span>
           </h6>
         </div>
-        <div class="sg-icon-bar">
+        <div class="sg-icon-bar--vertical">
           <span ng-show="addressbook.isEditable">
             <md-button class="iconButton" aria-label="Edit" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
               <i class="md-icon-create"><!-- edit --></i>

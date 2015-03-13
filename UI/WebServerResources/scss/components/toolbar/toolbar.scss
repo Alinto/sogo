@@ -6,10 +6,16 @@ md-toolbar {
   box-shadow: none;
   font-size: initial;
 }
+
+.md-toolbar-tools.md-toolbar-tools-top {
+  padding-top: $bl;
+}
+
 .md-toolbar-tools.md-toolbar-tools-bottom {
   height: (5 * $line);
   max-height: (5 * $line);
 }
+
 header {
   flex-direction: row;
   flex-wrap: nowrap;
@@ -28,17 +34,7 @@ hgroup {
   color: inherit;
   font-size: sg-size(headline);
 }
-.sg-icon-bar {
-  font-size: $sg-font-size-3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 0 0 $mg;
-    }
-.sg-icon-bar *.button {
-  display: block;
-}
+
 .sg-toolbar-group {
   display: flex;
   flex-direction: row;
@@ -55,5 +51,3 @@ hgroup {
     order: 3;
   }
 }
-
-

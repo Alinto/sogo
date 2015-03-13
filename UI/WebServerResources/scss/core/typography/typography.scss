@@ -395,16 +395,18 @@ html p {
 
 // Date bloc in use on the toolbar
 // ----------------------------------------------------------------------------
+$today-font-size: 72px; // Visualy adjusted
+
 .sg-date-group {
-  height: $pitch;
   font-size: sg-size(button);
   line-height: 1;
   text-transform: uppercase;
 }
 
 .sg-date-today {
-  font-size: $pitch;
-  line-height: 1;
+  margin-left: $bl;
+  font-size: $today-font-size;
+  line-height: 56px; // Visualy adjusted
   font-weight: $sg-font-light;
 }
 
