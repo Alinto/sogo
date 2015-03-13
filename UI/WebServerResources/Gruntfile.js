@@ -103,4 +103,5 @@ module.exports = function(grunt) {
     });
     grunt.task.registerTask('build', ['static', 'sass']);
     grunt.task.registerTask('default', ['build','watch']);
+    grunt.task.registerTask('css', ['sass', 'postcss']);
 };
