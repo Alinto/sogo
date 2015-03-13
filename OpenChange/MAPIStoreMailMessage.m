@@ -1627,11 +1627,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if ([mimeKey hasPrefix: @"body.peek"])
-    bodyPartKey = [NSString stringWithFormat: @"body[%@]",
-                          [mimeKey _strippedBodyKey]];
-  else
-    bodyPartKey = mimeKey;
+  bodyPartKey = mimeKey;
 
   return bodyPartKey;
 }

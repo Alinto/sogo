@@ -1500,6 +1500,15 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                     {
                       [bodyPartKeys addObject: bodyPartKey];
                       messageUid = [self messageUIDFromMessageKey: messageKey];
+                      /* If the bodyPartKey include peek, remove it as it is not returned
+                         as key in the IMAP server response.
+
+                         IMAP conversation example:
+                         a4 UID FETCH 1 (UID BODY.PEEK[text])
+                         * 1 FETCH (UID 1 BODY[TEXT] {1677}
+                      */
+                      bodyPartKey = [bodyPartKey stringByReplacingOccurrencesOfString: @"body.peek"
+                                                                           withString: @"body"];
                       [keyAssoc setObject: bodyPartKey forKey: messageUid];
                     }
                 }

@@ -2,6 +2,7 @@ master
 ------
 
 Enhancements
+ - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
  - Give support to calendar sharing invitations
  - Missing contact fields are now saved and available when sharing it
     (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
