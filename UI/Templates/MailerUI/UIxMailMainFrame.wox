@@ -85,7 +85,7 @@
       <li><var:string label:value="Mark Folder Read" /></li>
       <li><var:string label:value="New Subfolder..." /></li>
       <li><var:string label:value="Compact This Folder" /></li>
-      <li><var:string label:value="Archive This Folder" /></li>
+      <li><var:string label:value="Export This Folder" /></li>
       <li><var:string label:value="Empty Trash" /></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Search Messages..." /></li>
@@ -103,7 +103,7 @@
       <li><var:string label:value="New Subfolder..." /></li>
       <li><var:string label:value="Rename Folder..." /></li>
       <li><var:string label:value="Compact This Folder" /></li>
-      <li><var:string label:value="Archive This Folder" /></li>
+      <li><var:string label:value="Export This Folder" /></li>
       <li><var:string label:value="Delete Folder" /></li>
       <li><var:string label:value="Use This Folder For" /></li>
       <li><!-- separator --></li>
