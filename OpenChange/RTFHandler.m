@@ -660,22 +660,17 @@ const unsigned short ansicpg874[256] = {
    } while (count != 0); 
 }
 
-//
-//
-//
-- (void) parsePicture
+- (void) parseIgnoringEverything
 {
+  unsigned int count = 1;
   // Ignore everything. But we cannot parse it blindly because it could have
   // binary data with '}' and '{' bytes, so disasters can happen and they will
-  unsigned int count = 0;
-  const char *cw;
-
   do
     {
       if (*_bytes == '\\')
         {
           unsigned int binary_size, len = 0, cw_len;
-          cw = [self parseControlWord: &len];
+          const char *cw = [self parseControlWord: &len];
           cw_len = strlen("bin");
           if (strncmp(cw, "bin", cw_len) == 0 && len > cw_len)
             {
@@ -688,23 +683,21 @@ const unsigned short ansicpg874[256] = {
               binary_size = [s intValue];
               ADVANCE_N(binary_size);
             }
-          else if (len > 0)
-            {
-              ADVANCE_N(len);
-            }
-          else
-            {
-              ADVANCE;
-            }
         }
-      else
-        {
-          if (*_bytes == '{') count++;
-          if (*_bytes == '}') count--;
-          ADVANCE;
-        }
+
+      if (*_bytes == '{') count++;
+      if (*_bytes == '}') count--;
+      ADVANCE;
     }
   while (count > 0);
+}
+
+//
+//
+//
+- (void) parsePicture
+{
+  [self parseIgnoringEverything];
 }
 
 //
@@ -771,19 +764,7 @@ const unsigned short ansicpg874[256] = {
             }
           else if (*(_bytes+1) == '*')
             {
-	      int cc = 1;
-	      
-	      do
-                {
-                  if (*_bytes == '{')
-                    cc++;
-                  if (*_bytes == '}')
-                    cc--;
-                  
-                  ADVANCE;
-                }
-              while (cc != 0);
-
+              [self parseIgnoringEverything];
               continue;
             }
 
