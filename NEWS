@@ -5,6 +5,7 @@ Enhancements
  - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
 
 Bug fixes
+ - Fix reception of calendar event invitations on optional attendees
  - Fix server side crash parsing rtf without color table
  - Weekly recurring events created in SOGo web interface are now shown in Outlook
  - Fix exception modifications import in recurrence series
