@@ -28,9 +28,10 @@
         'A400': '00e676',
         'A700': '00c853',
         'contrastDefaultColor': 'dark',
-        'contrastLightColors': '500 600 700 800 900'
+        'contrastDarkColors': '50 100 200',
+        'contrastLightColors': '300 400 500 600 700 800 900'
       });
-      $mdThemingProvider.definePalette('vintage-blue', {
+      $mdThemingProvider.definePalette('sogo-blue', {
         '50': 'f0faf9',
         '100': 'e1f5f3',
         '200': 'ceebe8',
@@ -49,7 +50,7 @@
         'contrastDarkColors': ['50', '100', '200'],
         'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
       });
-      $mdThemingProvider.definePalette('paper', {
+      $mdThemingProvider.definePalette('sogo-paper', {
         '50': 'fcf7f8',
         '100': 'f7f1dc',
         '200': 'ede5ca',
@@ -71,14 +72,19 @@
       // Default theme definition
       // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
       $mdThemingProvider.theme('default')
-        .primaryPalette('vintage-blue', {
+        .primaryPalette('sogo-blue', {
           'default': '300',
           'hue-1': '100',
           'hue-2': '400',
           'hue-3': 'A700'
         })
-        .accentPalette('sogo-green')
-        .backgroundPalette('paper', {
+        .accentPalette('sogo-green', {
+          'default': '300',
+          'hue-1': '200',
+          'hue-2': '500',
+          'hue-3': 'A700'
+        })
+        .backgroundPalette('sogo-paper', {
           'default': '500',
           'hue-1': '200',
           'hue-2': '50',
@@ -98,7 +104,7 @@
       return l;
     })
 
-    .controller('toggleCtrl', ['$scope', '$timeout', '$mdSidenav', '$log', function ($scope, $timeout, $mdSidenav, $log) {
+    .controller('navController', ['$scope', '$timeout', '$mdSidenav', '$mdBottomSheet', '$log', function ($scope, $timeout, $mdSidenav, $mdBottomSheet, $log) {
       $scope.toggleLeft = function () {
         $mdSidenav('left').toggle()
           .then(function () {
@@ -110,6 +116,12 @@
           .then(function () {
             $log.debug("toggle RIGHT is done");
           });
+      };
+      $scope.openBottomSheet = function() {
+        $mdBottomSheet.show({
+          parent: angular.element(document.getElementById('left-sidenav')),
+          templateUrl: 'bottomSheetTemplate.html'
+        });
       };
     }]);
 })();

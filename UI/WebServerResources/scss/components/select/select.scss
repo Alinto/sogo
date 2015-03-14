@@ -17,7 +17,7 @@ md-select.md-default-theme.sg-toolbar-sort {
 }
 
 md-select.md-default-theme.sg-logout {
-  margin-top: 0;
+  margin-top: $bl;
   color: $colorWhite;
 
   // angular material overqualifies, so we are

@@ -1,7 +1,7 @@
 <?xml version='1.0' standalone='yes'?>
 <container xmlns="http://www.w3.org/1999/xhtml" xmlns:var="http://www.skyrix.com/od/binding" xmlns:const="http://www.skyrix.com/od/constant" xmlns:label="OGo:label">
 
-  <md-content md-scroll-y="true" class="md-padding">
+  <md-content md-scroll-y="true" class="md-padding bg-sogoPaper-50">
     <div class="editor md-padding" style="padding-bottom: 72px">
       <hgroup class="header">
         <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>

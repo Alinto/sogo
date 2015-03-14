@@ -393,10 +393,10 @@ $colorBlueGrey900:  nth($paletteBlueGrey, 10);
   $hues: map-keys($palette);
   @each $hue in $hues {
     $color: map-get($palette, $hue);
-    .fg-#{$name}-#{$hue} {
+    .md-default-theme.fg-#{$name}-#{$hue} {
       color: $color;
     };
-    .bg-#{$name}-#{$hue} {
+    .md-default-theme.bg-#{$name}-#{$hue} {
       background-color: $color;
     };
   };

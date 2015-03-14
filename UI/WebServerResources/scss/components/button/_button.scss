@@ -10,16 +10,25 @@
 
 // Buttons for the sidenav folder tree
 // ------------------------------------
-sg-folder-tree .md-button {
+sg-folder-tree .md-button,
+md-sidenav md-list button.md-button {
   outline: none;
   color: inherit;
   font-size: sg-size(button);
   padding: 0;
+  text-transform: initial;
   -webkit-font-smoothing: auto;
-
+}
+.sg-folder {
+  flex: 1;
+  text-align: left;
 }
 .sg-active .md-button {
   color: sg-color($sogoBlue, 800);
+}
+
+.md-button [class ^= md-icon] {
+  margin-right: 1em;
 }
 ///
 /// iconButton

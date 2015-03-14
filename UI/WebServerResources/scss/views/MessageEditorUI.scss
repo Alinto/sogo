@@ -10,7 +10,7 @@
   margin: 0 auto;
   overflow: auto;
   height: 100%;
-  background-color: sg-color($sogoPaper, 100);
+  background-color: sg-color($sogoPaper, 50);
   transform: translateY(-1 * $pitch);
   z-index: 40;
   box-shadow: $whiteframe-shadow-z1;

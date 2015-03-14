@@ -1,1 +1,17 @@
 @import 'extends';
+
+md-bottom-sheet.md-default-theme {
+  border: none;
+  background-color: transparent;
+}
+
+md-bottom-sheet.md-default-theme .md-button.md-default-theme {
+  &:hover:not([disabled]) {
+    background-color: transparent;
+    color: sg-color($sogoBlue, 800);
+  }
+  &[disabled] {
+    padding: 6px; // The server remove the 'a' tag when disabling
+    text-transform: uppercase;
+  }
+}
