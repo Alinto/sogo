@@ -27,7 +27,7 @@ md-sidenav md-list button.md-button {
   color: sg-color($sogoBlue, 800);
 }
 
-.md-button [class ^= md-icon] {
+md-sidenav .md-button [class ^= md-icon] {
   margin-right: 1em;
 }
 ///
