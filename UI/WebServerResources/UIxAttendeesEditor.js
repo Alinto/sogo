@@ -917,6 +917,7 @@ _freeBusyCacheEntry.prototype = {
           fetchDates = [];
 
           if (adjustedSd.getTime() < this.startDate.getTime()) {
+              // Period extends to before current start
               var start = adjustedSd.clone();
               start.addDays(-7);
               var end = this.startDate.beginOfDay();
@@ -928,35 +929,45 @@ _freeBusyCacheEntry.prototype = {
           var nextDate = this.startDate.clone();
           nextDate.addDays(currentNbrDays);
           if (adjustedEd.getTime() >= nextDate.getTime()) {
-              var end = nextDate.clone();
+              // Period extends to after current end
+              var end = adjustedEd.clone();
               end.addDays(7);
               fetchDates.push({ start: nextDate, end: end });
           }
       }
       else {
+          // Initial range
           var start = adjustedSd.clone();
           start.addDays(-7);
           var end = adjustedEd.clone();
           end.addDays(7);
           fetchDates = [ { start: start, end: end } ];
       }
-
       return fetchDates;
   },
 
   integrateEntries: function fBCE_integrateEntries(entries, start, end) {
+      var days, merged = false;
       if (this.startDate) {
           if (start.getTime() < this.startDate) {
-              var days = start.deltaDays(this.startDate);
+              days = start.deltaDays(this.startDate);
               if (entries.length == (days * 96)) {
+                  // New period is just before previous period
                   this.startDate = start;
                   this.entries = entries.concat(this.entries);
+                  merged = true;
               }
           }
           else {
-              this.entries = this.entries.concat(entries);
+              days = this.startDate.deltaDays(start);
+              if (this.entries.length == (days * 96)) {
+                  // New period is just after previous period
+                  this.entries = this.entries.concat(entries);
+                  merged = true;
+              }
           }
-      } else {
+      }
+      if (!merged) {
           this.startDate = start;
           this.entries = entries;
       }
