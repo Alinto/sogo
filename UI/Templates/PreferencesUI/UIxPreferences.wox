@@ -42,7 +42,7 @@
 
       <script type="text/ng-template" id="preferences.html">
         
-        <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
+        <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
           
           <md-toolbar class="md-tall" layout-align="end start">
             <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
@@ -119,7 +119,7 @@
         <form name="preferencesForm"
               ng-submit="save()">
           <div ui-view="module"><!-- view --></div>
-          <md-button class="button tiny radius" type="submit">
+          <md-button class="" type="submit">
             <var:string label:value="Save" />
           </md-button>
         </form>
