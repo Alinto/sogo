@@ -263,7 +263,7 @@
     </div>
 
 <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-layout-fill" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <md-toolbar class="md-tall" layout-align="start start">
         <div class="md-toolbar-tools" layout="row">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">
@@ -301,7 +301,7 @@
     </md-sidenav>
 
 <!-- Main section -->
-    <section layout="column" class="md-layout-fill">
+    <section layout="column" class="sg-app-content md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start" ng-controller="navController">
           <div class="sg-toolbar-group-1" layout="row">
@@ -341,10 +341,9 @@
 
             </div>
           </div>
-          <div class="spacer cols-8"><!-- spacer --></div>
         </div>
       </md-toolbar>
-      <div layout="row" class="md-flex" layout-align="space-between" ui-view="mailbox"><!-- messages list --></div>
+      <div layout="row" layout-align="space-between" ui-view="mailbox"><!-- messages list --></div>
     </section>
   </script>
 

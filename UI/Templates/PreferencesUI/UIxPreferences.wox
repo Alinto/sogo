@@ -45,13 +45,12 @@
         <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
           
           <md-toolbar class="md-tall" layout-align="end start">
-            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-              <span class="md-flex">{{activeUser.identification}}</span>
+            <div class="md-toolbar-tools">
               <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">
                 <i class="md-icon-apps"><!--icon--></i>
               </md-button>
               <span class="sg-logo"><!--logo.svg--></span>
-            </h2>
+            </div>
             
             <div class="md-toolbar-tools" layout="row">
               <div layout="column">

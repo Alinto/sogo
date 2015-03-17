@@ -203,7 +203,7 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="md-layout-fill">
+    <section layout="column" class="sg-app-content md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <div class="sg-toolbar-group-1" layout="row">
@@ -287,7 +287,7 @@
             </md-item>
           </md-list>
         </md-content>
-        <md-content class="md-padding md-flex" ui-view="card" layout="row" layout-align="center start"><!-- card view --></md-content>
+        <md-content class="md-padding" ui-view="card" layout="row" layout-align="center start"><!-- card view --></md-content>
       </div>
 
     </section>

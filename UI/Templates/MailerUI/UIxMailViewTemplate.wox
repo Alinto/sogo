@@ -7,7 +7,7 @@
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
 
-<md-content md-scroll-y="md-scroll-y"  class="md-padding bg-sogoPaper-50">
+<md-content md-scroll-y="md-scroll-y"  class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
   <header class="msg-header">
 
       <div class="msg-header-content">
