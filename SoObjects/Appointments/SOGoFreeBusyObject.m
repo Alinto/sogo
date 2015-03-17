@@ -381,8 +381,7 @@
                                             ([currentStartDate compare: startDate] == NSOrderedAscending)? startDate : currentStartDate, @"startDate",
                                           currentEndDate, @"endDate", nil]];
 
-          if (!firstRange
-              && currentEndDate != endDate
+          if (currentEndDate != endDate
               && ([currentEndDate dayOfWeek] == 6 || [currentEndDate dayOfWeek] == 0))
             {
               // Fill weekend days

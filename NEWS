@@ -14,6 +14,8 @@ Bug fixes
  - use correct mail attachment elements for EAS 2.5 clients
  - fixed contacts lookup by UID in freebusy
  - reduced telephone number to a single value in JSON response of contacts list
+ - fixed freebusy data when 'busy off hours' is enabled and period starts during the weekend
+ - fixed fetching of freebusy data from the Web interface
 
 2.2.16 (2015-02-12)
 -------------------
