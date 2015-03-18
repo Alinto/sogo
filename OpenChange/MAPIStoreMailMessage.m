@@ -1627,11 +1627,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if ([mimeKey hasPrefix: @"body.peek"])
-    bodyPartKey = [NSString stringWithFormat: @"body[%@]",
-                          [mimeKey _strippedBodyKey]];
-  else
-    bodyPartKey = mimeKey;
+  bodyPartKey = mimeKey;
 
   return bodyPartKey;
 }
@@ -1658,14 +1654,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       else /* 0: unflagged, 1: follow up complete */
         [sogoObject removeFlags: @"\\Flagged"];
     }
-}
-
-- (BOOL) read
-{
-  if (!headerSetup)
-    [self _fetchHeaderData];
-
-  return [sogoObject read];
 }
 
 @end

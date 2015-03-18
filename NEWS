@@ -1,6 +1,9 @@
 master
 ------
 
+Enhancements
+ - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
+
 Bug fixes
  - Sent mails are not longer in Drafts folder using Outlook
  - Fix server side crash parsing rtf emails with images (with word97 format)
