@@ -1689,6 +1689,13 @@ cronjob `sogo-tmpwatch`.
 
 Defaults to `/var/spool/sogo`.
 
+|S |NGMimeBuildMimeTempDirectory
+|Parameter used to set the path where temporary files will be stored
+by SOPE when dealing with MIME messages.
+
+Defaults to `/tmp`.
+
+
 |S |NGImap4DisableIMAP4Pooling
 |Disables IMAP pooling when set to `YES`. Enable pooling by setting to
 `NO` or using a caching proxy like imapproxy.
