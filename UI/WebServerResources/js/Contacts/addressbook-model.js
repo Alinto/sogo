@@ -175,9 +175,8 @@
           sort: 'c_cn',
           asc: 'true'
         };
-    if (options && options.excludeLists) {
-      params.excludeLists = true;
-    }
+    if (options)
+      angular.extend(params, options);
 
     return this.$id().then(function(addressbookId) {
       var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', params);

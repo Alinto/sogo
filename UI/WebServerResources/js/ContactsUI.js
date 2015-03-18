@@ -93,14 +93,10 @@
       $scope.addressbooks = stateAddressbooks;
       $rootScope.addressbook = stateAddressbook;
 
-      // $scope objects
-      $scope.search = { status: null, filter: null, lastFilter: null };
-
       // Adjust search status depending on addressbook type
       currentAddressbook = _.find($scope.addressbooks, function(o) {
         return o.id ==  $stateParams.addressbookId;
       });
-      $scope.search.status = (currentAddressbook && currentAddressbook.isRemote)? 'remote-addressbook' : '';
 
       // $scope functions
       $scope.select = function(rowIndex) {
@@ -242,31 +238,6 @@
             };
           }]
         });
-      };
-      $scope.doSearch = function(keyEvent) {
-        if ($scope.search.filter != $scope.search.lastFilter) {
-          if ($scope.search.filter.length > 2) {
-            $rootScope.addressbook.$filter($scope.search.filter).then(function(data) {
-              if (data.length == 0)
-                $scope.search.status = 'no-result';
-              else
-                $scope.search.status = '';
-            });
-          }
-          else if ($scope.search.filter.length == 0) {
-            $rootScope.addressbook = AddressBook.$find($stateParams.addressbookId);
-            // Extend resulting model instance with parameters from addressbooks listing
-            var o = _.find($scope.addressbooks, function(o) {
-              return o.id ==  $stateParams.addressbookId;
-            });
-            $scope.search.status = (o.isRemote)? 'remote-addressbook' : '';
-          }
-          else {
-            $scope.search.status = 'min-char';
-            $rootScope.addressbook.cards = [];
-          }
-        }
-        $scope.search.lastFilter = $scope.search.filter;
       };
 
       /**
