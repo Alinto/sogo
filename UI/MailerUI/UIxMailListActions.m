@@ -387,9 +387,9 @@
 {
   EOQualifier *qualifier, *searchQualifier;
   WORequest *request;
-  NSDictionary *sortingAttributes, *content;
+  NSDictionary *sortingAttributes, *content, *filter;
   NSArray *filters;
-  NSString *searchBy, *searchArgument, *searchInput, *searchString, *match;
+  NSString *searchBy, *searchInput, *searchString, *match;
   NSMutableArray *searchArray;
   int nbFilters, i;
   
@@ -410,17 +410,23 @@
           match = [sortingAttributes objectForKey :@"match"]; // AND, OR
         for (i = 0; i < nbFilters; i++)
           {
-            searchBy = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchBy"]];
-            searchArgument = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchArgument"]];
-            searchInput = [NSString stringWithString: [[filters objectAtIndex:i] objectForKey: @"searchInput"]];
-        
-            if ([[[filters objectAtIndex:i] objectForKey: @"negative"] boolValue])
-              searchString = [NSString stringWithFormat: @"(not (%@ %@: '%@'))", searchBy, searchArgument, searchInput];
+            filter = [filters objectAtIndex:i];
+            searchBy = [filter objectForKey: @"searchBy"];
+            searchInput = [filter objectForKey: @"searchInput"];
+            if (searchBy && searchInput)
+              {
+                if ([[filter objectForKey: @"negative"] boolValue])
+                  searchString = [NSString stringWithFormat: @"(not (%@ doesContain: '%@'))", searchBy, searchInput];
+                else
+                  searchString = [NSString stringWithFormat: @"(%@ doesContain: '%@')", searchBy, searchInput];
+
+                searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
+                [searchArray addObject: searchQualifier];
+              }
             else
-              searchString = [NSString stringWithFormat: @"(%@ %@: '%@')", searchBy, searchArgument, searchInput];
-        
-            searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
-            [searchArray addObject: searchQualifier];
+              {
+                [self errorWithFormat: @"Missing parameters in search filter: %@", filter];
+              }
           }
         if ([match isEqualToString: @"OR"])
           qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
@@ -655,10 +661,53 @@
 
 /* Module actions */
 
+/**
+ * @api {get} /so/:username/Mail/:accountId/:mailboxPath/view List messages UIDs
+ * @apiVersion 1.0.0
+ * @apiName GetMailUIDsList
+ * @apiGroup Mail
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Mail/0/folderINBOX/view
+ *          -H 'Content-Type: application/json' \
+ *          -d '{ "sortingAttributes": { "match": "AND", "asc": true, "sort": "subject" }, \
+ *                "filters": [{ "searchBy": "subject", "searchInput": "foo" }] }'
+ *
+ * @apiParam {Object} [sortingAttributes]                    Sorting preferences
+ * @apiParam {Boolean} [sortingAttributes.asc]               Descending sort when false. Defaults to true (ascending).
+ * @apiParam {String} [sortingAttributes.sort]               Sort field. Either c_cn, c_mail, c_screenname, c_o, or c_telephonenumber.
+ * @apiParam {String} [sortingAttributes.match]              Either OR or AND.
+ * @apiParam {String} [sortingAttributes.noHeaders]          Don't send the headers if true. Defaults to false.
+ * @apiParam {Object[]} [filters]                            The filters to apply.
+ * @apiParam {String} filters.searchBy                       Field criteria. Either subject, from, to, cc, or body.
+ * @apiParam {String} filters.searchInput                    String to match.
+ * @apiParam {String} [filters.negative]                     Reverse the condition when true. Defaults to false.
+ *
+ * @apiSuccess (Success 200) {Number} threaded               1 if threading is enabled for the user.
+ * @apiSuccess (Success 200) {Number[]} uids                 List of uids matching the filters, in the requested order.
+ * @apiSuccess (Success 200) {String[]} headers              The first entry are the fields names.
+ * @apiSuccess (Success 200) {Object[]} headers.To           Recipients
+ * @apiSuccess (Success 200) {String} headers.To.name        Recipient's name
+ * @apiSuccess (Success 200) {String} headers.To.email       Recipient's email address
+ * @apiSuccess (Success 200) {Number} headers.hasAttachment  1 when there is at least one attachment
+ * @apiSuccess (Success 200) {Number} headers.isFlagged      1 if the message is flagged
+ * @apiSuccess (Success 200) {String} headers.Subject        Subject
+ * @apiSuccess (Success 200) {Object[]} headers.From         Senders
+ * @apiSuccess (Success 200) {String} headers.From.name      Sender's name
+ * @apiSuccess (Success 200) {String} headers.From.email     Sender's email address
+ * @apiSuccess (Success 200) {Number} headers.isRead         1 if message is read
+ * @apiSuccess (Success 200) {String} headers.Priority       Priority
+ * @apiSuccess (Success 200) {String} headers.RelativeDate   Message date relative to now
+ * @apiSuccess (Success 200) {String} headers.Size           Formatted message size
+ * @apiSuccess (Success 200) {String[]} headers.Flags        Flags, such as "answered" and "seen"
+ * @apiSuccess (Success 200) {Number} headers.uid            Message UID
+ * @apiSuccess (Success 200) {Object} [quotas]               Quota information
+ * @apiSuccess (Success 200) {Number} [quotas.usedSpace]     Used space
+ * @apiSuccess (Success 200) {Number} [quotas.maxQuota]      Mailbox maximum quota
+ */
 - (id <WOActionResults>) getUIDsAction
 {
+  BOOL noHeaders;
   NSDictionary *data, *requestContent;
-  NSString *noHeaders;
   SOGoMailFolder *folder;
   WORequest *request;
   WOResponse *response;
@@ -672,9 +721,9 @@
 
   folder = [self clientObject];
   
-  noHeaders = [[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"no_headers"];
+  noHeaders = [[[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"noHeaders"] boolValue];
   data = [self getUIDsInFolder: folder
-                   withHeaders: ([noHeaders length] == 0)];
+                   withHeaders: !noHeaders];
 
   [response appendContentString: [data jsonRepresentation]];
 
