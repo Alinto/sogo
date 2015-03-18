@@ -286,8 +286,8 @@
                 items = list.find('md-item-content');
 
                 // Hightlight element as "selected"
-                angular.element(iElement.find('md-item-content')[0]).removeClass('sg-loading');
                 angular.element(iElement.find('md-item-content')[0]).addClass('sg-active');
+                angular.element(iElement.find('md-item-content')[0]).removeClass('sg-loading');
 
                 // Show options button
                 angular.forEach(items, function(element) {
@@ -458,6 +458,7 @@
     <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
   */
     .directive('sgSubscribe', [function() {
+      console.debug('registering sgSubscribe');
       return {
         restrict: 'CA',
         scope: {
@@ -581,6 +582,73 @@
           element.bind('focus', function (evt) {
             hasFocus = true;
           });
+        }
+      };
+    }])
+
+  /*
+   * sgSearch - Search within a list of items
+   * @memberof SOGo.UIDesktop
+   * @restrict attribute
+   * @param {function} sgSearch - the function to call when performing a search.
+   *        Two variables are available: searchField and searchText.
+   * @example:
+
+   <div sg-search="mailbox.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
+     <md-input-container>
+       <input name="search" type="search"/>
+     </md-input-container>
+     <md-select class="sg-toolbar-sort md-contrast-light">
+       <md-option value="subject">Subject</md-option>
+       <md-option value="sender">sender</md-option>
+     </md-select>
+   </div>
+  */
+    .directive('sgSearch', ['$compile', function($compile) {
+      return {
+        restrict: 'A',
+        controller: 'sgSearchController',
+        controllerAs: '$sgSearchController',
+        // See http://stackoverflow.com/questions/19224028/add-directives-from-directive-in-angularjs
+        // for reasons of using terminal and priority
+        terminal: true,
+        priority: 1000,
+        scope: {
+          doSearch: '&sgSearch'
+        },
+        compile: compile
+      };
+
+      function compile(tElement, tAttr) {
+        var mdInputEl = tElement.find('md-input-container'),
+            inputEl = tElement.find('input'),
+            selectEl = tElement.find('md-select');
+
+        inputEl.attr('ng-model', '$sgSearchController.searchText');
+        inputEl.attr('ng-keyup', '$sgSearchController.onChange()');
+        selectEl.attr('ng-model', '$sgSearchController.searchField');
+        selectEl.attr('ng-change', '$sgSearchController.onChange()');
+
+        return function postLink(scope, iElement, iAttr, controller) {
+          $compile(mdInputEl)(scope);
+          $compile(selectEl)(scope);
+        }
+      }
+    }])
+    .controller('sgSearchController', ['$scope', '$element', function($scope, $element) {
+      this.previous = { searchText: '', searchField: '' };
+      this.searchField = $element.find('md-option').attr('value'); // defaults to first option
+
+      this.onChange = function() {
+        if (typeof this.searchText != 'undefined') {
+          if (this.searchText != this.previous.searchText || this.searchField != this.previous.searchField) {
+            if (this.searchText.length > 2 || this.searchText.length == 0) {
+              // See https://github.com/angular/angular.js/issues/7635
+              // for why we need to use $scope here
+              $scope.doSearch({ searchText: this.searchText, searchField: this.searchField });
+            }
+            this.previous = { searchText: this.searchText, searchField: this.searchField };
+          }
         }
       };
     }]);
