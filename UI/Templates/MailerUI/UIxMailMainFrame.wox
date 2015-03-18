@@ -4,6 +4,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
     const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
@@ -323,17 +324,20 @@
           </div>
         </div>
         <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
-          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px">
+          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px"
+               sg-search="mailbox.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
             <md-input-container class="sg-search-field-container">
-              <label style="color: white"><i class="md-icon-search"><!--icon--></i>Search</label>
-              <input name="folderSearch" type="search"
-                     ng-model="search.filter" ng-keyup="doSearch($event)" style="color: white"/>
+              <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+              <input name="folderSearch" type="search" style="color: white"/>
             </md-input-container>
 
             <div class="sg-toolbar-group">
-              <md-select class="sg-toolbar-sort md-contrast-light" label:placeholder="All"
-                         ng-model="search.criteria">
-                <md-option value="all">ALL</md-option>
+              <md-select class="sg-toolbar-sort md-contrast-light">
+                <md-option value="subject"><var:string label:value="Subject"/></md-option>
+                <md-option value="sender"><var:string label:value="Sender"/></md-option>
+                <md-option value="subject_or_sender"><var:string label:value="Subject or Sender"/></md-option>
+                <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
+                <md-option value="body"><var:string label:value="Entire Message"/></md-option>
               </md-select>
               <md-button class="iconButton" aria-label="create" ui-sref="mail.newMessage()">
                 <i class="md-icon-create"><!-- icon --></i>

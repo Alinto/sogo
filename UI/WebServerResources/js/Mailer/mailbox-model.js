@@ -73,7 +73,7 @@
   Mailbox.$find = function(account) {
     var path, futureMailboxData;
 
-    futureMailboxData = this.$$resource.post(account.id, 'view', {sortingAttributes: {sort: 'date', asc: false}});
+    futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
 
     return Mailbox.$unwrapCollection(account, futureMailboxData); // a collection of mailboxes
   };
@@ -113,7 +113,7 @@
    * @memberof Mailbox
    * @desc Build the path of the mailbox (or account only).
    * @param {string} accountId - the account ID
-   * @param {string} [mailboxPath] - an array of the mailbox path components
+   * @param {string} [mailboxPath] - the mailbox path
    * @returns a string representing the path relative to the mail module
    */
   Mailbox.$absolutePath = function(accountId, mailboxPath) {
@@ -141,15 +141,44 @@
   };
 
   /**
-   * @function $reload
+   * @function $filter
    * @memberof Mailbox.prototype
-   * @desc Fetch the messages metadata of the mailbox.
+   * @desc Fetch the messages metadata of the mailbox
+   * @param {object} [sort] - sort preferences. Defaults to descendent by date.
+   * @param {string} sort.match - either AND or OR
+   * @param {string} sort.sort - either arrival, subject, from, to, date, or size
+   * @param {boolean} sort.asc - sort is ascendant if true
+   * @param {object[]} [filers] - list of filters for the query
+   * @param {string} filers.searchBy - either subject, from, to, cc, or body
+   * @param {string} filers.searchInput - the search string to match
+   * @param {boolean} filers.negative - negate the condition
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$reload = function() {
-    var futureMailboxData;
+  Mailbox.prototype.$filter = function(sort, filters) {
+    var futureMailboxData, options;
 
-    futureMailboxData = Mailbox.$$resource.post(this.id, 'view', {sortingAttributes: {sort: 'date', asc: false}});
+    if (!angular.isDefined(sort)) {
+      sort = { sortingAttributes: { match: 'OR', sort: 'date', asc: false } };
+    }
+    options = { sortingAttributes: sort };
+    if (angular.isDefined(filters)) {
+      options.filters = _.reject(filters, function(filter) {
+        return angular.isUndefined(filter.searchInput) || filter.searchInput.length == 0;
+      });
+      _.each(options.filters, function(filter) {
+        var secondFilter,
+            match = filter.searchBy.match(/(\w+)_or_(\w+)/);
+        if (match) {
+          options.sortingAttributes.match = 'OR';
+          filter.searchBy = match[1];
+          secondFilter = angular.copy(filter);
+          secondFilter.searchBy = match[2];
+          options.filters.push(secondFilter);
+        }
+      });
+    }
+
+    futureMailboxData = Mailbox.$$resource.post(this.id, 'view', options);
 
     return this.$unwrap(futureMailboxData);
   };

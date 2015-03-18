@@ -89,7 +89,7 @@
               return _find(stateAccount.$mailboxes);
             }],
             stateMessages: ['stateMailbox', function(stateMailbox) {
-              return stateMailbox.$reload();
+              return stateMailbox.$filter();
             }]
           }
         })
@@ -235,7 +235,7 @@
 
     .controller('MailboxCtrl', ['$scope', '$rootScope', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, stateAccount, stateMailbox, $timeout, focus, Dialog, Account, Mailbox) {
       $scope.account = stateAccount;
-      $scope.mailbox = stateMailbox;
+      $rootScope.mailbox = stateMailbox;
       $rootScope.currentFolder = stateMailbox;
       $timeout(function() {
         $rootScope.$broadcast('sgSelectFolder', stateMailbox.id);
