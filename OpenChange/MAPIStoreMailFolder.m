@@ -1163,13 +1163,20 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   if (![[result objectForKey: @"result"] boolValue])
     return MAPISTORE_ERROR;
 
-  /* "Move" treatment: Store \Deleted and unregister urls */
+  /* "Move" treatment: Store \Deleted and unregister urls as soft-deleted */
   if (!wantCopy)
     {
       [client storeFlags: [NSArray arrayWithObject: @"Deleted"] forUIDs: uids
              addOrRemove: YES];
       for (count = 0; count < midCount; count++)
-        [mapping unregisterURLWithID: srcMids[count]];
+        {
+          /* Using soft-deleted to make deleted fmids to return the
+             srcMids.
+             See [MAPIStoreFolder getDeletedFMIDs:andCN:fromChangeNumber:inTableType:inMemCtx]
+             for details */
+          [mapping unregisterURLWithID: srcMids[count]
+                              andFlags: MAPISTORE_SOFT_DELETE];
+        }
     }
 
   /* Registration of target messages */

@@ -2,6 +2,7 @@ master
 ------
 
 Bug fixes
+ - Sent mails are not longer in Drafts folder using Outlook
  - Fix server side crash parsing rtf emails with images (with word97 format)
 
 2.2.15-zentyal2 (2015-03-16)
