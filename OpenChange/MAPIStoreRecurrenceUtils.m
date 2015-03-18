@@ -24,6 +24,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -48,6 +49,10 @@
 
 - (void) setupRecurrenceWithMasterEntity: (iCalRepeatableEntityObject *) entity
                    fromRecurrencePattern: (struct RecurrencePattern *) rp
+                          withExceptions: (struct ExceptionInfo *) exInfos
+                       andExceptionCount: (uint16_t) exInfoCount
+                              inTimeZone: (NSTimeZone *) tz
+
 {
   NSCalendarDate *startDate, *olEndDate, *untilDate, *exDate;
   NSString *monthDay, *month;
@@ -214,34 +219,42 @@
 
   /* exception dates:
      - take all deleted instances
-     - remove all modified instances from the above set
+     - remove all modified instances available in ExceptionInfo from the above set
      - add remaining instances, in chronological order
    */
-  exceptionDates = [NSMutableSet set];
-  for (count = 0; count < rp->DeletedInstanceCount; count++)
-    {
-      exDate
-        = [NSDate dateFromMinutesSince1601: rp->DeletedInstanceDates[count]];
-      exDate = [exDate hour: [startDate hourOfDay]
-                     minute: [startDate minuteOfHour]
-                     second: [startDate secondOfMinute]];
-      [exceptionDates addObject: exDate];
-    }
-  for (count = 0; count < rp->ModifiedInstanceCount; count++)
-    {
-      exDate
-        = [NSDate dateFromMinutesSince1601: rp->ModifiedInstanceDates[count]];
-      exDate = [exDate hour: [startDate hourOfDay]
-                     minute: [startDate minuteOfHour]
-                     second: [startDate secondOfMinute]];
-      [exceptionDates removeObject: exDate];
-    }
 
-  realExDates = [[exceptionDates allObjects]
-                  sortedArrayUsingSelector: @selector (compare:)];
-  max = [realExDates count];
-  for (count = 0; count < max; count++)
-    [entity addToExceptionDates: [realExDates objectAtIndex: count]];
+  /* Heuristic to avoid these loops */
+  if (rp->DeletedInstanceCount != rp->ModifiedInstanceCount) {
+    exceptionDates = [NSMutableSet set];
+    for (count = 0; count < rp->DeletedInstanceCount; count++)
+      {
+        exDate
+          = [NSDate dateFromMinutesSince1601: rp->DeletedInstanceDates[count]];
+        exDate = [exDate hour: [startDate hourOfDay]
+                       minute: [startDate minuteOfHour]
+                       second: [startDate secondOfMinute]];
+        [exceptionDates addObject: exDate];
+      }
+    /* Read the exceptions to remove the instances that are modified and not deleted */
+    if (exInfos && exInfoCount > 0)
+      {
+        for (count = 0; count < exInfoCount; count++)
+          {
+            /* The OriginalStartDate is in local time */
+            exDate = [NSDate dateFromMinutesSince1601: exInfos[count].OriginalStartDate];
+            exDate = [exDate dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: - [tz secondsFromGMT]];
+            [exceptionDates removeObject: exDate];
+          }
+      }
+
+    realExDates = [[exceptionDates allObjects]
+                    sortedArrayUsingSelector: @selector (compare:)];
+    max = [realExDates count];
+    for (count = 0; count < max; count++)
+      [entity addToExceptionDates: [realExDates objectAtIndex: count]];
+  }
 }
 
 @end
@@ -312,15 +325,25 @@
       rp->RecurFrequency = RecurFrequency_Weekly;
       rp->PatternType = PatternType_Week;
       rp->Period = repeatInterval;
+
+      dayOfWeek = [startDate dayOfWeek];
+
       mask = 0;
       byDayMask = [self byDayMask];
-      for (count = 0; count < 7; count++)
-        if ([byDayMask occursOnDay: count])
-          mask |= 1 << count;
+      if (byDayMask)
+        {
+          for (count = 0; count < 7; count++)
+            if ([byDayMask occursOnDay: count])
+              mask |= 1 << count;
+        }
+      else
+        {
+          /* Set the recurrence pattern using start date */
+          mask |= 1 << dayOfWeek;
+        }
       rp->PatternTypeSpecific.WeekRecurrencePattern = mask;
 
       /* FirstDateTime */
-      dayOfWeek = [startDate dayOfWeek];
       if (dayOfWeek)
         beginOfWeek = [startDate dateByAddingYears: 0 months: 0
                                               days: -dayOfWeek
