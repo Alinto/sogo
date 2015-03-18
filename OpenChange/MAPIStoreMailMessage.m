@@ -65,7 +65,7 @@
 
 @class iCalCalendar, iCalEvent;
 
-static Class NSExceptionK;
+static Class NSExceptionK, MAPIStoreSharingMessageK;
 
 @interface NSString (MAPIStoreMIME)
 
@@ -108,6 +108,7 @@ static Class NSExceptionK;
 + (void) initialize
 {
   NSExceptionK = [NSException class];
+  MAPIStoreSharingMessageK = [MAPIStoreSharingMessage class];
 }
 
 - (id) init
@@ -267,7 +268,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                  a sharing object is a proxy in a mail message */
               sharingMessage = [[MAPIStoreSharingMessage alloc]
                                  initWithMailHeaders: [sogoObject mailHeaders]
-                                   andConnectionInfo: [[self context] connectionInfo]];
+                                   andConnectionInfo: [[self context] connectionInfo]
+                                         fromMessage: self];
               [self addProxy: sharingMessage];
               [sharingMessage release];
             }
@@ -1641,6 +1643,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   bodySetup = YES;
 }
 
+- (MAPIStoreSharingMessage *) _sharingObject
+{
+  /* Get the sharing object if available */
+  NSUInteger i, max;
+  id proxy;
+
+  max = [proxies count];
+  for (i = 0; i < max; i++) {
+    proxy = [proxies objectAtIndex: i];
+    if ([proxy isKindOfClass: MAPIStoreSharingMessageK])
+      return proxy;
+  }
+  return nil;
+}
+
 - (void) save: (TALLOC_CTX *) memCtx 
 {
   NSNumber *value;
@@ -1654,6 +1671,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       else /* 0: unflagged, 1: follow up complete */
         [sogoObject removeFlags: @"\\Flagged"];
     }
+
+  if (mailIsSharingObject)
+    [[self _sharingObject] saveWithMessage: self
+                             andSOGoObject: sogoObject];
+
 }
 
 @end

@@ -23,8 +23,8 @@
 #ifndef MAPISTORESHARINGMESSAGE_H
 #define MAPISTORESHARINGMESSAGE_H
 
+#import "MAPIStoreMailMessage.h"
 #import "MAPIStoreObjectProxy.h"
-
 
 @interface MAPIStoreSharingMessage : MAPIStoreObjectProxy
 {
@@ -33,7 +33,8 @@
 }
 
 - (id) initWithMailHeaders: (NSDictionary *) mailHeaders
-         andConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
+         andConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+               fromMessage: (MAPIStoreMailMessage *) msg;
 
 /* getters */
 - (int) getPidLidSharingCapabilities: (void **) data
@@ -88,6 +89,10 @@
                             inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidNameContentClass: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx;
+
+/* Save */
+- (void) saveWithMessage: (MAPIStoreMailMessage *) msg
+           andSOGoObject: (SOGoMailObject *) sogoObject;
 
 @end
 

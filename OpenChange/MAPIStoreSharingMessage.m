@@ -22,9 +22,11 @@
 
 #include <talloc.h>
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
+#import <Mailer/SOGoMailObject.h>
 #import <NGExtensions/NGBase64Coding.h>
 
 #import "MAPIStoreTypes.h"
@@ -33,9 +35,11 @@
 #import "NSString+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
 
+#import "MAPIStoreMailFolder.h"
 #import "MAPIStoreSharingMessage.h"
 
 #include <mapistore/mapistore_errors.h>
+#include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreSharingMessage
 
@@ -52,6 +56,7 @@
 
 - (id) initWithMailHeaders: (NSDictionary *) mailHeaders
          andConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+               fromMessage: (MAPIStoreMailMessage *) msg
 {
   NSEnumerator *enumerator;
   NSString *key;
@@ -67,6 +72,12 @@
             [properties setObject: [mailHeaders objectForKey: key]
                            forKey: key];
         }
+
+      /* Set request properties from container folder */
+      NSDictionary *requestProps = [(MAPIStoreMailFolder *)[msg container]
+                                       extraPropertiesForMessage: [msg nameInContainer]];
+      if (requestProps)
+        [properties addEntriesFromDictionary: requestProps];
     }
 
   return self;
@@ -368,7 +379,18 @@
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   id value;
 
-  value = [properties objectForKey: @"x-ms-sharing-responsetime"];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidSharingResponseTime)];
+  if (!value)
+    {
+      value = [properties objectForKey: @"x-ms-sharing-responsetime"];
+      if (value)
+        {
+          /* Here the value is a GSCBufferString */
+          NSString * responseTime = [NSString stringWithUTF8String: [value UTF8String]];
+          value = [NSDate dateWithString: responseTime];
+        }
+    }
+
   if (value)
     {
       *data = [value asFileTimeInMemCtx: memCtx];
@@ -385,7 +407,10 @@
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   id value;
 
-  value = [properties objectForKey: @"x-ms-sharing-responsetype"];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidSharingResponseType)];
+  if (!value)
+    value = [properties objectForKey: @"x-ms-sharing-responsetype"];
+
   if (value)
     {
       *data = MAPILongValue (memCtx, [value intValue]);
@@ -398,8 +423,38 @@
 - (int) getPidNameContentClass: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-    *data = talloc_strdup (memCtx, "Sharing");
-    return MAPISTORE_SUCCESS;
+  *data = talloc_strdup (memCtx, "Sharing");
+  return MAPISTORE_SUCCESS;
+}
+
+- (void) saveWithMessage: (MAPIStoreMailMessage *) msg
+           andSOGoObject: (SOGoMailObject *) sogoObject
+{
+  /* Store PidLidSharingResponseType and PidLidSharingResponseTime if
+     required in versions message from the container as I don't see
+     other straightforward place to put that information */
+  id response;
+  NSDictionary *propsToStore;
+
+  response = [[msg properties] objectForKey: MAPIPropertyKey (PidLidSharingResponseType)];
+  if (response)
+    {
+      /* FIXME: Is there any better way to increase the modseq? */
+      [sogoObject addFlags: @"\\Draft"];
+      [sogoObject removeFlags: @"\\Draft"];
+
+      /* Store this modification in container folder along the property values */
+      propsToStore = [NSDictionary dictionaryWithObjects:
+                               [NSArray arrayWithObjects: response,
+                                        [[msg properties] objectForKey: MAPIPropertyKey (PidLidSharingResponseTime)],
+                                        nil]
+                                                 forKeys:
+                               [NSArray arrayWithObjects: MAPIPropertyKey (PidLidSharingResponseType),
+                                        MAPIPropertyKey (PidLidSharingResponseTime), nil]];
+
+      [(MAPIStoreMailFolder *)[msg container] setExtraProperties: propsToStore
+                                                      forMessage: [msg nameInContainer]];
+    }
 }
 
 @end
