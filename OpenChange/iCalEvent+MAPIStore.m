@@ -141,6 +141,107 @@
     }
 }
 
+- (int) _updateFromAttendeeMAPIProperties: (NSArray *) recipients
+                                 withRole: (NSString *) role
+                                 outParam: (BOOL *) organizerIsSet
+{
+  NSDictionary *dict;
+  NSString *attEmail;
+  iCalPerson *person;
+  iCalPersonPartStat newPartStat;
+  NSNumber *flags, *trackStatus;
+  int i, effective;
+
+  effective = 0;
+  for (i = 0; i < [recipients count]; i++)
+    {
+      dict = [recipients objectAtIndex: i];
+      person = [iCalPerson new];
+      [person setCn: [dict objectForKey: @"fullName"]];
+      attEmail = [dict objectForKey: @"email"];
+      [person setEmail: attEmail];
+
+      flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
+      if (!flags)
+        {
+          [self logWithFormat:
+                  @"no recipient flags specified: skipping recipient"];
+          continue;
+        }
+
+      if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
+        {
+          [self setOrganizer: person];
+          *organizerIsSet = YES;
+          [self logWithFormat: @"organizer set via recipient flags"];
+        }
+      else
+        {
+          BOOL isOrganizer = NO;
+
+          // /* Work-around: it happens that Outlook still passes the
+          //    organizer as a recipient, maybe because of a feature
+          //    documented in a pre-mesozoic PDF still buried in a
+          //    cavern... In that case we remove it, and we keep the
+          //    number of effective recipients in "effective". If the
+          //    total is 0, we remove the "ORGANIZER" too. */
+          // if ([attEmail isEqualToString: orgEmail])
+          //   {
+          //     [self logWithFormat:
+          //             @"avoiding setting organizer as recipient"];
+          //     continue;
+          //   }
+
+          trackStatus = [dict objectForKey: MAPIPropertyKey (PidTagRecipientTrackStatus)];
+          if (trackStatus)
+            {
+              /* FIXME: we should provide a data converter between OL
+                 partstats and SOGo */
+              switch ([trackStatus unsignedIntValue])
+                {
+                case 0x01: /* respOrganized */
+                  isOrganizer = YES;
+                  break;
+                case 0x02: /* respTentative */
+                  newPartStat = iCalPersonPartStatTentative;
+                  break;
+                case 0x03: /* respAccepted */
+                  newPartStat = iCalPersonPartStatAccepted;
+                  break;
+                case 0x04: /* respDeclined */
+                  newPartStat = iCalPersonPartStatDeclined;
+                  break;
+                default:
+                  newPartStat = iCalPersonPartStatNeedsAction;
+                }
+
+              if (isOrganizer)
+                {
+                  [self setOrganizer: person];
+                  *organizerIsSet = YES;
+                  [self logWithFormat: @"organizer set via track status"];
+                }
+              else
+                {
+                  [person setParticipationStatus: newPartStat];
+                  [person setRsvp: @"TRUE"];
+                  [person setRole: role];
+                  [self addToAttendees: person];
+                  effective++;
+                }
+            }
+          else
+            [self errorWithFormat: @"skipped recipient due"
+                  @" to missing track status"];
+        }
+
+      [person release];
+    }
+
+  return effective;
+}
+
+
 - (void) updateFromMAPIProperties: (NSDictionary *) properties
                     inUserContext: (MAPIStoreUserContext *) userContext
                    withActiveUser: (SOGoUser *) activeUser
@@ -375,106 +476,28 @@
   value = [properties objectForKey: @"recipients"];
   if (value)
     {
-      NSArray *recipients;
       NSDictionary *dict;
-      NSString *orgEmail, *sentBy, *attEmail;
+      NSString *orgEmail, *sentBy;
       iCalPerson *person;
       iCalPersonPartStat newPartStat;
-      NSNumber *flags, *trackStatus;
-      int i, effective;
+      int effective;
       BOOL organizerIsSet = NO;
 
       [self setOrganizer: nil];
       [self removeAllAttendees];
 
-      recipients = [value objectForKey: @"to"];
-      effective = 0;
-      for (i = 0; i < [recipients count]; i++)
-        {
-          dict = [recipients objectAtIndex: i];
-          person = [iCalPerson new];
-          [person setCn: [dict objectForKey: @"fullName"]];
-          attEmail = [dict objectForKey: @"email"];
-          [person setEmail: attEmail];
- 
-          flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
-          if (!flags)
-            {
-              [self logWithFormat:
-                      @"no recipient flags specified: skipping recipient"];
-              continue;
-            }
+      /* In [MS-OXOCAL] Section 2.2.4.10.7 says the recipient type is 0x01 as Required
+         and 0x02 as Optional and other documents such [MS-OXCMSG] 2.2.3.1.2 indicates
+         that MAPI_TO is 0x01 and MAPI_CC is 0x02, that's why in SOGo is in 'to' and 'cc'
+         respectively. */
+      effective = [self _updateFromAttendeeMAPIProperties: [value objectForKey: @"to"]
+                                                 withRole: @"REQ-PARTICIPANT"
+                                                 outParam: &organizerIsSet];
+      effective += [self _updateFromAttendeeMAPIProperties: [value objectForKey: @"cc"]
+                                                 withRole: @"OPT-PARTICIPANT"
+                                                 outParam: &organizerIsSet];
 
-          if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
-            {
-              [self setOrganizer: person];
-              organizerIsSet = YES;
-              [self logWithFormat: @"organizer set via recipient flags"];
-            }
-          else
-            {
-              BOOL isOrganizer = NO;
-
-              // /* Work-around: it happens that Outlook still passes the
-              //    organizer as a recipient, maybe because of a feature
-              //    documented in a pre-mesozoic PDF still buried in a
-              //    cavern... In that case we remove it, and we keep the
-              //    number of effective recipients in "effective". If the
-              //    total is 0, we remove the "ORGANIZER" too. */
-              // if ([attEmail isEqualToString: orgEmail])
-              //   {
-              //     [self logWithFormat:
-              //             @"avoiding setting organizer as recipient"];
-              //     continue;
-              //   }
-
-              trackStatus = [dict objectForKey: MAPIPropertyKey (PidTagRecipientTrackStatus)];
-              if (trackStatus)
-                {
-                  /* FIXME: we should provide a data converter between OL
-                     partstats and SOGo */
-                  switch ([trackStatus unsignedIntValue])
-                    {
-                    case 0x01: /* respOrganized */
-                      isOrganizer = YES;
-                      break;
-                    case 0x02: /* respTentative */
-                      newPartStat = iCalPersonPartStatTentative;
-                      break;
-                    case 0x03: /* respAccepted */
-                      newPartStat = iCalPersonPartStatAccepted;
-                      break;
-                    case 0x04: /* respDeclined */
-                      newPartStat = iCalPersonPartStatDeclined;
-                      break;
-                    default:
-                      newPartStat = iCalPersonPartStatNeedsAction;
-                    }
-
-                  if (isOrganizer)
-                    {
-                      [self setOrganizer: person];
-                      organizerIsSet = YES;
-                      [self logWithFormat: @"organizer set via track status"];
-                    }
-                  else
-                    {
-                      [person setParticipationStatus: newPartStat];
-                      [person setRsvp: @"TRUE"];
-                      [person setRole: @"REQ-PARTICIPANT"];
-                      [self addToAttendees: person];
-                      effective++;
-                    }
-                }
-              else
-                [self errorWithFormat: @"skipped recipient due"
-                      @" to missing track status"];
-            }
-
-          [person release];
-        }
-
-      if (effective == 0) /* See work-around above */
+      if (effective == 0) /* See work-around inside _updateFromAttendeeMAPIProperties */
         [self setOrganizer: nil];
       else
         {
@@ -500,7 +523,7 @@
                     = [properties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
                   if (value)
                     responseStatus = [value unsignedLongValue];
-                      
+
                   /* FIXME: we should provide a data converter between OL partstats and
                      SOGo */
                   switch (responseStatus)
@@ -522,23 +545,6 @@
                   value = [properties objectForKey: MAPIPropertyKey (PidLidAttendeeCriticalChange)];
                   if (value && ![value isNever])
                     [self setTimeStampAsDate: value];
-                  //                 if (newPartStat // != iCalPersonPartStatUndefined
-                  //                     )
-                  //                   {
-                  //                     // iCalPerson *participant;
-
-                  //                     // participant = [self userAsAttendee: ownerUser];
-                  //                     // [participant setParticipationStatus: newPartStat];
-                  //                     // [sogoObject saveComponent: self];
-
-                  //                     [sogoObject changeParticipationStatus: newPartStat
-                  //                                              withDelegate: nil];
-                  //                     // [[self context] tearDownRequest];
-                  //                   }
-                  // //   }1005
-
-                  // // else
-                  // //   {
                 }
             }
           else
@@ -553,7 +559,7 @@
               [person setCn: [dict objectForKey: @"fullName"]];
               orgEmail = [dict objectForKey: @"email"];
               [person setEmail: orgEmail];
-                  
+
               if (![activeUser isEqual: ownerUser])
                 {
                   dict = [activeUser primaryIdentity];
