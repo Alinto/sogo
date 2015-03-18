@@ -300,7 +300,7 @@ static NSString *inboxFolderName = @"INBOX";
 	  quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
 	  inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
 					[NSNumber numberWithLong: (long)(quota+0.5)], @"maxQuota",
-					[inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
+                                         [NSNumber numberWithLong: [[inboxQuota objectForKey: @"usedSpace"] longLongValue]], @"usedSpace",
 				     nil];
 	}
     }
