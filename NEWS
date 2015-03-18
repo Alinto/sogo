@@ -16,6 +16,7 @@ Bug fixes
  - reduced telephone number to a single value in JSON response of contacts list
  - fixed freebusy data when 'busy off hours' is enabled and period starts during the weekend
  - fixed fetching of freebusy data from the Web interface
+ - fixed EAS handling of Bcc in emails (#3138)
 
 2.2.16 (2015-02-12)
 -------------------
