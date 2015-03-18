@@ -244,22 +244,6 @@
 
     .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {
       $rootScope.message = stateMessage;
-      $scope.loadImages = function() {
-        // Load external resources
-        angular.forEach(['src', 'data', 'classid', 'background', 'style'], function(suffix) {
-          var elements = document.querySelectorAll('#messageView [unsafe-' + suffix + ']'),
-              element,
-              value,
-              i;
-          for (i = 0; i < elements.length; i++) {
-            element = angular.element(elements[i]);
-            value = element.attr('unsafe-' + suffix);
-            element.attr(suffix, value);
-            element.removeAttr('unsafe-' + suffix);
-          }
-          stateMessage.hasUnsafeContent = false;
-        });
-      };
       $scope.doDelete = function() {
         stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
           // Remove card from list of addressbook

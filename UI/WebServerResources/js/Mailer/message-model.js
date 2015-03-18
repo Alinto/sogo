@@ -13,6 +13,8 @@
   function Message(accountId, mailbox, futureMessageData) {
     this.accountId = accountId;
     this.$mailbox = mailbox;
+    this.$hasUnsafeContent = false;
+    this.$loadUnsafeContent = false;
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
@@ -125,14 +127,46 @@
   };
 
   /**
+   * @function loadUnsafeContent
+   * @memberof Message.prototype
+   * @desc Mark the message to load unsafe resources when calling $content().
+   */
+  Message.prototype.loadUnsafeContent = function() {
+    this.$loadUnsafeContent = true;
+  };
+
+  /**
    * @function $content
    * @memberof Message.prototype
    * @desc Get the message body as accepted by SCE (Angular Strict Contextual Escaping).
    * @returns the HTML representation of the body
    */
   Message.prototype.$content = function() {
-    this.hasUnsafeContent = (this.content.indexOf(' unsafe-') > -1);
-    return Message.$sce.trustAs('html', this.content);
+    var _this = this;
+
+    if (this.$loadUnsafeContent) {
+      if (angular.isUndefined(this.unsafeContent)) {
+        this.unsafeContent = document.createElement('div');
+        this.unsafeContent.innerHTML = this.content;
+        angular.forEach(['src', 'data', 'classid', 'background', 'style'], function(suffix) {
+          var elements = _this.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
+              element,
+              value,
+              i;
+          for (i = 0; i < elements.length; i++) {
+            element = angular.element(elements[i]);
+            value = element.attr('unsafe-' + suffix);
+            element.attr(suffix, value);
+            element.removeAttr('unsafe-' + suffix);
+          }
+        });
+      }
+      this.$hasUnsafeContent = false;
+      return Message.$sce.trustAs('html', this.unsafeContent.innerHTML);
+    }
+    else {
+      return Message.$sce.trustAs('html', this.content);
+    }
   };
 
   /**
@@ -212,6 +246,7 @@
    * @see {@link Message.$reply}
    * @see {@link Message.$replyAll}
    * @see {@link Message.$forwad}
+   * @param {string} action - the HTTP action to perform on the message
    * @returns a promise of the HTTP operations
    */
   Message.prototype.$newDraft = function(action) {
@@ -315,6 +350,8 @@
         angular.extend(_this, data);
         _this.id = _this.$absolutePath();
         _this.$formatFullAddresses();
+        _this.$hasUnsafeContent = (_this.content.indexOf(' unsafe-') > -1);
+        _this.$loadUnsafeContent = false;
         deferred.resolve(_this);
       });
       if (!_this.isread) {

@@ -59,8 +59,9 @@
             ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i>
         </md-button>
       <md-button class="iconButton" aria-label="Load Images"
-            ng-show="message.hasUnsafeContent"
-            ng-click="loadImages()"><var:string label:value="Load Images"/>
+            ng-show="message.$hasUnsafeContent"
+            ng-click="message.loadUnsafeContent()">
+        <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
         <i class="md-icon-image"><!--icon--></i>
       </md-button>
     </div>
