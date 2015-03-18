@@ -134,7 +134,8 @@
   value = [properties objectForKey: @"x-ms-sharing-capabilities"];
   if (value)
     {
-      *data = [[value stringValue] asUnicodeInMemCtx: memCtx];
+      *data = [[NSString stringWithFormat:@"%X", [value intValue]]
+                 asUnicodeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
 
@@ -177,7 +178,7 @@
           if ([value intValue] == 0x40290)  /* Special folder */
             {
               value = [properties objectForKey: @"x-ms-sharing-responsetime"];
-              auxValue = [properties objectForKey: @"x-ms-sharing-remotename"];
+              auxValue = [properties objectForKey: @"x-ms-sharing-remoteuid"];
               if (value)  /* A sharing request */
                 {
                   if (auxValue)
@@ -187,10 +188,10 @@
                 }
               else
                 {
-                  if (auxValue)  /* It SHOULD be an invitation or response acceptance */
+                  if (auxValue)  /* It SHOULD be an invitation or response */
                     *data = MAPILongValue (memCtx, 0x20310);
-                  else
-                    *data = MAPILongValue (memCtx, 0x23310);
+                  else  /* No remote info, then denial */
+                    *data = MAPILongValue (memCtx, 0x25100);
                 }
             }
           else
@@ -213,7 +214,8 @@
   value = [properties objectForKey: @"x-ms-sharing-flavor"];
   if (value)
     {
-      *data = [[value stringValue] asUnicodeInMemCtx: memCtx];
+      *data = [[NSString stringWithFormat:@"%X", [value intValue]]
+                asUnicodeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
 
