@@ -82,7 +82,9 @@
 - (NSString *) localeCode
 {
   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
-  return [locale objectForKey: @"NSLocaleCode"];
+  // Region subtag must be separated by a dash
+  NSString *s = [locale objectForKey: @"NSLocaleCode"];
+  return [s stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
 }
 
 - (NSArray *) monthMenuItems
