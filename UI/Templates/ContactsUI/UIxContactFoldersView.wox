@@ -145,7 +145,7 @@
          sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
     -->
 <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <md-toolbar class="md-tall" layout-align="start start">
         <div class="md-toolbar-tools" layout="row">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">

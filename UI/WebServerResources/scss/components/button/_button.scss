@@ -58,9 +58,15 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
 // Classes
 .iconButton {
   padding: $iconButton-padding;
+  border-radius: 50%;
+  overflow: hidden;
+  // z-index provides a stacking context that prevent ripple-effect from overflowing
+  z-index: 1;
+  background-clip: content-box;
   background-color: transparent;
   color: inherit;
-  &:hover {
+  &:hover,
+  &:active {
     background-color: transparent;
     [class ^= md-icon],
     [class *= md-icon-] {
@@ -73,6 +79,9 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
     color: curentColor;
     font-size: $iconButton-icon-size;
     transition: $iconButton-transition;
+  }
+  .md-ripple-container {
+    border-radius: 50%;
   }
 }
 // Icon-bars are for iconButtons, by default they're vertical and at the right

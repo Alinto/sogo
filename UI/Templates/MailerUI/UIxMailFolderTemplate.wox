@@ -41,9 +41,6 @@
     </md-list>
   </md-content>
 
-
     <div layout="column" ui-view="message" md-component-id="right"><!-- message view --></div>
-
-
 
 </container>
