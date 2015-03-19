@@ -4,7 +4,9 @@
 
 }
 [ui-view="message"] {
-  flex: 0 0 $detailView-width;
+  flex: 1 2 $detailView-width;
+  min-width: ($detailView-width - $pitch);
+  max-width: ($detailView-width + $pitch);
   margin: 0 auto;
 }
 

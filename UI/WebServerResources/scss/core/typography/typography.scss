@@ -130,7 +130,7 @@
 }
 
 // Google's Material design specs are in 'sp' or 'dp' which are not css units
-// 'dp' is 'density independant pexels' and 'sp' is 'scale-independent pixels'
+// 'dp' is 'density independant pixels' and 'sp' is 'scale-independent pixels'
 // (same as dp, but will be scaled by the user's font size preference)
 // Android gives a 160dpi  base value to 'sp' and 'dp', but Google's examples seems to use 'sp' as 'px'
 // We define a scaling factor in case we need to adjust

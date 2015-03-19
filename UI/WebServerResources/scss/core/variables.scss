@@ -17,9 +17,6 @@ $primary-color: sg-color($sogoBlue, 300) !default;
 //$foreground-primary-color: rgba($foreground-base-color, 0.73) !default;
 $foreground-primary-color: rgba($primary-color, 0.87);//override
 
-$bottombar-color: #212121;
-
-
 
 // Layout and grid
 // ------------------------------
@@ -55,6 +52,11 @@ $mg: $layout-gutter-width;
 $layout-breakpoint-sm:     600px !default;
 $layout-breakpoint-md:     960px !default;
 $layout-breakpoint-lg:     1200px !default;
+
+// Redefinitions
+// $layout-breakpoint-sm:     360px;
+$layout-breakpoint-md:     1025px;
+$layout-breakpoint-lg:     1280px;
 
 // App bar variables
 $app-bar-height: $sg-md-grid-pitch;

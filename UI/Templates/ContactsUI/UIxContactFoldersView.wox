@@ -288,6 +288,7 @@
             </md-item>
           </md-list>
         </md-content>
+        <!-- This extra container prevent card from being stretch by layout-fill -->
         <md-content class="md-padding" ui-view="card" layout="row" layout-align="center start"><!-- card view --></md-content>
       </div>
 

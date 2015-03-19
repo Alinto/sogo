@@ -9,6 +9,18 @@
   'use strict';
 
   angular.module('SOGo.UI', ['ngMaterial'])
+// md break-points values are hard-coded in angular-material/src/core/util/constant.js
+// $mdMedia has a built-in support for those values but can also evaluate others
+// For some reasons, angular-material's break-points don't match the specs
+// Here we define values according to specs
+    .constant('sgConstant', {
+      'sm': '(max-width: 600px)',
+      'gt-sm': '(min-width: 600px)',
+      'md': '(min-width: 600px) and (max-width: 1024px)',
+      'gt-md': '(min-width: 1025px)',
+      'lg': '(min-width: 1024px) and (max-width: 1280px)',
+      'gt-lg': '(min-width: 1280px)'
+    })
 
     .config(['$mdThemingProvider', function ($mdThemingProvider) {
 
@@ -104,7 +116,8 @@
       return l;
     })
 
-    .controller('navController', ['$scope', '$timeout', '$mdSidenav', '$mdBottomSheet', '$log', function ($scope, $timeout, $mdSidenav, $mdBottomSheet, $log) {
+    .controller('navController', ['$scope', '$timeout', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', function ($scope, $timeout, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant) {
+
       $scope.toggleLeft = function () {
         $mdSidenav('left').toggle()
           .then(function () {
@@ -123,5 +136,11 @@
           templateUrl: 'bottomSheetTemplate.html'
         });
       };
+      $scope.$watch(function() {
+        return $mdMedia(sgConstant['gt-md']);
+      },
+      function(newVal) {
+        $scope.isGtMedium = newVal;
+      });
     }]);
 })();

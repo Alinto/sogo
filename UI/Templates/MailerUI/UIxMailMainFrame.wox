@@ -264,7 +264,7 @@
     </div>
 
 <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-layout-fill" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <md-toolbar class="md-tall" layout-align="start start">
         <div class="md-toolbar-tools" layout="row">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">
@@ -304,7 +304,7 @@
 <!-- Main section -->
     <section layout="column" class="sg-app-content md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start" ng-controller="navController">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <div class="sg-toolbar-group-1" layout="row">
             <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>

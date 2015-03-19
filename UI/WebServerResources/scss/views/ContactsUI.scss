@@ -1,7 +1,8 @@
 /*! ContactUI.scss */
 
 [id ="contactsList"] {
-  flex: 0 0 $listView-width;
+  flex: 0 1 $listView-width;
+  min-width: ($listView-width - ($pitch * 2));
 }
 
 [id = "contactsList"] .sg-md-subheader {
@@ -9,12 +10,14 @@
 }
 // md is overqualifying, we have to do the same to override
 md-content[ui-view="card"] {
+  margin: 0 auto;
   background-color: sg-color($sogoPaper, 200);
 }
 
 // md is overqualifying, we have to do the same to override
 md-card.viewer {
-  width: $detailView-width;
+  flex: 0 2 $detailView-width;
+  min-width: ($detailView-width - ($pitch * 2));
 }
 
 // Contact editor
