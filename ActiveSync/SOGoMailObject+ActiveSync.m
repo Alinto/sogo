@@ -538,6 +538,10 @@ struct GlobalObjectId {
   NSData *d, *globalObjId;
   NSArray *attachmentKeys;
   NSMutableString *s;
+
+  uint32_t v;
+  NSString *p;
+  
   id value;
 
   iCalCalendar *calendar;
@@ -578,8 +582,25 @@ struct GlobalObjectId {
   if (value)
     [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value activeSyncRepresentationInContext: context]];
     
-  // Importance - FIXME
-  [s appendFormat: @"<Importance xmlns=\"Email:\">%@</Importance>", @"1"];
+  // Importance
+  v = 0x1;
+  p = [[self mailHeaders] objectForKey: @"x-priority"];
+
+  if (p) 
+    {
+      if ([p hasPrefix: @"1"]) v = 0x2;
+      else if ([p hasPrefix: @"2"]) v = 0x2;
+      else if ([p hasPrefix: @"4"]) v = 0x0;
+      else if ([p hasPrefix: @"5"]) v = 0x0;
+    }
+  else
+    {
+      p = [[self mailHeaders] objectForKey: @"importance"];
+      if ([p hasPrefix: @"High"]) v = 0x2;
+      else if ([p hasPrefix: @"Low"]) v = 0x0;
+    }
+
+  [s appendFormat: @"<Importance xmlns=\"Email:\">%d</Importance>", v];
   
   // Read
   [s appendFormat: @"<Read xmlns=\"Email:\">%d</Read>", ([self read] ? 1 : 0)];
