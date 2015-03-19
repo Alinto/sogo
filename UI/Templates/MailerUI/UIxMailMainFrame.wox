@@ -334,8 +334,8 @@
             <div class="sg-toolbar-group">
               <md-select class="sg-toolbar-sort md-contrast-light">
                 <md-option value="subject"><var:string label:value="Subject"/></md-option>
-                <md-option value="sender"><var:string label:value="Sender"/></md-option>
-                <md-option value="subject_or_sender"><var:string label:value="Subject or Sender"/></md-option>
+                <md-option value="from"><var:string label:value="Sender"/></md-option>
+                <md-option value="subject_or_from"><var:string label:value="Subject or Sender"/></md-option>
                 <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
                 <md-option value="body"><var:string label:value="Entire Message"/></md-option>
               </md-select>
