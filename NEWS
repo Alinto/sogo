@@ -17,6 +17,7 @@ Bug fixes
  - fixed freebusy data when 'busy off hours' is enabled and period starts during the weekend
  - fixed fetching of freebusy data from the Web interface
  - fixed EAS handling of Bcc in emails (#3138)
+ - fixed Language-Region tags in Web interface (#3121)
 
 2.2.16 (2015-02-12)
 -------------------
