@@ -95,7 +95,7 @@
 "Subject"       = "Assunto";
 "To"            = "Para";
 "Cc"            = "Cc";
-"Bcc"           = "Bcc";
+"Bcc"           = "Cco";
 "Reply-To"	    = "Responder-Para";
 "Add address"   = "Adicionar endereço";
 "Body"          = "Corpo";
@@ -109,7 +109,7 @@
 
 "to"            = "Para";
 "cc"            = "Cc";
-"bcc"           = "Bcc";
+"bcc"           = "Cco";
 
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
@@ -261,7 +261,7 @@
 "Operation failed" = "Falha na Operação";
 
 "Quota" = "Quota:";
-"quotasFormat" = "%{0}% usedo em %{1} MB";
+"quotasFormat" = "%{0}% usado em %{1} MB";
 
 "Please select a message." = "Por favor, selecione uma mensagem.";
 "Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
