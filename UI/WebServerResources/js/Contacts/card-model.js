@@ -61,7 +61,6 @@
     .directive('sgAddress', function() {
       return {
         restrict: 'A',
-        replace: true,
         scope: { data: '=sgAddress' },
         controller: ['$scope', function($scope) {
           $scope.addressLines = function(data) {
@@ -99,7 +98,7 @@
   /**
    * @memberof Card
    * @desc Unwrap to a collection of Card instances.
-   * @param {Object} futureCardData
+   * @param {object} futureCardData
    */
   Card.$unwrapCollection = function(futureCardData) {
     var collection = {};
@@ -411,7 +410,7 @@
    * @function $unwrap
    * @memberof Card.prototype
    * @desc Unwrap a promise and make a copy of the resolved data.
-   * @param {Object} futureCardData - a promise of the Card's data
+   * @param {object} futureCardData - a promise of the Card's data
    */
   Card.prototype.$unwrap = function(futureCardData) {
     var _this = this;
@@ -429,6 +428,9 @@
           if (o.email) o.emails = [{value: o.email}];
           _this.refs[i] = new Card(o);
         });
+        if (_this.birthday) {
+          _this.birthday = new Date(_this.birthday * 1000);
+        }
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);
       });
@@ -439,7 +441,7 @@
    * @function $omit
    * @memberof Card.prototype
    * @desc Return a sanitized object used to send to the server.
-   * @param {Boolean} [deep] - make a deep copy if true
+   * @param {boolean} [deep] - make a deep copy if true
    * @return an object literal copy of the Card instance
    */
   Card.prototype.$omit = function(deep) {
