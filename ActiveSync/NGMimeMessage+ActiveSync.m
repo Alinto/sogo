@@ -61,7 +61,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSArray *) allRecipients
 {
   NSMutableArray *recipients;
-  NSEnumerator *enumerator;
 
   recipients = [NSMutableArray array];
 
