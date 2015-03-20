@@ -95,7 +95,7 @@
 "Subject"       = "Assunto";
 "To"            = "Para";
 "Cc"            = "Cc";
-"Bcc"           = "Bcc";
+"Bcc"           = "Cco";
 "Reply-To"	    = "Responder-Para";
 "Add address"   = "Adicionar endereço";
 "Body"          = "Corpo";
@@ -109,7 +109,7 @@
 
 "to"            = "Para";
 "cc"            = "Cc";
-"bcc"           = "Bcc";
+"bcc"           = "Cco";
 
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
