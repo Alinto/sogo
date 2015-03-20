@@ -59,8 +59,7 @@
           abstract: true,
           views: {
             card: {
-              template: '<ui-view/>',
-              controller: 'CardCtrl'
+              template: '<ui-view/>'
             }
           },
           resolve: {
@@ -71,13 +70,21 @@
         })
         .state('addressbook.card.view', {
           url: '/view',
-          templateUrl: 'UIxContactViewTemplate', // UI/Templates/Contacts/UIxContactViewTemplate.wox
-          controller: 'CardCtrl'
+          views: {
+            'card@addressbook': {
+              templateUrl: 'UIxContactViewTemplate', // UI/Templates/Contacts/UIxContactViewTemplate.wox
+              controller: 'CardCtrl'
+            }
+          }
         })
         .state('addressbook.card.editor', {
           url: '/edit',
-          templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
-          controller: 'CardCtrl'
+          views: {
+            'card@addressbook': {
+              templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
+              controller: 'CardCtrl'
+            }
+          }
         });
 
       // if none of the above states are matched, use this as the fallback
