@@ -293,7 +293,7 @@
 
 "is under" = "abaixo";
 "is over" = "acima";
-"is" = "is";
+"is" = "é igual";
 "is not" = "não é";
 "contains" = "contem";
 "does not contain" = "não contem";
@@ -311,15 +311,15 @@
 
 /* Password policy */
 "The password was changed successfully." = "Senha alterada com sucesso.";
-"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
-"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
-"Password change failed" = "Échec au changement";
-"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
-"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
-"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
-"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
-"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
-"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
-"Unhandled error response" = "Erreur inconnue";
-"Password change is not supported." = "Changement de mot de passe non-supporté.";
-"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"Password must not be empty." = "A Senha não deve estar vazio";
+"The passwords do not match. Please try again." = "As senhas não coincidem. Por favor, tente novamente.";
+"Password change failed" = "Alteração de senha falhou";
+"Password change failed - Permission denied" = "Alteração de senha falhou - Permissão Negada";
+"Password change failed - Insufficient password quality" = "Alteração de senha falhou pois não atende os requisitos minímos";
+"Password change failed - Password is too short" = "Alteração de senha falhou - Senha muito curta";
+"Password change failed - Password is too young" = "Alteração de senha falhou - Senha alterada recentemente";
+"Password change failed - Password is in history" = "Alteração de senha falhou - A Senha já foi utilizada";
+"Unhandled policy error: %{0}" = "Erro de política não tratada: %{0}";
+"Unhandled error response" = "Resposta de erro não tratada";
+"Password change is not supported." = "Troca de senha não suportada";
+"Unhandled HTTP error code: %{0}" = "Código de erro HTTP não tratada: %{0}";
