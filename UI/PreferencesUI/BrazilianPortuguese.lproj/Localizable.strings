@@ -34,6 +34,7 @@
 "Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
 "End date of your auto reply must be in the future."
 = "A data final da resposta automática deve estar no futuro.";
+"Always send vacation message response" = "Sempre enviar resposta de mensagem de férias.";
 
 /* forward messages */
 "Forward incoming messages" = "Encaminhar mensagens recebidas";
