@@ -59,7 +59,7 @@
           abstract: true,
           views: {
             card: {
-              templateUrl: 'UIxContactViewTemplate',
+              template: '<ui-view/>',
               controller: 'CardCtrl'
             }
           },
