@@ -3,7 +3,7 @@
 
   <div class="md-whiteframe-z1">
     <md-content md-scroll-y="true" class="md-padding bg-sogoPaper-50">
-      <div class="editor md-padding" style="padding-bottom: 72px">
+      <div class="editor md-padding">
         <hgroup class="header">
           <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader">{{card.$description()}}
