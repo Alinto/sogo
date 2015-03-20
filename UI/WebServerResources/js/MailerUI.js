@@ -277,6 +277,12 @@
         $scope.message = stateMessage;
       }
       $scope.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
+      $scope.cancel = function() {
+        if ($scope.mailbox)
+          $state.go('mail.account.mailbox', { accountId: $scope.mailbox.$account.id, mailboxId: $scope.mailbox.id });
+        else
+          $state.go('mail');
+      };
       $scope.send = function(message) {
         message.$send().then(function(data) {
           $rootScope.message = null;

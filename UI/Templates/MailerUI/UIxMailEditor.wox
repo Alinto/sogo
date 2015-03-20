@@ -78,12 +78,12 @@
       <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
       <div class="buttonsToolbar">
         <div layout="row" layout-align="end center">
-          <md-button
-             ng-click="message.$save()">
+          <md-button ng-click="cancel()"><var:string label:value="Cancel"/></md-button>
+          <md-button ng-click="message.$save()">
             <var:string label:value="Save"/>
           </md-button>
           <md-button class="fg-sogoBlue-700 md-primary md-hue-3"
-             ng-click="send(message)">
+                     ng-click="send(message)">
             <var:string label:value="Send"/>
           </md-button>
         </div>

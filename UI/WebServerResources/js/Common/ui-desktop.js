@@ -632,7 +632,7 @@
         return function postLink(scope, iElement, iAttr, controller) {
           $compile(mdInputEl)(scope);
           $compile(selectEl)(scope);
-          $compile(tElement.find('md-button'))(scope);
+          $compile(tElement.find('md-button'))(scope.$parent);
         }
       }
     }])
