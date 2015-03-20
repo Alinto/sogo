@@ -76,6 +76,12 @@
 
       $scope.preferences = statePreferences;
 
+      $scope.addCalendarCategory = function() {
+        var color = {"": "#000"};
+        $scope.preferences.defaults.SOGoCalendarCategories.push("");
+        $scope.preferences.defaults.SOGoCalendarCategoriesColors.push(color);
+      }
+      
       $scope.removeCalendarCategory = function(index) {
         var key = $scope.preferences.defaults.SOGoCalendarCategories[index];
         $scope.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
