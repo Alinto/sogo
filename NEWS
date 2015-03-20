@@ -3,6 +3,7 @@
 
 Enhancements
  - support for mail prority using EAS
+ - immediately delete mails from EAS clients when they are marked as deleted on the IMAP server
 
 Bug fixes
  - fixed login issue after password change (#2601)
