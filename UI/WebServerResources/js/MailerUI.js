@@ -257,7 +257,7 @@
       };
     }])
 
-    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, focus, Dialog, Account, Mailbox, AddressBook) {
+    .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
       if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
           $scope.message = msgObject;
@@ -279,7 +279,7 @@
       $scope.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
       $scope.cancel = function() {
         if ($scope.mailbox)
-          $state.go('mail.account.mailbox', { accountId: $scope.mailbox.$account.id, mailboxId: $scope.mailbox.id });
+          $state.go('mail.account.mailbox', { accountId: $scope.mailbox.$account.id, mailboxId: encodeUriFilter($scope.mailbox.path) });
         else
           $state.go('mail');
       };
