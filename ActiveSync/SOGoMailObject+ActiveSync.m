@@ -272,9 +272,13 @@ struct GlobalObjectId {
       charset = [[[self lookupInfoForBodyPart: key] objectForKey: @"parameterList"] objectForKey: @"charset"];
 
       if (![charset length])
-        charset = @"us-ascii";
+        charset = @"utf-8";
       
       s = [NSString stringWithData: d  usingEncodingNamed: charset];
+
+      // We fallback to ISO-8859-1 string encoding
+      if (!s)
+        s = [[[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding] autorelease];
 
       if (theType == 1 && *theNativeTypeFound == 2)
         s = [s htmlToText];
@@ -323,7 +327,7 @@ struct GlobalObjectId {
                [[[thePart contentType] type] isEqualToString: @"text"] &&
                ([[[thePart contentType] subType] isEqualToString: @"plain"] || [[[thePart contentType] subType] isEqualToString: @"html"]))
         {
-          // We make sure everything is encoded in UTF-8
+          // We make sure everything is encoded in UTF-8.
           NGMimeType *mimeType;
           NSString *s;
 
@@ -334,9 +338,13 @@ struct GlobalObjectId {
               charset = [[thePart contentType] valueOfParameter: @"charset"];
 
               if (![charset length])
-                charset = @"us-ascii";
+                charset = @"utf-8";
               
-              s = [NSString stringWithData: body usingEncodingNamed: charset];     
+              s = [NSString stringWithData: body usingEncodingNamed: charset];
+
+              // We fallback to ISO-8859-1 string encoding. We avoid #3103.
+              if (!s)
+                s = [[[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding] autorelease];
             }
           else
             {
@@ -439,7 +447,7 @@ struct GlobalObjectId {
           charset = [[[self lookupInfoForBodyPart: @""] objectForKey: @"parameterList"] objectForKey: @"charset"];
           
           if (![charset length])
-            charset = @"us-ascii";
+            charset = @"utf-8";
           
           d = [[self fetchPlainTextParts] objectForKey: @""];
           
@@ -453,6 +461,10 @@ struct GlobalObjectId {
             d = [d dataByDecodingQuotedPrintableTransferEncoding];
 
           s = [NSString stringWithData: d  usingEncodingNamed: charset];
+
+          // We fallback to ISO-8859-1 string encoding. We avoid #3103.
+          if (!s)
+            s = [[[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding] autorelease];
           
           // Check if we must convert html->plain
           if (theType == 1 && [subtype isEqualToString: @"html"])

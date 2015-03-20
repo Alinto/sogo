@@ -21,6 +21,7 @@ Bug fixes
  - fixed fetching of freebusy data from the Web interface
  - fixed EAS handling of Bcc in emails (#3138)
  - fixed Language-Region tags in Web interface (#3121)
+ - properly fallback over EAS to UTF-8 and then Latin1 for messages w/o charset (#3103)
 
 2.2.16 (2015-02-12)
 -------------------
