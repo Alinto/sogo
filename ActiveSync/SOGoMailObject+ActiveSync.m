@@ -344,7 +344,7 @@ struct GlobalObjectId {
 
               // We fallback to ISO-8859-1 string encoding. We avoid #3103.
               if (!s)
-                s = [[[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding] autorelease];
+                s = [[[NSString alloc] initWithData: body  encoding: NSISOLatin1StringEncoding] autorelease];
             }
           else
             {
