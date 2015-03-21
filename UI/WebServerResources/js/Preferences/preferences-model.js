@@ -88,18 +88,23 @@
   Preferences.prototype.$omit = function(deep) {
     var preferences = {};
     angular.forEach(this, function(value, key) {
-      if (key == 'refs') {
-        preferences.refs = _.map(value, function(o) {
-          return o.$omit(deep);
-        });
-      }
-      else if (key != 'constructor' && key[0] != '$') {
+      if (key != 'constructor' && key[0] != '$') {
         if (deep)
           preferences[key] = angular.copy(value);
         else
           preferences[key] = value;
       }
     });
+
+    // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
+    var labels = _.object(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
+      if (key.charAt(0) == '_' && key.charAt(1) == '$')
+        return [key.substring(1), value];
+      return [key, value];
+    }));
+    
+    preferences.defaults.SOGoMailLabelsColors = labels;
+    
     return preferences;
   };
   
