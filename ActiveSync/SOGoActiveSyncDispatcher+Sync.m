@@ -540,6 +540,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
+  NSString *davCollectionTagToStore;
   NSAutoreleasePool *pool;
   NSMutableString *s;
   
@@ -617,6 +618,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return;
   
   more_available = NO;
+
+  davCollectionTagToStore = [theCollection davCollectionTag];
 
   switch (theFolderType)
     {
@@ -788,7 +791,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
-            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
           }
 
         [self _setFolderMetadata: folderMetadata
@@ -963,7 +966,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
-            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
           }
         
         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
