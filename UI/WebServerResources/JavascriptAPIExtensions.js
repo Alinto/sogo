@@ -121,9 +121,19 @@ Date.prototype.clone = function() {
     return newDate;
 }
 
+Date.prototype.treatAsUTC = function() {
+    var result = new Date(this);
+    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+    return result;
+}
+
 Date.prototype.deltaDays = function(otherDate) {
-    var day1 = this.getTime();
-    var day2 = otherDate.getTime();
+    // Thanks to http://stackoverflow.com/a/11252167/4703328
+    var day1UTC = this.treatAsUTC();
+    var day2UTC = otherDate.treatAsUTC();
+
+    var day1 = day1UTC.getTime();
+    var day2 = day2UTC.getTime();
     if (day1 > day2) {
         var tmp = day2;
         day2 = day1;
@@ -217,9 +227,9 @@ Date.prototype.stringWithSeparator = function(separator) {
 };
 
 Date.prototype.addDays = function(nbrDays) {
-    var milliSeconds = this.getTime();
-    milliSeconds += 86400000 * nbrDays;
-    this.setTime(milliSeconds);
+    // Thanks to http://stackoverflow.com/a/563442
+    var dat = new Date(this.valueOf());
+    this.setDate(dat.getDate() + nbrDays);
 };
 
 Date.prototype.earlierDate = function(otherDate) {
