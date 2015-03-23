@@ -1166,27 +1166,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        //
        if (folderType == ActiveSyncMailFolder)
          {
-           EOQualifier *notDeletedQualifier, *sinceDateQualifier;
-           EOAndQualifier *qualifier;
            NSCalendarDate *filter;
-           NSArray *uids;
+           NSString *syncKey;
+           NSArray *allMessages;
 
            filter = [NSCalendarDate dateFromFilterType: [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"FilterType"] lastObject] textValue]];
+           syncKey = [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"SyncKey"] lastObject] textValue];
       
-           notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
-                                                 @"(not (flags = %@))",
-                                               @"deleted"];
-           sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                               @"(DATE >= %@)", filter];
-      
-           qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
-                                               nil];
-           AUTORELEASE(qualifier);
+           allMessages = [currentCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: syncKey  fromDate: filter];
 
-           uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
-                                                   sortOrdering: @"REVERSE ARRIVAL"
-                                                       threaded: NO];
-           count = [uids count];
+           count = [allMessages count];
       
            // Add the number of UIDs expected to "soft delete"
            count += [self _softDeleteCountWithFilter: filter collectionId: nameInCache];
