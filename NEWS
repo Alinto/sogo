@@ -24,6 +24,7 @@ Bug fixes
  - fixed Language-Region tags in Web interface (#3121)
  - properly fallback over EAS to UTF-8 and then Latin1 for messages w/o charset (#3103)
  - prevent potential freebusy lookup crashes during timezone changes with repetitive events
+ - improved GetItemEstimate to count all vasnished/deleted mails too
 
 2.2.16 (2015-02-12)
 -------------------
