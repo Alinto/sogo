@@ -181,6 +181,12 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
       else
         {
           origCalendar = [sogoObject calendar: YES secure: YES];
+          if (!origCalendar)
+            {
+              [self errorWithFormat: @"Incorrect calendar event %@. Empty message is created",
+                    [self url]];
+              return self;
+            }
           calendar = [origCalendar mutableCopy];
           masterEvent = [[calendar events] objectAtIndex: 0];
           [self _setupAttachmentParts];
