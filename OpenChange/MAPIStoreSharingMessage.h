@@ -26,6 +26,8 @@
 #import "MAPIStoreMailMessage.h"
 #import "MAPIStoreObjectProxy.h"
 
+#define SHARING_SPECIAL_FOLDER 0x40290
+
 @interface MAPIStoreSharingMessage : MAPIStoreObjectProxy
 {
   struct mapistore_connection_info *connInfo;

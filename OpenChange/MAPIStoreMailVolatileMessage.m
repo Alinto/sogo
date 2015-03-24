@@ -572,7 +572,7 @@ FillMessageHeadersFromSharingProperties (NGMutableHashMap *headers, NSDictionary
           /* 0x5100 sharing flavour is not in standard but it seems to
              be a denial of request + invitation message so we store
              deny sharing flavour */
-          sharingFlavourNum = [NSNumber numberWithUnsignedInt: 0x25100];
+          sharingFlavourNum = [NSNumber numberWithUnsignedInt: SHARING_DENY_REQUEST];
         }
       [headers setObject: sharingFlavourNum
                   forKey: @"X-MS-Sharing-Flavor"];

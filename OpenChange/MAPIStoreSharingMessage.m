@@ -38,6 +38,7 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreSharingMessage.h"
 
+#include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
@@ -175,28 +176,28 @@
       value = [properties objectForKey: @"x-ms-sharing-capabilities"];
       if (value)
         {
-          if ([value intValue] == 0x40290)  /* Special folder */
+          if ([value intValue] == SHARING_SPECIAL_FOLDER)
             {
               value = [properties objectForKey: @"x-ms-sharing-responsetime"];
               auxValue = [properties objectForKey: @"x-ms-sharing-remoteuid"];
               if (value)  /* A sharing request */
                 {
                   if (auxValue)
-                    *data = MAPILongValue (memCtx, 0x20710);
+                    *data = MAPILongValue (memCtx, SHARING_INVITATION_REQUEST_FOLDER);
                   else
-                    *data = MAPILongValue (memCtx, 0x20500);
+                    *data = MAPILongValue (memCtx, SHARING_REQUEST_SPECIAL_FOLDER);
                 }
               else
                 {
                   if (auxValue)  /* It SHOULD be an invitation or response */
-                    *data = MAPILongValue (memCtx, 0x20310);
+                    *data = MAPILongValue (memCtx, SHARING_INVITATION_SPECIAL_FOLDER);
                   else  /* No remote info, then denial */
-                    *data = MAPILongValue (memCtx, 0x25100);
+                    *data = MAPILongValue (memCtx, SHARING_DENY_REQUEST);
                 }
             }
           else
             {
-              *data = MAPILongValue (memCtx, 0x310);
+              *data = MAPILongValue (memCtx, SHARING_INVITATION_FOLDER);
             }
           rc = MAPISTORE_SUCCESS;
         }
