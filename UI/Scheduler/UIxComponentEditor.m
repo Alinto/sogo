@@ -176,7 +176,6 @@ iRANGE(2);
       [self setIsCycleEndNever];
       componentOwner = @"";
       organizer = nil;
-      //organizerIdentity = nil;
       organizerProfile = nil;
       ownerAsAttendee = nil;
       attendee = nil;
@@ -213,7 +212,6 @@ iRANGE(2);
   [title release];
   [location release];
   [organizer release];
-  //[organizerIdentity release];
   [organizerProfile release];
   [ownerAsAttendee release];
   [comment release];
@@ -820,25 +818,27 @@ iRANGE(2);
 	uid = email;
       
       [profile setObject: name
-			   forKey: @"name"];
+                  forKey: @"name"];
       
       [profile setObject: email
-			   forKey: @"email"];
+                  forKey: @"email"];
       
       if (partstat == nil || ![partstat length])
 	partstat = @"accepted";
+      
       [profile setObject: partstat
-			   forKey: @"partstat"];
+                  forKey: @"partstat"];
       
       if (role == nil || ![role length])
 	role = @"chair";
+      
       [profile setObject: role
-			   forKey: @"role"];
+                  forKey: @"role"];
       
       organizerProfile = [NSDictionary dictionaryWithObject: profile forKey: uid];
       [organizerProfile retain];
     }
-
+  
   return organizerProfile;
 }
 
@@ -897,30 +897,6 @@ iRANGE(2);
   return [[[[self organizerProfile] allValues] lastObject] jsonRepresentation];
 }
 
-// - (BOOL) canBeOrganizer
-// {
-//   NSString *owner;
-//   SOGoObject <SOGoComponentOccurence> *co;
-//   SOGoUser *currentUser;
-//   BOOL hasOrganizer;
-//   SoSecurityManager *sm;
-
-//   co = [self clientObject];
-//   owner = [co ownerInContext: context];
-//   currentUser = [context activeUser];
-
-//   hasOrganizer = ([[organizer value: 0] length] > 0);
-
-//   sm = [SoSecurityManager sharedSecurityManager];
-  
-//   return ([co isNew]
-// 	  || (([owner isEqualToString: [currentUser login]]
-// 	       || ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-// 		       onObject: co
-// 		       inContext: context])
-// 	      && (!hasOrganizer || [component userIsOrganizer: currentUser])));
-// }
-
 - (BOOL) hasOrganizer
 {
   // We check if there's an organizer and if it's not ourself
@@ -948,50 +924,7 @@ iRANGE(2);
     }
 
   return NO;
-
-    //return ([[organizer value: 0] length] && ![self canBeOrganizer]);
 }
-
-//- (void) setOrganizerIdentity: (NSDictionary *) newOrganizerIdentity
-//{
-//  ASSIGN (organizerIdentity, newOrganizerIdentity);
-//}
-
-// - (NSDictionary *) organizerIdentity
-// {
-//   NSArray *allIdentities;
-//   NSEnumerator *identities;
-//   NSDictionary *currentIdentity;
-//   NSString *orgEmail;
-
-//   orgEmail = [organizer rfc822Email];
-//   if (!organizerIdentity)
-//     {
-//       if ([orgEmail length])
-// 	{
-// 	  allIdentities = [[context activeUser] allIdentities];
-// 	  identities = [allIdentities objectEnumerator];
-// 	  while (!organizerIdentity
-// 		 && ((currentIdentity = [identities nextObject])))
-// 	    if ([[currentIdentity objectForKey: @"email"]
-// 		  caseInsensitiveCompare: orgEmail]
-// 		== NSOrderedSame)
-// 	      ASSIGN (organizerIdentity, currentIdentity);
-// 	}
-//     }
-
-//   return organizerIdentity;
-// }
-
-//- (NSArray *) organizerList
-//{
-//  return [[context activeUser] allIdentities];
-//}
-
-//- (NSString *) itemOrganizerText
-//{
-//  return [item keysWithFormat: @"%{fullName} <%{email}>"];
-//}
 
 - (BOOL) hasAttendees
 {
