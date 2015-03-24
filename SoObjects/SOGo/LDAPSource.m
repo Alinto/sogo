@@ -101,6 +101,8 @@ static Class NSStringK;
       contactMapping = nil;
       searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
       [searchFields retain];
+      groupObjectClasses = [NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil];
+      [groupObjectClasses retain];
       IMAPHostField = nil;
       IMAPLoginField = nil;
       SieveHostField = nil;
@@ -144,6 +146,7 @@ static Class NSStringK;
   [contactMapping release];
   [mailFields release];
   [searchFields release];
+  [groupObjectClasses release];
   [IMAPHostField release];
   [IMAPLoginField release];
   [SieveHostField release];
@@ -189,6 +192,7 @@ static Class NSStringK;
              UIDField: [udSource objectForKey: @"UIDFieldName"]
            mailFields: [udSource objectForKey: @"MailFieldNames"]
          searchFields: [udSource objectForKey: @"SearchFieldNames"]
+   groupObjectClasses: [udSource objectForKey: @"GroupObjectClasses"]
         IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
        SieveHostField: [udSource objectForKey: @"SieveHostFieldName"]
@@ -310,6 +314,7 @@ static Class NSStringK;
           UIDField: (NSString *) newUIDField
         mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
+groupObjectClasses: (NSArray *) newGroupObjectClasses
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField
@@ -334,6 +339,8 @@ static Class NSStringK;
     ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
     ASSIGN(searchFields, newSearchFields);
+  if (newGroupObjectClasses)
+    ASSIGN(groupObjectClasses, newGroupObjectClasses);
   if (newBindFields)
     {
       // Before SOGo v1.2.0, bindFields was a comma-separated list
@@ -1031,6 +1038,8 @@ static Class NSStringK;
   NSString *value;
   static NSArray *resourceKinds = nil;
   NSMutableArray *classes;
+  NSEnumerator *gclasses;
+  NSString *gclass;
   id o;
 
   if (!resourceKinds)
@@ -1059,23 +1068,26 @@ static Class NSStringK;
 
   if (classes)
     {
-      // We check if our entry is a group. If so, we set the
-      // 'isGroup' custom attribute.
-      if ([classes containsObject: @"group"] ||
-          [classes containsObject: @"groupofnames"] ||
-          [classes containsObject: @"groupofuniquenames"] ||
-          [classes containsObject: @"posixgroup"])
-        {
-          [ldifRecord setObject: [NSNumber numberWithInt: 1]
-                         forKey: @"isGroup"];
-        }
       // We check if our entry is a resource. We also support
       // determining resources based on the KindFieldName attribute
       // value - see below.
-      else if ([classes containsObject: @"calendarresource"])
+      if ([classes containsObject: @"calendarresource"])
         {
           [ldifRecord setObject: [NSNumber numberWithInt: 1]
                          forKey: @"isResource"];
+        }
+      else
+        {
+        // We check if our entry is a group. If so, we set the
+        // 'isGroup' custom attribute.
+        gclasses = [groupObjectClasses objectEnumerator];
+        while (gclass = [gclasses nextObject])
+         if ([classes containsObject: [gclass lowercaseString]])
+           {
+             [ldifRecord setObject: [NSNumber numberWithInt: 1]
+                            forKey: @"isGroup"];
+             break;
+           }
         }
     }
 
@@ -1366,6 +1378,11 @@ static Class NSStringK;
 - (NSArray *) modifiers
 {
   return modifiers;
+}
+
+- (NSArray *) groupObjectClasses
+{
+  return groupObjectClasses;
 }
 
 static NSArray *
@@ -1683,6 +1700,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                        UIDField: @"cn"
                                      mailFields: nil
                                    searchFields: nil
+                             groupObjectClasses: nil
                                   IMAPHostField: nil
                                  IMAPLoginField: nil
                                  SieveHostField: nil
