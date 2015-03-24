@@ -35,9 +35,9 @@ module.exports = function(grunt) {
       options: {
         cache: false,
         loadPath: ['scss', 'bower_components/compass-mixins/lib',
-          'bower_components/compass-breakpoint/stylesheets',
-          'bower_components/breakpoint-slicer/stylesheets',
-          'bower_components/sassy-maps/sass'],
+                   'bower_components/compass-breakpoint/stylesheets',
+                   'bower_components/breakpoint-slicer/stylesheets',
+                   'bower_components/sassy-maps/sass'],
         style: 'expanded'
       },
       dist: {
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compass');
 
-    grunt.task.registerTask('static', function() {
+  grunt.task.registerTask('static', function() {
     var options = {
       'src': 'bower_components',
       'js_dest': 'js/vendor/',
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
         var paths = src.split('/');
         var dest = options.js_dest + paths[paths.length - 1];
         grunt.file.copy(src, dest);
-                grunt.log.ok("copy " + src + " => " + dest);
+        grunt.log.ok("copy " + src + " => " + dest);
       }
     }
     grunt.log.subhead('Copying font files');
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
         var paths = src.split('/');
         var dest = options.fonts_dest + paths[paths.length - 1];
         grunt.file.copy(src, dest);
-                grunt.log.ok("copy " + src + " => " + dest);
+        grunt.log.ok("copy " + src + " => " + dest);
       }
     }
     grunt.log.subhead('Copying CSS files');
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
         var paths = src.split('/');
         var dest = options.css_dest + paths[paths.length - 1];
         grunt.file.copy(src, dest);
-                grunt.log.ok("copy " + src + " => " + dest);
+        grunt.log.ok("copy " + src + " => " + dest);
       }
     }
   });
