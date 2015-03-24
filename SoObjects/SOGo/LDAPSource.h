@@ -72,6 +72,7 @@
 
   NSDictionary *contactMapping;
   NSArray *contactObjectClasses;
+  NSArray *groupObjectClasses;
 
   NSDictionary *modulesConstraints;
 
@@ -106,6 +107,7 @@
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
+groupObjectClasses: (NSArray *) newGroupObjectClasses
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField

@@ -6,6 +6,7 @@ Enhancements
  - immediately delete mails from EAS clients when they are marked as deleted on the IMAP server
  - now favor login@domain as the default email address if multiple mail: fields are specified
  - enable by default HTML mails support using EAS on Windows and BB phones
+ - now possible to configure objectClass names for LDAP groups using GroupObjectClasses (#1499)
 
 Bug fixes
  - fixed login issue after password change (#2601)

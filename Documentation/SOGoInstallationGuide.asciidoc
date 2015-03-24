@@ -1048,6 +1048,11 @@ of supported attributes.
 user addressbooks (see _abOU_ below), this list of object classes will
 be applied to new records as they are created.
 
+|GroupObjectClasses
+|A list (array) of names identifying groups within the LDAP source. If not
+set, SOGo will use `group`, `groupofnames`, `groupofuniquenames`
+and `posixgroup`.
+
 |modifiers
 |A list (array) of usernames that are authorized to perform
 modifications to the address book defined by this LDAP source.

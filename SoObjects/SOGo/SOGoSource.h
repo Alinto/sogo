@@ -110,6 +110,7 @@
 - (NSString *) baseDN;
 - (NSString *) MSExchangeHostname;
 
+- (NSArray *) groupObjectClasses;
 @end
 
 #endif /* SOGOSOURCE_H */
