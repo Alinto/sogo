@@ -1745,10 +1745,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   aclFolder = [self aclFolder];
 
-  users = [aclFolder aclUsers];
+  users = [[aclFolder aclUsers] copy];
   max = [users count];
   for (count = 0; count < max; count++)
     [aclFolder removeUserFromAcls: [users objectAtIndex: count]];
+
+  [users release];
 }
 
 - (int) modifyPermissions: (struct PermissionData *) permissions
