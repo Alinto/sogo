@@ -27,6 +27,9 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserProfile.h>
+#import <Mailer/SOGoMailLabel.h>
+
+#import <SOGoUI/UIxComponent.h>
 
 #import "UIxJSONPreferences.h"
 
@@ -47,9 +50,51 @@
 - (WOResponse *) jsonDefaultsAction
 {
   SOGoUserDefaults *defaults;
+  NSArray *categoryLabels;
 
   defaults = [[context activeUser] userDefaults];
 
+  if (![[defaults source] objectForKey: @"SOGoLongDateFormat"])
+    [[defaults source] setObject: @"default"  forKey: @"SOGoLongDateFormat"];
+
+  // Populate default calendar categories, based on the user's preferred language
+  if (![defaults calendarCategories])
+    {
+      categoryLabels = [[[self labelForKey: @"calendar_category_labels"]
+                         componentsSeparatedByString: @","]
+                         sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      
+      [defaults setCalendarCategories: categoryLabels];
+    }
+  
+  // Populate default contact categories, based on the user's preferred language
+  if (![defaults contactsCategories])
+    {
+      categoryLabels = [[[self labelForKey: @"contacts_category_labels"]
+                       componentsSeparatedByString: @","]
+                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      
+      if (!categoryLabels)
+        categoryLabels = [NSArray array];
+
+      [defaults setContactsCategories: categoryLabels];
+    }
+      
+  // Populate default mail lablels, based on the user's preferred language
+  if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
+    {
+      NSDictionary *v;
+      
+       v = [defaults mailLabelsColors];
+
+       // TODO - translate + refactor to not pass self since it's not a component
+       //[defaults setMailLabelsColors: [SOGoMailLabel labelsFromDefaults: v  component: self]];
+       [defaults setMailLabelsColors: v];
+    }
+
+  
+  [defaults synchronize];
+  
   return [self _makeResponse: [defaults source]];
 }
 

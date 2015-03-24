@@ -52,7 +52,6 @@
 #import <SOGo/SOGoBuild.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
-#import <Mailer/SOGoMailLabel.h>
 
 #import <Contacts/SOGoContactGCSFolder.h>
 
@@ -1539,167 +1538,177 @@ static NSArray *reminderValues = nil;
 //   return [locale objectForKey: @"NSLocaleCode"];
 // }
 
-- (NSArray *) _languageCalendarCategories
-{
-  NSArray *categoryLabels;
+// - (NSArray *) _languageCalendarCategories
+// {
+//   NSArray *categoryLabels;
 
-  categoryLabels = [[self labelForKey: @"calendar_category_labels"]
-                       componentsSeparatedByString: @","];
+//   categoryLabels = [[self labelForKey: @"calendar_category_labels"]
+//                        componentsSeparatedByString: @","];
 
-  return [categoryLabels trimmedComponents];
-}
+//   return [categoryLabels trimmedComponents];
+// }
 
-- (NSArray *) calendarCategoryList
-{
-  if (!calendarCategories)
-    {
-      ASSIGN (calendarCategories, [userDefaults calendarCategories]);
-      if (!calendarCategories)
-        ASSIGN (calendarCategories, [self _languageCalendarCategories]);
-    }
+// - (NSArray *) calendarCategoryList
+// {
+//   if (!calendarCategories)
+//     {
+//       ASSIGN (calendarCategories, [userDefaults calendarCategories]);
+//       if (!calendarCategories)
+//         ASSIGN (calendarCategories, [self _languageCalendarCategories]);
+//     }
 
-  return [calendarCategories
-           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
-}
+//   return [calendarCategories
+//            sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+// }
 
-- (SOGoMailLabel *) label
-{
-  return label;
-}
+// - (SOGoMailLabel *) label
+// {
+//   return label;
+// }
 
-- (void) setLabel: (SOGoMailLabel *) newLabel
-{
-  ASSIGN(label, newLabel);
-}
+// - (void) setLabel: (SOGoMailLabel *) newLabel
+// {
+//   ASSIGN(label, newLabel);
+// }
 
-- (NSArray *) mailLabelList
-{
-  if (!mailLabels)
-    {
-      NSDictionary *v;
+// - (NSArray *) mailLabelList
+// {
+//   if (!mailLabels)
+//     {
+//       NSDictionary *v;
 
-      v = [[[context activeUser] userDefaults] mailLabelsColors];
-      ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
-    }
+//       v = [[[context activeUser] userDefaults] mailLabelsColors];
+//       ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
+//     }
 
-  return mailLabels;
-}
+//   return mailLabels;
+// }
 
-- (NSString *) mailLabelsValue
-{
-  return @"";
-}
+// - (NSString *) mailLabelsValue
+// {
+//   return @"";
+// }
 
-- (void) setMailLabelsValue: (NSString *) value
-{
-  NSMutableDictionary *sanitizedLabels;
-  NSDictionary *newLabels;
-  NSArray *allKeys;
-  NSString *name;
-  int i;
+// - (void) setMailLabelsValue: (NSString *) value
+// {
+//   NSMutableDictionary *sanitizedLabels;
+//   NSDictionary *newLabels;
+//   NSArray *allKeys;
+//   NSString *name;
+//   int i;
 
-  newLabels = [value objectFromJSONString];
-  if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
-    {
-      // We encode correctly our keys
-      sanitizedLabels = [NSMutableDictionary dictionary];
-      allKeys = [newLabels allKeys];
+//   newLabels = [value objectFromJSONString];
+//   if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
+//     {
+//       // We encode correctly our keys
+//       sanitizedLabels = [NSMutableDictionary dictionary];
+//       allKeys = [newLabels allKeys];
 
-      for (i = 0; i < [allKeys count]; i++)
-        {
-          name = [allKeys objectAtIndex: i];
+//       for (i = 0; i < [allKeys count]; i++)
+//         {
+//           name = [allKeys objectAtIndex: i];
 
-          if (![name is7bitSafe])
-            name = [name stringByEncodingImap4FolderName];
+//           if (![name is7bitSafe])
+//             name = [name stringByEncodingImap4FolderName];
 
-          name = [name lowercaseString];
+//           name = [name lowercaseString];
 
-          [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
-                              forKey: name];
-        }
+//           [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
+//                               forKey: name];
+//         }
 
-      [userDefaults setMailLabelsColors: sanitizedLabels];
-    }
-}
+//       [userDefaults setMailLabelsColors: sanitizedLabels];
+//     }
+// }
 
 
-- (void) setCategory: (NSString *) newCategory
-{
-  ASSIGN (category, newCategory);
-}
+// - (void) setCategory: (NSString *) newCategory
+// {
+//   ASSIGN (category, newCategory);
+// }
 
-- (NSString *) category
-{
-  return category;
-}
+// - (NSString *) category
+// {
+//   return category;
+// }
 
-- (NSString *) categoryColor
-{
-  NSString *categoryColor;
+// - (NSString *) categoryColor
+// {
+//   SOGoDomainDefaults *dd;
+//   NSString *categoryColor;
 
-  if (!calendarCategoriesColors)
-    ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
+//   if (!calendarCategoriesColors)
+//     ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
 
-  categoryColor = [calendarCategoriesColors objectForKey: category];
+//   categoryColor = [calendarCategoriesColors objectForKey: category];
+//   if (!categoryColor)
+//     {
+//       if (!defaultCategoryColor)
+//         {
+//           dd = [[context activeUser] domainDefaults];
+//           ASSIGN (defaultCategoryColor, [dd calendarDefaultCategoryColor]);
+//         }
+//       categoryColor = defaultCategoryColor;
+//     }
 
-  return categoryColor;
-}
+//   return categoryColor;
+// }
 
-- (NSString *) calendarCategoriesValue
-{
-  return @"";
-}
+// - (NSString *) calendarCategoriesValue
+// {
+//   return @"";
+// }
 
-- (void) setCalendarCategoriesValue: (NSString *) value
-{
-  NSDictionary *newColors;
+// - (void) setCalendarCategoriesValue: (NSString *) value
+// {
+//   NSDictionary *newColors;
 
-  newColors = [value objectFromJSONString];
-  if (newColors && [newColors isKindOfClass: [NSDictionary class]])
-    {
-      [userDefaults setCalendarCategories: [newColors allKeys]];
-      [userDefaults setCalendarCategoriesColors: newColors];
-    }
-}
+//   newColors = [value objectFromJSONString];
+//   if (newColors && [newColors isKindOfClass: [NSDictionary class]])
+//     {
+//       [userDefaults setCalendarCategories: [newColors allKeys]];
+//       [userDefaults setCalendarCategoriesColors: newColors];
+//     }
+// }
 
-- (NSArray *) _languageContactsCategories
-{
-  NSArray *categoryLabels;
+// - (NSArray *) _languageContactsCategories
+// {
+//   NSArray *categoryLabels;
 
-  categoryLabels = [[self labelForKey: @"contacts_category_labels"]
-                       componentsSeparatedByString: @","];
-  if (!categoryLabels)
-    categoryLabels = [NSArray array];
+//   categoryLabels = [[self labelForKey: @"contacts_category_labels"]
+//                        componentsSeparatedByString: @","];
+//   if (!categoryLabels)
+//     categoryLabels = [NSArray array];
 
-  return [categoryLabels trimmedComponents];
-}
+//   return [categoryLabels trimmedComponents];
+// }
 
-- (NSArray *) contactsCategoryList
-{
-  if (!contactsCategories)
-    {
-      ASSIGN (contactsCategories, [userDefaults contactsCategories]);
-      if (!contactsCategories)
-        ASSIGN (contactsCategories, [self _languageContactsCategories]);
-    }
+// - (NSArray *) contactsCategoryList
+// {
+//   if (!contactsCategories)
+//     {
+//       ASSIGN (contactsCategories, [userDefaults contactsCategories]);
+//       if (!contactsCategories)
+//         ASSIGN (contactsCategories, [self _languageContactsCategories]);
+//     }
 
-  return [contactsCategories
-           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
-}
+//   return [contactsCategories
+//            sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+// }
 
-- (NSString *) contactsCategoriesValue
-{
-  return @"";
-}
+// - (NSString *) contactsCategoriesValue
+// {
+//   return @"";
+// }
 
-- (void) setContactsCategoriesValue: (NSString *) value
-{
-  NSArray *newCategories;
+// - (void) setContactsCategoriesValue: (NSString *) value
+// {
+//   NSArray *newCategories;
 
-  newCategories = [value objectFromJSONString];
-  if (newCategories && [newCategories isKindOfClass: [NSArray class]])
-    [userDefaults setContactsCategories: newCategories];
-}
+//   newCategories = [value objectFromJSONString];
+//   if (newCategories && [newCategories isKindOfClass: [NSArray class]])
+//     [userDefaults setContactsCategories: newCategories];
+// }
 
 //
 // Used by wox template
@@ -2020,14 +2029,45 @@ static NSArray *reminderValues = nil;
 
 - (id <WOActionResults>) saveAction
 {
-  //SOGoUser *user;
   id o, v;
   
   o = [[[context request] contentAsString] objectFromJSONString];
-  //user = [[self context] activeUser];
 
+  // Proceed with data sanitization of the "defaults"
   if ((v = [o objectForKey: @"defaults"]))
     {
+      NSMutableDictionary *sanitizedLabels;
+      NSDictionary *newLabels;
+      NSArray *allKeys;
+      NSString *name;
+      int i;
+
+      // We convert our object into a mutable one
+      v = [[v mutableCopy] autorelease];
+      
+      newLabels = [v objectForKey: @"SOGoMailLabelsColors"];
+      if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
+        {
+          // We encode correctly our keys
+          sanitizedLabels = [NSMutableDictionary dictionary];
+          allKeys = [newLabels allKeys];
+          
+          for (i = 0; i < [allKeys count]; i++)
+            {
+              name = [allKeys objectAtIndex: i];
+              
+              if (![name is7bitSafe])
+                name = [name stringByEncodingImap4FolderName];
+              
+              name = [name lowercaseString];
+              
+              [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
+                                  forKey: name];
+            }
+          
+          [v setObject: sanitizedLabels  forKey: @"SOGoMailLabelsColors"];
+        }
+      
       [[[user userDefaults] source] setValues: v];
       [[user userDefaults] synchronize];
     }
