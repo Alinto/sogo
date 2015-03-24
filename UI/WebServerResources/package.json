@@ -2,11 +2,12 @@
   "name": "sogo-web",
   "version": "0.0.1",
   "devDependencies": {
-    "bower": ">=1.3.8",
     "autoprefixer-core": ">=5.1.0",
+    "bower": ">=1.3.8",
     "csswring": ">=3.0.0",
     "grunt": ">=0.4.1",
     "grunt-cli": ">=0.1.11",
+    "grunt-contrib-compass": "^1.0.1",
     "grunt-contrib-sass": ">=0.8.0",
     "grunt-contrib-watch": ">=0.5.3",
     "grunt-postcss": "^0.3.0"

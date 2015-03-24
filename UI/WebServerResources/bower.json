@@ -12,8 +12,9 @@
     "angular-material": "master",
     "material-design-iconic-font": "latest",
     "ng-tags-input": "latest",
-    "compass-mixins": "~0.12.3",
-    "underscore": "latest"
+    "compass-mixins": "latest",
+    "underscore": "latest",
+    "breakpoint-slicer": "~1.3.6"
   },
   "resolutions": {
     "angular": "1.3.x"
