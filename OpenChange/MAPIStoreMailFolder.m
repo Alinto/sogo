@@ -179,6 +179,12 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
     {
       nameInContainer = [NSString stringWithFormat: @"folder%@",
                                   [[folderName stringByEncodingImap4FolderName] asCSSIdentifier]];
+
+      /* it may be the operation is interleaved with operations
+         from other users having cached information in the thread
+         with the other user, so it'd better activate the user again here... */
+      [[self userContext] activateWithUser: [[[self userContext] woContext] activeUser]];
+
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
       if ([newFolder create])

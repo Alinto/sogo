@@ -6,6 +6,7 @@ Enhancements
  - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
 
 Bug fixes
+ - Does not create a mail folder in other user's mailbox
  - Fix server-side crash with invalid events
  - Fix setting permissions for a folder with several users
  - Fix reception of calendar event invitations on optional attendees
