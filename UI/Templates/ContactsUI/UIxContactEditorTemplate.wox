@@ -1,8 +1,8 @@
 <?xml version='1.0' standalone='yes'?>
 <container xmlns="http://www.w3.org/1999/xhtml" xmlns:var="http://www.skyrix.com/od/binding" xmlns:const="http://www.skyrix.com/od/constant" xmlns:label="OGo:label">
 
-  <div class="md-whiteframe-z1">
-    <md-content md-scroll-y="true" class="md-padding bg-sogoPaper-50">
+
+    <md-content md-scroll-y="true" class="md-padding md-whiteframe-z1 bg-sogoPaper-50">
       <div class="editor md-padding">
         <hgroup class="header">
           <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
@@ -367,7 +367,7 @@
         </form>
       </div>
     </md-content>
-  </div>
+
 
 
 </container>

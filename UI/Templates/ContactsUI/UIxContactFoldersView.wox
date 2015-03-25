@@ -288,8 +288,9 @@
             </md-item>
           </md-list>
         </md-content>
-        <!-- This extra container prevent card from being stretch by layout-fill -->
-        <div ui-view="card" layout="column" ng-animate="'view'"><!-- card view --></div>
+        <!-- This extra container is used to animate views transitions
+             double quotes in ng-animate is not a typo                         -->
+        <div class="view-detail" ui-view="card" layout="column" ng-animate="'view'"><!-- card view --></div>
       </div>
 
     </section>

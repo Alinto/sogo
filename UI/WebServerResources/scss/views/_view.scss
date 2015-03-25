@@ -13,3 +13,47 @@
 .view[layout=row] {
   max-height: 100%;
 }
+// We make intensive use of the list/detail view pattern, here are some base
+// definitions for this
+// ----------------------------------------------------------------------------
+
+// Variables
+$listView-width: grid-step(6) !global;
+$detailView-width: grid-step(8) !global;
+
+[id="messagesList"] {
+  flex: 0 0 $listView-width;
+
+}
+
+.view-detail {
+  flex: 1 2 $detailView-width;
+  min-width: ($detailView-width - $pitch);
+  max-width: ($detailView-width + $pitch);
+  margin: 0 auto;
+}
+
+
+[ui-view="message"] {
+
+  &.ng-enter {
+    border: 4px solid red;
+    transition: all 1s linear;
+
+    &.ng-enter-active {
+      border: 4px solid green;
+      transition: all 1s linear;
+    }
+  }
+
+  &.ng-leave {
+    border: 4px solid blue;
+    transition: all 1s linear;
+
+    &.ng-leave-active {
+      border: 4px solid blue;
+      transition: all 1s linear;
+      filter: opacity(0);
+    }
+  }
+}
