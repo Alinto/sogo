@@ -247,7 +247,7 @@
 
       <div layout="row" class="md-flex" layout-align="space-between">
 
-        <md-content style="position: relative;" id="contactsList">
+        <md-content class="view-list" style="position: relative;" id="contactsList">
           <style>
             .vs-repeat-repeated-element {
             width: 100%;

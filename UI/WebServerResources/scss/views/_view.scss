@@ -21,9 +21,19 @@
 $listView-width: grid-step(6) !global;
 $detailView-width: grid-step(8) !global;
 
-[id="messagesList"] {
-  flex: 0 0 $listView-width;
+//[id="messagesList"] {
+//  flex: 0 0 $listView-width;
+//
+//}
+//
+//[id ="contactsList"] {
+//  flex: 0 1 $listView-width;
+//  min-width: ($listView-width - ($pitch * 2));
+//}
 
+.view-list {
+  flex: 0 1 $listView-width;
+  min-width: ($listView-width - ($pitch * 2));
 }
 
 .view-detail {

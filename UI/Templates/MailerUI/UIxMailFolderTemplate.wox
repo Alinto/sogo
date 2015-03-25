@@ -2,7 +2,7 @@
 <container
     xmlns="http://www.w3.org/1999/xhtml"
     >
-  <md-content style="position: relative;" id="messagesList">
+  <md-content class="view-list" style="position: relative;" id="messagesList">
     <style>
       .vs-repeat-repeated-element {
         width: 100%;

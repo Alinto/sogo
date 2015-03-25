@@ -1,10 +1,5 @@
 /*! ContactUI.scss */
 
-[id ="contactsList"] {
-  flex: 0 1 $listView-width;
-  min-width: ($listView-width - ($pitch * 2));
-}
-
 [id = "contactsList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
