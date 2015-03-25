@@ -2,6 +2,7 @@ master
 ------
 
 Enhancements
+ - Sharing request among different Outlook versions
  - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
 
 Bug fixes

@@ -28,6 +28,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSScanner.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NGBase64Coding.h>
@@ -541,6 +542,7 @@ FillMessageHeadersFromSharingProperties (NGMutableHashMap *headers, NSDictionary
      about the properties */
 
   id value;
+  NSNumber *sharingFlavourNum = nil;
 
   value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingCapabilities)];
   if (value)
@@ -549,8 +551,32 @@ FillMessageHeadersFromSharingProperties (NGMutableHashMap *headers, NSDictionary
 
   value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingFlavor)];
   if (value)
-    [headers setObject: value
-                forKey: @"X-MS-Sharing-Flavor"];
+    sharingFlavourNum = (NSNumber *)value;
+  else
+    {
+      value = [mailProperties objectForKey: MAPIPropertyKey (PidNameXSharingFlavor)];
+      if (value)
+        {
+          /* Transform the hex string to unsigned int */
+          NSScanner *scanner;
+          unsigned int sharingFlavour;
+          scanner = [NSScanner scannerWithString:value];
+          if ([scanner scanHexInt:&sharingFlavour])
+            sharingFlavourNum =[NSNumber numberWithUnsignedInt: sharingFlavour];
+        }
+    }
+  if (sharingFlavourNum)
+    {
+      if ([sharingFlavourNum unsignedIntegerValue] == 0x5100)
+        {
+          /* 0x5100 sharing flavour is not in standard but it seems to
+             be a denial of request + invitation message so we store
+             deny sharing flavour */
+          sharingFlavourNum = [NSNumber numberWithUnsignedInt: SHARING_DENY_REQUEST];
+        }
+      [headers setObject: sharingFlavourNum
+                  forKey: @"X-MS-Sharing-Flavor"];
+    }
 
   value = [mailProperties objectForKey: MAPIPropertyKey (PidLidSharingInitiatorEntryId)];
   if (value)

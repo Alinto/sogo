@@ -964,6 +964,37 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return list;
 }
 
+/* Management for extra properties once they already hit the IMAP server */
+- (void) setExtraProperties: (NSDictionary *) props
+                 forMessage: (NSString *) messageKey
+{
+  NSMutableDictionary *extraProps, *currentProperties;
+  NSString *messageUid;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  currentProperties = [versionsMessage properties];
+  extraProps = [currentProperties objectForKey: @"ExtraMessagesProperties"];
+  if (!extraProps)
+    {
+      extraProps = [NSMutableDictionary new];
+      [currentProperties setObject: extraProps forKey: @"ExtraMessagesProperties"];
+      [extraProps release];
+    }
+
+  [extraProps setObject: props
+                 forKey: messageUid];
+  [versionsMessage save];
+}
+
+- (NSDictionary *) extraPropertiesForMessage: (NSString *) messageKey
+{
+  NSString *messageUid;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  return [[[versionsMessage properties] objectForKey: @"ExtraMessagesProperties"]
+                   objectForKey: messageUid];
+}
+
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
                                        andCN: (NSNumber **) cnNbr
                                  inTableType: (uint8_t) tableType
