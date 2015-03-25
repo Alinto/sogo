@@ -16,7 +16,6 @@ md-content[ui-view="card"] {
 
 // md is overqualifying, we have to do the same to override
 md-card.viewer {
-  flex: 0 2 $detailView-width;
   min-width: ($detailView-width - ($pitch * 2));
 }
 
