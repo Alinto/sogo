@@ -1,3 +1,9 @@
+2.2.17a (2014-03-15)
+--------------------
+
+Bug fixes
+ - avoid calling -stringByReplacingOccurrencesOfString:... for old GNUstep runtime
+
 2.2.17 (2015-03-24)
 -------------------
 
