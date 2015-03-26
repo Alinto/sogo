@@ -1009,6 +1009,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSString *changeNumber;
   uint64_t modseq;
   NSDictionary *versionProperties;
+  EOQualifier *deletedQualifier, *kvQualifier, *searchQualifier;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
@@ -1017,8 +1018,33 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                  unsignedLongLongValue];
       if (modseq > 0)
         {
+          /* Hard deleted items */
           deletedUIDs = [(SOGoMailFolder *) sogoObject
                            fetchUIDsOfVanishedItems: modseq];
+
+          /* Soft deleted items */
+          kvQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"modseq"
+                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                      value: [NSNumber numberWithUnsignedLongLong: modseq]];
+          deletedQualifier
+            = [[EOKeyValueQualifier alloc]
+                 initWithKey: @"FLAGS"
+                operatorSelector: EOQualifierOperatorContains
+                       value: [NSArray arrayWithObject: @"Deleted"]];
+
+          searchQualifier = [[EOAndQualifier alloc]
+                              initWithQualifiers:
+                                kvQualifier, deletedQualifier, nil];
+
+          deletedUIDs = [deletedUIDs arrayByAddingObjectsFromArray:
+                                       [sogoObject fetchUIDsMatchingQualifier: searchQualifier
+                                                                 sortOrdering: nil]];
+
+          [deletedQualifier release];
+          [kvQualifier release];
+          [searchQualifier release];
+
           deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
           if ([deletedUIDs count] > 0)
             {
