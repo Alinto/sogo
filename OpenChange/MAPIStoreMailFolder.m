@@ -519,7 +519,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     *nextModseq;
   NSString *changeNumber, *uid, *messageKey;
   uint64_t lastModseqNbr;
-  EOQualifier *kvQualifier, *searchQualifier;
+  EOQualifier *searchQualifier;
   NSArray *uids, *changeNumbers;
   NSUInteger count, max;
   NSArray *fetchResults;
@@ -560,14 +560,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     {
       lastModseqNbr = [lastModseq unsignedLongLongValue];
       nextModseq = [NSNumber numberWithUnsignedLongLong: lastModseqNbr + 1];
-      kvQualifier = [[EOKeyValueQualifier alloc]
+      searchQualifier = [[EOKeyValueQualifier alloc]
                                 initWithKey: @"modseq"
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
                                       value: nextModseq];
-      searchQualifier = [[EOAndQualifier alloc]
-                          initWithQualifiers:
-                            kvQualifier, [self nonDeletedQualifier], nil];
-      [kvQualifier release];
+
       [searchQualifier autorelease];
     }
   else
@@ -595,7 +592,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
       fetchResults
         = [(NSDictionary *) [sogoObject fetchUIDs: uids
-                                            parts: [NSArray arrayWithObject: @"modseq"]]
+                                            parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
                           objectForKey: @"fetch"];
 
       /* NOTE: we sort items manually because Cyrus does not properly sort
@@ -631,17 +628,22 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           if (!lastModseq
               || ([lastModseq compare: modseq] == NSOrderedAscending))
             lastModseq = modseq;
+
+          if ([[result objectForKey: @"flags"] containsObject: @"deleted"])
+            [currentProperties setObject: changeNumber
+                                  forKey: @"SyncLastDeleteChangeNumber"];
         }
 
       [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       foundChange = YES;
     }
 
-  /* 2. we synchronise deleted UIDs */
+  /* 2. we synchronise expunged UIDs */
   if (initialLastModseq)
     {
       fetchResults = [(SOGoMailFolder *) sogoObject
                          fetchUIDsOfVanishedItems: lastModseqNbr];
+
       max = [fetchResults count];
 
       changeNumber = nil;
@@ -769,7 +771,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   if (!messageEntry)
     {
       fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
-                                                       parts: [NSArray arrayWithObject: @"modseq"]]
+                                                       parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
                          objectForKey: @"fetch"];
       if ([fetchResults count] == 1)
         {
@@ -794,6 +796,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           /* Store the changeNumber -> modseq mapping */
           mapping = [currentProperties objectForKey: @"VersionMapping"];
           [mapping setObject: modseq forKey: changeNumberStr];
+
+          /* Store the last deleted change number if it is soft-deleted */
+          if ([[result objectForKey: @"flags"] containsObject: @"deleted"])
+            [currentProperties setObject: changeNumberStr
+                                  forKey: @"SyncLastDeleteChangeNumber"];
 
           /* Save the message */
           [versionsMessage save];
