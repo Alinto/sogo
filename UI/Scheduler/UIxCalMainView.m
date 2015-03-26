@@ -1,7 +1,6 @@
 /* UIxCalMainView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
- *
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,8 +82,14 @@
 {
   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
   // Region subtag must be separated by a dash
-  NSString *s = [locale objectForKey: @"NSLocaleCode"];
-  return [s stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
+  NSMutableString *s = [NSMutableString stringWithString: [locale objectForKey: @"NSLocaleCode"]];
+
+  [s replaceOccurrencesOfString: @"_"
+                     withString: @"-"
+                        options: 0
+                          range: NSMakeRange(0, [s length])];
+  
+  return s;
 }
 
 - (NSArray *) monthMenuItems

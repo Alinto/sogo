@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2008-2014 Inverse inc.
+  Copyright (C) 2008-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -231,8 +231,14 @@ static NSArray *infoKeys = nil;
 {
   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
   // Region subtag must be separated by a dash
-  NSString *s = [locale objectForKey: @"NSLocaleCode"];
-  return [s stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
+  NSMutableString *s = [NSMutableString stringWithString: [locale objectForKey: @"NSLocaleCode"]];
+
+  [s replaceOccurrencesOfString: @"_"
+                     withString: @"-"
+                        options: 0
+                          range: NSMakeRange(0, [s length])];
+  
+  return s;
 }
 
 - (void) setFrom: (NSString *) newFrom
