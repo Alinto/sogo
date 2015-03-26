@@ -29,7 +29,6 @@
 #import <Mailer/SOGoMailObject.h>
 #import <NGExtensions/NGBase64Coding.h>
 
-#import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -37,8 +36,9 @@
 
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreSharingMessage.h"
+#import "MAPIStoreTypes.h"
 
-#include <mapistore/mapistore.h>
+#include <gen_ndr/property.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
