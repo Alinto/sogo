@@ -30,7 +30,7 @@
 
         <md-input-container>
           <label><var:string label:value="Port:"/></label>
-          <input type="text" required="required"
+          <input type="number" required="required" min="1" max="65535"
                  ng-model="account.port"/>
         </md-input-container>
 
@@ -62,12 +62,12 @@
 
         <md-input-container>
           <label><var:string label:value="Email:"/></label>
-          <input type="text" required="required" ng-model="account.identities[0].email"/>
+          <input type="email" required="required" ng-model="account.identities[0].email"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Reply To Email:"/></label>
-          <input type="text" ng-model="account.identities[0].replyTo"/>
+          <input type="email" ng-model="account.identities[0].replyTo"/>
         </md-input-container>
 
         <!-- FIXME -->
