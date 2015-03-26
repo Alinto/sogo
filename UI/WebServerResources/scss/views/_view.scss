@@ -13,6 +13,7 @@
 .view[layout=row] {
   max-height: 100%;
 }
+
 // We make intensive use of the list/detail view pattern, here are some base
 // definitions for this
 // ----------------------------------------------------------------------------
@@ -32,38 +33,42 @@ $detailView-width: grid-step(8) !global;
 //}
 
 .view-list {
-  flex: 0 1 $listView-width;
   min-width: ($listView-width - ($pitch * 2));
+  @include at(md){
+    @include flex-col(md, 7, 1, 1);
+  }
+  @include from(lg) {
+    @include flex-col(lg, 6, 1, 0);
+  }
+  @include to(sm) {
+    width: 100%;
+    min-width: 100%;
+  }
 }
 
 .view-detail {
-  flex: 1 2 $detailView-width;
-  min-width: ($detailView-width - $pitch);
-  max-width: ($detailView-width + $pitch);
-  margin: 0 auto;
-}
-
-
-[ui-view="message"] {
-
-  &.ng-enter {
-    border: 4px solid red;
-    transition: all 1s linear;
-
-    &.ng-enter-active {
-      border: 4px solid green;
-      transition: all 1s linear;
-    }
+  position: relative;
+  z-index: $z-index-view;
+  @include from(lg) {
+    @include flex-col(lg, 8, 2, 1);
+    margin: 0 auto $mg auto;
   }
-
-  &.ng-leave {
-    border: 4px solid blue;
-    transition: all 1s linear;
-
-    &.ng-leave-active {
-      border: 4px solid blue;
-      transition: all 1s linear;
-      filter: opacity(0);
+  @include at(md) {
+    @include flex-col(md, 9);
+    margin: 0;
+  }
+  @include to(sm) {
+    width: 100%;
+    min-width: 100%;
+    background-color: sg-color($sogoPaper, 50);
+    transform: translateX(0);
+    transition: all 0.25s $swift-ease-in-out-timing-function;
+    &.sg-open {
+      transform: translateX(-100%);
+    }
+    [class *= md-whiteframe-] {
+      box-shadow: none;
     }
   }
 }
+

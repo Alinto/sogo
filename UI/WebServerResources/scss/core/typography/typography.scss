@@ -143,7 +143,7 @@
 $md-prefix : 'sg-md';
 /// @alias $md-prefix
 $md: $md-prefix;
-$sg-rem-Base-value: 16 !global;
+$sg-rem-Base-value: 16;
 $sg-sp-value: (1 / $sg-rem-Base-value) !default; // sp value
 
 $sg-md-typo-baseline: 4px;

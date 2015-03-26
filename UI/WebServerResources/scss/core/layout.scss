@@ -2,29 +2,160 @@
 // -------------------------------
 @import "../../angular-material/src/core/style/layout";
 
+
+/**
+ * Overrides angular-material sources
+ * There are some redundancies (thanks to breakpoint-slicer) that can't
+ * be easily overriden and are interfeering
+ *
+ */
+// todo: look for redundancies and find a way to override them
+
+// Responsive attributes
+// Some value are defined in project variables
+// ------------------------------
+
+// hide means hide everywhere
+/* Sizes:
+  0    <= size < 600  Phone
+  600  <= size < 960  Tablet
+  960  <= size < 1200 Tablet-Landscape
+  1200 <= size         PC
+*/
+
+
+// SMALL SCREEN
+@include at(sm) {
+  .hide-sm, .hide {
+    &:not(.show-sm):not(.show) {
+      display: none;
+    }
+  }
+
+  @include flex-order-for-name(sm);
+  @include layout-align-for-name(sm);
+  @include layout-for-name(sm);
+  @include flex-properties-for-name(sm);
+}
+
+@include from(md) {
+  .show-sm {
+    display: none;
+  }
+}
+
+
+// BIGGER THAN SMALL SCREEN
+@include from(md) {
+  @include flex-order-for-name(gt-sm);
+  @include layout-align-for-name(gt-sm);
+  @include layout-for-name(gt-sm);
+  @include flex-properties-for-name(gt-sm);
+}
+
+// MEDIUM SCREEN
+@include at(md) {
+  .hide, .hide-gt-sm {
+    &:not(.show-gt-sm):not(.show-md):not(.show) {
+      display: none;
+    }
+  }
+  .hide-md:not(.show-md):not(.show) {
+    display: none;
+  }
+
+  @include flex-order-for-name(md);
+  @include layout-align-for-name(md);
+  @include layout-for-name(md);
+  @include flex-properties-for-name(md);
+}
+
+// BIGGER THAN MEDIUM SCREEN
+@include from(lg) {
+  @include flex-order-for-name(gt-md);
+  @include layout-align-for-name(gt-md);
+  @include layout-for-name(gt-md);
+  @include flex-properties-for-name(gt-md);
+  @include flex-order-for-name(lg);
+  @include layout-align-for-name(lg);
+  @include layout-for-name(lg);
+  @include flex-properties-for-name(lg);
+}
+// BIGGER THAN LARGE SCREEN
+@include  from(lg) {
+  .hide, .hide-gt-sm, .hide-gt-md {
+    &:not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
+      display: none;
+    }
+  }
+  .hide-lg:not(.show-lg):not(.show) {
+    display: none;
+  }
+}
+
+// BIGGER THAN X-LARGE SCREEN in needed
+@include from(xl) {
+  .hide-gt-sm, .hide-gt-md, .hide-gt-lg, .hide {
+    &:not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show) {
+      display: none;
+    }
+  }
+
+  @include flex-order-for-name(gt-lg);
+  @include layout-align-for-name(gt-lg);
+  @include layout-for-name(gt-lg);
+  @include flex-properties-for-name(gt-lg);
+}
+
+
 // Utility classes to compensate for the the xml mandatory attribute values
 // ------------------------------------------------------------------------
-$selectors: layout, layout-sm, layout-gt-sm, layout-md, layout-gt-md, layout-lg, layout-gt-lg,
-layout-align,layout-align-sm, layout-align-gt-sm, layout-align-md, layout-align-gt-md, layout-align-lg, layout-align-gt-lg,
-layout-padding,
-layout-margin,
-layout-wrap,
-layout-fill,
-flex, flex-sm, flex-gt-sm, flex-md, flex-gt-md, flex-lg, flex-gt-lg, hide, hide-sm, hide-gt-sm, hide-md, hide-gt-md, hide-lg, hide-gt-lg, show, show-sm, show-gt-sm, show-md, show-gt-md, show-lg, show-gt-lg;
+$selectors: layout, layout-align, layout-padding, layout-margin, layout-wrap, layout-fill,
+flex, hide, show, show-sm;
 
 @include attributesToClasses($selectors);
+
 .md-flex {
   flex: 1 1 auto;
 }
 
-@for $i from 1 to 20 {
-  .cols-#{$i} {
-  max-width: grid-step($i);
-  flex: 1 1 auto;
+// Generate responsive columns
+// ----------------------------------------------------------------------------
+@mixin responsive-columns($breakpoint, $query) {
+  $cols: map-get($base-grid-total-columns, $breakpoint);
+  $colWidth: ((100 / $cols) * 1vw);
+  // there must be a way to escape the rule but we didn't found-out
+  @if ($query == 'from') {
+    @include from($breakpoint)  {
+      @for $i from 1 to $cols {
+        .cols-#{$i}, {
+          max-width: ($colWidth * $i);
+          flex: 1 1 ($colWidth * $i);
+        }
+      }
+    }
+  } @else {
+    @include at($breakpoint) {
+      @for $i from 1 to $cols {
+        .cols-#{$i} {
+          max-width: ($colWidth * $i);
+          flex: 1 1 ($colWidth * $i);
+        }
+      }
+    }
   }
-  .cols-#{$i}.spacer {
-    width: grid-step($i);
-  }
+}
+@include responsive-columns('md', 'at');
+@include responsive-columns('lg', 'from');
+
+// Utility to implement a specific one without extending
+// todo: include error handling
+
+@mixin flex-col($breakpoint, $nb, $grow: 1, $shrink: 1) {
+    $cols: map-get($base-grid-total-columns, $breakpoint);
+    $colWidth: ((100 / $cols) * 1vw);
+      max-width: ($colWidth * $nb);
+      flex: $grow $shrink ($colWidth * $nb);
 }
 
 // Rows are included in padded containers, margins are used for vertical spacing
@@ -32,4 +163,12 @@ flex, flex-sm, flex-gt-sm, flex-md, flex-gt-md, flex-lg, flex-gt-lg, hide, hide-
 [layout="row"].md-layout-margin {
   margin-right: 0;
   margin-left: 0;
+}
+// App container for responsive
+.sg-app-content {
+  @include to(sm) {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
 }

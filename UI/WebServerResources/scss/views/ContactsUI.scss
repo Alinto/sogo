@@ -3,6 +3,7 @@
 [id = "contactsList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
+
 // md is overqualifying, we have to do the same to override
 md-content[ui-view="card"] {
   margin: 0 auto;
@@ -11,7 +12,7 @@ md-content[ui-view="card"] {
 
 // md is overqualifying, we have to do the same to override
 md-card.viewer {
-  min-width: ($detailView-width - ($pitch * 2));
+
 }
 
 // Contact editor

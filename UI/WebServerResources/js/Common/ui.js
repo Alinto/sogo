@@ -91,9 +91,9 @@
           'hue-3': 'A700'
         })
         .accentPalette('sogo-green', {
-          'default': '300',
+          'default': '500',
           'hue-1': '200',
-          'hue-2': '500',
+          'hue-2': '300',
           'hue-3': 'A700'
         })
         .backgroundPalette('sogo-paper', {
@@ -145,6 +145,12 @@
           parent: angular.element(document.getElementById('left-sidenav')),
           templateUrl: 'bottomSheetTemplate.html'
         });
+      };
+      $scope.toggleDetailView = function() {
+        $timeout(function() {
+          var view = angular.element(document.getElementById('detailView'));
+          view.toggleClass('sg-open');
+        })
       };
       $scope.$watch(function() {
         return $mdMedia(sgConstant['gt-md']);

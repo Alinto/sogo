@@ -39,9 +39,11 @@ $touch-zone: $touch-zone-width;
 // Google specifies dimensions in grid pitch
 // This is a small utility function
 // Return dimension in px
+
 @function grid-step($nb) {
   @return ($pitch * $nb)
 }
+
 
 // Margins
 $layout-gutter-width:      ($baseline-grid * 2) !default;
@@ -61,9 +63,19 @@ $layout-breakpoint-lg:     1200px !default;
 $layout-breakpoint-md:     1024px;
 $layout-breakpoint-lg:     1280px;
 
+// We use column-based responsive grids inspired by Google's Material design metrics
+// ----------------------------------------------------------------------------
+
+$base-grid-total-columns: (
+  'sm': 1,
+  'md': 16,
+  'lg': 20,
+);
+
 // Passing to breakpoint-slicer
 $slicer-breakpoints: 0 $layout-breakpoint-sm $layout-breakpoint-md $layout-breakpoint-lg;
-$slicer-breakpoint-names: 'phones' 'tablets' 'laptops' 'desktops';
+// todo: ? 'md' name is error prone because of possible confusion with the 'md-' prefix
+$slicer-breakpoint-names: 'sm' 'md' 'lg' 'xl';
 
 $media-pointer: (pointer fine);
 
@@ -100,7 +112,8 @@ $z-index-toast: 90 !default;
 $z-index-bottom-sheet: 70 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
-$z-index-fab: 20 !default;
+$z-index-fab: 20;
+$z-index-view: 10;
 
 // Easing Curves
 //--------------------------------------------

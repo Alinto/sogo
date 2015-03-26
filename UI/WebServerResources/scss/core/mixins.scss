@@ -22,9 +22,9 @@
 // Utility to compensate for the the xml mandatory attribute values
 // Creates classes extending layout attributes with no values
 // ----------------------------------------------------------------
-@mixin attributesToClasses($selectors) {
+@mixin attributesToClasses($selectors, $prefix: 'md') {
   @each $selector in $selectors {
-    .md-#{$selector} {
+    .#{$prefix}-#{$selector} {
 // no syntax error here
       @extend #{'['$selector']'} !optional
     }

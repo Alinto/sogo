@@ -207,9 +207,10 @@
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <div class="sg-toolbar-group-1" layout="row">
-            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
+            <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
+            <!--todo: provide live data for this group-->
             <div class="sg-date-group" layout="column" layout-align="space-between end">
               <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
               <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
@@ -237,10 +238,8 @@
                 <md-option value="category"><var:string label:value="Category"/></md-option>
                 <md-option value="organization"><var:string label:value="Organization"/></md-option>
               </md-select>
-              <md-button class="iconButton" label:aria-label="New Contact" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-create"><!--icon--></i></md-button>
             </div>
           </div>
-          <div class="spacer cols-8"><!-- spacer --></div>
         </div>
       </md-toolbar>
 
@@ -273,7 +272,7 @@
             <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id">
               <md-item-content
                   ng-class="{_selected: card.id == currentCard.id}"
-                  ng-click="select($index)">
+                  ng-click="select($index); toggleDetailView()">
                 <div class="md-tile-left">
                   <!--avatar--><!-- currentCard.tag = vcard || vlist -->
                 </div>
@@ -289,7 +288,8 @@
         </md-content>
         <!-- This extra container is used to animate views transitions
              double quotes in ng-animate is not a typo                         -->
-        <div class="view-detail" ui-view="card" layout="column" ng-animate="'view'"><!-- card view --></div>
+        <div id="detailView" class="view-detail" ui-view="card" layout="column" ng-animate="'view'"><!-- card view --></div>
+        <md-button class="iconButton md-fab md-accent" label:aria-label="New Contact" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-add"><!--icon--></i></md-button>
       </div>
 
     </section>

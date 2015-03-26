@@ -87,15 +87,16 @@ linters:
     enabled: true
 
   PropertySortOrder:
-    enabled: false
-    ignore_unspecified: false
+    enabled: true
+    order: concentric
+    ignore_unspecified: true
 
   PropertySpelling:
     enabled: true
     extra_properties: []
 
   QualifyingElement:
-    enabled: true
+    enabled: false
     allow_element_with_attribute: false
     allow_element_with_class: false
     allow_element_with_id: false

@@ -12,24 +12,27 @@
 // ------------------------------------
 sg-folder-tree .md-button,
 md-sidenav md-list button.md-button {
+  padding: 0;
   outline: none;
   color: inherit;
-  font-size: sg-size(button);
-  padding: 0;
   text-transform: initial;
+  font-size: sg-size(button);
   -webkit-font-smoothing: auto;
 }
+
 .sg-folder {
-  flex: 1;
   text-align: left;
+  flex: 1;
 }
+
 .sg-active .md-button {
   color: sg-color($sogoBlue, 800);
 }
 
-md-sidenav .md-button [class ^= md-icon] {
+md-sidenav .md-button [class ^= "md-icon"] {
   margin-right: 1em;
 }
+
 ///
 /// iconButton
 /// according to Material design specs:
@@ -54,25 +57,26 @@ $iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-i
 $iconButton-hover-scale: 1.25;
 $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-function;
 
-
 // Classes
-.iconButton {
-  padding: $iconButton-padding;
-  border-radius: 50%;
-  overflow: hidden;
+.iconButton,
+.md-button.md-default-theme:not([disabled]).iconButton {
   // z-index provides a stacking context that prevent ripple-effect from overflowing
   z-index: 1;
-  background-clip: content-box;
-  background-color: transparent;
+  overflow: hidden;
+  padding: $iconButton-padding;
+  border-radius: 50%;
   color: inherit;
+
   &:hover,
   &:active {
     background-color: transparent;
+
     [class ^= md-icon],
     [class *= md-icon-] {
       transform: scale($iconButton-hover-scale);
     }
   }
+
   [class ^= md-icon],
   [class *= md-icon-] {
     padding: $iconButton-icon-padding;
@@ -80,20 +84,27 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
     font-size: $iconButton-icon-size;
     transition: $iconButton-transition;
   }
+  .md-icon-arrow-back {
+    font-size: sg-size('headline')
+  }
+
   .md-ripple-container {
     border-radius: 50%;
   }
 }
+
+
+
 // Icon-bars are for iconButtons, by default they're vertical and at the right
 // the modifier class is to reflect those values and leave place to other versions
 .sg-icon-bar--vertical {
-  font-size: $sg-font-size-3;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  // Containers have padding, we compensate to align according to specs
   margin: 0 ($iconButton-padding * -1) 0 $mg;
+  font-size: $sg-font-size-3;
+  align-items: center;
+  // Containers have padding, we compensate to align according to specs
+  justify-content: space-between;
 }
 
 // NiceToHave: some horizontal or left hand side variant
@@ -102,16 +113,23 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
   display: block;
 }
 
-// angular-material is overspecifying so we are
-.md-button.md-default-theme:not([disabled]).iconButton {
-  @extend .iconButton;
+//// angular-material is overspecifying so we are
+//.md-button.md-default-theme:not([disabled]).iconButton {
+//  @extend .iconButton;
+//}
+
+.md-button.iconButton.md-fab.md-default-theme {
+  z-index: $z-index-fab;
+  margin-right: $mg;
+  transform: translateY(-50%);
 }
 
 .sg-button-navicon {
+  margin-left: ($mg * -1);
   width: $touch-zone;
   height: $touch-zone;
-  margin-left: ($mg * -1);
 }
+
 // angular-material is overspecifying so we are and so we have to continue
 .sg-button-navicon.iconButton span.md-icon-menu,
 .sg-button-navicon.iconButton i[class|="md-icon"] {
