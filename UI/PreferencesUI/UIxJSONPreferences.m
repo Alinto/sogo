@@ -35,25 +35,28 @@
 
 @implementation UIxJSONPreferences
 
-- (WOResponse *) _makeResponse: (SOGoUserProfile *) profile
+- (WOResponse *) _makeResponse: (NSDictionary *) values
 {
   WOResponse *response;
 
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
-  [response appendContentString: [profile jsonRepresentation]];
+  [response appendContentString: [values jsonRepresentation]];
 
   return response;
 }
 
 - (WOResponse *) jsonDefaultsAction
 {
+  NSMutableDictionary *values;
   SOGoUserDefaults *defaults;
   NSArray *categoryLabels;
-
+  BOOL dirty;
+  
   defaults = [[context activeUser] userDefaults];
-
+  dirty = NO;
+  
   if (![[defaults source] objectForKey: @"SOGoLongDateFormat"])
     [[defaults source] setObject: @"default"  forKey: @"SOGoLongDateFormat"];
 
@@ -65,6 +68,7 @@
                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
       
       [defaults setCalendarCategories: categoryLabels];
+      dirty = YES;
     }
   
   // Populate default contact categories, based on the user's preferred language
@@ -78,6 +82,7 @@
         categoryLabels = [NSArray array];
 
       [defaults setContactsCategories: categoryLabels];
+      dirty = YES;
     }
       
   // Populate default mail lablels, based on the user's preferred language
@@ -90,12 +95,19 @@
        // TODO - translate + refactor to not pass self since it's not a component
        //[defaults setMailLabelsColors: [SOGoMailLabel labelsFromDefaults: v  component: self]];
        [defaults setMailLabelsColors: v];
+       dirty = YES;
     }
 
-  
-  [defaults synchronize];
-  
-  return [self _makeResponse: [defaults source]];
+  if (dirty)
+    [defaults synchronize];
+
+  // We inject our default mail account, something we don't want to do before we
+  // call -synchronize on our defaults.
+  values = [[[[defaults source] values] mutableCopy] autorelease];
+  [[values objectForKey: @"AuxiliaryMailAccounts"] insertObject: [[[context activeUser] mailAccounts] objectAtIndex: 0]
+                                                        atIndex: 0];
+    
+  return [self _makeResponse: values];
 }
 
 - (WOResponse *) jsonSettingsAction
@@ -104,7 +116,7 @@
 
   settings = [[context activeUser] userSettings];
 
-  return [self _makeResponse: [settings source]];
+  return [self _makeResponse: [[settings source] values]];
 }
 
 @end
