@@ -61,10 +61,26 @@ $detailView-width: grid-step(8) !global;
     width: 100%;
     min-width: 100%;
     background-color: sg-color($sogoPaper, 50);
-    transform: translateX(0);
-    transition: all 0.25s $swift-ease-in-out-timing-function;
-    &.sg-open {
+    transform: translateX(-100%);
+    transition: all 0.2s $swift-ease-in-out-timing-function;
+    &.sg-close {
+      transition-delay: 0.2s;
+      transform: translateX(-200%);
+      &.ng-enter {
+        filter: opacity(0);
+      }
+    }
+    &.ng-enter {
+      transform: translateX(0);
+    }
+    &.ng-enter.ng-enter-active,
+    &.ng-leave {
+      filter: opacity(1);
       transform: translateX(-100%);
+    }
+    &.ng-leave.ng.leave-active {
+      filter: opacity(1);
+      transform: translateX(-200%);
     }
     [class *= md-whiteframe-] {
       box-shadow: none;

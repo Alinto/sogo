@@ -90,6 +90,28 @@ tags-input.ng-invalid .tags {
   -moz-box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
   box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
 }
+tags-input[disabled] .host:focus {
+  outline: none;
+}
+tags-input[disabled] .tags {
+  background-color: #eeeeee;
+  cursor: default;
+}
+tags-input[disabled] .tags .tag-item {
+  opacity: 0.65;
+  background: -webkit-linear-gradient(top, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+  background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+}
+tags-input[disabled] .tags .tag-item .remove-button {
+  cursor: default;
+}
+tags-input[disabled] .tags .tag-item .remove-button:active {
+  color: #585858;
+}
+tags-input[disabled] .tags .input {
+  background-color: #eeeeee;
+  cursor: default;
+}
 
 tags-input .autocomplete {
   margin-top: 5px;
@@ -107,6 +129,9 @@ tags-input .autocomplete .suggestion-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
 }
 tags-input .autocomplete .suggestion-item {
   padding: 5px 10px;

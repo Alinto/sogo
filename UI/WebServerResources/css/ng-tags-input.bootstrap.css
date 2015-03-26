@@ -60,6 +60,16 @@ tags-input.ng-invalid .tags {
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
 }
+tags-input[disabled] .tags {
+  background-color: #eeeeee;
+}
+tags-input[disabled] .tags .tag-item {
+  background: #337ab7;
+  opacity: 0.65;
+}
+tags-input[disabled] .tags .input {
+  background-color: #eeeeee;
+}
 
 .input-group tags-input {
   padding: 0;

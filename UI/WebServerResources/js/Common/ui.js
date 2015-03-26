@@ -117,6 +117,7 @@
     })
 
     .controller('navController', ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', function ($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant) {
+
       // Show current day in top bar
       $scope.currentDay = window.currentDay;
       $timeout(function() {
@@ -147,10 +148,8 @@
         });
       };
       $scope.toggleDetailView = function() {
-        $timeout(function() {
-          var view = angular.element(document.getElementById('detailView'));
-          view.toggleClass('sg-open');
-        })
+        var detail = angular.element(document.getElementById('detailView'));
+        detail.toggleClass('sg-close');
       };
       $scope.$watch(function() {
         return $mdMedia(sgConstant['gt-md']);

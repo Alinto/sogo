@@ -16,7 +16,7 @@
         vs-scroll-parent="#messagesList">
       <md-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}">
-        <md-item-content ui-sref-active="_selected" ng-click="toggleDetailView()">
+        <md-item-content ui-sref-active="_selected">
           <div class="md-tile-left">
             <!--avatar-->
           </div>
@@ -42,6 +42,6 @@
   </md-content>
   <!-- This extra container is used to animate views transitions
        double quotes in ng-animate is not a typo                         -->
-    <div id="detailView" class="view-detail" layout="column" ui-view="message"><!-- message view --></div>
+    <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
 
 </container>

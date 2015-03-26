@@ -100,11 +100,14 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
 .sg-icon-bar--vertical {
   display: flex;
   flex-direction: column;
-  margin: 0 ($iconButton-padding * -1) 0 $mg;
+  margin: ($iconButton-padding * -1) ($iconButton-padding * -1) 0 $mg;
   font-size: $sg-font-size-3;
   align-items: center;
   // Containers have padding, we compensate to align according to specs
   justify-content: space-between;
+  @include at(sm) {
+  margin-left: $iconButton-padding;
+  }
 }
 
 // NiceToHave: some horizontal or left hand side variant
