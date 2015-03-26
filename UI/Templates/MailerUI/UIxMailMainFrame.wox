@@ -310,12 +310,11 @@
               <span class="md-icon-menu"></span>
             </md-button>
             <div class="sg-date-group" layout="column" layout-align="space-between end">
-              <p class="sg-day">monday</p>
-              <p class="sg-month">january</p>
-              <p class="sg-year">2015</p>
+              <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
+              <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
+              <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
             </div>
-
-            <p class="sg-md-display-3 sg-date-today">15</p>
+            <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
           </div>
           <div class="sg-toolbar-group-2">
             <md-button class="iconButton" aria-label="Search">

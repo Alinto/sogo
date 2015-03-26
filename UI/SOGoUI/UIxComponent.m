@@ -39,6 +39,7 @@
 #import <NGExtensions/NSURL+misc.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
@@ -438,6 +439,11 @@ static SoProduct      *commonProduct      = nil;
     }
 
   return _selectedDate;
+}
+
+- (NSString *) currentDayDescription
+{
+  return [[[context activeUser] currentDay] jsonRepresentation];
 }
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) _date

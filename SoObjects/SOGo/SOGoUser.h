@@ -99,6 +99,7 @@
 - (NSString *) cn;
 
 - (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context;
+- (NSDictionary *) currentDay;
 
 /* defaults */
 - (SOGoUserDefaults *) userDefaults;

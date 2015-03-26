@@ -394,6 +394,39 @@
   return dateFormatter;
 }
 
+- (NSDictionary *) currentDay
+{
+  NSCalendarDate *now;
+  NSDictionary *description, *abbr;
+  NSDictionary *locale;
+  SOGoUserDefaults *ud;
+  WOResourceManager *resMgr;
+  NSUInteger seconds;
+
+  now = [NSCalendarDate calendarDate];
+  ud = [self userDefaults];
+  resMgr = [[WOApplication application] resourceManager];
+  locale = [resMgr localeForLanguageNamed: [ud language]];
+
+  [now setTimeZone: [ud timeZone]];
+  seconds = [now hourOfDay]*3600 + [now minuteOfHour]*60 + [now secondOfMinute];
+
+  abbr = [NSDictionary dictionaryWithObjectsAndKeys:
+                 [now descriptionWithCalendarFormat: @"%a" locale: locale], @"weekday",
+                 [now descriptionWithCalendarFormat: @"%b" locale: locale], @"month",
+                       nil];
+  description = [NSDictionary dictionaryWithObjectsAndKeys:
+                        [now descriptionWithCalendarFormat: @"%A" locale: locale], @"weekday",
+                        [now descriptionWithCalendarFormat: @"%B" locale: locale], @"month",
+                        [now descriptionWithCalendarFormat: @"%d" locale: locale], @"day",
+                        [now descriptionWithCalendarFormat: @"%Y" locale: locale], @"year",
+                        abbr, @"abbr",
+                        [NSNumber numberWithInt: (24*3600 - seconds)], @"secondsBeforeTomorrow",
+                        nil];
+
+  return description;
+}
+
 - (SOGoUserDefaults *) userDefaults
 {
   if (!_defaults)

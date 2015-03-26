@@ -116,7 +116,17 @@
       return l;
     })
 
-    .controller('navController', ['$scope', '$timeout', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', function ($scope, $timeout, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant) {
+    .controller('navController', ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', function ($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant) {
+      // Show current day in top bar
+      $scope.currentDay = window.currentDay;
+      $timeout(function() {
+        // Update date when day ends
+        $interval(function() {
+          $http.get('../date').success(function(data) {
+            $scope.currentDay = data;
+          });
+        }, 24 * 3600 * 1000);
+      }, window.secondsBeforeTomorrow * 1000);
 
       $scope.toggleLeft = function () {
         $mdSidenav('left').toggle()

@@ -602,6 +602,27 @@
   return result;
 }
 
+/**
+ * @api {get} /so/:username/date Get current day
+ * @apiVersion 1.0.0
+ * @apiName GetCurrentDate
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/date
+ *
+ * @apiSuccess (Success 200) {String} weekday      Full weekday name according to user's locale
+ * @apiSuccess (Success 200) {String} month        Full month name according to user's locale
+ * @apiSuccess (Success 200) {String} day          Day of month as two digit decimal number (leading zero)
+ * @apiSuccess (Success 200) {String} year         Year as a decimal number with century
+ * @apiSuccess (Success 200) {Object} abbr         Abbreviations
+ * @apiSuccess (Success 200) {String} abbr.weekday Abbreviated weekday name according to user's locale
+ * @apiSuccess (Success 200) {String} abbr.month   Abbreviated month name according to user's locale
+ */
+- (id <WOActionResults>) dateAction
+{
+  return [self responseWithStatus: 200 andJSONRepresentation: [[context activeUser] currentDay]];
+}
+
 - (id) recoverAction
 {
   return [self responseWithStatus: 200

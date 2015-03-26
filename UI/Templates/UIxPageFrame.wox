@@ -201,6 +201,8 @@
               var UserIdentification = '<var:string value="userIdentification" const:escapeHTML="NO" />';
               var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO" />';
             </var:if>
+              // This is the equivalent of an AJAX call to /SOGo/so/_UserLogin_/date
+              var currentDay = <var:string value="currentDayDescription" const:escapeHTML="NO"/>;
             <var:string value="commonLocalizableStrings" const:escapeHTML="NO" />
             <var:string value="productLocalizableStrings" const:escapeHTML="NO" />
           </script>
