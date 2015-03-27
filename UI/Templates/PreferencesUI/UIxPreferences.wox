@@ -14,6 +14,10 @@
   <main class="view md-layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
 
+      <script type="text/javascript">
+        var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
+      </script>
+
       <script type="text/ng-template" id="preferences.html">
 
         <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">

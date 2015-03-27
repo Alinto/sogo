@@ -53,18 +53,18 @@
                  ng-model="account.password"/>
         </md-input-container>
 
-        <script type="text/javascript">
-          var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
-        </script>
-
         <md-input-container>
           <label><var:string label:value="Full Name:"/></label>
-          <input type="text" required="required" ng-model="account.identities[0].fullName"/>
+          <input type="text" required="required"
+                 ng-readonly="customFromIsReadonly()"
+                 ng-model="account.identities[0].fullName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Email:"/></label>
-          <input type="email" required="required" ng-model="account.identities[0].email"/>
+          <input type="email" required="required"
+                 ng-readonly="customFromIsReadonly()"
+                 ng-model="account.identities[0].email"/>
         </md-input-container>
 
         <md-input-container>

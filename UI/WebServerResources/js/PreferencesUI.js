@@ -114,7 +114,8 @@
           templateUrl: 'editAccount?account=' + index,
           targetEvent: null,
           locals: { account: account,
-                    accountId: index}
+                    accountId: index,
+                    mailCustomFromEnabled: window.mailCustomFromEnabled}
         }).then(function() {
           $scope.preferences.defaults.AuxiliaryMailAccounts[index] = account;
         });
@@ -245,9 +246,15 @@
     };
   }
   
-  function AccountDialogCtrl($scope, $mdDialog, account, accountId) {
+  function AccountDialogCtrl($scope, $mdDialog, account, accountId, mailCustomFromEnabled) {
     $scope.account = account;
     $scope.accountId = accountId;
+    $scope.customFromIsReadonly = function() {
+      if (accountId > 0)
+        return false;
+
+      return !mailCustomFromEnabled;
+    };
     $scope.cancel = function() {
       $mdDialog.cancel();
     };
