@@ -94,9 +94,4 @@
   return result;
 }
 
-- (NSString *) accountId
-{
-  return accountId;
-}
-
 @end

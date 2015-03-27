@@ -108,12 +108,13 @@
       };
 
       $scope.editMailAccount = function(index) {
-        var account =  $scope.preferences.defaults.AuxiliaryMailAccounts[index];   
+        var account = $scope.preferences.defaults.AuxiliaryMailAccounts[index];
         $mdDialog.show({
           controller: AccountDialogCtrl,
           templateUrl: 'editAccount?account=' + index,
           targetEvent: null,
-          locals: { account: account }
+          locals: { account: account,
+                    accountId: index}
         }).then(function() {
           $scope.preferences.defaults.AuxiliaryMailAccounts[index] = account;
         });
@@ -244,8 +245,9 @@
     };
   }
   
-  function AccountDialogCtrl($scope, $mdDialog, account) {
+  function AccountDialogCtrl($scope, $mdDialog, account, accountId) {
     $scope.account = account;
+    $scope.accountId = accountId;
     $scope.cancel = function() {
       $mdDialog.cancel();
     };

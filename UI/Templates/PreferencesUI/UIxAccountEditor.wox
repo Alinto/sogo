@@ -13,42 +13,44 @@
     >
   <md-dialog>
     <md-content>
-      <script type="text/javascript">
-        var accountId = '<var:string value="accountId"/>';
-      </script>
-      <form id="mainForm" var:href="ownPath">
+
+      <form id="mainForm" name="accountForm" var:href="ownPath">
 
         <md-input-container>
           <label><var:string label:value="Account Name:"/></label>
-          <input type="text" required="required" ng-model="account.name"/>
+          <input type="text" required="required"
+                 ng-readonly="accountId == 0" ng-model="account.name"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Server Name:"/></label>
-          <input type="text" required="required" ng-model="account.serverName"/>
+          <input type="text" required="required"
+                 ng-readonly="accountId == 0" ng-model="account.serverName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Port:"/></label>
           <input type="number" required="required" min="1" max="65535"
-                 ng-model="account.port"/>
+                 ng-readonly="accountId == 0" ng-model="account.port"/>
         </md-input-container>
 
         <md-radio-group ng-model="account.encryption">
           <label><var:string label:value="Encryption:"/></label>
-          <md-radio-button value="none"><var:string label:value="None"/></md-radio-button>
-          <md-radio-button value="ssl"><var:string label:value="SSL"/></md-radio-button>
-          <md-radio-button value="tls"><var:string label:value="TLS"/></md-radio-button>
+          <md-radio-button ng-disabled="accountId == 0" value="none"><var:string label:value="None"/></md-radio-button>
+          <md-radio-button ng-disabled="accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
+          <md-radio-button ng-disabled="accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
         </md-radio-group>
 
         <md-input-container>
           <label><var:string label:value="User Name:"/></label>
-          <input type="text" required="required" ng-model="account.userName"/>
+          <input type="text" required="required"
+                 ng-readonly="accountId == 0" ng-model="account.userName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Password:"/></label>
-          <input type="text" required="required" ng-model="account.password"/>
+          <input type="password" ng-readonly="account.isDefault == 1"
+                 ng-model="account.password"/>
         </md-input-container>
 
         <script type="text/javascript">
@@ -109,10 +111,11 @@
           </md-select>
         </label>
 
-   <div class="md-actions" layout="row">
-      <md-button type="button" ng-click="cancel()">Cancel</md-button>
-      <md-button type="button" class="md-primary" ng-click="save()">Save</md-button>
-      </div>
+        <div class="md-actions" layout="row">
+          <md-button type="button" ng-click="cancel()">Cancel</md-button>
+          <md-button type="button" class="md-primary"
+                     ng-disabled="accountForm.$invalid" ng-click="save()">Save</md-button>
+        </div>
 
       </form>
     </md-content>
