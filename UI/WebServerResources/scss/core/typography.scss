@@ -1,11 +1,6 @@
-/*! typography.scss - */
-////
-/// SOGo
-/// Version: #{$Version}
-/// Module: typography
-///
-/// Main typography module file define basic typographic styles
-////
+// Import from sources for extends
+// -------------------------------
+@import "../../angular-material/src/core/style/typography";
 
 // Fonts declaration
 // ----------------------------------------------------------------------------

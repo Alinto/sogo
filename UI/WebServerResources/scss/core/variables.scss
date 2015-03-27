@@ -10,13 +10,24 @@ $version: '3.alpha';
 //@import '../themes/color-palette'; // fixme : clarify if it is needed or assure by javascript
 @import 'components/palette';        // fixme : The maps in color-palettes are more js then scss
 
-// Font Variables
-$font-family: 'Fira sans', 'Helvetica Neue', sans-serif !default;
-
 $primary-color: sg-color($sogoBlue, 300) !default;
 //$foreground-primary-color: rgba($foreground-base-color, 0.73) !default;
 $foreground-primary-color: rgba($primary-color, 0.87);//override
 
+// Typography
+// ------------------------------
+$font-family: 'Fira sans', 'Helvetica Neue', sans-serif !default;
+
+$display-4-font-size-base: 11.20rem !default;
+$display-3-font-size-base: 5.600rem !default;
+$display-2-font-size-base: 4.500rem !default;
+$display-1-font-size-base: 3.400rem !default;
+$headline-font-size-base:  2.400rem !default;
+$title-font-size-base:     2.000rem !default;
+$subhead-font-size-base:   1.600rem !default;
+
+$body-font-size-base:      1.400rem !default;
+$caption-font-size-base:   1.200rem !default;
 
 // Layout and grid
 // ------------------------------
