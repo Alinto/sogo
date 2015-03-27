@@ -157,6 +157,9 @@ static Class MAPIStoreTasksMessageK = Nil;
                           forKey: MAPIPropertyKey (PidLidTaskDueDate)];
       [knownProperties setObject: @"c_creationdate"
                           forKey: MAPIPropertyKey (PidLidTaskOrdinal)];
+      /* Use by oxcfxics to sort the latest first */
+      [knownProperties setObject: @"c_lastmodified"
+                          forKey: MAPIPropertyKey (PidTagMessageDeliveryTime)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
