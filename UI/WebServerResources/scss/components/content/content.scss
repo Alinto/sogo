@@ -1,4 +1,34 @@
 @import 'extends';
+
+// angular-material is mobile first (is it ?) SOGo is not. We're inversing
+// the media definitions and replacing magic numbers with variables
+// ----------------------------------------------------------------------------
 md-content {
+
+  display: block;
+  position: relative;
+  overflow: auto;
   background-color: transparent;
+  -webkit-overflow-scrolling: touch;
+
+  &[md-scroll-y] {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &[md-scroll-x] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &[md-scroll-xy] {
+  }
+
+  &.md-padding {
+    padding: $mg;
+  }
+}
+// Overrides out of specs angular-material definition
+@include at(sm) {
+  md-content.md-padding {
+    padding: $mg;
+  }
 }

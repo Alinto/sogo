@@ -92,6 +92,11 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
     border-radius: 50%;
   }
 }
+// First button must have it's icon align to margin/padding
+md-content.md-padding > .iconButton:first-child {
+  margin-top: ($iconButton-padding * -1);
+  margin-left: ($iconButton-padding * -1);
+  }
 
 
 
@@ -128,6 +133,7 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
 }
 
 .sg-button-navicon {
+  top: ($mg * -1);
   margin-left: ($mg * -1);
   width: $touch-zone;
   height: $touch-zone;

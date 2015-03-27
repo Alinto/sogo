@@ -62,26 +62,33 @@ $detailView-width: grid-step(8) !global;
     width: 100%;
     min-width: 100%;
     background-color: sg-color($sogoPaper, 50);
-    transform: translateX(-100%);
-    transition: all 0.2s $swift-ease-in-out-timing-function;
+    transform: translateX(-100%) scale(1);
+    filter: opacity(1);
+    transform-origin: 50% 50%;
+    transition: all 0.5s $swift-ease-in-out-timing-function;
     &.sg-close {
-      transition-delay: 0.2s;
-      transform: translateX(-200%);
+      transition: all 0.35s $swift-ease-in-out-timing-function;
+      transition-delay: 0.15s;
+      transform: translateX(-100%) scale(0);
+      //transform: translateX(-200%);
       &.ng-enter {
-        filter: opacity(0);
+        transform: translateX(-100%) scale(0);
       }
     }
     &.ng-enter {
-      transform: translateX(0);
+      transform: translateX(-100%) scale(0);
+      //transform: translateX(0);
     }
     &.ng-enter.ng-enter-active,
     &.ng-leave {
+      transform: translateX(-100%) scale(1);
       filter: opacity(1);
-      transform: translateX(-100%);
+      //transform: translateX(-100%);
     }
     &.ng-leave.ng.leave-active {
+      transform: translateX(-100%) scale(0);
       filter: opacity(1);
-      transform: translateX(-200%);
+      //transform: translateX(-200%);
     }
     [class *= md-whiteframe-] {
       box-shadow: none;
