@@ -13,8 +13,11 @@ $toolbar-padding: $mg;
 // must be declare in containers with sg-padded
 md-toolbar {
   padding: $toolbar-padding 0;
-  box-shadow: none;
+  z-index: $z-index-toolbar;
   font-size: initial;
+  background-image: url("../img/felt-transp.png");
+  background-blend-mode: luminosity;
+  box-shadow: $whiteframe-shadow-z1;
 }
 
 .md-toolbar-tools {
@@ -71,3 +74,5 @@ hgroup {
     order: 3;
   }
 }
+
+

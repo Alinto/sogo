@@ -33,7 +33,13 @@ $detailView-width: grid-step(8) !global;
 //  min-width: ($listView-width - ($pitch * 2));
 //}
 
+[class|="view"] {
+  position: relative;
+
+}
+
 .view-list {
+  z-index: ($z-index-view -1);
   min-width: ($listView-width - ($pitch * 2));
   @include at(md){
     @include flex-col(md, 7, 1, 1);
@@ -48,7 +54,6 @@ $detailView-width: grid-step(8) !global;
 }
 
 .view-detail {
-  position: relative;
   z-index: $z-index-view;
   background-color: $background-base-color;
   @include from(lg) {

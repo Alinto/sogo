@@ -145,7 +145,7 @@
          sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
     -->
 <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <md-toolbar class="md-tall" layout-align="start start">
         <div class="md-toolbar-tools sg-padded" layout="row" layout-align="start start">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">
@@ -210,7 +210,6 @@
             <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
-            <!--todo: provide live data for this group-->
             <div class="sg-date-group" layout="column" layout-align="space-between end">
               <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
               <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
@@ -245,7 +244,7 @@
 
       <div layout="row" class="md-flex" layout-align="space-between">
 
-        <md-content class="view-list" style="position: relative;" id="contactsList">
+        <md-content class="view-list" id="contactsList">
           <header class="sg-md-subheader">
             <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
           </header>

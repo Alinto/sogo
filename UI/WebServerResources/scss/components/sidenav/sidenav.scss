@@ -106,7 +106,13 @@ md-sidenav {
   & md-content,
   & md-toolbar {
     background-color: inherit;
+    background-image: url("../img/cardboard-transp.png");
+    background-blend-mode: multiply;
   }
+}
+
+.md-sidenav-left md-toolbar {
+  box-shadow: none;
 }
 
 // MAILER Folder tree (in the left sidenav
@@ -122,7 +128,7 @@ $i: 1;
   [class*="sg-child-level"] {
     margin-right: 1em;
   };
-// This hack is so BAD I'm ashame putting it in the shame file
+// This hack is so BAD I am ashame putting it in the shame file
 // -----------------------------------------------------------
 // Folder tree's controler function are very intricate, the way
 // elements are marked as 'active reminds me of good old time JQuery
@@ -130,7 +136,7 @@ $i: 1;
 // selection, but I don't wan't to mess in that script.
 // Here's the hack : on selection I use the parent > child selector to
 // change the definition of the icon's class. Yes, this means that
-// md-icon-folder:before as the value of md-icon-folder:before:before,
+// md-icon-folder:before as the value of md-icon-folder-open:before,
 // and this is wrong !
 
 .sg-active i.md-icon-folder:before {
