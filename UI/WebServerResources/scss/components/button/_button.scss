@@ -32,6 +32,9 @@ md-sidenav md-list button.md-button {
 md-sidenav .md-button [class ^= "md-icon"] {
   margin-right: 1em;
 }
+md-sidenav .md-button.iconButton.sg-button-navicon [class ^= "md-icon"] {
+  margin: 0;
+}
 
 ///
 /// iconButton
@@ -80,7 +83,7 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
   [class ^= md-icon],
   [class *= md-icon-] {
     padding: $iconButton-icon-padding;
-    color: curentColor;
+    color: currentColor;
     font-size: $iconButton-icon-size;
     transition: $iconButton-transition;
   }
@@ -92,13 +95,29 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
     border-radius: 50%;
   }
 }
+md-toolbar .md-toolbar-tools:first-of-type .iconButton,
+md-toolbar .md-toolbar-tools:first-child .iconButton,
+md-toolbar .md-toolbar-tools.md-toolbar-tools-top .iconButton,
+md-toolbar .md-toolbar-tools:not(.md-toolbar-tools-bottom) .iconButton {
+  margin-top: ($mg * -1);
+}
 // First button must have it's icon align to margin/padding
-md-content.md-padding > .iconButton:first-child {
-  margin-top: ($iconButton-padding * -1);
-  margin-left: ($iconButton-padding * -1);
+md-toolbar .md-toolbar-tools .iconButton:first-child,
+.sg-toolbar-group-last .iconButton:first-child {
+  margin-left: ($mg * -1);
+}
+md-content.md-padding,
+md-card-content {
+  &> .iconButton:first-child {
+    margin-top: ($mg * -1);
+    margin-left: ($mg * -1);
   }
-
-
+}
+// Last button must have it's icon align to margin/padding
+md-toolbar .md-toolbar-tools .iconButton:last-child,
+.sg-toolbar-group-last .iconButton:last-child {
+  margin-right: ($mg * -1);
+}
 
 // Icon-bars are for iconButtons, by default they're vertical and at the right
 // the modifier class is to reflect those values and leave place to other versions
@@ -133,8 +152,8 @@ md-content.md-padding > .iconButton:first-child {
 }
 
 .sg-button-navicon {
-  top: ($mg * -1);
-  margin-left: ($mg * -1);
+  //top: ($mg * -1);
+  //margin-left: ($mg * -1);
   width: $touch-zone;
   height: $touch-zone;
 }

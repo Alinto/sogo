@@ -7,7 +7,7 @@
     >
   <md-card class="viewer">
     <md-card-content>
-      <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-arrow-back"><!--icon--></i></md-button>
+      <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
       <header>
         <div class="sg-avatar">
           <!--avatar--><!-- currentCard.tag = vcard || vlist -->

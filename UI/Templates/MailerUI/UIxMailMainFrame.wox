@@ -265,8 +265,8 @@
 
 <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
-      <md-toolbar class="md-tall" layout-align="start start">
-        <div class="md-toolbar-tools" layout="row">
+      <md-toolbar class="md-tall sg-padded" layout-align="start start">
+        <div class="md-toolbar-tools" layout="row" layout-align="start start">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">
             <i class="md-icon-apps"><!--icon--></i>
           </md-button>
@@ -304,12 +304,11 @@
 <!-- Main section -->
     <section layout="column" class="sg-app-content md-layout-fill">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
+        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
           <div class="sg-toolbar-group-1" layout="row">
             <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
               <span class="md-icon-menu"></span>
             </md-button>
-            <!--todo: provide live data for this group-->
             <div class="sg-date-group" layout="column" layout-align="space-between end">
               <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
               <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
@@ -317,14 +316,14 @@
             </div>
             <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
           </div>
-          <div class="sg-toolbar-group-2">
-            <md-button class="iconButton" aria-label="Search">
-              <i class="md-icon-search"><!--icon--></i>
+          <div class="sg-toolbar-group-last">
+            <md-button class="iconButton" aria-label="More">
+              <i class="md-icon-more-vert"><!--icon--></i>
             </md-button>
           </div>
         </div>
         <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
-          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px"
+          <div class="view-list cols-6 sg-padded" layout="row" layout-align="space-between center"
                sg-search="mailbox.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
             <md-input-container class="sg-search-field-container">
               <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>

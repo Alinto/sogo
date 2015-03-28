@@ -50,6 +50,7 @@ $detailView-width: grid-step(8) !global;
 .view-detail {
   position: relative;
   z-index: $z-index-view;
+  background-color: $background-base-color;
   @include from(lg) {
     @include flex-col(lg, 8, 2, 1);
     margin: 0 auto $mg auto;
@@ -61,7 +62,6 @@ $detailView-width: grid-step(8) !global;
   @include to(sm) {
     width: 100%;
     min-width: 100%;
-    background-color: sg-color($sogoPaper, 50);
     transform: translateX(-100%) scale(1);
     filter: opacity(1);
     transform-origin: 50% 50%;

@@ -1,13 +1,33 @@
+$toolbar-tools-height: 100%;
+$toolbar-height: $pitch;
+$toolbar-medium-tall-height: 88px !default;
+$toolbar-tall-height: ($toolbar-height * 2);
+$toolbar-indent-margin: $pitch;
+$toolbar-padding: $mg;
 @import 'extends';
 
+// According to specs, there's no case where toolbars have no padding
+// We overule angular-material way of implenting this by defining padding toolbars
+// instead of toolbar-tools to prevent padding addition
+// INFO: because we make intensive use of border-box box sizing model, horizontal paddings
+// must be declare in containers with sg-padded
 md-toolbar {
-  // todo: create variables scaled z-index
+  padding: $toolbar-padding 0;
   box-shadow: none;
   font-size: initial;
 }
 
+.md-toolbar-tools {
+  padding: 0 initial;
+}
+
+// angular-material is overspecifying so we are
+.md-toolbar-tools[layout-align="start start"] {
+  align-items: flex-start;
+}
+
 .md-toolbar-tools.md-toolbar-tools-top {
-  padding-top: $mg;
+  align-items: flex-start;
 }
 
 .md-toolbar-tools.md-toolbar-tools-bottom {
@@ -46,7 +66,8 @@ hgroup {
   &-2 {
     order: 2;
   }
-  &-3 {
+  &-3,
+  &-last {
     order: 3;
   }
 }

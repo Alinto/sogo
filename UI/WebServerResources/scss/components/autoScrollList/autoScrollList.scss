@@ -10,6 +10,10 @@
 // avoid overspecifying
 // todo: create new classes and refactor templates markup
 // ----------------------------------------------------------------------------
+.vs-repeat-repeated-element {
+  width: 100%;
+}
+
 [id='messagesList'],
 [id='contactsList'] {
   border-top: 44px solid transparent;   // padding for the header.subheader,

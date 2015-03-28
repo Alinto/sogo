@@ -10,14 +10,23 @@
  */
 
 main {
-  background-color: sg-color($sogoPaper, 200);
+  background-color: $background-base-color;
+}
+
+// Utility class to add padding on containers
+// Because of the border-box sizing model, padding can affect width specialy
+// in nested containers
+.sg-padded {
+  padding-left: $mg;
+  padding-right: $mg;
 }
 
 .sg-logo {
   background-image: url("../img/sogo-full.svg");
   background-size: contain;
   background-repeat: no-repeat;
-  margin: $bl 0 0 $mg;
   height: 7 * $bl;
   min-width: 18 * $bl;
+  //optical adjustement
+  transform: translateY(-10%);
 }
