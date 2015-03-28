@@ -48,15 +48,27 @@ module.exports = function(grunt) {
       }
     },
     postcss: {
-      options: {
-        map: true,
-        processors: [
-          require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss,
-          // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
-          require('csswring').postcss
-        ]
-      },
       dist: {
+        options: {
+          map: false,
+          processors: [
+            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss,
+            // minifier
+            require('csswring').postcss
+          ]
+          // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
+        },
+        src: 'css/styles.css'
+      },
+      dev: {
+        options: {
+          map: true,
+          processors: [
+            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss
+          ]
+          // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
+
+        },
         src: 'css/styles.css'
       }
     },
@@ -138,6 +150,6 @@ module.exports = function(grunt) {
   });
   grunt.task.registerTask('build', ['static', 'sass']);
   grunt.task.registerTask('default', ['build', 'watch']);
-  grunt.task.registerTask('css', ['sass', 'postcss']);
+  grunt.task.registerTask('css', ['sass', 'postcss:dev']);
   grunt.task.registerTask('sass-compass', ['compass:dev', 'postcss']);
 };
