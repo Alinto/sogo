@@ -13,6 +13,7 @@
 @import '_breakpoint.scss', '_sassy-maps.scss';
 // This is no longer required because we use grunt-contrib-compass (ruby required)
 //@import '_compass.scss';
+@import 'SassyJSON';
 
 @import 'core/variables'; // Will be replace by a complete 'config file
 

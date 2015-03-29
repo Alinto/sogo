@@ -33,11 +33,13 @@ module.exports = function(grunt) {
     },
     sass: {
       options: {
-        cache: false,
+        require: 'SassyJSON',
+        noCache: true,
         loadPath: ['scss', 'bower_components/compass-mixins/lib',
                    'bower_components/compass-breakpoint/stylesheets',
                    'bower_components/breakpoint-slicer/stylesheets',
-                   'bower_components/sassy-maps/sass'
+                   'bower_components/sassy-maps/sass',
+                   'node_modules/SassyJSON/dist'
         ],
         style: 'expanded'
       },
