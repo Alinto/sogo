@@ -75,8 +75,10 @@ linters:
     force_nesting: false
 
   NameFormat:
-    enabled: true
-    convention: hyphenated_lowercase
+# it actualy look-up for variable names and give false negative
+# todo: refactor linter
+    enabled: false
+    convention: BEM
     allow_leading_underscore: true
 
   NestingDepth:
@@ -106,7 +108,9 @@ linters:
     max_depth: 3
 
   SelectorFormat:
-    enabled: true
+  #  give false negative
+  # todo: refactor linter
+    enabled: flase
     convention: hyphenated_lowercase
     class_convention: '^(?:u|is|has)\-[a-z][a-zA-Z0-9]*$|^(?!u|is|has)[a-zA-Z][a-zA-Z0-9]*(?:\-[a-z][a-zA-Z0-9]*)?(?:\-\-[a-z][a-zA-Z0-9]*)?$'
 
