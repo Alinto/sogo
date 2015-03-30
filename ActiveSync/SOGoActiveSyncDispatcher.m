@@ -2630,7 +2630,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   aSelector = NSSelectorFromString(cmdName);
 
   // The -processItemOperations: method will generate a multipart response when Content-Type is application/vnd.ms-sync.multipart
-  if ([[theRequest headerForKey: @"MS-ASAcceptMultiPart"] isEqualToString:@"T"])
+  if (([cmdName rangeOfString: @"ItemOperations" options: NSCaseInsensitiveSearch].location != NSNotFound) &&
+      ([[theRequest headerForKey: @"MS-ASAcceptMultiPart"] isEqualToString:@"T"] || [[theRequest uri] acceptsMultiPart]))
     [theResponse setHeader: @"application/vnd.ms-sync.multipart"  forKey: @"Content-Type"];
   else 
     [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];

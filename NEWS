@@ -1,4 +1,13 @@
-2.2.17a (2014-03-15)
+2.2.18 (2015-04-XX)
+-------------------
+
+Enhancements
+ - improved multipart handling using EAS
+
+Bug fixes
+ -
+
+2.2.17a (2015-03-15)
 --------------------
 
 Bug fixes
