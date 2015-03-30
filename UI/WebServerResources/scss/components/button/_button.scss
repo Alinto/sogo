@@ -8,6 +8,11 @@
 ////
 @import 'extends';
 
+// sometimes fabs get squized
+.md-button.md-fab {
+  min-width: $button-fab-width;
+}
+
 // Buttons for the sidenav folder tree
 // ------------------------------------
 sg-folder-tree .md-button,
@@ -55,7 +60,7 @@ $iconButton-icon-padding: 2px;
 $iconButton-size-cursor-coarse: $iconButton-size;
 // Could be use to scale-down buttons if desktop layout suffers too much from touch-size
 $iconButton-size-cursor-fine: $iconButton-size;
-// convenient wrapper for padding calculation
+// convenient wrapper for padding calculation todo: write a mixin or a function for a more generic use
 $iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) / 2;
 $iconButton-hover-scale: 1.25;
 $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-function;
@@ -140,15 +145,24 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
   display: block;
 }
 
-//// angular-material is overspecifying so we are
-//.md-button.md-default-theme:not([disabled]).iconButton {
-//  @extend .iconButton;
-//}
-
-.md-button.iconButton.md-fab.md-default-theme {
+.md-button.iconButton.md-fab,
+// angular-material is overspecifying so we are
+.md-button.iconButton.md-fab.md-default-theme:not([disabled]) {
   z-index: $z-index-fab;
+  // this is a temporary fix, see comment in variables
+  padding: $mg;
   margin-right: $mg;
+  // this is to positioned the button on the toolbar's edge
   transform: translateY(-50%);
+  @include at(sm) {
+    //position: absolute;
+    transform: translate(-100%, -50%);
+  }
+
+  i[class|="md-icon"] {
+    padding: 0;
+    font-size: sg-size('headline');
+  }
 }
 
 .sg-button-navicon {
