@@ -122,7 +122,7 @@ _intValueFromHex (NSString *hexString)
       mustSynchronize = [[folder nameInContainer] isEqualToString: @"personal"] || [folder synchronizeCalendar];
 
       [calendar setObject: folderName forKey: @"id"];
-      [calendar setObject: fDisplayName forKey: @"displayName"];
+      [calendar setObject: fDisplayName forKey: @"name"];
       [calendar setObject: [folder calendarColor] forKey: @"color"];
       isActive = [NSNumber numberWithBool: [folder isActive]];
       [calendar setObject: isActive forKey: @"active"];
@@ -232,7 +232,7 @@ _intValueFromHex (NSString *hexString)
  *
  * @apiSuccess (Success 200) {Object[]} calendars                   List of calendars
  * @apiSuccess (Success 200) {String} calendars.id                  Calendar ID
- * @apiSuccess (Success 200) {String} calendars.displayName         Human readable name
+ * @apiSuccess (Success 200) {String} calendars.name                Human readable name
  * @apiSuccess (Success 200) {String} calendars.owner               User ID of owner
  * @apiSuccess (Success 200) {String} calendars.color               Calendar's hex color code
  * @apiSuccess (Success 200) {Number} calendars.active              1 if the calendar is enabled
