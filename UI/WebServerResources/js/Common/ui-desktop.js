@@ -652,6 +652,70 @@
           }
         }
       };
+    }])
+
+  /*
+   * sgCalendarDayTable - Build list of blocks for a specific day
+   * @memberof SOGo.UIDesktop
+   * @restrict element
+   * @param {object} sgBlocks - the events blocks definitions for the current view
+   * @param {string} sgDay - the day of the events to display
+   * @example:
+
+   <sg-calendar-day-table
+       sg-blocks="calendar.blocks"
+       sg-day="20150330" />
+  */
+    .directive('sgCalendarDayTable', [function() {
+      return {
+        restrict: 'E',
+        scope: {
+          blocks: '=sgBlocks',
+          day: '@sgDay'
+        },
+        template:
+          '<sg-calendar-day-block class="event draggable"' +
+          '                   ng-repeat="block in blocks[day]"' +
+          '                   sg-block="block"/>',
+      };
+    }])
+
+  /*
+   * sgCalendarDayBlock - An event block to be displayed in a week
+   * @memberof SOGo.UIDesktop
+   * @restrict element
+   * @param {object} sgBlock - the event block definition
+   * @example:
+
+   <sg-calendar-day-block
+       class="event draggable"
+       ng-repeat="block in blocks[day]"
+       sg-block="block"/>
+  */
+    .directive('sgCalendarDayBlock', [function() {
+      return {
+        restrict: 'E',
+        scope: {
+          block: '=sgBlock'
+        },
+        replace: true,
+        template:
+          '<div class="event draggable">' +
+          '  <div class="eventInside">' +
+          '      <div class="gradient">' +
+          '      </div>' +
+          '      <div class="text">{{ block.component.c_title }}<span class="icons"></span></div>' +
+          '    </div>' +
+          '    <div class="topDragGrip"></div>' +
+          '    <div class="bottomDragGrip"></div>' +
+          '</div>',
+        link: link
+      };
+
+      function link(scope, iElement, attrs) {
+          iElement.addClass('starts' + scope.block.start);
+          iElement.addClass('lasts' + scope.block.length);
+      }
     }]);
 
 })();
