@@ -224,6 +224,10 @@ struct GlobalObjectId {
 
   while ((key = [e nextObject]))
     {
+      // don't use body parts from a nested body - e.g. body of type message/rfc822
+      if (![key hasPrefix: @"1"])
+        continue;
+
       part = [self lookupInfoForBodyPart: key];
       type = [part valueForKey: @"type"];
       subtype = [part valueForKey: @"subtype"];
