@@ -6,35 +6,21 @@
       xmlns:rsrc="OGo:url"
       xmlns:label="OGo:label">
 
-    <div class="menu" id="currentViewMenu">
-      <ul>
-        <li><var:string label:value="New Event..."/></li>
-        <li><var:string label:value="New Task..."/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Previous Week"/></li>
-        <li><var:string label:value="Next Week"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Delete Event"/></li>
-        <li><var:string label:value="Copy event to my calendar"/></li>
-        <li><var:string label:value="View Raw Source"/></li>
-      </ul>
+    <div layout="row" layout-align="center">
+      <h5>
+        <md-button
+            class="iconButton"
+            label:aria-label="Previous Week"
+            var:date="prevWeekQueryParameters.day"
+            ng-click="calendar.changeView($event)"><i class="md-icon-chevron-left"><!--icon--></i></md-button>
+        <var:string value="currentWeekName" />
+        <md-button
+            class="iconButton"
+            label:aria-label="Next Week"
+            var:date="nextWeekQueryParameters.day"
+            ng-click="calendar.changeView($event)"><i class="md-icon-chevron-right"><!--icon--></i></md-button>
+      </h5>
     </div>
-    <span class="weeksHeader">
-      <span class="week1">
-        <a href="#"
-           id="leftNavigationArrow"
-           var:date="prevWeekQueryParameters.day"
-           onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-left.png"/></a>
-      </span>
-      <span class="week0"><var:string value="currentWeekName" /></span>
-      <span class="week1">
-        <a href="#"
-           id="rightNavigationArrow"
-           var:date="nextWeekQueryParameters.day"
-           onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
-      </span>
-      <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
-    </span>
     <div id="calendarContent">
       <var:component
           className="UIxCalDayTable"

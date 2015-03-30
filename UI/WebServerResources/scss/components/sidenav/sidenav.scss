@@ -154,11 +154,14 @@ $i: 1;
     &.sg-loading {
       color: sg-color($sogoBlue, 500);
     }
-    .sg-item-name {
+    .sg-item-name, .md-label {
       text-align: left;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+    }
+    .md-label {
+      display: inline;
     }
   }
 }

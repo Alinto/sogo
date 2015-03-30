@@ -101,6 +101,9 @@
                   <span class="minutes45"><!-- space --></span>
                 </div>
               </var:foreach>
+              <sg-calendar-day-table
+                  sg-blocks="calendar.blocks"
+                  var:sg-day="currentTableDay.shortDateString" />
             </div>
             <div class="events"><!-- space --></div>
           </div>

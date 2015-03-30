@@ -9,7 +9,7 @@
   className="UIxPageFrame"
   const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors,SOGoDefaultCalendar"
   const:userSettingsKeys="Calendar,ShowCompletedTasks"
-  const:jsFiles="SchedulerUIDnD.js,jquery-ui.js"
+  const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Appointments/component-model.js, Appointments/calendar-model.js"
   title="title">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
@@ -17,6 +17,7 @@
     var currentView = '<var:string value="currentView"/>';
     var localeCode = '<var:string value="localeCode" />';
   </script>
+  <var:component className="UIxCalendarSelector" />
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">
     DIV#verticalDragHandle, DIV#rightPanel
@@ -31,6 +32,8 @@
      { height: <var:string value="eventsListViewStyle" />; }
   </var:if>
   </style>
+
+  <!--
   <div class="preload" style="visibility: hidden;">
     <img rsrc:src="event-gradient.png"/>
   </div>
@@ -56,12 +59,12 @@
     <ul>
       <li><var:string label:value="New Event..."/></li>
       <li><var:string label:value="New Task..."/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Edit Selected Event..."/></li>
       <li><var:string label:value="Delete Selected Event"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Select All"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Workweek days only"/></li>
       <li><var:string label:value="Tasks in View"/></li>
     </ul>
@@ -71,10 +74,10 @@
     <ul>
       <li><var:string label:value="Open Task..."/></li>
       <li><var:string label:value="New Task..."/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Mark Completed"/></li>
       <li><var:string label:value="Delete Task"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="View Raw Source"/></li>
     </ul>
   </div>
@@ -82,28 +85,28 @@
   <div class="menu" id="calendarsMenu">
     <ul>
       <li><var:string label:value="Properties"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="New Calendar..."/></li>
       <li id="deleteCalendarMenuItem"><var:string label:value="Delete Calendar"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Export Calendar..."/></li>
       <li><var:string label:value="Import Events..."/></li>
       <li><var:string label:value="Publish Calendar..."/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Reload Remote Calendars"/></li>
-      <li><!-- separator --></li>
+      <li>!- separator -</li>
       <li><var:string label:value="Sharing..." /></li>
     </ul>
   </div>
   
   <div id="eventDialog" style="display: none;" class="dialog">
     <div>
-      <h1><!-- space --></h1>
-      <p><span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Calendar:" /></span> <span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Created by:" /></span> <span><!-- space --></span></p>
-      <p class="description"><!-- space --></p>
+      <h1>!- space -</h1>
+      <p><span>!- space -</span></p>
+      <p><span class="label"><var:string label:value="Calendar:" /></span> <span>!- space -</span></p>
+      <p><span class="label"><var:string label:value="Location:" /></span> <span>!- space -</span></p>
+      <p><span class="label"><var:string label:value="Created by:" /></span> <span>!- space -</span></p>
+      <p class="description">!- space -</p>
     </div>
   </div>
 
@@ -129,97 +132,110 @@
   <div id="uploadResults" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import Events"/></h3>
-      <p><span id="uploadResultsContent"><!-- empty --></span>
+      <p><span id="uploadResultsContent">!- empty -</span>
       <a href="#" class="button" const:id="uploadOK">
           <span><var:string label:value="Done" /></span></a></p>
       <hr/>
     </div>
-  </div>
-
-  <div id="leftPanel">
-    <div id="dateSelectorView" class=""
-         ><var:component className="UIxCalDateSelector"
-         selectedDate="thisMonth"
-         /></div>
-    <div id="calendarSelectorView"
-         ><var:component className="UIxCalendarSelector"
-         var:calendarFolders="calendarFolders" /></div>
-  </div>
-
-  <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
-
-  <div id="rightPanel">
-    <div class="tabsContainer" id="schedulerTabs" var:style="listStateStyle">
-      <ul>
-        <li target="eventsListView" var:class="eventsTabClass"
-          ><span><var:string label:value="Events" /></span></li>
-        <li target="tasksListView" var:class="tasksTabClass"
-          ><span><var:string label:value="Tasks" /></span></li>
-      </ul>
-      <div class="tabs">
-        <div id="eventsListView" class="tab">
-          <var:component className="UIxCalFilterPanel" />
-          <table id="eventsList" cellspacing="0">
-            <thead>
-              <tr>
-                <td id="eventTitleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-                <td id="eventStartHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
-                <td id="eventEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
-                <td id="eventLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-                <td id="eventCategoryHeader" class="headerCell headerCategory sortableTableHeader"><var:string label:value="Category"/></td>
-                <td id="eventCalendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
-              </tr>
-            </thead>
-            <tbody><!-- events list --></tbody>
-          </table>
-        </div>
-        <div id="tasksListView" class="tab">
-          <div class="filterPanel" search="tasks">
-            <div class="menu" id="taskSearchMenu">
-              <ul class="choiceMenu">
-                <li option="title"><var:string label:value="Title"/></li>
-                <li option="title_Category_Location"><var:string label:value="Title, category or location"/></li>
-                <li option="entireContent"><var:string label:value="Entire content"/></li>
-              </ul>
-            </div>
-            <span class="searchBox" style="float: right">
-              <input name="criteria" type="hidden" />
-              <input name="search" class="textField"
-                     autocomplete="off" type="text"
-                     menuid="taskSearchMenu" />
-            </span>
-            <span>
-              <var:string label:value="View:" />
-              <var:popup list="tasksFilters"
-                const:id="tasksFilterpopup"
-                item="taskFilter" string="tasksFilterLabel" value="taskFilter"
-                selection="selectedTasksFilter"
-                const:name="tasksFilterpopup"
-                const:onchange="return onTasksListFilterChange();" />
-            </span>
-            <span>
-              <input id="showHideCompletedTasks" type="checkbox" class="checkBox" var:checked="showCompletedTasks"/>
-              <var:string label:value="Show completed tasks" />
-            </span>
-          </div>
-          <table id="tasksList" cellspacing="0">
-            <thead>
-              <tr>
-                <td id="taskCompletedHeader" class="headerCell"><entity name="nbsp"/></td>
-                <td id="taskPriorityHeader" class="headerCell headerPriority sortableTableHeader"><var:string label:value="Priority"/></td>
-                <td id="taskTitleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-                <td id="taskEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Due Date"/></td>
-                <td id="taskLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-                <td id="taskCategoryHeader" class="headerCell headerCategory sortableTableHeader"><var:string label:value="Category"/></td>
-                <td id="taskCalendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
-              </tr>
-            </thead>
-            <tbody><!-- tasks list --></tbody>
-          </table>
-        </div>
-      </div>
     </div>
-    <div id="rightDragHandle" class="dragHandle" var:style="listStateStyle"><!-- space --></div>
-    <div id="calendarView" var:style="listStateStyle"><!-- space --></div>
-  </div>
+    -->
+
+  <main class="view md-layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
+
+  <script type = "text/ng-template" id="UIxCalMainFrame">
+    <!-- Sidenav -->
+    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+      <var:component className="UIxSidenavToolbarTemplate" />
+      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+        <md-list ng-repeat="calendar in calendars.list">
+          <md-item>
+            <md-item-content>
+              <md-checkbox ng-model="calendar.active"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           aria-label="Enable"
+                           class="md-button md-flex sg-item-name">{{calendar.name}}</md-checkbox>
+            </md-item-content>
+          </md-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+
+    <!-- Main section -->
+    <section layout="column" class="sg-app-content md-layout-fill"
+             ng-controller="CalendarListController as list">
+      <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
+          <div class="sg-toolbar-group-1" layout="row">
+            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
+              <span class="md-icon-menu"></span>
+            </md-button>
+            <div class="sg-date-group" layout="column" layout-align="space-between end">
+              <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
+              <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
+              <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
+            </div>
+            <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
+          </div>
+          <div class="sg-toolbar-group-2">
+            <md-button class="iconButton" label:aria-label="Search">
+              <i class="md-icon-search"><!--icon--></i>
+            </md-button>
+          </div>
+        </div><!-- .md-toolbar-tools -->
+        <div layout="row" layout-align="space-between center" class="md-toolbar-tools md-toolbar-tools-bottom">
+          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px"
+               sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
+            <md-input-container class="sg-search-field-container">
+              <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+              <input name="folderSearch" type="search" style="color: white"/>
+            </md-input-container>
+            <div class="sg-toolbar-group">
+              <md-select>
+                <md-option value="title_Category_Location"><var:string label:value="Title, category or location"/></md-option>
+                <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
+              </md-select>
+              <span class="md-icon-create"><!-- icon --></span>
+            </div>
+          </div>
+          <div class="spacer cols-8"><!-- spacer -->
+            <a class="iconButton md-button md-default-theme" label:aria-label="Week" href="#/calendar/weekView"><i class="md-icon-view-week"><!-- week view --></i>
+            </a>
+          </div>
+        </div>
+      </md-toolbar>
+      <md-content layout="row">
+        <md-content id="componentsList"
+                    flex="33"
+                    md-scroll-y="md-scroll-y">
+          <md-tabs md-selected="list.selectedList">
+            <md-tab label:label="Events"
+                    md-on-select="list.selectComponentType('events')">
+              <md-list>
+                <md-item ng-repeat="event in list.component.$events">
+                  <md-item-content>
+                    <span>{{event.c_title}}</span>
+                    <span class="right">{{event.formatted_startdate}}</span>
+                  </md-item-content>
+                </md-item>
+              </md-list>
+            </md-tab>
+            <md-tab label:label="Tasks"
+                    md-on-select="list.selectComponentType('tasks')">
+              <md-list>
+                <md-item ng-repeat="task in list.component.$tasks">
+                  <md-item-content>
+                    <span>{{task.c_title}}</span>
+                    <span class="right">{{task.formatted_enddate}}</span>
+                  </md-item-content>
+                </md-item>
+              </md-list>
+            </md-tab>
+          </md-tabs>
+        </md-content>
+        <md-content flex="67" ui-view="calendarView"><!-- calendar view --></md-content>
+      </md-content>
+    </section>
+  </script>
+
 </var:component>

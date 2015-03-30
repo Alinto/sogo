@@ -6,46 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
-  <style type="text/css">
-    <var:foreach list="calendars" item="currentCalendar">
-.calendarFolder<var:string value="currentCalendar.folder" />
-{ background-color: <var:string value="currentCalendar.color" />; color: <var:string value="contrastingTextColor" />; }
-div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
-{ color: <var:string value="currentCalendar.color" />; }
-.calendarLabels [folder='<var:string value="currentCalendar.folder" />']
-{ border-color: <var:string value="currentCalendar.color" />; }
-    </var:foreach>
-  </style>
-  <div id="calendarSelector">
-    <h6><var:string label:value="Calendars"/></h6>
-    <div id="calendarSelectorButtons">
-      <a href="#" class="smallToolbarButton"
-        ><span><img rsrc:src="add-calendar.png"
-            label:title="New Calendar..."
-            /></span></a>
-      <a href="#" class="smallToolbarButton"
-        ><span><img rsrc:src="add-web-calendar.png"
-            label:title="Subscribe to a web calendar..."
-            /></span></a>
-      <a href="#" class="smallToolbarButton"
-        ><span><img rsrc:src="add-user-calendar.png"
-            label:title="Subscribe to a Calendar..."
-            /></span></a>
-      <a href="#" class="smallToolbarButton"
-        ><span><img rsrc:src="remove-calendar.png"
-            label:title="Remove the selected Calendar"
-            /></span></a>
-    </div>
-    <ul id="calendarList">
-      <var:foreach list="calendars" item="currentCalendar"
-       ><li class="denied" var:id="currentCalendar.id" var:owner="currentCalendar.owner" >
-          <input type="checkbox" class="checkBox" const:disabled="disabled" var:checked="currentCalendar.active" />
-          <div var:class="currentCalendarClass"><entity name="nbsp"/></div>
-          <span><var:string value="currentCalendar.displayName"/></span><var:if
-          condition="currentCalendar.activeTasks"><span class="badge"><var:string value="currentCalendar.activeTasks"/></span
-          ></var:if>
-       </li>
-      </var:foreach>
-    </ul>
-  </div>
+  <script type="text/javascript">
+    var calendarsData = <var:string value="calendars.jsonRepresentation" const:escapeHTML="NO" />;
+  </script>
 </container>
