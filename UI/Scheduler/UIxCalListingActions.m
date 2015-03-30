@@ -65,15 +65,15 @@
 static NSArray *eventsFields = nil;
 static NSArray *tasksFields = nil;
 
-#define dayLength       86400
-#define quarterLength   900             // number of seconds in 15 minutes
-#define offsetHours (24 * 5)            // number of hours in invitation window
-#define offsetSeconds (offsetHours * 60 * 60)  // number of seconds in
-// invitation window
+#define dayLength     86400
+#define quarterLength 900                     // number of seconds in 15 minutes
+#define offsetHours   (24 * 5)                // number of hours in invitation window
+#define offsetSeconds (offsetHours * 60 * 60) // number of seconds in
+                                              // invitation window
 /* 1 block = 15 minutes */
-#define offsetBlocks (offsetHours * 4)  // number of 15-minute blocks in invitation window
-#define maxBlocks (offsetBlocks * 2)    // maximum number of blocks to search
-// for a free slot (10 days)
+#define offsetBlocks  (offsetHours * 4)       // number of 15-minute blocks in invitation window
+#define maxBlocks     (offsetBlocks * 2)      // maximum number of blocks to search
+                                              // for a free slot (10 days)
 
 @class SOGoAppointment;
 
@@ -321,18 +321,25 @@ static NSArray *tasksFields = nil;
   iCalPersonPartStat stat;
   NSUInteger count, max;
 
-  mails = [[theRecord objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
-  states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
-  max = [mails count];
-  statesDescription = [NSMutableArray arrayWithCapacity: max];
-  for (count = 0; count < max; count++)
+  if ([[theRecord objectForKey: @"c_partmails"] length] > 0 &&
+      [[theRecord objectForKey: @"c_partstates"] length] > 0)
     {
-      stat = [[states objectAtIndex: count] intValue];
-      [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
-    }
+      mails = [[theRecord objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+      states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+      max = [mails count];
+      statesDescription = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          stat = [[states objectAtIndex: count] intValue];
+          [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
+        }
 
-  [theRecord setObject: mails forKey: @"c_partmails"];
-  [theRecord setObject: statesDescription forKey: @"c_partstates"];
+      if (max > 0)
+        {
+          [theRecord setObject: mails forKey: @"c_partmails"];
+          [theRecord setObject: statesDescription forKey: @"c_partstates"];
+        }
+    }
 }
 
 - (NSArray *) _fetchFields: (NSArray *) fields
@@ -620,17 +627,19 @@ static NSArray *tasksFields = nil;
 }
 
 /**
- * @api {get} /so/:username/Calendar/eventslist Get events
+ * @api {get} /so/:username/Calendar/eventslist List events
  * @apiVersion 1.0.0
  * @apiName GetEventsList
  * @apiGroup Calendar
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/eventslist?day=20141201\&filterpopup=view_selectedday
  *
- * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
- * @apiParam {String} [sort] Sort field. Either title, end, location, or calendarName.
- * @apiParam {Number} [day] Selected day (YYYYMMDD)
- * @apiParam {String} [filterpopup] Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_future, view_selectedday, or view_all
+ * @apiParam {Boolean} [asc]         Descending sort when false. Defaults to true (ascending).
+ * @apiParam {String} [sort]         Sort field. Either title, end, location, or calendarName.
+ * @apiParam {Number} [day]          Selected day (YYYYMMDD)
+ * @apiParam {String} [filterpopup]  Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_future, view_selectedday, or view_all
+ * @apiParam {String} [search]       Search field criteria. Either title_Category_Location or entireContent.
+ * @apiParam {String} [value]        String to match
  *
  * @apiSuccess (Success 200) {String[]} fields                   List of fields for each event definition
  * @apiSuccess (Success 200) {String[]} events                   List of events
@@ -737,10 +746,9 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
             forKey: @"length"];
 }
 
-static inline void
-_feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
-                              NSTimeZone *userTimeZone,
-                              SOGoDateFormatter *dateFormatter)
+static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
+                                                 NSTimeZone *userTimeZone,
+                                                 SOGoDateFormatter *dateFormatter)
 {
   NSCalendarDate *eventStartDate;
   NSString *startHour;
@@ -779,27 +787,21 @@ _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
   return block;
 }
 
-static inline iCalPersonPartStat
-_userStateInEvent (NSArray *event)
+static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
 {
   unsigned int count, max;
   iCalPersonPartStat state;
-  NSString *partList, *stateList;
   NSArray *participants, *states;
   SOGoUser *user;
   
   participants = nil;
   state = iCalPersonPartStatOther;
   
-  partList = [event objectAtIndex: eventPartMailsIndex];
-  stateList = [event objectAtIndex: eventPartStatesIndex];
-  if ([partList length] && [stateList length])
-  {
-    participants = [partList componentsSeparatedByString: @"\n"];
-    states = [stateList componentsSeparatedByString: @"\n"];
-    count = 0;
-    max = [participants count];
-    while (state == iCalPersonPartStatOther && count < max)
+  participants = [event objectAtIndex: eventPartMailsIndex];
+  states = [event objectAtIndex: eventPartStatesIndex];
+  count = 0;
+  max = [participants count];
+  while (state == iCalPersonPartStatOther && count < max)
     {
       user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
                                roles: nil];
@@ -808,7 +810,6 @@ _userStateInEvent (NSArray *event)
       else
         count++;
     }
-  }
   
   return state;
 }
@@ -878,7 +879,7 @@ _userStateInEvent (NSArray *event)
           // This special case occurs with a DST change.
           return;
         
-        userState = _userStateInEvent (event);
+        userState = _userStateInEvent(event);
         while (currentDayStart + dayLength < eventEnd)
         {
           eventBlock = [self _eventBlockWithStart: currentStart
@@ -1195,9 +1196,9 @@ _computeBlocksPosition (NSArray *blocks)
 - (WOResponse *) eventsBlocksAction
 {
   int count, max;
-  NSArray *events, *event;
+  NSArray *events, *event, *calendars;
   NSDictionary *eventsBlocks;
-  NSMutableArray *allDayBlocks, *blocks, *currentDay, *calendars, *eventsByCalendars, *eventsForCalendar;
+  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsByCalendars, *eventsForCalendar;
   NSNumber *eventNbr;
   BOOL isAllDay;
   int i, j;
@@ -1215,7 +1216,8 @@ _computeBlocksPosition (NSArray *blocks)
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
       for (j = 0; j < [events count]; j++) {
-        if ([[[events objectAtIndex:j] objectAtIndex:1] isEqualToString:[calendars objectAtIndex:i]]) {
+        if ([[[events objectAtIndex:j] objectAtIndex:eventFolderIndex] isEqualToString:[calendars objectAtIndex:i]]) {
+          // Event is in current calendar
           [eventsForCalendar addObject: [events objectAtIndex:j]];
         }
       }
@@ -1316,7 +1318,7 @@ _computeBlocksPosition (NSArray *blocks)
 }
 
 /**
- * @api {get} /so/:username/Calendar/taskslist Get tasks
+ * @api {get} /so/:username/Calendar/taskslist List tasks
  * @apiVersion 1.0.0
  * @apiName GetTasksList
  * @apiGroup Calendar
@@ -1324,11 +1326,12 @@ _computeBlocksPosition (NSArray *blocks)
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/taskslist?filterpopup=view_all
  *
  * @apiParam {Number} [show-completed] Show completed tasks when set to 1. Defaults to ignore completed tasks.
- * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
- * @apiParam {Boolean} [sort] Sort field. Either title, priority, end, location, category, or calendarname.
- * @apiParam {Number} [day] Selected day (YYYYMMDD)
- * @apiParam {String} [filterpopup] Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_overdue, view_incomplete, view_not_started, or view_all
- * @apiParam {Boolean} [setud] Save 'show-completed' parameter in user's settings
+ * @apiParam {Boolean} [asc]           Descending sort when false. Defaults to true (ascending).
+ * @apiParam {Boolean} [sort]          Sort field. Either title, priority, end, location, category, or calendarname.
+ * @apiParam {Number} [day]            Selected day (YYYYMMDD)
+ * @apiParam {String} [filterpopup]    Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_overdue, view_incomplete, view_not_started, or view_all
+ * @apiParam {String} [search]         Search field criteria. Either title_Category_Location or entireContent.
+ * @apiParam {Boolean} [setud]         Save 'show-completed' parameter in user's settings
  *
  * @apiSuccess (Success 200) {String[]} fields                List of fields for each event definition
  * @apiSuccess (Success 200) {String[]} tasks                 List of events
