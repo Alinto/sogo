@@ -116,9 +116,9 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/save \
  *          -H "Content-Type: application/json" \
- *          -d '{"displayName": "Personal Calendar", "notifications": {"notifyOnPersonalModifications": true}}'
+ *          -d '{"name": "Personal Calendar", "notifications": {"notifyOnPersonalModifications": true}}'
  *
- * @apiParam {String} displayName         Human readable name
+ * @apiParam {String} name                Human readable name
  * @apiParam {String} color               Calendar's hex color code
  * @apiParam {Number} includeInFreeBusy   1 if calendar must be include in freebusy
  * @apiParam {Number} synchronizeCalendar 1 if calendar must be synchronized
@@ -140,7 +140,7 @@
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
 
-  o = [params objectForKey: @"displayName"];
+  o = [params objectForKey: @"name"];
   if ([o isKindOfClass: [NSString class]])
     [calendar renameTo: o];
 
