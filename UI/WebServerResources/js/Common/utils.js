@@ -69,6 +69,27 @@ String.prototype.base64decode = function() {
   return output;
 };
 
+String.prototype.asDate = function () {
+    var newDate;
+    var date = this.split("/");
+    if (date.length == 3)
+        newDate = new Date(date[2], date[1] - 1, date[0]); // dd/mm/yyyy
+    else {
+        date = this.split("-");
+        if (date.length == 3)
+            newDate = new Date(date[0], date[1] - 1, date[2]); // yyyy-mm-dd
+        else {
+            if (this.length == 8) {
+                newDate = new Date(this.substring(0, 4),
+                                   this.substring(4, 6) - 1,
+                                   this.substring(6, 8));
+            }
+        }
+    }
+
+    return newDate;
+};
+
 String.prototype.asCSSIdentifier = function() {
   var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' '
                      , "'", '&', '\\+' ];
@@ -86,6 +107,78 @@ String.prototype.asCSSIdentifier = function() {
   }
 
   return newString;
+};
+
+Date.prototype.stringWithSeparator = function(separator) {
+    var month = '' + (this.getMonth() + 1);
+    var day = '' + this.getDate();
+    var year = this.getYear();
+    if (year < 1000)
+        year = '' + (year + 1900);
+    if (month.length == 1)
+        month = '0' + month;
+    if (day.length == 1)
+        day = '0' + day;
+
+    if (separator == '-')
+        str = year + '-' + month + '-' + day;
+    else
+        str = day + '/' + month + '/' + year;
+
+    return str;
+};
+
+Date.prototype.addDays = function(nbrDays) {
+    var milliSeconds = this.getTime();
+    milliSeconds += 86400000 * nbrDays;
+    this.setTime(milliSeconds);
+};
+
+Date.prototype.beginOfDay = function() {
+    var beginOfDay = new Date(this.getTime());
+    beginOfDay.setHours(0);
+    beginOfDay.setMinutes(0);
+    beginOfDay.setSeconds(0);
+    beginOfDay.setMilliseconds(0);
+
+    return beginOfDay;
+}
+
+Date.prototype.beginOfWeek = function() {
+    var offset = firstDayOfWeek - this.getDay();
+    if (offset > 0)
+        offset -= 7;
+
+    var beginOfWeek = this.beginOfDay();
+    beginOfWeek.setHours(12);
+    beginOfWeek.addDays(offset);
+
+    return beginOfWeek;
+};
+
+// YYYYMMDD
+Date.prototype.getDayString = function() {
+    var newString = this.getYear();
+    if (newString < 1000) newString += 1900;
+    var month = '' + (this.getMonth() + 1);
+    if (month.length == 1)
+        month = '0' + month;
+    newString += month;
+    var day = '' + this.getDate();
+    if (day.length == 1)
+        day = '0' + day;
+    newString += day;
+
+    return newString;
+};
+
+// MMHH
+Date.prototype.getHourString = function() {
+    var newString = this.getHours() + '00';
+    if (newString.length == 3)
+        newString = '0' + newString;
+
+    return newString;
 };
 
 function l() {
