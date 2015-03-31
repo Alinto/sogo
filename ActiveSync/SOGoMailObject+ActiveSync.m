@@ -224,9 +224,17 @@ struct GlobalObjectId {
 
   while ((key = [e nextObject]))
     {
-      // don't use body parts from a nested body - e.g. body of type message/rfc822
-      if (![key hasPrefix: @"1"])
+      // Don't use body parts from nested bodies if not of type multipart/alternative. - e.g. body of type message/rfc822
+      // Use only parts of level 0 or 1.
+      if ([key countOccurrencesOfString: @"."] > 1)
         continue;
+      else if ([key countOccurrencesOfString: @"."] == 1)
+        {
+          // Ignore nested parts if the container is not of type multipart/alternative.
+          part = [self lookupInfoForBodyPart: [[key componentsSeparatedByString: @"."] objectAtIndex:0]];
+          if (!([[part valueForKey: @"type"] isEqualToString: @"multipart"] && [[part valueForKey: @"subtype"] isEqualToString: @"alternative"]))
+            continue;
+        }
 
       part = [self lookupInfoForBodyPart: key];
       type = [part valueForKey: @"type"];
