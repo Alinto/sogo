@@ -2,3 +2,8 @@
 // ngMaterial source for overrides
 // ----------------------------------------------------------------------------
 @import '../../angular-material/src/core/style/structure.scss';
+
+// re-inforce a reset
+html * {
+  box-sizing: border-box;
+}

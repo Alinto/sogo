@@ -264,7 +264,7 @@
     </div>
 
 <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <md-toolbar class="md-tall sg-padded" layout-align="start start">
         <div class="md-toolbar-tools" layout="row" layout-align="start start">
           <md-button class="iconButton sg-button-navicon" ng-click="openBottomSheet()">

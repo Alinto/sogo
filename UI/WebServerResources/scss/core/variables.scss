@@ -102,16 +102,21 @@ $toast-height: $baseline-grid * 3 !default;
 $toast-margin: $baseline-grid * 1 !default;
 
 // Whiteframes
-
+// todo: program a mixin
 $whiteframe-shadow-z1: 0px 2px 5px 0 rgba(0,0,0,0.26) !default;
+$sidenav-shadow-z1: 2px 0px 5px 0 rgba(0,0,0,0.26) !default;
 $whiteframe-zindex-z1: 1 !default;
 $whiteframe-shadow-z2: 0px 8px 17px rgba(0,0,0,0.2) !default;
+$sidenav-shadow-z2: 8px 0px 17px 0 rgba(0,0,0,0.2) !default;
 $whiteframe-zindex-z2: 2 !default;
 $whiteframe-shadow-z3: 0px 17px 50px rgba(0,0,0,0.19) !default;
+$sidenav-shadow-z3: 17px 0px 50px 0 rgba(0,0,0,0.19) !default;
 $whiteframe-zindex-z3: 3 !default;
 $whiteframe-shadow-z4: 0px 16px 28px 0 rgba(0,0,0,0.22) !default;
+$sidenav-shadow-z4: 16px 0px 28px 0 rgba(0,0,0,0.22) !default;
 $whiteframe-zindex-z4: 4 !default;
 $whiteframe-shadow-z5: 0px 27px 24px 0 rgba(0,0,0,0.2) !default;
+$sidenav-shadow-z5: 27px 0px 24px 0 rgba(0,0,0,0.22) !default;
 $whiteframe-zindex-z5: 5 !default;
 
 

@@ -80,6 +80,11 @@ md-sidenav {
   left: 0;
   top: 0;
   transform: translate3d(0%, 0, 0);
+
+  &.md-whiteframe-z2 {
+    box-shadow: $sidenav-shadow-z2;
+  }
+
   &.md-closed {
     transform: translate3d(-100%, 0, 0);
   }
@@ -144,6 +149,9 @@ $i: 1;
 }
 
 .md-sidenav-left {
+  &.md-whiteframe-z1 {
+    box-shadow: $sidenav-shadow-z1;
+  }
 
   md-item-content {
     line-height: $sg-line-height-6; // 40px eg. display-1
