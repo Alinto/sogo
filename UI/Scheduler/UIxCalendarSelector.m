@@ -141,7 +141,7 @@ _intValueFromHex (NSString *hexString)
           urls = [NSMutableDictionary dictionaryWithObject: [folder folderPropertyValueInCategory: @"WebCalendars"]
                                                     forKey: @"webCalendarURL"];
           if ([folder respondsToSelector: @selector (reloadOnLogin)])
-            reloadOnLogin = [(SOGoWebAppointmentFolder *) calendar reloadOnLogin];
+            reloadOnLogin = [(SOGoWebAppointmentFolder *) folder reloadOnLogin];
           else
             reloadOnLogin = NO;
           [calendar setObject: [NSNumber numberWithBool: reloadOnLogin] forKey: @"reloadOnLogin"];
