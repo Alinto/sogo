@@ -391,6 +391,12 @@ function redisplayEventSpans() {
         etHour++;
     }
 
+    if (isAllDay) {
+        addDays++;
+        stHour = stMinute = 0;
+        etHour = etMinute = 0;
+    }
+
     if (stHour < displayStartHour) {
         stHour = displayStartHour;
         stMinute = 0;
@@ -432,8 +438,10 @@ function redisplayEventSpans() {
         if (currentSpanNbr > 3) {
             currentSpanNbr = 0;
             currentCellNbr++;
-            currentCell = row.cells[currentCellNbr];
-            spans = $(currentCell).childNodesWithTag("span");
+            if (currentCellNbr < row.cells.length) {
+                currentCell = row.cells[currentCellNbr];
+                spans = $(currentCell).childNodesWithTag("span");
+            }
         }
         deltaSpans--;
     }
