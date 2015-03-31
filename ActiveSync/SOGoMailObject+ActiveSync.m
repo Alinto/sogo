@@ -600,7 +600,11 @@ struct GlobalObjectId {
     
   // Importance
   v = 0x1;
-  p = [[self mailHeaders] objectForKey: @"x-priority"];
+  value = [[self mailHeaders] objectForKey: @"x-priority"];
+  if ([value isKindOfClass: [NSArray class]])
+    p = [value lastObject];
+  else
+    p = value;
 
   if (p) 
     {
@@ -611,7 +615,12 @@ struct GlobalObjectId {
     }
   else
     {
-      p = [[self mailHeaders] objectForKey: @"importance"];
+      value = [[self mailHeaders] objectForKey: @"importance"];
+      if ([value isKindOfClass: [NSArray class]])
+        p = [value lastObject];
+      else
+        p = value;
+
       if ([p hasPrefix: @"High"]) v = 0x2;
       else if ([p hasPrefix: @"Low"]) v = 0x0;
     }
