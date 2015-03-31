@@ -652,14 +652,10 @@
   return [[[context activeUser] domainDefaults] searchMinimumWordLength];
 }
 
-- (id) contentMediaComponent
-{
-  //NSString *name = [self->pageName stringValueInComponent: [context component]];
-  NSString *name = [[[self->context component] parent] name];
-  NSLog(@"************ loading %@", name);
-
-  return [self pageWithName: @"UIxContactFoldersView"];
-}
-
-
 @end /* UIxPageFrame */
+
+@interface UIxSidenavToolbarTemplate : UIxComponent
+@end
+
+@implementation UIxSidenavToolbarTemplate
+@end
