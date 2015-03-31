@@ -14,7 +14,8 @@ $toolbar-padding: $mg;
 md-toolbar {
   padding: $toolbar-padding 0;
   z-index: $z-index-toolbar;
-  font-size: initial;
+  // dirty fix to override angular-material botchy typography
+  font-size: 1em !important;
   background-image: url("../img/felt-transp.png");
   background-blend-mode: luminosity;
   box-shadow: $whiteframe-shadow-z1;
@@ -22,6 +23,8 @@ md-toolbar {
 
 .md-toolbar-tools {
   padding: 0 initial;
+  // dirty fix to override angular-material botchy typography
+  font-size: 1em !important;
 }
 
 // angular-material is overspecifying so we are

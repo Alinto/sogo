@@ -233,7 +233,7 @@
 <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxMailMainFrame">
     <!-- dropdown menu for mailbox options button -->
-    <div id="folderProperties" class ="f-dropdown icons-dropdown" dropdown-content="dropdown-content">
+    <div id="folderProperties" class ="f-dropdown icons-dropdown" dropdown-content="dropdown-content" ng-hide="true">
       <ul class="button-group">
         <li ng-show="currentFolder.isEditable">
           <span class="button" ng-click="editFolder(currentFolder)">
@@ -338,9 +338,6 @@
                 <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
                 <md-option value="body"><var:string label:value="Entire Message"/></md-option>
               </md-select>
-              <md-button class="iconButton" aria-label="create" ui-sref="mail.newMessage()">
-                <i class="md-icon-create"><!-- icon --></i>
-              </md-button>
 
             </div>
           </div>

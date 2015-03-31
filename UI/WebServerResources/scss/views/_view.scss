@@ -43,6 +43,7 @@ $detailView-width: grid-step(8) !global;
   min-width: ($listView-width - ($pitch * 2));
   @include at(md){
     @include flex-col(md, 7, 1, 1);
+    min-width: ($pitch * 3);
   }
   @include from(lg) {
     @include flex-col(lg, 6, 1, 0);
@@ -71,6 +72,7 @@ $detailView-width: grid-step(8) !global;
   @include from(md) {
     .viewer {
       position: absolute;
+      max-width: 100%;
       transform: translate3d(0, 0, 0);
       transition: all 0.5s $swift-ease-in-out-timing-function;
       &.ng-enter {

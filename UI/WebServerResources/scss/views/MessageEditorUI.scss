@@ -6,7 +6,13 @@
 ////
 
 [id=messageEditor] {
-  width: (13 * $pitch + $mg); // 13 cols + 1margin for scrollbar
+  //width: (13 * $pitch + $mg); // 13 cols + 1margin for scrollbar
+  @include from(lg) {
+    @include flex-col(lg, 11, 1, 1);
+  }
+  @include at(md) {
+    @include flex-col(md, 10, 1, 1);
+  }
   margin: 0 auto;
   overflow: auto;
   height: 100%;
