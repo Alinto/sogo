@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
  - EAS reply fix when message/rfc822 parts are included in the original mail (#3153)
+ - fix yet an other potential crash during freebusy lookups during timezone changes
 
 2.2.17a (2015-03-15)
 --------------------
