@@ -217,7 +217,7 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
      CC="$cc" LDFLAGS="$ldflags" \
      install
-install -d  ${RPM_BUILD_ROOT}/etc/init.d
+install -d  ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
 install -d  ${RPM_BUILD_ROOT}/etc/cron.d
 install -d ${RPM_BUILD_ROOT}/etc/cron.daily
 install -d ${RPM_BUILD_ROOT}/etc/logrotate.d
@@ -236,8 +236,8 @@ install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 chmod 755 ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
-cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
-chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
+cp Scripts/sogo-systemd-redhat ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
+chmod 644 ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
@@ -365,14 +365,14 @@ fi
 %post
 # update timestamp on imgs,css,js to let apache know the files changed
 find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
-/sbin/chkconfig --add sogod
-/etc/init.d/sogod condrestart  >&/dev/null
+systemctl enable sogod
+systemctl start sogod > /dev/null 2>&1
 
 %preun
 if [ "$1" == "0" ]
 then
-  /sbin/chkconfig --del sogod
-  /sbin/service sogod stop > /dev/null 2>&1
+  systemctl disable sogod
+  systemctl stop sogod > /dev/null 2>&1
 fi
 
 %postun
@@ -387,6 +387,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 31 2015. Inverse inc. <support@inverse.ca>
+- Change script start sogod for systemd
+
 * Wed Oct 8 2014 Inverse inc. <support@inverse.ca>
 - fixed the library move to "sogo" app dir
 
