@@ -55,50 +55,101 @@ $detailView-width: grid-step(8) !global;
 
 .view-detail {
   z-index: $z-index-view;
+  overflow-x: hidden;
   background-color: $background-base-color;
+
   @include from(lg) {
     @include flex-col(lg, 8, 2, 1);
     margin: 0 auto $mg auto;
   }
+
   @include at(md) {
     @include flex-col(md, 9);
     margin: 0;
   }
+
+  @include from(md) {
+    .viewer {
+      position: absolute;
+      transform: translate3d(0, 0, 0);
+      transition: all 0.5s $swift-ease-in-out-timing-function;
+      &.ng-enter {
+        transform: translate(-105%, 0);
+        &.ng-enter-active {
+          transform: translate(0%, 0%);
+          transition-delay: 0.5s;
+        }
+      }
+
+      &.ng-leave {
+        transition-delay: 0;
+        transition-duration: 0.1s;
+        transform: translate(0, 0);
+
+        &.ng-leave-active {
+          transition-delay: 0.1s;
+          transition-duration: 0.4s;
+          transform: translate(-105%, 100%);
+
+        }
+      }
+    }
+  }
+
   @include to(sm) {
     position: absolute;
     width: 100%;
     min-width: 100%;
+    // caution: limited support in Android (<=4.4), full-support in v. 37
+    height: calc(100vh - #{$toolbar-tall-height});
     transform: translateX(-100%) scale(1);
-    filter: opacity(1);
     transform-origin: 50% 50%;
     transition: all 0.5s $swift-ease-in-out-timing-function;
+// .view-detail.sg-close hides the background
     &.sg-close {
-      transition: all 0.35s $swift-ease-in-out-timing-function;
-      transition-delay: 0.15s;
+      transition-delay: 0.1s;
+      transition-duration: 0.4s;
       transform: translateX(-100%) scale(0);
-      //transform: translateX(-200%);
-      &.ng-enter {
-        transform: translateX(-100%) scale(0);
+      // .viewer is the card itself
+      .viewer {
+        &.ng-leave,
+        &.ng-enter,
+        &.ng-leave.ng-leave-active {
+          transform: translateY(0) scale(0);
+        }
+        // ui-sref might add ng-animate class early
+        &.ng-enter.ng-enter-active {
+          transform: translateY(0) scale(0);
+        }
       }
     }
+    // .viewer is the card itself
+    .viewer {
+      &.ng-leave,
+      &.ng-leave.ng-leave-active {
+        transform: translateY(100%) scale(0);
+      }
+
+      &.ng-enter {
+        transition: all 0.5s $swift-ease-in-out-timing-function;
+        transform: translateY(100%) scale(0);
+      }
+      &.ng-enter.ng-enter-active {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    &.ng-leave,
+    &.ng-leave.ng-leave-active {
+      transform: translateX(-100%) scale(0);
+    }
+
     &.ng-enter {
+      transition: all 0.5s $swift-ease-in-out-timing-function;
       transform: translateX(-100%) scale(0);
-      //transform: translateX(0);
     }
-    &.ng-enter.ng-enter-active,
-    &.ng-leave {
+    &.ng-enter.ng-enter-active {
       transform: translateX(-100%) scale(1);
-      filter: opacity(1);
-      //transform: translateX(-100%);
-    }
-    &.ng-leave.ng.leave-active {
-      transform: translateX(-100%) scale(0);
-      filter: opacity(1);
-      //transform: translateX(-200%);
-    }
-    [class *= md-whiteframe-] {
-      box-shadow: none;
     }
   }
 }
-

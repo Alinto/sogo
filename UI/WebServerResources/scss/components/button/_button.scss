@@ -63,7 +63,7 @@ $iconButton-size-cursor-fine: $iconButton-size;
 // convenient wrapper for padding calculation todo: write a mixin or a function for a more generic use
 $iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) / 2;
 $iconButton-hover-scale: 1.25;
-$iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-function;
+$iconButton-transition: all $swift-ease-in-duration $swift-ease-in-timing-function;
 
 // Classes
 .iconButton,
@@ -74,8 +74,9 @@ $iconButton-transition: transform $swift-ease-in-duration $swift-ease-in-timing-
   padding: $iconButton-padding;
   border-radius: 50%;
   color: inherit;
+  transition: $iconButton-transition;
 
-  &:hover,
+  &:hover:not(.md-fab),
   &:active {
     background-color: transparent;
 
@@ -129,11 +130,13 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
 .sg-icon-bar--vertical {
   display: flex;
   flex-direction: column;
-  margin: ($iconButton-padding * -1) ($iconButton-padding * -1) 0 $mg;
+  margin: 0 ($mg * -1) 0 $mg;
   font-size: $sg-font-size-3;
   align-items: center;
   // Containers have padding, we compensate to align according to specs
   justify-content: space-between;
+
+  // for transitions
   @include at(sm) {
   margin-left: $iconButton-padding;
   }
@@ -153,10 +156,21 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
   padding: $mg;
   margin-right: $mg;
   // this is to positioned the button on the toolbar's edge
-  transform: translateY(-50%);
+  transform: translate3d(0, -50%, 0);
+  &:hover {
+    transform: translate3d(0, -49%, 0);
+    [class ^= md-icon],
+    [class *= md-icon-] {
+      transform: scale($iconButton-hover-scale);
+    }
+  }
+
   @include at(sm) {
     //position: absolute;
-    transform: translate(-100%, -50%);
+    transform: translate3d(-100%, -50%, 0);
+    &:hover {
+      transform: translate3d(-100%, -49%, 0);
+    }
   }
 
   i[class|="md-icon"] {

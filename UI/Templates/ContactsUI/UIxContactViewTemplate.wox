@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-card class="viewer">
+
     <md-card-content>
       <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
       <header>
@@ -19,11 +19,9 @@
           </h6>
         </div>
         <div class="sg-icon-bar--vertical">
-          <span ng-show="addressbook.isEditable">
-            <md-button class="iconButton" aria-label="Edit" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
-              <i class="md-icon-create"><!-- edit --></i>
-            </md-button>
-          </span>
+          <md-button class="iconButton" aria-label="Edit" ng-show="addressbook.isEditable" ui-sref="addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+            <i class="md-icon-create"><!-- edit --></i>
+          </md-button>
           <md-button class="iconButton" aria-label="Delete" ng-click="confirmDelete(card)">
             <i class="md-icon-delete"><!-- delete --></i>
           </md-button>
@@ -125,5 +123,5 @@
 
     </md-card-content>
 
-  </md-card>
+
 </container>
