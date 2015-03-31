@@ -5,6 +5,7 @@ $card-box-shadow: $whiteframe-shadow-z1 !default;
 
 md-card {
   box-sizing: border-box;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: sg-color($sogoPaper, 50);
@@ -18,5 +19,6 @@ md-card {
 
   md-card-content {
     order: 1;
+    transition: $swift-ease-in-out;
   }
 }
