@@ -37,12 +37,14 @@
             }]
           }
         })
-        .state('calendars.weekView', {
-          url: '/weekView/:day',
+        .state('calendars.view', {
+          url: '/{view:(?:day|week)}/:day',
           views: {
             calendarView: {
-              templateUrl: function ($stateParams) {
-                return 'weekview?day=' + $stateParams.day; // UI/Templates/SchedulerUI/UIxCalWeekView.wox
+              templateUrl: function($stateParams) {
+                // UI/Templates/SchedulerUI/UIxCalDayView.wox or
+                // UI/Templates/SchedulerUI/UIxCalWeekView.wox
+                return $stateParams.view + 'view?day=' + $stateParams.day;
               },
               controller: 'CalendarController',
               controllerAs: 'calendar'
@@ -50,15 +52,20 @@
           },
           resolve: {
             stateEventsBlocks: ['$stateParams', 'sgComponent', function($stateParams, Component) {
-              return Component.$eventsBlocksForWeek($stateParams.day.asDate());
+              return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate());
             }]
           }
         });
 
-      $urlRouterProvider.when('/calendar/weekView', function() {
+      $urlRouterProvider.when('/calendar/day', function() {
+        // If no date is specified, show today
+        var now = new Date();
+        return '/calendar/day/' + now.getDayString();
+      })
+      $urlRouterProvider.when('/calendar/week', function() {
         // If no date is specified, show today's week
         var now = new Date();
-        return '/calendar/weekView/' + now.getDayString();
+        return '/calendar/week/' + now.getDayString();
       });
 
       // if none of the above states are matched, use this as the fallback
@@ -127,13 +134,13 @@
       // Change calendar's view
       this.changeView = function($event) {
         var date = angular.element($event.currentTarget).attr('date');
-        $state.go('calendars.weekView', { day: date });
+        $state.go('calendars.view', { view: $stateParams.view, day: date });
       };
 
       // Refresh current view when the list of calendars is modified
       $scope.$on('calendars:list', angular.bind(this, function() {
         var ctrl = this;
-        Component.$eventsBlocksForWeek($stateParams.day.asDate()).then(function(data) {
+        Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
           ctrl.blocks = data;
         });
       }));

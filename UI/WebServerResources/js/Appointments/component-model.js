@@ -74,25 +74,46 @@
   };
 
   /**
-   * @function $eventsBlocksForWeek
+   * @function $eventsBlocksForView
    * @memberof Component.prototype
    * @desc Events blocks for a specific week
-   * @param {Date} type - Date of any day of the week
-   * @returns a promise of a collection of Components instances
+   * @param {string} view - Either 'day' or 'week'
+   * @param {Date} type - Date of any day of the desired period
+   * @returns a promise of a collection of objects describing the events blocks
    */
-  Component.$eventsBlocksForWeek = function(date) {
-    var startDate, endDate, params, i,
+  Component.$eventsBlocksForView = function(view, date) {
+    var viewAction, startDate, endDate, params;
+
+    if (view == 'day') {
+      viewAction = 'dayView';
+      startDate = endDate = date;
+    }
+    else if (view == 'week') {
+      viewAction = 'weekView';
+      startDate = date.beginOfWeek();
+      endDate = new Date();
+      endDate.setTime(startDate.getTime());
+      endDate.addDays(6);
+    }
+    return this.$eventsBlocks(viewAction, startDate, endDate);
+  };
+
+  /**
+   * @function $eventsBlocks
+   * @memberof Component.prototype
+   * @desc Events blocks for a specific view and period
+   * @param {string} view - Either 'day' or 'week'
+   * @param {Date} startDate - period's start date
+   * @param {Date} endDate - period's end date
+   * @returns a promise of a collection of objects describing the events blocks
+   */
+  Component.$eventsBlocks = function(view, startDate, endDate) {
+    var params, futureComponentData, i,
         deferred = Component.$q.defer();
-    
-    startDate = date.beginOfWeek();
-    endDate = new Date();
-    endDate.setTime(startDate.getTime());
-    endDate.addDays(6);
 
-    params = { view: 'weekView', sd: startDate.getDayString(), ed: endDate.getDayString() };
+    params = { view: view, sd: startDate.getDayString(), ed: endDate.getDayString() };
     Component.$log.debug('eventsblocks ' + JSON.stringify(params, undefined, 2));
-
-    var futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
+    futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
     futureComponentData.then(function(data) {
       Component.$timeout(function() {
         var components = [], blocks = {};
@@ -112,7 +133,7 @@
         });
 
         // Convert array of blocks to object with days as keys
-        for (i = 0; i < 7; i++) {
+        for (i = 0; i < data.blocks.length; i++) {
           blocks[startDate.getDayString()] = data.blocks[i];
           startDate.addDays(1);
         }

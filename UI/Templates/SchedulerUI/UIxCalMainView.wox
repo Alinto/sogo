@@ -199,8 +199,12 @@
             </div>
           </div>
           <div class="spacer cols-8"><!-- spacer -->
-            <a class="iconButton md-button md-default-theme" label:aria-label="Week" href="#/calendar/weekView"><i class="md-icon-view-week"><!-- week view --></i>
-            </a>
+            <a class="iconButton md-button md-default-theme"
+               label:aria-label="Day"
+               href="#/calendar/day"><i class="md-icon-view-day"><!-- day view --></i></a>
+            <a class="iconButton md-button md-default-theme"
+               label:aria-label="Week"
+               href="#/calendar/week"><i class="md-icon-view-week"><!-- week view --></i></a>
           </div>
         </div>
       </md-toolbar>
