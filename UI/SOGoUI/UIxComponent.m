@@ -443,7 +443,16 @@ static SoProduct      *commonProduct      = nil;
 
 - (NSString *) currentDayDescription
 {
-  return [[[context activeUser] currentDay] jsonRepresentation];
+  NSDictionary *currentDay;
+  SOGoUser *user;
+
+  user = [context activeUser];
+  if (user)
+    currentDay = [user currentDay];
+  else
+    currentDay = [NSDictionary dictionary];
+
+  return [currentDay jsonRepresentation];
 }
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) _date
