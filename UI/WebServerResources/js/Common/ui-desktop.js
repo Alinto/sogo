@@ -625,7 +625,7 @@
             selectEl = tElement.find('md-select');
 
         inputEl.attr('ng-model', '$sgSearchController.searchText');
-        inputEl.attr('ng-keyup', '$sgSearchController.onChange()');
+        inputEl.attr('ng-model-options', '$sgSearchController.searchTextOptions');
         selectEl.attr('ng-model', '$sgSearchController.searchField');
         selectEl.attr('ng-change', '$sgSearchController.onChange()');
 
@@ -633,14 +633,28 @@
           $compile(mdInputEl)(scope);
           $compile(selectEl)(scope);
           $compile(tElement.find('md-button'))(scope.$parent);
+
+          scope.$watch('$sgSearchController.searchText', angular.bind(controller, controller.onChange));
         }
       }
     }])
     .controller('sgSearchController', ['$scope', '$element', function($scope, $element) {
+      // Controller variables
       this.previous = { searchText: '', searchField: '' };
+      this.searchText = '';
       this.searchField = $element.find('md-option').attr('value'); // defaults to first option
 
-      this.onChange = function() {
+      // Model options
+      this.searchTextOptions = {
+        updateOn: 'default blur',
+        debounce: {
+          default: 300,
+          blur: 0
+        }
+      };
+
+      // Method to call on data changes
+      this.onChange = function(value) {
         if (typeof this.searchText != 'undefined') {
           if (this.searchText != this.previous.searchText || this.searchField != this.previous.searchField) {
             if (this.searchText.length > 2 || this.searchText.length == 0) {
