@@ -417,7 +417,7 @@ fi
 
 # ********************************* changelog *************************
 %changelog
-* Thu Mar 31 2015. Inverse inc. <support@inverse.ca>
+* Thu Mar 31 2015 Inverse inc. <support@inverse.ca>
 - Change script start sogod for systemd
 
 * Wed Oct 8 2014 Inverse inc. <support@inverse.ca>
