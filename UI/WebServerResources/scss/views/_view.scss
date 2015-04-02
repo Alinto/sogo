@@ -61,12 +61,14 @@ $detailView-width: grid-step(8) !global;
 
   @include from(lg) {
     @include flex-col(lg, 8, 2, 1);
-    margin: 0 auto $mg auto;
+    margin: 0 $mg;
+
   }
 
   @include at(md) {
     @include flex-col(md, 9);
     margin: 0;
+
   }
 
   @include from(md) {
@@ -153,5 +155,12 @@ $detailView-width: grid-step(8) !global;
     &.ng-enter.ng-enter-active {
       transform: translateX(-100%) scale(1);
     }
+  }
+}
+
+@include from(md) {
+  [ui-view="message"] > md-content {
+    // to create a false padding for the fab button
+    border-bottom: ($button-fab-height + ($mg * 2)) solid transparent; // buton height + mg top and bottom
   }
 }

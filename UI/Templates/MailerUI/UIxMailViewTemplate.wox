@@ -76,6 +76,8 @@
     <div class="mailer_mailcontent"
          ng-bind-html="message.$content()"><!-- msg --></div>
   </div>
-
 </md-content>
+  <md-button class="iconButton md-fab md-fab--bottom-inside md-accent hide-sm" aria-label="create" ui-sref="mail.newMessage()">
+    <i class="md-icon-add"><!-- icon --></i>
+  </md-button>
 </container>

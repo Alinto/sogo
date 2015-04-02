@@ -43,7 +43,8 @@
   <!-- This extra container is used to animate views transitions
        double quotes in ng-animate is not a typo                         -->
     <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
-  <md-button class="iconButton md-fab md-accent" aria-label="create" ui-sref="mail.newMessage()">
+  <!-- Responsive: show-small only -->
+  <md-button class="iconButton md-fab md-accent show-sm" aria-label="create" ui-sref="mail.newMessage()">
     <i class="md-icon-add"><!-- icon --></i>
   </md-button>
 

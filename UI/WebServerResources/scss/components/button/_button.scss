@@ -152,11 +152,15 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
 // angular-material is overspecifying so we are
 .md-button.iconButton.md-fab.md-default-theme:not([disabled]) {
   z-index: $z-index-fab;
+  // flex might stretch or squize fab bottons
+  min-width: $button-fab-width;
+  min-height: $button-fab-height;
   // this is a temporary fix, see comment in variables
   padding: $mg;
   margin-right: $mg;
   // this is to positioned the button on the toolbar's edge
   transform: translate3d(0, -50%, 0);
+
   &:hover {
     transform: translate3d(0, -49%, 0);
     [class ^= md-icon],
@@ -176,6 +180,25 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
   i[class|="md-icon"] {
     padding: 0;
     font-size: sg-size('headline');
+  }
+}
+
+.md-button.iconButton.md-fab.md-fab--bottom {
+  align-self: flex-end;
+  // this is to positioned the button on the container's edge
+  transform: translate3d(-50%, -50%, 0) !important; // at this point important is not worst than long selector
+  &:hover {
+    transform: translate3d(-50%, -49%, 0) !important;
+  }
+}
+
+.md-button.iconButton.md-fab.md-fab--bottom-inside {
+  transform: translate3d(0, (($button-fab-height + $mg) * -1), 0) !important; // at this point important is not worst than long selector
+  // to prevent empty space at bottom of container
+  position: absolute;
+  right: 0;
+  &:hover {
+    transform: translate3d(0, (($button-fab-height + $mg - 1) * -1) 0) !important; // at this point important is not worst than long selector
   }
 }
 
