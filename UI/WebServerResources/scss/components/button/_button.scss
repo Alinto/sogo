@@ -65,6 +65,10 @@ $iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-i
 $iconButton-hover-scale: 1.25;
 $iconButton-transition: all $swift-ease-in-duration $swift-ease-in-timing-function;
 
+$button-fab-width: 56px;
+$button-fab-height: 56px;
+
+
 // Classes
 .iconButton,
 .md-button.md-default-theme:not([disabled]).iconButton {
