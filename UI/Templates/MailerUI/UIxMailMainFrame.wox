@@ -287,15 +287,7 @@
 
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list ng-repeat="account in accounts track by account.id">
-          <md-item>
-            <md-item-content>
-              <div class="md-tile-content">
-                <md-button>
-                  <span>{{account.name}}</span>
-                </md-button>
-              </div>
-            </md-item-content>
-          </md-item>
+          <h2 class="sg-md-subheader--static sg-padded">{{account.name}}</h2>
           <sg-folder-tree ng-repeat="folder in account.$mailboxes track by folder.id" sg-root="account" sg-folder="folder" sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
         </md-list>
       </md-content>

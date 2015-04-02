@@ -1,17 +1,26 @@
 @import 'extends';
 
 .sg-md-subheader {
-    padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
-    position: fixed;
-    background-color: transparent;
+  position: fixed;
+  z-index: auto;
+  padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
+  background-color: transparent;
+  &--static {
+    position: static;
     z-index: auto;
+    padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
+    background-color: transparent;
+    font-size: $sg-font-size-2;
+    font-weight: $sg-font-medium;
+  }
 }
 
 .sg-md-subheader {
-  font-size: $sg-font-size-2;
   font-weight: $sg-font-medium;
+  font-size: $sg-font-size-2;
 }
+
 .sg-md-subheader > * {
-  font-size: inherit;
   font-weight: inherit;
-};
+  font-size: inherit;
+}

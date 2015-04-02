@@ -423,7 +423,9 @@ html p {
 /// @alias .subhead-2
 .#{$md}-subhead-solo {
   @extend .#{$md}-subhead-2;
+  margin: 0;
 }
+
 .#{$md}-title {
   $lineHeight : $sg-line-height-4;
   font-size: $sg-font-size-4;
