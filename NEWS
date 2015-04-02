@@ -9,7 +9,8 @@ Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
  - EAS reply fix when message/rfc822 parts are included in the original mail (#3153)
  - fixed yet an other potential crash during freebusy lookups during timezone changes
- - fix display of freebusy information in event attendees editor during timezone changes
+ - fixed display of freebusy information in event attendees editor during timezone changes
+ - fixed timezone of MSExchange freebusy information
  - fixed a potential EAS error with multiple email priority flags
 
 2.2.17a (2015-03-15)
