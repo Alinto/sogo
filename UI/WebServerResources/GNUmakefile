@@ -10,7 +10,6 @@ build-static-files:
 	else \
 	  bower install --allow-root; \
 	fi
-	( cd bower_components/underscore/ && npm run-script build )
 	grunt build
 
 all :: build-static-files
