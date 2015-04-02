@@ -119,7 +119,7 @@ Date.prototype.clone = function() {
     newDate.setTime(this.getTime());
 
     return newDate;
-}
+};
 
 Date.prototype.deltaDays = function(otherDate) {
     var day1 = this.getTime();
@@ -131,7 +131,7 @@ Date.prototype.deltaDays = function(otherDate) {
     }
 
     return Math.round((day2 - day1) / 86400000);
-}
+};
 
 Date.prototype.daysUpTo = function(otherDate) {
     var days = new Array();
@@ -248,7 +248,7 @@ Date.prototype.beginOfDay = function() {
     beginOfDay.setMilliseconds(0);
 
     return beginOfDay;
-}
+};
   
 Date.prototype.beginOfWeek = function() {
     var offset = firstDayOfWeek - this.getDay();
