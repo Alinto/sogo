@@ -73,7 +73,7 @@
   <script type="text/ng-template" id="UIxContactFoldersView">
 
     <!-- dropdown menu for addressbook options button -->
-    <div id="addressbookProperties" class="f-dropdown icons-dropdown">
+    <div id="addressbookProperties" class="f-dropdown icons-dropdown" ng-hide="true">
       <ul class="button-group">
         <li label:tooltip="Links to this Address Book"
             tooltip-popup-delay="500">

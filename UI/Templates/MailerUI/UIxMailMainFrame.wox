@@ -343,7 +343,7 @@
           </div>
         </div>
       </md-toolbar>
-      <div layout="row" layout-align="space-between" ui-view="mailbox"><!-- messages list --></div>
+      <div layout="row"  ui-view="mailbox"><!-- messages list --></div>
     </section>
   </script>
 

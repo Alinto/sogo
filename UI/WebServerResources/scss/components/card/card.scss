@@ -8,8 +8,6 @@ md-card {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: sg-color($sogoPaper, 50);
-
   box-shadow: $card-box-shadow;
 
   > img {
@@ -20,5 +18,9 @@ md-card {
   md-card-content {
     order: 1;
     transition: $swift-ease-in-out;
+  }
+
+  &.md-default-theme {
+    background-color: sg-color($sogoPaper, 50);
   }
 }
