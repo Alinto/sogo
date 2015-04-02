@@ -33,13 +33,14 @@ module.exports = function(grunt) {
     },
     sass: {
       options: {
-        require: 'SassyJSON',
+        // require: 'SassyJSON',
         noCache: true,
-        loadPath: ['scss', 'bower_components/compass-mixins/lib',
+        loadPath: ['scss',
+                   'bower_components/compass-mixins/lib',
                    'bower_components/compass-breakpoint/stylesheets',
                    'bower_components/breakpoint-slicer/stylesheets',
                    'bower_components/sassy-maps/sass',
-                   'node_modules/SassyJSON/dist'
+                   'node_modules/sassyjson/dist'
         ],
         style: 'expanded'
       },
@@ -122,7 +123,7 @@ module.exports = function(grunt) {
     }
     grunt.log.subhead('Copying font files');
     var fonts = [
-      '<%= src %>/ionic/release/fonts/ionicons.*',
+      //'<%= src %>/ionic/release/fonts/ionicons.*',
       '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*'
     ];
     for (var j = 0; j < fonts.length; j++) {
@@ -137,7 +138,7 @@ module.exports = function(grunt) {
     }
     grunt.log.subhead('Copying CSS files');
     var css = [
-      '<%= src %>/ng-tags-input/ng-tags-input*.css' // This is no longer needed, ng-tags css is integrated to scss
+      //'<%= src %>/ng-tags-input/ng-tags-input*.css' // This is no longer needed, ng-tags css is integrated to scss
     ];
     for (var j = 0; j < css.length; j++) {
       var files = grunt.file.expand(grunt.template.process(css[j], {data: options}));
@@ -150,7 +151,7 @@ module.exports = function(grunt) {
       }
     }
   });
-  grunt.task.registerTask('build', ['static', 'sass']);
+  grunt.task.registerTask('build', ['static', 'sass', 'postcss:dist']);
   grunt.task.registerTask('default', ['build', 'watch']);
   grunt.task.registerTask('css', ['sass', 'postcss:dev']);
   grunt.task.registerTask('sass-compass', ['compass:dev', 'postcss']);
