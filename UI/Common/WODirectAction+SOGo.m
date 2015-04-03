@@ -35,7 +35,19 @@
 
 #import "WODirectAction+SOGo.h"
 
+static SoProduct      *commonProduct      = nil;
+
 @implementation WODirectAction (SOGoExtension)
+
++ (void) initialize
+{
+  if (commonProduct == nil)
+    {
+      // @see commonLabelForKey:
+      commonProduct = [[SoProduct alloc] initWithBundle:
+                               [NSBundle bundleForClass: NSClassFromString(@"CommonUIProduct")]];
+    }
+}
 
 - (WOResponse *) responseWithStatus: (unsigned int) status
 {
@@ -91,55 +103,60 @@
   return response;
 }
 
-- (NSString *) labelForKey: (NSString *) key
+- (NSString *) labelForKey: (NSString *) _str
+       withResourceManager: (WOResourceManager *) rm
 {
-  NSString *bundleId, *userLanguage, *label;
-  NSArray *paths;
-  NSBundle *bundle;
-  NSDictionary *strings;
-  SOGoUserDefaults *ud;
-  static NSMutableDictionary *bundlesCache = nil;
-  NSMutableDictionary *languagesCache;
+  NSString *lKey, *lTable, *lVal;
+  NSRange r;
 
-  if (!bundlesCache)
-    bundlesCache = [NSMutableDictionary new];
+  if ([_str length] == 0)
+    return nil;
 
-  bundle = [NSBundle bundleForClass: [self class]];
-  if (!bundle)
-    bundle = [NSBundle mainBundle];
+  if (rm == nil)
+    [self warnWithFormat:@"missing resource manager!"];
 
-  bundleId = [bundle executablePath];
-  languagesCache = [bundlesCache objectForKey: bundleId];
-  if (!languagesCache)
-    {
-      languagesCache = [NSMutableDictionary new];
-      [bundlesCache setObject: languagesCache forKey: bundleId];
-      [languagesCache release];
-    }
+  /* get parameters */
+  r = [_str rangeOfString:@"/"];
+  if (r.length > 0) {
+    lTable = [_str substringToIndex:r.location];
+    lKey   = [_str substringFromIndex:(r.location + r.length)];
+  }
+  else {
+    lTable = nil;
+    lKey   = _str;
+  }
+  lVal = lKey;
 
-  ud = [[context activeUser] userDefaults];
-  userLanguage = [ud language];
-  strings = [languagesCache objectForKey: userLanguage];
-  if (!strings)
-    {
-      paths = [bundle pathsForResourcesOfType: @"strings"
-                                  inDirectory: [NSString stringWithFormat: @"%@.lproj",
-                                                         userLanguage]
-                              forLocalization: userLanguage];
-      if ([paths count] > 0)
-        {
-          strings = [NSDictionary
-                      dictionaryFromStringsFile: [paths objectAtIndex: 0]];
-          if (strings)
-            [languagesCache setObject: strings forKey: userLanguage];
-        }
-    }
-
-  label = [strings objectForKey: key];
-  if (!label)
-    label = key;
+  if ([lKey hasPrefix:@"$"])
+    lKey = [self valueForKeyPath:[lKey substringFromIndex:1]];
+ 
+  if ([lTable hasPrefix:@"$"])
+    lTable = [self valueForKeyPath:[lTable substringFromIndex:1]];
   
-  return label;
+  /* lookup string */
+  return [rm stringForKey: lKey
+             inTableNamed: lTable
+             withDefaultValue: lVal
+             languages: [context resourceLookupLanguages]];
+}
+
+- (NSString *) commonLabelForKey: (NSString *) _str
+{
+  WOResourceManager *rm;
+
+  rm = [commonProduct resourceManager];
+
+  return [self labelForKey: _str withResourceManager: rm];
+}
+
+- (NSString *) labelForKey: (NSString *) _str
+{
+  WOResourceManager *rm;
+  /* find resource manager */
+
+  rm = [self pageResourceManager];
+
+  return [self labelForKey: _str withResourceManager: rm];
 }
 
 - (WOResourceManager *) pageResourceManager

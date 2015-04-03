@@ -38,6 +38,7 @@
 - (WOResponse *) responseWith204;
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
+- (NSString *) commonLabelForKey: (NSString *) _str;
 - (NSString *) labelForKey: (NSString *) _str;
 
 - (WOResourceManager *) pageResourceManager;

@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WODirectAction.h>
 #import <NGObjWeb/WOResponse.h>
@@ -30,6 +32,7 @@
 #import <Mailer/SOGoMailLabel.h>
 
 #import <SOGoUI/UIxComponent.h>
+#import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxJSONPreferences.h"
 
@@ -75,27 +78,38 @@
   if (![defaults contactsCategories])
     {
       categoryLabels = [[[self labelForKey: @"contacts_category_labels"]
-                       componentsSeparatedByString: @","]
+                          componentsSeparatedByString: @","]
                           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
       
       if (!categoryLabels)
         categoryLabels = [NSArray array];
-
+      
       [defaults setContactsCategories: categoryLabels];
       dirty = YES;
     }
-      
+  
   // Populate default mail lablels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
     {
-      NSDictionary *v;
+      SOGoMailLabel *label;
+      NSArray *labels;
+      id v;
       
-       v = [defaults mailLabelsColors];
-
-       // TODO - translate + refactor to not pass self since it's not a component
-       //[defaults setMailLabelsColors: [SOGoMailLabel labelsFromDefaults: v  component: self]];
-       [defaults setMailLabelsColors: v];
-       dirty = YES;
+      int i;
+      
+      v = [defaults mailLabelsColors];
+      
+      labels = [SOGoMailLabel labelsFromDefaults: v  component: self];
+      v = [NSMutableDictionary dictionary];
+      for (i = 0; i < [labels count]; i++)
+        {
+          label = [labels objectAtIndex: i];
+          [v setObject: [NSArray arrayWithObjects: [label label], [label color], nil]
+                forKey: [label name]];
+        }
+ 
+      [defaults setMailLabelsColors: v];
+      dirty = YES;
     }
 
   if (dirty)

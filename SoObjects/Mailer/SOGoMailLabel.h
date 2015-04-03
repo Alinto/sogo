@@ -43,7 +43,7 @@
 - (NSString *) color;
 
 + (NSArray *) labelsFromDefaults: (NSDictionary *) theDefaults
-                       component: (UIxComponent *) theComponent;
+                       component: (id) theComponent;
 
 @end
 
