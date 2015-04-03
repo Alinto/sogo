@@ -1,0 +1,154 @@
+https://wiki.inverse.ca/focus/SOGo/CodingStyle
+https://wiki.inverse.ca/focus/SOGo/D%C3%A9veloppement
+https://wiki.inverse.ca/focus/PacketFence/Devel/BestPractices
+
+UI and UX
+---------
+
+* http://www.google.com/design/spec/material-design/
+* http://goodui.org/
+ * Try Repeating Your Primary Action instead of showing it just once.
+ * Try Distinct Clickable/Selected Styles instead of blurring them.
+ * Try Undos instead of prompting for confirmation.
+ * Try More Contrast instead of similarity.
+ * Try Exposing Options instead of hiding them.
+ * Try Showing State instead of being state agnostic.
+ * Try Direct Manipulation instead of contextless menus.
+ * Try Exposing Fields instead of creating extra pages.
+ * Try Transitions instead of showing changes instantly.
+ * Try Fewer Borders instead of wasting attention.
+ * Try Designing For Zero Data instead of just data heavy cases.
+ * Try Consistency instead of making people relearn.
+ * Try Conventions instead of reinventing the wheel.
+ * Try Visual Hierarchy instead of dullness.
+ * Try Grouping Related Items instead of disordering.
+ * Try Inline Validation instead of delaying errors.
+ * Try Forgiving Inputs instead of being strict with data.
+ * Try Bigger Click Areas instead of tiny ones.
+ * Try Faster Load Times instead of making people wait.
+ * Try Keyboard Shortcuts instead of buttons only.
+ * Try Upfront Progress instead of starting with a blank.
+ * Try Softer Prompts instead of modal windows.
+ * Try Multifunctional Controls instead of more parts.
+ * Try Icon Labels instead of opening for interpretation.
+* http://designmodo.com/create-style-guides/
+* http://uxmyths.com/
+
+Frameworks & Tools
+------------------
+
+GNUstep
+~~~~~~~
+
+SOPE
+~~~~
+
+AngularJS
+~~~~~~~~~
+
+* https://angularjs.org/
+* http://angular-ui.github.io/ui-router/
+* https://www.airpair.com/angularjs/posts/angularjs-tutorial
+
+Angular Material
+~~~~~~~~~~~~~~~~
+
+* https://material.angularjs.org/
+
+Lo-Dash
+~~~~~~~
+
+* http://lodash.com/
+* http://underscorejs.org/
+
+Code Style
+----------
+
+Objective-C
+~~~~~~~~~~~
+
+* To document the Web APIs, we follow the http://apidocjs.com/[APIDOC] standards.
+
+    apidoc -f ".*\\.m" -i UI -o Documentation/JSON-API
+
+HTML
+~~~~
+
+* Localize your strings:
+
+    <var:string label:value="I'm localized!"/>
+
+* Localize your attributes:
+
+    <input type="text" label:placeholder="I'm localized!"/>
+
+* Reuse existing localized strings as much as possible. Otherwise don't forget to update the English Localizable.strings file of the appropriate module.
+
+JavaScript
+~~~~~~~~~~
+
+* http://eslint.org/
+* https://github.com/toddmotto/angularjs-styleguide
+* https://github.com/angular/material/blob/master/docs/guides/CODING.md
+
+* We conform to https://github.com/airbnb/javascript[Airbnb coding standards]. Use https://github.com/jscs-dev/node-jscs[jscs] with the 'airbnb' preset to validate your code style:
+
+    jscs -p airbnb *.js
+
+* For documentation, we follow the http://usejsdoc.org/[JSDoc3] standards:
+
+    jsdoc UI/WebServerResources/js/{Appointments,Common,Contacts,Mailer}/*.js -d Documentation/JavaScript-API
+
+Models (facades)
+^^^^^^^^^^^^^^^^
+
+////
+http://trochette.github.io/Angular-Design-Patterns-Best-Practices/
+////
+* Move business logic into models and share them.
+* Keep it simple, separate server interaction and error handling from the model. That way model only handle data processing and code is easier to maintain.
+
+SASS/CSS
+~~~~~~~~
+
+* http://componentcss.com/
+* https://github.com/styleguide/css
+* https://smacss.com/
+
+* For documentation, we follow http://sassdoc.com/[SassDoc] annotations.
+* We need the SASS files of Angular Material to build our CSS. The git repository of Angular Material is included as a submodule of SOGo:
+
+    git submodule init
+    git submodule update
+
+Fonts
+^^^^^
+
+* We build a custom icons font using the online app https://icomoon.io/app/#/select[icomoon].
+* http://www.carrois.com/fira-4-0/
+
+Version Control
+---------------
+
+* https://devcharm.com/articles/46/improve-your-git-workflow/
+* Each commit should cover only one thing;
+* Begin the commit message with a single short (less than 50 characters) line summarizing the change, followed by a blank line and then a more thorough description;
+* When fixing a bug, commit to the devel branch as well as the maintenance branch of the latest release version (named maintenance/x.y). When a ticket is associated to the bug, add to the description a line saying *Fixes #1234*.
+* `git pull` may introduce http://stackoverflow.com/questions/15316601/in-what-cases-could-git-pull-be-harmful[inconsistencies and problems]. Replace it with the following alias:
+
+    git config --global alias.up '!git remote update -p; git merge --ff-only @{u}'
+
+Testing
+-------
+
+* https://github.com/angular/protractor
+* http://karma-runner.github.io/
+
+JSON API
+~~~~~~~~
+
+One practical way to test the JSON API is to use `curl`. To do so, you need to enable `SOGoTrustProxyAuthentication` and configure HTTP authentifcation in Apache. You can pipe the result to [jq](http://stedolan.github.io/jq/) to nicely format and filter the output:
+
+    curl -u username:password http://localhost/SOGo/so/username/Calendar/calendarslist | jq '.'
+
+    curl -u username:password -H 'Content-Type: application/json' -d '{}' http://localhost/SOGo/so/francis/Calendar/personal/71B6-54904400-1-7C308500.ics/save
