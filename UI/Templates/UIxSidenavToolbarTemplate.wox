@@ -6,7 +6,7 @@
     xmlns:label="OGo:label"
     >
       <md-toolbar class="md-tall" layout-align="start start">
-        <div class="md-toolbar-tools" layout="row">
+        <div class="md-toolbar-tools sg-padded" layout="row" layout-align="start start">
           <md-button
               class="iconButton sg-button-navicon"
               label:aria-label="Apps"
@@ -16,7 +16,7 @@
           <span class="sg-logo"><!-- logo.svg --></span>
         </div>
 
-        <div class="md-toolbar-tools" layout="row">
+        <div class="md-toolbar-tools sg-padded" layout="row">
           <div layout="column">
             <p class="sg-md-title">{{activeUser.identification}}</p>
             <!--fixme: implement this with the proper model and actions -->
