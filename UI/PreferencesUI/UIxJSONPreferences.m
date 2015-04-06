@@ -59,7 +59,10 @@
   
   defaults = [[context activeUser] userDefaults];
   dirty = NO;
-  
+
+  if (![[defaults source] objectForKey: @"SOGoShortDateFormat"])
+    [[defaults source] setObject: @"default"  forKey: @"SOGoShortDateFormat"];
+
   if (![[defaults source] objectForKey: @"SOGoLongDateFormat"])
     [[defaults source] setObject: @"default"  forKey: @"SOGoLongDateFormat"];
 
