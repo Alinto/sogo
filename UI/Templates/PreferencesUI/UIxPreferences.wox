@@ -52,18 +52,23 @@
       
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <div class="md-toolbar-tools" ng-controller="navController">
-          <span flex="flex">
-            <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="hide-gt-md">
-              <span class="icon-ic_menu_24px"></span>
+        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+          <div class="sg-toolbar-group-1" layout="row">
+            <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
+              <span class="md-icon-menu"></span>
             </md-button>
-            <div class="display-1" style="font-size: 2em; font-weight: 300">
-              [[Preferences]]
+            <div class="sg-date-group" layout="column" layout-align="space-between end">
+              <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
+              <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
+              <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
             </div>
-          </span>
-          <span class="sd-toolbar-tools">
-            <span>search</span>
-          </span>
+            <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
+          </div>
+          <div class="sg-toolbar-group-last">
+            <md-button class="iconButton" label:aria-label="Menu">
+              <i class="md-icon-more-vert"><!--icon--></i>
+            </md-button>
+          </div>
         </div>
       </md-toolbar>
 
