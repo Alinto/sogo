@@ -154,8 +154,11 @@
                 if (perr == passwordPolicyConfig.PolicyNoError) {
                   msg = l('Wrong username or password.');
                 }
+                else if (perr == passwordPolicyConfig.PolicyAccountLocked) {
+                  msg = l('Your account was locked due to too many failed attempts.');
+                }
                 else {
-                  msg = l('Login failed due to unhandled error case: ' + perr);
+                  msg = l('Login failed due to unhandled error case: ') + perr;
                 }
               }
               else {
