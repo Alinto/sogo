@@ -66,6 +66,12 @@
   if (![[defaults source] objectForKey: @"SOGoLongDateFormat"])
     [[defaults source] setObject: @"default"  forKey: @"SOGoLongDateFormat"];
 
+  if (![[defaults source] objectForKey: @"SOGoFirstWeekOfYear"])
+    [[defaults source] setObject: [defaults firstWeekOfYear] forKey: @"SOGoFirstWeekOfYear"];
+  
+  if (![[defaults source] objectForKey: @"SOGoSelectedAddressBook"])
+    [[defaults source] setObject: @"personal" forKey: @"SOGoSelectedAddressBook"];
+  
   // Populate default calendar categories, based on the user's preferred language
   if (![defaults calendarCategories])
     {

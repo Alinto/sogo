@@ -318,7 +318,7 @@
                   <div>
                     <md-select ng-model="preferences.defaults.SOGoFirstWeekOfYear">
                       <var:foreach list="firstWeekList" item="item">
-                        <md-option var:ng-value="item">
+                        <md-option var:value="item">
                           <var:string value="itemFirstWeekText"/>
                         </md-option>
                       </var:foreach>
