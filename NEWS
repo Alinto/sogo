@@ -12,6 +12,7 @@ Bug fixes
  - fixed display of freebusy information in event attendees editor during timezone changes
  - fixed timezone of MSExchange freebusy information
  - fixed a potential EAS error with multiple email priority flags
+ - fixed paragraphs margins in HTML messages (#3163)
 
 2.2.17a (2015-03-15)
 --------------------
