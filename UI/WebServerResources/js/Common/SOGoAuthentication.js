@@ -167,6 +167,49 @@
               d.reject({error: msg});
             });
             return d.promise;
+          }, // login: function(data) { ...
+
+          changePassword: function(newPassword) {
+            var d = $q.defer(),
+                loginCookie = _this.readLoginCookie();
+            
+            $http({
+              method: 'POST',
+              url: '/SOGo/so/changePassword',
+              data: {
+                userName: loginCookie[0],
+                password: loginCookie[1],
+                newPassword: newPassword }
+            }).success(function(data, status) {
+              d.resolve();
+            }).error(function(data, status) {
+              var error,
+                  perr = data["LDAPPasswordPolicyError"];
+
+              if (!perr) {
+                perr = passwordPolicyConfig.PolicyPasswordSystemUnknown;
+                error = _("Unhandled error response");
+              }
+              else if (perr == passwordPolicyConfig.PolicyNoError) {
+                error = l("Password change failed");
+              } else if (perr == passwordPolicyConfig.PolicyPasswordModNotAllowed) {
+                error = l("Password change failed - Permission denied");
+              } else if (perr == passwordPolicyConfig.PolicyInsufficientPasswordQuality) {
+                error = l("Password change failed - Insufficient password quality");
+              } else if (perr == passwordPolicyConfig.PolicyPasswordTooShort) {
+                error = l("Password change failed - Password is too short");
+              } else if (perr == passwordPolicyConfig.PolicyPasswordTooYoung) {
+                error = l("Password change failed - Password is too young");
+              } else if (perr == passwordPolicyConfig.PolicyPasswordInHistory) {
+                error = l("Password change failed - Password is in history");
+              } else {
+                error = l("Unhandled policy error: %{0}").formatted(perr);
+                perr = passwordPolicyConfig.PolicyPasswordUnknown;
+              }
+  
+              d.reject(error);
+            });
+            return d.promise;
           }
         };
         return service;

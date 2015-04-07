@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.MailerUI', []);
 
-  angular.module('SOGo.PreferencesUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.UIDesktop', 'SOGo.UI'])
+  angular.module('SOGo.PreferencesUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.UIDesktop', 'SOGo.UI', 'SOGo.Authentication'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -72,7 +72,7 @@
       $urlRouterProvider.otherwise('/general');
     }])
 
-    .controller('PreferencesCtrl', ['$scope', '$timeout', '$mdDialog', 'sgPreferences', 'statePreferences', function($scope, $timeout, $mdDialog, Preferences, statePreferences) {
+    .controller('PreferencesCtrl', ['$scope', '$timeout', '$mdDialog', 'sgPreferences', 'statePreferences', 'Authentication', function($scope, $timeout, $mdDialog, Preferences, statePreferences, Authentication) {
 
       $scope.preferences = statePreferences;
 
@@ -175,12 +175,42 @@
       };
       
       $scope.save = function() {
-        console.debug("save");
         $scope.preferences.$save();
       };
 
+      $scope.passwords = { newPassword: null, newPasswordConfirmation: null };
+      
+      $scope.canChangePassword = function() {
+        if ($scope.passwords.newPassword && $scope.passwords.newPassword.length > 0 &&
+            $scope.passwords.newPasswordConfirmation && $scope.passwords.newPasswordConfirmation.length &&
+            $scope.passwords.newPassword == $scope.passwords.newPasswordConfirmation)
+          return true;
+
+        return false;
+      };
+      
       $scope.changePassword = function() {
-        console.debug("change password");
+        Authentication.changePassword($scope.passwords.newPassword).then(function() {
+          var alert = $mdDialog.alert({
+            title: l('Password'),
+            content: l('The password was changed successfully.'),
+            ok: 'OK'
+          });
+          $mdDialog.show( alert )
+            .finally(function() {
+              alert = undefined;
+            });
+        }, function(msg) {
+          var alert = $mdDialog.alert({
+            title: l('Password'),
+            content: msg,
+            ok: 'OK'
+          });
+          $mdDialog.show( alert )
+            .finally(function() {
+              alert = undefined;
+            });
+        });
       };
     }]);
 

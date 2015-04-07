@@ -9,7 +9,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common/resource.js,Mailer/mailbox-model.js,Mailer/message-model.js,Preferences/preferences-model.js">
+    const:jsFiles="Common/resource.js,Common/SOGoAuthentication.js,Mailer/mailbox-model.js,Mailer/message-model.js,Preferences/preferences-model.js">
 
   <main class="view md-layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
@@ -212,16 +212,16 @@
                 <md-input-container>
                   <label><var:string label:value="New password:"/>
                   </label>
-	          <input type="text"/>
+	          <input type="password" ng-model="passwords.newPassword"/>
                 </md-input-container>
 
                 <md-input-container>
                   <label><var:string label:value="Confirmation:"/>
                   </label>
-	          <input type="text"/>
+	          <input type="password" ng-model="passwords.newPasswordConfirmation"/>
                 </md-input-container>
-
-                <md-button ng-click="changePassword()" type="button">
+                
+                <md-button ng-click="changePassword()" type="button" ng-disabled="!canChangePassword()">
                   <var:string label:value="Change"/>
                 </md-button>
 
