@@ -25,6 +25,7 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -136,8 +137,20 @@
 - (WOResponse *) jsonSettingsAction
 {
   SOGoUserSettings *settings;
+  id v;
 
   settings = [[context activeUser] userSettings];
+
+  // We sanitize PreventInvitationsWhitelist if we need to, this is due to the fact
+  // that SOGo <= 2.2.17 used to store it as a JSON *string* within the JSON-blob -
+  // sorry about this engineering brain fart!
+  v = [[settings objectForKey: @"Calendar"] objectForKey: @"PreventInvitationsWhitelist"];
+
+  if (v && [v isKindOfClass: [NSString class]])
+    {
+      [[settings objectForKey: @"Calendar"] setObject: [v objectFromJSONString]
+                                               forKey: @"PreventInvitationsWhitelist"];
+    }
 
   return [self _makeResponse: [[settings source] values]];
 }
