@@ -13,6 +13,7 @@ Bug fixes
  - fixed timezone of MSExchange freebusy information
  - fixed a potential EAS error with multiple email priority flags
  - fixed paragraphs margins in HTML messages (#3163)
+ - fixed regression when loading the inbox for the first time
 
 2.2.17a (2015-03-15)
 --------------------
