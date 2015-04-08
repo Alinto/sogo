@@ -702,7 +702,6 @@
    * @example:
 
    <sg-calendar-day-block
-       class="event draggable"
        ng-repeat="block in blocks[day]"
        sg-block="block"/>
   */
@@ -729,6 +728,73 @@
       function link(scope, iElement, attrs) {
           iElement.addClass('starts' + scope.block.start);
           iElement.addClass('lasts' + scope.block.length);
+      }
+    }])
+
+  /*
+   * sgCalendarMonthDay - Build list of blocks for a specific day in a month
+   * @memberof SOGo.UIDesktop
+   * @restrict element
+   * @param {object} sgBlocks - the events blocks definitions for the current view
+   * @param {string} sgDay - the day of the events to display
+   * @example:
+
+   <sg-calendar-monh-day
+       sg-blocks="calendar.blocks"
+       sg-day="20150408" />
+  */
+    .directive('sgCalendarMonthDay', [function() {
+      return {
+        restrict: 'E',
+        scope: {
+          blocks: '=sgBlocks',
+          day: '@sgDay'
+        },
+        template:
+          '<sg-calendar-month-event' +
+          '  ng-repeat="block in blocks[day]"' +
+          '  sg-block="block"/>',
+      };
+    }])
+
+  /*
+   * sgCalendarMonthEvent - An event block to be displayed in a month
+   * @memberof SOGo.UIDesktop
+   * @restrict element
+   * @param {object} sgBlock - the event block definition
+   * @example:
+
+   <sg-calendar-month-event
+       ng-repeat="block in blocks[day]"
+       sg-block="block"/>
+  */
+    .directive('sgCalendarMonthEvent', [function() {
+      return {
+        restrict: 'E',
+        scope: {
+          block: '=sgBlock'
+        },
+        replace: true,
+        template:
+          '<div class="event">' +
+          '  <div>' +
+          '      <div>' +
+          '        <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>' +
+          '        {{ block.component.c_title }}<span class="icons">' +
+          '          <i ng-if="block.component.c_nextalarm" class="md-icon-alarm"></i>' +
+          '          <i ng-if="block.component.c_classification == 1" class="md-icon-visibility-off"></i>' +
+          '          <i ng-if="block.component.c_classification == 2" class="md-icon-vpn-key"></i>' +
+          '        </span>' +
+          '      </div>' +
+          '  </div>' +
+          '  <div class="leftDragGrip"></div>' +
+          '  <div class="rightDragGrip"></div>' +
+          '</div>',
+        link: link
+      };
+
+      function link(scope, iElement, attrs) {
+        iElement.addClass('calendarFolder' + scope.block.component.c_folder);
       }
     }]);
 

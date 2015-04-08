@@ -82,7 +82,7 @@ String.prototype.asDate = function () {
             if (this.length == 8) {
                 newDate = new Date(this.substring(0, 4),
                                    this.substring(4, 6) - 1,
-                                   this.substring(6, 8));
+                                   this.substring(6, 8)); // yyyymmdd
             }
         }
     }
@@ -154,6 +154,18 @@ Date.prototype.beginOfWeek = function() {
     beginOfWeek.addDays(offset);
 
     return beginOfWeek;
+};
+
+Date.prototype.endOfWeek = function() {
+    var endOfWeek = this.beginOfWeek();
+    endOfWeek.addDays(6);
+
+    endOfWeek.setHours(23);
+    endOfWeek.setMinutes(59);
+    endOfWeek.setSeconds(59);
+    endOfWeek.setMilliseconds(999);
+
+    return endOfWeek;
 };
 
 // YYYYMMDD

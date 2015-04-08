@@ -205,6 +205,9 @@
             <a class="iconButton md-button md-default-theme"
                label:aria-label="Week"
                href="#/calendar/week"><i class="md-icon-view-week"><!-- week view --></i></a>
+            <a class="iconButton md-button md-default-theme"
+               label:aria-label="Month"
+               href="#/calendar/month"><i class="md-icon-view-module"><!-- month view --></i></a>
           </div>
         </div>
       </md-toolbar>

@@ -95,6 +95,17 @@
       endDate.setTime(startDate.getTime());
       endDate.addDays(6);
     }
+    else if (view == 'month') {
+      viewAction = 'monthView';
+      startDate = date;
+      startDate.setDate(1);
+      startDate = startDate.beginOfWeek();
+      endDate = new Date();
+      endDate.setTime(startDate.getTime());
+      endDate.setMonth(endDate.getMonth() + 1);
+      endDate.addDays(-1);
+      endDate = endDate.endOfWeek();
+    }
     return this.$eventsBlocks(viewAction, startDate, endDate);
   };
 
@@ -111,7 +122,7 @@
     var params, futureComponentData, i,
         deferred = Component.$q.defer();
 
-    params = { view: view, sd: startDate.getDayString(), ed: endDate.getDayString() };
+    params = { view: view.toLowerCase(), sd: startDate.getDayString(), ed: endDate.getDayString() };
     Component.$log.debug('eventsblocks ' + JSON.stringify(params, undefined, 2));
     futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
     futureComponentData.then(function(data) {

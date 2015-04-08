@@ -38,12 +38,13 @@
           }
         })
         .state('calendars.view', {
-          url: '/{view:(?:day|week)}/:day',
+          url: '/{view:(?:day|week|month)}/:day',
           views: {
             calendarView: {
               templateUrl: function($stateParams) {
                 // UI/Templates/SchedulerUI/UIxCalDayView.wox or
-                // UI/Templates/SchedulerUI/UIxCalWeekView.wox
+                // UI/Templates/SchedulerUI/UIxCalWeekView.wox or
+                // UI/Templates/SchedulerUI/UIxCalMonthView.wox
                 return $stateParams.view + 'view?day=' + $stateParams.day;
               },
               controller: 'CalendarController',
@@ -66,6 +67,11 @@
         // If no date is specified, show today's week
         var now = new Date();
         return '/calendar/week/' + now.getDayString();
+      })
+      $urlRouterProvider.when('/calendar/month', function() {
+        // If no date is specified, show today's month
+        var now = new Date();
+        return '/calendar/month/' + now.getDayString();
       });
 
       // if none of the above states are matched, use this as the fallback
