@@ -14,6 +14,7 @@ Bug fixes
  - fixed a potential EAS error with multiple email priority flags
  - fixed paragraphs margins in HTML messages (#3163)
  - fixed regression when loading the inbox for the first time
+ - fixed serialization of the PreventInvitationsWhitelist settings
 
 2.2.17a (2015-03-15)
 --------------------
