@@ -2084,8 +2084,8 @@ static NSArray *reminderValues = nil;
   // Proceed with data sanitization of the "defaults"
   if ((v = [o objectForKey: @"defaults"]))
     {
+      NSArray *allKeys, *accounts, *addresses;
       NSMutableDictionary *sanitizedLabels;
-      NSArray *allKeys, *accounts;
       NSDictionary *newLabels;
       NSString *name;
       int i;
@@ -2115,6 +2115,11 @@ static NSArray *reminderValues = nil;
           
           [v setObject: sanitizedLabels  forKey: @"SOGoMailLabelsColors"];
         }
+
+      // We sanitize our autoreply email addresses
+      addresses = [NSArray arrayWithArray: [[[[v objectForKey: @"Vacation"] objectForKey: @"autoReplyEmailAddresses"]
+                                              componentsSeparatedByString: @","] trimmedComponents]];
+      [[v objectForKey: @"Vacation"] setObject: addresses  forKey: @"autoReplyEmailAddresses"];
       
       // We sanitize our auxilary mail accounts
       accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
