@@ -47,11 +47,8 @@
   &-tile-content {
     //@extend .md-tile-content; content of :
     flex: 1;
-
     padding: $baseline-grid * 2;
-
     text-overflow: ellipsis;
-
 
     .name,
     .contact-email {
