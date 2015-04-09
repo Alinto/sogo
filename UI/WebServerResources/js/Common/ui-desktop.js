@@ -202,8 +202,8 @@
           selectFolder: '=sgSelectFolder'
         },
         template:
-          '<md-item>' +
-          '  <md-item-content>' +
+          '<md-list-item>' +
+          '  <div>' +
           '    <i class="md-icon-folder"></i>' +
           '    <button class="md-button md-flex sg-item-name">{{folder.name}}</button>' +
           '    <md-input-container class="md-flex md-tile-content ng-hide">'+
@@ -218,7 +218,7 @@
           '         dropdown-toggle="#folderProperties"' +
           '         options="align:right"><i class="md-icon-more-vert"></i></a>' +
           '    </span>' +
-          '  </md-item-content>' +
+          '  </div>' +
           '</md-item>' +
           '<sg-folder-tree ng-repeat="child in folder.children track by child.path"' +
           '                data-sg-root="root"' +

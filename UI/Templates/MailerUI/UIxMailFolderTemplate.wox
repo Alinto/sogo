@@ -14,10 +14,10 @@
 
     <md-list vs-repeat="72"
         vs-scroll-parent="#messagesList">
-      <md-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
+      <md-list-item ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}">
-        <md-item-content ui-sref-active="_selected">
-          <div class="md-tile-left">
+        <div ui-sref-active="_selected" layout="row">
+          <div class="sg-avatar">
             <!--avatar-->
           </div>
           <div class="sg-tile-content">
@@ -36,8 +36,8 @@
             <i class="md-icon-flag" ng-show="currentMessage.isflagged"> </i>
             <i class="md-icon-attach-file disable" ng-show="currentMessage.hasattachment"> </i>
           </div>
-        </md-item-content>
-      </md-item>
+        </div>
+      </md-list-item>
     </md-list>
   </md-content>
   <!-- This extra container is used to animate views transitions

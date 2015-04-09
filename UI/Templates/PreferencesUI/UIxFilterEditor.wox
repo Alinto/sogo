@@ -44,8 +44,7 @@
     <div id="filterRulesContainer" class="container">
       <div id="filterRules"><!-- empty -->
         <md-list>
-          <md-item ng-repeat="rule in filter.rules">
-            <md-item-content>
+          <md-list-item ng-repeat="rule in filter.rules">
               <md-select ng-model="rule.field">
                 <md-option ng-value="key" ng-repeat="(key, value) in fieldLabels">{{ value }}</md-option>
               </md-select>
@@ -70,9 +69,8 @@
               <md-button ng-click="removeMailFilterRule($index)" type="button">
                 <div class="md-icon-remove"><!-- delete --></div>
               </md-button>
-
-            </md-item-content>
-          </md-item>
+              
+          </md-list-item>
         </md-list>
       </div>
 
@@ -87,8 +85,7 @@
       <div id="filterActions"><!-- empty --></div>
 
         <md-list>
-          <md-item ng-repeat="action in filter.actions">
-            <md-item-content>
+          <md-list-item ng-repeat="action in filter.actions">
               <md-select ng-model="action.method">
                 <md-option ng-value="key" ng-repeat="(key, value) in methodLabels">{{ value }}</md-option>
               </md-select>
@@ -124,9 +121,8 @@
               <md-button ng-click="removeMailFilterAction($index)" type="button">
                 <div class="md-icon-remove"><!-- delete --></div>
               </md-button>
-
-            </md-item-content>
-          </md-item>
+              
+          </md-list-item>
         </md-list>
 
       <md-button ng-click="addMailFilterAction($event)" type="button">

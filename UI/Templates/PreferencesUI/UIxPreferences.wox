@@ -24,26 +24,18 @@
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-padding md-flex">
         <md-list>
-          <md-item>
-            <md-item-content>
-              <a ui-sref="preferences.general">General</a>
-            </md-item-content>
-          </md-item>
-          <md-item>
-            <md-item-content>
-              <a ui-sref="preferences.calendars">Calendar</a>
-            </md-item-content>
-          </md-item>
-          <md-item>
-            <md-item-content>
-              <a ui-sref="preferences.addressbooks">Contacts</a>
-            </md-item-content>
-          </md-item>
-          <md-item>
-            <md-item-content>
-              <a ui-sref="preferences.mailer">Mail</a>
-            </md-item-content>
-          </md-item>
+          <md-list-item>
+            <a ui-sref="preferences.general">General</a>
+          </md-list-item>
+          <md-list-item>
+            <a ui-sref="preferences.calendars">Calendar</a>
+          </md-list-item>
+          <md-list-item>
+            <a ui-sref="preferences.addressbooks">Contacts</a>
+          </md-list-item>
+          <md-list-item>
+            <a ui-sref="preferences.mailer">Mail</a>
+          </md-list-item>
         </md-list>
       </md-content>
     </md-sidenav>
@@ -420,19 +412,20 @@
                   label:label="Categories">
 
               <md-list>
-                <md-item ng-repeat="item in
+                <md-list-item ng-repeat="item in
                                     preferences.defaults.SOGoCalendarCategories
                                     track by $index">
-                  <md-item-content>
-                    <div class="md-icon-label"><!-- create --></div>
+                  <div class="md-icon-label"><!-- create --></div>
                     <md-input-container>
 	              <input type="text" ng-model="preferences.defaults.SOGoCalendarCategories[$index]"/>
                     </md-input-container>
-                    <md-button ng-click="removeCalendarCategory($index)" type="button">
+                    <md-button
+                        ng-click="removeCalendarCategory($index)"
+                        type="button"
+                        layout="row" layout-align="end center">
                       <div class="md-icon-remove"><!-- delete --></div>
                     </md-button>
-                  </md-item-content>
-                </md-item>
+                </md-list-item>
               </md-list>
 
               <div class="bottomToolbar">
@@ -456,14 +449,12 @@
               </md-checkbox>
 
               <md-list>
-                <md-item ng-repeat="(key, value) in
-                                    preferences.settings.Calendar.PreventInvitationsWhitelist">
-                  <md-item-content>
-                    <md-input-container>
-	              <input type="text" ng-model="key"/>
-                    </md-input-container>
-                  </md-item-content>
-                </md-item>
+                <md-list-item ng-repeat="(key, value) in
+                                         preferences.settings.Calendar.PreventInvitationsWhitelist">
+                  <md-input-container>
+	            <input type="text" ng-model="key"/>
+                  </md-input-container>
+                </md-list-item>
               </md-list>
 
               <div class="bottomToolbar">
@@ -502,18 +493,18 @@
             <div role="tabpanel" aria-labelledby="contactsCategoriesView"  id="contactsCategoriesView-content">
               <!-- <label><var:string label:value="Categories"/></label> -->
               <md-list>
-                <md-item ng-repeat="item in
-                                    preferences.defaults.SOGoContactsCategories
-                                    track by $index">
-                  <md-item-content>
-                    <md-input-container>
-	              <input type="text" ng-model="preferences.defaults.SOGoContactsCategories[$index]"/>
-                    </md-input-container>
-                    <md-button ng-click="removeContactCategory($index)" type="button">
-                      <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
-                    </md-button>
-                  </md-item-content>
-                </md-item>
+                <md-list-item ng-repeat="item in
+                                         preferences.defaults.SOGoContactsCategories
+                                         track by $index">
+                  <md-input-container>
+	            <input type="text" ng-model="preferences.defaults.SOGoContactsCategories[$index]"/>
+                  </md-input-container>
+                  <md-button
+                      ng-click="removeContactCategory($index)"
+                      type="button" layout="row" layout-align="end center">
+                    <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
+                  </md-button>
+                </md-list-item>
               </md-list>
 
               <div class="bottomToolbar">
@@ -660,29 +651,31 @@
                      id="mailFiltersView-content">
                   
                   <md-list>
-                    <md-item ng-repeat="item in
-                                        preferences.defaults.SOGoSieveFilters
-                                        track by $index">
-                      <md-item-content>
-                        <md-checkbox
-                            ng-model="preferences.defaults.SOGoSieveFilters[$index].active"
-                            ng-true-value="1"
-                            ng-false-value="0">
-                          <!-- active or not-->
-                        </md-checkbox>
-                        <md-input-container>
-	                  <input type="text" ng-model="preferences.defaults.SOGoSieveFilters[$index].name"/>
-                        </md-input-container>
-                        <md-button ng-click="editMailFilter($index)" type="button">
-                          <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
-                        </md-button>
-                        <md-button ng-click="removeMailFilter($index)" type="button">
-                          <div class="md-icon-remove"><!-- delete --></div>
-                        </md-button>
-                      </md-item-content>
-                    </md-item>
+                    <md-list-item ng-repeat="item in
+                                             preferences.defaults.SOGoSieveFilters
+                                             track by $index">
+                      <md-checkbox
+                          ng-model="preferences.defaults.SOGoSieveFilters[$index].active"
+                          ng-true-value="1"
+                          ng-false-value="0">
+                        <!-- active or not-->
+                      </md-checkbox>
+                      <md-input-container>
+	                <input type="text" ng-model="preferences.defaults.SOGoSieveFilters[$index].name"/>
+                      </md-input-container>
+                      <md-button ng-click="editMailFilter($index)"
+                                 type="button" 
+                                 layout="row" layout-align="end center">
+                        <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
+                      </md-button>
+                      <md-button ng-click="removeMailFilter($index)"
+                                 type="button"
+                                 layout="row" layout-align="end center">
+                        <div class="md-icon-remove"><!-- delete --></div>
+                      </md-button>
+                    </md-list-item>
                   </md-list>
-
+                  
                   <!-- FIXME: move up/down to be replaced by DnD? -->
                   <div class="bottomToolbar">
                     <md-button ng-click="addMailFilter($event)" type="button">
@@ -700,17 +693,17 @@
 
                 <div role="tabpanel" aria-labelledby="mailLabelsView"  id="mailLabelsView-content">
                   <md-list>
-                    <md-item ng-repeat="(key, value) in
-                                        preferences.defaults.SOGoMailLabelsColors">
-                      <md-item-content>
-                        <md-input-container>
-	                  <input type="text" ng-model="value[0]"/>
-                        </md-input-container>
-                        <md-button ng-click="removeMailLabel(key)" type="button">
-                          <div class="md-icon-remove"><!-- delete --></div>
-                        </md-button>
-                      </md-item-content>
-                    </md-item>
+                    <md-list-item ng-repeat="(key, value) in
+                                             preferences.defaults.SOGoMailLabelsColors">
+                      <md-input-container>
+	                <input type="text" ng-model="value[0]"/>
+                      </md-input-container>
+                      <md-button ng-click="removeMailLabel(key)"
+                                 type="button"
+                                 layout="row" layout-align="end center">
+                        <div class="md-icon-remove"><!-- delete --></div>
+                      </md-button>
+                    </md-list-item>
                   </md-list>
 
                   <div class="bottomToolbar">
@@ -728,24 +721,25 @@
                     label:label="Accounts">
 
               <md-list>
-                <md-item ng-repeat="item in
-                                    preferences.defaults.AuxiliaryMailAccounts
-                                    track by $index">
-                  <md-item-content>
-                    <md-input-container>
-	              <input type="text"
-                             ng-model="preferences.defaults.AuxiliaryMailAccounts[$index].name"
-                             ng-readonly="$index == 0"/>
-                    </md-input-container>
-                    <md-button ng-click="editMailAccount($index)" type="button">
-                      <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
-                    </md-button>
-                    <md-button ng-click="removeMailAccount()"
-                               ng-show="$index > 0" type="button">
-                      <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
-                    </md-button>
-                  </md-item-content>
-                </md-item>
+                <md-list-item ng-repeat="item in
+                                         preferences.defaults.AuxiliaryMailAccounts
+                                         track by $index">
+                  <md-input-container>
+	            <input type="text"
+                           ng-model="preferences.defaults.AuxiliaryMailAccounts[$index].name"
+                           ng-readonly="$index == 0"/>
+                  </md-input-container>
+                  <md-button ng-click="editMailAccount($index)"
+                             type="button"
+                             layout="row" layout-align="end center">
+                    <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
+                  </md-button>
+                  <md-button ng-click="removeMailAccount()"
+                             ng-show="$index > 0" type="button"
+                             layout="row" layout-align="end center">
+                    <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
+                  </md-button>
+                </md-list-item>
               </md-list>
               
               <var:if condition="mailAuxiliaryUserAccountsEnabled">

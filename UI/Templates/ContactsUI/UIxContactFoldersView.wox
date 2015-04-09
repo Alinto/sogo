@@ -149,10 +149,9 @@
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list>
-          <md-item ng-repeat="folder in addressbooks track by folder.id"
+          <md-list-item ng-repeat="folder in addressbooks track by folder.id"
               ng-class="{_selected: addressbook.id==folder.id}"
               ng-dblclick="edit($index)">
-            <md-item-content>
               <i class="sg-child-level-0" ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
               <md-button class="sg-folder">
                 <form ng-submit="save($index)">
@@ -178,8 +177,7 @@
                   <i class="md-icon-more-vert"><!-- options --></i>
                 </a>
               </span>
-            </md-item-content>
-          </md-item>
+          </md-list-item>
         </md-list>
       </md-content>
     </md-sidenav>
@@ -244,11 +242,12 @@
                </div>
           -->
           <md-list vs-repeat="72" vs-scroll-parent="#contactsList">
-            <md-item ng-repeat="currentCard in addressbook.cards track by currentCard.id">
-              <md-item-content
+            <md-list-item ng-repeat="currentCard in addressbook.cards track by currentCard.id">
+              <div
                   ng-class="{_selected: card.id == currentCard.id}"
-                  ng-click="select($index); toggleDetailView()">
-                <div class="md-tile-left">
+                  ng-click="select($index); toggleDetailView()"
+                  layout="row">
+                <div class="sg-avatar">
                   <!--avatar--><!-- currentCard.tag = vcard || vlist -->
                 </div>
                 <div class="sg-tile-content">
@@ -257,8 +256,8 @@
                     <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail()}}</div>
                   </a>
                 </div>
-              </md-item-content>
-            </md-item>
+              </div>
+            </md-list-item>
           </md-list>
         </md-content>
         <md-button class="iconButton md-fab md-fab--bottom md-accent hide-sm" label:aria-label="New Contact" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'card'})"><i class="md-icon-add"><!--icon--></i></md-button>
