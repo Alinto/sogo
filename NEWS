@@ -4,6 +4,7 @@
 Enhancements
  - improved multipart handling using EAS
  - added systemd startup script (PR#76)
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)

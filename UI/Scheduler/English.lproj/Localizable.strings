@@ -325,9 +325,11 @@
 "Week(s)" = "Week(s)";
 "On" = "On";
 "Month(s)" = "Month(s)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "The";
 "Recur on day(s)" = "Recur on day(s)";
 "Year(s)" = "Year(s)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "of";
 "No end date" = "No end date";
 "Create" = "Create";
@@ -547,7 +549,6 @@ vtodo_class2 = "(Confidential task)";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
 "EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 "Please select at least one calendar" = "Please select at least one calendar";
-
 
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
