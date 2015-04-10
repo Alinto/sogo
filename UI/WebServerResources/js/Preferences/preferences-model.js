@@ -26,6 +26,10 @@
         }));
         
         data.SOGoMailLabelsColors = labels;
+
+        // We convert our list of autoReplyEmailAddresses into a string.
+        if (data.Vacation && data.Vacation.autoReplyEmailAddresses)
+          data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
         
         angular.extend(_this.defaults, data);
       });
@@ -104,6 +108,9 @@
     }));
     
     preferences.defaults.SOGoMailLabelsColors = labels;
+    
+    if (preferences.defaults.Vacation && preferences.defaults.Vacation.autoReplyEmailAddresses)
+      preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
     
     return preferences;
   };

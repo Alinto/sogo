@@ -67,7 +67,8 @@ static NSArray *reminderValues = nil;
   if (!reminderItems && !reminderValues)
     {
       reminderItems = [NSArray arrayWithObjects:
-                                 @"5_MINUTES_BEFORE",
+                               @"NONE",
+                               @"5_MINUTES_BEFORE",
 			       @"10_MINUTES_BEFORE",
 			       @"15_MINUTES_BEFORE",
 			       @"30_MINUTES_BEFORE",
@@ -83,7 +84,8 @@ static NSArray *reminderValues = nil;
 			       @"1_WEEK_BEFORE",
 			       nil];
       reminderValues = [NSArray arrayWithObjects:
-                                  @"-PT5M",
+                                @"NONE",
+                                @"-PT5M",
 				@"-PT10M",
 				@"-PT15M",
 				@"-PT30M",
@@ -575,9 +577,9 @@ static NSArray *reminderValues = nil;
 //
 // Used by wox template
 //
-- (NSArray *) reminderList
+- (NSArray *) reminderValues
 {
-  return reminderItems;
+  return reminderValues;
 }
 
 //
@@ -587,10 +589,19 @@ static NSArray *reminderValues = nil;
 {
   NSString *text;
 
-  if ([item isEqualToString: @"-"])
-    text = item;
+  if ([item isEqualToString: @""])
+    text = @"-";
   else
-    text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
+    {
+      NSUInteger index;
+
+      index = [reminderValues indexOfObject: item];
+
+      if (index != NSNotFound)
+        text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", [reminderItems objectAtIndex: index]]];
+      else
+        text = @"NONE";
+    }
 
   return text;
 }
@@ -2087,12 +2098,17 @@ static NSArray *reminderValues = nil;
       NSArray *allKeys, *accounts, *addresses;
       NSMutableDictionary *sanitizedLabels;
       NSDictionary *newLabels;
-      NSString *name;
+      NSString *name, *reminder;
+
+      NSUInteger index;
       int i;
 
       // We convert our object into a mutable one
       v = [[v mutableCopy] autorelease];
-      
+
+      //
+      // We sanitize mail labels
+      //
       newLabels = [v objectForKey: @"SOGoMailLabelsColors"];
       if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
         {
@@ -2116,12 +2132,9 @@ static NSArray *reminderValues = nil;
           [v setObject: sanitizedLabels  forKey: @"SOGoMailLabelsColors"];
         }
 
-      // We sanitize our autoreply email addresses
-      addresses = [NSArray arrayWithArray: [[[[v objectForKey: @"Vacation"] objectForKey: @"autoReplyEmailAddresses"]
-                                              componentsSeparatedByString: @","] trimmedComponents]];
-      [[v objectForKey: @"Vacation"] setObject: addresses  forKey: @"autoReplyEmailAddresses"];
-      
+      //
       // We sanitize our auxilary mail accounts
+      //
       accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
       if (accounts && [accounts isKindOfClass: [NSArray class]])
         {

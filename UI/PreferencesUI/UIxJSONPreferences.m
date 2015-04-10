@@ -20,6 +20,7 @@
 
 #import <Foundation/NSDictionary.h>
 
+#import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WODirectAction.h>
 #import <NGObjWeb/WOResponse.h>
@@ -36,6 +37,8 @@
 #import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxJSONPreferences.h"
+
+static SoProduct *preferencesProduct = nil;
 
 @implementation UIxJSONPreferences
 
@@ -55,39 +58,87 @@
 {
   NSMutableDictionary *values;
   SOGoUserDefaults *defaults;
+  NSMutableArray *accounts;
   NSArray *categoryLabels;
   BOOL dirty;
   
-  defaults = [[context activeUser] userDefaults];
-  dirty = NO;
+  if (!preferencesProduct)
+    {
+      preferencesProduct = [[SoProduct alloc] initWithBundle:
+                                    [NSBundle bundleForClass: NSClassFromString(@"PreferencesUIProduct")]];
+    }
 
+  defaults = [[context activeUser] userDefaults];
+
+  //
+  // Default General preferences
+  //
+  if (![[defaults source] objectForKey: @"SOGoLanguage"])
+    [[defaults source] setObject: [defaults language]  forKey: @"SOGoLanguage"];
+
+  if (![[defaults source] objectForKey: @"SOGoTimeZone"])
+    [[defaults source] setObject: [defaults timeZoneName]  forKey: @"SOGoTimeZone"];
+  
   if (![[defaults source] objectForKey: @"SOGoShortDateFormat"])
-    [[defaults source] setObject: @"default"  forKey: @"SOGoShortDateFormat"];
+    [[defaults source] setObject: [defaults shortDateFormat]  forKey: @"SOGoShortDateFormat"];
 
   if (![[defaults source] objectForKey: @"SOGoLongDateFormat"])
-    [[defaults source] setObject: @"default"  forKey: @"SOGoLongDateFormat"];
+    [[defaults source] setObject: [defaults longDateFormat]  forKey: @"SOGoLongDateFormat"];
 
+  if (![[defaults source] objectForKey: @"SOGoTimeFormat"])
+    [[defaults source] setObject: [defaults timeFormat]  forKey: @"SOGoTimeFormat"];
+
+  if (![[defaults source] objectForKey: @"SOGoLoginModule"])
+    [[defaults source] setObject: [defaults loginModule]  forKey: @"SOGoLoginModule"];
+  
+  if (![[defaults source] objectForKey: @"SOGoRefreshViewCheck"])
+    [[defaults source] setObject: [defaults refreshViewCheck]  forKey: @"SOGoRefreshViewCheck"];
+
+  //
+  // Default Calendar preferences
+  //
+  if (![[defaults source] objectForKey: @"SOGoFirstDayOfWeek"])
+    [[defaults source] setObject: [NSNumber numberWithInt: [defaults firstDayOfWeek]] forKey: @"SOGoFirstDayOfWeek"];
+  
+  if (![[defaults source] objectForKey: @"SOGoDayStartTime"])
+    [[defaults source] setObject: [NSString stringWithFormat: @"%02d:00", [defaults dayStartHour]] forKey: @"SOGoDayStartTime"];
+
+  if (![[defaults source] objectForKey: @"SOGoDayEndTime"])
+    [[defaults source] setObject: [NSString stringWithFormat: @"%02d:00", [defaults dayEndHour]] forKey: @"SOGoDayEndTime"];
+  
   if (![[defaults source] objectForKey: @"SOGoFirstWeekOfYear"])
     [[defaults source] setObject: [defaults firstWeekOfYear] forKey: @"SOGoFirstWeekOfYear"];
+
+  if (![[defaults source] objectForKey: @"SOGoDefaultCalendar"])
+    [[defaults source] setObject: [defaults defaultCalendar] forKey: @"SOGoDefaultCalendar"];
+
+  if (![[defaults source] objectForKey: @"SOGoCalendarEventsDefaultClassification"])
+    [[defaults source] setObject: [defaults calendarEventsDefaultClassification] forKey: @"SOGoCalendarEventsDefaultClassification"];
   
-  if (![[defaults source] objectForKey: @"SOGoSelectedAddressBook"])
-    [[defaults source] setObject: @"personal" forKey: @"SOGoSelectedAddressBook"];
+  if (![[defaults source] objectForKey: @"SOGoCalendarTasksDefaultClassification"])
+    [[defaults source] setObject: [defaults calendarTasksDefaultClassification] forKey: @"SOGoCalendarTasksDefaultClassification"];
+  
+  if (![[defaults source] objectForKey: @"SOGoCalendarDefaultReminder"])
+    [[defaults source] setObject: [defaults calendarDefaultReminder] forKey: @"SOGoCalendarDefaultReminder"];
   
   // Populate default calendar categories, based on the user's preferred language
   if (![defaults calendarCategories])
     {
-      categoryLabels = [[[self labelForKey: @"calendar_category_labels"]
+      categoryLabels = [[[self labelForKey: @"calendar_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
                          componentsSeparatedByString: @","]
                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
       
       [defaults setCalendarCategories: categoryLabels];
-      dirty = YES;
     }
   
+  //
+  // Default Contacts preferences
+  //
   // Populate default contact categories, based on the user's preferred language
+  //
   if (![defaults contactsCategories])
     {
-      categoryLabels = [[[self labelForKey: @"contacts_category_labels"]
+      categoryLabels = [[[self labelForKey: @"contacts_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
                           componentsSeparatedByString: @","]
                           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
       
@@ -95,8 +146,28 @@
         categoryLabels = [NSArray array];
       
       [defaults setContactsCategories: categoryLabels];
-      dirty = YES;
     }
+
+  //
+  // Default Mail preferences
+  //
+  if (![[defaults source] objectForKey: @"SOGoSelectedAddressBook"])
+    [[defaults source] setObject: [defaults selectedAddressBook] forKey: @"SOGoSelectedAddressBook"];
+
+  if (![[defaults source] objectForKey: @"SOGoMailMessageForwarding"])
+    [[defaults source] setObject: [defaults mailMessageForwarding] forKey: @"SOGoMailMessageForwarding"];
+
+  if (![[defaults source] objectForKey: @"SOGoMailReplyPlacement"])
+    [[defaults source] setObject: [defaults mailReplyPlacement] forKey: @"SOGoMailReplyPlacement"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailSignaturePlacement"])
+    [[defaults source] setObject: [defaults mailSignaturePlacement] forKey: @"SOGoMailSignaturePlacement"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailComposeMessageType"])
+    [[defaults source] setObject: [defaults mailComposeMessageType] forKey: @"SOGoMailComposeMessageType"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
+    [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
   
   // Populate default mail lablels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
@@ -119,17 +190,19 @@
         }
  
       [defaults setMailLabelsColors: v];
-      dirty = YES;
     }
 
-  if (dirty)
+  if ([[defaults source] dirty])
     [defaults synchronize];
 
   // We inject our default mail account, something we don't want to do before we
   // call -synchronize on our defaults.
   values = [[[[defaults source] values] mutableCopy] autorelease];
-  [[values objectForKey: @"AuxiliaryMailAccounts"] insertObject: [[[context activeUser] mailAccounts] objectAtIndex: 0]
-                                                        atIndex: 0];
+
+  accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
+  [accounts insertObject: [[[context activeUser] mailAccounts] objectAtIndex: 0]
+                 atIndex: 0];
+  [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
     
   return [self _makeResponse: values];
 }

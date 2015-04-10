@@ -51,6 +51,8 @@
     SOGoTimeFormat = "%H:%M";
     SOGoFirstDayOfWeek = 0;
     SOGoFirstWeekOfYear = "January1";
+    SOGoShortDateFormat = "default";
+    SOGoLongDateFormat = "default";
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
@@ -67,6 +69,8 @@
     SOGoSentFolderName = "Sent";
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
+    SOGoMailComposeMessageType = "html";
+    SOGoMailDisplayRemoteInlineImages = "never";
 
     SOGoMailAutoSave = "5";
 
@@ -74,8 +78,10 @@
     SOGoCalendarEventsDefaultClassification = "PUBLIC";
     SOGoCalendarTasksDefaultClassification = "PUBLIC";
     SOGoCalendarDefaultReminder = "NONE";
-
+    SOGoDefaultCalendar = "selected";
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
+
+    SOGoSelectedAddressBook = "personal";
 
     SOGoSearchMinimumWordLength = 2;
 

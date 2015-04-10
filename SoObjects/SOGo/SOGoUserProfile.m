@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2008-2009 Inverse inc.
-  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2008-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -323,6 +322,10 @@
 }
 
 /* saving changes */
+- (BOOL) dirty
+{
+  return defFlags.modified;
+}
 
 - (BOOL) synchronize
 {
