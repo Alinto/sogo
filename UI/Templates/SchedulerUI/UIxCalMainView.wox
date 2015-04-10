@@ -166,17 +166,7 @@
              ng-controller="CalendarListController as list">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
-          <div class="sg-toolbar-group-1" layout="row">
-            <md-button ng-click="toggleLeft()" class="md-hide-gt-md sg-button-navicon iconButton" label:aria-label="Toggle Menu">
-              <span class="md-icon-menu"></span>
-            </md-button>
-            <div class="sg-date-group" layout="column" layout-align="space-between end">
-              <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
-              <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
-              <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
-            </div>
-            <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
-          </div>
+          <var:component className="UIxTopnavToolbarTemplate" />
           <div class="sg-toolbar-group-2">
             <md-button class="iconButton" label:aria-label="Search">
               <i class="md-icon-search"><!--icon--></i>
@@ -198,7 +188,7 @@
               <span class="md-icon-create"><!-- icon --></span>
             </div>
           </div>
-          <div class="spacer cols-8"><!-- spacer -->
+          <div class="spacer"><!-- spacer -->
             <a class="iconButton md-button md-default-theme"
                label:aria-label="Day"
                href="#/calendar/day"><i class="md-icon-view-day"><!-- day view --></i></a>

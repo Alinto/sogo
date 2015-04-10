@@ -657,3 +657,9 @@
 
 @implementation UIxSidenavToolbarTemplate
 @end
+
+@interface UIxTopnavToolbarTemplate : UIxComponent
+@end
+
+@implementation UIxTopnavToolbarTemplate
+@end

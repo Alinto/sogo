@@ -1,0 +1,19 @@
+<?xml version='1.0' standalone='yes'?>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <div class="sg-toolbar-group-1" layout="row">
+    <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
+      <span class="md-icon-menu"></span>
+    </md-button>
+    <div class="sg-date-group" layout="column" layout-align="space-between end">
+      <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
+      <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
+      <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
+    </div>
+    <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
+  </div>
+</container>
