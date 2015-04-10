@@ -669,6 +669,34 @@
     }])
 
   /*
+   * sgFolderStylesheet - Add CSS stylesheet for folder (addressbook or calendar)
+   * @memberof SOGo.UIDesktop
+   * @restrict attribute
+   * @param {object} ngModel - the object literal describing the folder (an Addressbook or Calendar instance)
+   * @example:
+
+    <div sg-folder-stylesheet="true"
+         ng-repeat="calendar in calendars.list"
+         ng-model="calendar" />
+   </div>
+  */
+    .directive('sgFolderStylesheet', [function() {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+          ngModel: '='
+        },
+        template:
+          '<style type="text/css">' +
+          '  .folder{{ ngModel.id }} {' +
+          '    background-color: {{ ngModel.color }};' +
+          '  }' +
+          '</style>'
+      }
+    }])
+
+  /*
    * sgCalendarDayTable - Build list of blocks for a specific day
    * @memberof SOGo.UIDesktop
    * @restrict element
@@ -726,8 +754,24 @@
       };
 
       function link(scope, iElement, attrs) {
-          iElement.addClass('starts' + scope.block.start);
-          iElement.addClass('lasts' + scope.block.length);
+        // Compute overlapping (5%)
+        var pc = 100 / scope.block.siblings,
+            left = scope.block.position * pc,
+            right = 100 - (scope.block.position + 1) * pc;
+
+        if (pc < 100) {
+          if (left > 0)
+            left -= 5;
+          if (right > 0)
+            right -= 5;
+        }
+
+        // Set position
+        iElement.css('left', left + '%');
+        iElement.css('right', right + '%');
+        iElement.addClass('starts' + scope.block.start);
+        iElement.addClass('lasts' + scope.block.length);
+        iElement.addClass('folder' + scope.block.component.c_folder);
       }
     }])
 
@@ -750,6 +794,7 @@
           blocks: '=sgBlocks',
           day: '@sgDay'
         },
+        replace: true,
         template:
           '<sg-calendar-month-event' +
           '  ng-repeat="block in blocks[day]"' +
@@ -776,25 +821,23 @@
         },
         replace: true,
         template:
-          '<div class="event">' +
-          '  <div>' +
-          '      <div>' +
+          '<div class="sg-event">' +
           '        <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>' +
-          '        {{ block.component.c_title }}<span class="icons">' +
+          '        {{ block.component.c_title }}' +
+          '        <span class="icons">' +
           '          <i ng-if="block.component.c_nextalarm" class="md-icon-alarm"></i>' +
           '          <i ng-if="block.component.c_classification == 1" class="md-icon-visibility-off"></i>' +
           '          <i ng-if="block.component.c_classification == 2" class="md-icon-vpn-key"></i>' +
           '        </span>' +
-          '      </div>' +
-          '  </div>' +
           '  <div class="leftDragGrip"></div>' +
           '  <div class="rightDragGrip"></div>' +
+          '  </div>' +
           '</div>',
         link: link
       };
 
       function link(scope, iElement, attrs) {
-        iElement.addClass('calendarFolder' + scope.block.component.c_folder);
+        iElement.addClass('folder' + scope.block.component.c_folder);
       }
     }]);
 

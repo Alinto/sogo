@@ -143,6 +143,10 @@
   <main class="view md-layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
 
   <script type = "text/ng-template" id="UIxCalMainFrame">
+    <!-- calendars colors -->
+    <div sg-folder-stylesheet="true"
+         ng-repeat="calendar in calendars.list"
+         ng-model="calendar"><!-- stylesheet --></div>
     <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
