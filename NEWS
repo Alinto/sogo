@@ -20,6 +20,65 @@ Bug fixes
  - Fix exception modifications import in recurrence series
  - Fix server side crash parsing rtf emails with images (with word97 format)
 
+2.2.17a (2014-03-15)
+--------------------
+
+Bug fixes
+ - avoid calling -stringByReplacingOccurrencesOfString:... for old GNUstep runtime
+
+2.2.17 (2015-03-24)
+-------------------
+
+Enhancements
+ - support for mail prority using EAS
+ - immediately delete mails from EAS clients when they are marked as deleted on the IMAP server
+ - now favor login@domain as the default email address if multiple mail: fields are specified
+ - enable by default HTML mails support using EAS on Windows and BB phones
+ - now possible to configure objectClass names for LDAP groups using GroupObjectClasses (#1499)
+
+Bug fixes
+ - fixed login issue after password change (#2601)
+ - fixed potential encoding issue using EAS and 8-bit mails (#3116)
+ - multiple collections support for GetItemEstimate using EAS
+ - fixed empty sync responses for EAS 2.5 and 12.0 clients
+ - use the correct mail body element for EAS 2.5 clients
+ - fixed tasks disappearing issue with RoadSync
+ - use the correct body element for events for EAS 2.5 clients
+ - SmartReply improvements for missing body attributes
+ - do not use syncKey from cache when davCollectionTag = -1
+ - use correct mail attachment elements for EAS 2.5 clients
+ - fixed contacts lookup by UID in freebusy
+ - reduced telephone number to a single value in JSON response of contacts list
+ - fixed freebusy data when 'busy off hours' is enabled and period starts during the weekend
+ - fixed fetching of freebusy data from the Web interface
+ - fixed EAS handling of Bcc in emails (#3138)
+ - fixed Language-Region tags in Web interface (#3121)
+ - properly fallback over EAS to UTF-8 and then Latin1 for messages w/o charset (#3103)
+ - prevent potential freebusy lookup crashes during timezone changes with repetitive events
+ - improved GetItemEstimate to count all vasnished/deleted mails too
+ - improvements to EAS SyncKey handling to avoid missing mails (#3048, #3058)
+
+2.2.16 (2015-02-12)
+-------------------
+
+New features
+ - now possible for SOGo to change the sambaNTPassword/sambaLMPassword
+ - now possible to limit automatic forwards to internal/external domains
+
+Enhancements
+ - added support for email categories using EAS (#2995)
+ - now possible to always send vacation messages (#2332)
+ - added EAS best practices to the documentation
+ - improved fetching of text parts over EAS
+ - updated Czech, Finnish, French, German and Hungarian translations
+
+Bug fixes
+ - (regression) fixed sending a message when mail module is not active (#3088)
+ - mail labels with blanks are not handled correctly (#3078)
+ - fixed BlackBerry issues sending multiple mails over EAS (#3095)
+ - fixed plain/text mails showing on one line on Android/EAS (#3055)
+ - fixed exception in sogo-tool when parsing arguments of a set operation
+
 2.2.15-zentyal2 (2015-03-16)
 ----------------------------
 

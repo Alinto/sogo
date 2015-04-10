@@ -37,6 +37,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
+#import <Contacts/SOGoContactFolders.h>
 
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
@@ -234,7 +235,6 @@
   [currentPassword release];
   [cn release];
   [loginInDomain release];
-  //[language release];
   [super dealloc];
 }
 
@@ -577,13 +577,13 @@
 - (void) _appendSystemMailAccount
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *cImapServer, *signature,
-    *encryption, *scheme, *action, *query, *customEmail, *sieveServer;
+    *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
   NSArray *mails;
   NSURL *url, *cUrl;
-  unsigned int count, max;
+  unsigned int count, max, default_identity;
   NSInteger defaultPort;
 
   [self userDefaults];
@@ -661,8 +661,9 @@
       [mailAccount setObject: sieveServer  forKey: @"sieveServerName"];
     }
   
-
-  /* identities */
+  // Identities
+  defaultEmail = [NSString stringWithFormat: @"%@@%@", [self loginInDomain], [self domain]];
+  default_identity = 0;
   identities = [NSMutableArray new];
   mails = [self allEmails];
   [mailAccount setObject: [mails objectAtIndex: 0] forKey: @"name"];
@@ -702,6 +703,10 @@
           if (signature)
             [identity setObject: signature forKey: @"signature"];
           [identities addObject: identity];
+
+          if ([[identity objectForKey: @"email"] caseInsensitiveCompare: defaultEmail] == NSOrderedSame)
+            default_identity = [identities count]-1;
+
           [identity release];
         }
     }
@@ -723,10 +728,14 @@
       if (signature)
         [identity setObject: signature forKey: @"signature"];
       [identities addObject: identity];
+
+      if ([[identity objectForKey: @"email"] caseInsensitiveCompare: defaultEmail] == NSOrderedSame)
+            default_identity = [identities count]-1;
+
       [identity release];
     }
-  [[identities objectAtIndex: 0] setObject: [NSNumber numberWithBool: YES]
-                                    forKey: @"isDefault"];
+  [[identities objectAtIndex: default_identity] setObject: [NSNumber numberWithBool: YES]
+                                                   forKey: @"isDefault"];
   
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];

@@ -254,7 +254,7 @@ typedef enum
                  //
                  // to achieve what we want.
                  //
-                 if (o && [o count] == 1)
+                 if (o && [o isKindOfClass: [NSDictionary class]] && [o count] == 1)
                   {
                     [source setObject: [[o allValues] lastObject] forKey: key];
                   }

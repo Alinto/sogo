@@ -1127,6 +1127,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id currentCollection;
   NSMutableString *s;
   NSData *d;
+  NSArray *allCollections;
+  int j;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
   int status, count;
@@ -1135,66 +1137,72 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   status = 1;
   count = 0;
 
-  collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
-  realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
-
-  if (folderType == ActiveSyncMailFolder)
-     nameInCache = [NSString stringWithFormat: @"folder%@", realCollectionId];
-  else
-     nameInCache = collectionId;
-
-  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-
-  currentCollection = [self collectionFromId: realCollectionId  type: folderType];
-  
-  //
-  // For IMAP, we simply build a request like this:
-  //
-  // . UID SORT (SUBJECT) UTF-8 SINCE 1-Jan-2014 NOT DELETED
-  // * SORT 124576 124577 124579 124578
-  // . OK Completed (4 msgs in 0.000 secs)
-  //
-  if (folderType == ActiveSyncMailFolder)
-    {
-      EOQualifier *notDeletedQualifier, *sinceDateQualifier;
-      EOAndQualifier *qualifier;
-      NSCalendarDate *filter;
-      NSArray *uids;
-
-      filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
-      
-      notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
-                                            @"(not (flags = %@))",
-                                          @"deleted"];
-      sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                          @"(DATE >= %@)", filter];
-      
-      qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
-                                          nil];
-      AUTORELEASE(qualifier);
-      
-      uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
-                                              sortOrdering: @"REVERSE ARRIVAL"
-                                                  threaded: NO];
-      count = [uids count];
-      
-      // Add the number of UIDs expected to "soft delete"
-      count += [self _softDeleteCountWithFilter: filter collectionId: nameInCache];
-
-    }
-  else
-    {
-      count = [[currentCollection toOneRelationshipKeys] count];
-    }
-      
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-  [s appendFormat: @"<GetItemEstimate xmlns=\"GetItemEstimate:\"><Response><Status>%d</Status><Collection>", status];
+  [s appendString: @"<GetItemEstimate xmlns=\"GetItemEstimate:\">"];
+
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
+
+  for (j = 0; j < [allCollections count]; j++)
+     {
+       collectionId = [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"CollectionId"] lastObject] textValue];
+       realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+
+       if (folderType == ActiveSyncMailFolder)
+          nameInCache = [NSString stringWithFormat: @"folder%@", realCollectionId];
+       else
+          nameInCache = collectionId;
+
+       realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
+
+       currentCollection = [self collectionFromId: realCollectionId  type: folderType];
   
-  [s appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
-  [s appendFormat: @"<Estimate>%d</Estimate>", count];
+       //
+       // For IMAP, we simply build a request like this:
+       //
+       // . UID SORT (SUBJECT) UTF-8 SINCE 1-Jan-2014 NOT DELETED
+       // * SORT 124576 124577 124579 124578
+       // . OK Completed (4 msgs in 0.000 secs)
+       //
+       if (folderType == ActiveSyncMailFolder)
+         {
+           NSCalendarDate *filter;
+           NSString *syncKey;
+           NSArray *allMessages;
+
+           filter = [NSCalendarDate dateFromFilterType: [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"FilterType"] lastObject] textValue]];
+           syncKey = [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"SyncKey"] lastObject] textValue];
+      
+           allMessages = [currentCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: syncKey  fromDate: filter];
+
+           count = [allMessages count];
+      
+           // Add the number of UIDs expected to "soft delete"
+           count += [self _softDeleteCountWithFilter: filter collectionId: nameInCache];
+         }
+       else
+         {
+           count = [[currentCollection toOneRelationshipKeys] count];
+         }
+      
+
+       [s appendString: @"<Response>"];
+       [s appendFormat: @"<Status>%d</Status><Collection>", status];
+
+       if (folderType == ActiveSyncMailFolder)
+         [s appendString: @"<Class>Email</Class>"];
+       else if (folderType == ActiveSyncContactFolder)
+         [s appendString: @"<Class>Contacts</Class>"];
+       else if (folderType == ActiveSyncEventFolder)
+         [s appendString: @"<Class>Calendar</Class>"];
+       else if (folderType == ActiveSyncTaskFolder)
+         [s appendString: @"<Class>Tasks</Class>"];
+
+       [s appendFormat: @"<CollectionId>%@</CollectionId>",collectionId];
+       [s appendFormat: @"<Estimate>%d</Estimate></Collection></Response>", count];
+     }
   
-  [s appendString: @"</Collection></Response></GetItemEstimate>"];
+  [s appendString: @"</GetItemEstimate>"];
 
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
@@ -1929,6 +1937,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Provision xmlns=\"Provision:\">"];
+  [s appendString: @"<AllowHTMLEmail>1</AllowHTMLEmail>"];
   [s appendString: @"</Provision>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -2254,7 +2263,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   error = [self _sendMail: data
                recipients: [message allRecipients]
-                saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
+                saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
 
   if (error)
     {
@@ -2345,7 +2354,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id value;
 
   folderId = [[(id)[theDocumentElement getElementsByTagName: @"FolderId"] lastObject] textValue];
+
+  // if folderId is not there try to get it from URL
+  if (!folderId)
+    {
+     folderId = [[[context request] uri] collectionid];
+    }
+
   itemId = [[(id)[theDocumentElement getElementsByTagName: @"ItemId"] lastObject] textValue];
+
+  // if itemId is not there try to get it from URL
+  if (!itemId)
+    {
+     itemId = [[[context request] uri] itemid];
+    }
+
   realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
@@ -2543,7 +2566,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
   // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
   //
-  if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame &&
+  if (([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame ||
+      [cmdName caseInsensitiveCompare: @"SmartReply"] == NSOrderedSame ||
+      [cmdName caseInsensitiveCompare: @"SmartForward"] == NSOrderedSame) &&
       [[theRequest headerForKey: @"content-type"] caseInsensitiveCompare: @"message/rfc822"] == NSOrderedSame)
     {
       NSString *s, *xml;
@@ -2561,7 +2586,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           s = [theRequest contentAsString];
         }
       
-      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><SendMail xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></SendMail>", [s stringByEncodingBase64]];
+      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><%@ xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></%@>", cmdName, [s stringByEncodingBase64], cmdName];
+
+
       
       d = [xml dataUsingEncoding: NSASCIIStringEncoding];
     }

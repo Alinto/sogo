@@ -29,6 +29,7 @@
 "Days between responses :" = "Válaszok közötti napok száma:";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
+"Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Kérem adja meg az üzenetét valamint a címeket, amelyekre engedélyezi az automatikus válasz küldését.";
 "Your vacation message must not end with a single dot on a line." = "A távollét üzenet utolsó sora nem tartalmazhat egy egyedülálló . karatert.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Másolat megtartása";
 "Please specify an address to which you want to forward your messages."
 = "Kérem adjon meg egy címet, amelyre a leveleit továbbítani kívánja.";
+"You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
+"You are not allowed to forward your messages to an internal email address." = "Ön számára nem endélyezett az üzenetek továbbítása belső email címre.";
+
 
 /* d & t */
 "Current Time Zone :" = "Időzóna :";

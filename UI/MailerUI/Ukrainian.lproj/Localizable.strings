@@ -79,7 +79,6 @@
 "Remove this folder" = "Вилучати цю теку";
 "Erase mails from this folder" = "Вилучати повідомлення з цієї теки";
 "Expunge this folder" = "Позначати листи як вилучені";
-"Archive This Folder" = "Архівувати цю теку";
 "Modify the acl of this folder" = "Керувати правами доступу до цієї теки";
 
 "Saved Messages.zip" = "Збережено Messages.zip";

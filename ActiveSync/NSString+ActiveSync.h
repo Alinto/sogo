@@ -49,6 +49,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) deviceType;
 - (NSString *) attachmentName;
 - (NSString *) command;
+- (NSString *) collectionid;
+- (NSString *) itemid;
 - (NSData *) convertHexStringToBytes;
 
 @end

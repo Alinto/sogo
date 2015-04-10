@@ -240,7 +240,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
       handle = currentHandle;
     else if (debugPools)
       [self logWithFormat: @"DBPOOL: cannot use handle (%@ vs %@) ",
-	    [_url absoluteString], [handle->url absoluteString]];
+	    [_url absoluteString], [currentHandle->url absoluteString]];
 
   return handle;
 }

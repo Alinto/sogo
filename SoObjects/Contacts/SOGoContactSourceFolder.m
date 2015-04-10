@@ -267,6 +267,13 @@
     data = [oldRecord objectForKey: @"homephone"];
   if (![data length])
     data = @"";
+  else if ([data isKindOfClass: [NSArray class]])
+    {
+      if ([data count] > 0)
+        data = [data objectAtIndex: 0];
+      else
+        data = @"";
+    }
   [newRecord setObject: data forKey: @"c_telephonenumber"];
 
   // Custom attribute for group-lookups. See LDAPSource.m where

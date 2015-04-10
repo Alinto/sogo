@@ -137,6 +137,8 @@
   NGLdapEntry *entry;
   NSObject <SOGoSource> *source;
   id o;
+  NSEnumerator *gclasses;
+  NSString *gclass;
   
   int i;
 
@@ -194,12 +196,11 @@
             }
 	}
 
-      // Found a group, let's return it.
-      if ([classes containsObject: @"group"] ||
-	  [classes containsObject: @"groupofnames"] ||
-	  [classes containsObject: @"groupofuniquenames"] ||
-	  [classes containsObject: @"posixgroup"])
-	{
+        gclasses = [[source groupObjectClasses] objectEnumerator];
+        while (gclass = [gclasses nextObject])
+          if ([classes containsObject: gclass])
+           {
+          // Found a group, let's return it.
 	  o = [[self alloc] initWithIdentifier: theValue
 			                domain: domain
                                         source: source

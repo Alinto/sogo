@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@ static Class NSStringK;
 #define SafeLDAPCriteria(x) [[[x stringByReplacingString: @"\\" withString: @"\\\\"] \
                                  stringByReplacingString: @"'" withString: @"\\'"] \
                                  stringByReplacingString: @"%" withString: @"%%"]
-
 
 @implementation LDAPSource
 
@@ -102,6 +101,8 @@ static Class NSStringK;
       contactMapping = nil;
       searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
       [searchFields retain];
+      groupObjectClasses = [NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil];
+      [groupObjectClasses retain];
       IMAPHostField = nil;
       IMAPLoginField = nil;
       SieveHostField = nil;
@@ -113,6 +114,7 @@ static Class NSStringK;
 
       searchAttributes = nil;
       passwordPolicy = NO;
+      updateSambaNTLMPasswords = NO;
 
       kindField = nil;
       multipleBookingsField = nil;
@@ -144,6 +146,7 @@ static Class NSStringK;
   [contactMapping release];
   [mailFields release];
   [searchFields release];
+  [groupObjectClasses release];
   [IMAPHostField release];
   [IMAPLoginField release];
   [SieveHostField release];
@@ -189,6 +192,7 @@ static Class NSStringK;
              UIDField: [udSource objectForKey: @"UIDFieldName"]
            mailFields: [udSource objectForKey: @"MailFieldNames"]
          searchFields: [udSource objectForKey: @"SearchFieldNames"]
+   groupObjectClasses: [udSource objectForKey: @"GroupObjectClasses"]
         IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
        SieveHostField: [udSource objectForKey: @"SieveHostFieldName"]
@@ -245,6 +249,9 @@ static Class NSStringK;
       if ([udSource objectForKey: @"passwordPolicy"])
         passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
 
+      if ([udSource objectForKey: @"updateSambaNTLMPasswords"])
+        updateSambaNTLMPasswords = [[udSource objectForKey: @"updateSambaNTLMPasswords"] boolValue];
+      
       ASSIGN(MSExchangeHostname, [udSource objectForKey: @"MSExchangeHostname"]);
     }
 
@@ -307,6 +314,7 @@ static Class NSStringK;
           UIDField: (NSString *) newUIDField
         mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
+groupObjectClasses: (NSArray *) newGroupObjectClasses
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField
@@ -331,6 +339,8 @@ static Class NSStringK;
     ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
     ASSIGN(searchFields, newSearchFields);
+  if (newGroupObjectClasses)
+    ASSIGN(groupObjectClasses, newGroupObjectClasses);
   if (newBindFields)
     {
       // Before SOGo v1.2.0, bindFields was a comma-separated list
@@ -598,6 +608,40 @@ static Class NSStringK;
   return [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
 }
 
+- (BOOL)  _ldapModifyAttribute: (NSString *) theAttribute
+                     withValue: (NSString *) theValue
+                        userDN: (NSString *) theUserDN
+                      password: (NSString *) theUserPassword
+                    connection: (NGLdapConnection *) bindConnection
+{
+  NGLdapModification *mod;
+  NGLdapAttribute *attr;
+  NSArray *changes;
+
+  BOOL didChange;
+  
+  attr = [[NGLdapAttribute alloc] initWithAttributeName: theAttribute];
+  [attr addStringValue: theValue];
+  
+  mod = [NGLdapModification replaceModification: attr];
+  
+  changes = [NSArray arrayWithObject: mod];
+  
+  if ([bindConnection bindWithMethod: @"simple"
+                              binddn: theUserDN
+                         credentials: theUserPassword])
+    {
+      didChange = [bindConnection modifyEntryWithDN: theUserDN
+                                            changes: changes];
+    }
+  else
+    didChange = NO;
+  
+  RELEASE(attr);
+
+  return didChange;
+}
+
 //
 //
 //
@@ -651,12 +695,8 @@ static Class NSStringK;
                   {
                     // We don't use a password policy - we simply use
                     // a modify-op to change the password
-                    NGLdapModification *mod;
-                    NGLdapAttribute *attr;
-                    NSArray *changes;
                     NSString* encryptedPass;
-
-                    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
+                    
                     if ([_userPasswordAlgorithm isEqualToString: @"none"])
                       {
                         encryptedPass = newPassword;
@@ -665,23 +705,32 @@ static Class NSStringK;
                       {
                         encryptedPass = [self _encryptPassword: newPassword];
                       }
-                    if(encryptedPass != nil)
+                    
+                    if (encryptedPass != nil)
                       {
-                        [attr addStringValue: encryptedPass];
-                        mod = [NGLdapModification replaceModification: attr];
-                        changes = [NSArray arrayWithObject: mod];
                         *perr = PolicyNoError;
-
-                        if ([bindConnection bindWithMethod: @"simple"
-                            binddn: userDN
-                            credentials: oldPassword])
-                          {
-                            didChange = [bindConnection modifyEntryWithDN: userDN
-                                                                  changes: changes];
-                        }
-                        else
-                          didChange = NO;
+                        didChange = [self _ldapModifyAttribute: @"userPassword"
+                                                     withValue: encryptedPass
+                                                        userDN: userDN
+                                                      password: oldPassword
+                                                    connection: bindConnection];
                       }
+                  }
+
+                // We must check if we must update the Samba NT/LM password hashes
+                if (didChange && updateSambaNTLMPasswords)
+                  {
+                    [self _ldapModifyAttribute: @"sambaNTPassword"
+                                     withValue: [newPassword asNTHash]
+                                        userDN: userDN
+                                      password: newPassword
+                                    connection: bindConnection];
+                    
+                    [self _ldapModifyAttribute: @"sambaLMPassword"
+                                     withValue: [newPassword asLMHash]
+                                        userDN: userDN
+                                      password: newPassword
+                                    connection: bindConnection];
                   }
               }
           }
@@ -989,6 +1038,8 @@ static Class NSStringK;
   NSString *value;
   static NSArray *resourceKinds = nil;
   NSMutableArray *classes;
+  NSEnumerator *gclasses;
+  NSString *gclass;
   id o;
 
   if (!resourceKinds)
@@ -1017,23 +1068,26 @@ static Class NSStringK;
 
   if (classes)
     {
-      // We check if our entry is a group. If so, we set the
-      // 'isGroup' custom attribute.
-      if ([classes containsObject: @"group"] ||
-          [classes containsObject: @"groupofnames"] ||
-          [classes containsObject: @"groupofuniquenames"] ||
-          [classes containsObject: @"posixgroup"])
-        {
-          [ldifRecord setObject: [NSNumber numberWithInt: 1]
-                         forKey: @"isGroup"];
-        }
       // We check if our entry is a resource. We also support
       // determining resources based on the KindFieldName attribute
       // value - see below.
-      else if ([classes containsObject: @"calendarresource"])
+      if ([classes containsObject: @"calendarresource"])
         {
           [ldifRecord setObject: [NSNumber numberWithInt: 1]
                          forKey: @"isResource"];
+        }
+      else
+        {
+        // We check if our entry is a group. If so, we set the
+        // 'isGroup' custom attribute.
+        gclasses = [groupObjectClasses objectEnumerator];
+        while (gclass = [gclasses nextObject])
+         if ([classes containsObject: [gclass lowercaseString]])
+           {
+             [ldifRecord setObject: [NSNumber numberWithInt: 1]
+                            forKey: @"isGroup"];
+             break;
+           }
         }
     }
 
@@ -1324,6 +1378,11 @@ static Class NSStringK;
 - (NSArray *) modifiers
 {
   return modifiers;
+}
+
+- (NSArray *) groupObjectClasses
+{
+  return groupObjectClasses;
 }
 
 static NSArray *
@@ -1641,6 +1700,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                        UIDField: @"cn"
                                      mailFields: nil
                                    searchFields: nil
+                             groupObjectClasses: nil
                                   IMAPHostField: nil
                                  IMAPLoginField: nil
                                  SieveHostField: nil

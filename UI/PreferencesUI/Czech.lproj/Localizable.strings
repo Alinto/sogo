@@ -29,6 +29,7 @@
 "Days between responses :" = "Počet dnů mezi odpověďmi :";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
 "Disable auto reply on" = "Automatické odpovědi vypnout dne";
+"Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím zadejte text zprávy a své emailové adresy, pro které chcete zasílání v nepřítomnosti použít.";
 "Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Ponechat kopii";
 "Please specify an address to which you want to forward your messages."
 = "Prosím zadejte adresu, na kterou chcete své zprávy přeposílat.";
+"You are not allowed to forward your messages to an external email address." = "Nemáte povoleno přeposílání Vašich zpráv na externí emailovou adresu.";
+"You are not allowed to forward your messages to an internal email address." = "Nemáte povoleno přeposílání Vašich zpráv na interní emailovou adresu.";
+
 
 /* d & t */
 "Current Time Zone :" = "Současné časové pásmo :";
