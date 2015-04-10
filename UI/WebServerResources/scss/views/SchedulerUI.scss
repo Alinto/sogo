@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+/// SchedulerUI.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
 
 .dayLabels {
@@ -27,8 +27,6 @@ $hours_margin: 50px;
             height: 40px;
             border-bottom: 1px solid sg-color($sogoPaper, 300);
         }
-=======
-/// SchedulerUI.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 #calendarHeader {
   position: relative;
@@ -46,11 +44,9 @@ $hours_margin: 50px;
       position: absolute;
       text-align: center;
       }
->>>>>>> Cleaning unused scss files
     }
   }
 
-<<<<<<< HEAD
 .daysViewFor1Days {
     .day {
         width: 100%;
@@ -63,11 +59,9 @@ $hours_margin: 50px;
 .daysViewFor7Days {
     .day {
         width: (100% / 7);
-=======
 .monthView, .daysViewFor7Days {
   .day {
     width: 14.2857%;
->>>>>>> Cleaning unused scss files
     }
   $i: 0;
   @while $i < 7 {
@@ -78,7 +72,6 @@ $hours_margin: 50px;
     }
   }
 
-<<<<<<< HEAD
 .sg-calendar-tile-header {
     color: sg-color($sogoPaper, 800);
     font-size: $sg-font-size-2;
@@ -124,7 +117,6 @@ $hours_margin: 50px;
             &.starts#{$i} { top: 10px * $i; }
             &.lasts#{$i} { height: 10px * $i; }
             $i: $i + 1;
-=======
 .daysViewFor1Days {
   .day {
     width: 100%;
@@ -181,7 +173,6 @@ $hours_margin: 50px;
     @while $i < 96 {
       &.starts#{$i} {
         top: 10px * $i;
->>>>>>> Cleaning unused scss files
         }
       &.lasts#{$i} {
         height: 10px * $i;
@@ -227,13 +218,10 @@ $hours_margin: 50px;
   }
 
 .minutes30 {
-<<<<<<< HEAD
     border-bottom: 1px dotted sg-color($sogoPaper, 300);
 }
-=======
   border-bottom: 1px dotted #ccc;
   }
->>>>>>> Cleaning unused scss files
 
 .gradient, .text {
   position: absolute;
