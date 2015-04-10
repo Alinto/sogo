@@ -1,6 +1,9 @@
 master
 ------
 
+New features
+ - Internet headers are now shown in Outlook
+
 Enhancements
  - Sharing request among different Outlook versions
  - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails

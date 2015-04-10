@@ -32,6 +32,7 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMailAddress.h>
 #import <NGMail/NGMailAddressParser.h>
+#import <NGMail/NGMimeMessageGenerator.h>
 #import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -1394,6 +1395,41 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           ? [[self _appointmentWrapper] getPidLidMeetingType: data
                                                     inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidTagTransportMessageHeaders: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSDictionary *mailHeaders;
+  NSEnumerator *keyEnumerator;
+  NSMutableArray *headers;
+  NGMimeMessageGenerator *g;
+  NSString *headerKey, *fullHeader, *headerGenerated;
+  id headerValue;
+  NSData *headerData;
+
+  /* Let's encode each mail header and put them on 'headers' array */
+  mailHeaders = [sogoObject mailHeaders];
+  headers = [NSMutableArray arrayWithCapacity: [mailHeaders count]];
+
+  g = [[NGMimeMessageGenerator alloc] init];
+  keyEnumerator = [mailHeaders keyEnumerator];
+  while ((headerKey = [keyEnumerator nextObject]))
+    {
+      headerValue = [mailHeaders objectForKey: headerKey];
+
+      headerData = [g generateDataForHeaderField: headerKey value: headerValue];
+      headerGenerated = [[NSString alloc] initWithData: headerData encoding:NSUTF8StringEncoding];
+      fullHeader = [NSString stringWithFormat:@"%@: %@", headerKey, headerGenerated];
+      [headerGenerated release];
+
+      [headers addObject: fullHeader];
+    }
+  [g release];
+
+  *data = [[headers componentsJoinedByString:@"\n"] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr
