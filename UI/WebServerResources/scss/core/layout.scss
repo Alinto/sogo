@@ -126,6 +126,10 @@ flex, hide, show, show-sm;
   flex: 1 1 auto;
 }
 
+.md-flex-fix {
+  flex: 1 1 0;
+}
+
 // Generate responsive columns
 // ----------------------------------------------------------------------------
 @mixin responsive-columns($breakpoint, $query) {

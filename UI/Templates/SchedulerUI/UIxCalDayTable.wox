@@ -6,7 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
-  <div id="calendarHeader" var:class="daysViewClasses">
+  <div var:class="daysViewClasses">
 
 <!-- MultiColumnView -->
     <!-- Display the name of the calendar -->
@@ -20,7 +20,7 @@
       </div>
       
       <!-- Display today abreviation and date -->
-      <div class="dayLabels">
+      <div class="days dayLabels">
         <var:foreach list="daysToDisplay" item="currentTableDay">
           <div var:class="dayClasses">
             <var:string value="labelForDate"/><br/>
@@ -42,7 +42,7 @@
 <!-- DayView or WeekView -->
     <var:if condition="isNotMultiColumnView">
       <!-- Display today abreviation and date -->
-      <div class="dayLabels">
+      <div class="days dayLabels">
         <var:foreach list="daysToDisplay" item="currentTableDay">
           <div var:class="dayClasses">
             <var:string value="labelForDate"/><br/>
@@ -62,7 +62,7 @@
   
   
   <!-- The hours cells -->
-  <div id="daysView" var:class="daysViewClasses">
+  <div var:class="daysViewClasses">
     <div class="hours">
       <var:foreach list="hoursToDisplay" item="currentTableHour">
         <div class="hour" var:id="currentHourId">

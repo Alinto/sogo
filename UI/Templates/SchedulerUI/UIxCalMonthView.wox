@@ -36,30 +36,32 @@
             ng-click="calendar.changeView($event)"><i class="md-icon-chevron-right"><!--icon--></i></md-button>
       </h5>
     </div>
-    <div id="calendarContent">
       <div class="monthView">
-        <div id="calendarHeader" layout="row" layout-align="center center">
-        <var:foreach list="headerDaysToDisplay" item="currentTableDay">
-          <div class="md-flex"><var:string value="labelForCurrentDayToDisplay"/></div>
-        </var:foreach>
-        </div>
-        <div id="monthDaysView">
-          <var:foreach list="weeksToDisplay" item="currentWeek">
-            <div layout="row">
-            <var:foreach list="currentWeek" item="currentTableDay">
-              <div class="md-flex"
-                    var:day="currentTableDay.shortDateString"
-                    var:day-number="currentDayNumber"
-                    var:id="currentDayId">
-                <div class="dayHeader"><var:string value="dayHeaderNumber"/></div>
-                <sg-calendar-month-day
-                    sg-blocks="calendar.blocks"
-                    var:sg-day="currentTableDay.shortDateString" />
-              </div>
-            </var:foreach>
-            </div>
+        <div layout="row" layout-align="center center">
+          <var:foreach list="headerDaysToDisplay" item="currentTableDay">
+            <div class="md-flex-fix dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
           </var:foreach>
         </div>
+        <md-grid-list
+            md-cols="7"
+            md-row-height="1:1">
+          <var:foreach list="weeksToDisplay" item="currentWeek">
+            <var:foreach list="currentWeek" item="currentTableDay">
+              <md-grid-tile
+                  md-rowspan="1"
+                  md-colspan="1"
+                  class="day"
+                  var:day="currentTableDay.shortDateString"
+                  var:day-number="currentDayNumber"
+                  var:id="currentDayId">
+                <div layout="column" layout-fill="true">
+                <div class="sg-calendar-tile-header"><var:string value="dayHeaderNumber"/></div>
+                <sg-calendar-month-day
+                    sg-blocks="calendar.blocks"
+                    var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day></div>
+              </md-grid-tile>
+            </var:foreach>
+          </var:foreach>
+        </md-grid-list>
       </div>
-    </div>
   </container>

@@ -1,25 +1,46 @@
-#calendarHeader {
+$hours_margin: 50px;
+
+.dayLabels {
+    color: sg-color($sogoBlue, 700);
+    height: 35px;
+    left: 0;
+    overflow: hidden;
     position: relative;
+    .day {
+        height: 100%;
+        position: absolute;
+        text-align: center;
+    }
+}
+
+.days {
+    left: 0;
+    right: 0;
     top: 0;
-    height: 38px;
-    right: 0px;
-    .dayLabels {
-        height: 35px;
-        left: 0;
-        margin-left: 50px;
-        overflow: hidden;
-        position: relative;
-        .day {
-            height: 100%;
-            position: absolute;
-            text-align: center;
+    margin-left: $hours_margin;
+    position: relative;
+    .day {
+        border-left: 1px solid sg-color($sogoPaper, 300);
+        position: absolute;
+        .clickableHourCell {
+            height: 40px;
+            border-bottom: 1px solid sg-color($sogoPaper, 300);
         }
     }
 }
 
-.monthView, .daysViewFor7Days {
+.daysViewFor1Days {
     .day {
-        width: 14.2857%;
+        width: 100%;
+    }
+    .days {
+        margin-left: 0;
+    }
+}
+
+.daysViewFor7Days {
+    .day {
+        width: (100% / 7);
     }
     $i: 0;
     @while $i < 7 {
@@ -28,50 +49,38 @@
     }
 }
 
-.daysViewFor1Days {
-    .day {
-        width: 100%;
-    }
+.sg-calendar-tile-header {
+    color: sg-color($sogoPaper, 800);
+    font-size: $sg-font-size-2;
+    font-weight: $sg-font-light;
+    overflow: hidden;
+    padding: 2px;
 }
 
-#daysView {
+.daysView {
+    bottom: 0;
+    overflow-x: hidden;
+    overflow: auto;
     position: relative;
     top: 0;
-    bottom: 0;
-    overflow: auto;
-    overflow-x: hidden;
     .hours {
-        height: auto;
+        color: sg-color($sogoBlue, 700);
         display: inline-block;
-        position: relative;
         float: left;
-        top: 0;
+        font-weight: $sg-font-light;
+        height: auto;
         left: 0;
-        width: 50px;
+        position: relative;
+        top: 0;
+        width: $hours_margin;
         .hour {
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid sg-color($sogoPaper, 300);
             height: 40px;
             left: 0;
-            padding-right: 2px;
-            //padding-top: 2px;
+            padding: 2px;
             position: relative;
             right: 0;
             top: 0;
-        }
-    }
-    .days {
-        left: 0;
-        right: 0;
-        top: 0;
-        margin-left: 50px;
-        position: relative;
-        .day {
-            border-left: 1px solid #ccc;
-            position: absolute;
-            .clickableHourCell {
-                height: 40px;
-                border-bottom: 1px solid #ccc;
-            }
         }
     }
     .event {
@@ -81,7 +90,7 @@
         left: 0%;
         right: 0%;
         $i: 0;
-        @while $i < 96 {
+        @while $i < 96 { // number of 15-minutes blocks in a day
             &.starts#{$i} { top: 10px * $i; }
             &.lasts#{$i} { height: 10px * $i; }
             $i: $i + 1;
@@ -100,13 +109,32 @@
     }
 }
 
+.monthView {
+    md-grid-tile {
+        border: 1px solid sg-color($sogoPaper, 300);
+        overflow: auto;
+    }
+    .sg-event {
+        border-radius: 1px;
+        font-size: $sg-font-size-2;
+        overflow: hidden;
+        padding: 2px;
+        margin-bottom: 1px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        span {
+            font-weight: $sg-font-light;
+        }
+    }
+}
+
 .minutes15, .minutes30, .minutes45 {
     display: block;
     height: 25%;
 }
 
 .minutes30 {
-    border-bottom: 1px dotted #ccc;
+    border-bottom: 1px dotted sg-color($sogoPaper, 300);
 }
 
 .gradient, .text {
