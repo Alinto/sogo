@@ -1,11 +1,4 @@
-/**
-*
-* Main Stylesheet SOGo
-* Based on Angular Material Design
-* IMPORTANT : This scss file might interfere with actual Angular-Material grunt-build
-* and will generate a (too)) long css file because of the overrides
-*
-**/
+/// styles.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 // Compass extension imports - comment-out if needed
 // ------------------------------------------------------------------------------
@@ -41,7 +34,7 @@
 @import 'components/bottomSheet/bottomSheet';
 @import 'components/button/button';
 @import 'components/card/card';
-@import 'components/checkbox/checkbox';
+//@import 'components/checkbox/checkbox';
 @import 'components/content/content';
 @import 'components/dialog/dialog';
 @import 'components/divider/divider';
@@ -50,18 +43,18 @@
 @import 'components/input/input';
 @import 'components/list/list';
 @import 'components/autoScrollList/autoScrollList';
-@import 'components/progressCircular/progressCircular';
-@import 'components/progressLinear/progressLinear';
-@import 'components/radioButton/radio-button';
+//@import 'components/progressCircular/progressCircular';
+//@import 'components/progressLinear/progressLinear';
+//@import 'components/radioButton/radio-button';
 @import 'components/select/select';
 @import 'components/sidenav/sidenav';
 @import 'components/slider/slider';
-@import 'components/sticky/sticky';
+//@import 'components/sticky/sticky';
 @import 'components/subheader/subheader';
-@import 'components/switch/switch';
+//@import 'components/switch/switch';
 @import 'components/tabs/tabs';
 @import 'components/textField/textField';
-@import 'components/toast/toast';
+//@import 'components/toast/toast';
 @import 'components/toolbar/toolbar';
 // @import 'components/bottombar/bottombar';
 @import 'components/tooltip/tooltip';

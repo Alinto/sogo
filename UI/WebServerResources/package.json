@@ -11,6 +11,7 @@
     "grunt-contrib-sass": ">=0.8.0",
     "grunt-contrib-watch": ">=0.5.3",
     "grunt-postcss": "^0.3.0",
+    "kss": "^2.0.2",
     "sassyjson": "^1.1.8"
   }
 }
