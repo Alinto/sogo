@@ -134,6 +134,9 @@
       };
 
       $scope.addMailFilter = function(ev) {
+        if (!$scope.preferences.defaults.SOGoSieveFilters)
+          $scope.preferences.defaults.SOGoSieveFilters = [];
+
         $scope.preferences.defaults.SOGoSieveFilters.push({});
         var filter = _.last($scope.preferences.defaults.SOGoSieveFilters);
         $mdDialog.show({
