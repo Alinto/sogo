@@ -800,62 +800,51 @@ static NSArray *reminderValues = nil;
 //
 - (NSArray *) addressBookList
 {
-  /* We want all the SourceIDS */
-  NSMutableArray *folders, *availableAddressBooksID, *availableAddressBooksName;
-  SOGoParentFolder *contactFolders;
-  
+  NSMutableArray *folders, *localAddressBooks;
+  SOGoParentFolder *contactFolder;
+  SOGoContactGCSFolder *addressbook;
   int i, count;
   BOOL collectedAlreadyExist;
-  
-  contactFolders = [[[context activeUser] homeFolderInContext: context]
+
+  // Fetch all addressbooks
+  contactFolder = [[[context activeUser] homeFolderInContext: context]
                      lookupName: @"Contacts"
                       inContext: context
                         acquire: NO];
-  folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
-  count = [folders count]-1;
-  
-  // Inside this loop we remove all the public or shared addressbooks
-  for (; count >= 0; count--)
+  folders = [NSMutableArray arrayWithArray: [contactFolder subFolders]];
+  count = [folders count];
+
+  // Remove all public addressbooks
+  for (count--; count >= 0; count--)
     {
       if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
         [folders removeObjectAtIndex: count];
     }
-  
-  // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
-  availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
-  availableAddressBooksName = [NSMutableArray arrayWithCapacity: [folders count]];
-  count = [folders count]-1;
+
+  // Build list of local addressbooks
+  localAddressBooks = [NSMutableArray arrayWithCapacity: [folders count]];
+  count = [folders count];
   collectedAlreadyExist = NO;
-  
-  for (i = 0; i <= count ; i++)
+
+  for (i = 0; i < count ; i++)
     {
-      [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
-      [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
-      
-      if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
+      addressbook = [folders objectAtIndex: i];
+      [localAddressBooks addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    [addressbook nameInContainer], @"id",
+                                                  [addressbook displayName], @"name",
+                                                  nil]];
+      if ([[addressbook nameInContainer] isEqualToString: @"collected"])
         collectedAlreadyExist = YES;
-    }
-  // Create the dictionary for the next function : itemAddressBookText.
-  if (!addressBooksIDWithDisplayName)
-    {
-      addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
-                                                                           forKeys:availableAddressBooksID];
     }
   if (!collectedAlreadyExist)
     {
-      [availableAddressBooksID addObject: @"collected"];
-      [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"]  forKey: @"collected"];
+      [localAddressBooks addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    @"collected", @"id",
+                                                  [self labelForKey: @"Collected Address Book"], @"name",
+                                                  nil]];
     }
-  
-  return availableAddressBooksID;
-}
 
-//
-// Used by wox template
-//
-- (NSString *) itemAddressBookText
-{
-  return [addressBooksIDWithDisplayName objectForKey: item];
+  return localAddressBooks;
 }
 
 // - (NSString *) userAddressBook

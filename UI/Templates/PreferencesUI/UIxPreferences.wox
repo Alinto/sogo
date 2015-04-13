@@ -526,14 +526,16 @@
                 <md-checkbox
                     ng-model="preferences.defaults.SOGoMailShowSubscribedFoldersOnly"
                     ng-true-value="1"
-                    ng-false-value="0">
+                    ng-false-value="0"
+                    label:aria-label="Show subscribed mailboxes only">
                   <var:string label:value="Show subscribed mailboxes only"/>
                 </md-checkbox>
 
                 <md-checkbox
                     ng-model="preferences.defaults.SOGoMailSortByThreads"
                     ng-true-value="1"
-                    ng-false-value="0">
+                    ng-false-value="0"
+                    label:aria-label="Sort messages by threads">
                   <var:string label:value="Sort messages by threads"/>
                 </md-checkbox>
 
@@ -541,14 +543,15 @@
                   <md-checkbox
                       ng-model="preferences.defaults.SOGoMailAddOutgoingAddresses"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      label:arial-label="When sending mail, add unknown recipients to my">
                     <var:string label:value="When sending mail, add unknown recipients to my"/>
                   </md-checkbox>
 
                   <md-select ng-model="preferences.defaults.SOGoSelectedAddressBook">
                     <var:foreach list="addressBookList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemAddressBookText"/>
+                      <md-option var:value="item.id">
+                        <var:string value="item.name"/>
                     </md-option>
                     </var:foreach>
                   </md-select>
@@ -655,12 +658,14 @@
                       </md-input-container>
                       <md-button ng-click="editMailFilter($index)"
                                  type="button" 
-                                 layout="row" layout-align="end center">
+                                 layout="row" layout-align="end center"
+                                 label:aria-label="Edit Filter">
                         <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
                       </md-button>
                       <md-button ng-click="removeMailFilter($index)"
                                  type="button"
-                                 layout="row" layout-align="end center">
+                                 layout="row" layout-align="end center"
+                                 label:aria-label="Delete Filter">
                         <div class="md-icon-remove"><!-- delete --></div>
                       </md-button>
                     </md-list-item>
@@ -668,7 +673,9 @@
                   
                   <!-- FIXME: move up/down to be replaced by DnD? -->
                   <div class="bottomToolbar">
-                    <md-button ng-click="addMailFilter($event)" type="button">
+                    <md-button ng-click="addMailFilter($event)"
+                               type="button"
+                               label:aria-label="Create Filter">
                       <div class="md-icon-add"><!-- create --></div>
                     </md-button>
                   </div>
@@ -690,14 +697,17 @@
                       </md-input-container>
                       <md-button ng-click="removeMailLabel(key)"
                                  type="button"
-                                 layout="row" layout-align="end center">
+                                 layout="row" layout-align="end center"
+                                 label:aria-label="Delete Label">
                         <div class="md-icon-remove"><!-- delete --></div>
                       </md-button>
                     </md-list-item>
                   </md-list>
 
                   <div class="bottomToolbar">
-                    <md-button ng-click="addMailLabel()" type="button">
+                    <md-button ng-click="addMailLabel()"
+                               type="button"
+                               label:aria-label="Create Label">
                       <div class="md-icon-add"><!-- create --></div>
                     </md-button>
                   </div>
@@ -721,12 +731,17 @@
                   </md-input-container>
                   <md-button ng-click="editMailAccount($index)"
                              type="button"
-                             layout="row" layout-align="end center">
+                             layout="row"
+                             layout-align="end center"
+                             label:aria-label="Edit Account">
                     <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
                   </md-button>
                   <md-button ng-click="removeMailAccount()"
-                             ng-show="$index > 0" type="button"
-                             layout="row" layout-align="end center">
+                             ng-show="$index > 0"
+                             type="button"
+                             layout="row"
+                             layout-align="end center"
+                             label:aria-label="Delete Account">
                     <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
                   </md-button>
                 </md-list-item>
@@ -734,7 +749,9 @@
               
               <var:if condition="mailAuxiliaryUserAccountsEnabled">
                 <div class="bottomToolbar">
-                  <md-button ng-click="addMailAccount()" type="button">
+                  <md-button ng-click="addMailAccount()"
+                             type="button"
+                             label:aria-label="Create Account">
                     <div class="md-icon-add"><!-- create --></div>
                   </md-button>
                 </div>
@@ -752,7 +769,8 @@
                   <md-checkbox
                       ng-model="preferences.defaults.Vacation.enabled"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      label:aria-label="Enable vacation auto reply">
                     <var:string label:value="Enable vacation auto reply"/>
                   </md-checkbox>
                   
