@@ -402,7 +402,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
              withRow: (struct SRow *) aRow
               andFID: (uint64_t) fid
 {
-  int rc = MAPISTORE_SUCCESS;
+  BOOL mapped;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   MAPIStoreMapping *mapping;
   NSString *baseURL, *childURL, *folderKey;
   MAPIStoreFolder *childFolder;
@@ -430,7 +431,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               childURL = [NSString stringWithFormat: @"%@%@/",
                                    baseURL,
                                    [folderKey stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-              [mapping registerURL: childURL withID: fid];
+
+              mapped = [mapping registerURL: childURL withID: fid];
+              if (!mapped)
+                /* Enforce the creation if the backend does know the fid */
+                [mapping updateURL: childURL withID: fid];
+
               childFolder = [self lookupFolder: folderKey];
               if (childFolder)
                 {
