@@ -125,6 +125,11 @@ typedef BOOL (*EOComparator) (id, SEL, id);
     finalKey = @"";
 
   propValue = [properties objectForKey: finalKey];
+  /* sogo-openchange library stores the properties as NSString keys
+     and we have to check if the property exists using the NSString */
+  if (!propValue && [key isKindOfClass: [NSString class]])
+    propValue = [properties objectForKey: key];
+
   comparator = (EOComparator) [propValue methodForSelector: operator];
 
   return (comparator ? comparator (propValue, operator, value) : NO);
