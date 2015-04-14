@@ -311,9 +311,9 @@ static NSMapTable *contextsTable = nil;
              parts in this url. We strip the '-' character in case we have
              this in the domain part - like foo@bar-zot.com */
           ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [[[user loginInDomain] asCSSIdentifier] 
-                                      stringByReplacingOccurrencesOfString: @"-"
-                                                                withString: @"_"]];
+                                    [[[user login] asCSSIdentifier]
+                                     stringByReplacingOccurrencesOfString: @"-"
+                                                               withString: @"_"]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];

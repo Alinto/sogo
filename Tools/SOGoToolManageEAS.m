@@ -142,7 +142,7 @@ typedef enum
              parts in this url. We strip the '-' character in case we have
              this in the domain part - like foo@bar-zot.com */
           ocFSTableName = [NSMutableString stringWithFormat: @"sogo_cache_folder_%@",
-                                           [[user loginInDomain] asCSSIdentifier]];
+                                           [[user login] asCSSIdentifier]];
           [ocFSTableName replaceOccurrencesOfString: @"-"
                                          withString: @"_"
                                             options: 0
