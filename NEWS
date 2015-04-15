@@ -1,9 +1,52 @@
-2.2.17a-zentyal1 (2014-04-15)
---------------------
+2.2.19 (2015-05-XX)
+------
 
-Zentyal Release
+New features
+ - Internet headers are now shown in Outlook
 
-2.2.17a (2014-03-15)
+Enhancements
+ - Sharing request among different Outlook versions
+ - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
+ - Give support to calendar sharing invitations
+ - Missing contact fields are now saved and available when sharing it
+    (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
+ - Appointment color and importance work now between Outlooks
+
+Bug fixes
+ - Sent mails are not longer in Drafts folder using Outlook
+ - Deleted mails are properly synced between Outlook profiles from the same account
+ - Does not create a mail folder in other user's mailbox
+ - Fix server-side crash with invalid events
+ - Fix setting permissions for a folder with several users
+ - Fix reception of calendar event invitations on optional attendees
+ - Fix server side crash parsing rtf without color table
+ - Weekly recurring events created in SOGo web interface are now shown in Outlook
+ - Fix exception modifications import in recurrence series
+ - Fix server side crash parsing rtf emails with images (with word97 format)
+ - Fix sender on importing email messages like event invitations
+ - Fix Outlook crashes when modifying the view of a folder
+ - Fix server side crash when reading some recurrence appointments
+
+2.2.18 (2015-04-XX)
+-------------------
+
+Enhancements
+ - improved multipart handling using EAS
+ - added systemd startup script (PR#76)
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
+
+Bug fixes
+ - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
+ - EAS reply fix when message/rfc822 parts are included in the original mail (#3153)
+ - fixed yet an other potential crash during freebusy lookups during timezone changes
+ - fixed display of freebusy information in event attendees editor during timezone changes
+ - fixed timezone of MSExchange freebusy information
+ - fixed a potential EAS error with multiple email priority flags
+ - fixed paragraphs margins in HTML messages (#3163)
+ - fixed regression when loading the inbox for the first time
+ - fixed serialization of the PreventInvitationsWhitelist settings
+
+2.2.17a (2015-03-15)
 --------------------
 
 Bug fixes
@@ -61,42 +104,6 @@ Bug fixes
  - fixed BlackBerry issues sending multiple mails over EAS (#3095)
  - fixed plain/text mails showing on one line on Android/EAS (#3055)
  - fixed exception in sogo-tool when parsing arguments of a set operation
-
-2.2.15-zentyal3 (2015-04-14)
-------
-
-New features
- - Internet headers are now shown in Outlook
-
-Enhancements
- - Sharing request among different Outlook versions
- - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
-
-Bug fixes
- - Sent mails are not longer in Drafts folder using Outlook
- - Deleted mails are properly synced between Outlook profiles from the same account
- - Does not create a mail folder in other user's mailbox
- - Fix server-side crash with invalid events
- - Fix setting permissions for a folder with several users
- - Fix reception of calendar event invitations on optional attendees
- - Fix server side crash parsing rtf without color table
- - Weekly recurring events created in SOGo web interface are now shown in Outlook
- - Fix exception modifications import in recurrence series
- - Fix server side crash parsing rtf emails with images (with word97 format)
-
-2.2.15-zentyal2 (2015-03-16)
-----------------------------
-
-Enhancements
- - Give support to calendar sharing invitations
- - Missing contact fields are now saved and available when sharing it
-    (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
- - Appointment color and importance work now between Outlooks
-
-Bug fixes
- - Fix sender on importing email messages like event invitations
- - Fix Outlook crashes when modifying the view of a folder
- - Fix server side crash when reading some recurrence appointments
 
 2.2.15 (2015-01-30)
 -------------------

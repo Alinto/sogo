@@ -224,6 +224,18 @@ struct GlobalObjectId {
 
   while ((key = [e nextObject]))
     {
+      // Don't use body parts from nested bodies if not of type multipart/alternative. - e.g. body of type message/rfc822
+      // Use only parts of level 0 or 1.
+      if ([key countOccurrencesOfString: @"."] > 1)
+        continue;
+      else if ([key countOccurrencesOfString: @"."] == 1)
+        {
+          // Ignore nested parts if the container is not of type multipart/alternative.
+          part = [self lookupInfoForBodyPart: [[key componentsSeparatedByString: @"."] objectAtIndex:0]];
+          if (!([[part valueForKey: @"type"] isEqualToString: @"multipart"] && [[part valueForKey: @"subtype"] isEqualToString: @"alternative"]))
+            continue;
+        }
+
       part = [self lookupInfoForBodyPart: key];
       type = [part valueForKey: @"type"];
       subtype = [part valueForKey: @"subtype"];
@@ -596,7 +608,11 @@ struct GlobalObjectId {
     
   // Importance
   v = 0x1;
-  p = [[self mailHeaders] objectForKey: @"x-priority"];
+  value = [[self mailHeaders] objectForKey: @"x-priority"];
+  if ([value isKindOfClass: [NSArray class]])
+    p = [value lastObject];
+  else
+    p = value;
 
   if (p) 
     {
@@ -607,7 +623,12 @@ struct GlobalObjectId {
     }
   else
     {
-      p = [[self mailHeaders] objectForKey: @"importance"];
+      value = [[self mailHeaders] objectForKey: @"importance"];
+      if ([value isKindOfClass: [NSArray class]])
+        p = [value lastObject];
+      else
+        p = value;
+
       if ([p hasPrefix: @"High"]) v = 0x2;
       else if ([p hasPrefix: @"Low"]) v = 0x0;
     }

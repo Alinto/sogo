@@ -391,6 +391,12 @@ function redisplayEventSpans() {
         etHour++;
     }
 
+    if (isAllDay) {
+        addDays++;
+        stHour = stMinute = 0;
+        etHour = etMinute = 0;
+    }
+
     if (stHour < displayStartHour) {
         stHour = displayStartHour;
         stMinute = 0;
@@ -432,8 +438,10 @@ function redisplayEventSpans() {
         if (currentSpanNbr > 3) {
             currentSpanNbr = 0;
             currentCellNbr++;
-            currentCell = row.cells[currentCellNbr];
-            spans = $(currentCell).childNodesWithTag("span");
+            if (currentCellNbr < row.cells.length) {
+                currentCell = row.cells[currentCellNbr];
+                spans = $(currentCell).childNodesWithTag("span");
+            }
         }
         deltaSpans--;
     }
@@ -897,7 +905,7 @@ _freeBusyCacheEntry.prototype = {
               var adjustedEd = ed.beginOfDay();
               var nbrDays = adjustedSd.deltaDays(adjustedEd) + 1;
               var offsetEnd = offset + (nbrDays * 96);
-              if (Math.round(this.entries.length/96) >= nbrDays) {
+              if (Math.round((this.entries.length - offset)/96) >= nbrDays) {
                   entries = this.entries.slice(offset, offsetEnd);
               }
           }
@@ -934,7 +942,6 @@ _freeBusyCacheEntry.prototype = {
               // Period extends to after current end
               if (start.getTime() <= nextDate.getTime()) {
                   start = nextDate.beginOfDay();
-                  start.addDays(1);
               }
               fetchDates.push({ start: start, end: end });
           }
@@ -952,7 +959,7 @@ _freeBusyCacheEntry.prototype = {
       if (this.startDate) {
           if (start.getTime() < this.startDate) {
               days = start.deltaDays(this.startDate);
-              if (entries.length == (days * 96)) {
+              if (Math.round(entries.length/96) == days) {
                   // New period is just before previous period
                   this.startDate = start;
                   this.entries = entries.concat(this.entries);
@@ -1123,7 +1130,7 @@ function displayFreeBusyForNode(input) {
     var rowIndex = input.parentNode.parentNode.sectionRowIndex;
     var row = $("freeBusyData").tBodies[0].rows[rowIndex];
     var nodes = row.cells;
-    //log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
+    //log ("displayFreeBusyForNode index " + rowIndex + " uid " + input.uid + " (" + nodes.length + " cells)");
     if (input.uid) {
         if (!input.hasfreebusy) {
             // log("forcing draw of nodes");
@@ -1451,10 +1458,11 @@ function onTimeDateWidgetChange() {
 function prepareTableHeaders() {
     var startTimeDate = $("startTime_date");
     var startDate = startTimeDate.inputAsDate();
+    startDate.setHours(0, 0);
 
     var endTimeDate = $("endTime_date");
     var endDate = endTimeDate.inputAsDate();
-    endDate.setTime(endDate.getTime());
+    endDate.setHours(0, 0);
 
     var rows = $("freeBusyHeader").rows;
     var days = startDate.daysUpTo(endDate);
