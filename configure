@@ -374,6 +374,41 @@ EOF
   return $LINK_RESULT
 }
 
+
+# gnulib requires autoconf https://www.gnu.org/software/gnulib/manual/html_node/Initial-import.html
+# We only require crypyo/md4 module (no dependencies, two files) when using gnutls
+# Workaround: copy manually the files to the project needed (md4.c)
+# Really ugly but it works, glad to change this to better alternative.
+gnulib_dir=/usr/share/gnulib/lib
+
+checkGnulib() {
+  if test ! -d $gnulib_dir; then
+    echo "When using --with-ssl=gnutls option gnulib package is required to be installed in $gnulib_dir"
+    exit 1
+  fi
+  cfgwrite "GNULIB_INCLUDE := $gnulib_dir"
+}
+
+gnulibMd4() {
+  local source_files="md4.c"
+  local local_gnulib_dir="SoObjects/SOGo"
+
+  for source_file in $source_files; do
+    if test -f $gnulib_dir/$source_file; then
+      cp $gnulib_dir/$source_file $local_gnulib_dir
+    else
+      echo "Error with gnulib file $source_file, gnulib package not installed?"
+      exit 1
+    fi
+  done
+
+  # md4.c requires config.h, create empty one
+  touch $local_gnulib_dir/config.h
+
+  cfgwrite "GNULIB_FILES := $source_files"
+}
+# End of gnulib stuff
+
 checkDependencies() {
   cfgwrite "BASE_LIBS := `gnustep-config --base-libs`"
   if test "x$ARG_ENABLE_SAML2" = "x1"; then
@@ -389,11 +424,15 @@ checkDependencies() {
       checkLinking "ssl"     optional;
       if test $? != 0; then
           checkLinking "gnutls"  optional;
+          checkGnulib
+          gnulibMd4
       fi;
   elif test "x$ARG_CFGSSL" = "xssl"; then
       checkLinking "ssl"     required;
   elif test "x$ARG_CFGSSL" = "xgnutls"; then
       checkLinking "gnutls"  required;
+      checkGnulib
+      gnulibMd4
   fi
 }
 
