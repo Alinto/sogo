@@ -1,6 +1,6 @@
 /* LDAPSource.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,12 +72,14 @@
 
   NSDictionary *contactMapping;
   NSArray *contactObjectClasses;
+  NSArray *groupObjectClasses;
 
   NSDictionary *modulesConstraints;
 
   NSMutableArray *searchAttributes;
   
   BOOL passwordPolicy;
+  BOOL updateSambaNTLMPasswords;
 
   /* resources handling */
   NSString *kindField;
@@ -105,6 +107,7 @@
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
+groupObjectClasses: (NSArray *) newGroupObjectClasses
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField

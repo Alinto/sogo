@@ -155,6 +155,7 @@
 
                   delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
                   startInterval += (delta/60/15);
+                  startInterval = (startInterval < -4 ? -4 : startInterval);
 
                   currentDate = [record objectForKey: @"endDate"];
                   if ([currentDate earlierDate: endDate] == endDate)
@@ -165,6 +166,8 @@
                   
                   delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
                   endInterval += (delta/60/15);
+                  endInterval = (endInterval < 0 ? 0 : endInterval);
+                  endInterval = (endInterval > itemCount+4 ? itemCount+4 : endInterval);
 
                   // Update bit string representation
                   // If the user is a resource with restristed amount of bookings, keep the sum of overlapping events
@@ -230,7 +233,7 @@
   intervals = interval / intervalSeconds + 8;
 
   // Build a bit string representation of the freebusy data for the period
-  freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
+  freeBusyItems = calloc(intervals, sizeof (unsigned int));
   [self _fillFreeBusyItems: (freeBusyItems+4)
                      count: (intervals-4)
 	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
@@ -243,7 +246,7 @@
     {
       [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
     }
-  NSZoneFree (NULL, freeBusyItems);
+  free(freeBusyItems);
 
   // Return a NSString representation
   return [freeBusy componentsJoinedByString: @","];

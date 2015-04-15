@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSString+misc.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -274,11 +275,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // It is very important here to NOT set <Truncated>0</Truncated> in the response,
       // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
-      [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-      [s appendFormat: @"<Type>%d</Type>", 1];
-      [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
-      [s appendFormat: @"<Data>%@</Data>", o];
-      [s appendString: @"</Body>"];
+
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+        {
+          [s appendFormat: @"<Body xmlns=\"Calendar:\">%@</Body>", o];
+          [s appendString: @"<BodyTruncated xmlns=\"Calendar:\">0</BodyTruncated>"];
+        }
+      else
+        {
+          [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+          [s appendFormat: @"<Type>%d</Type>", 1];
+          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
+          [s appendFormat: @"<Data>%@</Data>", o];
+          [s appendString: @"</Body>"];
+       }
     }
 
   [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", 1];
@@ -394,9 +404,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   
   // FIXME: merge with iCalToDo
-  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
-    [self setComment: o];
-  
+  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+    {
+      if ((o = [theValues objectForKey: @"Body"]))
+        [self setComment: o];
+    }
+  else
+    {
+      if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
+        [self setComment: o];
+    }
+
   if ((o = [theValues objectForKey: @"Location"]))
     [self setLocation: o];
 

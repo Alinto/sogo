@@ -835,13 +835,16 @@ static NSString *sieveScriptName = @"sogo";
 
   if (values && [[values objectForKey: @"enabled"] boolValue])
     {
+      NSMutableString *vacation_script;
       NSArray *addresses;
       NSString *text;
-      BOOL ignore;
+      
+      BOOL ignore, alwaysSend;
       int days, i;
-            
+      
       days = [[values objectForKey: @"daysBetweenResponse"] intValue];
       addresses = [values objectForKey: @"autoReplyEmailAddresses"];
+      alwaysSend = [[values objectForKey: @"alwaysSend"] boolValue];
       ignore = [[values objectForKey: @"ignoreLists"] boolValue];
       text = [values objectForKey: @"autoReplyText"];
       b = YES;
@@ -849,28 +852,38 @@ static NSString *sieveScriptName = @"sogo";
       if (days == 0)
         days = 7;
 
+      vacation_script = [NSMutableString string];
+      
       [req addObjectUniquely: @"vacation"];
 
       // Skip mailing lists
       if (ignore)
-        [script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
+        [vacation_script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
       
-      [script appendFormat: @"vacation :days %d :addresses [", days];
+      [vacation_script appendFormat: @"vacation :days %d :addresses [", days];
 
       for (i = 0; i < [addresses count]; i++)
         {
-          [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+          [vacation_script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
 	  
           if (i == [addresses count]-1)
-            [script appendString: @"] "];
+            [vacation_script appendString: @"] "];
           else
-            [script appendString: @", "];
+            [vacation_script appendString: @", "];
         }
       
-      [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
+      [vacation_script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
       
       if (ignore)
-        [script appendString: @"}\r\n"];
+        [vacation_script appendString: @"}\r\n"];
+
+      //
+      // See http://sogo.nu/bugs/view.php?id=2332 for details
+      //
+      if (alwaysSend)
+        [script insertString: vacation_script  atIndex: 0];
+      else
+        [script appendString: vacation_script];
     }
 
 

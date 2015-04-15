@@ -29,6 +29,7 @@
 "Days between responses :" = "Päivät vastausten välillä:";
 "Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
 "Disable auto reply on" = "Poista automaattivastaus käytöstä";
+"Always send vacation message response" = "Lähetä lomaviestivastaus aina";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Ole hyvä ja määritä viesti sekä sähköpostiosoitteet joille haluat aktivoida automaattivastauksen.";
 "Your vacation message must not end with a single dot on a line." = "Lomaviestisi ei saa päättyä yksittäiseen pisteeseen viimeisellä rivillä.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Pidä kopio";
 "Please specify an address to which you want to forward your messages."
 = "Ole hyvä ja määritä sähköpostiosoite johon haluat edelleenlähettää viestisi.";
+"You are not allowed to forward your messages to an external email address." = "Sinulla ei ole lupaa välittää viestejä ulkoiseen sähköpostiosoitteeseen.";
+"You are not allowed to forward your messages to an internal email address." = "Sinulla ei ole lupaa välittää viestejä sisäiseen sähköpostiosoitteeseen.";
+
 
 /* d & t */
 "Current Time Zone :" = "Nykyinen aikavyöhyke:";

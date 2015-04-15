@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
@@ -912,6 +913,37 @@ static Class NSNullK;
     currentUser = nil;
 
   return currentUser;
+}
+
+/**
+ * Fetch the contact information identified by the specified UID in the global addressbooks.
+ */
+- (NSDictionary *) fetchContactWithUID: (NSString *) uid
+                              inDomain: (NSString *) domain
+{
+  NSDictionary *contact;
+  NSMutableArray *contacts;
+  NSEnumerator *sources;
+  NSString *sourceID;
+  id currentSource;
+
+  contacts = [NSMutableArray array];
+  contact = nil;
+  sources = [[self addressBookSourceIDsInDomain: domain] objectEnumerator];
+  while ((sourceID = [sources nextObject]))
+    {
+      currentSource = [_sources objectForKey: sourceID];
+      contact = [currentSource lookupContactEntry: uid];
+      if (contact)
+        [contacts addObject: contact];
+    }
+
+  if ([contacts count])
+    contact = [[self _compactAndCompleteContacts: [contacts objectEnumerator]] lastObject];
+  else
+    contact = nil;
+
+  return contact;
 }
 
 - (NSArray *) _compactAndCompleteContacts: (NSEnumerator *) contacts

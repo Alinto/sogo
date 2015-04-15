@@ -1,6 +1,6 @@
 /* SOGoWebAppointmentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,6 +137,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
           curl_easy_setopt (curl, CURLOPT_URL, [location UTF8String]);
           curl_easy_setopt (curl, CURLOPT_SSL_VERIFYPEER, 0L);
           curl_easy_setopt (curl, CURLOPT_SSL_VERIFYHOST, 0L);
+          curl_easy_setopt (curl, CURLOPT_TIMEOUT, 60L);
 
           authInfos = [self _loadAuthData];
           if (authInfos)

@@ -896,9 +896,8 @@ _freeBusyCacheEntry.prototype = {
           if (this.entries.length > offset) {
               var adjustedEd = ed.beginOfDay();
               var nbrDays = adjustedSd.deltaDays(adjustedEd) + 1;
-              var nbrQu = nbrDays * 96;
-              var offsetEnd = offset + nbrQu;
-              if (this.entries.length >= offsetEnd) {
+              var offsetEnd = offset + (nbrDays * 96);
+              if (Math.round(this.entries.length/96) >= nbrDays) {
                   entries = this.entries.slice(offset, offsetEnd);
               }
           }
@@ -912,15 +911,19 @@ _freeBusyCacheEntry.prototype = {
 
       var adjustedSd = sd.beginOfDay();
       var adjustedEd = ed.beginOfDay();
-      var nbrDays = adjustedSd.deltaDays(adjustedEd) + 1;
+      var start = adjustedSd.clone();
+      start.addDays(-7);
+      var end = adjustedEd.clone();
+      end.addDays(7);
       if (this.startDate) {
           fetchDates = [];
 
           if (adjustedSd.getTime() < this.startDate.getTime()) {
-              var start = adjustedSd.clone();
-              start.addDays(-7);
-              var end = this.startDate.beginOfDay();
-              end.addDays(-1);
+              // Period extends to before current start
+              if (end.getTime() >= this.startDate.getTime()) {
+                  end = this.startDate.beginOfDay();
+                  end.addDays(-1);
+              }
               fetchDates.push({ start: start, end: end });
           }
 
@@ -928,16 +931,16 @@ _freeBusyCacheEntry.prototype = {
           var nextDate = this.startDate.clone();
           nextDate.addDays(currentNbrDays);
           if (adjustedEd.getTime() >= nextDate.getTime()) {
-              var end = nextDate.clone();
-              end.addDays(7);
-              fetchDates.push({ start: nextDate, end: end });
+              // Period extends to after current end
+              if (start.getTime() <= nextDate.getTime()) {
+                  start = nextDate.beginOfDay();
+                  start.addDays(1);
+              }
+              fetchDates.push({ start: start, end: end });
           }
       }
       else {
-          var start = adjustedSd.clone();
-          start.addDays(-7);
-          var end = adjustedEd.clone();
-          end.addDays(7);
+          // Initial range
           fetchDates = [ { start: start, end: end } ];
       }
 
@@ -945,18 +948,27 @@ _freeBusyCacheEntry.prototype = {
   },
 
   integrateEntries: function fBCE_integrateEntries(entries, start, end) {
+      var days, merged = false;
       if (this.startDate) {
           if (start.getTime() < this.startDate) {
-              var days = start.deltaDays(this.startDate);
+              days = start.deltaDays(this.startDate);
               if (entries.length == (days * 96)) {
+                  // New period is just before previous period
                   this.startDate = start;
                   this.entries = entries.concat(this.entries);
+                  merged = true;
               }
           }
           else {
-              this.entries = this.entries.concat(entries);
+              days = this.startDate.deltaDays(start);
+              if (Math.round(this.entries.length/96) == days) {
+                  // New period is just after previous period
+                  this.entries = this.entries.concat(entries);
+                  merged = true;
+              }
           }
-      } else {
+      }
+      if (!merged) {
           this.startDate = start;
           this.entries = entries;
       }
@@ -1193,7 +1205,7 @@ function drawFbData(input, slots) {
     else {
         log("inconsistency between freebusy results and"
             + " the number of cells");
-        log("  expecting: " + tds.length + " received: " + slots.length);
+        log("  expecting: " + (tds.length * 4) + " received: " + slots.length);
     }
 }
 
@@ -1674,10 +1686,10 @@ function initTimeWidgets(widgets) {
 function onAdjustTime(event) {
     var endDate = window.getEndDate();
     var startDate = window.getStartDate();
+    var delta = 0;
     if (this.id.startsWith("start")) {
         // Start date was changed
-        var delta = window.getShadowStartDate().valueOf() -
-            startDate.valueOf();
+        delta = window.getShadowStartDate().valueOf() - startDate.valueOf();
         var newEndDate = new Date(endDate.valueOf() - delta);
         window.setEndDate(newEndDate);
         window.timeWidgets['end']['date'].updateShadowValue();
@@ -1687,20 +1699,27 @@ function onAdjustTime(event) {
     }
     else {
         // End date was changed
-        var delta = endDate.valueOf() - startDate.valueOf();  
-        if (delta < 0) {
-            showAlertDialog(labels.validate_endbeforestart);
-            var oldEndDate = window.getShadowEndDate();
-            window.setEndDate(oldEndDate);
-
-            window.timeWidgets['end']['date'].updateShadowValue();
-            window.timeWidgets['end']['time'].updateShadowValue();
-            window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+        delta = window.getShadowEndDate().valueOf() - endDate.valueOf();
+        if (delta != 0) {
+            var startEndDelta = endDate.valueOf() - startDate.valueOf();
+            if (startEndDelta < 0) {
+                showAlertDialog(labels.validate_endbeforestart);
+                var oldEndDate = window.getShadowEndDate();
+                window.setEndDate(oldEndDate);
+                window.timeWidgets['end']['date'].updateShadowValue();
+                window.timeWidgets['end']['time'].updateShadowValue();
+                window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+            }
+            else {
+                window.timeWidgets['end']['date'].updateShadowValue();
+                window.timeWidgets['end']['time'].updateShadowValue();
+            }
         }
     }
 
-    // Specific function for the attendees editor
-    onTimeDateWidgetChange();
+    if ($("freeBusyHeader").getElementsByTagName("th").length == 0 || delta != 0)
+        // Update freebusy data
+        onTimeDateWidgetChange();
 }
 
 function _getDate(which) {
@@ -1739,6 +1758,7 @@ function getShadowEndDate() {
 
 function _setDate(which, newDate) {
     window.timeWidgets[which]['date'].setInputAsDate(newDate);
+    jQuery(window.timeWidgets[which]['date']).closest('.date').datepicker('update');
     if (!isAllDay) {
         window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
         if (window.timeWidgets[which]['time'].onChange) window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker

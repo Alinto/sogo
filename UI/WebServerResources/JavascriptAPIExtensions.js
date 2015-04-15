@@ -218,7 +218,7 @@ Date.prototype.stringWithSeparator = function(separator) {
 
 Date.prototype.addDays = function(nbrDays) {
     var milliSeconds = this.getTime();
-    milliSeconds += 86400000 * nbrDays;
+    milliSeconds += 86400000 * Math.round(nbrDays);
     this.setTime(milliSeconds);
 };
 

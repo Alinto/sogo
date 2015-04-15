@@ -2129,13 +2129,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                       value: nextModseq];
       searchQualifier = [[EOAndQualifier alloc]
                           initWithQualifiers:
-                            kvQualifier, [self _nonDeletedQualifier], nil];
+                            kvQualifier, nil];
       [kvQualifier release];
       [searchQualifier autorelease];
     }
   else
     {
-      searchQualifier = [self _nonDeletedQualifier];
+      searchQualifier = nil;
     }
 
   if (theStartDate)
@@ -2144,7 +2144,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       
       sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
                                           @"(DATE >= %@)", theStartDate];
-      searchQualifier = [[EOAndQualifier alloc] initWithQualifiers: searchQualifier, sinceDateQualifier,
+      searchQualifier = [[EOAndQualifier alloc] initWithQualifiers: sinceDateQualifier, searchQualifier,
                                                 nil];
       [searchQualifier autorelease];
     }
@@ -2155,7 +2155,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                              sortOrdering: nil];
 
   fetchResults = [(NSDictionary *)[self fetchUIDs: uids
-                                            parts: [NSArray arrayWithObject: @"modseq"]]
+                                            parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
                      objectForKey: @"fetch"];
   
   /* NOTE: we sort items manually because Cyrus does not properly sort
@@ -2166,7 +2166,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   for (i = 0; i < [fetchResults count]; i++)
     { 
-      d = [NSDictionary dictionaryWithObject: [[fetchResults objectAtIndex: i] objectForKey: @"modseq"]
+      d = [NSDictionary dictionaryWithObject: ([[[fetchResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"]) ? [NSNull null] : [[fetchResults objectAtIndex: i] objectForKey: @"modseq"]
                                       forKey: [[[fetchResults objectAtIndex: i] objectForKey: @"uid"] stringValue]];
       [allTokens addObject: d];
     }

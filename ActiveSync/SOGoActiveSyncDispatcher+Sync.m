@@ -540,6 +540,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
+  NSString *davCollectionTagToStore;
   NSAutoreleasePool *pool;
   NSMutableString *s;
   
@@ -617,6 +618,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return;
   
   more_available = NO;
+
+  davCollectionTagToStore = [theCollection davCollectionTag];
 
   switch (theFolderType)
     {
@@ -788,7 +791,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
-            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
           }
 
         [self _setFolderMetadata: folderMetadata
@@ -963,7 +966,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
-            [folderMetadata setObject: [theCollection davCollectionTag]  forKey: @"SyncKey"];
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
           }
         
         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
@@ -1211,7 +1214,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Make sure that client is updated with the right syncKey. - This keeps vtodo's and vevent's syncKey in sync.
       syncKeyInCache = [folderMetadata  objectForKey: @"SyncKey"];
-      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]))
+      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]) && ![davCollectionTag isEqualToString: @"-1"])
         {
           davCollectionTag = syncKeyInCache;
           *changeDetected = YES;
@@ -1431,8 +1434,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  // Only send a response if there are changes otherwise send an empty response.
-  if (changeDetected)
+
+  // Only send a response if there are changes or MS-ASProtocolVersion is either 2.5 or 12.0 oterwise send an empty response.
+  if (changeDetected || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"12.0"])
     {
       // We always return the last generated response.
       // If we only return <Sync><Collections/></Sync>,
