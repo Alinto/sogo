@@ -803,7 +803,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
       if (contactInfos)
         {
-          username = [contactInfos objectForKey: @"c_uid"];
+          username = [contactInfos objectForKey: @"sAMAccountName"];
           samCtx = [[self context] connectionInfo]->sam_ctx;
           entryId = MAPIStoreInternalEntryId (samCtx, username);
         }
@@ -1501,10 +1501,10 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   if ([cn length] == 0)
                     cn = email;
                   contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
-                  
+
                   if (contactInfos)
                     {
-                      username = [contactInfos objectForKey: @"c_uid"];
+                      username = [contactInfos objectForKey: @"sAMAccountName"];
                       recipient->username = [username asUnicodeInMemCtx: msgData];
                       entryId = MAPIStoreInternalEntryId (samCtx, username);
                     }
