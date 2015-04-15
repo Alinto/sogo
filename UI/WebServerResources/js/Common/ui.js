@@ -97,10 +97,10 @@
           'hue-3': 'A700'
         })
         .backgroundPalette('sogo-paper', {
-          'default': '500',
+          'default': '100',
           'hue-1': '200',
           'hue-2': '50',
-          'hue-3': '100'
+          'hue-3': '500'
         });
     }])
 

@@ -30,7 +30,7 @@
 @include at(sm) {
   .hide-sm, .hide {
     &:not(.show-sm):not(.show) {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -42,7 +42,7 @@
 
 @include from(md) {
   .show-sm {
-    display: none;
+    display: none !important;
   }
 }
 
