@@ -4,6 +4,9 @@ master
 Enhancements
  - Synchronize events, contacts and tasks in reverse chronological order
 
+Bug fixes
+ - Optional attendes on events are now shown properly
+
 2.2.17a-zentyal1 (2014-04-15)
 --------------------
 
