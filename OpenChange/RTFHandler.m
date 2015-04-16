@@ -1034,6 +1034,9 @@ const unsigned short ansicpg874[256] = {
 
   [_html appendBytes: "</body></html>"  length: 14];
 
+ printf ("XXX len: %i\n\n", _len);
+  printf ("XXX current_pos: %i\n\n", _current_pos);
+
   RELEASE(stack);
   return AUTORELEASE(_html);
 }
