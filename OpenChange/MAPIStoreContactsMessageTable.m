@@ -220,6 +220,9 @@ static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
 			  forKey: MAPIPropertyKey (PidTagSubject)];
       [knownProperties setObject: @"c_cn"
 			  forKey: MAPIPropertyKey (PidTagNormalizedSubject)];
+      /* Use by oxcfxics to sort the latest first */
+      [knownProperties setObject: @"c_lastmodified"
+                          forKey: MAPIPropertyKey (PidTagMessageDeliveryTime)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];

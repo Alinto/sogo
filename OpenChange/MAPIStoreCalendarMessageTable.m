@@ -182,6 +182,9 @@ static Class MAPIStoreCalendarMessageK = Nil;
                           forKey: MAPIPropertyKey (PR_CREATION_TIME)];
       [knownProperties setObject: @"c_uid"
                           forKey: MAPIPropertyKey (PR_OWNER_APPT_ID)];
+      /* Use by oxcfxics to sort the latest first */
+      [knownProperties setObject: @"c_lastmodified"
+                          forKey: MAPIPropertyKey (PidTagMessageDeliveryTime)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
