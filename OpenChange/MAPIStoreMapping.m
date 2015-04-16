@@ -227,12 +227,32 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
     }
 }
 
+- (BOOL) updateURL: (NSString *) urlString
+            withID: (uint64_t) idNbr
+{
+  BOOL rc = NO;
+  uint64_t oldIDNbr;
+
+  oldIDNbr = [self idFromURL: urlString];
+  if (oldIDNbr)
+    {
+      [self logWithFormat: @"Updating URL: %@ with id %.16"PRIx64" from old id %.16"PRIx64,
+            urlString, idNbr, oldIDNbr];
+      [self unregisterURLWithID: oldIDNbr];
+      [self registerURL: urlString
+                 withID: idNbr];
+      rc = YES;
+    }
+
+  return rc;
+}
+
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr
 {
   NSString *oldURL;
   uint64_t oldIdNbr;
-  bool rc, softDeleted;
+  bool softDeleted;
 
   oldURL = [self urlFromID: idNbr];
   if (oldURL != NULL)
@@ -257,7 +277,6 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
     }
   else
     {
-      rc = YES;
       // [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
       //       urlString, idNbr, idNbr];
 
@@ -266,7 +285,7 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
                          idNbr, [urlString UTF8String]);
     }
 
-  return rc;
+  return YES;
 }
 
 - (void) registerURLs: (NSArray *) urlStrings
