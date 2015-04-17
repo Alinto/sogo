@@ -5,15 +5,16 @@ Enhancements
  - Synchronize events, contacts and tasks in reverse chronological order
 
 Bug fixes
+ - Outlook clients can use reply all functionality on multidomain environment
  - Optional attendes on events are now shown properly
 
-2.2.17a-zentyal1 (2014-04-15)
+2.2.17a-zentyal1 (2015-04-15)
 --------------------
 
 Bug fixes
  - Do not share Outlook metadata between users with the same name and different domain
 
-2.2.17a (2014-03-15)
+2.2.17a (2015-03-15)
 --------------------
 
 Bug fixes
