@@ -16,6 +16,7 @@ Bug fixes
  - fixed paragraphs margins in HTML messages (#3163)
  - fixed regression when loading the inbox for the first time
  - fixed serialization of the PreventInvitationsWhitelist settings
+ - fixed md4 support (for NTLM password changes) with GNU TLS
 
 2.2.17a (2015-03-15)
 --------------------

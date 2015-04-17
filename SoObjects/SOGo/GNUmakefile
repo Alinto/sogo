@@ -159,7 +159,7 @@ SOGo_OBJC_FILES = \
 	\
 	SOGoCredentialsFile.m
 
-SOGo_C_FILES = lmhash.c
+SOGo_C_FILES += lmhash.c
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \
