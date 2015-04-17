@@ -17,6 +17,7 @@ Bug fixes
  - fixed regression when loading the inbox for the first time
  - fixed serialization of the PreventInvitationsWhitelist settings
  - fixed md4 support (for NTLM password changes) with GNU TLS
+ - fixed edition of attachment URL in event/task editor
 
 2.2.17a (2015-03-15)
 --------------------

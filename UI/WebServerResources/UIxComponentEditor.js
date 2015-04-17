@@ -123,7 +123,7 @@ function initializeDocumentHref() {
     var documentLabel = $("documentLabel");
     var documentUrl = $("attach");
 
-    documentHref.on("click", onPopupDocumentWindow, false);
+    documentHref.on("click", onPopupDocumentWindow);
     if (documentUrl.value.length > 0) {
         documentHref.appendChild(document.createTextNode(documentUrl.value));
         documentLabel.setStyle({ display: "block" });
@@ -131,7 +131,7 @@ function initializeDocumentHref() {
 
     var changeUrlButton = $("changeAttachButton");
     if (changeUrlButton)
-        changeUrlButton.on("click", onPopupAttachWindow, false);
+        changeUrlButton.on("click", onPopupAttachWindow);
 }
 
 function initializeClassificationMenu() {
