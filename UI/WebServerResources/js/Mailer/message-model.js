@@ -15,6 +15,7 @@
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
+    this.editable = {to: [], cc: [], bcc: []};
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
@@ -184,7 +185,7 @@
       angular.extend(_this, data);
       Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
-        _this.editable = data;
+        angular.extend(_this.editable, data);
         deferred.resolve(data.text);
       }, deferred.reject);
     }, deferred.reject);
@@ -263,7 +264,7 @@
       // Fetch draft initial data
       Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
-        message.editable = data;
+        angular.extend(message.editable, data);
         deferred.resolve(message);
       }, function(data) {
         deferred.reject(data);
