@@ -26,26 +26,45 @@
         <label class="pseudo-input-label">
           <var:string label:value="To"/>
         </label>
-
-          <tags-input type="text" name="to"
-                      ng-model="message.editable.to"
-                      label:placeholder="Add a recipient"
-                      ng-focus="angular.element().triggerHandler('focus')">
-            <auto-complete source="userFilter($query)"><!-- to --></auto-complete>
-          </tags-input>
-
+        <md-chips ng-model="message.editable.to">
+          <md-autocomplete
+              md-selected-item="autocomplete.to.selected"
+              md-search-text="autocomplete.to.searchText"
+              md-items="user in userFilter(autocomplete.to.searchText)"
+              label:placeholder="Add a recipient">
+            <span md-highlight-text="autocomplete.to.searchText">{{user}}</span>
+          </md-autocomplete>
+        </md-chips>
       </div>
+
       <div class="pseudo-input-container">
         <label class="pseudo-input-label">
           <var:string label:value="Cc"/>
         </label>
-        <div class="pseudo-input-inputLike">
-          <tags-input type="text" name="cc"
-                      ng-model="message.editable.cc"
-                      label:placeholder="Add a recipient">
-            <auto-complete source="userFilter($query)"><!-- to --></auto-complete>
-          </tags-input>
-        </div>
+        <md-chips ng-model="message.editable.cc">
+          <md-autocomplete
+              md-selected-item="autocomplete.cc.selected"
+              md-search-text="autocomplete.cc.searchText"
+              md-items="user in userFilter(autocomplete.cc.searchText)"
+              label:placeholder="Add a recipient">
+            <span md-highlight-text="autocomplete.cc.searchText">{{user}}</span>
+          </md-autocomplete>
+        </md-chips>
+      </div>
+
+      <div class="pseudo-input-container">
+        <label class="pseudo-input-label">
+          <var:string label:value="Bcc"/>
+        </label>
+        <md-chips ng-model="message.editable.bcc">
+          <md-autocomplete
+              md-selected-item="autocomplete.bcc.selected"
+              md-search-text="autocomplete.bcc.searchText"
+              md-items="user in userFilter(autocomplete.bcc.searchText)"
+              label:placeholder="Add a recipient">
+            <span md-highlight-text="autocomplete.bcc.searchText">{{user}}</span>
+          </md-autocomplete>
+        </md-chips>
       </div>
 
       <md-input-container>

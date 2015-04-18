@@ -108,7 +108,6 @@ module.exports = function(grunt) {
       '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
       '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
       '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
-      '<%= src %>/ng-tags-input/ng-tags-input{,.min}.js',
       '<%= src %>/underscore/underscore-min.{js,map}'
     ];
     for (var j = 0; j < js.length; j++) {
@@ -123,7 +122,6 @@ module.exports = function(grunt) {
     }
     grunt.log.subhead('Copying font files');
     var fonts = [
-      //'<%= src %>/ionic/release/fonts/ionicons.*',
       '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*'
     ];
     for (var j = 0; j < fonts.length; j++) {
@@ -136,9 +134,9 @@ module.exports = function(grunt) {
         grunt.log.ok("copy " + src + " => " + dest);
       }
     }
+    /*
     grunt.log.subhead('Copying CSS files');
     var css = [
-      //'<%= src %>/ng-tags-input/ng-tags-input*.css' // This is no longer needed, ng-tags css is integrated to scss
     ];
     for (var j = 0; j < css.length; j++) {
       var files = grunt.file.expand(grunt.template.process(css[j], {data: options}));
@@ -150,6 +148,7 @@ module.exports = function(grunt) {
         grunt.log.ok("copy " + src + " => " + dest);
       }
     }
+    */
   });
   grunt.task.registerTask('build', ['static', 'sass', 'postcss:dist']);
   grunt.task.registerTask('default', ['build', 'watch']);

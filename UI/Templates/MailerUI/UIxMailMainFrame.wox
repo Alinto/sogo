@@ -9,8 +9,7 @@
     title="title"
     const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
     const:userSettingsKeys="Mail"
-    const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-tags-input.js, vendor/angular-file-upload.js">
-    <!--const:cssFiles="ng-tags-input.css">-->
+    const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.js">
   <script type="text/javascript">
     var mailAccounts =<var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames =<var:string value="userNames" const:escapeHTML="NO" />;

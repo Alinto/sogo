@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'ck', 'ngTagsInput', 'angularFileUpload', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop', 'SOGo.ContactsUI', 'ngAnimate'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop', 'SOGo.ContactsUI', 'ngAnimate'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -20,7 +20,7 @@
       }
    })
 
-    .config(['$stateProvider', '$urlRouterProvider', 'tagsInputConfigProvider', function($stateProvider, $urlRouterProvider, tagsInputConfigProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider
         .state('mail', {
           url: '/Mail',
@@ -159,11 +159,11 @@
       $urlRouterProvider.otherwise('/Mail');
 
       // Set default configuration for tags input
-      tagsInputConfigProvider.setDefaults('tagsInput', {
-        addOnComma: false,
-        replaceSpacesWithDashes: false,
-        allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
-      });
+      // tagsInputConfigProvider.setDefaults('tagsInput', {
+      //   addOnComma: false,
+      //   replaceSpacesWithDashes: false,
+      //   allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
+      // });
     }])
 
     .run(function($rootScope) {
@@ -258,6 +258,7 @@
     }])
 
     .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
+      $scope.autocomplete = {to: {}, cc: {}, bcc: {}};
       if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
           $scope.message = msgObject;
@@ -294,7 +295,7 @@
       $scope.userFilter = function($query) {
         var deferred = $q.defer();
         AddressBook.$filterAll($query).then(function(results) {
-          deferred.resolve(_.invoke(results, '$shortFormat'));
+          deferred.resolve(_.invoke(results, '$shortFormat', $query));
         });
         return deferred.promise;
       };

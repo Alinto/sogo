@@ -89,10 +89,6 @@
 @import 'components/pseudo-input/pseudo-input';
 @import 'views/view';
 
-// Ng-tags styles for re-skinning
-// ------------------------------------------------------------------------------
-@import 'components/ngTags/ng-tags-input';
-
 // core styles - need to be after components till settings are correctly implemented
 // ------------------------------------------------------------------------------
 @import 'core/base_styles/base_style';
