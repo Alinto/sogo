@@ -102,7 +102,7 @@
         </div>
 
         <!-- </label> -->
-        <md-switch ng-model="creds.rememberLogin">
+        <md-switch ng-model="creds.rememberLogin" arial-label="Remember username">
           <var:string label:value="Remember username"/>
         </md-switch>
         <label id="animation"><!-- busy.gif! --></label>
