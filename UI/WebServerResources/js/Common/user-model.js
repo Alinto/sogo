@@ -189,7 +189,6 @@
       User.$$resource.userResource(this.uid).fetch(null, 'foldersSearch', param).then(function(response) {
         _this.$$folders = response.folders;
         deferred.resolve(response.folders);
-        return data;
       });
     }
     return deferred.promise;
