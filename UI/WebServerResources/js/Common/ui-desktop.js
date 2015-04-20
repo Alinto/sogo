@@ -690,7 +690,7 @@
         template:
           '<style type="text/css">' +
           '  .folder{{ ngModel.id }} {' +
-          '    background-color: {{ ngModel.color }};' +
+          '    background-color: {{ ngModel.color }} !important;' +
           '  }' +
           '</style>'
       }
