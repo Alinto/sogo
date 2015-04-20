@@ -17,7 +17,7 @@
           class="md-clickable"
           ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}">
-        <md-item-content ui-sref-active="_selected" layout="row">
+        <md-item-content ui-sref-active="_selected" layout="row" class="md-flex">
           <div class="sg-avatar">
             <!--avatar-->
           </div>
