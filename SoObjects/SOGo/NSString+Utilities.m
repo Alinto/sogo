@@ -560,9 +560,9 @@ static int cssEscapingCount;
 - (id) objectFromJSONString
 {
   SBJsonParser *parser;
-  NSObject *object;
+  NSArray *object;
   NSError *error;
-  NSString *unescaped;
+  NSString *unescaped, *json;
 
   object = nil;
 
@@ -571,13 +571,16 @@ static int cssEscapingCount;
       parser = [SBJsonParser new];
       [parser autorelease];
       error = nil;
-      object = [parser objectWithString: self
+
+      /* Parse it this way so we can parse simple values, like "null" */
+      json = [NSString stringWithFormat: @"[%@]", self];
+      object = [parser objectWithString: json
                                   error: &error];
       if (error)
         {
           [self errorWithFormat: @"json parser: %@,"
                 @" attempting once more after unescaping...", error];
-          unescaped = [self stringByReplacingString: @"\\\\"
+          unescaped = [json stringByReplacingString: @"\\\\"
                                          withString: @"\\"];
           object = [parser objectWithString: unescaped
                                       error: &error];
@@ -591,7 +594,7 @@ static int cssEscapingCount;
         }
     }
 
-  return object;
+  return [object objectAtIndex: 0];
 }
 
 - (NSString *) asSafeSQLString

@@ -31,7 +31,7 @@ endif
 all::
 	@echo " Python executable: ${PYTHON}"
 
-SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
+SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py 'private dir' || echo /var/lib/samba/private)
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
@@ -110,6 +110,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	MAPIStoreFallbackContext.m \
 	\
+	MAPIStoreSharingMessage.m \
+	\
 	NSArray+MAPIStore.m \
 	NSData+MAPIStore.m \
 	NSDate+MAPIStore.m \
@@ -120,7 +122,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	iCalEvent+MAPIStore.m \
 	iCalTimeZone+MAPIStore.m \
 	\
-	RTFHandler.m
+	RTFHandler.m \
+	\
+	Codepages.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \

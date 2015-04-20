@@ -50,19 +50,22 @@
   NSUInteger count;
   enum MAPITAGS faiProperties[] = { 0x68350102, 0x683c0102, 0x683e0102,
                                     0x683f0102, 0x68410003, 0x68420102,
-                                    0x68450102, 0x68460003 };
+                                    0x68450102, 0x68460003,
+                                    // PR_VD_NAME_W, PR_VD_FLAGS, PR_VD_VERSION, PR_VIEW_CLSID
+                                    0x7006001F, 0x70030003, 0x70070003, 0x68330048 };
+  size_t faiSize = sizeof(faiProperties) / sizeof(enum MAPITAGS);
 
   properties = talloc_zero (memCtx, struct SPropTagArray);
-  properties->cValues = MAPIStoreSupportedPropertiesCount + 8;
+  properties->cValues = MAPIStoreSupportedPropertiesCount + faiSize;
   properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
-                                         MAPIStoreSupportedPropertiesCount + 8);
+                                         MAPIStoreSupportedPropertiesCount + faiSize);
 
   for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
     properties->aulPropTag[count] = MAPIStoreSupportedProperties[count];
 
   /* FIXME (hack): append a few undocumented properties that can be added to
      FAI messages */
-  for (count = 0; count < 8; count++)
+  for (count = 0; count < faiSize; count++)
     properties->aulPropTag[MAPIStoreSupportedPropertiesCount+count]
       = faiProperties[count];
 

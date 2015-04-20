@@ -26,6 +26,7 @@
 // Useful macros
 //
 #define ADVANCE _bytes++; _current_pos++;
+#define ADVANCE_N(N) _bytes += (N); _current_pos += (N);
 #define REWIND _bytes--; _current_pos--;
 
 
@@ -412,16 +413,46 @@ const unsigned short ansicpg874[256] = {
 - (const char *) parseControlWord: (unsigned int *) len
 {
   const char *start, *end;
-  
+
   start = ADVANCE;
-  
-  while (isalnum(*_bytes) || *_bytes == '-')
+
+  /*
+    A control word is defined by:
+
+    \<ASCII Letter Sequence><Delimiter>
+  */
+  while (isalpha(*_bytes))
     {
       ADVANCE;
     }
+
+  /*
+    The <Delimiter> can be one of the following:
+
+     - A space. This serves only to delimit a control word and is
+       ignored in subsequent processing.
+
+     - A numeric digit or an ASCII minus sign (-), which indicates
+       that a numeric parameter is associated with the control word.
+       Only this case requires to include it in the control word.
+
+     - Any character other than a letter or a digit
+  */
+  if (*_bytes == '-' || isdigit(*_bytes))
+    {
+      ADVANCE;
+      while (isdigit(*_bytes))  // TODO: Allow up to 10 digits
+        {
+          ADVANCE;
+        }
+    }
+  /* In this case, the delimiting character terminates the control
+     word and is not part of the control word. */
+
   end = _bytes;
-  
+
   *len = end-start-1;
+
   return start+1;
 }
 
@@ -508,6 +539,7 @@ const unsigned short ansicpg874[256] = {
 
   fontTable = [[[RTFFontTable alloc] init] autorelease];
   fontName = nil;
+  fontInfo = nil;
   count = 0;
  
   do
@@ -543,7 +575,7 @@ const unsigned short ansicpg874[256] = {
           // Skip our control word
           if (strncmp((const char*)cw, "fonttbl", len) == 0)
             continue;
-            
+
           // We must at least parse <fontnum><fontfamily><fcharset>
           s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                              length: len-1
@@ -558,12 +590,18 @@ const unsigned short ansicpg874[256] = {
               
               // We now parse <fontfamily><fcharset>
               cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
               fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                                                 length: len-1
                                                               encoding: NSASCIIStringEncoding
                                                           freeWhenDone: NO];
 
               cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
               fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
                                                                  length: len-1
                                                                encoding: NSASCIIStringEncoding
@@ -622,13 +660,44 @@ const unsigned short ansicpg874[256] = {
    } while (count != 0); 
 }
 
+- (void) parseIgnoringEverything
+{
+  unsigned int count = 1;
+  // Ignore everything. But we cannot parse it blindly because it could have
+  // binary data with '}' and '{' bytes, so disasters can happen and they will
+  do
+    {
+      if (*_bytes == '\\')
+        {
+          unsigned int binary_size, len = 0, cw_len;
+          const char *cw = [self parseControlWord: &len];
+          cw_len = strlen("bin");
+          if (strncmp(cw, "bin", cw_len) == 0 && len > cw_len)
+            {
+              NSString *s;
+              s = [[NSString alloc] initWithBytesNoCopy: (void *) cw + cw_len
+                                                 length: len - cw_len
+                                               encoding: NSASCIIStringEncoding
+                                           freeWhenDone: NO];
+              [s autorelease];
+              binary_size = [s intValue];
+              ADVANCE_N(binary_size);
+            }
+        }
+
+      if (*_bytes == '{') count++;
+      if (*_bytes == '}') count--;
+      ADVANCE;
+    }
+  while (count > 0);
+}
+
 //
 //
 //
 - (void) parsePicture
 {
-  // Do the same as -parseStyleSheet for now, that is, ignore everything.
-  [self parseStyleSheet];
+  [self parseIgnoringEverything];
 }
 
 //
@@ -648,6 +717,7 @@ const unsigned short ansicpg874[256] = {
   fontTable = nil;
   colorTable = nil;
   charset = NULL;
+  formattingOptions = nil;
 
   _html = [[NSMutableData alloc] init];
   [_html appendBytes: "<html><meta charset='utf-8'><body>"  length: 34];
@@ -694,19 +764,7 @@ const unsigned short ansicpg874[256] = {
             }
           else if (*(_bytes+1) == '*')
             {
-	      int cc = 1;
-	      
-	      do
-                {
-                  if (*_bytes == '{')
-                    cc++;
-                  if (*_bytes == '}')
-                    cc--;
-                  
-                  ADVANCE;
-                }
-              while (cc != 0);
-
+              [self parseIgnoringEverything];
               continue;
             }
 
@@ -726,16 +784,16 @@ const unsigned short ansicpg874[256] = {
             {
               // We rewind our buffer so we start at the beginning of {\fonttbl...
               _bytes = cw-2;
-              _current_pos -= 10;
+              _current_pos -= 9;  // Length: {\fonttbl
               fontTable = [self parseFontTable];
               
-              // We go back 1 byte in order to end our section properly ('}' character
+              // We go back 1 byte in order to end our section properly ('}' character)
               REWIND;
             }
           else if (strncmp(cw, "stylesheet", 10) == 0)
   	     {
                _bytes = cw-2;
-               _current_pos -= 13;
+               _current_pos -= 12;  // Length: {\stylesheet
                [self parseStyleSheet];
                REWIND;
              } 
@@ -746,7 +804,7 @@ const unsigned short ansicpg874[256] = {
            else if (strncmp(cw, "pict", 4) == 0)
              {
                _bytes = cw-2;
-               _current_pos -= 7;
+               _current_pos -= 6;  // Length: {\pict
                [self parsePicture];
                REWIND;
              }
@@ -766,19 +824,19 @@ const unsigned short ansicpg874[256] = {
               int color_index;
               char *v;
 
+              if (!formattingOptions) continue;
+
               color_index = [[s substringFromIndex: 2] intValue];
-             
- 	      if (!formattingOptions)
-		continue;
- 
-              if (formattingOptions->color_index >= 0) // && color_index != formattingOptions->color_index)
+              colorDef = [colorTable colorDefAtIndex: color_index];
+              if (!colorDef) continue;
+
+              if (formattingOptions->color_index >= 0)
                 {
                   [_html appendBytes: "</font>"  length: 7];
                 }
-              
-              formattingOptions->color_index = color_index;              
-              colorDef = [colorTable colorDefAtIndex: color_index];
-              
+
+              formattingOptions->color_index = color_index;
+
               v = malloc(23*sizeof(char));
               memset(v, 0, 23);
               sprintf(v, "<font color=\"#%02x%02x%02x\">", colorDef->red, colorDef->green, colorDef->blue);
@@ -814,20 +872,41 @@ const unsigned short ansicpg874[256] = {
 
               if (!formattingOptions)
                 continue;
-              
+
               if (formattingOptions->font_index >= 0 &&
                   font_index != formattingOptions->font_index)
                 {
                   [_html appendBytes: "</font>"  length: 7];
                 }
-              
+
               formattingOptions->font_index = font_index;
 
               fontInfo = [fontTable fontInfoAtIndex: font_index];
-
-              char *v = malloc(128*sizeof(char));
-              memset(v, 0, 128);
-              sprintf(v, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+              char *v = NULL;
+              if (fontInfo && fontInfo->name)
+                {
+                  if (fontInfo->name.length < 128)
+                    {
+                      int tag_size = 15 + fontInfo->name.length;
+                      v = calloc(tag_size, sizeof(char));
+                      snprintf(v, tag_size, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+                    }
+                  else
+                    {
+                      NSLog(@"RTFHandler: Font %u has %d chars length, parse error? "
+                            "Ignored", font_index, fontInfo->name.length);
+                      v = calloc(7, sizeof(char));
+                      sprintf(v, "<font>");
+                    }
+                }
+              else
+                {
+                  // RTF badformed? We don't know about that font (font_index).
+                  // Anyhow, we still open the html tag because in the future
+                  // we will close it (e.g. when new font is used).
+                  v = calloc(7, sizeof(char));
+                  sprintf(v, "<font>");
+                }
               [_html appendBytes: v  length: strlen(v)];
               free(v);
             }

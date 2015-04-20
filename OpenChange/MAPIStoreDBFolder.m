@@ -138,7 +138,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   MAPIStoreMapping *mapping;
   NSRange slashRange;
 
-  if (isMove && [targetFolder isKindOfClass: MAPIStoreDBFolderK])
+  pathComponent = nil;
+
+  if (isMove && ([targetFolder isKindOfClass: MAPIStoreDBFolderK] || !targetFolder))
     {
       path = [sogoObject path];
       slashRange = [path rangeOfString: @"/" options: NSBackwardsSearch];
@@ -147,14 +149,28 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                     format: @"db folder path must start with a '/'"];
       else
         pathComponent = [path substringFromIndex: slashRange.location + 1];
-      targetPath = [[targetFolder sogoObject] path];
-      newPath = [NSString stringWithFormat: @"%@/%@",
-                          targetPath, pathComponent];
-      [dbFolder changePathTo: newPath];
+
+      if (targetFolder)
+        {
+          targetPath = [[targetFolder sogoObject] path];
+          newPath = [NSString stringWithFormat: @"%@/%@",
+                              targetPath, pathComponent];
+          [dbFolder changePathTo: newPath
+                intoNewContainer: [targetFolder dbFolder]];
+        }
+      else
+        [dbFolder changePathTo: [NSString stringWithFormat: @"/fallback/%@", pathComponent]
+              intoNewContainer: nil];
       
       mapping = [self mapping];
-      newURL = [NSString stringWithFormat: @"%@%@/",
-                         [targetFolder url], pathComponent];
+
+      if (targetFolder)
+        newURL = [NSString stringWithFormat: @"%@%@/",
+                           [targetFolder url], pathComponent];
+      else
+        newURL = [NSString stringWithFormat: @"sogo://%@@fallback/%@/",
+                           [[self userContext] username], pathComponent];
+
       [mapping updateID: [self objectId]
                 withURL: newURL];
 

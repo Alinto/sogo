@@ -70,6 +70,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 #undef DEBUG
 #include <util/attr.h>
 #include <libmapi/libmapi.h>
+#include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
@@ -163,6 +164,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   int i;
 
   nameInContainer = nil;
+  rc = MAPISTORE_ERROR;
 
   folderName = nil;
   for (i = 0; !folderName && i < aRow->cValues; i++)
@@ -177,6 +179,12 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
     {
       nameInContainer = [NSString stringWithFormat: @"folder%@",
                                   [[folderName stringByEncodingImap4FolderName] asCSSIdentifier]];
+
+      /* it may be the operation is interleaved with operations
+         from other users having cached information in the thread
+         with the other user, so it'd better activate the user again here... */
+      [[self userContext] activateWithUser: [[[self userContext] woContext] activeUser]];
+
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
       if ([newFolder create])
@@ -511,7 +519,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     *nextModseq;
   NSString *changeNumber, *uid, *messageKey;
   uint64_t lastModseqNbr;
-  EOQualifier *kvQualifier, *searchQualifier;
+  EOQualifier *searchQualifier;
   NSArray *uids, *changeNumbers;
   NSUInteger count, max;
   NSArray *fetchResults;
@@ -552,14 +560,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     {
       lastModseqNbr = [lastModseq unsignedLongLongValue];
       nextModseq = [NSNumber numberWithUnsignedLongLong: lastModseqNbr + 1];
-      kvQualifier = [[EOKeyValueQualifier alloc]
+      searchQualifier = [[EOKeyValueQualifier alloc]
                                 initWithKey: @"modseq"
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
                                       value: nextModseq];
-      searchQualifier = [[EOAndQualifier alloc]
-                          initWithQualifiers:
-                            kvQualifier, [self nonDeletedQualifier], nil];
-      [kvQualifier release];
+
       [searchQualifier autorelease];
     }
   else
@@ -587,7 +592,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
       fetchResults
         = [(NSDictionary *) [sogoObject fetchUIDs: uids
-                                            parts: [NSArray arrayWithObject: @"modseq"]]
+                                            parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
                           objectForKey: @"fetch"];
 
       /* NOTE: we sort items manually because Cyrus does not properly sort
@@ -623,58 +628,230 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           if (!lastModseq
               || ([lastModseq compare: modseq] == NSOrderedAscending))
             lastModseq = modseq;
+
+          if ([[result objectForKey: @"flags"] containsObject: @"deleted"])
+            [currentProperties setObject: changeNumber
+                                  forKey: @"SyncLastDeleteChangeNumber"];
         }
 
       [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       foundChange = YES;
     }
 
-  /* 2. we synchronise deleted UIDs */
+  /* 2. we synchronise expunged UIDs */
   if (initialLastModseq)
     {
       fetchResults = [(SOGoMailFolder *) sogoObject
                          fetchUIDsOfVanishedItems: lastModseqNbr];
+
       max = [fetchResults count];
-      changeNumbers = [[self context] getNewChangeNumbers: max];
+
       changeNumber = nil;
       for (count = 0; count < max; count++)
         {
-          uid = [fetchResults objectAtIndex: count];
+          uid = [[fetchResults objectAtIndex: count] stringValue];
           if ([messages objectForKey: uid])
             {
-              newChangeNum = [[changeNumbers objectAtIndex: count]
-                               unsignedLongLongValue];
-              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+              if (!changeNumber)
+                {
+                  newChangeNum = [[self context] getNewChangeNumber];
+                  changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+                }
               [messages removeObjectForKey: uid];
-              [self logWithFormat: @"removed message entry for uid %@", uid];
+              [self logWithFormat: @"Removed message entry for UID %@", uid];
+            }
+          else
+            {
+              [self logWithFormat:@"Message entry not found for UID %@", uid];
             }
         }
       if (changeNumber)
         {
           [currentProperties setObject: changeNumber
                                 forKey: @"SyncLastDeleteChangeNumber"];
+          [mapping setObject: lastModseq forKey: changeNumber];
           foundChange = YES;
         }
     }
 
   if (foundChange)
     {
+      [self synchronizeUpdatedFolder: lastModseq
+                         withMapping: mapping];
+
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
       [versionsMessage save];
     }
 
+
   return rc;
 }
- 
+
+- (void) synchronizeUpdatedFolder: (NSNumber *) lastModseq
+                      withMapping: (NSMutableDictionary *) mapping
+{
+  /* This method should be called whenever something has changed on the folder.
+     Then we will perform two actions:
+         1 - Update the PidTagChangeNumber property of the root container.
+         2 - Store relationship PidTagChangenumber with lastModseq value on the
+             mapping given as parameter for this folder */
+  uint64_t *current_cn;
+  struct SRow row;
+  struct SPropValue prop;
+  uint64_t fid;
+  const char *username;
+  struct openchangedb_context *oc_ctx;
+  enum MAPISTATUS retval;
+  TALLOC_CTX *local_mem_ctx = NULL;
+
+  row.cValues = 1;
+  prop.ulPropTag = PidTagChangeNumber;
+  prop.value.d = 0; // It doesn't matter, it will be autogenerated
+  row.lpProps = &prop;
+
+  /* We are doing a "touch" operation to update change number of the root container.
+     We get the root container as it has the properties in the OpenChange DB */
+  username = [[self context] connectionInfo]->username;
+  oc_ctx = [[self context] connectionInfo]->oc_ctx;
+  fid = [[self rootContainer] objectId];
+  retval = openchangedb_set_folder_properties(oc_ctx, username, fid, &row);
+  if (retval != MAPI_E_SUCCESS)
+    {
+      [self errorWithFormat:@"%s: Error setting change number on %"PRIu64,
+            __PRETTY_FUNCTION__, fid];
+      return;
+    }
+
+  local_mem_ctx = talloc_named(NULL, 0, __PRETTY_FUNCTION__);
+  if (local_mem_ctx == NULL)
+    {
+      [self errorWithFormat:@"%s: Error with talloc_named, out of memory?",
+            __PRETTY_FUNCTION__];
+      return;
+    }
+  retval = openchangedb_get_folder_property(local_mem_ctx, oc_ctx, username,
+                                            PidTagChangeNumber, fid,
+                                            (void **) &current_cn);
+  if (retval != MAPI_E_SUCCESS)
+    {
+      [self errorWithFormat:@"%s: Error getting change number on %"PRIu64,
+            __PRETTY_FUNCTION__, fid];
+      talloc_free(local_mem_ctx);
+      return;
+    }
+
+  [mapping setObject: lastModseq
+              forKey: [NSString stringWithUnsignedLongLong: *current_cn]];
+  talloc_free(local_mem_ctx);
+}
+
+- (BOOL) synchroniseCacheForUID: (NSString *) messageUID
+{
+  /* Try to synchronise old UIDs in versions.plist cache using an
+     specific UID. It returns a boolean indicating if the
+     synchronisation were done.
+
+     It should be used as last resort, keeping synchroniseCache to main
+     sync entry point.
+  */
+  NSMutableDictionary *currentProperties, *messages, *messageEntry, *mapping;
+  NSArray *fetchResults;
+  uint64_t changeNumber;
+  NSDictionary *result;
+  NSNumber *modseq;
+  NSString *changeNumberStr;
+  NSData *changeKey;
+
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
+  messages = [currentProperties objectForKey: @"Messages"];
+  messageEntry = [messages objectForKey: messageUID];
+  if (!messageEntry)
+    {
+      fetchResults = [(NSDictionary *) [sogoObject fetchUIDs: [NSArray arrayWithObject: messageUID]
+                                                       parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
+                         objectForKey: @"fetch"];
+      if ([fetchResults count] == 1)
+        {
+          result = [fetchResults objectAtIndex: 0];
+          modseq = [result objectForKey: @"modseq"];
+          changeNumber = [[self context] getNewChangeNumber];
+          changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
+
+          /* Create new message entry in Messages dict */
+          messageEntry = [NSMutableDictionary new];
+          [messages setObject: messageEntry forKey: messageUID];
+          [messageEntry release];
+
+          /* Store the modseq and change number */
+          [messageEntry setObject: modseq forKey: @"modseq"];
+          [messageEntry setObject: changeNumberStr forKey: @"version"];
+
+          /* Store the change key */
+          changeKey = [self getReplicaKeyFromGlobCnt: changeNumber >> 16];
+          [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
+          /* Store the changeNumber -> modseq mapping */
+          mapping = [currentProperties objectForKey: @"VersionMapping"];
+          [mapping setObject: modseq forKey: changeNumberStr];
+
+          /* Store the last deleted change number if it is soft-deleted */
+          if ([[result objectForKey: @"flags"] containsObject: @"deleted"])
+            [currentProperties setObject: changeNumberStr
+                                  forKey: @"SyncLastDeleteChangeNumber"];
+
+          /* Save the message */
+          [versionsMessage save];
+          return YES;
+        }
+      else
+        {
+          return NO;
+        }
+    }
+  /* If message entry exists, then synchroniseCache did its job */
+  return YES;
+}
+
+
 - (NSNumber *) modseqFromMessageChangeNumber: (NSString *) changeNum
 {
   NSDictionary *mapping;
   NSNumber *modseq;
+  NSEnumerator *enumerator;
+  id key;
+  uint64_t found, target, current, replica_id, current_cn;
+  NSString *closestChangeNum;
 
   mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
   modseq = [mapping objectForKey: changeNum];
+  if (modseq) return modseq;
+
+  // Not found from stored change numbers for this folder.
+  // Get the closest modseq for the change number given.
+  // O(n) cost but will be unusual behaviour.
+  target = exchange_globcnt([changeNum unsignedLongLongValue] >> 16);
+  replica_id = [changeNum unsignedLongLongValue] & 0xFFFF;
+  found = 0;
+  enumerator  = [mapping keyEnumerator];
+  while ((key = [enumerator nextObject]))
+    {
+      current_cn = [(NSString *)key unsignedLongLongValue];
+      if ((current_cn & 0xFFFF) != replica_id)
+        continue;
+      current = exchange_globcnt(current_cn >> 16);
+      if (current < target && current > found)
+        found = current;
+    }
+
+  if (found)
+    {
+      closestChangeNum = [NSString stringWithUnsignedLongLong:
+                                   (exchange_globcnt(found) << 16 | replica_id)];
+      modseq = [mapping objectForKey: closestChangeNum];
+    }
 
   return modseq;
 }
@@ -688,7 +865,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   if (dotRange.location != NSNotFound)
     messageUid = [messageKey substringToIndex: dotRange.location];
   else
-    messageUid = nil;
+    {
+      messageUid = nil;
+      [self errorWithFormat:@"%s: Unexpected messageKey value [%@]",
+            __PRETTY_FUNCTION__, messageKey];
+    }
 
   return messageUid;
 }
@@ -710,12 +891,24 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   NSMutableDictionary *messages, *messageEntry;
   NSString *messageUid;
+  BOOL synced;
 
   messageUid = [self messageUIDFromMessageKey: messageKey];
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   messageEntry = [messages objectForKey: messageUid];
   if (!messageEntry)
-    abort ();
+    {
+      [self warnWithFormat: @"attempting to synchronise to set the change key for "
+                            @"this message %@", messageKey];
+      synced = [self synchroniseCacheForUID: messageUid];
+      if (synced)
+        messageEntry = [[[versionsMessage properties] objectForKey: @"Messages"] objectForKey: messageUid];
+      if (!messageEntry)
+        {
+          [self errorWithFormat: @"still nothing. We crash!"];
+          abort ();
+        }
+    }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
   
   [versionsMessage save];
@@ -784,6 +977,37 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return list;
 }
 
+/* Management for extra properties once they already hit the IMAP server */
+- (void) setExtraProperties: (NSDictionary *) props
+                 forMessage: (NSString *) messageKey
+{
+  NSMutableDictionary *extraProps, *currentProperties;
+  NSString *messageUid;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  currentProperties = [versionsMessage properties];
+  extraProps = [currentProperties objectForKey: @"ExtraMessagesProperties"];
+  if (!extraProps)
+    {
+      extraProps = [NSMutableDictionary new];
+      [currentProperties setObject: extraProps forKey: @"ExtraMessagesProperties"];
+      [extraProps release];
+    }
+
+  [extraProps setObject: props
+                 forKey: messageUid];
+  [versionsMessage save];
+}
+
+- (NSDictionary *) extraPropertiesForMessage: (NSString *) messageKey
+{
+  NSString *messageUid;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  return [[[versionsMessage properties] objectForKey: @"ExtraMessagesProperties"]
+                   objectForKey: messageUid];
+}
+
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
                                        andCN: (NSNumber **) cnNbr
                                  inTableType: (uint8_t) tableType
@@ -792,6 +1016,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSString *changeNumber;
   uint64_t modseq;
   NSDictionary *versionProperties;
+  EOQualifier *deletedQualifier, *kvQualifier, *searchQualifier;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
@@ -800,8 +1025,33 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                  unsignedLongLongValue];
       if (modseq > 0)
         {
+          /* Hard deleted items */
           deletedUIDs = [(SOGoMailFolder *) sogoObject
                            fetchUIDsOfVanishedItems: modseq];
+
+          /* Soft deleted items */
+          kvQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"modseq"
+                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                      value: [NSNumber numberWithUnsignedLongLong: modseq]];
+          deletedQualifier
+            = [[EOKeyValueQualifier alloc]
+                 initWithKey: @"FLAGS"
+                operatorSelector: EOQualifierOperatorContains
+                       value: [NSArray arrayWithObject: @"Deleted"]];
+
+          searchQualifier = [[EOAndQualifier alloc]
+                              initWithQualifiers:
+                                kvQualifier, deletedQualifier, nil];
+
+          deletedUIDs = [deletedUIDs arrayByAddingObjectsFromArray:
+                                       [sogoObject fetchUIDsMatchingQualifier: searchQualifier
+                                                                 sortOrdering: nil]];
+
+          [deletedQualifier release];
+          [kvQualifier release];
+          [searchQualifier release];
+
           deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
           if ([deletedUIDs count] > 0)
             {
@@ -857,6 +1107,8 @@ _parseIMAPRange (const unichar *uniString, NSArray **UIDsP)
   uint32_t currentUid, rangeMin;
   BOOL done = NO, inRange = NO;
 
+  rangeMin = 0;
+  currentUid = 0;
   UIDs = [NSMutableArray array];
   while (!done)
     {
@@ -981,13 +1233,20 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   if (![[result objectForKey: @"result"] boolValue])
     return MAPISTORE_ERROR;
 
-  /* "Move" treatment: Store \Deleted and unregister urls */
+  /* "Move" treatment: Store \Deleted and unregister urls as soft-deleted */
   if (!wantCopy)
     {
       [client storeFlags: [NSArray arrayWithObject: @"Deleted"] forUIDs: uids
              addOrRemove: YES];
       for (count = 0; count < midCount; count++)
-        [mapping unregisterURLWithID: srcMids[count]];
+        {
+          /* Using soft-deleted to make deleted fmids to return the
+             srcMids.
+             See [MAPIStoreFolder getDeletedFMIDs:andCN:fromChangeNumber:inTableType:inMemCtx]
+             for details */
+          [mapping unregisterURLWithID: srcMids[count]
+                              andFlags: MAPISTORE_SOFT_DELETE];
+        }
     }
 
   /* Registration of target messages */
@@ -1061,6 +1320,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   struct SRow folderRow;
   struct SPropValue nameProperty;
   MAPIStoreMailFolder *newFolder;
+  SOGoMailAccount *accountFolder;
   SOGoMailFolder *targetSOGoFolder;
   NSMutableArray *uids;
   NSArray *childKeys;
@@ -1068,12 +1328,12 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NGImap4Connection *connection;
   NGImap4Client *client;
   NSString *newURL, *parentDBFolderPath, *childKey, *folderIMAPName,
-    *urlNamePart, *newFolderIMAPName;
+    *urlNamePart, *newFolderIMAPName, *newFolderDBName;
   NSException *error;
   MAPIStoreMapping *mapping;
   NSDictionary *result;
 
-  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
+  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK] || (!targetFolder && isMove))
     {
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
@@ -1081,9 +1341,23 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       targetSOGoFolder = [targetFolder sogoObject];
       if (isMove)
         {
-          urlNamePart = [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-          newFolderURL = [NSURL URLWithString: urlNamePart
-                                relativeToURL: [targetSOGoFolder imap4URL]];
+          newFolderDBName = [[newFolderName stringByEncodingImap4FolderName] asCSSIdentifier];
+          if (targetSOGoFolder)
+            {
+              /* Mimetise [SOGoMailFolderK imap4URLString] */
+              urlNamePart = [[newFolderName stringByEncodingImap4FolderName] stringByEscapingURL];
+              newFolderURL = [NSURL URLWithString: urlNamePart
+                                    relativeToURL: [targetSOGoFolder imap4URL]];
+            }
+          else
+            {
+              /* Mimetise what createRootSecondaryFolderWithFID does */
+              accountFolder = [[[self userContext] rootFolders] objectForKey: @"mail"];
+              targetSOGoFolder = [SOGoMailFolder objectWithName: [NSString stringWithFormat: @"folder%@",
+                                                                           newFolderDBName]
+                                                    inContainer: accountFolder];
+              newFolderURL = [targetSOGoFolder imap4URL];
+            }
           error = [[sogoObject imap4Connection]
                       moveMailboxAtURL: folderURL
                                  toURL: newFolderURL];
@@ -1093,16 +1367,29 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
             {
               rc = MAPISTORE_SUCCESS;
               mapping = [self mapping];
-              newURL = [NSString stringWithFormat: @"%@folder%@/",
-                                 [targetFolder url], urlNamePart];
+              if (targetFolder)
+                newURL = [NSString stringWithFormat: @"%@folder%@/",
+                                   [targetFolder url], newFolderDBName];
+              else
+                newURL = [NSString stringWithFormat: @"sogo://%@:%@@mail/folder%@/",
+                                   [[self userContext] username], [[self userContext] username],
+                                   newFolderDBName];
               [mapping updateID: [self objectId] withURL: newURL];
-              parentDBFolderPath = [[targetFolder dbFolder] path];
-              if (!parentDBFolderPath)
-                parentDBFolderPath = @"";
-              [dbFolder changePathTo: [NSString stringWithFormat:
-                                                  @"%@/folder%@",
-                                                parentDBFolderPath,
-                                                newFolderName]];
+              if (targetFolder)
+                {
+                  parentDBFolderPath = [[targetFolder dbFolder] path];
+                  if (!parentDBFolderPath)
+                    parentDBFolderPath = @"";
+                  [dbFolder changePathTo: [NSString stringWithFormat:
+                                                      @"%@/folder%@",
+                                                    parentDBFolderPath,
+                                                    newFolderDBName]
+                        intoNewContainer: [targetFolder dbFolder]];
+                }
+              else
+                [dbFolder changePathTo: [NSString stringWithFormat:
+                                                    @"/mail/folder%@", newFolderDBName]
+                      intoNewContainer: nil];
             }
         }
       else
@@ -1290,6 +1577,15 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                     {
                       [bodyPartKeys addObject: bodyPartKey];
                       messageUid = [self messageUIDFromMessageKey: messageKey];
+                      /* If the bodyPartKey include peek, remove it as it is not returned
+                         as key in the IMAP server response.
+
+                         IMAP conversation example:
+                         a4 UID FETCH 1 (UID BODY.PEEK[text])
+                         * 1 FETCH (UID 1 BODY[TEXT] {1677}
+                      */
+                      bodyPartKey = [bodyPartKey stringByReplacingOccurrencesOfString: @"body.peek"
+                                                                           withString: @"body"];
                       [keyAssoc setObject: bodyPartKey forKey: messageUid];
                     }
                 }

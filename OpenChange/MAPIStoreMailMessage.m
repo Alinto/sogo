@@ -32,6 +32,7 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMailAddress.h>
 #import <NGMail/NGMailAddressParser.h>
+#import <NGMail/NGMimeMessageGenerator.h>
 #import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -40,6 +41,7 @@
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 
+#import "Codepages.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -50,6 +52,7 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreSamDBUtils.h"
+#import "MAPIStoreSharingMessage.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 
@@ -63,7 +66,7 @@
 
 @class iCalCalendar, iCalEvent;
 
-static Class NSExceptionK;
+static Class NSExceptionK, MAPIStoreSharingMessageK;
 
 @interface NSString (MAPIStoreMIME)
 
@@ -106,6 +109,7 @@ static Class NSExceptionK;
 + (void) initialize
 {
   NSExceptionK = [NSException class];
+  MAPIStoreSharingMessageK = [MAPIStoreSharingMessage class];
 }
 
 - (id) init
@@ -114,6 +118,7 @@ static Class NSExceptionK;
     {
       mimeKey = nil;
       mailIsEvent = NO;
+      mailIsSharingObject = NO;
       headerCharset = nil;
       headerEncoding = nil;
       headerMimeType = nil;
@@ -132,6 +137,7 @@ static Class NSExceptionK;
   [bodyContent release];
   [headerMimeType release];
   [headerCharset release];
+  [headerEncoding release];
   [appointmentWrapper release];
   [super dealloc];
 }
@@ -149,6 +155,30 @@ static Class NSExceptionK;
 - (NSDate *) lastModificationTime
 {
   return [sogoObject date];
+}
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  BOOL listedProperties[65536];
+  NSUInteger count;
+  uint16_t propId;
+
+  if (mailIsSharingObject)
+    {
+      memset (listedProperties, NO, 65536 * sizeof (BOOL));
+      [super getAvailableProperties: propertiesP inMemCtx: memCtx];
+      for (count = 0; count < (*propertiesP)->cValues; count++)
+        {
+          propId = ((*propertiesP)->aulPropTag[count] >> 16) & 0xffff;
+          listedProperties[propId] = YES;
+        }
+      [MAPIStoreSharingMessage fillAvailableProperties: *propertiesP
+                                        withExclusions: listedProperties];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return [super getAvailableProperties: propertiesP inMemCtx: memCtx];
 }
 
 static NSComparisonResult
@@ -200,9 +230,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (void) _fetchHeaderData
 {
+  MAPIStoreSharingMessage *sharingMessage;
   NSMutableArray *keys;
   NSArray *acceptedTypes;
   NSDictionary *messageData, *partHeaderData, *parameters;
+  NSString *sharingHeader;
 
   acceptedTypes = [NSArray arrayWithObjects: @"text/calendar",
                            @"application/ics",
@@ -227,6 +259,22 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
         mailIsEvent = YES;
+      else
+        {
+          sharingHeader = [[sogoObject mailHeaders] objectForKey: @"x-ms-sharing-localtype"];
+          if (sharingHeader)
+            {
+              mailIsSharingObject = YES;
+              /* It is difficult to subclass this in folder class, that's why
+                 a sharing object is a proxy in a mail message */
+              sharingMessage = [[MAPIStoreSharingMessage alloc]
+                                 initWithMailHeaders: [sogoObject mailHeaders]
+                                   andConnectionInfo: [[self context] connectionInfo]
+                                         fromMessage: self];
+              [self addProxy: sharingMessage];
+              [sharingMessage release];
+            }
+        }
     }
 
   headerSetup = YES;
@@ -368,6 +416,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   uint64_t version = ULLONG_MAX;
   NSString *uid, *changeNumber;
+  BOOL synced;
 
   uid = [(MAPIStoreMailFolder *)
           container messageUIDFromMessageKey: [self nameInContainer]];
@@ -386,8 +435,19 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
             [self logWithFormat: @"got one"];
           else
             {
-              [self errorWithFormat: @"still nothing. We crash!"];
-              abort();
+              [self warnWithFormat: @"attempting to get change number"
+                    @" by synchronising this specific message..."];
+              synced = [(MAPIStoreMailFolder *) container synchroniseCacheForUID: uid];
+              if (synced)
+                {
+                  changeNumber = [(MAPIStoreMailFolder *) container
+                                     changeNumberForMessageUID: uid];
+                }
+              else
+                {
+                  [self errorWithFormat: @"still nothing. We crash!"];
+                  abort();
+                }
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;
@@ -504,6 +564,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (mailIsEvent)
     [[self _appointmentWrapper] getPidTagMessageClass: data
                                              inMemCtx: memCtx];
+  else if (mailIsSharingObject)
+    *data = talloc_strdup (memCtx, "IPM.Sharing");
   else
     *data = talloc_strdup (memCtx, "IPM.Note");
 
@@ -923,15 +985,17 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagInternetCodepage: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  /* ref:
-     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
-  
-     minimal list that should be handled:
-     us-ascii: 20127
-     iso-8859-1: 28591
-     iso-8859-15: 28605
-     utf-8: 65001 */
-  *data = MAPILongValue(memCtx, 65001);
+  NSNumber *codepage;
+
+  codepage = [Codepages getCodepageFromName: headerCharset];
+  if (!codepage)
+    {
+      [self warnWithFormat: @"Couldn't find codepage from `%@`. "
+                            @"Using UTF-8 by default", headerCharset];
+      codepage = [Codepages getCodepageFromName: @"utf-8"];
+    }
+
+  *data = MAPILongValue(memCtx, [codepage intValue]);
 
   return MAPISTORE_SUCCESS;
 }
@@ -1333,6 +1397,41 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
+- (int) getPidTagTransportMessageHeaders: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSDictionary *mailHeaders;
+  NSEnumerator *keyEnumerator;
+  NSMutableArray *headers;
+  NGMimeMessageGenerator *g;
+  NSString *headerKey, *fullHeader, *headerGenerated;
+  id headerValue;
+  NSData *headerData;
+
+  /* Let's encode each mail header and put them on 'headers' array */
+  mailHeaders = [sogoObject mailHeaders];
+  headers = [NSMutableArray arrayWithCapacity: [mailHeaders count]];
+
+  g = [[NGMimeMessageGenerator alloc] init];
+  keyEnumerator = [mailHeaders keyEnumerator];
+  while ((headerKey = [keyEnumerator nextObject]))
+    {
+      headerValue = [mailHeaders objectForKey: headerKey];
+
+      headerData = [g generateDataForHeaderField: headerKey value: headerValue];
+      headerGenerated = [[NSString alloc] initWithData: headerData encoding:NSUTF8StringEncoding];
+      fullHeader = [NSString stringWithFormat:@"%@: %@", headerKey, headerGenerated];
+      [headerGenerated release];
+
+      [headers addObject: fullHeader];
+    }
+  [g release];
+
+  *data = [[headers componentsJoinedByString:@"\n"] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1566,11 +1665,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if ([mimeKey hasPrefix: @"body.peek"])
-    bodyPartKey = [NSString stringWithFormat: @"body[%@]",
-                          [mimeKey _strippedBodyKey]];
-  else
-    bodyPartKey = mimeKey;
+  bodyPartKey = mimeKey;
 
   return bodyPartKey;
 }
@@ -1582,6 +1677,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
   ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
   bodySetup = YES;
+}
+
+- (MAPIStoreSharingMessage *) _sharingObject
+{
+  /* Get the sharing object if available */
+  NSUInteger i, max;
+  id proxy;
+
+  max = [proxies count];
+  for (i = 0; i < max; i++) {
+    proxy = [proxies objectAtIndex: i];
+    if ([proxy isKindOfClass: MAPIStoreSharingMessageK])
+      return proxy;
+  }
+  return nil;
 }
 
 - (void) save: (TALLOC_CTX *) memCtx 
@@ -1597,6 +1707,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       else /* 0: unflagged, 1: follow up complete */
         [sogoObject removeFlags: @"\\Flagged"];
     }
+
+  if (mailIsSharingObject)
+    [[self _sharingObject] saveWithMessage: self
+                             andSOGoObject: sogoObject];
+
 }
 
 @end
