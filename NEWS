@@ -1,32 +1,3 @@
-master
-------
-
-New features
- - Internet headers are now shown in Outlook
-
-Enhancements
- - Sharing request among different Outlook versions
- - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
- - Give support to calendar sharing invitations
- - Missing contact fields are now saved and available when sharing it
-    (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
- - Appointment color and importance work now between Outlooks
-
-Bug fixes
- - Sent mails are not longer in Drafts folder using Outlook
- - Deleted mails are properly synced between Outlook profiles from the same account
- - Does not create a mail folder in other user's mailbox
- - Fix server-side crash with invalid events
- - Fix setting permissions for a folder with several users
- - Fix reception of calendar event invitations on optional attendees
- - Fix server side crash parsing rtf without color table
- - Weekly recurring events created in SOGo web interface are now shown in Outlook
- - Fix exception modifications import in recurrence series
- - Fix server side crash parsing rtf emails with images (with word97 format)
- - Fix sender on importing email messages like event invitations
- - Fix Outlook crashes when modifying the view of a folder
- - Fix server side crash when reading some recurrence appointments
-
 2.2.18 (2015-04-XX)
 -------------------
 
@@ -105,6 +76,23 @@ Bug fixes
  - fixed plain/text mails showing on one line on Android/EAS (#3055)
  - fixed exception in sogo-tool when parsing arguments of a set operation
 
+<<<<<<< HEAD
+=======
+2.2.15-zentyal2 (2015-03-16)
+----------------------------
+
+Enhancements
+ - Give support to calendar sharing invitations
+ - Missing contact fields are now saved and available when sharing it
+    (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
+ - Appointment color and importance work now between Outlooks
+
+Bug fixes
+ - Fix sender on importing email messages like event invitations
+ - Fix Outlook crashes when modifying the view of a folder
+ - Fix server side crash when reading some recurrence appointments
+
+>>>>>>> parent of 8706443... Prepare for 2.2.17a-zentyal1
 2.2.15 (2015-01-30)
 -------------------
 
