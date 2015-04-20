@@ -1,4 +1,4 @@
-/// autoScrollList.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// autoScrollList.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
 // The only selector for vs-repeat lists is this id, we use attributes selector to
@@ -13,6 +13,10 @@
 [id='contactsList'] {
   border-top: 44px solid transparent;   // padding for the header.subheader,
   border-bottom: 2px solid transparent; //close to a hack
+  md-list-item {
+    // dirty fix for vs-repeat damages
+    position: absolute;
+  }
 
   // In use in MAILER messages list but re-usable
   // --------------------------------------------
