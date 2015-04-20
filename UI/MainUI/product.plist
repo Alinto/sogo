@@ -215,7 +215,7 @@
           protectedBy = "View";
           pageName = "SOGoUserHomePage";
           actionName = "date";
-        }
+        };
       };
     };
     //     SOGoGroupsFolder = {
