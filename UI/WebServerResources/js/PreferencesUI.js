@@ -5,9 +5,10 @@
   'use strict';
 
   angular.module('SOGo.Common', []);
+  angular.module('SOGo.ContactsUI', []);
   angular.module('SOGo.MailerUI', []);
 
-  angular.module('SOGo.PreferencesUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.UIDesktop', 'SOGo.UI', 'SOGo.Authentication'])
+  angular.module('SOGo.PreferencesUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.UIDesktop', 'SOGo.UI', 'SOGo.ContactsUI', 'SOGo.Authentication'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -72,10 +73,10 @@
       $urlRouterProvider.otherwise('/general');
     }])
 
-    .controller('PreferencesCtrl', ['$scope', '$timeout', '$mdDialog', 'sgPreferences', 'statePreferences', 'Authentication', function($scope, $timeout, $mdDialog, Preferences, statePreferences, Authentication) {
+    .controller('PreferencesCtrl', ['$scope', '$timeout', '$q', '$mdDialog', 'sgPreferences', 'sgUser', 'statePreferences', 'Authentication', function($scope, $timeout, $q, $mdDialog, Preferences, User, statePreferences, Authentication) {
 
       $scope.preferences = statePreferences;
-
+      
       $scope.addCalendarCategory = function() {
         var color = {"": "#000"};
         $scope.preferences.defaults.SOGoCalendarCategories.push("");
@@ -169,12 +170,12 @@
         $scope.preferences.defaults.SOGoSieveFilters.splice(index, 1);
       };
 
-      $scope.addPreventInvitationsWhitelist = function() {
-        $scope.preferences.settings.Calendar.PreventInvitationsWhitelist.push("");
-      };
-      
-      $scope.removePreventInvitationsWhitelist = function() {
-        $scope.preferences.settings.Calendar.PreventInvitationsWhitelist.pop();
+      $scope.userFilter = function($query) {
+        var deferred = $q.defer();
+        User.$filter($query).then(function(results) {
+          deferred.resolve(results)
+        });
+        return deferred.promise;
       };
       
       $scope.save = function() {

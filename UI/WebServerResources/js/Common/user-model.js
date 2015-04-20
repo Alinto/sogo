@@ -7,8 +7,14 @@
    * @param {object} [userData] - some default values for the user
    */
   function User(userData) {
-    if (userData)
+    if (userData) {
       angular.extend(this, userData);
+      
+      if (!this.shortFormat)
+        this.shortFormat = this.$shortFormat();
+
+      this.image = "http://www.gravatar.com/avatar/asdasdasdasd?d=identicon";
+    }
   }
 
   /**
@@ -60,7 +66,7 @@
     var email = this.c_email;
     var no_email = options && options.email === false;
     if (!no_email && email && fullname != email) {
-      fullname += ' (' + email + ')';
+      fullname += ' <' + email + '>';
     }
     return fullname;
   };

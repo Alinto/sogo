@@ -9,7 +9,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common/resource.js,Common/SOGoAuthentication.js,Mailer/mailbox-model.js,Mailer/message-model.js,Preferences/preferences-model.js">
+    const:jsFiles="Common/resource.js,Common/SOGoAuthentication.js,Mailer/mailbox-model.js,Mailer/message-model.js,Preferences/preferences-model.js,Common/user-model.js">
 
   <main class="view md-layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
@@ -438,24 +438,21 @@
                 <var:string label:value="Prevent from being invited to appointments"/>
               </md-checkbox>
 
-              <md-list>
-                <md-list-item ng-repeat="(key, value) in
-                                         preferences.settings.Calendar.PreventInvitationsWhitelist">
-                  <md-input-container>
-	            <input type="text" ng-model="key"/>
-                  </md-input-container>
-                </md-list-item>
-              </md-list>
-
-              <div class="bottomToolbar">
-                <md-button ng-click="addPreventInvitationsWhitelist()" type="button">
-                  <div class="md-icon-add"><!-- create --></div>
-                </md-button>
-                <md-button ng-click="removePreventInvitationsWhitelist()" type="button">
-                  <div class="md-icon-remove"><!-- delete --></div>
-                </md-button>
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label">
+                  <var:string label:value="White list for appointment invitations:"/>
+                </label>
+                <md-contact-chips
+                    ng-model="preferences.settings.Calendar.PreventInvitationsWhitelist"
+                    md-contacts="userFilter($query)"
+                    md-contact-name="shortFormat"
+                    md-contact-image="image"
+                    md-contact-email="c_email"
+                    md-require-match="md-require-match"
+                    placeholder="Add">
+                  </md-contact-chips>
               </div>
-
+              
             </div>
           </md-tab>
 

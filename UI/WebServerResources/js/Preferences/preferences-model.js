@@ -36,6 +36,14 @@
     });
     Preferences.$$resource.fetch("jsonSettings").then(function(data) {
       Preferences.$timeout(function() {
+
+                
+        // We convert our PreventInvitationsWhitelist hash into a array of user
+        if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
+          data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
+            return new Preferences.$User({uid: key, shortFormat: value});
+          });
+        
         angular.extend(_this.settings, data);
       });
     });
@@ -46,14 +54,15 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMailbox', function($q, $timeout, $log, Settings, Resource, Mailbox) {
+  Preferences.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMailbox', 'sgUser', function($q, $timeout, $log, Settings, Resource, Mailbox, User) {
     angular.extend(Preferences, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
       activeUser: Settings.activeUser,
-      $Mailbox: Mailbox
+      $Mailbox: Mailbox,
+      $User: User
     });
 
     return Preferences; // return constructor
@@ -111,6 +120,15 @@
     
     if (preferences.defaults.Vacation && preferences.defaults.Vacation.autoReplyEmailAddresses)
       preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+
+    if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
+      var h = {};
+      _.each(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
+        h[user.uid] = user.shortFormat;
+
+        preferences.settings.Calendar.PreventInvitationsWhitelist = h;
+      });
+    }
     
     return preferences;
   };
