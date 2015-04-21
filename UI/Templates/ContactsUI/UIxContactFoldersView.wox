@@ -150,33 +150,27 @@
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list>
           <md-list-item ng-repeat="folder in addressbooks track by folder.id"
-              ng-class="{_selected: addressbook.id==folder.id}"
-              ng-dblclick="edit($index)">
-              <i class="sg-child-level-0" ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
-              <md-button class="sg-folder">
-                <form ng-submit="save($index)">
-                  <a ui-sref="addressbook({addressbookId: folder.id})"
-                     ng-click="select($index)"
-                     ng-show="editMode!=folder.id"
-                     ng-cloak="ng-cloak">{{folder.name}}
-                  </a>
-                  <input class="folder-name" type="text"
-                         ng-model="folder.name"
-                         ng-show="editMode==folder.id"
-                         ng-cloak="ng-cloak"
-                         ng-blur="save($index)"
-                         sg-focus-on="addressBookName_{{$index}}"
-                         sg-escape="revertEditing($index)"/>
-                </form>
-              </md-button>
-              <span class="icon" ng-cloak="ng-cloak">
-                <a class="icon" href="#"
-                    dropdown-toggle="#addressbookProperties"
-                    options="align:right"
-                    ng-show="currentFolderIsConfigurable(folder)">
-                  <i class="md-icon-more-vert"><!-- options --></i>
-                </a>
-              </span>
+                        ui-sref-active="sg-active"
+                        ng-dblclick="edit($index)">
+            <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
+            <button class="md-button md-flex sg-item-name"
+                    ng-show="editMode!=folder.id"
+                    ng-click="select($index)"
+                    ng-cloak="ng-cloak"
+                    ui-sref="addressbook({addressbookId: folder.id})">{{folder.name}}</button>
+            <md-input-container
+                class="md-flex md-tile-content"
+                ng-show="editMode==folder.id">
+              <input class="folder-name" type="text"
+                     ng-model="folder.name"
+                     ng-cloak="ng-cloak"
+                     ng-blur="save($index)"
+                     sg-focus-on="addressBookName_{{$index}}"
+                     sg-enter="save($index)"
+                     sg-escape="revertEditing($index)"/>
+            </md-input-container>
+            <i class="md-icon-more-vert"
+               ng-show="currentFolderIsConfigurable(folder)"><!-- options --></i>
           </md-list-item>
         </md-list>
       </md-content>
@@ -231,7 +225,8 @@
               <div
                   ng-class="{_selected: card.id == currentCard.id}"
                   ng-click="select($index); toggleDetailView()"
-                  layout="row">
+                  layout="row"
+                  flex="true">
                 <div class="sg-avatar">
                   <!--avatar--><!-- currentCard.tag = vcard || vlist -->
                 </div>

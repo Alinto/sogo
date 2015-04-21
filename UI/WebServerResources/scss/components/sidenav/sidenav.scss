@@ -49,11 +49,6 @@ $i: 1;
   $i: $i + 1;
 }
 
-// Folder and mailboxes icons
-// ---------------------------------------
-  [class*="sg-child-level"] {
-    margin-right: 1em;
-  };
 // This hack is so BAD I am ashame putting it in the shame file
 // -----------------------------------------------------------
 // Folder tree's controler function are very intricate, the way
@@ -73,29 +68,23 @@ $i: 1;
   &.md-whiteframe-z1 {
     box-shadow: $sidenav-shadow-z1;
   }
-  button {
-    // dirty fix to squash the theme style
-    background-color: transparent !important;
-  }
-  md-item-content {
-    line-height: $sg-line-height-6; // 40px eg. display-1
-    padding: 0 $mg;
+  md-list-item {
     transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
                 color 0.12s linear;
     &:hover {
-      background-color: sg-color($sogoPaper, 500);
-      cursor: pointer;
+      background-color: sg-color($sogoBlue, 500);
     }
     &.sg-active {
-      color: sg-color($sogoBlue, 800);
+      background-color: sg-color($sogoBlue, 400);
     }
     &.sg-loading {
-      color: sg-color($sogoBlue, 500);
+      color: sg-color($sogoBlue, 200);
     }
     .sg-item-name, .md-label {
+      font-size: sg-size(button);
+      overflow: hidden;
       text-align: left;
       text-overflow: ellipsis;
-      overflow: hidden;
       white-space: nowrap;
     }
     .md-label {

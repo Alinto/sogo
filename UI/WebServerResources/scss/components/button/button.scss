@@ -1,4 +1,4 @@
-/// button.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// button.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
 // sometimes fabs get squized
@@ -10,21 +10,14 @@
 // ------------------------------------
 sg-folder-tree .md-button,
 md-sidenav md-list button.md-button {
-  padding: 0;
+  // dirty fix to squash the theme style
+  background-color: transparent !important;
+  padding: 0 $mg;
   outline: none;
   color: inherit;
   text-transform: initial;
   font-size: sg-size(button);
   -webkit-font-smoothing: auto;
-}
-
-.sg-folder {
-  text-align: left;
-  flex: 1;
-}
-
-.sg-active .md-button {
-  color: sg-color($sogoBlue, 800);
 }
 
 md-sidenav .md-button [class ^= "md-icon"] {

@@ -22,19 +22,23 @@
 
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-padding md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list>
-          <md-list-item>
-            <a ui-sref="preferences.general">General</a>
+          <md-list-item ui-sref-active="sg-active">
+            <button class="md-button md-flex sg-item-name"
+                    ui-sref="preferences.general"><var:string label:value="General"/></button>
           </md-list-item>
-          <md-list-item>
-            <a ui-sref="preferences.calendars">Calendar</a>
+          <md-list-item ui-sref-active="sg-active">
+            <button class="md-button md-flex sg-item-name"
+                    ui-sref="preferences.calendars"><var:string label:value="Calendar"/></button>
           </md-list-item>
-          <md-list-item>
-            <a ui-sref="preferences.addressbooks">Contacts</a>
+          <md-list-item ui-sref-active="sg-active">
+            <button class="md-button md-flex sg-item-name"
+                    ui-sref="preferences.addressbooks"><var:string label:value="Contacts"/></button>
           </md-list-item>
-          <md-list-item>
-            <a ui-sref="preferences.mailer">Mail</a>
+          <md-list-item ui-sref-active="sg-active">
+            <button class="md-button md-flex sg-item-name"
+                    ui-sref="preferences.mailer"><var:string label:value="Mail"/></button>
           </md-list-item>
         </md-list>
       </md-content>

@@ -254,12 +254,12 @@
                 while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('md-item-content');
+                items = list.find('md-list-item');
 
                 // Highlight element as "loading"
                 items.removeClass('sg-active');
                 items.removeClass('sg-loading');
-                angular.element(iElement.find('md-item-content')[0]).addClass('sg-loading');
+                angular.element(iElement.find('md-list-item')[0]).addClass('sg-loading');
 
                 // Call external function
                 scope.selectFolder(scope.root, scope.folder);
@@ -283,11 +283,11 @@
                 while (list[0].tagName != 'MD-LIST') {
                   list = list.parent();
                 }
-                items = list.find('md-item-content');
+                items = list.find('md-list-item');
 
                 // Hightlight element as "selected"
-                angular.element(iElement.find('md-item-content')[0]).addClass('sg-active');
-                angular.element(iElement.find('md-item-content')[0]).removeClass('sg-loading');
+                angular.element(iElement.find('md-list-item')[0]).addClass('sg-active');
+                angular.element(iElement.find('md-list-item')[0]).removeClass('sg-loading');
 
                 // Show options button
                 angular.forEach(items, function(element) {
