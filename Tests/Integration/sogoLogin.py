@@ -14,8 +14,9 @@ def getAuthCookie(hostname, port, username, password) :
 	opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cjar))
 	urllib2.install_opener(opener)
 
-	creds = urllib.urlencode([("userName",username), ("password", password)])
-	req = urllib2.Request("http://%s:%s/SOGo/connect" % (hostname, port), creds)
+	creds2 = simplejson.dumps({"userName":username, "password": password})
+	req = urllib2.Request("http://%s:%s/SOGo/connect" % (hostname, port), creds2,
+				{'Content-Type': 'application/json'})
 	
 	fd = urllib2.urlopen(req)
 	
