@@ -10,6 +10,8 @@
             <span ng-repeat="category in card.categories">{{category.value}}</span>
           </h6>
         </hgroup>
+        
+        <!-- contact editor -->
         <form name="cardForm" ng-show="card.$isCard()" ng-submit="save(cardForm)">
           <md-input-container>
             <var:entity const:name="nbsp"/>
@@ -298,71 +300,58 @@
             </md-button>
           </div>
         </form>
+
+        <!-- list editor -->
         <form name="listForm" ng-show="card.$isList()" ng-submit="save(listForm)">
-          <div class="buttonsToolbar">
-            <span class="button tiny radius secondary" ng-click="cancel()">
-              <i class="icon-arrow-left"><!-- cancel --></i>
-              <var:string label:value="Cancel"/>
-            </span>
-            <span class="button tiny radius secondary" ng-click="reset()">
-              <i class="icon-undo"><!-- reset --></i>
-              <var:string label:value="Reset"/>
-            </span>
-            <button class="button tiny radius" type="submit">
-              <i class="icon-checkmark"><!-- save --></i>
-              <var:string label:value="Save"/>
-            </button>
-          </div>
-          <div class="section">
-            <div class="attr">
-              <div class="key">
-                <label class=" right inline">
-                  <var:string label:value="Display"/>
-                </label>
-              </div>
-              <div class="value">
-                <input type="text" ng-model="card.fn"/>
-              </div>
-            </div>
-            <div class="attr">
-              <div class="key">
-                <label class=" right inline">
-                  <var:string label:value="Nickname"/>
-                </label>
-              </div>
-              <div class="value">
-                <input type="text" ng-model="card.nickname"/>
-              </div>
-            </div>
-          </div>
+          <md-input-container>
+            <label class="pseudo-input-label">
+              <var:string label:value="Display"/>
+            </label>
+            <input type="text" ng-maxlength="30" ng-model="card.fn"/>
+          </md-input-container>
+          
+          <md-input-container>
+            <label class="pseudo-input-label">
+              <var:string label:value="Nickname"/>
+            </label>
+            <input type="text" ng-maxlength="30" ng-model="card.nickname"/>
+          </md-input-container>
+
+          <md-input-container>
+            <label class=" right inline">
+              <var:string label:value="Description"/>
+            </label>
+            <textarea ng-model="card.description"><!-- note --></textarea>
+          </md-input-container>
+          
           <!-- list members -->
-          <div class="section">
-            <div class="attr" ng-repeat="ref in card.refs">
-              <div class="action">
-                <span class="button alert icon" ng-click="card.$delete('refs', $index)">
-                  <i class="md-icon-remove-circle-outline"><!-- remove --></i>
-                </span>
-              </div>
-              <div class="key">
-                <label class=" right inline">
-                  <var:string label:value="Member"/>
-                </label>
-              </div>
-              <div class="value">
-                <input type="text" label:placeholder="email address" ng-model="ref.email"
-                       sg-focus-on="ref_{{$index}}"
-                       typeahead="card.$preferredEmail($viewValue) as card.$shortFormat($viewValue) for card in addressbook.$filter($viewValue, {dry: true, excludeLists: true})"
-                       typeahead-on-select="card.$updateMember($index, $model, $item)"/>
-              </div>
-            </div>
-            <div class="attr">
-              <div class="value single">
-                <span class="button outline secondary tiny" type="button" ng-click="addMember()">
-                  <i class="md-icon-add"><!-- new --></i>
-                  <var:string label:value="Add Member"/>
-                </span>
-              </div>
-            </div>
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label">
+                  <var:string label:value="Members:"/>
+            </label>
+            <md-contact-chips
+                ng-model="card.refs"
+                md-contacts="addressbook.$filter($query, {dry: true, excludeLists: true})"
+                md-contact-name="shortFormat"
+                md-contact-image="image"
+                md-contact-email="email"
+                md-require-match="md-require-match"
+                placeholder="Add Member">
+            </md-contact-chips>
+          </div>
+          
+          <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
+            <md-button class="" ng-click="cancel()">
+              <var:string label:value="Cancel"/>
+            </md-button>
+            <md-button class="" ng-click="reset()">
+              <var:string label:value="Reset"/>
+            </md-button>
+            <var:if condition="canCreateOrModify">
+              <md-button class="md-primary md-hue-3" type="submit">
+                <var:string label:value="Save"/>
+              </md-button>
+            </var:if>
           </div>
         </form>
       </div>

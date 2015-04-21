@@ -20,6 +20,12 @@
         this.$unwrap(newCardData);
         this.isNew = true;
       }
+
+      if (!this.shortFormat)
+        this.shortFormat = this.$shortFormat();
+      
+      // FIXME
+      this.image = "http://www.gravatar.com/avatar/asdasdasdasd?d=identicon";
     }
     else {
       // The promise will be unwrapped first

@@ -13,6 +13,7 @@
       if (!this.shortFormat)
         this.shortFormat = this.$shortFormat();
 
+      // FIXME
       this.image = "http://www.gravatar.com/avatar/asdasdasdasd?d=identicon";
     }
   }

@@ -41,39 +41,44 @@
           </div>
         </div>
 
-        <div class="section" ng-repeat="ref in card.refs track by ref.reference">
-          <!-- list members -->
-
-          <div class="pseudo-input-container">
-            <div class="value single">
-              <a ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: ref.reference})">
-                {{ref.$fullname()}}
-              </a>
-              <div ng-show="ref.email">
-                <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
-                  <i class="md-icon-mail"><!-- email --></i>
-                  {{ref.email}}
+        <!-- list members -->
+        <div class="section" ng-show="card.refs.length > 0">
+          <md-list>
+            <md-subheader class="md-no-sticky">Members</md-subheader>
+            <md-list-item class="md-3-line" ng-repeat="ref in card.refs track by ref.reference">
+              <div class="sg-avatar">
+                <!--avatar--><!-- currentCard.tag = vcard || vlist -->
+              </div>
+              <div class="md-list-item-text">
+                <h3><a ui-sref="addressbook.card.view({addressbookId:
+                                addressbook.id, cardId:
+                                ref.reference})">
+                  {{ ref.$fullname() }}
                 </a>
+                </h3>
+                <h4 ng-show="ref.email">
+                  <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
+                    {{ ref.email }}
+                  </a>
+                </h4>
               </div>
+            </md-list-item>
+          </md-list>
+        </div>
+        
+        <div class="section">
+          <div class="pseudo-input-container" ng-repeat="email in card.emails">
+            <div class="key">
+              <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
             </div>
-          </div>
-
-          <div class="section">
-            <div class="pseudo-input-container" ng-repeat="email in card.emails">
-              <div class="key">
-                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}
-                </label>
-              </div>
-
-              <div class="pseudo-input-field">
-                <a href="mailto:{{email.value}}">{{email.value}}</a>
-              </div>
-
+            
+            <div class="pseudo-input-field">
+              <a href="mailto:{{email.value}}">{{email.value}}</a>
             </div>
+            
           </div>
         </div>
-
-
+        
         <div class="section" ng-show="card.phones.length > 0">
           <div class="pseudo-input-container" ng-repeat="phone in card.phones">
             <div class="key">
