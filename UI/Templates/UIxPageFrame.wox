@@ -170,6 +170,13 @@
           </var:if>
         </var:if>
 
+        <md-item>
+          <md-button var:ng-href="logoffPath">
+            <i class="md-icon-settings-power"><!--icon--></i>
+            <var:string label:value="Disconnect"/>
+          </md-button>
+        </md-item>
+
       </var:if>
     </md-list>
   </md-bottom-sheet>
