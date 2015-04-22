@@ -162,6 +162,17 @@
             </md-item-content>
           </md-item>
         </md-list>
+        <md-toolbar class="md-medium-tall">
+          <div class="md-toolbar-tools md-toolbar-tools-bottom">
+            <md-button
+                class="iconButton sg-button-navicon"
+                label:aria-label="Subscribe to a Calendar..."
+                sg-subscribe="calendar"
+                sg-subscribe-on-select="subscribeToFolder(folderData)">
+              <i class="md-icon-folder-shared"><!-- icon --></i>
+            </md-button>
+          </div>
+        </md-toolbar>
       </md-content>
     </md-sidenav>
 

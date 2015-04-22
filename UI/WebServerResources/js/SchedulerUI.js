@@ -105,6 +105,15 @@
           });
         }
       }, true); // compare for object equality
+      /**
+       * subscribeToFolder - Callback of sgSubscribe directive
+       */
+      $scope.subscribeToFolder = function(calendarData) {
+        console.debug('subscribeToFolder ' + calendarData.owner + calendarData.name);
+        Calendar.$subscribe(calendarData.owner, calendarData.name).catch(function(data) {
+          Dialog.alert(l('Warning'), l('An error occured please try again.'));
+        });
+      };
     }])
   
     .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', function($scope, $rootScope, $timeout, focus, encodeUriFilter, Dialog, Settings, Calendar, Component) {

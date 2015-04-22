@@ -475,7 +475,7 @@
           var vm = this;
           vm.showDialog = function() {
             $mdDialog.show({
-              templateUrl: 'UIxContactsUserFolders',
+              templateUrl: '../Contacts/UIxContactsUserFolders',
               clickOutsideToClose: true,
 	      locals: {
                 folderType: vm.folderType,
