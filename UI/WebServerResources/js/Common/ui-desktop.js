@@ -460,26 +460,41 @@
     .directive('sgSubscribe', [function() {
       console.debug('registering sgSubscribe');
       return {
-        restrict: 'CA',
+        restrict: 'A',
         scope: {
           folderType: '@sgSubscribe',
-          onFolderSelect: '=sgSubscribeOnSelect'
+          onFolderSelect: '&sgSubscribeOnSelect'
         },
-        templateUrl: 'userFoldersTemplate', // UI/Templates/Contacts/UIxContactsUserFolders.wox
-        controller: ['$scope', function($scope) {
-          $scope.selectUser = function(i) {
-            // Fetch folders of specific type for selected user
-            $scope.users[i].$folders($scope.folderType).then(function() {
-              $scope.selectedUser = $scope.users[i];
+        replace: false,
+        link: function(scope, element, attrs, controller) {
+          element.on('click', controller.showDialog);
+        },
+        controllerAs: 'vm',
+        bindToController: true,
+        controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
+          var vm = this;
+          vm.showDialog = function() {
+            $mdDialog.show({
+              templateUrl: 'UIxContactsUserFolders',
+              clickOutsideToClose: true,
+	      locals: {
+                folderType: vm.folderType,
+                onFolderSelect: vm.onFolderSelect
+              },
+              controller: function($scope, folderType, onFolderSelect) {
+                $scope.selectUser = function(i) {
+                  // Fetch folders of specific type for selected user
+                  $scope.users[i].$folders(folderType).then(function() {
+                    $scope.selectedUser = $scope.users[i];
+                  });
+                };
+                $scope.selectFolder = function(folder) {
+                  onFolderSelect({folderData: folder});
+                };
+              }
             });
           };
-          $scope.selectFolder = function(folder) {
-            $scope.onFolderSelect(folder);
-          };
         }],
-        link: function(scope, element, attrs, controller) {
-          element.addClass('joyride-tip-guide');
-        }
       };
     }])
 

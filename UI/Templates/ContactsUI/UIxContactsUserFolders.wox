@@ -5,45 +5,42 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
-    xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
-  <span class="joyride-nub left"><!-- dropdown nub --></span>
-  <div class="joyride-content-wrapper">
-    <ul>
-      <li class="title"><var:string label:value="Subscribe"/></li>
-      <li class="search">
-        <input type="text" label:placeholder="Search"
-               ng-model="searchString"
-               sg-user-typeahead="sg-user-typeahead" />
-      </li>
-      <li class="item"
-          ng-repeat="user in users">
-        <a ng-click="selectUser($index)"
-           ng-mouseenter="selectActive($index)">
-          <span bind-html-unsafe="user.$shortFormat() | typeaheadHighlight:query"><!-- user --></span>
-          <i class="icon right"
-             ng-class="{'icon-arrow-right': user.uid != selectedUser.uid, 'icon-arrow-down': user.uid == selectedUser.uid}"><!-- arrow --></i>
-        </a>
-        <ul class="subitems"
-            ng-if="user.uid == selectedUser.uid">
-          <li class="item"
-              ng-show="user.$$folders.length == 0">
-            <a class="disabled">
-              <i class="icon icon-notification"><!-- no subscription --></i>
+    xmlns:uix="OGo:uix">
+  <md-dialog>
+  <md-content>
+    <md-input-container md-no-float="md-no-float" layout="row">
+      <i class="md-icon-search"><!--icon--></i>
+      <input ng-model="searchString" type="text" placeholder="Name" sg-user-typeahead="sg-user-typeahead"/>
+    </md-input-container>
+
+    <md-list>
+      <md-list-item ng-repeat="user in users" layout="column">
+        <md-button ng-click="selectUser($index)">
+          {{user.$shortFormat()}}
+          <i class="md-icon-chevron-right"
+             ng-show="user.uid != selectedUser.uid"><!--icon--></i>
+          <i class="md-icon-chevron-more"
+             ng-show="user.uid == selectedUser.uid"><!--icon--></i>
+        </md-button>
+
+        <md-list ng-if="user.uid == selectedUser.uid">
+          <md-list-item ng-show="user.$$folders.length == 0">
+              <i class="md-icon-warning"><!-- no subscription --></i>
               <var:string label:value="No possible subscription"/>
-            </a>
-          </li>
-          <li class="item"
+          </md-list-item>
+          <md-list-item
               ng-repeat="folder in user.$$folders">
-            <a>
-              <i class="icon"
-                 ng-class="{'icon-address-book': folder.type == 'Contact'}"><!-- type --></i>
-              <span ng-bind="folder.displayName"><!-- folder --></span>
-              <button class="button tiny right"
-                      ng-click="selectFolder(folder)">Subscribe</button>
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+              <i class="md-icon-contacts"
+                 ng-show="folder.type == 'Contact'"><!--icon--></i>
+              {{folder.displayName}}
+              <md-button class="button tiny right"
+                         ng-click="selectFolder(folder)">Subscribe</md-button>
+          </md-list-item>
+        </md-list>
+        <md-divider><!-- divider --></md-divider>
+      </md-list-item>
+    </md-list>
+    
+  </md-content>
+  </md-dialog>
 </container>
