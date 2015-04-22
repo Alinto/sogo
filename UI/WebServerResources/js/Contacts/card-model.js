@@ -21,6 +21,8 @@
         this.isNew = true;
       }
 
+      this.refs = [];
+
       if (!this.shortFormat)
         this.shortFormat = this.$shortFormat();
       

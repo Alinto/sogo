@@ -91,7 +91,7 @@
       $urlRouterProvider.otherwise('/personal');
     }])
 
-    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $modal, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
       var currentAddressbook;
 
       $scope.activeUser = Settings.activeUser;
@@ -126,6 +126,41 @@
               AddressBook.$add(addressbook);
             }
           });
+      };
+      $scope.newComponent = function(ev) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template:
+          '<md-dialog aria-label="Create component">' +
+            '  <md-content>' +
+            '  <div layout="column">' +
+            '    <md-button ng-click="createContact()">' +
+            '      Contact' +
+            '    </md-button>' +
+            '    <md-button ng-click="createList()">' +
+            '      List' +
+            '    </md-button>' +
+            '  </div>' +
+            '  </md-content>' +
+            '</md-dialog>',
+          locals: {
+            state: $state
+          },
+          controller: ComponentDialogController
+        });
+        function ComponentDialogController(scope, $mdDialog, state) {
+          scope.createContact = function() {
+            state.go('addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'card' });
+            $mdDialog.hide();
+          }
+          scope.createList = function() {
+            state.go('addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'list' });
+            $mdDialog.hide();
+          }
+        }
       };
       $scope.currentFolderIsConfigurable = function(folder) {
         return ($scope.addressbook && $scope.addressbook.id == folder.id && !folder.isRemote);
