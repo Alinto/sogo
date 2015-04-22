@@ -1295,13 +1295,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
         }
     }
 
-  [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
-                                      andMessageURLs: oldMessageURLs
-                                            andCount: midCount
-                                          fromFolder: sourceFolder
-                                            withMIDs: targetMids
-                                            wantCopy: wantCopy];
-
   // We cleanup cache of our source and destination folders
   [self cleanupCaches];
   [sourceFolder cleanupCaches];

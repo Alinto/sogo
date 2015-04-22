@@ -87,58 +87,7 @@
 
 - (void) notifyChangesForChild: (MAPIStoreMessage *) child
 {
-  NSUInteger currentChildRow, newChildRow;
-  NSArray *list;
-  NSString *childName;
-  struct mapistore_table_notification_parameters notif_parameters;
-  struct mapistore_context *mstoreCtx;
 
-  mstoreCtx = [[(MAPIStoreFolder *) container context]
-                connectionInfo]->mstore_ctx;
-
-  notif_parameters.table_type = tableType;
-  notif_parameters.handle = handleId;
-  notif_parameters.folder_id = [(MAPIStoreFolder *) container objectId];
-  notif_parameters.object_id = [child objectId];
-  notif_parameters.instance_id = 0; /* TODO: always 0 ? */
-
-  childName = [child nameInContainer];
-  list = [self restrictedChildKeys];
-  currentChildRow = [list indexOfObject: childName];
-  notif_parameters.row_id = currentChildRow;
-
-  [self cleanupCaches];
-  list = [self restrictedChildKeys];
-  newChildRow = [list indexOfObject: childName];
-
-  if (currentChildRow == NSNotFound)
-    {
-      if (newChildRow != NSNotFound)
-        {
-          notif_parameters.row_id = newChildRow;
-          mapistore_push_notification (mstoreCtx,
-                                       MAPISTORE_TABLE,
-                                       MAPISTORE_OBJECT_CREATED,
-                                       &notif_parameters);
-        }
-    }
-  else
-    {
-      if (newChildRow == NSNotFound)
-        mapistore_push_notification (mstoreCtx,
-                                     MAPISTORE_TABLE,
-                                     MAPISTORE_OBJECT_DELETED,
-                                     &notif_parameters);
-      else
-        {
-          /* the fact that the row order has changed has no impact here */
-          notif_parameters.row_id = newChildRow;
-          mapistore_push_notification (mstoreCtx,
-                                       MAPISTORE_TABLE,
-                                       MAPISTORE_OBJECT_MODIFIED,
-                                       &notif_parameters);
-        }
-    }
 }
 
 @end
