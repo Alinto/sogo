@@ -405,23 +405,23 @@
                   aria-controls="calendarCategories-content"
                   label:label="Categories">
 
-              <md-list>
-                <md-list-item ng-repeat="item in
-                                    preferences.defaults.SOGoCalendarCategories
-                                    track by $index">
-                  <div class="md-icon-label"><!-- create --></div>
-                    <md-input-container>
-	              <input type="text" ng-model="preferences.defaults.SOGoCalendarCategories[$index]"/>
-                    </md-input-container>
-                    <md-button
-                        ng-click="removeCalendarCategory($index)"
-                        type="button"
-                        layout="row" layout-align="end center">
-                      <div class="md-icon-remove"><!-- delete --></div>
-                    </md-button>
-                </md-list-item>
-              </md-list>
-
+            <md-list>
+              <md-list-item ng-repeat="item in
+                                       preferences.defaults.SOGoCalendarCategories
+                                       track by $index">
+                <i class="md-avatar" ng-style="{'background-color': '{{preferences.defaults.SOGoCalendarCategoriesColors[item]}}'}"><!-- category color --></i>
+                <md-input-container>
+	          <input type="text" ng-model="preferences.defaults.SOGoCalendarCategories[$index]"/>
+                </md-input-container>
+                <md-button
+                    ng-click="removeCalendarCategory($index)"
+                    type="button"
+                    layout="row" layout-align="end center">
+                  <div class="md-icon-remove"><!-- delete --></div>
+                </md-button>
+              </md-list-item>
+            </md-list>
+              
               <div class="bottomToolbar">
                 <md-button ng-click="addCalendarCategory()" type="button">
                   <div class="md-icon-add"><!-- create --></div>
