@@ -71,8 +71,15 @@ div.md-tile-left {
 // Avatar placeholder
 // ------------------------------------
 .md-tile-left:before {
-  content: "\f251";
   font-family: 'Material Design Iconic Font';
   font-size: 40px;
   color: rgba(0, 0, 0, 0.26);
+}
+.md-tile-left-card:before {
+  @extend .md-tile-left;
+  content: "\f251";
+}
+.md-tile-left-list:before {
+  @extend .md-tile-left;
+  content: "\f2d4";
 }

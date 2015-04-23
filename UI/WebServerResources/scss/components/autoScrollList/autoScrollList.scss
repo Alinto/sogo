@@ -92,7 +92,12 @@
   }
 }
 .sg-avatar {
-  @extend .md-tile-left;
+  @extend .md-tile-left-card;
+  margin-right: 0;
+  margin-left: 0;
+}
+.sg-list-avatar {
+  @extend .md-tile-left-list;
   margin-right: 0;
   margin-left: 0;
 }

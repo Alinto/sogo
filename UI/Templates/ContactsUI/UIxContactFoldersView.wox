@@ -238,8 +238,11 @@
                   ng-click="select($index); toggleDetailView()"
                   layout="row"
                   flex="true">
-                <div class="sg-avatar">
-                  <!--avatar--><!-- currentCard.tag = vcard || vlist -->
+                <div class="sg-avatar" ng-show="currentCard.tag == 'vcard'">
+                  <!--card avatar-->
+                </div>
+                <div class="sg-list-avatar" ng-show="currentCard.tag == 'vlist'">
+                  <!--list avatar-->
                 </div>
                 <div class="sg-tile-content">
                   <a ui-sref="addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">

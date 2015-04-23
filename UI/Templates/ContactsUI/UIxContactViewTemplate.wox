@@ -9,8 +9,11 @@
     <md-card-content>
       <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
       <header>
-        <div class="sg-avatar">
-          <!--avatar--><!-- currentCard.tag = vcard || vlist -->
+        <div class="sg-avatar" ng-show="card.tag == 'vcard'">
+          <!--card avatar-->
+        </div>
+        <div class="sg-list-avatar" ng-show="card.tag == 'vlist'">
+          <!--list avatar-->
         </div>
         <div class="msg-header-content">
           <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
