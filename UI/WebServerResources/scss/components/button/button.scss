@@ -9,7 +9,7 @@
 // Buttons for the sidenav folder tree
 // ------------------------------------
 sg-folder-tree .md-button,
-md-sidenav md-list button.md-button {
+md-sidenav md-list .md-button {
   // dirty fix to squash the theme style
   background-color: transparent !important;
   padding: 0 $mg;
@@ -20,11 +20,16 @@ md-sidenav md-list button.md-button {
   -webkit-font-smoothing: auto;
 }
 
-md-sidenav .md-button [class ^= "md-icon"] {
+.md-sidenav-left .md-button [class^="md-icon"] {
   margin-right: 1em;
 }
-md-sidenav .md-button.iconButton.sg-button-navicon [class ^= "md-icon"] {
+md-sidenav .md-button.iconButton.sg-button-navicon [class^="md-icon"] {
   margin: 0;
+}
+
+// Expandable button for a collapsable list
+.sg-expandable {
+    width: 100%;
 }
 
 ///
@@ -61,9 +66,10 @@ $button-fab-height: 56px;
   // z-index provides a stacking context that prevent ripple-effect from overflowing
   z-index: 1;
   overflow: hidden;
-  padding: $iconButton-padding;
+  padding: $iconButton-padding 0;
   border-radius: 50%;
   color: inherit;
+  min-width: $iconButton-size;
   transition: $iconButton-transition;
 
   &:hover:not(.md-fab),
@@ -197,6 +203,7 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
   //margin-left: ($mg * -1);
   width: $touch-zone;
   height: $touch-zone;
+  line-height: $touch-zone;
 }
 
 // angular-material is overspecifying so we are and so we have to continue

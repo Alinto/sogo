@@ -1,4 +1,4 @@
-/// list.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// list.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 // List variables
 // ----------------------------------------------------------------------------
@@ -21,6 +21,17 @@
 //$item-padding-left: 0px !default;
 //$item-padding-bottom: 0px !default;
 
+// List item label
+md-list {
+    .sg-item-name {
+      font-size: sg-size(button);
+      text-transform: initial;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+}
 
 // The right tile for a list item.
 // ----------------------------------------------------------------------------

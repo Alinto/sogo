@@ -6,41 +6,49 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
-  <md-dialog>
-  <md-content>
-    <md-input-container md-no-float="md-no-float" layout="row">
-      <i class="md-icon-search"><!--icon--></i>
-      <input ng-model="searchString" type="text" placeholder="Name" sg-user-typeahead="sg-user-typeahead"/>
-    </md-input-container>
-
-    <md-list>
-      <md-list-item ng-repeat="user in users" layout="column">
-        <md-button ng-click="selectUser($index)">
-          {{user.$shortFormat()}}
-          <i class="md-icon-chevron-right"
-             ng-show="user.uid != selectedUser.uid"><!--icon--></i>
-          <i class="md-icon-chevron-more"
-             ng-show="user.uid == selectedUser.uid"><!--icon--></i>
-        </md-button>
-
-        <md-list ng-if="user.uid == selectedUser.uid">
-          <md-list-item ng-show="user.$$folders.length == 0">
+  <md-dialog flex="50" flex-sm="100">
+    <md-content>
+      <md-input-container md-no-float="md-no-float" layout="row">
+        <i class="md-icon-search"><!--icon--></i>
+        <input ng-model="searchString" type="text" placeholder="Name" sg-user-typeahead="sg-user-typeahead"/>
+      </md-input-container>
+      <md-list>
+        <md-list-item
+            layout="column"
+            ng-repeat="user in users">
+          <md-button class="sg-expandable" ng-click="selectUser($index)">
+            <div layout="row" layout-align="space-between center" layout-fill="true">
+              <span class="sg-item-name">{{user.$shortFormat()}}</span>
+              <span class="md-display-1">
+                <i class="md-icon-expand-more"
+                   ng-show="user.uid != selectedUser.uid"><!--icon--></i>
+                <i class="md-icon-expand-less"
+                   ng-show="user.uid == selectedUser.uid"><!--icon--></i>
+              </span>
+            </div>
+          </md-button>
+          <md-list layout-fill="true" ng-if="user.uid == selectedUser.uid">
+            <md-list-item ng-show="user.$$folders.length == 0">
               <i class="md-icon-warning"><!-- no subscription --></i>
               <var:string label:value="No possible subscription"/>
-          </md-list-item>
-          <md-list-item
-              ng-repeat="folder in user.$$folders">
-              <i class="md-icon-contacts"
-                 ng-show="folder.type == 'Contact'"><!--icon--></i>
-              {{folder.displayName}}
-              <md-button class="button tiny right"
-                         ng-click="selectFolder(folder)">Subscribe</md-button>
-          </md-list-item>
-        </md-list>
-        <md-divider><!-- divider --></md-divider>
-      </md-list-item>
-    </md-list>
-    
-  </md-content>
+            </md-list-item>
+            <md-list-item
+                layout="row"
+                layout-fill="true"
+                ng-repeat="folder in user.$$folders">
+                <i class="md-icon-contacts md-padding"
+                   ng-show="folder.type == 'Contact'"><!--icon--></i>
+                <i class="md-icon-today md-padding"
+                   ng-show="folder.type == 'Appointment'"><!--icon--></i>
+                <p class="md-flex sg-item-name">{{folder.displayName}}</p>
+              <md-button
+                  class="md-raised"
+                  ng-click="selectFolder(folder)">Subscribe</md-button>
+            </md-list-item>
+          </md-list>
+          <md-divider ng-if="!$last"><!-- divider --></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-content>
   </md-dialog>
 </container>
