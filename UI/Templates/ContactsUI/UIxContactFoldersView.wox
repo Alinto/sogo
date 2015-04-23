@@ -182,6 +182,9 @@
               sg-subscribe-on-select="subscribeToFolder(folderData)">
               <i class="md-icon-folder-shared"><!-- icon --></i>
             </md-button>
+            <md-button ng-click="newAddressbook()">
+              <i class="md-icon-add-circle"><!-- icon --></i>
+            </md-button>
           </div>
           </md-toolbar>
       </md-content>

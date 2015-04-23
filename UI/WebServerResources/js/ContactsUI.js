@@ -109,23 +109,50 @@
       $scope.select = function(rowIndex) {
         $scope.editMode = false;
       };
-      $scope.newAddressbook = function() {
+      $scope.newAddressbook = function(ev) {
         $scope.editMode = false;
-        Dialog.prompt(l('New addressbook'),
-                      l('Name of new addressbook'))
-          .then(function(name) {
-            if (name && name.length > 0) {
-              var addressbook = new AddressBook(
-                {
-                  name: name,
-                  isEditable: true,
-                  isRemote: false,
-                  owner: UserLogin
-                }
-              );
-              AddressBook.$add(addressbook);
-            }
-          });
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template:
+          '<md-dialog aria-label="' + l('New addressbook') + '">' +
+            '  <md-content layout="column">' +
+            '    <md-input-container>' +
+            '      <label>' + l('Name of new addressbook') + '</label>' +
+            '      <input type="text" ng-model="name" required="required"/>' +
+            '    </md-input-container>' +
+            '    <div layout="row">' +
+            '      <md-button ng-click="cancelClicked()">' +
+            '        Cancel' +
+            '      </md-button>' +
+            '      <md-button ng-click="okClicked()" ng-disabled="!name.length">' +
+            '        OK' +
+            '      </md-button>' +
+            '    </div>'+
+            '  </md-content>' +
+            '</md-dialog>',
+          controller: NewAddressBookDialogController
+        });
+        function NewAddressBookDialogController(scope, $mdDialog) {
+          scope.name = "";
+          scope.cancelClicked = function() {
+            $mdDialog.hide();
+          }
+          scope.okClicked = function() {
+            var addressbook = new AddressBook(
+              {
+                name: scope.name,
+                isEditable: true,
+                isRemote: false,
+                owner: UserLogin
+              }
+            );
+            AddressBook.$add(addressbook);
+            $mdDialog.hide();
+          }
+        }
       };
       $scope.newComponent = function(ev) {
         $mdDialog.show({
