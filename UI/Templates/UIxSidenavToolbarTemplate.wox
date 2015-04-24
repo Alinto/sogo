@@ -20,10 +20,10 @@
           <div layout="column">
             <p class="sg-md-title">{{activeUser.identification}}</p>
             <!--fixme: implement this with the proper model and actions -->
-            <md-select class="sg-logout" ng-model="accounts.options" var:placeholder="shortUserNameForDisplay">
+            <!-- <md-select class="sg-logout" ng-model="accounts.options" var:placeholder="shortUserNameForDisplay">
               <md-option var:value="relativePreferencesPath"><var:string label:value="Preferences"/></md-option>
               <var:if condition="canLogoff"><md-option var:value="logoffPath"><var:string label:value="Disconnect" /></md-option></var:if>
-            </md-select>
+            </md-select> -->
           </div>
         </div>
       </md-toolbar>
