@@ -714,93 +714,92 @@ static NSArray *reminderValues = nil;
 //
 //  return toolbarFilename;
 //}
-//
-//
-//- (int) ownerIsAttendee: (SOGoUser *) ownerUser
-//        andClientObject: (SOGoContentObject
-//                          <SOGoComponentOccurence> *) clientObject
-//{
-//  BOOL isOrganizer;
-//  iCalPerson *ownerAttendee;
-//  int rc;
-//
-//  rc = 0;
-//
-//  isOrganizer = [component userIsOrganizer: ownerUser];
-//  if (isOrganizer)
-//    isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
-//
-//  if (!isOrganizer && ![[component tag] isEqualToString: @"VTODO"])
-//    {
-//      ownerAttendee = [component userAsAttendee: ownerUser];
-//      if (ownerAttendee)
-//        rc = 1;
-//    }
-//
-//  return rc;
-//}
-//
-//- (int) delegateIsAttendee: (SOGoUser *) ownerUser
-//           andClientObject: (SOGoContentObject
-//                             <SOGoComponentOccurence> *) clientObject
-//{
-//  SoSecurityManager *sm;
-//  iCalPerson *ownerAttendee;
-//  int rc;
-//
-//  rc = 0;
-//
-//  sm = [SoSecurityManager sharedSecurityManager];
-//  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-//                     onObject: clientObject
-//                    inContext: context])
-//    rc = [self ownerIsAttendee: ownerUser
-//               andClientObject: clientObject];
-//  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
-//                          onObject: clientObject
-//                         inContext: context])
-//    {
-//      ownerAttendee = [component userAsAttendee: ownerUser];
-//      if ([[ownerAttendee rsvp] isEqualToString: @"true"]
-//          && ![component userIsOrganizer: ownerUser])
-//        rc = 1;
-//      else
-//        rc = 2;
-//    }
-//  else
-//    rc = 2; // not invited, just RO
-//
-//  return rc;
-//}
-//
-//- (int) getEventRWType
-//{
-//  SOGoContentObject <SOGoComponentOccurence> *clientObject;
-//  SOGoUser *ownerUser;
-//  int rc;
-//
-//  clientObject = [self clientObject];
-//  ownerUser
-//    = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
-//  if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
-//    rc = 2;
-//  else
-//    {
-//      if ([ownerUser isEqual: [context activeUser]])
-//        rc = [self ownerIsAttendee: ownerUser
-//                   andClientObject: clientObject];
-//      else
-//        rc = [self delegateIsAttendee: ownerUser
-//                      andClientObject: clientObject];
-//    }
-//
-//  return rc;
-//}
-//
-//- (BOOL) eventIsReadOnly
-//{
-//  return [self getEventRWType] != 0;
-//}
+
+
+- (int) ownerIsAttendee: (SOGoUser *) ownerUser
+       andClientObject: (SOGoContentObject
+                         <SOGoComponentOccurence> *) clientObject
+{
+ BOOL isOrganizer;
+ iCalPerson *ownerAttendee;
+ int rc;
+
+ rc = 0;
+
+ isOrganizer = [component userIsOrganizer: ownerUser];
+ if (isOrganizer)
+   isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
+
+ if (!isOrganizer && ![[component tag] isEqualToString: @"VTODO"])
+   {
+     ownerAttendee = [component userAsAttendee: ownerUser];
+     if (ownerAttendee)
+       rc = 1;
+   }
+
+ return rc;
+}
+
+- (int) delegateIsAttendee: (SOGoUser *) ownerUser
+          andClientObject: (SOGoContentObject
+                            <SOGoComponentOccurence> *) clientObject
+{
+ SoSecurityManager *sm;
+ iCalPerson *ownerAttendee;
+ int rc;
+
+ rc = 0;
+
+ sm = [SoSecurityManager sharedSecurityManager];
+ if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+                    onObject: clientObject
+                   inContext: context])
+   rc = [self ownerIsAttendee: ownerUser
+              andClientObject: clientObject];
+ else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+                         onObject: clientObject
+                        inContext: context])
+   {
+     ownerAttendee = [component userAsAttendee: ownerUser];
+     if ([[ownerAttendee rsvp] isEqualToString: @"true"]
+         && ![component userIsOrganizer: ownerUser])
+       rc = 1;
+     else
+       rc = 2;
+   }
+ else
+   rc = 2; // not invited, just RO
+
+ return rc;
+}
+
+- (int) getEventRWType
+{
+ SOGoContentObject <SOGoComponentOccurence> *clientObject;
+ SOGoUser *ownerUser;
+ int rc;
+
+ clientObject = [self clientObject];
+ ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
+ if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
+   rc = 2;
+ else
+   {
+     if ([ownerUser isEqual: [context activeUser]])
+       rc = [self ownerIsAttendee: ownerUser
+                  andClientObject: clientObject];
+     else
+       rc = [self delegateIsAttendee: ownerUser
+                     andClientObject: clientObject];
+   }
+
+ return rc;
+}
+
+- (BOOL) isReadOnly
+{
+ return [self getEventRWType] != 0;
+}
 //
 //- (NSString *) emailAlarmsEnabled
 //{

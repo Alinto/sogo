@@ -29,10 +29,12 @@
 
 @interface UIxComponentEditor : UIxComponent
 {
+  id item;
   iCalRepeatableEntityObject *component;
   SOGoAppointmentFolder *componentCalendar;
 }
 
+- (BOOL) isReadOnly;
 - (void) setAttributes: (NSDictionary *) attributes;
 
 + (NSArray *) reminderValues;

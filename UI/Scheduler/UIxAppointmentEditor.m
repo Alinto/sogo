@@ -548,6 +548,7 @@
  * @apiSuccess (Success 200) {String} endDate                 End date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
+ * @apiSuccess (Success 200) {Number} isReadOnly              1 if event is read-only
  *
  * From [iCalEvent+SOGo attributes]
  *
@@ -669,6 +670,7 @@
                          [co nameInContainer], @"id",
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
+                       [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        nil];

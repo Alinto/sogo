@@ -402,6 +402,7 @@
  * @apiSuccess (Success 200) {String} completedTime           Formatted completed time
  * @apiSuccess (Success 200) {String} status                  Status (needs-action, in-process, completed, or cancelled)
  * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
+ * @apiSuccess (Success 200) {Number} isReadOnly              1 if task is read-only
  *
  * From [iCalEntityObject+SOGo attributes]
  *
@@ -519,6 +520,7 @@
                          [co nameInContainer], @"id",
                        [thisFolder nameInContainer], @"pid",
                        [thisFolder displayName], @"calendar",
+                       [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
 		       nil];
 
   if (startDate)
