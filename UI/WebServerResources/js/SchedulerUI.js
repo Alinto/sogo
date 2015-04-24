@@ -85,26 +85,36 @@
     })
 
     .controller('CalendarsController', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$log', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'stateCalendars', function($scope, $rootScope, $stateParams, $state, $timeout, $log, focus, encodeUriFilter, Dialog, Settings, Calendar, stateCalendars) {
-      this.activeUser = Settings.activeUser;
-      this.list = stateCalendars;
+      var vm = this;
+
+      vm.activeUser = Settings.activeUser;
+      vm.service = Calendar;
 
       // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
       // when the color of a calendar is changed
-      $scope.$watch(angular.bind(this, function() {
-        return _.map(this.list, function(o) { return _.pick(o, ['id', 'active', 'color']) });
-      }), function(newList, oldList) {
-        // Identify which calendar has changed
-        var ids = _.pluck(_.filter(newList, function(o, i) { return !_.isEqual(o, oldList[i]); }), 'id');
-        if (ids.length > 0) {
-          $log.debug(ids.join(', ') + ' changed');
-          _.each(ids, function(id) {
-            var calendar = _.find(stateCalendars, function(o) { return o.id == id });
-            calendar.$setActivation().then(function() {
-              $scope.$broadcast('calendars:list');
+      $scope.$watch(
+        function() {
+          return _.union(
+            _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']) }),
+            _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']) })
+          );
+        },
+        function(newList, oldList) {
+          // Identify which calendar has changed
+          var ids = _.pluck(_.filter(newList, function(o, i) { return !_.isEqual(o, oldList[i]); }), 'id');
+          if (ids.length > 0) {
+            $log.debug(ids.join(', ') + ' changed');
+            _.each(ids, function(id) {
+              var calendar = Calendar.$get(id);
+              calendar.$setActivation().then(function() {
+                $scope.$broadcast('calendars:list');
+              });
             });
-          });
-        }
-      }, true); // compare for object equality
+          }
+        },
+        true // compare for object equality
+      );
+
       /**
        * subscribeToFolder - Callback of sgSubscribe directive
        */

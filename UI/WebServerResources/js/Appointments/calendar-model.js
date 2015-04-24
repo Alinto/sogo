@@ -10,7 +10,7 @@
    */
   function Calendar(futureCalendarData) {
     // Data is immediately available
-    angular.extend(this, futureCalendarData);
+    this.init(futureCalendarData);
     if (this.name && !this.id) {
       // Create a new calendar on the server
       var newCalendarData = Calendar.$$resource.create('createFolder', this.name);
@@ -26,13 +26,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Calendar constructor
    */
-  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgCard', 'sgAcl', function($q, $timeout, $log, Settings, Resource, Card, Acl) {
+  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgComponent', 'sgAcl', function($q, $timeout, $log, Settings, Resource, Component, Acl) {
     angular.extend(Calendar, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser.folderURL + 'Calendar', Settings.activeUser),
-      $Card: Card,
+      $Component: Component,
       $$Acl: Acl,
       activeUser: Settings.activeUser
     });
@@ -51,19 +51,15 @@
    */
   Calendar.$add = function(calendar) {
     // Insert new calendar at proper index
-    var sibling, i;
+    var list, sibling, i;
 
-    calendar.isOwned = this.activeUser.isSuperUser || calendar.owner == this.activeUser.login;
-    calendar.isSubscription = calendar.owner != this.activeUser.login;
-    sibling = _.find(this.$calendars, function(o) {
-      return (o.isRemote
-              || (!calendar.isSubscription && o.isSubscription)
-              || (o.id != 'personal'
-                  && o.isSubscription === calendar.isSubscription
-                  && o.name.localeCompare(calendar.name) === 1));
+    list = calendar.isSubscription? this.$subscriptions : this.$calendars;
+    sibling = _.find(list, function(o) {
+      return (o.id != 'personal'
+              && o.name.localeCompare(calendar.name) === 1);
     });
-    i = sibling ? _.indexOf(_.pluck(this.$calendars, 'id'), sibling.id) : 1;
-    this.$calendars.splice(i, 0, calendar);
+    i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
+    list.splice(i, 0, calendar);
   };
 
   /**
@@ -75,18 +71,34 @@
   Calendar.$findAll = function(data) {
     var _this = this;
     if (data) {
-      
-      this.$calendars = data;
+      this.$calendars = [];
+      this.$subscriptions = [];
       // Instanciate Calendar objects
-      angular.forEach(this.$calendars, function(o, i) {
-        _this.$calendars[i] = new Calendar(o);
-        // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
-        // _this.$calendars[i].isSubscription = _this.$calendars[i].owner != _this.activeUser.login;
-        // _this.$calendars[i].isOwned = _this.activeUser.isSuperUser
-        //   || _this.$calendars[i].owner == _this.activeUser.login;
+      angular.forEach(data, function(o, i) {
+        var calendar = new Calendar(o);
+        if (calendar.isSubscription)
+          _this.$subscriptions.push(calendar);
+        else
+          _this.$calendars.push(calendar);
       });
     }
     return this.$calendars;
+  };
+
+  /**
+   * @memberof Calendar
+   * @desc Find a calendar among local instances (personal calendars and subscriptions).
+   * @param {string} id - the calendar ID
+   * @returns an object literal of the matching Calendar instance
+   */
+  Calendar.$get = function(id) {
+    var calendar;
+
+    calendar = _.find(Calendar.$calendars, function(o) { return o.id == id });
+    if (!calendar)
+      calendar = _.find(Calendar.$subscriptions, function(o) { return o.id == id });
+
+    return calendar;
   };
 
   /**
@@ -100,13 +112,36 @@
     var _this = this;
     return Calendar.$$resource.userResource(uid).fetch(path, 'subscribe').then(function(calendarData) {
       var calendar = new Calendar(calendarData);
-      if (!_.find(_this.$calendars, function(o) {
+      if (!_.find(_this.$subscriptions, function(o) {
         return o.id == calendarData.id;
       })) {
         Calendar.$add(calendar);
       }
       return calendar;
     });
+  };
+
+  /**
+   * @function init
+   * @memberof Calendar.prototype
+   * @desc Extend instance with new data and compute additional attributes.
+   * @param {object} data - attributes of calendar
+   */
+  Calendar.prototype.init = function(data) {
+    angular.extend(this, data);
+    // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
+    this.isOwned = Calendar.activeUser.isSuperUser || this.owner == Calendar.activeUser.login;
+    this.isSubscription = !this.isRemote && this.owner != Calendar.activeUser.login;
+  };
+
+  /**
+   * @function getClassName
+   * @memberof Calendar.prototype
+   * @desc Return the calendar CSS class name based on its ID.
+   * @returns a string representing the foreground CSS class name
+   */
+  Calendar.prototype.getClassName = function() {
+    return 'fg-folder' + this.id;
   };
 
   /**
@@ -170,6 +205,16 @@
    */
   Calendar.prototype.$setActivation = function() {
     return Calendar.$$resource.fetch(this.id, (this.active?'':'de') + 'activateFolder');
+  };
+
+  /**
+   * @function $getComponent
+   * @memberof Calendar.prototype
+   * @desc Fetch the card attributes from the server.
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.$getComponent = function(componentId) {
+    return Calendar.$Component.$find(this.id, componentId);
   };
 
   /**
