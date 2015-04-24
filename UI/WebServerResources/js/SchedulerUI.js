@@ -133,6 +133,51 @@
         true // compare for object equality
       );
 
+      $scope.newCalendar = function(ev) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template:
+          '<md-dialog aria-label="' + l('New calendar') + '">' +
+            '  <md-content layout="column">' +
+            '    <md-input-container>' +
+            '      <label>' + l('Name of the Calendar') + '</label>' +
+            '      <input type="text" ng-model="name" required="required"/>' +
+            '    </md-input-container>' +
+            '    <div layout="row">' +
+            '      <md-button ng-click="cancelClicked()">' +
+            '        Cancel' +
+            '      </md-button>' +
+            '      <md-button ng-click="okClicked()" ng-disabled="!name.length">' +
+            '        OK' +
+            '      </md-button>' +
+            '    </div>'+
+            '  </md-content>' +
+            '</md-dialog>',
+          controller: NewCalendarDialogController
+        });
+        function NewCalendarDialogController(scope, $mdDialog) {
+          scope.name = "";
+          scope.cancelClicked = function() {
+            $mdDialog.hide();
+          }
+          scope.okClicked = function() {
+            var calendar = new Calendar(
+              {
+                name: scope.name,
+                isEditable: true,
+                isRemote: false,
+                owner: UserLogin
+              }
+            );
+            Calendar.$add(calendar);
+            $mdDialog.hide();
+          }
+        }
+      };
+      
       $scope.share = function(calendar) {
         $mdDialog.show({
           templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
