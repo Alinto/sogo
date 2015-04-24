@@ -11,7 +11,7 @@
   function AddressBook(futureAddressBookData) {
     // Data is immediately available
     if (typeof futureAddressBookData.then !== 'function') {
-      angular.extend(this, futureAddressBookData);
+      this.init(futureAddressBookData);
       if (this.name && !this.id) {
         // Create a new addressbook on the server
         var newAddressBookData = AddressBook.$$resource.create('createFolder', this.name);
@@ -78,19 +78,16 @@
    */
   AddressBook.$add = function(addressbook) {
     // Insert new addressbook at proper index
-    var sibling, i;
+    var list, sibling, i;
 
-    addressbook.isOwned = this.activeUser.isSuperUser || addressbook.owner == this.activeUser.login;
-    addressbook.isSubscription = addressbook.owner != this.activeUser.login;
-    sibling = _.find(this.$addressbooks, function(o) {
-      return (o.isRemote
-              || (!addressbook.isSubscription && o.isSubscription)
+    list = addressbook.isSubscription? this.$subscriptions : this.$addressbooks;
+    sibling = _.find(list, function(o) {
+      return (addressbook.id == 'personal'
               || (o.id != 'personal'
-                  && o.isSubscription === addressbook.isSubscription
                   && o.name.localeCompare(addressbook.name) === 1));
     });
-    i = sibling ? _.indexOf(_.pluck(this.$addressbooks, 'id'), sibling.id) : 1;
-    this.$addressbooks.splice(i, 0, addressbook);
+    i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
+    list.splice(i, 0, addressbook);
   };
 
   /**
@@ -102,14 +99,18 @@
   AddressBook.$findAll = function(data) {
     var _this = this;
     if (data) {
-      this.$addressbooks = data;
+      this.$addressbooks = [];
+      this.$subscriptions = [];
+      this.$remotes = [];
       // Instanciate AddressBook objects
-      angular.forEach(this.$addressbooks, function(o, i) {
-        _this.$addressbooks[i] = new AddressBook(o);
-        // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
-        _this.$addressbooks[i].isSubscription = _this.$addressbooks[i].owner != _this.activeUser.login;
-        _this.$addressbooks[i].isOwned = _this.activeUser.isSuperUser
-          || _this.$addressbooks[i].owner == _this.activeUser.login;
+      angular.forEach(data, function(o, i) {
+        var addressbook = new AddressBook(o);
+        if (addressbook.isRemote)
+          _this.$remotes.push(addressbook);
+        else if (addressbook.isSubscription)
+          _this.$subscriptions.push(addressbook);
+        else
+          _this.$addressbooks.push(addressbook);
       });
     }
     return this.$addressbooks;
@@ -138,13 +139,27 @@
     var _this = this;
     return AddressBook.$$resource.userResource(uid).fetch(path, 'subscribe').then(function(addressbookData) {
       var addressbook = new AddressBook(addressbookData);
-      if (!_.find(_this.$addressbooks, function(o) {
+      if (!_.find(_this.$subscriptions, function(o) {
         return o.id == addressbookData.id;
       })) {
+        // Not already subscribed
         AddressBook.$add(addressbook);
       }
       return addressbook;
     });
+  };
+
+  /**
+   * @function init
+   * @memberof AddressBook.prototype
+   * @desc Extend instance with new data and compute additional attributes.
+   * @param {object} data - attributes of addressbook
+   */
+  AddressBook.prototype.init = function(data) {
+    angular.extend(this, data);
+    // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
+    this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
+    this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
   };
 
   /**
@@ -225,17 +240,22 @@
   AddressBook.prototype.$delete = function() {
     var _this = this,
         d = AddressBook.$q.defer(),
+        list,
         promise;
 
-    if (this.isSubscription)
+    if (this.isSubscription) {
       promise = AddressBook.$$resource.fetch(this.id, 'unsubscribe');
-    else
+      list = AddressBook.$subscriptions;
+    }
+    else {
       promise = AddressBook.$$resource.remove(this.id);
+      list = AddressBook.$addressbooks;
+    }
 
     promise.then(function() {
-      var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), _this.id);
-      AddressBook.$addressbooks.splice(i, 1);
-      d.resolve(true);
+      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
+      list.splice(i, 1);
+      d.resolve();
     }, function(data, status) {
       d.reject(data);
     });
@@ -280,7 +300,7 @@
     // Resolve the promise
     this.$futureAddressBookData.then(function(data) {
       AddressBook.$timeout(function() {
-        angular.extend(_this, data);
+        _this.init(data);
         // Also extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
         angular.forEach(AddressBook.$findAll(), function(o, i) {

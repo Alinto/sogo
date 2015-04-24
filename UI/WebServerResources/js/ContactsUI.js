@@ -21,24 +21,36 @@
 
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider
-        .state('addressbook', {
-          url: '/:addressbookId',
+        .state('app', {
+          url: '/addressbooks',
+          abstract: true,
           views: {
             addressbooks: {
               templateUrl: 'UIxContactFoldersView', // UI/Templates/Contacts/UIxContactFoldersView.wox
-              controller: 'AddressBookCtrl'
+              controller: 'AddressBooksCtrl'
             }
           },
           resolve: {
             stateAddressbooks: ['sgAddressBook', function(AddressBook) {
               return AddressBook.$findAll(contactFolders);
-            }],
+            }]
+          }
+        })
+        .state('app.addressbook', {
+          url: '/:addressbookId',
+          views: {
+            addressbook: {
+              templateUrl: 'addressbook',
+              controller: 'AddressBookCtrl'
+            }
+          },
+          resolve: {
             stateAddressbook: ['$stateParams', 'sgAddressBook', function($stateParams, AddressBook) {
               return AddressBook.$find($stateParams.addressbookId);
             }]
           }
         })
-        .state('addressbook.new', {
+        .state('app.addressbook.new', {
           url: '/:contactType/new',
           views: {
             card: {
@@ -54,7 +66,7 @@
             }]
           }
         })
-        .state('addressbook.card', {
+        .state('app.addressbook.card', {
           url: '/:cardId',
           abstract: true,
           views: {
@@ -68,19 +80,19 @@
             }]
           }
         })
-        .state('addressbook.card.view', {
+        .state('app.addressbook.card.view', {
           url: '/view',
           views: {
-            'card@addressbook': {
+            'card@app.addressbook': {
               templateUrl: 'UIxContactViewTemplate', // UI/Templates/Contacts/UIxContactViewTemplate.wox
               controller: 'CardCtrl'
             }
           }
         })
-        .state('addressbook.card.editor', {
+        .state('app.addressbook.card.editor', {
           url: '/edit',
           views: {
-            'card@addressbook': {
+            'card@app.addressbook': {
               templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
               controller: 'CardCtrl'
             }
@@ -88,26 +100,17 @@
         });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/personal');
+      $urlRouterProvider.otherwise('/addressbooks/personal');
     }])
 
-    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
-      var currentAddressbook;
-
+    .controller('AddressBooksCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', function($scope, $rootScope, $state, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks) {
       $scope.activeUser = Settings.activeUser;
-
-      // Resolved objects
-      $scope.addressbooks = stateAddressbooks;
-      $rootScope.addressbook = stateAddressbook;
-
-      // Adjust search status depending on addressbook type
-      currentAddressbook = _.find($scope.addressbooks, function(o) {
-        return o.id ==  $stateParams.addressbookId;
-      });
+      $scope.service = AddressBook;
 
       // $scope functions
-      $scope.select = function(rowIndex) {
+      $scope.select = function(folder) {
         $scope.editMode = false;
+        //$rootScope.currentFolder = folder;
       };
       $scope.newAddressbook = function(ev) {
         $scope.editMode = false;
@@ -154,62 +157,21 @@
           }
         }
       };
-      $scope.newComponent = function(ev) {
-        $mdDialog.show({
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          template:
-          '<md-dialog aria-label="Create component">' +
-            '  <md-content>' +
-            '  <div layout="column">' +
-            '    <md-button ng-click="createContact()">' +
-            '      Contact' +
-            '    </md-button>' +
-            '    <md-button ng-click="createList()">' +
-            '      List' +
-            '    </md-button>' +
-            '  </div>' +
-            '  </md-content>' +
-            '</md-dialog>',
-          locals: {
-            state: $state
-          },
-          controller: ComponentDialogController
-        });
-        function ComponentDialogController(scope, $mdDialog, state) {
-          scope.createContact = function() {
-            state.go('addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'card' });
-            $mdDialog.hide();
-          }
-          scope.createList = function() {
-            state.go('addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'list' });
-            $mdDialog.hide();
-          }
+      $scope.edit = function(index, folder) {
+        if (!folder.isRemote) {
+          $scope.editMode = folder.id;
+          $scope.originalAddressbook = angular.extend({}, folder.$omit());
+          focus('addressBookName_' + folder.id);
         }
       };
-      $scope.currentFolderIsConfigurable = function(folder) {
-        return ($scope.addressbook && $scope.addressbook.id == folder.id && !folder.isRemote);
-      };
-      $scope.edit = function(i) {
-        if (!$rootScope.addressbook.isRemote) {
-          if (angular.isUndefined(i)) {
-            i = _.indexOf(_.pluck($scope.addressbooks, 'id'), $rootScope.addressbook.id);
-          }
-          $scope.editMode = $rootScope.addressbook.id;
-          $scope.originalAddressbook = angular.extend({}, $scope.addressbook.$omit());
-          focus('addressBookName_' + i);
-        }
-      };
-      $scope.revertEditing = function(i) {
-        $scope.addressbooks[i].name = $scope.originalAddressbook.name;
+      $scope.revertEditing = function(folder) {
+        folder.name = $scope.originalAddressbook.name;
         $scope.editMode = false;
       };
-      $scope.save = function(i) {
-        var name = $scope.addressbooks[i].name;
-        if (name && name.length > 0) {
-          $scope.addressbook.$rename(name)
+      $scope.save = function(folder) {
+        var name = folder.name;
+        if (name && name.length > 0 && name != $scope.originalAddressbook.name) {
+          folder.$rename(name)
             .then(function(data) {
               $scope.editMode = false;
             }, function(data, status) {
@@ -218,31 +180,30 @@
         }
       };
       $scope.confirmDelete = function() {
-        if ($scope.addressbook.isSubscription) {
+        if ($scope.currentFolder.isSubscription) {
           // Unsubscribe without confirmation
-          $rootScope.addressbook.$delete()
+          $rootScope.currentFolder.$delete()
             .then(function() {
-              $rootScope.addressbook = null;
+              $rootScope.currentFolder = null;
+              $state.go('app.addressbook', { addressbookId: 'personal' });
             }, function(data, status) {
               Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                             $rootScope.addressbook.name),
+                             $rootScope.currentFolder.name),
                            l(data.error));
             });
         }
         else {
           Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
-                                         $scope.addressbook.name))
-            .then(function(res) {
-              if (res) {
-                $rootScope.addressbook.$delete()
-                  .then(function() {
-                    $rootScope.addressbook = null;
-                  }, function(data, status) {
-                    Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                                   $rootScope.addressbook.name),
-                                 l(data.error));
-                  });
-              }
+                                         $scope.currentFolder.name))
+            .then(function() {
+              $rootScope.currentFolder.$delete()
+                .then(function() {
+                  $rootScope.currentFolder = null;
+                }, function(data, status) {
+                  Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                                 $rootScope.currentFolder.name),
+                               l(data.error));
+                });
             });
         }
       };
@@ -320,6 +281,49 @@
       };
     }])
 
+    .controller('AddressBookCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook', function($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+      var currentAddressbook;
+
+      $rootScope.currentFolder = stateAddressbook;
+      $scope.addressbook = stateAddressbook;
+
+      $scope.newComponent = function(ev) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template:
+          '<md-dialog aria-label="Create component">' +
+            '  <md-content>' +
+            '  <div layout="column">' +
+            '    <md-button ng-click="createContact()">' +
+            '      Contact' +
+            '    </md-button>' +
+            '    <md-button ng-click="createList()">' +
+            '      List' +
+            '    </md-button>' +
+            '  </div>' +
+            '  </md-content>' +
+            '</md-dialog>',
+          locals: {
+            state: $state
+          },
+          controller: ComponentDialogController
+        });
+        function ComponentDialogController(scope, $mdDialog, state) {
+          scope.createContact = function() {
+            state.go('app.addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'card' });
+            $mdDialog.hide();
+          }
+          scope.createList = function() {
+            state.go('app.addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'list' });
+            $mdDialog.hide();
+          }
+        }
+      };
+    }])
+
   /**
    * Controller to view and edit a card
    */
@@ -372,7 +376,7 @@
                 // Update contacts list with new version of the Card object
                 $rootScope.addressbook.cards[i] = angular.copy($scope.card);
               }
-              $state.go('addressbook.card.view', { cardId: $scope.card.id });
+              $state.go('app.addressbook.card.view', { cardId: $scope.card.id });
             }, function(data, status) {
               console.debug('failed');
             });
@@ -386,11 +390,11 @@
         if ($scope.card.isNew) {
           // Cancelling the creation of a card
           $scope.card = null;
-          $state.go('addressbook', { addressbookId: $scope.addressbook.id });
+          $state.go('app.addressbook', { addressbookId: $scope.addressbook.id });
         }
         else {
           // Cancelling the edition of an existing card
-          $state.go('addressbook.card.view', { cardId: $scope.card.id });
+          $state.go('app.addressbook.card.view', { cardId: $scope.card.id });
         }
       };
       $scope.confirmDelete = function(card) {
@@ -406,7 +410,7 @@
                 });
                 // Remove card object from scope
                 $scope.card = null;
-                $state.go('addressbook', { addressbookId: $scope.addressbook.id });
+                $state.go('app.addressbook', { addressbookId: $scope.addressbook.id });
               }, function(data, status) {
                 Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                              card.$fullname()));
