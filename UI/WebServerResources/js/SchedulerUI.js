@@ -84,7 +84,8 @@
       })
     })
 
-    .controller('CalendarsController', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$log', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'stateCalendars', function($scope, $rootScope, $stateParams, $state, $timeout, $log, focus, encodeUriFilter, Dialog, Settings, Calendar, stateCalendars) {
+
+    .controller('CalendarsController', ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$q', '$mdDialog', '$log', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgUser', 'stateCalendars', function($scope, $rootScope, $stateParams, $state, $timeout, $q, $mdDialog, $log, focus, encodeUriFilter, Dialog, Settings, Calendar, User, stateCalendars) {
       var vm = this;
 
       vm.activeUser = Settings.activeUser;
@@ -115,6 +116,77 @@
         true // compare for object equality
       );
 
+      $scope.share = function(calendar) {
+        $mdDialog.show({
+          templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
+          controller: CalendarACLController,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          locals: {
+            usersWithACL: calendar.$acl.$users(),
+            User: User,
+            stateCalendar: calendar,
+            q: $q
+          }
+        });
+        function CalendarACLController($scope, $mdDialog, usersWithACL, User, stateCalendar, q) {
+          $scope.users = usersWithACL; // ACL users
+          $scope.stateCalendar = stateCalendar;
+          $scope.userToAdd = '';
+          $scope.searchText = '';
+          $scope.userFilter = function($query) {
+            var deferred = q.defer();
+            User.$filter($query).then(function(results) {
+              deferred.resolve(results)
+            });
+            return deferred.promise;
+          };
+          $scope.closeModal = function() {
+              stateCalendar.$acl.$resetUsersRights(); // cancel changes
+              $mdDialog.hide();
+            };
+            $scope.saveModal = function() {
+              stateCalendar.$acl.$saveUsersRights().then(function() {
+                $mdDialog.hide();
+              }, function(data, status) {
+                Dialog.alert(l('Warning'), l('An error occured please try again.'));
+              });
+            };
+            $scope.confirmChange = function(user) {
+              var confirmation = user.$confirmRights();
+              if (confirmation) {
+                Dialog.confirm(l('Warning'), confirmation).then(function(res) {
+                  if (!res)
+                    user.$resetRights(true);
+                });
+              }
+            };
+            $scope.removeUser = function(user) {
+              stateCalendar.$acl.$removeUser(user.uid).then(function() {
+                if (user.uid == $scope.selectedUser.uid) {
+                  $scope.selectedUser = null;
+                }
+              }, function(data, status) {
+                Dialog.alert(l('Warning'), l('An error occured please try again.'))
+              });
+            };
+          $scope.addUser = function(data) {            
+              stateCalendar.$acl.$addUser(data).then(function() {
+                $scope.userToAdd = '';
+                $scope.searchText = '';
+              }, function(error) {
+                Dialog.alert(l('Warning'), error);
+              });
+            };
+            $scope.selectUser = function(user) {
+              // Check if it is a different user
+              if ($scope.selectedUser != user) {
+                $scope.selectedUser = user;
+                $scope.selectedUser.$rights();
+              }
+            };
+        };
+      }
       /**
        * subscribeToFolder - Callback of sgSubscribe directive
        */

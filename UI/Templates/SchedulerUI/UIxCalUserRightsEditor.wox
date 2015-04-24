@@ -10,45 +10,72 @@
   title="title"
   const:toolbar="none"
   const:popup="YES">
-  <form id="userRightsForm" const:href="saveUserRights">
-    <input id="uid" type="hidden" name="uid" var:value="uid"/>
-    <div class="title">
-      <label><span><var:string label:value="Access rights to"/></span>
-      <span id="folderName" class="value"><var:string value="folderName"/></span></label>
-      <label><span><var:string label:value="For user"/></span>
-      <span class="value"><var:string value="userDisplayName"/></span></label>
+   
+  <div class="calendarUserRights"  layout="column">
+    
+      
+    <!-- <var:foreach list="rightTypes" item="currentRightType">
+	 <div><span><var:string value="currentRightTypeLabel"/></span>
+	 <var:popup list="objectRights" item="currentRight"
+	 var:name="currentRightTypeName"
+	 var:value="currentRight"
+	 string="currentRightLabel"
+	 selection="currentRightSelection"
+	 /></div>
+         </var:foreach>
+    -->
+    <div layout="row" layout-align="space-around center">
+      <var:string label:value="Public"/>
+      <md-select ng-model="selectedUser.rights.Public">
+        <var:foreach list="objectRights" item="currentRight">
+          <md-option var:value="currentRight">
+            <var:string value="currentRightLabel"/>
+          </md-option>
+        </var:foreach>
+      </md-select>
     </div>
-    <div class="calendarUserRights">
-      <var:foreach list="rightTypes" item="currentRightType">
-	<div><span><var:string value="currentRightTypeLabel"/></span>
-	<var:popup list="objectRights" item="currentRight"
-		   var:name="currentRightTypeName"
-		   var:value="currentRight"
-		   string="currentRightLabel"
-		   selection="currentRightSelection"
-		   /></div>
-      </var:foreach>
+
+    <div layout="row" layout-align="space-around center">
+      <var:string label:value="Confidential"/>
+      <md-select ng-model="selectedUser.rights.Confidential">
+        <var:foreach list="objectRights" item="currentRight">
+          <md-option var:value="currentRight">
+            <var:string value="currentRightLabel"/>
+          </md-option>
+        </var:foreach>
+      </md-select>
     </div>
-    <var:if condition="userIsAnonymousUser" const:negate="YES"
-      ><div class="basicUserRights">
-        <label><input type="checkbox" class="checkBox"
-            const:name="ObjectCreator"
-            var:checked="userCanCreateObjects"/><var:string
-            label:value="This person can create objects in my calendar."
-            /></label>
-        <br/>
-        <label><input type="checkbox" class="checkBox"
-            const:name="ObjectEraser"
-            var:checked="userCanEraseObjects"/><var:string
-            label:value="This person can erase objects from my calendar."
-            /></label>
-      </div></var:if>
-    <div class="buttons">
-      <a href="#" const:name="updateButton" id="updateButton" 
-        class="button actionButton">
-        <span><var:string label:value="Update" /></span></a>
-      <a href="#" const:name="cancelButton" id="cancelButton" class="button">
-        <span><var:string label:value="Cancel" /></span></a>
+
+    <div layout="row" layout-align="space-around center">
+      <var:string label:value="Private"/>
+      <md-select ng-model="selectedUser.rights.Private">
+        <var:foreach list="objectRights" item="currentRight">
+          <md-option var:value="currentRight">
+            <var:string value="currentRightLabel"/>
+          </md-option>
+        </var:foreach>
+      </md-select>
     </div>
-  </form>
+    
+    <md-checkbox name="canCreateObjects"
+                 ng-model="selectedUser.rights.canCreateObjects"
+                 ng-change="confirmChange(selectedUser)"
+                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="This person can create objects in my calendar." />
+    </md-checkbox>
+    
+    <md-checkbox name="canEraseObjects"
+                 ng-model="selectedUser.rights.canEraseObjects"
+                 ng-change="confirmChange(selectedUser)"
+                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-true-value="1"
+                 ng-false-value="0">
+              <var:string label:value="This person can erase objects from my calendar." />
+    </md-checkbox>
+
+  </div>
+
+
 </var:component>

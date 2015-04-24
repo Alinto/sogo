@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
@@ -94,22 +95,35 @@
   return rightsForType;
 }
 
-- (void) updateRights
+- (NSDictionary *) userRightsForObject
+{
+  NSMutableDictionary *d;
+  
+  [self prepareRightsForm];
+
+  d = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                               [NSNumber numberWithBool:[self userCanCreateObjects]], @"canCreateObjects",
+                               [NSNumber numberWithBool:[self userCanEraseObjects]], @"canEraseObjects",
+                           nil];
+
+  [d addEntriesFromDictionary: rights];
+
+  return d;
+}
+
+- (void) updateRights: (NSDictionary *) newRights
 {
   NSEnumerator *types;
   NSString *currentType, *currentValue;
   NSArray *rightsForType;
-  WORequest *request;
 
-  request = [context request];
   types = [[self rightTypes] objectEnumerator];
   currentType = [types nextObject];
   while (currentType)
     {
       rightsForType = [self _rightsForType: currentType];
-      currentValue
-	= [request formValueForKey:
-		     [NSString stringWithFormat: @"%@Right", currentType]];
+      currentValue = [newRights objectForKey: currentType];
+	
       if ([currentValue isEqualToString: @"None"])
 	[self removeAllRightsFromList: rightsForType];
       else
@@ -119,12 +133,12 @@
       currentType = [types nextObject];
     }
 
-  if ([[request formValueForKey: @"ObjectCreator"] length] > 0)
+  if ([[newRights objectForKey: @"canCreateObjects"] boolValue])
     [self appendRight: SOGoRole_ObjectCreator];
   else
     [self removeRight: SOGoRole_ObjectCreator];
 
-  if ([[request formValueForKey: @"ObjectEraser"] length] > 0)
+  if ([[newRights objectForKey: @"canEraseObjects"] boolValue])
     [self appendRight: SOGoRole_ObjectEraser];
   else
     [self removeRight: SOGoRole_ObjectEraser];

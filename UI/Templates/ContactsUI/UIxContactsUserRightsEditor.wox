@@ -10,28 +10,36 @@
     
     <md-checkbox name="canViewObjects"
                  ng-model="selectedUser.rights.canViewObjects"
-                 ng-change="confirmChange(selectedUser)" >
+                 ng-change="confirmChange(selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
       <var:string label:value="This person can read the cards of this addressbook." />
     </md-checkbox>
     
     <md-checkbox name="canCreateObjects"
                  ng-model="selectedUser.rights.canCreateObjects"
                  ng-change="confirmChange(selectedUser)"
-                 ng-hide="selectedUser.$isAnonymous()">
+                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-true-value="1"
+                 ng-false-value="0">
       <var:string label:value="This person can add cards to this addressbook." />
     </md-checkbox>
     
     <md-checkbox name="canEditObjects"
                  ng-model="selectedUser.rights.canEditObjects"
                  ng-change="confirmChange(selectedUser)"
-                 ng-hide="selectedUser.$isAnonymous()">
+                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-true-value="1"
+                 ng-false-value="0">
       <var:string label:value="This person can edit the cards of this addressbook." />
     </md-checkbox>
     
     <md-checkbox name="canEraseObjects"
                  ng-model="selectedUser.rights.canEraseObjects"
                  ng-change="confirmChange(selectedUser)"
-                 ng-hide="selectedUser.$isAnonymous()">
+                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="This person can erase cards from this addressbook." />
     </md-checkbox>
     

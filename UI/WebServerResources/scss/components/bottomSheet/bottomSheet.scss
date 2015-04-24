@@ -3,15 +3,15 @@
 md-bottom-sheet.md-default-theme {
   border: none;
   background-color: inherit;
-  background-image: url("../img/cardboard-transp.png");
-  background-blend-mode: multiply;
+  //background-image: url("../img/cardboard-transp.png");
+  //background-blend-mode: multiply;
 }
 
 md-bottom-sheet.md-default-theme .md-button.md-default-theme {
   &:hover:not([disabled]) {
     background-color: inherit;
-    background-image: url("../img/cardboard-transp.png");
-    background-blend-mode: multiply;
+    //background-image: url("../img/cardboard-transp.png");
+    //background-blend-mode: multiply;
     color: sg-color($sogoBlue, 800);
   }
   &[disabled] {

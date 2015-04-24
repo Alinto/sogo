@@ -90,9 +90,9 @@
       User.$$resource.fetch(folderId, 'userRights', param).then(function(data) {
         _this.rights = data;
         // Convert numbers (0|1) to boolean values
-        angular.forEach(_.keys(_this.rights), function(key) {
-          _this.rights[key] = _this.rights[key] ? true : false;
-        });
+        //angular.forEach(_.keys(_this.rights), function(key) {
+        //  _this.rights[key] = _this.rights[key] ? true : false;
+        //});
         // console.debug('rights ' + _this.uid + ' => ' + JSON.stringify(data, undefined, 2));
         // Keep a copy of the server's version
         _this.$shadowRights = angular.copy(data);

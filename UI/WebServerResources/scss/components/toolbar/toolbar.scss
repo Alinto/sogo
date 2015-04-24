@@ -17,8 +17,8 @@ md-toolbar {
   z-index: $z-index-toolbar;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
-  background-image: url("../img/felt-transp.png");
-  background-blend-mode: luminosity;
+  //background-image: url("../img/felt-transp.png");
+  //background-blend-mode: luminosity;
   box-shadow: $whiteframe-shadow-z1;
 }
 

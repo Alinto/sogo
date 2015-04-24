@@ -175,7 +175,12 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
               <i class="md-icon-turned-in md-display-8"
-                 ng-class="calendar.getClassName()"><!-- calendar color --></i>
+                 ng-class="calendar.getClassName()"><!-- calendar
+                                                         color --></i>
+              <md-button class="iconButton" label:aria-label="Options"
+                         ng-click="share(calendar)">
+                <i class="md-icon-more-vert"><!-- options --></i>
+              </md-button>
             </md-list-item>
           </md-list>
         </section>
@@ -294,4 +299,8 @@
     </section>
   </script>
 
+  <script type="text/ng-template" id="UIxUserRightsEditor">
+    <var:component className="UIxCalUserRightsEditor" />
+  </script>
+  
 </var:component>

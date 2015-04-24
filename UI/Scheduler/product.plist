@@ -123,6 +123,7 @@
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxCalUserRightsEditor";
+          actionName  = "userRights";
         };
         saveUserRights = {
           protectedBy = "Change Permissions";
@@ -168,6 +169,7 @@
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxCalUserRightsEditor";
+          actionName  = "userRights";
         };
         saveUserRights = {
           protectedBy = "Change Permissions";
