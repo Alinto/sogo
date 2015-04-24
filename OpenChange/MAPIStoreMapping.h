@@ -60,6 +60,8 @@
                     andFlags: (uint8_t) flags;
 - (void) updateID: (uint64_t) idNbr
           withURL: (NSString *) urlString;
+- (BOOL) updateURL: (NSString *) urlString
+            withID: (uint64_t) idNbr;
 
 @end
 

@@ -264,7 +264,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 
           if (contactInfos)
             {
-              username = [contactInfos objectForKey: @"c_uid"];
+              username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
               entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
             }
@@ -273,7 +273,7 @@ static NSCharacterSet *hexCharacterSet = nil;
               recipient->username = NULL;
               entryId = MAPIStoreExternalEntryId (cn, email);
             }
-          recipient->type = MAPI_TO;
+          recipient->type = [[person role] isEqualToString: @"OPT-PARTICIPANT"] ? MAPI_CC : MAPI_TO;
 
           /* properties */
           p = 0;
@@ -283,7 +283,7 @@ static NSCharacterSet *hexCharacterSet = nil;
           // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
           recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
           p++;
-          
+
           // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
           recipient->data[p] = MAPILongValue (msgData, 0);
           p++;
@@ -365,7 +365,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 
         if (contactInfos)
           {
-            username = [contactInfos objectForKey: @"c_uid"];
+            username = [contactInfos objectForKey: @"sAMAccountName"];
             recipient->username = [username asUnicodeInMemCtx: msgData];
             entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
           }
@@ -383,7 +383,7 @@ static NSCharacterSet *hexCharacterSet = nil;
         // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
         recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
         p++;
-          
+
         // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
         recipient->data[p] = MAPILongValue (msgData, 0);
         p++;
@@ -931,7 +931,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
   if (contactInfos)
     {
-      username = [contactInfos objectForKey: @"c_uid"];
+      username = [contactInfos objectForKey: @"sAMAccountName"];
       entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
     }
   else

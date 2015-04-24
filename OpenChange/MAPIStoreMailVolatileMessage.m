@@ -386,7 +386,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
           contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
           if (contactInfos)
             {
-              username = [contactInfos objectForKey: @"c_uid"];
+              username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
               entryId = MAPIStoreInternalEntryId (samCtx, username);
             }

@@ -664,7 +664,7 @@ static Class NSNullK;
 //
 //
 - (void) _fillContactInfosForUser: (NSMutableDictionary *) currentUser
-		   withUIDorEmail: (NSString *) uid
+                   withUIDorEmail: (NSString *) uid
                          inDomain: (NSString *) domain
 {
   NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin, *c_sievehostname;
@@ -685,12 +685,11 @@ static Class NSNullK;
   c_sievehostname = nil;
 
   [currentUser setObject: [NSNumber numberWithBool: YES]
-	       forKey: @"CalendarAccess"];
+                  forKey: @"CalendarAccess"];
   [currentUser setObject: [NSNumber numberWithBool: YES]
-	       forKey: @"MailAccess"];
+                  forKey: @"MailAccess"];
 
-  sogoSources = [[self authenticationSourceIDsInDomain: domain]
-                  objectEnumerator];
+  sogoSources = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
   userEntry = nil;
   while (!userEntry && (sourceID = [sogoSources nextObject]))
     {
@@ -698,44 +697,49 @@ static Class NSNullK;
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid
                                                          inDomain: domain];
       if (userEntry)
-	{
+        {
           [currentUser setObject: sourceID forKey: @"SOGoSource"];
-	  if (!cn)
-	    cn = [userEntry objectForKey: @"c_cn"];
-	  if (!c_uid)
-	    c_uid = [userEntry objectForKey: @"c_uid"];
+          if (!cn)
+            cn = [userEntry objectForKey: @"c_cn"];
+          if (!c_uid)
+            c_uid = [userEntry objectForKey: @"c_uid"];
           if (!c_domain)
             c_domain = [userEntry objectForKey: @"c_domain"];
-	  c_emails = [userEntry objectForKey: @"c_emails"];
-	  if ([c_emails count])
-	    [emails addObjectsFromArray: c_emails];
-	  if (!c_imaphostname)
-	    c_imaphostname = [userEntry objectForKey: @"c_imaphostname"];
+          c_emails = [userEntry objectForKey: @"c_emails"];
+          if ([c_emails count])
+            [emails addObjectsFromArray: c_emails];
+          if (!c_imaphostname)
+            c_imaphostname = [userEntry objectForKey: @"c_imaphostname"];
           if (!c_imaplogin)
             c_imaplogin = [userEntry objectForKey: @"c_imaplogin"];
           if (!c_sievehostname)
             c_sievehostname = [userEntry objectForKey: @"c_sievehostname"];
-	  access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
-	  if (!access)
-	    [currentUser setObject: [NSNumber numberWithBool: NO]
-			 forKey: @"CalendarAccess"];
-	  access = [[userEntry objectForKey: @"MailAccess"] boolValue];
-	  if (!access)
-	    [currentUser setObject: [NSNumber numberWithBool: NO]
-			 forKey: @"MailAccess"];
-	  
-	  // We check if it's a group
+          access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
+          if (!access)
+            [currentUser setObject: [NSNumber numberWithBool: NO]
+                            forKey: @"CalendarAccess"];
+          access = [[userEntry objectForKey: @"MailAccess"] boolValue];
+          if (!access)
+            [currentUser setObject: [NSNumber numberWithBool: NO]
+                            forKey: @"MailAccess"];
+
+          // We check if it's a group
           isGroup = [userEntry objectForKey: @"isGroup"];
           if (isGroup)
             [currentUser setObject: isGroup forKey: @"isGroup"];
 
-	  // We also fill the resource attributes, if any
-	  if ([userEntry objectForKey: @"isResource"])
-	    [currentUser setObject: [userEntry objectForKey: @"isResource"]
-			 forKey: @"isResource"];
-	  if ([userEntry objectForKey: @"numberOfSimultaneousBookings"])
-	    [currentUser setObject: [userEntry objectForKey: @"numberOfSimultaneousBookings"]
-			 forKey: @"numberOfSimultaneousBookings"];
+          // We also fill the resource attributes, if any
+          if ([userEntry objectForKey: @"isResource"])
+            [currentUser setObject: [userEntry objectForKey: @"isResource"]
+                            forKey: @"isResource"];
+          if ([userEntry objectForKey: @"numberOfSimultaneousBookings"])
+            [currentUser setObject: [userEntry objectForKey: @"numberOfSimultaneousBookings"]
+                            forKey: @"numberOfSimultaneousBookings"];
+
+          // This is Active Directory specific attribute (needed on OpenChange/* layer)
+          if ([userEntry objectForKey: @"samaccountname"])
+            [currentUser setObject: [userEntry objectForKey: @"samaccountname"]
+                            forKey: @"sAMAccountName"];
         }
     }
 
@@ -745,7 +749,7 @@ static Class NSNullK;
     c_uid = @"";
   if (!c_domain)
     c_domain = @"";
-  
+
   if (c_imaphostname)
     [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
   if (c_imaplogin)
