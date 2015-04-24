@@ -103,7 +103,9 @@
       $urlRouterProvider.otherwise('/addressbooks/personal');
     }])
 
-    .controller('AddressBooksCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'stateAddressbooks', function($scope, $rootScope, $state, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks) {
+    .controller('AddressBooksCtrl', ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$q', '$mdDialog', 'sgFocus', 'sgCard', 'sgAddressBook', 'sgDialog', 'sgSettings', 'sgUser', 'stateAddressbooks', function($state, $scope, $rootScope, $stateParams, $timeout, $q, $mdDialog, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+      var currentAddressbook;
+
       $scope.activeUser = Settings.activeUser;
       $scope.service = AddressBook;
 
@@ -214,23 +216,37 @@
         window.location.href = ApplicationBaseURL + '/' + $rootScope.addressbook.id + '/exportFolder';
       };
       $scope.share = function() {
-        var modal = $modal.open({
-          templateUrl: stateAddressbook.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
-          resolve: {
-            modalUsers: function() {
-              return stateAddressbook.$acl.$users();
-            }
-          },
-          controller: ['$scope', '$modalInstance', 'sgUser', 'modalUsers', function($scope, $modalInstance, User, modalUsers) {
-            $scope.users = modalUsers; // ACL users
-            $scope.userFilter = User.$filter; // Filter for typeahead
-            $scope.closeModal = function() {
+        $mdDialog.show({
+          templateUrl: $scope.currentFolder.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
+          controller: AddressBookACLController,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          locals: {
+            usersWithACL: $scope.currentFolder.$acl.$users(),
+            User: User,
+            stateAddressbook: $scope.currentFolder,
+            q: $q
+          }
+        });
+        function AddressBookACLController($scope, $mdDialog, usersWithACL, User, stateAddressbook, q) {
+          $scope.users = usersWithACL; // ACL users
+          $scope.stateAddressbook = stateAddressbook;
+          $scope.userToAdd = '';
+          $scope.searchText = '';
+          $scope.userFilter = function($query) {
+            var deferred = q.defer();
+            User.$filter($query).then(function(results) {
+              deferred.resolve(results)
+            });
+            return deferred.promise;
+          };
+          $scope.closeModal = function() {
               stateAddressbook.$acl.$resetUsersRights(); // cancel changes
-              $modalInstance.close();
+              $mdDialog.hide();
             };
             $scope.saveModal = function() {
               stateAddressbook.$acl.$saveUsersRights().then(function() {
-                $modalInstance.close();
+                $mdDialog.hide();
               }, function(data, status) {
                 Dialog.alert(l('Warning'), l('An error occured please try again.'));
               });
@@ -253,9 +269,11 @@
                 Dialog.alert(l('Warning'), l('An error occured please try again.'))
               });
             };
-            $scope.addUser = function(data) {
-              $scope.userToAdd = '';
-              stateAddressbook.$acl.$addUser(data).catch(function(error) {
+          $scope.addUser = function(data) {            
+              stateAddressbook.$acl.$addUser(data).then(function() {
+                $scope.userToAdd = '';
+                $scope.searchText = '';
+              }, function(error) {
                 Dialog.alert(l('Warning'), error);
               });
             };
@@ -266,8 +284,7 @@
                 $scope.selectedUser.$rights();
               }
             };
-          }]
-        });
+        };
       };
 
       /**

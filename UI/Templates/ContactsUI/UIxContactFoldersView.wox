@@ -183,7 +183,8 @@
                        sg-escape="revertEditing(folder)"/>
               </md-input-container>
               <md-button class="iconButton" label:aria-label="Options"
-                         ng-show="currentFolder.id==folder.id">
+                         ng-show="currentFolder.id==folder.id"
+                         ng-click="share()">
               <i class="md-icon-more-vert"><!-- options --></i>
               </md-button>
             </md-list-item>
