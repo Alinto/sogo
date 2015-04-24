@@ -130,6 +130,10 @@
           pageName    = "UIxCalUserRightsEditor";
           actionName  = "saveUserRights";
         };
+        UIxAppointmentEditorTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditorTemplate";
+        };
         editAttendees = {
           protectedBy = "View";
           pageName    = "UIxAttendeesEditor";
@@ -250,7 +254,7 @@
         };
         raw = {
           protectedBy = "ViewAllComponent";
-          actionClass = "UIxComponentEditor";
+          actionClass = "UIxAppointmentEditor";
           actionName  = "raw";
         };
         adjust = {
@@ -299,7 +303,7 @@
         };
         raw = {
           protectedBy = "ViewAllComponent";
-          pageName    = "UIxComponentEditor"; 
+          pageName    = "UIxTaskEditor";
           actionName  = "raw";
         };
       };

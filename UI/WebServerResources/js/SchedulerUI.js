@@ -7,7 +7,7 @@
   angular.module('SOGo.Common', []);
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
+  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'vs-repeat', 'SOGo.Common', 'SOGo.UI', 'SOGo.UIDesktop', 'SOGo.ContactsUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -39,6 +39,8 @@
         })
         .state('calendars.view', {
           url: '/{view:(?:day|week|month)}/:day',
+          sticky: true,
+          deepStateRedirect: true,
           views: {
             calendarView: {
               templateUrl: function($stateParams) {
@@ -54,6 +56,21 @@
           resolve: {
             stateEventsBlocks: ['$stateParams', 'sgComponent', function($stateParams, Component) {
               return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate());
+            }]
+          }
+        })
+        .state('calendars.component', {
+          url: '/:calendarId/event/:componentId',
+          views: {
+            componentEditor: {
+              templateUrl: 'UIxAppointmentEditorTemplate',
+              controller: 'ComponentController',
+              controllerAs: 'editor'
+            }
+          },
+          resolve: {
+            stateComponent: ['$stateParams', 'sgCalendar', function($stateParams, Calendar) {
+              return Calendar.$get($stateParams.calendarId).$getComponent($stateParams.componentId);
             }]
           }
         });
@@ -198,7 +215,7 @@
       };
     }])
   
-    .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', function($scope, $rootScope, $timeout, focus, encodeUriFilter, Dialog, Settings, Calendar, Component) {
+    .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', '$mdSidenav', function($scope, $rootScope, $timeout, focus, encodeUriFilter, Dialog, Settings, Calendar, Component, $mdSidenav) {
       // Scope variables
       this.component = Component;
       this.componentType = null;
@@ -241,6 +258,64 @@
           ctrl.blocks = data;
         });
       }));
+    }])
+
+    .controller('ComponentController', ['$scope', '$log', '$timeout', '$state', '$previousState', '$mdSidenav', '$mdDialog', 'sgCalendar', 'sgComponent', 'stateCalendars', 'stateComponent', function($scope, $log, $timeout, $state, $previousState, $mdSidenav, $mdDialog, Calendar, Component, stateCalendars, stateComponent) {
+      var vm = this;
+
+      vm.calendars = stateCalendars;
+      vm.event = stateComponent;
+      vm.categories = {};
+      vm.editRecurrence = editRecurrence;
+      vm.cancel = cancel;
+      vm.save = save;
+
+      $scope.$on('$viewContentLoaded', function(event) {
+        $timeout(function() {
+          $mdSidenav('right').open()
+            .then(function() {
+              $scope.$watch($mdSidenav('right').isOpen, function(isOpen, wasOpen) {
+                if (!isOpen) {
+                  if ($previousState.get())
+                    $previousState.go()
+                  else
+                    $state.go('calendars');
+                }
+              });
+            });
+        }, 100); // don't ask why
+      });
+
+      function editRecurrence($event) {
+        $mdDialog.show({
+          templateUrl: 'editRecurrence', // UI/Templates/SchedulerUI/UIxRecurrenceEditor.wox
+          controller: RecurrenceController
+        });
+        function RecurrenceController() {
+          
+        }
+      }
+
+      function save(form) {
+        if (form.$valid) {
+          vm.event.$save()
+            .then(function(data) {
+              $scope.$emit('calendars:list');
+              $mdSidenav('right').close();
+            }, function(data, status) {
+              console.debug('failed');
+            });
+        }
+      }
+
+      function cancel() {
+        vm.event.$reset();
+        if (vm.event.isNew) {
+          // Cancelling the creation of a card
+          vm.event = null;
+        }
+        $mdSidenav('right').close();
+      }
     }]);
 
 })();

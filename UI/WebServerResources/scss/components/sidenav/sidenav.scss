@@ -21,24 +21,29 @@ md-sidenav {
   }
 }
 
-.md-sidenav-right {
-  width: $sidenav-right-width;
-  max-width: $sidenav-right-width;
-}
-
 // MAIN SIDENAV, actually to the left
 // ----------------------------------------------------------------------------
 .md-sidenav-left {
   & md-content,
   & md-toolbar {
     background-color: inherit;
-    //background-image: url("../img/cardboard-transp.png");
-    //background-blend-mode: multiply;
+    background-image: url("../img/cardboard-transp.png");
+    background-blend-mode: multiply;
   }
 }
 
 .md-sidenav-left md-toolbar {
   box-shadow: none;
+}
+
+.md-sidenav-right {
+  width: $sidenav-right-width;
+  max-width: $sidenav-right-width;
+  & md-content,
+  & md-toolbar {
+    background-color: inherit;
+    background-image: none;
+  }
 }
 
 // MAILER Folder tree (in the left sidenav

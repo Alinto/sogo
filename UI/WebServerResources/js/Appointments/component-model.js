@@ -11,7 +11,7 @@
   function Component(futureComponentData) {
     // Data is immediately available
     if (typeof futureComponentData.then !== 'function') {
-      angular.extend(this, futureComponentData);
+      this.init(futureComponentData);
     }
     else {
       // The promise will be unwrapped first
@@ -29,7 +29,8 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser)
+      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $categories: window.UserDefaults.SOGoCalendarCategoriesColors
     });
 
     return Component; // return constructor
@@ -71,6 +72,33 @@
     var futureComponentData = this.$$resource.fetch(null, type + 'list', this.$filterOptions);
 
     return this.$unwrapCollection(type, futureComponentData);
+  };
+
+  /**
+   * @memberof Card
+   * @desc Fetch a card from a specific addressbook.
+   * @param {string} addressbook_id - the addressbook ID
+   * @param {string} card_id - the card ID
+   * @see {@link AddressBook.$getCard}
+   */
+  Component.$find = function(calendarId, componentId) {
+    var futureComponentData = this.$$resource.fetch([calendarId, componentId].join('/'), 'view');
+
+    return new Component(futureComponentData);
+  };
+
+  /**
+   * @function filterCategories
+   * @memberof Component.prototype
+   * @desc Search for categories matching some criterias
+   * @param {string} search - the search string to match
+   * @returns a collection of strings
+   */
+  Component.filterCategories = function(query) {
+    var re = new RegExp(query, 'i');
+    return _.filter(_.keys(Component.$categories), function(category) {
+      return category.search(re) != -1;
+    });
   };
 
   /**
@@ -198,6 +226,56 @@
     return deferred.promise;
   };
 
+  Component.prototype.init = function(data) {
+    this.categories = [];
+    angular.extend(this, data);
+  };
+
+  /**
+   * @function getClassName
+   * @memberof Component.prototype
+   * @desc Return the component CSS class name based on its container (calendar) ID.
+   * @param {string} [base] - the prefix to add to the class name (defaults to "fg")
+   * @returns a string representing the foreground CSS class name
+   */
+  Component.prototype.getClassName = function(base) {
+    if (angular.isUndefined(base))
+      base = 'fg';
+    return base + '-folder' + (this.pid || this.c_folder);
+  };
+
+  /**
+   * @function $reset
+   * @memberof Card.prototype
+   * @desc Reset the original state the card's data.
+   */
+  Component.prototype.$reset = function() {
+    var _this = this;
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key[0] != '$') {
+        delete _this[key];
+      }
+    });
+    angular.extend(this, this.$shadowData);
+    this.$shadowData = this.$omit(true);
+  };
+
+  /**
+   * @function $save
+   * @memberof Component.prototype
+   * @desc Save the component to the server.
+   */
+  Component.prototype.$save = function() {
+    var _this = this;
+
+    return Component.$$resource.save([this.pid, this.id].join('/'), this.$omit())
+      .then(function(data) {
+        // Make a copy of the data for an eventual reset
+        _this.$shadowData = _this.$omit(true);
+        return data;
+      });
+  };
+
   /**
    * @function $unwrap
    * @memberof Component.prototype
@@ -215,7 +293,9 @@
     this.$futureComponentData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
       Component.$timeout(function() {
-        angular.extend(_this, data);
+        _this.init(data);
+        // Make a copy of the data for an eventual reset
+        _this.$shadowData = _this.$omit();
         deferred.resolve(_this);
       });
     }, function(data) {

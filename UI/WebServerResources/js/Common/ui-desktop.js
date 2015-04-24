@@ -22,7 +22,7 @@
       template:
       '<h2 data-ng-bind-html="title"></h2>' +
         '<p data-ng-bind-html="content"></p>' +
-        '<a class="button button-primary" ng-click="closeModal()">' + l('OK') + '</a>' +
+        '<a class="button md-primary" ng-click="closeModal()">' + l('OK') + '</a>' +
         '<span class="close-reveal-modal" ng-click="closeModal()"><i class="icon-close"></i></span>',
       windowClass: 'small',
       controller: function($scope, $modalInstance) {
@@ -455,7 +455,7 @@
    * @param {Function} sgSubscribeOnSelect - the function to call when subscribing to a folder
    * @example:
 
-    <div sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder"></div>
+    <md-button sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder">Subscribe ..</md-button>
   */
     .directive('sgSubscribe', [function() {
       console.debug('registering sgSubscribe');
@@ -466,11 +466,8 @@
           onFolderSelect: '&sgSubscribeOnSelect'
         },
         replace: false,
-        link: function(scope, element, attrs, controller) {
-          element.on('click', controller.showDialog);
-        },
-        controllerAs: 'vm',
         bindToController: true,
+        controllerAs: 'vm',
         controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
           var vm = this;
           vm.showDialog = function() {
@@ -495,6 +492,9 @@
             });
           };
         }],
+        link: function(scope, element, attrs, controller) {
+          element.on('click', controller.showDialog);
+        }
       };
     }])
 
@@ -704,8 +704,11 @@
         },
         template:
           '<style type="text/css">' +
-          '  .folder{{ ngModel.id }} {' +
+          '  .bg-folder{{ ngModel.id }} {' +
           '    background-color: {{ ngModel.color }} !important;' +
+          '  }' +
+          '  .fg-folder{{ ngModel.id }} {' +
+          '    color: {{ ngModel.color }} !important;' +
           '  }' +
           '</style>'
       }
@@ -755,16 +758,22 @@
           block: '=sgBlock'
         },
         replace: true,
-        template:
-          '<div class="event draggable">' +
-          '  <div class="eventInside">' +
-          '      <div class="gradient">' +
-          '      </div>' +
-          '      <div class="text">{{ block.component.c_title }}<span class="icons"></span></div>' +
-          '    </div>' +
-          '    <div class="topDragGrip"></div>' +
-          '    <div class="bottomDragGrip"></div>' +
-          '</div>',
+        template: [
+          '<div class="event draggable">',
+          '  <div class="eventInside">',
+          '      <div class="gradient">',
+          '      </div>',
+          '      <div class="text">{{ block.component.c_title }}',
+          '        <span class="icons">',
+          '          <i ng-if="block.component.c_nextalarm" class="md-icon-alarm"></i>',
+          '          <i ng-if="block.component.c_classification == 1" class="md-icon-visibility-off"></i>',
+          '          <i ng-if="block.component.c_classification == 2" class="md-icon-vpn-key"></i>',
+          '       </span></div>',
+          '    </div>',
+          '    <div class="topDragGrip"></div>',
+          '    <div class="bottomDragGrip"></div>',
+          '</div>'
+        ].join(''),
         link: link
       };
 
@@ -786,7 +795,7 @@
         iElement.css('right', right + '%');
         iElement.addClass('starts' + scope.block.start);
         iElement.addClass('lasts' + scope.block.length);
-        iElement.addClass('folder' + scope.block.component.c_folder);
+        iElement.addClass('bg-folder' + scope.block.component.c_folder);
       }
     }])
 
@@ -852,7 +861,7 @@
       };
 
       function link(scope, iElement, attrs) {
-        iElement.addClass('folder' + scope.block.component.c_folder);
+        iElement.addClass('bg-folder' + scope.block.component.c_folder);
       }
     }]);
 

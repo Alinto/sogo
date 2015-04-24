@@ -220,6 +220,7 @@
           <script type="text/javascript" rsrc:src="js/vendor/angular-aria.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-material.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/vendor/ct-ui-router-extras.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-vs-repeat.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>

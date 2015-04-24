@@ -328,3 +328,53 @@
 }
 
 @end
+
+@interface UIxAppointmentEditorTemplate : UIxComponent
+{
+  id item;
+}
+@end
+
+@implementation UIxAppointmentEditorTemplate
+
+- (void) dealloc
+{
+  [item release];
+  [super dealloc];
+}
+
+- (void) setItem: (id) _item
+{
+  ASSIGN (item, _item);
+}
+
+- (id) item
+{
+  return item;
+}
+
+- (NSArray *) repeatList
+{
+  static NSArray *repeatItems = nil;
+
+  if (!repeatItems)
+    {
+      repeatItems = [NSArray arrayWithObjects: @"daily",
+                             @"weekly",
+                             @"bi-weekly",
+                             @"every_weekday",
+                             @"monthly",
+                             @"yearly",
+                             nil];
+      [repeatItems retain];
+    }
+
+  return repeatItems;
+}
+
+- (NSString *) itemRepeatText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"repeat_%@", [item uppercaseString]]];
+}
+
+@end

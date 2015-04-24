@@ -1,0 +1,129 @@
+<?xml version='1.0' standalone='yes'?>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <form name="eventForm" ng-submit="editor.save(eventForm)">
+    <md-toolbar class="md-padding" ng-class="editor.event.getClassName('bg')">
+      <!-- summary -->
+      <md-input-container md-no-float="true">
+        <input type="text"
+               class="md-display-1"
+               label:placeholder="Title"
+               ng-model="editor.event.summary"/>
+      </md-input-container>
+      <!--<md-chips>
+          <md-chip ng-repeat="category in editor.event.categories">{{category}}</md-chip>
+        </md-chips>-->
+    </md-toolbar>
+    <md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
+      <!-- location -->
+      <md-input-container>
+        <label><var:string label:value="Location"/></label>
+        <input type="text" ng-model="editor.event.location"/>
+      </md-input-container>
+      <!-- categories -->
+      <div class="pseudo-input-container">
+        <md-chips ng-model="editor.event.categories">
+          <md-autocomplete
+              md-selected-item="editor.categories.selected"
+              md-search-text="editor.categories.searchText"
+              md-items="category in editor.event.constructor.filterCategories(editor.categories.searchText)"
+              label:placeholder="Add a category">
+            <span md-highlight-text="editor.categories.searchText">{{category}}</span>
+          </md-autocomplete>
+        </md-chips>
+      </div>
+      <!-- calendar -->
+      <div class="pseudo-input-container">
+        <label class="pseudo-input-label"><var:string label:value="Calendar"/></label>
+        <md-select ng-model="editor.event.pid" class="pseudo-input-field"
+                   label:placeholder="Calendar">
+          <md-option ng-repeat="calendar in ::editor.calendars"
+                     ng-value="calendar.id">{{calendar.name}}</md-option>
+        </md-select>
+      </div>
+      <!-- priority -->
+      <div layout="row" layout-align="center center">
+        <div flex="20"><var:string label:value="Priority"/></div>
+        <md-slider class="md-flex"
+                   md-discrete="true"
+                   ng-model="rating1"
+                   step="1"
+                   min="0"
+                   max="9"
+                   label:aria-label="Priority"><!-- slider --></md-slider>
+      </div>
+      <!-- is all day -->
+      <md-checkbox
+          ng-model="editor.event.isAllDay"
+          ng-true-value="1"
+          ng-false-value="0"
+          label:aria-label="All day Event">
+        <var:string label:value="All day Event"/>
+      </md-checkbox>
+      <!-- is transparent -->
+      <md-checkbox
+          ng-model="editor.event.isTransparent"
+          ng-true-value="1"
+          ng-false-value="0"
+          label:aria-label="Show Time as Free">
+        <var:string label:value="Show Time as Free"/>
+      </md-checkbox>
+      <!-- send appointment notifications -->
+      <md-checkbox
+          ng-model="editor.event.sendAppointmentNotifications"
+          ng-true-value="1"
+          ng-false-value="0"
+          label:aria-label="Send Appointment Notifications">
+        <var:string label:value="Send Appointment Notifications"/>
+      </md-checkbox>
+      <!-- start + end -->
+      <div layout="row">
+        <md-input-container>
+          <label><var:string label:value="From"/></label>
+          <input type="text" ng-model="editor.event.startDate"/>
+        </md-input-container>
+        <md-input-container>
+          <label><var:string label:value="To"/></label>
+          <input type="text" ng-model="editor.event.endDate"/>
+        </md-input-container>
+      </div>
+      <!-- comment -->
+      <md-input-container>
+        <label><var:string label:value="Description"/></label>
+        <textarea ng-model="editor.event.comment"><!-- comment --></textarea>
+      </md-input-container>
+      <!-- repeat -->
+      <div layout="row">
+      <div class="pseudo-input-container md-flex">
+        <label class="pseudo-input-label"><var:string label:value="Repeat"/>{{editor.event.repeat.frequency}}</label>
+        <md-select ng-model="editor.event.repeat.frequency" class="pseudo-input-field"
+                   label:placeholder="Repeat">
+          <var:foreach list="repeatList" item="item">
+            <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
+          </var:foreach> 
+        </md-select>
+      </div>
+        <button class="iconButton md-button"
+                ng-click="editor.editRecurrence()">
+          <i class="md-icon-more-horiz"><!-- customize --></i>
+        </button>
+      </div>
+      
+      <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
+        <md-button ng-click="editor.cancel()">
+          <var:string label:value="Cancel"/>
+        </md-button>
+        <md-button ng-click="editor.event.$reset()">
+          <var:string label:value="Reset"/>
+        </md-button>
+        <md-button class="md-primary md-hue-3" type="submit">
+          <var:string label:value="Save"/>
+        </md-button>
+      </div>
+    </md-content>  
+  </form>
+</container>

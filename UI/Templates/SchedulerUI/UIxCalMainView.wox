@@ -264,7 +264,6 @@
               <md-list>
                 <md-list-item
                     class="md-clickable md-2-line"
-                    n0-ng-click="list.openComponent(event)"
                     ng-repeat="event in list.component.$events">
                   <i class="md-avatar" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
                   <div class="md-list-item-text"
@@ -296,6 +295,7 @@
         </md-content>
         <md-content flex="67" ui-view="calendarView"><!-- calendar view --></md-content>
       </md-content>
+      <md-sidenav class="md-sidenav-right" md-component-id="right" layout="column" ui-view="componentEditor"><!-- appointment editor view --><!--<var:component className="UIxAppointmentEditorTemplate" />--></md-sidenav>
     </section>
   </script>
 

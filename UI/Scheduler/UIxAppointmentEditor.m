@@ -562,10 +562,10 @@
  * @apiSuccess (Success 200) {String} summary                 Summary
  * @apiSuccess (Success 200) {String} [location]              Location
  * @apiSuccess (Success 200) {String} [comment]               Comment
- * @apiSuccess (Success 200) {String} [status]                Status
+ * @apiSuccess (Success 200) {String} [status]                Status (tentative, confirmed, or cancelled)
  * @apiSuccess (Success 200) {String} [attachUrl]             Attached URL
  * @apiSuccess (Success 200) {String} [createdBy]             Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
- * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {Number} priority                Priority (0-9)
  * @apiSuccess (Success 200) {NSString} [classification]      Either public, confidential or private
  * @apiSuccess (Success 200) {String[]} [categories]          Categories
  * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
