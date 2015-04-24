@@ -1,6 +1,6 @@
-/// ContactsUI.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// ContactsUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-[id = "contactsList"] .sg-md-subheader {
+[id="contactsList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
 

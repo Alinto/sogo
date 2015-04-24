@@ -21,7 +21,7 @@ md-sidenav md-list .md-button {
 }
 
 .md-sidenav-left .md-button [class^="md-icon"] {
-  margin-right: 1em;
+  //margin-right: 1em;
 }
 md-sidenav .md-button.iconButton.sg-button-navicon [class^="md-icon"] {
   margin: 0;
@@ -66,7 +66,7 @@ $button-fab-height: 56px;
   // z-index provides a stacking context that prevent ripple-effect from overflowing
   z-index: 1;
   overflow: hidden;
-  padding: $iconButton-padding 0;
+  //padding: $iconButton-padding 0;
   border-radius: 50%;
   color: inherit;
   min-width: $iconButton-size;
@@ -76,18 +76,19 @@ $button-fab-height: 56px;
   &:active {
     background-color: transparent;
 
-    [class ^= md-icon],
-    [class *= md-icon-] {
+    [class^=md-icon],
+    [class*=md-icon-] {
       transform: scale($iconButton-hover-scale);
     }
   }
 
-  [class ^= md-icon],
-  [class *= md-icon-] {
+  [class^=md-icon],
+  [class*=md-icon-] {
     padding: $iconButton-icon-padding;
     color: currentColor;
     font-size: $iconButton-icon-size;
     transition: $iconButton-transition;
+    vertical-align: middle;
   }
   .md-icon-arrow-back {
     font-size: sg-size('headline')

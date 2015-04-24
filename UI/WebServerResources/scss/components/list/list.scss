@@ -23,14 +23,14 @@
 
 // List item label
 md-list {
-    .sg-item-name {
-      font-size: sg-size(button);
-      text-transform: initial;
-      overflow: hidden;
-      text-align: left;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+  .sg-item-name {
+    font-size: sg-size(button);
+    text-transform: initial;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 // The right tile for a list item.

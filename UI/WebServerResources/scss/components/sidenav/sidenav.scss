@@ -80,15 +80,5 @@ $i: 1;
     &.sg-loading {
       color: sg-color($sogoBlue, 200);
     }
-    .sg-item-name, .md-label {
-      font-size: sg-size(button);
-      overflow: hidden;
-      text-align: left;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .md-label {
-      display: inline;
-    }
   }
 }

@@ -1,11 +1,19 @@
-/// subheader.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// subheader.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+.md-subheader {
+  .md-subheader-inner {
+    padding: 0 0 0 $layout-gutter-width;
+  }
+}
+
 .sg-md-subheader {
-  position: fixed;
-  z-index: auto;
-  padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
-  background-color: transparent;
+  &--fixed {
+    position: fixed;
+    z-index: auto;
+    padding: $baseline-grid $baseline-grid $baseline-grid $layout-gutter-width;
+    background-color: transparent;
+  }
   &--static {
     position: static;
     z-index: auto;
