@@ -1,4 +1,4 @@
-/// styles.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// styles.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 // Compass extension imports - comment-out if needed
 // ------------------------------------------------------------------------------
@@ -21,7 +21,6 @@
 /* Local overrides from angular-material src */
 // fixme : refactor all this to meet our practices
 // ------------------------------------------------------------------------------
-//@import 'core/variables';
 @import 'core/mixins';
 @import 'core/structure';
 @import 'core/layout';
@@ -50,13 +49,12 @@
 @import 'components/select/select';
 @import 'components/sidenav/sidenav';
 @import 'components/slider/slider';
-//@import 'components/sticky/sticky';
+@import 'components/sticky/sticky';
 @import 'components/subheader/subheader';
 //@import 'components/switch/switch';
 @import 'components/tabs/tabs';
 //@import 'components/toast/toast';
 @import 'components/toolbar/toolbar';
-// @import 'components/bottombar/bottombar';
 @import 'components/tooltip/tooltip';
 @import 'components/whiteframe/whiteframe';
 
