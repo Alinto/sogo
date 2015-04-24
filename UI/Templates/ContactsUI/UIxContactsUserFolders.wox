@@ -17,7 +17,9 @@
             layout="column"
             ng-repeat="user in users">
           <md-button class="sg-expandable" ng-click="selectUser($index)">
-            <div layout="row" layout-align="space-between center" layout-fill="true">
+            <div layout="row" layout-align="space-between center"
+                 layout-fill="true">
+              <div class="sg-avatar"><!-- normal-user --></div>
               <span class="sg-item-name">{{user.$shortFormat()}}</span>
               <span class="md-display-1">
                 <i class="md-icon-expand-more"
