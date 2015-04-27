@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
   <md-dialog flex="50" flex-sm="100">
-    <md-content>
+    <md-dialog-content>
       <md-input-container md-no-float="md-no-float" layout="row">
         <i class="md-icon-search"><!--icon--></i>
         <input ng-model="searchString" type="text" placeholder="Name" sg-user-typeahead="sg-user-typeahead"/>
@@ -51,6 +51,6 @@
           <md-divider ng-if="!$last"><!-- divider --></md-divider>
         </md-list-item>
       </md-list>
-    </md-content>
+    </md-dialog-content>
   </md-dialog>
 </container>

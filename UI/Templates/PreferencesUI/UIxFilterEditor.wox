@@ -10,80 +10,80 @@
   className="UIxPageFrame"
   >
   <md-dialog>
-  <md-content>
-  <script type="text/javascript">
-    var filterId = '<var:string value="filterId"/>';
-    var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
-    var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
-  </script>
-  <form id="mainForm" var:href="ownPath">
-    <div id="filterNameContainer" class="container">
-      <md-input-container>
-        <label><var:string label:value="Filter name:"/></label>
-        <input const:name="filterName" type="text" ng-model="filter.name"/>
-      </md-input-container>
-    </div>
-    <div id="filterMatchContainer" class="container">
-      <var:string label:value="For incoming messages that"/>
-      <md-select const:name="matchType" const:id="matchType" ng-model="filter.match">
-        <md-option const:value="all">
-          <var:string label:value="match all of the following rules:"/>
-        </md-option>
-        <md-option const:value="any">
-          <var:string label:value="match any of the following rules:"/>
-        </md-option>
-        <md-option const:value="allmessages">
-          <var:string label:value="match all messages"/>
-        </md-option>
-      </md-select>
-    </div>
+    <md-dialog-content>
+      <script type="text/javascript">
+        var filterId = '<var:string value="filterId"/>';
+        var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
+        var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
+      </script>
+      <form id="mainForm" var:href="ownPath">
+        <div id="filterNameContainer" class="container">
+          <md-input-container>
+            <label><var:string label:value="Filter name:"/></label>
+            <input const:name="filterName" type="text" ng-model="filter.name"/>
+          </md-input-container>
+        </div>
+        <div id="filterMatchContainer" class="container">
+          <var:string label:value="For incoming messages that"/>
+          <md-select const:name="matchType" const:id="matchType" ng-model="filter.match">
+            <md-option const:value="all">
+              <var:string label:value="match all of the following rules:"/>
+            </md-option>
+            <md-option const:value="any">
+              <var:string label:value="match any of the following rules:"/>
+            </md-option>
+            <md-option const:value="allmessages">
+              <var:string label:value="match all messages"/>
+            </md-option>
+          </md-select>
+        </div>
 
-    <!-- CONDITIONS -->
-    <div id="filterRulesContainer" class="container">
-      <div id="filterRules"><!-- empty -->
-        <md-list>
-          <md-list-item ng-repeat="rule in filter.rules">
-              <md-select ng-model="rule.field">
-                <md-option ng-value="key" ng-repeat="(key, value) in fieldLabels">{{ value }}</md-option>
-              </md-select>
+        <!-- CONDITIONS -->
+        <div id="filterRulesContainer" class="container">
+          <div id="filterRules"><!-- empty -->
+            <md-list>
+              <md-list-item ng-repeat="rule in filter.rules">
+                <md-select ng-model="rule.field">
+                  <md-option ng-value="key" ng-repeat="(key, value) in fieldLabels">{{ value }}</md-option>
+                </md-select>
 
-              <input type="text" ng-show="rule.field ==
-                                                      'header'" ng-model="rule.custom_header"/>
+                <input type="text" ng-show="rule.field ==
+                                            'header'" ng-model="rule.custom_header"/>
 
-              <md-select ng-show="rule.field =='size'" ng-model="rule.operator">
-                <md-option ng-value="key" ng-repeat="(key, value) in numberOperatorLabels">
-                  {{ value }}
-                </md-option>
-              </md-select>
+                <md-select ng-show="rule.field =='size'" ng-model="rule.operator">
+                  <md-option ng-value="key" ng-repeat="(key, value) in numberOperatorLabels">
+                    {{ value }}
+                  </md-option>
+                </md-select>
 
-              <md-select ng-show="rule.field !='size'" ng-model="rule.operator">
-                <md-option ng-value="key" ng-repeat="(key, value) in textOperatorLabels">
-                  {{ value }}
-                </md-option>
-              </md-select>
+                <md-select ng-show="rule.field !='size'" ng-model="rule.operator">
+                  <md-option ng-value="key" ng-repeat="(key, value) in textOperatorLabels">
+                    {{ value }}
+                  </md-option>
+                </md-select>
 
-              <input type="text" ng-model="rule.value"/>
+                <input type="text" ng-model="rule.value"/>
 
-              <md-button ng-click="removeMailFilterRule($index)" type="button">
-                <div class="md-icon-remove"><!-- delete --></div>
-              </md-button>
-              
-          </md-list-item>
-        </md-list>
-      </div>
+                <md-button ng-click="removeMailFilterRule($index)" type="button">
+                  <div class="md-icon-remove"><!-- delete --></div>
+                </md-button>
 
-        <md-button ng-click="addMailFilterRule($event)" type="button">
-          <div class="md-icon-add"><!-- create --></div>
-        </md-button>
-    </div>
+              </md-list-item>
+            </md-list>
+          </div>
 
-    <!-- ACTIONS -->
-    <div id="filterActionsContainer" class="container">
-      <var:string label:value="Perform these actions:"/><br/>
-      <div id="filterActions"><!-- empty --></div>
+          <md-button ng-click="addMailFilterRule($event)" type="button">
+            <div class="md-icon-add"><!-- create --></div>
+          </md-button>
+        </div>
 
-        <md-list>
-          <md-list-item ng-repeat="action in filter.actions">
+        <!-- ACTIONS -->
+        <div id="filterActionsContainer" class="container">
+          <var:string label:value="Perform these actions:"/><br/>
+          <div id="filterActions"><!-- empty --></div>
+
+          <md-list>
+            <md-list-item ng-repeat="action in filter.actions">
               <md-select ng-model="action.method">
                 <md-option ng-value="key" ng-repeat="(key, value) in methodLabels">{{ value }}</md-option>
               </md-select>
@@ -119,20 +119,20 @@
               <md-button ng-click="removeMailFilterAction($index)" type="button">
                 <div class="md-icon-remove"><!-- delete --></div>
               </md-button>
-              
+
           </md-list-item>
-        </md-list>
+          </md-list>
 
-      <md-button ng-click="addMailFilterAction($event)" type="button">
-        <div class="md-icon-add"><!-- create --></div>
-      </md-button>
-    </div>
+          <md-button ng-click="addMailFilterAction($event)" type="button">
+            <div class="md-icon-add"><!-- create --></div>
+          </md-button>
+        </div>
 
-    <div class="md-actions" layout="row">
-      <md-button type="button" ng-click="cancel()">Cancel</md-button>
-      <md-button type="button" class="md-primary" ng-click="save()">Save</md-button>
+        <div class="md-actions" layout="row">
+          <md-button type="button" ng-click="cancel()">Cancel</md-button>
+          <md-button type="button" class="md-primary" ng-click="save()">Save</md-button>
       </div>
-  </form>
-  </md-content>
-  </md-dialog>
+    </form>
+  </md-dialog-content>
+</md-dialog>
 </var:component>

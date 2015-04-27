@@ -141,7 +141,7 @@
           escapeToClose: true,
           template:
           '<md-dialog aria-label="' + l('New calendar') + '">' +
-            '  <md-content layout="column">' +
+            '  <md-dialog-content layout="column">' +
             '    <md-input-container>' +
             '      <label>' + l('Name of the Calendar') + '</label>' +
             '      <input type="text" ng-model="name" required="required"/>' +
@@ -154,7 +154,7 @@
             '        OK' +
             '      </md-button>' +
             '    </div>'+
-            '  </md-content>' +
+            '  </md-dialog-content>' +
             '</md-dialog>',
           controller: NewCalendarDialogController
         });

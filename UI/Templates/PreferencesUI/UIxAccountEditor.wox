@@ -10,7 +10,7 @@
     className="UIxPageFrame"
     >
   <md-dialog>
-    <md-content>
+    <md-dialog-content>
 
       <form id="mainForm" name="accountForm" var:href="ownPath">
 
@@ -116,6 +116,6 @@
         </div>
 
       </form>
-    </md-content>
+    </md-dialog-content>
   </md-dialog>
 </var:component>

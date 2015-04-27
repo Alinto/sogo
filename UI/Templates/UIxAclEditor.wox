@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
   <md-dialog>
-    <md-content>
+    <md-dialog-content>
       <md-subheader><var:string label:value="Access Rights"/> - {{stateAddressbook.name}}</md-subheader>
       
       <md-list>
@@ -70,7 +70,7 @@
         <md-button ng-click="closeModal()"><var:string label:value="Close"/></md-button>
         <md-button ng-click="saveModal()"><var:string label:value="Save"/></md-button>
       </div>
-    </md-content>
+    </md-dialog-content>
   </md-dialog>
   
 </container>

@@ -123,7 +123,7 @@
           escapeToClose: true,
           template:
           '<md-dialog aria-label="' + l('New addressbook') + '">' +
-            '  <md-content layout="column">' +
+            '  <md-dialog-content layout="column">' +
             '    <md-input-container>' +
             '      <label>' + l('Name of new addressbook') + '</label>' +
             '      <input type="text" ng-model="name" required="required"/>' +
@@ -136,7 +136,7 @@
             '        OK' +
             '      </md-button>' +
             '    </div>'+
-            '  </md-content>' +
+            '  </md-dialog-content>' +
             '</md-dialog>',
           controller: NewAddressBookDialogController
         });
