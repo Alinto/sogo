@@ -96,8 +96,11 @@ MAPIStoreInternalEntryId (struct ldb_context *samCtx, NSString *username)
       [entryId appendUInt8: 0]; // end of string
     }
   else
-    entryId = nil;
- 
+    {
+      NSLog (@"Error trying to generate EntryId for `%@`", username);
+      entryId = nil;
+    }
+
   return entryId;
 }
 
