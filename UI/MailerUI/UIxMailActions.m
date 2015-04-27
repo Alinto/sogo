@@ -163,7 +163,7 @@
   co = [self clientObject];
   us = [[context activeUser] userSettings];
   if (!(moduleSettings = [us objectForKey: @"Mail"]))
-    [us setObject:[NSMutableDictionary dictionnary] forKey: @"Mail"];
+    [us setObject:[NSMutableDictionary dictionary] forKey: @"Mail"];
 
   if (isCollapsing)
     {

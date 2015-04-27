@@ -249,7 +249,7 @@ function mailListToggleMessageThread(row, cell) {
             row.hide();
     }
 
-    // Update the dictionnary of the collapsed threads
+    // Update the dictionary of the collapsed threads
     var mailbox = Mailer.currentMailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
     var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};

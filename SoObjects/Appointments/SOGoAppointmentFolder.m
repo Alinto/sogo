@@ -800,7 +800,7 @@ static Class iCalEventK = nil;
 
 /**
  * Set the timezone of the event start and end dates to the user's timezone.
- * @param theRecord a dictionnary with the attributes of the event.
+ * @param theRecord a dictionary with the attributes of the event.
  * @return a copy of theRecord with adjusted dates.
  */
 - (NSMutableDictionary *) _fixupRecord: (NSDictionary *) theRecord
