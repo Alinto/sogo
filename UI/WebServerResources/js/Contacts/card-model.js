@@ -48,7 +48,8 @@
   Card.$factory = ['$timeout', 'sgSettings', 'sgResource', function($timeout, Settings, Resource) {
     angular.extend(Card, {
       $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
-      $timeout: $timeout
+      $timeout: $timeout,
+      $categories: window.UserDefaults.SOGoContactsCategories
     });
 
     return Card; // return constructor
@@ -101,6 +102,20 @@
     if (card_id) return new Card(futureCardData); // a single card
 
     return Card.$unwrapCollection(futureCardData); // a collection of cards
+  };
+
+  /**
+   * @function filterCategories
+   * @memberof Card.prototype
+   * @desc Search for categories matching some criterias
+   * @param {string} search - the search string to match
+   * @returns a collection of strings
+   */
+  Card.filterCategories = function(query) {
+    var re = new RegExp(query, 'i');
+    return _.filter(Card.$categories, function(category) {
+      return category.search(re) != -1;
+    });
   };
 
   /**
@@ -301,7 +316,6 @@
       if (i == this.categories.length)
         this.categories.push({value: category});
     }
-    return this.categories.length - 1;
   };
 
   Card.prototype.$addEmail = function(type) {

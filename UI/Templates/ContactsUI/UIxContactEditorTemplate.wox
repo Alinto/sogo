@@ -6,9 +6,7 @@
       <div class="editor md-padding">
         <hgroup class="header">
           <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{card.$description()}}
-            <span ng-repeat="category in card.categories">{{category.value}}</span>
-          </h6>
+          <h6 class="sg-md-display-2-subheader">{{card.$description()}}</h6>
         </hgroup>
         
         <!-- contact editor -->
@@ -120,29 +118,20 @@
           </md-input-container>
 
           <!-- categories -->
-          <div class="attr" ng-repeat="category in card.categories">
-            <div layout="row" layout-align="center end">
-              <md-input-container>
-                <label class="pseudo-input-label">
-                  <var:string label:value="Category"/>
-                </label>
-                <input type="text" ng-model="category.value"
-                       sg-focus-on="category_{{$index}}"/>
-                <!--typeahead="cat for cat in card.allCategories | filter:$viewValue"/>-->
-              </md-input-container>
-              <md-button class="iconButton" ng-click="card.$delete('categories', $index)">
-                <i class="md-icon-remove-circle"><!-- remove --></i>
-              </md-button>
-            </div>
-          </div>
-          <!-- New category button-group -->
-          <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="iconButton" type="button" ng-click="addCategory()">
-              <i class="md-icon-add"><!-- new --></i>
-            </md-button>
-            <label class="button-label">
-              <var:string label:value="New Category"/>
-            </label>
+          <div class="pseudo-input-container">
+            <md-chips ng-model="card.categories">
+              <md-chip-template>
+                {{$chip.value}}
+              </md-chip-template>
+              <md-autocomplete
+                  md-selected-item="categories.selected"
+                  md-selected-item-change="card.$addCategory(category)"
+                  md-search-text="categories.searchText"
+                  md-items="category in card.constructor.filterCategories(categories.searchText)"
+                  label:placeholder="Add a category">
+                <span md-highlight-text="categories.searchText">{{category}}</span>
+              </md-autocomplete>
+            </md-chips>
           </div>
 
           <!-- phones -->
@@ -286,7 +275,6 @@
             </label>
             <textarea ng-model="card.note"><!-- note --></textarea>
           </md-input-container>
-
 
           <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
             <md-button type="button" ng-click="cancel()">

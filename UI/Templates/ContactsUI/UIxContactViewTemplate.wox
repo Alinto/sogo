@@ -17,9 +17,13 @@
         </div>
         <div class="msg-header-content">
           <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{card.$description()}}
-            <span class="label radius" ng-repeat="category in card.categories">{{category.value}}</span>
-          </h6>
+          <h6 class="sg-md-display-2-subheader">{{card.$description()}}</h6>
+          <md-chips ng-model="card.categories"
+                    readonly="true">
+            <md-chip-template>
+              {{$chip.value}}
+            </md-chip-template>
+          </md-chips>
         </div>
         <div class="sg-icon-bar--vertical">
           <md-button class="iconButton" aria-label="Edit" ng-show="currentFolder.isEditable" ui-sref="app.addressbook.card.editor({addressbookId: currentFolder.id, cardId: card.id})">

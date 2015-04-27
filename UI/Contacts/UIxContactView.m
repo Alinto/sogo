@@ -161,7 +161,7 @@
   contactCategories = [card categories];
   if (contactCategories)
     {
-      newCats = [cats mergedArrayWithArray: contactCategories];
+      newCats = [cats mergedArrayWithArray: [contactCategories trimmedComponents]];
       if ([newCats count] != [cats count])
         {
           cats = [newCats sortedArrayUsingSelector:

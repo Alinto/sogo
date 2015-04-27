@@ -350,14 +350,11 @@
       $scope.allTelTypes = Card.$TEL_TYPES;
       $scope.allUrlTypes = Card.$URL_TYPES;
       $scope.allAddressTypes = Card.$ADDRESS_TYPES;
+      $scope.categories = {};
 
       $scope.addOrgUnit = function() {
         var i = $scope.card.$addOrgUnit('');
         focus('orgUnit_' + i);
-      };
-      $scope.addCategory = function() {
-        var i = $scope.card.$addCategory('');
-        focus('category_' + i);
       };
       $scope.addEmail = function() {
         var i = $scope.card.$addEmail('');
