@@ -289,10 +289,10 @@
 
 
           <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button class="" ng-click="cancel()">
+            <md-button type="button" ng-click="cancel()">
               <var:string label:value="Cancel"/>
             </md-button>
-            <md-button class="" ng-click="reset()">
+            <md-button type="button" ng-click="reset()">
               <var:string label:value="Reset"/>
             </md-button>
             <md-button class="md-primary md-hue-3" type="submit">
