@@ -213,7 +213,7 @@
 
       };
       $scope.exportCards = function() {
-        window.location.href = ApplicationBaseURL + '/' + $rootScope.addressbook.id + '/exportFolder';
+        window.location.href = ApplicationBaseURL + '/' + $scope.currentFolder.id + '/exportFolder';
       };
       $scope.share = function() {
         $mdDialog.show({
@@ -302,7 +302,6 @@
       var currentAddressbook;
 
       $rootScope.currentFolder = stateAddressbook;
-      $scope.addressbook = stateAddressbook;
 
       $scope.newComponent = function(ev) {
         $mdDialog.show({
@@ -330,11 +329,11 @@
         });
         function ComponentDialogController(scope, $mdDialog, state) {
           scope.createContact = function() {
-            state.go('app.addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'card' });
+            state.go('app.addressbook.new', { addressbookId: $scope.currentFolder.id, contactType: 'card' });
             $mdDialog.hide();
           }
           scope.createList = function() {
-            state.go('app.addressbook.new', { addressbookId: $scope.addressbook.id, contactType: 'list' });
+            state.go('app.addressbook.new', { addressbookId: $scope.currentFolder.id, contactType: 'list' });
             $mdDialog.hide();
           }
         }
@@ -384,14 +383,14 @@
         if (form.$valid) {
           $scope.card.$save()
             .then(function(data) {
-              var i = _.indexOf(_.pluck($rootScope.addressbook.cards, 'id'), $scope.card.id);
+              var i = _.indexOf(_.pluck($scope.currentFolder.cards, 'id'), $scope.card.id);
               if (i < 0) {
                 // New card; reload contacts list and show addressbook in which the card has been created
-                $rootScope.addressbook = AddressBook.$find(data.pid);
+                $rootScope.currentFolder = AddressBook.$find(data.pid);
               }
               else {
                 // Update contacts list with new version of the Card object
-                $rootScope.addressbook.cards[i] = angular.copy($scope.card);
+                $rootScope.currentFolder.cards[i] = angular.copy($scope.card);
               }
               $state.go('app.addressbook.card.view', { cardId: $scope.card.id });
             }, function(data, status) {
@@ -407,7 +406,7 @@
         if ($scope.card.isNew) {
           // Cancelling the creation of a card
           $scope.card = null;
-          $state.go('app.addressbook', { addressbookId: $scope.addressbook.id });
+          $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
         }
         else {
           // Cancelling the edition of an existing card
@@ -422,12 +421,12 @@
             card.$delete()
               .then(function() {
                 // Remove card from list of addressbook
-                $rootScope.addressbook.cards = _.reject($rootScope.addressbook.cards, function(o) {
+                $rootScope.currentFolder.cards = _.reject($rootScope.currentFolder.cards, function(o) {
                   return o.id == card.id;
                 });
                 // Remove card object from scope
                 $scope.card = null;
-                $state.go('app.addressbook', { addressbookId: $scope.addressbook.id });
+                $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
               }, function(data, status) {
                 Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                              card.$fullname()));

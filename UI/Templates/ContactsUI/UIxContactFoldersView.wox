@@ -297,12 +297,10 @@
              </div>
         -->
         <md-list vs-repeat="72" vs-scroll-parent="#contactsList">
-          <md-list-item ng-repeat="currentCard in addressbook.cards track by currentCard.id">
-            <div
-                ng-class="{_selected: card.id == currentCard.id}"
-                ng-click="select($index); toggleDetailView()"
-                layout="row"
-                flex="true">
+          <md-list-item ng-repeat="currentCard in currentFolder.cards track by currentCard.id">
+            <div layout="row" flex="true"
+                 ng-class="{_selected: card.id == currentCard.id}"
+                 ng-click="select($index); toggleDetailView()">
               <div class="sg-avatar" ng-show="currentCard.tag == 'vcard'">
                 <!--card avatar-->
               </div>
@@ -310,7 +308,7 @@
                 <!--list avatar-->
               </div>
               <div class="sg-tile-content">
-                <a ui-sref="app.addressbook.card.view({addressbookId: addressbook.id, cardId: currentCard.id})">
+                <a ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
                   <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
                   <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail()}}</div>
                 </a>

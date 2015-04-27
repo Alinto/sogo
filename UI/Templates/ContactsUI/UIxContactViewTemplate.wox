@@ -22,7 +22,7 @@
           </h6>
         </div>
         <div class="sg-icon-bar--vertical">
-          <md-button class="iconButton" aria-label="Edit" ng-show="addressbook.isEditable" ui-sref="app.addressbook.card.editor({addressbookId: addressbook.id, cardId: card.id})">
+          <md-button class="iconButton" aria-label="Edit" ng-show="currentFolder.isEditable" ui-sref="app.addressbook.card.editor({addressbookId: currentFolder.id, cardId: card.id})">
             <i class="md-icon-create"><!-- edit --></i>
           </md-button>
           <md-button class="iconButton" aria-label="Delete" ng-click="confirmDelete(card)">
@@ -56,7 +56,7 @@
               </div>
               <div class="md-list-item-text">
                 <h3><a ui-sref="addressbook.card.view({addressbookId:
-                                addressbook.id, cardId:
+                                currentFolder.id, cardId:
                                 ref.reference})">
                   {{ ref.$fullname() }}
                 </a>
