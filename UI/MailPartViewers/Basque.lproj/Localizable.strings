@@ -1,0 +1,48 @@
+ACCEPTED = "onartua";
+COMPLETED = "amaitua";
+DECLINED = "gaitzetsia";
+DELEGATED = "delegatua";
+"IN-PROCESS" = "prozesuan";
+"NEEDS-ACTION" = "ekintza behar du";
+TENTATIVE = "behin-behineko";
+organized_by_you = "zuk antolatua";
+you_are_an_attendee = "Partaidea zera";
+add_info_text = "SOGo-k ez du iMIP 'ADD' eskaerarik onartzen";
+publish_info_text = "Bidaltzaileak atxikitutako ekitaldiari buruz jakinarazten zaitu.";
+cancel_info_text = "Zure gonbidapena edo ekitaldi osoa bertan behera utzi da.";
+request_info_no_attendee = "partaideei topaketa bat proposatzen die. Email hau jakinarazpen bezala jasotzen duzu, ez zaude partaide bezala programatua";
+Appointment = "Hitzordua";
+"Status Update" = "Egoera eguneraketa";
+was = "zen";
+
+Organizer = "Antolatzailea";
+Time = "Ordua";
+Attendees = "Partaideak";
+request_info = "bileran parte-hartzera gonbidatzen zaitu.";
+"Add to calendar" = "Egutegira gehitu";
+"Delete from calendar" = "Egutegitik ezabatu";
+"Update status" = "Egoera eguneratu";
+Accept = "Onartu";
+Decline = "Uko egin";
+Tentative = "Behin-behineko";
+"Delegate ..." = "Delegatu ...";
+"Delegated to" = "Beste honen esku utzia";
+"Update status in calendar" = "Egoera egunerartu egutegian";
+"delegated from" = "Beste honek zure esku utzia";
+
+reply_info_no_attendee = "Ekitaldi planifikazio bati erantzuna jaso duzu baina erantzunaren bidaltzailea ez da parte-hartzailea.";
+reply_info = "Zuk egindako gonbidapen bati erantzuna da hau.";
+
+"to" = "nori";
+
+"Untitled" = "Izenburu-gabea";
+
+"Size" = "Tamaina";
+
+"Digital signature is not valid" = "Sinadura digitala ez da baliozkoa";
+"Message is signed" = "Mezua sinatua dago";
+"Subject" = "Gaia";
+"From" = "Nork";
+"Date" = "Data";
+"To" = "Nori";
+"Issuer" = "jaulkitzailea";
