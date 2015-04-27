@@ -1,11 +1,20 @@
 2.2.18 (2015-04-XX)
 -------------------
 
+New features
+ - Internet headers are now shown in Outlook (Zentyal)
+
 Enhancements
  - improved multipart handling using EAS
  - added systemd startup script (PR#76)
  - added Basque translation - thanks to Gorka Gonzalez
- - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations Enhancements
+ - Sharing request among different Outlook versions (Zentyal)
+ - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails (Zentyal)
+ - Give support to calendar sharing invitations
+ - Missing contact fields are now saved and available when sharing it (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary) (Zentyal)
+ - Appointment color and importance work now between Outlooks (Zentyal)
+ - Synchronize events, contacts and tasks in reverse chronological order (Zentyal)
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
@@ -19,6 +28,22 @@ Bug fixes
  - fixed serialization of the PreventInvitationsWhitelist settings
  - fixed md4 support (for NTLM password changes) with GNU TLS
  - fixed edition of attachment URL in event/task editor
+ - Sent mails are not longer in Drafts folder using Outlook (Zentyal)
+ - Deleted mails are properly synced between Outlook profiles from the same account (Zentyal)
+ - Does not create a mail folder in other user's mailbox (Zentyal)
+ - Fix server-side crash with invalid events (Zentyal)
+ - Fix setting permissions for a folder with several users (Zentyal)
+ - Fix reception of calendar event invitations on optional attendees (Zentyal)
+ - Fix server side crash parsing rtf without color table (Zentyal)
+ - Weekly recurring events created in SOGo web interface are now shown in Outlook (Zentyal)
+ - Fix exception modifications import in recurrence series (Zentyal)
+ - Fix server side crash parsing rtf emails with images (with word97 format) (Zentyal)
+ - Fix sender on importing email messages like event invitations (Zentyal)
+ - Fix Outlook crashes when modifying the view of a folder (Zentyal)
+ - Fix server side crash when reading some recurrence appointments (Zentyal)
+ - Outlook clients can use reply all functionality on multidomain environment (Zentyal)
+ - Optional attendes on events are now shown properly (Zentyal)
+
 
 2.2.17a (2015-03-15)
 --------------------
