@@ -20,8 +20,6 @@
 /* Adapted by Simon Josefsson from gnulib md5.? and Libgcrypt
    cipher/md4.c . */
 
-#include <config.h>
-
 #include "md4.h"
 
 #include <stdalign.h>
