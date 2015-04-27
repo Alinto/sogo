@@ -1,0 +1,78 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Erabiltzailea:";
+"Password:" = "Pasahitza:";
+"Domain:" = "Domeinua";
+"Remember username" = "Gogoratu erabiltzaile-izena";
+
+"Connect" = "Konektatu";
+
+"Wrong username or password." = "Erabiltzaile edo pasahitz okerrak";
+"cookiesNotEnabled" = "Ezin zara sartu zure arakatzailearen 'cookie'-ak desgaituta daudelako. Mesedez, gaitu 'cookie'-ak zure arakatzailearen ezarpenetan.";
+
+"browserNotCompatible" = "Zure arakatzailearen bertsioa ez da onartzen webgune honetan. Gure gomendioa Firefox erabiltzea da. Klikatu ondorengo estekan arakatzaile honen bertsio berriena jeisteko.";
+"alternativeBrowsers" = "Aukeran, honako beste arakatzaileak erabili ditzakezu";
+"alternativeBrowserSafari" = "Aukeran, Safari arakatzailea erabili dezakezu ere.";
+"Download" = "Deskargatu";
+
+"Language:" = "Hizkuntza";
+"choose" = "Aukeratu ...";
+"Arabic" = "العربية";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Honi buruz";
+"AboutBox" = "Inverse-k garatua. SOGo ezaugarri guztidun groupware zerbitzaria da, eskalagarritasunean eta simpletasunean bideratzen dena.<br/><br/>\nSOGo-k AJAX-ean oinarritutako web interfaze aberatsa eskeintzen du eta jatorrizko bezero anitz onartzen ditu ValDAv eta CardDAV bezalako protokolo estandarrak erabiliz. <br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 2. bertsio edo berriago lizentziapean dago banatua, eta honen zatiak GNU LGPL 2. bertsio lizentziapean. Software librea da: Askatasun osoa daukazu aldatu eta banatzeko. EZ dago inolako GARANTIARIK, legeak onartzen duen neurrian.<br/><br/>\nLaguntza aukera ezberdinak ikusteko klikatu <a href=\"http://www.sogo.nu/en/support/community.html\">hemen</a> ";
+
+"Your account was locked due to too many failed attempts." = "Zure kontua blokeatuta dago saiakera oker gehiegi egiteagatik.";
+"Your account was locked due to an expired password." = "Zure kontua blokeatuta dago pasahitza iraungita dagoelako.";
+"Login failed due to unhandled error case: " = "Login-ak hutsegin du landu gabeko akats-kasu batengatik:";
+"Change your Password" = "Aldatu zure pasahitza";
+"The password was changed successfully." = "Pasahitza ondo aldatu da.";
+"Your password has expired, please enter a new one below:" = "Zure pasahitza iraungita dago, mesedez sartu pasahitz berria:";
+"Password must not be empty." = "Pasahitza ezin da hutsa izan.";
+"The passwords do not match. Please try again." = "Pasahaitzak ez datoz bat. Mesedez, saiatu berriz.";
+"Password Grace Period" = "Pasahitzaren graziazko aldia";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "%{0} saiakera geratzen zaizkizu zure kontua blokeatu aurretik. Mesedez, aldatu pasahitza hoberespenen elkarrizketa-koadroan.";
+"Password about to expire" = "Pasahitza iraungitzear dago";
+"Your password is going to expire in %{0} %{1}." = "Zure pasahitza %{0} %{1}-n iraungiko da.";
+"days" = "egun";
+"hours" = "ordu";
+"minutes" = "minutu";
+"seconds" = "segundu";
+"Password change failed" = "Pasahitz aldaketak hutsegin du";
+"Password change failed - Permission denied" = "Pasahitz aldaketak hutsegin du - Baimena ukatua";
+"Password change failed - Insufficient password quality" = "Pasahitz aldaketak hutsegin du - Pasahitzaren kalitate eskasa";
+"Password change failed - Password is too short" = "Pasahitz aldaketak hutsegin du - Pasahitz motzegia";
+"Password change failed - Password is too young" = "Pasahitz aldaketak hutsegin du - Pasahitza berriegia da";
+"Password change failed - Password is in history" = "Pasahitz aldaketak hutsegin du - Pasahitza historikoan dago";
+"Unhandled policy error: %{0}" = "Landu gabeko politika errorea: %{0}";
+"Unhandled error response" = "Landu gabeko errore erantzuna";
+"Password change is not supported." = "Pasahitz aldaketa ez dago onartua.";
+"Unhandled HTTP error code: %{0}" = "Landu gabeko HTTP errore kodea: %{0}";
+"New password:" = "Pasahitz berria";
+"Confirmation:" = "Berrespena:";
+"Cancel" = "Ezeztatu";
+"Please wait..." = "Itxaron mesedez...";
