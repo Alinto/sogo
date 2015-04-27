@@ -502,12 +502,12 @@ static Class iCalEventK = nil;
   BOOL is_owner;
   
   userLogin = [[context activeUser] login];
-  is_owner = [userLogin isEqualToString: [self ownerInContext: context]];
+  is_owner = [userLogin isEqualToString: self->owner];
   
   // Check if the owner (not the active user) has excluded the calendar from her/his free busy data.
   excludeFromFreeBusy
     = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
-				  forUser: [SOGoUser userWithLogin: userLogin]];
+				  forUser: [context activeUser]];
 
   if ([self isSubscription])
     {
