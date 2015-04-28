@@ -26,18 +26,26 @@ class preventInvitationsTest(unittest.TestCase):
     def setUp(self):
       self.prefs = preferences.preferences(attendee1, attendee1_password)
       self.caldav = CalDAVSchedulingTest(self)
+      cal = self.prefs.get("Calendar")
+      if "PreventInvitationsWhitelist" not in cal:
+            #print "LUC (cal):", cal
+            cal["PreventInvitationsWhitelist"] = None
+      self.prefs.set("PreventInvitationsWhitelist", None)
 
     def tearDown(self):
       self.prefs.set("autoReplyText", "")
-      self.prefs.set('PreventInvitations', '0')
-      self.prefs.set("whiteList", "")
+      self.prefs.set('PreventInvitations', 0)
+      self.prefs.set("PreventInvitationsWhitelist", None)
       #- Manual Cleanup, not called because classs is not derived from unittest
       self.caldav.tearDown()
+
+    def not_test_empty_string_instead_of_null(self):
+      self.prefs.set('PreventInvitationsWhitelist', "")
 
     def testDontPreventInvitation(self):
       """ Set/get the PreventInvitation pref"""
       #- First accept the invitation
-      self.prefs.set('PreventInvitations', '0')
+      self.prefs.set('PreventInvitations', 0)
       notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(notset, 0)
       self.caldav.AddAttendee()
@@ -46,7 +54,7 @@ class preventInvitationsTest(unittest.TestCase):
     def testPreventInvitation(self):
       """ Set PreventInvitation and don't accept the Invitation"""
       #- Second, enable PreventInviation and refuse it
-      self.prefs.set('enablePreventInvitations', '0')
+      self.prefs.set('PreventInvitations', 1)
       isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(isset, 1)
       self.caldav.AddAttendee(409)
@@ -55,13 +63,13 @@ class preventInvitationsTest(unittest.TestCase):
     def testPreventInvitationWhiteList(self):
       """ Set PreventInvitation add to WhiteList and accept the Invitation"""
       #- First, add the Organiser to the Attendee's whitelist
-      self.prefs.set('enablePreventInvitations', '0')
-      self.prefs.set("whiteList", simplejson.dumps(white_listed_attendee))
+      self.prefs.set('PreventInvitations', 1)
+      self.prefs.set("PreventInvitationsWhitelist", simplejson.dumps(white_listed_attendee))
       whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
       self.assertEqual(whitelist, white_listed_attendee)
 
       #- Second, try again to invite, it should work
-      self.prefs.set('enablePreventInvitations', '0')
+      self.prefs.set('PreventInvitations', 1)
       isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
       self.assertEqual(isset, 1)
       self.caldav.AddAttendee()

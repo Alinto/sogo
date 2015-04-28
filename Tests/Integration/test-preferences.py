@@ -9,6 +9,12 @@ import utilities
 
 class preferencesTest(unittest.TestCase):
 
+    def setUp(self):
+      self.prefs = preferences.preferences()
+
+    def tearDown(self):
+      self.prefs.set("autoReplyText", "")
+
     def _setTextPref(self, prefText = None ):
       """ set a text preference to a known value """
       self.prefs.set("autoReplyText", prefText)
@@ -19,15 +25,8 @@ class preferencesTest(unittest.TestCase):
       self.assertEqual(prefData["autoReplyText"], prefText,
                   "%s != %s" % (prefData["autoReplyText"], prefText))
 
-    def setUp(self):
-      self.prefs = preferences.preferences()
-
-    def tearDown(self):
-      self.prefs.set("autoReplyText", "")
-
     def testSetTextPreferences(self):
       """ Set/get a text preference - normal characters"""
-      
       self._setTextPref("defaultText")
 
     def testSetTextPreferencesWeirdChars(self):
@@ -37,17 +36,17 @@ class preferencesTest(unittest.TestCase):
 
     def testSetPreventInvitation(self):
       """ Set/get the PreventInvitation pref"""
-      self.prefs.set('PreventInvitations', '0')
-      notset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
+      self.prefs.set('PreventInvitations', 0)
+      notset = self.prefs.get('Calendar')['PreventInvitations']
       self.assertEqual(notset, 0)
-      self.prefs.set('enablePreventInvitations', '0')
-      isset = self.prefs.get_settings('')['Calendar']['PreventInvitations']
+      self.prefs.set('PreventInvitations', 1)
+      isset = self.prefs.get('Calendar')['PreventInvitations']
       self.assertEqual(isset, 1)
 
     def testPreventInvitationsWhiteList(self):
       """Add to the PreventInvitations Whitelist"""
-      self.prefs.set("whiteList", simplejson.dumps(white_listed_attendee))
-      whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
+      self.prefs.set("PreventInvitationsWhitelist", white_listed_attendee)
+      whitelist = self.prefs.get('Calendar')['PreventInvitationsWhitelist']
       self.assertEqual(whitelist, white_listed_attendee)
 
 
