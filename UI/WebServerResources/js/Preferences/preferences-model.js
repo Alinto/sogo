@@ -27,9 +27,12 @@
         
         data.SOGoMailLabelsColors = labels;
 
-        // We convert our list of autoReplyEmailAddresses into a string.
+        // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
         if (data.Vacation && data.Vacation.autoReplyEmailAddresses)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
+
+        if (data.Forward && data.Forward.forwardAddress)
+          data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
         
         angular.extend(_this.defaults, data);
       });
@@ -120,6 +123,9 @@
     
     if (preferences.defaults.Vacation && preferences.defaults.Vacation.autoReplyEmailAddresses)
       preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+
+    if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
+      preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
 
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
       var h = {};
