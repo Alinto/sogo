@@ -2077,19 +2077,20 @@ static NSArray *reminderValues = nil;
 //
 - (id <WOActionResults>) saveAction
 {
+  id <WOActionResults> results;
   id o, v;
   
   o = [[[context request] contentAsString] objectFromJSONString];
-
+  results = nil;
+  
   // Proceed with data sanitization of the "defaults"
   if ((v = [o objectForKey: @"defaults"]))
     {
-      NSArray *allKeys, *accounts, *addresses;
       NSMutableDictionary *sanitizedLabels;
+      NSArray *allKeys, *accounts;
       NSDictionary *newLabels;
-      NSString *name, *reminder;
+      NSString *name;
 
-      NSUInteger index;
       int i;
 
       // We convert our object into a mutable one
@@ -2140,7 +2141,32 @@ static NSArray *reminderValues = nil;
         }
 
       [[[user userDefaults] source] setValues: v];
-      [[user userDefaults] synchronize];
+      
+      if ([[user userDefaults] synchronize])
+        {
+          SOGoMailAccount *account;
+          SOGoMailAccounts *folder;
+          SOGoDomainDefaults *dd;
+          
+          dd = [[context activeUser] domainDefaults];
+
+          // We check if the Sieve server is available *ONLY* if at least one of the option is enabled
+          if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]) || [self _isSieveServerAvailable])
+            {
+              
+              folder = [[self clientObject] mailAccountsFolder: @"Mail"
+                                                     inContext: context];
+              account = [folder lookupName: @"0" inContext: context acquire: NO];
+              
+              if (![account updateFilters])
+                {
+                  results = [self responseWithStatus: 502
+                           andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]]; 
+                }
+            }
+          results = [self responseWithStatus: 503
+                       andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
+        }
     }
   
   if ((v = [o objectForKey: @"settings"]))
@@ -2148,8 +2174,11 @@ static NSArray *reminderValues = nil;
       [[[user userSettings] source] setValues: v];
       [[user userSettings] synchronize];
     }
-    
-  return [self responseWithStatus: 200];
+
+  if (!results)
+    results = [self responseWithStatus: 200];
+
+  return results;
 }
 
 @end
