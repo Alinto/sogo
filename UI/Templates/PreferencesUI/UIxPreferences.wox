@@ -45,7 +45,7 @@
     </md-sidenav>
 
     <section  layout="column" class="md-layout-fill">
-      
+
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
@@ -76,12 +76,11 @@
     <script type="text/ng-template" id="generalPreferences.html">
 
       <md-content layout="row" class="md-flex">
-        <md-tabs class="md-accent">
+        <md-tabs md-dynamic-height="true">
 
           <!-- GENERAL OPTIONS -->
           <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
-            <div role="tabpanel" aria-labelledby="generalOptionsView" id="generalOptionsView-content">
-
+            <div aria-labelledby="generalOptionsView" id="generalOptionsView-content">
               <div layout="row" layout-align="space-around center">
                 <div><var:string label:value="SOGo Version :"/></div>
                 <div><var:string value="sogoVersion"/></div>
@@ -211,7 +210,7 @@
                   </label>
 	          <input type="password" ng-model="passwords.newPasswordConfirmation"/>
                 </md-input-container>
-                
+
                 <md-button ng-click="changePassword()" type="button" ng-disabled="!canChangePassword()">
                   <var:string label:value="Change"/>
                 </md-button>
@@ -229,7 +228,7 @@
     -->
     <script type="text/ng-template" id="calendarsPreferences.html">
       <md-content layout="row" class="md-flex">
-        <md-tabs class="md-accent">
+        <md-tabs md-dynamic-height="true">
 
           <!-- CALENDAR - GENERAL -->
           <md-tab id="calendarOptionsView"
@@ -421,7 +420,7 @@
                 </md-button>
               </md-list-item>
             </md-list>
-              
+
               <div class="bottomToolbar">
                 <md-button ng-click="addCalendarCategory()" type="button">
                   <div class="md-icon-add"><!-- create --></div>
@@ -456,7 +455,7 @@
                     placeholder="Add">
                   </md-contact-chips>
               </div>
-              
+
             </div>
           </md-tab>
 
@@ -469,7 +468,7 @@
     -->
     <script type="text/ng-template" id="addressbooksPreferences.html">
       <md-content layout="row" class="md-flex">
-        <md-tabs class="md-accent">
+        <md-tabs md-dynamic-height="true">
 
           <!-- CONTACT > GENERAL -->
           <!-- <md-tab id="contactsGeneralTab"
@@ -518,7 +517,7 @@
     <script type="text/ng-template" id="mailerPreferences.html">
       <var:if condition="userHasMailAccess">
         <md-content layout="row" class="md-flex">
-          <md-tabs class="md-accent">
+          <md-tabs md-dynamic-height="true">
 
             <!-- MAIL > GENERAL -->
             <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
@@ -643,7 +642,7 @@
                       label:label="Filters">
                 <div role="tabpanel" aria-labelledby="mailFiltersView"
                      id="mailFiltersView-content">
-                  
+
                   <md-list>
                     <md-list-item ng-repeat="item in
                                              preferences.defaults.SOGoSieveFilters
@@ -658,7 +657,7 @@
 	                <input type="text" ng-model="preferences.defaults.SOGoSieveFilters[$index].name"/>
                       </md-input-container>
                       <md-button ng-click="editMailFilter($index)"
-                                 type="button" 
+                                 type="button"
                                  layout="row" layout-align="end center"
                                  label:aria-label="Edit Filter">
                         <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
@@ -671,7 +670,7 @@
                       </md-button>
                     </md-list-item>
                   </md-list>
-                  
+
                   <!-- FIXME: move up/down to be replaced by DnD? -->
                   <div class="bottomToolbar">
                     <md-button ng-click="addMailFilter($event)"
@@ -747,7 +746,7 @@
                   </md-button>
                 </md-list-item>
               </md-list>
-              
+
               <var:if condition="mailAuxiliaryUserAccountsEnabled">
                 <div class="bottomToolbar">
                   <md-button ng-click="addMailAccount()"
@@ -766,7 +765,7 @@
             <var:if condition="isVacationEnabled">
               <md-tab id="mailVacationTab" aria-controls="mailVacationTab-content" label:label="Vacation">
                 <div role="tabpanel" aria-labelledby="mailVacationView" id="mailVacationView-content">
-                  
+
                   <md-checkbox
                       ng-model="preferences.defaults.Vacation.enabled"
                       ng-true-value="1"
@@ -774,8 +773,8 @@
                       label:aria-label="Enable vacation auto reply">
                     <var:string label:value="Enable vacation auto reply"/>
                   </md-checkbox>
-                  
-                  
+
+
                   <div>
                     <label><var:string label:value="Auto reply message :"/>
                     <textarea const:name="autoReplyText"
@@ -783,7 +782,7 @@
                               ng-model="preferences.defaults.Vacation.autoReplyText"/>
                     </label>
                   </div>
-                  
+
                   <div>
                     <!-- <script>
                          var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
@@ -794,9 +793,9 @@
                               ng-model="preferences.defaults.Vacation.autoReplyEmailAddresses"/><br/>
                     <md-button>
                       <var:string label:value="Add default email addresses" type="button"/>
-                    </md-button>            
+                    </md-button>
                   </div>
-                  
+
                   <div layout="row" layout-align="space-around center">
                     <div><var:string label:value="Days between responses :"/></div>
                     <div>
@@ -809,14 +808,14 @@
                       </md-select>
                     </div>
                   </div>
-                  
+
                   <md-checkbox
                       ng-model="preferences.defaults.Vacation.ignoreLists"
                       ng-true-value="1"
                       ng-false-value="0">
                     <var:string label:value="Do not send responses to mailing lists" />
                   </md-checkbox>
-                  
+
                   <div layout="row" layout-align="space-around center">
                     <md-checkbox
                         ng-model="preferences.defaults.Vacation.endDateEnabled"
@@ -824,27 +823,27 @@
                         ng-false-value="0">
                       <var:string label:value="Disable auto reply on" />
                     </md-checkbox>
-                    
+
                     <div class="value">
                       <p class="PseudoField-inputLike--underline">
                         <input type="date" ng-model="preferences.defaults.Vacation.endDate"/>
                       </p>
                     </div>
-                    
+
                   </div>
-                  
+
                   <md-checkbox
                       ng-model="preferences.defaults.Vacation.alwaysSend"
                       ng-true-value="1"
                       ng-false-value="0">
                     <var:string label:value="Always send vacation message response"/>
                   </md-checkbox>
-                  
+
                 </div>
               </md-tab>
             </var:if>
             <!-- END OF MAIL > VACATION -->
-            
+
             <!-- MAIL > FORWARD -->
             <var:if condition="isForwardEnabled">
               <md-tab id="mailForwardTab" aria-controls="mailForwardTab-content" label:label="Forward">
@@ -864,7 +863,7 @@
                                 ng-model="preferences.defaults.Forward.forwardAddress" />
                       </label><br/>
                     </div>
-                    
+
                     <md-checkbox
                         ng-model="preferences.defaults.Forward.keepCopy"
                         ng-true-value="1"
