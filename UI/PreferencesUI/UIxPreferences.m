@@ -1427,7 +1427,7 @@ static NSArray *reminderValues = nil;
 
   if (!client)
     {
-      folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
+      folder = [[[context activeUser] homeFolderInContext: context] mailAccountsFolder: @"Mail" inContext: context];
       account = [folder lookupName: @"0" inContext: context acquire: NO];
       manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
       client = [[manager clientForAccount: account] retain];
@@ -2154,8 +2154,8 @@ static NSArray *reminderValues = nil;
           if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]) || [self _isSieveServerAvailable])
             {
               
-              folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                                     inContext: context];
+              folder = [[[context activeUser] homeFolderInContext: context]  mailAccountsFolder: @"Mail"
+                                                                                      inContext: context];
               account = [folder lookupName: @"0" inContext: context acquire: NO];
               
               if (![account updateFilters])
