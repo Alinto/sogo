@@ -126,7 +126,7 @@
       };
       
       $scope.addMailLabel = function() {
-        $scope.preferences.defaults.SOGoMailLabelsColors["foo_bar"] =  ["foo bar", "#FFFF00"];
+        $scope.preferences.defaults.SOGoMailLabelsColors["new_label"] =  ["New label", "#aaa"];
       };
 
       $scope.removeMailLabel = function(key) {

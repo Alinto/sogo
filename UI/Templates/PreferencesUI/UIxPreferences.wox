@@ -692,6 +692,7 @@
                   <md-list>
                     <md-list-item ng-repeat="(key, value) in
                                              preferences.defaults.SOGoMailLabelsColors">
+                      <i class="md-avatar" ng-style="{'background-color': '{{value[1]}}'}"><!-- label color --></i>
                       <md-input-container>
 	                <input type="text" ng-model="value[0]"/>
                       </md-input-container>
