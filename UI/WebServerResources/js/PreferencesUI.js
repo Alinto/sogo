@@ -267,12 +267,18 @@
       $mdDialog.hide();
     };
     $scope.addMailFilterRule = function(event) {
+      if (!$scope.filter.rules)
+        $scope.filter.rules = [];
+
       $scope.filter.rules.push({});
     }
     $scope.removeMailFilterRule = function(index) {
       $scope.filter.rules.splice(index, 1);
     };
     $scope.addMailFilterAction = function(event) {
+      if (!$scope.filter.actions)
+        $scope.filter.actions = [];
+
       $scope.filter.actions.push({});
     }
     $scope.removeMailFilterAction = function(index) {
