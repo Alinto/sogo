@@ -46,6 +46,8 @@
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
             return new Preferences.$User({uid: key, shortFormat: value});
           });
+        else
+          data.Calendar.PreventInvitationsWhitelist = [];
         
         angular.extend(_this.settings, data);
       });
