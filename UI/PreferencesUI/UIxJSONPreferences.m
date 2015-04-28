@@ -130,6 +130,19 @@ static SoProduct *preferencesProduct = nil;
       
       [defaults setCalendarCategories: categoryLabels];
     }
+  if (![defaults calendarCategoriesColors])
+    {
+      NSMutableDictionary *colors;
+      int i;
+
+      categoryLabels = [defaults calendarCategories];
+      colors = [NSMutableDictionary dictionaryWithCapacity: [categoryLabels count]];
+
+      for (i = 0; i < [categoryLabels count]; i++)
+        [colors setObject: @"#aaa"  forKey: [categoryLabels objectAtIndex: i]];
+
+      [defaults setCalendarCategoriesColors: colors];
+    }
   
   //
   // Default Contacts preferences
