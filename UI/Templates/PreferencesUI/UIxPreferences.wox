@@ -737,7 +737,7 @@
                              label:aria-label="Edit Account">
                     <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
                   </md-button>
-                  <md-button ng-click="removeMailAccount()"
+                  <md-button ng-click="removeMailAccount($index)"
                              ng-show="$index > 0"
                              type="button"
                              layout="row"
