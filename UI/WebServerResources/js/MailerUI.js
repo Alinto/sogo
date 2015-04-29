@@ -180,9 +180,7 @@
         Dialog.prompt(l('New folder'),
                       l('Enter the new name of your folder :'))
           .then(function(name) {
-            if (name && name.length > 0) {
-              parentFolder.$newMailbox(parentFolder.id, name);
-            }
+            parentFolder.$newMailbox(parentFolder.id, name);
           });
       };
       $scope.editFolder = function(folder) {

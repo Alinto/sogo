@@ -267,7 +267,16 @@
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <section ng-repeat="account in accounts track by account.id">
-          <md-subheader class="sg-md-subheader md-padding">{{account.name}}</md-subheader>
+          <md-subheader class="sg-md-subheader">
+            <div layout="row" layout-align="space-between center">
+              <span>{{account.name}}</span>
+              <md-button class="iconButton"
+                         label:aria-label="New Folder..."
+                         ng-click="newFolder(account)">
+                <i class="md-icon-add-circle-outline"><!-- add --></i>
+              </md-button>
+            </div>
+          </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in account.$flattenMailboxes() track by folder.path"
                           ng-click="selectFolder(account, folder)"
