@@ -24,8 +24,10 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUserDefaults.h> /* for locale string constants */
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -51,6 +53,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -115,6 +118,7 @@ static NSArray *tasksFields = nil;
     componentsData = [NSMutableDictionary new];
     startDate = nil;
     endDate = nil;
+    ASSIGN (now, [NSCalendarDate calendarDate]);
     ASSIGN (request, newRequest);
     user = [[self context] activeUser];
     ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
@@ -526,17 +530,48 @@ static NSArray *tasksFields = nil;
 {
   NSCalendarDate *date;
   NSString *formattedDate;
-  
+  NSUInteger delta;
+
   date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
   // Adjust for daylight saving time? (wrt to startDate)
   //NSLog(@"***[UIxCalListingActions _formattedDateForSeconds] user timezone is %@", userTimeZone);
   [date setTimeZone: userTimeZone];
-  if (forAllDay)
-    formattedDate = [dateFormatter formattedDate: date];
+
+  if ([now dayOfCommonEra] == [date dayOfCommonEra])
+    {
+      // Same day
+      if (forAllDay)
+        return [self labelForKey: @"Today"];
+      else
+        return [dateFormatter formattedTime: date];
+    }
+  else if ([now dayOfCommonEra] - [date dayOfCommonEra] == 1)
+    {
+      // Yesterday
+      return [self labelForKey: @"Yesterday"];
+    }
+  else if ([date dayOfCommonEra] - [now dayOfCommonEra] == 1)
+    {
+      // Tomorrow
+      return [self labelForKey: @"Tomorrow"];
+    }
+  else if (abs(delta = [date dayOfCommonEra] - [now dayOfCommonEra]) < 7)
+    {
+      WOResourceManager *resMgr = [[WOApplication application] resourceManager];
+      NSString *language = [[[context activeUser] userDefaults] language];
+      NSDictionary *locale = [resMgr localeForLanguageNamed: language];
+      NSString *dayOfWeek = [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [date dayOfWeek]];
+      if (delta < 7)
+        // Wihtin the next 7 days
+        return dayOfWeek;
+      else
+        // With the past 7 days
+        return [NSString stringWithFormat: [self labelForKey: @"last %@"], dayOfWeek];
+    }
   else
-    formattedDate = [dateFormatter formattedDateAndTime: date];
-  
-  return formattedDate;
+    {
+      return [dateFormatter shortFormattedDate: date];
+    }
 }
 
 /**
@@ -1288,7 +1323,7 @@ _computeBlocksPosition (NSArray *blocks)
 - (NSString *) _getStatusClassForStatusCode: (int) statusCode
                             andEndDateStamp: (unsigned int) endDateStamp
 {
-  NSCalendarDate *taskDate, *now;
+  NSCalendarDate *taskDate;
   NSString *statusClass;
   
   if (statusCode == 1)
@@ -1297,7 +1332,6 @@ _computeBlocksPosition (NSArray *blocks)
   {
     if (endDateStamp)
     {
-      now = [NSCalendarDate calendarDate];
       taskDate = [NSCalendarDate dateWithTimeIntervalSince1970: endDateStamp];
       [taskDate setTimeZone: userTimeZone];
       if ([taskDate earlierDate: now] == taskDate)

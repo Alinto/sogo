@@ -1,8 +1,6 @@
 /* UIxCalListingActions.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +38,7 @@
   NSMutableDictionary *componentsData;
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
+  NSCalendarDate *now;
   NSString *value;
   NSString *criteria;
   NSString *userLogin;
