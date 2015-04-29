@@ -1,6 +1,6 @@
 /* UIxCalMainActions.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2013 Inverse inc.
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 
@@ -39,16 +40,20 @@
 
 - (WOResponse *) addWebCalendarAction
 {
-  WORequest *r;
-  WOResponse *response;
-  SOGoWebAppointmentFolder *folder;
-  NSString *urlString, *displayName;
-  NSMutableDictionary *rc;
+  NSDictionary *params;
+  NSException *ex;
+  NSMutableDictionary *jsonResponse;
+  NSString *urlString;
   SOGoAppointmentFolders *folders;
+  SOGoWebAppointmentFolder *folder;
+  WORequest *request;
+  unsigned int httpStatus;
 
-  r = [context request];
+  ex = nil;
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
 
-  urlString = [[r formValueForKey: @"url"] stringByTrimmingSpaces];
+  urlString = [[params objectForKey: @"url"] stringByTrimmingSpaces];
   if ([urlString length] > 0)
     {
       folders = [self clientObject];
@@ -57,27 +62,33 @@
       
       if (folder)
         {
-	  displayName = [folder displayName];
-          response = [self responseWithStatus: 200];
-          [response setHeader: @"application/json" forKey: @"content-type"];
-          
-          rc = [NSMutableDictionary dictionary];
-          [rc setObject: [folder displayName] forKey: @"name"];
-          [rc setObject: [folder folderReference] forKey: @"folderID"];
-          [response appendContentString: [rc jsonRepresentation]];
+          jsonResponse = [NSMutableDictionary dictionary];
+          [jsonResponse setObject: [folder displayName] forKey: @"name"];
+          [jsonResponse setObject: [folder name] forKey: @"id"];
         }
       else
-        response = (WOResponse *)
-          [NSException exceptionWithHTTPStatus: 400
-                                        reason: @"folder was not created"];
+        ex = [NSException exceptionWithName: @"newWebCalendarWithURLException"
+                                     reason: @"Can't subscribe to Web calendar"
+                                   userInfo: nil];
     }
   else
-    response = (WOResponse *)
-      [NSException exceptionWithHTTPStatus: 400
-                                    reason: @"missing 'url' parameter"];
-  
+    ex = [NSException exceptionWithName: @"missingParameterException"
+                                 reason: @"Missing 'url' parameter"
+                               userInfo: nil];
 
-  return response;
+  if (ex)
+    {
+      httpStatus = 500;
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"failure", @"status",
+                                   [ex reason], @"message",
+                                   nil];
+    }
+  else
+    httpStatus = 200;
+
+  return [self responseWithStatus: httpStatus
+            andJSONRepresentation: jsonResponse];
 }
 
 @end
