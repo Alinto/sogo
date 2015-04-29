@@ -19,9 +19,10 @@
           ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}">
         <md-item-content ui-sref-active="_selected" layout="row" class="md-flex">
-          <div class="sg-avatar">
-            <!--avatar-->
-          </div>
+          <div><sg-gravatar-image class="md-tile-left"
+                                  email="{{currentMessage['from'][0].email}}"
+                                  size="48"><!-- gravatar -->
+          </sg-gravatar-image></div>
           <div class="sg-tile-content">
             <a ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
               <div class="sg-md-subhead-multi subject">

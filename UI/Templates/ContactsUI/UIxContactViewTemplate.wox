@@ -9,8 +9,11 @@
     <md-card-content>
       <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
       <header>
-        <div class="sg-avatar" ng-show="card.tag == 'vcard'">
-          <!--card avatar-->
+        <div ng-show="card.tag == 'vcard'">
+          <sg-gravatar-image class="md-tile-left"
+                             email="{{card.$preferredEmail()}}"
+                             size="48"><!-- gravatar -->
+          </sg-gravatar-image>
         </div>
         <div class="sg-list-avatar" ng-show="card.tag == 'vlist'">
           <!--list avatar-->

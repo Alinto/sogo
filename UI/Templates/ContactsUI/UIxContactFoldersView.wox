@@ -297,8 +297,11 @@
             <div layout="row" flex="true"
                  ng-class="{_selected: card.id == currentCard.id}"
                  ng-click="toggleDetailView()">
-              <div class="sg-avatar" ng-show="currentCard.tag == 'vcard'">
-                <!--card avatar-->
+              <div ng-show="currentCard.tag == 'vcard'">
+                <sg-gravatar-image class="md-tile-left"
+                                   email="{{currentCard.$preferredEmail()}}"
+                                   size="48"><!-- gravatar -->
+                </sg-gravatar-image>
               </div>
               <div class="sg-list-avatar" ng-show="currentCard.tag == 'vlist'">
                 <!--list avatar-->
