@@ -100,6 +100,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreMailAttachment.m \
 	MAPIStoreMailContext.m \
 	MAPIStoreMailFolder.m \
+	MAPIStoreMailFolderTable.m \
 	MAPIStoreMailMessage.m \
 	MAPIStoreMailVolatileMessage.m \
 	MAPIStoreMailMessageTable.m \
