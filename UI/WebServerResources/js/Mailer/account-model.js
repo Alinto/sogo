@@ -83,6 +83,7 @@
     else {
       Account.$Mailbox.$find(this).then(function(data) {
         _this.$mailboxes = data;
+        _this.$flattenMailboxes({reload: true});
         deferred.resolve(_this.$mailboxes);
       });
     }
@@ -90,23 +91,30 @@
     return deferred.promise;
   };
 
-  Account.prototype.$flattenMailboxes = function() {
+  /**
+   * @function $flattenMailboxes
+   * @memberof Account.prototype
+   * @desc Get a flatten array of the mailboxes.
+   * @param {object} [options] - force a reload
+   * @returns an array of Mailbox instances
+   */
+  Account.prototype.$flattenMailboxes = function(options) {
     var _this = this,
         allMailboxes = [],
-        _visit = function(level, mailboxes) {
+        _visit = function(mailboxes) {
           _.each(mailboxes, function(o) {
-            allMailboxes.push({ id: o.id, path: o.path, name: o.name, level: level });
+            allMailboxes.push(o);
             if (o.children && o.children.length > 0) {
-              _visit(level+1, o.children);
+              _visit(o.children);
             }
           });
         };
 
-    if (this.$$flattenMailboxes) {
+    if (this.$$flattenMailboxes && !(options && options.reload)) {
       allMailboxes = this.$$flattenMailboxes;
     }
     else {
-      _visit(0, this.$mailboxes);
+      _visit(this.$mailboxes);
       _this.$$flattenMailboxes = allMailboxes;
     }
 

@@ -88,10 +88,11 @@
   Mailbox.$unwrapCollection = function(account, futureMailboxData) {
     var collection = [],
         // Local recursive function
-        createMailboxes = function(mailbox) {
+        createMailboxes = function(level, mailbox) {
           for (var i = 0; i < mailbox.children.length; i++) {
+            mailbox.children[i].level = level;
             mailbox.children[i] = new Mailbox(account, mailbox.children[i]);
-            createMailboxes(mailbox.children[i]);
+            createMailboxes(level+1, mailbox.children[i]);
           }
         };
     //collection.$futureMailboxData = futureMailboxData;
@@ -100,8 +101,9 @@
       return Mailbox.$timeout(function() {
         // Each entry is spun up as a Mailbox instance
         angular.forEach(data.mailboxes, function(data, index) {
+          data.level = 0;
           var mailbox = new Mailbox(account, data);
-          createMailboxes(mailbox); // recursively create all sub-mailboxes
+          createMailboxes(1, mailbox); // recursively create all sub-mailboxes
           collection.push(mailbox);
         });
         return collection;

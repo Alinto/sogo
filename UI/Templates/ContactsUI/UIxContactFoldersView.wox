@@ -8,8 +8,7 @@
     const:userDefaultsKeys="SOGoContactsCategories"
     const:jsFiles="Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
     className="UIxPageFrame"
-    title="name"
-    var:popup="isPopup">
+    title="name">
   <script type="text/javascript">
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
@@ -153,28 +152,26 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="AddressBooks"/></span>
-              <md-button
-                  class="iconButton"
-                  label:aria-label="New Addressbook..."
-                  ng-click="newAddressbook()">
+              <md-button class="iconButton"
+                         label:aria-label="New Addressbook..."
+                         ng-click="newAddressbook()">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in service.$addressbooks track by folder.id"
-                          ui-sref-active="sg-active"
-                          ng-dblclick="edit($index, folder)">
+                          ng-click="select(folder)"
+                          ng-dblclick="edit($index, folder)"
+                          ui-sref="app.addressbook({addressbookId: folder.id})"
+                          ui-sref-active="sg-active">
               <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
-              <button class="md-button md-flex sg-item-name"
-                      ng-show="editMode!=folder.id"
-                      ng-click="select(folder)"
-                      ng-cloak="ng-cloak"
-                      ui-sref="app.addressbook({addressbookId: folder.id})">{{folder.name}}</button>
-              <md-input-container
-                  class="md-flex md-tile-content"
-                  ng-show="editMode==folder.id">
+              <p class="sg-item-name"
+                 ng-show="editMode!=folder.id"> {{folder.name}}</p>
+              <md-input-container class="md-flex md-tile-content"
+                                  ng-show="editMode==folder.id">
                 <input class="folder-name" type="text"
+                       label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"
                        ng-blur="save($index, folder)"
@@ -182,10 +179,10 @@
                        sg-enter="save(folder)"
                        sg-escape="revertEditing(folder)"/>
               </md-input-container>
-              <md-button class="iconButton" label:aria-label="Options"
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
                          ng-show="currentFolder.id==folder.id"
-                         ng-click="share()">
-              <i class="md-icon-more-vert"><!-- options --></i>
+                         ng-click="share(folder)">
+                <i class="md-icon-more-vert"><!-- options --></i>
               </md-button>
             </md-list-item>
           </md-list>
@@ -195,29 +192,27 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
-              <md-button
-                  class="iconButton"
-                  label:aria-label="Subscribe to an Addressbook..."
-                  sg-subscribe="contact"
-                  sg-subscribe-on-select="subscribeToFolder(folderData)">
+              <md-button class="iconButton"
+                         label:aria-label="Subscribe to an Addressbook..."
+                         sg-subscribe="contact"
+                         sg-subscribe-on-select="subscribeToFolder(folderData)">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in service.$subscriptions track by folder.id"
-                          ui-sref-active="sg-active"
-                          ng-dblclick="edit($index, folder)">
+                          ng-click="select(folder)"
+                          ng-dblclick="edit($index, folder)"
+                          ui-sref="app.addressbook({addressbookId: folder.id})"
+                          ui-sref-active="sg-active">
               <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
-              <button class="md-button md-flex sg-item-name"
-                      ng-show="editMode!=folder.id"
-                      ng-click="select(folder)"
-                      ng-cloak="ng-cloak"
-                      ui-sref="app.addressbook({addressbookId: folder.id})">{{folder.name}}</button>
-              <md-input-container
-                  class="md-flex md-tile-content"
-                  ng-show="editMode==folder.id">
+              <p class="sg-item-name"
+                 ng-show="editMode!=folder.id">{{folder.name}}</p>
+              <md-input-container class="md-flex md-tile-content"
+                                  ng-show="editMode==folder.id">
                 <input class="folder-name" type="text"
+                       label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"
                        ng-blur="save($index, folder)"
@@ -225,9 +220,10 @@
                        sg-enter="save(folder)"
                        sg-escape="revertEditing(folder)"/>
               </md-input-container>
-              <md-button class="iconButton" label:aria-label="Options"
-                         ng-show="currentFolder.id==folder.id">
-              <i class="md-icon-more-vert"><!-- options --></i>
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
+                         ng-show="currentFolder.id==folder.id"
+                         ng-click="">
+                <i class="md-icon-more-vert"><!-- options --></i>
               </md-button>
             </md-list-item>
           </md-list>
@@ -235,16 +231,15 @@
         <!-- Remote/domain addressbooks -->
         <section>
           <md-subheader class="sg-md-subheader md-padding">
-              <var:string label:value="Global Addressbooks"/>
+            <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in service.$remotes track by folder.id"
+                          ng-click="select(folder)"
+                          ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="sg-active">
               <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
-              <button class="md-button md-flex sg-item-name"
-                      ng-click="select(folder)"
-                      ng-cloak="ng-cloak"
-                      ui-sref="app.addressbook({addressbookId: folder.id})">{{folder.name}}</button>
+              <p class="sg-item-name">{{folder.name}}</p>
             </md-list-item>
           </md-list>
         </section>
@@ -260,7 +255,7 @@
         <var:component className="UIxTopnavToolbarTemplate" />
       </div>
       <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
-        <div class="view-list cols-6 sg-padded" layout="row" layout-align="space-between center"
+        <div class="view-list sg-padded" layout="row" layout-align="space-between center"
              sg-search="addressbook.$filter(searchText, { search: searchField })">
           <md-input-container class="sg-search-field-container">
             <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
@@ -278,7 +273,8 @@
       </div>
     </md-toolbar>
     <div layout="row" class="md-flex" layout-align="space-between">
-      <md-content class="view-list" id="contactsList">
+      <div class="view-list" layout="column" flex="true" style="position: relative;">
+      <md-content id="contactsList">
         <header class="sg-md-subheader sg-md-subheader--fixed">
           <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
         </header>
@@ -300,7 +296,7 @@
           <md-list-item ng-repeat="currentCard in currentFolder.cards track by currentCard.id">
             <div layout="row" flex="true"
                  ng-class="{_selected: card.id == currentCard.id}"
-                 ng-click="select($index); toggleDetailView()">
+                 ng-click="toggleDetailView()">
               <div class="sg-avatar" ng-show="currentCard.tag == 'vcard'">
                 <!--card avatar-->
               </div>
@@ -318,11 +314,12 @@
         </md-list>
       </md-content>
 
-      <md-button class="iconButton md-fab md-fab--bottom md-accent hide-sm"
+      <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
                  label:aria-label="New Contact"
                  ng-click="newComponent()">
         <i class="md-icon-add"><!--icon--></i>
       </md-button>
+      </div>
 
       <!-- This extra container is used to animate views transitions
            double quotes in ng-animate is not a typo                         -->
@@ -330,11 +327,6 @@
         <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
       </div>
 
-      <md-button class="iconButton md-fab md-accent show-sm"
-                 label:aria-label="New Contact"
-                 ng-click="newComponent()">
-        <i class="md-icon-add"><!--icon--></i>
-      </md-button>
     </div>
   </script>
 

@@ -186,44 +186,44 @@
           });
       };
       $scope.editFolder = function(folder) {
-        $rootScope.$broadcast('sgEditFolder', folder.id);
+        $scope.editMode = folder.path;
+        focus('mailboxName_' + folder.path);
       };
-      $scope.setCurrentFolder = function(account, folder) {
+      $scope.revertEditing = function(folder) {
+        folder.$reset();
+        $scope.editMode = false;
+      };
+      $scope.selectFolder = function(account, folder) {
+        if ($scope.editMode == folder.path)
+          return;
         $rootScope.currentFolder = folder;
+        $scope.editMode = false;
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
+      };
+      $scope.saveFolder = function(folder) {
+        folder.$rename();
       };
       $scope.exportMails = function() {
         window.location.href = ApplicationBaseURL + '/' + $rootScope.currentFolder.id + '/exportFolder';
       };
-      $scope.confirmDelete = function() {
+      $scope.confirmDelete = function(folder) {
+        if (folder.path != $scope.currentFolder.path) {
+          // Counter the possibility to click on the "hidden" secondary button
+          $scope.selectFolder(folder.$account, folder);
+          return;
+        }
         Dialog.confirm(l('Confirmation'), l('Do you really want to move this folder into the trash ?'))
-            .then(function(res) {
-              if (res) {
-                $rootScope.currentFolder.$delete()
-                  .then(function() {
-                    $rootScope.currentFolder = null;
-                  }, function(data, status) {
-                    Dialog.alert(l('An error occured while deleting the mailbox "%{0}".',
-                                   $rootScope.currentFolder.name),
-                                 l(data.error));
-                  });
-              }
-            });
+          .then(function() {
+            folder.$delete()
+              .then(function() {
+                $rootScope.currentFolder = null;
+                $state.go('mail');
+              }, function(data, status) {
+                Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
+                             l(data.error));
+              });
+          });
       };
-
-      // Register listeners
-      $scope.$on('sgRevertFolder', function(event, folderId) {
-        if (folderId == $scope.currentFolder.id) {
-          $scope.currentFolder.$reset();
-          event.stopPropagation();
-        }
-      });
-      $scope.$on('sgSaveFolder', function(event, folderId) {
-        if (folderId == $scope.currentFolder.id) {
-          $scope.currentFolder.$rename();
-          event.stopPropagation();
-        }
-      });
 
       if ($state.current.name == 'mail' && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
         // Redirect to first mailbox of first account if no mailbox is selected
@@ -237,9 +237,6 @@
       $scope.account = stateAccount;
       $rootScope.mailbox = stateMailbox;
       $rootScope.currentFolder = stateMailbox;
-      $timeout(function() {
-        $rootScope.$broadcast('sgSelectFolder', stateMailbox.id);
-      });
     }])
 
     .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {

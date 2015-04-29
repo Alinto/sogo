@@ -140,8 +140,10 @@
    * @desc Return the calendar CSS class name based on its ID.
    * @returns a string representing the foreground CSS class name
    */
-  Calendar.prototype.getClassName = function() {
-    return 'fg-folder' + this.id;
+  Calendar.prototype.getClassName = function(base) {
+    if (angular.isUndefined(base))
+      base = 'fg';
+    return base + '-folder' + this.id;
   };
 
   /**

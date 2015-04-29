@@ -1,14 +1,15 @@
 <?xml version='1.0' standalone='yes'?>
 <container
     xmlns="http://www.w3.org/1999/xhtml"
-    >
-  <md-content class="view-list cols-6" style="position: relative;" id="messagesList">
+    xmlns:label="OGo:label">
+  <div class="view-list md-layout-fill" layout="column" flex="true" style="position: relative;">
+  <md-content id="messagesList">
     <style>
       .vs-repeat-repeated-element {
         width: 100%;
       }
     </style>
-    <header class="sg-md-subheader">
+    <header class="sg-md-subheader sg-md-subheader--fixed">
       <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Unread Messages</h2>
     </header>
     <md-list vs-repeat="72"
@@ -41,13 +42,15 @@
       </md-list-item>
     </md-list>
   </md-content>
+  <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
+             label:aria-label="Write a new message"
+             ui-sref="mail.newMessage()">
+    <i class="md-icon-add"><!--icon--></i>
+  </md-button>
+  </div>
+
   <!-- This extra container is used to animate views transitions
        double quotes in ng-animate is not a typo                         -->
     <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
-  <!-- Responsive: show-small only -->
-  <md-button class="iconButton md-fab md-accent show-sm" aria-label="create" ui-sref="mail.newMessage()">
-    <i class="md-icon-add"><!-- icon --></i>
-  </md-button>
-
 
 </container>

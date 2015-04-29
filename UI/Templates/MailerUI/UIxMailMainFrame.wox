@@ -266,10 +266,35 @@
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
-        <md-list ng-repeat="account in accounts track by account.id">
-          <h2 class="sg-md-subheader--static sg-padded">{{account.name}}</h2>
-          <sg-folder-tree ng-repeat="folder in account.$mailboxes track by folder.id" sg-root="account" sg-folder="folder" sg-select-folder="setCurrentFolder"><!-- tree --></sg-folder-tree>
-        </md-list>
+        <section ng-repeat="account in accounts track by account.id">
+          <md-subheader class="sg-md-subheader md-padding">{{account.name}}</md-subheader>
+          <md-list>
+            <md-list-item ng-repeat="folder in account.$flattenMailboxes() track by folder.path"
+                          ng-click="selectFolder(account, folder)"
+                          ng-dblclick="editFolder(folder)"
+                          ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
+                          ui-sref-active="sg-active">
+              <i class="md-icon-folder" ng-class="'sg-child-level-' + folder.level"><!-- icon --></i>
+              <p class="sg-item-name"
+                 ng-show="editMode != folder.path">{{folder.name}}</p>
+              <md-input-container class="md-flex md-tile-content"
+                                  ng-show="editMode == folder.path">
+                <input class="folder-name" type="text"
+                       label:aria-label="Enter the new name of your folder :"
+                       ng-model="folder.name"
+                       ng-blur="saveFolder(folder)"
+                       sg-focus-on="mailboxName_{{folder.path}}"
+                       sg-enter="saveFolder(folder)"
+                       sg-escape="revertEditing(folder)"/>
+              </md-input-container>
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
+                         ng-show="currentFolder.path == folder.path"
+                         ng-click="confirmDelete(folder)">
+                <i class="md-icon-more-vert"><!-- options --></i>
+              </md-button>
+            </md-list-item>
+          </md-list>
+        </section>
       </md-content>
     </md-sidenav>
 
@@ -305,7 +330,7 @@
           </div>
         </div>
       </md-toolbar>
-      <div layout="row"  ui-view="mailbox"><!-- messages list --></div>
+      <div layout="row" ui-view="mailbox"><!-- messages list --></div>
     </section>
   </script>
 

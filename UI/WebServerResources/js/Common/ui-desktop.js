@@ -702,15 +702,19 @@
         scope: {
           ngModel: '='
         },
-        template:
-          '<style type="text/css">' +
-          '  .bg-folder{{ ngModel.id }} {' +
-          '    background-color: {{ ngModel.color }} !important;' +
-          '  }' +
-          '  .fg-folder{{ ngModel.id }} {' +
-          '    color: {{ ngModel.color }} !important;' +
-          '  }' +
+        template: [
+          '<style type="text/css">',
+          '  .bg-folder{{ ngModel.id }} {',
+          '    background-color: {{ ngModel.color }} !important;',
+          '  }',
+          '  .fg-folder{{ ngModel.id }} {',
+          '    color: {{ ngModel.color }} !important;',
+          '  }',
+          '  .checkbox-folder{{ ngModel.id }}.md-checked .md-icon {',
+          '    background-color: {{ ngModel.color }} !important;',
+          '  }',
           '</style>'
+        ].join('')
       }
     }])
 

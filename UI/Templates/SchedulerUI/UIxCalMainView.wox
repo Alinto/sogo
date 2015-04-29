@@ -151,7 +151,7 @@
          ng-repeat="calendar in calendars.service.$subscriptions"
          ng-model="calendar"><!-- stylesheet --></div>
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <!-- User's calendars -->
@@ -159,10 +159,9 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
-              <md-button
-                  class="iconButton"
-                  label:aria-label="New Calendar..."
-                  ng-click="newCalendar()">
+              <md-button class="iconButton"
+                         label:aria-label="New Calendar..."
+                         ng-click="newCalendar()">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
@@ -170,14 +169,12 @@
           <md-list>
             <md-list-item ng-repeat="calendar in calendars.service.$calendars">
               <md-checkbox ng-model="calendar.active"
+                           ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-              <i class="md-icon-turned-in md-display-8"
-                 ng-class="calendar.getClassName()"><!-- calendar
-                                                         color --></i>
-              <md-button class="iconButton" label:aria-label="Options"
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
                          ng-click="share(calendar)">
                 <i class="md-icon-more-vert"><!-- options --></i>
               </md-button>
@@ -189,17 +186,39 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
-              <md-button
-                  class="iconButton"
-                  label:aria-label="Subscribe to a Calendar..."
-                  sg-subscribe="calendar"
-                  sg-subscribe-on-select="subscribeToFolder(folderData)">
+              <md-button class="iconButton"
+                         label:aria-label="Subscribe to a Calendar..."
+                         sg-subscribe="calendar"
+                         sg-subscribe-on-select="subscribeToFolder(folderData)">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="calendar in calendars.service.$subscriptions">
+              <md-checkbox ng-model="calendar.active"
+                           ng-class="calendar.getClassName('checkbox')"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           label:aria-label="Enable"><!-- enable --></md-checkbox>
+              <p class="sg-item-name">{{calendar.name}}</p>
+            </md-list-item>
+          </md-list>
+        </section>
+        <!-- Web Calendars -->
+        <section>
+          <md-subheader class="sg-md-subheader">
+            <div layout="row" layout-align="space-between center">
+              <span><var:string label:value="Web Calendars"/></span>
+              <md-button class="iconButton"
+                         label:aria-label="Subscribe to a web calendar..."
+                         ng-click="addWebCalendar()">
+                <i class="md-icon-add-circle-outline"><!-- add --></i>
+              </md-button>
+            </div>
+          </md-subheader>
+          <md-list>
+            <md-list-item ng-repeat="calendar in calendars.service.$webcalendars">
               <md-checkbox ng-model="calendar.active"
                            ng-true-value="1"
                            ng-false-value="0"
@@ -217,7 +236,7 @@
     <section layout="column" class="sg-app-content md-layout-fill"
              ng-controller="CalendarListController as list">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
+        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
           <div class="sg-toolbar-group-2">
             <md-button class="iconButton" label:aria-label="Search">
@@ -225,8 +244,8 @@
             </md-button>
           </div>
         </div><!-- .md-toolbar-tools -->
-        <div layout="row" layout-align="space-between center" class="md-toolbar-tools md-toolbar-tools-bottom">
-          <div class="cols-6" layout="row" layout-align="space-between center" style="padding-right: 16px"
+        <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
+          <div class="view-list sg-padded" layout="row" layout-align="space-between center"
                sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
             <md-input-container class="sg-search-field-container">
               <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
@@ -237,10 +256,9 @@
                 <md-option value="title_Category_Location"><var:string label:value="Title, category or location"/></md-option>
                 <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
               </md-select>
-              <span class="md-icon-create"><!-- icon --></span>
             </div>
           </div>
-          <div class="spacer"><!-- spacer -->
+          <div class="sg-padded">
             <a class="iconButton md-button md-default-theme"
                label:aria-label="Day"
                href="#/calendar/day"><i class="md-icon-view-day"><!-- day view --></i></a>
@@ -254,46 +272,51 @@
         </div>
       </md-toolbar>
       <md-content layout="row">
-        <md-content id="componentsList"
-                    flex="33"
-                    md-scroll-y="md-scroll-y">
-          <md-tabs md-dynamic-height="true"
-                   md-selected="list.selectedList">
-            <md-tab label:label="Events"
-                    md-on-select="list.selectComponentType('events')">
-              <md-list>
-                <md-list-item
-                    class="md-clickable md-2-line"
-                    ng-repeat="event in list.component.$events">
-                  <i class="md-avatar" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
-                  <div class="md-list-item-text"
-                       ui-sref="calendars.component({calendarId: event.c_folder, componentId: event.c_name})">
-                    <h3>{{event.c_title}}</h3>
-                    <p>{{event.c_location}}</p>
-                    <p class="md-secondary">
-                      {{event.formatted_startdate}}
-                      <i class="md-icon-repeat" ng-show="event.c_iscycle"><!-- recurrent --></i>
-                      <i class="md-icon-alarm" ng-show="event.c_nextalarm"><!-- alarm --></i>
-                    </p>
-                  </div>
-                </md-list-item>
-              </md-list>
-            </md-tab>
-            <md-tab label:label="Tasks"
-                    md-on-select="list.selectComponentType('tasks')">
-              <md-list>
-                <md-list-item
-                    class="md-clickable"
-                    ng-repeat="task in list.component.$tasks">
-                  <i class="md-avatar" ng-class="task.getClassName()" ><!-- calendar color --></i>
-                  <p>{{task.c_title}}</p>
-                  <p class="md-secondary">{{task.formatted_enddate}}</p>
-                </md-list-item>
-              </md-list>
-            </md-tab>
-          </md-tabs>
-        </md-content>
-        <md-content flex="67" ui-view="calendarView"><!-- calendar view --></md-content>
+        <div class="view-list" layout="column" flex="true" style="position: relative;">
+          <md-content id="componentsList">
+            <md-tabs md-dynamic-height="true"
+                     md-selected="list.selectedList">
+              <md-tab label:label="Events"
+                      md-on-select="list.selectComponentType('events')">
+                <md-list>
+                  <md-list-item
+                      class="md-clickable md-2-line"
+                      ng-repeat="event in list.component.$events">
+                    <i class="md-avatar" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
+                    <div class="md-list-item-text"
+                         ui-sref="calendars.component({calendarId: event.c_folder, componentId: event.c_name})">
+                      <h3>{{event.c_title}}</h3>
+                      <p>{{event.c_location}}</p>
+                      <p class="md-secondary">
+                        {{event.formatted_startdate}}
+                        <i class="md-icon-repeat" ng-show="event.c_iscycle"><!-- recurrent --></i>
+                        <i class="md-icon-alarm" ng-show="event.c_nextalarm"><!-- alarm --></i>
+                      </p>
+                    </div>
+                  </md-list-item>
+                </md-list>
+              </md-tab>
+              <md-tab label:label="Tasks"
+                      md-on-select="list.selectComponentType('tasks')">
+                <md-list>
+                  <md-list-item
+                      class="md-clickable"
+                      ng-repeat="task in list.component.$tasks">
+                    <i class="md-avatar" ng-class="task.getClassName()" ><!-- calendar color --></i>
+                    <p>{{task.c_title}}</p>
+                    <p class="md-secondary">{{task.formatted_enddate}}</p>
+                  </md-list-item>
+                </md-list>
+              </md-tab>
+            </md-tabs>
+          </md-content>
+          <md-button class="iconButton md-fab md-fab-bottom-right md-accent hide-sm"
+                     label:aria-label="New Appointment"
+                     ng-click="newComponent()">
+            <i class="md-icon-add"><!--icon--></i>
+          </md-button>
+        </div>
+        <md-content class="view-detail sg-padded" ui-view="calendarView"><!-- calendar view --></md-content>
       </md-content>
       <md-sidenav class="md-sidenav-right" md-component-id="right" layout="column" ui-view="componentEditor"><!-- appointment editor view --><!--<var:component className="UIxAppointmentEditorTemplate" />--></md-sidenav>
     </section>

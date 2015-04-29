@@ -32,7 +32,7 @@
           },
           resolve: {
             stateAddressbooks: ['sgAddressBook', function(AddressBook) {
-              return AddressBook.$findAll(contactFolders);
+              return AddressBook.$findAll(window.contactFolders);
             }]
           }
         })
@@ -112,7 +112,7 @@
       // $scope functions
       $scope.select = function(folder) {
         $scope.editMode = false;
-        //$rootScope.currentFolder = folder;
+        $state.go('app.addressbook', {addressbookId: folder.id});
       };
       $scope.newAddressbook = function(ev) {
         $scope.editMode = false;
@@ -215,7 +215,12 @@
       $scope.exportCards = function() {
         window.location.href = ApplicationBaseURL + '/' + $scope.currentFolder.id + '/exportFolder';
       };
-      $scope.share = function() {
+      $scope.share = function(folder) {
+        if (folder.id != $scope.currentFolder.id) {
+          // Counter the possibility to click on the "hidden" secondary button
+          $scope.select(folder);
+          return;
+        }
         $mdDialog.show({
           templateUrl: $scope.currentFolder.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
           controller: AddressBookACLController,

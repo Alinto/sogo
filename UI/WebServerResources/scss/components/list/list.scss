@@ -25,11 +25,19 @@
 md-list {
   .sg-item-name {
     font-size: sg-size(button);
+    max-width: 75%; // leave some place for a secondary button
     text-transform: initial;
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+// Add some padding to the first icon in a list item
+.md-list-item-inner {
+  > i:first-child {
+    padding-right: $mg;
   }
 }
 
