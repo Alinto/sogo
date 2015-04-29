@@ -18,30 +18,19 @@
    * @param {string} content
    */
   Dialog.alert = function(title, content) {
-    this.$modal.open({
-      template:
-      '<h2 data-ng-bind-html="title"></h2>' +
-        '<p data-ng-bind-html="content"></p>' +
-        '<a class="button md-primary" ng-click="closeModal()">' + l('OK') + '</a>' +
-        '<span class="close-reveal-modal" ng-click="closeModal()"><i class="icon-close"></i></span>',
-      windowClass: 'small',
-      controller: function($scope, $modalInstance) {
-        $scope.title = title;
-        $scope.content = content;
-        $scope.closeModal = function() {
-          $modalInstance.close();
-        };
-      }
-    });
+    var alert = this.$modal.alert()
+        .title(title)
+        .content(content)
+        .ok(l('OK'));
+    this.$modal.show(alert);
   };
 
   /**
    * @name confirm
-   * @desc Show a confirmation dialog box with buttons "Cancel" and "OK"
+   * @desc Show a confirmation dialog box with buttons 'Cancel' and 'OK'
    * @param {string} title
    * @param {string} content
-   * @returns a promise that always resolves, but returns true only if the user user has clicked on the
-   * 'OK' button
+   * @returns a promise that resolves if the user has clicked on the 'OK' button
    */
   Dialog.confirm = function(title, content) {
     var d = this.$q.defer(),
@@ -58,32 +47,59 @@
     return d.promise;
   };
 
-  Dialog.prompt = function(title, inputPlaceholder, options) {
+  /**
+   * @name prompt
+   * @desc Show a primpt dialog box with a input text field and the 'Cancel' and 'OK' buttons
+   * @param {string} title
+   * @param {string} label
+   * @param {object} [options] - use a different input type by setting 'inputType'
+   * @returns a promise that resolves with the input field value
+   */
+  Dialog.prompt = function(title, label, options) {
     var o = options || {},
         d = this.$q.defer();
-    this.$modal.open({
-      template:
-      '<h2 ng-bind-html="title"></h2>' +
-        '<form><input type="' + (o.inputType || 'text')
-        + '" placeholder="' + (inputPlaceholder || '') + '" ng-model="inputValue" /></form>' +
-        '<a class="button button-primary" ng-click="confirm(inputValue)">' + l('OK') + '</a>' +
-        '<a class="button button-secondary" ng-click="closeModal()">' + l('Cancel') + '</a>' +
-        '<span class="close-reveal-modal" ng-click="closeModal()"><i class="icon-close"></i></span>',
-      windowClass: 'small',
 
-      controller: function($scope, $modalInstance) {
-        $scope.title = title;
-        $scope.inputValue = o.inputValue || '';
-        $scope.closeModal = function() {
-          $modalInstance.close();
-          d.resolve(false);
-        };
-        $scope.confirm = function(value) {
-          $modalInstance.close();
-          d.resolve(value);
-        };
-      }
+    this.$modal.show({
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+      escapeToClose: true,
+      template: [
+        '<md-dialog flex="30" flex-sm="100">',
+        '  <md-dialog-content layout="column">',
+        '    <h2 class="md-title" ng-bind="title"></h2>',
+        '    <md-input-container>',
+        '      <label>' + label + '</label>',
+        '      <input type="' + (o.inputType || 'text') + '"',
+        '             aria-label="' + title + '"',
+        '             ng-model="name" required="required"/>',
+        '    </md-input-container>',
+        '  </md-dialog-content>',
+        '    <div class="md-actions">',
+        '      <md-button ng-click="cancel()">',
+        '        ' + l('Cancel'),
+        '      </md-button>',
+        '      <md-button class="md-primary" ng-click="ok()" ng-disabled="!name.length">',
+        '        ' + l('OK'),
+        '      </md-button>',
+        '    </div>',
+        '</md-dialog>'
+      ].join(''),
+      controller: PromptDialogController
     });
+
+    function PromptDialogController(scope, $mdDialog) {
+      scope.title = title;
+      scope.name = "";
+      scope.cancel = function() {
+        d.reject();
+        $mdDialog.hide();
+      }
+      scope.ok = function() {
+        d.resolve(scope.name);
+        $mdDialog.hide();
+      }
+    }
+
     return d.promise;
   };
 
