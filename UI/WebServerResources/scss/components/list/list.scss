@@ -32,6 +32,10 @@ md-list {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+ .sg-inline-list-icon-label {
+  text-transform: uppercase;
+  }
 }
 
 // Add some padding to the first icon in a list item
