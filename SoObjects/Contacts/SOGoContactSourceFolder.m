@@ -1,6 +1,6 @@
 /* SOGoContactSourceFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -249,17 +249,26 @@
   [newRecord setObject: data forKey: @"c_cn"];
 
   // mail => emails[]
-  data = [oldRecord objectForKey: @"mail"];
+  data = [oldRecord objectForKey: @"c_emails"];
   if (data)
     {
       if ([data isKindOfClass: [NSArray class]])
         {
           if ([data count] > 0)
-            data = [data objectAtIndex: 0];
-          else
-            data = nil;
+            {
+              NSEnumerator *emails;
+              NSMutableArray *recordEmails;
+              NSString *email;
+              emails = [(NSArray *)data objectEnumerator];
+              recordEmails = [NSMutableArray arrayWithCapacity: [data count]];
+              while ((email = [emails nextObject]))
+                {
+                  [recordEmails addObject: [NSDictionary dictionaryWithObject: email forKey: @"value"]];
+                }
+              [newRecord setObject: recordEmails forKey: @"emails"];
+            }
         }
-      if (data)
+      else if (data)
         {
           NSDictionary *email;
           email = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];

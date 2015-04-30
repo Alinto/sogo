@@ -92,7 +92,7 @@
   [vcard setProdID: [NSString
                       stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
                       SOGoVersion]];
-  [vcard updateFromLDIFRecord: [self simplifiedLDIFRecord]];
+  [vcard updateFromLDIFRecord: [self ldifRecord]];
 
   return vcard;
 }

@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -187,29 +187,59 @@ convention:
   return element;
 }
 
+- (void) addElementWithTag: (NSString *) elementTag
+                             ofType: (NSString *) type
+                          withValue: (id) value
+{
+  NSArray *allValues;
+  NSEnumerator *list;
+  CardElement *element;
+
+  // value is either an array or a string
+  if ([value isKindOfClass: [NSString class]])
+    allValues = [NSArray arrayWithObject: value];
+  else
+    allValues = value;
+
+  // Add all values as separate elements
+  list = [allValues objectEnumerator];
+  while ((value = [list nextObject]))
+    {
+      element = [CardElement simpleElementWithTag: elementTag
+                                       singleType: type
+                                            value: value];
+      [self addChild: element];
+    }
+}
+
 - (void) _setPhoneValues: (NSDictionary *) ldifRecord
 {
-  CardElement *phone;
-
-  phone = [self elementWithTag: @"tel" ofType: @"work"];
-  [phone setSingleValue: [ldifRecord objectForKey: @"telephonenumber"] forKey: @""];
-  phone = [self elementWithTag: @"tel" ofType: @"home"];
-  [phone setSingleValue: [ldifRecord objectForKey: @"homephone"] forKey: @""];
-  phone = [self elementWithTag: @"tel" ofType: @"cell"];
-  [phone setSingleValue: [ldifRecord objectForKey: @"mobile"] forKey: @""];
-  phone = [self elementWithTag: @"tel" ofType: @"fax"];
-  [phone setSingleValue: [ldifRecord objectForKey: @"facsimiletelephonenumber"]
-                 forKey: @""];
-  phone = [self elementWithTag: @"tel" ofType: @"pager"];
-  [phone setSingleValue: [ldifRecord objectForKey: @"pager"] forKey: @""];
+  [self addElementWithTag: @"tel"
+                   ofType: @"work"
+                withValue: [ldifRecord objectForKey: @"telephonenumber"]];
+  [self addElementWithTag: @"tel"
+                   ofType: @"home"
+                withValue: [ldifRecord objectForKey: @"homephone"]];
+  [self addElementWithTag: @"tel"
+                   ofType: @"cell"
+                withValue: [ldifRecord objectForKey: @"mobile"]];
+  [self addElementWithTag: @"tel"
+                   ofType: @"fax"
+                withValue: [ldifRecord objectForKey: @"facsimiletelephonenumber"]];
+  [self addElementWithTag: @"tel"
+                   ofType: @"pager"
+                withValue: [ldifRecord objectForKey: @"pager"]];
 }
 
 - (void) _setEmails: (NSDictionary *) ldifRecord
 {
-  CardElement *mail, *homeMail;
+  CardElement *homeMail;
 
-  mail = [self elementWithTag: @"email" ofType: @"work"];
-  [mail setSingleValue: [ldifRecord objectForKey: @"mail"] forKey: @""];
+  // Emails from the configured mail fields of the source have already been extracted in
+  // [LDAPSource _fillEmailsOfEntry:intoLDIFRecord:]
+  [self addElementWithTag: @"email"
+                   ofType: @"work"
+                withValue: [ldifRecord objectForKey: @"c_emails"]];
   homeMail = [self elementWithTag: @"email" ofType: @"home"];
   [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
   [[self uniqueChildWithTag: @"x-mozilla-html"]
