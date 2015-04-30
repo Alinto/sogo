@@ -56,7 +56,7 @@ static SoProduct *preferencesProduct = nil;
 
 - (WOResponse *) jsonDefaultsAction
 {
-  NSMutableDictionary *values;
+  NSMutableDictionary *values, *account;
   SOGoUserDefaults *defaults;
   NSMutableArray *accounts;
   NSArray *categoryLabels;
@@ -208,15 +208,27 @@ static SoProduct *preferencesProduct = nil;
   if ([[defaults source] dirty])
     [defaults synchronize];
 
+  //
   // We inject our default mail account, something we don't want to do before we
   // call -synchronize on our defaults.
+  //
   values = [[[[defaults source] values] mutableCopy] autorelease];
 
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
-  [accounts insertObject: [[[context activeUser] mailAccounts] objectAtIndex: 0]
-                 atIndex: 0];
+  account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
+  if (![account objectForKey: @"receipts"])
+    {
+      [account setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"ignore", @"receiptAction",
+                                        @"ignore", @"receiptNonRecipientAction",
+                                        @"ignore", @"receiptOutsideDomainAction",
+                                        @"ignore", @"receiptAnyAction", nil]
+                  forKey:  @"receipts"];
+    }
+
+  [accounts insertObject: account  atIndex: 0];
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
-    
+
+
   return [self _makeResponse: values];
 }
 

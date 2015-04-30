@@ -99,11 +99,24 @@
       $scope.addMailAccount = function(ev) {
         $scope.preferences.defaults.AuxiliaryMailAccounts.push({});
         var account = _.last($scope.preferences.defaults.AuxiliaryMailAccounts);
+        account['name'] = "New account";
+        account['identities'] = [];
+        account['identities'][0] = {};
+        account['identities'][0]['fullName'] = "";
+        account['identities'][0]['email'] = "";
+        account['receipts'] = {};
+        account['receipts']['receiptAction'] = "ignore";
+        account['receipts']['receiptNonRecipientAction'] = "ignore";
+        account['receipts']['receiptOutsideDomainAction'] = "ignore";
+        account['receipts']['receiptAnyAction'] = "ignore";
+
         $mdDialog.show({
           controller: AccountDialogCtrl,
           templateUrl: 'editAccount?account=new',
           targetEvent: ev,
-          locals: { account: account }
+          locals: { account: account,
+                    accountId: ($scope.preferences.defaults.AuxiliaryMailAccounts.length-1),
+                    mailCustomFromEnabled: window.mailCustomFromEnabled}
         });
       };
 

@@ -32,9 +32,9 @@
                  ng-readonly="accountId == 0" ng-model="account.port"/>
         </md-input-container>
 
+        <label><var:string label:value="Encryption:"/></label>
         <md-radio-group ng-model="account.encryption">
-          <label><var:string label:value="Encryption:"/></label>
-          <md-radio-button ng-disabled="accountId == 0" value="none"><var:string label:value="None"/></md-radio-button>
+          <md-radio-button ng-disabled="accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
           <md-radio-button ng-disabled="accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
           <md-radio-button ng-disabled="accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
         </md-radio-group>
@@ -47,7 +47,7 @@
 
         <md-input-container>
           <label><var:string label:value="Password:"/></label>
-          <input type="password" ng-readonly="account.isDefault == 1"
+          <input type="password" ng-readonly="accountId == 0"
                  ng-model="account.password"/>
         </md-input-container>
 
