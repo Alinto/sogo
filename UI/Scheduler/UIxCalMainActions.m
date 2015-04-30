@@ -38,6 +38,22 @@
 
 @implementation UIxCalMainActions
 
+/**
+ * @api {post} /so/:username/Scheduler/addWebCalendar Add Web calendar
+ * @apiVersion 1.0.0
+ * @apiName PostAddWebCalendar
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/addWebCalendar \
+ *          -H "Content-Type: application/json" \
+ *          -d '{ "url": "http://localhost/test.ics" }'
+ *
+ * @apiDescription Called to subscribe to a remote Web calendar (.ics)
+ *
+ * @apiParam {String} url            The URL of the remote Web calendar
+ * @apiSuccess (Success 200) {String} id   Calendar ID
+ * @apiSuccess (Success 200) {String} name The display name of the calendar
+ */
 - (WOResponse *) addWebCalendarAction
 {
   NSDictionary *params;
@@ -64,7 +80,7 @@
         {
           jsonResponse = [NSMutableDictionary dictionary];
           [jsonResponse setObject: [folder displayName] forKey: @"name"];
-          [jsonResponse setObject: [folder name] forKey: @"id"];
+          [jsonResponse setObject: [folder nameInContainer] forKey: @"id"];
         }
       else
         ex = [NSException exceptionWithName: @"newWebCalendarWithURLException"

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2015 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -108,17 +108,33 @@
 }
 
 /* These methods are only available on instance of SOGoWebAppointmentFolder. */
+
+/**
+ * @api {get} /so/:username/Scheduler/:calendarId/reload Load Web calendar
+ * @apiVersion 1.0.0
+ * @apiName PostReloadWebCalendar
+ * @apiGroup Calendar
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/5B30-55419180-7-6B687280/reload
+ *
+ * @apiDescription Load and parse the events from a remote Web calendar (.ics)
+ *
+ * @apiSuccess (Success 200) {Number} status     The HTTP code received when accessing the remote URL
+ * @apiSuccess (Success 200) {String} [imported] The number of imported events in case of success
+ * @apiError   (Error 500)   {String} [error]    The error type in case of a failure
+ */
 - (WOResponse *) reloadAction
 {
-  WOResponse *response;
   NSDictionary *results;
+  unsigned int httpCode;
 
-  response = [self responseWithStatus: 200];
-  [response setHeader: @"application/json" forKey: @"content-type"];
+  httpCode = 200;
   results = [[self clientObject] loadWebCalendar];
-  [response appendContentString: [results jsonRepresentation]];
 
-  return response;
+  if ([results objectForKey: @"error"])
+    httpCode = 500;
+
+  return [self responseWithStatus: httpCode andJSONRepresentation: results];
 }
 
 - (WOResponse *) setCredentialsAction

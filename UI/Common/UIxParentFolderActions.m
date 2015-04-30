@@ -1,6 +1,6 @@
 /* UIxParentFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,21 @@
 
 @implementation UIxParentFolderActions
 
+/**
+ * @api {post} /so/:username/:module/createFolder Create folder
+ * @apiVersion 1.0.0
+ * @apiName PostCreateFolder
+ * @apiGroup Common
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/createFolder \
+ *          -H "Content-Type: application/json" \
+ *          -d '{ "name": "Business" }'
+ *
+ * @apiDescription Called to create a new calendar or a new address book.
+ *
+ * @apiParam {String} name            The display name of the new folder
+ * @apiSuccess (Success 201) {String} id Folder ID
+ */
 - (id <WOActionResults>) createFolderAction
 {
   WOResponse *response;
