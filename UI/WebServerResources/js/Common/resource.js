@@ -130,7 +130,10 @@
    */
   Resource.prototype.post = function(id, action, data) {
     var deferred = this._q.defer(),
-        path = this._path + '/' + id + '/' + action;
+        path = [this._path];
+    if (id) path.push(id);
+    if (action) path.push(action);
+    path = _.compact(_.flatten(path)).join('/');
 
     this._http
       .post(path, data)
