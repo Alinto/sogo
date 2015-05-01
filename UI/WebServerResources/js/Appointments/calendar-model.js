@@ -53,7 +53,13 @@
     // Insert new calendar at proper index
     var list, sibling, i;
 
-    list = calendar.isSubscription? this.$subscriptions : this.$calendars;
+    if (calendar.isWebCalendar)
+      list = this.$webcalendars;
+    else if (calendar.isSubscription)
+      list = this.$subscriptions;
+    else
+      list = this.$calendars;
+
     sibling = _.find(list, function(o) {
       return (o.id != 'personal'
               && o.name.localeCompare(calendar.name) === 1);
@@ -73,10 +79,13 @@
     if (data) {
       this.$calendars = [];
       this.$subscriptions = [];
+      this.$webcalendars = [];
       // Instanciate Calendar objects
       angular.forEach(data, function(o, i) {
         var calendar = new Calendar(o);
-        if (calendar.isSubscription)
+        if (calendar.isWebCalendar)
+          _this.$webcalendars.push(calendar);
+        else if (calendar.isSubscription)
           _this.$subscriptions.push(calendar);
         else
           _this.$calendars.push(calendar);
@@ -97,6 +106,8 @@
     calendar = _.find(Calendar.$calendars, function(o) { return o.id == id });
     if (!calendar)
       calendar = _.find(Calendar.$subscriptions, function(o) { return o.id == id });
+    if (!calendar)
+      calendar = _.find(Calendar.$webcalendars, function(o) { return o.id == id });
 
     return calendar;
   };
@@ -119,6 +130,46 @@
       }
       return calendar;
     });
+  };
+
+  /**
+   * @memberOf Calendar
+   * @desc Subscribe to a remote Web calendar
+   * @param {string} url - URL of .ics file
+   * @returns a promise of the HTTP query result
+   */
+  Calendar.$addWebCalendar = function(url) {
+    var _this = this,
+        d = Calendar.$q.defer();
+
+    if (_.find(_this.$webcalendars, function(o) {
+        return o.urls.webCalendarURL == url;
+    })) {
+      // Already subscribed
+      d.reject();
+    }
+    else {
+      Calendar.$$resource.post(null, 'addWebCalendar', { url: url }).then(function(calendarData) {
+        angular.extend(calendarData, {
+          isWebCalendar: true,
+          isEditable: true,
+          isRemote: false,
+          owner: Calendar.activeUser.login,
+          urls: { webCalendarURL: url }
+        });
+        var calendar = new Calendar(calendarData);
+        Calendar.$add(calendar);
+        Calendar.$$resource.fetch(calendar.id, 'reload').then(function(data) {
+          // TODO: show a toast of the reload status
+          Calendar.$log.debug(JSON.stringify(data, undefined, 2));
+        });
+        d.resolve();
+      }, function() {
+        d.reject();
+      });
+    }
+
+    return d.promise;
   };
 
   /**
@@ -170,17 +221,25 @@
   Calendar.prototype.$delete = function() {
     var _this = this,
         d = Calendar.$q.defer(),
+        list,
         promise;
 
-    if (this.isSubscription)
+    if (this.isSubscription) {
       promise = Calendar.$$resource.fetch(this.id, 'unsubscribe');
-    else
+      list = Calendar.$subscriptions;
+    }
+    else {
       promise = Calendar.$$resource.remove(this.id);
+      if (this.isWebCalendar)
+        list = Calendar.$webcalendars;
+      else
+        list = Calendar.$calendars;
+    }
 
     promise.then(function() {
-      var i = _.indexOf(_.pluck(Calendar.$calendars, 'id'), _this.id);
-      Calendar.$calendars.splice(i, 1);
-      d.resolve(true);
+      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
+      list.splice(i, 1);
+      d.resolve();
     }, function(data, status) {
       d.reject(data);
     });
