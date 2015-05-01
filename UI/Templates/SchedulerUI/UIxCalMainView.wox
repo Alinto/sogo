@@ -161,7 +161,7 @@
               <span><var:string label:value="Calendars"/></span>
               <md-button class="iconButton"
                          label:aria-label="New Calendar..."
-                         ng-click="newCalendar()">
+                         ng-click="calendars.newCalendar()">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
@@ -175,7 +175,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
               <md-button class="iconButton md-secondary" label:aria-label="Options"
-                         ng-click="share(calendar)">
+                         ng-click="calendars.share(calendar)">
                 <i class="md-icon-more-vert"><!-- options --></i>
               </md-button>
             </md-list-item>
@@ -189,7 +189,7 @@
               <md-button class="iconButton"
                          label:aria-label="Subscribe to a Calendar..."
                          sg-subscribe="calendar"
-                         sg-subscribe-on-select="subscribeToFolder(folderData)">
+                         sg-subscribe-on-select="calendars.subscribeToFolder(folderData)">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
@@ -202,6 +202,10 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
+                         ng-click="calendars.confirmDelete(calendar)">
+                <i class="md-icon-more-vert"><!-- options --></i>
+              </md-button>
             </md-list-item>
           </md-list>
         </section>
@@ -212,7 +216,7 @@
               <span><var:string label:value="Web Calendars"/></span>
               <md-button class="iconButton"
                          label:aria-label="Subscribe to a web calendar..."
-                         ng-click="addWebCalendar()">
+                         ng-click="calendars.addWebCalendar()">
                 <i class="md-icon-add-circle-outline"><!-- add --></i>
               </md-button>
             </div>
@@ -220,12 +224,15 @@
           <md-list>
             <md-list-item ng-repeat="calendar in calendars.service.$webcalendars">
               <md-checkbox ng-model="calendar.active"
+                           ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-              <i class="md-icon-turned-in md-display-8"
-                 ng-class="calendar.getClassName()"><!-- calendar color --></i>
+              <md-button class="iconButton md-secondary" label:aria-label="Options"
+                         ng-click="calendars.confirmDelete(calendar)">
+                <i class="md-icon-more-vert"><!-- options --></i>
+              </md-button>
             </md-list-item>
           </md-list>
         </section>

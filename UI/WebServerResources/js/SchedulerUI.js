@@ -114,7 +114,8 @@
         function() {
           return _.union(
             _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']) }),
-            _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']) })
+            _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']) }),
+            _.map(Calendar.$webcalendars, function(o) { return _.pick(o, ['id', 'active', 'color']) })
           );
         },
         function(newList, oldList) {
@@ -133,52 +134,54 @@
         true // compare for object equality
       );
 
-      $scope.newCalendar = function(ev) {
-        $mdDialog.show({
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          template:
-          '<md-dialog aria-label="' + l('New calendar') + '">' +
-            '  <md-dialog-content layout="column">' +
-            '    <md-input-container>' +
-            '      <label>' + l('Name of the Calendar') + '</label>' +
-            '      <input type="text" ng-model="name" required="required"/>' +
-            '    </md-input-container>' +
-            '    <div layout="row">' +
-            '      <md-button ng-click="cancelClicked()">' +
-            '        Cancel' +
-            '      </md-button>' +
-            '      <md-button ng-click="okClicked()" ng-disabled="!name.length">' +
-            '        OK' +
-            '      </md-button>' +
-            '    </div>'+
-            '  </md-dialog-content>' +
-            '</md-dialog>',
-          controller: NewCalendarDialogController
-        });
-        function NewCalendarDialogController(scope, $mdDialog) {
-          scope.name = "";
-          scope.cancelClicked = function() {
-            $mdDialog.hide();
-          }
-          scope.okClicked = function() {
+      vm.newCalendar = function(ev) {
+        Dialog.prompt(l('New calendar'), l('Name of the Calendar'))
+          .then(function(name) {
             var calendar = new Calendar(
               {
-                name: scope.name,
+                name: name,
                 isEditable: true,
                 isRemote: false,
                 owner: UserLogin
               }
             );
             Calendar.$add(calendar);
-            $mdDialog.hide();
-          }
+          });
+      };
+
+      vm.addWebCalendar = function() {
+        Dialog.prompt(l('Subscribe to a web calendar...'), l('URL of the Calendar'), {inputType: 'url'})
+          .then(function(url) {
+            Calendar.$addWebCalendar(url);
+          });
+      };
+
+      vm.confirmDelete = function(folder) {
+        if (folder.isSubscription) {
+          // Unsubscribe without confirmation
+          folder.$delete()
+            .then(function() {
+              $scope.$broadcast('calendars:list');
+            }, function(data, status) {
+              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".', folder.name),
+                           l(data.error));
+            });
+        }
+        else {
+          Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?', folder.name))
+            .then(function() {
+              folder.$delete()
+                .then(function() {
+                  $scope.$broadcast('calendars:list');
+                }, function(data, status) {
+                  Dialog.alert(l('An error occured while deleting the addressbook "%{0}".', folder.name),
+                               l(data.error));
+                });
+            });
         }
       };
-      
-      $scope.share = function(calendar) {
+
+      vm.share = function(calendar) {
         $mdDialog.show({
           templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
           controller: CalendarACLController,
@@ -187,73 +190,67 @@
           locals: {
             usersWithACL: calendar.$acl.$users(),
             User: User,
-            stateCalendar: calendar,
-            q: $q
+            stateCalendar: calendar
           }
         });
-        function CalendarACLController($scope, $mdDialog, usersWithACL, User, stateCalendar, q) {
+        function CalendarACLController($scope, $mdDialog, usersWithACL, User, stateCalendar) {
           $scope.users = usersWithACL; // ACL users
           $scope.stateCalendar = stateCalendar;
           $scope.userToAdd = '';
           $scope.searchText = '';
           $scope.userFilter = function($query) {
-            var deferred = q.defer();
-            User.$filter($query).then(function(results) {
-              deferred.resolve(results)
-            });
-            return deferred.promise;
+            return User.$filter($query);
           };
           $scope.closeModal = function() {
-              stateCalendar.$acl.$resetUsersRights(); // cancel changes
+            stateCalendar.$acl.$resetUsersRights(); // cancel changes
+            $mdDialog.hide();
+          };
+          $scope.saveModal = function() {
+            stateCalendar.$acl.$saveUsersRights().then(function() {
               $mdDialog.hide();
-            };
-            $scope.saveModal = function() {
-              stateCalendar.$acl.$saveUsersRights().then(function() {
-                $mdDialog.hide();
-              }, function(data, status) {
-                Dialog.alert(l('Warning'), l('An error occured please try again.'));
+            }, function(data, status) {
+              Dialog.alert(l('Warning'), l('An error occured please try again.'));
+            });
+          };
+          $scope.confirmChange = function(user) {
+            var confirmation = user.$confirmRights();
+            if (confirmation) {
+              Dialog.confirm(l('Warning'), confirmation).then(function(res) {
+                if (!res)
+                  user.$resetRights(true);
               });
-            };
-            $scope.confirmChange = function(user) {
-              var confirmation = user.$confirmRights();
-              if (confirmation) {
-                Dialog.confirm(l('Warning'), confirmation).then(function(res) {
-                  if (!res)
-                    user.$resetRights(true);
-                });
+            }
+          };
+          $scope.removeUser = function(user) {
+            stateCalendar.$acl.$removeUser(user.uid).then(function() {
+              if (user.uid == $scope.selectedUser.uid) {
+                $scope.selectedUser = null;
               }
-            };
-            $scope.removeUser = function(user) {
-              stateCalendar.$acl.$removeUser(user.uid).then(function() {
-                if (user.uid == $scope.selectedUser.uid) {
-                  $scope.selectedUser = null;
-                }
-              }, function(data, status) {
-                Dialog.alert(l('Warning'), l('An error occured please try again.'))
-              });
-            };
+            }, function(data, status) {
+              Dialog.alert(l('Warning'), l('An error occured please try again.'))
+            });
+          };
           $scope.addUser = function(data) {            
-              stateCalendar.$acl.$addUser(data).then(function() {
-                $scope.userToAdd = '';
-                $scope.searchText = '';
-              }, function(error) {
-                Dialog.alert(l('Warning'), error);
-              });
-            };
-            $scope.selectUser = function(user) {
-              // Check if it is a different user
-              if ($scope.selectedUser != user) {
-                $scope.selectedUser = user;
-                $scope.selectedUser.$rights();
-              }
-            };
+            stateCalendar.$acl.$addUser(data).then(function() {
+              $scope.userToAdd = '';
+              $scope.searchText = '';
+            }, function(error) {
+              Dialog.alert(l('Warning'), error);
+            });
+          };
+          $scope.selectUser = function(user) {
+            // Check if it is a different user
+            if ($scope.selectedUser != user) {
+              $scope.selectedUser = user;
+              $scope.selectedUser.$rights();
+            }
+          };
         };
-      }
-      /**
-       * subscribeToFolder - Callback of sgSubscribe directive
-       */
-      $scope.subscribeToFolder = function(calendarData) {
-        console.debug('subscribeToFolder ' + calendarData.owner + calendarData.name);
+      };
+
+      // Callback of sgSubscribe directive
+      vm.subscribeToFolder = function(calendarData) {
+        $log.debug('subscribeToFolder ' + calendarData.owner + calendarData.name);
         Calendar.$subscribe(calendarData.owner, calendarData.name).catch(function(data) {
           Dialog.alert(l('Warning'), l('An error occured please try again.'));
         });
@@ -261,48 +258,48 @@
     }])
   
     .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', '$mdSidenav', function($scope, $rootScope, $timeout, focus, encodeUriFilter, Dialog, Settings, Calendar, Component, $mdSidenav) {
-      // Scope variables
-      this.component = Component;
-      this.componentType = null;
+      var vm = this;
+
+      vm.component = Component;
+      vm.componentType = null;
+      vm.selectComponentType = selectComponentType;
+      // TODO: should reflect last state userSettings -> Calendar -> SelectedList
+      vm.selectedList = 0;
+      vm.selectComponentType('events');
 
       // Switch between components tabs
-      this.selectComponentType = angular.bind(this, function(type, options) {
-        console.debug("selectComponentType " + type);
-        if (options && options.reload || this.componentType != type) {
+      function selectComponentType(type, options) {
+        if (options && options.reload || vm.componentType != type) {
           // TODO: save user settings (Calendar.SelectedList)
           Component.$filter(type);
-          this.componentType = type;
+          vm.componentType = type;
         }
-      });
+      }
 
       // Refresh current list when the list of calendars is modified
-      $scope.$on('calendars:list', angular.bind(this, function() {
-        Component.$filter(this.componentType);
-      }));
-
-      // Initialization
-      // TODO: should reflect last state userSettings -> Calendar -> SelectedList
-      this.selectedList = 0;
-      this.selectComponentType('events');
+      $scope.$on('calendars:list', function() {
+        Component.$filter(vm.componentType);
+      });
     }])
 
     .controller('CalendarController', ['$scope', '$state', '$stateParams', '$timeout', '$interval', '$log', 'sgFocus', 'sgCalendar', 'sgComponent', 'stateEventsBlocks', function($scope, $state, $stateParams, $timeout, $interval, $log, focus, Calendar, Component, stateEventsBlocks) {
-      // Scope variables
-      this.blocks = stateEventsBlocks;
+      var vm = this;
 
-      // Change calendar's view
-      this.changeView = function($event) {
-        var date = angular.element($event.currentTarget).attr('date');
-        $state.go('calendars.view', { view: $stateParams.view, day: date });
-      };
+      vm.blocks = stateEventsBlocks;
+      vm.changeView = changeView;
 
       // Refresh current view when the list of calendars is modified
-      $scope.$on('calendars:list', angular.bind(this, function() {
-        var ctrl = this;
+      $scope.$on('calendars:list', function() {
         Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
-          ctrl.blocks = data;
+          vm.blocks = data;
         });
-      }));
+      });
+
+      // Change calendar's view
+      function changeView($event) {
+        var date = angular.element($event.currentTarget).attr('date');
+        $state.go('calendars.view', { view: $stateParams.view, day: date });
+      }
     }])
 
     .controller('ComponentController', ['$scope', '$log', '$timeout', '$state', '$previousState', '$mdSidenav', '$mdDialog', 'sgCalendar', 'sgComponent', 'stateCalendars', 'stateComponent', function($scope, $log, $timeout, $state, $previousState, $mdSidenav, $mdDialog, Calendar, Component, stateCalendars, stateComponent) {
@@ -315,6 +312,8 @@
       vm.cancel = cancel;
       vm.save = save;
 
+      // Open sidenav when loading the view;
+      // Return to previous state when closing the sidenav.
       $scope.$on('$viewContentLoaded', function(event) {
         $timeout(function() {
           $mdSidenav('right').open()
@@ -348,7 +347,7 @@
               $scope.$emit('calendars:list');
               $mdSidenav('right').close();
             }, function(data, status) {
-              console.debug('failed');
+              $log.debug('failed');
             });
         }
       }
@@ -356,7 +355,7 @@
       function cancel() {
         vm.event.$reset();
         if (vm.event.isNew) {
-          // Cancelling the creation of a card
+          // Cancelling the creation of a component
           vm.event = null;
         }
         $mdSidenav('right').close();
