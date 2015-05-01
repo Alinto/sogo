@@ -7,10 +7,11 @@
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
 
-<md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
-  <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
-  <header class="msg-header">
-
+  <md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
+    <md-button class="iconButton show-sm" ng-click="toggleDetailView()">
+      <i class="md-icon-close"><!--icon--></i>
+    </md-button>
+    <header class="msg-header">
       <div class="msg-header-content">
         <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
         <div class="pseudo-input-container--compact">
@@ -38,46 +39,43 @@
       </p>
 -->
 
-    <div class="sg-icon-bar--vertical">
+      <div class="sg-icon-bar--vertical">
       <!-- todo: Replace md-tooltip values by localizable string variable -->
-        <md-button class="iconButton"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"
-            aria-label="reply">
-          <md-tooltip md-direction="left">Reply to the message</md-tooltip>
-          <i class="md-icon-reply"><!-- reply --></i>
-        </md-button>
-        <md-button class="iconButton" aria-label="Reply All"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i>
-        </md-button>
-        <md-button class="iconButton" aria-label="Forward"
-            ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i>
-        </md-button>
-        <md-button class="iconButton" aria-label="Edit"
-            ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
-            ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i>
-        </md-button>
-        <md-button class="iconButton" aria-label="Delete"
-            ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i>
-        </md-button>
+      <md-button class="iconButton"
+                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"
+                 aria-label="reply">
+        <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
+        <i class="md-icon-reply"><!-- reply --></i>
+      </md-button>
+      <md-button class="iconButton" aria-label="Reply All"
+                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})"><i class="md-icon-reply-all"><!-- reply all --></i>
+      </md-button>
+      <md-button class="iconButton" aria-label="Forward"
+                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})"><i class="md-icon-forward"><!-- forward --></i>
+      </md-button>
+      <md-button class="iconButton" aria-label="Edit"
+                 ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})"
+                 ng-show="message.isDraft"><i class="md-icon-create"><!-- edit --></i>
+      </md-button>
+      <md-button class="iconButton" aria-label="Delete"
+                 ng-click="doDelete(message)"><i class="md-icon-delete"><!-- delete --></i>
+      </md-button>
       <md-button class="iconButton" aria-label="Load Images"
-            ng-show="message.$hasUnsafeContent"
-            ng-click="message.loadUnsafeContent()">
+                 ng-show="message.$hasUnsafeContent"
+                 ng-click="message.loadUnsafeContent()">
         <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
         <i class="md-icon-image"><!--icon--></i>
       </md-button>
-    </div>
-  </header>
-  <md-divider><!-- divider --></md-divider>
+      </div>
+    </header>
+    <md-divider><!-- divider --></md-divider>
 
-  <div class="msg-body">
-    <div class="msg-date sg-md-body-multi">
-      <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
+    <div class="msg-body">
+      <div class="msg-date sg-md-body-multi">
+        <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
+      </div>
+      <div class="mailer_mailcontent"
+           ng-bind-html="message.$content()"><!-- msg --></div>
     </div>
-    <div class="mailer_mailcontent"
-         ng-bind-html="message.$content()"><!-- msg --></div>
-  </div>
-</md-content>
-  <md-button class="iconButton md-fab md-fab--bottom-inside md-accent hide-sm" aria-label="create" ui-sref="mail.newMessage()">
-    <i class="md-icon-add"><!-- icon --></i>
-  </md-button>
+  </md-content>
 </container>

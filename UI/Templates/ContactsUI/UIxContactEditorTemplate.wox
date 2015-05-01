@@ -84,7 +84,7 @@
             <div class="attr" ng-repeat="email in card.emails">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
                 <md-select ng-model="email.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in allEmailTypes" ng-value="type">{{ type }}</md-option>
+                  <md-option ng-repeat="type in ::allEmailTypes" ng-value="type">{{ type }}</md-option>
                 </md-select>
                 <md-input-container>
                   <label class="pseudo-input-label">
@@ -270,7 +270,7 @@
 
           <!-- note -->
           <md-input-container>
-            <label class=" right inline">
+            <label class="right inline">
               <var:string label:value="Note"/>
             </label>
             <textarea ng-model="card.note"><!-- note --></textarea>

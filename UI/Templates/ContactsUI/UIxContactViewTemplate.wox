@@ -29,7 +29,10 @@
           </md-chips>
         </div>
         <div class="sg-icon-bar--vertical">
-          <md-button class="iconButton" aria-label="Edit" ng-show="currentFolder.isEditable" ui-sref="app.addressbook.card.editor({addressbookId: currentFolder.id, cardId: card.id})">
+          <md-button class="iconButton"
+                     label:aria-label="Edit"
+                     ng-show="currentFolder.isEditable"
+                     ui-sref="app.addressbook.card.editor({addressbookId: currentFolder.id, cardId: card.id})">
             <i class="md-icon-create"><!-- edit --></i>
           </md-button>
           <md-button class="iconButton" aria-label="Delete" ng-click="confirmDelete(card)">
@@ -62,11 +65,10 @@
                 <!--avatar--><!-- currentCard.tag = vcard || vlist -->
               </div>
               <div class="md-list-item-text">
-                <h3><a ui-sref="addressbook.card.view({addressbookId:
-                                currentFolder.id, cardId:
-                                ref.reference})">
-                  {{ ref.$fullname() }}
-                </a>
+                <h3>
+                  <a ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: ref.reference})">
+                    {{ ref.$fullname() }}
+                  </a>
                 </h3>
                 <h4 ng-show="ref.email">
                   <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
