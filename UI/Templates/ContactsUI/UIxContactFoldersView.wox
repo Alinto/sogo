@@ -256,7 +256,7 @@
       </div>
       <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
         <div class="view-list sg-padded" layout="row" layout-align="space-between center"
-             sg-search="addressbook.$filter(searchText, { search: searchField })">
+             sg-search="currentFolder.$filter(searchText, { search: searchField })">
           <md-input-container class="sg-search-field-container">
             <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
             <input name="folderSearch" type="search" style="color: white"/>
@@ -299,7 +299,7 @@
                  ng-click="toggleDetailView()">
               <div ng-show="currentCard.tag == 'vcard'">
                 <sg-gravatar-image class="md-tile-left"
-                                   email="{{currentCard.$preferredEmail()}}"
+                                   email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
                                    size="48"><!-- gravatar -->
                 </sg-gravatar-image>
               </div>
@@ -309,7 +309,7 @@
               <div class="sg-tile-content">
                 <a ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
                   <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                  <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail()}}</div>
+                  <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
                 </a>
               </div>
             </div>
