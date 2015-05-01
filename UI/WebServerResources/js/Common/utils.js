@@ -69,6 +69,10 @@ String.prototype.base64decode = function() {
   return output;
 };
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 String.prototype.asDate = function () {
     var newDate;
     var date = this.split("/");
