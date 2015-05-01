@@ -1,4 +1,4 @@
-/// MailerUI.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// MailerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 // Message view header
 // Could be made into a more generic component
@@ -7,13 +7,14 @@
 //  padding-bottom: $mg; We should add a padding class to preserve genericity
 }
 
-[id = "messagesList"] .sg-md-subheader {
+[id="messagesList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
 
 .msg-header-content {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   align-items: stretch;
   justify-content: flex-start;
 }
