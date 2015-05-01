@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -60,7 +61,6 @@ static SoProduct *preferencesProduct = nil;
   SOGoUserDefaults *defaults;
   NSMutableArray *accounts;
   NSArray *categoryLabels;
-  BOOL dirty;
   
   if (!preferencesProduct)
     {
