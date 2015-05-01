@@ -235,7 +235,7 @@
   Card.prototype.$preferredEmail = function(partial) {
     var email, re;
     if (partial) {
-      re = new RegExp(partial);
+      re = new RegExp(partial, 'i');
       email = _.find(this.emails, function(o) {
         return re.test(o.value);
       });

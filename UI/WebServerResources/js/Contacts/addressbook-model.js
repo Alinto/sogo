@@ -160,6 +160,7 @@
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
+    this.$query = undefined;
   };
 
   /**
@@ -197,6 +198,7 @@
       var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', params);
       return futureAddressBookData.then(function(data) {
         var cards;
+        _this.$query = search;
         if (options && options.dry) {
           // Don't keep a copy of the resulting cards.
           // This is usefull when doing autocompletion.
