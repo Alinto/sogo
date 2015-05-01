@@ -59,6 +59,22 @@
             }]
           }
         })
+        .state('calendars.newComponent', {
+          url: '/:calendarId/{componentType:(?:appointment|task)}/new',
+          views: {
+            componentEditor: {
+              templateUrl: 'UIxAppointmentEditorTemplate',
+              controller: 'ComponentController',
+              controllerAs: 'editor'
+            }
+          },
+          resolve: {
+            stateComponent: ['$stateParams', 'sgComponent', function($stateParams, Component) {
+              var component = new Component({ pid: $stateParams.calendarId, type: $stateParams.componentType });
+              return component;
+            }]
+          }
+        })
         .state('calendars.component', {
           url: '/:calendarId/event/:componentId',
           views: {
@@ -257,12 +273,13 @@
       };
     }])
   
-    .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', '$mdSidenav', function($scope, $rootScope, $timeout, focus, encodeUriFilter, Dialog, Settings, Calendar, Component, $mdSidenav) {
+    .controller('CalendarListController', ['$scope', '$rootScope', '$timeout', '$state', 'sgFocus', 'encodeUriFilter', 'sgDialog', 'sgSettings', 'sgCalendar', 'sgComponent', '$mdSidenav', function($scope, $rootScope, $timeout, $state, focus, encodeUriFilter, Dialog, Settings, Calendar, Component, $mdSidenav) {
       var vm = this;
 
       vm.component = Component;
       vm.componentType = null;
       vm.selectComponentType = selectComponentType;
+      vm.newComponent = newComponent;
       // TODO: should reflect last state userSettings -> Calendar -> SelectedList
       vm.selectedList = 0;
       vm.selectComponentType('events');
@@ -274,6 +291,15 @@
           Component.$filter(type);
           vm.componentType = type;
         }
+      }
+
+      function newComponent() {
+        var type = 'appointment';
+
+        if (vm.componentType == 'tasks')
+          type = 'task';
+
+        $state.go('calendars.newComponent', { calendarId: 'personal', componentType: type });
       }
 
       // Refresh current list when the list of calendars is modified

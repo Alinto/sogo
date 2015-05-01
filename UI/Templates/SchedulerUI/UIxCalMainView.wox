@@ -319,7 +319,7 @@
           </md-content>
           <md-button class="iconButton md-fab md-fab-bottom-right md-accent hide-sm"
                      label:aria-label="New Appointment"
-                     ng-click="newComponent()">
+                     ng-click="list.newComponent()">
             <i class="md-icon-add"><!--icon--></i>
           </md-button>
         </div>

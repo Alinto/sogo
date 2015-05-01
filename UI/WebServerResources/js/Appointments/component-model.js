@@ -12,6 +12,13 @@
     // Data is immediately available
     if (typeof futureComponentData.then !== 'function') {
       this.init(futureComponentData);
+      if (this.pid && !this.id) {
+        // Prepare for the creation of a new component;
+        // Get UID from the server.
+        var newComponentData = Component.$$resource.newguid(this.pid);
+        this.$unwrap(newComponentData);
+        this.isNew = true;
+      }
     }
     else {
       // The promise will be unwrapped first
@@ -226,6 +233,12 @@
     return deferred.promise;
   };
 
+  /**
+   * @function init
+   * @memberof Component.prototype
+   * @desc Extend instance with required attributes and new data.
+   * @param {object} data - attributes of component
+   */
   Component.prototype.init = function(data) {
     this.categories = [];
     angular.extend(this, data);
@@ -266,9 +279,12 @@
    * @desc Save the component to the server.
    */
   Component.prototype.$save = function() {
-    var _this = this;
+    var _this = this, options;
 
-    return Component.$$resource.save([this.pid, this.id].join('/'), this.$omit())
+    if (this.isNew)
+      options = { action: 'saveAs' + this.type.capitalize() };
+
+    return Component.$$resource.save([this.pid, this.id].join('/'), this.$omit(), options)
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);
