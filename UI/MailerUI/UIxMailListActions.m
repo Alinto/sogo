@@ -254,24 +254,24 @@
 {
   NSArray *flags;
   
-  flags = [[self message] valueForKey:@"flags"];
-  return [flags containsObject:@"deleted"];
+  flags = [[self message] valueForKey: @"flags"];
+  return [flags containsObject: @"deleted"];
 }
 
 - (BOOL) isMessageRead
 {
   NSArray *flags;
   
-  flags = [[self message] valueForKey:@"flags"];
-  return [flags containsObject:@"seen"];
+  flags = [[self message] valueForKey: @"flags"];
+  return [flags containsObject: @"seen"];
 }
 
 - (BOOL) isMessageFlagged
 {
   NSArray *flags;
   
-  flags = [[self message] valueForKey:@"flags"];
-  return [flags containsObject:@"flagged"];
+  flags = [[self message] valueForKey: @"flags"];
+  return [flags containsObject: @"flagged"];
 }
 
 - (NSString *) messageUidString 
@@ -733,12 +733,12 @@
 - (NSArray *) getHeadersForUIDs: (NSArray *) uids
 		       inFolder: (SOGoMailFolder *) mailFolder
 {
+  UIxEnvelopeAddressFormatter *addressFormatter;
+  NSMutableArray *headers, *msg, *tags;
+  NSEnumerator *msgsList;
   NSArray *to, *from;
   NSDictionary *msgs;
-  NSMutableArray *headers, *msg;
-  NSEnumerator *msgsList;
   NSString *msgDate;
-  UIxEnvelopeAddressFormatter *addressFormatter;
   
   headers = [NSMutableArray arrayWithCapacity: [uids count]];
   addressFormatter = [context mailEnvelopeAddressFormatter];
@@ -801,7 +801,6 @@
       else
 	[msg addObject: @""];
       
-
       // isRead
       [msg addObject: [NSNumber numberWithBool: [self isMessageRead]]];
       
@@ -817,10 +816,15 @@
       // Size
       [msg addObject: [[self sizeFormatter] stringForObjectValue: [message objectForKey: @"size"]]];
 
-      // labels
-      [msg addObject: [message objectForKey: @"flags"]];
+      // Mail labels / tags
+      tags = [NSMutableArray arrayWithArray: [message objectForKey: @"flags"]];
+      [tags removeObject: @"deleted"];
+      [tags removeObject: @"flaggged"];
+      [tags removeObject: @"recent"];
+      [tags removeObject: @"seen"];
+      [msg addObject: tags];
 
-      // uid
+      // UID
       [msg addObject: [message objectForKey: @"uid"]];
       [headers addObject: msg];
       

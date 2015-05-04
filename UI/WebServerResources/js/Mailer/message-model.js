@@ -40,7 +40,8 @@
       $timeout: $timeout,
       $log: $log,
       $sce: $sce,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser)
+      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $tags: window.UserDefaults.SOGoMailLabelsColors
     });
 
     return Message; // return constructor
@@ -49,6 +50,21 @@
   /* Factory registration in Angular module */
   angular.module('SOGo.MailerUI')
     .factory('sgMessage', Message.$factory);
+
+  /**
+   * @function filterTags
+   * @memberof Message.prototype
+   * @desc Search for tags (ie., mail labels) matching some criterias
+   * @param {string} search - the search string to match
+   * @returns a collection of strings
+   */
+  Message.filterTags = function(query) {
+    var re = new RegExp(query, 'i');
+    return _.filter(_.keys(Message.$tags), function(tag) {
+      var value = Message.$tags[tag];
+      return value[0].search(re) != -1;
+    });
+  };
 
   /**
    * @function $absolutePath
@@ -192,6 +208,16 @@
 
     return deferred.promise;
   };
+
+  Message.prototype.$addOrRemoveTag = function(operation, tag) {
+    var data = {};
+
+    data['operation'] = operation;
+    data['msgUIDs'] = [ this.uid ];
+    data['flags'] = tag;
+
+    return Message.$$resource.post(this.$mailbox.$id(), 'addOrRemoveLabel', data);
+  }
 
   /**
    * @function $reload
@@ -342,7 +368,7 @@
         deferred = Message.$q.defer();
 
     // Expose the promise
-      this.$futureMessageData = futureMessageData;
+    this.$futureMessageData = futureMessageData;
 
     // Resolve the promise
     this.$futureMessageData.then(function(data) {

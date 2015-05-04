@@ -31,6 +31,26 @@
             <a ng-href="mailto:{{message.to[0].email}}" ng-bind="message.to[0].full"><!-- to --></a>
           </div>
         </div>
+
+        <md-chips ng-model="message.flags">
+          <md-chip-template>
+            {{message.constructor.$tags[$chip][0]}}
+            <button md-chip-remove="md-chip-remove"
+                    class="md-chip-remove"
+                    ng-click="addOrRemoveTag('remove', $chip)">
+              <i class="md-icon-close"><!-- delete tag --></i>
+            </button>
+          </md-chip-template>
+          <md-autocomplete
+              md-selected-item="tags.selected"
+              md-selected-item-change="addOrRemoveTag('add', tag)"
+              md-search-text="tags.searchText"
+              md-items="tag in message.constructor.filterTags(tags.searchText)"
+              label:placeholder="Add a tag">
+            <span md-highlight-text="tags.searchText">{{message.constructor.$tags[tag][0]}}</span>
+          </md-autocomplete>
+        </md-chips>
+
       </div>
 
 <!--      <p class="flags">

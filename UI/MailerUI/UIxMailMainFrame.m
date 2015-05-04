@@ -126,7 +126,6 @@
   userNames = [accounts objectsForKey: @"userName" notFoundMarker: nil];
   
   return [userNames jsonRepresentation];
-  
 }
 
 - (NSString *) pageFormURL

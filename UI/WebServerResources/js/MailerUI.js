@@ -239,6 +239,12 @@
 
     .controller('MessageCtrl', ['$scope', '$rootScope', '$stateParams', '$state', 'stateAccount', 'stateMailbox', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', function($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {
       $rootScope.message = stateMessage;
+      $scope.tags = {};
+      $scope.addOrRemoveTag = function(operation, tag) {
+        if (tag) {
+          stateMessage.$addOrRemoveTag(operation, tag);
+        }
+      };
       $scope.doDelete = function() {
         stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
           // Remove card from list of addressbook

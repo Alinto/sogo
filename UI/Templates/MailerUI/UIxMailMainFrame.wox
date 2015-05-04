@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement"
+    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailLabelsColors"
     const:userSettingsKeys="Mail"
     const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Mailer/message-model.js, Mailer/mailbox-model.js, Mailer/account-model.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.js">
   <script type="text/javascript">
