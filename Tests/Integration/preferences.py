@@ -79,7 +79,10 @@ class preferences:
             return self.preferences
         else:
             tmpdict = self.find_key(self.preferences, preference)
-            return tmpdict[preference]
+            if tmpdict:
+                return tmpdict[preference]
+            else:
+                return None
         
     def _get(self, subtype='jsonDefault', preference=None):
         url = "/SOGo/so/%s/%s" % (self.login, subtype)
@@ -125,6 +128,17 @@ class preferences:
         for key, value in preferences.iteritems():
             self.set_nosave(key, value)
         self.save()
+
+    def set_or_create(self, preference, value, paths=['defaults']):
+        if not self.preferences:
+            self.load_preferences()
+        subdict = self.find_key(self.preferences, preference)
+        #- Pref is not set
+        if not subdict:
+            subdict = self.preferences
+            for path in paths:
+                subdict = subdict.setdefault(path, {})
+        subdict[preference] = value
 
     def save(self):
         url = "/SOGo/so/%s/Preferences/save" % self.login

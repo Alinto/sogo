@@ -11,6 +11,11 @@ class preferencesTest(unittest.TestCase):
 
     def setUp(self):
       self.prefs = preferences.preferences()
+      # because if not set in vacation will not be found later
+      # we must make sure they are there at the start
+      self.prefs.set_or_create("autoReplyText", '', ["defaults", "Vacation"])
+      self.prefs.set_or_create("PreventInvitations", 0, ["settings", "Calendar"])
+      self.prefs.set_or_create("PreventInvitationsWhitelist", [], ["settings", "Calendar"])
 
     def tearDown(self):
       self.prefs.set("autoReplyText", "")
