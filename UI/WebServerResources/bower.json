@@ -14,7 +14,7 @@
     "material-design-iconic-font": "latest",
     "compass-mixins": "latest",
     "underscore": "latest",
-    "breakpoint-slicer": "~1.3.6"
+    "breakpoint-sass": ">=2.4.2"
   },
   "resolutions": {
     "angular": "1.3.x"

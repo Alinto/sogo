@@ -1,12 +1,8 @@
 /// styles.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-// Compass extension imports - comment-out if needed
+// Breakpoint (https://github.com/at-import/breakpoint)
 // ------------------------------------------------------------------------------
-@import '_breakpoint-slicer.sass';
-@import '_breakpoint.scss', '_sassy-maps.scss';
-// This is no longer required because we use grunt-contrib-compass (ruby required)
-//@import '_compass.scss';
-//@import 'SassyJSON';
+@import 'breakpoint';
 
 @import 'core/variables'; // Will be replace by a complete 'config file
 

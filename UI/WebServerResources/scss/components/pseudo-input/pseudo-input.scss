@@ -1,4 +1,4 @@
-/// pseudo-input.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// pseudo-input.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 /// Component: pseudo-input
 /// This component mimics the presentation of form fields according to Google's
@@ -32,7 +32,6 @@ $input-padding-top: 2px !default;
 .pseudo-input-container {
   display: block; // Should be (reset to ?) a plain block element
   padding: 0 2px;
-
 }
 .sg-search-field-container {
   margin-bottom: 12px;
@@ -94,13 +93,13 @@ $input-padding-top: 2px !default;
   }
 }
 
-input /deep/ #inner-editor {
+input #inner-editor {
   color: $colorGrayLight;
   line-height: inherit;
 }
 
-:root /deep/ #placeholder,
-:root /deep/ [pseudo="-webkit-input-placeholder"] {
+:root #placeholder,
+:root [pseudo="-webkit-input-placeholder"] {
   padding: 0;
   height: $mg;
   color: $colorGrayLight;
@@ -109,12 +108,12 @@ input /deep/ #inner-editor {
 }
 
 input::-webkit-datetime-edit,
-:root /deep/ div#date-time-edit {
+:root div#date-time-edit {
   opacity: 0;
 }
 
 .md-input-focused input::-webkit-datetime-edit,
-.md-input-focused /deep/ div#date-time-edit,
+.md-input-focused div#date-time-edit,
 .md-input-has-value input::-webkit-datetime-edit {
   opacity: 1;
 }

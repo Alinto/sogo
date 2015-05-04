@@ -1,46 +1,13 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    compass: {
-      dist: {
-        options: {
-          sassDir: 'scss',
-          cssDir: 'css',
-          specify: 'scss/styles.scss',
-          outputStyle: 'compact', // will be compressed by postcss
-          environment: 'production'
-        }
-      },
-      dev: {
-        options: {
-          force: true,
-          sassDir: 'scss',
-          cssDir: 'css',
-          importPath: [
-            'bower_components/compass-mixins/lib',
-            'bower_components/compass-breakpoint/stylesheets',
-            'bower_components/breakpoint-slicer/stylesheets',
-            'bower_components/breakpoint-slicer/stylesheets/breakpoint-slicer',
-            'bower_components/sassy-maps/sass'
-          ],
-          noLineComments: true,
-          sourcemap: true,
-          specify: 'scss/styles.scss',
-          raw: 'sass_options = {:cache => false\n}',
-          outputStyle: 'expanded'
-        }
-      }
-    },
     sass: {
       options: {
+        sourceMap: true,
         // require: 'SassyJSON',
         noCache: true,
-        loadPath: ['scss',
-                   'bower_components/compass-mixins/lib',
-                   'bower_components/compass-breakpoint/stylesheets',
-                   'bower_components/breakpoint-slicer/stylesheets',
-                   'bower_components/sassy-maps/sass',
-                   'node_modules/sassyjson/dist'
+        includePaths: ['scss/',
+                       'bower_components/breakpoint-sass/stylesheets/'
         ],
         style: 'expanded'
       },
@@ -76,8 +43,9 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      grunt: {files: ['Gruntfile.js']},
-
+      grunt: {
+        files: ['Gruntfile.js']
+      },
       sass: {
         files: 'scss/**/*.scss',
         tasks: ['sass']
@@ -85,10 +53,9 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-compass');
 
   grunt.task.registerTask('static', function() {
     var options = {
@@ -109,6 +76,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
       '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
       '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
+      //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/underscore/underscore-min.{js,map}'
     ];
     for (var j = 0; j < js.length; j++) {
@@ -152,7 +120,6 @@ module.exports = function(grunt) {
     */
   });
   grunt.task.registerTask('build', ['static', 'sass', 'postcss:dist']);
-  grunt.task.registerTask('default', ['build', 'watch']);
   grunt.task.registerTask('css', ['sass', 'postcss:dev']);
-  grunt.task.registerTask('sass-compass', ['compass:dev', 'postcss']);
+  grunt.task.registerTask('default', ['build', 'watch']);
 };

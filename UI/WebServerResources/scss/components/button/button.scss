@@ -135,7 +135,7 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
 
   // for transitions
   @include at(sm) {
-  margin-left: $iconButton-padding;
+    margin-left: $iconButton-padding;
   }
 }
 
