@@ -10,7 +10,7 @@
       }
     </style>
     <header class="sg-md-subheader sg-md-subheader--fixed">
-      <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Unread Messages</h2>
+      <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
     </header>
     <md-list vs-repeat="72"
         vs-scroll-parent="#messagesList">
