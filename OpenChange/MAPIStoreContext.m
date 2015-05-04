@@ -419,7 +419,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
               withFID: (uint64_t) newFid
 {
   enum mapistore_error rc;
-  MAPIStoreMapping *mapping;
   MAPIStoreFolder *baseFolder;
   SOGoFolder *currentFolder;
   WOContext *woContext;
@@ -427,10 +426,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSArray *pathComponents;
   NSUInteger count, max;
 
-  mapping = [userContext mapping];
-  if (![mapping urlFromID: newFid])
-    [mapping registerURL: [contextUrl absoluteString]
-                  withID: newFid];
   [userContext activateWithUser: activeUser];
   woContext = [userContext woContext];
 
