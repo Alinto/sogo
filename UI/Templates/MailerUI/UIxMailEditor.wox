@@ -8,106 +8,127 @@
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
   <div id="messageEditor">
 <md-content class="md-padding bg-sogoPaper-50">
-    <form>
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label">
-          <var:string label:value="From"/>
-        </label>
-        <!--<div class="pseudo-input-field">-->
+  <form>
+    <header>
+
+      <!-- FROM / TO / CC/ BCC / SUBJECT / ATTACHMENTS -->
+      <div class="msg-header-content">
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label">
+            <var:string label:value="From"/>
+          </label>
+          <!--<div class="pseudo-input-field">-->
           <md-select name="from"
-                  ng-model="message.editable.from">
-                  <md-option ng-value="identity" ng-repeat="identity in identities">{{identity}}</md-option>
+                     ng-model="message.editable.from">
+            <md-option ng-value="identity" ng-repeat="identity in identities">{{identity}}</md-option>
           </md-select>
-        <!--</div>-->
-
-      </div>
-
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label">
-          <var:string label:value="To"/>
-        </label>
-        <md-chips ng-model="message.editable.to">
-          <md-autocomplete
-              md-selected-item="autocomplete.to.selected"
-              md-search-text="autocomplete.to.searchText"
-              md-items="user in userFilter(autocomplete.to.searchText)"
-              label:placeholder="Add a recipient">
-            <span md-highlight-text="autocomplete.to.searchText">{{user}}</span>
-          </md-autocomplete>
-        </md-chips>
-      </div>
-
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label">
-          <var:string label:value="Cc"/>
-        </label>
-        <md-chips ng-model="message.editable.cc">
-          <md-autocomplete
-              md-selected-item="autocomplete.cc.selected"
-              md-search-text="autocomplete.cc.searchText"
-              md-items="user in userFilter(autocomplete.cc.searchText)"
-              label:placeholder="Add a recipient">
-            <span md-highlight-text="autocomplete.cc.searchText">{{user}}</span>
-          </md-autocomplete>
-        </md-chips>
-      </div>
-
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label">
-          <var:string label:value="Bcc"/>
-        </label>
-        <md-chips ng-model="message.editable.bcc">
-          <md-autocomplete
-              md-selected-item="autocomplete.bcc.selected"
-              md-search-text="autocomplete.bcc.searchText"
-              md-items="user in userFilter(autocomplete.bcc.searchText)"
-              label:placeholder="Add a recipient">
-            <span md-highlight-text="autocomplete.bcc.searchText">{{user}}</span>
-          </md-autocomplete>
-        </md-chips>
-      </div>
-
-      <md-input-container>
-        <label>
-          <var:string label:value="Subject"/>
-        </label>
-        <input type="text" name="subject" ng-model="message.editable.subject"/>
-      </md-input-container>
-
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label">
-          <var:string label:value="Attachments"/>
-        </label>
-        <div class="pseudoInput-text">
-          <input type="file"
-                 nv-file-select="nv-file-select"
-                 uploader="uploader"/>
+          <!--</div>-->    
+        </div>      
+        
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label">
+            <var:string label:value="To"/>
+          </label>
+          <md-chips ng-model="message.editable.to">
+            <md-autocomplete
+                md-selected-item="autocomplete.to.selected"
+                md-search-text="autocomplete.to.searchText"
+                md-items="user in userFilter(autocomplete.to.searchText)"
+                label:placeholder="Add a recipient">
+              <span md-highlight-text="autocomplete.to.searchText">{{user}}</span>
+            </md-autocomplete>
+          </md-chips>
         </div>
-      </div>
-
-      <ul>
-        <li ng-repeat="item in message.editable.attachmentAttrs">
-          <span ng-bind="item.filename"><!-- filename --></span>
-        </li>
-        <li ng-repeat="item in uploader.queue">
-          <span ng-bind="item.file.name"><!-- filename --></span>
-          (<span ng-bind="item.file.progress"><!-- progress --></span>)
-        </li>
-      </ul>
-      <textarea name="content" var:class="editorClass" ng-model="message.editable.text"/>
-      <div class="buttonsToolbar">
-        <div layout="row" layout-align="end center">
-          <md-button ng-click="cancel()"><var:string label:value="Cancel"/></md-button>
-          <md-button ng-click="message.$save()">
-            <var:string label:value="Save"/>
-          </md-button>
-          <md-button class="fg-sogoBlue-700 md-primary md-hue-3"
-                     ng-click="send(message)">
-            <var:string label:value="Send"/>
-          </md-button>
+        
+        <div class="pseudo-input-container" ng-hide="hideCc">
+          <label class="pseudo-input-label">
+            <var:string label:value="Cc"/>
+          </label>
+          <md-chips ng-model="message.editable.cc">
+            <md-autocomplete
+                md-selected-item="autocomplete.cc.selected"
+                md-search-text="autocomplete.cc.searchText"
+                md-items="user in userFilter(autocomplete.cc.searchText)"
+                label:placeholder="Add a recipient">
+              <span md-highlight-text="autocomplete.cc.searchText">{{user}}</span>
+            </md-autocomplete>
+          </md-chips>
         </div>
+        
+        <div class="pseudo-input-container" ng-hide="hideBcc">
+          <label class="pseudo-input-label">
+            <var:string label:value="Bcc"/>
+          </label>
+          <md-chips ng-model="message.editable.bcc">
+            <md-autocomplete
+                md-selected-item="autocomplete.bcc.selected"
+                md-search-text="autocomplete.bcc.searchText"
+                md-items="user in userFilter(autocomplete.bcc.searchText)"
+                label:placeholder="Add a recipient">
+              <span md-highlight-text="autocomplete.bcc.searchText">{{user}}</span>
+            </md-autocomplete>
+          </md-chips>
+        </div>
+        
+        <md-input-container>
+          <label>
+            <var:string label:value="Subject"/>
+          </label>
+          <input type="text" name="subject" ng-model="message.editable.subject"/>
+        </md-input-container>
+        
+        <div class="pseudo-input-container" ng-hide="hideAttachments">
+          <label class="pseudo-input-label">
+            <var:string label:value="Attachments"/>
+          </label>
+          <div class="pseudoInput-text">
+            <input type="file"
+                   nv-file-select="nv-file-select"
+                   uploader="uploader"/>
+          </div>
+          
+          <md-list>
+            <md-list-item ng-repeat="item in message.editable.attachmentAttrs">
+              <span ng-bind="item.filename"><!-- filename --></span>
+            </md-list-item>
+            <md-list-item ng-repeat="item in uploader.queue">
+              <span ng-bind="item.file.name"><!-- filename --></span>
+              (<span ng-bind="item.file.progress"><!-- progress --></span>)
+            </md-list-item>
+          </md-list>
+        </div>
+        
       </div>
-    </form>
-</md-content>
+      
+      <!-- TOOLBAR TO SHOW CC/BCC/ATTACHMENT FIELDS -->
+      <div layout="column" layout-align="start end">
+        <md-button  class="iconButton" ng-show="hideCc" ng-click="hideCc = false">Cc</md-button>
+        <md-button  class="iconButton" ng-show="hideBcc" ng-click="hideBcc = false">Bcc</md-button>
+        <md-button  class="iconButton" ng-show="hideAttachments" ng-click="hideAttachments = false">
+          <i class="md-icon-attach-file"><!-- delete tag --></i>
+        </md-button>
+      </div>
+      
+    </header>
+    
+    <!-- MESSAGE CONTENT -->
+    <textarea name="content" var:class="editorClass"
+              ng-model="message.editable.text"/>
+    
+    <!-- TOOLBAR BUTTONS -->
+    <div class="buttonsToolbar">
+      <div layout="row" layout-align="end center">
+        <md-button ng-click="cancel()"><var:string label:value="Cancel"/></md-button>
+        <md-button ng-click="message.$save()">
+          <var:string label:value="Save"/>
+        </md-button>
+        <md-button class="fg-sogoBlue-700 md-primary md-hue-3"
+                   ng-click="send(message)">
+          <var:string label:value="Send"/>
+          </md-button>
+      </div>
     </div>
+  </form>
+</md-content>
+</div>
 </container>

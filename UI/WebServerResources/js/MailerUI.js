@@ -260,19 +260,33 @@
 
     .controller('MessageEditorCtrl', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'sgDialog', 'sgAccount', 'sgMailbox', 'sgAddressBook', function($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
       $scope.autocomplete = {to: {}, cc: {}, bcc: {}};
+      $scope.hideCc = true;
+      $scope.hideBcc = true;
+      $scope.hideAttachments = true;
       if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
+                  console.debug("foo");
+
           $scope.message = msgObject;
+          $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
+          $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
+          $scope.hideAttachments = true;
         });
       }
       else if ($stateParams.actionName == 'replyall') {
         stateMessage.$replyAll().then(function(msgObject) {
           $scope.message = msgObject;
+          $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
+          $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
+          $scope.hideAttachments = true;
         });
       }
       else if ($stateParams.actionName == 'forward') {
         stateMessage.$forward().then(function(msgObject) {
           $scope.message = msgObject;
+          $scope.hideCc = true;
+          $scope.hideBcc = true;
+          $scope.hideAttachments = (!msgObject.editable.attachmentAttrs || msgObject.editable.attachmentAttrs.length == 0);
         });
       }
       else if (angular.isDefined(stateMessage)) {
