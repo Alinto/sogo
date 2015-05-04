@@ -43,7 +43,7 @@ Bug fixes
  - Fix server side crash when reading some recurrence appointments (Zentyal)
  - Outlook clients can use reply all functionality on multidomain environment (Zentyal)
  - Optional attendes on events are now shown properly (Zentyal)
-
+ - fixed the EAS maximum response size being per-folder, and not global
 
 2.2.17a (2015-03-15)
 --------------------

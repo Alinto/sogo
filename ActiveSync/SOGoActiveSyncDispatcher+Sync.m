@@ -1452,6 +1452,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                              inBuffer: s
                        changeDetected: &changeDetected
                   maxSyncResponseSize: maxSyncResponseSize];
+
+          if (maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize)
+            break;
         }
 
       if (changeDetected)
