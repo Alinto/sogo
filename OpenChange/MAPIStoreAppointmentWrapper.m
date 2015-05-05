@@ -1461,8 +1461,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   firstStartDate = [event firstRecurrenceStartDate];
   if (firstStartDate)
     {
-      [firstStartDate setTimeZone: timeZone];
-
       arp = talloc_zero (NULL, struct AppointmentRecurrencePattern);
       [rule fillRecurrencePattern: &arp->RecurrencePattern
                         withEvent: event
@@ -1472,6 +1470,12 @@ static NSCharacterSet *hexCharacterSet = nil;
       arp->WriterVersion2 = 0x00003008; /* 0x3008 for compatibility with
                                            ol2003 */
 
+      /* All day events' dates are specified in floating time
+         ([MS-OXCICAL] 2.1.3.1.1.20.10). The StartTimeOffset and EndTimeOffset
+	 fields are relative to midnight of those days ([MS-OXOCAL] 2.2.1.44.5),
+	 so no time zone adjustment is needed */
+      if (![event isAllDay])
+        [firstStartDate setTimeZone: timeZone];
       startMinutes = ([firstStartDate hourOfDay] * 60
                       + [firstStartDate minuteOfHour]);
       arp->StartTimeOffset = startMinutes;
