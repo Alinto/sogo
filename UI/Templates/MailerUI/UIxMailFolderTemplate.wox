@@ -19,10 +19,12 @@
           ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}">
         <md-item-content ui-sref-active="_selected" layout="row" class="md-flex">
-          <div><sg-gravatar-image class="md-tile-left"
-                                  email="{{currentMessage['from'][0].email}}"
-                                  size="48"><!-- gravatar -->
-          </sg-gravatar-image></div>
+          <div>
+            <sg-gravatar-image class="md-tile-left"
+                               email="{{currentMessage['from'][0].email}}"
+                               size="48"><!-- gravatar -->
+            </sg-gravatar-image>
+          </div>
           <div class="sg-tile-content">
             <a ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})">
               <div class="sg-md-subhead-multi subject">
@@ -35,8 +37,9 @@
             </a>
           </div>
           <div class="sg-tile-icons">
-            <!--<a><i class="md-icon-star"> </i></a>-->
-            <i class="md-icon-flag" ng-show="currentMessage.isflagged"> </i>
+            <i class="md-icon-star" ng-show="currentMessage.isflagged"> </i>
+            <i class="md-icon-reply" ng-show="currentMessage.isanswered"> </i>
+            <i class="md-icon-forward" ng-show="currentMessage.isforwarded"> </i>
             <i class="md-icon-attach-file disable" ng-show="currentMessage.hasattachment"> </i>
           </div>
         </md-item-content>

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2014 Inverse inc.
+  Copyright (C) 2006-2015 Inverse inc.
 
   This file is part of SOGo
 
@@ -269,9 +269,25 @@
 - (BOOL) isMessageFlagged
 {
   NSArray *flags;
-  
+
   flags = [[self message] valueForKey: @"flags"];
   return [flags containsObject: @"flagged"];
+}
+
+- (BOOL) isMessageAnswered
+{
+  NSArray *flags;
+
+  flags = [[self message] valueForKey: @"flags"];
+  return [flags containsObject: @"answered"];
+}
+
+- (BOOL) isMessageForwarded
+{
+  NSArray *flags;
+
+  flags = [[self message] valueForKey: @"flags"];
+  return [flags containsObject: @"$forwarded"];
 }
 
 - (NSString *) messageUidString 
@@ -750,7 +766,7 @@
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];
 
-  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", nil];
+  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", @"isAnswered", @"isForwarded", nil];
   [headers addObject: msg];
   while (message)
     {
@@ -818,15 +834,23 @@
 
       // Mail labels / tags
       tags = [NSMutableArray arrayWithArray: [message objectForKey: @"flags"]];
+      [tags removeObject: @"answered"];
       [tags removeObject: @"deleted"];
-      [tags removeObject: @"flaggged"];
+      [tags removeObject: @"flagged"];
       [tags removeObject: @"recent"];
       [tags removeObject: @"seen"];
+      [tags removeObject: @"$forwarded"];
       [msg addObject: tags];
 
       // UID
       [msg addObject: [message objectForKey: @"uid"]];
       [headers addObject: msg];
+
+      // isAnswered
+      [msg addObject: [NSNumber numberWithBool: [self isMessageAnswered]]];
+
+      // isForwarded
+      [msg addObject: [NSNumber numberWithBool: [self isMessageForwarded]]];
       
       [self setMessage: [msgsList nextObject]];
     }
