@@ -441,8 +441,8 @@
                 <var:string label:value="Prevent from being invited to appointments"/>
               </md-checkbox>
 
-              <div class="pseudo-input-container">
-                <label class="pseudo-input-label">
+              <div ng-show="preferences.settings.Calendar.PreventInvitations == 1">
+                <label>
                   <var:string label:value="White list for appointment invitations:"/>
                 </label>
                 <md-contact-chips
@@ -548,7 +548,9 @@
                     <var:string label:value="When sending mail, add unknown recipients to my"/>
                   </md-checkbox>
 
-                  <md-select ng-model="preferences.defaults.SOGoSelectedAddressBook">
+                  <md-select
+                      ng-disabled="preferences.defaults.SOGoMailAddOutgoingAddresses == 0"
+                      ng-model="preferences.defaults.SOGoSelectedAddressBook">
                     <var:foreach list="addressBookList" item="item">
                       <md-option var:value="item.id">
                         <var:string value="item.name"/>
@@ -775,71 +777,71 @@
                     <var:string label:value="Enable vacation auto reply"/>
                   </md-checkbox>
 
-
-                  <div>
-                    <label><var:string label:value="Auto reply message :"/>
-                    <textarea const:name="autoReplyText"
-                              const:id="autoReplyText"
-                              ng-model="preferences.defaults.Vacation.autoReplyText"/>
-                    </label>
-                  </div>
-
-                  <div>
-                    <!-- <script>
-                         var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
-                         </script> -->
-                    <label><var:string label:value="Email addresses (separated by commas) :"/></label><br/>
-                    <textarea const:name="autoReplyEmailAddresses"
-                              const:id="autoReplyEmailAddresses"
-                              ng-model="preferences.defaults.Vacation.autoReplyEmailAddresses"/><br/>
-                    <md-button>
-                      <var:string label:value="Add default email addresses" type="button"/>
-                    </md-button>
-                  </div>
-
-                  <div layout="row" layout-align="space-around center">
-                    <div><var:string label:value="Days between responses :"/></div>
+                  <div ng-show="preferences.defaults.Vacation.enabled == 1">
                     <div>
-                      <md-select ng-model="preferences.defaults.Vacation.daysBetweenResponse">
-                        <var:foreach list="daysBetweenResponsesList" item="item">
-                          <md-option var:value="item">
-                            <var:string value="item"/>
-                          </md-option>
-                        </var:foreach>
-                      </md-select>
+                      <label><var:string label:value="Auto reply message :"/>
+                      <textarea const:name="autoReplyText"
+                                const:id="autoReplyText"
+                                ng-model="preferences.defaults.Vacation.autoReplyText"/>
+                      </label>
                     </div>
-                  </div>
 
-                  <md-checkbox
-                      ng-model="preferences.defaults.Vacation.ignoreLists"
-                      ng-true-value="1"
-                      ng-false-value="0">
-                    <var:string label:value="Do not send responses to mailing lists" />
-                  </md-checkbox>
+                    <div>
+                      <!-- <script>
+                           var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
+                           </script> -->
+                      <label><var:string label:value="Email addresses (separated by commas) :"/></label><br/>
+                      <textarea const:name="autoReplyEmailAddresses"
+                                const:id="autoReplyEmailAddresses"
+                                ng-model="preferences.defaults.Vacation.autoReplyEmailAddresses"/><br/>
+                      <md-button>
+                        <var:string label:value="Add default email addresses" type="button"/>
+                      </md-button>
+                    </div>
 
-                  <div layout="row" layout-align="space-around center">
+                    <div layout="row" layout-align="space-around center">
+                      <div><var:string label:value="Days between responses :"/></div>
+                      <div>
+                        <md-select ng-model="preferences.defaults.Vacation.daysBetweenResponse">
+                          <var:foreach list="daysBetweenResponsesList" item="item">
+                            <md-option var:value="item">
+                              <var:string value="item"/>
+                            </md-option>
+                          </var:foreach>
+                        </md-select>
+                      </div>
+                    </div>
+
                     <md-checkbox
-                        ng-model="preferences.defaults.Vacation.endDateEnabled"
+                        ng-model="preferences.defaults.Vacation.ignoreLists"
                         ng-true-value="1"
                         ng-false-value="0">
-                      <var:string label:value="Disable auto reply on" />
+                      <var:string label:value="Do not send responses to mailing lists" />
                     </md-checkbox>
 
-                    <div class="value">
-                      <p class="PseudoField-inputLike--underline">
-                        <input type="date" ng-model="preferences.defaults.Vacation.endDate"/>
-                      </p>
+                    <div layout="row" layout-align="space-around center">
+                      <md-checkbox
+                          ng-model="preferences.defaults.Vacation.endDateEnabled"
+                          ng-true-value="1"
+                          ng-false-value="0">
+                        <var:string label:value="Disable auto reply on" />
+                      </md-checkbox>
+
+                      <div class="value">
+                        <p class="PseudoField-inputLike--underline">
+                          <input ng-disabled="preferences.defaults.Vacation.endDateEnabled == 0" type="date" ng-model="preferences.defaults.Vacation.endDate"/>
+                        </p>
+                      </div>
+
                     </div>
 
+                    <md-checkbox
+                        ng-model="preferences.defaults.Vacation.alwaysSend"
+                        ng-true-value="1"
+                        ng-false-value="0">
+                      <var:string label:value="Always send vacation message response"/>
+                    </md-checkbox>
                   </div>
-
-                  <md-checkbox
-                      ng-model="preferences.defaults.Vacation.alwaysSend"
-                      ng-true-value="1"
-                      ng-false-value="0">
-                    <var:string label:value="Always send vacation message response"/>
-                  </md-checkbox>
-
                 </div>
               </md-tab>
             </var:if>
@@ -857,27 +859,28 @@
                       <var:string label:value="Forward incoming messages"/>
                     </md-checkbox>
 
-                    <div id="forward">
+                    <div ng-show="preferences.defaults.Forward.enabled == 1">
                       <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
                       <textarea const:name="forwardAddress"
                                 const:id="forwardAddress"
                                 ng-model="preferences.defaults.Forward.forwardAddress" />
                       </label><br/>
+
+                      <md-checkbox
+                          ng-model="preferences.defaults.Forward.keepCopy"
+                          ng-true-value="1"
+                          ng-false-value="0">
+                        <var:string label:value="Keep a copy" />
+                      </md-checkbox>
+
                     </div>
 
-                    <md-checkbox
-                        ng-model="preferences.defaults.Forward.keepCopy"
-                        ng-true-value="1"
-                        ng-false-value="0">
-                      <var:string label:value="Keep a copy" />
-                    </md-checkbox>
-
-                      <script type="text/javascript">
-                        var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
-                      </script>
+                    <script type="text/javascript">
+                      var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
+                    </script>
 
                   </div>
-              </div>
+                </div>
               </md-tab>
             </var:if>
             <!-- END OF MAIL > FORWARD -->
