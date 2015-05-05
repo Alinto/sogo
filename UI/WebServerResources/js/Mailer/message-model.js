@@ -312,12 +312,6 @@
     var _this = this,
         data = this.editable;
 
-    // Flatten recipient addresses
-    _.each(['to', 'cc', 'bcc', 'reply-to'], function(type) {
-      if (data[type]) {
-        data[type] = _.pluck(data[type], 'text');
-      }
-    });
     Message.$log.debug('save = ' + JSON.stringify(data, undefined, 2));
 
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
@@ -337,12 +331,6 @@
     var data = angular.copy(this.editable),
         deferred = Message.$q.defer();
 
-    // Flatten recipient addresses
-    _.each(['to', 'cc', 'bcc', 'reply-to'], function(type) {
-      if (data[type]) {
-        data[type] = _.pluck(data[type], 'text');
-      }
-    });
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
     Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
