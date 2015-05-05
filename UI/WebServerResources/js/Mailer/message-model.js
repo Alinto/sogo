@@ -40,9 +40,12 @@
       $timeout: $timeout,
       $log: $log,
       $sce: $sce,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
-      $tags: window.UserDefaults.SOGoMailLabelsColors
+      $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser)
     });
+
+    if (window.UserDefaults && window.UserDefaults.SOGoMailLabelsColors) {
+      Message.$tags = window.UserDefaults.SOGoMailLabelsColors;
+    }
 
     return Message; // return constructor
   }];
