@@ -368,6 +368,11 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       if (sortOrderings)
         [self errorWithFormat: @"sort orderings are not used for folders"];
       
+      /* FIXME: Flush any cache before retrieving the hierarchy, this
+         slows things down but it is safer */
+      if (!qualifier)
+        [sogoObject flushMailCaches];
+
       subfolderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
       [subfolderKeys autorelease];
 

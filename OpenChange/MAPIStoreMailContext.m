@@ -146,6 +146,9 @@ MakeDisplayFolderName (NSString *folderName)
       DLIST_ADD_END (firstContext, context, void);
     }
 
+  /* FIXME: Flush any cache before retrieving the hierarchy */
+  [accountFolder flushMailCaches];
+
   secondaryFolders = [[accountFolder toManyRelationshipKeysWithNamespaces: NO]
                        mutableCopy];
   [secondaryFolders autorelease];
