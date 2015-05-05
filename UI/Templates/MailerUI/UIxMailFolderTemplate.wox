@@ -55,6 +55,6 @@
 
   <!-- This extra container is used to animate views transitions
        double quotes in ng-animate is not a typo                         -->
-    <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
+    <div ng-show="message" id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
 
 </container>

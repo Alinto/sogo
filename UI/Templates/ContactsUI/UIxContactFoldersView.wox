@@ -326,7 +326,7 @@
 
       <!-- This extra container is used to animate views transitions
            double quotes in ng-animate is not a typo                         -->
-      <div id="detailView" class="view-detail" layout="column">
+      <div ng-show="card" id="detailView" class="view-detail" layout="column">
         <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
       </div>
 

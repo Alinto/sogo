@@ -112,6 +112,7 @@
       // $scope functions
       $scope.select = function(folder) {
         $scope.editMode = false;
+        $rootScope.card = null;
         $state.go('app.addressbook', {addressbookId: folder.id});
       };
       $scope.newAddressbook = function() {

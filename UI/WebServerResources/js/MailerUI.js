@@ -196,6 +196,7 @@
           return;
         $rootScope.currentFolder = folder;
         $scope.editMode = false;
+        $rootScope.message = null;
         $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
       };
       $scope.saveFolder = function(folder) {
