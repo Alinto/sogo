@@ -209,6 +209,12 @@
     return deferred.promise;
   };
 
+  /**
+   * @function $addOrRemoveTag
+   * @memberof Message.prototype
+   * @desc Add or remove a mail tag on the current message.
+   * @returns a promise of the HTTP operation
+   */
   Message.prototype.$addOrRemoveTag = function(operation, tag) {
     var data = {};
 
@@ -217,6 +223,22 @@
     data['flags'] = tag;
 
     return Message.$$resource.post(this.$mailbox.$id(), 'addOrRemoveLabel', data);
+  }
+
+  /**
+   * @function $markAsFlaggedOrUnflagged
+   * @memberof Message.prototype
+   * @desc Add or remove a the \\Flagged flag on the current message.
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.$markAsFlaggedOrUnflagged = function(operation) {
+    var data = {};
+
+    if (operation == 'add') {
+      return Message.$$resource.post(this.id, 'markMessageFlagged', data);
+    }
+
+    return Message.$$resource.post(this.id, 'markMessageUnflagged', data);
   }
 
   /**

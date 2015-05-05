@@ -245,6 +245,12 @@
           stateMessage.$addOrRemoveTag(operation, tag);
         }
       };
+      $scope.markAsFlaggedOrUnflagged = function() {
+        var operation = (stateMessage.isflagged ? 'remove' : 'add');
+        stateMessage.$markAsFlaggedOrUnflagged(operation).then(function() {
+          stateMessage.isflagged = !stateMessage.isflagged;
+        });
+      };
       $scope.doDelete = function() {
         stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
           // Remove card from list of addressbook

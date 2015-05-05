@@ -13,7 +13,13 @@
     </md-button>
     <header class="msg-header">
       <div class="msg-header-content">
-        <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
+        <div layout="row" layout-align="start center">
+          <md-button class="iconButton" aria-label="flagged" ng-click="markAsFlaggedOrUnflagged()">
+            <i ng-class="{'md-icon-star-outline' :
+                         !message.isflagged, 'md-icon-star': message.isflagged}"><!-- not flagged --></i>
+          </md-button>
+          <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
+        </div>
         <div class="pseudo-input-container--compact">
           <label class="pseudo-input-label">
             <var:string label:value="From"/>
