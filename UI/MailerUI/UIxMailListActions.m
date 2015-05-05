@@ -836,6 +836,7 @@
       tags = [NSMutableArray arrayWithArray: [message objectForKey: @"flags"]];
       [tags removeObject: @"answered"];
       [tags removeObject: @"deleted"];
+      [tags removeObject: @"draft"];
       [tags removeObject: @"flagged"];
       [tags removeObject: @"recent"];
       [tags removeObject: @"seen"];
