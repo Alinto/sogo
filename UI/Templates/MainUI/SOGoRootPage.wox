@@ -54,7 +54,7 @@
           <label>
             <var:string label:value="Username:"/>
           </label>
-          <input type="text" ng-model="creds.username" required="required" />
+          <input autocapitalize="off" type="text" ng-model="creds.username" required="required" />
         </md-input-container>
         <md-input-container>
           <label>
