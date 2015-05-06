@@ -6,15 +6,16 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
-  <md-dialog>
+  <md-dialog flex="50" flex-sm="100">
     <md-dialog-content>
-      <md-subheader><var:string label:value="Access Rights"/> - {{stateAddressbook.name}}</md-subheader>
-      
+      <h2 class="md-headline"><var:string label:value="Access Rights"/> - {{folder.name}}</h2>
       <md-list>
-        <md-list-item ng-repeat="user in users | orderBy:['userClass', 'displayName']">
-          <div layout="column">
+        <md-list-item
+            ng-repeat="user in users | orderBy:['userClass', 'displayName']"
+            ng-click="selectUser(user)">
+          <div layout="column" layout-fill="true">
             <div layout="row">
-              <md-button ng-click="selectUser(user)">
+              <md-button>
                 <div layout="row" layout-align="space-between center"
                      layout-fill="true">
                   <span class="card-picture" ng-switch="user.userClass">
@@ -28,11 +29,11 @@
                   ng-click="removeUser(user)"
                   type="button"
                   layout="row" layout-align="end center"
-                  ng-hide="user.$isSpecial()">
+                  ng-hide="user.uid != selectedUser.uid || user.$isSpecial()">
                 <div class="md-icon-delete"><!-- delete --></div>
               </md-button>
             </div>
-            <span id="AccessRightList" ng-show="user==selectedUser">
+            <span id="AccessRightList" ng-show="user.uid == selectedUser.uid">
               <md-checkbox ng-model="user.isSubscribed"
                            arial-label="Subscribe User"
                            ng-disabled="user.wasSubscribed"
@@ -52,25 +53,26 @@
           </div>
           <md-divider><!-- divider --></md-divider>
         </md-list-item>
-        
-        <md-autocomplete
-            md-selected-item="userToAdd"
-            md-search-text="searchText"
-            md-selected-item-change="addUser(user)"
-            md-items="user in userFilter(searchText)"
-            md-item-text="user.shortFormat"
-            md-min-length="0"
-            placeholder="Add">
-          <span md-highlight-text="searchText" md-highlight-flags="^i">{{user.shortFormat}}</span>
-        </md-autocomplete>
-        
+        <md-list-item>
+          <md-autocomplete
+              class="md-flex"
+              md-selected-item="userToAdd"
+              md-search-text="searchText"
+              md-selected-item-change="addUser(user)"
+              md-items="user in userFilter(searchText)"
+              md-item-text="user.shortFormat"
+              md-min-length="0"
+              placeholder="Add">
+            <span md-highlight-text="searchText" md-highlight-flags="^i">{{user.shortFormat}}</span>
+          </md-autocomplete>
+        </md-list-item>
       </md-list>
-      
-      <div id="aclButtons">
-        <md-button ng-click="closeModal()"><var:string label:value="Close"/></md-button>
-        <md-button ng-click="saveModal()"><var:string label:value="Save"/></md-button>
-      </div>
     </md-dialog-content>
+
+    <div class="md-actions">
+      <md-button ng-click="closeModal()"><var:string label:value="Close"/></md-button>
+      <md-button class="md-primitive" ng-click="saveModal()"><var:string label:value="Save"/></md-button>
+    </div>
   </md-dialog>
-  
+
 </container>

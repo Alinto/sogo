@@ -7,10 +7,10 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxPageFrame"
-  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors,SOGoDefaultCalendar"
-  const:userSettingsKeys="Calendar,ShowCompletedTasks"
-  const:jsFiles="Common/resource.js, Common/user-model.js, Common/acl-model.js, Contacts/card-model.js, Contacts/addressbook-model.js, Appointments/component-model.js, Appointments/calendar-model.js"
-  title="title">
+  title="title"
+  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors, SOGoDefaultCalendar"
+  const:userSettingsKeys="Calendar, ShowCompletedTasks"
+  const:jsFiles="Scheduler.app.js, Scheduler.js, Common.js, Contacts.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;

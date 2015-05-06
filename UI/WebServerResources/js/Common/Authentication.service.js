@@ -81,12 +81,12 @@
           newAddress = baseAddress;
         }
 
-        if (/theme=mobile/.test(window.location.search)) {
-          newAddress = baseAddress + '/Contacts' + '?theme=mobile';
-        }
-        else {
-          newAddress = baseAddress + '/Contacts';
-        }
+        // if (/theme=mobile/.test(window.location.search)) {
+        //   newAddress = baseAddress + '/Contacts' + '?theme=mobile';
+        // }
+        // else {
+        //   newAddress = baseAddress + '/Contacts';
+        // }
 
         return newAddress;
       };

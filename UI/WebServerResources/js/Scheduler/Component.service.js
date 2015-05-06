@@ -31,7 +31,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', function($q, $timeout, $log, Settings, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', function($q, $timeout, $log, Settings, Resource) {
     angular.extend(Component, {
       $q: $q,
       $timeout: $timeout,
@@ -49,7 +49,7 @@
    */
   angular.module('SOGo.SchedulerUI')
   /* Factory registration in Angular module */
-    .factory('sgComponent', Component.$factory);
+    .factory('Component', Component.$factory);
 
   /**
    * @function $filter
@@ -331,12 +331,28 @@
    * @return an object literal copy of the Component instance
    */
   Component.prototype.$omit = function() {
-    var component = {};
+    var component = {}, date;
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key[0] != '$') {
         component[key] = value;
       }
     });
+
+    component.startTime = component.startDate ? formatTime(component.startDate) : '';
+    component.endTime   = component.endDate   ? formatTime(component.endDate)   : '';
+
+    function formatTime(dateString) {
+      // YYYY-MM-DDTHH:MM-05:00
+      var date = new Date(dateString.substring(0,10) + ' ' + dateString.substring(11,16)),
+          hours = date.getHours(),
+          minutes = date.getMinutes();
+
+      if (hours < 10) hours = '0' + hours;
+      if (minutes < 10) minutes = '0' + minutes;
+
+      return hours + ':' + minutes;
+    }
+    
 
     return component;
   };

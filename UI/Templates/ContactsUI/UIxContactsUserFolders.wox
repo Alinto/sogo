@@ -8,44 +8,44 @@
     xmlns:uix="OGo:uix">
   <md-dialog flex="50" flex-sm="100">
     <md-dialog-content>
-      <md-input-container md-no-float="md-no-float" layout="row">
-        <i class="md-icon-search"><!--icon--></i>
-        <input ng-model="searchString" type="text" placeholder="Name" sg-user-typeahead="sg-user-typeahead"/>
+      <h2 class="md-headline"><var:string label:value="Subscribe"/></h2>
+      <md-input-container>
+        <label><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+        <input type="input"
+               autocomplete="off"
+               ng-model="vm.searchText"
+               ng-model-options="vm.searchTextOptions"
+               ng-change="vm.onChange()"/>
       </md-input-container>
       <md-list>
-        <md-list-item
-            layout="column"
-            ng-repeat="user in users">
-          <md-button class="sg-expandable" ng-click="selectUser($index)">
-            <div layout="row" layout-align="space-between center"
+        <md-list-item layout="column"
+                      ng-repeat="user in vm.users">
+          <md-button class="sg-expandable" ng-click="vm.selectUser($index)">
+            <div layout="row" layout-align="start center"
                  layout-fill="true">
               <div class="sg-avatar"><!-- normal-user --></div>
               <span class="sg-item-name">{{user.$shortFormat()}}</span>
-              <span class="md-display-1">
-                <i class="md-icon-expand-more"
-                   ng-show="user.uid != selectedUser.uid"><!--icon--></i>
-                <i class="md-icon-expand-less"
-                   ng-show="user.uid == selectedUser.uid"><!--icon--></i>
+              <span class="md-secondary md-display-1">
+                <i ng-class="{ 'md-icon-expand-more': user.uid != vm.selectedUser.uid,
+                               'md-icon-expand-less': user.uid == vm.selectedUser.uid }"><!--icon--></i>
               </span>
             </div>
           </md-button>
-          <md-list layout-fill="true" ng-if="user.uid == selectedUser.uid">
+          <md-list layout-fill="true"
+                   ng-show="user == vm.selectedUser">
             <md-list-item ng-show="user.$$folders.length == 0">
               <i class="md-icon-warning"><!-- no subscription --></i>
               <var:string label:value="No possible subscription"/>
             </md-list-item>
-            <md-list-item
-                layout="row"
-                layout-fill="true"
-                ng-repeat="folder in user.$$folders">
-                <i class="md-icon-contacts md-padding"
-                   ng-show="folder.type == 'Contact'"><!--icon--></i>
-                <i class="md-icon-today md-padding"
-                   ng-show="folder.type == 'Appointment'"><!--icon--></i>
+            <md-list-item layout="row" layout-fill="true"
+                          ng-repeat="folder in user.$$folders">
+              <i class="md-padding"
+                 ng-class="{ 'md-icon-contacts': folder.type == 'Contact',
+                             'md-icon-today': folder.type == 'Appointment' }"><!--icon--></i>
                 <p class="md-flex sg-item-name">{{folder.displayName}}</p>
               <md-button
                   class="md-raised"
-                  ng-click="selectFolder(folder)">Subscribe</md-button>
+                  ng-click="vm.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
             </md-list-item>
           </md-list>
           <md-divider ng-if="!$last"><!-- divider --></md-divider>

@@ -10,10 +10,8 @@
   title="title"
   const:toolbar="none"
   const:popup="YES">
-   
-  <div class="calendarUserRights"  layout="column">
-    
-      
+
+  <div class="calendarUserRights" layout="column">
     <!-- <var:foreach list="rightTypes" item="currentRightType">
 	 <div><span><var:string value="currentRightTypeLabel"/></span>
 	 <var:popup list="objectRights" item="currentRight"
@@ -24,9 +22,9 @@
 	 /></div>
          </var:foreach>
     -->
-    <div layout="row" layout-align="space-around center">
+    <div layout="row" layout-align="space-between center">
       <var:string label:value="Public"/>
-      <md-select ng-model="selectedUser.rights.Public">
+      <md-select flex="50" ng-model="selectedUser.rights.Public">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -35,9 +33,9 @@
       </md-select>
     </div>
 
-    <div layout="row" layout-align="space-around center">
+    <div layout="row" layout-align="space-between center">
       <var:string label:value="Confidential"/>
-      <md-select ng-model="selectedUser.rights.Confidential">
+      <md-select flex="50" ng-model="selectedUser.rights.Confidential">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -46,9 +44,9 @@
       </md-select>
     </div>
 
-    <div layout="row" layout-align="space-around center">
+    <div layout="row" layout-align="space-between center">
       <var:string label:value="Private"/>
-      <md-select ng-model="selectedUser.rights.Private">
+      <md-select flex="50" ng-model="selectedUser.rights.Private">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -56,7 +54,7 @@
         </var:foreach>
       </md-select>
     </div>
-    
+
     <md-checkbox name="canCreateObjects"
                  ng-model="selectedUser.rights.canCreateObjects"
                  ng-change="confirmChange(selectedUser)"
@@ -65,7 +63,7 @@
                  ng-false-value="0">
       <var:string label:value="This person can create objects in my calendar." />
     </md-checkbox>
-    
+
     <md-checkbox name="canEraseObjects"
                  ng-model="selectedUser.rights.canEraseObjects"
                  ng-change="confirmChange(selectedUser)"

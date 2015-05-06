@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common/user-model.js, Common/acl-model.js, Common/resource.js, Contacts/card-model.js, Contacts/addressbook-model.js"
+    const:jsFiles="Contacts.app.js, Contacts.js, Common.js, Contacts.js"
     className="UIxPageFrame"
     title="name">
   <script type="text/javascript">
@@ -319,7 +319,7 @@
 
       <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
                  label:aria-label="New Contact"
-                 ng-click="newComponent()">
+                 ng-click="newComponent($event)">
         <i class="md-icon-add"><!--icon--></i>
       </md-button>
       </div>

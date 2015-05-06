@@ -26,7 +26,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Calendar constructor
    */
-  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgComponent', 'sgAcl', function($q, $timeout, $log, Settings, Resource, Component, Acl) {
+  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Component', 'Acl', function($q, $timeout, $log, Settings, Resource, Component, Acl) {
     angular.extend(Calendar, {
       $q: $q,
       $timeout: $timeout,
@@ -42,7 +42,7 @@
 
   /* Factory registration in Angular module */
   angular.module('SOGo.SchedulerUI')
-    .factory('sgCalendar', Calendar.$factory);
+    .factory('Calendar', Calendar.$factory);
 
   /**
    * @memberof Calendar

@@ -23,7 +23,7 @@
    * @desc The factory we'll use to register with Angular.
    * @return the User constructor
    */
-  User.factory = ['$q', 'sgSettings', 'sgResource', function($q, Settings, Resource) {
+  User.factory = ['$q', 'sgSettings', 'Resource', function($q, Settings, Resource) {
     angular.extend(User, {
       $q: $q,
       $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser)
@@ -36,7 +36,7 @@
    * @module SOGo.Common
    * @desc Factory registration of User in Angular module.
    */
-  angular.module('SOGo.Common').factory('sgUser', User.factory);
+  angular.module('SOGo.Common').factory('User', User.factory);
 
   /**
    * @memberof User
@@ -46,6 +46,8 @@
    */
   User.$filter = function(search) {
     var param = {search: search};
+    if (!search)
+      return User.$q.when([]);
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results = [];
       angular.forEach(response.users, function(data) {
@@ -53,6 +55,7 @@
         var user = new User(data);
         results.push(user);
       });
+      User.$users = results;
       return results;
     });
   };

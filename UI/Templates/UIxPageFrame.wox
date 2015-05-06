@@ -226,8 +226,6 @@
           <script type="text/javascript" rsrc:src="js/vendor/angular-recursion.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-vs-repeat.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/Common/utils.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/Common/ui.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/Common/ui-desktop.js"><!-- space --></script>
 
           <var:if condition="hasProductSpecificJavaScript">
             <script type="text/javascript"

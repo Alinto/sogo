@@ -9,6 +9,7 @@
    * @param {object} futureMailboxData - either an object literal or a promise
    */
   function Mailbox(account, futureMailboxData) {
+    this.$isLoading = false;
     this.$account = account;
     // Data is immediately available
     if (typeof futureMailboxData.then !== 'function') {
@@ -37,7 +38,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Mailbox constructor
    */
-  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMessage', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, PRELOAD) {
+  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, PRELOAD) {
     angular.extend(Mailbox, {
       $q: $q,
       $timeout: $timeout,
@@ -61,7 +62,7 @@
       SIZE: 100
     })
   /* Factory registration in Angular module */
-    .factory('sgMailbox', Mailbox.$factory);
+    .factory('Mailbox', Mailbox.$factory);
 
   /**
    * @memberof Mailbox
@@ -180,6 +181,7 @@
       });
     }
 
+    this.$isLoading = true;
     futureMailboxData = Mailbox.$$resource.post(this.id, 'view', options);
 
     return this.$unwrap(futureMailboxData);
@@ -388,7 +390,7 @@
 
   /**
    * @function $newMailbox
-   * @memberof Account.prototype
+   * @memberof Mailbox.prototype
    * @desc Create a new mailbox on the server and refresh the list of mailboxes.
    * @returns a promise of the HTTP operations
    */
@@ -435,6 +437,8 @@
         _this.uidsMap = {};
 
         if (_this.uids) {
+          Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
+          
           // First entry of 'headers' are keys
           headers = _.invoke(_this.headers[0], 'toLowerCase');
           _this.headers.splice(0, 1);
@@ -469,6 +473,7 @@
           });
         }
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
+        _this.$isLoading = false;
         deferred.resolve(_this.$messages);
       });
     }, function(data) {

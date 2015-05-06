@@ -15,7 +15,7 @@
    * @desc The factory we'll use to register with Angular.
    * @return the Acl constructor
    */
-  Acl.factory = ['$q', '$timeout', 'sgSettings', 'sgResource', 'sgUser', function($q, $timeout, Settings, Resource, User) {
+  Acl.factory = ['$q', '$timeout', 'sgSettings', 'Resource', 'User', function($q, $timeout, Settings, Resource, User) {
     angular.extend(Acl, {
       $q: $q,
       $timeout: $timeout,
@@ -30,7 +30,7 @@
    * @module SOGo.Common
    * @desc Factory registration of User in Angular module.
    */
-  angular.module('SOGo.Common').factory('sgAcl', Acl.factory);
+  angular.module('SOGo.Common').factory('Acl', Acl.factory);
 
   /**
    * @function $users

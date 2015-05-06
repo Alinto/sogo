@@ -38,7 +38,7 @@
    * @module SOGo.Common
    * @desc Factory registration of Resource in Angular module.
    */
-  angular.module('SOGo.Common').factory('sgResource', Resource.$factory);
+  angular.module('SOGo.Common').factory('Resource', Resource.$factory);
 
   /**
    * @function userResource

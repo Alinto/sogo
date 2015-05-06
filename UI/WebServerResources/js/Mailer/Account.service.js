@@ -31,7 +31,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Account constructor
    */
-  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgMailbox', 'sgMessage', function($q, $timeout, $log, Settings, Resource, Mailbox, Message) {
+  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Mailbox', 'Message', function($q, $timeout, $log, Settings, Resource, Mailbox, Message) {
     angular.extend(Account, {
       $q: $q,
       $timeout: $timeout,
@@ -46,7 +46,7 @@
 
   /* Factory registration in Angular module */
   angular.module('SOGo.MailerUI')
-    .factory('sgAccount', Account.$factory);
+    .factory('Account', Account.$factory);
 
   /**
    * @memberof Account
@@ -70,7 +70,7 @@
    * @function $getMailboxes
    * @memberof Account.prototype
    * @desc Fetch the list of mailboxes for the current account.
-   * @param {object} [options] - force a reload
+   * @param {object} [options] - force a reload by setting 'reload' to true
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function(options) {

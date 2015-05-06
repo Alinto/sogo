@@ -34,7 +34,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'sgResource', function($q, $timeout, $log, $sce, Settings, Resource) {
+  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Resource', function($q, $timeout, $log, $sce, Settings, Resource) {
     angular.extend(Message, {
       $q: $q,
       $timeout: $timeout,
@@ -52,7 +52,7 @@
 
   /* Factory registration in Angular module */
   angular.module('SOGo.MailerUI')
-    .factory('sgMessage', Message.$factory);
+    .factory('Message', Message.$factory);
 
   /**
    * @function filterTags

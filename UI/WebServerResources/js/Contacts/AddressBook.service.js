@@ -32,7 +32,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the AddressBook constructor
    */
-  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgResource', 'sgCard', 'sgAcl', function($q, $timeout, $log, Settings, Resource, Card, Acl) {
+  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Card', 'Acl', function($q, $timeout, $log, Settings, Resource, Card, Acl) {
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
@@ -48,7 +48,7 @@
 
   /* Factory registration in Angular module */
   angular.module('SOGo.ContactsUI')
-    .factory('sgAddressBook', AddressBook.$factory);
+    .factory('AddressBook', AddressBook.$factory);
 
   /**
    * @memberof AddressBook
