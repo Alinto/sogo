@@ -8,8 +8,6 @@
 */*/*/obj/
 */*/obj/
 */obj/
-.dat3015.0b5
-.idea
 .scss-lint-config.yml_
 Documentation/*.docbook
 Documentation/*.pdf
@@ -23,6 +21,11 @@ UI/WebServerResources/css/
 UI/WebServerResources/css/styles.css
 UI/WebServerResources/css/styles.css.map
 UI/WebServerResources/fonts/
+UI/WebServerResources/js/Common.js
+UI/WebServerResources/js/Contacts.js
+UI/WebServerResources/js/Mailer.js
+UI/WebServerResources/js/Preferences.js
+UI/WebServerResources/js/Scheduler.js
 UI/WebServerResources/js/vendor/
 UI/WebServerResources/node_modules/
 UI/WebServerResources/scss/.sass-cache/
