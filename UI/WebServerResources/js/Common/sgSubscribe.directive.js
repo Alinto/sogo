@@ -12,7 +12,7 @@
    * @ngInject
    * @example:
 
-    <md-button sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder">Subscribe ..</md-button>
+     <md-button sg-subscribe="contact" sg-subscribe-on-select="subscribeToFolder">Subscribe ..</md-button>
   */
   sgSubscribe.$inject = ['User'];
   function sgSubscribe(User) {
@@ -28,66 +28,70 @@
       controllerAs: 'vm',
       link: link
     }
-    sgSubscribeDialogController.$inject = ['$mdDialog'];
-    function sgSubscribeDialogController($mdDialog) {
-      var vm = this;
-      vm.showDialog = function() {
-        $mdDialog.show({
-          templateUrl: '../Contacts/UIxContactsUserFolders',
-          clickOutsideToClose: true,
-          //scope: vm,
-          //preserveScope: true,
-	  locals: {
-            folderType: vm.folderType,
-            onFolderSelect: vm.onFolderSelect
-            //User: User
-          },
-          controller: sgSubscribeController,
-          controllerAs: 'vm'
-        });
-        /**
-         * @ngInject
-         */
-        sgSubscribeController.$inject = ['folderType', 'onFolderSelect', 'User'];
-        function sgSubscribeController(folderType, onFolderSelect, User) {
-          var vm = this;
-          vm.selectedUser = null;
-
-          vm.searchTextOptions = {
-            updateOn: 'default blur',
-            debounce: {
-              default: 300,
-              blur: 0
-            }
-          };
-
-          vm.onChange = function() {
-            User.$filter(vm.searchText).then(function(matches) {
-              vm.users = matches;
-            });
-          };
-
-          vm.selectUser = function(i) {
-            // Fetch folders of specific type for selected user
-            vm.users[i].$folders(folderType).then(function() {
-              vm.selectedUser = vm.users[i];
-            });
-          };
-
-          // Callback upon subscription to a folder
-          vm.selectFolder = function(folder) {
-            onFolderSelect({folderData: folder});
-          };
-        }
-      };
-    }
-    function link(scope, element, attrs, controller) {
-      var inputEl = element.find('input');
-      element.on('click', controller.showDialog);
-    }
   }
+
+  /**
+   * @ngInject
+   */
+  sgSubscribeDialogController.$inject = ['$mdDialog'];
+  function sgSubscribeDialogController($mdDialog) {
+    var vm = this;
+    vm.showDialog = function() {
+      $mdDialog.show({
+        templateUrl: '../Contacts/UIxContactsUserFolders',
+        clickOutsideToClose: true,
+        locals: {
+          folderType: vm.folderType,
+          onFolderSelect: vm.onFolderSelect
+        },
+        controller: sgSubscribeController,
+        controllerAs: 'vm'
+      });
+    };
+  }
+
+  /**
+   * @ngInject
+   */
+  sgSubscribeController.$inject = ['folderType', 'onFolderSelect', 'User'];
+  function sgSubscribeController(folderType, onFolderSelect, User) {
+    var vm = this;
+    vm.selectedUser = null;
+
+    vm.searchTextOptions = {
+      updateOn: 'default blur',
+      debounce: {
+        default: 300,
+        blur: 0
+      }
+    };
+
+    vm.onChange = function() {
+      User.$filter(vm.searchText).then(function(matches) {
+        vm.users = matches;
+      });
+    };
+
+    vm.selectUser = function(i) {
+      // Fetch folders of specific type for selected user
+      vm.users[i].$folders(folderType).then(function() {
+        vm.selectedUser = vm.users[i];
+      });
+    };
+
+    // Callback upon subscription to a folder
+    vm.selectFolder = function(folder) {
+      onFolderSelect({folderData: folder});
+    };
+  }
+
+  function link(scope, element, attrs, controller) {
+    var inputEl = element.find('input');
+    element.on('click', controller.showDialog);
+  }
+
 
   angular
     .module('SOGo.Common')
     .directive('sgSubscribe', sgSubscribe);
-  })();
+})();

@@ -9,7 +9,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Preferences.app.js, Common.js, Mailer.js, Preferences.js">
+    const:jsFiles="Preferences.app.js, Common.js, Mailer.js, Contacts.js, Preferences.js">
 
   <main class="view md-layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>

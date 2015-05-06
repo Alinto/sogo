@@ -2,7 +2,7 @@
 
 (function() {
   'use strict';
-  
+
   /**
    * @name Preferences
    * @constructor
@@ -13,47 +13,48 @@
     this.defaults = {};
     this.settings = {};
 
-   this.mailboxes = Preferences.$Mailbox.$find({ id: 0 });
-   
-   Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
-     Preferences.$timeout(function() {
+    this.mailboxes = Preferences.$Mailbox.$find({ id: 0 });
 
-       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-       var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
-         if (key.charAt(0) == '$')
-           return ['_' + key, value];
-         return [key, value];
-       }));
+    Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
+      Preferences.$timeout(function() {
 
-       data.SOGoMailLabelsColors = labels;
+        // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
+        var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
+          if (key.charAt(0) == '$')
+            return ['_' + key, value];
+          return [key, value];
+        }));
 
-       // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
-       if (data.Vacation && data.Vacation.autoReplyEmailAddresses)
-         data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
+        data.SOGoMailLabelsColors = labels;
 
-       if (data.Forward && data.Forward.forwardAddress)
-         data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
-       
-       angular.extend(_this.defaults, data);
-     });
-   });
-   Preferences.$$resource.fetch("jsonSettings").then(function(data) {
-     Preferences.$timeout(function() {
+        // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
+        if (data.Vacation && data.Vacation.autoReplyEmailAddresses)
+          data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
 
-               
-       // We convert our PreventInvitationsWhitelist hash into a array of user
-       if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
-         data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
-           return new Preferences.$User({uid: key, shortFormat: value});
-         });
-       else
-         data.Calendar.PreventInvitationsWhitelist = [];
-       
-       angular.extend(_this.settings, data);
-     });
-   });
+        if (data.Forward && data.Forward.forwardAddress)
+          data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
+
+        angular.extend(_this.defaults, data);
+      });
+    });
+
+    Preferences.$$resource.fetch("jsonSettings").then(function(data) {
+      Preferences.$timeout(function() {
+
+
+        // We convert our PreventInvitationsWhitelist hash into a array of user
+        if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
+          data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
+            return new Preferences.$User({uid: key, shortFormat: value});
+          });
+        else
+          data.Calendar.PreventInvitationsWhitelist = [];
+
+        angular.extend(_this.settings, data);
+      });
+    });
   }
-  
+
   /**
    * @memberof Preferences
    * @desc The factory we'll use to register with Angular
@@ -82,10 +83,10 @@
    * @memberof Preferences.prototype
    * @desc Save the preferences to the server.
    */
-  /*Preferences.prototype.$save = function() {
+  Preferences.prototype.$save = function() {
     var _this = this;
     console.debug("save in model...");
-    
+
     return Preferences.$$resource.save("Preferences",
                                        this.$omit(),
                                        undefined)
@@ -94,7 +95,7 @@
         //_this.$shadowData = _this.$omit(true);
         return data;
       });
-  };*/
+  };
 
   /**
    * @function $omit
@@ -103,7 +104,7 @@
    * @param {Boolean} [deep] - make a deep copy if true
    * @return an object literal copy of the Preferences instance
    */
-  /*Preferences.prototype.$omit = function(deep) {
+  Preferences.prototype.$omit = function(deep) {
     var preferences = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key[0] != '$') {
@@ -120,9 +121,9 @@
         return [key.substring(1), value];
       return [key, value];
     }));
-    
+
     preferences.defaults.SOGoMailLabelsColors = labels;
-    
+
     if (preferences.defaults.Vacation && preferences.defaults.Vacation.autoReplyEmailAddresses)
       preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
 
@@ -137,8 +138,8 @@
         preferences.settings.Calendar.PreventInvitationsWhitelist = h;
       });
     }
-    
+
     return preferences;
-  };*/
-  
+  };
+
 })();

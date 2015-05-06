@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', ['ngMaterial', 'RecursionHelper'])
+  angular.module('SOGo.Common', ['ngMaterial'])
   // md break-points values are hard-coded in angular-material/src/core/util/constant.js
   // $mdMedia has a built-in support for those values but can also evaluate others
   // For some reasons, angular-material's break-points don't match the specs

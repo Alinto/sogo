@@ -37,9 +37,7 @@
           }
         },
         resolve: {
-          stateAddressbooks: ['AddressBook', function(AddressBook) {
-            return AddressBook.$findAll(window.contactFolders);
-          }]
+          stateAddressbooks: stateAddressbooks
         }
       })
       .state('app.addressbook', {
@@ -51,9 +49,7 @@
           }
         },
         resolve: {
-          stateAddressbook: ['$stateParams', 'AddressBook', function($stateParams, AddressBook) {
-            return AddressBook.$find($stateParams.addressbookId);
-          }]
+          stateAddressbook: stateAddressbook
         }
       })
       .state('app.addressbook.new', {
@@ -65,11 +61,7 @@
           }
         },
         resolve: {
-          stateCard: ['$stateParams', 'stateAddressbook', 'Card', function($stateParams, stateAddressbook, Card) {
-            var tag = 'v' + $stateParams.contactType,
-                card = new Card({ pid: $stateParams.addressbookId, tag: tag });
-            return card;
-          }]
+          stateCard: stateNewCard
         }
       })
       .state('app.addressbook.card', {
@@ -81,9 +73,7 @@
           }
         },
         resolve: {
-          stateCard: ['$stateParams', 'stateAddressbook', function($stateParams, stateAddressbook) {
-            return stateAddressbook.$getCard($stateParams.cardId);
-          }]
+          stateCard: stateCard
         }
       })
       .state('app.addressbook.card.view', {
@@ -107,6 +97,40 @@
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/addressbooks/personal');
+  }
+
+  /**
+   * @ngInject
+   */
+  stateAddressbooks.$inject = ['AddressBook'];
+  function stateAddressbooks(AddressBook) {
+    return AddressBook.$findAll(window.contactFolders);
+  }
+
+  /**
+   * @ngInject
+   */
+  stateAddressbook.$inject = ['$stateParams', 'AddressBook'];
+  function stateAddressbook($stateParams, AddressBook) {
+    return AddressBook.$find($stateParams.addressbookId);
+  }
+
+  /**
+   * @ngInject
+   */
+  stateNewCard.$inject = ['$stateParams', 'stateAddressbook', 'Card'];
+  function stateNewCard($stateParams, stateAddressbook, Card) {
+    var tag = 'v' + $stateParams.contactType,
+        card = new Card({ pid: $stateParams.addressbookId, tag: tag });
+    return card;
+  }
+
+  /**
+   * @ngInject
+   */
+  stateCard.$inject = ['$stateParams', 'stateAddressbook'];
+  function stateCard($stateParams, stateAddressbook) {
+    return stateAddressbook.$getCard($stateParams.cardId);
   }
 
 })();

@@ -37,18 +37,7 @@
           }
         },
         resolve: {
-          stateAccounts: ['$q', 'Account', function($q, Account) {
-            var accounts = Account.$findAll(mailAccounts);
-            var promises = [];
-            // Fetch list of mailboxes for each account
-            angular.forEach(accounts, function(account, i) {
-              var mailboxes = account.$getMailboxes();
-              promises.push(mailboxes.then(function(objects) {
-                return account;
-              }));
-            });
-            return $q.all(promises);
-          }]
+          stateAccounts: stateAccounts
         }
       })
       .state('mail.account', {
@@ -60,11 +49,7 @@
           }
         },
         resolve: {
-          stateAccount: ['$stateParams', 'stateAccounts', function($stateParams, stateAccounts) {
-            return _.find(stateAccounts, function(account) {
-              return account.id == $stateParams.accountId;
-            });
-          }]
+          stateAccount: stateAccount
         }
       })
       .state('mail.account.mailbox', {
@@ -76,27 +61,8 @@
           }
         },
         resolve: {
-          stateMailbox: ['$stateParams', 'stateAccount', 'decodeUriFilter', function($stateParams, stateAccount, decodeUriFilter) {
-            var mailboxId = decodeUriFilter($stateParams.mailboxId);
-            // Recursive find function
-            var _find = function(mailboxes) {
-              var mailbox = _.find(mailboxes, function(o) {
-                return o.path == mailboxId;
-              });
-              if (!mailbox) {
-                angular.forEach(mailboxes, function(o) {
-                  if (!mailbox && o.children && o.children.length > 0) {
-                    mailbox = _find(o.children);
-                  }
-                });
-              }
-              return mailbox;
-            };
-            return _find(stateAccount.$mailboxes);
-          }],
-          stateMessages: ['stateMailbox', function(stateMailbox) {
-            return stateMailbox.$filter();
-          }]
+          stateMailbox: stateMailbox,
+          stateMessages: stateMessages
         }
       })
       .state('mail.account.mailbox.message', {
@@ -108,17 +74,7 @@
           }
         },
         resolve: {
-          stateMessage: ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages', function(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
-            var message = _.find(stateMessages, function(messageObject) {
-              return messageObject.uid == $stateParams.messageId;
-            });
-
-            if (message)
-              return message.$reload();
-            else
-              // Message not found
-              $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
-          }]
+          stateMessage: stateMessage
         }
       })
       .state('mail.account.mailbox.message.edit', {
@@ -130,9 +86,7 @@
           }
         },
         resolve: {
-          stateContent: ['stateMessage', function(stateMessage) {
-            return stateMessage.$editableContent();
-          }]
+          stateContent: stateContent
         }
       })
       .state('mail.account.mailbox.message.action', {
@@ -170,6 +124,88 @@
     //   replaceSpacesWithDashes: false,
     //   allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
     // });
+  }
+
+  /**
+   * @ngInject
+   */
+  stateAccounts.$inject = ['$q', 'Account'];
+  function stateAccounts($q, Account) {
+    var accounts = Account.$findAll(mailAccounts);
+    var promises = [];
+    // Fetch list of mailboxes for each account
+    angular.forEach(accounts, function(account, i) {
+      var mailboxes = account.$getMailboxes();
+      promises.push(mailboxes.then(function(objects) {
+        return account;
+      }));
+    });
+    return $q.all(promises);
+  }
+
+  /**
+   * @ngInject
+   */
+  stateAccount.$inject = ['$stateParams', 'stateAccounts'];
+  function stateAccount($stateParams, stateAccounts) {
+    return _.find(stateAccounts, function(account) {
+      return account.id == $stateParams.accountId;
+    });
+  }
+
+  /**
+   * @ngInject
+   */
+  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
+  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
+    var mailboxId = decodeUriFilter($stateParams.mailboxId);
+    // Recursive find function
+    var _find = function(mailboxes) {
+      var mailbox = _.find(mailboxes, function(o) {
+        return o.path == mailboxId;
+      });
+      if (!mailbox) {
+        angular.forEach(mailboxes, function(o) {
+          if (!mailbox && o.children && o.children.length > 0) {
+            mailbox = _find(o.children);
+          }
+        });
+      }
+      return mailbox;
+    };
+    return _find(stateAccount.$mailboxes);
+  }
+
+  /**
+   * @ngInject
+   */
+  stateMessages.$inject = ['stateMailbox'];
+  function stateMessages(stateMailbox) {
+    return stateMailbox.$filter();
+  }
+
+  /**
+   * @ngInject
+   */
+  stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
+  function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
+    var message = _.find(stateMessages, function(messageObject) {
+      return messageObject.uid == $stateParams.messageId;
+    });
+
+    if (message)
+      return message.$reload();
+    else
+      // Message not found
+      $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) }  );
+  }
+
+  /**
+   * @ngInject
+   */
+  stateContent.$inject = ['stateMessage'];
+  function stateContent(stateMessage) {
+    return stateMessage.$editableContent();
   }
 
   /**
