@@ -35,6 +35,7 @@
 {
   BOOL headerSetup;
   BOOL mailIsEvent;
+  BOOL mailIsMeetingRequest;
   BOOL mailIsSharingObject;
   NSString *mimeKey;
   NSString *headerCharset;

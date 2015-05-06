@@ -118,6 +118,7 @@ static Class NSExceptionK, MAPIStoreSharingMessageK;
     {
       mimeKey = nil;
       mailIsEvent = NO;
+      mailIsMeetingRequest = NO;
       mailIsSharingObject = NO;
       headerCharset = nil;
       headerEncoding = nil;
@@ -258,7 +259,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       ASSIGN (headerCharset, [parameters objectForKey: @"charset"]);
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
+      {
         mailIsEvent = YES;
+        if ([[parameters objectForKey: @"method"] isEqualToString: @"REQUEST"])
+          mailIsMeetingRequest = YES;
+      }
       else
         {
           sharingHeader = [[sogoObject mailHeaders] objectForKey: @"x-ms-sharing-localtype"];
@@ -572,28 +577,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-/* Note: this applies to regular mails... */
-// - (int) getPidTagReplyRequested: (void **) data // TODO
-//                    inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   if (!headerSetup)
-//     [self _fetchHeaderData];
-
-//   return (mailIsEvent
-//           ? [self getYes: data inMemCtx: memCtx]
-//           : [self getNo: data inMemCtx: memCtx]);
-// }
-
-/* ... while this applies to invitations. */
-- (int) getPidTagResponseRequested: (void **) data // TODO
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReplyRequested: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  return (mailIsEvent
-          ? [self getNo: data inMemCtx: memCtx]
+  return (mailIsMeetingRequest
+          ? [self getYes: data inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidTagResponseRequested: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagReplyRequested: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagLatestDeliveryTime: (void **) data // DOUBT
