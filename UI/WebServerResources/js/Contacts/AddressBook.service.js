@@ -210,7 +210,7 @@
         }
         // Instanciate Card objects
         angular.forEach(cards, function(o, i) {
-          cards[i] = new AddressBook.$Card(o);
+          cards[i] = new AddressBook.$Card(o, search);
         });
 
         return cards;

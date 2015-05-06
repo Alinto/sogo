@@ -7,12 +7,13 @@
    * @name Card
    * @constructor
    * @param {object} futureCardData
+   * @param {string} [partial]
    */
-  function Card(futureCardData) {
+  function Card(futureCardData, partial) {
 
     // Data is immediately available
     if (typeof futureCardData.then !== 'function') {
-      angular.extend(this, futureCardData);
+      this.init(futureCardData, partial);
       if (this.pid && !this.id) {
         // Prepare for the creation of a new card;
         // Get UID from the server.
@@ -20,11 +21,6 @@
         this.$unwrap(newCardData);
         this.isNew = true;
       }
-
-      this.refs = [];
-
-      if (!this.shortFormat)
-        this.shortFormat = this.$shortFormat();
     }
     else {
       // The promise will be unwrapped first
@@ -42,10 +38,11 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$timeout', 'sgSettings', 'Resource', function($timeout, Settings, Resource) {
+  Card.$factory = ['$timeout', 'sgSettings', 'Resource', 'Gravatar', function($timeout, Settings, Resource, Gravatar) {
     angular.extend(Card, {
       $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
       $timeout: $timeout,
+      $gravatar: Gravatar,
       $categories: window.UserDefaults.SOGoContactsCategories
     });
 
@@ -107,6 +104,21 @@
     });
 
     return collection;
+  };
+
+  /**
+   * @function init
+   * @memberof Card.prototype
+   * @desc Extend instance with required attributes and new data.
+   * @param {object} data - attributes of card
+   */
+  Card.prototype.init = function(data, partial) {
+    this.refs = [];
+    angular.extend(this, data);
+    if (!this.shortFormat)
+      this.shortFormat = this.$shortFormat();
+    if (!this.image)
+      this.image = Card.$gravatar(this.$preferredEmail(partial), 32);
   };
 
   /**
@@ -414,7 +426,7 @@
     this.$futureCardData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
       Card.$timeout(function() {
-        angular.extend(_this, data);
+        _this.init(data);
         // Instanciate Card objects for list members
         angular.forEach(_this.refs, function(o, i) {
           if (o.email) o.emails = [{value: o.email}];

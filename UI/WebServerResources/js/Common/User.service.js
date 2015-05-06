@@ -8,13 +8,7 @@
    */
   function User(userData) {
     if (userData) {
-      angular.extend(this, userData);
-      
-      if (!this.shortFormat)
-        this.shortFormat = this.$shortFormat();
-
-      // FIXME
-      this.image = "http://www.gravatar.com/avatar/asdasdasdasd?d=identicon";
+      this.init(userData);
     }
   }
 
@@ -23,10 +17,11 @@
    * @desc The factory we'll use to register with Angular.
    * @return the User constructor
    */
-  User.factory = ['$q', 'sgSettings', 'Resource', function($q, Settings, Resource) {
+  User.factory = ['$q', 'sgSettings', 'Resource', 'Gravatar', function($q, Settings, Resource, Gravatar) {
     angular.extend(User, {
       $q: $q,
-      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser)
+      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
+      $gravatar: Gravatar
     });
 
     return User;
@@ -58,6 +53,20 @@
       User.$users = results;
       return results;
     });
+  };
+
+  /**
+   * @function init
+   * @memberof User.prototype
+   * @desc Extend instance with required attributes and new data.
+   * @param {object} data - attributes of user
+   */
+  User.prototype.init = function(data) {
+    angular.extend(this, data);
+    if (!this.shortFormat)
+      this.shortFormat = this.$shortFormat();
+    if (!this.image)
+      this.image = User.$gravatar(this.c_email);
   };
 
   /**

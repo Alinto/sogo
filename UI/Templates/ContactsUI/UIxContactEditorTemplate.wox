@@ -267,7 +267,6 @@
             </div>
           </div>
 
-
           <!-- note -->
           <md-input-container>
             <label class="right inline">
@@ -290,7 +289,7 @@
         </form>
 
         <!-- list editor -->
-        <form name="listForm" ng-show="card.$isList()" ng-submit="save(listForm)">
+        <form name="listForm" ng-if="card.$isList()" ng-submit="save(listForm)">
           <md-input-container>
             <label class="pseudo-input-label">
               <var:string label:value="Display"/>
@@ -319,13 +318,13 @@
             </label>
             <md-contact-chips
                 ng-model="card.refs"
-                md-contacts="addressbook.$filter($query, {dry: true, excludeLists: true})"
+                md-contacts="currentFolder.$filter($query, {dry: true, excludeLists: true})"
                 md-contact-name="shortFormat"
                 md-contact-image="image"
                 md-contact-email="email"
-                md-require-match="md-require-match"
-                placeholder="Add Member">
-            </md-contact-chips>
+                md-require-match="true"
+                filter-selected="false"
+                label:placeholder="Add Member"><!-- members --></md-contact-chips>
           </div>
           
           <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
