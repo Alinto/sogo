@@ -15,6 +15,7 @@ Enhancements
  - Missing contact fields are now saved and available when sharing it (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary) (Zentyal)
  - Appointment color and importance work now between Outlooks (Zentyal)
  - Synchronize events, contacts and tasks in reverse chronological order (Zentyal)
+ - During login, we now extract the domain from the user to accelerate authentication requests on sources
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)

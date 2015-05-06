@@ -479,17 +479,47 @@ static Class NSNullK;
   NSString *dictPassword, *username, *jsonUser;
   SOGoSystemDefaults *dd;
   BOOL checkOK;
- 
+
+  dd = [SOGoSystemDefaults sharedSystemDefaults];
+
   // We check for cached passwords. If the entry is cached, we 
   // check this immediately. If not, we'll go directly at the
   // authentication source and try to validate there, then cache it.
   if (*_domain != nil)
     username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
   else
-    username = _login;
+    {
+      NSRange r;
+
+      username = _login;
+
+      // We try to extract the domain in use in order to avoid pounding all the authentication
+      // sources if SOGoLoginDomains isn't specified. This is also true if the user is
+      // using DAV or EAS.
+      r = [username rangeOfString: @"@"];
+
+      if (r.location != NSNotFound)
+        {
+          NSArray *allDomains;
+          int i;
+
+          *_domain = [username substringFromIndex: r.location+1];
+
+          allDomains = [[dd dictionaryForKey: @"domains"] allValues];
+
+          for (i = 0; i < [allDomains count]; i++)
+            {
+              if ([*_domain isEqualToString: [[allDomains objectAtIndex: i] objectForKey: @"SOGoMailDomain"]])
+                break;
+            }
+
+          // We haven't found one
+          if (i == [allDomains count])
+            *_domain = nil;
+        }
+    }
 
   failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
-  dd = [SOGoSystemDefaults sharedSystemDefaults];
 
   //
   // We check the fail count per user in memcache (per server). If the
