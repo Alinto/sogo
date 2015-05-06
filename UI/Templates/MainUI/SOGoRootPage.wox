@@ -64,11 +64,22 @@
               </label>
               <input type="password" ng-model="creds.password" required="required" />
             </md-input-container>
+
+            <!-- CONNECT BUTTON -->
+            <div layout="row" layout-align="end center">
+              <md-button class="md-raised" type="submit" ng-disabled='!loginForm.$valid'>
+                <span>
+                  <var:string label:value="Connect"/>
+                </span>
+              </md-button>
+            </div>
+
+            <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
               <label class="login-lang">
                 <var:string label:value="Language:"/>
               </label>
-              <md-select ng-model="creds.language" label:placeholder="choose">
+              <md-select flex="true" ng-model="creds.language" label:placeholder="choose">
                 <var:foreach list="languages" item="item">
                   <md-option var:value="item">
                     <var:string value="languageText"/>
@@ -77,33 +88,33 @@
               </md-select>
             </div>
 
+            <!-- DOMAINS SELECT -->
             <var:if condition="hasLoginDomains">
-	      <label><var:string label:value="Domain:"/><br/>
-	      <var:popup const:name="domain"
-                         const:ng-model="creds.domain"
-		         list="loginDomains"
-		         item="item"
-		         var:selection="item"
-		         var:value="item"
-		         string="item"/>
+              <div layout="row" layout-align="start end">
+	        <label>
+                <var:string label:value="Domain:"/>
               </label>
-            </var:if>
-            <div class="fieldset" layout="row" layout-align="end center">
-              <md-button type="submit" class="md-primary" ng-disabled='!loginForm.$valid'>
-                <span>
-                  <var:string label:value="Connect"/>
-                </span>
-              </md-button>
+              <md-select flex="true" ng-model="creds.domain" label:placeholder="choose">
+                <var:foreach list="loginDomains" item="item">
+                  <md-option var:value="item">
+                    <var:string value="item"/>
+                  </md-option>
+                </var:foreach>
+              </md-select>
+              </div>
+	    </var:if>
+            
+            <div layout="row" layout-align="center center">
+              <md-switch ng-model="creds.rememberLogin" label:arial-label="Remember username">
+                <var:string label:value="Remember username"/>
+              </md-switch>
             </div>
-            <md-switch ng-model="creds.rememberLogin" label:arial-label="Remember username">
-              <var:string label:value="Remember username"/>
-            </md-switch>
           </form>
-          <md-toolbar>
-            <md-button ng-click="showAbout()">
-              About
+          <div layout="row"  layout-align="end end">
+            <md-button class="iconButton" ng-click="showAbout()">
+              <i class="md-icon-info" ng-style="{'color': '#aaa'}"><!-- about --></i>
             </md-button>
-          </md-toolbar>
+          </div>
         </div>
       </div>
     </md-content>
