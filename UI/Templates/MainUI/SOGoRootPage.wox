@@ -7,113 +7,105 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    const:jsFiles="Common/SOGoAuthentication.js"
+    const:jsFiles="Main.app.js, Common.js"
     const:popup="YES"
-    ><var:string var:value="doctype" const:escapeHTML="NO"/>
+    >
   <!--
-    MAIN CONTENT ROW
-    Content of the application view injected injected in the element bellow
-    MUST be the first html element after body
-    SHOULD  be a main tag (with role="main")
+      MAIN CONTENT ROW
+      Content of the application view injected injected in the element bellow
+      MUST be the first html element after body
+      SHOULD  be a main tag (with role="main")
   -->
   <main class="view md-layout-fill md-layout-padding" ui-view="login" layout="row" layout-align="center start">
-<md-content class="md-padding" md-scroll-y="true">
-  <div ng-controller="loginController">
+    <md-content class="md-padding" md-scroll-y="true">
+      <div ng-controller="loginController">
 
-    <script type="text/javascript">
-      var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
-    </script>
-    <!--   <div id="aboutBox" style="display:none;">
-      <div>
-        <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
-        <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
-        <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
-        <img const:alt="Inverse" rsrc:src="img/inverse.png"/>
-        <p class="links"><a href="http://sogo.nu/" target="_new">sogo.nu</a> / 
-        <a href="http://inverse.ca/" target="_new">inverse.ca</a></p>
-        <p><a id="aboutClose" href="#" class="button">
-        <span><var:string label:value="OK" /></span></a></p>
-      </div>
-    </div> -->
-    <!-- <nav class="top-bar">
-      <section class="top-bar-section">
-        <ul class="right">
-          <li><a href="#"><var:string label:value="About" /></a></li>
-        </ul>
-      </section>
-    </nav> -->
-    <div id="login">
-      <div id="logo">
-        <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
-      </div>
+        <script type="text/javascript">
+          var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
+        </script>
+        <!--   <div id="aboutBox" style="display:none;">
+             <div>
+             <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
+             <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
+             <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
+             <img const:alt="Inverse" rsrc:src="img/inverse.png"/>
+             <p class="links"><a href="http://sogo.nu/" target="_new">sogo.nu</a> / 
+             <a href="http://inverse.ca/" target="_new">inverse.ca</a></p>
+             <p><a id="aboutClose" href="#" class="button">
+             <span><var:string label:value="OK" /></span></a></p>
+             </div>
+             </div> -->
+        <!-- <nav class="top-bar">
+             <section class="top-bar-section">
+             <ul class="right">
+             <li><a href="#"><var:string label:value="About" /></a></li>
+             </ul>
+             </section>
+             </nav> -->
+        <div id="login">
+          <div id="logo">
+            <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
+          </div>
 
-      <form name="loginForm" layout="column" ng-controller="loginController" ng-submit="login(creds)">
-        <var:if condition="hasLoginSuffix"><input type="hidden" ng-model="creds.loginSuffix" var:value="loginSuffix"/></var:if>
-        <div ng-show="warning" ng-cloak="ng-cloak" alert="alert" class="alert-box radius warning">{{warning}}</div>
-        <md-input-container>
-          <label>
-            <var:string label:value="Username:"/>
-          </label>
-          <input autocapitalize="off" type="text" ng-model="creds.username" required="required" />
-        </md-input-container>
-        <md-input-container>
-          <label>
-            <var:string label:value="Password:"/>
-          </label>
-          <input type="password" ng-model="creds.password" required="required" />
-        </md-input-container>
-        <div layout="row" layout-align="start end">
-          <label class="login-lang">
-            <var:string label:value="Language:"/>
-          </label>
-          <md-select ng-model="creds.language" label:placeholder="choose">
-            <var:foreach list="languages" item="item">
-              <md-option var:value="item">
-                <var:string value="languageText"/>
-              </md-option>
-            </var:foreach>
-          </md-select>
+          <form name="loginForm" layout="column" ng-controller="loginController" ng-submit="login(creds)">
+            <var:if condition="hasLoginSuffix">
+              <input type="hidden" ng-model="creds.loginSuffix" var:value="loginSuffix"/>
+            </var:if>
+            <div ng-show="warning" ng-cloak="ng-cloak" alert="alert" class="alert-box radius warning">{{warning}}</div>
+            <md-input-container>
+              <label>
+                <var:string label:value="Username:"/>
+              </label>
+              <input autocapitalize="off" type="text" ng-model="creds.username" required="required" />
+            </md-input-container>
+            <md-input-container>
+              <label>
+                <var:string label:value="Password:"/>
+              </label>
+              <input type="password" ng-model="creds.password" required="required" />
+            </md-input-container>
+            <div layout="row" layout-align="start end">
+              <label class="login-lang">
+                <var:string label:value="Language:"/>
+              </label>
+              <md-select ng-model="creds.language" label:placeholder="choose">
+                <var:foreach list="languages" item="item">
+                  <md-option var:value="item">
+                    <var:string value="languageText"/>
+                  </md-option>
+                </var:foreach>
+              </md-select>
+            </div>
+
+            <var:if condition="hasLoginDomains">
+	      <label><var:string label:value="Domain:"/><br/>
+	      <var:popup const:name="domain"
+                         const:ng-model="creds.domain"
+		         list="loginDomains"
+		         item="item"
+		         var:selection="item"
+		         var:value="item"
+		         string="item"/>
+              </label>
+            </var:if>
+            <div class="fieldset" layout="row" layout-align="end center">
+              <md-button type="submit" class="md-primary" ng-disabled='!loginForm.$valid'>
+                <span>
+                  <var:string label:value="Connect"/>
+                </span>
+              </md-button>
+            </div>
+            <md-switch ng-model="creds.rememberLogin" label:arial-label="Remember username">
+              <var:string label:value="Remember username"/>
+            </md-switch>
+          </form>
+          <md-toolbar>
+            <md-button ng-click="showAbout()">
+              About
+            </md-button>
+          </md-toolbar>
         </div>
-
-
-        <var:if condition="hasLoginDomains">
-	  <label><var:string label:value="Domain:"/><br/>
-	  <var:popup const:name="domain"
-                     const:ng-model="creds.domain"
-		     list="loginDomains"
-		     item="item"
-		     var:selection="item"
-		     var:value="item"
-		     string="item"
-		     />
-          </label>
-        </var:if>
-        <!--
-        <md-checkbox ng-model="creds.rememberLogin">
-          <label><var:string label:value="Remember username"/></label>
-          </md-checkbox> -->
-          <!-- <label> -->
-        <div class="fieldset" layout="row" layout-align="end center">
-          <md-button type="submit" class="md-primary" ng-disabled='!loginForm.$valid'>
-            <span>
-              <var:string label:value="Connect"/>
-            </span>
-          </md-button>
-        </div>
-
-        <!-- </label> -->
-        <md-switch ng-model="creds.rememberLogin" arial-label="Remember username">
-          <var:string label:value="Remember username"/>
-        </md-switch>
-        <label id="animation"><!-- busy.gif! --></label>
-      </form>
-      <md-toolbar>
-        <md-button ng-click="showAbout()">
-          About
-        </md-button>
-      </md-toolbar>
-    </div>
-  </div>
-</md-content>
-</main>
+      </div>
+    </md-content>
+  </main>
 </var:component>
