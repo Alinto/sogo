@@ -1461,8 +1461,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   firstStartDate = [event firstRecurrenceStartDate];
   if (firstStartDate)
     {
-      [firstStartDate setTimeZone: timeZone];
-
       arp = talloc_zero (NULL, struct AppointmentRecurrencePattern);
       [rule fillRecurrencePattern: &arp->RecurrencePattern
                         withEvent: event
@@ -1472,6 +1470,12 @@ static NSCharacterSet *hexCharacterSet = nil;
       arp->WriterVersion2 = 0x00003008; /* 0x3008 for compatibility with
                                            ol2003 */
 
+      /* All day events' dates are specified in floating time
+         ([MS-OXCICAL] 2.1.3.1.1.20.10). The StartTimeOffset and EndTimeOffset
+	 fields are relative to midnight of those days ([MS-OXOCAL] 2.2.1.44.5),
+	 so no time zone adjustment is needed */
+      if (![event isAllDay])
+        [firstStartDate setTimeZone: timeZone];
       startMinutes = ([firstStartDate hourOfDay] * 60
                       + [firstStartDate minuteOfHour]);
       arp->StartTimeOffset = startMinutes;
@@ -2069,17 +2073,21 @@ ReservedBlockEE2Size: 00 00 00 00
   enum mapistore_error rc;
   iCalTimeZone *icalTZ;
 
-  if ([event isRecurrent])
+  /* [MS-OXOCAL] 3.1.5.5.1: This property is used in floating (all-day) events,
+     specified in floating time, to convert the start date from UTC to the user's
+     time zone */
+  if ([event isAllDay])
+    icalTZ = [iCalTimeZone timeZoneForName: [timeZone timeZoneName]];
+  else if ([event isRecurrent])
+    icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
+
+  if (icalTZ)
     {
-      icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
-      if (icalTZ)
-        {
-          *data = [icalTZ asZoneTimeDefinitionWithFlags: TZRULE_FLAG_EFFECTIVE_TZREG | TZRULE_FLAG_RECUR_CURRENT_TZREG
-                                               inMemCtx: memCtx];
-          rc = MAPISTORE_SUCCESS;
-        }
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
+      /* [MS-OXOCAL] 2.2.1.42: This property can only have the E flag set in the
+         TimeZoneDefinition struct */
+      *data = [icalTZ asZoneTimeDefinitionWithFlags: TZRULE_FLAG_EFFECTIVE_TZREG
+                                           inMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
