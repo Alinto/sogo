@@ -67,7 +67,7 @@
       $scope.card.$reset();
       if ($scope.card.isNew) {
         // Cancelling the creation of a card
-        $scope.card = null;
+        $rootScope.card = null;
         $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
       }
       else {
@@ -87,7 +87,7 @@
                 return o.id == card.id;
               });
               // Remove card object from scope
-              $scope.card = null;
+              $rootScope.card = null;
               $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
@@ -98,6 +98,6 @@
   }
 
   angular
-    .module('SOGo.ContactsUI')  
-    .controller('CardController', CardController);                                    
+    .module('SOGo.ContactsUI')
+    .controller('CardController', CardController);
 })();

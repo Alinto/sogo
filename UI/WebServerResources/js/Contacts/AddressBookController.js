@@ -8,9 +8,10 @@
    */
   AddressBookController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
   function AddressBookController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
-      var currentAddressbook;
+    var currentAddressbook;
 
-      $rootScope.currentFolder = stateAddressbook;
+    $rootScope.currentFolder = stateAddressbook;
+    $rootScope.card = null;
 
       $scope.newComponent = function(ev) {
         $mdDialog.show({
@@ -19,13 +20,13 @@
           clickOutsideToClose: true,
           escapeToClose: true,
           template: [
-            '<md-dialog aria-label="Create component">',
+            '<md-dialog aria-label="' + l('Create component') + '">',
             '  <md-content>',
             '    <div layout="column">',
-            '      <md-button ng-click="createContact()">',
+            '      <md-button ng-click="create(\'card\')">',
             '        ' + l('Contact'),
             '      </md-button>',
-            '      <md-button ng-click="createList()">',
+            '      <md-button ng-click="create(\'list\')">',
             '        ' + l('List'),
             '      </md-button>',
             '    </div>',
@@ -33,18 +34,20 @@
             '</md-dialog>'
           ].join(''),
           locals: {
-            state: $state
+            state: $state,
+            addressbookId: $scope.currentFolder.id
           },
           controller: ComponentDialogController
         });
-        function ComponentDialogController(scope, $mdDialog, state) {
-          scope.createContact = function() {
-            state.go('app.addressbook.new', { addressbookId: $scope.currentFolder.id, contactType: 'card' });
+
+        /**
+         * @ngInject
+         */
+        ComponentDialogController.$inject = ['scope', '$mdDialog', 'state', 'addressbookId'];
+        function ComponentDialogController(scope, $mdDialog, state, addressbookId) {
+          scope.create = function(type) {
             $mdDialog.hide();
-          }
-          scope.createList = function() {
-            state.go('app.addressbook.new', { addressbookId: $scope.currentFolder.id, contactType: 'list' });
-            $mdDialog.hide();
+            state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
           }
         }
       };
