@@ -296,7 +296,8 @@
           <md-list-item ng-repeat="currentCard in currentFolder.cards track by currentCard.id">
             <div layout="row" flex="true"
                  ng-class="{_selected: card.id == currentCard.id}"
-                 ng-click="toggleDetailView()">
+                 ng-click="toggleDetailView()"
+                 ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
               <div ng-show="currentCard.tag == 'vcard'">
                 <sg-gravatar-image class="md-tile-left"
                                    email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
@@ -307,10 +308,8 @@
                 <!--list avatar-->
               </div>
               <div class="sg-tile-content">
-                <a ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
-                  <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                  <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
-                </a>
+                <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
               </div>
             </div>
           </md-list-item>
@@ -326,7 +325,7 @@
 
       <!-- This extra container is used to animate views transitions
            double quotes in ng-animate is not a typo                         -->
-      <div ng-show="card" id="detailView" class="view-detail" layout="column">
+      <div id="detailView" class="view-detail ng-cloak" ng-show="card" layout="column">
         <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
       </div>
 
@@ -337,12 +336,9 @@
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxContactsUserRightsEditor" />
   </script>
+
   <script type="text/ng-template" id="UIxContactViewTemplate">
     <var:component className="UIxContactViewTemplate" />
   </script>
-
-
-
-    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
 
 </var:component>
