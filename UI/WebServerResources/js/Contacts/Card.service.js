@@ -115,10 +115,12 @@
   Card.prototype.init = function(data, partial) {
     this.refs = [];
     angular.extend(this, data);
-    if (!this.shortFormat)
-      this.shortFormat = this.$shortFormat();
-    if (!this.image)
-      this.image = Card.$gravatar(this.$preferredEmail(partial), 32);
+    if (!this.$$fullname)
+      this.$$fullname = this.$fullname();
+    if (!this.$$email)
+      this.$$email = this.$preferredEmail();
+    if (!this.$$image)
+      this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32);
   };
 
   /**

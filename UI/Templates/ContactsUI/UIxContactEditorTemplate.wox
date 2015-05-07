@@ -319,9 +319,9 @@
             <md-contact-chips
                 ng-model="card.refs"
                 md-contacts="currentFolder.$filter($query, {dry: true, excludeLists: true})"
-                md-contact-name="shortFormat"
-                md-contact-image="image"
-                md-contact-email="email"
+                md-contact-name="$$fullname"
+                md-contact-image="$$image"
+                md-contact-email="$$email"
                 md-require-match="true"
                 filter-selected="false"
                 label:placeholder="Add Member"><!-- members --></md-contact-chips>
