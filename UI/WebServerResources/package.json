@@ -11,7 +11,7 @@
     "grunt-contrib-watch": ">=0.5.3",
     "grunt-ng-annotate": ">=0.10.0",
     "grunt-postcss": "^0.3.0",
-    "grunt-sass": ">=0.18.0",
+    "grunt-sass": "0.18.1",
     "kss": "^2.0.2"
   }
 }
