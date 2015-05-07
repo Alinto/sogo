@@ -104,16 +104,20 @@
           usersWithACL: $scope.currentFolder.$acl.$users(),
           User: User,
           stateAddressbook: $scope.currentFolder,
-          q: $q
+          $q: $q
         }
       });
-      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, stateAddressbook, q) {
+      /**
+       * @ngInject
+       */
+      AddressBookACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'stateAddressbook', '$q'];
+      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, stateAddressbook, $q) {
         $scope.users = usersWithACL; // ACL users
         $scope.stateAddressbook = stateAddressbook;
         $scope.userToAdd = '';
         $scope.searchText = '';
         $scope.userFilter = function($query) {
-          var deferred = q.defer();
+          var deferred = $q.defer();
           User.$filter($query).then(function(results) {
             deferred.resolve(results)
           });
@@ -148,13 +152,15 @@
             Dialog.alert(l('Warning'), l('An error occured please try again.'))
           });
         };
-        $scope.addUser = function(data) {            
-          stateAddressbook.$acl.$addUser(data).then(function() {
-            $scope.userToAdd = '';
-            $scope.searchText = '';
-          }, function(error) {
-            Dialog.alert(l('Warning'), error);
-          });
+        $scope.addUser = function(data) {
+          if (data) {
+            stateAddressbook.$acl.$addUser(data).then(function() {
+              $scope.userToAdd = '';
+              $scope.searchText = '';
+            }, function(error) {
+              Dialog.alert(l('Warning'), error);
+            });
+          }
         };
         $scope.selectUser = function(user) {
           // Check if it is a different user

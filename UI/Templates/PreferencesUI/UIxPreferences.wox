@@ -448,8 +448,8 @@
                 <md-contact-chips
                     ng-model="app.preferences.settings.Calendar.PreventInvitationsWhitelist"
                     md-contacts="app.userFilter($query)"
-                    md-contact-name="shortFormat"
-                    md-contact-image="image"
+                    md-contact-name="cn"
+                    md-contact-image="$$image"
                     md-contact-email="c_email"
                     md-require-match="md-require-match"
                     filter-selected="false"

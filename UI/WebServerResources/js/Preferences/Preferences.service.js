@@ -133,7 +133,7 @@
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
       var h = {};
       _.each(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
-        h[user.uid] = user.shortFormat;
+        h[user.uid] = user.$$shortFormat;
 
         preferences.settings.Calendar.PreventInvitationsWhitelist = h;
       });

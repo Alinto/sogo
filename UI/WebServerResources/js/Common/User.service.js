@@ -63,10 +63,10 @@
    */
   User.prototype.init = function(data) {
     angular.extend(this, data);
-    if (!this.shortFormat)
-      this.shortFormat = this.$shortFormat();
-    if (!this.image)
-      this.image = User.$gravatar(this.c_email);
+    if (!this.$$shortFormat)
+      this.$$shortFormat = this.$shortFormat();
+    if (!this.$$image)
+      this.$$image = this.image || User.$gravatar(this.c_email);
   };
 
   /**
