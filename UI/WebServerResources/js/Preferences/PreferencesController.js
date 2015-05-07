@@ -146,11 +146,8 @@
     }
 
     function userFilter($query) {
-      var deferred = $q.defer();
-      User.$filter($query).then(function(results) {
-        deferred.resolve(results)
-      });
-      return deferred.promise;
+      User.$filter($query);
+      return User.$users;
     }
     
     function save() {

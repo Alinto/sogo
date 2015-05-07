@@ -40,10 +40,19 @@
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search) {
-    var param = {search: search};
-    if (!search)
-      return User.$q.when([]);
-    return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
+    var deferred = User.$q.defer(),
+        param = {search: search};
+
+    if (!search) {
+      User.$users = [];
+      deferred.resolve(User.$users);
+      return deferred.promise;
+    }
+    if (angular.isUndefined(User.$users)) {
+      User.$users = [];
+    }
+
+    User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results = [];
       angular.forEach(response.users, function(data) {
         console.debug(JSON.stringify(data, undefined, 2));
@@ -51,8 +60,10 @@
         results.push(user);
       });
       User.$users = results;
-      return results;
-    });
+      deferred.resolve(results);
+    }, deferred.reject);
+
+    return deferred.promise;
   };
 
   /**

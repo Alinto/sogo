@@ -453,8 +453,7 @@
                     md-contact-email="c_email"
                     md-require-match="md-require-match"
                     filter-selected="false"
-                    placeholder="Add">
-                  </md-contact-chips>
+                    placeholder="Add"><!-- users --></md-contact-chips>
               </div>
 
             </div>

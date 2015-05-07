@@ -318,7 +318,7 @@
             </label>
             <md-contact-chips
                 ng-model="card.refs"
-                md-contacts="currentFolder.$filter($query, {dry: true, excludeLists: true})"
+                md-contacts="userFilter($query)"
                 md-contact-name="$$fullname"
                 md-contact-image="$$image"
                 md-contact-email="$$email"

@@ -16,6 +16,7 @@
     $scope.allUrlTypes = Card.$URL_TYPES;
     $scope.allAddressTypes = Card.$ADDRESS_TYPES;
     $scope.categories = {};
+    $scope.userFilterResults = [];
 
     $scope.addOrgUnit = function() {
       var i = $scope.card.$addOrgUnit('');
@@ -40,6 +41,12 @@
     $scope.addMember = function() {
       var i = $scope.card.$addMember('');
       focus('ref_' + i);
+    };
+    $scope.userFilter = function($query) {
+      $scope.currentFolder.$filter($query, {dry: true, excludeLists: true}).then(function(results) {
+        $scope.userFilterResults = results;
+      });
+      return $scope.userFilterResults;
     };
     $scope.save = function(form) {
       if (form.$valid) {
