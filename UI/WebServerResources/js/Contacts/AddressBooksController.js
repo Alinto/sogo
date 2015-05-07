@@ -117,11 +117,7 @@
         $scope.userToAdd = '';
         $scope.searchText = '';
         $scope.userFilter = function($query) {
-          var deferred = $q.defer();
-          User.$filter($query).then(function(results) {
-            deferred.resolve(results)
-          });
-          return deferred.promise;
+          return User.$filter($query);
         };
         $scope.closeModal = function() {
           stateAddressbook.$acl.$resetUsersRights(); // cancel changes
