@@ -6,11 +6,14 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$scope', '$rootScope', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($scope, $rootScope, $stateParams, stateAccount, stateMailbox, $timeout, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'stateAccount', 'stateMailbox', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($scope, $rootScope, $state, $stateParams, stateAccount, stateMailbox, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     $scope.account = stateAccount;
     $rootScope.mailbox = stateMailbox;
     $rootScope.currentFolder = stateMailbox;
+    $scope.selectMessage = function(message) {
+      $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
+    };
   }
 
   angular

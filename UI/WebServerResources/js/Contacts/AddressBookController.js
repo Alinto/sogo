@@ -13,6 +13,10 @@
     $rootScope.currentFolder = stateAddressbook;
     $rootScope.card = null;
 
+    $scope.selectCard = function(card) {
+      $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
+    };
+
       $scope.newComponent = function(ev) {
         $mdDialog.show({
           parent: angular.element(document.body),

@@ -293,24 +293,23 @@
              </div>
         -->
         <md-list vs-repeat="72" vs-scroll-parent="#contactsList">
-          <md-list-item ng-repeat="currentCard in currentFolder.cards track by currentCard.id">
-            <div layout="row" flex="true"
-                 ng-class="{_selected: card.id == currentCard.id}"
-                 ng-click="toggleDetailView()"
-                 ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
-              <div ng-show="currentCard.tag == 'vcard'">
-                <sg-gravatar-image class="md-tile-left"
-                                   email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
-                                   size="48"><!-- gravatar -->
-                </sg-gravatar-image>
-              </div>
-              <div class="sg-list-avatar" ng-show="currentCard.tag == 'vlist'">
-                <!--list avatar-->
-              </div>
-              <div class="sg-tile-content">
-                <div class="sg-md-body-multi contact-name" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                <div class="sg-md-subhead-multi contact-email">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
-              </div>
+          <md-list-item
+              ng-repeat="currentCard in currentFolder.cards track by currentCard.id"
+              ng-class="{'sg-active': card.id == currentCard.id}"
+              ng-click="selectCard(currentCard)"
+              ui-sref-active="sg-active"
+              ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
+            <sg-gravatar-image class="md-tile-left"
+                               ng-show="currentCard.tag == 'vcard'"
+                               email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
+                               size="48"><!-- gravatar -->
+            </sg-gravatar-image>
+            <div class="sg-list-avatar" ng-show="currentCard.tag == 'vlist'">
+              <!--list avatar-->
+            </div>
+            <div class="sg-tile-content">
+              <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+              <div class="sg-md-body-multi">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
             </div>
           </md-list-item>
         </md-list>

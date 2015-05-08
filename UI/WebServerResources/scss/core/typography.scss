@@ -386,10 +386,6 @@ html p {
   line-height: $sg-line-height-2;
   font-weight: $sg-font-regular;
 }
-/// @alias .body-1
-.#{$md}-body-multi {
-  @extend .#{$md}-body-1;
-}
 .#{$md}-body-2 {
   $lineHeight : $sg-line-height-2 + $sg-md-typo-baseline;
   font-size: $sg-font-size-2;
@@ -398,10 +394,6 @@ html p {
   margin-top: ($lineHeight * -1);
   margin-bottom: $lineHeight;
 }
-/// @alias .body-2
-.#{$md}-body-solo {
-  @extend .#{$md}-body-2;
-}
 .#{$md}-subhead-1 {
   $lineHeight : $sg-line-height-3;
   font-size: $sg-font-size-3;
@@ -409,10 +401,6 @@ html p {
   font-weight: $sg-font-regular;
   margin-top: ($lineHeight * -1);
   margin-bottom: $lineHeight;
-}
-/// @alias .subhead-1
-.#{$md}-subhead-multi {
-  @extend .#{$md}-subhead-1;
 }
 .#{$md}-subhead-2 {
   $lineHeight : $sg-line-height-3 + $sg-md-typo-baseline;

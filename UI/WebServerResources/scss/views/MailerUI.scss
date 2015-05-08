@@ -11,6 +11,16 @@
   transform: translateY(-100%); // Compensate the container top-margin
 }
 
+.unread {
+  .#{$md}-subhead-multi,
+  .#{$md}-body-multi {
+    font-weight: $sg-font-medium;
+  }
+  .msg-date {
+    color: sg-color($sogoBlue, 600);
+  }
+}
+
 .msg-header-content {
   display: flex;
   flex-direction: column;

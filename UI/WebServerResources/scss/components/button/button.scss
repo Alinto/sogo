@@ -8,8 +8,8 @@
 
 // Buttons for the sidenav folder tree
 // ------------------------------------
-sg-folder-tree .md-button,
-md-sidenav md-list .md-button {
+md-sidenav md-list .md-button,
+.view-list md-list .md-button {
   // dirty fix to squash the theme style
   background-color: transparent !important;
   padding: 0 $mg;
@@ -18,6 +18,11 @@ md-sidenav md-list .md-button {
   text-transform: initial;
   font-size: sg-size(button);
   -webkit-font-smoothing: auto;
+}
+
+.view-list md-list .md-button {
+  // Gain some space in lists
+  padding: 0;
 }
 
 .md-sidenav-left .md-button [class^="md-icon"] {
