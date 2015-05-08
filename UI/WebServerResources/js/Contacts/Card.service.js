@@ -26,6 +26,8 @@
       // The promise will be unwrapped first
       this.$unwrap(futureCardData);
     }
+
+    this.selected = false;
   }
 
   Card.$TEL_TYPES = ['work', 'home', 'cell', 'fax', 'pager'];

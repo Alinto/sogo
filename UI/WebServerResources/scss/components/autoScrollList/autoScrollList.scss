@@ -80,3 +80,8 @@
   margin-right: 0;
   margin-left: 0;
 }
+.sg-selected-avatar {
+  @extend .md-tile-left-selected;
+  margin-right: 0;
+  margin-left: 0;
+}

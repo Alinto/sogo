@@ -95,3 +95,7 @@ div.md-tile-left {
   @extend .md-tile-left;
   content: "\f2d4";
 }
+.md-tile-left-selected:before {
+  @extend .md-tile-left;
+  content: "\f299";
+}

@@ -23,11 +23,11 @@
     };
     $scope.doDelete = function() {
       stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
-        // Remove card from list of addressbook
+        // Remove message from list of messages
         stateMailbox.$messages = _.reject(stateMailbox.$messages, function(o) {
           return o.uid == stateMessage.uid;
         });
-        // Remove card object from scope
+        // Remove message object from scope
         $rootScope.message = null;
         $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) });
       });

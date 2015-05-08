@@ -71,6 +71,16 @@
     });
   };
 
+  AddressBook.prototype.$selectedCount = function() {
+    var count;
+    
+    count = 0;
+    if (this.cards) {
+      count = (_.filter(this.cards, function(card) { return card.selected })).length;
+    }
+    return count;
+  };
+
   /**
    * @memberof AddressBook
    * @desc Add a new addressbook to the static list of addressbooks
@@ -262,6 +272,22 @@
       d.reject(data);
     });
     return d.promise;
+  };
+
+  /**
+   * @function $deleteCards
+   * @memberof AddressBook.prototype
+   * @desc Delete multiple cards from addressbook.
+   * @return a promise of the HTTP operation
+   */
+  AddressBook.prototype.$deleteCards = function(cards) {
+
+    var uids = _.map(cards, function(card) { return card.id });
+    var _this = this;
+    
+    return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: uids}).then(function() {
+      _this.cards = _.difference(_this.cards, cards);
+    });
   };
 
   /**

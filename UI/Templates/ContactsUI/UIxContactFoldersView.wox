@@ -254,7 +254,9 @@
       <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
         <var:component className="UIxTopnavToolbarTemplate" />
       </div>
-      <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
+      <div class="md-toolbar-tools md-toolbar-tools-bottom"
+           layout="row" layout-align="space-between center"
+           ng-show="currentFolder.$selectedCount() == 0">
         <div class="view-list sg-padded" layout="row" layout-align="space-between center"
              sg-search="currentFolder.$filter(searchText, { search: searchField })">
           <md-input-container class="sg-search-field-container">
@@ -270,6 +272,15 @@
             </md-select>
           </div>
         </div>
+      </div>
+      <div layout="row" layout-align="space-between center" ng-show="currentFolder.$selectedCount() > 0">
+        <md-button ng-click="unselectCards()">
+          <i class="md-icon-arrow-back"><!-- unselect all --></i>
+        </md-button>
+        <label>{{currentFolder.$selectedCount()}} selected</label>
+        <md-button ng-click="confirmDeleteSelectedCards()">
+          <i class="md-icon-delete"><!-- delete --></i>
+        </md-button>
       </div>
     </md-toolbar>
     <div layout="row" class="md-flex" layout-align="space-between">
@@ -299,17 +310,25 @@
               ng-click="selectCard(currentCard)"
               ui-sref-active="sg-active"
               ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: currentCard.id})">
-            <sg-gravatar-image class="md-tile-left"
-                               ng-show="currentCard.tag == 'vcard'"
-                               email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
-                               size="48"><!-- gravatar -->
-            </sg-gravatar-image>
-            <div class="sg-list-avatar" ng-show="currentCard.tag == 'vlist'">
-              <!--list avatar-->
+            <div class="sg-selected-avatar" ng-show="currentCard.selected"
+                 ng-click="currentCard.selected = !currentCard.selected">
+              <!-- selected avatar -->
             </div>
-            <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-              <div class="sg-md-body-multi">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
+              <sg-gravatar-image class="md-tile-left"
+                                 ng-show="notSelectedComponent(currentCard,'vcard')"
+                                 ng-click="currentCard.selected = !currentCard.selected"
+                                 email="{{currentCard.$preferredEmail(currentFolder.$query)}}"
+                                 size="48">
+                <!-- gravatar -->
+              </sg-gravatar-image>
+              <div class="sg-list-avatar"
+                   ng-show="notSelectedComponent(currentCard, 'vlist')"
+                   ng-click="currentCard.selected = !currentCard.selected">
+                <!--list avatar-->
+              </div>
+              <div class="sg-tile-content">
+                <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                <div class="sg-md-body-multi">{{currentCard.$preferredEmail(currentFolder.$query)}}</div>
             </div>
           </md-list-item>
         </md-list>

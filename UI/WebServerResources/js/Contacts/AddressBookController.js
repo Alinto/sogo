@@ -55,7 +55,27 @@
           }
         }
       };
-    }
+
+    $scope.notSelectedComponent = function(currentCard, type) {
+      return (currentCard.tag == type && !currentCard.selected);
+    };
+
+    $scope.unselectCards = function() {
+      _.each($rootScope.currentFolder.cards, function(card) { card.selected = false; });
+    };
+    
+    $scope.confirmDeleteSelectedCards = function() {
+      Dialog.confirm(l('Warning'),
+                     l('Are you sure you want to delete the selected contacts?'))
+        .then(function() {
+          // User confirmed the deletion
+          var selectedCards = _.filter($rootScope.currentFolder.cards, function(card) { return card.selected });
+          $rootScope.currentFolder.$deleteCards(selectedCards);
+        },  function(data, status) {
+          // Delete failed
+        });
+    };
+  }
 
   angular
     .module('SOGo.ContactsUI')  

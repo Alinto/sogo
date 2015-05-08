@@ -301,12 +301,13 @@
 - (id) batchDeleteAction
 {
   WOResponse *response;
-  NSString *idsParam;
+  NSDictionary *data;
   NSArray *ids;
 
-  idsParam = [[context request] formValueForKey: @"ids"];
-  ids = [idsParam componentsSeparatedByString: @","];
-  if ([ids count])
+  data = [[[context request] contentAsString] objectFromJSONString];
+  ids = [data objectForKey: @"uids"];
+  
+  if ([ids isKindOfClass: [NSArray class]] && [ids count])
     {
       clientObject = [self clientObject];
       [clientObject deleteEntriesWithIds: ids];
