@@ -71,16 +71,6 @@
     });
   };
 
-  AddressBook.prototype.$selectedCount = function() {
-    var count;
-    
-    count = 0;
-    if (this.cards) {
-      count = (_.filter(this.cards, function(card) { return card.selected })).length;
-    }
-    return count;
-  };
-
   /**
    * @memberof AddressBook
    * @desc Add a new addressbook to the static list of addressbooks
@@ -183,6 +173,22 @@
     return this.$futureAddressBookData.then(function(data) {
       return data.id;
     });
+  };
+
+  /**
+   * @function $selectedCount
+   * @memberof AddressBook.prototype
+   * @desc Return the number of cards selected by the user.
+   * @returns the number of selected cards
+   */
+  AddressBook.prototype.$selectedCount = function() {
+    var count;
+
+    count = 0;
+    if (this.cards) {
+      count = (_.filter(this.cards, function(card) { return card.selected })).length;
+    }
+    return count;
   };
 
   /**
