@@ -26,8 +26,6 @@
       // The promise will be unwrapped first
       this.$unwrap(futureCardData);
     }
-
-    this.selected = false;
   }
 
   Card.$TEL_TYPES = ['work', 'home', 'cell', 'fax', 'pager'];
@@ -123,6 +121,7 @@
       this.$$email = this.$preferredEmail();
     if (!this.$$image)
       this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32);
+    this.selected = false;
   };
 
   /**
