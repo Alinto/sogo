@@ -27,6 +27,7 @@
       // The promise will be unwrapped first
       this.$unwrap(futureMessageData);
     }
+    this.selected = false;
   }
 
   /**

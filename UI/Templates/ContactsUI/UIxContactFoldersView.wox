@@ -273,7 +273,7 @@
           </div>
         </div>
       </div>
-      <div layout="row" layout-align="space-between center" ng-show="currentFolder.$selectedCount() > 0">
+      <div layout="row" layout-align="start center" ng-show="currentFolder.$selectedCount() > 0">
         <md-button ng-click="unselectCards()">
           <i class="md-icon-arrow-back"><!-- unselect all --></i>
         </md-button>

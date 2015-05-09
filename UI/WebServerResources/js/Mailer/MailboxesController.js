@@ -59,6 +59,24 @@
         });
     };
 
+    $scope.unselectMessages = function() {
+      _.each($rootScope.mailbox.$messages, function(message) { message.selected = false; });
+    };
+
+    $scope.confirmDeleteSelectedMessages = function() {
+      Dialog.confirm(l('Warning'),
+                     l('Are you sure you want to delete the selected messages?'))
+        .then(function() {
+          // User confirmed the deletion
+          var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
+          var selectedUIDs = _.pluck(selectedMessages, 'uid');
+          $rootScope.mailbox.$deleteMessages(selectedUIDs).then(function() {
+            $rootScope.mailbox.$messages = _.difference($rootScope.mailbox.$messages, selectedMessages);
+          });
+        },  function(data, status) {
+          // Delete failed
+        });
+    };
     if ($state.current.name == 'mail' && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
       // Redirect to first mailbox of first account if no mailbox is selected
       var account = $scope.accounts[0];

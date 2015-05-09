@@ -11,9 +11,11 @@
     $scope.account = stateAccount;
     $rootScope.mailbox = stateMailbox;
     $rootScope.currentFolder = stateMailbox;
+    
     $scope.selectMessage = function(message) {
       $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
     };
+
   }
 
   angular

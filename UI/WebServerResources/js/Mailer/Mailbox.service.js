@@ -144,6 +144,22 @@
   };
 
   /**
+   * @function $selectedCount
+   * @memberof Mailbox.prototype
+   * @desc Return the number of messages selected by the user.
+   * @returns the number of selected messages
+   */
+  Mailbox.prototype.$selectedCount = function() {
+    var count;
+
+    count = 0;
+    if (this.$messages) {
+      count = (_.filter(this.$messages, function(message) { return message.selected })).length;
+    }
+    return count;
+  };
+
+  /**
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox
@@ -348,6 +364,7 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$deleteMessages = function(uids) {
+    var _this = this;
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
   };
 

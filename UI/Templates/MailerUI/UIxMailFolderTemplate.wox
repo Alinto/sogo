@@ -20,9 +20,16 @@
           ng-click="selectMessage(currentMessage)"
           ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
           ui-sref-active="sg-active">
+        <div class="sg-selected-avatar" ng-show="currentMessage.selected"
+             ng-click="currentMessage.selected = !currentMessage.selected">
+          <!-- selected avatar -->
+        </div>
         <sg-gravatar-image class="md-tile-left"
+                           ng-show="!currentMessage.selected"
+                           ng-click="currentMessage.selected = !currentMessage.selected"
                            email="{{currentMessage['from'][0].email}}"
-                           size="48"><!-- gravatar -->
+                           size="48">
+          <!-- gravatar -->
         </sg-gravatar-image>
         <div class="sg-tile-content">
           <span class="msg-date"

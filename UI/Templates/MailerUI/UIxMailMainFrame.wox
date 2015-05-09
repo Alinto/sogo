@@ -318,7 +318,9 @@
             </md-button>
           </div>
         </div>
-        <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
+        <div class="md-toolbar-tools md-toolbar-tools-bottom"
+             layout="row" layout-align="space-between center"
+             ng-show="mailbox.$selectedCount() == 0">
           <div class="view-list cols-6 sg-padded" layout="row" layout-align="space-between center"
                sg-search="mailbox.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
             <md-input-container class="sg-search-field-container">
@@ -337,6 +339,18 @@
 
             </div>
           </div>
+        </div>
+        <div layout="row" layout-align="start center" ng-show="mailbox.$selectedCount() > 0">
+          <md-button ng-click="unselectMessages()">
+            <i class="md-icon-arrow-back"><!-- unselect all --></i>
+          </md-button>
+          <label>{{mailbox.$selectedCount()}} selected</label>
+          <md-button ng-click="confirmDeleteSelectedMessages()">
+            <i class="md-icon-delete"><!-- delete --></i>
+          </md-button>
+          <md-button>
+            <i class="md-icon-star"><!-- flag mails --></i>
+          </md-button>
         </div>
       </md-toolbar>
       <div layout="row" ui-view="mailbox"><!-- messages list --></div>
