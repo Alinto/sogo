@@ -281,6 +281,9 @@
         <md-button ng-click="confirmDeleteSelectedCards()">
           <i class="md-icon-delete"><!-- delete --></i>
         </md-button>
+        <md-button>
+          <i class="md-icon-email"><!-- email contacts --></i>
+        </md-button>
       </div>
     </md-toolbar>
     <div layout="row" class="md-flex" layout-align="space-between">
