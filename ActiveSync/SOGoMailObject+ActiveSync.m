@@ -728,18 +728,18 @@ struct GlobalObjectId {
 
       [s appendFormat: @"<AllDayEvent xmlns=\"Email:\">%d</AllDayEvent>", ([event isAllDay] ? 1 : 0)];
 
-      // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
+      // StartTime -- https://msdn.microsoft.com/en-us/library/ee203365%28v=exchg.80%29.aspx
       if ([event startDate])
-        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationInContext: context]];
       
       if ([event timeStampAsDate])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationInContext: context]];
       else if ([event created])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationInContext: context]];
       
-      // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
+      // EndTime -- https://msdn.microsoft.com/en-us/library/ee158628(v=exchg.80).aspx
       if ([event endDate])
-        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationInContext: context]];
       
       // FIXME: Single appointment - others are not supported right now
       [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
