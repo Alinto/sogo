@@ -131,7 +131,7 @@
     },
     {
       columnName = c_partstates;
-      sqlType    = "VARCHAR(255)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {

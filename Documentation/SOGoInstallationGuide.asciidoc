@@ -2714,6 +2714,13 @@ sudo -u sogo mv ~/GNUstep/Defaults/.GNUstepDefaults \
     ~/GNUstep/Defaults/GNUstepDefaults.old
 ----
 
+h|2.1.18
+|Run the shell script `sql-update-2.1.17_to_2.1.18.sh` or
+`sql-update-2.1.18_to_2.1.18-mysql.sh` (if you use MySQL).
+
+This will grow the "participant states" field of calendar tables to a larger
+size.
+
 h|2.0.4
 |The parameter _SOGoForceIMAPLoginWithEmail_ is now deprecated and is
 replaced by _SOGoForceExternalLoginWithEmail_ (which extends the

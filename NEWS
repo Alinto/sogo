@@ -49,6 +49,7 @@ Bug fixes
  - now set MeetingMessageType only for EAS 14.1
  - now correctly handle external invitations using EAS
  - now correctly handle multiple email addresses in the GAL over EAS (#3102)
+ - now handle very large amount of participants correctly (#3175)
 
 2.2.17a (2015-03-15)
 --------------------
