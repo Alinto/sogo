@@ -47,7 +47,8 @@ Bug fixes
  - optional attendes on events are now shown properly (Zentyal)
  - fixed the EAS maximum response size being per-folder, and not global
  - now set MeetingMessageType only for EAS 14.1
- - now correct handle external invitations using EAS
+ - now correctly handle external invitations using EAS
+ - now correctly handle multiple email addresses in the GAL over EAS (#3102)
 
 2.2.17a (2015-03-15)
 --------------------

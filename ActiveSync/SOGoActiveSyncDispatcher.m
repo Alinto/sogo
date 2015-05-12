@@ -2109,13 +2109,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             inResponse: (WOResponse *) theResponse
 {
   SOGoContactSourceFolder *currentFolder;
+  NSArray *allKeys, *allContacts, *mails;
   NSDictionary *systemSources, *contact;
+  NSString *name, *query, *current_mail;
   SOGoContactFolders *contactFolders;
-  NSArray *allKeys, *allContacts;
   SOGoUserFolder *userFolder;
-  NSString *name, *query;
   NSMutableString *s;
   NSData *d;
+  id o;
 
   int i, j, total;
             
@@ -2166,18 +2167,50 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           
           // We get the LDIF entry of our record, for easier processing
           contact = [[currentFolder lookupName: [contact objectForKey: @"c_name"] inContext: context  acquire: NO] ldifRecord];
-          
-          [s appendString: @"<Result xmlns=\"Search:\">"];
-          [s appendString: @"<Properties>"];
-          [s appendFormat: @"<DisplayName xmlns=\"Gal:\">%@</DisplayName>", [contact objectForKey: @"displayname"]];
-          [s appendFormat: @"<FirstName xmlns=\"Gal:\">%@</FirstName>", [contact objectForKey: @"givenname"]];
-          [s appendFormat: @"<LastName xmlns=\"Gal:\">%@</LastName>", [contact objectForKey: @"sn"]];
-          [s appendFormat: @"<EmailAddress xmlns=\"Gal:\">%@</EmailAddress>", [contact objectForKey: @"mail"]];
-          [s appendFormat: @"<Phone xmlns=\"Gal:\">%@</Phone>", [contact objectForKey: @"telephonenumber"]];
-          [s appendFormat: @"<Company xmlns=\"Gal:\">%@</Company>", [contact objectForKey: @"o"]];
-          [s appendString: @"</Properties>"];
-          [s appendString: @"</Result>"];
-          total++;
+ 
+          o = [contact objectForKey: @"mail"];
+          if ([o isKindOfClass: [NSArray class]])
+            mails = o;
+          else
+            mails = [NSArray arrayWithObjects: o ? o : @"", nil];
+
+          for (total = 0; total < [mails count]; total++)
+            {
+              current_mail = [mails objectAtIndex: total];
+              
+              [s appendString: @"<Result xmlns=\"Search:\">"];
+              [s appendString: @"<Properties>"];
+              
+              if ((o = [contact objectForKey: @"displayname"]))
+                [s appendFormat: @"<DisplayName xmlns=\"Gal:\">%@</DisplayName>", o];
+              
+              if ((o = [contact objectForKey: @"title"]))
+                [s appendFormat: @"<Title xmlns=\"Gal:\">%@</Title>", o];
+              
+              if ((o = [contact objectForKey: @"givenname"]))
+                [s appendFormat: @"<FirstName xmlns=\"Gal:\">%@</FirstName>", o];
+              
+              if ((o = [contact objectForKey: @"sn"]))
+                [s appendFormat: @"<LastName xmlns=\"Gal:\">%@</LastName>", o];
+              
+              if ([current_mail length] > 0)
+                [s appendFormat: @"<EmailAddress xmlns=\"Gal:\">%@</EmailAddress>", current_mail];
+              
+              if ((o = [contact objectForKey: @"telephonenumber"]))
+                [s appendFormat: @"<Phone xmlns=\"Gal:\">%@</Phone>", o];
+              
+              if ((o = [contact objectForKey: @"homephone"]))
+                [s appendFormat: @"<HomePhone xmlns=\"Gal:\">%@</HomePhone>", o];
+              
+              if ((o = [contact objectForKey: @"mobile"]))
+                [s appendFormat: @"<MobilePhone xmlns=\"Gal:\">%@</MobilePhone>", o];
+              
+              if ((o = [contact objectForKey: @"o"]))
+                [s appendFormat: @"<Company xmlns=\"Gal:\">%@</Company>", o];
+              
+              [s appendString: @"</Properties>"];
+              [s appendString: @"</Result>"];
+            }
         }        
     }
   
