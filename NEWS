@@ -83,6 +83,7 @@ Bug fixes
  - prevent potential freebusy lookup crashes during timezone changes with repetitive events
  - improved GetItemEstimate to count all vasnished/deleted mails too
  - improvements to EAS SyncKey handling to avoid missing mails (#3048, #3058)
+ - fixed EAS replies decoding from Outlook (#3123)
 
 2.2.16 (2015-02-12)
 -------------------

@@ -384,6 +384,11 @@ static BOOL debugSoParts       = NO;
     _path = [_path componentsSeparatedByString: @"."];
   }
   
+  // deal with mails of type text/calendar
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"text"] &&
+      [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
+    return info;
+
   /* 
      For each path component, eg 1,1,3 
      
