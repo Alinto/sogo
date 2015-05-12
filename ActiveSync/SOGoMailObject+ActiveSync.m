@@ -49,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOApplication.h>
 
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
@@ -73,6 +74,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Mailer/SOGoMailBodyPart.h>
 #include <SOGo/SOGoUser.h>
 #include <SOGo/NSString+Utilities.h>
+
+#import <Appointments/SOGoAptMailNotification.h>
 
 typedef struct {
   uint32_t dwLowDateTime;
@@ -452,7 +455,7 @@ struct GlobalObjectId {
   // We get the right part based on the preference
   if (theType == 1 || theType == 2)
     {
-      if ([type isEqualToString: @"text"])
+      if ([type isEqualToString: @"text"] && ![subtype isEqualToString: @"calendar"])
         {
           NSString *s, *charset;
           
@@ -511,8 +514,36 @@ struct GlobalObjectId {
 - (iCalCalendar *) calendarFromIMIPMessage
 {
   NSDictionary *part;
+  NSString *type, *subtype;
   NSArray *parts;
   int i;
+
+  type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
+  subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
+
+  // process mail of type text/calendar
+  if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"calendar"])
+    {
+      iCalCalendar *calendar;
+      NSString *encoding;
+      NSData *calendarData;
+
+      encoding = [[[self bodyStructure] valueForKey: @"encoding"] lowercaseString];
+      calendarData = [[self fetchPlainTextParts] objectForKey: @""];
+
+      if ([encoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
+        calendarData = [calendarData dataByDecodingBase64];
+      else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
+        calendarData = [calendarData dataByDecodingQuotedPrintableTransferEncoding];
+
+      NS_DURING
+        calendar = [iCalCalendar parseSingleFromSource: calendarData];
+      NS_HANDLER
+        calendar = nil;
+      NS_ENDHANDLER
+
+      return calendar;
+    }
 
   // We check if we have at least 2 parts and if one of them is a text/calendar
   parts = [[self bodyStructure] objectForKey: @"parts"];
@@ -783,6 +814,39 @@ struct GlobalObjectId {
 
   nativeBodyType = 1;
   d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
+
+  if (calendar && !d)
+    {
+      WOApplication *app;
+      SOGoAptMailNotification *p;
+      NSString *pageName;
+
+      nativeBodyType = 2;
+
+      /* get WOApplication instance */
+      app = [WOApplication application];
+
+      /* create page name */
+      pageName = [NSString stringWithFormat: @"SOGoAptMail%@", @"Invitation"];
+      /* construct message content */
+      p = [app pageWithName: pageName inContext: context];
+      [p setApt: (iCalEvent *)  [[calendar events] lastObject]];
+
+      if ([[ [[calendar events] lastObject] organizer] cn] && [[[ [[calendar events] lastObject] organizer] cn] length])
+        {
+          [p setOrganizerName: [[ [[calendar events] lastObject] organizer] cn]];
+        }
+      else
+        {
+          [p setOrganizerName: [[SOGoUser userWithLogin: owner] cn]];
+        }
+
+      if (preferredBodyType == 1 && nativeBodyType == 2)
+        d = [[[p getBody] htmlToText] dataUsingEncoding: NSUTF8StringEncoding];
+      else
+        d = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+
+    }
   
   if (d)
     {
