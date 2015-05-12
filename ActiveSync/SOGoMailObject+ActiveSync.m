@@ -846,7 +846,10 @@ struct GlobalObjectId {
       if (preferredBodyType == 1 && nativeBodyType == 2)
         d = [[[p getBody] htmlToText] dataUsingEncoding: NSUTF8StringEncoding];
       else
-        d = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+        {
+          preferredBodyType = 2;
+          d = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+        }
 
     }
   
