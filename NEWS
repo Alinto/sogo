@@ -46,6 +46,7 @@ Bug fixes
  - Outlook clients can use reply all functionality on multidomain environment (Zentyal)
  - optional attendes on events are now shown properly (Zentyal)
  - fixed the EAS maximum response size being per-folder, and not global
+ - now set MeetingMessageType only for EAS 14.1
 
 2.2.17a (2015-03-15)
 --------------------

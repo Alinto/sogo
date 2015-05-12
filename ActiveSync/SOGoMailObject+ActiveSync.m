@@ -787,7 +787,9 @@ struct GlobalObjectId {
       [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId activeSyncRepresentationInContext: context]];
 
       // We set the right message type - we must set AS version to 14.1 for this
-      [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
+        [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+
       [s appendString: @"</MeetingRequest>"];
 
       // ContentClass
