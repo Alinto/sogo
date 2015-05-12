@@ -2490,6 +2490,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         [map setObject: email forKey: @"from"];
 
+      if ([[mailObject envelope] messageId])
+        [map setObject: [[mailObject envelope] messageId] forKey: @"in-reply-to"];
+
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
       

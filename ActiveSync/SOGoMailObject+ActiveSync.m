@@ -973,9 +973,18 @@ struct GlobalObjectId {
       [s appendFormat: @"</Categories>"];
     }
   
+  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] &&
+      [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
+    {
+      if ([self inReplyTo])
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+      else if ([self messageId])
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+    }
+
   // FIXME - support these in the future
-  //[s appendString: @"<ConversationId xmlns=\"Email2:\">foobar</ConversationId>"];
   //[s appendString: @"<ConversationIndex xmlns=\"Email2:\">zot=</ConversationIndex>"];
+
   
   // NativeBodyType -- http://msdn.microsoft.com/en-us/library/ee218276(v=exchg.80).aspx
   // This is a required child element.
