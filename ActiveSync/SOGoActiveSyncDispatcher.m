@@ -1454,6 +1454,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                            inContext: context
                                              acquire: NO];
+
+          // Create the appointment if it is not added to calendar yet
+          if ([appointmentObject isKindOfClass: [NSException class]])
+            {
+              appointmentObject = [[SOGoAppointmentObject alloc] initWithName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+                                                                  inContainer: collection];
+              [appointmentObject saveComponent: event];
+           }
         }
     }
      
@@ -1489,7 +1497,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else
     {
-      [theResponse setStatus: 500];
+      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+      [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
+      [s appendString: @"<Result>"];
+      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+      [s appendFormat: @"<Status>%d</Status>", 2];
+      [s appendString: @"</Result>"];
+      [s appendString: @"</MeetingResponse>"];
+      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+      [theResponse setContent: d];
     }
 }
 
