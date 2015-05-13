@@ -250,20 +250,45 @@
   };
 
   /**
+   * @function addTag
+   * @memberof Message.prototype
+   * @desc Add a mail tag on the current message.
+   * @param {string} tag - the tag name
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.addTag = function(tag) {
+    return this.$addOrRemoveTag('add', tag);
+  };
+
+  /**
+   * @function removeTag
+   * @memberof Message.prototype
+   * @desc Remove a mail tag from the current message.
+   * @param {string} tag - the tag name
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.removeTag = function(tag) {
+    return this.$addOrRemoveTag('remove', tag);
+  };
+
+  /**
    * @function $addOrRemoveTag
    * @memberof Message.prototype
    * @desc Add or remove a mail tag on the current message.
+   * @param {string} operation - the operation name to perform
+   * @param {string} tag - the tag name
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$addOrRemoveTag = function(operation, tag) {
-    var data = {};
+    var data = {
+      operation: operation,
+      msgUIDs: [this.uid],
+      flags: tag
+    };
 
-    data['operation'] = operation;
-    data['msgUIDs'] = [ this.uid ];
-    data['flags'] = tag;
-
-    return Message.$$resource.post(this.$mailbox.$id(), 'addOrRemoveLabel', data);
-  }
+    if (tag)
+      return Message.$$resource.post(this.$mailbox.$id(), 'addOrRemoveLabel', data);
+  };
 
   /**
    * @function $markAsFlaggedOrUnflagged
@@ -271,14 +296,18 @@
    * @desc Add or remove a the \\Flagged flag on the current message.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$markAsFlaggedOrUnflagged = function(operation) {
-    var data = {};
+  Message.prototype.toggleFlag = function() {
+    var _this = this,
+        action = 'markMessageFlagged';
 
-    if (operation == 'add') {
-      return Message.$$resource.post(this.id, 'markMessageFlagged', data);
-    }
+    if (this.isflagged)
+      action = 'markMessageUnflagged';
 
-    return Message.$$resource.post(this.id, 'markMessageUnflagged', data);
+    return Message.$$resource.post(this.id, action).then(function(data) {
+      Message.$timeout(function() {
+        _this.isflagged = !_this.isflagged;
+      });
+    });
   }
 
   /**

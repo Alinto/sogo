@@ -1,4 +1,4 @@
-/// icon.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// icon.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 
 @import 'extends';
@@ -29,4 +29,15 @@ src: url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAjEMAAsAA
   src: url('#{$md-font-path}/Material-Design-Iconic-Font.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+.msg-header {
+  .iconButton {
+    .md-icon-star {
+      color: sg-color($sogoGreen, 50) !important;
+      &.flagged {
+        color: sg-color($sogoBlue, 600) !important;
+      }
+    }
+  }
 }

@@ -189,7 +189,7 @@
    */
   stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
   function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
-    var message = _.find(stateMessages, function(messageObject) {
+    var message = _.find(stateMailbox.$messages, function(messageObject) {
       return messageObject.uid == $stateParams.messageId;
     });
 

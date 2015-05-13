@@ -14,9 +14,9 @@
     <header class="msg-header">
       <div class="msg-header-content">
         <div layout="row" layout-align="start center">
-          <md-button class="iconButton" aria-label="flagged" ng-click="markAsFlaggedOrUnflagged()">
-            <i ng-class="{'md-icon-star-outline' :
-                         !message.isflagged, 'md-icon-star': message.isflagged}"><!-- not flagged --></i>
+          <md-button class="iconButton" aria-label="flagged" ng-click="message.toggleFlag()">
+            <i class="md-icon-star"
+               ng-class="{'flagged': message.isflagged}"><!-- flag --></i>
           </md-button>
           <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
         </div>
@@ -42,12 +42,12 @@
           <md-chip-template>{{message.constructor.$tags[$chip][0]}}</md-chip-template>
           <button md-chip-remove="md-chip-remove"
                   class="md-chip-remove"
-                  ng-click="addOrRemoveTag('remove', $chip)">
+                  ng-click="message.removeTag($chip)">
             <i class="md-icon-close"><!-- delete tag --></i>
           </button>
           <md-autocomplete
               md-selected-item="tags.selected"
-              md-selected-item-change="addOrRemoveTag('add', tag)"
+              md-selected-item-change="message.addTag(tag)"
               md-search-text="tags.searchText"
               md-items="tag in message.constructor.filterTags(tags.searchText)"
               label:placeholder="Add a tag">

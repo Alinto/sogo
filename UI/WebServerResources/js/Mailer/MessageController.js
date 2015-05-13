@@ -10,17 +10,6 @@
   function MessageController($scope, $rootScope, $stateParams, $state, stateAccount, stateMailbox, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     $rootScope.message = stateMessage;
     $scope.tags = {};
-    $scope.addOrRemoveTag = function(operation, tag) {
-      if (tag) {
-        stateMessage.$addOrRemoveTag(operation, tag);
-      }
-    };
-    $scope.markAsFlaggedOrUnflagged = function() {
-      var operation = (stateMessage.isflagged ? 'remove' : 'add');
-      stateMessage.$markAsFlaggedOrUnflagged(operation).then(function() {
-        stateMessage.isflagged = !stateMessage.isflagged;
-      });
-    };
     $scope.doDelete = function() {
       stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
         // Remove message from list of messages
