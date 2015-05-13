@@ -30,7 +30,7 @@
         '  .fg-folder{{ ngModel.id }} {',
         '    color: {{ ngModel.color }} !important;',
         '  }',
-        '  .checkbox-folder{{ ngModel.id }}.md-checked .md-icon {',
+        '  .checkbox-folder{{ ngModel.id }} .md-icon {',
         '    background-color: {{ ngModel.color }} !important;',
         '  }',
         '</style>'
