@@ -39,14 +39,12 @@
         </div>
 
         <md-chips ng-model="message.flags">
-          <md-chip-template>
-            {{message.constructor.$tags[$chip][0]}}
-            <button md-chip-remove="md-chip-remove"
-                    class="md-chip-remove"
-                    ng-click="addOrRemoveTag('remove', $chip)">
-              <i class="md-icon-close"><!-- delete tag --></i>
-            </button>
-          </md-chip-template>
+          <md-chip-template>{{message.constructor.$tags[$chip][0]}}</md-chip-template>
+          <button md-chip-remove="md-chip-remove"
+                  class="md-chip-remove"
+                  ng-click="addOrRemoveTag('remove', $chip)">
+            <i class="md-icon-close"><!-- delete tag --></i>
+          </button>
           <md-autocomplete
               md-selected-item="tags.selected"
               md-selected-item-change="addOrRemoveTag('add', tag)"

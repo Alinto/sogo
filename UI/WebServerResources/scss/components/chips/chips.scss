@@ -1,2 +1,14 @@
 /// chips.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
+
+// Remove the line under the tags of the message viewer
+.msg-header {
+  md-chips {
+    .md-chips {
+      box-shadow: none;
+      &.md-focused {
+        box-shadow: none;
+      }
+    }
+  }
+}
