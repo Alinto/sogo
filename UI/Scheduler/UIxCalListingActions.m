@@ -75,6 +75,15 @@ static NSArray *tasksFields = nil;
 #define maxBlocks (offsetBlocks * 2)    // maximum number of blocks to search
 // for a free slot (10 days)
 
+@implementation NSArray (SOGoBlocksCompare)
+
+- (NSComparisonResult) compareBlock: (NSArray *) theOtherBlock
+{
+  return [[self objectAtIndex: 5] compare: [theOtherBlock objectAtIndex: 5]];
+}
+
+@end
+
 @implementation UIxCalListingActions
 
 + (void) initialize
@@ -483,7 +492,9 @@ static NSArray *tasksFields = nil;
             }
         }
     }
-  
+
+  [infos sortUsingSelector: @selector(compareBlock:)];
+
   return infos;
 }
 
