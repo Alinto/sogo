@@ -153,7 +153,7 @@
       columnName = c_nextalarm;
       sqlType    = "INT";
       allowsNull = YES;
-    }
+    },
     {
       columnName = c_description;
       sqlType    = "TEXT";
