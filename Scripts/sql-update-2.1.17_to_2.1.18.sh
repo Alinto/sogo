@@ -2,7 +2,8 @@
 
 set -e 
 # This script only works with PostgreSQL
-# updates c_partstates to text.
+# updates c_partstates to text
+# adds c_description to Calendar quick tables
 # http://www.sogo.nu/bugs/view.php?id=3175
 # the field length was actually changed in v2.2.18
 
@@ -35,11 +36,12 @@ fi
 
 sqlscript=""
 
-function growVC() {
+function adjustSchema() {
     oldIFS="$IFS"
     IFS=" "
-    part="`echo -e \"ALTER TABLE $table ALTER COLUMN c_partstates TYPE TEXT;\\n\"`";
-    sqlscript="$sqlscript$part"
+    part1="`echo -e \"ALTER TABLE $table ALTER COLUMN c_partstates TYPE TEXT;\\n\"`";
+    part2="`echo -e \"ALTER TABLE $table ADD COLUMN c_description TEXT;\\n\"`";
+    sqlscript="$sqlscript$part1$part2"
     IFS="$oldIFS"
 }
 
@@ -48,7 +50,7 @@ tables=`psql -t -U $username -h $hostname $database -c "select split_part(c_quic
 
 for table in $tables;
 do
-  growVC
+  adjustSchema
 done
 
 echo "$sqlscript" | psql -q -e -U $username -h $hostname $database
