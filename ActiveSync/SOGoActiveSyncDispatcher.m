@@ -1621,10 +1621,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               //
               // See http://msdn.microsoft.com/en-us/library/gg651088(v=exchg.80).aspx for Status response codes.
               //
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
               if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
                 {
                   // Previous move failed operation but we can recover the dstMessageId from previous request
-                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
                   [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]];
                   [s appendFormat: @"<Status>%d</Status>", 3];
                   [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
