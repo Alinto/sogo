@@ -166,7 +166,7 @@
     var _this = this,
         parts = [],
         _visit = function(part) {
-          if (part.type == "UIxMailPartAlternativeViewer") {
+          if (part.type == 'UIxMailPartAlternativeViewer') {
             _visit(_.find(part.content, function(alternatePart) {
               return part.preferredPart == alternatePart.contentType;
             }));
@@ -182,7 +182,8 @@
               part.safeContent = part.content;
               _this.$hasUnsafeContent = (part.safeContent.indexOf(' unsafe-') > -1);
             }
-            if (part.type == "UIxMailPartHTMLViewer") {
+            if (part.type == 'UIxMailPartHTMLViewer') {
+              part.html = true;
               if (_this.$loadUnsafeContent) {
                 if (angular.isUndefined(part.unsafeContent)) {
                   part.unsafeContent = document.createElement('div');
@@ -207,7 +208,14 @@
               }
               parts.push(part);
             }
+            else if (part.type == 'UIxMailPartICalViewer' ||
+                     part.type == 'UIxMailPartLinkViewer') {
+              // Trusted content that can be compiled (Angularly-speaking)
+              part.compile = true;
+              parts.push(part);
+            }
             else {
+              part.html = true;
               part.content = Message.$sce.trustAs('html', part.safeContent);
               parts.push(part);
             }

@@ -107,9 +107,9 @@
       <div class="msg-date sg-md-body-multi">
         <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
       </div>
-      <div class="mailer_mailcontent">
-        <div ng-repeat="part in message.$content()"
-             ng-bind-html="part.content"><!-- msg --></div>
+      <div class="mailer_mailcontent" ng-repeat="part in message.$content()">
+        <div ng-if="part.html" ng-bind-html="part.content"><!-- msg --></div>
+        <div ng-if="part.compile" sg-compile="part.content"><!-- msg --></div>
       </div>
     </div>
   </md-content>
