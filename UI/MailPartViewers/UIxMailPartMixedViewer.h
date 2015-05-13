@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2015 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -15,7 +15,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -27,9 +27,15 @@
 
 @interface UIxMailPartMixedViewer : UIxMailPartViewer
 {
-  id           childInfo;
-  unsigned int childIndex;
+  id         childInfo;
+  NSUInteger childIndex;
 }
+
+- (void) setChildInfo: (id) _info;
+- (id) childInfo;
+- (void) setChildIndex: (unsigned int) _index;
+- (id) childPartPath;
+
 
 @end
 

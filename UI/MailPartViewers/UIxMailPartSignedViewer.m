@@ -1,9 +1,6 @@
 /* UIxMailPartSignedViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +27,12 @@
 #endif
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
 #import <NGMime/NGPart.h>
 #import <Mailer/SOGoMailObject.h>
 
+#import "UIxMailRenderingContext.h"
 #import "UIxMailPartSignedViewer.h"
 
 @implementation UIxMailPartSignedViewer : UIxMailPartMixedViewer
@@ -210,5 +210,34 @@
   return nil;
 }
 #endif
+
+- (id) renderedPart {
+  id info, viewer;
+  NSArray *parts;
+  NSMutableArray *renderedParts;
+  NSUInteger i, max;
+
+  parts = [[self bodyInfo] objectForKey: @"parts"];
+  max = [parts count];
+  renderedParts = [NSMutableArray arrayWithCapacity: max];
+  for (i = 0; i < max; i++)
+    {
+      [self setChildIndex: i];
+      [self setChildInfo: [parts objectAtIndex: i]];
+      info = [self childInfo];
+      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo:info];
+      [viewer setBodyInfo: info];
+      [viewer setPartPath: [self childPartPath]];
+      [renderedParts addObject: [viewer renderedPart]];
+    }
+
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                         [self className], @"type",
+                       @"supports-smime", [NSNumber numberWithBool: [self supportsSMIME]],
+                       @"valid", [NSNumber numberWithBool: [self validSignature]],
+                       @"error", [self validationMessage],
+                       renderedParts, @"content",
+                       nil];
+}
 
 @end

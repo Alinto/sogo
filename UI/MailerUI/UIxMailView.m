@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2014 Inverse inc.
+  Copyright (C) 2005-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -215,11 +215,14 @@ static NSString *mailETag = nil;
 {
   // TODO: I would prefer to flatten the body structure prior rendering,
   //       using some delegate to decide which parts to select for alternative.
-  id info;
+  id info, viewer;
   
   info = [[self clientObject] bodyStructure];
 
-  return [[context mailRenderingContext] viewerForBodyInfo:info];
+  viewer = [[context mailRenderingContext] viewerForBodyInfo: info];
+  [viewer setBodyInfo: info];
+
+  return viewer;
 }
 
 /* actions */
@@ -232,9 +235,14 @@ static NSString *mailETag = nil;
   NSArray *addresses;
   SOGoMailObject *co;
   UIxEnvelopeAddressFormatter *addressFormatter;
+  UIxMailRenderingContext *mctx;
 
   co = [self clientObject];
   addressFormatter = [context mailEnvelopeAddressFormatter];
+
+  mctx = [[UIxMailRenderingContext alloc] initWithViewer: self context: context];
+  [context pushMailRenderingContext: mctx];
+  [mctx release];
 
   /* check etag to see whether we really must rerender */
   /*
@@ -280,7 +288,7 @@ static NSString *mailETag = nil;
                        [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
-                       [[self generateResponse] contentAsString], @"content",
+                       [[self contentViewerComponent] renderedPart], @"parts",
                        nil];
   if ([self messageSubject])
     [data setObject: [self messageSubject] forKey: @"subject"];
@@ -297,6 +305,10 @@ static NSString *mailETag = nil;
 
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
+
+  [response setHeader: mailETag forKey: @"etag"];
+
+  [[context popMailRenderingContext] reset];
 
   return response;
 }

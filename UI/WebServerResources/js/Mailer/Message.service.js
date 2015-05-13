@@ -163,31 +163,59 @@
    * @returns the HTML representation of the body
    */
   Message.prototype.$content = function() {
-    var _this = this;
-
-    if (this.$loadUnsafeContent) {
-      if (angular.isUndefined(this.unsafeContent)) {
-        this.unsafeContent = document.createElement('div');
-        this.unsafeContent.innerHTML = this.content;
-        angular.forEach(['src', 'data', 'classid', 'background', 'style'], function(suffix) {
-          var elements = _this.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
-              element,
-              value,
-              i;
-          for (i = 0; i < elements.length; i++) {
-            element = angular.element(elements[i]);
-            value = element.attr('unsafe-' + suffix);
-            element.attr(suffix, value);
-            element.removeAttr('unsafe-' + suffix);
+    var _this = this,
+        parts = [],
+        _visit = function(part) {
+          if (part.type == "UIxMailPartAlternativeViewer") {
+            _visit(_.find(part.content, function(alternatePart) {
+              return part.preferredPart == alternatePart.contentType;
+            }));
           }
-        });
-      }
-      this.$hasUnsafeContent = false;
-      return Message.$sce.trustAs('html', this.unsafeContent.innerHTML);
-    }
-    else {
-      return Message.$sce.trustAs('html', this.content);
-    }
+          else if (angular.isArray(part.content)) {
+            _.each(part.content, function(mixedPart) {
+              _visit(mixedPart);
+            });
+          }
+          else {
+            if (angular.isUndefined(part.safeContent)) {
+              // Keep a copy of the original content
+              part.safeContent = part.content;
+              _this.$hasUnsafeContent = (part.safeContent.indexOf(' unsafe-') > -1);
+            }
+            if (part.type == "UIxMailPartHTMLViewer") {
+              if (_this.$loadUnsafeContent) {
+                if (angular.isUndefined(part.unsafeContent)) {
+                  part.unsafeContent = document.createElement('div');
+                  part.unsafeContent.innerHTML = part.safeContent;
+                  angular.forEach(['src', 'data', 'classid', 'background', 'style'], function(suffix) {
+                    var elements = part.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
+                        element,
+                        value,
+                        i;
+                    for (i = 0; i < elements.length; i++) {
+                      element = angular.element(elements[i]);
+                      value = element.attr('unsafe-' + suffix);
+                      element.attr(suffix, value);
+                      element.removeAttr('unsafe-' + suffix);
+                    }
+                  });
+                }
+                part.content = Message.$sce.trustAs('html', part.unsafeContent.innerHTML);
+              }
+              else {
+                part.content = Message.$sce.trustAs('html', part.safeContent);
+              }
+              parts.push(part);
+            }
+            else {
+              part.content = Message.$sce.trustAs('html', part.safeContent);
+              parts.push(part);
+            }
+          }
+        };
+    _visit(this.parts);
+
+    return parts;
   };
 
   /**
@@ -391,7 +419,6 @@
         angular.extend(_this, data);
         _this.id = _this.$absolutePath();
         _this.$formatFullAddresses();
-        _this.$hasUnsafeContent = (_this.content.indexOf(' unsafe-') > -1);
         _this.$loadUnsafeContent = false;
         deferred.resolve(_this);
       });
