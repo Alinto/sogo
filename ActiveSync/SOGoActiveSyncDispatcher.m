@@ -113,7 +113,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"
