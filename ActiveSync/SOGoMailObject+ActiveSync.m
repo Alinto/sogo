@@ -973,7 +973,7 @@ struct GlobalObjectId {
       [s appendFormat: @"</Categories>"];
     }
   
-  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] &&
+  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
       [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
     {
       if ([self inReplyTo])
