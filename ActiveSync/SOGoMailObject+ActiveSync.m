@@ -219,6 +219,8 @@ struct GlobalObjectId {
   NSEnumerator *e;
   NSData *d;
 
+  BOOL ignore;
+
   textParts = [self fetchPlainTextParts];
   e = [textParts keyEnumerator];
   plainKey = nil;
@@ -227,15 +229,24 @@ struct GlobalObjectId {
 
   while ((key = [e nextObject]))
     {
-      // Don't use body parts from nested bodies if not of type multipart/alternative. - e.g. body of type message/rfc822
-      // Use only parts of level 0 or 1.
-      if ([key countOccurrencesOfString: @"."] > 1)
-        continue;
-      else if ([key countOccurrencesOfString: @"."] == 1)
+      // Walk the hierarchy up and check whether parents are of type mulipart - i.e. ignore message/rfc822
+      if ([key countOccurrencesOfString: @"."] > 0)
         {
-          // Ignore nested parts if the container is not of type multipart/alternative.
-          part = [self lookupInfoForBodyPart: [[key componentsSeparatedByString: @"."] objectAtIndex:0]];
-          if (!([[part valueForKey: @"type"] isEqualToString: @"multipart"] && [[part valueForKey: @"subtype"] isEqualToString: @"alternative"]))
+          NSMutableArray *a;
+
+          a = [[[key componentsSeparatedByString: @"."] mutableCopy] autorelease];
+          ignore = NO;
+
+          while ([a count] > 0)
+            {
+              [a removeLastObject];
+              part = [self lookupInfoForBodyPart: [a componentsJoinedByString: @"."]];
+
+              if (![[part valueForKey: @"type"] isEqualToString: @"multipart"])
+                ignore = YES;
+            }
+
+          if (ignore)
             continue;
         }
 

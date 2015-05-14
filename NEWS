@@ -53,6 +53,7 @@ Bug fixes
  - now correctly handle external invitations using EAS
  - now correctly handle multiple email addresses in the GAL over EAS (#3102)
  - now handle very large amount of participants correctly (#3175)
+ - fix message bodies not shown on some EAS devices (#3173)
 
 2.2.17a (2015-03-15)
 --------------------
