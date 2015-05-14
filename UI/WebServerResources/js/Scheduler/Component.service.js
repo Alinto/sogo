@@ -242,6 +242,7 @@
   Component.prototype.init = function(data) {
     this.categories = [];
     angular.extend(this, data);
+    this.destinationCalendar = this.pid;
   };
 
   /**

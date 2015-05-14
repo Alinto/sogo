@@ -617,6 +617,8 @@ static NSArray *reminderValues = nil;
   NSCalendarDate *now;
   NSMutableDictionary *dataWithOwner;
   NSString *owner;
+  SOGoAppointmentFolders *folders;
+  id destinationCalendar;
 
   now = [NSCalendarDate calendarDate];
   owner = [componentCalendar ownerInContext: context];
@@ -625,6 +627,17 @@ static NSArray *reminderValues = nil;
   dataWithOwner = [NSMutableDictionary dictionaryWithDictionary: data];
   [dataWithOwner setObject: owner forKey: @"owner"];
   [component setAttributes: dataWithOwner inContext: context];
+
+  destinationCalendar = [data objectForKey: @"destinationCalendar"];
+  if ([destinationCalendar isKindOfClass: [NSString class]])
+    {
+      folders = [[context activeUser] calendarsFolderInContext: context];
+      componentCalendar = [folders lookupName: [destinationCalendar stringValue]
+                                    inContext: context
+                                      acquire: 0];
+      [componentCalendar retain];
+
+    }
 
   [self _handleOrganizer];
 

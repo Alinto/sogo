@@ -430,6 +430,7 @@
  *
  * Save in [UIxComponentEditor setAttributes:]
  *
+ * @apiParam {String} [destinationCalendar]   ID of destination calendar
  * @apiParam {Object} [organizer]             Appointment organizer
  * @apiParam {String} organizer.name          Organizer's name
  * @apiParam {String} organizer.email         Organizer's email address

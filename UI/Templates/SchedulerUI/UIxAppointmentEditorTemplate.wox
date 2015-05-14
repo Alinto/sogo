@@ -39,7 +39,7 @@
       <!-- calendar -->
       <div class="pseudo-input-container">
         <label class="pseudo-input-label"><var:string label:value="Calendar"/></label>
-        <md-select ng-model="editor.event.pid" class="pseudo-input-field"
+        <md-select ng-model="editor.event.destinationCalendar" class="pseudo-input-field"
                    label:placeholder="Calendar">
           <md-option ng-repeat="calendar in ::editor.calendars"
                      ng-value="calendar.id">{{calendar.name}}</md-option>
