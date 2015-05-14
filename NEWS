@@ -18,6 +18,7 @@ Enhancements
  - during login, we now extract the domain from the user to accelerate authentication requests on sources
  - make sure sure email invitations can always be read by EAS clients
  - now able to print event/task's description (new components only) in the list view (#2881)
+ - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)

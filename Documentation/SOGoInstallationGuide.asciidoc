@@ -2439,6 +2439,11 @@ Defaults to `0`, which means no overwrite is performed.
 
 Setting this parameter to a value greater than `512` will
 have unexpected behaviour with various ActiveSync clients.
+|S |SOGoEASDebugEnabled
+|Parameter used to log the complete request and response of every single
+EAS command.
+
+Defaults to `NO`, which means no logging is performed.
 |=======================================================================
 
 Please be aware of the following limitations:
