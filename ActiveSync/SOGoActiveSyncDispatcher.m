@@ -61,6 +61,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSString+Encoding.h>
 
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
@@ -95,6 +96,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/NSArray+Utilities.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -110,6 +112,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailObject+Draft.h>
+#import <Mailer/NSString+Mail.h>
+
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
@@ -2389,26 +2394,19 @@ static BOOL debugOn = NO;
 }
 
 
-//
-// <?xml version="1.0"?>
-// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
-// <SmartForward xmlns="ComposeMail:">
-//  <ClientId>C9FF94FE-EA40-473A-B3E2-AAEE94F753A4</ClientId>
-//  <SaveInSentItems/>
-//  <ReplaceMime/>
-//  <Source>
-//   <FolderId>mail/INBOX</FolderId>
-//   <ItemId>82</ItemId>
-//  </Source>
-//  <MIME>... the data ...</MIME>
-// </SmartForward>
-//
-- (void) processSmartForward: (id <DOMElement>) theDocumentElement
-                  inResponse: (WOResponse *) theResponse
+- (void) _processSmartCommand: (id <DOMElement>) theDocumentElement
+                   inResponse: (WOResponse *) theResponse
+               isSmartForward: (BOOL ) isSmartForward
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  SOGoUserDefaults *ud;
+
+  BOOL htmlComposition, isHTML;
   id value;
+  
+  isHTML = NO;
+  ud = [[context activeUser] userDefaults];
 
   folderId = [[(id)[theDocumentElement getElementsByTagName: @"FolderId"] lastObject] textValue];
 
@@ -2457,10 +2455,14 @@ static BOOL debugOn = NO;
       NGMutableHashMap *map;
       NGMimeFileData *fdata;
       NSException *error;
+      NSArray *attachmentKeys;
+      NSMutableArray *attachments;
 
-      id body, bodyFromSmartForward;
-      NSString *fullName, *email;
+      id body, bodyFromSmartForward, htmlPart, textPart;
+      NSString *fullName, *email, *charset, *s;
       NSDictionary *identity;
+
+      int a;
 
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -2471,7 +2473,6 @@ static BOOL debugOn = NO;
                                             acquire: NO];
 
       mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
-
 
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
@@ -2493,8 +2494,8 @@ static BOOL debugOn = NO;
       else
         [map setObject: email forKey: @"from"];
 
-      if ([[mailObject envelope] messageId])
-        [map setObject: [[mailObject envelope] messageId] forKey: @"in-reply-to"];
+      if ([mailObject messageId])
+        [map setObject: [mailObject messageId] forKey: @"in-reply-to"];
 
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
@@ -2503,12 +2504,16 @@ static BOOL debugOn = NO;
       // we take the first part text/* part we see.
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
       bodyFromSmartForward = nil;
+      textPart = nil;
+      htmlPart = nil;
+
+      attachments = [NSMutableArray array];
 
       if ([[messageFromSmartForward body] isKindOfClass: [NGMimeMultipartBody class]])
         {
-          NGMimeBodyPart *part;
-          NSArray *parts;
-          int i;
+          NGMimeBodyPart *part, *apart;
+          NSArray *parts, *aparts;
+          int i, j;
           
           parts = [[messageFromSmartForward body] parts];
           
@@ -2516,37 +2521,159 @@ static BOOL debugOn = NO;
             {
               part = [parts objectAtIndex: i];
               
-              if ([[[part contentType] type] isEqualToString: @"text"])
+              if ([[[part contentType] type] isEqualToString: @"multipart"] && [[[part contentType] subType] isEqualToString: @"alternative"])
                 {
-                  [map setObject: [[part contentType] stringValue] forKey: @"content-type"];
-                  bodyFromSmartForward = [part body];
-                  break;
+                  aparts = [[part body] parts];
+                  for (j = 0; j < [aparts count]; j++)
+                    {
+                      apart = [aparts objectAtIndex: j];
+                      if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"html"])
+                          htmlPart = apart;
+                      if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"plain"])
+                          textPart = apart;
+                    }
                 }
+              else 
+                {
+                  if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"html"])
+                     htmlPart = part;
+                  else if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"plain"])
+                     textPart = part;
+                  else
+                     [attachments addObject: part];
+               }
             }
         }
       else
         {
-          [map setObject: [[messageFromSmartForward contentType] stringValue] forKey: @"content-type"];
-          bodyFromSmartForward = [messageFromSmartForward body];
+          if ([[[messageFromSmartForward contentType] type] isEqualToString: @"text"] && [[[messageFromSmartForward contentType] subType] isEqualToString: @"html"])
+             htmlPart = messageFromSmartForward;
+          else
+             textPart = messageFromSmartForward;
         }
 
+      htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
+
+      if (htmlComposition && htmlPart)
+        {
+          bodyFromSmartForward = [htmlPart body];
+          charset = [[htmlPart contentType] valueOfParameter: @"charset"];
+          isHTML = YES;
+        }
+      else if (!htmlComposition && !textPart)
+        {
+          bodyFromSmartForward = [htmlPart body];
+          charset = [[htmlPart contentType] valueOfParameter: @"charset"];
+          isHTML = YES;
+        } 
+      else 
+        {
+          bodyFromSmartForward = [textPart body];
+          charset = [[textPart contentType] valueOfParameter: @"charset"];
+        }
+
+      // We make sure everything is encoded in UTF-8.
+      if ([bodyFromSmartForward isKindOfClass: [NSData class]])
+        {
+          if (![charset length])
+            charset = @"utf-8";
+
+          s = [NSString stringWithData: bodyFromSmartForward usingEncodingNamed: charset];
+
+          // We fallback to ISO-8859-1 string encoding. We avoid #3103.
+          if (!s)
+            s = [[[NSString alloc] initWithData: bodyFromSmartForward  encoding: NSISOLatin1StringEncoding] autorelease];
+
+          bodyFromSmartForward = s;
+        }
+
+     if (htmlComposition && !isHTML)
+       {
+         [map setObject: @"text/html; charset=utf-8" forKey: @"content-type"];
+         bodyFromSmartForward = [[bodyFromSmartForward stringByEscapingHTMLString] stringByConvertingCRLNToHTML];
+       } 
+     else if (!htmlComposition && isHTML)
+       {
+         [map setObject: @"text/plain; charset=utf-8" forKey: @"content-type"];
+         bodyFromSmartForward = [bodyFromSmartForward htmlToText]; 
+       } 
+     else if (htmlComposition && isHTML)
+       {
+         [map setObject: @"text/html; charset=utf-8" forKey: @"content-type"];
+       }
+     else
+       {
+         [map setObject: @"text/plain; charset=utf-8" forKey: @"content-type"];
+       }
+
       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      [bodyPart setBody: bodyFromSmartForward];
+
+      if (isSmartForward && [[ud mailMessageForwarding] isEqualToString: @"attached"])
+        [bodyPart setBody: [bodyFromSmartForward dataUsingEncoding: NSUTF8StringEncoding]];
+      else
+        [bodyPart setBody: [[NSString stringWithFormat: @"%@%@", bodyFromSmartForward, [mailObject contentForEditing]] dataUsingEncoding: NSUTF8StringEncoding]];
+
       [body addBodyPart: bodyPart];
 
-      // Second part
-      map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
-      [map setObject: @"message/rfc822" forKey: @"content-type"];
-      [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
-      bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      
-      data = [mailObject content];
-      fdata = [[NGMimeFileData alloc] initWithBytes:[data bytes]
-                                             length:[data length]];
+      // Add attachments
+      for (a = 0; a < [attachments count]; a++)
+        {
+          [body addBodyPart: [attachments objectAtIndex: a]];
+        }
 
-      [bodyPart setBody: fdata];
-      RELEASE(fdata);
-      [body addBodyPart: bodyPart];
+      // For a forward decide whether do it inline or as an attachment.
+      if (isSmartForward)
+        {
+          if ([[ud mailMessageForwarding] isEqualToString: @"attached"])
+            {
+              map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+              [map setObject: @"message/rfc822" forKey: @"content-type"];
+              [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
+              [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [mailObject filenameForForward]] forKey: @"content-disposition"];
+              bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
+
+              data = [mailObject content];
+              fdata = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
+
+              [bodyPart setBody: fdata];
+              RELEASE(fdata);
+              [body addBodyPart: bodyPart];
+            }
+          else
+            {
+              attachmentKeys = [mailObject fetchFileAttachmentKeys];
+              if ([attachmentKeys count])
+                {
+                  id currentAttachment;
+                  NGHashMap *response;
+                  NSData *bodydata;
+                  NSArray *paths;
+
+                  paths = [attachmentKeys keysWithFormat: @"BODY[%{path}]"];
+                  response = [[mailObject fetchParts: paths] objectForKey: @"RawResponse"];
+
+                  for (a = 0; a < [attachmentKeys count]; a++)
+                     {
+                       currentAttachment = [attachmentKeys objectAtIndex: a];
+                       bodydata = [[[response objectForKey: @"fetch"] objectForKey: [NSString stringWithFormat: @"body[%@]", [currentAttachment objectForKey: @"path"]]] valueForKey: @"data"]; 
+
+                       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+                       [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
+                       [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
+                       [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
+
+                       fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];
+
+                       [bodyPart setBody: fdata];
+                       RELEASE(fdata);
+                       [body addBodyPart: bodyPart];
+                     }
+
+                }
+            }
+        }
+
       [messageToSend setBody: body];
       
       generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2573,6 +2700,29 @@ static BOOL debugOn = NO;
 //
 // <?xml version="1.0"?>
 // <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <SmartForward xmlns="ComposeMail:">
+//  <ClientId>C9FF94FE-EA40-473A-B3E2-AAEE94F753A4</ClientId>
+//  <SaveInSentItems/>
+//  <ReplaceMime/>
+//  <Source>
+//   <FolderId>mail/INBOX</FolderId>
+//   <ItemId>82</ItemId>
+//  </Source>
+//  <MIME>... the data ...</MIME>
+// </SmartForward>
+//
+- (void) processSmartForward: (id <DOMElement>) theDocumentElement
+                  inResponse: (WOResponse *) theResponse
+{
+  [self _processSmartCommand: theDocumentElement
+                  inResponse: theResponse
+              isSmartForward: YES];
+}
+
+
+//
+// <?xml version="1.0"?>
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
 // <SmartReply xmlns="ComposeMail:">
 //  <ClientId>DD40B5DC-4BDF-4A6A-9D8B-4B02BE5342CD</ClientId>
 //  <SaveInSentItems/>
@@ -2587,10 +2737,10 @@ static BOOL debugOn = NO;
 - (void) processSmartReply: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
-  [self processSmartForward: theDocumentElement  inResponse: theResponse];
+  [self _processSmartCommand: theDocumentElement
+                  inResponse: theResponse
+              isSmartForward: NO];
 }
-
-
 
 //
 //

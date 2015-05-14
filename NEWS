@@ -19,6 +19,7 @@ Enhancements
  - make sure sure email invitations can always be read by EAS clients
  - now able to print event/task's description (new components only) in the list view (#2881)
  - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
+ - many improvements to EAS SmartReply/SmartForward commands
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
