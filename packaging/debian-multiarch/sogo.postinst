@@ -34,7 +34,7 @@ case "$1" in
               . /usr/share/apache2/apache2-maintscript-helper
               apache2_invoke enconf SOGo || exit $?
           elif [ "$COMMON_STATE" = "installed" ] || [ "$COMMON_STATE" = "unpacked" ] ; then
-              if [ -d /etc/apache2/conf.d/ -a ! -L /etc/apache2/conf.d/SOGo.conf ]; then
+              if [ -d /etc/apache2/conf.d/ -a ! -e /etc/apache2/conf.d/SOGo.conf ]; then
                   ln -s ../conf-available/SOGo.conf /etc/apache2/conf.d/SOGo.conf
               fi
           fi
