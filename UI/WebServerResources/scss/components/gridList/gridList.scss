@@ -1,1 +1,19 @@
 @import "extends";
+
+// See sgToggleGrid directive
+[sg-toggle-grid] {
+  md-grid-tile {
+    border-radius: 5%;
+    &.iconButton {
+      &:hover {
+        background-color: sg-color($sogoBlue, 600);
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+    &.sg-active, &.sg-active:hover {
+      background-color: sg-color($sogoBlue, 300);
+      color: #fff;
+    }
+  }
+}
