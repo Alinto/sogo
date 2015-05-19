@@ -11,13 +11,21 @@ module.exports = function(grunt) {
     sass: {
       options: {
         sourceMap: true,
+        outFile: 'css/styles.css',
         noCache: true,
         includePaths: ['scss/',
                        'bower_components/breakpoint-sass/stylesheets/'
-        ],
-        style: 'expanded'
+        ]
       },
       dist: {
+        files: {
+          'css/styles.css': 'scss/styles.scss'
+        },
+        options: {
+          outputStyle: 'compressed'
+        }
+      },
+      dev: {
         files: {
           'css/styles.css': 'scss/styles.scss'
         }
@@ -144,10 +152,10 @@ module.exports = function(grunt) {
     }
     */
   });
-  grunt.task.registerTask('build', ['static', 'concat_sourcemap:dist', 'sass', 'postcss:dist']);
+  grunt.task.registerTask('build', ['static', 'concat_sourcemap:dist', 'sass:dist', 'postcss:dist']);
   // Tasks for developers
   grunt.task.registerTask('default', ['watch']);
-  grunt.task.registerTask('css', ['sass', 'postcss:dev']);
+  grunt.task.registerTask('css', ['sass:dev', 'postcss:dev']);
   grunt.task.registerTask('js', ['concat_sourcemap:dev']);
   grunt.task.registerTask('dev', ['css', 'js']);
 };
