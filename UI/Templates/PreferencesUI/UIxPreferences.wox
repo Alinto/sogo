@@ -457,7 +457,7 @@
                     md-contact-email="c_email"
                     md-require-match="md-require-match"
                     filter-selected="false"
-                    placeholder="Add"><!-- users --></md-contact-chips>
+                    label:placeholder="Add"><!-- users --></md-contact-chips>
               </div>
 
             </div>

@@ -17,9 +17,10 @@
    * @desc The factory we'll use to register with Angular.
    * @return the User constructor
    */
-  User.factory = ['$q', 'sgSettings', 'Resource', 'Gravatar', function($q, Settings, Resource, Gravatar) {
+  User.factory = ['$q', '$log', 'sgSettings', 'Resource', 'Gravatar', function($q, $log, Settings, Resource, Gravatar) {
     angular.extend(User, {
       $q: $q,
+      $log: $log,
       $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
       $gravatar: Gravatar
     });
@@ -44,23 +45,44 @@
         param = {search: search};
 
     if (!search) {
+      // No query specified
       User.$users = [];
       deferred.resolve(User.$users);
       return deferred.promise;
     }
     if (angular.isUndefined(User.$users)) {
+      // First session query
       User.$users = [];
     }
+    else if (User.$query == search) {
+      // Query hasn't changed
+      deferred.resolve(User.$users);
+      return deferred.promise;
+    }
+    User.$query = search;
 
     User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
-      var results = [];
+      var index, user;
+      // Add new users matching the search query
       angular.forEach(response.users, function(data) {
-        console.debug(JSON.stringify(data, undefined, 2));
-        var user = new User(data);
-        results.push(user);
+        if (!_.find(User.$users, function(user) {
+          return user.uid == data.uid;
+        })) {
+          var user = new User(data),
+              index = _.sortedIndex(User.$users, user, '$$shortFormat');
+          User.$users.splice(index, 0, user);
+        }
       });
-      User.$users = results;
-      deferred.resolve(results);
+      // Remove users that no longer match the search query
+      for (index = User.$users.length - 1; index >= 0; index--) {
+        user = User.$users[index];
+        if (!_.find(response.users, function(data) {
+          return user.uid == data.uid;
+        })) {
+          User.$users.splice(index, 1);
+        }
+      }
+      deferred.resolve(User.$users);
     }, deferred.reject);
 
     return deferred.promise;
