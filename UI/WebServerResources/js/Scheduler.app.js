@@ -141,9 +141,15 @@
   /**
    * @ngInject
    */
-  stateComponent.$inject = ['$stateParams', 'Calendar'];
-  function stateComponent($stateParams, Calendar) {
-    return Calendar.$get($stateParams.calendarId).$getComponent($stateParams.componentId);
+  stateComponent.$inject = ['$q', '$stateParams', 'Calendar'];
+  function stateComponent($q, $stateParams, Calendar) {
+    var component = Calendar.$get($stateParams.calendarId).$getComponent($stateParams.componentId);
+
+    return $q(function(resolve, reject) {
+      component.$futureComponentData.then(function() {
+        resolve(component);
+      }, reject);
+    });
   }
 
   /**
