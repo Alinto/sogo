@@ -2080,6 +2080,8 @@ ReservedBlockEE2Size: 00 00 00 00
     icalTZ = [iCalTimeZone timeZoneForName: [timeZone timeZoneName]];
   else if ([event isRecurrent])
     icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
+  else
+    icalTZ = nil;
 
   if (icalTZ)
     {
