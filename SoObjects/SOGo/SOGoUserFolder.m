@@ -427,7 +427,8 @@
         {
           currentUser = [users objectAtIndex: i];
           field = [currentUser objectForKey: @"c_uid"];
-          if (enableDomainBasedUID)
+          if (enableDomainBasedUID &&
+              [field rangeOfString: @"@"].location == NSNotFound)
             field = [NSString stringWithFormat: @"%@@%@", field, domain];
           if (![field isEqualToString: login])
             {
