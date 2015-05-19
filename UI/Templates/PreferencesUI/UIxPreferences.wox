@@ -58,13 +58,17 @@
         </div>
       </md-toolbar>
 
-      <form name="preferencesForm"
-            ng-submit="app.save()">
-        <div ui-view="module"><!-- view --></div>
-        <md-button class="" type="submit">
-          <var:string label:value="Save" />
-        </md-button>
-      </form>
+      <md-content>
+        <form name="preferencesForm"
+              ng-submit="app.save()">
+          <div ui-view="module"><!-- view --></div>
+          <div class="md-actions">
+            <md-button type="submit">
+              <var:string label:value="Save" />
+            </md-button>
+          </div>
+        </form>
+      </md-content>
 
     </section>
 
@@ -75,8 +79,7 @@
     -->
     <script type="text/ng-template" id="generalPreferences.html">
 
-      <md-content layout="row" class="md-flex">
-        <md-tabs md-dynamic-height="true">
+        <md-tabs class="md-flex" md-dynamic-height="true">
 
           <!-- GENERAL OPTIONS -->
           <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
@@ -220,15 +223,13 @@
           </var:if>
 
         </md-tabs>
-      </md-content>
     </script>
 
     <!--
         CALENDAR PREFERENCE PANEL
     -->
     <script type="text/ng-template" id="calendarsPreferences.html">
-      <md-content layout="row" class="md-flex">
-        <md-tabs md-dynamic-height="true">
+        <md-tabs class="md-flex" md-dynamic-height="true">
 
           <!-- CALENDAR - GENERAL -->
           <md-tab id="calendarOptionsView"
@@ -421,19 +422,22 @@
               </md-list-item>
             </md-list>
 
-              <div class="bottomToolbar">
-                <md-button ng-click="app.addCalendarCategory()" type="button">
-                  <div class="md-icon-add"><!-- create --></div>
-                </md-button>
-              </div>
+            <div class="bottomToolbar">
+              <md-button ng-click="app.addCalendarCategory()" type="button">
+                <div class="md-icon-add"><!-- create --></div>
+              </md-button>
+            </div>
 
           </md-tab>
 
           <!-- CALENDAR - INVITATIONS -->
-          <md-tab id="calendarInvitationsTab" aria-controls="calendarInvitationsTab-content" label:label="Invitations">
-            <div role="tabpanel" aria-labelledby="calendarInvitationsView"  id="calendarInvitationsView-content">
-              <!-- <div id="calendarAppointmentsInvitationsView"
-                   class="tab"> -->
+          <md-tab id="calendarInvitationsTab"
+                  aria-controls="calendarInvitationsTab-content"
+                  label:label="Invitations">
+            <div role="tabpanel"
+                 aria-labelledby="calendarInvitationsTab"
+                 id="calendarInvitationsTab-content">
+
               <md-checkbox
                   ng-model="app.preferences.settings.Calendar.PreventInvitations"
                   ng-true-value="1"
@@ -460,7 +464,6 @@
           </md-tab>
 
         </md-tabs>
-      </md-content>
     </script>
 
     <!--
@@ -516,8 +519,7 @@
     -->
     <script type="text/ng-template" id="mailerPreferences.html">
       <var:if condition="userHasMailAccess">
-        <md-content layout="row" class="md-flex">
-          <md-tabs md-dynamic-height="true">
+          <md-tabs class="md-flex" md-dynamic-height="true">
 
             <!-- MAIL > GENERAL -->
             <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
@@ -887,7 +889,6 @@
 
 
           </md-tabs>
-        </md-content>
       </var:if>
     </script>
 
