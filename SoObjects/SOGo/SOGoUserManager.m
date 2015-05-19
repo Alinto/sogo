@@ -622,7 +622,8 @@ static Class NSNullK;
       // internal cache.
       [currentUser setObject: [newPassword asSHA1String] forKey: @"password"];
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainBasedUID])
+      if ([sd enableDomainBasedUID] &&
+          [login rangeOfString: @"@"].location == NSNotFound)
         userLogin = [NSString stringWithFormat: @"%@@%@", login, domain];
       else
         userLogin = login;
