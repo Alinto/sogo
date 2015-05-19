@@ -40,12 +40,11 @@
 
     Preferences.$$resource.fetch("jsonSettings").then(function(data) {
       Preferences.$timeout(function() {
-
-
         // We convert our PreventInvitationsWhitelist hash into a array of user
         if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
-            return new Preferences.$User({uid: key, shortFormat: value});
+            var match = /^(.+)\s<(\S+)>$/.exec(value);
+            return new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
           });
         else
           data.Calendar.PreventInvitationsWhitelist = [];
@@ -85,11 +84,8 @@
    */
   Preferences.prototype.$save = function() {
     var _this = this;
-    console.debug("save in model...");
 
-    return Preferences.$$resource.save("Preferences",
-                                       this.$omit(),
-                                       undefined)
+    return Preferences.$$resource.save("Preferences", this.$omit(true))
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         //_this.$shadowData = _this.$omit(true);
@@ -133,10 +129,9 @@
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
       var h = {};
       _.each(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
-        h[user.uid] = user.$$shortFormat;
-
-        preferences.settings.Calendar.PreventInvitationsWhitelist = h;
+        h[user.uid] = user.$shortFormat();
       });
+      preferences.settings.Calendar.PreventInvitationsWhitelist = h;
     }
 
     return preferences;
