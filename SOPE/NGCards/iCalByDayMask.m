@@ -190,17 +190,17 @@
   return self;
 }
 
-+ (id) byDayMaskWithDaysAndOccurences: (NSArray *) values
++ (id) byDayMaskWithDaysAndOccurrences: (NSArray *) values
 {
   id o;
 
-  o = [[self alloc] initWithDaysAndOccurences: values];
+  o = [[self alloc] initWithDaysAndOccurrences: values];
   AUTORELEASE(o);
 
   return o;
 }
 
-- (id) initWithDaysAndOccurences: (NSArray *) values
+- (id) initWithDaysAndOccurrences: (NSArray *) values
 {
   unsigned int count, max;
   NSString *value;
@@ -258,7 +258,7 @@
 
               if (day != iCalWeekDayUnknown)
                 {
-                  value = [mask objectForKey: @"occurence"];
+                  value = [mask objectForKey: @"occurrence"];
                   valueLength = [value length];
                   if (valueLength > 0)
                     {

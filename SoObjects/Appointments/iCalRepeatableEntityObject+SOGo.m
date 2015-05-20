@@ -197,7 +197,7 @@
 
               o = [repeat objectForKey: @"days"];
               if ([o isKindOfClass: [NSArray class]])
-                [rule setByDayMask: [iCalByDayMask byDayMaskWithDaysAndOccurences: o]];
+                [rule setByDayMask: [iCalByDayMask byDayMaskWithDaysAndOccurrences: o]];
 
               o = [repeat objectForKey: @"monthdays"];
               if ([o isKindOfClass: [NSArray class]])
