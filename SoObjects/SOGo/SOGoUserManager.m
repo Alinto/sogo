@@ -362,6 +362,7 @@ static Class NSNullK;
   NSDictionary *contactInfos;
   NSString *login;
   SOGoDomainDefaults *dd;
+  SOGoSystemDefaults *sd;
 
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid
                                                 inDomain: domain];
@@ -372,10 +373,22 @@ static Class NSNullK;
         dd = [SOGoDomainDefaults defaultsForDomain: domain];
       else
         dd = [SOGoSystemDefaults sharedSystemDefaults];
-      
-      login = [dd forceExternalLoginWithEmail] ? [self getEmailForUID: uid] : uid;
+
+      if ([dd forceExternalLoginWithEmail])
+        {
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          if ([sd enableDomainBasedUID])
+            // On multidomain environment we must use uid@domain
+            // for getEmailForUID method
+            login = [NSString stringWithFormat: @"%@@%@", uid, domain];
+          else
+            login = uid;
+          login = [self getEmailForUID: login];
+        }
+      else
+        login = uid;
     }
-  
+
   return login;
 }
 
