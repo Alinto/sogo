@@ -1,8 +1,6 @@
 /* UIxRecurrenceEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
- *
- * Author: Ludovic Marcotte <ludovic@inverse.ca>
+ * Copyright (C) 2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +19,13 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h> /* for locale string constants */
 
 #import <Common/UIxPageFrame.h>
+
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
 
 #import "UIxRecurrenceEditor.h"
 
@@ -64,7 +65,7 @@
   if (!monthlyDayList)
     {
       monthlyDayList = [NSMutableArray arrayWithArray: [locale objectForKey: NSWeekDayNameArray]];
-      [monthlyDayList addObject: @"DayOfTheMonth"];
+      [monthlyDayList addObject: [self labelForKey: @"DayOfTheMonth"]];
       [monthlyDayList retain];
     }
   
@@ -77,7 +78,7 @@
 
   if (!yearlyMonthList)
     {
-      yearlyMonthList = [locale objectForKey: NSMonthNameArray];
+      yearlyMonthList = [locale objectForKey: NSShortMonthNameArray];
       [yearlyMonthList retain];
     }
   
@@ -102,18 +103,27 @@
 //
 - (NSArray *) repeatList
 {
-  static NSArray *repeatList = nil;
+  static NSArray *repeatItems = nil;
 
-  if (!repeatList)
+  if (!repeatItems)
     {
-      repeatList = [NSArray arrayWithObjects: @"Daily", @"Weekly",
-			    @"Monthly", @"Yearly", nil];
-      [repeatList retain];
+      repeatItems = [NSArray arrayWithObjects: @"daily",
+                             @"weekly",
+                             @"bi-weekly",
+                             @"every_weekday",
+                             @"monthly",
+                             @"yearly",
+                             nil];
+      [repeatItems retain];
     }
 
-  return repeatList;
+  return repeatItems;
 }
 
+- (NSString *) itemRepeatText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"repeat_%@", [item uppercaseString]]];
+}
 
 //
 // Accessors
@@ -156,6 +166,56 @@
 - (NSString *) labelForWeekDay
 {
   return item;
+}
+
+- (NSString *) valueForWeekDay
+{
+  unsigned int i;
+
+  i = [[self shortWeekDaysList] indexOfObject: item];
+
+  return iCalWeekDayString[i];
+}
+
+- (NSString *) valueForMonthlyRepeat
+{
+  static NSArray *monthlyRepeatValues = nil;
+  unsigned int i;
+
+  if (!monthlyRepeatValues)
+    {
+      monthlyRepeatValues = [NSArray arrayWithObjects: @"1", @"2", @"3",
+                                     @"4", @"5", @"-1", nil];
+      [monthlyRepeatValues retain];
+    }
+  i = [[self monthlyRepeatList] indexOfObject: item];
+
+  return [monthlyRepeatValues objectAtIndex: i];
+}
+
+- (NSString *) valueForMonthlyDay
+{
+  unsigned int i;
+
+  i = [[self monthlyDayList] indexOfObject: item];
+  if (i % 7 != i)
+    return @"";
+  else
+    return iCalWeekDayString[i];
+}
+
+- (unsigned int) valueForYearlyMonth
+{
+  return [[self yearlyMonthList] indexOfObject: item] + 1;
+}
+
+- (NSString *) valueForYearlyDay
+{
+  unsigned int i;
+
+  i = [[self yearlyDayList] indexOfObject: item];
+
+  return iCalWeekDayString[i];
 }
 
 @end

@@ -29,7 +29,6 @@
 
 @interface UIxComponentEditor : UIxComponent
 {
-  id item;
   iCalRepeatableEntityObject *component;
   SOGoAppointmentFolder *componentCalendar;
 }

@@ -48,14 +48,13 @@
    * @desc Factory registration of Component in Angular module.
    */
   angular.module('SOGo.SchedulerUI')
-  /* Factory registration in Angular module */
     .factory('Component', Component.$factory);
 
   /**
    * @function $filter
    * @memberof Component.prototype
    * @desc Search for components matching some criterias
-   * @param {string} type - Either 'events' or 'tasks'
+   * @param {string} type - either 'events' or 'tasks'
    * @param {object} [options] - additional options to the query
    * @returns a collection of Components instances
    */
@@ -82,11 +81,11 @@
   };
 
   /**
-   * @memberof Card
-   * @desc Fetch a card from a specific addressbook.
-   * @param {string} addressbook_id - the addressbook ID
-   * @param {string} card_id - the card ID
-   * @see {@link AddressBook.$getCard}
+   * @function $find
+   * @desc Fetch a component from a specific calendar.
+   * @param {string} calendarId - the calendar ID
+   * @param {string} componentId - the component ID
+   * @see {@link Calendar.$getComponent}
    */
   Component.$find = function(calendarId, componentId) {
     var futureComponentData = this.$$resource.fetch([calendarId, componentId].join('/'), 'view');
@@ -96,7 +95,6 @@
 
   /**
    * @function filterCategories
-   * @memberof Component.prototype
    * @desc Search for categories matching some criterias
    * @param {string} search - the search string to match
    * @returns a collection of strings
@@ -110,7 +108,6 @@
 
   /**
    * @function $eventsBlocksForView
-   * @memberof Component.prototype
    * @desc Events blocks for a specific week
    * @param {string} view - Either 'day' or 'week'
    * @param {Date} type - Date of any day of the desired period
@@ -146,7 +143,6 @@
 
   /**
    * @function $eventsBlocks
-   * @memberof Component.prototype
    * @desc Events blocks for a specific view and period
    * @param {string} view - Either 'day' or 'week'
    * @param {Date} startDate - period's start date
@@ -197,9 +193,9 @@
   };
 
   /**
-   * @function $unwrap
-   * @memberof Comonent.prototype
+   * @function $unwrapCollection
    * @desc Unwrap a promise and instanciate new Component objects using received data.
+   * @param {string} type - either 'events' or 'tasks'
    * @param {promise} futureComponentData - a promise of the components' metadata
    * @returns a promise of the HTTP operation
    */
@@ -241,8 +237,57 @@
    */
   Component.prototype.init = function(data) {
     this.categories = [];
+    this.repeat = {};
     angular.extend(this, data);
+
+    // Parse recurrence rule definition and initialize default values
+    if (this.repeat.days) {
+      var byDayMask = _.find(this.repeat.days, function(o) {
+        return angular.isDefined(o.occurrence);
+      });
+      if (byDayMask)
+        if (this.repeat.frequency == 'yearly')
+          this.repeat.year = { byday: true };
+        this.repeat.month = {
+          type: 'byday',
+          occurrence: byDayMask.occurrence.toString(),
+          day: byDayMask.day
+        };
+    }
+    else {
+      this.repeat.days = [];
+    }
+    if (angular.isUndefined(this.repeat.interval))
+      this.repeat.interval = 1;
+    if (angular.isUndefined(this.repeat.month))
+      this.repeat.month = { occurrence: '1', day: 'SU', type: 'bymonthday' };
+    if (angular.isUndefined(this.repeat.monthdays))
+      this.repeat.monthdays = [];
+    if (angular.isUndefined(this.repeat.months))
+      this.repeat.months = [];
+    if (angular.isUndefined(this.repeat.year))
+      this.repeat.year = {};
+    if (this.repeat.count)
+      this.repeat.end = 'count';
+    else if (this.repeat.until) {
+      this.repeat.end = 'until';
+      this.repeat.until = this.repeat.until.substring(0,10).asDate();
+    }
+    else
+      this.repeat.end = 'never';
+    this.$hasCustomRepeat = this.hasCustomRepeat();
+
+    // Allow the event to be moved to a different calendar
     this.destinationCalendar = this.pid;
+  };
+
+  Component.prototype.hasCustomRepeat = function() {
+    var b = angular.isDefined(this.repeat) &&
+        (this.repeat.interval > 1 ||
+         this.repeat.days && this.repeat.days.length > 0 ||
+         this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
+         this.repeat.months && this.repeat.months.length > 0);
+    return b;
   };
 
   /**
@@ -260,8 +305,8 @@
 
   /**
    * @function $reset
-   * @memberof Card.prototype
-   * @desc Reset the original state the card's data.
+   * @memberof Component.prototype
+   * @desc Reset the original state the component's data.
    */
   Component.prototype.$reset = function() {
     var _this = this;
@@ -300,29 +345,21 @@
    * @param {promise} futureComponentData - a promise of some of the Component's data
    */
   Component.prototype.$unwrap = function(futureComponentData) {
-    var _this = this,
-        deferred = Component.$q.defer();
+    var _this = this;
 
     // Expose the promise
     this.$futureComponentData = futureComponentData;
 
     // Resolve the promise
     this.$futureComponentData.then(function(data) {
-      // Calling $timeout will force Angular to refresh the view
-      Component.$timeout(function() {
-        _this.init(data);
-        // Make a copy of the data for an eventual reset
-        _this.$shadowData = _this.$omit();
-        deferred.resolve(_this);
-      });
+      _this.init(data);
+      // Make a copy of the data for an eventual reset
+      _this.$shadowData = _this.$omit();
     }, function(data) {
       angular.extend(_this, data);
       _this.isError = true;
       Component.$log.error(_this.error);
-      deferred.reject();
     });
-
-    return deferred.promise;
   };
 
   /**
@@ -335,12 +372,38 @@
     var component = {}, date;
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key[0] != '$') {
-        component[key] = value;
+        component[key] = angular.copy(value);
       }
     });
 
+    // Format times
     component.startTime = component.startDate ? formatTime(component.startDate) : '';
     component.endTime   = component.endDate   ? formatTime(component.endDate)   : '';
+
+    // Update recurrence definition depending on selections
+    if (this.$hasCustomRepeat) {
+      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday'
+          || this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
+        // BYDAY mask for a monthly or yearly recurrence
+        delete component.repeat.monthdays;
+        component.repeat.days = [{ day: this.repeat.month.day, occurrence: this.repeat.month.occurrence.toString() }];
+      }
+      else if (this.repeat.month.type) {
+        // montly recurrence by month days or yearly by month
+        delete component.repeat.days;
+      }
+    }
+    else {
+      component.repeat = { frequency: this.repeat.frequency };
+    }
+    if (this.repeat.end == 'until' && this.repeat.until)
+      component.repeat.until = this.repeat.until.stringWithSeparator('-');
+    else if (this.repeat.end == 'count' && this.repeat.count)
+      component.repeat.count = this.repeat.count;
+    else {
+      delete component.repeat.until;
+      delete component.repeat.count;
+    }
 
     function formatTime(dateString) {
       // YYYY-MM-DDTHH:MM-05:00
@@ -353,7 +416,6 @@
 
       return hours + ':' + minutes;
     }
-    
 
     return component;
   };

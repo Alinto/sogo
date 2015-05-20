@@ -13,7 +13,8 @@
     vm.calendars = stateCalendars;
     vm.event = stateComponent;
     vm.categories = {};
-    vm.editRecurrence = editRecurrence;
+    vm.showRecurrenceEditor = vm.event.$hasCustomRepeat;
+    vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
     vm.cancel = cancel;
     vm.save = save;
 
@@ -35,14 +36,9 @@
       }, 100); // don't ask why
     });
 
-    function editRecurrence($event) {
-      $mdDialog.show({
-        templateUrl: 'editRecurrence', // UI/Templates/SchedulerUI/UIxRecurrenceEditor.wox
-        controller: RecurrenceController
-      });
-      function RecurrenceController() {
-        
-      }
+    function toggleRecurrenceEditor() {
+      vm.showRecurrenceEditor = !vm.showRecurrenceEditor;
+      vm.event.$hasCustomRepeat = vm.showRecurrenceEditor;
     }
 
     function save(form) {

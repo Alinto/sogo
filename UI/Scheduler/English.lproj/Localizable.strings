@@ -128,6 +128,8 @@
 "Attach" = "Attach";
 "Update" = "Update";
 "Cancel" = "Cancel";
+"Reset" = "Reset";
+"Save" = "Save";
 "show_rejected_apts" = "Show rejected appointments";
 "hide_rejected_apts" = "Hide rejected appointments";
 
@@ -336,6 +338,11 @@
 "Create" = "Create";
 "appointment(s)" = "appointment(s)";
 "Repeat until" = "Repeat until";
+
+"End Repeat" = "End Repeat";
+"Never" = "Never";
+"After" = "After";
+"On Date" = "On Date";
 
 "First" = "First";
 "Second" = "Second";

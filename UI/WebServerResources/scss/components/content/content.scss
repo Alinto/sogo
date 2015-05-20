@@ -32,3 +32,9 @@ md-content {
     padding: $mg;
   }
 }
+
+.sg-subcontent {
+  border-left: $baseline-grid solid sg-color($sogoGreen, 100);
+  margin-left: ($baseline-grid / 2);
+  padding-left: $baseline-grid;
+}

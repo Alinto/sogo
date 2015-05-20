@@ -5,6 +5,13 @@ md-select {
   margin-right: $bl;
 }
 
+// Try to align select labels with other input components
+[layout="row"] {
+  .md-select-label {
+    padding-top: 4px;
+  }
+}
+
 // angular material overqualifies, so we are
 md-select.md-default-theme.sg-toolbar-sort {
   margin: 0 $bl 4px 0;

@@ -242,59 +242,6 @@ static NSArray *reminderValues = nil;
 //  return [comment stringByReplacingString: @"\n" withString: @"\r\n"];
 //}
 
-// TODO: Expose this method to the JSON API or centralize in UIxPreferences
-- (NSArray *) categoryList
-{
-  NSMutableArray *categoryList;
-  NSArray *categoryLabels;
-  SOGoUserDefaults *defaults;
-
-  defaults = [[context activeUser] userDefaults];
-  categoryLabels = [defaults calendarCategories];
-  if (!categoryLabels)
-    categoryLabels = [[self labelForKey: @"category_labels"]
-                       componentsSeparatedByString: @","];
-  categoryList = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
-  [categoryList addObjectsFromArray:
-                  [categoryLabels sortedArrayUsingSelector:
-                                    @selector (localizedCaseInsensitiveCompare:)]];
-
-  return categoryList;
-}
-
-//- (NSArray *) repeatList
-//{
-//  static NSArray *repeatItems = nil;
-//
-//  if (!repeatItems)
-//    {
-//      repeatItems = [NSArray arrayWithObjects: @"DAILY",
-//                             @"WEEKLY",
-//                             @"BI-WEEKLY",
-//                             @"EVERY WEEKDAY",
-//                             @"MONTHLY",
-//                             @"YEARLY",
-//                             @"-",
-//                             @"CUSTOM",
-//                             nil];
-//      [repeatItems retain];
-//    }
-//
-//  return repeatItems;
-//}
-
-//- (NSString *) repeatLabel
-//{
-//  NSString *rc;
-//
-//  if ([self repeat])
-//    rc = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", [self repeat]]];
-//  else
-//    rc = [self labelForKey: @"repeat_NEVER"];
-//
-//  return rc;
-//}
-
 //- (NSString *) reminder
 //{
 //  if ([[self clientObject] isNew])
@@ -392,20 +339,6 @@ static NSArray *reminderValues = nil;
 //    }
 //
 //  return priorities;
-//}
-
-//- (NSArray *) classificationClasses
-//{
-//  static NSArray *classes = nil;
-//  
-//  if (!classes)
-//    {
-//      classes = [NSArray arrayWithObjects: @"PUBLIC",
-//                         @"CONFIDENTIAL", @"PRIVATE", nil];
-//      [classes retain];
-//    }
-//  
-//  return classes;
 //}
 
 /* helpers */
