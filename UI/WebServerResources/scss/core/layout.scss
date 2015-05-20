@@ -1,4 +1,4 @@
-/// layout.scss -*- Mode: text; indent-tabs-mode: nil; basic-offset: 2 -*-
+/// layout.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 // Import from sources for extends
 // -------------------------------
@@ -24,7 +24,6 @@
   960  <= size < 1200 Tablet-Landscape
   1200 <= size         PC
 */
-
 
 // SMALL SCREEN
 @include at(sm) {
