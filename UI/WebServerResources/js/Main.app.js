@@ -21,18 +21,18 @@
         });
       return false;
     };
-    $scope.showAbout = function() {
-      var alert;
-      alert = $mdDialog.alert({
-        title: 'About SOGo',
-        content: 'This is SOGo v3!',
-        ok: 'OK'
+    $scope.showAbout = function($event) {
+      $mdDialog.show({
+        targetEvent: $event,
+        templateUrl: 'aboutBox.html',
+        controller: AboutDialogController
       });
-      $mdDialog
-        .show( alert )
-        .finally(function() {
-          alert = undefined;
-        });
+      AboutDialogController.$inject = ['scope', '$mdDialog'];
+      function AboutDialogController(scope, $mdDialog) {
+        scope.closeDialog = function() {
+          $mdDialog.hide();
+        };
+      }
     };
   }
 })();

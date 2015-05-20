@@ -47,7 +47,10 @@
             <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
           </div>
 
-          <form name="loginForm" layout="column" ng-controller="loginController" ng-submit="login(creds)">
+          <form name="loginForm" layout="column"
+                ng-cloak="ng-cloak"
+                ng-controller="loginController"
+                ng-submit="login(creds)">
             <var:if condition="hasLoginSuffix">
               <input type="hidden" ng-model="creds.loginSuffix" var:value="loginSuffix"/>
             </var:if>
@@ -111,12 +114,30 @@
             </div>
           </form>
           <div layout="row"  layout-align="end end">
-            <md-button class="iconButton" ng-click="showAbout()">
-              <i class="md-icon-info" ng-style="{'color': '#aaa'}"><!-- about --></i>
+            <md-button class="iconButton fg-sogoPaper-500"
+                       label:aria-label="About"
+                       ng-click="showAbout()">
+              <i class="md-icon-info"><!-- about --></i>
             </md-button>
           </div>
         </div>
       </div>
     </md-content>
   </main>
+
+  <script type="text/ng-template" id="aboutBox.html">
+    <md-dialog flex="50">
+      <md-dialog-content>
+        <p><a href="http://sogo.nu/" target="_new">sogo.nu</a></p>
+        <p>Version <var:string value="version"/> (<var:string value="buildDate" />)</p>
+        <br/>
+        <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
+        <!--<img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>-->
+      </md-dialog-content>
+      <div class="md-actions">
+        <md-button ng-click="closeDialog()"><var:string label:value="Close"/></md-button>
+      </div>
+    </md-dialog>
+  </script>
+
 </var:component>
