@@ -59,14 +59,14 @@
   /**
    * @memberof Card
    * @desc Fetch a card from a specific addressbook.
-   * @param {string} addressbook_id - the addressbook ID
-   * @param {string} card_id - the card ID
+   * @param {string} addressbookId - the addressbook ID
+   * @param {string} cardId - the card ID
    * @see {@link AddressBook.$getCard}
    */
-  Card.$find = function(addressbook_id, card_id) {
-    var futureCardData = this.$$resource.fetch([addressbook_id, card_id].join('/'), 'view');
+  Card.$find = function(addressbookId, cardId) {
+    var futureCardData = this.$$resource.fetch([addressbookId, cardId].join('/'), 'view');
 
-    if (card_id) return new Card(futureCardData); // a single card
+    if (cardId) return new Card(futureCardData); // a single card
 
     return Card.$unwrapCollection(futureCardData); // a collection of cards
   };
