@@ -488,7 +488,8 @@ static Class NSNullK;
               grace: (int *) _grace
            useCache: (BOOL) useCache
 {
-  NSMutableDictionary *currentUser, *failedCount;
+  NSMutableDictionary *currentUser;
+  NSDictionary *failedCount;
   NSString *dictPassword, *username, *jsonUser;
   SOGoSystemDefaults *dd;
   BOOL checkOK;
