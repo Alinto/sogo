@@ -287,7 +287,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo
 %defattr(-,root,root,-)
 
+%if !0%{?_with_systemd}
 /etc/init.d/sogod
+%endif
 /etc/cron.daily/sogo-tmpwatch
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/lib/sogo
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/log/sogo
