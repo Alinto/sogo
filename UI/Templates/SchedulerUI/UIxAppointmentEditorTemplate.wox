@@ -45,6 +45,19 @@
                      ng-value="calendar.id">{{calendar.name}}</md-option>
         </md-select>
       </div>
+      <!-- classification -->
+      <md-radio-group layout="row" layout-align="space-around center"
+                      ng-model="editor.event.classification">
+        <md-radio-button value="public">
+          <var:string label:value="label_Public"/>
+        </md-radio-button>
+        <md-radio-button value="confidential">
+          <var:string label:value="label_Confidential"/>
+        </md-radio-button>
+        <md-radio-button value="private">
+          <var:string label:value="label_Private"/>
+        </md-radio-button>
+      </md-radio-group>
       <!-- priority -->
       <div layout="row" layout-align="center center">
         <div flex="20"><var:string label:value="Priority"/></div>
@@ -98,21 +111,44 @@
       </md-input-container>
       <!-- repeat -->
       <div layout="row">
-      <div class="pseudo-input-container md-flex">
-        <label class="pseudo-input-label"><var:string label:value="Repeat"/>{{editor.event.repeat.frequency}}</label>
-        <md-select ng-model="editor.event.repeat.frequency" class="pseudo-input-field"
-                   label:placeholder="Repeat">
-          <var:foreach list="repeatList" item="item">
-            <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
-          </var:foreach> 
-        </md-select>
-      </div>
-        <button class="iconButton md-button"
-                ng-click="editor.editRecurrence()">
-          <i class="md-icon-more-horiz"><!-- customize --></i>
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Repeat"/></label>
+          <md-select class="pseudo-input-field" ng-model="editor.event.repeat.frequency"
+                     label:placeholder="Repeat">
+            <var:foreach list="repeatList" item="item">
+              <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
+            </var:foreach>
+          </md-select>
+        </div>
+        <button type="button" class="iconButton md-button"
+                ng-click="editor.toggleRecurrenceEditor()">
+          <i class="md-icon-more-horiz"><!-- toggle custom rule --></i>
         </button>
       </div>
-      
+      <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
+        <var:component className="UIxRecurrenceEditor" />
+      </div>
+      <!-- end repeat -->
+      <div layout="row" layout-align="start end">
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="End Repeat"/></label>
+          <md-select class="pseudo-input-field" ng-model="editor.event.repeat.end">
+            <md-option value="never"><var:string label:value="Never"/></md-option>
+            <md-option value="count"><var:string label:value="After"/></md-option>
+            <md-option value="until"><var:string label:value="On Date"/></md-option>
+          </md-select>
+        </div>
+        <div layout="row" layout-align="start center" ng-show="editor.event.repeat.end == 'count'">
+          <md-input-container class="md-input-number">
+            <input type="number" label:aria-label="times" ng-model="editor.event.repeat.count"/>
+          </md-input-container>
+          <var:string label:value="times"/>
+        </div>
+        <md-input-container ng-show="editor.event.repeat.end == 'until'">
+          <input type="date" label:aria-label="Repeat until" ng-model="editor.event.repeat.until"/>
+        </md-input-container>
+      </div>
+      <!-- cancel/reset/save -->
       <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
         <md-button type="button" ng-click="editor.cancel()">
           <var:string label:value="Cancel"/>
@@ -124,6 +160,6 @@
           <var:string label:value="Save"/>
         </md-button>
       </div>
-    </md-content>  
+    </md-content>
   </form>
 </container>
