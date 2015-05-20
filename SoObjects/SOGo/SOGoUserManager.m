@@ -495,11 +495,11 @@ static Class NSNullK;
 
   dd = [SOGoSystemDefaults sharedSystemDefaults];
 
-  // We check for cached passwords. If the entry is cached, we 
-  // check this immediately. If not, we'll go directly at the
-  // authentication source and try to validate there, then cache it.
-  if (*_domain != nil)
-    username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
+  if (*_domain)
+    {
+      if ([_login rangeOfString: @"@"].location == NSNotFound)
+        username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
+    }
   else
     {
       NSRange r;
@@ -532,13 +532,10 @@ static Class NSNullK;
         }
     }
 
-  failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
-
-  //
   // We check the fail count per user in memcache (per server). If the
   // fail count reaches X in Y minutes, we deny immediately the
   // authentications for Z minutes
-  //
+  failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
   if (failedCount)
     {
       unsigned int current_time, start_time, delta, block_time;
@@ -564,7 +561,9 @@ static Class NSNullK;
         }
     }
 
-
+  // We check for cached passwords. If the entry is cached, we
+  // check this immediately. If not, we'll go directly at the
+  // authentication source and try to validate there, then cache it.
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
