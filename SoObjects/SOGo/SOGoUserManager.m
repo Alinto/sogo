@@ -425,9 +425,19 @@ static Class NSNullK;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-  
+  SOGoSystemDefaults *sd;
+  NSRange r;
+
   checkOK = NO;
-  
+
+  if (*domain == nil)
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      r = [login rangeOfString: @"@" options: NSBackwardsSearch];
+      if ([sd enableDomainBasedUID] && r.location != NSNotFound)
+        *domain = [login substringFromIndex: (r.location + r.length)];
+    }
+
   authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
