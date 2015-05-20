@@ -287,7 +287,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo
 %defattr(-,root,root,-)
 
-%if !0%{?_with_systemd}
+%if 0%{?_with_systemd}
+/usr/lib/systemd/system/sogod.service
+%else
 /etc/init.d/sogod
 %endif
 /etc/cron.daily/sogo-tmpwatch
