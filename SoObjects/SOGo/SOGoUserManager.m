@@ -806,24 +806,20 @@ static Class NSNullK;
            withLogin: (NSString *) login
 {
   NSEnumerator *emails;
-  NSString *key;
-  
-  [[SOGoCache sharedCache]
-        setUserAttributes: [newUser jsonRepresentation]
-                 forLogin: login];
+  NSString *key, *user_json;
+
+  user_json = [newUser jsonRepresentation];
+  [[SOGoCache sharedCache] setUserAttributes: user_json
+                                    forLogin: login];
   if (![newUser isKindOfClass: NSNullK])
     {
-      key = [newUser objectForKey: @"c_uid"];
-      if (key && ![key isEqualToString: login])
-        [[SOGoCache sharedCache]
-            setUserAttributes: [newUser jsonRepresentation]
-                     forLogin: key];
-
       emails = [[newUser objectForKey: @"emails"] objectEnumerator];
       while ((key = [emails nextObject]))
-        [[SOGoCache sharedCache]
-            setUserAttributes: [newUser jsonRepresentation]
-                     forLogin: key];
+        {
+          if (![key isEqualToString: login])
+            [[SOGoCache sharedCache] setUserAttributes: user_json
+                                              forLogin: key];
+        }
     }
 }
 
