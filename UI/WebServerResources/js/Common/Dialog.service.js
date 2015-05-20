@@ -86,9 +86,10 @@
       controller: PromptDialogController
     });
 
-  /**
-   * @ngInject
-   */
+    /**
+     * @ngInject
+     */
+    PromptDialogController.$inject = ['scope', '$mdDialog'];
     function PromptDialogController(scope, $mdDialog) {
       scope.title = title;
       scope.name = "";
