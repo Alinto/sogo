@@ -26,7 +26,6 @@
 
 @class NSString;
 
-@class SOGoMailLabel;
 @class SOGoUser;
 
 @interface UIxPreferences : UIxComponent
@@ -46,10 +45,6 @@
   NSArray *contactsCategories;
   NSCalendarDate *today;
 
-  // Mail labels/tags
-  SOGoMailLabel *label;
-  NSArray *mailLabels;
-  
   // Sieve filtering
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;

@@ -139,6 +139,7 @@
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
+"Address Book" = "Address Book";
 
 "Forward messages:" = "Forward messages:";
 "messageforward_inline" = "Inline";
@@ -165,6 +166,7 @@
 "Collected Address Book" = "Collected Address Book";
 
 /* IMAP Accounts */
+"Mail Account" = "Mail Account";
 "New Mail Account" = "New Mail Account";
 
 "Server Name:" = "Server Name:";
@@ -202,6 +204,12 @@
 "PRIVATE_item" = "Private";
 
 /* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
 "category_none" = "None";
 "calendar_category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
 

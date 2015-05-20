@@ -73,12 +73,10 @@ static NSArray *reminderValues = nil;
 			       @"15_MINUTES_BEFORE",
 			       @"30_MINUTES_BEFORE",
 			       @"45_MINUTES_BEFORE",
-			       @"-",
 			       @"1_HOUR_BEFORE",
 			       @"2_HOURS_BEFORE",
 			       @"5_HOURS_BEFORE",
 			       @"15_HOURS_BEFORE",
-			       @"-",
 			       @"1_DAY_BEFORE",
 			       @"2_DAYS_BEFORE",
 			       @"1_WEEK_BEFORE",
@@ -90,12 +88,10 @@ static NSArray *reminderValues = nil;
 				@"-PT15M",
 				@"-PT30M",
 				@"-PT45M",
-				@"",
 				@"-PT1H",
 				@"-PT2H",
 				@"-PT5H",
 				@"-PT15H",
-				@"",
 				@"-P1D",
 				@"-P2D",
 				@"-P1W",
@@ -122,9 +118,6 @@ static NSArray *reminderValues = nil;
       calendarCategories = nil;
       calendarCategoriesColors = nil;
       category = nil;
-
-      label = nil;
-      mailLabels = nil;
 
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
@@ -168,8 +161,6 @@ static NSArray *reminderValues = nil;
   [calendarCategories release];
   [calendarCategoriesColors release];
   [category release];
-  [label release];
-  [mailLabels release];
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
@@ -1715,8 +1706,7 @@ static NSArray *reminderValues = nil;
 //
 - (NSArray *) languages
 {
-  return [[SOGoSystemDefaults sharedSystemDefaults]
-           supportedLanguages];
+  return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
 }
 
 // - (NSString *) language
