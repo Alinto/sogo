@@ -1,6 +1,6 @@
 /* iCalTimeZone.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +147,8 @@ static NSArray *knownTimeZones;
                         if (ext.location != NSNotFound)
                           {
                             zone = [zone substringToIndex: ext.location];
-                            [timeZoneNames addObject: zone];
+                            if (![timeZoneNames containsObject: zone])
+                              [timeZoneNames addObject: zone];
                           }
 		      }
 		  }
