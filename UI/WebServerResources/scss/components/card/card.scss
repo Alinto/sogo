@@ -1,20 +1,8 @@
 /// card.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-$card-margin: 8px !default;
-$card-box-shadow: $whiteframe-shadow-z1 !default;
-
 md-card {
-  box-sizing: border-box;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: $card-box-shadow;
-
-  > img {
-    order: 0;
-    width: 100%;
-  }
 
   md-card-content {
     order: 1;
