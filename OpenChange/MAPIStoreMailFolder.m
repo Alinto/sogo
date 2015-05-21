@@ -52,6 +52,7 @@
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreMailContext.h"
 #import "MAPIStoreMailMessage.h"
+#import "MAPIStoreMailFolderTable.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
@@ -152,6 +153,11 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 {
   [self synchroniseCache];
   return [MAPIStoreMailMessageTable tableForContainer: self];
+}
+
+- (MAPIStoreFolderTable *) folderTable
+{
+  return [MAPIStoreMailFolderTable tableForContainer: self];
 }
 
 - (enum mapistore_error) createFolder: (struct SRow *) aRow
@@ -359,19 +365,54 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
+  NSArray *filteredSubfolderKeys;
   NSMutableArray *subfolderKeys;
+  NSMutableArray *subfolderKeysQualifying;
+  NSString *subfolderKey;
+  NSUInteger count, max;
 
   if ([self ensureFolderExists])
     {
+      /* Only folder name can be used as qualifier key */
       if (qualifier)
-        [self errorWithFormat: @"qualifier is not used for folders"];
+        [self warnWithFormat: @"qualifier is only used for folders with name"];
       if (sortOrderings)
         [self errorWithFormat: @"sort orderings are not used for folders"];
       
+      /* FIXME: Flush any cache before retrieving the hierarchy, this
+         slows things down but it is safer */
+      if (!qualifier)
+        [sogoObject flushMailCaches];
+
       subfolderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
       [subfolderKeys autorelease];
 
       [self _cleanupSubfolderKeys: subfolderKeys];
+
+      if (qualifier)
+        {
+          subfolderKeysQualifying = [NSMutableArray array];
+          max = [subfolderKeys count];
+          for (count = 0; count < max; count++) {
+            subfolderKey = [subfolderKeys objectAtIndex: count];
+            /* Remove "folder" prefix */
+            subfolderKey = [subfolderKey substringFromIndex: 6];
+            subfolderKey = [[subfolderKey fromCSSIdentifier] stringByDecodingImap4FolderName];
+            [subfolderKeysQualifying addObject: [NSDictionary dictionaryWithObject: subfolderKey
+                                                                            forKey: @"name"]];
+          }
+          filteredSubfolderKeys = [subfolderKeysQualifying filteredArrayUsingQualifier: qualifier];
+
+          max = [filteredSubfolderKeys count];
+          subfolderKeys = [NSMutableArray arrayWithCapacity: max];
+          for (count = 0; count < max; count++)
+            {
+              subfolderKey = [[filteredSubfolderKeys objectAtIndex: count] valueForKey: @"name"];
+              subfolderKey = [NSString stringWithFormat: @"folder%@", [[subfolderKey stringByEncodingImap4FolderName] asCSSIdentifier]];
+              [subfolderKeys addObject: subfolderKey];
+            }
+
+        }
     }
   else
     subfolderKeys = nil;
