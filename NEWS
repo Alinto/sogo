@@ -1,4 +1,4 @@
-2.2.18 (2015-04-XX)
+2.3.0 (2015-05-XX)
 -------------------
 
 New features
@@ -20,6 +20,9 @@ Enhancements
  - now able to print event/task's description (new components only) in the list view (#2881)
  - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
  - many improvements to EAS SmartReply/SmartForward commands
+ - event invitation response mails are now sent
+ - mail subfolders created in WebMail are created when Outlook synchronises
+ - mail root folder created in WebMail (same level INBOX) are created on Outlook logon
 
 Bug fixes
  - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
@@ -55,6 +58,7 @@ Bug fixes
  - now handle very large amount of participants correctly (#3175)
  - fix message bodies not shown on some EAS devices (#3173)
  - avoid appending the domain unconditionally when SOGoEnableDomainBasedUID is set to YES
+ - recurrent all day events are now shown properly in Outlook
 
 2.2.17a (2015-03-15)
 --------------------
