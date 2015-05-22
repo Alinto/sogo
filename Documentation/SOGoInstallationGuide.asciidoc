@@ -167,9 +167,9 @@ Operating System Requirements
 The following 32-bit and 64-bit operating systems are currently
 supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 5 and 6
-* Community ENTerprise Operating System (CentOS) 5 and 6
-* Debian GNU/Linux 5.0 (Lenny) to 7.0 (Wheezy)
+* Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
+* Community ENTerprise Operating System (CentOS) 5, 6 and 7
+* Debian GNU/Linux 6.0 (Squeeze) to 8.0 (Jessie)
 * Ubuntu 10.04 (Lucid) to 14.04 (Trusty)
 
 Make sure the required components are started automatically at boot time
@@ -194,7 +194,8 @@ Installation
 
 This section will guide you through the installation of SOGo together
 with its dependencies. The steps described here apply to an RPM-based
-installation for a Red Hat or CentOS distribution.
+installation for a Red Hat or CentOS 6 distribution. Most of these steps
+should apply to all supported operating systems.
 
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
