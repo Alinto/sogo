@@ -206,7 +206,9 @@ var SOGoTimePickerInterface = {
             event.keyCode == Event.KEY_TAB ||
             event.keyCode == Event.KEY_BACKSPACE)
             return true;
-        if (event.keyCode > 57 && event.keyCode != 186 && event.keyCode != 59 ||
+        if (event.keyCode > 57 && // ignore non-numeric characters
+            (event.keyCode < 96 || event.keyCode > 105) && // but allow entries from keypad
+            event.keyCode != 186 && event.keyCode != 59 ||
             (event.keyCode == 186 || event.keyCode == 59) && this.value.indexOf(":") >= 0)
             Event.stop(event);
     },
