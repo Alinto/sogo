@@ -496,6 +496,8 @@ static Class NSNullK;
 
   dd = [SOGoSystemDefaults sharedSystemDefaults];
 
+  username = _login;
+
   if (*_domain)
     {
       if ([_login rangeOfString: @"@"].location == NSNotFound)
@@ -504,8 +506,6 @@ static Class NSNullK;
   else
     {
       NSRange r;
-
-      username = _login;
 
       // We try to extract the domain in use in order to avoid pounding all the authentication
       // sources if SOGoLoginDomains isn't specified. This is also true if the user is
