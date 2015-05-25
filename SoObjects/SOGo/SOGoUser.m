@@ -165,8 +165,9 @@
               // The domain is probably appended to the username;
               // make sure it is defined as a domain in the configuration.
               domain = [newLogin substringFromIndex: (r.location + r.length)];
-              if (![[sd domainIds] containsObject: domain])
-                domain = nil;
+              if ([[sd domainIds] containsObject: domain] &&
+                  ![sd enableDomainBasedUID])
+                newLogin = [newLogin substringToIndex: r.location];
 
               if (domain != nil && ![sd enableDomainBasedUID])
                 // Login domains are enabled (SOGoLoginDomains) but not

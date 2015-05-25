@@ -514,21 +514,9 @@ static Class NSNullK;
 
       if (r.location != NSNotFound)
         {
-          NSArray *allDomains;
-          int i;
-
           *_domain = [username substringFromIndex: r.location+1];
 
-          allDomains = [[dd dictionaryForKey: @"domains"] allValues];
-
-          for (i = 0; i < [allDomains count]; i++)
-            {
-              if ([*_domain isEqualToString: [[allDomains objectAtIndex: i] objectForKey: @"SOGoMailDomain"]])
-                break;
-            }
-
-          // We haven't found one
-          if (i == [allDomains count])
+          if (![[[SOGoSystemDefaults sharedSystemDefaults] domainIds] containsObject: *_domain])
             *_domain = nil;
         }
     }
