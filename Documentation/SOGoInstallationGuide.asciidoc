@@ -2699,6 +2699,13 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|2.3.0
+|Run the shell script `sql-update-2.2.17_to_2.3.0.sh` or
+`sql-update-2.2.17_to_2.3.0-mysql.sh` (if you use MySQL).
+
+This will grow the "participant states" field of calendar quick tables to a larger
+size and add the the "c_description" column to calendar quick tables.
+
 h|2.2.8
 |The configuration configuration parameters were renamed:
 
@@ -2719,13 +2726,6 @@ chmod 640 /etc/sogo/sogo.conf
 sudo -u sogo mv ~/GNUstep/Defaults/.GNUstepDefaults \ 
     ~/GNUstep/Defaults/GNUstepDefaults.old
 ----
-
-h|2.1.18
-|Run the shell script `sql-update-2.1.17_to_2.1.18.sh` or
-`sql-update-2.1.18_to_2.1.18-mysql.sh` (if you use MySQL).
-
-This will grow the "participant states" field of calendar tables to a larger
-size.
 
 h|2.0.4
 |The parameter _SOGoForceIMAPLoginWithEmail_ is now deprecated and is
