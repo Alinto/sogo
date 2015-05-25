@@ -844,7 +844,7 @@ source:
 
 [cols="^3,>47,50a"]
 |=======================================================================
-.33+|D <|SOGoUserSources
+.34+|D <|SOGoUserSources
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines an LDAP
