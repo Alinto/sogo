@@ -239,7 +239,7 @@ Red Hat Enterprise Linux v6 x86_64
 If you are using Red Hat Enterprise Linux version 6 x86_64, packages
 for Samba 4, OpenChange and SOGo and the SOGo OpenChange backend are
 available from SOGo's web site. Please follow the instructions from
-http://www.sogo.nu/english/downloads/backend_nightly.html.
+http://www.sogo.nu/english/downloads/backend.html.
 
 In order to satisfy certain dependencies, you should also add the EPEL
 source corresponding to your distribution and architecture. More
@@ -643,7 +643,9 @@ host = localhost
 port = 389
 basedn = CN=Users,DC=example,DC=com
 set debug = true
+----
 
+----
 [autodiscover]
 
 [autodiscover:rpcproxy]
