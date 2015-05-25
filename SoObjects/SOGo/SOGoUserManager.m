@@ -362,6 +362,7 @@ static Class NSNullK;
   NSDictionary *contactInfos;
   NSString *login;
   SOGoDomainDefaults *dd;
+  SOGoSystemDefaults *sd;
 
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid
                                                 inDomain: domain];
@@ -372,10 +373,22 @@ static Class NSNullK;
         dd = [SOGoDomainDefaults defaultsForDomain: domain];
       else
         dd = [SOGoSystemDefaults sharedSystemDefaults];
-      
-      login = [dd forceExternalLoginWithEmail] ? [self getEmailForUID: uid] : uid;
+
+      if ([dd forceExternalLoginWithEmail])
+        {
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          if ([sd enableDomainBasedUID])
+            // On multidomain environment we must use uid@domain
+            // for getEmailForUID method
+            login = [NSString stringWithFormat: @"%@@%@", uid, domain];
+          else
+            login = uid;
+          login = [self getEmailForUID: login];
+        }
+      else
+        login = uid;
     }
-  
+
   return login;
 }
 
@@ -485,27 +498,22 @@ static Class NSNullK;
               grace: (int *) _grace
            useCache: (BOOL) useCache
 {
-  NSMutableDictionary *currentUser, *failedCount;
+  NSMutableDictionary *currentUser;
+  NSDictionary *failedCount;
   NSString *dictPassword, *username, *jsonUser;
   SOGoSystemDefaults *dd;
   BOOL checkOK;
- 
-  // We check for cached passwords. If the entry is cached, we 
-  // check this immediately. If not, we'll go directly at the
-  // authentication source and try to validate there, then cache it.
-  if (*_domain != nil)
+
+  if (*_domain && [_login rangeOfString: @"@"].location == NSNotFound)
     username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
   else
     username = _login;
 
-  failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
-  dd = [SOGoSystemDefaults sharedSystemDefaults];
-
-  //
   // We check the fail count per user in memcache (per server). If the
   // fail count reaches X in Y minutes, we deny immediately the
   // authentications for Z minutes
-  //
+  failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
+  dd = [SOGoSystemDefaults sharedSystemDefaults];
   if (failedCount)
     {
       unsigned int current_time, start_time, delta, block_time;
@@ -531,7 +539,9 @@ static Class NSNullK;
         }
     }
 
-
+  // We check for cached passwords. If the entry is cached, we
+  // check this immediately. If not, we'll go directly at the
+  // authentication source and try to validate there, then cache it.
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
@@ -632,7 +642,8 @@ static Class NSNullK;
       // internal cache.
       [currentUser setObject: [newPassword asSHA1String] forKey: @"password"];
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainBasedUID])
+      if ([sd enableDomainBasedUID] &&
+          [login rangeOfString: @"@"].location == NSNotFound)
         userLogin = [NSString stringWithFormat: @"%@@%@", login, domain];
       else
         userLogin = login;
@@ -785,24 +796,20 @@ static Class NSNullK;
            withLogin: (NSString *) login
 {
   NSEnumerator *emails;
-  NSString *key;
-  
-  [[SOGoCache sharedCache]
-        setUserAttributes: [newUser jsonRepresentation]
-                 forLogin: login];
+  NSString *key, *user_json;
+
+  user_json = [newUser jsonRepresentation];
+  [[SOGoCache sharedCache] setUserAttributes: user_json
+                                    forLogin: login];
   if (![newUser isKindOfClass: NSNullK])
     {
-      key = [newUser objectForKey: @"c_uid"];
-      if (key && ![key isEqualToString: login])
-        [[SOGoCache sharedCache]
-            setUserAttributes: [newUser jsonRepresentation]
-                     forLogin: key];
-
       emails = [[newUser objectForKey: @"emails"] objectEnumerator];
       while ((key = [emails nextObject]))
-        [[SOGoCache sharedCache]
-            setUserAttributes: [newUser jsonRepresentation]
-                     forLogin: key];
+        {
+          if (![key isEqualToString: login])
+            [[SOGoCache sharedCache] setUserAttributes: user_json
+                                              forLogin: key];
+        }
     }
 }
 

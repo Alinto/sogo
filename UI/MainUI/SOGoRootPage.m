@@ -228,7 +228,8 @@
       if ([domain isNotNull])
         {
           sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID])
+          if ([sd enableDomainBasedUID] &&
+              [username rangeOfString: @"@"].location == NSNotFound)
             username = [NSString stringWithFormat: @"%@@%@", username, domain];
         }
 
@@ -587,7 +588,8 @@
       if ([domain isNotNull])
         {
           sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID])
+          if ([sd enableDomainBasedUID] &&
+              [username rangeOfString: @"@"].location == NSNotFound)
             username = [NSString stringWithFormat: @"%@@%@", username, domain];
         }
       
