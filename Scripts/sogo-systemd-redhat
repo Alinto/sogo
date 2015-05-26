@@ -3,8 +3,10 @@ Description=SOGo is a groupware server
 After=network.target
 
 [Service]
+Environment="PREFORK=3"
+EnvironmentFile=-/etc/sysconfig/sogo
 Type=forking
-ExecStart=/usr/sbin/sogod -WOWorkersCount 3 -WOPidFile /var/run/sogo/sogo.pid -WOLogFile /var/log/sogo/sogo.log
+ExecStart=/usr/sbin/sogod -WOWorkersCount ${PREFORK} -WOPidFile /var/run/sogo/sogo.pid -WOLogFile /var/log/sogo/sogo.log
 PIDFile=/var/run/sogo/sogo.pid
 User=sogo
 
