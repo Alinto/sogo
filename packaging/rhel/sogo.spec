@@ -390,6 +390,7 @@ fi
 # update timestamp on imgs,css,js to let apache know the files changed
 find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
 %if 0%{?_with_systemd}
+  systemctl daemon-reload
   systemctl enable sogod
   systemctl start sogod > /dev/null 2>&1
 %else
