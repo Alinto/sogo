@@ -318,11 +318,11 @@
             </label>
             <md-contact-chips
                 ng-model="card.refs"
-                md-contacts="userFilter($query)"
+                md-contacts="userFilter($query, card.refs)"
                 md-contact-name="$$fullname"
                 md-contact-image="$$image"
                 md-contact-email="$$email"
-                md-require-match="true"
+                md-require-match="md-require-match"
                 filter-selected="false"
                 label:placeholder="Add Member"><!-- members --></md-contact-chips>
           </div>

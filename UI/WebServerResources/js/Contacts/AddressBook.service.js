@@ -161,6 +161,8 @@
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
     this.$query = undefined;
+    this.$cards = [];
+    this.cards = [];
   };
 
   /**
@@ -199,39 +201,81 @@
    * @param {object} [options] - additional options to the query
    * @returns a collection of Cards instances
    */
-  AddressBook.prototype.$filter = function(search, options) {
+  AddressBook.prototype.$filter = function(search, excludedCards, options) {
     var _this = this,
+        deferred = AddressBook.$q.defer(),
         params = {
           search: 'name_or_address',
           value: search,
           sort: 'c_cn',
           asc: 'true'
         };
-    if (options)
+    if (options) {
       angular.extend(params, options);
 
-    return this.$id().then(function(addressbookId) {
+      if (options.dry) {
+        if (!search) {
+          // No query specified
+          this.$cards = [];
+          deferred.resolve(this.$cards);
+          return deferred.promise;
+        }
+        else if (this.$query == search) {
+          // Query hasn't changed
+          deferred.resolve(this.$cards);
+          return deferred.promise;
+        }
+      }
+    }
+    this.$query = search;
+
+    this.$id().then(function(addressbookId) {
       var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', params);
-      return futureAddressBookData.then(function(data) {
-        var cards;
-        _this.$query = search;
+      futureAddressBookData.then(function(response) {
+        var results, cards, card, index;
         if (options && options.dry) {
           // Don't keep a copy of the resulting cards.
           // This is usefull when doing autocompletion.
-          cards = data.cards;
+          cards = _this.$cards;
         }
         else {
-          _this.cards = data.cards;
           cards = _this.cards;
         }
-        // Instanciate Card objects
-        angular.forEach(cards, function(o, i) {
-          cards[i] = new AddressBook.$Card(o, search);
+        if (excludedCards) {
+          // Remove excluded cards from results
+          results = _.filter(response.cards, function(data) {
+            return !_.find(excludedCards, function(card) {
+              return card.id == data.id;
+            });
+          });
+        }
+        else {
+            results = response.cards;
+        }
+        // Add new cards matching the search query
+        angular.forEach(results, function(data) {
+          if (!_.find(cards, function(card) {
+            return card.id == data.id;
+          })) {
+            var card = new AddressBook.$Card(data, search),
+                index = _.sortedIndex(cards, card, '$$fullname');
+            cards.splice(index, 0, card);
+          }
         });
+        // Remove cards that no longer match the search query
+        for (index = cards.length - 1; index >= 0; index--) {
+          card = cards[index];
+          if (!_.find(results, function(data) {
+            return card.id == data.id;
+          })) {
+            cards.splice(index, 1);
+          }
+        }
+        deferred.resolve(cards);
+      }, deferred.reject);
+    }, deferred.reject);
 
-        return cards;
-      });
-    });
+    return deferred.promise;
   };
 
   /**

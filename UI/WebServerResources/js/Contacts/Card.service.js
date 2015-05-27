@@ -433,6 +433,7 @@
         // Instanciate Card objects for list members
         angular.forEach(_this.refs, function(o, i) {
           if (o.email) o.emails = [{value: o.email}];
+          o.id = o.reference;
           _this.refs[i] = new Card(o);
         });
         if (_this.birthday) {

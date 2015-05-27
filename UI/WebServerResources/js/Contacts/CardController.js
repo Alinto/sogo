@@ -42,11 +42,9 @@
       var i = $scope.card.$addMember('');
       focus('ref_' + i);
     };
-    $scope.userFilter = function($query) {
-      $scope.currentFolder.$filter($query, {dry: true, excludeLists: true}).then(function(results) {
-        $scope.userFilterResults = results;
-      });
-      return $scope.userFilterResults;
+    $scope.userFilter = function($query, excludedCards) {
+      $scope.currentFolder.$filter($query, excludedCards, {dry: true, excludeLists: true});
+      return $scope.currentFolder.$cards;
     };
     $scope.save = function(form) {
       if (form.$valid) {
