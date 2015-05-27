@@ -40,7 +40,7 @@
    * @param {string} search - a string used to performed the search
    * @return a promise of an array of matching User objects
    */
-  User.$filter = function(search) {
+  User.$filter = function(search, excludedUsers) {
     var deferred = User.$q.defer(),
         param = {search: search};
 
@@ -62,9 +62,20 @@
     User.$query = search;
 
     User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
-      var index, user;
+      var results, index, user;
+      if (excludedUsers) {
+        // Remove excluded users from response
+        results = _.filter(response.users, function(data) {
+          return !_.find(excludedUsers, function(user) {
+            return user.uid == data.uid;
+          });
+        });
+      }
+      else {
+        results = response.users;
+      }
       // Add new users matching the search query
-      angular.forEach(response.users, function(data) {
+      angular.forEach(results, function(data) {
         if (!_.find(User.$users, function(user) {
           return user.uid == data.uid;
         })) {
@@ -76,7 +87,7 @@
       // Remove users that no longer match the search query
       for (index = User.$users.length - 1; index >= 0; index--) {
         user = User.$users[index];
-        if (!_.find(response.users, function(data) {
+        if (!_.find(results, function(data) {
           return user.uid == data.uid;
         })) {
           User.$users.splice(index, 1);

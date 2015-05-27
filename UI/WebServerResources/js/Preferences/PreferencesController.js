@@ -145,8 +145,8 @@
       vm.preferences.defaults.SOGoSieveFilters.splice(index, 1);
     }
 
-    function userFilter($query) {
-      User.$filter($query);
+    function userFilter($query, excludedUsers) {
+      User.$filter($query, excludedUsers);
       return User.$users;
     }
     
