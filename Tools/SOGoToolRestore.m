@@ -45,32 +45,14 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 
-#import "SOGoTool.h"
+#import "SOGoToolRestore.h"
 
 /* TODO:
    - respond to "--help restore"
    - handle database connectivity errors
    - handle the case where the restored folder has been deleted
    - write methods in GDLContentStore to get/update displayname
-     and storing roles */ 
-
-typedef enum SOGoToolRestoreMode {
-  SOGoToolRestoreFolderMode,
-  SOGoToolRestoreFolderDestructiveMode,
-  SOGoToolRestoreListFoldersMode,
-  SOGoToolRestorePreferencesMode
-} SOGoToolRestoreMode;
-
-@interface SOGoToolRestore : SOGoTool
-{
-  NSString *directory;
-  NSString *userID;
-  NSString *restoreFolder;
-  BOOL destructive; /* destructive mode not handled */
-  SOGoToolRestoreMode restoreMode;
-}
-
-@end
+     and storing roles */
 
 @implementation SOGoToolRestore
 
