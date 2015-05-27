@@ -409,6 +409,7 @@ Add the following parameters to the `[global]` section of the
 
 ----
 ### Configuration required by OpenChange server ###
+dsdb:schema update allowed = true
 dcerpc endpoint servers = epmapper, mapiproxy, dnsserver
 dcerpc_mapiproxy:server = true
 dcerpc_mapiproxy:interfaces = exchange_emsmdb, exchange_nsp, exchange_ds_rfr
@@ -426,6 +427,7 @@ Your Samba 4 configuration file should look like this:
   netbios name = sogo
   passdb backend = samba4
   ### Configuration required by OpenChange server ###
+  dsdb:schema update allowed = true
   dcerpc endpoint servers = +epmapper, +mapiproxy
   dcerpc_mapiproxy:server = true
   dcerpc_mapiproxy:interfaces = exchange_emsmdb, exchange_nsp, exchange_ds_rfr
