@@ -266,7 +266,8 @@ from this guide.
 
 [NOTE]
 Samba4/OpenChange are not available for now on CentOS 5 i386/x86_64,
-CentOS 6 i386 and CentOS 7.
+CentOS 6 i386 and CentOS 7. On Debian-based systems, packages are
+available only on the x86_64 platform.
 
 Debian 7 (Wheezy) and Ubuntu 12.04 (Precise Pangolin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
