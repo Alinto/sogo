@@ -19,7 +19,7 @@
     angular.extend(Acl, {
       $q: $q,
       $timeout: $timeout,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
       $User: User
     });
 
