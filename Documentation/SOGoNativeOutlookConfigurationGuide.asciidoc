@@ -266,8 +266,8 @@ from this guide.
 
 [NOTE]
 Samba4/OpenChange are not available for now on CentOS 5 i386/x86_64,
-CentOS 6 i386 and CentOS 7. On Debian-based systems, packages are
-available only on the x86_64 platform.
+and CentOS 7. On Debian-based systems, packages are available only on
+the x86_64 platform.
 
 Debian 7 (Wheezy) and Ubuntu 12.04 (Precise Pangolin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -277,22 +277,19 @@ available from SOGo's web site. Please follow the instructions from
 http://www.sogo.nu/english/downloads/backend.html to setup your
 apt sources.
 
-On Debian7, for Samba 4, you need to use the _wheezy-backports_ repository.
-To do so, create `/etc/apt/sources.list.d/backports.list`:
+On Debian7, for some Samba 4 dependencies, you need to use the
+_wheezy-backports_ repository. To do so, create
+`/etc/apt/sources.list.d/backports.list` with the following
+content:
 
  deb http://http.debian.net/debian wheezy-backports main
-
-On Ubuntu 12.04, you will also have to add the Wheezy sources:
-
- deb http://ftp.us.debian.org/debian wheezy main
- deb http://security.debian.org/ wheezy/updates main
 
 Then install Samba 4 on top of an existing SOGo
 installation:
 
 ----
 apt-get update
-apt-get -t wheezy-backports install samba samba-dev
+apt-get install samba samba-dev
 ----
 
 Once completed, install the packages related to OpenChange and the SOGo
@@ -323,8 +320,6 @@ https://wiki.samba.org/index.php/Samba4/InitScript
 
 Debian 8 (Jessie) and Ubuntu 14.04 (Trusty Tahr)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For Debian 8 and Ubuntu 14.04, you must not use the Debian Wheezy backports.
 
 Please follow the instructions from
 http://www.sogo.nu/english/downloads/backend.html to setup your
