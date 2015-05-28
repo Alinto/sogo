@@ -567,17 +567,29 @@ usernames like this: `SOGoSuperUsernames = (<username1>[, <username2>, ...]);`
 for SOGo. Possible values are:
 
 [options="compact"]
+* `Arabic`
+* `Basque`
 * `BrazilianPortuguese`
+* `Catalan`
 * `Czech`
+* `Danish`
 * `Dutch`
 * `English`
+* `Finnish`
 * `French`
 * `German`
 * `Hungarian`
+* `Icelandic`
 * `Italian`
+* `NorwegianBokmal`
+* `NorwegianNynorsk`
+* `Polish`
 * `Russian`
-* `Spanish`
+* `Slovak`
+* `SpanishSpain`
+* `SpanishArgentina`
 * `Swedish`
+* `Ukrainian`
 * `Welsh`
 
 |D |SOGoNotifyOnPersonalModifications
@@ -650,7 +662,7 @@ of 1 day by default.
 |Parameter used to configure which languages are available from SOGo's
 Web interface. Available languages are specified as an array of string.
 
-The default value is: `( "Czech", "Welsh", "English", "Spanish", "French", "German", "Italian", "Hungarian", "Dutch", "BrazilianPortuguese", "Polish", "Russian", Ukrainian", "Swedish" )`
+The default value is: `( "Arabic", "Basque", "Catalan", "Czech", "Dutch", "Danish", "Welsh", "English", "SpanishSpain", "SpanishArgentina", "Finnish", "French", "German", "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak", "Ukrainian", "Swedish" )`
 
 |D |SOGoHideSystemEMail
 |Parameter used to control if SOGo should hide or not the system email
