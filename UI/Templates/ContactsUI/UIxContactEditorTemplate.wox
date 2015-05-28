@@ -5,73 +5,73 @@
     <md-content md-scroll-y="true" class="md-padding md-whiteframe-z1 bg-sogoPaper-50">
       <div class="editor md-padding">
         <hgroup class="header">
-          <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{card.$description()}}</h6>
+          <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+          <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
         </hgroup>
         
         <!-- contact editor -->
-        <form name="cardForm" ng-show="card.$isCard()" ng-submit="save(cardForm)">
+        <form name="cardForm" ng-show="editor.card.$isCard()" ng-submit="editor.save(cardForm)">
           <md-input-container>
             <var:entity const:name="nbsp"/>
-            <label class="pseudo-input-label">
+            <label>
               <var:string label:value="Display"/>
             </label>
-            <input type="text" ng-maxlength="30" ng-model="card.fn"/>
+            <input type="text" ng-maxlength="30" ng-model="editor.card.fn"/>
           </md-input-container>
           <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles-->
           <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
             <md-input-container flex="40">
-              <label class="pseudo-input-label">
+              <label>
                 <var:string label:value="Firstname"/>
               </label>
-              <input type="text" ng-model="card.givenname"/>
+              <input type="text" ng-model="editor.card.givenname"/>
             </md-input-container>
             <md-input-container flex="40">
-              <label class="pseudo-input-label">
+              <label>
                 <var:string label:value="Lastname"/>
               </label>
-              <input type="text" ng-model="card.sn"/>
+              <input type="text" ng-model="editor.card.sn"/>
             </md-input-container>
             <md-input-container flex="20">
-              <label class="pseudo-input-label">
+              <label>
                 <var:string label:value="Nickname"/>
               </label>
-              <input type="text" ng-model="card.nickname"/>
+              <input type="text" ng-model="editor.card.nickname"/>
             </md-input-container>
           </div>
 
           <div class="sg-fieldset" layout="row" layout-sm="column">
             <md-input-container>
-              <label class="pseudo-input-label">
+              <label>
                 <var:string label:value="Organization"/>
               </label>
-              <input type="text" ng-model="card.org"/>
+              <input type="text" ng-model="editor.card.org"/>
             </md-input-container>
             <md-input-container>
-              <label class="pseudo-input-label">
+              <label>
                 <var:string label:value="Title"/>
               </label>
-              <input type="text" ng-model="card.title"/>
+              <input type="text" ng-model="editor.card.title"/>
             </md-input-container>
           </div>
 
           <!-- org units -->
-          <div class="attr" ng-repeat="unit in card.orgUnits">
+          <div class="attr" ng-repeat="unit in editor.card.orgUnits">
             <div layout="row" layout-align="center end">
               <md-input-container>
-                <label class="pseudo-input-label">
+                <label>
                   <var:string label:value="Organization Unit"/>
                 </label>
                 <input type="text" ng-model="unit.value"
                        sg-focus-on="orgUnit_{{$index}}"/>
               </md-input-container>
-              <md-button class="iconButton" ng-click="card.$delete('orgUnits', $index)">
+              <md-button class="iconButton" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
                 <i class="md-icon-remove-circle"><!-- remove --></i>
               </md-button>
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="iconButton" type="button" ng-click="addOrgUnit($event)">
+            <md-button class="iconButton" type="button" ng-click="editor.addOrgUnit($event)">
               <i class="md-icon-add"><!-- plus icon button--></i>
             </md-button>
             <label class="button-label">
@@ -81,26 +81,26 @@
 
           <!-- emails -->
           <div class="section">
-            <div class="attr" ng-repeat="email in card.emails">
+            <div class="attr" ng-repeat="email in editor.card.emails">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
                 <md-select ng-model="email.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::allEmailTypes" ng-value="type">{{ type }}</md-option>
+                  <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
                 </md-select>
                 <md-input-container>
-                  <label class="pseudo-input-label">
+                  <label>
                     <var:string label:value="Email Address"/>
                   </label>
                   <input type="email" ng-model="email.value"
                          sg-focus-on="email_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" ng-click="card.$delete('emails', $index)">
+                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('emails', $index)">
                   <i class="md-icon-remove-circle"><!-- remove --></i>
                 </md-button>
               </div>
 
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="addEmail()">
+              <md-button class="iconButton" type="button" ng-click="editor.addEmail()">
                 <i class="md-icon-add"><!-- new --></i>
               </md-button>
               <label class="button-label">
@@ -111,51 +111,49 @@
 
           <!-- birthday -->
           <md-input-container>
-            <label class="pseudo-input-label--no-margin">
+            <label>
               <var:string label:value="Birthday"/>
             </label>
-            <input type="date" ng-model="card.birthday"/>
+            <input type="date" ng-model="editor.card.birthday"/>
           </md-input-container>
 
           <!-- categories -->
-          <div class="pseudo-input-container">
-            <md-chips ng-model="card.categories">
+            <md-chips ng-model="editor.card.categories">
               <md-chip-template>
                 {{$chip.value}}
               </md-chip-template>
               <md-autocomplete
-                  md-selected-item="categories.selected"
-                  md-selected-item-change="card.$addCategory(category)"
-                  md-search-text="categories.searchText"
-                  md-items="category in card.constructor.filterCategories(categories.searchText)"
+                  md-selected-item="editor.categories.selected"
+                  md-selected-item-change="editor.card.$addCategory(category)"
+                  md-search-text="editor.categories.searchText"
+                  md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
                   label:placeholder="Add a category">
-                <span md-highlight-text="categories.searchText">{{category}}</span>
+                <span md-highlight-text="editor.categories.searchText">{{category}}</span>
               </md-autocomplete>
             </md-chips>
-          </div>
 
           <!-- phones -->
           <div class="section">
-            <div class="attr" ng-repeat="phone in card.phones">
-              <div layout="row" layout-align="center end">
+            <div class="attr" ng-repeat="phone in editor.card.phones">
+              <div class="md-layout-margin" layout="row" layout-align="space-between end">
                 <md-select ng-model="phone.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in allTelTypes" ng-value="type">{{ type }}</md-option>
+                  <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
                 </md-select>
                 <md-input-container>
-                  <label class="pseudo-input-label">
+                  <label>
                     <var:string label:value="Phone Number"/>
                   </label>
                   <input type="text" ng-model="phone.value"
                          sg-focus-on="phone_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" ng-click="card.$delete('phones', $index)">
+                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('phones', $index)">
                   <i class="md-icon-remove-circle"><!-- remove --></i>
                 </md-button>
               </div>
             </div>
 
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="addPhone()">
+              <md-button class="iconButton" type="button" ng-click="editor.addPhone()">
                 <i class="md-icon-add"><!-- new --></i>
               </md-button>
               <label class="button-label">
@@ -166,24 +164,24 @@
 
           <!-- urls -->
           <div class="section">
-            <div class="attr" ng-repeat="url in card.urls">
-              <div layout="row" layout-align="center end">
+            <div class="attr" ng-repeat="url in editor.card.urls">
+              <div class="md-layout-margin" layout="row" layout-align="space-between end">
                 <md-select ng-model="url.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in allUrlTypes" value="type">{{ type }}</md-option>
+                  <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
                 </md-select>
                 <md-input-container>
-                  <label class="pseudo-input-label">
+                  <label>
                     <var:string label:value="URL"/>
                   </label>
                   <input type="url" ng-model="url.value" sg-focus-on="url_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" ng-click="card.$delete('urls', $index)">
+                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('urls', $index)">
                   <i class="md-icon-remove-circle"><!-- remove --></i>
                 </md-button>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="addUrl()">
+              <md-button class="iconButton" type="button" ng-click="editor.addUrl()">
                 <i class="md-icon-add"><!-- new --></i>
               </md-button>
               <label class="button-label">
@@ -194,10 +192,10 @@
 
           <!-- addresses -->
           <div class="section">
-            <div class="attr" ng-repeat="address in card.addresses">
+            <div class="attr" ng-repeat="address in editor.card.addresses">
               <div layout="row" layout-align="center end">
                 <md-select ng-model="address.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in allAddressTypes" ng-value="type">{{ type }}</md-option>
+                  <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
                 </md-select>
                 <md-input-container>
                   <label>
@@ -252,13 +250,13 @@
                   </label>
                   <input type="text" ng-model="address.postalcode"/>
                 </md-input-container>
-                <md-button class="iconButton" ng-click="card.$delete('addresses', $index)">
+                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('addresses', $index)">
                   <i class="md-icon-remove-circle"><!-- remove --></i>
                 </md-button>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="addAddress()">
+              <md-button class="iconButton" type="button" ng-click="editor.addAddress()">
                 <i class="md-icon-add"><!-- new --></i>
               </md-button>
               <label class="button-label">
@@ -272,14 +270,14 @@
             <label class="right inline">
               <var:string label:value="Note"/>
             </label>
-            <textarea ng-model="card.note"><!-- note --></textarea>
+            <textarea ng-model="editor.card.note"><!-- note --></textarea>
           </md-input-container>
 
           <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button type="button" ng-click="cancel()">
+            <md-button type="button" ng-click="editor.cancel()">
               <var:string label:value="Cancel"/>
             </md-button>
-            <md-button type="button" ng-click="reset()">
+            <md-button type="button" ng-click="editor.reset()">
               <var:string label:value="Reset"/>
             </md-button>
             <md-button class="md-primary md-hue-3" type="submit">
@@ -289,26 +287,26 @@
         </form>
 
         <!-- list editor -->
-        <form name="listForm" ng-if="card.$isList()" ng-submit="save(listForm)">
+        <form name="listForm" ng-if="editor.card.$isList()" ng-submit="editor.save(listForm)">
           <md-input-container>
-            <label class="pseudo-input-label">
+            <label>
               <var:string label:value="Display"/>
             </label>
-            <input type="text" ng-maxlength="30" ng-model="card.fn"/>
+            <input type="text" ng-maxlength="30" ng-model="editor.card.fn"/>
           </md-input-container>
           
           <md-input-container>
-            <label class="pseudo-input-label">
+            <label>
               <var:string label:value="Nickname"/>
             </label>
-            <input type="text" ng-maxlength="30" ng-model="card.nickname"/>
+            <input type="text" ng-maxlength="30" ng-model="editor.card.nickname"/>
           </md-input-container>
 
           <md-input-container>
-            <label class=" right inline">
+            <label>
               <var:string label:value="Description"/>
             </label>
-            <textarea ng-model="card.description"><!-- note --></textarea>
+            <textarea ng-model="editor.card.description"><!-- note --></textarea>
           </md-input-container>
           
           <!-- list members -->
@@ -317,8 +315,8 @@
                   <var:string label:value="Members:"/>
             </label>
             <md-contact-chips
-                ng-model="card.refs"
-                md-contacts="userFilter($query, card.refs)"
+                ng-model="editor.card.refs"
+                md-contacts="editor.userFilter($query, editor.card.refs)"
                 md-contact-name="$$fullname"
                 md-contact-image="$$image"
                 md-contact-email="$$email"
@@ -328,10 +326,10 @@
           </div>
           
           <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button class="" ng-click="cancel()">
+            <md-button type="button" ng-click="editor.cancel()">
               <var:string label:value="Cancel"/>
             </md-button>
-            <md-button class="" ng-click="reset()">
+            <md-button type="button" ng-click="editor.reset()">
               <var:string label:value="Reset"/>
             </md-button>
             <var:if condition="canCreateOrModify">
@@ -343,7 +341,5 @@
         </form>
       </div>
     </md-content>
-
-
 
 </container>

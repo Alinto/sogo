@@ -7,80 +7,95 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$rootScope', '$timeout', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $rootScope, $timeout, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
-    $rootScope.card = stateCard;
+  CardController.$inject = ['$scope', '$timeout', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
+    var vm = this;
 
-    $scope.allEmailTypes = Card.$EMAIL_TYPES;
-    $scope.allTelTypes = Card.$TEL_TYPES;
-    $scope.allUrlTypes = Card.$URL_TYPES;
-    $scope.allAddressTypes = Card.$ADDRESS_TYPES;
-    $scope.categories = {};
-    $scope.userFilterResults = [];
+    vm.card = stateCard;
 
-    $scope.addOrgUnit = function() {
-      var i = $scope.card.$addOrgUnit('');
+    vm.currentFolder = AddressBook.selectedFolder;
+    vm.allEmailTypes = Card.$EMAIL_TYPES;
+    vm.allTelTypes = Card.$TEL_TYPES;
+    vm.allUrlTypes = Card.$URL_TYPES;
+    vm.allAddressTypes = Card.$ADDRESS_TYPES;
+    vm.categories = {};
+    vm.userFilterResults = [];
+    vm.addOrgUnit = addOrgUnit;
+    vm.addEmail = addEmail;
+    vm.addPhone = addPhone;
+    vm.addUrl = addUrl;
+    vm.addAddress = addAddress;
+    vm.addMember = addMember;
+    vm.userFilter = userFilter;
+    vm.save = save;
+    vm.reset = reset;
+    vm.cancel = cancel;
+    vm.confirmDelete = confirmDelete;
+
+    function addOrgUnit() {
+      var i = vm.card.$addOrgUnit('');
       focus('orgUnit_' + i);
     };
-    $scope.addEmail = function() {
-      var i = $scope.card.$addEmail('');
+    function addEmail() {
+      var i = vm.card.$addEmail('');
       focus('email_' + i);
     };
-    $scope.addPhone = function() {
-      var i = $scope.card.$addPhone('');
+    function addPhone() {
+      var i = vm.card.$addPhone('');
       focus('phone_' + i);
     };
-    $scope.addUrl = function() {
-      var i = $scope.card.$addUrl('', '');
+    function addUrl() {
+      var i = vm.card.$addUrl('', '');
       focus('url_' + i);
     };
-    $scope.addAddress = function() {
-      var i = $scope.card.$addAddress('', '', '', '', '', '', '', '');
+    function addAddress() {
+      var i = vm.card.$addAddress('', '', '', '', '', '', '', '');
       focus('address_' + i);
     };
-    $scope.addMember = function() {
-      var i = $scope.card.$addMember('');
+    function addMember() {
+      var i = vm.card.$addMember('');
       focus('ref_' + i);
     };
-    $scope.userFilter = function($query, excludedCards) {
-      $scope.currentFolder.$filter($query, excludedCards, {dry: true, excludeLists: true});
-      return $scope.currentFolder.$cards;
+    function userFilter($query, excludedCards) {
+      AddressBook.selectedFolder.$filter($query, excludedCards, {dry: true, excludeLists: true});
+      return AddressBook.selectedFolder.$cards;
     };
-    $scope.save = function(form) {
+    function save(form) {
       if (form.$valid) {
-        $scope.card.$save()
+        vm.card.$save()
           .then(function(data) {
-            var i = _.indexOf(_.pluck($scope.currentFolder.cards, 'id'), $scope.card.id);
+            var i = _.indexOf(_.pluck(AddressBook.selectedFolder.cards, 'id'), vm.card.id);
             if (i < 0) {
               // New card; reload contacts list and show addressbook in which the card has been created
-              $rootScope.currentFolder = AddressBook.$find(data.pid);
+              AddressBook.selectedFolder.$reload();
             }
             else {
               // Update contacts list with new version of the Card object
-              $rootScope.currentFolder.cards[i] = angular.copy($scope.card);
+              AddressBook.selectedFolder.cards[i] = angular.copy(vm.card);
             }
-            $state.go('app.addressbook.card.view', { cardId: $scope.card.id });
-          }, function(data, status) {
-            console.debug('failed');
+            $state.go('app.addressbook.card.view', { cardId: vm.card.id });
+          })
+          .catch(function(err) {
+            console.log(err);
           });
       }
     };
-    $scope.reset = function() {
-      $scope.card.$reset();
+    function reset() {
+      vm.card.$reset();
     };
-    $scope.cancel = function() {
-      $scope.card.$reset();
-      if ($scope.card.isNew) {
+    function cancel() {
+      vm.card.$reset();
+      if (vm.card.isNew) {
         // Cancelling the creation of a card
-        $rootScope.card = null;
-        $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
+        vm.card = null;
+        $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
       }
       else {
         // Cancelling the edition of an existing card
-        $state.go('app.addressbook.card.view', { cardId: $scope.card.id });
+        $state.go('app.addressbook.card.view', { cardId: vm.card.id });
       }
     };
-    $scope.confirmDelete = function(card) {
+    function confirmDelete(card) {
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the card of %{0}?', card.$fullname()))
         .then(function() {
@@ -88,12 +103,12 @@
           card.$delete()
             .then(function() {
               // Remove card from list of addressbook
-              $rootScope.currentFolder.cards = _.reject($rootScope.currentFolder.cards, function(o) {
+              AddressBook.selectedFolder.cards = _.reject(AddressBook.selectedFolder.cards, function(o) {
                 return o.id == card.id;
               });
               // Remove card object from scope
-              $rootScope.card = null;
-              $state.go('app.addressbook', { addressbookId: $scope.currentFolder.id });
+              vm.card = null;
+              $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                            card.$fullname()));

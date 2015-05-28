@@ -8,17 +8,27 @@
    */
   AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$q', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
   function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $q, $mdDialog, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
-    var currentAddressbook;
+    var vm = this;
 
-    $scope.activeUser = Settings.activeUser;
-    $scope.service = AddressBook;
+    vm.activeUser = Settings.activeUser;
+    vm.service = AddressBook;
+    vm.select = select;
+    vm.newAddressbook = newAddressbook;
+    vm.edit = edit;
+    vm.revertEditing = revertEditing;
+    vm.save = save;
+    vm.confirmDelete = confirmDelete;
+    vm.importCards = importCards;
+    vm.exportCards = exportCards;
+    vm.share = share;
+    vm.subscribeToFolder = subscribeToFolder;
 
-    // $scope functions
-    $scope.select = function(folder) {
-      $scope.editMode = false;
+    function select(folder) {
+      vm.editMode = false;
       $state.go('app.addressbook', {addressbookId: folder.id});
-    };
-    $scope.newAddressbook = function() {
+    }
+
+    function newAddressbook() {
       Dialog.prompt(l('New addressbook'),
                     l('Name of new addressbook'))
         .then(function(name) {
@@ -32,105 +42,133 @@
           );
           AddressBook.$add(addressbook);
         });
-    };
-    $scope.edit = function(index, folder) {
+    }
+
+    function edit(folder) {
       if (!folder.isRemote) {
-        $scope.editMode = folder.id;
-        $scope.originalAddressbook = angular.extend({}, folder.$omit());
+        vm.editMode = folder.id;
+        vm.originalAddressbook = angular.extend({}, folder.$omit());
         focus('addressBookName_' + folder.id);
       }
-    };
-    $scope.revertEditing = function(folder) {
-      folder.name = $scope.originalAddressbook.name;
-      $scope.editMode = false;
-    };
-    $scope.save = function(folder) {
+    }
+
+    function revertEditing(folder) {
+      folder.name = vm.originalAddressbook.name;
+      vm.editMode = false;
+    }
+
+    function save(folder) {
       var name = folder.name;
-      if (name && name.length > 0 && name != $scope.originalAddressbook.name) {
+      if (name && name.length > 0 && name != vm.originalAddressbook.name) {
         folder.$rename(name)
           .then(function(data) {
-            $scope.editMode = false;
+            vm.editMode = false;
           }, function(data, status) {
             Dialog.alert(l('Warning'), data);
           });
       }
-    };
-    $scope.confirmDelete = function() {
-      if ($scope.currentFolder.isSubscription) {
+    }
+
+    function confirmDelete() {
+      if (vm.service.selectedFolder.isSubscription) {
         // Unsubscribe without confirmation
-        $rootScope.currentFolder.$delete()
+        vm.service.selectedFolder.$delete()
           .then(function() {
-            $rootScope.currentFolder = null;
+            vm.service.selectedFolder = null;
             $state.go('app.addressbook', { addressbookId: 'personal' });
           }, function(data, status) {
             Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                           $rootScope.currentFolder.name),
+                           vm.service.selectedFolder.name),
                          l(data.error));
           });
       }
       else {
         Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
-                                       $scope.currentFolder.name))
+                                       vm.service.selectedFolder.name))
           .then(function() {
-            $rootScope.currentFolder.$delete()
-              .then(function() {
-                $rootScope.currentFolder = null;
-              }, function(data, status) {
-                Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                               $rootScope.currentFolder.name),
-                             l(data.error));
-              });
+            return vm.service.selectedFolder.$delete();
+          })
+          .then(function() {
+            vm.service.selectedFolder = null;
+            return true;
+          })
+          .catch(function(data, status) {
+            Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                           vm.service.selectedFolder.name),
+                         l(data.error));
           });
       }
-    };
-    $scope.importCards = function() {
+    }
 
-    };
-    $scope.exportCards = function() {
-      window.location.href = ApplicationBaseURL + '/' + $scope.currentFolder.id + '/exportFolder';
-    };
-    $scope.share = function(folder) {
-      if (folder.id != $scope.currentFolder.id) {
+    function importCards() {
+
+    }
+
+    function exportCards() {
+      window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
+    }
+
+    function share(addressbook) {
+      if (addressbook.id != vm.service.selectedFolder.id) {
         // Counter the possibility to click on the "hidden" secondary button
-        $scope.select(folder);
+        select(addressbook);
         return;
       }
-      $mdDialog.show({
-        templateUrl: $scope.currentFolder.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
-        controller: AddressBookACLController,
-        clickOutsideToClose: true,
-        escapeToClose: true,
-        locals: {
-          usersWithACL: $scope.currentFolder.$acl.$users(),
-          User: User,
-          stateAddressbook: $scope.currentFolder,
-          $q: $q
-        }
+      // Fetch list of ACL users
+      addressbook.$acl.$users().then(function() {
+        // Show ACL editor
+        $mdDialog.show({
+          templateUrl: addressbook.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
+          controller: AddressBookACLController,
+          controllerAs: 'acl',
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          locals: {
+            usersWithACL: addressbook.$acl.users,
+            User: User,
+            folder: addressbook,
+            $q: $q
+          }
+        });
       });
+
       /**
        * @ngInject
        */
-      AddressBookACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'stateAddressbook', '$q'];
-      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, stateAddressbook, $q) {
-        $scope.users = usersWithACL; // ACL users
-        $scope.stateAddressbook = stateAddressbook;
-        $scope.userToAdd = '';
-        $scope.searchText = '';
-        $scope.userFilter = function($query) {
-          return User.$filter($query);
-        };
-        $scope.closeModal = function() {
-          stateAddressbook.$acl.$resetUsersRights(); // cancel changes
+      AddressBookACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder', '$q'];
+      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, folder, $q) {
+        var vm = this;
+
+        vm.users = usersWithACL; // ACL users
+        vm.folder = folder;
+        vm.userToAdd = '';
+        vm.searchText = '';
+        vm.userFilter = userFilter;
+        vm.closeModal = closeModal;
+        vm.saveModal = saveModal;
+        vm.confirmChange = confirmChange;
+        vm.removeUser = removeUser;
+        vm.addUser = addUser;
+        vm.selectUser = selectUser;
+
+        function userFilter($query) {
+          return User.$filter($query, folder.$acl.users);
+        }
+
+        function closeModal() {
+          folder.$acl.$resetUsersRights(); // cancel changes
           $mdDialog.hide();
-        };
-        $scope.saveModal = function() {
-          stateAddressbook.$acl.$saveUsersRights().then(function() {
+        }
+
+        function saveModal() {
+          folder.$acl.$saveUsersRights().then(function() {
             $mdDialog.hide();
           }, function(data, status) {
             Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
-        };
-        $scope.confirmChange = function(user) {
+        }
+
+        function confirmChange(user) {
           var confirmation = user.$confirmRights();
           if (confirmation) {
             Dialog.confirm(l('Warning'), confirmation).then(function(res) {
@@ -138,48 +176,51 @@
                 user.$resetRights(true);
             });
           }
-        };
-        $scope.removeUser = function(user) {
-          stateAddressbook.$acl.$removeUser(user.uid).then(function() {
-            if (user.uid == $scope.selectedUser.uid) {
-              $scope.selectedUser = null;
+        }
+
+        function removeUser(user) {
+          folder.$acl.$removeUser(user.uid).then(function() {
+            if (user.uid == vm.selectedUser.uid) {
+              vm.selectedUser = null;
             }
           }, function(data, status) {
             Dialog.alert(l('Warning'), l('An error occured please try again.'))
           });
-        };
-        $scope.addUser = function(data) {
+        }
+
+        function addUser(data) {
           if (data) {
-            stateAddressbook.$acl.$addUser(data).then(function() {
-              $scope.userToAdd = '';
-              $scope.searchText = '';
+            folder.$acl.$addUser(data).then(function() {
+              vm.userToAdd = '';
+              vm.searchText = '';
             }, function(error) {
               Dialog.alert(l('Warning'), error);
             });
           }
-        };
-        $scope.selectUser = function(user) {
+        }
+
+        function selectUser(user) {
           // Check if it is a different user
-          if ($scope.selectedUser != user) {
-            $scope.selectedUser = user;
-            $scope.selectedUser.$rights();
+          if (vm.selectedUser != user) {
+            vm.selectedUser = user;
+            vm.selectedUser.$rights();
           }
-        };
-      };
-    };
+        }
+      }
+    }
 
     /**
      * subscribeToFolder - Callback of sgSubscribe directive
      */
-    $scope.subscribeToFolder = function(addressbookData) {
+    function subscribeToFolder(addressbookData) {
       console.debug('subscribeToFolder ' + addressbookData.owner + addressbookData.name);
       AddressBook.$subscribe(addressbookData.owner, addressbookData.name).catch(function(data) {
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
-    };
+    }
   }
 
   angular
-    .module('SOGo.ContactsUI')  
-    .controller('AddressBooksController', AddressBooksController);                                    
+    .module('SOGo.ContactsUI')
+    .controller('AddressBooksController', AddressBooksController);
 })();

@@ -8,16 +8,22 @@
    */
   AddressBookController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
   function AddressBookController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
-    var currentAddressbook;
+    var vm = this;
 
-    $rootScope.currentFolder = stateAddressbook;
-    $rootScope.card = null;
+    AddressBook.selectedFolder = stateAddressbook;
+
+    vm.selectedFolder = stateAddressbook;
+    vm.selectCard = selectCard;
+    vm.newComponent = newComponent;
+    vm.notSelectedComponent = notSelectedComponent;
+    vm.unselectCards = unselectCards;
+    vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
     
-    $scope.selectCard = function(card) {
+    function selectCard(card) {
       $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
-    };
+    }
     
-    $scope.newComponent = function(ev) {
+    function newComponent(ev) {
       $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: ev,
@@ -39,7 +45,7 @@
         ].join(''),
         locals: {
           state: $state,
-          addressbookId: $scope.currentFolder.id
+          addressbookId: vm.selectedFolder.id
         },
         controller: ComponentDialogController
       });
@@ -54,27 +60,27 @@
           state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
         }
       }
-    };
+    }
 
-    $scope.notSelectedComponent = function(currentCard, type) {
+    function notSelectedComponent(currentCard, type) {
       return (currentCard.tag == type && !currentCard.selected);
-    };
+    }
 
-    $scope.unselectCards = function() {
-      _.each($rootScope.currentFolder.cards, function(card) { card.selected = false; });
-    };
+    function unselectCards() {
+      _.each(vm.selectedFolder.cards, function(card) { card.selected = false; });
+    }
     
-    $scope.confirmDeleteSelectedCards = function() {
+    function confirmDeleteSelectedCards() {
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the selected contacts?'))
         .then(function() {
           // User confirmed the deletion
-          var selectedCards = _.filter($rootScope.currentFolder.cards, function(card) { return card.selected });
-          $rootScope.currentFolder.$deleteCards(selectedCards);
+          var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected });
+          vm.selectedFolder.$deleteCards(selectedCards);
         },  function(data, status) {
           // Delete failed
         });
-    };
+    }
   }
 
   angular

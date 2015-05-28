@@ -40,7 +40,8 @@
       $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
       $Card: Card,
       $$Acl: Acl,
-      activeUser: Settings.activeUser
+      activeUser: Settings.activeUser,
+      selectedFolder: null
     });
 
     return AddressBook; // return constructor
@@ -156,13 +157,13 @@
    * @param {object} data - attributes of addressbook
    */
   AddressBook.prototype.init = function(data) {
+    this.$cards = [];
+    this.cards = [];
     angular.extend(this, data);
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
     this.$query = undefined;
-    this.$cards = [];
-    this.cards = [];
   };
 
   /**
@@ -172,9 +173,16 @@
    * @returns a promise of the addressbook id
    */
   AddressBook.prototype.$id = function() {
-    return this.$futureAddressBookData.then(function(data) {
-      return data.id;
-    });
+    if (this.id) {
+      // Object already unwrapped
+      return AddressBook.$q.when(this.id);
+    }
+    else {
+      // Wait until object is unwrapped
+      return this.$futureAddressBookData.then(function(addressbook) {
+        return addressbook.id;
+      });
+    }
   };
 
   /**
@@ -194,6 +202,46 @@
   };
 
   /**
+   * @function $reload
+   * @memberof AddressBook.prototype
+   * @desc Reload list of cards
+   * @returns a promise of the Cards instances
+   */
+  AddressBook.prototype.$reload = function() {
+    var _this = this;
+
+    return AddressBook.$$resource.fetch(this.id, 'view')
+      .then(function(response) {
+        var index, card,
+            results = response.cards,
+            cards = _this.cards;
+
+        // Add new cards
+        angular.forEach(results, function(data) {
+          if (!_.find(cards, function(card) {
+            return card.id == data.id;
+          })) {
+            var card = new AddressBook.$Card(data),
+                index = _.sortedIndex(cards, card, '$$fullname');
+            cards.splice(index, 0, card);
+          }
+        });
+
+        // Remove cards that no longer exist
+        for (index = cards.length - 1; index >= 0; index--) {
+          card = cards[index];
+          if (!_.find(results, function(data) {
+            return card.id == data.id;
+          })) {
+            cards.splice(index, 1);
+          }
+        }
+
+        return cards;
+      });
+  };
+
+    /**
    * @function $filter
    * @memberof AddressBook.prototype
    * @desc Search for cards matching some criterias
@@ -203,13 +251,13 @@
    */
   AddressBook.prototype.$filter = function(search, excludedCards, options) {
     var _this = this,
-        deferred = AddressBook.$q.defer(),
         params = {
           search: 'name_or_address',
           value: search,
           sort: 'c_cn',
           asc: 'true'
         };
+
     if (options) {
       angular.extend(params, options);
 
@@ -217,65 +265,60 @@
         if (!search) {
           // No query specified
           this.$cards = [];
-          deferred.resolve(this.$cards);
-          return deferred.promise;
+          return AddressBook.$q.when(this.$cards);
         }
         else if (this.$query == search) {
           // Query hasn't changed
-          deferred.resolve(this.$cards);
-          return deferred.promise;
+          return AddressBook.$q.when(this.$cards);
         }
       }
     }
     this.$query = search;
 
-    this.$id().then(function(addressbookId) {
-      var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', params);
-      futureAddressBookData.then(function(response) {
-        var results, cards, card, index;
-        if (options && options.dry) {
-          // Don't keep a copy of the resulting cards.
-          // This is usefull when doing autocompletion.
-          cards = _this.$cards;
-        }
-        else {
-          cards = _this.cards;
-        }
-        if (excludedCards) {
-          // Remove excluded cards from results
-          results = _.filter(response.cards, function(data) {
-            return !_.find(excludedCards, function(card) {
-              return card.id == data.id;
-            });
+    return this.$id().then(function(addressbookId) {
+      return AddressBook.$$resource.fetch(addressbookId, 'view', params);
+    }).then(function(response) {
+      var results, cards, card, index;
+      if (options && options.dry) {
+        // Don't keep a copy of the resulting cards.
+        // This is usefull when doing autocompletion.
+        cards = _this.$cards;
+      }
+      else {
+        cards = _this.cards;
+      }
+      if (excludedCards) {
+        // Remove excluded cards from results
+        results = _.filter(response.cards, function(data) {
+          return !_.find(excludedCards, function(card) {
+            return card.id == data.id;
           });
-        }
-        else {
-            results = response.cards;
-        }
-        // Add new cards matching the search query
-        angular.forEach(results, function(data) {
-          if (!_.find(cards, function(card) {
-            return card.id == data.id;
-          })) {
-            var card = new AddressBook.$Card(data, search),
-                index = _.sortedIndex(cards, card, '$$fullname');
-            cards.splice(index, 0, card);
-          }
         });
-        // Remove cards that no longer match the search query
-        for (index = cards.length - 1; index >= 0; index--) {
-          card = cards[index];
-          if (!_.find(results, function(data) {
-            return card.id == data.id;
-          })) {
-            cards.splice(index, 1);
-          }
+      }
+      else {
+        results = response.cards;
+      }
+      // Add new cards matching the search query
+      angular.forEach(results, function(data) {
+        if (!_.find(cards, function(card) {
+          return card.id == data.id;
+        })) {
+          var card = new AddressBook.$Card(data, search),
+              index = _.sortedIndex(cards, card, '$$fullname');
+          cards.splice(index, 0, card);
         }
-        deferred.resolve(cards);
-      }, deferred.reject);
-    }, deferred.reject);
-
-    return deferred.promise;
+      });
+      // Remove cards that no longer match the search query
+      for (index = cards.length - 1; index >= 0; index--) {
+        card = cards[index];
+        if (!_.find(results, function(data) {
+          return card.id == data.id;
+        })) {
+          cards.splice(index, 1);
+        }
+      }
+      return cards;
+    });
   };
 
   /**
@@ -377,21 +420,23 @@
     this.$futureAddressBookData = futureAddressBookData;
     // Resolve the promise
     this.$futureAddressBookData.then(function(data) {
-      AddressBook.$timeout(function() {
-        _this.init(data);
-        // Also extend AddressBook instance from data of addressbooks list.
+      return AddressBook.$timeout(function() {
+        // Extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
         angular.forEach(AddressBook.$findAll(), function(o, i) {
-          if (o.id == _this.id) {
+          if (o.id == data.id) {
             angular.extend(_this, o);
           }
         });
+        // Extend AddressBook instance with received data
+        _this.init(data);
         // Instanciate Card objects
         angular.forEach(_this.cards, function(o, i) {
           _this.cards[i] = new AddressBook.$Card(o);
         });
         // Instanciate Acl object
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
+        return _this;
       });
     }, function(data) {
       _this.isError = true;

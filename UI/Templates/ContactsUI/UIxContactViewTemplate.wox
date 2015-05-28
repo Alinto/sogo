@@ -7,21 +7,23 @@
     >
 
     <md-card-content>
-      <md-button class="iconButton show-sm" ng-click="toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
+      <md-button class="iconButton show-sm"
+                 label:aria-label="Close"
+                 ng-click="editor.toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
       <header>
-        <div ng-show="card.tag == 'vcard'">
+        <div ng-show="editor.card.tag == 'vcard'">
           <sg-gravatar-image class="md-tile-left"
-                             email="{{card.$preferredEmail()}}"
+                             email="{{editor.card.$preferredEmail()}}"
                              size="48"><!-- gravatar -->
           </sg-gravatar-image>
         </div>
-        <div class="sg-list-avatar" ng-show="card.tag == 'vlist'">
+        <div class="sg-list-avatar" ng-show="editor.card.tag == 'vlist'">
           <!--list avatar-->
         </div>
         <div class="msg-header-content">
-          <h1 class="sg-md-display-2--light" ng-bind-html="card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{card.$description()}}</h6>
-          <md-chips ng-model="card.categories"
+          <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+          <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
+          <md-chips ng-model="editor.card.categories"
                     readonly="true">
             <md-chip-template>
               {{$chip.value}}
@@ -31,11 +33,11 @@
         <div class="sg-icon-bar--vertical">
           <md-button class="iconButton"
                      label:aria-label="Edit"
-                     ng-show="currentFolder.isEditable"
-                     ui-sref="app.addressbook.card.editor({addressbookId: currentFolder.id, cardId: card.id})">
+                     ng-show="editor.currentFolder.isEditable"
+                     ui-sref="app.addressbook.card.editor({addressbookId: editor.currentFolder.id, cardId: editor.card.id})">
             <i class="md-icon-create"><!-- edit --></i>
           </md-button>
-          <md-button class="iconButton" aria-label="Delete" ng-click="confirmDelete(card)">
+          <md-button class="iconButton" aria-label="Delete" ng-click="editor.confirmDelete(editor.card)">
             <i class="md-icon-delete"><!-- delete --></i>
           </md-button>
         </div>
@@ -43,30 +45,32 @@
       <md-divider class="md-inset"><!-- divider --></md-divider>
       <section class="msg-body">
 
-        <div class="pseudo-input-container" ng-show="card.birthday">
+        <div class="pseudo-input-container" ng-show="editor.card.birthday">
           <div class="key">
             <label class="pseudo-input-label">
               <var:string label:value="Birthday"/>
             </label>
           </div>
           <div class="pseudo-input-field">
-            <span>{{card.$birthday() | date}}</span>
+            <span>{{editor.card.$birthday() | date}}</span>
           </div>
         </div>
 
         <!-- list members -->
-        <div class="section" ng-show="card.refs.length > 0">
+        <div class="section" ng-show="editor.card.refs.length > 0">
           <label class="pseudo-input-label">
             <var:string label:value="Members"/>
           </label>
           <md-list>
-            <md-list-item class="md-3-line" ng-repeat="ref in card.refs track by ref.reference">
-              <div class="sg-avatar">
-                <!--avatar--><!-- currentCard.tag = vcard || vlist -->
-              </div>
+            <md-list-item class="md-3-line" ng-repeat="ref in editor.card.refs track by ref.reference">
+              <sg-gravatar-image class="md-tile-left"
+                                 email="{{ref.$preferredEmail()}}"
+                                 size="48">
+                <!-- contact avatar -->
+              </sg-gravatar-image>
               <div class="md-list-item-text">
                 <h3>
-                  <a ui-sref="app.addressbook.card.view({addressbookId: currentFolder.id, cardId: ref.reference})">
+                  <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">
                     {{ ref.$fullname() }}
                   </a>
                 </h3>
@@ -80,8 +84,8 @@
           </md-list>
         </div>
         
-        <div class="section">
-          <div class="pseudo-input-container" ng-repeat="email in card.emails">
+        <div class="section" ng-show="editor.card.emails.length > 0">
+          <div class="pseudo-input-container" ng-repeat="email in editor.card.emails">
             <div class="key">
               <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
             </div>
@@ -93,8 +97,8 @@
           </div>
         </div>
         
-        <div class="section" ng-show="card.phones.length > 0">
-          <div class="pseudo-input-container" ng-repeat="phone in card.phones">
+        <div class="section" ng-show="editor.card.phones.length > 0">
+          <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
             <div class="key">
               <label class="pseudo-input-label">{{phone.type}}</label>
             </div>
@@ -105,8 +109,8 @@
 
           </div>
         </div>
-        <div class="section" ng-show="card.urls">
-          <div class="pseudo-input-container" ng-repeat="url in card.urls">
+        <div class="section" ng-show="editor.card.urls">
+          <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
             <div class="key">
               <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}
               </label>
@@ -118,8 +122,8 @@
 
           </div>
         </div>
-        <div class="section" ng-show="card.addresses">
-          <div class="pseudo-input-container" ng-repeat="address in card.addresses">
+        <div class="section" ng-show="editor.card.addresses">
+          <div class="pseudo-input-container" ng-repeat="address in editor.card.addresses">
             <div class="key">
               <label class="pseudo-input-label">{{address.type}}</label>
             </div>
@@ -128,14 +132,14 @@
             </div>
           </div>
         </div>
-        <div class="pseudo-input-container" ng-show="card.note">
+        <div class="pseudo-input-container" ng-show="editor.card.note">
           <div class="key">
             <label class="pseudo-input-label">
               <var:string label:value="Note"/>
             </label>
           </div>
           <div class="pseudo-input-field">
-            <div ng-bind-html="card.note"><!-- note --></div>
+            <div ng-bind-html="editor.card.note"><!-- note --></div>
           </div>
         </div>
       </section>

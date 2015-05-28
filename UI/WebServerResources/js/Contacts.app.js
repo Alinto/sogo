@@ -33,7 +33,8 @@
         views: {
           addressbooks: {
             templateUrl: 'UIxContactFoldersView', // UI/Templates/Contacts/UIxContactFoldersView.wox
-            controller: 'AddressBooksController'
+            controller: 'AddressBooksController',
+            controllerAs: 'app'
           }
         },
         resolve: {
@@ -45,7 +46,8 @@
         views: {
           addressbook: {
             templateUrl: 'addressbook',
-            controller: 'AddressBookController'
+            controller: 'AddressBookController',
+            controllerAs: 'addressbook'
           }
         },
         resolve: {
@@ -57,7 +59,8 @@
         views: {
           card: {
             templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
-            controller: 'CardController'
+            controller: 'CardController',
+            controllerAs: 'editor'
           }
         },
         resolve: {
@@ -81,7 +84,8 @@
         views: {
           'card@app.addressbook': {
             templateUrl: 'UIxContactViewTemplate', // UI/Templates/Contacts/UIxContactViewTemplate.wox
-            controller: 'CardController'
+            controller: 'CardController',
+            controllerAs: 'editor'
           }
         }
       })
@@ -90,7 +94,8 @@
         views: {
           'card@app.addressbook': {
             templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
-            controller: 'CardController'
+            controller: 'CardController',
+            controllerAs: 'editor'
           }
         }
       });
