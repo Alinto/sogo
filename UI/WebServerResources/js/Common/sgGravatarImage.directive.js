@@ -16,9 +16,11 @@
       restrict: 'AE',
       replace: true,
       required: 'email',
-      template: '<img ng-src="{{url}}" />',
+      template: '<img ng-src="{{url}}"/>',
       link: function(scope, element, attrs) {
         var size = attrs.size;
+        element.attr('width', size);
+        element.attr('height', size);
         attrs.$observe('email', function(value) {
           if (!value) { return; }
           scope.url = Gravatar(value, size);
