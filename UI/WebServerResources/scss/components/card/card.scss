@@ -12,4 +12,21 @@ md-card {
   &.md-default-theme {
     background-color: sg-color($sogoPaper, 50);
   }
+
+  &.sg-collapsed {
+    margin-top: 0;
+    margin-bottom: 1px;
+  }
+
+  &.sg-expanded {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .md-button {
+    .sg-tile-content {
+      text-align: left;
+      text-transform: none;
+    }
+  }
 }

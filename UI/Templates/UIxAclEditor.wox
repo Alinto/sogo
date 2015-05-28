@@ -5,76 +5,71 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
-    xmlns:uix="OGo:uix">
+    >
   <md-dialog flex="50" flex-sm="100">
     <md-dialog-content>
-      <h2 class="md-headline"><var:string label:value="Access Rights"/> - {{folder.name}}</h2>
-      <md-list>
-        <md-list-item
-            ng-repeat="user in users | orderBy:['userClass', 'displayName']"
-            ng-click="selectUser(user)">
-          <div layout="column" layout-fill="true">
-            <div layout="row">
-              <md-button>
-                <div layout="row" layout-align="space-between center"
-                     layout-fill="true">
-                  <span class="card-picture" ng-switch="user.userClass">
-                    <div ng-switch-when="normal-user" class="sg-avatar"><!-- normal-user --></div>
-                    <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>
-                  </span>
-                  <span class="name">{{user.$shortFormat()}}</span>
-                </div>
-              </md-button>
-              <md-button
-                  ng-click="removeUser(user)"
-                  type="button"
-                  layout="row" layout-align="end center"
-                  ng-hide="user.uid != selectedUser.uid || user.$isSpecial()">
-                <div class="md-icon-delete"><!-- delete --></div>
-              </md-button>
-            </div>
-            <span id="AccessRightList" ng-show="user.uid == selectedUser.uid">
-              <md-checkbox ng-model="user.isSubscribed"
-                           label:arial-label="Subscribe User"
-                           ng-disabled="user.wasSubscribed"
-                           ng-true-value="1"
-                           ng-false-value="0"
-                           ng-hide="user.$isSpecial()">
-                <var:string label:value="Subscribe User"/>
-              </md-checkbox>
-              <div ng-include="'UIxUserRightsEditor'">
-                <!--
-                    Load ng-template #UIxUserRightsEditor from main module wox. Inner wox templates are:
-                    - UI/Templates/ContactsUI/UIxContactsUserRightsEditor.wox
-                    - UI/Templates/MailerUI/UIxMailUserRightsEditor.wox
-                    - UI/Templates/SchedulerUI/UIxCalUserRightsEditor.wox
-                --></div>
+      <h2 class="md-headline"><var:string label:value="Access Rights"/> - {{acl.folder.name}}</h2>
+      <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
+               ng-click="acl.selectUser(user)"
+               ng-class="{ 'sg-collapsed': user.uid != acl.selectedUser.uid, 'sg-expanded': user.uid == acl.selectedUser.uid }">
+        <md-button>
+          <div layout="row" layout-align="start center">
+            <span class="card-picture" ng-switch="user.userClass">
+              <div ng-switch-when="normal-user" class="sg-avatar"><!-- normal-user --></div>
+              <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>
             </span>
+            <div class="sg-tile-content">
+              <div class="sg-md-subhead-multi">{{user.cn}}</div>
+              <div class="sg-md-body-multi">{{user.c_email}}</div>
+            </div>
+            <md-button ng-click="acl.removeUser(user)"
+                       type="button"
+                       ng-hide="user.uid != acl.selectedUser.uid || user.$isSpecial()">
+              <i class="md-icon-delete"><!-- delete --></i>
+            </md-button>
           </div>
-          <md-divider><!-- divider --></md-divider>
-        </md-list-item>
-      </md-list>
+        </md-button>
+        <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUser.uid">
+          <md-checkbox ng-model="user.isSubscribed"
+                       label:arial-label="Subscribe User"
+                       ng-disabled="user.wasSubscribed"
+                       ng-true-value="1"
+                       ng-false-value="0"
+                       ng-hide="user.$isSpecial()">
+            <var:string label:value="Subscribe User"/>
+          </md-checkbox>
+          <div ng-include="'UIxUserRightsEditor'">
+            <!--
+                Load ng-template #UIxUserRightsEditor from main module wox. Inner wox templates are:
+                - UI/Templates/ContactsUI/UIxContactsUserRightsEditor.wox
+                - UI/Templates/MailerUI/UIxMailUserRightsEditor.wox
+                - UI/Templates/SchedulerUI/UIxCalUserRightsEditor.wox
+            -->
+          </div>
+        </md-card-content>
+      </md-card>
     </md-dialog-content>
 
     <div class="md-actions">
       <md-autocomplete
           class="md-flex"
-          md-selected-item="userToAdd"
-          md-search-text="searchText"
-          md-selected-item-change="addUser(user)"
-          md-items="user in userFilter(searchText)"
-          md-min-length="0"
+          md-search-text="acl.searchText"
+          md-selected-item="acl.userToAdd"
+          md-selected-item-change="acl.addUser(user)"
+          md-items="user in acl.userFilter(acl.searchText)"
+          md-min-length="3"
+          md-no-cache="true"
           label:placeholder="Add">
         <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
           <span class="md-contact-name"
-                md-highlight-text="searchText"
+                md-highlight-text="acl.searchText"
                 md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                md-highlight-text="searchText"
+                md-highlight-text="acl.searchText"
                 md-highlight-flags="^i">{{user.c_email}}</span>
         </span>
       </md-autocomplete>
-      <md-button ng-click="closeModal()"><var:string label:value="Close"/></md-button>
-      <md-button class="md-primitive" ng-click="saveModal()"><var:string label:value="Save"/></md-button>
+      <md-button ng-click="acl.closeModal()"><var:string label:value="Close"/></md-button>
+      <md-button class="md-primitive" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
     </div>
   </md-dialog>
 
