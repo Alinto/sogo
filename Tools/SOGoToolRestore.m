@@ -40,6 +40,7 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
@@ -154,10 +155,22 @@
   BOOL rc;
   SOGoUserManager *lm;
   NSDictionary *infos;
+  SOGoSystemDefaults *sd;
+  NSString *uid = nil;
 
   lm = [SOGoUserManager sharedUserManager];
   infos = [lm contactInfosForUserWithUIDorEmail: identifier];
-  ASSIGN (userID, [infos objectForKey: @"c_uid"]);
+  if (infos)
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([sd enableDomainBasedUID])
+        uid = [NSString stringWithFormat: @"%@@%@",
+                        [infos objectForKey: @"c_uid"],
+                        [infos objectForKey: @"c_domain"]];
+      else
+        uid = [infos objectForKey: @"c_uid"];
+    }
+  ASSIGN (userID, uid);
   if (userID)
     rc = YES;
   else
