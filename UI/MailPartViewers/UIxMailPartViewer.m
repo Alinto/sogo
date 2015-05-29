@@ -303,7 +303,7 @@
   return [filename stringByEscapingURL];
 }
 
-- (NSString *) pathToAttachment
+- (NSString *) _pathForAttachmentOrDownload: (BOOL) forDownload
 {
   NSMutableString *url;
   NSString *s, *attachment;
@@ -315,14 +315,27 @@
   if (![url hasSuffix: @"/"])
     [url appendString: @"/"];
 
-//   s = [[self partPath] componentsJoinedByString: @"/"];
   if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
     attachment = [self _filenameForAttachment: bodyPart];
   else
     attachment = @"0";
+
+  if (forDownload)
+    [url appendString: @"asAttachment/"];
+    
   [url appendString: attachment];
 
   return url;
+}
+
+- (NSString *) pathToAttachment
+{
+  return [self _pathForAttachmentOrDownload: NO];
+}
+
+- (NSString *) pathForDownload
+{
+  return [self _pathForAttachmentOrDownload: YES];
 }
 
 - (NSString *) mimeImageURL

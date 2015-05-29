@@ -209,6 +209,7 @@
               parts.push(part);
             }
             else if (part.type == 'UIxMailPartICalViewer' ||
+                     part.type == 'UIxMailPartImageViewer' ||
                      part.type == 'UIxMailPartLinkViewer') {
               // Trusted content that can be compiled (Angularly-speaking)
               part.compile = true;
