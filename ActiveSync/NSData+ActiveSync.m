@@ -32,6 +32,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -45,11 +47,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void) _dumpToFile
 {
-  NSString *path;
+  BOOL debugOn;
 
-  path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
-  [self writeToFile: path  atomically: YES];
-  [self errorWithFormat: @"Original data written to: %@", path];
+  debugOn = [[SOGoSystemDefaults sharedSystemDefaults] easDebugEnabled];
+
+  if (debugOn)
+    {
+      NSString *path;
+
+      path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
+      [self writeToFile: path  atomically: YES];
+      [self errorWithFormat: @"Original data written to: %@", path];
+    }
 }
 
 //
