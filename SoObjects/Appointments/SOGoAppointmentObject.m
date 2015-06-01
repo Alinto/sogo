@@ -2106,32 +2106,23 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       if ([[newEvent attendees] count] || [[oldEvent attendees] count])
         {
-          NSString *uid;
-          
+          BOOL userIsOrganizer;
+
           // newEvent might be nil here, if we're deleting a RECURRENCE-ID with attendees
-          // If that's the case, we use the oldEvent for now just to obtain the organizer
-          // and we'll swap it back to nil once we're done.
-          if (!newEvent)
-            newEvent = oldEvent;
-          
-          // We fetch the organizer's uid. Sometimes, the recurrence-id will
-          // have it, sometimes not. If it doesn't, we fetch it from the master event.
-          uid = [[newEvent organizer] uid];
-          
-          if (!uid && !recurrenceId)
-            uid = [[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid];
-          
+          // If that's the case, we use the oldEvent to obtain the organizer
+          if (newEvent)
+            userIsOrganizer = [newEvent userIsOrganizer: ownerUser];
+          else
+            userIsOrganizer = [oldEvent userIsOrganizer: ownerUser];
+
           // With Thunderbird 10, if you create a recurring event with an exception
           // occurence, and invite someone, the PUT will have the organizer in the
           // recurrence-id and not in the master event. We must fix this, otherwise
           // SOGo will break.
           if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid])
             [[[[newEvent parent] events] objectAtIndex: 0] setOrganizer: [newEvent organizer]];
-          
-          if (newEvent == oldEvent)
-            newEvent = nil;
-          
-          if (uid && [uid caseInsensitiveCompare: owner] == NSOrderedSame)
+
+          if (userIsOrganizer)
             {
               // A RECCURENCE-ID was removed
               if (!newEvent && oldEvent)
