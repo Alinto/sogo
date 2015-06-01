@@ -7,9 +7,71 @@ import carddav
 import sogotests
 import unittest
 import webdavlib
+import time
 
 
-class JsonDavTests(unittest.TestCase):
+class JsonDavEventTests(unittest.TestCase):
+    def setUp(self):
+        self._connect_as_user()
+
+    def _connect_as_user(self, newuser=username, newpassword=password):
+        self.dv = carddav.Carddav(newuser, newpassword)
+
+    def _create_new_event(self, path):
+        gid = self.dv.newguid(path)
+        event = {'startDate': "2015-12-25",
+                 'startTime': "10:00",
+                 'endDate':   "2015-12-25",
+                 'endTime':   "23:00",
+                 'isTransparent': 0,
+                 'sendAppointmentNotifications': 0,
+                 'summary':   "Big party",
+                 'alarm': {'action': 'display',
+                         'quantity': 10,
+                         'unit': "MINUTES",
+                         'reference': "BEFORE",
+                         'relation': "START",
+                         'email': "sogo1@example.com"},
+                 'organizer': {'name': u"Balthazar C\xe9sar",
+                             'email': "sogo2@example.com"},
+                 'c_name': gid,
+                 'c_folder': path
+                }
+        return (event, path, gid)
+
+    def _get_dav_data(self, filename, user=username, passwd=password):
+        w = webdavlib.WebDAVClient(hostname, port, user, passwd)
+        query = webdavlib.HTTPGET("http://localhost/SOGo/dav/%s/Calendar/personal/%s" % (username, filename))
+        w.execute(query)
+        self.assertEquals(query.response['status'], 200)
+        return query.response['body'].split("\r\n")
+
+    def _get_dav_field(self, davdata, fieldname):
+        try:
+            data = [a.split(':')[1] for a in davdata if fieldname in a][0]
+        except IndexError:
+            data = ''
+        return data
+
+    def test_create_new_event(self):
+        path = 'Calendar/personal'
+        (event, folder, gid) = self._create_new_event(path)
+        #print "Saving Event to:", folder, gid
+        self.dv.save_event(event, folder, gid)
+        #- Get the event back with JSON
+        self._connect_as_user()
+        self.dv.load_events()
+        elist = [e for e in self.dv.events if e['c_name'] == gid]
+        #- MUST have this event -- only once
+        self.assertEquals(len(elist), 1)
+        strdate = "%d-%.02d-%.02d" % time.gmtime(elist[0]['c_startdate'])[0:3]
+        self.assertEquals(strdate, event['startDate'])
+        #- Get the event back with DAV
+        dav = self._get_dav_data(gid, username, password)
+        self.assertEquals(self._get_dav_field(dav, 'SUMMARY:'), event['summary'])
+
+
+class JsonDavPhoneTests(unittest.TestCase):
 
     def setUp(self):
         self._connect_as_user()
