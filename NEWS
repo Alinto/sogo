@@ -8,9 +8,9 @@ Enhancements
  - improved multipart handling using EAS
  - added systemd startup script (PR#76)
  - added Basque translation - thanks to Gorka Gonzalez
- - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations Enhancements
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
  - sharing request among different Outlook versions (Zentyal)
- - improve sync speed from Outlook by non-reprocessing already downloaded unread mails (Zentyal)
+ - improved sync speed from Outlook by non-reprocessing already downloaded unread mails (Zentyal)
  - give support to calendar sharing invitations
  - missing contact fields are now saved and available when sharing it (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary) (Zentyal)
  - appointment color and importance work now between Outlooks (Zentyal)
@@ -20,7 +20,7 @@ Enhancements
  - now able to print event/task's description (new components only) in the list view (#2881)
  - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
  - many improvements to EAS SmartReply/SmartForward commands
- - event invitation response mails are now sent
+ - event invitation response mails from Outlook are now sent
  - mail subfolders created in WebMail are created when Outlook synchronises
  - mail root folder created in WebMail (same level INBOX) are created on Outlook logon
 
