@@ -40,37 +40,20 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 
-#import "SOGoTool.h"
+#import "SOGoToolRestore.h"
 
 /* TODO:
    - respond to "--help restore"
    - handle database connectivity errors
    - handle the case where the restored folder has been deleted
    - write methods in GDLContentStore to get/update displayname
-     and storing roles */ 
-
-typedef enum SOGoToolRestoreMode {
-  SOGoToolRestoreFolderMode,
-  SOGoToolRestoreFolderDestructiveMode,
-  SOGoToolRestoreListFoldersMode,
-  SOGoToolRestorePreferencesMode
-} SOGoToolRestoreMode;
-
-@interface SOGoToolRestore : SOGoTool
-{
-  NSString *directory;
-  NSString *userID;
-  NSString *restoreFolder;
-  BOOL destructive; /* destructive mode not handled */
-  SOGoToolRestoreMode restoreMode;
-}
-
-@end
+     and storing roles */
 
 @implementation SOGoToolRestore
 
@@ -172,10 +155,22 @@ typedef enum SOGoToolRestoreMode {
   BOOL rc;
   SOGoUserManager *lm;
   NSDictionary *infos;
+  SOGoSystemDefaults *sd;
+  NSString *uid = nil;
 
   lm = [SOGoUserManager sharedUserManager];
   infos = [lm contactInfosForUserWithUIDorEmail: identifier];
-  ASSIGN (userID, [infos objectForKey: @"c_uid"]);
+  if (infos)
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([sd enableDomainBasedUID])
+        uid = [NSString stringWithFormat: @"%@@%@",
+                        [infos objectForKey: @"c_uid"],
+                        [infos objectForKey: @"c_domain"]];
+      else
+        uid = [infos objectForKey: @"c_uid"];
+    }
+  ASSIGN (userID, uid);
   if (userID)
     rc = YES;
   else
