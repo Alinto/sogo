@@ -4,6 +4,9 @@
 Enhancements
  - improved EAS speed, especially when fetching big attachments
 
+Bug fixes
+ - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
+
 2.3.0 (2015-06-01)
 -------------------
 
