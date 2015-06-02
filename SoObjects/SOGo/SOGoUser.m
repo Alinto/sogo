@@ -165,7 +165,9 @@
               // The domain is probably appended to the username;
               // make sure it is defined as a domain in the configuration.
               domain = [newLogin substringFromIndex: (r.location + r.length)];
-              if (![[sd domainIds] containsObject: domain])
+              if ([[sd domainIds] containsObject: domain])
+                newLogin = [newLogin substringToIndex: r.location];
+              else
                 domain = nil;
 
               if (domain != nil && ![sd enableDomainBasedUID])
@@ -197,9 +199,7 @@
           // [SOGoUser loginInDomain] only returns the login.
           r = [realUID rangeOfString: domain  options: NSBackwardsSearch|NSCaseInsensitiveSearch];
 
-          // Do NOT strip @domain.com if SOGoEnableDomainBasedUID is enabled since
-          // the real login most likely is the email address.
-          if (r.location != NSNotFound && ![sd enableDomainBasedUID])
+          if (r.location != NSNotFound)
             uid = [realUID substringToIndex: r.location-1];
           else
             uid = [NSString stringWithString: realUID];
