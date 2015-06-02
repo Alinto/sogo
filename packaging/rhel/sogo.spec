@@ -253,6 +253,7 @@ cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
 %if 0%{?_with_systemd}
   cp Scripts/sogo-systemd-redhat ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
   chmod 644 ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
+  mkdir ${RPM_BUILD_ROOT}/etc/tmpfiles.d
   cp Scripts/sogo-systemd.conf ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo.conf
   chmod 644 ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo-systemd.conf
 %else
