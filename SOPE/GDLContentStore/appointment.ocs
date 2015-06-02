@@ -131,7 +131,7 @@
     },
     {
       columnName = c_partstates;
-      sqlType    = "VARCHAR(255)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {
@@ -152,6 +152,11 @@
     {
       columnName = c_nextalarm;
       sqlType    = "INT";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_description;
+      sqlType    = "TEXT";
       allowsNull = YES;
     }
   );

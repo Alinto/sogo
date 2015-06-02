@@ -80,8 +80,8 @@ function addUserLineToTree(tree, parent, line) {
     var icon = ResourcesURL + '/busy.gif';
 
     var email = line[1] + " &lt;" + line[2] + "&gt;";
-    if (line[3] && !line[3].empty())
-        email += ", " + line[3]; // extra contact info
+    if (line[4] && !line[4].empty())
+        email += ", " + line[4]; // extra contact info
     tree.add(parent, 0, email, 0, '#', line[0], 'person',
              '', '',
              ResourcesURL + '/abcard.png',

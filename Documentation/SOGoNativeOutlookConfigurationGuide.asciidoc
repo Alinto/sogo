@@ -239,7 +239,7 @@ Red Hat Enterprise Linux v6 x86_64
 If you are using Red Hat Enterprise Linux version 6 x86_64, packages
 for Samba 4, OpenChange and SOGo and the SOGo OpenChange backend are
 available from SOGo's web site. Please follow the instructions from
-http://www.sogo.nu/english/downloads/backend_nightly.html.
+http://www.sogo.nu/english/downloads/backend.html.
 
 In order to satisfy certain dependencies, you should also add the EPEL
 source corresponding to your distribution and architecture. More
@@ -266,32 +266,30 @@ from this guide.
 
 [NOTE]
 Samba4/OpenChange are not available for now on CentOS 5 i386/x86_64,
-CentOS 6 i386 and CentOS 7.
+and CentOS 7. On Debian-based systems, packages are available only on
+the x86_64 platform.
 
-Debian 7.0 (Wheezy) and Ubuntu 12.04 (Precise Pangolin)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Debian 7 (Wheezy) and Ubuntu 12.04 (Precise Pangolin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SOGo, OpenChange and the SOGo OpenChange backend are now
 available from SOGo's web site. Please follow the instructions from
 http://www.sogo.nu/english/downloads/backend.html to setup your
 apt sources.
 
-For Samba 4, you need to use the _wheezy-backports_ repository. To do so, create
-`/etc/apt/sources.list.d/backports.list`:
+On Debian7, for some Samba 4 dependencies, you need to use the
+_wheezy-backports_ repository. To do so, create
+`/etc/apt/sources.list.d/backports.list` with the following
+content:
 
  deb http://http.debian.net/debian wheezy-backports main
-
-On Ubuntu 12.04, you will also have to add the Wheezy sources:
-
- deb http://ftp.us.debian.org/debian wheezy main
- deb http://security.debian.org/ wheezy/updates main
 
 Then install Samba 4 on top of an existing SOGo
 installation:
 
 ----
 apt-get update
-apt-get -t wheezy-backports install samba samba-dev
+apt-get install samba samba-dev
 ----
 
 Once completed, install the packages related to OpenChange and the SOGo
@@ -303,7 +301,12 @@ apt-get install openchangeserver \
                 openchangeproxy \ 
                 python-ocsmanager \
                 mysql-server \
-                python-mysqldb
+                python-mysqldb \
+                openchange-ocsmanager \
+                openchange-rpcproxy \
+                python-sievelib \
+                python-spyne \
+                python-rpclib
 ----
 
 Once the packages are installed, refer to the _Configuration_ chapter
@@ -315,10 +318,8 @@ disable the upstart check. For more details, refer to:
 https://wiki.samba.org/index.php/Samba4/InitScript
 
 
-Ubuntu 14.04 (Trusty Tahr)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For Ubuntu 14.04, you must not use the Debian Wheezy backports.
+Debian 8 (Jessie) and Ubuntu 14.04 (Trusty Tahr)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Please follow the instructions from
 http://www.sogo.nu/english/downloads/backend.html to setup your
@@ -341,12 +342,26 @@ apt-get install openchangeserver \
                 openchangeproxy \ 
                 python-ocsmanager \
                 mysql-server \
-                python-mysqldb
+                python-mysqldb \
+                openchange-ocsmanager \
+                openchange-rpcproxy \
+                python-sievelib \
+                python-spyne \
+                python-rpclib
 ----
 
 Once the packages are installed, refer to the _Configuration_ chapter
 from this guide.
 
+[NOTE]
+The `ocsmanager.conf` and `rpcproxy.conf` are currently located in
+`/etc/apache2/conf.d`. These should be moved to `/etc/apache2/conf-available`.
+This is a packaging error that will soon be fixed.
+
+[NOTE]
+You might have to adjust the `rpcproxy.conf` configuration file to add the
+`Require all granted` permission if you get Apache errors such as
+`client denied by server configuration`.
 
 Configuration
 -------------
@@ -390,6 +405,7 @@ Add the following parameters to the `[global]` section of the
 
 ----
 ### Configuration required by OpenChange server ###
+dsdb:schema update allowed = true
 dcerpc endpoint servers = epmapper, mapiproxy, dnsserver
 dcerpc_mapiproxy:server = true
 dcerpc_mapiproxy:interfaces = exchange_emsmdb, exchange_nsp, exchange_ds_rfr
@@ -407,6 +423,7 @@ Your Samba 4 configuration file should look like this:
   netbios name = sogo
   passdb backend = samba4
   ### Configuration required by OpenChange server ###
+  dsdb:schema update allowed = true
   dcerpc endpoint servers = +epmapper, +mapiproxy
   dcerpc_mapiproxy:server = true
   dcerpc_mapiproxy:interfaces = exchange_emsmdb, exchange_nsp, exchange_ds_rfr
@@ -533,7 +550,7 @@ services can be found in `/etc/httpd/conf.d/ocsmanager.conf` and
 `/etc/httpd/conf.d/rpcproxy.conf`.
 
 For Debian-based distributions, these files can be found
-in `/etc/apache2/conf.d/`.
+in `/etc/apache2/conf.d/` or `/etc/apache2/conf-available`.
 
 The configuration requires three Apache modules:  _mod_proxy_,
 _mod_proxy_http_ and _mod_wsgi_. These are usually already installed but
@@ -541,13 +558,17 @@ might need to be activated on Debian-based installations:
 
  a2enmod proxy proxy_http wsgi
 
+The OCS Manager and RPC Proxy configuration module can be enabled using:
+
+ a2enconf ocsmanager
+ a2enconf rpcproxy
+
 On RHEL-based distributions, make sure the `LoadModule` directive is
-uncommented in `/etc/httpd/conf.d/wsgi.conf` (or
-`python26-mod_wsgi.conf` on RHELv5).
+uncommented in `/etc/httpd/conf.d/wsgi.conf`.
 
 The _reqtimeout_ apache module is known to cause problems when using the
 default configuration shipped with Debian-based systems. On such
-distributions, apache will close (HTTP/1.1 500) any HTTP request for
+distributions, Apache will close (HTTP/1.1 500) any HTTP request for
 which the HTTP body hasn't arrived in 10 seconds.
 
 While this is arguably good practice with regular HTTP, it will disrupt
@@ -567,9 +588,102 @@ On Debian-based distributions, do:
 
  update-rc.d apache2 defaults && /etc/init.d/apache2 restart
 
-[NOTE]
-Debian-based distributions are not supported anymore for
-OCSManager/rpcproxy. Support will soon resume.
+Finally, you must adjust the OCS Manager configuration file, which is
+located in `/etc/ocsmanager/ocsmanager.ini`. You should enable LDAP-based
+authentication in the `main` section and configure it accordingly. You should
+also enable rpcproxy. You file should be similar to this one:
+
+----
+[DEFAULT]
+debug = true
+email_to = you@yourdomain.com
+smtp_server = localhost
+error_email_from = paste@localhost
+
+[main]
+auth = ldap
+mapistore_root = /var/lib/samba/private
+mapistore_data = /var/lib/samba/private/mapistore
+debug = yes
+
+[auth:file]
+
+[auth:ldap]
+host = ldap://127.0.0.1
+port = 389
+bind_dn = cn=administrator,cn=Users,dc=example,dc=com
+bind_pw = %1OpenChange
+basedn = cn=Users,dc=example,dc=com
+
+[auth:single]
+username = openchange
+password = {SSHA}I6Hy5Wv0wuxyXvMBFWFQDVVN12_CLaX9
+
+[server:main]
+use = egg:Paste#http
+host = 127.0.0.1
+port = 5000
+protocol_version = HTTP/1.1
+
+[app:main]
+use = egg:ocsmanager
+full_stack = true
+static_files = true
+cache_dir = %(here)s/data
+beaker.session.key = ocsmanager
+beaker.session.secret = SDyKK3dKyDgW0mlpqttTMGU1f
+app_instance_uuid = {ee533ebc-f266-49d1-ae10-d017ee6aa98c}
+NTLMAUTHHANDLER_WORKDIR = /var/cache/ntlmauthhandler
+SAMBA_HOST = 127.0.0.1
+
+[rpcproxy:ldap]
+host = localhost
+port = 389
+basedn = CN=Users,DC=example,DC=com
+set debug = true
+----
+
+----
+[autodiscover]
+
+[autodiscover:rpcproxy]
+enabled = true
+
+[outofoffice]
+
+[outofoffice:file]
+sieve_script_path = /var/vmail/$domain/$user/sieve-script
+sieve_script_path_mkdir = false
+
+[outofoffice:managesieve]
+secret = secret
+
+[loggers]
+keys = root
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+----
+
+Once completed, start the OCS Manager service:
+
+ /etc/init.d/openchange-ocsmanager start
 
 Name Service Configuration for Web Services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

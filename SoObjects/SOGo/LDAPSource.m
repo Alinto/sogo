@@ -737,7 +737,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       }
   NS_HANDLER
     {
-      if ([[localException name] isEqual: @"LDAPException"] && 
+      if ([[localException name] isEqual: @"LDAPException"] &&
           ([[[localException userInfo] objectForKey: @"error_code"] intValue] == LDAP_CONSTRAINT_VIOLATION))
         {
           *perr = PolicyInsufficientPasswordQuality;

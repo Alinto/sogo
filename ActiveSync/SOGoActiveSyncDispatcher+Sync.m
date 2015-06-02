@@ -131,6 +131,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
   [[o properties] removeObjectForKey: @"MoreAvailable"];
+  [[o properties] removeObjectForKey: @"BodyPreferenceType"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
 
   [[o properties] addEntriesFromDictionary: values];
@@ -1068,14 +1069,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 changeDetected: (BOOL *) changeDetected
            maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey, *syncKeyInCache;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *lastServerKey, *syncKeyInCache;
   SOGoMicrosoftActiveSyncFolderType folderType;
   id collection, value;
   
   NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
   unsigned int windowSize, v, status;
-  NSMutableDictionary *folderMetadata;
+  NSMutableDictionary *folderMetadata, *folderOptions;
   
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
@@ -1124,20 +1125,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   
   first_sync = NO;
 
+  folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]];
+
   if ([syncKey isEqualToString: @"0"])
     {
       davCollectionTag = @"-1";
       first_sync = YES;
       *changeDetected = YES;
     }
-  else if ((![syncKey isEqualToString: @"-1"]) && !([[self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]]  objectForKey: @"SyncCache"]))
+  else if ((![syncKey isEqualToString: @"-1"]) && !([folderMetadata objectForKey: @"SyncCache"]))
     {
       //NSLog(@"Reset folder: %@", [collection nameInContainer]);
       davCollectionTag = @"0";
       first_sync = YES;
       *changeDetected = YES;
       
-      if (!([[self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]]  objectForKey: @"displayName"]))
+      if (!([folderMetadata objectForKey: @"displayName"]))
         status = 12;  // need folderSync
       else 
         status = 3;   // do a complete resync 
@@ -1147,7 +1150,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
 
   if (!bodyPreferenceType)
-    bodyPreferenceType = @"1";
+   {
+     bodyPreferenceType = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"];
+
+     // By default, send MIME mails. See #3146 for details.
+     if (!bodyPreferenceType)
+       bodyPreferenceType = @"4";
+   }
+  else
+   {
+     mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+
+     if (!mimeSupport)
+        mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
+
+     if (!mimeSupport)
+        mimeSupport = @"0";
+
+     if ([mimeSupport isEqualToString: @"1"] && [bodyPreferenceType isEqualToString: @"4"])
+        bodyPreferenceType = @"2";
+     else if ([mimeSupport isEqualToString: @"2"] && [bodyPreferenceType isEqualToString: @"4"])
+        bodyPreferenceType = @"4";
+     else if ([mimeSupport isEqualToString: @"0"] && [bodyPreferenceType isEqualToString: @"4"])
+        bodyPreferenceType = @"2";
+
+
+     // Avoid writing to cache if there is nothing to change.
+     if (![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"] isEqualToString: bodyPreferenceType] ||
+         ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"] isEqualToString: mimeSupport])
+       {
+         folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", bodyPreferenceType, @"BodyPreferenceType", nil];
+         [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
+         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: collection withType: folderType]];
+       }
+   }
   
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
 
@@ -1416,6 +1452,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                              inBuffer: s
                        changeDetected: &changeDetected
                   maxSyncResponseSize: maxSyncResponseSize];
+
+          if (maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize)
+            break;
         }
 
       if (changeDetected)

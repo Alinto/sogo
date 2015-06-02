@@ -29,6 +29,7 @@
 "Days between responses :" = "Dias entre respuestas :";
 "Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
 "Disable auto reply on" = "Desactivar respuesta automatica";
+"Always send vacation message response" = "Siempre enviar mensaje de vacaciones";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
 "Your vacation message must not end with a single dot on a line." = "El mensaje de vacaciones no puede finalizarse con un único punto en una linea.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Guardar una copia";
 "Please specify an address to which you want to forward your messages."
 = "Por favor, especificar una dirección para aquellos mensajes que quiere desviar.";
+"You are not allowed to forward your messages to an external email address." = "No esta autorizado a reenviar sus mensajes a una dirección de correo externa.";
+"You are not allowed to forward your messages to an internal email address." = "No esta autorizado a reenviar sus mensajes a una dirección de correo interna.";
+
 
 /* d & t */
 "Current Time Zone :" = "Zona horaria actual :";
@@ -212,6 +216,7 @@
 "Language :" = "Idioma :";
 "choose" = "Elija ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

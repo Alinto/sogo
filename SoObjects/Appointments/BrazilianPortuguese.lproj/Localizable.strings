@@ -56,7 +56,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}foi aceitado seu convite ao evento.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}foi declinado seu convite ao evento.";
+= "%{Attendee} %{SentByText}recusou seu convite para o evento.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText} delegou o convite para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."

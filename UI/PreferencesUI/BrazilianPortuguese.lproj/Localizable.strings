@@ -23,12 +23,13 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Habilitar auto resposta de férias";
-"Auto reply message :" = "AutoResponder somente uma vez a cada remetente com o seguinte texto :";
+"Auto reply message :" = "Auto Responder somente uma vez a cada remetente com o seguinte texto:";
 "Email addresses (separated by commas) :" = "Endereço de e-mail (separado por vírgulas):";
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
 "Days between responses :" = "Dias entre respostas:";
 "Do not send responses to mailing lists" = "Não envie respostas para lista de e-mails";
 "Disable auto reply on" = "Desativar resposta automática em";
+"Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Favor especificar a sua mensagem e seus endereços de e-mail para o qual você deseja ativar resposta automática.";
 "Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
@@ -40,9 +41,12 @@
 "Keep a copy" = "Manter uma cópia";
 "Please specify an address to which you want to forward your messages."
 = "Favor especificar um endereço para o qual você deseja encaminhar suas mensagens.";
+"You are not allowed to forward your messages to an external email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail externo.";
+"You are not allowed to forward your messages to an internal email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail interno.";
+
 
 /* d & t */
-"Current Time Zone :" = "Fuso Horário :";
+"Current Time Zone :" = "Fuso Horário:";
 "Short Date Format :" = "Formato da Data (Curto) :";
 "Long Date Format :" = "Formato da Data (Longo) :";
 "Time Format :" = "Formato da Hora :";
@@ -170,7 +174,7 @@
 "User Name:" = "Nome do Usuário:";
 "Password:" = "Senha:";
 
-"Full Name:" = "Nome Compelto:";
+"Full Name:" = "Nome Completo:";
 "Email:" = "E-mail:";
 "Reply To Email:" = "Responder para o Email:";
 "Signature:" = "Assinatura:";
@@ -207,11 +211,12 @@
 "Mail" = "Correio";
 "Last" = "Último usado";
 "Default Module :" = "Módulo Padrão:";
-"SOGo Version :" = "Versão SOGo:";
+"SOGo Version :" = "Versão do SOGo:";
 
 "Language :" = "Idioma :";
 "choose" = "Escolha ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -283,7 +288,7 @@
 "Header" = "Cabeçalho";
 "Body" = "Corpo";
 "Flag the message with:" = "Marcar a mensagem com:";
-"Discard the message" = "Discate a mensagem";
+"Discard the message" = "Descarte a mensagem";
 "File the message in:" = "Arquivo da mensagem em:";
 "Keep the message" = "Manter a mensagem";
 "Forward the message to:" = "Encaminhar a mensagem para:";
@@ -293,7 +298,7 @@
 
 "is under" = "abaixo";
 "is over" = "acima";
-"is" = "is";
+"is" = "é igual";
 "is not" = "não é";
 "contains" = "contem";
 "does not contain" = "não contem";
@@ -307,19 +312,19 @@
 "Answered" = "Respondido";
 "Flagged" = "Marcado";
 "Junk" = "Lixo";
-"Not Junk" = "Não é Lixo";
+"Not Junk" = "Não é Lixo Eletrônico";
 
 /* Password policy */
 "The password was changed successfully." = "Senha alterada com sucesso.";
-"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
-"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
-"Password change failed" = "Échec au changement";
-"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
-"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
-"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
-"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
-"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
-"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
-"Unhandled error response" = "Erreur inconnue";
-"Password change is not supported." = "Changement de mot de passe non-supporté.";
-"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"Password must not be empty." = "A Senha não pode ser vazia.";
+"The passwords do not match. Please try again." = "As senhas não coincidem. Por favor, tente novamente.";
+"Password change failed" = "Alteração de senha falhou";
+"Password change failed - Permission denied" = "Alteração de senha falhou - Permissão Negada";
+"Password change failed - Insufficient password quality" = "Alteração de senha falhou pois não atende os requisitos minímos";
+"Password change failed - Password is too short" = "Alteração de senha falhou - Senha muito curta";
+"Password change failed - Password is too young" = "Alteração de senha falhou - Senha alterada recentemente";
+"Password change failed - Password is in history" = "Alteração de senha falhou - A Senha já foi utilizada";
+"Unhandled policy error: %{0}" = "Erro de política não tratada: %{0}";
+"Unhandled error response" = "Resposta de erro não tratada";
+"Password change is not supported." = "Troca de senha não suportada";
+"Unhandled HTTP error code: %{0}" = "Código de erro HTTP não tratada: %{0}";

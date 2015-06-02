@@ -70,11 +70,27 @@
                  to: (NSCalendarDate *) newEndDate
 {
   ASSIGN(address, newAddress);
-  ASSIGN(startDate, newStartDate);
-  ASSIGN(endDate, newEndDate);
+
+  startDate = [NSCalendarDate dateWithYear: [newStartDate yearOfCommonEra]
+                                     month: [newStartDate monthOfYear]
+                                       day: [newStartDate dayOfMonth]
+                                      hour: [newStartDate hourOfDay]
+                                    minute: [newStartDate minuteOfHour]
+                                    second: [newStartDate secondOfMinute]
+                                  timeZone: [newStartDate timeZone]];
+  endDate = [NSCalendarDate dateWithYear: [newEndDate yearOfCommonEra]
+                                   month: [newEndDate monthOfYear]
+                                     day: [newEndDate dayOfMonth]
+                                    hour: [newEndDate hourOfDay]
+                                  minute: [newEndDate minuteOfHour]
+                                  second: [newEndDate secondOfMinute]
+                                timeZone: [newEndDate timeZone]];
 
   [startDate setTimeZone: timeZone];
   [endDate setTimeZone: timeZone];
+
+  [startDate retain];
+  [endDate retain];
 }
 
 - (NSString *) serverVersion

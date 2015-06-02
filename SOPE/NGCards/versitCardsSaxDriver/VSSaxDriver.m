@@ -1075,6 +1075,12 @@ static NSCharacterSet *whitespaceCharSet = nil;
   // FIXME: Data is not always utf-8.....
   source = [[[NSString alloc] initWithData: _data encoding: encoding]
 	     autorelease];
+
+  // We fallback to ISO-8859-1 string encoding
+  if (!source)
+     source = [[[NSString alloc] initWithData: _data encoding: NSISOLatin1StringEncoding]
+                 autorelease];
+
   if (!source)
     {
       e = (id)[SaxParseException exceptionWithName: @"SaxIOException"

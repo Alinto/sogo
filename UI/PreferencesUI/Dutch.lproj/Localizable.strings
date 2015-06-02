@@ -29,6 +29,7 @@
 "Days between responses :" = "Dagen tussen reacties:";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
+"Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Geeft u alstublieft de tekst van het automatische bericht bij afwezigheid op en de e-mailadressen waarvoor het moet worden geactiveerd.";
 "Your vacation message must not end with a single dot on a line." = "Uw automatisch bericht bij afwezigheid mag niet eindigen met een enkele punt op een regel.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Kopie bewaren";
 "Please specify an address to which you want to forward your messages."
 = "Alstublieft het e-mailadres waarnaar u de berichten wilt laten doorsturen aangeven.";
+"You are not allowed to forward your messages to an external email address." = "Email naar een extern emailadres doorsturen is niet toegestaan";
+"You are not allowed to forward your messages to an internal email address." = "Email naar een intern emailadres doorsturen is niet toegestaan";
+
 
 /* d & t */
 "Current Time Zone :" = "Huidige tijdzone:";
@@ -212,6 +216,7 @@
 "Language :" = "Taal:";
 "choose" = "Kies...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

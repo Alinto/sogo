@@ -6,7 +6,7 @@ BUNDLE_NAME = MailerUI
 
 MailerUI_PRINCIPAL_CLASS = MailerUIProduct
 
-MailerUI_LANGUAGES = Arabic BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+MailerUI_LANGUAGES = Arabic Basque BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 MailerUI_OBJC_FILES += \
 	MailerUIProduct.m	\

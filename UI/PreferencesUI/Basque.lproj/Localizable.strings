@@ -1,0 +1,330 @@
+/* toolbar */
+"Save and Close" = "Gorde eta itxi";
+"Close" = "Itxi";
+
+/* tabs */
+"General" = "Orokorra";
+"Calendar Options" = "Egutegiaren aukerak";
+"Contacts Options" = "Kontaktuen aukerak";
+"Mail Options" = "Email aukerak";
+"IMAP Accounts" = "IMAP kontuak";
+"Vacation" = "'Oporretan nago'";
+"Forward" = "Birbidali";
+"Password" = "Pasahitza";
+"Categories" = "Kategoriak";
+"Appointments invitations" = "Hitzordu gonbidapenak";
+"Name" = "Izena";
+"Color" = "Kolorea";
+"Add" = "Gehitu";
+"Delete" = "Ezabatu";
+
+/* contacts categories */
+"contacts_category_labels" = "Lankide, Lehiakide, Bezero, Lagun, Familia, Negoziokide, Hornitzaile, Prentsa, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Gaitu \"oporretan nago\" erantzun automatikoa";
+"Auto reply message :" = "Erantzun automatikorako mezua:";
+"Email addresses (separated by commas) :" = "Email helbideak (koma bidez banatuak):";
+"Add default email addresses" = "Gehitu email helbide lehenetsiak";
+"Days between responses :" = "Erantzunen arteko egunak:";
+"Do not send responses to mailing lists" = "Ez bidali erantzunak email zerrendatara";
+"Disable auto reply on" = "Ezgaitu erantzun automatikoa";
+"Always send vacation message response" = "'Oporretan nago' erantzun mezua beti bidali";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Mesedez, zehaztu zure mezua eta zure helbide elektronikoa zeini erantzun automatikoa gaitu nahi diozun.";
+"Your vacation message must not end with a single dot on a line." = "Zure 'oporretan nago' mezua ezin da lerro batean puntu bakarrarekin amaitu.";
+"End date of your auto reply must be in the future."
+= "Erantzun automatikoaren amaiera datak etorkizuenan behar du izan.";
+
+/* forward messages */
+"Forward incoming messages" = "Birbidali sarrera mezuak";
+"Keep a copy" = "Gorde kopia bat";
+"Please specify an address to which you want to forward your messages."
+= "Mesedez, zehaztu zein helbidetara birbidali nahi dituzun mezuak.";
+"You are not allowed to forward your messages to an external email address." = "Ezin dituzu zure mezuak kanpoko email helbide batera birbidali.";
+"You are not allowed to forward your messages to an internal email address." = "Ezin dituzu zure mezuak barneko email helbide batera birbidali.";
+
+
+/* d & t */
+"Current Time Zone :" = "Uneko ordu-zona:";
+"Short Date Format :" = "Data-formatu laburra:";
+"Long Date Format :" = "Data-formatu luzea:";
+"Time Format :" = "Ordu-formatua:";
+
+"default" = "Lehenetsia";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* calendar */
+"Week begins on :" = "Astea hasteko eguna:";
+"Day start time :" = "Egunaren hasiera ordua:";
+"Day end time :" = "Egunaren amaiera ordua:";
+"Day start time must be prior to day end time." = "Egunaren hasiera orduak amaiera orduak baino lehenago behar du izan.";
+"Show time as busy outside working hours" = "Erakutsi denbora lanpetuta bezala lan orduetatik kanpo";
+"First week of year :" = "Urteko lehen astea:";
+"Enable reminders for Calendar items" = "Gaitu oroigarriak egutegiko elementuetarako";
+"Play a sound when a reminder comes due" = "Soinua jo oroigarri baten ondorioz.";
+"Default reminder :" = "Lehenetsitako oroigarria:";
+
+"firstWeekOfYear_January1" = "Urtarrilak 1eab hasten da";
+"firstWeekOfYear_First4DayWeek" = "Lehenengo 4 eguneko astea";
+"firstWeekOfYear_FirstFullWeek" = "Lehenengo aste osoa";
+
+"Prevent from being invited to appointments" = "Hitzorduetara gonbidatua izatea eragotzi.";
+"White list for appointment invitations:" = "Hitzordu gonbidapenetarako zerrenda-zuria:";
+"Contacts Names" = "Kontaktuen izenak";
+
+/* Default Calendar */
+"Default calendar :" = "Lehenetsitako egutegia:";
+"selectedCalendar" = "Aukeratutako egutegia";
+"personalCalendar" = "Egutegi pertsonala";
+"firstCalendar" = "Gaitutako lehenengo egutegia";
+
+"reminder_NONE" = "Oroigarririk ez";
+"reminder_5_MINUTES_BEFORE" = "5 minutu lehenago";
+"reminder_10_MINUTES_BEFORE" = "10 minutu lehenago";
+"reminder_15_MINUTES_BEFORE" = "15 minutu lehenago";
+"reminder_30_MINUTES_BEFORE" = "30 minutu lehenago";
+"reminder_45_MINUTES_BEFORE" = "45 minutu lehenago";
+"reminder_1_HOUR_BEFORE" = "1 ordu lehenago";
+"reminder_2_HOURS_BEFORE" = "2 ordu lehenago";
+"reminder_5_HOURS_BEFORE" = "5 ordu lehenago";
+"reminder_15_HOURS_BEFORE" = "15 ordu lehenago";
+"reminder_1_DAY_BEFORE" = "1 egun lehenago";
+"reminder_2_DAYS_BEFORE" = "2 egun lehenago";
+"reminder_1_WEEK_BEFORE" = "1 aste lehenago";
+
+/* Mailer */
+"Labels" = "Etiketak";
+"Label" = "Etiketa";
+"Show subscribed mailboxes only" = "Erakutsi harpidetutako postontziak bakarrik";
+"Sort messages by threads" = "Antolatu mezuak haritan";
+"When sending mail, add unknown recipients to my" = "Mezua bidaltzerakoan gehitu jasotzaile ezezagunak nere";
+
+"Forward messages:" = "Mezuak birbidali:";
+"messageforward_inline" = "Mezuaren barruan";
+"messageforward_attached" = "Iruzkin bezala";
+
+"When replying to a message:" = "Mezu bati erantzuterakoan:";
+"replyplacement_above" = "Hasi nere erantzuna aipamenaren gainean";
+"replyplacement_below" = "Hasi nere erantzuna aipamenaren azpian";
+"And place my signature" = "Eta jarri nere sinadura";
+"signatureplacement_above" = "nere erantzunaren azpian";
+"signatureplacement_below" = "aipamenaren azpian";
+"Compose messages in" = "Sortu mezuak hemen:";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Testu arrunta";
+"Display remote inline images" = "Erakutsi mezuaren barneko hurruneko irudiak";
+"displayremoteinlineimages_never" = "Inoiz ez";
+"displayremoteinlineimages_always" = "Beti";
+
+"Auto save every" = "Automatikoki gorde";
+"minutes" = "minuturo";
+
+/* Contact */
+"Personal Address Book" = "Helbide liburu pertsonala";
+"Collected Address Book" = "Bildutako helbide liburua";
+
+/* IMAP Accounts */
+"New Mail Account" = "Email kontu berria";
+
+"Server Name:" = "Zerbitzariaren izena:";
+"Port:" = "Portua:";
+"Encryption:" = "Zifraketa:";
+"None" = "Bat ere ez";
+"User Name:" = "Erabiltzaile izena";
+"Password:" = "Pasahitza";
+
+"Full Name:" = "Izen osoa:";
+"Email:" = "Emaila:";
+"Reply To Email:" = "Erantzun honi emaila:";
+"Signature:" = "Sinadura";
+"(Click to create)" = "(Klikatu sortzeko)";
+
+"Signature" = "Sinadura";
+"Please enter your signature below:" = "Mesedez, idatzi zure sinadura azpian:";
+
+"Please specify a valid sender address." = "Mesedez, idatzi baliodun bidaltzaile-helbide bat.";
+"Please specify a valid reply-to address." = "Mesedez, idatzi baliodun erantzun-honi helbide bat.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Beste parametroak";
+
+/* password */
+"New password:" = "Pasahitz berria:";
+"Confirmation:" = "Berrespena:";
+"Change" = "Aldatu";
+
+/* Event+task classifications */
+"Default events classification :" = "Ekitaldien sailkapen lehenetsia:";
+"Default tasks classification :" = "Zereginen sailkapen lehenetsia:";
+"PUBLIC_item" = "Publikoa";
+"CONFIDENTIAL_item" = "Isilpekoa";
+"PRIVATE_item" = "Pribatua";
+
+/* Event+task categories */
+"category_none" = "Bat ere ez";
+"calendar_category_labels" = "Urteurrena, Urtebetetzea, Negozio, Deiak, Bezeroak, Lehia, Bezeroa, Gogokoak, Jarraitu, Opariak, Oporrak, Ideiak, Bilera, Aleak, Denetarik, Pertsonala, Proiektuak, Jaieguna, Egoera, Hornitzaileak, Bidaia, Oporrak";
+
+/* Default module */
+"Calendar" = "Egutegia";
+"Contacts" = "Helbide liburua";
+"Mail" = "Emaila";
+"Last" = "Azkenekoz erabilia";
+"Default Module :" = "Lehenetsitako modulua:";
+"SOGo Version :" = "SOGo betsioa:";
+
+"Language :" = "Hizkuntza";
+"choose" = "Aukeratu ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"BrazilianPortuguese" = "Português brasileiro";
+"Polish" = "Polski";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View :" = "Eguneratu ikuspegia";
+"refreshview_manually" = "Eskuz";
+"refreshview_every_minute" = "Minuturo";
+"refreshview_every_2_minutes" = "2 minuturo";
+"refreshview_every_5_minutes" = "5 minuturo";
+"refreshview_every_10_minutes" = "10 minuturo";
+"refreshview_every_20_minutes" = "20 minuturo";
+"refreshview_every_30_minutes" = "30 minuturo";
+"refreshview_once_per_hour" = "Orduro";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Jasotze-agiriaren eskakizun bat jasotzen dudanean:";
+"Never send a return receipt" = "Jasotze agiria inoiz ez bidali.";
+"Allow return receipts for some messages" = "Baimendu jasotze-agiriak zenbait mezutarako.";
+"If I'm not in the To or Cc of the message:" = "Ez banago mezuaren 'nori' edo 'kopia' eremuetan:";
+"If the sender is outside my domain:" = "Bidaltzailea nere domeinutik kanpo badago:";
+"In all other cases:" = "Beste kasu guztietan:";
+
+"Never send" = "Inoiz ez bidali";
+"Always send" = "Bidali beti";
+"Ask me" = "Galde nazazu";
+
+/* Filters - UIxPreferences */
+"Filters" = "Iragazkiak";
+"Active" = "Aktibo";
+"Move Up" = "Mugitu goruntz";
+"Move Down" = "Mugitu beheruntz";
+"Connection error" = "Konexio errorea";
+"Service temporarily unavailable" = "Zerbitzua aldi baterako ez dago erabligarri";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Iragazkiaren izena";
+"For incoming messages that" = "Honako hau betetzen duten mezuentzat";
+"match all of the following rules:" = "Arau guzti hauek betetzen dituztenak:";
+"match any of the following rules:" = "Arau hauetako edozein betetzen dituztenak:";
+"match all messages" = "mezu guztiekin bat etorri";
+"Perform these actions:" = "Egikaritu honako ekintzak:";
+"Untitled Filter" = "Izenburu gabeko iragazkia";
+
+"Subject" = "Gaia";
+"From" = "Nork";
+"To" = "Nori";
+"Cc" = "Kopia";
+"To or Cc" = "Nori edo kopia";
+"Size (Kb)" = "Tamaina (Kb)";
+"Header" = "Goiburua";
+"Body" = "Gorputza";
+"Flag the message with:" = "Mezuari honako bandera jarri:";
+"Discard the message" = "Baztertu mezua";
+"File the message in:" = "Fitxategiratu mezua:";
+"Keep the message" = "Mantendu mezua";
+"Forward the message to:" = "Birbidali mezua honi:";
+"Send a reject message:" = "Bidali ezetsi mezu bat:";
+"Send a vacation message" = "Bildai 'oporretan nago' mezu bat.";
+"Stop processing filter rules" = "Iragazki arauen prozesatzea gelditu.";
+
+"is under" = "azpian dago";
+"is over" = "gainean dago";
+"is" = "da";
+"is not" = "ez da";
+"contains" = "dauka";
+"does not contain" = "ez dauka";
+"matches" = "Bat dator";
+"does not match" = "ez dator bat";
+"matches regex" = "regex-ekin bat dator";
+"does not match regex" = "regex-ekin ez dator bat";
+
+"Seen" = "Ikusia";
+"Deleted" = "Ezabatua";
+"Answered" = "Erantzunda";
+"Flagged" = "Bandera dauka";
+"Junk" = "Zaborra";
+"Not Junk" = "Ez da zaborra";
+
+/* Password policy */
+"The password was changed successfully." = "Pasahitza ondo aldatu da.";
+"Password must not be empty." = "Pasahitza ezin da hutsa izan.";
+"The passwords do not match. Please try again." = "Pasahitzak ez datoz bat. Mesedez, saiatu berriz";
+"Password change failed" = "Pasahitz aldaketak hutsegin du.";
+"Password change failed - Permission denied" = "Pasahitz aldaketak hutsegin du - Baimena ukatua";
+"Password change failed - Insufficient password quality" = "Pasahitz aldaketak hutsegin du - Pasahitzaren kalitate eskasa";
+"Password change failed - Password is too short" = "Pasahitz aldaketak hutsegin du - Pasahitz motzegia";
+"Password change failed - Password is too young" = "Pasahitz aldaketak hutsegin du - Pasahitza berriegia da";
+"Password change failed - Password is in history" = "Pasahitz aldaketak hutsegin du - Pasahitza historikoan dago";
+"Unhandled policy error: %{0}" = "Landu gabeko politika errorea: %{0}";
+"Unhandled error response" = "Landu gabeko errore erantzuna";
+"Password change is not supported." = "Pasahitz aldaketa ez dago onartua.";
+"Unhandled HTTP error code: %{0}" = "Landu gabeko HTTP errore kodea: %{0}";

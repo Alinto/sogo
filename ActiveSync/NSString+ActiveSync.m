@@ -322,6 +322,18 @@ static NSArray *easCommandParameters = nil;
   return s;
 }
 
+- (BOOL) acceptsMultiPart
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"OPTIONS="];
+
+  if (s && [s rangeOfString: @"AcceptMultiPart" options: NSCaseInsensitiveSearch].location != NSNotFound)
+    return YES;
+
+  return NO;
+}
+
 
 //
 // FIXME: combine with our OpenChange code.

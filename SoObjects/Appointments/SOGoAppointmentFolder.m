@@ -502,12 +502,12 @@ static Class iCalEventK = nil;
   BOOL is_owner;
   
   userLogin = [[context activeUser] login];
-  is_owner = [userLogin isEqualToString: [self ownerInContext: context]];
+  is_owner = [userLogin isEqualToString: self->owner];
   
   // Check if the owner (not the active user) has excluded the calendar from her/his free busy data.
   excludeFromFreeBusy
     = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
-				  forUser: [SOGoUser userWithLogin: userLogin]];
+				  forUser: [context activeUser]];
 
   if ([self isSubscription])
     {
@@ -800,7 +800,7 @@ static Class iCalEventK = nil;
 
 /**
  * Set the timezone of the event start and end dates to the user's timezone.
- * @param theRecord a dictionnary with the attributes of the event.
+ * @param theRecord a dictionary with the attributes of the event.
  * @return a copy of theRecord with adjusted dates.
  */
 - (NSMutableDictionary *) _fixupRecord: (NSDictionary *) theRecord
@@ -2814,7 +2814,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			     @"c_category", @"c_classification", @"c_isallday",
 			     @"c_isopaque", @"c_participants", @"c_partmails",
 			     @"c_partstates", @"c_sequence", @"c_priority",
-			     @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", nil];
+			     @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", @"c_description", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
                component: _component

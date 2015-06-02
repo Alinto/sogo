@@ -640,26 +640,37 @@ static NSArray *reminderValues = nil;
   return [userDefaults busyOffHours];
 }
 
-- (NSArray *) whiteList
+- (NSString *) whiteList
 {
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
-  NSArray *whiteList;
+  id whiteList;
   
   us = [user userSettings];
   moduleSettings = [us objectForKey: @"Calendar"];
-  whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
+  whiteList = [moduleSettings objectForKey: @"PreventInvitationsWhitelist"];
+
+  if (whiteList && [whiteList isKindOfClass: [NSDictionary class]])
+    {
+      whiteList = [whiteList jsonRepresentation];
+    }
+  
   return whiteList;
 }
 
 - (void) setWhiteList: (NSString *) whiteListString
 {
-  SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
+  SOGoUserSettings *us;
+  id o;
   
   us = [user userSettings];
   moduleSettings = [us objectForKey: @"Calendar"];
-  [moduleSettings setObject: whiteListString forKey: @"PreventInvitationsWhitelist"];
+
+  if (!(o = [whiteListString objectFromJSONString]))
+    o = [NSDictionary dictionary];
+  
+  [moduleSettings setObject: o forKey: @"PreventInvitationsWhitelist"];
   [us synchronize];
 }
 

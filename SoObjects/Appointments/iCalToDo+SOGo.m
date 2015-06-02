@@ -177,6 +177,12 @@
     [row setObject: [categories componentsJoinedByString: @","]
             forKey: @"c_category"];
 
+  /* handle description */
+  if ([self comment])
+    [row setObject: [self comment]  forKey: @"c_description"];
+  else
+    [row setObject: [NSNull null] forKey: @"c_description"];
+
   return row;
 }
 

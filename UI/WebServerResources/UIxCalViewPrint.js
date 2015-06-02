@@ -538,7 +538,7 @@ function _parseEvent(event) {
     var end = _("End:");
     var location = _("Location:");
     var calendar = _("Calendar:");
-
+    var description = _("Description:");
     var newEvent = document.createElement("div");
     var table = document.createElement("table");
     Element.addClassName(newEvent, "divEventsPreview");
@@ -562,7 +562,11 @@ function _parseEvent(event) {
     var calendarCell = row.insertCell(0);
     Element.addClassName(calendarCell, "cellFormat");
     var calendarCellValue = row.insertCell(1);
-    
+    row = table.insertRow(5);
+    var descriptionCell = row.insertCell(0);
+    Element.addClassName(descriptionCell, "cellFormat");
+    var descriptionCellValue = row.insertCell(1);
+  
     title.innerHTML = event[4];
     startCell.innerHTML = start;
     var startDate = new Date(event[5] *1000);
@@ -574,6 +578,11 @@ function _parseEvent(event) {
     locationCellValue.innerHTML = event[7];
     calendarCell.innerHTML = calendar;
     calendarCellValue.innerHTML = event[2];
+
+    if (event[21] && event[21].length) {
+      descriptionCell.innerHTML = description;
+      descriptionCellValue.innerHTML = event[21];
+    }
 
     if (printColors.checked) {
         var allColors = window.parentvar("UserSettings")['Calendar']['FolderColors'];

@@ -1,18 +1,64 @@
-master
-------
+2.3.0 (2015-06-01)
+-------------------
+
+New features
+ - Internet headers are now shown in Outlook (Zentyal)
 
 Enhancements
- - Synchronize events, contacts and tasks in reverse chronological order
+ - improved multipart handling using EAS
+ - added systemd startup script (PR#76)
+ - added Basque translation - thanks to Gorka Gonzalez
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
+ - calendar sharing request support among different Outlook versions (Zentyal)
+ - improved sync speed from Outlook by non-reprocessing already downloaded unread mails (Zentyal)
+ - added support for sharing calendar invitations
+ - missing contact fields are now saved and available when sharing it (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary) (Zentyal)
+ - appointment color and importance work now between Outlooks (Zentyal)
+ - synchronize events, contacts and tasks in reverse chronological order (Zentyal)
+ - during login, we now extract the domain from the user to accelerate authentication requests on sources
+ - make sure sure email invitations can always be read by EAS clients
+ - now able to print event/task's description (new components only) in the list view (#2881)
+ - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
+ - many improvements to EAS SmartReply/SmartForward commands
+ - event invitation response mails from Outlook are now sent
+ - mail subfolders created in WebMail are created when Outlook synchronises
+ - mail root folder created in WebMail (same level INBOX) are created on Outlook logon
 
 Bug fixes
- - Outlook clients can use reply all functionality on multidomain environment
- - Optional attendes on events are now shown properly
-
-2.2.17a-zentyal1 (2015-04-15)
---------------------
-
-Bug fixes
- - Do not share Outlook metadata between users with the same name and different domain
+ - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
+ - EAS reply fix when message/rfc822 parts are included in the original mail (#3153)
+ - fixed yet an other potential crash during freebusy lookups during timezone changes
+ - fixed display of freebusy information in event attendees editor during timezone changes
+ - fixed timezone of MSExchange freebusy information
+ - fixed a potential EAS error with multiple email priority flags
+ - fixed paragraphs margins in HTML messages (#3163)
+ - fixed regression when loading the inbox for the first time
+ - fixed serialization of the PreventInvitationsWhitelist settings
+ - fixed md4 support (for NTLM password changes) with GNU TLS
+ - fixed edition of attachment URL in event/task editor
+ - sent mails are not longer in Drafts folder using Outlook (Zentyal)
+ - deleted mails are properly synced between Outlook profiles from the same account (Zentyal)
+ - does not create a mail folder in other user's mailbox (Zentyal)
+ - fix server-side crash with invalid events (Zentyal)
+ - fix setting permissions for a folder with several users (Zentyal)
+ - fix reception of calendar event invitations on optional attendees (Zentyal)
+ - fix server side crash parsing rtf without color table (Zentyal)
+ - weekly recurring events created in SOGo web interface are now shown in Outlook (Zentyal)
+ - fix exception modifications import in recurrence series (Zentyal)
+ - fix server side crash parsing rtf emails with images (with word97 format) (Zentyal)
+ - fix sender on importing email messages like event invitations (Zentyal)
+ - fix Outlook crashes when modifying the view of a folder (Zentyal)
+ - fix server side crash when reading some recurrence appointments (Zentyal)
+ - Outlook clients can use reply all functionality on multidomain environment (Zentyal)
+ - optional attendes on events are now shown properly (Zentyal)
+ - fixed the EAS maximum response size being per-folder, and not global
+ - now set MeetingMessageType only for EAS 14.1
+ - now correctly handle external invitations using EAS
+ - now correctly handle multiple email addresses in the GAL over EAS (#3102)
+ - now handle very large amount of participants correctly (#3175)
+ - fix message bodies not shown on some EAS devices (#3173)
+ - avoid appending the domain unconditionally when SOGoEnableDomainBasedUID is set to YES
+ - recurrent all day events are now shown properly in Outlook
 
 2.2.17a (2015-03-15)
 --------------------
@@ -51,6 +97,7 @@ Bug fixes
  - prevent potential freebusy lookup crashes during timezone changes with repetitive events
  - improved GetItemEstimate to count all vasnished/deleted mails too
  - improvements to EAS SyncKey handling to avoid missing mails (#3048, #3058)
+ - fixed EAS replies decoding from Outlook (#3123)
 
 2.2.16 (2015-02-12)
 -------------------
@@ -72,42 +119,6 @@ Bug fixes
  - fixed BlackBerry issues sending multiple mails over EAS (#3095)
  - fixed plain/text mails showing on one line on Android/EAS (#3055)
  - fixed exception in sogo-tool when parsing arguments of a set operation
-
-2.2.15-zentyal3 (2015-04-14)
-------
-
-New features
- - Internet headers are now shown in Outlook
-
-Enhancements
- - Sharing request among different Outlook versions
- - Improve sync speed from Outlook by non-reprocessing already downloaded unread mails
-
-Bug fixes
- - Sent mails are not longer in Drafts folder using Outlook
- - Deleted mails are properly synced between Outlook profiles from the same account
- - Does not create a mail folder in other user's mailbox
- - Fix server-side crash with invalid events
- - Fix setting permissions for a folder with several users
- - Fix reception of calendar event invitations on optional attendees
- - Fix server side crash parsing rtf without color table
- - Weekly recurring events created in SOGo web interface are now shown in Outlook
- - Fix exception modifications import in recurrence series
- - Fix server side crash parsing rtf emails with images (with word97 format)
-
-2.2.15-zentyal2 (2015-03-16)
-----------------------------
-
-Enhancements
- - Give support to calendar sharing invitations
- - Missing contact fields are now saved and available when sharing it
-    (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary)
- - Appointment color and importance work now between Outlooks
-
-Bug fixes
- - Fix sender on importing email messages like event invitations
- - Fix Outlook crashes when modifying the view of a folder
- - Fix server side crash when reading some recurrence appointments
 
 2.2.15 (2015-01-30)
 -------------------

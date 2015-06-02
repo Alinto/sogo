@@ -167,9 +167,9 @@ Operating System Requirements
 The following 32-bit and 64-bit operating systems are currently
 supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 5 and 6
-* Community ENTerprise Operating System (CentOS) 5 and 6
-* Debian GNU/Linux 5.0 (Lenny) to 7.0 (Wheezy)
+* Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
+* Community ENTerprise Operating System (CentOS) 5, 6 and 7
+* Debian GNU/Linux 6.0 (Squeeze) to 8.0 (Jessie)
 * Ubuntu 10.04 (Lucid) to 14.04 (Trusty)
 
 Make sure the required components are started automatically at boot time
@@ -194,7 +194,8 @@ Installation
 
 This section will guide you through the installation of SOGo together
 with its dependencies. The steps described here apply to an RPM-based
-installation for a Red Hat or CentOS distribution.
+installation for a Red Hat or CentOS 6 distribution. Most of these steps
+should apply to all supported operating systems.
 
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
@@ -566,17 +567,29 @@ usernames like this: `SOGoSuperUsernames = (<username1>[, <username2>, ...]);`
 for SOGo. Possible values are:
 
 [options="compact"]
+* `Arabic`
+* `Basque`
 * `BrazilianPortuguese`
+* `Catalan`
 * `Czech`
+* `Danish`
 * `Dutch`
 * `English`
+* `Finnish`
 * `French`
 * `German`
 * `Hungarian`
+* `Icelandic`
 * `Italian`
+* `NorwegianBokmal`
+* `NorwegianNynorsk`
+* `Polish`
 * `Russian`
-* `Spanish`
+* `Slovak`
+* `SpanishSpain`
+* `SpanishArgentina`
 * `Swedish`
+* `Ukrainian`
 * `Welsh`
 
 |D |SOGoNotifyOnPersonalModifications
@@ -649,7 +662,7 @@ of 1 day by default.
 |Parameter used to configure which languages are available from SOGo's
 Web interface. Available languages are specified as an array of string.
 
-The default value is: `( "Czech", "Welsh", "English", "Spanish", "French", "German", "Italian", "Hungarian", "Dutch", "BrazilianPortuguese", "Polish", "Russian", Ukrainian", "Swedish" )`
+The default value is: `( "Arabic", "Basque", "Catalan", "Czech", "Dutch", "Danish", "Welsh", "English", "SpanishSpain", "SpanishArgentina", "Finnish", "French", "German", "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak", "Ukrainian", "Swedish" )`
 
 |D |SOGoHideSystemEMail
 |Parameter used to control if SOGo should hide or not the system email
@@ -843,7 +856,7 @@ source:
 
 [cols="^3,>47,50a"]
 |=======================================================================
-.33+|D <|SOGoUserSources
+.34+|D <|SOGoUserSources
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines an LDAP
@@ -2439,6 +2452,11 @@ Defaults to `0`, which means no overwrite is performed.
 
 Setting this parameter to a value greater than `512` will
 have unexpected behaviour with various ActiveSync clients.
+|S |SOGoEASDebugEnabled
+|Parameter used to log the complete request and response of every single
+EAS command.
+
+Defaults to `NO`, which means no logging is performed.
 |=======================================================================
 
 Please be aware of the following limitations:
@@ -2693,6 +2711,13 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|2.3.0
+|Run the shell script `sql-update-2.2.17_to_2.3.0.sh` or
+`sql-update-2.2.17_to_2.3.0-mysql.sh` (if you use MySQL).
+
+This will grow the "participant states" field of calendar quick tables to a larger
+size and add the the "c_description" column to calendar quick tables.
+
 h|2.2.8
 |The configuration configuration parameters were renamed:
 

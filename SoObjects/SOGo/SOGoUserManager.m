@@ -504,16 +504,49 @@ static Class NSNullK;
   SOGoSystemDefaults *dd;
   BOOL checkOK;
 
-  if (*_domain && [_login rangeOfString: @"@"].location == NSNotFound)
-    username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
+  dd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  username = _login;
+
+  if (*_domain)
+    {
+      if ([_login rangeOfString: @"@"].location == NSNotFound)
+        username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
+    }
   else
-    username = _login;
+    {
+      NSRange r;
+
+      // We try to extract the domain in use in order to avoid pounding all the authentication
+      // sources if SOGoLoginDomains isn't specified. This is also true if the user is
+      // using DAV or EAS.
+      r = [username rangeOfString: @"@"];
+
+      if (r.location != NSNotFound)
+        {
+          NSArray *allDomains;
+          int i;
+
+          *_domain = [username substringFromIndex: r.location+1];
+
+          allDomains = [[dd dictionaryForKey: @"domains"] allValues];
+
+          for (i = 0; i < [allDomains count]; i++)
+            {
+              if ([*_domain isEqualToString: [[allDomains objectAtIndex: i] objectForKey: @"SOGoMailDomain"]])
+                break;
+            }
+
+          // We haven't found one
+          if (i == [allDomains count])
+            *_domain = nil;
+        }
+    }
 
   // We check the fail count per user in memcache (per server). If the
   // fail count reaches X in Y minutes, we deny immediately the
   // authentications for Z minutes
   failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
-  dd = [SOGoSystemDefaults sharedSystemDefaults];
   if (failedCount)
     {
       unsigned int current_time, start_time, delta, block_time;
