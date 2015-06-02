@@ -1,8 +1,6 @@
 /* UIxCalUserRightsEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +30,6 @@
 @interface UIxCalUserRightsEditor : UIxUserRightsEditor
 {
   NSString *currentRight;
-  NSString *currentRightType;
   NSMutableDictionary *rights;
 }
 
@@ -41,11 +38,6 @@
 - (NSString *) currentRight;
 
 - (NSArray *) rightTypes;
-- (void) setCurrentRightType: (NSString *) newCurrentRightType;
-- (NSString *) currentRightType;
-- (NSString *) currentRightTypeLabel;
-- (NSString *) currentRightTypeName;
-- (NSString *) currentRightSelection;
 
 - (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects;
 - (BOOL) userCanCreateObjects;

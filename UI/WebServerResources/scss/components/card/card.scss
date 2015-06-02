@@ -14,8 +14,12 @@ md-card {
   }
 
   &.sg-collapsed {
+    border-radius: 0;
     margin-top: 0;
-    margin-bottom: 1px;
+    margin-bottom: 0;
+    > .md-button {
+      margin: 0;
+    }
   }
 
   &.sg-expanded {

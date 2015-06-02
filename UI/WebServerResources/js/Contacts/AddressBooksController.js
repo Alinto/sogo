@@ -141,6 +141,7 @@
 
         vm.users = usersWithACL; // ACL users
         vm.folder = folder;
+        vm.selectedUser = null;
         vm.userToAdd = '';
         vm.searchText = '';
         vm.userFilter = userFilter;
@@ -171,9 +172,8 @@
         function confirmChange(user) {
           var confirmation = user.$confirmRights();
           if (confirmation) {
-            Dialog.confirm(l('Warning'), confirmation).then(function(res) {
-              if (!res)
-                user.$resetRights(true);
+            Dialog.confirm(l('Warning'), confirmation).catch(function() {
+              user.$resetRights(true);
             });
           }
         }

@@ -95,6 +95,7 @@
       $mdDialog.show({
         templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
         controller: CalendarACLController,
+        controllerAs: 'acl',
         clickOutsideToClose: true,
         escapeToClose: true,
         locals: {
@@ -106,59 +107,74 @@
       /**
        * @ngInject
        */
-      CalendarACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder'];
-      function CalendarACLController($scope, $mdDialog, usersWithACL, User, folder) {
-        $scope.users = usersWithACL; // ACL users
-        $scope.folder = folder;
-        $scope.selectedUser = null;
-        $scope.userToAdd = '';
-        $scope.searchText = '';
-        $scope.userFilter = function($query) {
-          return User.$filter($query);
-        };
-        $scope.closeModal = function() {
+      CalendarACLController.$inject = ['$mdDialog', 'usersWithACL', 'User', 'folder'];
+      function CalendarACLController($mdDialog, usersWithACL, User, folder) {
+        var vm = this;
+
+        vm.users = usersWithACL; // ACL users
+        vm.folder = folder;
+        vm.selectedUser = null;
+        vm.userToAdd = '';
+        vm.searchText = '';
+        vm.userFilter = userFilter;
+        vm.closeModal = closeModal;
+        vm.saveModal = saveModal;
+        vm.confirmChange = confirmChange;
+        vm.removeUser = removeUser;
+        vm.addUser = addUser;
+        vm.selectUser = selectUser;
+
+        function userFilter($query) {
+          return User.$filter($query, folder.$acl.users);
+        }
+
+        function closeModal() {
           folder.$acl.$resetUsersRights(); // cancel changes
           $mdDialog.hide();
-        };
-        $scope.saveModal = function() {
+        }
+
+        function saveModal() {
           folder.$acl.$saveUsersRights().then(function() {
             $mdDialog.hide();
           }, function(data, status) {
             Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
-        };
-        $scope.confirmChange = function(user) {
+        }
+
+        function confirmChange(user) {
           var confirmation = user.$confirmRights();
           if (confirmation) {
-            Dialog.confirm(l('Warning'), confirmation).then(function(res) {
-              if (!res)
-                user.$resetRights(true);
+            Dialog.confirm(l('Warning'), confirmation).catch(function() {
+              user.$resetRights(true);
             });
           }
-        };
-        $scope.removeUser = function(user) {
+        }
+
+        function removeUser(user) {
           folder.$acl.$removeUser(user.uid).then(function() {
-            if (user.uid == $scope.selectedUser.uid)
-              $scope.selectedUser = null;
+            if (user.uid == vm.selectedUser.uid)
+              vm.selectedUser = null;
           }, function(data, status) {
             Dialog.alert(l('Warning'), l('An error occured please try again.'))
           });
-        };
-        $scope.addUser = function(data) {
+        }
+
+        function addUser(data) {
           if (data) {
             folder.$acl.$addUser(data).then(function() {
-              $scope.userToAdd = '';
-              $scope.searchText = '';
+              vm.userToAdd = '';
+              vm.searchText = '';
             }, function(error) {
               Dialog.alert(l('Warning'), error);
             });
           }
-        };
-        $scope.selectUser = function(user) {
+        }
+
+        function selectUser(user) {
           // Check if it is a different user
-          if ($scope.selectedUser != user) {
-            $scope.selectedUser = user;
-            $scope.selectedUser.$rights();
+          if (vm.selectedUser != user) {
+            vm.selectedUser = user;
+            vm.selectedUser.$rights();
           }
         };
       };
@@ -174,6 +190,6 @@
   }
 
   angular
-    .module('SOGo.SchedulerUI')  
-    .controller('CalendarsController', CalendarsController);                                    
+    .module('SOGo.SchedulerUI')
+    .controller('CalendarsController', CalendarsController);
 })();

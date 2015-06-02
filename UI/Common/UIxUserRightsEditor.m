@@ -184,19 +184,22 @@
 }
 
 /**
- * @api {get} /so/:username/:folderPath/acls Get ACLs
+ * @api {get} /so/:username/:folderPath/userRights?uid=:uid Get user's rights
  * @apiVersion 1.0.0
- * @apiName GetAcls
+ * @apiName GetUserRights
  * @apiGroup Common
  * @apiExample {curl} Example usage:
- *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/acls
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/userRights?uid=sogo2
  *
- * @apiSuccess (Success 200) {Object[]} users             List of users with ACL for the folder
- * @apiSuccess (Success 200) {String} users.uid           User ID
- * @apiSuccess (Success 200) {String} users.userClass     Either 'normal-user', 'normal-group' or 'public-access'
- * @apiSuccess (Success 200) {Number} users.isSubscribed  1 if the user is subscribed to the folder
- * @apiSuccess (Success 200) {String} [users.cn]          User fullname
- * @apiSuccess (Success 200) {String} [users.c_email]     User main email address
+ * @apiSuccess (Success 200) {String} [Public]            Calendar: either None, DAndTViewer, Viewer, Responder, or Modifier
+ * @apiSuccess (Success 200) {String} [Confidential]      Calendar: either None, DAndTViewer, Viewer, Responder, or Modifier
+ * @apiSuccess (Success 200) {Number} [Private]           Calendar: either None, DAndTViewer, Viewer, Responder, or Modifier
+ * @apiSuccess (Success 200) {Number} [canCreateObjects]  Calendar: can create events and tasks
+ * @apiSuccess (Success 200) {Number} [canEraseObjects]   Calendar: can erase events and tasks
+ * @apiSuccess (Success 200) {Number} [canCreateObjects]  Address Book: can create cards
+ * @apiSuccess (Success 200) {Number} [canEraseObjects]   Address Book: can erase cards
+ * @apiSuccess (Success 200) {Number} [canViewObjects]    Address Book: can view cards
+ * @apiSuccess (Success 200) {Number} [canEditObjects]    Address Book: can modify cards
  */
 - (id <WOActionResults>) userRightsAction
 {

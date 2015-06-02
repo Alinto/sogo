@@ -225,7 +225,10 @@
     if (zero) {
       // Disable all rights
       _.map(_.keys(this.rights), function(key) {
-        _this.rights[key] = 0;
+        if (angular.isString(_this.rights[key]))
+          _this.rights[key] = 'None';
+        else
+          _this.rights[key] = 0;
       });
     }
     else {

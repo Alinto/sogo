@@ -1,8 +1,6 @@
 /* UIxCalUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +34,6 @@
   if ((self = [super init]))
     {
       currentRight = nil;
-      currentRightType = nil;
       rights = [NSMutableDictionary new];
       [rights setObject: @"None" forKey: @"Public"];
       [rights setObject: @"None" forKey: @"Private"];
@@ -49,7 +46,6 @@
 - (void) dealloc
 {
   [currentRight release];
-  [currentRightType release];
   [rights release];
   [super dealloc];
 }
@@ -95,6 +91,9 @@
   return rightsForType;
 }
 
+/**
+ * @see [UIxUserRightsEditor userRightsAction]
+ */
 - (NSDictionary *) userRightsForObject
 {
   NSMutableDictionary *d;
@@ -111,6 +110,9 @@
   return d;
 }
 
+/**
+ * @see [UIxUserRightsEditor saveUserRightsAction]
+ */
 - (void) updateRights: (NSDictionary *) newRights
 {
   NSEnumerator *types;
@@ -163,62 +165,10 @@
   return currentRight;
 }
 
-- (NSArray *) rightTypes
-{
-  return
-    [NSArray arrayWithObjects: @"Public", @"Confidential", @"Private", nil];
-}
-
-- (void) setCurrentRightType: (NSString *) newCurrentRightType
-{
-  ASSIGN (currentRightType, newCurrentRightType);
-}
-
-- (NSString *) currentRightType
-{
-  return currentRightType;
-}
-
 - (NSString *) currentRightLabel
 {
   return [self labelForKey:
 		 [NSString stringWithFormat: @"label_%@", currentRight]];
-}
-
-- (NSString *) currentRightTypeLabel
-{
-  return [self labelForKey:
-		 [NSString stringWithFormat: @"label_%@", currentRightType]];
-}
-
-- (NSString *) currentRightTypeName
-{
-  return [NSString stringWithFormat: @"%@Right", currentRightType];
-}
-
-- (NSString *) currentRightSelection
-{
-  return [rights objectForKey: currentRightType];
-}
-
-- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects
-{
-  [self appendRight: SOGoRole_ObjectCreator];
-}
-
-- (BOOL) userCanCreateObjects
-{
-  return [userRights containsObject: SOGoRole_ObjectCreator];
-}
-
-- (void) setUserCanEraseObjects: (BOOL) userCanEraseObjects
-{
-  [self appendRight: SOGoRole_ObjectEraser];
-}
-
-- (BOOL) userCanEraseObjects
-{
-  return [userRights containsObject: SOGoRole_ObjectEraser];
 }
 
 @end

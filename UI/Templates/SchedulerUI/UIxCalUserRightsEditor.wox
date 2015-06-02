@@ -11,20 +11,13 @@
   const:toolbar="none"
   const:popup="YES">
 
-  <div class="calendarUserRights" layout="column">
-    <!-- <var:foreach list="rightTypes" item="currentRightType">
-	 <div><span><var:string value="currentRightTypeLabel"/></span>
-	 <var:popup list="objectRights" item="currentRight"
-	 var:name="currentRightTypeName"
-	 var:value="currentRight"
-	 string="currentRightLabel"
-	 selection="currentRightSelection"
-	 /></div>
-         </var:foreach>
-    -->
+  <div layout="column">
+
     <div layout="row" layout-align="space-between center">
-      <var:string label:value="Public"/>
-      <md-select flex="50" ng-model="selectedUser.rights.Public">
+      <label><var:string label:value="label_Public"/></label>
+      <md-select flex="50" label:aria-label="Public"
+                 ng-model="acl.selectedUser.rights.Public"
+                 ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -34,8 +27,10 @@
     </div>
 
     <div layout="row" layout-align="space-between center">
-      <var:string label:value="Confidential"/>
-      <md-select flex="50" ng-model="selectedUser.rights.Confidential">
+      <var:string label:value="label_Confidential"/>
+      <md-select flex="50" label:aria-label="Confidential"
+                 ng-model="acl.selectedUser.rights.Confidential"
+                 ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -45,8 +40,10 @@
     </div>
 
     <div layout="row" layout-align="space-between center">
-      <var:string label:value="Private"/>
-      <md-select flex="50" ng-model="selectedUser.rights.Private">
+      <var:string label:value="label_Private"/>
+      <md-select flex="50" label:aria-label="Private"
+                 ng-model="acl.selectedUser.rights.Private"
+                 ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
           <md-option var:value="currentRight">
             <var:string value="currentRightLabel"/>
@@ -56,24 +53,25 @@
     </div>
 
     <md-checkbox name="canCreateObjects"
-                 ng-model="selectedUser.rights.canCreateObjects"
-                 ng-change="confirmChange(selectedUser)"
-                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-model="acl.selectedUser.rights.canCreateObjects"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-hide="acl.selectedUser.$isAnonymous()"
                  ng-true-value="1"
-                 ng-false-value="0">
+                 ng-false-value="0"
+                 label:aria-label="This person can create objects in my calendar.">
       <var:string label:value="This person can create objects in my calendar." />
     </md-checkbox>
 
     <md-checkbox name="canEraseObjects"
-                 ng-model="selectedUser.rights.canEraseObjects"
-                 ng-change="confirmChange(selectedUser)"
-                 ng-hide="selectedUser.$isAnonymous()"
+                 ng-model="acl.selectedUser.rights.canEraseObjects"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-hide="acl.selectedUser.$isAnonymous()"
                  ng-true-value="1"
-                 ng-false-value="0">
+                 ng-false-value="0"
+                 label:aria-label="This person can erase objects from my calendar.">
               <var:string label:value="This person can erase objects from my calendar." />
     </md-checkbox>
 
   </div>
-
 
 </var:component>

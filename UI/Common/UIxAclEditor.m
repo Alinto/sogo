@@ -84,7 +84,7 @@
 }
 
 /**
- * @api {get} /so/:username/:folderPath/acls Get ACLs
+ * @api {get} /so/:username/:folderPath/acls List users with rights
  * @apiVersion 1.0.0
  * @apiName GetAcls
  * @apiGroup Common
