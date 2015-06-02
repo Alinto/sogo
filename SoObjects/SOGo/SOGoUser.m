@@ -197,12 +197,8 @@
           // When the user is associated to a domain, the [SOGoUser login]
           // method returns the combination login@domain while
           // [SOGoUser loginInDomain] only returns the login.
-          r = [realUID rangeOfString: domain  options: NSBackwardsSearch|NSCaseInsensitiveSearch];
-
-          if (r.location != NSNotFound)
-            uid = [realUID substringToIndex: r.location-1];
-          else
-            uid = [NSString stringWithString: realUID];
+          uid = [NSString stringWithString: realUID];
+          realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
         }
     }
 
