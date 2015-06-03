@@ -85,3 +85,28 @@
   margin-right: 0;
   margin-left: 0;
 }
+.sg-accepted {
+  @extend .md-tile-left-accepted;
+  margin-right: 0;
+  margin-left: 0;
+}
+.sg-declined {
+  @extend .md-tile-left-declined;
+  margin-right: 0;
+  margin-left: 0;
+}
+.sg-delegated {
+  @extend .md-tile-left-delegated;
+  margin-right: 0;
+  margin-left: 0;
+}
+.sg-needs-action {
+  @extend .md-tile-left-needs-action;
+  margin-right: 0;
+  margin-left: 0;
+}
+.sg-tentative {
+  @extend .md-tile-left-tentative;
+  margin-right: 0;
+  margin-left: 0;
+}

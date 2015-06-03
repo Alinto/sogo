@@ -43,11 +43,6 @@
           actionClass = "UIxMailPartICalActions";
           actionName  = "updateUserStatus";
         };
-        /*        tentative = {
-                  protectedBy = "View";
-                  actionClass = "UIxMailPartICalAction";
-                  actionName  = "markTentative";
-                  }; */
         addToCalendar = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";

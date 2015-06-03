@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -180,6 +179,59 @@
   [date setTimeZone: [ud timeZone]];
   
   return date;
+}
+
+/*
+  In v3.0, we moved the template's logic here to format
+  the event's start/end date-time. The previous logic was:
+
+          <dd><var:string value="startDate" />
+            <var:if condition="inEvent.isAllDay" const:negate="YES">
+              <var:string value="startTime" />
+            </var:if>
+            <var:if condition="isEndDateOnSameDay">
+              <var:if condition="inEvent.isAllDay" const:negate="YES">
+                <var:string label:value="to" />
+                <var:string value="endTime" />
+              </var:if>
+            </var:if>
+            <var:if condition="isEndDateOnSameDay" const:negate="YES">
+              <var:string label:value="to" />
+              <var:string value="endDate" />
+              <var:if condition="inEvent.isAllDay" const:negate="YES">
+                <var:string value="endTime" />
+              </var:if>
+            </var:if>
+          </dd>
+
+*/
+- (NSString *) formattedDateTime
+{
+  NSMutableString *s;
+
+  s = [NSMutableString string];
+
+  [s appendString: [self startDate]];
+
+  if (![[self inEvent] isAllDay])
+    [s appendFormat: @" %@", [self startTime]];
+
+  if ([self isEndDateOnSameDay] &&
+      ![[self inEvent] isAllDay])
+    {
+      [s appendFormat: @" %@", [self labelForKey: @"to"]];
+      [s appendFormat: @" %@", [self endTime]];
+    }
+  else if (![self isEndDateOnSameDay])
+    {
+      [s appendFormat: @" %@", [self labelForKey: @"to"]];
+      [s appendFormat: @" %@", [self endDate]];
+
+      if (![[self inEvent] isAllDay])
+        [s appendFormat: @" %@", [self endTime]];
+    }
+
+  return s;
 }
 
 - (NSString *) startDate
@@ -388,10 +440,7 @@
 
   cssClass = [[attendee partStatWithDefault] lowercaseString];
 
-  if ([[attendee rfc822Email] isEqualToString: [self loggedInUserEMail]])
-    cssClass = [cssClass stringByAppendingString: @" attendeeUser"];
-
-  return cssClass;
+  return [NSString stringWithFormat: @"sg-%@", cssClass];
 }
 
 /* derived fields */

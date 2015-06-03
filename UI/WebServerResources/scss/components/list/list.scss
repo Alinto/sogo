@@ -99,3 +99,31 @@ div.md-tile-left {
   @extend .md-tile-left;
   content: "\f299";
 }
+.md-tile-left-accepted:before {
+  @extend .md-tile-left;
+  background-color: rgba(0, 255, 0, 0.3) !important;
+  content: "\f299";
+  color: rgba(0, 0, 0, 0.5);
+}
+.md-tile-left-declined:before {
+  @extend .md-tile-left;
+  background-color: rgba(255, 0, 0, 0.3) !important;
+  content: "\f111";
+  color: rgba(0, 0, 0, 0.5);
+}
+.md-tile-left-delegated:before {
+  @extend .md-tile-left;
+  background-color: rgba(192, 192, 192, 0.3) !important;
+  content: "\f298";
+  color: rgba(0, 0, 0, 0.5);
+}
+.md-tile-left-needs-action:before {
+  @extend .md-tile-left;
+  background-color: rgba(255, 255, 0, 0.3) !important;
+  content: "?";
+}
+.md-tile-left-tentative:before {
+  @extend .md-tile-left;
+  background-color: rgba(255, 255, 0, 0.3) !important;
+  content: "\f2d8";
+}

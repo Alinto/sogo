@@ -15,7 +15,8 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
     <table cellpadding="2" cellspacing="2" border="0" style="width: 100%; max-width: 600px;">
       <tr>
         <th></th>
-        <td><h1 style="font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc;"><var:string
+        <td><h1 style="font-size: 18px; font-weight: normal;
+          padding-bottom: 9px; border-bottom: 1px solid #ccc;" class="ng-hide"><var:string
           value="getSubject" const:escapeHTML="NO"/> <small style="font-size: 12px; color: #999;"><var:string
           value="organizerName" const:escapeHTML="NO"/><var:string value="sentByText" const:escapeHTML="NO"/></small></h1></td>
       </tr>

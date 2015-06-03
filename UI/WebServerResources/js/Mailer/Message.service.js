@@ -292,6 +292,25 @@
   };
 
   /**
+   * @function $imipAction
+   * @memberof Message.prototype
+   * @desc Perform IMIP actions on the current message.
+   * @param {string} path - the path of the IMIP calendar part 
+   * @param {string} action - the the IMIP action to perform
+   * @param {object} data - the delegation info 
+   */
+  Message.prototype.$imipAction = function(path, action, data) {
+    var _this = this;
+    Message.$$resource.post([this.id, path].join('/'), action, data).then(function(data) {
+      Message.$timeout(function() {
+        _this.$reload();
+      }, function() {
+        // TODO: show toast
+      });
+    });
+  };
+
+  /**
    * @function $markAsFlaggedOrUnflagged
    * @memberof Message.prototype
    * @desc Add or remove a the \\Flagged flag on the current message.

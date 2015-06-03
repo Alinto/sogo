@@ -328,6 +328,15 @@
   return url;
 }
 
+- (NSString *) pathToAttachmentFromMessage
+{
+  SOGoMailBodyPart *bodyPart;
+
+  bodyPart = [self clientPart];
+
+  return [NSString stringWithFormat: @"%@/%@", [bodyPart nameInContainer], [self _filenameForAttachment: bodyPart]];
+}
+
 - (NSString *) pathToAttachment
 {
   return [self _pathForAttachmentOrDownload: NO];

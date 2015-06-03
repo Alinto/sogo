@@ -1,6 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -288,12 +288,15 @@
 //  BOOL receiveUpdates;
   NSString *delegatedEmail, *delegatedUid;
   iCalPerson *delegatedAttendee;
+  NSDictionary *content;
   SOGoUser *user;
   WORequest *request;
   WOResponse *response;
 
   request = [context request];
-  delegatedEmail = [request formValueForKey: @"to"];
+  content = [[request contentAsString] objectFromJSONString];
+  delegatedEmail = [content objectForKey: @"delegatedTo"];
+
   if ([delegatedEmail length])
     {
       user = [context activeUser];
@@ -307,13 +310,14 @@
 	  delegatedUser = [SOGoUser userWithLogin: delegatedUid];
 	  [delegatedAttendee setCn: [delegatedUser cn]];
 	}
+
       [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
       [delegatedAttendee setRsvp: @"TRUE"];
       [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
       [delegatedAttendee setDelegatedFrom:
 	       [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
       
-//      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
+//      receiveUpdates = [[content objectForKey: @"receiveUpdates"] boolValue];
 //      if (receiveUpdates)
 //	[delegatedAttendee setRole: @"NON-PARTICIPANT"];
 
