@@ -110,7 +110,7 @@
         <textarea ng-model="editor.event.comment"><!-- comment --></textarea>
       </md-input-container>
       <!-- repeat -->
-      <div layout="row">
+      <div layout="row" layout-align="start end">
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Repeat"/></label>
           <md-select class="pseudo-input-field" ng-model="editor.event.repeat.frequency"
@@ -120,10 +120,13 @@
             </var:foreach>
           </md-select>
         </div>
-        <button type="button" class="iconButton md-button"
-                ng-click="editor.toggleRecurrenceEditor()">
-          <i class="md-icon-more-horiz"><!-- toggle custom rule --></i>
-        </button>
+        <md-button type="button" class="iconButton"
+                   label:aria-label="repeat_CUSTOM"
+                   ng-show="editor.event.repeat.frequency != 'never'"
+                   ng-click="editor.toggleRecurrenceEditor()">
+          <i ng-class="{'md-icon-more-horiz': !editor.showRecurrenceEditor,
+                       'md-icon-clear': editor.showRecurrenceEditor}"><!-- toggle custom rule --></i>
+        </md-button>
       </div>
       <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
         <var:component className="UIxRecurrenceEditor" />

@@ -257,6 +257,8 @@
     else {
       this.repeat.days = [];
     }
+    if (angular.isUndefined(this.repeat.frequency))
+      this.repeat.frequency = 'never';
     if (angular.isUndefined(this.repeat.interval))
       this.repeat.interval = 1;
     if (angular.isUndefined(this.repeat.month))
@@ -300,7 +302,7 @@
   Component.prototype.getClassName = function(base) {
     if (angular.isUndefined(base))
       base = 'fg';
-    return base + '-folder' + (this.pid || this.c_folder);
+    return base + '-folder' + (this.destinationCalendar || this.c_folder);
   };
 
   /**
@@ -393,20 +395,25 @@
         delete component.repeat.days;
       }
     }
-    else {
+    else if (this.repeat.frequency) {
       component.repeat = { frequency: this.repeat.frequency };
     }
-    if (this.repeat.end == 'until' && this.repeat.until)
-      component.repeat.until = this.repeat.until.stringWithSeparator('-');
-    else if (this.repeat.end == 'count' && this.repeat.count)
-      component.repeat.count = this.repeat.count;
+    if (this.repeat.frequency) {
+      if (this.repeat.end == 'until' && this.repeat.until)
+        component.repeat.until = this.repeat.until.stringWithSeparator('-');
+      else if (this.repeat.end == 'count' && this.repeat.count)
+        component.repeat.count = this.repeat.count;
+      else {
+        delete component.repeat.until;
+        delete component.repeat.count;
+      }
+    }
     else {
-      delete component.repeat.until;
-      delete component.repeat.count;
+      delete component.repeat;
     }
 
     function formatTime(dateString) {
-      // YYYY-MM-DDTHH:MM-05:00
+      // YYYY-MM-DDTHH:MM-ZZ:00 => YYYY-MM-DD HH:MM
       var date = new Date(dateString.substring(0,10) + ' ' + dateString.substring(11,16)),
           hours = date.getHours(),
           minutes = date.getMinutes();
