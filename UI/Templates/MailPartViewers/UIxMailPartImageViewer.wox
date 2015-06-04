@@ -1,9 +1,11 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE div>
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:var="http://www.skyrix.com/od/binding"
-     xmlns:const="http://www.skyrix.com/od/constant"
-     xmlns:label="OGo:label">
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
   <md-card>
     <img var:src="pathToAttachment"
          var:title="filenameForDisplay"
@@ -12,7 +14,7 @@
       <p>
         <var:string value="filenameForDisplay" /><br/>
         <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
-        </p>
+      </p>
     </md-card-content>
     <div class="md-actions" layout="row" layout-align="end center">
       <md-button var:href="pathForDownload">
@@ -20,4 +22,4 @@
       </md-button>
     </div>
   </md-card>
-</div>
+</container>
