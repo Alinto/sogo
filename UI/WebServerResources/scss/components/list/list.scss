@@ -80,6 +80,13 @@ div.md-tile-left {
   height:(7 * $line);
 
 }
+.sg-avatars {
+  margin: ($mg / 2) 0 0 ($mg / 2);
+  img {
+    border-radius: 100%;
+    margin-right: ($mg / 2);
+  }
+}
 // Avatar placeholder
 // ------------------------------------
 .md-tile-left:before {

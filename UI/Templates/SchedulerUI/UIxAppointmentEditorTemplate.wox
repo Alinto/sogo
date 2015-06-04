@@ -151,6 +151,43 @@
           <input type="date" label:aria-label="Repeat until" ng-model="editor.event.repeat.until"/>
         </md-input-container>
       </div>
+      <!-- attendees -->
+      <div layout="row" layout-align="space-between end">
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
+          <div class="sg-avatars" ng-hide="editor.showAttendeesEditor">
+            <sg-gravatar-image ng-repeat="currentAttendee in editor.event.attendees track by currentAttendee.email"
+                               email="{{currentAttendee.email}}"
+                               size="32">
+              <!-- gravatar -->
+            </sg-gravatar-image>
+          </div>
+        </div>
+        <md-button type="button" class="iconButton"
+                   label:aria-label="repeat_CUSTOM"
+                   ng-click="editor.toggleAttendeesEditor()">
+          <i ng-class="{'md-icon-expand-more': !editor.showAttendeesEditor, 'md-icon-expand-less': editor.showAttendeesEditor}"><!-- toggle attendees details --></i>
+        </md-button>
+      </div>
+      <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">
+         <var:component className="UIxAttendeesEditor" />
+      </div>
+      <md-autocomplete class="md-flex"
+                       md-selected-item="attendeeToAdd"
+                       md-search-text="editor.searchText"
+                       md-selected-item-change="editor.addAttendee(card)"
+                       md-items="card in editor.cardFilter(editor.searchText)"
+                       md-min-length="2"
+                       label:placeholder="Invite Attendees"
+                       sg-enter="editor.addAttendee(editor.searchText)">
+        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
+          <span class="md-contact-name"
+                md-highlight-text="editor.searchText"
+                md-highlight-flags="^i">{{card.$$fullname}}</span> <span class="md-contact-email"
+                md-highlight-text="editor.searchText"
+                md-highlight-flags="^i">{{card.$$email}}</span>
+        </span>
+      </md-autocomplete>
       <!-- cancel/reset/save -->
       <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
         <md-button type="button" ng-click="editor.cancel()">

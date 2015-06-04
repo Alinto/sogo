@@ -50,11 +50,14 @@ $hours_margin: 50px;
 }
 
 .sg-calendar-tile-header {
-    color: sg-color($sogoPaper, 800);
-    font-size: $sg-font-size-2;
-    font-weight: $sg-font-light;
-    overflow: hidden;
-    padding: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: sg-color($sogoPaper, 800);
+  font-size: $sg-font-size-2;
+  font-weight: $sg-font-light;
+  overflow: hidden;
+  padding: 2px;
 }
 
 .daysView {
@@ -155,4 +158,57 @@ $hours_margin: 50px;
     height: 100%;
     min-height: 15px; /* for 15-minute events */
     width: 100%;
+}
+
+/* Attendees Editor */
+.attendees {
+  overflow: hidden;
+  overflow-x: scroll;
+  md-content {
+    display: table-row;
+  }
+  md-list {
+    display: table-cell;
+    &.day {
+      min-width: 408px;
+      md-list-item {
+        padding: 0;
+        align-items: stretch;
+      }
+    }
+    md-list-item {
+      &:hover {
+        background-color: initial;
+      }
+      img {
+        margin-right: $mg/4;
+      }
+    }
+    .hours {
+      font-size: 9px;
+    }
+    .hour {
+      display: flex;
+      border-left: 1px solid sg-color($sogoPaper, 100);
+      min-width: 16px;
+      min-height: 16px;
+      flex-wrap: nowrap;
+      flex-grow: 0;
+      flex-basis: 17px; // hour's width + hour's border
+      align-items: stretch;
+    }
+    .quarter {
+      min-width: 4px;
+      display: flex;
+      align-items: stretch;
+      .busy {
+        margin: 8px 0;
+        min-width: 4px;
+        background-color: sg-color($sogoPaper, 600);
+      }
+      &.event {
+        background-color: sg-color($sogoBlue, 300);
+      }
+    }
+  }
 }

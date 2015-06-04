@@ -1,3 +1,5 @@
+/* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
 String.prototype.endsWith = function(suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -101,6 +103,52 @@ String.prototype.asDate = function () {
     return newDate;
 };
 
+String.prototype.formatTime = function(hours, minutes) {
+    var newString = this;
+
+    // See http://www.gnustep.org/resources/documentation/Developer/Base/Reference/NSCalendarDate.html#method$NSCalendarDate-descriptionWithCalendarFormat$
+    var p = 'am', i = hours, m = minutes;
+    if (hours > 12) {
+        p = 'pm';
+        i = hours % 12;
+    }
+    if (minutes < 10) {
+        m = '0' + minutes;
+    }
+
+    // %H : hour as a decimal number using 24-hour clock
+    newString = newString.replace("%H", hours < 10 ? '0' + hours : hours);
+    // %I : hour as a decimal number using 12-hour clock
+    newString = newString.replace("%I", i < 10 ? '0' + i : i);
+    // %M : minute as decimal number
+    newString = newString.replace("%M", m);
+    // %p : 'am' or 'pm'
+    newString = newString.replace("%p", p);
+
+    return newString;
+};
+
+Date.prototype.daysUpTo = function(otherDate) {
+    var days = new Array();
+
+    var day1 = this.getTime();
+    var day2 = otherDate.getTime();
+    if (day1 > day2) {
+        var tmp = day1;
+        day1 = day2;
+        day2 = tmp;
+    }
+
+    var nbrDays = Math.round((day2 - day1) / 86400000) + 1;
+    for (var i = 0; i < nbrDays; i++) {
+        var newDate = new Date();
+        newDate.setTime(day1 + (i * 86400000));
+        days.push(newDate);
+    }
+
+    return days;
+};
+
 String.prototype.asCSSIdentifier = function() {
   var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' '
                      , "'", '&', '\\+' ];
@@ -143,6 +191,18 @@ Date.prototype.addDays = function(nbrDays) {
     var milliSeconds = this.getTime();
     milliSeconds += 86400000 * nbrDays;
     this.setTime(milliSeconds);
+};
+
+Date.prototype.addHours = function(nbrHours) {
+  var milliSeconds = this.getTime();
+  milliSeconds += 3600000 * nbrHours;
+  this.setTime(milliSeconds);
+};
+
+Date.prototype.addMinutes = function(nbrMinutes) {
+  var milliSeconds = this.getTime();
+  milliSeconds += 60000 * nbrMinutes;
+  this.setTime(milliSeconds);
 };
 
 Date.prototype.beginOfDay = function() {

@@ -25,7 +25,7 @@
       this.$unwrap(futureComponentData);
     }
   }
-  
+
   /**
    * @memberof Component
    * @desc The factory we'll use to register with Angular
@@ -39,6 +39,11 @@
       $$resource: new Resource(Settings.baseURL, Settings.activeUser),
       $categories: window.UserDefaults.SOGoCalendarCategoriesColors
     });
+
+    if (window.UserDefaults && window.UserDefaults.SOGoTimeFormat)
+      Component.timeFormat = window.UserDefaults.SOGoTimeFormat;
+    else
+      Component.timeFormat = "%H:%M";
 
     return Component; // return constructor
   }];
@@ -236,9 +241,16 @@
    * @param {object} data - attributes of component
    */
   Component.prototype.init = function(data) {
+    var _this = this;
+
     this.categories = [];
     this.repeat = {};
     angular.extend(this, data);
+
+    if (this.startDate)
+      this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+    if (this.endDate)
+      this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
 
     // Parse recurrence rule definition and initialize default values
     if (this.repeat.days) {
@@ -281,8 +293,23 @@
 
     // Allow the event to be moved to a different calendar
     this.destinationCalendar = this.pid;
+
+    // Load freebusy of attendees
+    this.freebusy = this.updateFreeBusyCoverage();
+
+    if (this.attendees) {
+      _.each(this.attendees, function(attendee) {
+        _this.updateFreeBusy(attendee);
+      });
+    }
   };
 
+  /**
+   * @function hasCustomRepeat
+   * @memberof Component.prototype
+   * @desc Check if the component has a custom recurrence rule.
+   * @returns true if the the recurrence rule requires the full recurrence editor
+   */
   Component.prototype.hasCustomRepeat = function() {
     var b = angular.isDefined(this.repeat) &&
         (this.repeat.interval > 1 ||
@@ -290,6 +317,114 @@
          this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
          this.repeat.months && this.repeat.months.length > 0);
     return b;
+  };
+
+  /**
+   * @function coversFreeBusy
+   * @memberof Component.prototype
+   * @desc Check if a specific quarter matches the component's period
+   * @returns true if the quarter covers the component's period
+   */
+  Component.prototype.coversFreeBusy = function(day, hour, quarter) {
+    var b = (angular.isDefined(this.freebusy[day]) &&
+             angular.isDefined(this.freebusy[day][hour]) &&
+             this.freebusy[day][hour][quarter] == 1);
+    return b;
+  };
+
+  /**
+   * @function updateFreeBusyCoverage
+   * @memberof Component.prototype
+   * @desc Build a 15-minute-based representation of the component's period.
+   * @returns an object literal hashed by days and hours and arrays of four 1's and 0's
+   */
+  Component.prototype.updateFreeBusyCoverage = function() {
+    var _this = this, freebusy = {};
+
+    if (this.start && this.end) {
+      var roundedStart = new Date(this.start.getTime()),
+          roundedEnd = new Date(this.end.getTime()),
+          startQuarter = parseInt(roundedStart.getMinutes()/15 + 0.5),
+          endQuarter = parseInt(roundedEnd.getMinutes()/15 + 0.5);
+      roundedStart.setMinutes(15*startQuarter);
+      roundedEnd.setMinutes(15*endQuarter);
+
+      _.each(roundedStart.daysUpTo(roundedEnd), function(date, index) {
+        var currentDay = date.getDate(),
+            dayKey = date.getDayString(),
+            hourKey;
+        if (dayKey == _this.start.getDayString()) {
+          hourKey = date.getHours().toString();
+          freebusy[dayKey] = {};
+          freebusy[dayKey][hourKey] = [];
+          while (startQuarter > 0) {
+            freebusy[dayKey][hourKey].push(0);
+            startQuarter--;
+          }
+        }
+        else {
+          date = date.beginOfDay();
+          freebusy[dayKey] = {};
+        }
+        while (date.getTime() < _this.end.getTime() &&
+               date.getDate() == currentDay) {
+          hourKey = date.getHours().toString();
+          if (angular.isUndefined(freebusy[dayKey][hourKey]))
+            freebusy[dayKey][hourKey] = [];
+          freebusy[dayKey][hourKey].push(1);
+          date.addMinutes(15);
+        }
+      });
+      return freebusy;
+    }
+  };
+
+  /**
+   * @function updateFreeBusy
+   * @memberof Component.prototype
+   * @desc Update the freebusy information for the component's period for a specific attendee.
+   * @param {Object} card - an Card object instance of the attendee
+   */
+  Component.prototype.updateFreeBusy = function(attendee) {
+    var params, url, days;
+    if (attendee.uid) {
+      params =
+        {
+          sday: this.start.getDayString(),
+          eday: this.end.getDayString()
+        };
+      url = ['..', '..', attendee.uid, 'freebusy.ifb'];
+      days = _.map(this.start.daysUpTo(this.end), function(day) { return day.getDayString(); });
+
+      if (angular.isUndefined(attendee.freebusy))
+        attendee.freebusy = {};
+
+      // Fetch FreeBusy information
+      Component.$$resource.fetch(url.join('/'), 'ajaxRead', params).then(function(data) {
+        _.each(days, function(day) {
+          var hour;
+
+          if (angular.isUndefined(attendee.freebusy[day]))
+            attendee.freebusy[day] = {};
+
+          if (angular.isUndefined(data[day]))
+            data[day] = {};
+
+          for (var i = 0; i <= 23; i++) {
+            hour = i.toString();
+            if (data[day][hour])
+              attendee.freebusy[day][hour] = [
+                data[day][hour]["0"],
+                data[day][hour]["15"],
+                data[day][hour]["30"],
+                data[day][hour]["45"]
+              ];
+            else
+              attendee.freebusy[day][hour] = [0, 0, 0, 0];
+          }
+        });
+      });
+    }
   };
 
   /**
@@ -303,6 +438,34 @@
     if (angular.isUndefined(base))
       base = 'fg';
     return base + '-folder' + (this.destinationCalendar || this.c_folder);
+  };
+
+  /**
+   * @function addAttendee
+   * @memberof Component.prototype
+   * @desc Add an attendee and fetch his freebusy info.
+   * @param {Object} card - an Card object instance to be added to the attendees list
+   */
+  Component.prototype.addAttendee = function(card) {
+    var attendee, url, params;
+    if (card) {
+      attendee = {
+        name: card.c_cn,
+        email: card.$preferredEmail(),
+        role: 'req-participant',
+        status: 'needs-action',
+        uid: card.c_uid
+      };
+      if (!_.find(this.attendees, function(o) {
+        return o.email == attendee.email;
+      })) {
+        if (this.attendees)
+          this.attendees.push(attendee);
+        else
+          this.attendees = [attendee];
+        this.updateFreeBusy(attendee);
+      }
+    }
   };
 
   /**
@@ -343,7 +506,7 @@
   /**
    * @function $unwrap
    * @memberof Component.prototype
-   * @desc Unwrap a promise. 
+   * @desc Unwrap a promise.
    * @param {promise} futureComponentData - a promise of some of the Component's data
    */
   Component.prototype.$unwrap = function(futureComponentData) {

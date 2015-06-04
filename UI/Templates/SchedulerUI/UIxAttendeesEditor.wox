@@ -1,141 +1,57 @@
 <?xml version='1.0' standalone='yes'?>
-<!DOCTYPE var:component>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  const:toolbar="none"
-  const:popup="YES"
-  const:cssFiles="datepicker.css,SOGoTimePicker.css"
-  const:jsFiles="datepicker.js,SOGoTimePicker.js">
-  <div class="popupMenu" id="attendeesMenu">
-    <ul><!-- space --></ul>
-  </div>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
     var dayEndHour = <var:string value="dayEndHour"/>;
     var timeFormat = '<var:string value="userDefaults.timeFormat" const:escapeHTML="NO"/>';
   </script>
-  <div id="attendeesView">
-    <form const:href=""
-      ><div id="freeBusyViewButtons">
-        <span id="freeBusyViewOptions">
-	  <var:string label:value="Suggest time slot:"/>
-	
-	  <span id="freeBusyTimeRange">
-	    <var:string label:value="Between"/>
-	    <select const:id="timeSlotStartLimitHour"><!--space --></select>
-	    <select const:id="timeSlotStartLimitMinute"><!--space --></select>
-	    <var:string label:value="and"/>
-	    <select const:id="timeSlotEndLimitHour"><!--space --></select> 
-	    <select const:id="timeSlotEndLimitMinute"><!--space --></select>
-	  </span>
-
-	  <label><input type="checkbox" const:id="workDaysOnly" const:checked="YES"
-	     /><var:string label:value="Work days only"/></label>
-	</span>
-
-        <a id="nextSlot" href="#" class="button"
-          ><span><var:string label:value="Next slot" /></span></a>
-        <a id="previousSlot" href="#" class="button"
-          ><span><var:string label:value="Previous slot" /></span></a>
-      </div></form>
-
-    <div id="freeBusyView">
-      <table id="freeBusy" cellspacing="0" cellpadding="0">
-	<thead>
-          <tr>
-            <td><!--space --></td>
-            <td class="freeBusyHeader">
-              <div><table id="freeBusyHeader" cellspacing="0" cellpadding="0">
-                  <tr class="freeBusyHeader1"><!--space --></tr>
-                  <tr class="freeBusyHeader2"><!--space --></tr>
-                  <tr id="currentEventPosition" class="freeBusyHeader3"><!--space --></tr>
-                </table></div>
-            </td>
-          </tr>
-	</thead>
-	<tbody>
-          <tr>
-            <td class="freeBusyAttendees">
-              <div><table id="freeBusyAttendees" cellspacing="0" cellpadding="0">
-                  <tbody>
-                    <tr class="futureAttendee"
-                      ><td class="attendeeStatus"><div><!-- space --></div></td
-                        ><td class="attendees"><a href="#" class="button"
-                          readonly="readonly"><span
-                            ><var:string label:value="newAttendee" /></span></a></td
-                        ></tr>
-                    <tr class="attendeeModel"
-                      ><td class="attendeeStatus"><div><!-- space --></div></td
-                        ><td class="attendees"
-                        ><input type="text" class="textField" /></td
-                        ></tr>
-                  </tbody>
-                </table></div>
-            </td>
-            <td class="freeBusyData">
-              <div><table id="freeBusyData" cellspacing="0" cellpadding="0">
-                  <tbody>
-                    <tr class="futureData"><!-- space --></tr>
-                    <tr class="dataModel"><!-- space --></tr>
-                  </tbody>
-                </table></div>
-            </td>
-          </tr>
-	</tbody>
-      </table>
-    </div>
-    <div id="freeBusyFooter">
-      <div id="legend" onmousedown="return false;">
-	<ul class="roles-legend">
-	  <li role="req-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Participant"/></li>
-	  <li role="opt-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Optional Participant"/></li>
-	  <li role="non-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Non Participant"/></li>
-	  <li role="chair"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Chair"/></li>
-	</ul>
-
-	<ul class="freebusy-legend">
-	  <li><div class="colorBox free"><!-- spacer --></div
-	      ><var:string label:value="Free" /></li>
-	  <li><div class="colorBox busy"><!-- spacer --></div
-	      ><var:string label:value="Busy" /></li>
-          <!-- 	  li><div class="colorBox maybe-busy">\- spacer -\->/div -->
-          <!-- 	      >var:string label:value="Maybe busy" />/li> -->
-	  <li><div class="colorBox noFreeBusy"><!-- spacer --></div
-	      ><var:string label:value="No free-busy information" /></li>
-	</ul>
-      </div>
-      <div id="freeBusyReplicas">
-        <div><span><var:string label:value="Start:"
-              /></span><var:component className="UIxTimeDateControl"
-            const:controlID="startTime"
-            date="aptStartDate"
-            const:dayStartHour="0"
-            const:dayEndHour="23"
-            /></div>
-        <div><span><var:string label:value="End:"
-              /></span><var:component className="UIxTimeDateControl"
-            const:controlID="endTime"
-            date="aptEndDate"
-            const:dayStartHour="0"
-            const:dayEndHour="23"
-            /></div>
-      </div>
-      <div id="windowButtons">
-	<a id="okButton" href="#" class="button actionButton"
-          ><span><var:string label:value="OK"/></span></a>
-	<a id="cancelButton" href="#" class="button"
-          ><span><var:string label:value="Cancel"/></span></a>
-      </div>
-    </div>
-  </div>
-</var:component>
+  <md-content>
+    <!-- attendees -->
+    <md-list>
+      <md-list-item>
+        <div><!-- empty --></div>
+      </md-list-item>
+      <md-list-item ng-repeat="currentAttendee in editor.event.attendees track by currentAttendee.email">
+        <sg-gravatar-image email="{{currentAttendee.email}}"
+                           size="32">
+          <!-- gravatar -->
+        </sg-gravatar-image>
+        <div class="sg-tile-content">
+          <div class="sg-md-subhead-multi">{{currentAttendee.name}}</div>
+          <div class="sg-md-body-multi">{{currentAttendee.email}}</div>
+        </div>
+      </md-list-item>
+    </md-list>
+    <!-- freebusy -->
+    <md-list class="day"
+             ng-repeat="day in editor.attendeesEditor.days">
+      <md-list-item layout="column" layout-align="end start">
+        <div>{{day.stringWithSeparator}}</div>
+        <div class="hours" layout="row" layout-align="space-between center" layout-fill="layout-fill">
+          <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
+        </div>
+      </md-list-item>
+      <md-list-item ng-repeat="currentAttendee in editor.event.attendees track by currentAttendee.email">
+        <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">
+          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 0)}">
+            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
+          </div>
+          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 1)}">
+            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
+          </div>
+          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 2)}">
+            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
+          </div>
+          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 3)}">
+            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
+          </div>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</container>
