@@ -49,6 +49,7 @@ function adjustSchema() {
 
 echo "This script will ask for the sql password twice" >&2
 echo "Converting c_partstates from VARCHAR(255) to mediumtext in calendar quick tables" >&2
+echo "Adding c_description column as mediumtext in calendar quick tables" >&2
 tables=`mysql -p -s -u $username -h $hostname $database -e "select SUBSTRING_INDEX(c_quick_location, '/', -1) from $indextable where c_path3 = 'Calendar';"`
 
 for table in $tables;
