@@ -87,20 +87,42 @@
   return [self redirectToLocation: [moduleURL absoluteString]];
 }
 
-- (void) _fillFreeBusyItems: (unsigned int *) items
-		      count: (unsigned int) itemCount
-                withRecords: (NSArray *) records
-              fromStartDate: (NSCalendarDate *) startDate
-                  toEndDate: (NSCalendarDate *) endDate
+- (NSDictionary *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
+                            toEndDate: (NSCalendarDate *) endDate
+                          forFreeBusy: (SOGoFreeBusyObject *) fb
+                           andContact: (NSString *) uid
 {
+  NSCalendarDate *start, *end;
+  NSMutableDictionary *freeBusy, *dayData, *hourData;
+  NSArray *records;
   NSArray *emails, *partstates;
-  NSCalendarDate *currentDate;
+  NSCalendarDate *currentDate, *currentStartDate, *currentEndDate;
   NSDictionary *record;
+  NSString *dayKey, *hourKey, *minuteKey;
+  NSEnumerator *freeBusyList, *dayList, *hourList;
   SOGoUser *user;
+  int quarter, lastQuarter, recordCount, recordMax, count, i, type, maxBookings, isResource;
 
-  int recordCount, recordMax, count, startInterval, endInterval, i, type, maxBookings, isResource, delta;
+  // We "copy" the start/end date because -fetchFreeBusyInfosFrom will mess
+  // with the timezone and we don't want that to properly calculate the delta
+  // DO NOT USE -copy HERE - it'll simply return [self retain].
+  start = [NSCalendarDate dateWithYear: [startDate yearOfCommonEra]
+                                 month: [startDate monthOfYear]
+                                   day: [startDate dayOfMonth]
+                                  hour: [startDate hourOfDay]
+                                minute: [startDate minuteOfHour]
+                                second: [startDate secondOfMinute]
+                              timeZone: [startDate timeZone]];
 
-  recordMax = [records count];
+  end = [NSCalendarDate dateWithYear: [endDate yearOfCommonEra]
+                               month: [endDate monthOfYear]
+                                 day: [endDate dayOfMonth]
+                                hour: [endDate hourOfDay]
+                              minute: [endDate minuteOfHour]
+                              second: [endDate secondOfMinute]
+                            timeZone: [endDate timeZone]];
+
+  freeBusy = [NSMutableDictionary dictionary];
   user = [SOGoUser userWithLogin: [[self clientObject] ownerInContext: context] roles: nil];
   maxBookings = [user numberOfSimultaneousBookings];
   isResource = [user isResource];
@@ -108,6 +130,8 @@
   // Fetch freebusy information if the user is NOT a resource or if multiplebookings isn't unlimited
   if (!isResource || maxBookings != 0)
     {
+      records = [fb fetchFreeBusyInfosFrom: start to: end forContact: uid];
+      recordMax = [records count];
       for (recordCount = 0; recordCount < recordMax; recordCount++)
         {
           record = [records objectAtIndex: recordCount];
@@ -147,35 +171,111 @@
 
               if (type == 1)
                 {
-                  // User is busy for this event; update items bit string
-                  currentDate = [record objectForKey: @"startDate"];
-                  if ([currentDate earlierDate: startDate] == currentDate)
-                    startInterval = 0;
-                  else
-                    startInterval = ([currentDate timeIntervalSinceDate: startDate]
-                                     / INTERVALSECONDS);
-
-                  delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
-                  startInterval += (delta/INTERVALSECONDS);
-                  startInterval = (startInterval < -(HALFPADDING) ? -(HALFPADDING) : startInterval);
-
-                  currentDate = [record objectForKey: @"endDate"];
-                  if ([currentDate earlierDate: endDate] == endDate)
-                    endInterval = itemCount - 1;
-                  else
-                    endInterval = ([currentDate timeIntervalSinceDate: startDate]
-                                   / INTERVALSECONDS);
-                  
-                  delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
-                  endInterval += (delta/INTERVALSECONDS);
-                  endInterval = (endInterval < 0 ? 0 : endInterval);
-                  endInterval = (endInterval > itemCount+HALFPADDING ? itemCount+HALFPADDING : endInterval);
-
-                  // Update bit string representation
-                  // If the user is a resource with restristed amount of bookings, keep the sum of overlapping events
-                  for (count = startInterval; count < endInterval; count++)
+                  // User is busy for this event
+                  currentStartDate = [record objectForKey: @"startDate"];
+                  currentEndDate = [record objectForKey: @"endDate"];
+                  dayKey = [currentStartDate shortDateString];
+                  dayData = [freeBusy objectForKey: dayKey];
+                  if (!dayData)
                     {
-                      *(items + count) = (isResource && maxBookings > 0) ? *(items + count) + 1 : 1;
+                      dayData = [NSMutableDictionary dictionary];
+                      [freeBusy setObject: dayData forKey: dayKey];
+                    }
+                  if ([currentStartDate earlierDate: startDate] == currentStartDate)
+                    currentStartDate = startDate;
+
+                  currentDate = [NSCalendarDate dateWithYear: [currentStartDate yearOfCommonEra]
+                                                       month: [currentStartDate monthOfYear]
+                                                         day: [currentStartDate dayOfMonth]
+                                                        hour: [currentStartDate hourOfDay]
+                                                      minute: 0
+                                                      second: 0
+                                                    timeZone: [currentStartDate timeZone]];
+
+                  // Increment counters for quarters of first hour
+                  hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                  hourData = [dayData objectForKey: hourKey];
+                  if (!hourData)
+                    {
+                      hourData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                        [NSNumber numberWithInt: 0], @"0",
+                                                      [NSNumber numberWithInt: 0], @"15",
+                                                      [NSNumber numberWithInt: 0], @"30",
+                                                      [NSNumber numberWithInt: 0], @"45",
+                                                      nil];
+                      [dayData setObject: hourData forKey: hourKey];
+                    }
+                  quarter = (int)([currentStartDate minuteOfHour] / 15 + 0.5);
+                  if ([currentEndDate timeIntervalSinceDate: currentDate] < 3600)
+                    lastQuarter = (int)([currentEndDate minuteOfHour] / 15 + 0.5);
+                  else
+                    lastQuarter = 4;
+                  for (i = 0; i < lastQuarter; i++) {
+                    if (i >= quarter)
+                      {
+                        minuteKey = [NSString stringWithFormat: @"%u", i*15];
+                        count = [[hourData objectForKey: minuteKey] intValue] + 1;
+                        [hourData setObject: [NSNumber numberWithInt: count] forKey: minuteKey];
+                      }
+                  }
+                  currentDate = [currentDate dateByAddingYears:0 months:0 days:0 hours:1 minutes:0 seconds:0];
+
+                  // Increment counters of fully busy hours
+                  while ([currentDate compare: currentEndDate] == NSOrderedAscending &&
+                         [currentEndDate timeIntervalSinceDate: currentDate] >= 3600) // 1 hour
+                    {
+                      hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                      hourData = [dayData objectForKey: hourKey];
+                      if (!hourData)
+                        {
+                          hourData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                               [NSNumber numberWithInt: 1], @"0",
+                                                               [NSNumber numberWithInt: 1], @"15",
+                                                               [NSNumber numberWithInt: 1], @"30",
+                                                               [NSNumber numberWithInt: 1], @"45",
+                                                          nil];
+                          [dayData setObject: hourData forKey: hourKey];
+                        }
+                      else
+                        {
+                          for (i = 0; i < 4; i++)
+                            {
+                              minuteKey = [NSString stringWithFormat: @"%u", i*15];
+                              count = [[hourData objectForKey: minuteKey] intValue] + 1;
+                              [hourData setObject: [NSNumber numberWithInt: count] forKey: minuteKey];
+                            }
+                        }
+                      currentDate = [currentDate dateByAddingYears:0 months:0 days:0 hours:1 minutes:0 seconds:0];
+                    }
+
+                  // Increment counters for quarters of last hour
+                  if ([currentEndDate timeIntervalSinceDate: currentDate] > 0)
+                    {
+                      hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                      hourData = [dayData objectForKey: hourKey];
+                      if (!hourData)
+                        {
+                          hourData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                               [NSNumber numberWithInt: 0], @"0",
+                                                               [NSNumber numberWithInt: 0], @"15",
+                                                               [NSNumber numberWithInt: 0], @"30",
+                                                               [NSNumber numberWithInt: 0], @"45",
+                                                          nil];
+                          [dayData setObject: hourData forKey: hourKey];
+                        }
+                      quarter = (int)([currentEndDate minuteOfHour] / 15 + 0.5);
+                      for (i = 0; i < 4; i++)
+                        {
+                          if (i < quarter)
+                            {
+                              minuteKey = [NSString stringWithFormat: @"%u", i*15];
+                              if (isResource)
+                                count = [[hourData objectForKey: minuteKey] intValue] + 1;
+                              else
+                                count = 1;
+                              [hourData setObject: [NSNumber numberWithInt: count] forKey: minuteKey];
+                            }
+                        }
                     }
                 }
             }
@@ -183,88 +283,44 @@
       if (maxBookings > 0)
         {
           // Reset the freebusy for the periods that are bellow the maximum number of bookings
-          for (count = 0; count < itemCount; count++)
+          freeBusyList = [freeBusy objectEnumerator];
+          while ((dayData = [freeBusyList nextObject]))
             {
-              if (*(items + count) < maxBookings)
-                *(items + count) = 0;
-              else
-                *(items + count) = 1;
+              dayList = [dayData objectEnumerator];
+              while ((hourData = [dayList nextObject]))
+                {
+                  hourList = [hourData keyEnumerator];
+                  while ((minuteKey = [hourList nextObject]))
+                    {
+                      count = [[hourData objectForKey: minuteKey] intValue];
+                      if (count < maxBookings)
+                        i = 0;
+                      else
+                        i = 1;
+                      if (i != count)
+                        [hourData setObject: [NSNumber numberWithInt: i] forKey: minuteKey];
+                    }
+                }
             }
         }
     }
-}
 
-//
-//
-//
-- (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
-                            toEndDate: (NSCalendarDate *) endDate
-                          forFreeBusy: (SOGoFreeBusyObject *) fb
-                           andContact: (NSString *) uid
-{
-  NSCalendarDate *start, *end;
-  NSMutableArray *freeBusy;
-  unsigned int *freeBusyItems;
-  NSTimeInterval interval;
-  unsigned int count, intervals;
-
-  // We "copy" the start/end date because -fetchFreeBusyInfosFrom will mess
-  // with the timezone and we don't want that to properly calculate the delta
-  // DO NOT USE -copy HERE - it'll simply return [self retain].
-  start = [NSCalendarDate dateWithYear: [startDate yearOfCommonEra]
-                                 month: [startDate monthOfYear]
-                                   day: [startDate dayOfMonth]
-                                  hour: [startDate hourOfDay]
-                                minute: [startDate minuteOfHour]
-                                second: [startDate secondOfMinute]
-                              timeZone: [startDate timeZone]];
-  
-  end = [NSCalendarDate dateWithYear: [endDate yearOfCommonEra]
-                               month: [endDate monthOfYear]
-                                 day: [endDate dayOfMonth]
-                                hour: [endDate hourOfDay]
-                              minute: [endDate minuteOfHour]
-                              second: [endDate secondOfMinute]
-                            timeZone: [endDate timeZone]];
-
-  interval = [endDate timeIntervalSinceDate: startDate] + 60;
-
-  // Slices of 15 minutes. The +8 is to take into account that we can
-  // have a timezone change during the freebusy lookup. We have +4 at the
-  // beginning and +4 at the end.
-  intervals = interval / INTERVALSECONDS + PADDING;
-
-  // Build a bit string representation of the freebusy data for the period
-  freeBusyItems = calloc(intervals, sizeof (unsigned int));
-  [self _fillFreeBusyItems: (freeBusyItems+HALFPADDING)
-                     count: (intervals-PADDING)
-	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
-             fromStartDate: startDate
-                 toEndDate: endDate];
-
-  // Convert bit string to a NSArray. We also skip by the default the non-requested information.
-  freeBusy = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = HALFPADDING; count < (intervals-HALFPADDING); count++)
-    {
-      [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
-    }
-  free(freeBusyItems);
-
-  // Return a NSString representation
-  return [freeBusy componentsJoinedByString: @","];
+  return freeBusy;
 }
 
 - (id <WOActionResults>) readFreeBusyAction
 {
-  WOResponse *response;
   SOGoFreeBusyObject *freebusy;
   NSCalendarDate *startDate, *endDate;
+  NSDictionary *jsonResponse;
   NSString *queryDay, *uid;
   NSTimeZone *uTZ;
   SOGoUser *user;
+  unsigned int httpStatus;
 
   user = [context activeUser];
   uTZ = [[user userDefaults] timeZone];
+  httpStatus = 200;
 
   uid = [self queryParameterForKey: @"uid"];
   queryDay = [self queryParameterForKey: @"sday"];
@@ -281,28 +337,42 @@
                                                  inTimeZone: uTZ];
 
           if ([startDate earlierDate: endDate] == endDate)
-            response = [self responseWithStatus: 403
-                                      andString: @"Start date is later than end date."];
+            {
+              httpStatus = 403;
+              jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             @"failure", @"status",
+                                           @"Start date is later than end date.", @"message",
+                                           nil];
+            }
           else
             {
-             freebusy = [self clientObject];
-              response
-                = [self responseWithStatus: 200
-                                 andString: [self _freeBusyFromStartDate: startDate
-                                                               toEndDate: endDate
-                                                             forFreeBusy: freebusy
-                                                              andContact: uid]];
+              freebusy = [self clientObject];
+              jsonResponse = [self _freeBusyFromStartDate: startDate
+                                                toEndDate: endDate
+                                              forFreeBusy: freebusy
+                                               andContact: uid];
             }
         }
       else
-        response = [self responseWithStatus: 403
-                                  andString: @"Invalid end date."];
+        {
+          httpStatus = 403;
+          jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         @"failure", @"status",
+                                       @"Invalid end date.", @"message",
+                                       nil];
+        }
     }
   else
-    response = [self responseWithStatus: 403
-                              andString: @"Invalid start date."];
+    {
+      httpStatus = 403;
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"failure", @"status",
+                                   @"Invalid start date.", @"message",
+                                   nil];
+    }
 
-  return response;
+  return [self responseWithStatus: httpStatus
+            andJSONRepresentation: jsonResponse];
 }
 
 - (NSString *) _logoutRedirectURL
