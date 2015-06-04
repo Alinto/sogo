@@ -366,17 +366,17 @@
 }
 
 /**
- * @api {post} /so/:username/Calendar/:calendarId/:appointmentId/save Save event
+ * @api {post} /so/:username/Calendar/:calendarId/:appointmentId/save(AsAppointment) Save event
  * @apiVersion 1.0.0
  * @apiName PostEventSave
  * @apiGroup Calendar
+ * @apiDescription When saving a new event, the action URL must be saveAsAppointment,
+ *                 otherwise it is optional.
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/71B6-54904400-1-7C308500.ics/save \
  *          -H 'Content-Type: application/json' \
  *          -d '{ "summary": "Meeting", "startDate": "2015-01-28", "startTime": "10:00", \
  *                "endDate": "2015-01-28", "endTime": "12:00" }'
- *
- * Save in [iCalEvent+SOGo setAttributes:inContext:]
  *
  * @apiParam {String} startDate               Start date (YYYY-MM-DD)
  * @apiParam {String} startTime               Start time (HH:MM)
@@ -384,6 +384,8 @@
  * @apiParam {String} endTime                 End time (HH:MM)
  * @apiParam {Number} [isAllDay]              1 if event is all-day
  * @apiParam {Number} isTransparent           1 if the event is not opaque
+ *
+ * ^_ Save in [iCalEvent+SOGo setAttributes:inContext:]
  *
  * Save in [iCalEntityObject+SOGo setAttributes:inContext:]
  *
