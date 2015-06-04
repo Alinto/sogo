@@ -157,7 +157,7 @@
 // that much about this for now.
 //
 + (NSString *) securedValue: (NSString *) theValue
-		   usingKey: (NSString *) theKey
+                   usingKey: (NSString *) theKey
 {
   NSData *data;
   NSString *s;
@@ -171,13 +171,12 @@
   klen = [data length];
 
   // Get the key - padding it with 0 with key length
-  pass = (char *)malloc(klen);
-  memset(pass, 0, klen);
+  pass = (char *) calloc(klen, sizeof(char));
   [theValue getCString: pass  maxLength: klen  encoding: NSUTF8StringEncoding];
 
   // Target buffer
   buf = (char *)malloc(klen);
- 
+
   for (i = 0; i < klen; i++)
     {
       buf[i] = key[i] ^ pass[i];
@@ -186,36 +185,38 @@
   free(pass);
 
   data = [NSData dataWithBytesNoCopy: buf  length: klen  freeWhenDone: YES];
-  
+
   s = [[NSString alloc] initWithData: [data dataByEncodingBase64WithLineLength: 1024]
-			encoding: NSASCIIStringEncoding];
+                            encoding: NSASCIIStringEncoding];
   return [s autorelease];
 }
 
 
 + (NSString *) valueFromSecuredValue: (NSString *) theValue
-			    usingKey: (NSString *) theKey
+                            usingKey: (NSString *) theKey
 {
-  NSData *data;
+  NSData *dataKey, *dataValue;
   NSString *s;
-  
-  char *buf, *key, *pass;
-  int i, klen;
+
+  char *buf, *key, *value;
+  size_t i, klen, vlen;
 
   // Get the key length and its bytes
-  data = [theKey dataByDecodingBase64];
-  key = (char *)[data bytes];
-  klen = [data length];
+  dataKey = [theKey dataByDecodingBase64];
+  key = (char *)[dataKey bytes];
+  klen = [dataKey length];
 
-  // Get the secured password
-  pass = (char *)[[theValue dataByDecodingBase64] bytes];
-  
+  // Get the secured value length and its bytes
+  dataValue = [theValue dataByDecodingBase64];
+  value = (char *)[dataValue bytes];
+  vlen = [dataValue length];
+
   // Target buffer
-  buf = (char *)malloc(klen);
+  buf = (char *) calloc(klen, sizeof(char));
 
-  for (i = 0; i < klen; i++)
+  for (i = 0; i < klen && i < vlen; i++)
     {
-      buf[i] = key[i] ^ pass[i];
+      buf[i] = key[i] ^ value[i];
     }
 
   // buf is now our C string in UTF8

@@ -22,6 +22,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemoveDoubles.m \
 	SOGoToolRenameUser.m \
 	SOGoToolRestore.m \
+	SOGoToolCreateFolder.m \
 	SOGoToolUserPreferences.m \
 	SOGoToolManageEAS.m
 TOOL_NAME += $(SOGO_TOOL)

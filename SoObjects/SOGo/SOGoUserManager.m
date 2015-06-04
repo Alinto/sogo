@@ -438,9 +438,19 @@ static Class NSNullK;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-  
+  SOGoSystemDefaults *sd;
+  NSRange r;
+
   checkOK = NO;
-  
+
+  if (*domain == nil)
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      r = [login rangeOfString: @"@" options: NSBackwardsSearch];
+      if ([sd enableDomainBasedUID] && r.location != NSNotFound)
+        *domain = [login substringFromIndex: (r.location + r.length)];
+    }
+
   authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
@@ -514,9 +524,21 @@ static Class NSNullK;
 
       if (r.location != NSNotFound)
         {
+          NSArray *allDomains;
+          int i;
+
           *_domain = [username substringFromIndex: r.location+1];
 
-          if (![[[SOGoSystemDefaults sharedSystemDefaults] domainIds] containsObject: *_domain])
+          allDomains = [[dd dictionaryForKey: @"domains"] allValues];
+
+          for (i = 0; i < [allDomains count]; i++)
+            {
+              if ([*_domain isEqualToString: [[allDomains objectAtIndex: i] objectForKey: @"SOGoMailDomain"]])
+                break;
+            }
+
+          // We haven't found one
+          if (i == [allDomains count])
             *_domain = nil;
         }
     }
@@ -900,7 +922,7 @@ static Class NSNullK;
     {
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
-      if (domain && [aUID rangeOfString: @"@"].location == NSNotFound)
+      if (domain)
         cacheUid = [NSString stringWithFormat: @"%@@%@", aUID, domain];
       else
         cacheUid = aUID;
