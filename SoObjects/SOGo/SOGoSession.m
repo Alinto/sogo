@@ -262,9 +262,7 @@
           // The domain is probably appended to the username;
           // make sure it is defined as a domain in the configuration.
           *theDomain = [*theLogin substringFromIndex: (r.location + r.length)];
-          if ([[sd domainIds] containsObject: *theDomain])
-            *theLogin = [*theLogin substringToIndex: r.location];
-          else
+          if (![[sd domainIds] containsObject: *theDomain])
             *theDomain = nil;
         }
     }

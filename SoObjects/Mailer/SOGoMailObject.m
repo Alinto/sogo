@@ -384,6 +384,11 @@ static BOOL debugSoParts       = NO;
     _path = [_path componentsSeparatedByString: @"."];
   }
   
+  // deal with mails of type text/calendar
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"text"] &&
+      [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
+    return info;
+
   /* 
      For each path component, eg 1,1,3 
      
@@ -772,6 +777,8 @@ static BOOL debugSoParts       = NO;
           filename = [NSString stringWithFormat: @"unknown_%@", path];
       else if ([mimeType isEqualToString: @"message/rfc822"])
         filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      else if ([mimeType isEqualToString: @"text/calendar"])
+        filename = [NSString stringWithFormat: @"calendar_%@.ics", path];
   
 
   if (filename)

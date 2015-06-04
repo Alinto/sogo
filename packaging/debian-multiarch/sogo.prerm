@@ -13,5 +13,17 @@ set -e
 # for details, see /usr/share/doc/packaging-manual/
 
 #DEBHELPER#
+if [ "$1" = "deconfigure" ]  ; then
 
+    # Apache 2.2 / 2.4 kungfu
+    COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
+
+    if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
+                . /usr/share/apache2/apache2-maintscript-helper
+                apache2_invoke disconf SOGo || exit $?
+    elif [ "$COMMON_STATE" = "installed" ] || [ "$COMMON_STATE" = "unpacked" ] ; then
+        [ ! -L /etc/apache2/conf.d/SOGo.conf ] || rm /etc/apache2/conf.d/SOGo.conf
+    fi
+
+fi
 exit 0

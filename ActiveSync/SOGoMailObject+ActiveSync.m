@@ -49,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOApplication.h>
 
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
@@ -73,6 +74,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Mailer/SOGoMailBodyPart.h>
 #include <SOGo/SOGoUser.h>
 #include <SOGo/NSString+Utilities.h>
+
+#import <Appointments/SOGoAptMailNotification.h>
 
 typedef struct {
   uint32_t dwLowDateTime;
@@ -216,6 +219,8 @@ struct GlobalObjectId {
   NSEnumerator *e;
   NSData *d;
 
+  BOOL ignore;
+
   textParts = [self fetchPlainTextParts];
   e = [textParts keyEnumerator];
   plainKey = nil;
@@ -224,6 +229,27 @@ struct GlobalObjectId {
 
   while ((key = [e nextObject]))
     {
+      // Walk the hierarchy up and check whether parents are of type mulipart - i.e. ignore message/rfc822
+      if ([key countOccurrencesOfString: @"."] > 0)
+        {
+          NSMutableArray *a;
+
+          a = [[[key componentsSeparatedByString: @"."] mutableCopy] autorelease];
+          ignore = NO;
+
+          while ([a count] > 0)
+            {
+              [a removeLastObject];
+              part = [self lookupInfoForBodyPart: [a componentsJoinedByString: @"."]];
+
+              if (![[part valueForKey: @"type"] isEqualToString: @"multipart"])
+                ignore = YES;
+            }
+
+          if (ignore)
+            continue;
+        }
+
       part = [self lookupInfoForBodyPart: key];
       type = [part valueForKey: @"type"];
       subtype = [part valueForKey: @"subtype"];
@@ -440,7 +466,7 @@ struct GlobalObjectId {
   // We get the right part based on the preference
   if (theType == 1 || theType == 2)
     {
-      if ([type isEqualToString: @"text"])
+      if ([type isEqualToString: @"text"] && ![subtype isEqualToString: @"calendar"])
         {
           NSString *s, *charset;
           
@@ -499,8 +525,36 @@ struct GlobalObjectId {
 - (iCalCalendar *) calendarFromIMIPMessage
 {
   NSDictionary *part;
+  NSString *type, *subtype;
   NSArray *parts;
   int i;
+
+  type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
+  subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
+
+  // process mail of type text/calendar
+  if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"calendar"])
+    {
+      iCalCalendar *calendar;
+      NSString *encoding;
+      NSData *calendarData;
+
+      encoding = [[[self bodyStructure] valueForKey: @"encoding"] lowercaseString];
+      calendarData = [[self fetchPlainTextParts] objectForKey: @""];
+
+      if ([encoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
+        calendarData = [calendarData dataByDecodingBase64];
+      else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
+        calendarData = [calendarData dataByDecodingQuotedPrintableTransferEncoding];
+
+      NS_DURING
+        calendar = [iCalCalendar parseSingleFromSource: calendarData];
+      NS_HANDLER
+        calendar = nil;
+      NS_ENDHANDLER
+
+      return calendar;
+    }
 
   // We check if we have at least 2 parts and if one of them is a text/calendar
   parts = [[self bodyStructure] objectForKey: @"parts"];
@@ -596,7 +650,11 @@ struct GlobalObjectId {
     
   // Importance
   v = 0x1;
-  p = [[self mailHeaders] objectForKey: @"x-priority"];
+  value = [[self mailHeaders] objectForKey: @"x-priority"];
+  if ([value isKindOfClass: [NSArray class]])
+    p = [value lastObject];
+  else
+    p = value;
 
   if (p) 
     {
@@ -607,7 +665,12 @@ struct GlobalObjectId {
     }
   else
     {
-      p = [[self mailHeaders] objectForKey: @"importance"];
+      value = [[self mailHeaders] objectForKey: @"importance"];
+      if ([value isKindOfClass: [NSArray class]])
+        p = [value lastObject];
+      else
+        p = value;
+
       if ([p hasPrefix: @"High"]) v = 0x2;
       else if ([p hasPrefix: @"Low"]) v = 0x0;
     }
@@ -676,18 +739,18 @@ struct GlobalObjectId {
 
       [s appendFormat: @"<AllDayEvent xmlns=\"Email:\">%d</AllDayEvent>", ([event isAllDay] ? 1 : 0)];
 
-      // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
+      // StartTime -- https://msdn.microsoft.com/en-us/library/ee203365%28v=exchg.80%29.aspx
       if ([event startDate])
-        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationInContext: context]];
       
       if ([event timeStampAsDate])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationInContext: context]];
       else if ([event created])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationInContext: context]];
       
-      // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
+      // EndTime -- https://msdn.microsoft.com/en-us/library/ee158628(v=exchg.80).aspx
       if ([event endDate])
-        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationInContext: context]];
       
       // FIXME: Single appointment - others are not supported right now
       [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
@@ -735,7 +798,9 @@ struct GlobalObjectId {
       [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId activeSyncRepresentationInContext: context]];
 
       // We set the right message type - we must set AS version to 14.1 for this
-      [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
+        [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+
       [s appendString: @"</MeetingRequest>"];
 
       // ContentClass
@@ -762,6 +827,42 @@ struct GlobalObjectId {
 
   nativeBodyType = 1;
   d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
+
+  if (calendar && !d)
+    {
+      WOApplication *app;
+      SOGoAptMailNotification *p;
+      NSString *pageName;
+
+      nativeBodyType = 2;
+
+      /* get WOApplication instance */
+      app = [WOApplication application];
+
+      /* create page name */
+      pageName = [NSString stringWithFormat: @"SOGoAptMail%@", @"Invitation"];
+      /* construct message content */
+      p = [app pageWithName: pageName inContext: context];
+      [p setApt: (iCalEvent *)  [[calendar events] lastObject]];
+
+      if ([[ [[calendar events] lastObject] organizer] cn] && [[[ [[calendar events] lastObject] organizer] cn] length])
+        {
+          [p setOrganizerName: [[ [[calendar events] lastObject] organizer] cn]];
+        }
+      else
+        {
+          [p setOrganizerName: [[SOGoUser userWithLogin: owner] cn]];
+        }
+
+      if (preferredBodyType == 1 && nativeBodyType == 2)
+        d = [[[p getBody] htmlToText] dataUsingEncoding: NSUTF8StringEncoding];
+      else
+        {
+          preferredBodyType = 2;
+          d = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+        }
+
+    }
   
   if (d)
     {
@@ -883,9 +984,18 @@ struct GlobalObjectId {
       [s appendFormat: @"</Categories>"];
     }
   
+  if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
+      [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
+    {
+      if ([self inReplyTo])
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+      else if ([self messageId])
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+    }
+
   // FIXME - support these in the future
-  //[s appendString: @"<ConversationId xmlns=\"Email2:\">foobar</ConversationId>"];
   //[s appendString: @"<ConversationIndex xmlns=\"Email2:\">zot=</ConversationIndex>"];
+
   
   // NativeBodyType -- http://msdn.microsoft.com/en-us/library/ee218276(v=exchg.80).aspx
   // This is a required child element.

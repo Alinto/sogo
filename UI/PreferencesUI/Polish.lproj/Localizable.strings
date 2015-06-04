@@ -29,6 +29,7 @@
 "Days between responses :" = "Dni pomiędzy odpowiedziami :";
 "Do not send responses to mailing lists" = "Nie wysyłaj odpowiedzi do grup pocztowych";
 "Disable auto reply on" = "Zablokuj autoodpowiedź w";
+"Always send vacation message response" = "Zawsze wysyłaj autoodpowiedź";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Podaj treść wiadomości i twoje adresy e-mail, dla których chcesz włączyć autoodpowiedź.";
 "Your vacation message must not end with a single dot on a line." = "Twoja wiadomość nie może kończyć się kropką w pustej linii.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Zatrzymaj kopię";
 "Please specify an address to which you want to forward your messages."
 = "Podaj adres, na który chcesz przekazywać wiadomości.";
+"You are not allowed to forward your messages to an external email address." = "Nie masz uprawnień do przesyłania dalej swoich wiadomości na zewnętrzny adres e-mail.";
+"You are not allowed to forward your messages to an internal email address." = "Nie masz uprawnień do przesyłania dalej swoich wiadomości na wewnętrzny adres e-mail.";
+
 
 /* d & t */
 "Current Time Zone :" = "Bieżąca strefa czasowa :";
@@ -212,6 +216,7 @@
 "Language :" = "Język:";
 "choose" = "Wybierz";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

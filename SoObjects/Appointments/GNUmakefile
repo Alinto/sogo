@@ -54,7 +54,7 @@ Appointments_RESOURCE_FILES +=		\
 	MSExchangeFreeBusySOAPResponseMap.plist \
 	MSExchangeFreeBusySOAPRequest.wo
 
-Appointments_LANGUAGES = Arabic BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+Appointments_LANGUAGES = Arabic Basque BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

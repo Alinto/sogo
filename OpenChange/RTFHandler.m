@@ -885,16 +885,16 @@ const unsigned short ansicpg874[256] = {
               char *v = NULL;
               if (fontInfo && fontInfo->name)
                 {
-                  if (fontInfo->name.length < 128)
+                  if ([fontInfo->name length] < 128)
                     {
-                      int tag_size = 15 + fontInfo->name.length;
+                      int tag_size = 15 + [fontInfo->name length];
                       v = calloc(tag_size, sizeof(char));
                       snprintf(v, tag_size, "<font face=\"%s\">", [fontInfo->name UTF8String]);
                     }
                   else
                     {
                       NSLog(@"RTFHandler: Font %u has %d chars length, parse error? "
-                            "Ignored", font_index, fontInfo->name.length);
+                            "Ignored", font_index, [fontInfo->name length]);
                       v = calloc(7, sizeof(char));
                       sprintf(v, "<font>");
                     }

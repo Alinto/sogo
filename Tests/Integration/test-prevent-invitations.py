@@ -56,7 +56,7 @@ class preventInvitationsTest(unittest.TestCase):
       """ Set PreventInvitation add to WhiteList and accept the Invitation"""
       #- First, add the Organiser to the Attendee's whitelist
       self.prefs.set('enablePreventInvitations', '0')
-      self.prefs.set("whiteList", white_listed_attendee)
+      self.prefs.set("whiteList", simplejson.dumps(white_listed_attendee))
       whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
       self.assertEqual(whitelist, white_listed_attendee)
 

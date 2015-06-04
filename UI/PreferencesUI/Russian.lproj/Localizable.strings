@@ -29,6 +29,7 @@
 "Days between responses :" = "Дни между ответами :";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Disable auto reply on" = "Запрет автоответа включен";
+"Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
@@ -40,6 +41,9 @@
 "Keep a copy" = "Оставлять копию";
 "Please specify an address to which you want to forward your messages."
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
+"You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
+"You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
+
 
 /* d & t */
 "Current Time Zone :" = "Текущая временная зона :";
@@ -153,6 +157,9 @@
 "displayremoteinlineimages_never" = "Никогда";
 "displayremoteinlineimages_always" = "Всегда";
 
+"Auto save every" = "Автосохранение каждые";
+"minutes" = "минут";
+
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
@@ -209,6 +216,7 @@
 "Language :" = "Язык:";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

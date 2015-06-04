@@ -1,0 +1,118 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Gorde";
+"Close" = "Itxi";
+"Edit User Rights" = "Erabiltzailearen baimenak aldatu";
+
+"Home" = "Hasiera";
+"Calendar" = "Egutegia";
+"Address Book"	= "Helbide liburua";
+"Mail" = "Emaila";
+"Preferences" = "Hoberespenak";
+"Administration" = "Administrazio";
+"Disconnect" = "Deskonektatu";
+"Right Administration" = "Baimenen kudeaketa";
+"Log Console (dev.)" = "Erregistro kontsola (garap.)";
+
+"User" = "Erabiltzailea";
+"Vacation message is enabled" = "\"Oporretan nago\" mezua gaituta dago";
+
+"Help" = "Laguntza";
+
+"noJavascriptError" = "SOGo-k javascript beharrezkoa du. Mesedez ziurtatu zure nabigatzailearen aukeratan aktibatua dagoela.";
+"noJavascriptRetry" = "Berriz saiatu";
+
+"Owner:" = "Jabea:";
+"Publish the Free/Busy information" = "Argitaratu Libre/Lanpetu informazioa";
+
+"Add..." = "Gehitu...";
+"Remove" = "Ezabatu";
+
+"Subscribe User" = "Erabiltzailea harpidetu";
+
+"Any Authenticated User" = "Autentifikatutako edozein erabiltzaile";
+"Public Access" = "Atzipen publikoa";
+"Any user not listed above" = "Goian zerrendatu gabeko edozein erabiltzaile";
+"Anybody accessing this resource from the public area" = "Eremu publikotik baliabidea atzitzen duen edonork";
+
+"Sorry, the user rights can not be configured for that object." = "Barkatu, erabiltzailearen baimenak ezin dira objetu horretarako konfiguratu.";
+
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Sistema honetan kontua daukan edonor zure \"%{0}\" postontzia atzitzeko gai izango da. Ziur zaude hori nahi duzula? ";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Sistema honetan kontua daukan edonor zure \"%{0}\" egutegia atzitzeko gai izango da. Ziur zaude hori nahi duzula? ";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Internet-eko edonor zure \"%{0}\" egutegia atzitzeko gai izango da, naiz eta sistema honetan konturik ez eduki. Informazio hau egokia da internet publikorako?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Sistemako edozein erabiltzaile zure \"%{0}\" helbide liburua atzitzeko gai izango da. Ziur zaude hori nahi duzula?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Internet-eko edonor zure \"%{0}\" helbide liburua atzitzeko gai izango da, naiz eta sistema honetan konturik ez eduki. Informazio hau egokia da internet publikorako?";
+"Give Access" = "Baimendu atzipena";
+"Keep Private" = "Pribatua mantendu";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Ezin da karpeta hori harpidetu!";
+"You cannot subscribe to a folder that you own!"
+      	= "Ezin duzu zure karpeta bat harpidetu!";
+"Unable to unsubscribe from that folder!"
+	= "Ezin da karpetaren harpidetza kendu!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Ezin duzu zure karpeta baten harpidetza kendu!";
+"Unable to rename that folder!" = "Karpetaren izena ezin da aldatu!";
+"You have already subscribed to that folder!"
+     	= "Karpeta hau dagoeneko harpidetuta daukazu!";
+"The user rights cannot be edited for this object!"
+        = "Objetu honen erabiltzaile baimenak ezin dira editatu!";
+"A folder by that name already exists." = "Izen hori daukan karpeta existitzen da dagoeneko.";
+"You cannot create a list in a shared address book." 
+        = "Ezin duzu zerrenda bat sortu partekatutako helbide liburu batean";
+"Warning" = "Oharra";
+"Can't contact server" = "Errore gertatu da zerbitzariarekin konektatzerakoan. Mesedez saiatu beranduago.";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Ez daukazu modulu edo sistema honetarako atzipen baimenik. Mesedez, jarri harremanetan sistemaren administratzailearekin.";
+"You don't have the required privileges to perform the operation."
+= "Ez daukazu eragiketa egiteko beharrezko baimenik.";
+
+"noEmailForDelegation" = "Zure gonbidapena delegatu nahi duzun email helbidea zehaztu behar duzu.";
+"delegate is organizer" = "Delegatua antolatzailea da. Mesedez, aukeratu beste delegatu bat.";
+"delegate is a participant" = "DElegatua parte-hartzailea da jada.";
+"delegate is a group" = "Zehaztutako helbidea talde bati dagokio. Pertsona baten gain bakarrik delega dezakezu.";
+
+"Snooze for " = "Errepikatu ";
+"5 minutes" = "5 minutu";
+"10 minutes" = "10 minutu";
+"15 minutes" = "15 minutu";
+"30 minutes" = "30 minutu";
+"45 minutes" = "45 minutu";
+"1 hour" = "1 ordu";
+"1 day" = "1 egun";
+
+/* common buttons */
+"OK" = "Onartu";
+"Cancel" = "Ezeztatu";
+"Yes" = "Bai";
+"No" = "Ez";
+
+/* alarms */
+"Reminder:" = "Ohartarazpena:";
+"Start:" = "Hasi:";
+"Due Date:" = "Epemuga:";
+"Location:" = "Kokapen";
+
+/* mail labels */
+"Important" = "Garrantzitsua";
+"Work" = "Lana";
+"Personal" = "Pertsonala";
+"To Do" = "Egitekoa";
+"Later" = "Beranduago";
+
+"a2_Sunday" = "Ig";
+"a2_Monday" = "Al";
+"a2_Tuesday" = "As";
+"a2_Wednesday" = "Az";
+"a2_Thursday" = "Os";
+"a2_Friday" = "Or";
+"a2_Saturday" = "Lr";

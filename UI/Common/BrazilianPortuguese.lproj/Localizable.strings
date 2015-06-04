@@ -94,7 +94,7 @@
 "OK" = "OK";
 "Cancel" = "Cancelar";
 "Yes" = "Sim";
-"No" = "No";
+"No" = "Não";
 
 /* alarms */
 "Reminder:" = "Lembrete:";
@@ -109,10 +109,10 @@
 "To Do" = "Tarefa";
 "Later" = "Adiar";
 
-"a2_Sunday" = "Do";
-"a2_Monday" = "Se";
-"a2_Tuesday" = "Te";
-"a2_Wednesday" = "Qu";
-"a2_Thursday" = "Qu";
-"a2_Friday" = "Se";
-"a2_Saturday" = "Sa";
+"a2_Sunday" = "Dom";
+"a2_Monday" = "Seg";
+"a2_Tuesday" = "Ter";
+"a2_Wednesday" = "Qua";
+"a2_Thursday" = "Qui";
+"a2_Friday" = "Sex";
+"a2_Saturday" = "Sab";

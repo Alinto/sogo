@@ -421,11 +421,14 @@
   SOGoUserSettings *us;
   NSMutableArray *unavailableAttendees;
   NSEnumerator *enumerator;
-  NSString *currentUID, *ownerUID, *whiteListString;
+  NSString *currentUID, *ownerUID;
   NSMutableString *reason;
   NSDictionary *values;
-  NSMutableDictionary *value, *moduleSettings, *whiteList;
+  NSMutableDictionary *value, *moduleSettings;
+  id whiteList;
+  
   int i, count;
+  
   i = count = 0;
 
   // Build list of the attendees uids without ressources
@@ -447,8 +450,11 @@
           if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
-              whiteListString = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
-              whiteList = [whiteListString objectFromJSONString];
+              whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
+
+              // For backward <= 2.2.17 compatibility
+              if ([whiteList isKindOfClass: [NSString class]])
+                whiteList = [whiteList objectFromJSONString];
           
               // If the filter have a hit, do not add the currentUID to the unavailableAttendees array
               if (![whiteList objectForKey:ownerUID])

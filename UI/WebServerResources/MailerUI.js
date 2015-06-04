@@ -249,7 +249,7 @@ function mailListToggleMessageThread(row, cell) {
             row.hide();
     }
 
-    // Update the dictionnary of the collapsed threads
+    // Update the dictionary of the collapsed threads
     var mailbox = Mailer.currentMailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/" + msguid + "/" + action;
     var callbackData = { "currentMailbox": Mailer.currentMailbox, "msguid": msguid, "action": action};
@@ -916,10 +916,11 @@ function openMailbox(mailbox, reload) {
                     dataSource.init(inboxData['uids'], inboxData['threaded'], inboxData['headers'], inboxData['quotas']);
                     inboxData = null; // invalidate this initial lookup
                 }
-                else
+                else {
                     // Fetch UIDs and headers from server
                     var content = Object.toJSON(urlParams);
                     dataSource.load(content);
+                }
                 // Cache data source
                 Mailer.dataSources.set(key, dataSource);
                 // Update unseen count

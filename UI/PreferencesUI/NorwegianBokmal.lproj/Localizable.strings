@@ -12,6 +12,7 @@
 "Forward" = "Videresend";
 "Password" = "Passord";
 "Categories" = "Kategorier";
+"Appointments invitations" = "Avtale varslinger";
 "Name" = "Navn";
 "Color" = "Farge";
 "Add" = "Legg til";
@@ -28,6 +29,7 @@
 "Days between responses :" = "Dager mellom svar:";
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
 "Disable auto reply on" = "Skru av auto-svar";
+"Always send vacation message response" = "Alltid send ferie melding";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv melding og angi din e-postadresse som du vil aktivere auto-svar for.";
 "Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje. ";
@@ -39,6 +41,9 @@
 "Keep a copy" = "Behold en kopi";
 "Please specify an address to which you want to forward your messages."
 = "Angi adressen du vil videresende dine meldinger til.";
+"You are not allowed to forward your messages to an external email address." = "Du har ikke lov til å videresende mail til en ekstern e-mail addresse.";
+"You are not allowed to forward your messages to an internal email address." = "Du har ikke love til å videresende mail til en ekstern e-mail addresse.";
+
 
 /* d & t */
 "Current Time Zone :" = "Gjeldende tidssone:";
@@ -137,7 +142,7 @@
 
 "Forward messages:" = "Videresend meldinger:";
 "messageforward_inline" = "Innsatt";
-"messageforward_attached" = "Vedlegg";
+"messageforward_attached" = "Som Vedlegg";
 
 "When replying to a message:" = "Ved svar på melding: ";
 "replyplacement_above" = "Start svaret ovenfor";
@@ -151,6 +156,9 @@
 "Display remote inline images" = "Vis bilder lenket til fra andre nettsteder";
 "displayremoteinlineimages_never" = "Aldri";
 "displayremoteinlineimages_always" = "Alltid";
+
+"Auto save every" = "Lagre automatisk";
+"minutes" = "minutter";
 
 /* Contact */
 "Personal Address Book" = "Personlig addressebok";
@@ -208,6 +216,7 @@
 "Language :" = "Språk:";
 "choose" = "Velg ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

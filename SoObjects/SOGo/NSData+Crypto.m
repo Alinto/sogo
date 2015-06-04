@@ -39,7 +39,7 @@
 #include <stdint.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/crypto.h>
-#include <md4.h>
+#include "md4.h"
 #define MD4_DIGEST_LENGTH 16
 #define MD5_DIGEST_LENGTH 16
 #define SHA_DIGEST_LENGTH 20
@@ -53,6 +53,8 @@
 #else
 #error this module requires either gnutls or openssl
 #endif
+
+#include "lmhash.h"
 
 #import <Foundation/NSArray.h>
 #import <NGExtensions/NGBase64Coding.h>

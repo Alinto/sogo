@@ -52,7 +52,9 @@
 
 #import <SBJson/NSObject+SBJSON.h>
 
-#define intervalSeconds 900 /* 15 minutes */
+#define INTERVALSECONDS 900 /* 15 minutes */
+#define PADDING 8
+#define HALFPADDING PADDING/2
 
 @interface SOGoUserHomePage : UIxComponent
 
@@ -151,23 +153,23 @@
                     startInterval = 0;
                   else
                     startInterval = ([currentDate timeIntervalSinceDate: startDate]
-                                     / intervalSeconds);
+                                     / INTERVALSECONDS);
 
                   delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
-                  startInterval += (delta/60/15);
-                  startInterval = (startInterval < -4 ? -4 : startInterval);
+                  startInterval += (delta/INTERVALSECONDS);
+                  startInterval = (startInterval < -(HALFPADDING) ? -(HALFPADDING) : startInterval);
 
                   currentDate = [record objectForKey: @"endDate"];
                   if ([currentDate earlierDate: endDate] == endDate)
                     endInterval = itemCount - 1;
                   else
                     endInterval = ([currentDate timeIntervalSinceDate: startDate]
-                                   / intervalSeconds);
+                                   / INTERVALSECONDS);
                   
                   delta = [[currentDate timeZoneDetail] timeZoneSecondsFromGMT] - [[startDate timeZoneDetail] timeZoneSecondsFromGMT];
-                  endInterval += (delta/60/15);
+                  endInterval += (delta/INTERVALSECONDS);
                   endInterval = (endInterval < 0 ? 0 : endInterval);
-                  endInterval = (endInterval > itemCount+4 ? itemCount+4 : endInterval);
+                  endInterval = (endInterval > itemCount+HALFPADDING ? itemCount+HALFPADDING : endInterval);
 
                   // Update bit string representation
                   // If the user is a resource with restristed amount of bookings, keep the sum of overlapping events
@@ -230,19 +232,19 @@
   // Slices of 15 minutes. The +8 is to take into account that we can
   // have a timezone change during the freebusy lookup. We have +4 at the
   // beginning and +4 at the end.
-  intervals = interval / intervalSeconds + 8;
+  intervals = interval / INTERVALSECONDS + PADDING;
 
   // Build a bit string representation of the freebusy data for the period
   freeBusyItems = calloc(intervals, sizeof (unsigned int));
-  [self _fillFreeBusyItems: (freeBusyItems+4)
-                     count: (intervals-4)
+  [self _fillFreeBusyItems: (freeBusyItems+HALFPADDING)
+                     count: (intervals-PADDING)
 	       withRecords: [fb fetchFreeBusyInfosFrom: start to: end forContact: uid]
              fromStartDate: startDate
                  toEndDate: endDate];
 
   // Convert bit string to a NSArray. We also skip by the default the non-requested information.
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = 4; count < (intervals-4); count++)
+  for (count = HALFPADDING; count < (intervals-HALFPADDING); count++)
     {
       [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
     }

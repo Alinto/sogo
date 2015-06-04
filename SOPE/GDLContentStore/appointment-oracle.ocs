@@ -131,7 +131,7 @@
     },
     {
       columnName = c_partstates;
-      sqlType    = "VARCHAR2(255)";
+      sqlType    = "CLOB";
       allowsNull = YES;
     },
     {
@@ -154,5 +154,10 @@
       sqlType    = "INTEGER";
       allowsNull = YES;
     },
+    {
+      columnName = c_description;
+      sqlType    = "CLOB";
+      allowsNull = YES;
+    }
   );
 }

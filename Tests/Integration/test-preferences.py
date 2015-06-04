@@ -46,7 +46,7 @@ class preferencesTest(unittest.TestCase):
 
     def testPreventInvitationsWhiteList(self):
       """Add to the PreventInvitations Whitelist"""
-      self.prefs.set("whiteList", white_listed_attendee)
+      self.prefs.set("whiteList", simplejson.dumps(white_listed_attendee))
       whitelist = self.prefs.get_settings('Calendar')['PreventInvitationsWhitelist']
       self.assertEqual(whitelist, white_listed_attendee)
 

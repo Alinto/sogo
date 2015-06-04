@@ -77,9 +77,9 @@ function savePreferences(sender) {
                 showAlertDialog(_("Please specify an address to which you want to forward your messages."));
                 sendForm = false;
             }
-       
+
         // We check if we can only to internal/external addresses.
-        var constraints = parseInt(forwardConstraints);
+        var constraints = (typeof forwardConstraints != "undefined") && parseInt(forwardConstraints);
         
         if (constraints > 0) {
             // We first extract the list of 'known domains' to SOGo

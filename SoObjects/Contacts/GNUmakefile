@@ -27,7 +27,7 @@ Contacts_OBJC_FILES =			\
 Contacts_RESOURCE_FILES +=		\
 	product.plist			\
 
-Contacts_LANGUAGES = Arabic BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+Contacts_LANGUAGES = Arabic Basque BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 Contacts_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

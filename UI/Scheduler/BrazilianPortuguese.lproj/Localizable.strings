@@ -7,7 +7,7 @@
 "Edit this event or task" = "Editar este evento ou tarefa";
 "Print the current calendar view" = "Imprimir a visualização do calendário atual";
 "Delete this event or task" = "Apagar este evento ou tarefa";
-"Go to today" = "Vai para hoje";
+"Go to today" = "Ir para Hoje";
 "Switch to day view" = "Visualizar Dia";
 "Switch to week view" = "Visualizar Semana";
 "Switch to month view" = "Visualizar Mês";
@@ -129,7 +129,7 @@
 "Update" = "Atualizar";
 "Cancel" = "Cancelar";
 "show_rejected_apts" = "Exibir apontamentos rejeitados";
-"hide_rejected_apts" = "Ocultar apontamentos rejeitados";
+"hide_rejected_apts" = "Ocultar compromissos rejeitados";
 
 
 /* Schedule */
@@ -144,7 +144,7 @@
 "decline" = "Declinar";
 "more attendees" = "Mais Participantes";
 "Hide already accepted and rejected appointments" = "Ocultar apontamentos já aceitos e rejeitados";
-"Show already accepted and rejected appointments" = "Exibir apontamentos já aceitos e rejeitados";
+"Show already accepted and rejected appointments" = "Exibir compromissos já aceitos e rejeitados";
 
 /* Print view */
 
@@ -163,10 +163,10 @@
 
 /* Appointments */
 
-"Appointment viewer" = "Visualizador de Apontamentos";
-"Appointment editor" = "Editor de Apontamento";
-"Appointment proposal" = "Apontamento Proposto";
-"Appointment on" = "Apontamento em";
+"Appointment viewer" = "Visualizador de Compromissos";
+"Appointment editor" = "Editor de Compromisso";
+"Appointment proposal" = "Compromisso Proposto";
+"Appointment on" = "Compromisso em";
 "Start:" = "Inicio:";
 "End:" = "Fim:";
 "Due Date:" = "Data:";
@@ -210,7 +210,7 @@
 "Private" = "Privado";
 /* text used in overviews and tooltips */
 "empty title" = "Título Vazio";
-"private appointment" = "Apontamento privado";
+"private appointment" = "Compromisso privado";
 
 "Change..." = "Alterar...";
 
@@ -331,7 +331,7 @@
 "cycle_of" = "de";
 "No end date" = "Sem data final";
 "Create" = "Criar";
-"appointment(s)" = "apontamento(s)";
+"appointment(s)" = "compromisso(s)";
 "Repeat until" = "Repetir até";
 
 "First" = "Primeiro";
@@ -429,7 +429,7 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 
 /* menu */
 "New Event..." = "Novo Evento...";
-"New Task..." = "Neva Tarefa...";
+"New Task..." = "Nova Tarefa";
 "Edit Selected Event..." = "Editar o Evento Selecionado...";
 "Delete Selected Event" = "Apagar o Evento Selecionado";
 "Select All" = "Selecionar Tudo";
@@ -471,7 +471,7 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Work days only" = "Somente dias de trabalho";
 "The whole day" = "O dia inteiro";
 "Between" = "Entre";
-"and" = "and";
+"and" = "e";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Existe um conflito de tempo com um ou mais participantes.\nGostaria de manter as configurações atuais?";
