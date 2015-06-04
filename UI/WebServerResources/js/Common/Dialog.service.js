@@ -32,18 +32,12 @@
    * @returns a promise that resolves if the user has clicked on the 'OK' button
    */
   Dialog.confirm = function(title, content) {
-    var d = this.$q.defer(),
-        confirm = this.$modal.confirm()
+    var confirm = this.$modal.confirm()
         .title(title)
         .content(content)
         .ok(l('OK'))
         .cancel(l('Cancel'));
-    this.$modal.show(confirm).then(function() {
-      d.resolve();
-    }, function() {
-      d.reject();
-    });
-    return d.promise;
+    return this.$modal.show(confirm);
   };
 
   /**
