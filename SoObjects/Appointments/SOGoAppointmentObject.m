@@ -1802,6 +1802,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 {
   NSArray *allEvents;
   iCalEvent *event;
+  NSString *uid;
   NSUInteger i;
 
   allEvents = [rqCalendar events];
@@ -1823,6 +1824,20 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if ([event organizer] && ![[[event organizer] cn] length])
         {
           [[event organizer] setCn: [[event organizer] rfc822Email]];
+        }
+
+      // We now make sure that the organizer, if managed by SOGo, is using
+      // its default email when creating events and inviting attendees.
+      uid = [[SOGoUserManager sharedUserManager] getUIDForEmail: [[event organizer] rfc822Email]];
+      if (uid)
+        {
+          NSDictionary *defaultIdentity;
+          SOGoUser *organizer;
+
+          organizer = [SOGoUser userWithLogin: uid];
+          defaultIdentity = [organizer defaultIdentity];
+          [[event organizer] setCn: [defaultIdentity objectForKey: @"fullName"]];
+          [[event organizer] setEmail: [defaultIdentity objectForKey: @"email"]];
         }
     }
 }

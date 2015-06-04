@@ -3,6 +3,7 @@
 
 Enhancements
  - improved EAS speed, especially when fetching big attachments
+ - now always enforce the organizer's default identity in appointments
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
