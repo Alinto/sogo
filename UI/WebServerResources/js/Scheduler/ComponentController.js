@@ -78,12 +78,28 @@
 
     // Autocomplete cards for attendees
     function cardFilter($query) {
+      var index, indexResult, card;
       if ($query) {
         AddressBook.$filterAll($query).then(function(results) {
-          vm.cardResults.splice(0, vm.cardResults.length);
+          // Remove cards that no longer match the search query
+          for (index = vm.cardResults.length - 1; index >= 0; index--) {
+            card = vm.cardResults[index];
+            indexResult = _.findIndex(results, function(result) {
+              return _.find(card.emails, function(data) {
+                return _.find(result.emails, function(resultData) {
+                  return resultData.value == data.value;
+                });
+              });
+            });
+            if (indexResult >= 0)
+              results.splice(indexResult, 1);
+            else
+              vm.cardResults.splice(index, 1);
+          }
           _.each(results, function(card) {
-            // TODO don't show cards matching an attendee's email address
-            vm.cardResults.push(card);
+            // Add cards matching the search query but not already in the list of attendees
+            if (!vm.event.hasAttendee(card))
+              vm.cardResults.push(card);
           });
         });
       }
@@ -93,11 +109,14 @@
     function addAttendee(card) {
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
-        // TODO: only create card if the string is an email address
-        card = new Card({ emails: [{ value: card }] });
-        vm.searchText = '';
+        if (card.isValidEmail()) {
+          vm.event.addAttendee(new Card({ emails: [{ value: card }] }));
+          vm.searchText = '';
+        }
       }
-      vm.event.addAttendee(card);
+      else {
+        vm.event.addAttendee(card);
+      }
     }
 
     function save(form) {

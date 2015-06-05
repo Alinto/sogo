@@ -149,6 +149,11 @@ Date.prototype.daysUpTo = function(otherDate) {
     return days;
 };
 
+String.prototype.isValidEmail = function() {
+  var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
+  return emailRE.test(this);
+};
+
 String.prototype.asCSSIdentifier = function() {
   var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' '
                      , "'", '&', '\\+' ];

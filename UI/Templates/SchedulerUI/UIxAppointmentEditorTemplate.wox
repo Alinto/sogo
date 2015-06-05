@@ -178,6 +178,8 @@
                        md-selected-item-change="editor.addAttendee(card)"
                        md-items="card in editor.cardFilter(editor.searchText)"
                        md-min-length="2"
+                       md-no-cache="true"
+                       md-delay="300"
                        label:placeholder="Invite Attendees"
                        sg-enter="editor.addAttendee(editor.searchText)">
         <span class="md-contact-suggestion" layout="row" layout-align="space-between center">

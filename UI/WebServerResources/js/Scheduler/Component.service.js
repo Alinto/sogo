@@ -469,6 +469,22 @@
   };
 
   /**
+   * @function hasAttendee
+   * @memberof Component.prototype
+   * @desc Verify if one of the email addresses of a Card instance matches an attendee
+   * @param {Object} card - an Card object instance
+   * @returns true if the Card matches an attendee
+   */
+  Component.prototype.hasAttendee = function(card) {
+    var attendee = _.find(this.attendees, function(attendee) {
+      return _.find(card.emails, function(email) {
+        return email.value == attendee.email;
+      });
+    });
+    return angular.isDefined(attendee);
+  }
+
+  /**
    * @function $reset
    * @memberof Component.prototype
    * @desc Reset the original state the component's data.
