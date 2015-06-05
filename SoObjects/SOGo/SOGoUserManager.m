@@ -491,10 +491,10 @@ static Class NSNullK;
   NSMutableDictionary *currentUser;
   NSDictionary *failedCount;
   NSString *dictPassword, *username, *jsonUser;
-  SOGoSystemDefaults *dd;
+  SOGoSystemDefaults *sd;
   BOOL checkOK;
 
-  dd = [SOGoSystemDefaults sharedSystemDefaults];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
 
   username = _login;
 
@@ -533,10 +533,10 @@ static Class NSNullK;
       start_time = [[failedCount objectForKey: @"InitialDate"] unsignedIntValue];
       delta = current_time - start_time;
 
-      block_time = [dd failedLoginBlockInterval];
+      block_time = [sd failedLoginBlockInterval];
       
-      if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [dd maximumFailedLoginCount] &&
-          delta >= [dd maximumFailedLoginInterval] &&
+      if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [sd maximumFailedLoginCount] &&
+          delta >= [sd maximumFailedLoginInterval] &&
           delta <= block_time )
         {
           *_perr = PolicyAccountLocked;
@@ -574,6 +574,13 @@ static Class NSNullK;
           currentUser = [NSMutableDictionary dictionary];
         }
 
+      // Before caching user attributes, we must check if SOGoEnableDomainBasedUID is enabled
+      // but we don't have a domain. That would happen for example if a user authenticates
+      // without the domain part.
+      if ([sd enableDomainBasedUID] &&
+          [username rangeOfString: @"@"].location == NSNotFound)
+        username = [NSString stringWithFormat: @"%@@%@", username, *_domain];
+
       // It's important to cache the password here as we might have cached the
       // user's entry in -contactInfosForUserWithUIDorEmail: and if we don't
       // set the password and recache the entry, the password would never be
@@ -587,7 +594,7 @@ static Class NSNullK;
   else
     {
       // If failed login "rate-limiting" is enabled, we adjust the stats
-      if ([dd maximumFailedLoginCount])
+      if ([sd maximumFailedLoginCount])
         {
           [[SOGoCache sharedCache] setFailedCount: ([[failedCount objectForKey: @"FailedCount"] intValue] + 1)
                                          forLogin: username];
@@ -890,8 +897,9 @@ static Class NSNullK;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
                                             inDomain: (NSString *) domain
 {
-  NSMutableDictionary *currentUser;
   NSString *aUID, *cacheUid, *jsonUser;
+  NSMutableDictionary *currentUser;
+
   BOOL newUser;
 
   if ([uid isEqualToString: @"anonymous"])
@@ -936,9 +944,18 @@ static Class NSNullK;
                   currentUser = nil;
                 }
               else
-                [self _retainUser: currentUser
-                        withLogin: cacheUid];
-	    }
+                {
+                  SOGoSystemDefaults *sd;
+
+                  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+                  // to true but we don't have a domain part.
+                  if ([sd enableDomainBasedUID] && !domain)
+                    cacheUid = [NSString stringWithFormat: @"%@@%@", cacheUid, [currentUser objectForKey: @"c_domain"]];
+
+                  [self _retainUser: currentUser  withLogin: cacheUid];
+                }
+            }
 	}
     }
   else
