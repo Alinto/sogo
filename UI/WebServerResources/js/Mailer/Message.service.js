@@ -311,6 +311,25 @@
   };
 
   /**
+   * @function $deleteAttachment
+   * @memberof Message.prototype
+   * @desc Delete an attachment from a message being composed
+   * @param {string} filename - the filename of the attachment to delete
+   */
+  Message.prototype.$deleteAttachment = function(filename) {
+    var action = 'deleteAttachment?filename=' + filename;
+    var _this = this;
+    Message.$$resource.post(this.$absolutePath({asDraft: true}), action).then(function(data) {
+      Message.$timeout(function() {
+        _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function(attachment) {
+          return attachment.filename != filename});
+      }, function() {
+        // TODO: show toast
+      });
+    });
+  }
+
+  /**
    * @function $markAsFlaggedOrUnflagged
    * @memberof Message.prototype
    * @desc Add or remove a the \\Flagged flag on the current message.

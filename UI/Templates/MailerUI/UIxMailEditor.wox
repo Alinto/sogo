@@ -92,29 +92,42 @@
           </md-slider>
           </div>
           -->
-        
-        <div class="pseudo-input-container" ng-hide="hideAttachments">
-          <label class="pseudo-input-label">
-            <var:string label:value="Attachments"/>
-          </label>
-          <div class="pseudoInput-text">
-            <input type="file"
-                   nv-file-select="nv-file-select"
-                   uploader="uploader"/>
-          </div>
-          
-          <md-list>
-            <md-list-item ng-repeat="item in message.editable.attachmentAttrs">
+
+        <md-list>
+          <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
+               MAIL WITH ATTACHMENTS -->
+          <md-list-item ng-repeat="item in message.editable.attachmentAttrs">
+            <div layout="row" layout-align="space-between center">
               <span ng-bind="item.filename"><!-- filename --></span>
-            </md-list-item>
-            <md-list-item ng-repeat="item in uploader.queue">
+              <md-button class="iconButton"
+                         ng-click="message.$deleteAttachment(item.filename);">
+                <i class="md-icon-remove-circle-outline"><!--remove --></i>
+              </md-button>
+            </div>
+          </md-list-item>
+          <!-- FILE BEING ATTACHED TO A MAIL -->
+          <md-list-item ng-repeat="item in uploader.queue">
+            <div layout="row" layout-align="space-between center">
               <span ng-bind="item.file.name"><!-- filename --></span>
-              (<span ng-bind="item.file.progress"><!-- progress --></span>)
-            </md-list-item>
-          </md-list>
-        </div>
-        
+              <md-progress-linear md-mode="determinate"
+                                  value="{{item.progress}}"
+                                  ng-show="item.isUploading" ><!-- progress--></md-progress-linear>
+              <md-button class="iconButton"
+                         ng-click="uploader.cancelItem(item)"
+                         ng-show="item.isUploading">
+                <i class="md-icon-cancel"><!--cancel --></i>
+              </md-button>
+              <md-button class="iconButton"
+                         ng-click="message.$deleteAttachment(item.file.name);item.remove();"
+                         ng-show="!item.isUploading">
+                <i class="md-icon-remove-circle-outline"><!--remove --></i>
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
       </div>
+      
+      <!-- </div> -->
       
       <!-- TOOLBAR TO SHOW CC/BCC/ATTACHMENT FIELDS -->
       <div layout="column" layout-align="start end">
@@ -126,9 +139,17 @@
             <i class="md-icon-info-outline"></i>
             </md-button>
         -->
-        <md-button  class="iconButton" ng-show="hideAttachments" ng-click="hideAttachments = false">
-          <i class="md-icon-attach-file"><!-- show attachment --></i>
+        <md-button class="iconButton">
+          <label for="file-input">
+            Add files
+          </label>
         </md-button>
+        <input id="file-input" type="file"
+               nv-file-select="nv-file-select"
+               multiple="multiple"
+               uploader="uploader"
+               ng-show="false"/>
+        
         <!--
             <md-button  class="iconButton" ng-click="returnReceipt = !returnReceipt">
             <i class="md-icon-receipt"></i>

@@ -11,7 +11,6 @@
     $scope.autocomplete = {to: {}, cc: {}, bcc: {}};
     $scope.hideCc = true;
     $scope.hideBcc = true;
-    $scope.hideAttachments = true;
     if ($stateParams.actionName == 'reply') {
       stateMessage.$reply().then(function(msgObject) {
         console.debug("foo");
@@ -19,7 +18,6 @@
         $scope.message = msgObject;
         $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
         $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
-        $scope.hideAttachments = true;
       });
     }
     else if ($stateParams.actionName == 'replyall') {
@@ -27,7 +25,6 @@
         $scope.message = msgObject;
         $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
         $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
-        $scope.hideAttachments = true;
       });
     }
     else if ($stateParams.actionName == 'forward') {
@@ -35,7 +32,6 @@
         $scope.message = msgObject;
         $scope.hideCc = true;
         $scope.hideBcc = true;
-        $scope.hideAttachments = (!msgObject.editable.attachmentAttrs || msgObject.editable.attachmentAttrs.length == 0);
       });
     }
     else if (angular.isDefined(stateMessage)) {
@@ -74,6 +70,13 @@
         stateMessage.$setUID(response.uid);
         stateMessage.$reload();
         console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+      },
+      onCancelItem: function(item, response, status, headers) {
+        console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
+
+        // We remove the attachment
+        stateMessage.$deleteAttachment(item.file.name);
+        this.removeFromQueue(item);
       },
       onErrorItem: function(item, response, status, headers) {
         console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
