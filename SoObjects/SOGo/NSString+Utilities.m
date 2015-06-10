@@ -333,12 +333,18 @@ static int cssEscapingCount;
   int count;
 
   strings = [NSArray arrayWithObjects: @"_U_", @"_D_", @"_H_", @"_A_", @"_S_",
-                     @"_C_", @"_CO_", @"_SP_", @"_SQ_", @"_AM_", @"_P_", @"_DS_", nil];
+                     @"_C_", @"_SC_",
+                     @"_CO_", @"_SP_", @"_SQ_", @"_DQ_",
+                     @"_LP_", @"_RP_", @"_LS_", @"_RS_", @"_LC_", @"_RC_",
+                     @"_AM_", @"_P_", @"_DS_", nil];
   [strings retain];
   cssEscapingStrings = [strings asPointersOfObjects];
 
-  characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*", @":",
-                        @",", @" ", @"'", @"&", @"+", @"$", nil];
+  characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*",
+                        @":", @";",
+                        @",", @" ", @"'", @"\"",
+                        @"(", @")", @"[", @"]", @"{", @"}",
+                        @"&", @"+", @"$", nil];
   cssEscapingCount = [strings count];
   cssEscapingCharacters = NSZoneMalloc (NULL,
                                         (cssEscapingCount + 1)
