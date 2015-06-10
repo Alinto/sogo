@@ -1920,10 +1920,11 @@ events. This parameter is an array of arbitrary strings.
 
 Defaults to a list that depends on the language.
 
-|U |SOGoCalendarDefaultCategoryColor
-|Parameter used to define the default colour of categories.
+|U |SOGoCalendarCategoriesColors
+|Parameter used to define the colour of categories. This parameter
+is a dictionary of category name/color.
 
-Defaults to `#F0F0F0` when unset.
+Defaults to `#F0F0F0` for all categories when unset.
 
 |U |SOGoCalendarEventsDefaultClassification
 |Parameter used to defined the default classification for new events.
@@ -2712,6 +2713,11 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|2.3.1
+|The SOGoCalendarDefaultCategoryColor default has been removed. If you
+want to customize the color of calendar categories, use the
+SOGoCalendarCategories and SOGoCalendarCategoriesColors defaults.
+
 h|2.3.0
 |Run the shell script `sql-update-2.2.17_to_2.3.0.sh` or
 `sql-update-2.2.17_to_2.3.0-mysql.sh` (if you use MySQL).

@@ -4,6 +4,7 @@
 Enhancements
  - improved EAS speed, especially when fetching big attachments
  - now always enforce the organizer's default identity in appointments
+ - improved the handling of default calendar categories/colors (#3200) 
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
