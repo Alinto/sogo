@@ -459,7 +459,16 @@ static Class NSNullK;
 
       // If we are using multidomain and the UIDFieldName is not part of the email address
       // we must also try to bind without the domain part since internally, SOGo will use
-      // UID @ domain as its unique identifier.
+      // UIDFieldName @ domain as its unique identifier if the UIDFieldName is used to
+      // authenticate. This can happen for example of one has in LDAP:
+      //
+      // dn: uid=foo,dc=example,dc=com
+      // uid: foo
+      // mail: broccoli@example.com
+      //
+      // and authenticates with "foo", using bindFields = (uid, mail) and SOGoEnableDomainBasedUID = YES;
+      // The -checkLogin:... above would have failed because SOGo would first try to bind using: foo@example.com
+      //
       if (!checkOK && *domain && [sd enableDomainBasedUID] && r.location != NSNotFound)
         {
           checkOK = [sogoSource checkLogin: [login substringToIndex: r.location]
