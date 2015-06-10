@@ -453,7 +453,7 @@ static BOOL debugOn = NO;
   [s appendString: @"<FolderCreate xmlns=\"FolderHierarchy:\">"];
   [s appendFormat: @"<Status>%d</Status>", 1];
   [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
-  [s appendFormat: @"<ServerId>%@</ServerId>", nameInContainer];
+  [s appendFormat: @"<ServerId>%@</ServerId>", [nameInContainer stringByEscapingURL]];
   [s appendString: @"</FolderCreate>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];

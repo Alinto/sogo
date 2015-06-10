@@ -8,7 +8,8 @@ Enhancements
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
- - Fixed some rare cornercases in multidomain configurations
+ - fixed some rare cornercases in multidomain configurations
+ - properly escape folder after creation using EAS (#3237)
 
 2.3.0 (2015-06-01)
 -------------------
