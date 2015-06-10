@@ -11,6 +11,7 @@ Bug fixes
  - fixed some rare cornercases in multidomain configurations
  - properly escape folder after creation using EAS (#3237)
  - fixed potential organizer highjacking when using EAS (#3131)
+ - properly support big characters in EAS and fix encoding QP EAS error for Outlook (#3082)
 
 2.3.0 (2015-06-01)
 -------------------
