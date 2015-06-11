@@ -179,11 +179,30 @@
                        sg-enter="app.save(folder)"
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
-              <md-button class="iconButton md-secondary" label:aria-label="Options"
-                         ng-show="app.service.selectedFolder.id==folder.id"
-                         ng-click="app.share(folder)">
-                <i class="md-icon-more-vert"><!-- options --></i>
-              </md-button>
+
+              <md-menu class="md-secondary">
+                <md-button class="iconButton"
+                           label:aria-label="Options"
+                           ng-click="$mdOpenMenu()">
+                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
+                </md-button>
+
+                <md-menu-content width="2">
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.share(folder)"
+                               ng-show="app.service.selectedFolder.id==folder.id">
+                      <var:string label:value="Sharing..."/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.confirmDelete()">
+                      <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+
+              </md-menu>
+
             </md-list-item>
           </md-list>
         </section>
@@ -335,12 +354,13 @@
           </md-list-item>
         </md-list>
       </md-content>
-
+      
       <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
                  label:aria-label="New Contact"
                  ng-click="addressbook.newComponent($event)">
-        <i class="md-icon-add"><!--icon--></i>
+        <i class="md-icon-add"><!-- icon --></i>
       </md-button>
+
       </div>
 
       <!-- This extra container is used to animate views transitions
