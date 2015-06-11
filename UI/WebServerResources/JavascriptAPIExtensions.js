@@ -73,6 +73,10 @@ String.prototype.decodeEntities = function() {
                         });
 };
 
+String.prototype.unescapeHTMLEntities = function() {
+    return this.unescapeHTML().replace(/&quot;/g,'"');
+};
+
 String.prototype.asDate = function () {
     var newDate;
     var date = this.split("/");
@@ -97,7 +101,7 @@ String.prototype.asDate = function () {
 String.prototype.asCSSIdentifier = function() {
     var characters = [ '_'  ,  '\\.',  '#'  ,  '@'  ,  '\\*',  ':'  , ';'   , ','   , ' ',
                        '\\(',    '\\)',    '\\[',    '\\]',    '\\{',    '\\}',
-                       , "'",  '"',    '&',    '\\+' ];
+                       "'",  '"',    '&',    '\\+' ];
     var escapeds =   [ '_U_',  '_D_',  '_H_',  '_A_',  '_S_',  '_C_', '_SC_', '_CO_', '_SP_',
                        '_LP_', '_RP_', '_LS_', '_RQ_', '_LC_', '_RC_',
                        '_SQ_', '_DQ_', '_AM_', '_P_' ];
