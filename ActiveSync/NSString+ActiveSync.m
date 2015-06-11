@@ -53,7 +53,10 @@ static NSArray *easCommandParameters = nil;
 // e.g. SMILING FACE WITH OPEN MOUTH
 //      ok: wchar_t -> &#128515;   wrong:  unichar -> &#55357; &#56835;
 //
-- (NSString *)stringByEscapingXMLStringUsingCharacters {
+// We avoir naming it like the one in SOPE since if the ActiveSync
+// bundle is loaded, it'll overwrite the one provided by SOPE.
+//
+- (NSString *) _stringByEscapingXMLStringUsingCharacters {
   register unsigned i, len, j;
   register wchar_t *buf;
   const wchar_t *chars;
@@ -153,7 +156,7 @@ static NSArray *easCommandParameters = nil;
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
-  return [self stringByEscapingXMLStringUsingCharacters];
+  return [self _stringByEscapingXMLStringUsingCharacters];
 }
 
 - (int) activeSyncFolderType
