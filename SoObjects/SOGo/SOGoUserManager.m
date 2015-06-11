@@ -568,7 +568,7 @@ static Class NSNullK;
   // mail: broccoli@example.com
   //
   // and authenticates with "foo", using bindFields = (uid, mail) and SOGoEnableDomainBasedUID = YES;
-  // Otherwise, -_sourceCheckLogin:... would have failed because SOGo would to bind using: foo@example.com
+  // Otherwise, -_sourceCheckLogin:... would have failed because SOGo would try to bind using: foo@example.com
   //
   if ([[currentUser objectForKey: @"DomainLessLogin"] boolValue])
     {

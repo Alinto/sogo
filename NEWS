@@ -13,6 +13,7 @@ Bug fixes
  - fixed potential organizer highjacking when using EAS (#3131)
  - properly support big characters in EAS and fix encoding QP EAS error for Outlook (#3082)
  - properly encode id of DOM elements in Address Book module (#3239, #3245)
+ - fixed multi-domain support for sogo-tool backup/restore (#2600)
 
 2.3.0 (2015-06-01)
 -------------------

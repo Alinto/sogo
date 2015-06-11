@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
@@ -65,6 +66,7 @@ typedef enum SOGoToolRestoreMode {
 {
   NSString *directory;
   NSString *userID;
+  NSString *filename;
   NSString *restoreFolder;
   BOOL destructive; /* destructive mode not handled */
   SOGoToolRestoreMode restoreMode;
@@ -90,6 +92,7 @@ typedef enum SOGoToolRestoreMode {
     {
       directory = nil;
       userID = nil;
+      filename = nil;
       restoreFolder = nil;
       destructive = NO;
     }
@@ -101,6 +104,7 @@ typedef enum SOGoToolRestoreMode {
 {
   [directory release];
   [userID release];
+  [filename release];
   [restoreFolder release];
   [super dealloc];
 }
@@ -169,13 +173,35 @@ typedef enum SOGoToolRestoreMode {
 
 - (BOOL) fetchUserID: (NSString *) identifier
 {
-  BOOL rc;
+  SOGoSystemDefaults *sd;
   SOGoUserManager *lm;
   NSDictionary *infos;
+  NSString *uid;
+  
+  BOOL rc;
 
   lm = [SOGoUserManager sharedUserManager];
   infos = [lm contactInfosForUserWithUIDorEmail: identifier];
-  ASSIGN (userID, [infos objectForKey: @"c_uid"]);
+  uid = nil;
+
+  if (infos)
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      uid = [infos objectForKey: @"c_uid"];
+      
+      if ([sd enableDomainBasedUID] && [uid rangeOfString: @"@"].location == NSNotFound)
+        uid = [NSString stringWithFormat: @"%@@%@",
+                     [infos objectForKey: @"c_uid"],
+                     [infos objectForKey: @"c_domain"]];
+
+      if ([[infos objectForKey: @"DomainLessLogin"] boolValue])
+        ASSIGN(filename, [infos objectForKey: @"c_uid"]);
+      else
+        ASSIGN(filename, uid);
+    }
+
+  ASSIGN (userID, uid);
+
   if (userID)
     rc = YES;
   else
@@ -613,7 +639,7 @@ typedef enum SOGoToolRestoreMode {
   NSString *importPath;
   BOOL rc;
 
-  importPath = [directory stringByAppendingPathComponent: userID];
+  importPath = [directory stringByAppendingPathComponent: filename];
   userRecord = [NSDictionary dictionaryWithContentsOfFile: importPath];
   if (userRecord)
     {
@@ -631,7 +657,7 @@ typedef enum SOGoToolRestoreMode {
   else
     {
       rc = NO;
-      NSLog (@"user backup file could not be loaded");
+      NSLog(@"user backup (%@) file could not be loaded", importPath);
     }
 
   return rc;
