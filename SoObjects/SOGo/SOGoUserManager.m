@@ -435,21 +435,39 @@ static Class NSNullK;
                      grace: (int *) grace
 {
   NSObject <SOGoSource> *sogoSource;
+  SOGoSystemDefaults *sd;
   NSEnumerator *authIDs;
   NSString *currentID;
+
   BOOL checkOK;
-  
+  NSRange r;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
   checkOK = NO;
   
   authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
+      r = [login rangeOfString: [NSString stringWithFormat: @"@%@", *domain]];
+      
       checkOK = [sogoSource checkLogin: login
                               password: password
                                   perr: perr
                                 expire: expire
                                  grace: grace];
+
+      // If we are using multidomain and the UIDFieldName is not part of the email address
+      // we must also try to bind without the domain part since internally, SOGo will use
+      // UID @ domain as its unique identifier.
+      if (!checkOK && *domain && [sd enableDomainBasedUID] && r.location != NSNotFound)
+        {
+          checkOK = [sogoSource checkLogin: [login substringToIndex: r.location]
+                                  password: password
+                                      perr: perr
+                                    expire: expire
+                                     grace: grace];
+        }
     }
 
   if (checkOK && *domain == nil)
