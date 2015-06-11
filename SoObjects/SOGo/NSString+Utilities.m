@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -257,7 +257,7 @@ static int cssEscapingCount;
   return selfCopy;
 }
 
-- (NSString *) doubleQuotedString
+- (NSString *) asSafeJSString
 {
   NSMutableString *representation;
 
@@ -270,7 +270,12 @@ static int cssEscapingCount;
   [representation replaceString: @"\r" withString: @"\\r"];
   [representation replaceString: @"\t" withString: @"\\t"];
 
-  return [NSString stringWithFormat: @"\"%@\"", representation];
+  return representation;
+}
+
+- (NSString *) doubleQuotedString
+{
+  return [NSString stringWithFormat: @"\"%@\"", [self asSafeJSString]];
 }
 
 //
