@@ -8,7 +8,7 @@
     >
 
   <md-dialog>
-    <md-content>
+    <md-dialog-content>
       <div  layout="column" layout-padding="layout-padding">
 
         <div layout="column" layout-padding="layout-padding">
@@ -53,7 +53,7 @@
         <var:string label:value="OK"/>
       </md-button>
       
-    </md-content>
+    </md-dialog-content>
   </md-dialog>
   
 </container>
