@@ -155,6 +155,11 @@
 		     @"Responder", @"Modifier", nil]);
 }
 
+- (NSArray *) rightTypes
+{
+  return [NSArray arrayWithObjects: @"Public", @"Confidential", @"Private", nil];
+}
+
 - (void) setCurrentRight: (NSString *) newCurrentRight
 {
   ASSIGN (currentRight, newCurrentRight);
@@ -169,6 +174,16 @@
 {
   return [self labelForKey:
 		 [NSString stringWithFormat: @"label_%@", currentRight]];
+}
+
+- (BOOL) userCanCreateObjects
+{
+  return [userRights containsObject: SOGoRole_ObjectCreator];
+}
+
+- (BOOL) userCanEraseObjects
+{
+  return [userRights containsObject: SOGoRole_ObjectEraser];
 }
 
 @end

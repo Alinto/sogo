@@ -39,10 +39,8 @@
 
 - (NSArray *) rightTypes;
 
-- (void) setUserCanCreateObjects: (BOOL) userCanCreateObjects;
 - (BOOL) userCanCreateObjects;
 
-- (void) setUserCanEraseObjects: (BOOL) userCanEraseObjects;
 - (BOOL) userCanEraseObjects;
 
 @end
