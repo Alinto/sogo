@@ -132,9 +132,9 @@
           pageName    = "UIxContactsUserRightsEditor";
           actionName  = "saveUserRights";
         };
-        properties = {
+        links = {
           protectedBy = "View";
-          pageName = "UIxContactFolderProperties";
+          pageName = "UIxContactFolderLinksTemplate";
         };
       };
     };

@@ -20,6 +20,7 @@
     vm.confirmDelete = confirmDelete;
     vm.importCards = importCards;
     vm.exportCards = exportCards;
+    vm.showLinks = showLinks;
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
 
@@ -106,6 +107,28 @@
 
     function exportCards() {
       window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
+    }
+
+    function showLinks(selectedFolder) {
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: selectedFolder.id + '/links',
+        locals: {
+        },
+        controller: LinksDialogController
+      });
+      
+      /**
+       * @ngInject
+       */
+      LinksDialogController.$inject = ['scope', '$mdDialog'];
+      function LinksDialogController(scope, $mdDialog) {
+        scope.close = function(type) {
+          $mdDialog.hide();
+        }
+      }
     }
 
     function share(addressbook) {

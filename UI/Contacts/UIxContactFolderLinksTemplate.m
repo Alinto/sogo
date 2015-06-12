@@ -1,6 +1,6 @@
-/* UIxContactFolderProperties.m - this file is part of SOGo
+/* UIxContactFolderLinksTemplate.m - this file is part of SOGo
  *
- * Copyright (C) 2014 Inverse inc.
+ * Copyright (C) 2014-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
 
 #import <SOGo/SOGoSystemDefaults.h>
 
-#import "UIxContactFolderProperties.h"
+#import "UIxContactFolderLinksTemplate.h"
 
-@implementation UIxContactFolderProperties
+@implementation UIxContactFolderLinksTemplate
 
 - (id) init
 {
@@ -41,11 +41,6 @@
   [baseCardDAVURL release];
   [basePublicCardDAVURL release];
   [super dealloc];
-}
-
-- (NSString *) addressBookName
-{
-  return [addressBook displayName];
 }
 
 - (NSString *) _baseCardDAVURL
