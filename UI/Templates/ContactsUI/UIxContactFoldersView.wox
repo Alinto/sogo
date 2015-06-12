@@ -87,29 +87,10 @@
             <i class="icon-pencil"><!-- rename --></i>
           </span>
         </li>
-        <li ng-show="addressbook.isOwned"
-            label:tooltip="Sharing..."
-            tooltip-popup-delay="500">
-          <span class="button" ng-click="share()">
-            <i class="icon-share"><!-- share --></i>
-          </span>
-        </li>
         <li label:tooltip="Import Cards"
             tooltip-popup-delay="500">
           <span class="button" ng-click="importCards()">
             <i class="icon-file"><!-- import --></i>
-          </span>
-        </li>
-        <li label:tooltip="Export"
-            tooltip-popup-delay="500">
-          <span class="button" ng-click="exportCards()">
-            <i class="icon-ion-ios7-upload-outline"><!-- export --></i>
-          </span>
-        </li>
-        <li label:tooltip="Delete"
-            tooltip-popup-delay="500">
-          <span class="button" ng-click="confirmDelete(addressbook)">
-            <i class="icon-trash"><!-- delete --></i>
           </span>
         </li>
       </ul>
@@ -189,14 +170,19 @@
 
                 <md-menu-content width="2">
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.share(folder)"
-                               ng-show="app.service.selectedFolder.id==folder.id">
-                      <var:string label:value="Sharing..."/>
+                    <md-button type="button" ng-click="app.confirmDelete()">
+                      <var:string label:value="Delete"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.confirmDelete()">
-                      <var:string label:value="Delete"/>
+                    <md-button type="button" ng-click="app.exportCards()">
+                      <var:string label:value="Export"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.share(folder)"
+                               ng-show="app.service.selectedFolder.id==folder.id">
+                      <var:string label:value="Sharing..."/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
