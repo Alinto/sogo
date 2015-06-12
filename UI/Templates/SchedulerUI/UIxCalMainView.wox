@@ -174,10 +174,40 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-              <md-button class="iconButton md-secondary" label:aria-label="Options"
-                         ng-click="calendars.share(calendar)">
-                <i class="md-icon-more-vert"><!-- options --></i>
-              </md-button>
+  
+              <md-menu class="md-secondary">
+                <md-button class="iconButton"
+                           label:aria-label="Options"
+                           ng-click="$mdOpenMenu()">
+                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
+                </md-button>
+                
+                <md-menu-content width="2">
+                  <md-menu-item>
+                    <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
+                      <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="calendars.exportCalendar()">
+                      <var:string label:value="Export"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="calendars.showLinks(calendar)">
+                      <var:string label:value="Links to this Calendar"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="calendars.share(calendar)">
+                      <var:string label:value="Sharing..."/>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+
+              </md-menu>
+              
             </md-list-item>
           </md-list>
         </section>

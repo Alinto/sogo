@@ -1,0 +1,60 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:uix="OGo:uix"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPageFrame">
+
+  <md-dialog>
+    <md-content>
+      <div  layout="column" layout-padding="layout-padding">
+
+        <div layout="column" layout-padding="layout-padding">
+          <span><var:string label:value="Authenticated User Access"/></span>
+          
+          <md-input-container>
+            <label><var:string label:value="CalDAV URL"/></label>
+            <input var:value="calDavURL" ng-readonly="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label><var:string label:value="WebDAV ICS URL"/></label>
+            <input var:value="webDavICSURL" ng-readonly="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label><var:string label:value="WebDAV XML URL"/></label>
+            <input var:value="webDavXMLURL" ng-readonly="true"/>
+          </md-input-container>
+        </div>
+
+        
+        <var:if condition="isPublicAccessEnabled">
+          <div layout="column" layout-padding="layout-padding">
+            <span><var:string label:value="Public Access"/></span>
+
+            <md-input-container>
+              <label><var:string label:value="CalDAV URL: "/></label>
+              <input var:value="publicCalDavURL" ng-readonly="true"/>
+            </md-input-container>
+          </div>
+          <md-input-container>
+            <label><var:string label:value="WebDAV ICS URL"/></label>
+            <input var:value="publicWebDavICSURL" ng-readonly="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label><var:string label:value="WebDAV XML URL"/></label>
+            <input var:value="publicWebDavXMLURL" ng-readonly="true"/>
+          </md-input-container>
+        </var:if>
+      </div>
+        
+      <md-button type="button" ng-click="close()">
+        <var:string label:value="OK"/>
+      </md-button>
+      
+    </md-content>
+  </md-dialog>
+  
+</var:component>

@@ -180,6 +180,10 @@
           pageName    = "UIxCalUserRightsEditor";
           actionName  = "saveUserRights";
         };
+        links = {
+          protectedBy = "View";
+          pageName = "UIxCalendarFolderLinksTemplate";
+        };
       };
     };
 

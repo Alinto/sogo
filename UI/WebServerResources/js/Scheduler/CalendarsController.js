@@ -16,6 +16,7 @@
     vm.addWebCalendar = addWebCalendar;
     vm.confirmDelete = confirmDelete;
     vm.share = share;
+    vm.showLinks = showLinks;
     vm.subscribeToFolder = subscribeToFolder;
 
     // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
@@ -88,6 +89,28 @@
                              l(data.error));
               });
           });
+      }
+    }
+
+    function showLinks(selectedFolder) {
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: selectedFolder.id + '/links',
+        locals: {
+        },
+        controller: LinksDialogController
+      });
+      
+      /**
+       * @ngInject
+       */
+      LinksDialogController.$inject = ['scope', '$mdDialog'];
+      function LinksDialogController(scope, $mdDialog) {
+        scope.close = function(type) {
+          $mdDialog.hide();
+        }
       }
     }
 
