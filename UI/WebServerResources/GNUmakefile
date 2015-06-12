@@ -5,12 +5,17 @@ include ../common.make
 WEBSERVER_RESOURCE_DIRS = css fonts img js
 
 build-static-files:
+	npm install --production
+	@if [ ! -e angular-material/src ]; then \
+	  git submodule init; \
+	fi
+	git submodule update
 	@if [ -d bower_components ]; then \
 	  bower update --allow-root; \
 	else \
 	  bower install --allow-root; \
 	fi
-	grunt build
+	grunt --stack build
 
 all :: build-static-files
 

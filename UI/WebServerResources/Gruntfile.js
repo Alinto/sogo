@@ -36,7 +36,7 @@ module.exports = function(grunt) {
         options: {
           map: false,
           processors: [
-            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss,
+            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}),
             // minifier
             require('csswring').postcss
           ]
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
         options: {
           map: true,
           processors: [
-            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}).postcss
+            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'})
           ]
           // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
 
