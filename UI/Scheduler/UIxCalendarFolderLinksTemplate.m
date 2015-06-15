@@ -18,8 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSURL.h>
+
 #import <SOGo/SOGoSystemDefaults.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
 
 #import "UIxCalendarFolderLinksTemplate.h"
 
@@ -113,6 +116,16 @@
   // NOTE: This method is the same found in Common/UIxAclEditor.m
   return [[SOGoSystemDefaults sharedSystemDefaults]
            enablePublicAccess];
+}
+
+- (BOOL) isWebCalendar
+{
+  return ([calendar isKindOfClass: [SOGoWebAppointmentFolder class]]);
+}
+
+- (NSString *) webCalendarURL
+{
+  return [calendar folderPropertyValueInCategory: @"WebCalendars"];
 }
 
 @end
