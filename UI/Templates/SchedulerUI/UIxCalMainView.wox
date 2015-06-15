@@ -175,7 +175,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
   
-              <md-menu class="md-secondary">
+              <md-menu class="md-secondary" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -239,7 +239,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
               
-              <md-menu class="md-secondary">
+              <md-menu class="md-secondary" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -291,7 +291,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
 
-              <md-menu class="md-secondary">
+              <md-menu class="md-secondary" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
