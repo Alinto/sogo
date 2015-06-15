@@ -186,15 +186,12 @@
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.share(folder)"
-                               ng-show="app.service.selectedFolder.id==folder.id">
+                    <md-button type="button" ng-click="app.share(folder)">
                       <var:string label:value="Sharing..."/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
-
               </md-menu>
-
             </md-list-item>
           </md-list>
         </section>
