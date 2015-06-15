@@ -249,6 +249,14 @@ _intValueFromHex (NSString *hexString)
  * @apiSuccess (Success 200) {Number} calendars.notifications.notifyOnExternalModifications 1 if a mail is sent for each modification made by someone else
  * @apiSuccess (Success 200) {Number} calendars.notifications.notifyUserOnPersonalModifications 1 if a mail is sent to an external address for modification made by the owner
  * @apiSuccess (Success 200) {String} [calendars.notifications.notifiedUserOnPersonalModifications] Email address to notify changes
+ * @apiSuccess (Success 200) {Object[]} urls                        URLs to this calendar
+ * @apiSuccess (Success 200) {String} [urls.calDavURL]              CalDAV URL
+ * @apiSuccess (Success 200) {String} [urls.webDavXMLURL]           WebDAV XML URL
+ * @apiSuccess (Success 200) {String} [urls.webDavICSURL]           WebDAV ICS URL
+ * @apiSuccess (Success 200) {String} [urls.publicWebDavXMLURL]     Public WebDAV XML URL
+ * @apiSuccess (Success 200) {String} [urls.publicWebDavICSURL      Public WebDAV ICS URL
+ * @apiSuccess (Success 200) {String} [urls.publicCalDavURL]        Public CalDAV URL
+ * @apiSuccess (Success 200) {String} [urls.webCalendarURL]         External WebDAV ICS URL
  */
 - (WOResponse *) calendarsListAction
 {
