@@ -161,7 +161,7 @@
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
 
-              <md-menu class="md-secondary">
+              <md-menu class="md-secondary" ng-show="app.service.selectedFolder.id==folder.id">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -231,11 +231,22 @@
                        sg-enter="app.save(folder)"
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
-              <md-button class="iconButton md-secondary" label:aria-label="Options"
-                         ng-show="app.service.selectedFolder.id==folder.id"
-                         ng-click="app.confirmDelete(folder)">
-                <i class="md-icon-more-vert"><!-- options --></i>
-              </md-button>
+              <md-menu class="md-secondary" ng-show="app.service.selectedFolder.id==folder.id">
+                <md-button class="iconButton"
+                           label:aria-label="Options"
+                           ng-click="$mdOpenMenu()">
+                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
+                </md-button>
+                
+                <md-menu-content width="2">
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.confirmDelete(folder)">
+                      <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+  
             </md-list-item>
           </md-list>
         </section>

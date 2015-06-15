@@ -17,6 +17,7 @@
     vm.confirmDelete = confirmDelete;
     vm.share = share;
     vm.showLinks = showLinks;
+    vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
 
     // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
@@ -108,9 +109,39 @@
        */
       LinksDialogController.$inject = ['scope', '$mdDialog'];
       function LinksDialogController(scope, $mdDialog) {
-        scope.close = function(type) {
+        scope.close = function() {
           $mdDialog.hide();
+        };
+      }
+    }
+
+    function showProperties(calendar) {
+      $mdDialog.show({
+        templateUrl: calendar.id + '/properties',
+        controller: PropertiesDialogController,
+        controllerAs: 'properties',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          calendar: calendar
         }
+      });
+      
+      /**
+       * @ngInject
+       */
+      PropertiesDialogController.$inject = ['$mdDialog', 'calendar'];
+      function PropertiesDialogController($mdDialog, calendar) {
+        var vm = this;
+        vm.calendar = calendar;
+
+        vm.close = function() {
+          $mdDialog.hide();
+        };
+
+        vm.saveProperties = function() {
+          vm.calendar.$save();
+        };
       }
     }
 

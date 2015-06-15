@@ -125,7 +125,7 @@
        */
       LinksDialogController.$inject = ['scope', '$mdDialog'];
       function LinksDialogController(scope, $mdDialog) {
-        scope.close = function(type) {
+        scope.close = function() {
           $mdDialog.hide();
         }
       }
