@@ -141,6 +141,7 @@
 
         vm.saveProperties = function() {
           vm.calendar.$save();
+          $mdDialog.hide();
         };
       }
     }
