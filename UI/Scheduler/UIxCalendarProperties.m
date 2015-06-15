@@ -52,61 +52,6 @@
   [super dealloc];
 }
 
-- (NSString *) originalCalendarSyncTag
-{
-  return [calendar syncTag];
-}
-
-- (NSString *) allCalendarSyncTags
-{
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *syncTags;
-  NSEnumerator *keysList;
-  NSMutableArray *tags;
-  NSString *key, *result;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  tags = nil;
-
-  if (calendarSettings)
-    {
-      syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
-      if (syncTags)
-	{
-	  tags = [NSMutableArray arrayWithCapacity: [syncTags count]];
-	  keysList = [syncTags keyEnumerator];
-	  while ((key = (NSString*)[keysList nextObject])) {
-	    if (![key isEqualToString: [calendar folderReference]])
-	      [tags addObject: [syncTags objectForKey: key]];
-	  }
-	}
-    }
-  
-  if (!tags)
-    result = @"";
-  else
-    result = [tags componentsJoinedByString: @","];
-
-  return result;
-}
-
-- (BOOL) mustSynchronize
-{
-  return [[calendar nameInContainer] isEqualToString: @"personal"];
-}
-
-// - (NSString *) calendarSyncTag
-// {
-//   return [calendar syncTag];
-// }
-
-- (void) setCalendarSyncTag: (NSString *) newTag
-{
-  [calendar setSyncTag: newTag];
-}
-
 /**
  * @api {post} /so/:username/Calendar/:calendarId/save Save calendar
  * @apiDescription Save a calendar's properties.
@@ -121,7 +66,6 @@
  * @apiParam {String} name                Human readable name
  * @apiParam {String} color               Calendar's hex color code
  * @apiParam {Number} includeInFreeBusy   1 if calendar must be include in freebusy
- * @apiParam {Number} synchronizeCalendar 1 if calendar must be synchronized
  * @apiParam {Number} showCalendarAlarms  1 if alarms must be enabled
  * @apiParam {Number} showCalendarTasks   1 if tasks must be enabled
  * @apiParam {Number} reloadOnLogin       1 if calendar is a Web calendar that must be reload when user logins
@@ -151,10 +95,6 @@
   o = [params objectForKey: @"includeInFreeBusy"];
   if ([o isKindOfClass: [NSNumber class]])
     [calendar setIncludeInFreeBusy: [o boolValue]];
-
-  o = [params objectForKey: @"synchronizeCalendar"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setSynchronizeCalendar: [self mustSynchronize] || [o boolValue]];
 
   o = [params objectForKey: @"showCalendarAlarms"];
   if ([o isKindOfClass: [NSNumber class]])

@@ -99,7 +99,7 @@ _intValueFromHex (NSString *hexString)
   NSNumber *isActive, *fActiveTasks;
   SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
-  BOOL mustSynchronize, reloadOnLogin;
+  BOOL reloadOnLogin;
   
   if (!calendars)
   {
@@ -119,7 +119,6 @@ _intValueFromHex (NSString *hexString)
       if ([fDisplayName isEqualToString: [co defaultFolderName]])
         fDisplayName = [self labelForKey: fDisplayName];
       fActiveTasks = [folder activeTasks];
-      mustSynchronize = [[folder nameInContainer] isEqualToString: @"personal"] || [folder synchronizeCalendar];
 
       [calendar setObject: folderName forKey: @"id"];
       [calendar setObject: fDisplayName forKey: @"name"];
@@ -131,8 +130,6 @@ _intValueFromHex (NSString *hexString)
       if (fActiveTasks > 0)
         [calendar setObject: fActiveTasks forKey:@"activeTasks" ];
       [calendar setObject: [NSNumber numberWithBool: [folder includeInFreeBusy]] forKey: @"includeInFreeBusy"];
-      [calendar setObject: [NSNumber numberWithBool: [folder synchronizeCalendar]] forKey: @"synchronizeCalendar"];
-      [calendar setObject: [NSNumber numberWithBool: mustSynchronize] forKey: @"mustSynchronize"];
       [calendar setObject: [NSNumber numberWithBool: [folder showCalendarAlarms]] forKey: @"showCalendarAlarms"];
       [calendar setObject: [NSNumber numberWithBool: [folder showCalendarTasks]] forKey: @"showCalendarTasks"];
 
@@ -238,8 +235,6 @@ _intValueFromHex (NSString *hexString)
  * @apiSuccess (Success 200) {Number} calendars.active              1 if the calendar is enabled
  * @apiSuccess (Success 200) {Number} [calendars.activeTasks]       Number of incompleted tasks
  * @apiSuccess (Success 200) {Number} calendars.includeInFreeBusy   1 if calendar must be include in freebusy
- * @apiSuccess (Success 200) {Number} calendars.synchronizeCalendar 1 if calendar must be synchronized
- * @apiSuccess (Success 200) {Number} calendars.mustSynchronize     1 if calendar synchronization is mandatory
  * @apiSuccess (Success 200) {Number} calendars.showCalendarAlarms  1 if alarms must be enabled
  * @apiSuccess (Success 200) {Number} calendars.showCalendarTasks   1 if tasks must be enabled
  * @apiSuccess (Success 200) {Number} calendars.isWebCalendar       1 if calendar is a read-only external WebDAV calendar

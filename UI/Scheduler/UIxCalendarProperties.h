@@ -29,9 +29,4 @@
   SOGoAppointmentFolder *calendar;
 }
 
-- (NSString *) originalCalendarSyncTag;
-- (NSString *) allCalendarSyncTags;
-- (BOOL) mustSynchronize;
-- (void) setCalendarSyncTag: (NSString *) newTag;
-
 @end
