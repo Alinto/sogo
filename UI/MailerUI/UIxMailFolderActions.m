@@ -56,7 +56,7 @@
 /**
  * @api {post} /so/:username/Mail/:accountId/:parentMailboxPath/createFolder Create mailbox
  * @apiVersion 1.0.0
- * @apiName PostCreateFolder
+ * @apiName PostCreateMailbox
  * @apiGroup Mail
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Mail/0/folderINBOX/createFolder \
