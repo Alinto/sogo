@@ -23,8 +23,8 @@ md-card {
   }
 
   &.sg-expanded {
-    margin-left: 0;
-    margin-right: 0;
+    @extend .md-whiteframe-z2;
+    margin: 0 0 1px 0;
   }
 
   .md-button {
