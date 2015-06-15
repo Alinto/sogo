@@ -128,29 +128,29 @@
       
       <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned">
         <md-checkbox
-            ng-model="properties.calendar.notifyOnPersonalModifications"
+            ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
             ng-true-value="1"
             ng-false-value="0">
           <var:string label:value="Receive a mail when I modify my calendar"/>
         </md-checkbox>
 
         <md-checkbox
-            ng-model="properties.calendar.notifyOnExternalModifications"
+            ng-model="properties.calendar.notifications.notifyOnExternalModifications"
             ng-true-value="1"
             ng-false-value="0">
           <var:string label:value="Receive a mail when someone else modifies my calendar"/>
         </md-checkbox>
         
         <md-checkbox
-            ng-model="properties.calendar.notifyUserOnPersonalModifications"
+            ng-model="properties.calendar.notifications.notifyUserOnPersonalModifications"
             ng-true-value="1"
             ng-false-value="0">
           <var:string label:value="When I modify my calendar, send a mail to"/>
         </md-checkbox>
 
         <input type="text"
-               ng-value="properties.calendar.notifiedUserOnPersonalModifications"
-               ng-disabled="!properties.calendar.notifyUserOnPersonalModifications"/>
+               ng-value="properties.calendar.notifications.notifiedUserOnPersonalModifications"
+               ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
       </div>
 
       
