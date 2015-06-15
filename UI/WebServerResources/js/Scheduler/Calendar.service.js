@@ -96,7 +96,7 @@
 
   /**
    * @memberof Calendar
-   * @desc Find a calendar among local instances (personal calendars and subscriptions).
+   * @desc Find a calendar among local instances (personal calendars, subscriptions and Web calendars).
    * @param {string} id - the calendar ID
    * @returns an object literal of the matching Calendar instance
    */
@@ -271,7 +271,7 @@
   /**
    * @function $getComponent
    * @memberof Calendar.prototype
-   * @desc Fetch the card attributes from the server.
+   * @desc Fetch a component attributes from the server.
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.$getComponent = function(componentId) {
