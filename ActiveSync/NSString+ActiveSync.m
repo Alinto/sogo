@@ -131,10 +131,12 @@ static NSArray *easCommandParameters = nil;
     }
   }
   
-  self = [[[NSString alloc] initWithBytes:buf length:(j) * sizeof(wchar_t) encoding:NSUTF32StringEncoding] autorelease];
+  self = [[NSString alloc] initWithBytesNoCopy: buf
+                                        length: (j*sizeof(wchar_t))
+                                      encoding: NSUTF32StringEncoding
+                                  freeWhenDone: YES];
 
-  if (buf)   free(buf);
-  return self;
+  return [self autorelease];
 }
 
 - (NSString *) sanitizedServerIdWithType: (SOGoMicrosoftActiveSyncFolderType) folderType
