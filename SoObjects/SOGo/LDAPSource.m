@@ -1167,6 +1167,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
   [self _fillConstraints: ldapEntry forModule: @"Mail"
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
+  [self _fillConstraints: ldapEntry forModule: @"ActiveSync"
+          intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
 
   if (contactMapping)
     [self _applyContactMappingToResult: ldifRecord];
