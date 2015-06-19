@@ -46,7 +46,7 @@
       </var:foreach
 	></ul>
   </div>
-
+  
   <div class="menu" id="yearListMenu">
     <ul>
       <var:foreach list="yearMenuItems" item="yearMenuItem"
@@ -98,7 +98,7 @@
       <li><var:string label:value="Sharing..." /></li>
     </ul>
   </div>
-
+  
   <div id="eventDialog" style="display: none;" class="dialog">
     <div>
       <h1>!- space -</h1>
@@ -116,7 +116,7 @@
       <p class="prompt"><var:string label:value="Select an iCalendar file (.ics)."/></p>
       <form const:href="" name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
-        onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm,
+        onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
         <p class="prompt"><input type="file" name="calendarFile" class="textField" id="calendarFile" />
         <a href="#" class="button actionButton" id="uploadSubmit"
@@ -174,14 +174,14 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-
+  
               <md-menu class="md-secondary" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
                   <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
                 </md-button>
-
+                
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -213,7 +213,7 @@
                 </md-menu-content>
 
               </md-menu>
-
+              
             </md-list-item>
           </md-list>
         </section>
@@ -238,14 +238,14 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-
+              
               <md-menu class="md-secondary" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
                   <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
                 </md-button>
-
+                
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -266,7 +266,7 @@
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
-
+              
             </md-list-item>
           </md-list>
         </section>
@@ -297,7 +297,7 @@
                            ng-click="$mdOpenMenu()">
                   <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
                 </md-button>
-
+                
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -318,7 +318,7 @@
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
-
+              
             </md-list-item>
           </md-list>
         </section>
@@ -367,7 +367,7 @@
       <md-content layout="row">
         <div class="view-list" layout="column" flex="true" style="position: relative;">
           <md-content id="componentsList">
-            <md-tabs class="md-dynamic-height"
+            <md-tabs md-dynamic-height="true"
                      md-selected="list.selectedList">
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
@@ -418,5 +418,5 @@
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxCalUserRightsEditor" />
   </script>
-
+  
 </var:component>

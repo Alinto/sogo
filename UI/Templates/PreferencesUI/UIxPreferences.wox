@@ -79,7 +79,7 @@
     -->
     <script type="text/ng-template" id="generalPreferences.html">
 
-        <md-tabs class="md-flex md-dynamic-height">
+        <md-tabs class="md-flex" md-dynamic-height="true">
 
           <!-- GENERAL OPTIONS -->
           <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
@@ -229,7 +229,7 @@
         CALENDAR PREFERENCE PANEL
     -->
     <script type="text/ng-template" id="calendarsPreferences.html">
-        <md-tabs class="md-flex md-dynamic-height">
+        <md-tabs class="md-flex" md-dynamic-height="true">
 
           <!-- CALENDAR - GENERAL -->
           <md-tab id="calendarOptionsView"
@@ -478,7 +478,8 @@
         CONTACTS PREFERENCE PANEL
     -->
     <script type="text/ng-template" id="addressbooksPreferences.html">
-        <md-tabs class="md-flex md-dynamic-height">
+      <md-content layout="row" class="md-flex">
+        <md-tabs md-dynamic-height="true">
 
           <!-- CONTACT > GENERAL -->
           <!-- <md-tab id="contactsGeneralTab"
@@ -523,6 +524,7 @@
           <!-- END OF CONTACT > CATEGORIES -->
 
         </md-tabs>
+      </md-content>
     </script>
 
     <!--
@@ -530,7 +532,7 @@
     -->
     <script type="text/ng-template" id="mailerPreferences.html">
       <var:if condition="userHasMailAccess">
-          <md-tabs class="md-flex md-dynamic-height">
+          <md-tabs class="md-flex" md-dynamic-height="true">
 
             <!-- MAIL > GENERAL -->
             <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
@@ -907,6 +909,7 @@
               </md-tab>
             </var:if>
             <!-- END OF MAIL > FORWARD -->
+
 
           </md-tabs>
       </var:if>
