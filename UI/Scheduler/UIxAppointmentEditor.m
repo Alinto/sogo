@@ -545,8 +545,8 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/71B6-54904400-1-7C308500.ics/view
  *
- * @apiParam {Number} [resetAlarm] Mark alarm as triggered if set to 1
- * @apiParam {Number} [snoozeAlarm] Snooze the alarm for this number of minutes
+ * @apiParam {Number} [resetAlarm]    Mark alarm as triggered if set to 1
+ * @apiParam {Number} [snoozeAlarm]   Snooze the alarm for this number of minutes
  *
  * @apiSuccess (Success 200) {String} id                      Event ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
@@ -682,6 +682,7 @@
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
+                       [self loadAlarm], @"alarm",
                        nil];
 
   if (!isAllDay)

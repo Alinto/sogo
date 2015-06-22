@@ -545,6 +545,56 @@ static NSArray *reminderValues = nil;
     }
 }
 
+- (NSDictionary *) loadAlarm
+{
+  NSArray *attendees;
+  NSMutableDictionary *alarmData;
+  NSString *ownerId, *email;
+  iCalAlarm *anAlarm;
+  iCalPerson *aAttendee;
+  iCalTrigger *trigger;
+  SOGoUser *owner;
+  BOOL emailOrganizer, emailAttendees;
+  int count, max;
+
+  alarmData = nil;
+  if ([component hasAlarms])
+    {
+      anAlarm = [component firstSupportedAlarm];
+      trigger = [anAlarm trigger];
+      if (![[trigger valueType] length] || [[trigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+        {
+          alarmData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                             [[anAlarm action] lowercaseString], @"action",
+                                           nil];
+          [alarmData addEntriesFromDictionary: [trigger asDictionary]];
+
+          emailOrganizer = NO;
+          emailAttendees = NO;
+          attendees = [anAlarm attendees];
+          ownerId = [[self clientObject] ownerInContext: nil];
+          owner = [SOGoUser userWithLogin: ownerId];
+          email = [[owner defaultIdentity] objectForKey: @"email"];
+          max = [attendees count];
+          for (count = 0;
+               !(emailOrganizer && emailAttendees)
+                 && count < max;
+               count++)
+            {
+              aAttendee = [attendees objectAtIndex: count];
+              if ([[aAttendee rfc822Email] isEqualToString: email])
+                emailOrganizer = YES;
+              else
+                emailAttendees = YES;
+            }
+          [alarmData setObject: [NSNumber numberWithBool: emailOrganizer] forKey: @"organizer"];
+          [alarmData setObject: [NSNumber numberWithBool: emailAttendees] forKey: @"attendees"];
+        }
+    }
+
+  return alarmData;
+}
+
 - (void) setAttributes: (NSDictionary *) data
 {
   NSCalendarDate *now;
@@ -757,7 +807,7 @@ static NSArray *reminderValues = nil;
 //          ? @"true"
 //          : @"false");
 //}
-//
+
 //- (BOOL) userHasRSVP
 //{
 //  return ([self getEventRWType] == 1);

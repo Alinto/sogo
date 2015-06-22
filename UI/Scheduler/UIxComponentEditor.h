@@ -36,6 +36,7 @@
 - (BOOL) isReadOnly;
 - (void) setAttributes: (NSDictionary *) attributes;
 
+- (NSDictionary *) loadAlarm;
 + (NSArray *) reminderValues;
 
 @end

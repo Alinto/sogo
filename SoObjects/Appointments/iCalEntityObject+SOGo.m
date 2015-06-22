@@ -78,14 +78,12 @@ NSNumber *iCalDistantFutureNumber = nil;
   NSArray *elements;
   NSMutableArray *attendees;
   NSDictionary *contactData;
-  NSMutableDictionary *data, *organizerData, *attendeeData, *alarmData;
+  NSMutableDictionary *data, *organizerData, *attendeeData;
   NSEnumerator *attendeesList;
   NSString *uid, *domain, *sentBy;
   NSObject <SOGoSource> *source;
   SOGoUserManager *um;
   iCalPerson *organizer, *currentAttendee;
-  iCalAlarm *alarm;
-  iCalTrigger *trigger;
   id value;
 
   um = [SOGoUserManager sharedUserManager];
@@ -182,35 +180,6 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
   if ([attendees count])
     [data setObject: attendees forKey: @"attendees"];
-
-  // Alarm
-  if ([self hasAlarms])
-    {
-      alarm = [self firstSupportedAlarm]; // only consider the first alarm with a supported action
-      trigger = [alarm trigger];
-      if (![[trigger valueType] length] || [[trigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
-        {
-          alarmData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                             [[alarm action] lowercaseString], @"action",
-                                           nil];
-          [alarmData addEntriesFromDictionary: [trigger asDictionary]];
-          attendees = [NSMutableArray array];
-          attendeesList = [[alarm attendees] objectEnumerator];
-          while ((currentAttendee = [attendeesList nextObject]))
-            {
-              attendeeData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                    [currentAttendee rfc822Email], @"email",
-                                                  [currentAttendee cnWithoutQuotes], @"name",
-                                                  nil];
-              if ([currentAttendee uid]) [attendeeData setObject: [currentAttendee uid] forKey: @"uid"];
-              [attendees addObject: attendeeData];
-            }
-          if ([attendees count])
-            [alarmData setObject: attendees forKey: @"attendees"];
-
-          [data setObject: alarmData forKey: @"alarm"];
-        }
-    }
 
   return data;
 }
@@ -367,7 +336,6 @@ NSNumber *iCalDistantFutureNumber = nil;
   if (anAlarm)
     {
       [self addToAlarms: anAlarm];
-      [anAlarm release];
     }
 }
 
