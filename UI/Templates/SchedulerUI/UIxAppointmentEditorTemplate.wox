@@ -190,6 +190,15 @@
                 md-highlight-flags="^i">{{card.$$email}}</span>
         </span>
       </md-autocomplete>
+      <!-- reminder -->
+      <md-checkbox ng-model="editor.event.$hasAlarm"
+                   label:aria-label="Reminder:">
+        <var:string label:value="Reminder:"/>
+      </md-checkbox>
+      <div class="sg-subcontent"
+           ng-show="editor.event.$hasAlarm">
+        <var:component className="UIxReminderEditor" />
+      </div>
       <!-- cancel/reset/save -->
       <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
         <md-button type="button" ng-click="editor.cancel()">

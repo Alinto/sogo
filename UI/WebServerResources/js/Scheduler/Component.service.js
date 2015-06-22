@@ -245,6 +245,7 @@
 
     this.categories = [];
     this.repeat = {};
+    this.alarm = { action: 'display', quantity: 5, unit: 'MINUTES', reference: 'BEFORE', relation: 'START' };
     angular.extend(this, data);
 
     if (this.startDate)
@@ -290,6 +291,8 @@
     else
       this.repeat.end = 'never';
     this.$hasCustomRepeat = this.hasCustomRepeat();
+
+    this.$hasAlarm = angular.isDefined(data.alarm);
 
     // Allow the event to be moved to a different calendar
     this.destinationCalendar = this.pid;
@@ -471,7 +474,7 @@
   /**
    * @function hasAttendee
    * @memberof Component.prototype
-   * @desc Verify if one of the email addresses of a Card instance matches an attendee
+   * @desc Verify if one of the email addresses of a Card instance matches an attendee.
    * @param {Object} card - an Card object instance
    * @returns true if the Card matches an attendee
    */
@@ -482,7 +485,18 @@
       });
     });
     return angular.isDefined(attendee);
-  }
+  };
+
+  /**
+   * @function canRemindAttendeesByEmail
+   * @memberof Component.prototype
+   * @desc Verify if the component's reminder must be send by email and if it has at least one attendee.
+   * @returns true if attendees can receive a reminder by email
+   */
+  Component.prototype.canRemindAttendeesByEmail = function() {
+    return this.alarm.action == 'email' &&
+      this.attendees && this.attendees.length > 0;
+  };
 
   /**
    * @function $reset
@@ -589,6 +603,17 @@
     }
     else {
       delete component.repeat;
+    }
+
+    if (this.$hasAlarm) {
+      if (this.alarm.action == 'email' && !(this.attendees && this.attendees.length > 0)) {
+        // No attendees; email reminder must be sent to organizer only
+        this.alarm.attendees = 0;
+        this.alarm.organizer = 1;
+      }
+    }
+    else {
+      component.alarm = {};
     }
 
     function formatTime(dateString) {

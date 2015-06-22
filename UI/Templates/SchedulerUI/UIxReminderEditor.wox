@@ -1,56 +1,58 @@
 <?xml version='1.0' standalone='yes'?>
-<!DOCTYPE var:component>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  const:toolbar="none"
-  const:popup="YES">
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <div layout="row" layout-align="start center">
+    <md-input-container class="md-input-number">
+      <input type="number" label:aria-label="quantity" ng-model="editor.event.alarm.quantity"/>
+    </md-input-container>
+    <md-select ng-model="editor.event.alarm.unit">
+      <var:foreach list="unitsList" item="item">
+        <md-option var:value="item"><var:string value="itemText"/></md-option>
+      </var:foreach>
+    </md-select>
+    <md-select ng-model="editor.event.alarm.reference">
+      <var:foreach list="referencesList" item="item">
+        <md-option var:value="item"><var:string value="itemText"/></md-option>
+      </var:foreach>
+    </md-select>
+    <md-select ng-model="editor.event.alarm.relation">
+      <var:foreach list="relationsList" item="item">
+        <md-option var:value="item"><var:string value="itemText"/></md-option>
+      </var:foreach>
+    </md-select>
+  </div>
 
-  <form name="reminder_form" id="reminder_form" href="editReminder">
-    <div>
-      <fieldset>
-	<legend><var:string label:value="Reminder Details"/></legend>
-        <input type="text" id="quantityField"
-               class="textField"
-               size="2"
-               /><var:popup list="unitsList" const:id="unitsList" item="item"
-               string="itemText" var:value="item" selection="minutes"
-               /><var:popup list="referencesList" const:id="referencesList" item="item"
-               string="itemText" var:value="item" selection="BEFORE"
-               /><br/>
-        <var:popup list="relationsList" const:id="relationsList" item="item"
-                   string="itemText" var:value="item" selection="START"
-                   />
-      </fieldset>
-
-      <var:if condition="emailAlarmsEnabled">
-        <fieldset>
-          <legend><var:string label:value="Choose a Reminder Action"/></legend>
-          <select const:name="actionList" const:id="actionList">
-            <option const:value="display"><var:string label:value="Show an Alert"/></option>
-            <option const:value="email"><var:string label:value="Send an E-mail"/></option>
-          </select><br/>
-          <label><input type="checkbox" const:disabled="1"
-              const:name="emailOrganizer" const:id="emailOrganizer"/>
-            <var:string label:value="Email Organizer"/></label><br/>
-          <label><input type="checkbox" const:disabled="1"
-              const:name="emailAttendees" const:id="emailAttendees"/>
-            <var:string label:value="Email Attendees"/></label>
-        </fieldset>
-      </var:if>
-
-      <div id="windowButtons">
-        <a id="okButton" href="#" class="button actionButton"
-          ><span><var:string label:value="OK"/></span></a>
-        <a id="cancelButton" href="#" class="button"
-          ><span><var:string label:value="Cancel"/></span></a>
-      </div>
+  <var:if condition="emailAlarmsEnabled">
+    <div layout="row" layout-align="space-around center">
+      <md-radio-group layout="row" layout-align="space-around center"
+                      ng-model="editor.event.alarm.action">
+        <md-radio-button value="display">
+          <var:string label:value="Show an Alert"/>
+        </md-radio-button>
+        <md-radio-button value="email">
+          <var:string label:value="Send an E-mail"/>
+        </md-radio-button>
+      </md-radio-group>
     </div>
-  </form>
+    <div layout="row" layout-align="space-around center"
+         ng-show="editor.event.canRemindAttendeesByEmail()">
+      <md-checkbox ng-model="editor.event.alarm.organizer"
+                   ng-true-value="1"
+                   ng-false-value="0"
+                   label:aria-label="Email Organizer">
+        <var:string label:value="Email Organizer"/>
+      </md-checkbox>
+      <md-checkbox ng-model="editor.event.alarm.attendees"
+                   ng-true-value="1"
+                   ng-false-value="0"
+                   label:aria-label="Email Attendees">
+        <var:string label:value="Email Attendees"/>
+      </md-checkbox>
+    </div>
+  </var:if>
 
-</var:component>
+</container>
