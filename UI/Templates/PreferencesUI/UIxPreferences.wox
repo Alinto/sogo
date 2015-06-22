@@ -479,7 +479,7 @@
     -->
     <script type="text/ng-template" id="addressbooksPreferences.html">
       <md-content layout="row" class="md-flex">
-        <md-tabs md-dynamic-height="true">
+        <md-tabs class="md-flex" md-dynamic-height="true">
 
           <!-- CONTACT > GENERAL -->
           <!-- <md-tab id="contactsGeneralTab"
