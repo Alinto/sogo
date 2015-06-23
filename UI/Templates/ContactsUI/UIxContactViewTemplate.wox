@@ -10,7 +10,7 @@
       <md-button class="iconButton show-sm"
                  label:aria-label="Close"
                  ng-click="editor.toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
-      <header>
+      <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
           <sg-gravatar-image class="md-tile-left"
                              email="{{editor.card.$preferredEmail()}}"
@@ -42,7 +42,6 @@
           </md-button>
         </div>
       </header>
-      <md-divider class="md-inset"><!-- divider --></md-divider>
       <section class="msg-body">
 
         <div class="pseudo-input-container" ng-show="editor.card.birthday">
