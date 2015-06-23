@@ -5,7 +5,6 @@ md-card {
   overflow: hidden;
 
   md-card-content {
-    order: 1;
     transition: $swift-ease-in-out;
   }
 
@@ -13,13 +12,31 @@ md-card {
     background-color: sg-color($sogoPaper, 50);
   }
 
+  // Collapsed/expanded states for cards in ACL editor
+  &.sg-collapsed, &.sg-expanded {
+    transition: $swift-ease-in-out;
+    transition-delay: 0s;
+    > .md-button {
+      margin: 0;
+      flex-direction: row;
+    }
+    md-card-content {
+      order: 1;
+      transition: $swift-ease-in-out;
+      transition-delay: 0.1s;
+      max-height: 500px;
+      &.ng-hide {
+        max-height: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+    }
+  }
+
   &.sg-collapsed {
     border-radius: 0;
     margin-top: 0;
     margin-bottom: 0;
-    > .md-button {
-      margin: 0;
-    }
   }
 
   &.sg-expanded {
