@@ -79,6 +79,21 @@
             </label>
           </div>
 
+          <!-- categories -->
+          <md-chips ng-model="editor.card.categories">
+            <md-chip-template>
+              {{$chip.value}}
+            </md-chip-template>
+            <md-autocomplete
+                md-selected-item="editor.categories.selected"
+                md-selected-item-change="editor.card.$addCategory(category)"
+                md-search-text="editor.categories.searchText"
+                md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
+                label:placeholder="Add a category">
+              <span md-highlight-text="editor.categories.searchText">{{category}}</span>
+            </md-autocomplete>
+          </md-chips>
+
           <!-- emails -->
           <div class="section">
             <div class="attr" ng-repeat="email in editor.card.emails">
@@ -116,21 +131,6 @@
             </label>
             <input type="date" ng-model="editor.card.birthday"/>
           </md-input-container>
-
-          <!-- categories -->
-            <md-chips ng-model="editor.card.categories">
-              <md-chip-template>
-                {{$chip.value}}
-              </md-chip-template>
-              <md-autocomplete
-                  md-selected-item="editor.categories.selected"
-                  md-selected-item-change="editor.card.$addCategory(category)"
-                  md-search-text="editor.categories.searchText"
-                  md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
-                  label:placeholder="Add a category">
-                <span md-highlight-text="editor.categories.searchText">{{category}}</span>
-              </md-autocomplete>
-            </md-chips>
 
           <!-- phones -->
           <div class="section">
