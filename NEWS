@@ -16,6 +16,7 @@ Bug fixes
  - properly encode id of DOM elements in Address Book module (#3239, #3245)
  - fixed multi-domain support for sogo-tool backup/restore (#2600)
  - fixed data ordering in events list of Calendar module (#3261)
+ - fixed data ordering in tasks list of Calendar module (#3267)
 
 2.3.0 (2015-06-01)
 -------------------

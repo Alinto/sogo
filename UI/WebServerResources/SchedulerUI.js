@@ -1191,8 +1191,9 @@ function tasksListCallback(http) {
             // [12] Owner
             // [13] recurrence-id
             // [14] isException
-            // [15] Status CSS class (duelater, completed, etc)
-            // [16] Due date (formatted)
+            // [15] Description
+            // [16] Status CSS class (duelater, completed, etc)
+            // [17] Due date (formatted)
 
             for (var i = 0; i < data.length; i++) {
                 var row = createElement("tr");
@@ -1208,16 +1209,12 @@ function tasksListCallback(http) {
                 if (rTime)
                     id += "-" + escape(rTime);
                 row.setAttribute("id", id);
-                //row.cname = escape(data[i][0]);
-                //row.calendar = calendar;
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
                 row.isException = data[i][14];
 
-
-                //row.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                //row.addClassName(data[i][14]); // status
+                row.addClassName(data[i][16]); // status
                 row.addClassName("taskRow");
                 row.calendar = calendar;
                 row.cname = cname;
@@ -1262,8 +1259,8 @@ function tasksListCallback(http) {
 
                 cell = createElement("td");
                 row.appendChild(cell);
-                if (data[i][16])
-                    cell.update(data[i][16]); // end date
+                if (data[i][17])
+                    cell.update(data[i][17]); // end date
 
                 cell = createElement("td");
                 row.appendChild(cell);
