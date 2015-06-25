@@ -7,19 +7,19 @@
     >
   <div layout="row" layout-align="start center">
     <md-input-container class="md-input-number">
-      <input type="number" label:aria-label="quantity" ng-model="editor.event.alarm.quantity"/>
+      <input type="number" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>
     </md-input-container>
-    <md-select ng-model="editor.event.alarm.unit">
+    <md-select ng-model="editor.component.alarm.unit">
       <var:foreach list="unitsList" item="item">
         <md-option var:value="item"><var:string value="itemText"/></md-option>
       </var:foreach>
     </md-select>
-    <md-select ng-model="editor.event.alarm.reference">
+    <md-select ng-model="editor.component.alarm.reference">
       <var:foreach list="referencesList" item="item">
         <md-option var:value="item"><var:string value="itemText"/></md-option>
       </var:foreach>
     </md-select>
-    <md-select ng-model="editor.event.alarm.relation">
+    <md-select ng-model="editor.component.alarm.relation">
       <var:foreach list="relationsList" item="item">
         <md-option var:value="item"><var:string value="itemText"/></md-option>
       </var:foreach>
@@ -29,7 +29,7 @@
   <var:if condition="emailAlarmsEnabled">
     <div layout="row" layout-align="space-around center">
       <md-radio-group layout="row" layout-align="space-around center"
-                      ng-model="editor.event.alarm.action">
+                      ng-model="editor.component.alarm.action">
         <md-radio-button value="display">
           <var:string label:value="Show an Alert"/>
         </md-radio-button>
@@ -39,14 +39,14 @@
       </md-radio-group>
     </div>
     <div layout="row" layout-align="space-around center"
-         ng-show="editor.event.canRemindAttendeesByEmail()">
-      <md-checkbox ng-model="editor.event.alarm.organizer"
+         ng-show="editor.component.canRemindAttendeesByEmail()">
+      <md-checkbox ng-model="editor.component.alarm.organizer"
                    ng-true-value="1"
                    ng-false-value="0"
                    label:aria-label="Email Organizer">
         <var:string label:value="Email Organizer"/>
       </md-checkbox>
-      <md-checkbox ng-model="editor.event.alarm.attendees"
+      <md-checkbox ng-model="editor.component.alarm.attendees"
                    ng-true-value="1"
                    ng-false-value="0"
                    label:aria-label="Email Attendees">

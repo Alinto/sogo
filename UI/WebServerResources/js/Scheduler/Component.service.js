@@ -246,12 +246,15 @@
     this.categories = [];
     this.repeat = {};
     this.alarm = { action: 'display', quantity: 5, unit: 'MINUTES', reference: 'BEFORE', relation: 'START' };
+    this.status = 'not-specified';
     angular.extend(this, data);
 
     if (this.startDate)
       this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
     if (this.endDate)
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
+    if (this.dueDate)
+      this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
 
     // Parse recurrence rule definition and initialize default values
     if (this.repeat.days) {
@@ -294,7 +297,7 @@
 
     this.$hasAlarm = angular.isDefined(data.alarm);
 
-    // Allow the event to be moved to a different calendar
+    // Allow the component to be moved to a different calendar
     this.destinationCalendar = this.pid;
 
     // Load freebusy of attendees
@@ -311,7 +314,7 @@
    * @function hasCustomRepeat
    * @memberof Component.prototype
    * @desc Check if the component has a custom recurrence rule.
-   * @returns true if the the recurrence rule requires the full recurrence editor
+   * @returns true if the recurrence rule requires the full recurrence editor
    */
   Component.prototype.hasCustomRepeat = function() {
     var b = angular.isDefined(this.repeat) &&
@@ -320,6 +323,19 @@
          this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
          this.repeat.months && this.repeat.months.length > 0);
     return b;
+  };
+
+  /**
+   * @function enablePercentComplete
+   * @memberof Component.prototype
+   * @desc Check if the percent completion should be enabled with respect to the
+   *       component's type and status.
+   * @returns true if the percent completion should be displayed
+   */
+  Component.prototype.enablePercentComplete = function() {
+    return (this.component = 'vtodo' &&
+            this.status != 'not-specified' &&
+            this.status != 'cancelled');
   };
 
   /**

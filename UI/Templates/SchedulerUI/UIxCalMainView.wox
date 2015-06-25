@@ -175,7 +175,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
   
-              <md-menu class="md-secondary" ng-click="true">
+              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -239,7 +239,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
               
-              <md-menu class="md-secondary" ng-click="true">
+              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -291,7 +291,7 @@
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
 
-              <md-menu class="md-secondary" ng-click="true">
+              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
                 <md-button class="iconButton"
                            label:aria-label="Options"
                            ng-click="$mdOpenMenu()">
@@ -365,19 +365,20 @@
         </div>
       </md-toolbar>
       <md-content layout="row">
-        <div class="view-list" layout="column" flex="true" style="position: relative;">
+        <div class="view-list md-flex" layout="column" style="position: relative;">
           <md-content id="componentsList">
             <md-tabs md-dynamic-height="true"
                      md-selected="list.selectedList">
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
                 <md-list>
-                  <md-list-item
-                      class="md-clickable md-2-line"
-                      ng-repeat="event in list.component.$events">
+                  <md-list-item class="md-clickable md-2-line"
+                                ng-repeat="event in list.component.$events">
                     <i class="md-avatar" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
                     <div class="md-list-item-text"
-                         ui-sref="calendars.component({calendarId: event.c_folder, componentId: event.c_name})">
+                         ui-sref="calendars.component({calendarId: event.c_folder,
+                                  componentType: 'appointment',
+                                  componentId: event.c_name})">
                       <h3>{{event.c_title}}</h3>
                       <p>{{event.c_location}}</p>
                       <p class="md-secondary">
@@ -392,12 +393,20 @@
               <md-tab label:label="Tasks"
                       md-on-select="list.selectComponentType('tasks')">
                 <md-list>
-                  <md-list-item
-                      class="md-clickable"
-                      ng-repeat="task in list.component.$tasks">
-                    <i class="md-avatar" ng-class="task.getClassName()" ><!-- calendar color --></i>
-                    <p>{{task.c_title}}</p>
-                    <p class="md-secondary">{{task.formatted_enddate}}</p>
+                  <md-list-item class="md-clickable md-2-line"
+                                ng-repeat="task in list.component.$tasks">
+                    <i class="md-avatar" ng-class="task.getClassName('bg')" ><!-- calendar color --></i>
+                    <div class="md-list-item-text"
+                         ui-sref="calendars.component({calendarId: task.c_folder,
+                                  componentType: 'task',
+                                  componentId: task.c_name})">
+                      <h3>{{task.c_title}}</h3>
+                      <p class="md-secondary">
+                        {{task.formatted_enddate}}
+                        <i class="md-icon-repeat" ng-show="task.c_iscycle"><!-- recurrent --></i>
+                        <i class="md-icon-alarm" ng-show="task.c_nextalarm"><!-- alarm --></i>
+                      </p>
+                    </div>
                   </md-list-item>
                 </md-list>
               </md-tab>

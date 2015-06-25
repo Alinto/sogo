@@ -14,9 +14,6 @@
                label:placeholder="Title"
                ng-model="editor.component.summary"/>
       </md-input-container>
-      <!--<md-chips>
-          <md-chip ng-repeat="category in editor.component.categories">{{category}}</md-chip>
-        </md-chips>-->
     </md-toolbar>
     <md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
       <!-- location -->
@@ -77,32 +74,42 @@
           label:aria-label="All day Event">
         <var:string label:value="All day Event"/>
       </md-checkbox>
-      <!-- is transparent -->
-      <md-checkbox
-          ng-model="editor.component.isTransparent"
-          ng-true-value="1"
-          ng-false-value="0"
-          label:aria-label="Show Time as Free">
-        <var:string label:value="Show Time as Free"/>
-      </md-checkbox>
-      <!-- send appointment notifications -->
-      <md-checkbox
-          ng-model="editor.component.sendAppointmentNotifications"
-          ng-true-value="1"
-          ng-false-value="0"
-          label:aria-label="Send Appointment Notifications">
-        <var:string label:value="Send Appointment Notifications"/>
-      </md-checkbox>
       <!-- start + end -->
       <div layout="row">
         <md-input-container>
-          <label><var:string label:value="From"/></label>
+          <label><var:string label:value="Start"/></label>
           <input type="text" ng-model="editor.component.startDate"/>
         </md-input-container>
         <md-input-container>
-          <label><var:string label:value="To"/></label>
-          <input type="text" ng-model="editor.component.endDate"/>
+          <label><var:string label:value="Due"/></label>
+          <input type="text" ng-model="editor.component.dueDate"/>
         </md-input-container>
+      </div>
+      <!-- status -->
+      <div layout="row">
+        <div class="pseudo-input-container" flex="50">
+          <label class="pseudo-input-label"><var:string label:value="Status"/></label>
+          <md-select ng-model="editor.component.status">
+            <var:foreach list="statusList" item="item">
+              <md-option var:value="item"><var:string value="itemStatusText"/></md-option>
+            </var:foreach>
+          </md-select>
+        </div>
+        <md-input-container ng-show="editor.component.status == 'completed'">
+          <label><var:string label:value="status_COMPLETED"/></label>
+          <input type="text" ng-model="editor.component.completedDate"/>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="center center"
+           ng-show="editor.component.enablePercentComplete()">
+        <md-slider class="md-flex"
+                   md-discrete="true"
+                   ng-model="editor.component.percentComplete"
+                   step="5"
+                   min="0"
+                   max="100"
+                   label:aria-label="% complete"><!-- slider --></md-slider>
+        <div flex="30"><var:string label:value="% complete"/></div>
       </div>
       <!-- comment -->
       <md-input-container>
@@ -151,45 +158,6 @@
           <input type="date" label:aria-label="Repeat until" ng-model="editor.component.repeat.until"/>
         </md-input-container>
       </div>
-      <!-- attendees -->
-      <div layout="row" layout-align="space-between end">
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
-          <div class="sg-avatars" ng-hide="editor.showAttendeesEditor">
-            <sg-gravatar-image ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email"
-                               email="{{currentAttendee.email}}"
-                               size="32">
-              <!-- gravatar -->
-            </sg-gravatar-image>
-          </div>
-        </div>
-        <md-button type="button" class="iconButton"
-                   label:aria-label="repeat_CUSTOM"
-                   ng-click="editor.toggleAttendeesEditor()">
-          <i ng-class="{'md-icon-expand-more': !editor.showAttendeesEditor, 'md-icon-expand-less': editor.showAttendeesEditor}"><!-- toggle attendees details --></i>
-        </md-button>
-      </div>
-      <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">
-         <var:component className="UIxAttendeesEditor" />
-      </div>
-      <md-autocomplete class="md-flex"
-                       md-selected-item="attendeeToAdd"
-                       md-search-text="editor.searchText"
-                       md-selected-item-change="editor.addAttendee(card)"
-                       md-items="card in editor.cardFilter(editor.searchText)"
-                       md-min-length="2"
-                       md-no-cache="true"
-                       md-delay="300"
-                       label:placeholder="Invite Attendees"
-                       sg-enter="editor.addAttendee(editor.searchText)">
-        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-          <span class="md-contact-name"
-                md-highlight-text="editor.searchText"
-                md-highlight-flags="^i">{{card.$$fullname}}</span> <span class="md-contact-email"
-                md-highlight-text="editor.searchText"
-                md-highlight-flags="^i">{{card.$$email}}</span>
-        </span>
-      </md-autocomplete>
       <!-- reminder -->
       <md-checkbox ng-model="editor.component.$hasAlarm"
                    label:aria-label="Reminder:">

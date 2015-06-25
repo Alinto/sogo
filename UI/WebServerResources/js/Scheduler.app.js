@@ -64,7 +64,11 @@
         url: '/:calendarId/{componentType:(?:appointment|task)}/new',
         views: {
           componentEditor: {
-            templateUrl: 'UIxAppointmentEditorTemplate',
+            templateUrl: function($stateParams) {
+              // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
+              // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
+              return 'UIx' + $stateParams.componentType.capitalize() + 'EditorTemplate';
+            },
             controller: 'ComponentController',
             controllerAs: 'editor'
           }
@@ -74,10 +78,14 @@
         }
       })
       .state('calendars.component', {
-        url: '/:calendarId/event/:componentId',
+        url: '/:calendarId/{componentType:(?:appointment|task)}/:componentId',
         views: {
           componentEditor: {
-            templateUrl: 'UIxAppointmentEditorTemplate',
+            templateUrl: function($stateParams) {
+              // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
+              // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
+              return 'UIx' + $stateParams.componentType.capitalize() + 'EditorTemplate';
+            },
             controller: 'ComponentController',
             controllerAs: 'editor'
           }

@@ -11,11 +11,11 @@
     var vm = this;
 
     vm.calendars = stateCalendars;
-    vm.event = stateComponent;
+    vm.component = stateComponent;
     vm.categories = {};
-    vm.showRecurrenceEditor = vm.event.$hasCustomRepeat;
+    vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
-    vm.showAttendeesEditor = angular.isDefined(vm.event.attendees);
+    vm.showAttendeesEditor = angular.isDefined(vm.component.attendees);
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     vm.cardFilter = cardFilter;
     vm.cardResults = [];
@@ -23,8 +23,8 @@
     vm.cancel = cancel;
     vm.save = save;
     vm.attendeesEditor = {
-      startDate: vm.event.startDate,
-      endDate: vm.event.endDate,
+      startDate: vm.component.startDate,
+      endDate: vm.component.endDate,
       days: getDays(),
       hours: getHours()
     };
@@ -47,21 +47,21 @@
       }, 100); // don't ask why
     });
 
-    $scope.$watch('editor.event.startDate', function(newStartDate, oldStartDate) {
+    $scope.$watch('editor.component.startDate', function(newStartDate, oldStartDate) {
       if (newStartDate) {
         $timeout(function() {
-          vm.event.start = new Date(newStartDate.substring(0,10) + ' ' + newStartDate.substring(11,16));
-          vm.event.freebusy = vm.event.updateFreeBusyCoverage();
+          vm.component.start = new Date(newStartDate.substring(0,10) + ' ' + newStartDate.substring(11,16));
+          vm.component.freebusy = vm.component.updateFreeBusyCoverage();
           vm.attendeesEditor.days = getDays();
         });
       }
     });
 
-    $scope.$watch('editor.event.endDate', function(newEndDate, oldEndDate) {
+    $scope.$watch('editor.component.endDate', function(newEndDate, oldEndDate) {
       if (newEndDate) {
         $timeout(function() {
-          vm.event.end = new Date(newEndDate.substring(0,10) + ' ' + newEndDate.substring(11,16));
-          vm.event.freebusy = vm.event.updateFreeBusyCoverage();
+          vm.component.end = new Date(newEndDate.substring(0,10) + ' ' + newEndDate.substring(11,16));
+          vm.component.freebusy = vm.component.updateFreeBusyCoverage();
           vm.attendeesEditor.days = getDays();
         });
       }
@@ -69,7 +69,7 @@
 
     function toggleRecurrenceEditor() {
       vm.showRecurrenceEditor = !vm.showRecurrenceEditor;
-      vm.event.$hasCustomRepeat = vm.showRecurrenceEditor;
+      vm.component.$hasCustomRepeat = vm.showRecurrenceEditor;
     }
 
     function toggleAttendeesEditor() {
@@ -98,7 +98,7 @@
           }
           _.each(results, function(card) {
             // Add cards matching the search query but not already in the list of attendees
-            if (!vm.event.hasAttendee(card))
+            if (!vm.component.hasAttendee(card))
               vm.cardResults.push(card);
           });
         });
@@ -110,18 +110,18 @@
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
-          vm.event.addAttendee(new Card({ emails: [{ value: card }] }));
+          vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
           vm.searchText = '';
         }
       }
       else {
-        vm.event.addAttendee(card);
+        vm.component.addAttendee(card);
       }
     }
 
     function save(form) {
       if (form.$valid) {
-        vm.event.$save()
+        vm.component.$save()
           .then(function(data) {
             $scope.$emit('calendars:list');
             $mdSidenav('right').close();
@@ -132,10 +132,10 @@
     }
 
     function cancel() {
-      vm.event.$reset();
-      if (vm.event.isNew) {
+      vm.component.$reset();
+      if (vm.component.isNew) {
         // Cancelling the creation of a component
-        vm.event = null;
+        vm.component = null;
       }
       $mdSidenav('right').close();
     }
@@ -143,8 +143,8 @@
     function getDays() {
       var days = [];
 
-      if (vm.event.start && vm.event.end)
-        days = vm.event.start.daysUpTo(vm.event.end);
+      if (vm.component.start && vm.component.end)
+        days = vm.component.start.daysUpTo(vm.component.end);
 
       return _.map(days, function(date) {
         return { stringWithSeparator: date.stringWithSeparator(),

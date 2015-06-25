@@ -134,6 +134,10 @@
           protectedBy = "View";
           pageName    = "UIxAppointmentEditorTemplate";
         };
+        UIxTaskEditorTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxTaskEditorTemplate";
+        };
         editAttendees = {
           protectedBy = "View";
           pageName    = "UIxAttendeesEditor";

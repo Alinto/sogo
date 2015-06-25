@@ -530,6 +530,7 @@
                        [thisFolder nameInContainer], @"pid",
                        [thisFolder displayName], @"calendar",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
+                       [self loadAlarm], @"alarm",
 		       nil];
 
   if (startDate)

@@ -16,7 +16,7 @@
       <md-list-item>
         <div><!-- empty --></div>
       </md-list-item>
-      <md-list-item ng-repeat="currentAttendee in editor.event.attendees track by currentAttendee.email">
+      <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
         <sg-gravatar-image email="{{currentAttendee.email}}"
                            size="32">
           <!-- gravatar -->
@@ -36,18 +36,18 @@
           <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
         </div>
       </md-list-item>
-      <md-list-item ng-repeat="currentAttendee in editor.event.attendees track by currentAttendee.email">
+      <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
         <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">
-          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 0)}">
+          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 0)}">
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
           </div>
-          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 1)}">
+          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 1)}">
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
           </div>
-          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 2)}">
+          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 2)}">
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
           </div>
-          <div class="quarter" ng-class="{event: editor.event.coversFreeBusy(day.getDayString, hour, 3)}">
+          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 3)}">
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
           </div>
         </div>
