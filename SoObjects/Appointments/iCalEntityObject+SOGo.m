@@ -72,6 +72,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 
 /**
  * @see [UIxAppointmentEditor viewAction]
+ * @see [UIxTaskEditor viewAction]
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
@@ -106,10 +107,10 @@ NSNumber *iCalDistantFutureNumber = nil;
   if (value && (value = [value absoluteString]) && [value length]) [data setObject: value forKey: @"attachUrl"];
 
   value = [self accessClass];
-  if (value) [data setObject: [value lowercaseString] forKey: @"classification"];
+  if ([value length]) [data setObject: [value lowercaseString] forKey: @"classification"];
 
   value = [self status];
-  if (value) [data setObject: [value lowercaseString] forKey: @"status"];
+  if ([value length]) [data setObject: [value lowercaseString] forKey: @"status"];
 
   value = [self createdBy];
   if (value) [data setObject: value forKey: @"createdBy"];
