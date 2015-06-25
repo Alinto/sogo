@@ -378,6 +378,8 @@
  *          -d '{ "summary": "Meeting", "startDate": "2015-01-28", "startTime": "10:00", \
  *                "endDate": "2015-01-28", "endTime": "12:00" }'
  *
+ * @apiParam {_} . _Save in [iCalEvent+SOGo setAttributes:inContext:]_
+ *
  * @apiParam {String} startDate               Start date (YYYY-MM-DD)
  * @apiParam {String} startTime               Start time (HH:MM)
  * @apiParam {String} endDate                 End date (YYYY-MM-DD)
@@ -385,9 +387,7 @@
  * @apiParam {Number} [isAllDay]              1 if event is all-day
  * @apiParam {Number} isTransparent           1 if the event is not opaque
  *
- * ^_ Save in [iCalEvent+SOGo setAttributes:inContext:]
- *
- * Save in [iCalEntityObject+SOGo setAttributes:inContext:]
+ * @apiParam {_} .. _Save in [iCalEntityObject+SOGo setAttributes:inContext:]_
  *
  * @apiParam {Number} [sendAppointmentNotifications] 0 if notifications must not be sent
  * @apiParam {String} [summary]               Summary
@@ -417,7 +417,7 @@
  * @apiParam {String} [alarm.organizer.name]  Attendee's name
  * @apiParam {String} alarm.organizer.email   Attendee's email address
  *
- * Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]
+ * @apiParam {_} ... _Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]_
  *
  * @apiParam {Object} [repeat]                Recurrence rule definition
  * @apiParam {String} repeat.frequency        Either daily, every weekday, weekly, bi-weekly, monthly, or yearly
@@ -430,7 +430,7 @@
  * @apiParam {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
  * @apiParam {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
  *
- * Save in [UIxComponentEditor setAttributes:]
+ * @apiParam {_} .... _Save in [UIxComponentEditor setAttributes:]_
  *
  * @apiParam {String} [destinationCalendar]   ID of destination calendar
  * @apiParam {Object} [organizer]             Appointment organizer
@@ -559,12 +559,25 @@
  * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
  * @apiSuccess (Success 200) {Number} isReadOnly              1 if event is read-only
  *
- * From [iCalEvent+SOGo attributes]
+ * @apiSuccess {_} . _From [UIxComponentEditor loadAlarm]_
+ *
+ * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
+ * @apiSuccess (Success 200) {String} alarm.action            Either display or email
+ * @apiSuccess (Success 200) {Number} alarm.quantity          Quantity of units
+ * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
+ * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
+ * @apiSuccess (Success 200) {Object[]} [alarm.attendees]     List of attendees
+ * @apiSuccess (Success 200) {String} [alarm.attendees.name]  Attendee's name
+ * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
+ * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
+ *
+ * @apiSuccess {_} .. _From [iCalEvent+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
  *
- * From [iCalEntityObject+SOGo attributes]
+ * @apiSuccess {_} ... _From [iCalEntityObject+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  * @apiSuccess (Success 200) {String} component               "vevent"
@@ -590,18 +603,8 @@
  * @apiSuccess (Success 200) {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
- * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
- * @apiSuccess (Success 200) {String} alarm.action            Either display or email
- * @apiSuccess (Success 200) {Number} alarm.quantity          Quantity of units
- * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
- * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
- * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
- * @apiSuccess (Success 200) {Object[]} [alarm.attendees]     List of attendees
- * @apiSuccess (Success 200) {String} [alarm.attendees.name]  Attendee's name
- * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
- * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
  *
- * From [iCalRepeatableEntityObject+SOGo attributes]
+ * @apiSuccess {_} .... _From [iCalRepeatableEntityObject+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly

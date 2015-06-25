@@ -256,6 +256,8 @@
  *          -d '{ "Summary": "Todo", "startDate": "2015-01-28", "startTime": "10:00", \
  *                "dueDate": "2015-01-28", "status": "in-process", "percentComplete": 25 }'
  *
+ * @apiParam {_} . _Save in [iCalToDo+SOGo setAttributes:inContext:]_
+ *
  * @apiParam {String} [startDate]             Start date (YYYY-MM-DD)
  * @apiParam {String} [startTime]             Start time (HH:MM)
  * @apiParam {String} [dueDate]               End date (YYYY-MM-DD)
@@ -264,7 +266,7 @@
  * @apiParam {String} [completedTime]         End time (HH:MM)
  * @apiParam {Number} percentComplete         Percent completion (0-100)
  *
- * Save in [iCalEntityObject+SOGo setAttributes:inContext:]
+ * @apiParam {_} .. _Save in [iCalEntityObject+SOGo setAttributes:inContext:]_
  *
  * @apiParam {Number} [sendAppointmentNotifications] 0 if notifications must not be sent
  * @apiParam {String} [summary]               Summary
@@ -294,7 +296,7 @@
  * @apiParam {String} [alarm.organizer.name]  Attendee's name
  * @apiParam {String} alarm.organizer.email   Attendee's email address
  *
- * Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]
+ * @apiParam {_} ... _Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]_
  *
  * @apiParam {Object} [repeat]                Recurrence rule definition
  * @apiParam {String} repeat.frequency        Either daily, every weekday, weekly, bi-weekly, monthly, or yearly
@@ -307,7 +309,7 @@
  * @apiParam {Number[]} [repeat.months]       List of months of the year (values are 1 to 12)
  * @apiParam {Number[]} [repeat.monthdays]    Days of the month (values are 1 to 31)
  *
- * Save in [UIxComponentEditor setAttributes:]
+ * @apiParam {_} .... _Save in [UIxComponentEditor setAttributes:]_
  *
  * @apiParam {Object} [organizer]             Appointment organizer
  * @apiParam {String} organizer.name          Organizer's name
@@ -392,38 +394,23 @@
  * @apiSuccess (Success 200) {String} id                      Todo ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (todo's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
- * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedStartDate      Formatted start date
  * @apiSuccess (Success 200) {String} localizedStartTime      Formatted start time
- * @apiSuccess (Success 200) {String} dueDate                 Due date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedDueDate        Formatted due date
  * @apiSuccess (Success 200) {String} localizedDueTime        Formatted due time
- * @apiSuccess (Success 200) {String} completedDate           Completed date (ISO8601)
- * @apiSuccess (Success 200) {String} completedTime           Formatted completed time
- * @apiSuccess (Success 200) {String} status                  Status (needs-action, in-process, completed, or cancelled)
- * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
+ * @apiSuccess (Success 200) {String} localizedCompletedDate  Formatted completed date
+ * @apiSuccess (Success 200) {String} localizedCompletedTime  Formatted completed time
  * @apiSuccess (Success 200) {Number} isReadOnly              1 if task is read-only
  *
- * From [iCalEntityObject+SOGo attributes]
+ * @apiSuccess {_} . _From [iCalToDo+SOGo attributesInContext:]_
  *
- * @apiSuccess (Success 200) {String} component               "vtodo"
- * @apiSuccess (Success 200) {String} summary                 Summary
- * @apiSuccess (Success 200) {String} location                Location
- * @apiSuccess (Success 200) {String} comment                 Comment
- * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
- * @apiSuccess (Success 200) {Number} priority                Priority
- * @apiSuccess (Success 200) {String[]} [categories]          Categories
- * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
- * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
- * @apiSuccess (Success 200) {String} organizer.email         Organizer's email address
- * @apiSuccess (Success 200) {Object[]} [attendees]           List of attendees
- * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
- * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
- * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
- * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
- * @apiSuccess (Success 200) {String} [attendees.role]        Attendee's role
- * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
- * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
+ * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
+ * @apiSuccess (Success 200) {String} dueDate                 Due date (ISO8601)
+ * @apiSuccess (Success 200) {String} completedDate           Completed date (ISO8601)
+ * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
+ *
+ * @apiSuccess {_} .. _From [UIxComponentEdtiror loadAlarm]_
+ *
  * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
  * @apiSuccess (Success 200) {String} alarm.action            Either display or email
  * @apiSuccess (Success 200) {String} alarm.quantity          Quantity of units
@@ -435,7 +422,29 @@
  * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
  * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
  *
- * From [iCalRepeatableEntityObject+SOGo attributes]
+ * @apiSuccess {_} ... _From [iCalEntityObject+SOGo attributesInContext:]_
+ *
+ * @apiSuccess (Success 200) {String} component               "vtodo"
+ * @apiSuccess (Success 200) {String} summary                 Summary
+ * @apiSuccess (Success 200) {String} location                Location
+ * @apiSuccess (Success 200) {String} comment                 Comment
+ * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
+ * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {String[]} [categories]          Categories
+ * @apiSuccess (Success 200) {String} status                  Status (needs-action, in-process, completed, or cancelled)
+ * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer
+ * @apiSuccess (Success 200) {String} organizer.name          Organizer's name
+ * @apiSuccess (Success 200) {String} organizer.email         Organizer's email address
+ * @apiSuccess (Success 200) {Object[]} [attendees]           List of attendees
+ * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
+ * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
+ * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
+ * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
+ * @apiSuccess (Success 200) {String} [attendees.role]        Attendee's role
+ * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
+ * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
+ *
+ * @apiSuccess {_} .... _From [iCalRepeatableEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
