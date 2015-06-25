@@ -104,7 +104,9 @@ static NSArray *tasksFields = nil;
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"editable", @"erasable",
-                   @"c_priority", @"c_owner", @"c_recurrence_id", @"isException", @"c_description", nil];
+                   @"c_priority", @"c_owner",
+                   @"c_iscycle", @"c_nextalarm",
+                   @"c_recurrence_id", @"isException", @"c_description", nil];
     [tasksFields retain];
   }
 }
@@ -529,7 +531,6 @@ static NSArray *tasksFields = nil;
                               forAllDay: (BOOL) forAllDay
 {
   NSCalendarDate *date;
-  NSString *formattedDate;
   NSUInteger delta;
 
   date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
