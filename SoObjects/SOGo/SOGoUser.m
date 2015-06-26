@@ -202,7 +202,18 @@
           // the real login most likely is the email address.
           if (r.location != NSNotFound && ![sd enableDomainBasedUID])
             uid = [realUID substringToIndex: r.location-1];
-          else
+          // If we don't have the domain in the UID but SOGoEnableDomainBasedUID is
+          // enabled, let's add it internally so so it becomes unique across
+          // all potential domains.
+          else if (r.location == NSNotFound && [sd enableDomainBasedUID])
+            {
+              uid = [NSString stringWithString: realUID];
+              realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
+            }
+          // We found the domain and SOGoEnableDomainBasedUID is enabled,
+          // we keep realUID.. This would happen for example if the user
+          // authenticates with foo@bar.com and the UIDFieldName is also foo@bar.com
+          else if ([sd enableDomainBasedUID])
             uid = [NSString stringWithString: realUID];
         }
     }

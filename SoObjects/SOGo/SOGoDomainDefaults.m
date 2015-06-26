@@ -294,11 +294,6 @@
   return [self stringForKey: @"SOGoLDAPContactInfoAttribute"];
 }
 
-- (NSString *) calendarDefaultCategoryColor
-{
-  return [self stringForKey: @"SOGoCalendarDefaultCategoryColor"];
-}
-
 - (NSArray *) freeBusyDefaultInterval
 {
   return [self arrayForKey: @"SOGoFreeBusyDefaultInterval"];

@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2010 Inverse inc.
+  Copyright (C) 2005-2015 Inverse inc.
 
   This file is part of SOGo
 
@@ -378,9 +378,8 @@ static Class SOGoContactGCSEntryK = Nil;
     result = [self redirectToLocation: [self modulePath]];
   else
     {
-      jsRefreshMethod
-        = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
-                    [contact nameInContainer]];
+      jsRefreshMethod = [NSString stringWithFormat: @"refreshContacts('%@')",
+                                  [contact nameInContainer]];
       result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
     }
 
