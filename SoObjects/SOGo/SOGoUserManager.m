@@ -922,7 +922,7 @@ static Class NSNullK;
     {
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
-      if (domain)
+      if (domain && [aUID rangeOfString: @"@"].location == NSNotFound)
         cacheUid = [NSString stringWithFormat: @"%@@%@", aUID, domain];
       else
         cacheUid = aUID;
