@@ -31,14 +31,16 @@
           </div>
         </md-button>
         <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUser.uid">
-          <md-checkbox ng-model="user.isSubscribed"
-                       label:arial-label="Subscribe User"
-                       ng-disabled="user.wasSubscribed"
-                       ng-true-value="1"
-                       ng-false-value="0"
-                       ng-hide="user.$isSpecial()">
-            <var:string label:value="Subscribe User"/>
-          </md-checkbox>
+          <var:if condition="canSubscribeUsers">
+            <md-checkbox ng-model="user.isSubscribed"
+                         label:arial-label="Subscribe User"
+                         ng-disabled="user.wasSubscribed"
+                         ng-true-value="1"
+                         ng-false-value="0"
+                         ng-hide="user.$isSpecial()">
+              <var:string label:value="Subscribe User"/>
+            </md-checkbox>
+          </var:if>
           <div ng-include="'UIxUserRightsEditor'">
             <!--
                 Load ng-template #UIxUserRightsEditor from main module wox. Inner wox templates are:

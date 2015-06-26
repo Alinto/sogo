@@ -83,6 +83,12 @@
   return defaultUserID;
 }
 
+- (BOOL) canSubscribeUsers
+{
+  return [[self clientObject]
+           respondsToSelector: @selector (subscribeUserOrGroup:reallyDo:response:)];
+}
+
 /**
  * @api {get} /so/:username/:folderPath/acls List users with rights
  * @apiVersion 1.0.0
@@ -100,11 +106,11 @@
  */
 - (id <WOActionResults>) aclsAction
 {
+  NSString *currentUID, *ownerLogin, *info;
+  NSDictionary *currentUserInfos;
+  NSMutableDictionary *userData;
   id <WOActionResults> result;
   NSEnumerator *aclsEnum;
-  NSString *currentUID, *ownerLogin, *info;
-  NSMutableDictionary *userData;
-  NSDictionary *currentUserInfos;
 
   if (!prepared)
     {
@@ -138,14 +144,17 @@
         }
 
       // Add the 'Any authenticated' user
-      userData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 @"<default>", @"uid",
-                               [self labelForKey: @"Any Authenticated User"], @"cn",
-                               @"public-user", @"userClass",
-                               nil];
-      [users setObject: userData forKey: @"<default>"];
+      if ([self canSubscribeUsers])
+        {
+          userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"<default>", @"uid",
+                                              [self labelForKey: @"Any Authenticated User"], @"cn",
+                                   @"public-user", @"userClass",
+                                   nil];
+          [users setObject: userData forKey: @"<default>"];
+        }
 
-      if ([self isPublicAccessEnabled])
+      if ([self canSubscribeUsers] && [self isPublicAccessEnabled])
         {
           // Add the 'public access' user
           userData = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -200,12 +209,6 @@
   um = [SOGoUserManager sharedUserManager];
 
   return [um contactInfosForUserWithUIDorEmail: [self currentUser]];
-}
-
-- (BOOL) canSubscribeUsers
-{
-  return [[self clientObject]
-           respondsToSelector: @selector (subscribeUserOrGroup:reallyDo:response:)];
 }
 
 - (BOOL) currentUserIsSubscribed
