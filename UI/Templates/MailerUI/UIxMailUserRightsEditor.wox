@@ -6,100 +6,91 @@
    xmlns:rsrc="OGo:url"
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
-      <div>
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox"
-                     ng-checked="selectedUser.rights.userCanReadMails"
-                     ng-model="selectedUser.rights.userCanReadMails"
-                     ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="Read mails from this folder" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanMarkMailsRead"
-                     ng-checked="selectedUser.rights.userCanMarkMailsRead"
-                     ng-model="selectedUser.rights.userCanMarkMailsRead"
-                     ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="Mark mails read and unread" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanWriteMails"
-                     ng-checked="selectedUser.rights.userCanWriteMails"
-                     ng-model="selectedUser.rights.userCanWriteMails"
-                     ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="Modify the flags of the mails in this folder" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanInsertMails"
-                     ng-checked="selectedUser.rights.userCanInsertMails"
-                     ng-model="selectedUser.rights.userCanInsertMails"
-                     ng-change="confirmChange(selectedUser)" />
+
+    <div class="mailUserRights" layout="column">
+    
+    <md-checkbox name="userCanReadMails"
+                 ng-model="acl.selectedUser.rights.userCanReadMails"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="Read mails from this folder" />
+    </md-checkbox>
+    
+    <md-checkbox name="userCanMarkMailsRead"
+                 ng-model="acl.selectedUser.rights.userCanMarkMailsRead"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="Mark mails read and unread" />
+    </md-checkbox>
+    
+    <md-checkbox name="userCanWriteMails"
+                 ng-model="acl.selectedUser.rights.userCanWriteMails"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="Modify the flags of the mails in this folder" />
+    </md-checkbox>
+    
+    <md-checkbox name="userCanInsertMails"
+                 ng-model="acl.selectedUser.rights.userCanInsertMails"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Insert, copy and move mails into this folder" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanPostMails"
-                     ng-checked="selectedUser.rights.userCanPostMails"
-                     ng-model="selectedUser.rights.userCanPostMails"
-                     ng-change="confirmChange(selectedUser)" />
+    </md-checkbox>
+
+    <md-checkbox name="userCanPostMails"
+                 ng-model="acl.selectedUser.rights.userCanPostMails"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Post mails" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanCreateSubfolders"
-                     ng-checked="selectedUser.rights.userCanCreateSubfolders"
-                     ng-model="selectedUser.rights.userCanCreateSubfolders"
-                     ng-change="confirmChange(selectedUser)" />
+    </md-checkbox>
+
+    <md-checkbox name="userCanCreateSubfolders"
+                 ng-model="acl.selectedUser.rights.userCanCreateSubfolders"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Add subfolders to this folder" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanEraseMails"
-                     ng-checked="selectedUser.rights.userCanEraseMails"
-                     ng-model="selectedUser.rights.userCanEraseMails"
-                     ng-change="confirmChange(selectedUser)" />
+    </md-checkbox>
+
+    <md-checkbox name="userCanEraseMails"
+                 ng-model="acl.selectedUser.rights.userCanEraseMails"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Erase mails from this folder" />
-            </label>
-          </li>
-          <var:if condition="conformsToRFC4314">
-          <li>
-            <label>
-              <input type="checkbox" name="userCanRemoveFolder"
-                     ng-checked="selectedUser.rights.userCanRemoveFolder"
-                     ng-model="selectedUser.rights.userCanRemoveFolder"
-                     ng-change="confirmChange(selectedUser)" />
+    </md-checkbox>
+
+    <var:if condition="conformsToRFC4314">
+    <md-checkbox name="userCanRemoveFolder"
+                 ng-model="acl.selectedUser.rights.userCanRemoveFolder"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Remove this folder" />
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" name="userCanExpungeFolder"
-                     ng-checked="selectedUser.rights.userCanExpungeFolder"
-                     ng-model="selectedUser.rights.userCanExpungeFolder"
-                     ng-change="confirmChange(selectedUser)" />
+    </md-checkbox>
+    
+    <md-checkbox name="userCanExpungeFolder"
+                 ng-model="acl.selectedUser.rights.userCanExpungeFolder"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
               <var:string label:value="Expunge this folder" />
-            </label>
-          </li>
-          </var:if>
-          <li>
-            <label>
-              <input type="checkbox" name="userIsAdministrator"
-                     ng-checked="selectedUser.rights.userIsAdministrator"
-                     ng-model="selectedUser.rights.userIsAdministrator"
-                     ng-change="confirmChange(selectedUser)" />
-              <var:string label:value="Modify the acl of this folder" />
-            </label>
-          </li>
-        </ul>
-      </div>
+    </md-checkbox>
+    </var:if>
+
+    <md-checkbox name="userIsAdministrator"
+                 ng-model="acl.selectedUser.rights.userIsAdministrator"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="Modify the acl of this folder" />
+    </md-checkbox>
+ 
+  </div>
+
 </container>

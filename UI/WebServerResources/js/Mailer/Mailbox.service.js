@@ -24,6 +24,7 @@
         this.isEditable = this.$isEditable();
         // Make a copy of the data for an eventual reset
         this.$shadowData = this.$omit();
+        this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
       }
     }
     else {
@@ -38,13 +39,14 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Mailbox constructor
    */
-  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, PRELOAD) {
+  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Acl', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, Acl, PRELOAD) {
     angular.extend(Mailbox, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser),
       $Message: Message,
+      $$Acl: Acl,
       PRELOAD: PRELOAD
     });
 
@@ -489,6 +491,9 @@
             _.extend(_this.$messages[i], msg);
           });
         }
+        // Instanciate Acl object
+        _this.$acl = new Mailbox.$$Acl('Mail/' + _this.id);
+
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
         _this.$isLoading = false;
         deferred.resolve(_this.$messages);

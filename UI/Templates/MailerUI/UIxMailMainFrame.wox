@@ -231,38 +231,8 @@
 
 <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxMailMainFrame">
-    <!-- dropdown menu for mailbox options button -->
-    <div id="folderProperties" class ="f-dropdown icons-dropdown" dropdown-content="dropdown-content" ng-hide="true">
-      <ul class="button-group">
-        <li ng-show="currentFolder.isEditable">
-          <span class="button" ng-click="editFolder(currentFolder)">
-            <i class="icon-pencil"><!-- rename --></i>
-          </span>
-        </li>
-        <li ng-show="currentFolder.isEditable">
-          <span class="button" ng-click="newFolder(currentFolder)">
-            <i class="icon-plus"><!-- new mailbox --></i>
-          </span>
-        </li>
-        <li ng-show="currentFolder.isEditable">
-          <span class="button" ng-click="share()">
-            <i class="icon-earth"><!-- share --></i>
-          </span>
-        </li>
-        <li>
-          <span class="button" ng-click="exportMails()">
-            <i class="icon-ion-ios7-upload-outline"><!-- export --></i>
-          </span>
-        </li>
-        <li ng-show="currentFolder.isEditable">
-          <span class="button" ng-click="confirmDelete()">
-            <i class="icon-trash"><!-- delete --></i>
-          </span>
-        </li>
-      </ul>
-    </div>
 
-<!-- Sidenav -->
+    <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
@@ -296,11 +266,52 @@
                        sg-enter="saveFolder(folder)"
                        sg-escape="revertEditing(folder)"/>
               </md-input-container>
-              <md-button class="iconButton md-secondary" label:aria-label="Options"
-                         ng-show="currentFolder.path == folder.path"
-                         ng-click="confirmDelete(folder)">
-                <i class="md-icon-more-vert"><!-- options --></i>
-              </md-button>
+              <md-menu class="md-secondary" ng-show="currentFolder.path == folder.path">
+                <md-button class="iconButton"
+                           label:aria-label="Options"
+                           ng-click="$mdOpenMenu()">
+                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
+                </md-button>
+
+                <md-menu-content width="2">
+                  <!-- <md-menu-item>
+                    <md-button type="button" ng-click="TODO">
+                      <var:string label:value="Mark Folder Read"/>
+                    </md-button>
+                  </md-menu-item> -->
+                  <md-menu-item>
+                    <md-button type="button" ng-click="newFolder(folder)">
+                      <var:string label:value="New Subfolder..."/>
+                    </md-button>
+                  </md-menu-item>
+                  <!-- <md-menu-item>
+                    <md-button type="button" ng-click="TODO">
+                      <var:string label:value="Compact"/>
+                    </md-button>
+                  </md-menu-item> -->
+                  <md-menu-item>
+                    <md-button type="button" ng-click="confirmDelete(folder)">
+                      <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="exportMails()">
+                      <var:string label:value="Export"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <!-- <md-menu-item>
+                    <md-button type="button" ng-click="TODO">
+                      <var:string label:value="Use This Folder For"/>
+                    </md-button>
+                  </md-menu-item> -->
+                  <md-menu-item>
+                    <md-button type="button" ng-click="share(folder)">
+                      <var:string label:value="Sharing..."/>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
             </md-list-item>
           </md-list>
         </section>
@@ -355,6 +366,11 @@
       </md-toolbar>
       <div layout="row" ui-view="mailbox"><!-- messages list --></div>
     </section>
+  </script>
+
+  <!-- modal for mailbox sharing options -->
+  <script type="text/ng-template" id="UIxUserRightsEditor">
+    <var:component className="UIxMailUserRightsEditor" />
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">

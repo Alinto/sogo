@@ -167,14 +167,19 @@
           actionClass = "UIxMailFolderActions";
           actionName = "setAsTrashFolder";
         };
-        userRights = {
-          protectedBy = "ReadAcls";
-          pageName    = "UIxMailUserRightsEditor";
-        };
         unseenCount = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "unseenCount";
+        };
+        UIxMailUserRightsEditor = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxMailUserRightsEditor";
+        };
+        userRights = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxMailUserRightsEditor";
+          actionName  = "userRights";
         };
         saveUserRights = {
           protectedBy = "Change Permissions";
