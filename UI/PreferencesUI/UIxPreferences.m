@@ -1335,14 +1335,14 @@ static NSArray *reminderValues = nil;
 //   return [[forwardOptions objectForKey: @"keepCopy"] boolValue];
 // }
 
-// - (NSString *) forwardConstraints
-// {
-//   SOGoDomainDefaults *dd;
-  
-//   dd = [[context activeUser] domainDefaults];
+- (NSString *) forwardConstraints
+{
+  SOGoDomainDefaults *dd;
 
-//   return [NSString stringWithFormat: @"%d", [dd forwardConstraints]];
-// }
+  dd = [[context activeUser] domainDefaults];
+
+  return [NSString stringWithFormat: @"%d", [dd forwardConstraints]];
+}
 
 //
 // Used by templates
