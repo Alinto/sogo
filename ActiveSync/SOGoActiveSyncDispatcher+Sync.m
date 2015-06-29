@@ -487,7 +487,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           if (![sogoObject isKindOfClass: [NSException class]])
             {
               // FIXME: handle errors here
-              if (deletesAsMoves)
+              if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
                 [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
               else
                 [sogoObject delete];
