@@ -474,7 +474,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                          acquire: NO];
 
           if (![sogoObject isKindOfClass: [NSException class]])
-            [sogoObject delete];
+            {
+              // FIXME: handle errors here
+              if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
+                [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+              else
+                [sogoObject delete];
+            }
 
           [theBuffer appendString: @"<Delete>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
