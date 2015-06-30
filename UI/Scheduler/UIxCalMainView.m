@@ -329,13 +329,23 @@
 
 @end
 
-@interface UIxAppointmentEditorTemplate : UIxComponent
+@interface UIxComponentEditorTemplate : UIxComponent
 {
   id item;
 }
 @end
 
-@implementation UIxAppointmentEditorTemplate
+@implementation UIxComponentEditorTemplate
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      item = nil;
+    }
+
+  return self;
+}
 
 - (void) dealloc
 {
@@ -374,6 +384,42 @@
 - (NSString *) itemRepeatText
 {
   return [self labelForKey: [NSString stringWithFormat: @"repeat_%@", [item uppercaseString]]];
+}
+
+@end
+
+@interface UIxAppointmentEditorTemplate : UIxComponentEditorTemplate
+@end
+
+@implementation UIxAppointmentEditorTemplate
+@end
+
+@interface UIxTaskEditorTemplate : UIxComponentEditorTemplate
+@end
+
+@implementation UIxTaskEditorTemplate
+
+- (NSArray *) statusList
+{
+  static NSArray *statusItems = nil;
+
+  if (!statusItems)
+    {
+      statusItems = [NSArray arrayWithObjects: @"not-specified",
+                             @"needs-action",
+                             @"in-process",
+                             @"completed",
+                             @"cancelled",
+                             nil];
+      [statusItems retain];
+    }
+
+  return statusItems;
+}
+
+- (NSString *) itemStatusText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"status_%@", [item uppercaseString]]];
 }
 
 @end
