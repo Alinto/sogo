@@ -410,86 +410,92 @@
 
 - (WOResponse *) copyMessagesAction
 {
-  SOGoMailFolder *co;
+  NSString *value, *destinationFolder;
   SOGoMailAccount *account;
   WOResponse *response;
-  NSArray *uids;
-  NSString *value, *destinationFolder;
+  SOGoMailFolder *co;
   NSDictionary *data;
+  NSArray *uids;
 
   co = [self clientObject];
-  value = [[context request] formValueForKey: @"uid"];
-  destinationFolder = [[context request] formValueForKey: @"folder"];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  uids = [data objectForKey: @"uids"];
+  destinationFolder = [data objectForKey: @"folder"];
   response = nil;
 
-  if ([value length] > 0)
-  {
-    uids = [value componentsSeparatedByString: @","];
-    response = [co copyUIDs: uids  toFolder: destinationFolder inContext: context];
-    if (!response)
-      {
-	// We return the inbox quota
-	account = [co mailAccountFolder];
-	data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-	response = [self responseWithStatus: 200
-				  andString: [data jsonRepresentation]];
-      }
-  }
+  if ([uids count] > 0)
+    {
+      response = [co copyUIDs: uids  toFolder: destinationFolder inContext: context];
+      if (!response)
+        {
+          // We return the inbox quota
+          account = [co mailAccountFolder];
+          data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+          response = [self responseWithStatus: 200
+                                    andString: [data jsonRepresentation]];
+        }
+    }
   else
-  {
-    response = [self responseWithStatus: 500];
-    [response appendContentString: @"Missing 'uid' parameter."];
-  }
+    {
+      data = [NSDictionary dictionaryWithObject: @"Error copying messages." forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [data jsonRepresentation]];
+    }
 
   return response;
 }
 
 - (WOResponse *) moveMessagesAction
 {
-  SOGoMailFolder *co;
+  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSMutableArray *mailboxThreadsCollapsed;
+  NSString *value, *destinationFolder;
   SOGoUserSettings *us;
   WOResponse *response;
+  NSDictionary *data;
+  SOGoMailFolder *co;
   NSArray *uids;
-  NSString *value, *destinationFolder;
-  NSMutableDictionary *moduleSettings, *threadsCollapsed;
-  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
-  NSMutableArray *mailboxThreadsCollapsed;
+
   int i;
 
   co = [self clientObject];
-  value = [[context request] formValueForKey: @"uid"];
-  destinationFolder = [[context request] formValueForKey: @"folder"];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  uids = [data objectForKey: @"uids"];
+  destinationFolder = [data objectForKey: @"folder"];
   response = nil;
 
-  if ([value length] > 0)
-  {
-    uids = [value componentsSeparatedByString: @","];
-    response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
-    if (!response)
-      // Verify if the message beeing delete is saved as the root of a collapsed thread
-      us = [[context activeUser] userSettings];
-      moduleSettings = [us objectForKey: @"Mail"];
-      threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
-      currentMailbox = [co nameInContainer];
-      currentAccount = [[co container] nameInContainer];
-      keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
-
-      if (threadsCollapsed)
+  if ([uids count] > 0)
+    {
+      response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
+      if (!response)
         {
-          if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+          // Verify if the message beeing delete is saved as the root of a collapsed thread
+          us = [[context activeUser] userSettings];
+          moduleSettings = [us objectForKey: @"Mail"];
+          threadsCollapsed = [moduleSettings objectForKey: @"threadsCollapsed"];
+          currentMailbox = [co nameInContainer];
+          currentAccount = [[co container] nameInContainer];
+          keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+
+          if (threadsCollapsed)
             {
-              for (i = 0; i < [uids count]; i++)
-                [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
-              [us synchronize];
+              if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey: keyForMsgUIDs]))
+                {
+                  for (i = 0; i < [uids count]; i++)
+                    [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
+                  [us synchronize];
+                }
             }
+          response = [self responseWith204];
         }
-      response = [self responseWith204];
-  }
+    }
   else
-  {
-    response = [self responseWithStatus: 500];
-    [response appendContentString: @"Missing 'uid' parameter."];
-  }
+    {
+      data = [NSDictionary dictionaryWithObject: @"Error moving messages." forKey: @"error"];
+      response = [self responseWithStatus: 500
+                                andString: [data jsonRepresentation]];
+    }
 
   return response;
 }

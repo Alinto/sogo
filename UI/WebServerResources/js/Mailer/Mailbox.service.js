@@ -132,7 +132,7 @@
 
     path.splice(0, 0, accountId); // insert account ID
 
-    return path.join('/');
+    return '/' + path.join('/');
   };
 
   /**
@@ -370,6 +370,28 @@
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
   };
 
+  /**
+   * @function $copyMessages
+   * @memberof Mailbox.prototype
+   * @desc Copy multiple messages from the current mailbox to a target one
+   * @return a promise of the HTTP operation
+   */
+  Mailbox.prototype.$copyMessages = function(uids, folder) {
+    var _this = this;
+    return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder});
+  };
+
+  /**
+   * @function $moveMessages
+   * @memberof Mailbox.prototype
+   * @desc Move multiple messages from the current mailbox to a target one
+   * @return a promise of the HTTP operation
+   */
+  Mailbox.prototype.$moveMessages = function(uids, folder) {
+    var _this = this;
+    return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder});
+  };
+  
   /**
    * @function $reset
    * @memberof Mailbox.prototype

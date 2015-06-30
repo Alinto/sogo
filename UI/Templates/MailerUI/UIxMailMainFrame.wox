@@ -347,7 +347,6 @@
                 <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
                 <md-option value="body"><var:string label:value="Entire Message"/></md-option>
               </md-select>
-
             </div>
           </div>
         </div>
@@ -362,6 +361,27 @@
           <md-button>
             <i class="md-icon-star"><!-- flag mails --></i>
           </md-button>
+          <md-menu>
+            <md-button aria-label="Copy messages" ng-click="$mdOpenMenu()">
+              <i class="md-icon-content-copy"><!-- copy mails --></i>
+            </md-button>
+            <md-menu-content width="4">
+              <div ng-repeat="account in accounts track by account.id">
+                <md-menu-item>
+                  <md-button class="md-primary" ng-disabled="true">{{account.name}}</md-button>
+                </md-menu-item>
+                <md-menu-divider><!-- divider --></md-menu-divider>
+                <md-menu-item ng-repeat="folder in
+                                         account.$flattenMailboxes()
+                                         track by folder.path"
+                              ng-hide="mailbox.id == folder.id">
+                  <md-button ng-click="copySelectedMessages(folder.id)">
+                    <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                  </md-button>
+                </md-menu-item>
+              </div>
+            </md-menu-content>
+          </md-menu>
         </div>
       </md-toolbar>
       <div layout="row" ui-view="mailbox"><!-- messages list --></div>
