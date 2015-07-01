@@ -94,8 +94,8 @@ typedef enum
 - (void) increaseSequence;
 
 /* url can either be set as NSString or NSURL */ 
-- (void) setAttach: (id) _value;
-- (NSURL *) attach;
+- (void) setAttach: (NSArray *) _value;
+- (NSArray *) attach;
 - (void) setUrl: (id) _value;
 - (NSURL *) url;
   

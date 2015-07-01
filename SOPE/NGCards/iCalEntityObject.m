@@ -400,32 +400,49 @@
   return [self childrenWithTag: @"valarm"];
 }
 
-- (void) setAttach: (id) _value
+- (void) setAttach: (NSArray *) _value
 {
   NSString *aString;
+  id anObject;
+  int count, max;
 
-  if ([_value isKindOfClass: [NSString class]])
-    aString = _value;
-  else if ([_value isKindOfClass: [NSURL class]])
-    aString = [_value absoluteString];
-  else
-    aString = @"";
-
-  [[self uniqueChildWithTag: @"attach"] setSingleValue: aString forKey: @""];
+  max = [_value count];
+  for (count = 0; count < max; count++)
+    {
+      anObject = [_value objectAtIndex: count];
+      if ([anObject isKindOfClass: [NSURL class]])
+        {
+          aString = [anObject absoluteString];
+        }
+      else
+        aString = anObject;
+      [self addChild: [CardElement simpleElementWithTag: @"attach" value: aString]];
+    }
 }
 
-- (NSURL *) attach
+- (NSArray *) attach
 {
+  NSArray *elements;
+  NSMutableArray *attachUrls;
   NSString *stringAttach;
   NSURL *url;
+  int count, max;
 
-  stringAttach = [[self uniqueChildWithTag: @"attach"] flattenedValuesForKey: @""];
-  url = [NSURL URLWithString: stringAttach];
+  elements = [self childrenWithTag: @"attach"];
+  max = [elements count];
+  attachUrls = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      stringAttach = [[elements objectAtIndex: count] flattenedValuesForKey: @""];
+      url = [NSURL URLWithString: stringAttach];
 
-  if (!url && [stringAttach length] > 0)
-    url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
+      if (!url && [stringAttach length] > 0)
+        url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
+
+      [attachUrls addObject: [url absoluteString]];
+    }
   
-  return url;
+  return attachUrls;
 }
 
 - (void) setUrl: (id) _value
