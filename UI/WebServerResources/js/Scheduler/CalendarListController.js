@@ -16,13 +16,15 @@
     vm.newComponent = newComponent;
     // TODO: should reflect last state userSettings -> Calendar -> SelectedList
     vm.selectedList = 0;
+    vm.selectComponentType('tasks');
     vm.selectComponentType('events');
 
     // Switch between components tabs
     function selectComponentType(type, options) {
       if (options && options.reload || vm.componentType != type) {
         // TODO: save user settings (Calendar.SelectedList)
-        Component.$filter(type);
+        if (angular.isUndefined(Component['$' + type]))
+          Component.$filter(type);
         vm.componentType = type;
       }
     }
