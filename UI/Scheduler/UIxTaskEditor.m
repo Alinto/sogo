@@ -409,7 +409,7 @@
  * @apiSuccess (Success 200) {String} completedDate           Completed date (ISO8601)
  * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
  *
- * @apiSuccess {_} .. _From [UIxComponentEdtiror loadAlarm]_
+ * @apiSuccess {_} .. _From [UIxComponentEdtiror alarm]_
  *
  * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
  * @apiSuccess (Success 200) {String} alarm.action            Either display or email
@@ -530,7 +530,7 @@
                        [thisFolder nameInContainer], @"pid",
                        [thisFolder displayName], @"calendar",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
-                       [self loadAlarm], @"alarm",
+                       [self alarm], @"alarm",
 		       nil];
 
   if (startDate)

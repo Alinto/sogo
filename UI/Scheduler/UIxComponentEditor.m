@@ -545,7 +545,7 @@ static NSArray *reminderValues = nil;
     }
 }
 
-- (NSDictionary *) loadAlarm
+- (NSDictionary *) alarm
 {
   NSArray *attendees;
   NSMutableDictionary *alarmData;
@@ -595,13 +595,41 @@ static NSArray *reminderValues = nil;
   return alarmData;
 }
 
+- (NSArray *) attachUrls
+{
+  NSMutableArray *attachUrls;
+  NSArray *values;
+  NSString *attachUrl;
+  NSUInteger count, max;
+
+  values = [component attach];
+  max = [values count];
+  if (max > 0)
+    {
+      attachUrls = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          attachUrl = [values objectAtIndex: count];
+          if ([attachUrl length] > 0)
+            [attachUrls addObject: [NSDictionary dictionaryWithObject: attachUrl forKey: @"value"]];
+        }
+    }
+  else
+    attachUrls = nil;
+
+  return attachUrls;
+}
+
 - (void) setAttributes: (NSDictionary *) data
 {
+  NSArray *values;
   NSCalendarDate *now;
+  NSMutableArray *attachUrls;
   NSMutableDictionary *dataWithOwner;
   NSString *owner;
+  NSUInteger i;
   SOGoAppointmentFolders *folders;
-  id destinationCalendar;
+  id destinationCalendar, o;
 
   now = [NSCalendarDate calendarDate];
   owner = [componentCalendar ownerInContext: context];
@@ -623,6 +651,27 @@ static NSArray *reminderValues = nil;
     }
 
   [self _handleOrganizer];
+
+  if ([[data objectForKey: @"attachUrls"] isKindOfClass: [NSArray class]])
+    {
+      values = [component childrenWithTag: @"attach"];
+      [component removeChildren: values];
+      values = [data objectForKey: @"attachUrls"];
+      attachUrls = [NSMutableArray arrayWithCapacity: [values count]];
+      for (i = 0; i < [values count]; i++)
+        {
+          o = [values objectAtIndex: i];
+          if ([o isKindOfClass: [NSDictionary class]])
+            {
+              [attachUrls addObject: [o objectForKey: @"value"]];
+            }
+        }
+    }
+  else
+    {
+      attachUrls = nil;
+    }
+  [component setAttach: attachUrls];
 
   if ([[self clientObject] isNew])
     {

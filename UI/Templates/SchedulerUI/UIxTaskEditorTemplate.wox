@@ -111,6 +111,29 @@
                    label:aria-label="% complete"><!-- slider --></md-slider>
         <div flex="30"><var:string label:value="% complete"/></div>
       </div>
+      <!-- attach urls -->
+      <div class="attr" ng-repeat="attach in editor.component.attachUrls">
+        <div layout="row" layout-align="center end">
+          <md-input-container>
+            <label>
+              <var:string label:value="URL"/>
+            </label>
+            <input type="text" ng-model="attach.value"
+                   sg-focus-on="attachUrl_{{$index}}"/>
+          </md-input-container>
+          <md-button class="iconButton" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+            <i class="md-icon-remove-circle"><!-- remove --></i>
+          </md-button>
+        </div>
+      </div>
+      <div class="md-layout-margin" layout="row" layout-align="start center">
+        <md-button class="iconButton" type="button" ng-click="editor.addAttachUrl($event)">
+          <i class="md-icon-add"><!-- plus icon button--></i>
+        </md-button>
+        <label class="button-label">
+          <var:string label:value="Attach"/>
+        </label>
+      </div>
       <!-- comment -->
       <md-input-container>
         <label><var:string label:value="Description"/></label>

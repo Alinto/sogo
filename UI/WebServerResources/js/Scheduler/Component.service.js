@@ -515,6 +515,41 @@
   };
 
   /**
+   * @function addAttachUrl
+   * @memberof Component.prototype
+   * @desc Add a new attach URL if not already defined
+   * @param {string} attachUrl - the URL
+   * @returns the number of values in the list of attach URLs
+   */
+  Component.prototype.addAttachUrl = function(attachUrl) {
+    if (angular.isUndefined(this.attachUrls)) {
+      this.attachUrls = [{value: attachUrl}];
+    }
+    else {
+      for (var i = 0; i < this.attachUrls.length; i++) {
+        if (this.attachUrls[i].value == attachUrl) {
+          break;
+        }
+      }
+      if (i == this.attachUrls.length)
+        this.attachUrls.push({value: attachUrl});
+    }
+    return this.attachUrls.length - 1;
+  };
+
+  /**
+   * @function deleteAttachUrl
+   * @memberof Component.prototype
+   * @desc Remove an attach URL
+   * @param {number} index - the URL index in the list of attach URLs
+   */
+  Component.prototype.deleteAttachUrl = function(index) {
+    if (index > -1 && this.attachUrls.length > index) {
+      this.attachUrls.splice(index, 1);
+    }
+  };
+
+  /**
    * @function $reset
    * @memberof Component.prototype
    * @desc Reset the original state the component's data.

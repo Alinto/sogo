@@ -548,6 +548,8 @@
  * @apiParam {Number} [resetAlarm]    Mark alarm as triggered if set to 1
  * @apiParam {Number} [snoozeAlarm]   Snooze the alarm for this number of minutes
  *
+ * @apiSuccess {_} . _From [UIxAppointmentEditor viewAction]_
+ *
  * @apiSuccess (Success 200) {String} id                      Event ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
@@ -558,8 +560,10 @@
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
  * @apiSuccess (Success 200) {Number} isReadOnly              1 if event is read-only
+ * @apiSuccess (Success 200) {Object[]} [attachUrls]          Attached URLs
+ * @apiSuccess (Success 200) {String} attachUrls.value        URL
  *
- * @apiSuccess {_} . _From [UIxComponentEditor loadAlarm]_
+ * @apiSuccess {_} .. _From [UIxComponentEditor alarm]_
  *
  * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
  * @apiSuccess (Success 200) {String} alarm.action            Either display or email
@@ -572,12 +576,12 @@
  * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
  * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
  *
- * @apiSuccess {_} .. _From [iCalEvent+SOGo attributes]_
+ * @apiSuccess {_} ... _From [iCalEvent+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
  *
- * @apiSuccess {_} ... _From [iCalEntityObject+SOGo attributes]_
+ * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  * @apiSuccess (Success 200) {String} component               "vevent"
@@ -585,7 +589,6 @@
  * @apiSuccess (Success 200) {String} [location]              Location
  * @apiSuccess (Success 200) {String} [comment]               Comment
  * @apiSuccess (Success 200) {String} [status]                Status (tentative, confirmed, or cancelled)
- * @apiSuccess (Success 200) {String} [attachUrl]             Attached URL
  * @apiSuccess (Success 200) {String} [createdBy]             Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
  * @apiSuccess (Success 200) {Number} priority                Priority (0-9)
  * @apiSuccess (Success 200) {NSString} [classification]      Either public, confidential or private
@@ -604,7 +607,7 @@
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
  *
- * @apiSuccess {_} .... _From [iCalRepeatableEntityObject+SOGo attributes]_
+ * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributes]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
@@ -620,6 +623,7 @@
 - (id <WOActionResults>) viewAction
 {
   BOOL isAllDay;
+  NSArray *attachUrls;
   NSMutableDictionary *data;
   NSCalendarDate *eventStartDate, *eventEndDate;
   NSTimeZone *timeZone;
@@ -685,8 +689,11 @@
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
-                       [self loadAlarm], @"alarm",
+                       [self alarm], @"alarm",
                        nil];
+
+  attachUrls = [self attachUrls];
+  if ([attachUrls count]) [data setObject: attachUrls forKey: @"attachUrls"];
 
   if (!isAllDay)
     {

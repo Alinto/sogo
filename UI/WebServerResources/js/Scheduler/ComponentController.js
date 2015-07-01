@@ -20,6 +20,7 @@
     vm.cardFilter = cardFilter;
     vm.cardResults = [];
     vm.addAttendee = addAttendee;
+    vm.addAttachUrl = addAttachUrl;
     vm.cancel = cancel;
     vm.save = save;
     vm.attendeesEditor = {
@@ -66,6 +67,11 @@
         });
       }
     });
+
+    function addAttachUrl() {
+      var i = vm.component.addAttachUrl('');
+      focus('attachUrl_' + i);
+    };
 
     function toggleRecurrenceEditor() {
       vm.showRecurrenceEditor = !vm.showRecurrenceEditor;

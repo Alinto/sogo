@@ -103,9 +103,6 @@ NSNumber *iCalDistantFutureNumber = nil;
   value = [self comment];
   if ([value length]) [data setObject: value forKey: @"comment"];
 
-  value = [self attach];
-  if (value && (value = [value absoluteString]) && [value length]) [data setObject: value forKey: @"attachUrl"];
-
   value = [self accessClass];
   if ([value length]) [data setObject: [value lowercaseString] forKey: @"classification"];
 
@@ -364,10 +361,6 @@ NSNumber *iCalDistantFutureNumber = nil;
   o = [data objectForKey: @"comment"];
   if ([o isKindOfClass: [NSString class]])
     [self setComment: [o stringByReplacingString: @"\r\n" withString: @"\n"]];
-
-  o = [data objectForKey: @"attachUrl"];
-  if ([o isKindOfClass: [NSString class]])
-    [self setAttach: o];
 
   o = [data objectForKey: @"classification"];
   if ([o isKindOfClass: [NSString class]])
