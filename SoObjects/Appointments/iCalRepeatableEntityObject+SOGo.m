@@ -209,9 +209,11 @@
             }
 
           if ((NSUInteger) frequency != NSNotFound)
-            [rule setFrequency: frequency];
+            {
+              [rule setFrequency: frequency];
+              [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
+            }
 
-          [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
 	  [rule release];
         }
     }
