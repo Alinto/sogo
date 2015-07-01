@@ -159,6 +159,7 @@
           folder: calendar
         }
       });
+
       /**
        * @ngInject
        */

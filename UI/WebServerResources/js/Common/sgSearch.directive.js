@@ -67,7 +67,7 @@
   function sgSearchController($scope, $element) {
     // Controller variables
     this.previous = { searchText: '', searchField: '' };
-    this.searchText = '';
+    this.searchText = null;
     this.searchField = $element.find('md-option').attr('value'); // defaults to first option
 
     // Model options
@@ -81,7 +81,7 @@
 
     // Method to call on data changes
     this.onChange = function(value) {
-      if (typeof this.searchText != 'undefined') {
+      if (this.searchText != null) {
         if (this.searchText != this.previous.searchText || this.searchField != this.previous.searchField) {
           if (this.searchText.length > 2 || this.searchText.length == 0) {
             // See https://github.com/angular/angular.js/issues/7635

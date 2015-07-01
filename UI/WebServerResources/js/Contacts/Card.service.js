@@ -118,7 +118,7 @@
     if (!this.$$fullname)
       this.$$fullname = this.$fullname();
     if (!this.$$email)
-      this.$$email = this.$preferredEmail();
+      this.$$email = this.$preferredEmail(partial);
     if (!this.$$image)
       this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32);
     this.selected = false;

@@ -178,7 +178,7 @@
   Mailbox.prototype.$filter = function(sort, filters) {
     var futureMailboxData, options;
 
-    if (!angular.isDefined(sort)) {
+    if (angular.isUndefined(sort)) {
       sort = { sortingAttributes: { match: 'OR', sort: 'date', asc: false } };
     }
     options = { sortingAttributes: sort };
@@ -366,7 +366,6 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$deleteMessages = function(uids) {
-    var _this = this;
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
   };
 
@@ -377,7 +376,6 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$copyMessages = function(uids, folder) {
-    var _this = this;
     return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder});
   };
 
@@ -388,7 +386,6 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$moveMessages = function(uids, folder) {
-    var _this = this;
     return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder});
   };
   
