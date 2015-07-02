@@ -15,7 +15,13 @@
       Dialog.prompt(l('New folder'),
                     l('Enter the new name of your folder :'))
         .then(function(name) {
-          parentFolder.$newMailbox(parentFolder.id, name);
+          parentFolder.$newMailbox(parentFolder.id, name)
+            .then(function() {
+              // success
+            }, function(data, status) {
+              Dialog.alert(l('An error occured while creating the mailbox "%{0}".', name),
+                           l(data.error));
+            });
         });
     };
     $scope.editFolder = function(folder) {
