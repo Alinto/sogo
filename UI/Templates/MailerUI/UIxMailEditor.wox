@@ -13,17 +13,13 @@
 
       <!-- FROM / TO / CC/ BCC / SUBJECT / ATTACHMENTS -->
       <div class="msg-header-content">
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label">
-            <var:string label:value="From"/>
-          </label>
-          <!--<div class="pseudo-input-field">-->
+        <md-input-container>
+          <label> <var:string label:value="From"/></label>
           <md-select name="from"
                      ng-model="message.editable.from">
             <md-option ng-value="identity" ng-repeat="identity in identities">{{identity}}</md-option>
           </md-select>
-          <!--</div>-->    
-        </div>      
+        </md-input-container>      
         
         <div class="pseudo-input-container">
           <label class="pseudo-input-label">
