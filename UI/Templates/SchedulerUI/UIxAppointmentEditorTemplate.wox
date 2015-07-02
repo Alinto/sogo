@@ -37,14 +37,13 @@
         </md-chips>
       </div>
       <!-- calendar -->
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label"><var:string label:value="Calendar"/></label>
-        <md-select ng-model="editor.component.destinationCalendar" class="pseudo-input-field"
-                   label:placeholder="Calendar">
+      <md-input-container>
+        <label><var:string label:value="Calendar"/></label>
+        <md-select ng-model="editor.component.destinationCalendar" class="pseudo-input-field">
           <md-option ng-repeat="calendar in ::editor.calendars"
                      ng-value="calendar.id">{{calendar.name}}</md-option>
         </md-select>
-      </div>
+      </md-input-container>
       <!-- classification -->
       <md-radio-group layout="row" layout-align="space-around center"
                       ng-model="editor.component.classification">
@@ -134,14 +133,15 @@
       </md-input-container>
       <!-- repeat -->
       <div layout="row" layout-align="start end">
-        <div class="pseudo-input-container md-flex">
-          <label class="pseudo-input-label"><var:string label:value="Repeat"/></label>
-          <md-select class="pseudo-input-field" ng-model="editor.component.repeat.frequency"
-                     label:placeholder="Repeat">
-            <var:foreach list="repeatList" item="item">
-              <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
-            </var:foreach>
-          </md-select>
+        <div class="md-flex">
+          <md-input-container>
+            <label><var:string label:value="Repeat"/></label>
+            <md-select class="pseudo-input-field" ng-model="editor.component.repeat.frequency">
+              <var:foreach list="repeatList" item="item">
+                <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
+              </var:foreach>
+            </md-select>
+          </md-input-container>
         </div>
         <md-button type="button" class="iconButton"
                    label:aria-label="repeat_CUSTOM"
@@ -156,13 +156,15 @@
       </div>
       <!-- end repeat -->
       <div layout="row" layout-align="start end">
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="End Repeat"/></label>
-          <md-select class="pseudo-input-field" ng-model="editor.component.repeat.end">
-            <md-option value="never"><var:string label:value="Never"/></md-option>
-            <md-option value="count"><var:string label:value="After"/></md-option>
-            <md-option value="until"><var:string label:value="On Date"/></md-option>
-          </md-select>
+        <div>
+          <md-input-container>
+            <label><var:string label:value="End Repeat"/></label>
+            <md-select class="pseudo-input-field" ng-model="editor.component.repeat.end">
+              <md-option value="never"><var:string label:value="Never"/></md-option>
+              <md-option value="count"><var:string label:value="After"/></md-option>
+              <md-option value="until"><var:string label:value="On Date"/></md-option>
+            </md-select>
+          </md-input-container>
         </div>
         <div layout="row" layout-align="start center" ng-show="editor.component.repeat.end == 'count'">
           <md-input-container class="md-input-number">
