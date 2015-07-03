@@ -7,25 +7,25 @@
     >
   <!-- daily -->
   <div layout="row" layout-align="start center"
-       ng-show="editor.event.repeat.frequency == 'daily'">
+       ng-show="editor.component.repeat.frequency == 'daily'">
     <var:string label:value="Every"/>
     <md-input-container class="md-input-number">
-      <input type="number" label:aria-label="Every" ng-model="editor.event.repeat.interval"/>
+      <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
     </md-input-container>
     <var:string label:value="Days"/>
   </div>
 
   <!-- weekly -->
-  <div ng-show="editor.event.repeat.frequency == 'weekly'">
+  <div ng-show="editor.component.repeat.frequency == 'weekly'">
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.event.repeat.interval"/>
+        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Week(s)"/> <var:string label:value="On"/>
     </div>
     <md-grid-list md-cols="7" md-row-height="1:1" md-gutter="0.5em"
-                  sg-toggle-grid="editor.event.repeat.days"
+                  sg-toggle-grid="editor.component.repeat.days"
                   sg-toggle-grid-attr="day">
       <var:foreach list="shortWeekDaysList" item="item">
         <md-grid-tile var:value="valueForWeekDay"><var:string value="labelForWeekDay"/></md-grid-tile>
@@ -34,20 +34,20 @@
   </div>
 
   <!-- monthly -->
-  <div ng-show="editor.event.repeat.frequency == 'monthly'">
+  <div ng-show="editor.component.repeat.frequency == 'monthly'">
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.event.repeat.interval"/>
+        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Month(s)"/>
     </div>
-    <md-radio-group ng-model="editor.event.repeat.month.type">
+    <md-radio-group ng-model="editor.component.repeat.month.type">
       <md-radio-button value="bymonthday">
         <var:string label:value="Recur on day(s)"/>
       </md-radio-button>
       <md-grid-list md-cols="7" md-row-height="1:1" md-gutter="0.5em"
-                    sg-toggle-grid="editor.event.repeat.monthdays">
+                    sg-toggle-grid="editor.component.repeat.monthdays">
         <md-grid-tile value="1">1</md-grid-tile>
         <md-grid-tile value="2">2</md-grid-tile>
         <md-grid-tile value="3">3</md-grid-tile>
@@ -84,12 +84,12 @@
         <md-radio-button value="byday">
           <var:string label:value="The"/>
         </md-radio-button>
-        <md-select ng-model="editor.event.repeat.month.occurrence">
+        <md-select ng-model="editor.component.repeat.month.occurrence">
           <var:foreach list="monthlyRepeatList" item="item">
             <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
           </var:foreach>
         </md-select>
-        <md-select ng-model="editor.event.repeat.month.day">
+        <md-select ng-model="editor.component.repeat.month.day">
           <var:foreach list="monthlyDayList" item="item">
             <md-option var:value="valueForMonthlyDay"><var:string value="item"/></md-option>
           </var:foreach>
@@ -99,30 +99,30 @@
   </div>
 
   <!-- yearly -->
-  <div ng-show="editor.event.repeat.frequency == 'yearly'">
+  <div ng-show="editor.component.repeat.frequency == 'yearly'">
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.event.repeat.interval"/>
+        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Year(s)"/>
     </div>
     <md-grid-list md-cols="6" md-row-height="1:1" md-gutter="0.5em"
-                  sg-toggle-grid="editor.event.repeat.months">
+                  sg-toggle-grid="editor.component.repeat.months">
       <var:foreach list="yearlyMonthList" item="item">
         <md-grid-tile var:value="valueForYearlyMonth"><var:string value="item"/></md-grid-tile>
       </var:foreach>
     </md-grid-list>
       <div layout="row" layout-align="start center">
-        <md-checkbox ng-model="editor.event.repeat.year.byday">
+        <md-checkbox ng-model="editor.component.repeat.year.byday">
           <var:string label:value="The"/>
         </md-checkbox>
-        <md-select ng-model="editor.event.repeat.month.occurrence">
+        <md-select ng-model="editor.component.repeat.month.occurrence">
           <var:foreach list="monthlyRepeatList" item="item">
             <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
           </var:foreach>
         </md-select>
-        <md-select ng-model="editor.event.repeat.month.day">
+        <md-select ng-model="editor.component.repeat.month.day">
           <var:foreach list="yearlyDayList" item="item">
             <md-option var:value="valueForYearlyDay"><var:string value="item"/></md-option>
           </var:foreach>
