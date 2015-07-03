@@ -132,7 +132,7 @@
 
     path.splice(0, 0, accountId); // insert account ID
 
-    return '/' + path.join('/');
+    return path.join('/');
   };
 
   /**

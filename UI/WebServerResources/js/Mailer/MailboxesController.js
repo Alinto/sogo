@@ -186,7 +186,7 @@
     $scope.copySelectedMessages = function(folder) {
       var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
       var selectedUIDs = _.pluck(selectedMessages, 'uid');
-      $rootScope.mailbox.$copyMessages(selectedUIDs, folder).then(function() {
+      $rootScope.mailbox.$copyMessages(selectedUIDs, '/' + folder).then(function() {
         // TODO: refresh target mailbox?
       }, function(error) {
         Dialog.alert(l('Error'), error.error);
@@ -196,7 +196,7 @@
     // $scope.moveSelectedMessages = function(folder) {
     //   var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
     //   var selectedUIDs = _.pluck(selectedMessages, 'uid');
-    //   $rootScope.mailbox.$moveMessages(selectedUIDs, folder).then(function() {
+    //   $rootScope.mailbox.$moveMessages(selectedUIDs, '/' + folder).then(function() {
     //     // TODO: refresh target mailbox?
     //     $rootScope.mailbox.$messages = _.difference($rootScope.mailbox.$messages, selectedMessages);
     //   });
