@@ -296,7 +296,7 @@
       filename = [NSString stringWithFormat: @"js/%@.js", NSStringFromClass([page class])];
       url = [self urlForResourceFilename: filename];
     }
-  NSLog(@"pageJavaScript => %@", filename);
+  //NSLog(@"pageJavaScript => %@", filename);
 
   return url;
 }
@@ -320,7 +320,7 @@
       filename = [NSString stringWithFormat: @"js/%@.js", [page frameworkName]];
       url = [self urlForResourceFilename: filename];
     }
-  NSLog(@"productJavaScript => %@", filename);
+  //NSLog(@"productJavaScript => %@", filename);
   
   return url;
 }
