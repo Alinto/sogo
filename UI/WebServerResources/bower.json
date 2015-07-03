@@ -11,7 +11,6 @@
     "angular-vs-repeat": "latest",
     "angular-file-upload": "latest",
     "angular-material": "master",
-    "material-design-iconic-font": "1.1.1",
     "compass-mixins": "latest",
     "underscore": "latest",
     "breakpoint-sass": ">=2.4.2"

@@ -51,7 +51,6 @@ module.exports = function(grunt) {
             require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'})
           ]
           // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
-
         },
         src: 'css/styles.css'
       }
@@ -122,9 +121,9 @@ module.exports = function(grunt) {
         grunt.log.ok("copy " + src + " => " + dest);
       }
     }
+    /*
     grunt.log.subhead('Copying font files');
     var fonts = [
-      '<%= src %>/material-design-iconic-font/fonts/Material-Design-Iconic-Font.*'
     ];
     for (var j = 0; j < fonts.length; j++) {
       var files = grunt.file.expand(grunt.template.process(fonts[j], {data: options}));
@@ -136,6 +135,7 @@ module.exports = function(grunt) {
         grunt.log.ok("copy " + src + " => " + dest);
       }
     }
+    */
     /*
     grunt.log.subhead('Copying CSS files');
     var css = [
