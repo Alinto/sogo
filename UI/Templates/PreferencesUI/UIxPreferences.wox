@@ -83,7 +83,7 @@
 
           <!-- GENERAL OPTIONS -->
           <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
-            <div layout="column" layout-align="space-around left" aria-labelledby="generalOptionsView" id="generalOptionsView-content">
+            <div layout="column" layout-align="space-around start" layout-padding="layout-padding" aria-labelledby="generalOptionsView" id="generalOptionsView-content">
               <md-input-container>
                 <label><var:string label:value="SOGo Version :"/></label>
                 <input type="text" ng-readonly="true" var:value="sogoVersion"/>
@@ -173,7 +173,8 @@
             <md-tab id="generalPasswordView"
                     aria-controls="generalPasswordView-content"
                     label:label="Password">
-              <div id="passwordView">
+              <div layout="column" layout-padding="layout-padding"
+                   layout-align="space-around start" id="passwordView">
                 <md-input-container>
                   <label><var:string label:value="New password:"/>
                   </label>
@@ -209,7 +210,8 @@
                   label:label="General">
             <!-- <script type="text/ng-template" id="calendarsPreferences.html"> -->
             <var:if condition="userHasCalendarAccess">
-              <div layout="column" layout-align="space-around left"
+              <div layout="column" layout-align="space-around start"
+                   layout-padding="layout-padding"
                    aria-labelledby="calendarOptionsView"
                    id="calendarOptionsView-content">
 
@@ -347,7 +349,8 @@
           <md-tab id="calendarInvitationsTab"
                   aria-controls="calendarInvitationsTab-content"
                   label:label="Invitations">
-            <div role="tabpanel"
+            <div layout="column" layout-align="space-around start"
+                 layout-padding="layout-padding"
                  aria-labelledby="calendarInvitationsTab"
                  id="calendarInvitationsTab-content">
 
@@ -441,7 +444,7 @@
 
             <!-- MAIL > GENERAL -->
             <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
-              <div layout="column" layout-align="space-around left" role="tabpanel" aria-labelledby="mailGeneralView"  id="mailGeneralView-content">
+              <div layout="column" layout-align="space-around start" layout-padding="layout-padding" role="tabpanel" aria-labelledby="mailGeneralView"  id="mailGeneralView-content">
 
                 <md-checkbox
                     ng-model="app.preferences.defaults.SOGoMailShowSubscribedFoldersOnly"
@@ -459,7 +462,7 @@
                   <var:string label:value="Sort messages by threads"/>
                 </md-checkbox>
 
-                <div layout="row" layout-align="space-around center">
+                <div layout="row" layout-align="space-around start">
                   <md-checkbox
                       ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
                       ng-true-value="1"
@@ -734,7 +737,7 @@
                       <var:string label:value="Do not send responses to mailing lists" />
                     </md-checkbox>
 
-                    <div layout="row" layout-align="space-around left">
+                    <div layout="row" layout-align="space-around start">
                       <md-checkbox
                           ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                           ng-true-value="1"
