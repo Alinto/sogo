@@ -83,118 +83,90 @@
 
           <!-- GENERAL OPTIONS -->
           <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
-            <div aria-labelledby="generalOptionsView" id="generalOptionsView-content">
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="SOGo Version :"/></div>
-                <div><var:string value="sogoVersion"/></div>
-              </div>
+            <div layout="column" layout-align="space-around left" aria-labelledby="generalOptionsView" id="generalOptionsView-content">
+              <md-input-container>
+                <label><var:string label:value="SOGo Version :"/></label>
+                <input type="text" ng-readonly="true" var:value="sogoVersion"/>
+              </md-input-container>
 
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Language :"/></div>
-                <div>
-                  <md-select label:aria-label="Language :" ng-model="app.preferences.defaults.SOGoLanguage">
-                    <var:foreach list="languages" item="item">
-                      <md-option var:value="item">
-                        <var:string value="languageText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                </div>
-              </div>
+              <md-input-container>
+                <label><var:string label:value="Language :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoLanguage">
+                  <var:foreach list="languages" item="item">
+                    <md-option var:value="item">
+                      <var:string value="languageText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
+              
+              <md-input-container>
+                <label><var:string label:value="Current Time Zone :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoTimeZone">
+                  <var:foreach list="timeZonesList" item="item">
+                    <md-option var:value="item">
+                      <var:string value="item"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
+              
+              <md-input-container>
+                <label><var:string label:value="Short Date Format :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoShortDateFormat">
+                  <var:foreach list="shortDateFormatsList" item="item">
+                    <md-option var:value="item">
+                      <var:string value="itemShortDateFormatText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
 
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Current Time Zone :"/></div>
-                <div>
-                  <md-select label:aria-label="Current Time Zone :" ng-model="app.preferences.defaults.SOGoTimeZone">
-                    <var:foreach list="timeZonesList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="item"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                </div>
-              </div>
+              <md-input-container>
+                <label><var:string label:value="Long Date Format :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoLongDateFormat">
+                  <var:foreach list="longDateFormatsList" item="item">
+                    <md-option var:value="item">
+                      <var:string value="itemLongDateFormatText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
 
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Short Date Format :"/></div>
-                <div>
-                  <md-select label:aria-label="Short Date Format :" ng-model="app.preferences.defaults.SOGoShortDateFormat">
-                    <var:foreach list="shortDateFormatsList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemShortDateFormatText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-
-                  <!-- <var:popup list="shortDateFormatsList" item="item"
-                             const:id="shortDateFormat"
-                             const:name="shortDateFormat"
-                             string="itemShortDateFormatText"
-                             selection="userShortDateFormat" /> -->
-                </div>
-              </div>
-
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Long Date Format :"/></div>
-                <div>
-                  <md-select label:aria-label="Long Date Format :" ng-model="app.preferences.defaults.SOGoLongDateFormat">
-                    <var:foreach list="longDateFormatsList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemLongDateFormatText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                  <!-- <var:popup list="longDateFormatsList" item="item"
-                             const:id="longDateFormat"
-                             const:name="longDateFormat"
-                             string="itemLongDateFormatText"
-                             selection="userLongDateFormat" /> -->
-                </div>
-              </div>
-
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Time Format :"/></div>
-                <div>
-                  <md-select label:aria-label="Time Format :" ng-model="app.preferences.defaults.SOGoTimeFormat">
-                    <var:foreach list="timeFormatsList" item="item">
+              <md-input-container>
+                <label><var:string label:value="Time Format :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoTimeFormat">
+                  <var:foreach list="timeFormatsList" item="item">
                       <md-option var:value="item">
                         <var:string value="itemTimeFormatText"/>
                       </md-option>
-                    </var:foreach>
-                  </md-select>
-                  <!-- <var:popup list="timeFormatsList" item="item"
-                             const:id="timeFormat"
-                             const:name="timeFormat"
-                             string="itemTimeFormatText"
-                             selection="userTimeFormat" /> -->
-                </div>
-              </div>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
 
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Default Module:"/></div>
-                <md-select label:aria-label="Default Module:" ng-model="app.preferences.defaults.SOGoLoginModule">
-                    <var:foreach list="availableModules" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemModuleText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-              </div>
+              <md-input-container>
+                <label><var:string label:value="Default Module:"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoLoginModule">
+                  <var:foreach list="availableModules" item="item">
+                    <md-option var:value="item">
+                      <var:string value="itemModuleText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
 
-              <div layout="row" layout-align="space-around center">
-                <div><var:string label:value="Refresh View :"/></div>
-                <div>
-                  <md-select label:aria-label="Refresh View :" ng-model="app.preferences.defaults.SOGoRefreshViewCheck">
-                    <var:foreach list="refreshViewList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemRefreshViewCheckText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                </div>
-              </div>
+              <md-input-container>
+                <label><var:string label:value="Refresh View :"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoRefreshViewCheck">
+                  <var:foreach list="refreshViewList" item="item">
+                    <md-option var:value="item">
+                      <var:string value="itemRefreshViewCheckText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
             </div>
-          </md-tab>
+            </md-tab>
 
           <!-- PASSWORD OPTIONS -->
           <var:if condition="shouldDisplayPasswordChange">
@@ -237,173 +209,106 @@
                   label:label="General">
             <!-- <script type="text/ng-template" id="calendarsPreferences.html"> -->
             <var:if condition="userHasCalendarAccess">
-              <div role="tabpanel"
+              <div layout="column" layout-align="space-around left"
                    aria-labelledby="calendarOptionsView"
                    id="calendarOptionsView-content">
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Week begins on :" /></div>
-                  <div>
-                    <md-select label:aria-label="Week begins on :"
-                               ng-model="app.preferences.defaults.SOGoFirstDayOfWeek">
-                      <var:foreach list="daysList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemWeekStartDay"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="daysList" item="item"
-                               const:id="weekStartDay"
-                               const:name="weekStartDay"
-                               string="itemWeekStartDay"
-                               selection="userWeekStartDay" /> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Week begins on :" /></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoFirstDayOfWeek">
+                    <var:foreach list="daysList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemWeekStartDay"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Day start time :" /></div>
-                  <div>
-                    <md-select label:aria-label="Day start time :"
-                               ng-model="app.preferences.defaults.SOGoDayStartTime">
-                      <var:foreach list="hoursList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="item"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="hoursList" item="item"
-                               const:id="dayStartTime"
-                               const:name="dayStartTime"
-                               string="item"
-                               selection="userDayStartTime" /> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Day start time :" /></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoDayStartTime">
+                    <var:foreach list="hoursList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="item"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Day end time :" /></div>
-                  <div>
-                    <md-select label:aria-label="Day end time :"
-                               ng-model="app.preferences.defaults.SOGoDayEndTime">
-                      <var:foreach list="hoursList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="item"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="hoursList" item="item"
-                               const:id="dayEndTime"
-                               const:name="dayEndTime"
-                               string="item"
-                               selection="userDayEndTime"/> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Day end time :" /></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoDayEndTime">
+                    <var:foreach list="hoursList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="item"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <md-checkbox
-                      ng-model="app.preferences.defaults.SOGoBusyOffHours"
-                      ng-true-value="1"
-                      ng-false-value="0">
-                    <var:string label:value="Show time as busy outside working hours"/>
-                  </md-checkbox>
-                </div>
+                <md-checkbox
+                    ng-model="app.preferences.defaults.SOGoBusyOffHours"
+                    ng-true-value="1"
+                    ng-false-value="0">
+                  <var:string label:value="Show time as busy outside working hours"/>
+                </md-checkbox>
+                
+                <md-input-container>
+                  <label><var:string label:value="First week of year :"/></label>
+                  <md-select label:aria-label="First week of year :"
+                             ng-model="app.preferences.defaults.SOGoFirstWeekOfYear">
+                    <var:foreach list="firstWeekList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemFirstWeekText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="First week of year :"/></div>
-                  <div>
-                    <md-select label:aria-label="First week of year :"
-                               ng-model="app.preferences.defaults.SOGoFirstWeekOfYear">
-                      <var:foreach list="firstWeekList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemFirstWeekText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="firstWeekList" item="item"
-                               const:id="firstWeek"
-                               const:name="firstWeek"
-                               string="itemFirstWeekText"
-                               selection="userFirstWeek"/> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Default calendar :" /></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoDefaultCalendar">
+                    <var:foreach list="defaultCalendarList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemCalendarText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Default calendar :" /></div>
-                  <div>
-                    <md-select label:aria-label="Default calendar :"
-                               ng-model="app.preferences.defaults.SOGoDefaultCalendar">
-                      <var:foreach list="defaultCalendarList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemCalendarText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="defaultCalendarList" item="item"
-                               const:id="defaultCalendar"
-                               const:name="defaultCalendar"
-                               string="itemCalendarText"
-                               selection="userDefaultCalendar"/> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Default events classification :" /></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoCalendarEventsDefaultClassification">
+                    <var:foreach list="calendarClassificationsList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemClassificationText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Default events classification :" /></div>
-                  <div>
-                    <md-select label:aria-label="Default events classification :"
-                               ng-model="app.preferences.defaults.SOGoCalendarEventsDefaultClassification">
-                      <var:foreach list="calendarClassificationsList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemClassificationText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="calendarClassificationsList" item="item"
-                               const:id="eventsClassification"
-                               const:name="eventsClassification"
-                               string="itemClassificationText"
-                               selection="eventsDefaultClassification"/> -->
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Default tasks classification :"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoCalendarTasksDefaultClassification">
+                    <var:foreach list="calendarClassificationsList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemClassificationText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Default tasks classification :"/></div>
-                  <div>
-                    <md-select label:aria-label="Default tasks classification :"
-                               ng-model="app.preferences.defaults.SOGoCalendarTasksDefaultClassification">
-                      <var:foreach list="calendarClassificationsList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemClassificationText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="calendarClassificationsList" item="item"
-                               const:id="tasksClassification"
-                               const:name="tasksClassification"
-                               string="itemClassificationText"
-                               selection="tasksDefaultClassification"/> -->
-                  </div>
-                </div>
-
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Default reminder :"/></div>
-                  <div>
-                    <md-select label:aria-label="Default reminder :"
-                               ng-model="app.preferences.defaults.SOGoCalendarDefaultReminder">
-                      <var:foreach list="reminderValues" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemReminderText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                    <!-- <var:popup list="reminderList" item="item"
-                               const:disabledValue="-"
-                               label:noSelectionString="reminder_NONE"
-                               const:name="reminderList"
-                               const:id="reminderList"
-                               string="itemReminderText"
-                               var:selection="reminder"/> -->
-                  </div>
-                </div>
-
+                <md-input-container>
+                  <label><var:string label:value="Default reminder :"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoCalendarDefaultReminder">
+                    <var:foreach list="reminderValues" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemReminderText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
+                
               </div>
             </var:if>
           </md-tab>
@@ -536,7 +441,7 @@
 
             <!-- MAIL > GENERAL -->
             <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
-              <div role="tabpanel" aria-labelledby="mailGeneralView"  id="mailGeneralView-content">
+              <div layout="column" layout-align="space-around left" role="tabpanel" aria-labelledby="mailGeneralView"  id="mailGeneralView-content">
 
                 <md-checkbox
                     ng-model="app.preferences.defaults.SOGoMailShowSubscribedFoldersOnly"
@@ -563,96 +468,83 @@
                     <var:string label:value="When sending mail, add unknown recipients to my"/>
                   </md-checkbox>
 
-                  <md-select
-                      label:aria-label="Address Book"
-                      ng-disabled="app.preferences.defaults.SOGoMailAddOutgoingAddresses == 0"
-                      ng-model="app.preferences.defaults.SOGoSelectedAddressBook">
-                    <var:foreach list="addressBookList" item="item">
-                      <md-option var:value="item.id">
-                        <var:string value="item.name"/>
-                    </md-option>
+                  <md-input-container>
+                    <label><var:string label:aria-label="Address Book"/></label>
+                    <md-select
+                        ng-disabled="app.preferences.defaults.SOGoMailAddOutgoingAddresses == 0"
+                        ng-model="app.preferences.defaults.SOGoSelectedAddressBook">
+                      <var:foreach list="addressBookList" item="item">
+                        <md-option var:value="item.id">
+                          <var:string value="item.name"/>
+                        </md-option>
+                      </var:foreach>
+                    </md-select>
+                  </md-input-container>
+                </div>
+
+                <md-input-container>
+                  <label><var:string label:value="Forward messages:"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoMailMessageForwarding">
+                    <var:foreach list="messageForwardingList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemMessageForwardingText"/>
+                      </md-option>
                     </var:foreach>
                   </md-select>
-                </div>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Forward messages:"/></div>
-                  <div>
-                    <md-select label:aria-label="Forward messages:"
-                               ng-model="app.preferences.defaults.SOGoMailMessageForwarding">
-                      <var:foreach list="messageForwardingList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemMessageForwardingText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="When replying to a message:"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoMailReplyPlacement">
+                    <var:foreach list="replyPlacementList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemReplyPlacementText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="When replying to a message:"/></div>
-                  <div>
-                    <md-select label:aria-label="When replying to a message:"
-                               ng-model="app.preferences.defaults.SOGoMailReplyPlacement">
-                      <var:foreach list="replyPlacementList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemReplyPlacementText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="And place my signature"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoMailSignaturePlacement">
+                    <var:foreach list="signaturePlacementList" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemSignaturePlacementText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
+                
+                <md-input-container>
+                  <label><var:string label:value="Compose messages in"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoMailComposeMessageType">
+                    <var:foreach list="composeMessagesType" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemComposeMessagesText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="And place my signature"/></div>
-                  <div>
-                    <md-select label:aria-label="And place my signature"
-                               ng-model="app.preferences.defaults.SOGoMailSignaturePlacement">
-                      <var:foreach list="signaturePlacementList" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemSignaturePlacementText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                  </div>
-                </div>
+                <md-input-container>
+                  <label><var:string label:value="Display remote inline images"/></label>
+                  <md-select ng-model="app.preferences.defaults.SOGoMailDisplayRemoteInlineImages">
+                    <var:foreach list="displayRemoteInlineImages" item="item">
+                      <md-option var:value="item">
+                        <var:string value="itemDisplayRemoteInlineImagesText"/>
+                      </md-option>
+                    </var:foreach>
+                  </md-select>
+                </md-input-container>
 
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Compose messages in"/></div>
-                  <div>
-                    <md-select label:aria-label="Compose messages in"
-                               ng-model="app.preferences.defaults.SOGoMailComposeMessageType">
-                      <var:foreach list="composeMessagesType" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemComposeMessagesText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                  </div>
-                </div>
-
-                <div layout="row" layout-align="space-around center">
-                  <div><var:string label:value="Display remote inline images"/></div>
-                  <div>
-                    <md-select label:aria-label="Display remote inline images"
-                               ng-model="app.preferences.defaults.SOGoMailDisplayRemoteInlineImages">
-                      <var:foreach list="displayRemoteInlineImages" item="item">
-                        <md-option var:value="item">
-                          <var:string value="itemDisplayRemoteInlineImagesText"/>
-                        </md-option>
-                      </var:foreach>
-                    </md-select>
-                  </div>
-                </div>
-
-                <div layout="row" layout-align="space-around center">
+                <div layout="row" layout-align="space-around left">
                   <div><var:string label:value="Auto save every"/></div>
                   <md-input-container class="md-input-number">
                     <input type="number" label:aria-label="minutes" ng-model="preferences.defaults.SOGoMailAutoSave"/>
                   </md-input-container>
                   <var:string label:value="minutes"/>
                 </div>
-
+                
               </div>
             </md-tab>
             <!-- END OF MAIL > GENERAL -->
@@ -823,19 +715,17 @@
                       </md-button>
                     </div>
 
-                    <div layout="row" layout-align="space-around center">
-                      <div><var:string label:value="Days between responses :"/></div>
-                      <div>
-                        <md-select label:aria-label="Days between responses :"
-                                   ng-model="app.preferences.defaults.Vacation.daysBetweenResponse">
-                          <var:foreach list="daysBetweenResponsesList" item="item">
-                            <md-option var:value="item">
-                              <var:string value="item"/>
-                            </md-option>
-                          </var:foreach>
-                        </md-select>
-                      </div>
-                    </div>
+                    <md-input-container>
+                      <label><var:string label:value="Days between responses :"/></label>
+                      <md-select label:aria-label="Days between responses :"
+                                 ng-model="app.preferences.defaults.Vacation.daysBetweenResponse">
+                        <var:foreach list="daysBetweenResponsesList" item="item">
+                          <md-option var:value="item">
+                            <var:string value="item"/>
+                          </md-option>
+                        </var:foreach>
+                      </md-select>
+                    </md-input-container>
 
                     <md-checkbox
                         ng-model="app.preferences.defaults.Vacation.ignoreLists"
@@ -844,7 +734,7 @@
                       <var:string label:value="Do not send responses to mailing lists" />
                     </md-checkbox>
 
-                    <div layout="row" layout-align="space-around center">
+                    <div layout="row" layout-align="space-around left">
                       <md-checkbox
                           ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                           ng-true-value="1"
