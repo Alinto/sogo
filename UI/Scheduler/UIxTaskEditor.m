@@ -391,6 +391,8 @@
  * @apiParam {Number} [resetAlarm] Mark alarm as triggered if set to 1
  * @apiParam {Number} [snoozeAlarm] Snooze the alarm for this number of minutes
  *
+ * @apiSuccess {_} . _From [UIxTaskEditor viewAction]_
+ *
  * @apiSuccess (Success 200) {String} id                      Todo ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (todo's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
@@ -401,15 +403,17 @@
  * @apiSuccess (Success 200) {String} localizedCompletedDate  Formatted completed date
  * @apiSuccess (Success 200) {String} localizedCompletedTime  Formatted completed time
  * @apiSuccess (Success 200) {Number} isReadOnly              1 if task is read-only
+ * @apiSuccess (Success 200) {Object[]} [attachUrls]          Attached URLs
+ * @apiSuccess (Success 200) {String} attachUrls.value        URL
  *
- * @apiSuccess {_} . _From [iCalToDo+SOGo attributesInContext:]_
+ * @apiSuccess {_} .. _From [iCalToDo+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
  * @apiSuccess (Success 200) {String} dueDate                 Due date (ISO8601)
  * @apiSuccess (Success 200) {String} completedDate           Completed date (ISO8601)
  * @apiSuccess (Success 200) {Number} percentComplete         Percent completion
  *
- * @apiSuccess {_} .. _From [UIxComponentEdtiror alarm]_
+ * @apiSuccess {_} ... _From [UIxComponentEdtiror alarm]_
  *
  * @apiSuccess (Success 200) {Object[]} [alarm]               Alarm definition
  * @apiSuccess (Success 200) {String} alarm.action            Either display or email
@@ -422,7 +426,7 @@
  * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
  * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
  *
- * @apiSuccess {_} ... _From [iCalEntityObject+SOGo attributesInContext:]_
+ * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {String} component               "vtodo"
  * @apiSuccess (Success 200) {String} summary                 Summary
@@ -444,7 +448,7 @@
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
  *
- * @apiSuccess {_} .... _From [iCalRepeatableEntityObject+SOGo attributesInContext:]_
+ * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
@@ -459,6 +463,7 @@
  */
 - (id <WOActionResults>) viewAction
 {
+  NSArray *attachUrls;
   NSMutableDictionary *data;
   NSCalendarDate *startDate, *dueDate, *completedDate;
   NSTimeZone *timeZone;
@@ -551,6 +556,9 @@
       [data setObject: [dateFormatter formattedDate: completedDate] forKey: @"localizedCompletedDate"];
       [data setObject: [dateFormatter formattedTime: completedDate] forKey: @"localizedCompletedTime"];
     }
+
+  attachUrls = [self attachUrls];
+  if ([attachUrls count]) [data setObject: attachUrls forKey: @"attachUrls"];
 
   // Add attributes from iCalToDo+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
   [data addEntriesFromDictionary: [todo attributesInContext: context]];
