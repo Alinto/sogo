@@ -10,7 +10,7 @@
     <md-dialog-content>
       <h2 class="md-headline"><var:string label:value="Subscribe"/></h2>
       <md-input-container>
-        <label><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+        <label><md-icon>search</md-icon><var:string label:value="Search"/></label>
         <input type="input"
                autocomplete="off"
                ng-model="vm.searchText"
@@ -26,22 +26,21 @@
               <div class="sg-avatar"><!-- normal-user --></div>
               <span class="sg-item-name">{{user.$shortFormat()}}</span>
               <span class="md-secondary md-display-1">
-                <i ng-class="{ 'md-icon-expand-more': user.uid != vm.selectedUser.uid,
-                               'md-icon-expand-less': user.uid == vm.selectedUser.uid }"><!--icon--></i>
+                <md-icon ng-class="{ 'icon-expand-more': user.uid != vm.selectedUser.uid,
+                                     'icon-expand-less': user.uid == vm.selectedUser.uid }"><!--icon--></md-icon>
               </span>
             </div>
           </md-button>
           <md-list layout-fill="true"
                    ng-show="user == vm.selectedUser">
             <md-list-item ng-show="user.$$folders.length == 0">
-              <i class="md-icon-warning"><!-- no subscription --></i>
+              <md-icon>warning</md-icon>
               <var:string label:value="No possible subscription"/>
             </md-list-item>
             <md-list-item layout="row" layout-fill="true"
                           ng-repeat="folder in user.$$folders">
-              <i class="md-padding"
-                 ng-class="{ 'md-icon-contacts': folder.type == 'Contact',
-                             'md-icon-today': folder.type == 'Appointment' }"><!--icon--></i>
+              <md-icon ng-class="{'icon-contacts': folder.type == 'Contact',
+                                  'icon-event': folder.type == 'Appointment'}"><!--icon--></md-icon>
                 <p class="md-flex sg-item-name">{{folder.displayName}}</p>
               <md-button
                   class="md-raised"

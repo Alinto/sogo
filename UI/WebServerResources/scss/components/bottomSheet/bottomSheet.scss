@@ -7,8 +7,23 @@ md-bottom-sheet.md-default-theme {
   background-blend-mode: multiply;
 }
 
+md-bottom-sheet {
+  &.md-list {
+    md-list-item {
+      .md-list-item-content {
+        flex-direction: row; // fix for md bug
+        flex-grow: 1;
+        md-icon {
+          margin-right: $bottom-sheet-icon-after-margin;
+        }
+      }
+    }
+  }
+}
+
 md-bottom-sheet.md-default-theme .md-button.md-default-theme {
-  &:hover:not([disabled]) {
+  &:hover:not([disabled]),
+  &:hover:not([disabled]) md-icon {
     background-color: inherit;
     background-image: url("../img/cardboard-transp.png");
     background-blend-mode: multiply;

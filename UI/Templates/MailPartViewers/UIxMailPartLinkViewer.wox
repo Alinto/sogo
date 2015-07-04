@@ -10,22 +10,22 @@
         <img var:src="mimeImageURL"/>
       </div>
       
-      <div layout="column" layout-align="start start">
+      <div layout="column" layout-align="start start" layout-padding="layout-padding">
         <div>
           <var:string value="filenameForDisplay"/>
         </div>
-        <div>
+        <div class="md-caption">
           <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
         </div>
       </div>
     </div>
     
     <div layout="row" layout-align="end end">
-      <md-button var:href="pathToAttachment">
-        <div class="md-icon-open-in-browser md-icon-lg"><!-- open --></div>
+      <md-button class="sg-icon-button" var:href="pathToAttachment">
+        <md-icon>open_in_browser</md-icon>
       </md-button>
-      <md-button var:href="pathForDownload">
-        <div class="md-icon-save md-icon-lg"><!-- save --></div>
+      <md-button class="sg-icon-button" var:href="pathForDownload">
+        <md-icon>save</md-icon>
       </md-button>
     </div>
     

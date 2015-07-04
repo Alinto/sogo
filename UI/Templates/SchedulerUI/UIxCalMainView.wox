@@ -159,10 +159,10 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          label:aria-label="New Calendar..."
                          ng-click="calendars.newCalendar()">
-                <i class="md-icon-add-circle-outline"><!-- add --></i>
+                <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
@@ -174,14 +174,10 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-  
               <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
-                <md-button class="iconButton"
-                           label:aria-label="Options"
-                           ng-click="$mdOpenMenu()">
-                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
-                </md-button>
-                
+                <md-icon label:aria-label="Options"
+                           ng-click="$mdOpenMenu()"
+                           md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -211,9 +207,7 @@
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
-
               </md-menu>
-              
             </md-list-item>
           </md-list>
         </section>
@@ -222,11 +216,11 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to a Calendar..."
                          sg-subscribe="calendar"
                          sg-subscribe-on-select="calendars.subscribeToFolder(folderData)">
-                <i class="md-icon-add-circle-outline"><!-- add --></i>
+                <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
@@ -238,14 +232,10 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-              
               <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
-                <md-button class="iconButton"
-                           label:aria-label="Options"
-                           ng-click="$mdOpenMenu()">
-                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
-                </md-button>
-                
+                <md-icon label:aria-label="Options"
+                         ng-click="$mdOpenMenu()"
+                         md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -266,7 +256,6 @@
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
-              
             </md-list-item>
           </md-list>
         </section>
@@ -275,10 +264,10 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Web Calendars"/></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to a web calendar..."
                          ng-click="calendars.addWebCalendar()">
-                <i class="md-icon-add-circle-outline"><!-- add --></i>
+                <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
@@ -290,14 +279,10 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-
               <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
-                <md-button class="iconButton"
-                           label:aria-label="Options"
-                           ng-click="$mdOpenMenu()">
-                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
-                </md-button>
-                
+                <md-icon label:aria-label="Options"
+                         ng-click="$mdOpenMenu()"
+                         md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="calendars.confirmDelete(calendar)">
@@ -318,7 +303,6 @@
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
-              
             </md-list-item>
           </md-list>
         </section>
@@ -332,8 +316,8 @@
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
           <div class="sg-toolbar-group-2">
-            <md-button class="iconButton" label:aria-label="Search">
-              <i class="md-icon-search"><!--icon--></i>
+            <md-button class="sg-icon-button" label:aria-label="Search">
+              <md-icon>search</md-icon>
             </md-button>
           </div>
         </div><!-- .md-toolbar-tools -->
@@ -341,7 +325,7 @@
           <div class="view-list sg-padded" layout="row" layout-align="space-between center"
                sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
             <md-input-container class="sg-search-field-container">
-              <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+              <label style="color: white"><md-icon>search</md-icon><var:string label:value="Search"/></label>
               <input name="folderSearch" type="search" style="color: white"/>
             </md-input-container>
             <div class="sg-toolbar-group">
@@ -352,15 +336,15 @@
             </div>
           </div>
           <div class="sg-padded">
-            <a class="iconButton md-button md-default-theme"
+            <a class="sg-icon-button md-button"
                label:aria-label="Day"
-               href="#/calendar/day"><i class="md-icon-view-day"><!-- day view --></i></a>
-            <a class="iconButton md-button md-default-theme"
+               href="#/calendar/day"><md-icon>view_day</md-icon></a>
+            <a class="sg-icon-button md-button"
                label:aria-label="Week"
-               href="#/calendar/week"><i class="md-icon-view-week"><!-- week view --></i></a>
-            <a class="iconButton md-button md-default-theme"
+               href="#/calendar/week"><md-icon>view_week</md-icon></a>
+            <a class="sg-icon-button md-button"
                label:aria-label="Month"
-               href="#/calendar/month"><i class="md-icon-view-module"><!-- month view --></i></a>
+               href="#/calendar/month"><md-icon>view_module</md-icon></a>
           </div>
         </div>
       </md-toolbar>
@@ -383,8 +367,8 @@
                       <p>{{event.c_location}}</p>
                       <p class="md-secondary">
                         {{event.formatted_startdate}}
-                        <i class="md-icon-repeat" ng-show="event.c_iscycle"><!-- recurrent --></i>
-                        <i class="md-icon-alarm" ng-show="event.c_nextalarm"><!-- alarm --></i>
+                        <md-icon ng-show="event.c_iscycle">repeat</md-icon>
+                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                       </p>
                     </div>
                   </md-list-item>
@@ -403,8 +387,8 @@
                       <h3>{{task.c_title}}</h3>
                       <p class="md-secondary">
                         {{task.formatted_enddate}}
-                        <i class="md-icon-repeat" ng-show="task.c_iscycle"><!-- recurrent --></i>
-                        <i class="md-icon-alarm" ng-show="task.c_nextalarm"><!-- alarm --></i>
+                        <md-icon ng-show="task.c_iscycle">repeat</md-icon>
+                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                       </p>
                     </div>
                   </md-list-item>
@@ -412,10 +396,10 @@
               </md-tab>
             </md-tabs>
           </md-content>
-          <md-button class="iconButton md-fab md-fab-bottom-right md-accent hide-sm"
+          <md-button class="md-fab md-fab-bottom-right md-accent hide-sm"
                      label:aria-label="New Appointment"
                      ng-click="list.newComponent()">
-            <i class="md-icon-add"><!--icon--></i>
+            <md-icon>add</md-icon>
           </md-button>
         </div>
         <md-content class="view-detail sg-padded" ui-view="calendarView"><!-- calendar view --></md-content>

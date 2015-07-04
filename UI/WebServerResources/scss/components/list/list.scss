@@ -22,7 +22,13 @@
 //$item-padding-bottom: 0px !default;
 
 // List item label
-md-list {
+md-list-item {
+  .md-list-item-inner {
+    flex-grow: 1; // use all column space
+  }
+  .md-button md-icon {
+    margin-left: 0;
+  }
   .sg-item-name {
     font-size: sg-size(button);
     max-width: 75%; // leave some place for a secondary button
@@ -32,9 +38,8 @@ md-list {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
- .sg-inline-list-icon-label {
-   text-transform: uppercase;
+  .sg-inline-list-icon-label {
+    text-transform: uppercase;
   }
 }
 
@@ -70,15 +75,17 @@ div.md-tile-left {
   min-width: $sg-md-grid-pitch + $baseline-grid;
 }
 .sg-tile-icons {
-  font-size: $sg-font-size-1;
-  color: $colorGray;
+  md-icon {
+    font-size: $sg-font-size-1;
+    color: $colorGray;
+    margin: 2px;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   width: (2 * $mg);
   height:(7 * $line);
-
 }
 .sg-avatars {
   margin: ($mg / 2) 0 0 ($mg / 2);
@@ -90,38 +97,38 @@ div.md-tile-left {
 // Avatar placeholder
 // ------------------------------------
 .md-tile-left:before {
-  font-family: 'Material Design Iconic Font';
+  font-family: 'Material Icons';
   font-size: 40px;
   color: rgba(0, 0, 0, 0.26);
 }
 .md-tile-left-card:before {
   @extend .md-tile-left;
-  content: "\f251";
+  content: "\e7fd"; // person
 }
 .md-tile-left-list:before {
   @extend .md-tile-left;
-  content: "\f2d4";
+  content: "\e7ef"; // group
 }
 .md-tile-left-selected:before {
   @extend .md-tile-left;
-  content: "\f299";
+  content: "\e5ca"; // check
 }
 .md-tile-left-accepted:before {
   @extend .md-tile-left;
   background-color: rgba(0, 255, 0, 0.3) !important;
-  content: "\f299";
+  content: "\e5ca"; // check
   color: rgba(0, 0, 0, 0.5);
 }
 .md-tile-left-declined:before {
   @extend .md-tile-left;
   background-color: rgba(255, 0, 0, 0.3) !important;
-  content: "\f111";
+  content: "\e15b"; // remove
   color: rgba(0, 0, 0, 0.5);
 }
 .md-tile-left-delegated:before {
   @extend .md-tile-left;
   background-color: rgba(192, 192, 192, 0.3) !important;
-  content: "\f298";
+  content: "\e5c8"; // arrow-forward
   color: rgba(0, 0, 0, 0.5);
 }
 .md-tile-left-needs-action:before {
@@ -132,5 +139,5 @@ div.md-tile-left {
 .md-tile-left-tentative:before {
   @extend .md-tile-left;
   background-color: rgba(255, 255, 0, 0.3) !important;
-  content: "\f2d8";
+  content: "\e7fd"; // person
 }

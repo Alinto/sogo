@@ -12,24 +12,11 @@ md-sidenav md-list .md-button,
 .view-list md-list .md-button {
   // dirty fix to squash the theme style
   background-color: transparent !important;
-  padding: 0 $mg;
-  outline: none;
-  color: inherit;
-  text-transform: initial;
-  font-size: sg-size(button);
-  -webkit-font-smoothing: auto;
 }
 
 .view-list md-list .md-button {
   // Gain some space in lists
   padding: 0;
-}
-
-.md-sidenav-left .md-button [class^="md-icon"] {
-  //margin-right: 1em;
-}
-md-sidenav .md-button.iconButton.sg-button-navicon [class^="md-icon"] {
-  margin: 0;
 }
 
 // Expandable button for a collapsable list
@@ -38,7 +25,7 @@ md-sidenav .md-button.iconButton.sg-button-navicon [class^="md-icon"] {
 }
 
 ///
-/// iconButton
+/// sg-icon-button
 /// according to Material design specs:
 /// @link www.google.com/design/spec/style/icons.html#icons-system-icons
 /// @link www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-touch-target-size
@@ -64,68 +51,46 @@ $iconButton-transition: all $swift-ease-in-duration $swift-ease-in-timing-functi
 $button-fab-width: 56px;
 $button-fab-height: 56px;
 
-
-// Classes
-.iconButton,
-.md-button.md-default-theme:not([disabled]).iconButton {
-  // z-index provides a stacking context that prevent ripple-effect from overflowing
+a.md-button.sg-icon-button,
+.md-button.sg-icon-button {
   z-index: 1;
-  overflow: hidden;
-  //padding: $iconButton-padding 0;
+  padding: $iconButton-padding 0;
   border-radius: 50%;
-  //color: inherit;
   min-width: $iconButton-size;
   transition: $iconButton-transition;
-
-  &:hover:not(.md-fab),
+  &:hover,
   &:active {
     background-color: transparent;
-
-    [class^=md-icon],
-    [class*=md-icon-] {
-      transform: scale($iconButton-hover-scale);
-    }
+    transform: scale($iconButton-hover-scale);
   }
-
-  [class^=md-icon],
-  [class*=md-icon-] {
-    padding: $iconButton-icon-padding;
-    color: currentColor;
-    font-size: $iconButton-icon-size;
-    transition: $iconButton-transition;
-    vertical-align: middle;
-  }
-  .md-icon-arrow-back {
-    font-size: sg-size('headline')
-  }
-
   .md-ripple-container {
     border-radius: 50%;
   }
 }
-md-toolbar .md-toolbar-tools:first-of-type .iconButton,
-md-toolbar .md-toolbar-tools:first-child .iconButton,
-md-toolbar .md-toolbar-tools.md-toolbar-tools-top .iconButton,
-md-toolbar .md-toolbar-tools:not(.md-toolbar-tools-bottom) .iconButton {
-  margin-top: ($mg * -1);
-}
+
+// md-toolbar .md-toolbar-tools:first-of-type .iconButton,
+// md-toolbar .md-toolbar-tools:first-child .iconButton,
+// md-toolbar .md-toolbar-tools.md-toolbar-tools-top .iconButton,
+// md-toolbar .md-toolbar-tools:not(.md-toolbar-tools-bottom) .iconButton {
+//   margin-top: ($mg * -1);
+// }
 // First button must have it's icon align to margin/padding
-md-toolbar .md-toolbar-tools .iconButton:first-child,
-.sg-toolbar-group-last .iconButton:first-child {
-  margin-left: ($mg * -1);
-}
-md-content.md-padding,
-md-card-content {
-  &> .iconButton:first-child {
-    margin-top: ($mg * -1);
-    margin-left: ($mg * -1);
-  }
-}
+// md-toolbar .md-toolbar-tools .iconButton:first-child,
+// .sg-toolbar-group-last .iconButton:first-child {
+//   margin-left: ($mg * -1);
+// }
+// md-content.md-padding,
+// md-card-content {
+//   &> .iconButton:first-child {
+//     margin-top: ($mg * -1);
+//     margin-left: ($mg * -1);
+//   }
+// }
 // Last button must have it's icon align to margin/padding
-md-toolbar .md-toolbar-tools .iconButton:last-child,
-.sg-toolbar-group-last .iconButton:last-child {
-  margin-right: ($mg * -1);
-}
+// md-toolbar .md-toolbar-tools .iconButton:last-child,
+// .sg-toolbar-group-last .iconButton:last-child {
+//   margin-right: ($mg * -1);
+// }
 
 // Icon-bars are for iconButtons, by default they're vertical and at the right
 // the modifier class is to reflect those values and leave place to other versions
@@ -207,8 +172,8 @@ md-toolbar .md-toolbar-tools .iconButton:last-child,
 }
 
 // angular-material is overspecifying so we are and so we have to continue
-.sg-button-navicon.iconButton span.md-icon-menu,
-.sg-button-navicon.iconButton i[class|="md-icon"] {
+.sg-button-navicon.sg-icon-button md-icon,
+.sg-button-navicon.sg-icon-button {
   padding: 0;
   font-size: $iconButton-menu-size;
 }

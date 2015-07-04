@@ -17,8 +17,8 @@
       </p>
     </md-card-content>
     <div class="md-actions" layout="row" layout-align="end center">
-      <md-button var:href="pathForDownload">
-        <div class="md-icon-save md-icon-lg"><!-- save --></div>
+      <md-button class="sg-icon-button" var:href="pathForDownload">
+        <md-icon>save</md-icon>
       </md-button>
     </div>
   </md-card>

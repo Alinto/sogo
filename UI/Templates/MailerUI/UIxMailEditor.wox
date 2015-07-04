@@ -95,9 +95,9 @@
           <md-list-item ng-repeat="item in message.editable.attachmentAttrs">
             <div layout="row" layout-align="space-between center">
               <span ng-bind="item.filename"><!-- filename --></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          ng-click="message.$deleteAttachment(item.filename);">
-                <i class="md-icon-remove-circle-outline"><!--remove --></i>
+                <md-icon>remove_circle_outline</md-icon>
               </md-button>
             </div>
           </md-list-item>
@@ -108,15 +108,15 @@
               <md-progress-linear md-mode="determinate"
                                   value="{{item.progress}}"
                                   ng-show="item.isUploading" ><!-- progress--></md-progress-linear>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          ng-click="uploader.cancelItem(item)"
                          ng-show="item.isUploading">
-                <i class="md-icon-cancel"><!--cancel --></i>
+                <md-icon>cancel</md-icon>
               </md-button>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          ng-click="message.$deleteAttachment(item.file.name);item.remove();"
                          ng-show="!item.isUploading">
-                <i class="md-icon-remove-circle-outline"><!--remove --></i>
+                <md-icon>remove_circle_outline</md-icon>
               </md-button>
             </div>
           </md-list-item>
@@ -131,8 +131,8 @@
         <md-button  class="iconButton" ng-show="hideBcc"
                     ng-click="hideBcc = false">Bcc</md-button>
         <!--
-            <md-button  class="iconButton" ng-show="hidePriority" ng-click="hidePriority = false">
-            <i class="md-icon-info-outline"></i>
+            <md-button class="sg-icon-button" ng-show="hidePriority" ng-click="hidePriority = false">
+            <md-icon>info_outline</md-icon>
             </md-button>
         -->
         <md-button class="iconButton">
@@ -147,8 +147,8 @@
                ng-show="false"/>
         
         <!--
-            <md-button  class="iconButton" ng-click="returnReceipt = !returnReceipt">
-            <i class="md-icon-receipt"></i>
+            <md-button class="sg-icon-button" ng-click="returnReceipt = !returnReceipt">
+            <md-icon>receipt</md-icon>
             </md-button>
         -->
       </div>

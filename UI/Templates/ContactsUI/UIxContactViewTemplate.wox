@@ -7,9 +7,9 @@
     >
 
     <md-card-content>
-      <md-button class="iconButton show-sm"
+      <md-button class="sg-icon-button show-sm"
                  label:aria-label="Close"
-                 ng-click="editor.toggleDetailView()"><i class="md-icon-close"><!--icon--></i></md-button>
+                 ng-click="editor.toggleDetailView()"><md-icon>close</md-icon></md-button>
       <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
           <sg-gravatar-image class="md-tile-left"
@@ -31,14 +31,16 @@
           </md-chips>
         </div>
         <div class="sg-icon-bar--vertical">
-          <md-button class="iconButton"
+          <md-button class="sg-icon-button"
                      label:aria-label="Edit"
                      ng-show="editor.currentFolder.isEditable"
                      ui-sref="app.addressbook.card.editor({addressbookId: editor.currentFolder.id, cardId: editor.card.id})">
-            <i class="md-icon-create"><!-- edit --></i>
+            <md-icon>mode_edit</md-icon>
           </md-button>
-          <md-button class="iconButton" aria-label="Delete" ng-click="editor.confirmDelete(editor.card)">
-            <i class="md-icon-delete"><!-- delete --></i>
+          <md-button class="sg-icon-button"
+                     label:aria-label="Delete"
+                     ng-click="editor.confirmDelete(editor.card)">
+            <md-icon>delete</md-icon>
           </md-button>
         </div>
       </header>

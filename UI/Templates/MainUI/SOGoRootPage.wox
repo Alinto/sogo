@@ -115,11 +115,11 @@
               </md-switch>
             </div>
           </form>
-          <div layout="row"  layout-align="end end">
-            <md-button class="iconButton fg-sogoPaper-500"
+          <div layout="row" layout-align="end end" ng-cloak="ng-cloak">
+            <md-button class="sg-icon-button fg-sogoPaper-500"
                        label:aria-label="About"
                        ng-click="showAbout()">
-              <i class="md-icon-info"><!-- about --></i>
+              <md-icon class="material-icons fg-sogoPaper-500">info</md-icon>
             </md-button>
           </div>
         </div>

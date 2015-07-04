@@ -6,8 +6,10 @@
     xmlns:label="OGo:label"
     >
   <div class="sg-toolbar-group-1" layout="row">
-    <md-button ng-click="toggleLeft()" class="hide-gt-md sg-button-navicon iconButton" aria-label="Toggle Menu">
-      <span class="md-icon-menu"></span>
+    <md-button ng-click="toggleLeft()"
+               class="hide-gt-md sg-button-navicon sg-icon-button"
+               label:aria-label="Toggle Menu">
+      <md-icon>menu</md-icon>
     </md-button>
     <div class="sg-date-group" layout="column" layout-align="space-between end">
       <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>

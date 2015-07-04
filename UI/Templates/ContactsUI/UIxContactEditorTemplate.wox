@@ -65,14 +65,14 @@
                 <input type="text" ng-model="unit.value"
                        sg-focus-on="orgUnit_{{$index}}"/>
               </md-input-container>
-              <md-button class="iconButton" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
-                <i class="md-icon-remove-circle"><!-- remove --></i>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
+                <md-icon>remove_circle</md-icon>
               </md-button>
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="iconButton" type="button" ng-click="editor.addOrgUnit($event)">
-              <i class="md-icon-add"><!-- plus icon button--></i>
+            <md-button class="sg-icon-button" type="button" ng-click="editor.addOrgUnit($event)">
+              <md-icon>add_circle</md-icon>
             </md-button>
             <label class="button-label">
               <var:string label:value="Add Organizational Unit"/>
@@ -108,15 +108,15 @@
                   <input type="email" ng-model="email.value"
                          sg-focus-on="email_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('emails', $index)">
-                  <i class="md-icon-remove-circle"><!-- remove --></i>
+                <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('emails', $index)">
+                  <md-icon>remove_circle</md-icon>
                 </md-button>
               </div>
 
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="editor.addEmail()">
-                <i class="md-icon-add"><!-- new --></i>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addEmail()">
+                <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
                 <var:string label:value="New Email Address"/>
@@ -146,15 +146,15 @@
                   <input type="text" ng-model="phone.value"
                          sg-focus-on="phone_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('phones', $index)">
-                  <i class="md-icon-remove-circle"><!-- remove --></i>
+                <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('phones', $index)">
+                  <md-icon>remove_circle</md-icon>
                 </md-button>
               </div>
             </div>
 
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="editor.addPhone()">
-                <i class="md-icon-add"><!-- new --></i>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addPhone()">
+                <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
                 <var:string label:value="New Phone Number"/>
@@ -175,14 +175,14 @@
                   </label>
                   <input type="url" ng-model="url.value" sg-focus-on="url_{{$index}}"/>
                 </md-input-container>
-                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('urls', $index)">
-                  <i class="md-icon-remove-circle"><!-- remove --></i>
+                <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('urls', $index)">
+                  <md-icon>remove_circle</md-icon>
                 </md-button>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="editor.addUrl()">
-                <i class="md-icon-add"><!-- new --></i>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addUrl()">
+                <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
                 <var:string label:value="New URL"/>
@@ -250,14 +250,14 @@
                   </label>
                   <input type="text" ng-model="address.postalcode"/>
                 </md-input-container>
-                <md-button class="iconButton" type="button" ng-click="editor.card.$delete('addresses', $index)">
-                  <i class="md-icon-remove-circle"><!-- remove --></i>
+                <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('addresses', $index)">
+                  <md-icon>remove_circle</md-icon>
                 </md-button>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="iconButton" type="button" ng-click="editor.addAddress()">
-                <i class="md-icon-add"><!-- new --></i>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addAddress()">
+                <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
                 <var:string label:value="New Address"/>

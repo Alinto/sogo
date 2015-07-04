@@ -51,8 +51,8 @@
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
           <div class="sg-toolbar-group-last">
-            <md-button class="iconButton" label:aria-label="Menu">
-              <i class="md-icon-more-vert"><!--icon--></i>
+            <md-button class="sg-icon-button" label:aria-label="Menu">
+              <md-icon>more_vert</md-icon>
             </md-button>
           </div>
         </div>
@@ -328,18 +328,20 @@
                 <md-input-container>
 	          <input type="text" label:aria-label="Calendar Category" ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
                 </md-input-container>
-                <md-button type="button"
+                <md-button class="sg-icon-button" type="button"
                            layout="row" layout-align="end center"
                            label:aria-label="Remove Calendar Category"
                            ng-click="app.removeCalendarCategory($index)">
-                  <div class="md-icon-remove"><!-- delete --></div>
+                  <md-icon>remove</md-icon>
                 </md-button>
               </md-list-item>
             </md-list>
 
             <div class="bottomToolbar">
-              <md-button label:aria-label="Add Calendar Category" ng-click="app.addCalendarCategory()" type="button">
-                <div class="md-icon-add"><!-- create --></div>
+              <md-button class="sg-icon-button" type="button"
+                         label:aria-label="Add Calendar Category"
+                         ng-click="app.addCalendarCategory()">
+                <md-icon>add</md-icon>
               </md-button>
             </div>
 
@@ -410,20 +412,19 @@
                            label:aria-label="Contact Category"
                            ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"/>
                   </md-input-container>
-                  <md-button type="button" layout="row" layout-align="end center"
+                  <md-button type="button" class="sg-icon-button"
                              label:aria-label="Remove Contact Category"
-                             ng-click="app.removeContactCategory($index)"
-                      >
-                    <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
+                             ng-click="app.removeContactCategory($index)">
+                    <md-icon>remove</md-icon>
                   </md-button>
                 </md-list-item>
               </md-list>
 
               <div class="bottomToolbar">
-                <md-button type="button"
+                <md-button class="sg-icon-button" type="button"
                            label:aria-label="Add Contact Category"
                            ng-click="app.addContactCategory()">
-                  <div class="md-icon-add"><!-- create --></div>
+                  <md-icon>add</md-icon>
                 </md-button>
               </div>
 
@@ -574,27 +575,27 @@
                       <md-input-container>
 	                <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                       </md-input-container>
-                      <md-button ng-click="app.editMailFilter($index)"
-                                 type="button"
+                      <md-button class="sg-icon-button" type="button"
+                                 ng-click="app.editMailFilter($index)"
                                  layout="row" layout-align="end center"
                                  label:aria-label="Edit Filter">
-                        <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
+                        <md-icon>edit</md-icon>
                       </md-button>
-                      <md-button ng-click="app.removeMailFilter($index)"
-                                 type="button"
+                      <md-button class="sg-icon-button" type="button"
+                                 ng-click="app.removeMailFilter($index)"
                                  layout="row" layout-align="end center"
                                  label:aria-label="Delete Filter">
-                        <div class="md-icon-remove"><!-- delete --></div>
+                        <md-icon>remove</md-icon>
                       </md-button>
                     </md-list-item>
                   </md-list>
 
                   <!-- FIXME: move up/down to be replaced by DnD? -->
                   <div class="bottomToolbar">
-                    <md-button ng-click="app.addMailFilter($event)"
-                               type="button"
+                    <md-button class="sg-icon-button" type="button"
+                               ng-click="app.addMailFilter($event)"
                                label:aria-label="Create Filter">
-                      <div class="md-icon-add"><!-- create --></div>
+                      <md-icon>add</md-icon>
                     </md-button>
                   </div>
                 </div>
@@ -616,20 +617,20 @@
                                label:aria-label="Label"
                                ng-model="value[0]"/>
                       </md-input-container>
-                      <md-button type="button"
+                      <md-button class="sg-icon-button" type="button"
                                  layout="row" layout-align="end center"
                                  label:aria-label="Delete Label"
                                  ng-click="app.removeMailLabel(key)">
-                        <div class="md-icon-remove"><!-- delete --></div>
+                        <md-icon>remove</md-icon>
                       </md-button>
                     </md-list-item>
                   </md-list>
 
                   <div class="bottomToolbar">
-                    <md-button type="button"
+                    <md-button class="sg-icon-button" type="button"
                                label:aria-label="Create Label"
                                ng-click="app.addMailLabel()">
-                      <div class="md-icon-add"><!-- create --></div>
+                      <md-icon>add</md-icon>
                     </md-button>
                   </div>
                 </div>
@@ -651,30 +652,30 @@
                            ng-model="app.preferences.defaults.AuxiliaryMailAccounts[$index].name"
                            ng-readonly="$index == 0"/>
                   </md-input-container>
-                  <md-button ng-click="app.editMailAccount($index)"
-                             type="button"
+                  <md-button class="sg-icon-button" type="button"
+                             ng-click="app.editMailAccount($index)"
                              layout="row"
                              layout-align="end center"
                              label:aria-label="Edit Account">
-                    <div class="md-icon-edit md-icon-lg"><!-- edit --></div>
+                    <md-icon>edit</md-icon>
                   </md-button>
-                  <md-button ng-click="app.removeMailAccount($index)"
+                  <md-button class="sg-icon-button" type="button"
+                             ng-click="app.removeMailAccount($index)"
                              ng-show="$index > 0"
-                             type="button"
                              layout="row"
                              layout-align="end center"
                              label:aria-label="Delete Account">
-                    <div class="md-icon-remove md-icon-lg"><!-- delete --></div>
+                    <md-icon>remove</md-icon>
                   </md-button>
                 </md-list-item>
               </md-list>
 
               <var:if condition="mailAuxiliaryUserAccountsEnabled">
                 <div class="bottomToolbar">
-                  <md-button ng-click="app.addMailAccount()"
-                             type="button"
+                  <md-button class="sg-icon-button" type="button"
+                             ng-click="app.addMailAccount()"
                              label:aria-label="Create Account">
-                    <div class="md-icon-add"><!-- create --></div>
+                    <md-icon>add</md-icon>
                   </md-button>
                 </div>
               </var:if>

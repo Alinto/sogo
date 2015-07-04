@@ -113,14 +113,14 @@
             <input type="text" ng-model="attach.value"
                    sg-focus-on="attachUrl_{{$index}}"/>
           </md-input-container>
-          <md-button class="iconButton" type="button" ng-click="editor.component.deleteAttachUrl($index)">
-            <i class="md-icon-remove-circle"><!-- remove --></i>
+          <md-button class="sg-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+            <md-icon>remove_circle</md-icon>
           </md-button>
         </div>
       </div>
       <div class="md-layout-margin" layout="row" layout-align="start center">
-        <md-button class="iconButton" type="button" ng-click="editor.addAttachUrl($event)">
-          <i class="md-icon-add"><!-- plus icon button--></i>
+        <md-button class="sg-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
+          <md-icon>add_circle</md-icon>
         </md-button>
         <label class="button-label">
           <var:string label:value="Attach"/>
@@ -143,12 +143,12 @@
             </md-select>
           </md-input-container>
         </div>
-        <md-button type="button" class="iconButton"
+        <md-button type="button" class="sg-icon-button"
                    label:aria-label="repeat_CUSTOM"
                    ng-show="editor.component.repeat.frequency != 'never'"
                    ng-click="editor.toggleRecurrenceEditor()">
-          <i ng-class="{'md-icon-more-horiz': !editor.showRecurrenceEditor,
-                       'md-icon-clear': editor.showRecurrenceEditor}"><!-- toggle custom rule --></i>
+          <md-icon ng-class="{'icon-more-horiz': !editor.showRecurrenceEditor,
+                              'icon-clear': editor.showRecurrenceEditor}"><!-- toggle custom rule --></md-icon>
         </md-button>
       </div>
       <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
@@ -188,10 +188,11 @@
             </sg-gravatar-image>
           </div>
         </div>
-        <md-button type="button" class="iconButton"
+        <md-button type="button" class="sg-icon-button"
                    label:aria-label="repeat_CUSTOM"
                    ng-click="editor.toggleAttendeesEditor()">
-          <i ng-class="{'md-icon-expand-more': !editor.showAttendeesEditor, 'md-icon-expand-less': editor.showAttendeesEditor}"><!-- toggle attendees details --></i>
+          <md-icon ng-class="{'icon-expand-more': !editor.showAttendeesEditor,
+                              'icon-expand-less': editor.showAttendeesEditor}"><!-- toggle attendees details --></md-icon>
         </md-button>
       </div>
       <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">

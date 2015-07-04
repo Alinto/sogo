@@ -8,15 +8,14 @@
    xmlns:uix="OGo:uix">
 
   <md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
-    <md-button class="iconButton show-sm" ng-click="toggleDetailView()">
-      <i class="md-icon-close"><!--icon--></i>
+    <md-button class="sg-icon-button show-sm" ng-click="toggleDetailView()">
+      <md-icon>close</md-icon>
     </md-button>
     <header class="msg-header">
       <div class="msg-header-content">
         <div layout="row" layout-align="start center">
-          <md-button class="iconButton" aria-label="flagged" ng-click="message.toggleFlag()">
-            <i class="md-icon-star"
-               ng-class="{'flagged': message.isflagged}"><!-- flag --></i>
+          <md-button class="sg-icon-button sg-msg-flag" label:aria-label="flagged" ng-click="message.toggleFlag()">
+            <md-icon ng-class="{'flagged': message.isflagged}">star</md-icon>
           </md-button>
           <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
         </div>
@@ -43,7 +42,7 @@
           <button md-chip-remove="md-chip-remove"
                   class="md-chip-remove"
                   ng-click="message.removeTag($chip)">
-            <i class="md-icon-close"><!-- delete tag --></i>
+            <md-icon>close</md-icon>
           </button>
           <md-autocomplete
               md-selected-item="tags.selected"
@@ -65,37 +64,37 @@
 
       <div class="sg-icon-bar--vertical">
       <!-- todo: Replace md-tooltip values by localizable string variable -->
-      <md-button class="iconButton"
+      <md-button class="sg-icon-button"
                  ng-hide="message.isDraft"
                  ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"
                  aria-label="reply">
         <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
-        <i class="md-icon-reply"><!-- reply --></i>
+        <md-icon>reply</md-icon>
       </md-button>
-      <md-button class="iconButton" aria-label="Reply All"
+      <md-button class="sg-icon-button" aria-label="Reply All"
                  ng-hide="message.isDraft"
                  ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})">
-        <i class="md-icon-reply-all"><!-- reply all --></i>
+        <md-icon>reply_all</md-icon>
       </md-button>
-      <md-button class="iconButton" aria-label="Forward"
+      <md-button class="sg-icon-button" aria-label="Forward"
                  ng-hide="message.isDraft"
                  ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})">
-        <i class="md-icon-forward"><!-- forward --></i>
+        <md-icon>forward</md-icon>
       </md-button>
-      <md-button class="iconButton" aria-label="Edit"
+      <md-button class="sg-icon-button" aria-label="Edit"
                  ng-show="message.isDraft"
                  ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})">
-        <i class="md-icon-create"><!-- edit --></i>
+        <md-icon>create</md-icon>
       </md-button>
-      <md-button class="iconButton" aria-label="Delete"
+      <md-button class="sg-icon-button" aria-label="Delete"
                  ng-click="doDelete(message)">
-        <i class="md-icon-delete"><!-- delete --></i>
+        <md-icon>delete</md-icon>
       </md-button>
-      <md-button class="iconButton" aria-label="Load Images"
+      <md-button class="sg-icon-button" aria-label="Load Images"
                  ng-show="message.$hasUnsafeContent"
                  ng-click="message.loadUnsafeContent()">
         <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
-        <i class="md-icon-image"><!--icon--></i>
+        <md-icon>image</md-icon>
       </md-button>
       </div>
     </header>

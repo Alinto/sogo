@@ -23,10 +23,10 @@
               <div class="sg-md-subhead-multi">{{user.cn}}</div>
               <div class="sg-md-body-multi">{{user.c_email}}</div>
             </div>
-            <md-button ng-click="acl.removeUser(user)"
-                       type="button"
+            <md-button class="sg-icon-button" type="button"
+                       ng-click="acl.removeUser(user)"
                        ng-hide="user.uid != acl.selectedUser.uid || user.$isSpecial()">
-              <i class="md-icon-delete"><!-- delete --></i>
+              <md-icon>delete</md-icon>
             </md-button>
           </div>
         </md-button>

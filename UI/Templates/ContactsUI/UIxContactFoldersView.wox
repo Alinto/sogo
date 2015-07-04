@@ -127,16 +127,17 @@
 <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+      <!-- <div style="position: relative; display: flex;"> -->
+      <md-content md-scroll-y="md-scroll-y">
         <!-- User's addressbooks -->
         <section>
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="AddressBooks"/></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          label:aria-label="New Addressbook..."
                          ng-click="app.newAddressbook()">
-                <i class="md-icon-add-circle-outline"><!-- add --></i>
+                <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
@@ -146,9 +147,9 @@
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="sg-active">
-              <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
+              <md-icon>contacts</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode!=folder.id"> {{folder.name}}</p>
+                 ng-show="app.editMode!=folder.id">{{folder.name}}</p>
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode==folder.id">
                 <input class="folder-name" type="text"
@@ -160,14 +161,12 @@
                        sg-enter="app.save(folder)"
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
-
-              <md-menu class="md-secondary" ng-show="app.service.selectedFolder.id==folder.id">
-                <md-button class="iconButton"
-                           label:aria-label="Options"
-                           ng-click="$mdOpenMenu()">
-                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
-                </md-button>
-
+              <md-menu class="md-secondary"
+                       ng-click="true"
+                       ng-show="app.service.selectedFolder.id==folder.id">
+                <md-icon label:aria-label="Options"
+                         ng-click="$mdOpenMenu()"
+                         md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete()">
@@ -200,11 +199,11 @@
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to an Addressbook..."
-                         sg-subscribe="contact"
-                         sg-subscribe-on-select="app.subscribeToFolder(folderData)">
-                <i class="md-icon-add-circle-outline"><!-- add --></i>
+                       sg-subscribe="contact"
+                       sg-subscribe-on-select="app.subscribeToFolder(folderData)">
+                <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
@@ -214,7 +213,7 @@
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="sg-active">
-              <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
+              <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="editMode!=folder.id">{{folder.name}}</p>
               <md-input-container class="md-flex md-tile-content"
@@ -228,13 +227,12 @@
                        sg-enter="app.save(folder)"
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
-              <md-menu class="md-secondary" ng-show="app.service.selectedFolder.id==folder.id">
-                <md-button class="iconButton"
-                           label:aria-label="Options"
-                           ng-click="$mdOpenMenu()">
-                  <i class="md-icon-more-vert" md-menu-origin="md-menu-origin"><!-- options --></i>
-                </md-button>
-                
+              <md-menu class="md-secondary"
+                       ng-click="true"
+                       ng-show="app.service.selectedFolder.id==folder.id">
+                <md-icon label:aria-label="Options"
+                         ng-click="$mdOpenMenu()"
+                         md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete(folder)">
@@ -243,7 +241,6 @@
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
-  
             </md-list-item>
           </md-list>
         </section>
@@ -257,12 +254,13 @@
                           ng-click="app.select(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="sg-active">
-              <i ng-class="{'md-icon-public': folder.isRemote, 'md-icon-contacts': folder.isEditable}"><!-- icon --></i>
+              <md-icon>public</md-icon>
               <p class="sg-item-name">{{folder.name}}</p>
             </md-list-item>
           </md-list>
         </section>
       </md-content>
+    <!-- </div> -->
     </md-sidenav>
 
     <section layout="column" class="sg-app-content md-layout-fill" ui-view="addressbook"><!-- contacts list --></section>
@@ -279,7 +277,7 @@
         <div class="view-list sg-padded" layout="row" layout-align="space-between center"
              sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
           <md-input-container class="sg-search-field-container">
-            <label style="color: white"><i class="md-icon-search"><!--icon--></i><var:string label:value="Search"/></label>
+            <label style="color: white"><md-icon>search</md-icon><var:string label:value="Search"/></label>
             <input name="folderSearch" type="search" style="color: white"/>
           </md-input-container>
 
@@ -293,15 +291,15 @@
         </div>
       </div>
       <div layout="row" layout-align="start center" ng-show="addressbook.selectedFolder.$selectedCount() > 0">
-        <md-button ng-click="addressbook.unselectCards()">
-          <i class="md-icon-arrow-back"><!-- unselect all --></i>
+        <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
+          <md-icon>arrow_back</md-icon>
         </md-button>
         <label>{{addressbook.selectedFolder.$selectedCount()}} selected</label>
-        <md-button ng-click="addressbook.confirmDeleteSelectedCards()">
-          <i class="md-icon-delete"><!-- delete --></i>
+        <md-button class="sg-icon-button" ng-click="addressbook.confirmDeleteSelectedCards()">
+          <md-icon>delete</md-icon>
         </md-button>
-        <md-button>
-          <i class="md-icon-email"><!-- email contacts --></i>
+        <md-button class="sg-icon-button">
+          <md-icon>email</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -355,10 +353,10 @@
         </md-list>
       </md-content>
       
-      <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
+      <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="New Contact"
                  ng-click="addressbook.newComponent($event)">
-        <i class="md-icon-add"><!-- icon --></i>
+        <md-icon>add</md-icon>
       </md-button>
 
       </div>

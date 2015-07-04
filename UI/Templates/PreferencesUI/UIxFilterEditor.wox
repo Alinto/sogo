@@ -1,15 +1,13 @@
 <?xml version="1.0" standalone="yes"?>
-<!DOCTYPE var:component>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  >
-  <md-dialog>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
+  <md-dialog flex="50">
     <md-dialog-content>
       <script type="text/javascript">
         var filterId = '<var:string value="filterId"/>';
@@ -64,16 +62,18 @@
 
                 <input type="text" ng-model="rule.value"/>
 
-                <md-button ng-click="removeMailFilterRule($index)" type="button">
-                  <div class="md-icon-remove"><!-- delete --></div>
+                <md-button class="sg-icon-button" type="button"
+                           ng-click="removeMailFilterRule($index)">
+                  <md-icon>remove</md-icon>
                 </md-button>
 
               </md-list-item>
             </md-list>
           </div>
 
-          <md-button ng-click="addMailFilterRule($event)" type="button">
-            <div class="md-icon-add"><!-- create --></div>
+          <md-button class="sg-icon-button" type="button"
+                     ng-click="addMailFilterRule($event)">
+            <md-icon>add</md-icon>
           </md-button>
         </div>
 
@@ -116,15 +116,17 @@
               <!-- nada -->
 
 
-              <md-button ng-click="removeMailFilterAction($index)" type="button">
-                <div class="md-icon-remove"><!-- delete --></div>
+              <md-button class="sg-icon-button" type="button"
+                         ng-click="removeMailFilterAction($index)">
+                <md-icon>remove</md-icon>
               </md-button>
 
           </md-list-item>
           </md-list>
 
-          <md-button ng-click="addMailFilterAction($event)" type="button">
-            <div class="md-icon-add"><!-- create --></div>
+          <md-button class="sg-icon-button" type="button"
+                     ng-click="addMailFilterAction($event)">
+            <md-icon>add</md-icon>
           </md-button>
         </div>
 
@@ -135,4 +137,4 @@
     </form>
   </md-dialog-content>
 </md-dialog>
-</var:component>
+</container>

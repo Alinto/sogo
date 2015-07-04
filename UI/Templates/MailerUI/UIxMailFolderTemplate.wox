@@ -9,6 +9,7 @@
         width: 100%;
       }
     </style>
+    <md-progress-linear ng-show="mailbox.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
     <header class="sg-md-subheader sg-md-subheader--fixed">
       <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
     </header>
@@ -40,18 +41,18 @@
              ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
         </div>
         <div class="sg-tile-icons">
-          <i class="md-icon-star" ng-show="currentMessage.isflagged"> </i>
-          <i class="md-icon-reply" ng-show="currentMessage.isanswered"> </i>
-          <i class="md-icon-forward" ng-show="currentMessage.isforwarded"> </i>
-          <i class="md-icon-attach-file disable" ng-show="currentMessage.hasattachment"> </i>
+          <md-icon ng-show="currentMessage.isflagged">star</md-icon>
+          <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
+          <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
+          <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
         </div>
       </md-list-item>
     </md-list>
   </md-content>
-  <md-button class="iconButton md-fab md-fab-bottom-right md-accent"
+  <md-button class="md-fab md-fab-bottom-right md-accent"
              label:aria-label="Write a new message"
              ui-sref="mail.newMessage()">
-    <i class="md-icon-add"><!--icon--></i>
+    <md-icon>add</md-icon>
   </md-button>
   </div>
 

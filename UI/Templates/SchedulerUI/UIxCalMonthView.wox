@@ -24,16 +24,16 @@
     <div layout="row" layout-align="center">
       <h5>
         <md-button
-            class="iconButton"
+            class="sg-icon-button"
             label:aria-label="Previous Month"
             var:date="prevMonthQueryParameters.day"
-            ng-click="calendar.changeView($event)"><i class="md-icon-chevron-left"><!--icon--></i></md-button>
+            ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
         <var:string value="monthNameOfThisMonth" />
         <md-button
-            class="iconButton"
+            class="sg-icon-button"
             label:aria-label="Next Month"
             var:date="nextMonthQueryParameters.day"
-            ng-click="calendar.changeView($event)"><i class="md-icon-chevron-right"><!--icon--></i></md-button>
+            ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
       </h5>
     </div>
       <div class="monthView">

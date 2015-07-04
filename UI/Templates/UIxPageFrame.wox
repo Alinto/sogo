@@ -89,16 +89,16 @@
                     <var:if condition="isCalendar">
                       <md-list-item>
                         <md-button class="md-list-item-content" ng-disabled="true">
-                          <i class="md-icon-event"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Calendar"/></span>
+                          <md-icon>event</md-icon>
+                          <var:string label:value="Calendar"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
                     <var:if condition="isCalendar" const:negate="YES">
                       <md-list-item>
                         <md-button class="md-list-item-content" var:href="relativeCalendarPath">
-                          <i class="md-icon-event"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Calendar"/></span>
+                          <md-icon>event</md-icon>
+                          <var:string label:value="Calendar"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
@@ -108,16 +108,16 @@
                   <var:if condition="isContacts">
                     <md-list-item>
                       <md-button class="md-list-item-content" ng-disabled="true">
-                        <i class="md-icon-contacts"><!--icon--></i>
-                        <span class="sg-inline-list-icon-label"><var:string label:value="Address Book"/></span>
+                        <md-icon>contacts</md-icon>
+                        <var:string label:value="Address Book"/>
                       </md-button>
                     </md-list-item>
                   </var:if>
                   <var:if condition="isContacts" const:negate="YES">
                     <md-list-item>
                       <md-button class="md-list-item-content" var:href="relativeContactsPath">
-                        <i class="md-icon-contacts"><!--icon--></i>
-                        <span class="sg-inline-list-icon-label"><var:string label:value="Address Book"/></span>
+                        <md-icon>contacts</md-icon>
+                        <var:string label:value="Address Book"/>
                       </md-button>
                     </md-list-item>
                   </var:if>
@@ -127,56 +127,68 @@
                     <var:if condition="isMail">
                       <md-list-item>
                         <md-button class="md-list-item-content" ng-disabled="true">
-                          <i class="md-icon-email"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Mail"/></span>
+                          <md-icon>email</md-icon>
+                          <var:string label:value="Mail"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
                     <var:if condition="isMail" const:negate="YES">
                       <md-list-item>
                         <md-button class="md-list-item-content" var:href="relativeMailPath">
-                          <i class="md-icon-email"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Mail"/></span>
+                          <md-icon>email</md-icon>
+                          <var:string label:value="Mail"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
                   </var:if>
 
                   <!-- PREFERENCES -->
-                  <md-list-item>
-                    <md-button class="md-list-item-content" var:ng-href="relativePreferencesPath">
-                      <i class="md-icon-settings"><!--icon--></i>
-                      <span class="sg-inline-list-icon-label"><var:string label:value="Preferences"/></span>
-                    </md-button>
-                  </md-list-item>
+                  <var:if condition="isPreferences">
+                    <md-list-item>
+                      <md-button class="md-list-item-content" ng-disabled="true">
+                        <md-icon>settings</md-icon>
+                        <var:string label:value="Preferences"/>
+                      </md-button>
+                    </md-list-item>
+                  </var:if>
+                  <var:if condition="isPreferences" const:negate="YES">
+                    <md-list-item>
+                      <md-button class="md-list-item-content" var:ng-href="relativePreferencesPath">
+                        <md-icon>settings</md-icon>
+                        <var:string label:value="Preferences"/>
+                      </md-button>
+                    </md-list-item>
+                  </var:if>
 
                   <!-- ADMINISTRATION -->
                   <var:if condition="isSuperUser">
                     <var:if condition="isAdministration">
                       <md-list-item>
                         <md-button class="md-list-item-content" ng-disabled="true">
-                          <i class="md-icon-settings-applications"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Administration"/></span>
+                          <md-icon>settings_applications</md-icon>
+                          <var:string label:value="Administration"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
                     <var:if condition="isAdministration" const:negate="YES">
                       <md-list-item>
                         <md-button class="md-list-item-content" var:href="relativeAdministrationPath">
-                          <i class="md-icon-settings-applications"><!--icon--></i>
-                          <span class="sg-inline-list-icon-label"><var:string label:value="Administration"/></span>
+                          <md-icon>settings_applications</md-icon>
+                          <var:string label:value="Administration"/>
                         </md-button>
                       </md-list-item>
                     </var:if>
                   </var:if>
 
                   <!-- DISCONNECT -->
-                  <md-list-item>
-                    <md-button class="md-list-item-content" var:ng-href="logoffPath">
-                      <i class="md-icon-settings-power"><!--icon--></i>
-                      <span class="sg-inline-list-icon-label"><var:string label:value="Disconnect"/></span>
-                    </md-button>
-                  </md-list-item>
+                  <var:if condition="canLogoff">
+                    <md-list-item>
+                      <md-button class="md-list-item-content" var:ng-href="logoffPath">
+                        <md-icon>settings_power</md-icon>
+                        <var:string label:value="Disconnect"/>
+                      </md-button>
+                    </md-list-item>
+                  </var:if>
                 </var:if>
                 
               </md-list>
