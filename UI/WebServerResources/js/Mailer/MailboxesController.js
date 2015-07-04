@@ -161,7 +161,7 @@
        * @ngInject
        */
       MailboxACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder'];
-      function MailboxACLController($scope, $mdDialog, usersWithACL, User, folder {
+      function MailboxACLController($scope, $mdDialog, usersWithACL, User, folder) {
         var vm = this;
 
         vm.users = usersWithACL; // ACL users
