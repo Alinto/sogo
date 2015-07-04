@@ -24,6 +24,76 @@
             });
         });
     };
+    $scope.delegate = function(account) {
+      $mdDialog.show({
+        templateUrl: account.id + '/delegation', // UI/Templates/MailerUI/UIxMailUserDelegation.wox
+        controller: MailboxDelegationController,
+        controllerAs: 'delegate',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          User: User,
+          account: account,
+          $q: $q
+        }
+      });
+
+      /**
+       * @ngInject
+       */
+      MailboxDelegationController.$inject = ['$scope', '$mdDialog', 'User', 'account', '$q'];
+      function MailboxDelegationController($scope, $mdDialog, User, account, $q) {
+        var vm = this;
+
+        vm.users = account.delegates;
+        vm.account = account;
+        vm.selectedUser = null;
+        vm.userToAdd = '';
+        vm.searchText = '';
+        vm.userFilter = userFilter;
+        vm.closeModal = closeModal;
+        vm.removeUser = removeUser;
+        vm.addUser = addUser;
+        vm.selectUser = selectUser;
+
+        function userFilter($query) {
+          //return User.$filter($query, folder.$acl.users);
+          return User.$filter($query, account.delegates);
+        }
+
+        function closeModal() {
+          $mdDialog.hide();
+        }
+
+        function removeUser(user) {
+          account.$removeDelegate(user.uid).then(function() {
+            if (user.uid == vm.selectedUser.uid) {
+              vm.selectedUser = null;
+            }
+          }, function(data, status) {
+            Dialog.alert(l('Warning'), l('An error occured please try again.'))
+          });
+        }
+
+        function addUser(data) {
+          if (data) {
+            account.$addDelegate(data).then(function() {
+              vm.userToAdd = '';
+              vm.searchText = '';
+            }, function(error) {
+              Dialog.alert(l('Warning'), error);
+            });
+          }
+        }
+
+        function selectUser(user) {
+          // Check if it is a different user
+          if (vm.selectedUser != user) {
+            vm.selectedUser = user;
+          }
+        }
+      }
+    };
     $scope.editFolder = function(folder) {
       $scope.editMode = folder.path;
       focus('mailboxName_' + folder.path);

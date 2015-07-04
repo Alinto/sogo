@@ -220,4 +220,48 @@
     return deferred.promise;
   };
 
+  /**
+   * @function $addDelegate
+   * @memberof Account.prototype
+   * @param {Object} user - a User object with minimal set of attributes (uid, isGroup, cn, c_email)
+   * @desc Remove a user from the account's delegates
+   * @see {@link User.$filter}
+   */
+  Account.prototype.$addDelegate = function(user) {
+    var _this = this,
+        deferred = Account.$q.defer(),
+        param = {uid: user.uid};
+    if (!user.uid || _.indexOf(_.pluck(this.delegates, 'uid'), user.uid) > -1) {
+      // No UID specified or user already in delegates
+      deferred.resolve();
+    }
+    else {
+      Account.$$resource.fetch(this.id.toString(), 'addDelegate', param).then(function() {
+        _this.delegates.push(user);
+        deferred.resolve(_this.users);
+      }, function(data, status) {
+        deferred.reject(l('An error occured please try again.'));
+      });
+    }
+    return deferred.promise;
+  };
+
+  /**
+   * @function $removeDelegate
+   * @memberof Account.prototype
+   * @param {Object} user - a User object with minimal set of attributes (uid, isGroup, cn, c_email)
+   * @desc Remove a user from the account's delegates
+   * @return a promise of the server call to remove the user from the account's delegates
+   */
+  Account.prototype.$removeDelegate = function(uid) {
+    var _this = this,
+        param = {uid: uid};
+    return Account.$$resource.fetch(this.id.toString(), 'removeDelegate', param).then(function() {
+      var i = _.indexOf(_.pluck(_this.delegates, 'uid'), uid);
+      if (i >= 0) {
+        _this.delegates.splice(i, 1);
+      }
+    });
+  };
+ 
 })();

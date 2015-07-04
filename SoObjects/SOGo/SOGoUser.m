@@ -627,10 +627,10 @@
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *cImapServer, *signature,
     *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
-  NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
+  NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *mailSettings;
   NSNumber *port;
   NSMutableArray *identities;
-  NSArray *mails;
+  NSArray *mails, *delegates;
   NSURL *url, *cUrl;
   unsigned int count, max, default_identity;
   NSInteger defaultPort;
@@ -824,6 +824,29 @@
 
   [mailAccounts addObject: mailAccount];
   [mailAccount release];
+
+  /* delegates */
+  mailSettings = [[self userSettings] objectForKey: @"Mail"];
+  delegates = [mailSettings objectForKey: @"DelegateTo"];
+  if (!delegates)
+    delegates = [NSArray array];
+  else
+    {
+      NSMutableArray *allDelegates;
+      SOGoUser *delegate;
+
+      allDelegates = [NSMutableArray array];
+      for (count = 0; count < [delegates count]; count++)
+        {
+          delegate = [SOGoUser userWithLogin: [delegates objectAtIndex: count]];
+          [allDelegates addObject: [NSDictionary dictionaryWithObjectsAndKeys: [delegates objectAtIndex: count], @"uid",
+                                                 [delegate cn], @"cn",
+                                                 [delegate systemEmail], @"c_email", nil]];
+        }
+
+      delegates = allDelegates;
+    }
+  [mailAccount setObject: delegates  forKey: @"delegates"];
 }
 
 - (NSArray *) mailAccounts
