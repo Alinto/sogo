@@ -464,7 +464,7 @@
 
                 <div layout="row" layout-align="space-around start">
                   <md-checkbox
-                      ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
+                      class="md-align-top-left" ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
                       ng-true-value="1"
                       ng-false-value="0"
                       label:arial-label="When sending mail, add unknown recipients to my">
