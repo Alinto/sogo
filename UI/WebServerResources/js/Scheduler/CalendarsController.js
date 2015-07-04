@@ -147,17 +147,19 @@
     }
 
     function share(calendar) {
-      $mdDialog.show({
-        templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
-        controller: CalendarACLController,
-        controllerAs: 'acl',
-        clickOutsideToClose: true,
-        escapeToClose: true,
-        locals: {
-          usersWithACL: calendar.$acl.$users(),
-          User: User,
-          folder: calendar
-        }
+      calendar.$acl.$users().then(function() {
+        $mdDialog.show({
+          templateUrl: calendar.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
+          controller: CalendarACLController,
+          controllerAs: 'acl',
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          locals: {
+            usersWithACL: calendar.$acl.users,
+            User: User,
+            folder: calendar
+          }
+        });
       });
 
       /**
