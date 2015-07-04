@@ -24,7 +24,7 @@
             <md-button ng-click="delegate.removeUser(user)"
                        type="button"
                        ng-hide="user.uid != delegate.selectedUser.uid || user.$isSpecial()">
-              <i class="md-icon-delete"><!-- delete --></i>
+              <md-icon>delete</md-icon>
             </md-button>
           </div>
         </md-button>

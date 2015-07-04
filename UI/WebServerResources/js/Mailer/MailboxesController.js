@@ -33,16 +33,15 @@
         escapeToClose: true,
         locals: {
           User: User,
-          account: account,
-          $q: $q
+          account: account
         }
       });
 
       /**
        * @ngInject
        */
-      MailboxDelegationController.$inject = ['$scope', '$mdDialog', 'User', 'account', '$q'];
-      function MailboxDelegationController($scope, $mdDialog, User, account, $q) {
+      MailboxDelegationController.$inject = ['$scope', '$mdDialog', 'User', 'account'];
+      function MailboxDelegationController($scope, $mdDialog, User, account) {
         var vm = this;
 
         vm.users = account.delegates;

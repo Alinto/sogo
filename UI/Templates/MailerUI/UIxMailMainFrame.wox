@@ -245,11 +245,11 @@
                          ng-click="newFolder(account)">
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
-              <md-button class="iconButton"
+              <md-button class="sg-icon-button"
                          ng-show="account.id == 0"
                          label:aria-label="Delegation..."
                          ng-click="delegate(account)">
-                <i class="md-icon-people"><!-- delegate --></i>
+                <md-icon>people</md-icon>
               </md-button>
             </div>
           </md-subheader>
