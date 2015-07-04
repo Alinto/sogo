@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$q', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $q, $mdDialog, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -149,8 +149,7 @@
           locals: {
             usersWithACL: addressbook.$acl.users,
             User: User,
-            folder: addressbook,
-            $q: $q
+            folder: addressbook
           }
         });
       });
@@ -158,8 +157,8 @@
       /**
        * @ngInject
        */
-      AddressBookACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder', '$q'];
-      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, folder, $q) {
+      AddressBookACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder'];
+      function AddressBookACLController($scope, $mdDialog, usersWithACL, User, folder) {
         var vm = this;
 
         vm.users = usersWithACL; // ACL users
