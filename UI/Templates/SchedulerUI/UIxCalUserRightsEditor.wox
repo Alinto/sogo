@@ -13,7 +13,7 @@
 
   <div layout="column">
 
-    <div layout="row" layout-align="space-between center">
+    <md-input-container>
       <label><var:string label:value="label_Public"/></label>
       <md-select flex="50" label:aria-label="Public"
                  ng-model="acl.selectedUser.rights.Public"
@@ -24,10 +24,10 @@
           </md-option>
         </var:foreach>
       </md-select>
-    </div>
+    </md-input-container>
 
-    <div layout="row" layout-align="space-between center">
-      <var:string label:value="label_Confidential"/>
+    <md-input-container>
+      <label><var:string label:value="label_Confidential"/></label>
       <md-select flex="50" label:aria-label="Confidential"
                  ng-model="acl.selectedUser.rights.Confidential"
                  ng-change="acl.confirmChange(acl.selectedUser)">
@@ -37,10 +37,10 @@
           </md-option>
         </var:foreach>
       </md-select>
-    </div>
+    </md-input-container>
 
-    <div layout="row" layout-align="space-between center">
-      <var:string label:value="label_Private"/>
+    <md-input-container>
+      <label><var:string label:value="label_Private"/></label>
       <md-select flex="50" label:aria-label="Private"
                  ng-model="acl.selectedUser.rights.Private"
                  ng-change="acl.confirmChange(acl.selectedUser)">
@@ -50,7 +50,7 @@
           </md-option>
         </var:foreach>
       </md-select>
-    </div>
+    </md-input-container>
 
     <md-checkbox name="canCreateObjects"
                  ng-model="acl.selectedUser.rights.canCreateObjects"
