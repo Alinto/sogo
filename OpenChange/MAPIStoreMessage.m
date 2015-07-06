@@ -202,7 +202,8 @@ rtf2html (NSData *compressedRTF)
         email = recipient->data[count];
         break;
       case PidTagObjectType:
-        object_type = *((uint8_t*) recipient->data[count]);
+        if (recipient->data[count])
+          object_type = *((uint8_t*) recipient->data[count]);
         break;
       case PidTagSmtpAddress:
         smtpAddress = recipient->data[count];
@@ -229,7 +230,7 @@ rtf2html (NSData *compressedRTF)
 
   if (object_type == MAPI_MAILUSER && recipient->username)
     {
-      /* values from user object have priority uppon the data passed for the client */
+      /* values from user object have priority over data sent by the client */
       recipientUser = [SOGoUser userWithLogin: [value lowercaseString]];
       if (recipientUser)
         {
