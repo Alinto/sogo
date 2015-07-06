@@ -17,6 +17,9 @@
 "Date" = "Date";
 "Calendars" = "Calendars";
 
+"No events for selected criteria" = "No events for selected criteria";
+"No tasks for selected criteria" = "No tasks for selected criteria";
+
 /* Day */
 
 "DayOfTheMonth" = "Day of the month";

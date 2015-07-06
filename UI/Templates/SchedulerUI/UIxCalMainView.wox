@@ -348,7 +348,7 @@
           </div>
         </div>
       </md-toolbar>
-      <md-content layout="row">
+      <md-content layout="row" class="md-flex">
         <div class="view-list md-flex" layout="column" style="position: relative;">
           <md-content id="componentsList">
             <md-tabs md-dynamic-height="true"
@@ -365,12 +365,17 @@
                                   componentId: event.c_name})">
                       <h3>{{event.c_title}}</h3>
                       <p>{{event.c_location}}</p>
-                      <p class="md-secondary">
+                      <p class="md-secondary" layout="row">
                         {{event.formatted_startdate}}
-                        <md-icon ng-show="event.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                        <span class="sg-tile-icons">
+                          <md-icon ng-show="event.c_iscycle">repeat</md-icon>
+                          <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                        </span>
                       </p>
                     </div>
+                  </md-list-item>
+                  <md-list-item ng-if="list.component.$events.length == 0">
+                    <p class="sg-md-caption"><var:string label:value="No events for selected criteria"/></p>
                   </md-list-item>
                 </md-list>
               </md-tab>
@@ -385,12 +390,17 @@
                                   componentType: 'task',
                                   componentId: task.c_name})">
                       <h3>{{task.c_title}}</h3>
-                      <p class="md-secondary">
+                      <p class="md-secondary" layout="row">
                         {{task.formatted_enddate}}
-                        <md-icon ng-show="task.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                        <span class="sg-tile-icons">
+                          <md-icon ng-show="task.c_iscycle">repeat</md-icon>
+                          <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                        </span>
                       </p>
                     </div>
+                  </md-list-item>
+                  <md-list-item ng-if="list.component.$tasks.length == 0">
+                    <p class="sg-md-caption"><var:string label:value="No tasks for selected criteria"/></p>
                   </md-list-item>
                 </md-list>
               </md-tab>
