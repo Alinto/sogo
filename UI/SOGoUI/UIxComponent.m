@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2015 Inverse inc.
   Copyright (C) 2004 SKYRIX Software AG
 
   This file is part of SOGo
@@ -452,7 +452,7 @@ static SoProduct      *commonProduct      = nil;
 
   jsClose = [UIxJSClose new];
   [jsClose autorelease];
-  [jsClose setRefreshMethod: methodName];
+  [jsClose setRefreshMethod: [methodName doubleQuotedString]];
 
   return jsClose;
 }

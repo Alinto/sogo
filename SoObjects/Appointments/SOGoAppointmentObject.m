@@ -1820,9 +1820,28 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
         }
 
-      if ([event organizer] && ![[[event organizer] cn] length])
+      if ([event organizer])
         {
-          [[event organizer] setCn: [[event organizer] rfc822Email]];
+          NSString *uid;
+
+          if (![[[event organizer] cn] length])
+            {
+              [[event organizer] setCn: [[event organizer] rfc822Email]];
+            }
+
+          // We now make sure that the organizer, if managed by SOGo, is using
+          // its default email when creating events and inviting attendees.
+          uid = [[SOGoUserManager sharedUserManager] getUIDForEmail: [[event organizer] rfc822Email]];
+          if (uid)
+            {
+              NSDictionary *defaultIdentity;
+              SOGoUser *organizer;
+
+              organizer = [SOGoUser userWithLogin: uid];
+              defaultIdentity = [organizer defaultIdentity];
+              [[event organizer] setCn: [defaultIdentity objectForKey: @"fullName"]];
+              [[event organizer] setEmail: [defaultIdentity objectForKey: @"email"]];
+            }
         }
     }
 }

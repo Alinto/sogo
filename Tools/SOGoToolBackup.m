@@ -1,9 +1,6 @@
 /* SOGoToolBackup.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +39,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <Contacts/NSDictionary+LDIF.h>
 
 #import "SOGoTool.h"
@@ -55,7 +53,7 @@
 @interface SOGoToolBackup : SOGoTool
 {
   NSString *directory;
-  NSArray *userIDs;
+  NSArray *usersToBackup;
 }
 
 @end
@@ -83,7 +81,7 @@
   if ((self = [super init]))
     {
       directory = nil;
-      userIDs = nil;
+      usersToBackup = nil;
     }
 
   return self;
@@ -92,7 +90,7 @@
 - (void) dealloc
 {
   [directory release];
-  [userIDs release];
+  [usersToBackup release];
   [super dealloc];
 }
 
@@ -143,6 +141,7 @@
 
   lm = [SOGoUserManager sharedUserManager];
   pool = [[NSAutoreleasePool alloc] init];
+  
 
   max = [users count];
   user = [users objectAtIndex: 0];
@@ -198,11 +197,11 @@
 	NSLog (@"user '%@' unknown", user);
     }
   [allUsers autorelease];
-  
-  ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid" notFoundMarker: nil]);
+
+  ASSIGN (usersToBackup, allUsers);
   DESTROY(pool);
 
-  return ([userIDs count] > 0);
+  return ([usersToBackup count] > 0);
 }
 
 - (BOOL) parseArguments
@@ -410,19 +409,29 @@
   return YES;
 }
 
-- (BOOL) exportUser: (NSString *) uid
+- (BOOL) exportUser: (NSDictionary *) theUser
 {
+  NSString *exportPath, *gcsUID, *ldapUID;
   NSMutableDictionary *userRecord;
-  NSString *exportPath;
-
+  SOGoSystemDefaults *sd;
+  
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
   userRecord = [NSMutableDictionary dictionary];
-  exportPath = [directory stringByAppendingPathComponent: uid];
 
-  return ([self extractUserFolders: uid
+  ldapUID = [theUser objectForKey: @"c_uid"];
+  exportPath = [directory stringByAppendingPathComponent: ldapUID];
+  
+  gcsUID = [theUser objectForKey: @"c_uid"];
+
+  if ([sd enableDomainBasedUID] && [gcsUID rangeOfString: @"@"].location == NSNotFound)
+    gcsUID = [NSString stringWithFormat: @"%@@%@", gcsUID, [theUser objectForKey: @"c_domain"]];
+
+  
+  return ([self extractUserFolders: gcsUID
                         intoRecord: userRecord]
-          && [self extractUserLDIFRecord: uid
+          && [self extractUserLDIFRecord: ldapUID
                               intoRecord: userRecord]
-          && [self extractUserPreferences: uid
+          && [self extractUserPreferences: gcsUID
                                intoRecord: userRecord]
           && [userRecord writeToFile: exportPath
                           atomically: NO]);
@@ -438,10 +447,10 @@
 
   pool = [NSAutoreleasePool new];
 
-  max = [userIDs count];
+  max = [usersToBackup count];
   for (count = 0; rc && count < max; count++)
     {
-      rc = [self exportUser: [userIDs objectAtIndex: count]];
+      rc = [self exportUser: [usersToBackup objectAtIndex: count]];
       if ((count % 10) == 0)
         [pool emptyPool];
     }

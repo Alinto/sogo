@@ -128,7 +128,6 @@ static NSArray *reminderValues = nil;
 
       calendarCategories = nil;
       calendarCategoriesColors = nil;
-      defaultCategoryColor = nil;
       category = nil;
 
       label = nil;
@@ -175,7 +174,6 @@ static NSArray *reminderValues = nil;
   [vacationOptions release];
   [calendarCategories release];
   [calendarCategoriesColors release];
-  [defaultCategoryColor release];
   [category release];
   [label release];
   [mailLabels release];
@@ -1521,15 +1519,6 @@ static NSArray *reminderValues = nil;
     ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
 
   categoryColor = [calendarCategoriesColors objectForKey: category];
-  if (!categoryColor)
-    {
-      if (!defaultCategoryColor)
-        {
-          dd = [[context activeUser] domainDefaults];
-          ASSIGN (defaultCategoryColor, [dd calendarDefaultCategoryColor]);
-        }
-      categoryColor = defaultCategoryColor;
-    }
 
   return categoryColor;
 }

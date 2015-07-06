@@ -46,6 +46,99 @@ static NSArray *easCommandParameters = nil;
 
 @implementation NSString (ActiveSync)
 
+//
+// This is a copy from NSString+XMLEscaping.m from SOPE.
+// The difference here is that we use wchar_t instead of unichar.
+// This is needed to get the rigth numeric character reference.
+// e.g. SMILING FACE WITH OPEN MOUTH
+//      ok: wchar_t -> &#128515;   wrong:  unichar -> &#55357; &#56835;
+//
+// We avoir naming it like the one in SOPE since if the ActiveSync
+// bundle is loaded, it'll overwrite the one provided by SOPE.
+//
+- (NSString *) _stringByEscapingXMLStringUsingCharacters {
+  register unsigned i, len, j;
+  register wchar_t *buf;
+  const wchar_t *chars;
+  unsigned escapeCount;
+
+  if ([self length] == 0) return @"";
+
+  NSData *data = [self dataUsingEncoding:NSUTF32StringEncoding];
+  chars = [data bytes];
+  len = [data length]/4;
+
+  /* check for characters to escape ... */
+  for (i = 0, escapeCount = 0; i < len; i++) {
+    switch (chars[i]) {
+      case '&': case '"': case '<': case '>': case '\r':
+        escapeCount++;
+        break;
+      default:
+        if (chars[i] > 127)
+          escapeCount++;
+        break;
+    }
+  }
+  if (escapeCount == 0 ) {
+    /* nothing to escape ... */
+    return [[self copy] autorelease];
+  }
+
+  buf = calloc((len + 5) + (escapeCount * 16), sizeof(wchar_t));
+  for (i = 0, j = 0; i < len; i++) {
+    switch (chars[i]) {
+      /* escape special chars */
+      case '\r':
+        buf[j] = '&'; j++; buf[j] = '#'; j++; buf[j] = '1'; j++;
+        buf[j] = '3'; j++; buf[j] = ';'; j++;
+        break;
+      case '&':
+        buf[j] = '&'; j++; buf[j] = 'a'; j++; buf[j] = 'm'; j++;
+        buf[j] = 'p'; j++; buf[j] = ';'; j++;
+        break;
+      case '"':
+        buf[j] = '&'; j++; buf[j] = 'q'; j++; buf[j] = 'u'; j++;
+        buf[j] = 'o'; j++; buf[j] = 't'; j++; buf[j] = ';'; j++;
+        break;
+      case '<':
+        buf[j] = '&'; j++; buf[j] = 'l'; j++; buf[j] = 't'; j++;
+        buf[j] = ';'; j++;
+        break;
+      case '>':
+        buf[j] = '&'; j++; buf[j] = 'g'; j++; buf[j] = 't'; j++;
+        buf[j] = ';'; j++;
+        break;
+
+      default:
+        /* escape big chars */
+        if (chars[i] > 127) {
+          unsigned char nbuf[32];
+          unsigned int k;
+
+          sprintf((char *)nbuf, "&#%i;", (int)chars[i]);
+          for (k = 0; nbuf[k] != '\0'; k++) {
+            buf[j] = nbuf[k];
+            j++;
+          }
+        }
+        else if (chars[i] == 0x9 || chars[i] == 0xA || chars[i] == 0xD || chars[i] >= 0x20) { // ignore any unsupported control character
+          /* nothing to escape */
+          buf[j] = chars[i];
+          j++;
+        }
+        break;
+    }
+  }
+  
+  self = [[NSString alloc] initWithBytesNoCopy: buf
+                                        length: (j*sizeof(wchar_t))
+                                      encoding: NSUTF32StringEncoding
+                                  freeWhenDone: YES];
+
+  return [self autorelease];
+}
+
 - (NSString *) sanitizedServerIdWithType: (SOGoMicrosoftActiveSyncFolderType) folderType
 {
   if (folderType == ActiveSyncEventFolder)
@@ -65,11 +158,7 @@ static NSArray *easCommandParameters = nil;
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
-  NSString *s;
-
-  s = [self safeString];
-
-  return [s stringByEscapingHTMLString];
+  return [self _stringByEscapingXMLStringUsingCharacters];
 }
 
 - (int) activeSyncFolderType

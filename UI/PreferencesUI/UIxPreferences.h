@@ -44,7 +44,6 @@
   NSDictionary *calendarCategoriesColors;
   
   NSArray *contactsCategories;
-  NSString *defaultCategoryColor;
   NSCalendarDate *today;
 
   // Mail labels/tags

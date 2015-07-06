@@ -45,7 +45,8 @@ function adjustSchema() {
     IFS="$oldIFS"
 }
 
-echo "Converting c_cycleinfo from VARCHAR(255) to TEXT in calendar quick tables" >&2
+echo "Converting c_partstates from VARCHAR(255) to mediumtext in calendar quick tables" >&2
+echo "Adding c_description column as mediumtext in calendar quick tables" >&2
 tables=`psql -t -U $username -h $hostname $database -c "select split_part(c_quick_location, '/', 5) from $indextable where c_path3 = 'Calendar';"`
 
 for table in $tables;

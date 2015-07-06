@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +73,7 @@
     {
       directory = nil;
       userID = nil;
+      filename = nil;
       restoreFolder = nil;
       destructive = NO;
     }
@@ -84,6 +85,7 @@
 {
   [directory release];
   [userID release];
+  [filename release];
   [restoreFolder release];
   [super dealloc];
 }
@@ -152,25 +154,35 @@
 
 - (BOOL) fetchUserID: (NSString *) identifier
 {
-  BOOL rc;
+  SOGoSystemDefaults *sd;
   SOGoUserManager *lm;
   NSDictionary *infos;
-  SOGoSystemDefaults *sd;
   NSString *uid = nil;
+
+  BOOL rc;
 
   lm = [SOGoUserManager sharedUserManager];
   infos = [lm contactInfosForUserWithUIDorEmail: identifier];
+  uid = nil;
+
   if (infos)
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainBasedUID])
+      uid = [infos objectForKey: @"c_uid"];
+
+      if ([sd enableDomainBasedUID] && [uid rangeOfString: @"@"].location == NSNotFound)
         uid = [NSString stringWithFormat: @"%@@%@",
-                        [infos objectForKey: @"c_uid"],
-                        [infos objectForKey: @"c_domain"]];
+                     [infos objectForKey: @"c_uid"],
+                     [infos objectForKey: @"c_domain"]];
+
+      if ([[infos objectForKey: @"DomainLessLogin"] boolValue])
+        ASSIGN(filename, [infos objectForKey: @"c_uid"]);
       else
-        uid = [infos objectForKey: @"c_uid"];
+        ASSIGN(filename, uid);
     }
+
   ASSIGN (userID, uid);
+
   if (userID)
     rc = YES;
   else
@@ -608,7 +620,7 @@
   NSString *importPath;
   BOOL rc;
 
-  importPath = [directory stringByAppendingPathComponent: userID];
+  importPath = [directory stringByAppendingPathComponent: filename];
   userRecord = [NSDictionary dictionaryWithContentsOfFile: importPath];
   if (userRecord)
     {
@@ -626,7 +638,7 @@
   else
     {
       rc = NO;
-      NSLog (@"user backup file could not be loaded");
+      NSLog(@"user backup (%@) file could not be loaded", importPath);
     }
 
   return rc;
