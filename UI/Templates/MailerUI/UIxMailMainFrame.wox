@@ -259,7 +259,7 @@
                           ng-dblclick="editFolder(folder)"
                           ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
                           ui-sref-active="sg-active">
-              <md-icon ng-class="'sg-child-level-' + folder.level">folder</md-icon>
+              <md-icon ng-class="'sg-child-level-' + folder.level">{{iconForFolder(folder)}}</md-icon>
               <p class="sg-item-name"
                  ng-show="editMode != folder.path">{{folder.name}}</p>
               <md-input-container class="md-flex md-tile-content"

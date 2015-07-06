@@ -232,6 +232,23 @@
         }
       }
     };
+
+    $scope.iconForFolder = function(folder) {
+      if (folder.type == 'inbox')
+        return 'inbox';
+      else if (folder.type == 'draft')
+        return 'drafts';
+      else if (folder.type == 'sent')
+        return 'send';
+      else if (folder.type == 'trash')
+        return 'delete';
+
+      //if ($rootScope.currentFolder == folder)
+      //  return 'folder_open';
+
+      return 'folder';
+    };
+
     $scope.unselectMessages = function() {
       _.each($rootScope.mailbox.$messages, function(message) { message.selected = false; });
     };
