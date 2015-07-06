@@ -87,3 +87,10 @@ $i: 1;
     }
   }
 }
+.md-sidenav-left {
+  md-bottom-sheet {
+    md-list-item:hover {
+      background-color: transparent;
+    }
+  }
+}
