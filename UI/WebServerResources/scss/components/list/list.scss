@@ -34,7 +34,7 @@ md-list-item {
     max-width: 75%; // leave some place for a secondary button
     text-transform: initial;
     overflow: hidden;
-    text-align: left;
+    align-items: flex-start;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
