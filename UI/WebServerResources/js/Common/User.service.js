@@ -41,14 +41,12 @@
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search, excludedUsers) {
-    var deferred = User.$q.defer(),
-        param = {search: search};
+    var param = {search: search};
 
     if (!search) {
       // No query specified
       User.$users = [];
-      deferred.resolve(User.$users);
-      return deferred.promise;
+      return User.$q.when(User.$users);
     }
     if (angular.isUndefined(User.$users)) {
       // First session query
@@ -56,12 +54,11 @@
     }
     else if (User.$query == search) {
       // Query hasn't changed
-      deferred.resolve(User.$users);
-      return deferred.promise;
+      return User.$q.when(User.$users);
     }
     User.$query = search;
 
-    User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
+    return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user;
       if (excludedUsers) {
         // Remove excluded users from response
@@ -93,10 +90,9 @@
           User.$users.splice(index, 1);
         }
       }
-      deferred.resolve(User.$users);
-    }, deferred.reject);
-
-    return deferred.promise;
+      User.$log.debug(User.$users);
+      return User.$users;
+    });
   };
 
   /**
@@ -111,6 +107,10 @@
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
       this.$$image = this.image || User.$gravatar(this.c_email);
+  };
+
+  User.prototype.toString = function() {
+    return '[User ' + this.c_email + ']';
   };
 
   /**
