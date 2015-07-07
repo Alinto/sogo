@@ -313,19 +313,19 @@ static NSString    *userAgent      = nil;
     {
       // newHeaders come from Web form; convert priority to MIME header representation
       priority = [newHeaders objectForKey: @"priority"];
-      if (!priority || [priority isEqualToString: @"NORMAL"])
+      if (!priority || [priority intValue] == 3)
         {
           [headers removeObjectForKey: @"X-Priority"];
         }
-      else if ([priority isEqualToString: @"HIGHEST"])
+      else if ([priority intValue] == 1)
         {
           [headers setObject: @"1 (Highest)"  forKey: @"X-Priority"];
         }
-      else if ([priority isEqualToString: @"HIGH"])
+      else if ([priority intValue] == 2)
         {
           [headers setObject: @"2 (High)"  forKey: @"X-Priority"];
         }
-      else if ([priority isEqualToString: @"LOW"])
+      else if ([priority intValue] == 4)
         {
           [headers setObject: @"4 (Low)"  forKey: @"X-Priority"];
         }
@@ -355,7 +355,7 @@ static NSString    *userAgent      = nil;
   else
     {
       receipt = [newHeaders objectForKey: @"receipt"];
-      if ([receipt isEqualToString: @"true"])
+      if ([receipt boolValue])
         {
           [headers setObject: receipt  forKey: @"receipt"];
           pureSender = [[newHeaders objectForKey: @"from"] pureEMailAddress];

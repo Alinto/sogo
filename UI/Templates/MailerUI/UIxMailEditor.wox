@@ -73,22 +73,6 @@
           <input type="text" name="subject" ng-model="message.editable.subject"/>
         </md-input-container>
 
-        <!--
-        <div layout="row" layout-align="center center" ng-hide="hidePriority">
-          <span class="md-body-1">
-            <var:string label:value="Priority"/>
-          </span>
-          <md-slider flex="flex"
-                     md-discrete="md-discrete"
-                     ng-model="message.editable.priority"
-                     step="1"
-                     min="1"
-                     max="5"
-                     aria-label="rating">
-          </md-slider>
-          </div>
-          -->
-
         <md-list>
           <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
                MAIL WITH ATTACHMENTS -->
@@ -130,11 +114,7 @@
         <md-button  class="iconButton" ng-show="hideCc" ng-click="hideCc = false">Cc</md-button>
         <md-button  class="iconButton" ng-show="hideBcc"
                     ng-click="hideBcc = false">Bcc</md-button>
-        <!--
-            <md-button class="sg-icon-button" ng-show="hidePriority" ng-click="hidePriority = false">
-            <md-icon>info_outline</md-icon>
-            </md-button>
-        -->
+
         <md-button class="iconButton">
           <label for="file-input">
             Add files
@@ -145,12 +125,35 @@
                multiple="multiple"
                uploader="uploader"
                ng-show="false"/>
+
+        <md-menu>
+          <md-button aria-label="More mail options" class="iconBtton" ng-click="$mdOpenMenu($event)">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <md-checkbox ng-model="message.editable.receipt">
+                <var:string label:value="Receipt"/>
+              </md-checkbox>
+            </md-menu-item>
+            <md-menu-item>
+              <div layout="row" layout-align="center center">
+                <span>
+                  <var:string label:value="Priority"/>
+                </span>
+                <md-slider flex="flex"
+                           md-discrete="md-discrete"
+                           ng-model="message.editable.priority"
+                           step="1"
+                           min="1"
+                           max="5"
+                           aria-label="rating">
+                </md-slider>
+              </div>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
         
-        <!--
-            <md-button class="sg-icon-button" ng-click="returnReceipt = !returnReceipt">
-            <md-icon>receipt</md-icon>
-            </md-button>
-        -->
       </div>
       
     </header>
