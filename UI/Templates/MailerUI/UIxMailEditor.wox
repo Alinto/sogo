@@ -111,11 +111,10 @@
       
       <!-- TOOLBAR TO SHOW CC/BCC/ATTACHMENT FIELDS -->
       <div layout="column" layout-align="start end">
-        <md-button  class="iconButton" ng-show="hideCc" ng-click="hideCc = false">Cc</md-button>
-        <md-button  class="iconButton" ng-show="hideBcc"
-                    ng-click="hideBcc = false">Bcc</md-button>
+        <md-button ng-show="hideCc" ng-click="hideCc = false">Cc</md-button>
+        <md-button ng-show="hideBcc" ng-click="hideBcc = false">Bcc</md-button>
 
-        <md-button class="iconButton">
+        <md-button>
           <label for="file-input">
             Add files
           </label>
@@ -127,7 +126,7 @@
                ng-show="false"/>
 
         <md-menu>
-          <md-button aria-label="More mail options" class="iconBtton" ng-click="$mdOpenMenu($event)">
+          <md-button label:aria-label="More mail options" class="iconBtton" ng-click="$mdOpenMenu($event)">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content width="4">
@@ -147,7 +146,7 @@
                            step="1"
                            min="1"
                            max="5"
-                           aria-label="rating">
+                           label:aria-label="Priority">
                 </md-slider>
               </div>
             </md-menu-item>
