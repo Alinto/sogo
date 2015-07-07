@@ -21,19 +21,13 @@
      </md-select>
    </div>
   */
-  sgSearch.$inject = ['$compile'];
-  function sgSearch($compile) {
+  sgSearchPreTransclude.$inject = ['$parse'];
+  function sgSearchPreTransclude($parse) {
     return {
       restrict: 'A',
       controller: 'sgSearchController',
       controllerAs: '$sgSearchController',
-      // See http://stackoverflow.com/questions/19224028/add-directives-from-directive-in-angularjs
-      // for reasons of using terminal and priority
-      terminal: true,
-      priority: 1000,
-      scope: {
-        doSearch: '&sgSearch'
-      },
+      priority: 1001,
       compile: compile
     };
 
@@ -44,18 +38,32 @@
 
       inputEl.attr('ng-model', '$sgSearchController.searchText');
       inputEl.attr('ng-model-options', '$sgSearchController.searchTextOptions');
+      inputEl.attr('ng-change', '$sgSearchController.onChange()');
       if (selectEl) {
         selectEl.attr('ng-model', '$sgSearchController.searchField');
         selectEl.attr('ng-change', '$sgSearchController.onChange()');
       }
 
       return function postLink(scope, iElement, iAttr, controller) {
-        $compile(mdInputEl)(scope);
-        if (selectEl)
-          $compile(selectEl)(scope);
-        $compile(tElement.find('md-button'))(scope.$parent);
+        // Associate callback to controller
+        controller.doSearch = $parse(iElement.attr('sg-search'));
+      }
+    }
+  }
 
-        scope.$watch('$sgSearchController.searchText', angular.bind(controller, controller.onChange));
+  function sgSearch() {
+    return {
+      restrict: 'A',
+      priority: 1000,
+      transclude: true,
+      compile: compile
+    };
+
+    function compile(tElement, tAttr) {
+      return function postLink(scope, iElement, iAttr, controller, transclude) {
+        transclude(function(clone) {
+          iElement.append(clone);
+        });
       }
     }
   }
@@ -68,7 +76,6 @@
     // Controller variables
     this.previous = { searchText: '', searchField: '' };
     this.searchText = null;
-    this.searchField = $element.find('md-option').attr('value'); // defaults to first option
 
     // Model options
     this.searchTextOptions = {
@@ -84,9 +91,8 @@
       if (this.searchText != null) {
         if (this.searchText != this.previous.searchText || this.searchField != this.previous.searchField) {
           if (this.searchText.length > 2 || this.searchText.length == 0) {
-            // See https://github.com/angular/angular.js/issues/7635
-            // for why we need to use $scope here
-            $scope.doSearch({ searchText: this.searchText, searchField: this.searchField });
+            // doSearch is the compiled expression of the sg-search attribute
+            this.doSearch($scope, { searchText: this.searchText, searchField: this.searchField });
           }
           this.previous = { searchText: this.searchText, searchField: this.searchField };
         }
@@ -97,5 +103,6 @@
   angular
     .module('SOGo.Common')
     .controller('sgSearchController', sgSearchController)
+    .directive('sgSearch', sgSearchPreTransclude)
     .directive('sgSearch', sgSearch);
 })();
