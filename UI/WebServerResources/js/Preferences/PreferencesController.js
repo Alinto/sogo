@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$scope', '$timeout', '$q', '$mdDialog', 'Preferences', 'User', 'statePreferences', 'Authentication'];
-  function PreferencesController($scope, $timeout, $q, $mdDialog, Preferences, User, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$scope', '$timeout', '$q', '$mdDialog', 'User', 'statePreferences', 'Authentication'];
+  function PreferencesController($scope, $timeout, $q, $mdDialog, User, statePreferences, Authentication) {
     var vm = this;
 
     vm.preferences = statePreferences;
@@ -26,7 +26,7 @@
     vm.addMailFilter = addMailFilter;
     vm.editMailFilter = editMailFilter;
     vm.removeMailFilter = removeMailFilter;
-    vm.userFilter = userFilter;
+    vm.userFilter = User.$filter;
     vm.save = save;
     vm.canChangePassword = canChangePassword;
     vm.changePassword = changePassword;
@@ -143,11 +143,6 @@
 
     function removeMailFilter(index) {
       vm.preferences.defaults.SOGoSieveFilters.splice(index, 1);
-    }
-
-    function userFilter($query, excludedUsers) {
-      User.$filter($query, excludedUsers);
-      return User.$users;
     }
     
     function save() {
