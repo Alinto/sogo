@@ -12,7 +12,8 @@
         <input type="text"
                class="md-display-1"
                label:placeholder="Title"
-               ng-model="editor.component.summary"/>
+               ng-model="editor.component.summary"
+               md-sidenav-focus="md-sidenav-focus" />
       </md-input-container>
       <!--<md-chips>
           <md-chip ng-repeat="category in editor.component.categories">{{category}}</md-chip>
