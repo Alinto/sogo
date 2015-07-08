@@ -12,6 +12,10 @@
    * @example:
 
    <div sg-search="mailbox.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
+     <md-button class="sg-icon-button"
+                sg-search-cancel="ctrl.cancelSearch()">
+       <md-icon>arrow_back</md-icon>
+     </md-button>
      <md-input-container>
        <input name="search" type="search"/>
      </md-input-container>
@@ -34,7 +38,8 @@
     function compile(tElement, tAttr) {
       var mdInputEl = tElement.find('md-input-container'),
           inputEl = tElement.find('input'),
-          selectEl = tElement.find('md-select');
+          selectEl = tElement.find('md-select'),
+          buttonEl = tElement.find('md-button');
 
       inputEl.attr('ng-model', '$sgSearchController.searchText');
       inputEl.attr('ng-model-options', '$sgSearchController.searchTextOptions');
@@ -43,10 +48,24 @@
         selectEl.attr('ng-model', '$sgSearchController.searchField');
         selectEl.attr('ng-change', '$sgSearchController.onChange()');
       }
+      if (buttonEl && buttonEl.attr('sg-search-cancel')) {
+        buttonEl.attr('ng-click', buttonEl.attr('sg-search-cancel'));
+        buttonEl.removeAttr('sg-search-cancel');
+      }
+      else {
+        buttonEl = null;
+      }
 
       return function postLink(scope, iElement, iAttr, controller) {
+        var compiledButtonEl = iElement.find('button');
+
         // Associate callback to controller
         controller.doSearch = $parse(iElement.attr('sg-search'));
+
+        // Reset the input field when cancelling the search
+        if (buttonEl && compiledButtonEl) {
+          compiledButtonEl.on('click', controller.cancelSearch);
+        }
       }
     }
   }
@@ -73,12 +92,14 @@
    */
   sgSearchController.$inject = ['$scope', '$element'];
   function sgSearchController($scope, $element) {
+    var vm = this;
+
     // Controller variables
-    this.previous = { searchText: '', searchField: '' };
-    this.searchText = null;
+    vm.previous = { searchText: '', searchField: '' };
+    vm.searchText = null;
 
     // Model options
-    this.searchTextOptions = {
+    vm.searchTextOptions = {
       updateOn: 'default blur',
       debounce: {
         default: 300,
@@ -87,16 +108,21 @@
     };
 
     // Method to call on data changes
-    this.onChange = function(value) {
-      if (this.searchText != null) {
-        if (this.searchText != this.previous.searchText || this.searchField != this.previous.searchField) {
-          if (this.searchText.length > 2 || this.searchText.length == 0) {
+    vm.onChange = function() {
+      if (vm.searchText != null) {
+        if (vm.searchText != vm.previous.searchText || vm.searchField != vm.previous.searchField) {
+          if (vm.searchText.length > 2 || vm.searchText.length == 0) {
             // doSearch is the compiled expression of the sg-search attribute
-            this.doSearch($scope, { searchText: this.searchText, searchField: this.searchField });
+            vm.doSearch($scope, { searchText: vm.searchText, searchField: vm.searchField });
           }
-          this.previous = { searchText: this.searchText, searchField: this.searchField };
+          vm.previous = { searchText: vm.searchText, searchField: vm.searchField };
         }
       }
+    };
+
+    // Reset input field when cancelling the search
+    vm.cancelSearch = function() {
+      vm.searchText = "";
     };
   }
 
