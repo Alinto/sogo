@@ -15,9 +15,7 @@
 
     this.mailboxes = Preferences.$Mailbox.$find({ id: 0 });
 
-    Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
-      Preferences.$timeout(function() {
-
+    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
         // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
         var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
           if (key.charAt(0) == '$')
@@ -35,11 +33,11 @@
           data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
 
         angular.extend(_this.defaults, data);
-      });
+
+      return _this.defaults;
     });
 
-    Preferences.$$resource.fetch("jsonSettings").then(function(data) {
-      Preferences.$timeout(function() {
+    this.settingsPromise = Preferences.$$resource.fetch("jsonSettings").then(function(data) {
         // We convert our PreventInvitationsWhitelist hash into a array of user
         if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
@@ -49,8 +47,9 @@
         else
           data.Calendar.PreventInvitationsWhitelist = [];
 
-        angular.extend(_this.settings, data);
-      });
+      angular.extend(_this.settings, data);
+
+      return _this.settings;
     });
   }
 
@@ -70,12 +69,22 @@
       $User: User
     });
 
-    return Preferences; // return constructor
+    return new Preferences(); // return unique instance
   }];
 
   /* Factory registration in Angular module */
   angular.module('SOGo.PreferencesUI')
     .factory('Preferences', Preferences.$factory);
+
+  /**
+   * @function ready
+   * @memberof Preferences.prototype
+   * @desc Combine promises used to load user's defaults and settings.
+   * @return a combined promise
+   */
+  Preferences.prototype.ready = function() {
+    return Preferences.$q.all([this.defaultsPromise, this.settingsPromise]);
+  };
 
   /**
    * @function $save

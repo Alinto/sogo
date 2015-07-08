@@ -82,7 +82,7 @@
    */
   statePreferences.$inject = ['Preferences'];
   function statePreferences(Preferences) {
-    return new Preferences();
+    return Preferences;
   }
   
 })();
