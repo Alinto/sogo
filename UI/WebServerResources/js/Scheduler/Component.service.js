@@ -31,15 +31,20 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', function($q, $timeout, $log, Settings, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Resource', function($q, $timeout, $log, Settings, Preferences, Resource) {
     angular.extend(Component, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $Preferences: Preferences,
       $$resource: new Resource(Settings.baseURL, Settings.activeUser),
-      $categories: window.UserDefaults.SOGoCalendarCategoriesColors
+      $categories: window.UserDefaults.SOGoCalendarCategoriesColors,
+      $query: { search: 'title_Category_Location' }
     });
-
+    Preferences.ready().then(function() {
+      Component.$query.filterpopup = Preferences.settings.CalendarDefaultFilter;
+      Component.$query['show-completed'] = parseInt(Preferences.settings.ShowCompletedTasks);
+    });
     if (window.UserDefaults && window.UserDefaults.SOGoTimeFormat)
       Component.timeFormat = window.UserDefaults.SOGoTimeFormat;
     else
@@ -70,19 +75,32 @@
         month = now.getMonth() + 1,
         year = now.getFullYear(),
         defaultParams = {
-          search: 'title_Category_Location',
           day: '' + year + (month < 10?'0':'') + month + (day < 10?'0':'') + day,
-          filterpopup: 'view_thismonth'
         };
 
-    if (angular.isUndefined(this.$filterOptions))
-      this.$filterOptions = defaultParams;
-    if (options)
-      angular.extend(this.$filterOptions, options);
+    return this.$Preferences.ready().then(function() {
+      var futureComponentData, dirty = false, otherType;
 
-    var futureComponentData = this.$$resource.fetch(null, type + 'list', this.$filterOptions);
+      angular.extend(_this.$query, defaultParams);
+      if (options) {
+        _.find(_.allKeys(options), function(key) {
+          dirty = (options[key] != Component.$query[key]);
+          return dirty;
+        })
+        angular.extend(_this.$query, options);
+      }
 
-    return this.$unwrapCollection(type, futureComponentData);
+      futureComponentData = _this.$$resource.fetch(null, type + 'list', _this.$query);
+
+      // Invalidate cached results of other type if $query has changed
+      otherType = (type == 'tasks')? '$events' : '$tasks';
+      if (dirty) {
+        delete Component[otherType];
+        Component.$log.debug('force reload of ' + otherType);
+      }
+
+      return _this.$unwrapCollection(type, futureComponentData);
+    });
   };
 
   /**
@@ -206,11 +224,10 @@
    */
   Component.$unwrapCollection = function(type, futureComponentData) {
     var _this = this,
-        deferred = Component.$q.defer(),
         components = [];
 
-    futureComponentData.then(function(data) {
-      Component.$timeout(function() {
+    return futureComponentData.then(function(data) {
+      return Component.$timeout(function() {
         var fields = _.invoke(data.fields, 'toLowerCase');
 
         // Instanciate Component objects
@@ -225,13 +242,9 @@
         // Save the list of components to the object model
         Component['$' + type] = components;
 
-        deferred.resolve(components);
+        return components;
       });
-    }, function(data) {
-      deferred.reject();
     });
-
-    return deferred.promise;
   };
 
   /**

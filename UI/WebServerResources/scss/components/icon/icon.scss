@@ -49,6 +49,9 @@ md-icon {
 
 // Define CSS styles to use ng-class with md-icon
 md-icon {
+  &.icon-check:before {
+    content: "\e5ca";
+  }
 //  &.icon_public:before {
 //    content: "\e80b";
 //  }

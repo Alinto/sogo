@@ -6,18 +6,28 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$scope', '$rootScope', '$timeout', '$state', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Calendar', 'Component', '$mdSidenav'];
-  function CalendarListController($scope, $rootScope, $timeout, $state, focus, encodeUriFilter, Dialog, Settings, Calendar, Component, $mdSidenav) {
+  CalendarListController.$inject = ['$scope', '$rootScope', '$timeout', '$state', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'Component', '$mdSidenav'];
+  function CalendarListController($scope, $rootScope, $timeout, $state, focus, encodeUriFilter, Dialog, Settings, Preferences, Calendar, Component, $mdSidenav) {
     var vm = this;
 
     vm.component = Component;
-    vm.componentType = null;
+    vm.componentType = 'events';
+    vm.selectedList = 0;
     vm.selectComponentType = selectComponentType;
     vm.newComponent = newComponent;
-    // TODO: should reflect last state userSettings -> Calendar -> SelectedList
-    vm.selectedList = 0;
-    vm.selectComponentType('tasks');
-    vm.selectComponentType('events');
+    vm.filter = filter;
+    vm.cancelSearch = cancelSearch;
+    vm.mode = { search: false };
+
+    // Select list based on user's settings
+    Preferences.ready().then(function() {
+      var type = 'events';
+      if (Preferences.settings.Calendar.SelectedList == 'tasksListView') {
+        vm.selectedList = 1;
+        type = 'tasks';
+      }
+      vm.selectComponentType(type, { reload: true });
+    });
 
     // Switch between components tabs
     function selectComponentType(type, options) {
@@ -36,6 +46,18 @@
         type = 'task';
 
       $state.go('calendars.newComponent', { calendarId: 'personal', componentType: type });
+    }
+
+    function filter(filterpopup) {
+      if (filterpopup)
+        Component.$query.filterpopup = filterpopup;
+
+      Component.$filter(vm.componentType, { value: '' });
+    }
+
+    function cancelSearch() {
+      vm.mode.search = false;
+      filter();
     }
 
     // Refresh current list when the list of calendars is modified

@@ -11,6 +11,9 @@ main {
 .sg-padded {
   padding-left: $mg;
   padding-right: $mg;
+  &--right {
+    padding-right: $mg;
+  }
 }
 
 .sg-logo {

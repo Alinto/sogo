@@ -8,9 +8,9 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors, SOGoDefaultCalendar"
+  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors, SOGoDefaultCalendar, SOGoTimeFormat"
   const:userSettingsKeys="Calendar, ShowCompletedTasks"
-  const:jsFiles="Scheduler.app.js, Scheduler.js, Common.js, Contacts.js">
+  const:jsFiles="Scheduler.app.js, Scheduler.js, Common.js, Contacts.js, Mailer.js, Preferences.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -314,7 +314,7 @@
              ng-controller="CalendarListController as list">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
-          <var:component className="UIxTopnavToolbarTemplate" />
+          <!-- <var:component className="UIxTopnavToolbarTemplate" /> -->
           <div class="sg-toolbar-group-2">
             <md-button class="sg-icon-button" label:aria-label="Search">
               <md-icon>search</md-icon>
@@ -322,19 +322,103 @@
           </div>
         </div><!-- .md-toolbar-tools -->
         <div class="md-toolbar-tools md-toolbar-tools-bottom" layout="row" layout-align="space-between center">
-          <div class="view-list sg-padded" layout="row" layout-align="space-between center"
-               sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
-            <md-input-container class="sg-search-field-container">
-              <label style="color: white"><md-icon>search</md-icon><var:string label:value="Search"/></label>
-              <input name="folderSearch" type="search" style="color: white"/>
-            </md-input-container>
+          <!-- filter mode -->
+          <div class="view-list sg-padded--right" layout="row" layout-align="space-between center"
+               ng-hide="list.mode.search">
             <div class="sg-toolbar-group">
-              <md-select>
-                <md-option value="title_Category_Location"><var:string label:value="Title, category or location"/></md-option>
-                <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
-              </md-select>
+              <md-button class="sg-icon-button" label:aria-label="Search"
+                         ng-click="list.mode.search = true">
+                <md-icon>search</md-icon>
+              </md-button>
+            </div>
+            <div class="sg-toolbar-group-last">
+              <md-menu>
+                <md-button class="sg-icon-button" label:aria-label="Search"
+                           ng-click="$mdOpenMenu()">
+                  <md-icon>filter_list</md-icon>
+                </md-button>
+                <md-menu-content>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_all')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_all' }">
+                        <!-- selected --></md-icon> <var:string label:value="view_all"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_today')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_today' }">
+                        <!-- selected --></md-icon> <var:string label:value="view_today"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_next7')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_next7' }">
+                        <!-- selected --></md-icon> <var:string label:value="view_next7"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_next14')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_next14' }">
+                        <!-- selected --></md-icon> <var:string label:value="view_next14"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_next31')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_next31' }">
+                        <!-- selected --></md-icon><var:string label:value="view_next31"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_thismonth')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_thismonth' }">
+                        <!-- selected --></md-icon><var:string label:value="view_thismonth"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_future')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_future' }">
+                        <!-- selected --></md-icon> <var:string label:value="view_future"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_selectedday')">
+                      <md-icon ng-class="{ 'icon-check': list.component.$query.filterpopup == 'view_selectedday' }">
+                        <!-- selected --></md-icon><var:string label:value="view_selectedday"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider ng-if="list.componentType == 'tasks'"><!-- divider --></md-menu-divider>
+                  <md-menu-item ng-if="list.componentType == 'tasks'">
+                    <md-button ng-click="list.filter()">
+                      <md-checkbox
+                          ng-model="list.component.$query['show-completed']"
+                          ng-true-value="1"
+                          ng-false-value="0"><var:string label:value="Show completed tasks"/></md-checkbox>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
             </div>
           </div>
+          <!-- search mode -->
+          <div class="view-list sg-padded--right sg-toolbar-search" layout="row" layout-align="space-between center"
+               ng-show="list.mode.search"
+               sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
+            <md-button class="sg-icon-button"
+                       sg-search-cancel="list.cancelSearch()"
+                       label:aria-label="Back">
+              <md-icon>arrow_back</md-icon>
+            </md-button>
+            <md-input-container>
+              <input name="folderSearch" type="search" />
+            </md-input-container>
+            <md-input-container>
+              <md-select>
+                <md-option value="title_Category_Location" selected="selected"><var:string label:value="Title, category or location"/></md-option>
+                <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+          <!-- day/week/month views -->
           <div class="sg-padded">
             <a class="sg-icon-button md-button"
                label:aria-label="Day"

@@ -5,8 +5,10 @@
   'use strict';
 
   angular.module('SOGo.ContactsUI', []);
+  angular.module('SOGo.MailerUI', []);
+  angular.module('SOGo.PreferencesUI', []);
 
-  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'vs-repeat', 'SOGo.Common', 'SOGo.ContactsUI'])
+  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'vs-repeat', 'SOGo.Common', 'SOGo.ContactsUI', 'SOGo.MailerUI', 'SOGo.PreferencesUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,

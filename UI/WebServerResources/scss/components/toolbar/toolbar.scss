@@ -64,7 +64,7 @@ hgroup {
 .sg-toolbar-group {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   &-1 {
     order: 1;
@@ -79,4 +79,10 @@ hgroup {
   }
 }
 
-
+.sg-toolbar-search {
+  background-color: sg-color($sogoPaper, 100);
+  color: rgba(0,0,0,0.54);
+  md-icon {
+    color: rgba(0,0,0,0.54);
+  }
+}
