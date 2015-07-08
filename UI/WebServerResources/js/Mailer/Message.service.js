@@ -311,6 +311,16 @@
   };
 
   /**
+   * @function $sendMDN
+   * @memberof Message.prototype
+   * @desc Send MDN response for current email message
+   */
+  Message.prototype.$sendMDN = function() {
+    this.shouldAskReceipt = 0;
+    return Message.$$resource.post(this.id, 'sendMDN');
+  }
+
+  /**
    * @function $deleteAttachment
    * @memberof Message.prototype
    * @desc Delete an attachment from a message being composed

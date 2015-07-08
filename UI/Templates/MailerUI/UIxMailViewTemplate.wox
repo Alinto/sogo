@@ -100,6 +100,23 @@
     </header>
     <md-divider><!-- divider --></md-divider>
 
+    <div ng-show="message.shouldAskReceipt == 1"
+         layout-padding="layout-padding">
+      <md-whiteframe class="md-whiteframe-z2" layout="column"
+                     layout-align="center start">
+        <md-icon>warning</md-icon>
+        <span><var:string label:value="The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?"/></span>
+        <div class="md-actions" layout="row">
+          <md-button label:aria-label="Yes"
+                     type="button" class="md-primary"
+                     ng-click="message.$sendMDN()">Yes</md-button>
+          <md-button label:aria-label="No"
+                     type="button"
+                     ng-click="message.shouldAskReceipt = 0">No</md-button>
+        </div>
+      </md-whiteframe>
+    </div>
+
     <div class="msg-body">
       <div class="msg-date sg-md-body-multi">
         <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
