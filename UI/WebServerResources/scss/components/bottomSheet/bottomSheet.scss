@@ -8,15 +8,10 @@ md-bottom-sheet.md-default-theme {
 }
 
 md-bottom-sheet {
-  &.md-list {
-    md-list-item {
-      .md-list-item-content {
-        flex-direction: row; // fix for md bug
-        flex-grow: 1;
-        md-icon {
-          margin-right: $bottom-sheet-icon-after-margin;
-        }
-      }
+  md-list-item {
+    md-icon {
+      margin-right: $bottom-sheet-icon-after-margin;
+      vertical-align: text-bottom;
     }
   }
 }
