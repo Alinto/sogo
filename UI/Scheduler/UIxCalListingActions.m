@@ -672,7 +672,7 @@ static NSArray *tasksFields = nil;
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/eventslist?day=20141201\&filterpopup=view_selectedday
  *
  * @apiParam {Boolean} [asc]         Descending sort when false. Defaults to true (ascending).
- * @apiParam {String} [sort]         Sort field. Either title, end, location, or calendarName.
+ * @apiParam {String} [sort]         Sort field. Either title, start, end, location, or calendarName.
  * @apiParam {Number} [day]          Selected day (YYYYMMDD)
  * @apiParam {String} [filterpopup]  Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_future, view_selectedday, or view_all
  * @apiParam {String} [search]       Search field criteria. Either title_Category_Location or entireContent.
@@ -1361,13 +1361,12 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Calendar/taskslist?filterpopup=view_all
  *
- * @apiParam {Number} [show-completed] Show completed tasks when set to 1. Defaults to ignore completed tasks.
+ * @apiParam {Number} [show_completed] Show completed tasks when set to 1. Defaults to ignore completed tasks.
  * @apiParam {Boolean} [asc]           Descending sort when false. Defaults to true (ascending).
- * @apiParam {Boolean} [sort]          Sort field. Either title, priority, end, location, category, or calendarname.
+ * @apiParam {Boolean} [sort]          Sort field. Either title, priority, end, location, category, calendarname, or status.
  * @apiParam {Number} [day]            Selected day (YYYYMMDD)
  * @apiParam {String} [filterpopup]    Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_overdue, view_incomplete, view_not_started, or view_all
  * @apiParam {String} [search]         Search field criteria. Either title_Category_Location or entireContent.
- * @apiParam {Boolean} [setud]         Save 'show-completed' parameter in user's settings
  *
  * @apiSuccess (Success 200) {String[]} fields                List of fields for each event definition
  * @apiSuccess (Success 200) {String[]} tasks                 List of events
@@ -1413,14 +1412,10 @@ _computeBlocksPosition (NSArray *blocks)
   endsSecs = (unsigned int) [endDate timeIntervalSince1970];
   tasksView = [request formValueForKey: @"filterpopup"];
   
-#warning see TODO in SchedulerUI.js about "setud"
-  showCompleted = [[request formValueForKey: @"show-completed"] intValue];
-  if ([request formValueForKey: @"setud"])
-  {
-    us = [[context activeUser] userSettings];
-    [us setBool: showCompleted forKey: @"ShowCompletedTasks"];
-    [us synchronize];
-  }
+  showCompleted = [[request formValueForKey: @"show_completed"] intValue];
+  us = [[context activeUser] userSettings];
+  [us setBool: showCompleted forKey: @"ShowCompletedTasks"];
+  [us synchronize];
   
   tasks = [[self _fetchFields: tasksFields
            forComponentOfType: @"vtodo"] objectEnumerator];
@@ -1468,7 +1463,7 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks sortUsingSelector: @selector (compareTasksLocationAscending:)];
   else if ([sort isEqualToString: @"category"])
     [filteredTasks sortUsingSelector: @selector (compareTasksCategoryAscending:)];
-  else if ([sort isEqualToString: @"calendarname"])
+  else if ([sort isEqualToString: @"calendarName"])
     [filteredTasks sortUsingSelector: @selector (compareTasksCalendarNameAscending:)];
   else
     [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];

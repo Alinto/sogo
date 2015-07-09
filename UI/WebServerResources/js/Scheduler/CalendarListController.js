@@ -16,6 +16,9 @@
     vm.selectComponentType = selectComponentType;
     vm.newComponent = newComponent;
     vm.filter = filter;
+    vm.filteredBy = filteredBy;
+    vm.sort = sort;
+    vm.sortedBy = sortedBy;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false };
 
@@ -26,7 +29,7 @@
         vm.selectedList = 1;
         type = 'tasks';
       }
-      vm.selectComponentType(type, { reload: true });
+      selectComponentType(type, { reload: true });
     });
 
     // Switch between components tabs
@@ -49,15 +52,24 @@
     }
 
     function filter(filterpopup) {
-      if (filterpopup)
-        Component.$query.filterpopup = filterpopup;
+      Component.$filter(vm.componentType, options);
+    }
 
-      Component.$filter(vm.componentType, { value: '' });
+    function filteredBy(filterpopup) {
+      return Component['$query' + vm.componentType.capitalize()].filterpopup == filterpopup;
+    }
+
+    function sort(field) {
+      Component.$filter(vm.componentType, { sort: field });
+    }
+
+    function sortedBy(field) {
+      return Component['$query' + vm.componentType.capitalize()].sort == field;
     }
 
     function cancelSearch() {
       vm.mode.search = false;
-      filter();
+      Component.$filter(vm.componentType, { value: '' });
     }
 
     // Refresh current list when the list of calendars is modified

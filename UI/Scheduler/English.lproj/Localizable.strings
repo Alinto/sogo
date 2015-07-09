@@ -489,7 +489,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
 
-/* apt list */
+/* events list */
 "Title" = "Title";
 "Start" = "Start";
 "End" = "End";
@@ -502,8 +502,12 @@ vevent_class0 = "(Public event)";
 vevent_class1 = "(Private event)";
 vevent_class2 = "(Confidential event)";
 
+/* tasks list */
 "Priority" = "Priority";
 "Category" = "Category";
+"Status" = "Status";
+
+"Descending Order" = "Descending Order";
 
 vtodo_class0 = "(Public task)";
 vtodo_class1 = "(Private task)";

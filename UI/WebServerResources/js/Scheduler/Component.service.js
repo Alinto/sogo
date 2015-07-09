@@ -39,11 +39,17 @@
       $Preferences: Preferences,
       $$resource: new Resource(Settings.baseURL, Settings.activeUser),
       $categories: window.UserDefaults.SOGoCalendarCategoriesColors,
-      $query: { search: 'title_Category_Location' }
+      // Filter parameters common to events and tasks
+      $query: { value: '', search: 'title_Category_Location' },
+      // Filter paramaters specific to events
+      $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
+      // Filter parameters specific to tasks
+      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' }
     });
+    // Initialize filter parameters from user's settings
     Preferences.ready().then(function() {
-      Component.$query.filterpopup = Preferences.settings.CalendarDefaultFilter;
-      Component.$query['show-completed'] = parseInt(Preferences.settings.ShowCompletedTasks);
+      Component.$queryEvents.filterpopup = Preferences.settings.CalendarDefaultFilter;
+      Component.$queryTasks.show_completed = parseInt(Preferences.settings.ShowCompletedTasks);
     });
     if (window.UserDefaults && window.UserDefaults.SOGoTimeFormat)
       Component.timeFormat = window.UserDefaults.SOGoTimeFormat;
@@ -74,23 +80,33 @@
         day = now.getDate(),
         month = now.getMonth() + 1,
         year = now.getFullYear(),
-        defaultParams = {
+        queryKey = '$query' + type.capitalize(),
+        params = {
           day: '' + year + (month < 10?'0':'') + month + (day < 10?'0':'') + day,
         };
 
     return this.$Preferences.ready().then(function() {
-      var futureComponentData, dirty = false, otherType;
+      var futureComponentData,
+          dirty = false,
+          otherType;
 
-      angular.extend(_this.$query, defaultParams);
+      angular.extend(_this.$query, params);
+
       if (options) {
-        _.find(_.allKeys(options), function(key) {
-          dirty = (options[key] != Component.$query[key]);
-          return dirty;
+        _.each(_.allKeys(options), function(key) {
+          // Query parameters common to events and tasks are compared
+          dirty |= (_this.$query[key] && options[key] != Component.$query[key]);
+          // Update either the common parameters or the type-specific parameters
+          if (angular.isDefined(_this.$query[key]))
+            _this.$query[key] = options[key];
+          else
+            _this[queryKey][key] = options[key];
         })
-        angular.extend(_this.$query, options);
       }
 
-      futureComponentData = _this.$$resource.fetch(null, type + 'list', _this.$query);
+      // Perform query with both common and type-specific parameters
+      futureComponentData = _this.$$resource.fetch(null, type + 'list',
+                                                   angular.extend(_this[queryKey], _this.$query));
 
       // Invalidate cached results of other type if $query has changed
       otherType = (type == 'tasks')? '$events' : '$tasks';
