@@ -9,21 +9,27 @@
     <md-input-container class="md-input-number">
       <input type="number" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>
     </md-input-container>
-    <md-select ng-model="editor.component.alarm.unit">
-      <var:foreach list="unitsList" item="item">
-        <md-option var:value="item"><var:string value="itemText"/></md-option>
-      </var:foreach>
-    </md-select>
-    <md-select ng-model="editor.component.alarm.reference">
-      <var:foreach list="referencesList" item="item">
-        <md-option var:value="item"><var:string value="itemText"/></md-option>
-      </var:foreach>
-    </md-select>
-    <md-select ng-model="editor.component.alarm.relation">
-      <var:foreach list="relationsList" item="item">
-        <md-option var:value="item"><var:string value="itemText"/></md-option>
-      </var:foreach>
-    </md-select>
+    <md-input-container>
+      <md-select ng-model="editor.component.alarm.unit">
+        <var:foreach list="unitsList" item="item">
+          <md-option var:value="item"><var:string value="itemText"/></md-option>
+        </var:foreach>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <md-select ng-model="editor.component.alarm.reference">
+        <var:foreach list="referencesList" item="item">
+          <md-option var:value="item"><var:string value="itemText"/></md-option>
+        </var:foreach>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <md-select ng-model="editor.component.alarm.relation">
+        <var:foreach list="relationsList" item="item">
+          <md-option var:value="item"><var:string value="itemText"/></md-option>
+        </var:foreach>
+      </md-select>
+    </md-input-container>
   </div>
 
   <var:if condition="emailAlarmsEnabled">

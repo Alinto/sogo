@@ -148,8 +148,7 @@
                    label:aria-label="repeat_CUSTOM"
                    ng-show="editor.component.repeat.frequency != 'never'"
                    ng-click="editor.toggleRecurrenceEditor()">
-          <md-icon ng-class="{'icon-more-horiz': !editor.showRecurrenceEditor,
-                              'icon-clear': editor.showRecurrenceEditor}"><!-- toggle custom rule --></md-icon>
+          <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
         </md-button>
       </div>
       <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
@@ -178,45 +177,46 @@
         </md-input-container>
       </div>
       <!-- attendees -->
+      <div layout="row" layout-align="start start">
+        <md-autocomplete class="md-flex"
+                         label:md-floating-label="Invite Attendees"
+                         md-selected-item="attendeeToAdd"
+                         md-search-text="editor.searchText"
+                         md-selected-item-change="editor.addAttendee(card)"
+                         md-items="card in editor.cardFilter(editor.searchText)"
+                         md-min-length="2"
+                         md-no-cache="true"
+                         md-delay="300"
+                         sg-enter="editor.addAttendee(editor.searchText)">
+          <md-item-template>
+            <div class="md-contact-suggestion" layout="row" layout-align="space-between center">
+              <span class="md-contact-name"
+                    md-highlight-text="editor.searchText"
+                    md-highlight-flags="^i">{{card.$$fullname}}</span>
+              <span class="md-contact-email"
+                    md-highlight-text="editor.searchText"
+                    md-highlight-flags="^i">{{card.$$email}}</span>
+            </div>
+          </md-item-template>
+        </md-autocomplete>
+        <md-button type="button" class="sg-icon-button"
+                   label:aria-label="repeat_CUSTOM"
+                   ng-click="editor.toggleAttendeesEditor()">
+          <md-icon ng-class="{'md-rotate-180': editor.showAttendeesEditor}">expand_more</md-icon>
+        </md-button>
+      </div>
       <div layout="row" layout-align="space-between end">
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
           <div class="sg-avatars" ng-hide="editor.showAttendeesEditor">
             <sg-gravatar-image ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email"
                                email="{{currentAttendee.email}}"
                                size="32">
               <!-- gravatar -->
             </sg-gravatar-image>
-          </div>
         </div>
-        <md-button type="button" class="sg-icon-button"
-                   label:aria-label="repeat_CUSTOM"
-                   ng-click="editor.toggleAttendeesEditor()">
-          <md-icon ng-class="{'icon-expand-more': !editor.showAttendeesEditor,
-                              'icon-expand-less': editor.showAttendeesEditor}"><!-- toggle attendees details --></md-icon>
-        </md-button>
       </div>
       <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">
          <var:component className="UIxAttendeesEditor" />
       </div>
-      <md-autocomplete class="md-flex"
-                       md-selected-item="attendeeToAdd"
-                       md-search-text="editor.searchText"
-                       md-selected-item-change="editor.addAttendee(card)"
-                       md-items="card in editor.cardFilter(editor.searchText)"
-                       md-min-length="2"
-                       md-no-cache="true"
-                       md-delay="300"
-                       label:placeholder="Invite Attendees"
-                       sg-enter="editor.addAttendee(editor.searchText)">
-        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-          <span class="md-contact-name"
-                md-highlight-text="editor.searchText"
-                md-highlight-flags="^i">{{card.$$fullname}}</span> <span class="md-contact-email"
-                md-highlight-text="editor.searchText"
-                md-highlight-flags="^i">{{card.$$email}}</span>
-        </span>
-      </md-autocomplete>
       <!-- reminder -->
       <md-checkbox ng-model="editor.component.$hasAlarm"
                    label:aria-label="Reminder:">
