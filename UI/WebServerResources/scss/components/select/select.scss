@@ -1,10 +1,5 @@
 @import "extends";
 
-md-select {
-  margin-bottom: 2px;
-  margin-right: $bl;
-}
-
 // Try to align select labels with other input components
 [layout="row"] {
   .md-select-label {
@@ -34,5 +29,4 @@ md-select.md-default-theme.sg-logout {
     border: none;
     color: $colorWhite;
   }
-
 }

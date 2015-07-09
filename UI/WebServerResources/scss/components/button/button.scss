@@ -54,7 +54,7 @@ $button-fab-height: 56px;
 a.md-button.sg-icon-button,
 .md-button.sg-icon-button {
   z-index: 1;
-  padding: $iconButton-padding 0;
+  line-height: inherit;
   border-radius: 50%;
   min-width: $iconButton-size;
   transition: $iconButton-transition;

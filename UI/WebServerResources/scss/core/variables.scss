@@ -53,7 +53,7 @@ $pitch:                    $sg-md-grid-pitch;
 
 // touch and pointers
 // ----------------------------------------------------------------------------
-$touch-zone-width: 48px;
+$touch-zone-width: 36px;
 // shortcut alias for $touch-zone-width
 $touch-zone: $touch-zone-width;
 
@@ -146,8 +146,8 @@ $z-index-bottom-sheet: 70 !default;
 $z-index-scroll-mask: 65 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
-$z-index-toolbar: 10 !default;
 $z-index-fab: 20 !default;
+$z-index-toolbar: 10 !default;
 $z-index-view: 9;
 
 // Easing Curves
