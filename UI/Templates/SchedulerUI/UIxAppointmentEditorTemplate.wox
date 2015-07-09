@@ -156,7 +156,7 @@
       </div>
       <!-- end repeat -->
       <div layout="row" layout-align="start end">
-        <div>
+        <div ng-show="editor.component.repeat.frequency != 'never'">
           <md-input-container>
             <label><var:string label:value="End Repeat"/></label>
             <md-select class="pseudo-input-field" ng-model="editor.component.repeat.end">
