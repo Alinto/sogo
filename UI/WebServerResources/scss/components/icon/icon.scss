@@ -49,30 +49,43 @@ md-icon {
 
 // Define CSS styles to use ng-class with md-icon
 md-icon {
+  transition: 240ms;
+  &.md-rotate-45 {
+    transform: rotate(45deg);
+  }
+  &.md-rotate-90 {
+    transform: rotate(90deg);
+  }
+  &.md-rotate-180 {
+    transform: rotate(180deg);
+  }
+//   &.icon-add:before {
+//     content: "\e317";
+//   }
   &.icon-check:before {
     content: "\e5ca";
   }
-//  &.icon_public:before {
-//    content: "\e80b";
-//  }
+  &.icon-clear:before {
+    content: "\e14c";
+  }
   &.icon-contacts:before {
     content: "\e0ba";
   }
   &.icon-event:before {
     content: "\e878";
   }
-  &.icon-more-horiz:before {
-    content: "\e5d3";
-  }
-  &.icon-clear:before {
-    content: "\e14c";
+  &.icon-expand-less:before {
+    content: "\e5ce";
   }
   &.icon-expand-more:before {
     content: "\e5cf";
   }
-  &.icon-expand-less:before {
-    content: "\e5ce";
+  &.icon-more-horiz:before {
+    content: "\e5d3";
   }
+//  &.icon_public:before {
+//    content: "\e80b";
+//  }
 }
 
 // Message flag
