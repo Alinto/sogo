@@ -131,9 +131,11 @@
           </md-button>
           <md-menu-content width="4">
             <md-menu-item>
-              <md-checkbox ng-model="message.editable.receipt">
-                <var:string label:value="Receipt"/>
-              </md-checkbox>
+              <md-button>
+                <md-checkbox ng-model="message.editable.receipt">
+                  <var:string label:value="Receipt"/>
+                </md-checkbox>
+              </md-button>
             </md-menu-item>
             <md-menu-item>
               <div layout="row" layout-align="center center">
