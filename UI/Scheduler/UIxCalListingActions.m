@@ -84,6 +84,7 @@ static NSArray *tasksFields = nil;
 
 + (void) initialize
 {
+  // NOTE: Modifying one of those two static arrays requires to modify NSArray+Scheduler.h
   if (!eventsFields)
   {
     eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
@@ -1430,7 +1431,7 @@ _computeBlocksPosition (NSArray *blocks)
     if (statusCode != 1 || showCompleted)
     {
       filteredTask = [NSMutableArray arrayWithArray: task];
-      endDateStamp = [[task objectAtIndex: 5] intValue];
+      endDateStamp = [[task objectAtIndex: taskEndDateIndex] intValue];
       statusFlag = [self _getStatusClassForStatusCode: statusCode
                                       andEndDateStamp: endDateStamp];
       [filteredTask addObject: statusFlag];
@@ -1448,11 +1449,11 @@ _computeBlocksPosition (NSArray *blocks)
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
         [filteredTasks addObject: filteredTask];
-      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:15] isEqualToString:@"overdue"]))
+      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:18] isEqualToString:@"overdue"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:15] isEqualToString:@"completed"]))
+      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:18] isEqualToString:@"completed"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:3] stringValue] isEqualToString:@"0"]))
+      else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
         [filteredTasks addObject: filteredTask];
     }
   }

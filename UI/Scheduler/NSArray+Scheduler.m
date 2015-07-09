@@ -120,8 +120,8 @@
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
 
-  result = [self _compareCompletionWithStatus1: [self objectAtIndex: taskCalendarNameIndex]
-                                    andStatus2: [otherTask objectAtIndex: taskCalendarNameIndex]];
+  result = [self _compareCompletionWithStatus1: [self objectAtIndex: taskStatusIndex]
+                                    andStatus2: [otherTask objectAtIndex: taskStatusIndex]];
   if (result == NSOrderedSame)
   {
     // End date
