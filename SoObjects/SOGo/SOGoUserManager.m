@@ -443,19 +443,11 @@ static Class NSNullK;
 
   checkOK = NO;
 
-  if (*domain == nil)
-    {
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      r = [login rangeOfString: @"@" options: NSBackwardsSearch];
-      if ([sd enableDomainBasedUID] && r.location != NSNotFound)
-        *domain = [login substringFromIndex: (r.location + r.length)];
-    }
-
   authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
-      
+
       checkOK = [sogoSource checkLogin: login
                               password: password
                                   perr: perr
