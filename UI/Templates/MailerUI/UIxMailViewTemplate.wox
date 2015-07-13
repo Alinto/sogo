@@ -14,17 +14,17 @@
     <header class="msg-header">
       <div class="msg-header-content">
         <div layout="row" layout-align="start center">
-          <md-button class="sg-icon-button sg-msg-flag" label:aria-label="flagged" ng-click="message.toggleFlag()">
-            <md-icon ng-class="{'flagged': message.isflagged}">star</md-icon>
+          <md-button class="sg-icon-button sg-msg-flag" label:aria-label="flagged" ng-click="viewer.message.toggleFlag()">
+            <md-icon ng-class="{'flagged': viewer.message.isflagged}">star</md-icon>
           </md-button>
-          <h3 class="sg-md-title-msg" ng-bind="message.subject"><!-- subject --></h3>
+          <h3 class="sg-md-title-msg" ng-bind="viewer.message.subject"><!-- subject --></h3>
         </div>
         <div class="pseudo-input-container--compact">
           <label class="pseudo-input-label">
             <var:string label:value="From"/>
           </label>
           <div class="pseudo-input-field">
-            <a ng-href="mailto:{{message.from[0].email}}" ng-bind="message.from[0].full"><!-- from --></a>
+            <a ng-href="mailto:{{viewer.message.from[0].email}}" ng-bind="viewer.message.from[0].full"><!-- from --></a>
           </div>
         </div>
 
@@ -33,24 +33,19 @@
             <var:string label:value="To"/>
           </label>
           <div class="pseudo-input-field">
-            <a ng-href="mailto:{{message.to[0].email}}" ng-bind="message.to[0].full"><!-- to --></a>
+            <a ng-href="mailto:{{viewer.message.to[0].email}}" ng-bind="viewer.message.to[0].full"><!-- to --></a>
           </div>
         </div>
 
-        <md-chips ng-model="message.flags">
-          <md-chip-template>{{message.constructor.$tags[$chip][0]}}</md-chip-template>
-          <button md-chip-remove="md-chip-remove"
-                  class="md-chip-remove"
-                  ng-click="message.removeTag($chip)">
-            <md-icon>close</md-icon>
-          </button>
+        <md-chips ng-model="viewer.message.flags" ng-change="viewer.changeFlags()">
+          <md-chip-template>{{viewer.service.$tags[$chip][0]}}</md-chip-template>
           <md-autocomplete
-              md-selected-item="tags.selected"
-              md-selected-item-change="message.addTag(tag)"
-              md-search-text="tags.searchText"
-              md-items="tag in message.constructor.filterTags(tags.searchText)"
+              md-selected-item="viewer.tags.selected"
+              md-selected-item-change="viewer.message.addTag(viewer.tags.selected)"
+              md-search-text="viewer.tags.searchText"
+              md-items="tag in viewer.service.filterTags(viewer.tags.searchText)"
               label:placeholder="Add a tag">
-            <span md-highlight-text="tags.searchText">{{message.constructor.$tags[tag][0]}}</span>
+            <span md-highlight-text="viewer.tags.searchText">{{viewer.service.$tags[tag][0]}}</span>
           </md-autocomplete>
         </md-chips>
 
@@ -65,34 +60,34 @@
       <div class="sg-icon-bar--vertical">
       <!-- todo: Replace md-tooltip values by localizable string variable -->
       <md-button class="sg-icon-button"
-                 ng-hide="message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'reply'})"
+                 ng-hide="viewer.message.isDraft"
+                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'reply'})"
                  aria-label="reply">
         <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
         <md-icon>reply</md-icon>
       </md-button>
       <md-button class="sg-icon-button" aria-label="Reply All"
                  ng-hide="message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'replyall'})">
+                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'replyall'})">
         <md-icon>reply_all</md-icon>
       </md-button>
       <md-button class="sg-icon-button" aria-label="Forward"
-                 ng-hide="message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid, actionName: 'forward'})">
+                 ng-hide="viewer.message.isDraft"
+                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'forward'})">
         <md-icon>forward</md-icon>
       </md-button>
       <md-button class="sg-icon-button" aria-label="Edit"
-                 ng-show="message.isDraft"
-                 ui-sref="mail.account.mailbox.message.edit({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: message.uid})">
+                 ng-show="viewer.message.isDraft"
+                 ui-sref="mail.account.mailbox.message.edit({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid})">
         <md-icon>create</md-icon>
       </md-button>
       <md-button class="sg-icon-button" aria-label="Delete"
-                 ng-click="doDelete(message)">
+                 ng-click="viewer.doDelete()">
         <md-icon>delete</md-icon>
       </md-button>
       <md-button class="sg-icon-button" aria-label="Load Images"
-                 ng-show="message.$hasUnsafeContent"
-                 ng-click="message.loadUnsafeContent()">
+                 ng-show="viewer.message.$hasUnsafeContent"
+                 ng-click="viewer.message.loadUnsafeContent()">
         <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
         <md-icon>image</md-icon>
       </md-button>
@@ -100,7 +95,7 @@
     </header>
     <md-divider><!-- divider --></md-divider>
 
-    <div ng-show="message.shouldAskReceipt == 1"
+    <div ng-show="viewer.message.shouldAskReceipt == 1"
          layout-padding="layout-padding">
       <md-whiteframe class="md-whiteframe-z2" layout="column"
                      layout-align="center start">
@@ -109,19 +104,19 @@
         <div class="md-actions" layout="row">
           <md-button label:aria-label="Yes"
                      type="button" class="md-primary"
-                     ng-click="message.$sendMDN()">Yes</md-button>
+                     ng-click="viewer.message.$sendMDN()">Yes</md-button>
           <md-button label:aria-label="No"
                      type="button"
-                     ng-click="message.shouldAskReceipt = 0">No</md-button>
+                     ng-click="viewer.message.shouldAskReceipt = 0">No</md-button>
         </div>
       </md-whiteframe>
     </div>
 
     <div class="msg-body">
       <div class="msg-date sg-md-body-multi">
-        <time datetime="message.date" ng-bind="message.date"><!-- date --></time>
+        <time datetime="viewer.message.date" ng-bind="viewer.message.date"><!-- date --></time>
       </div>
-      <div class="mailer_mailcontent" ng-repeat="part in message.$content()">
+      <div class="mailer_mailcontent" ng-repeat="part in viewer.message.$content()">
         <div ng-if="part.html" ng-bind-html="part.content"><!-- msg --></div>
         <div ng-if="part.compile" sg-compile="part.content"><!-- msg --></div>
       </div>

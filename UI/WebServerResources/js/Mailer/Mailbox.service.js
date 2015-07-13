@@ -47,6 +47,7 @@
       $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser),
       $Message: Message,
       $$Acl: Acl,
+      selectedFolder: null,
       PRELOAD: PRELOAD
     });
 

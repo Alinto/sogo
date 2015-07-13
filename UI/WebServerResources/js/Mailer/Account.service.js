@@ -197,27 +197,21 @@
    * @returns a promise of the HTTP operations
    */
   Account.prototype.$newMessage = function() {
-    var _this = this,
-        deferred = Account.$q.defer(),
-        message;
+    var _this = this;
 
     // Query account for draft folder and draft UID
-    Account.$$resource.fetch(this.id.toString(), 'compose').then(function(data) {
+    return Account.$$resource.fetch(this.id.toString(), 'compose').then(function(data) {
       Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
-      message = new Account.$Message(data.accountId, _this.$getMailboxByPath(data.mailboxPath), data);
+      var message = new Account.$Message(data.accountId, _this.$getMailboxByPath(data.mailboxPath), data);
+      return message;
+    }).then(function(message) {
       // Fetch draft initial data
-      Account.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      return Account.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Account.$log.debug('New message: ' + JSON.stringify(data, undefined, 2));
         angular.extend(message.editable, data);
-        deferred.resolve(message);
-      }, function(data) {
-        deferred.reject(data);
+        return message;
       });
-    }, function(data) {
-      deferred.reject(data);
     });
-
-    return deferred.promise;
   };
 
   /**

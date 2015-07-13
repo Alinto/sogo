@@ -105,8 +105,7 @@
     if (oldUID != uid) {
       this.uid = uid;
       this.id = this.$absolutePath();
-      if (oldUID > -1) {
-        // For new messages, $mailbox doesn't exist
+      if (oldUID > -1 && this.$mailbox.uidsMap[oldUID]) {
         this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
         this.$mailbox.uidsMap[oldUID] = null;
       }
@@ -417,29 +416,21 @@
    * @returns a promise of the HTTP operations
    */
   Message.prototype.$newDraft = function(action) {
-    var _this = this,
-        deferred = Message.$q.defer(),
-        mailbox,
-        message;
+    var _this = this;
 
     // Query server for draft folder and draft UID
-    Message.$$resource.fetch(this.id, action).then(function(data) {
+    return Message.$$resource.fetch(this.id, action).then(function(data) {
+      var mailbox, message;
       Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
       mailbox = _this.$mailbox.$account.$getMailboxByPath(data.mailboxPath);
       message = new Message(data.accountId, mailbox, data);
       // Fetch draft initial data
-      Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      return Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
         angular.extend(message.editable, data);
-        deferred.resolve(message);
-      }, function(data) {
-        deferred.reject(data);
+        return message;
       });
-    }, function(data) {
-      deferred.reject(data);
     });
-
-    return deferred.promise;
   };
 
   /**

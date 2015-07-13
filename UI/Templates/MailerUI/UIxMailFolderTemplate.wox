@@ -2,24 +2,24 @@
 <container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:label="OGo:label">
-  <div class="view-list md-layout-fill" layout="column" flex="true" style="position: relative;">
+  <div class="view-list md-layout-fill md-flex" layout="column" style="position: relative;">
   <md-content id="messagesList">
     <style>
       .vs-repeat-repeated-element {
         width: 100%;
       }
     </style>
-    <md-progress-linear ng-show="mailbox.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
+    <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
     <header class="sg-md-subheader sg-md-subheader--fixed">
       <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
     </header>
     <md-list vs-repeat="72"
         vs-scroll-parent="#messagesList">
       <md-list-item
-          ng-repeat="currentMessage in mailbox.$messages track by currentMessage.id"
+          ng-repeat="currentMessage in mailbox.selectedFolder.$messages track by currentMessage.id"
           ng-class="{unread: !currentMessage.isread}"
-          ng-click="selectMessage(currentMessage)"
-          ui-sref="mail.account.mailbox.message({accountId: account.id, mailboxId: (mailbox.path | encodeUri), messageId: currentMessage.uid})"
+          ng-click="mailbox.selectMessage(currentMessage)"
+          ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})"
           ui-sref-active="sg-active">
         <div class="sg-selected-avatar" ng-show="currentMessage.selected"
              ng-click="currentMessage.selected = !currentMessage.selected">
@@ -38,7 +38,7 @@
           <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
           <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
           <i class="icon-ion-refresh"
-             ng-hide="mailbox.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+             ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
         </div>
         <div class="sg-tile-icons">
           <md-icon ng-show="currentMessage.isflagged">star</md-icon>
@@ -51,13 +51,13 @@
   </md-content>
   <md-button class="md-fab md-fab-bottom-right md-accent"
              label:aria-label="Write a new message"
-             ui-sref="mail.newMessage()">
+             ui-sref="mail.account.mailbox.newMessage({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri)})">
     <md-icon>add</md-icon>
   </md-button>
   </div>
 
   <!-- This extra container is used to animate views transitions
        double quotes in ng-animate is not a typo                         -->
-    <div ng-show="message" id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
+    <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
 
 </container>

@@ -33,7 +33,8 @@
         views: {
           mailboxes: {
             templateUrl: 'UIxMailMainFrame', // UI/Templates/MailerUI/UIxMailMainFrame.wox
-            controller: 'MailboxesController'
+            controller: 'MailboxesController',
+            controllerAs: 'app'
           }
         },
         resolve: {
@@ -45,7 +46,7 @@
         abstract: true,
         views: {
           mailbox: {
-            template: '<ui-view/>',
+            template: '<ui-view/>'
           }
         },
         resolve: {
@@ -57,7 +58,8 @@
         views: {
           'mailbox@mail': {
             templateUrl: 'UIxMailFolderTemplate', // UI/Templates/MailerUI/UIxMailFolderTemplate.wox
-            controller: 'MailboxController'
+            controller: 'MailboxController',
+            controllerAs: 'mailbox'
           }
         },
         resolve: {
@@ -65,12 +67,26 @@
           stateMessages: stateMessages
         }
       })
+      .state('mail.account.mailbox.newMessage', {
+        url: '/new',
+        views: {
+          'mailbox@mail': {
+            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
+            controller: 'MessageEditorController',
+            controllerAs: 'editor'
+          }
+        },
+        resolve: {
+          stateMessage: stateNewMessage
+        }
+      })
       .state('mail.account.mailbox.message', {
         url: '/:messageId',
         views: {
           message: {
             templateUrl: 'UIxMailViewTemplate', // UI/Templates/MailerUI/UIxMailViewTemplate.wox
-            controller: 'MessageController'
+            controller: 'MessageController',
+            controllerAs: 'viewer'
           }
         },
         resolve: {
@@ -82,7 +98,8 @@
         views: {
           'mailbox@mail': {
             templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController'
+            controller: 'MessageEditorController',
+            controllerAs: 'editor'
           }
         },
         resolve: {
@@ -94,24 +111,9 @@
         views: {
           'mailbox@mail': {
             templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController'
+            controller: 'MessageEditorController',
+            controllerAs: 'editor'
           }
-        }
-      })
-      .state('mail.newMessage', {
-        url: '/new',
-        views: {
-          mailbox: {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController'
-          }
-        },
-        resolve: {
-          stateMessage: ['stateAccounts', function(stateAccounts) {
-            if (stateAccounts.length > 0) {
-              return stateAccounts[0].$newMessage();
-            }
-          }]
         }
       });
 
@@ -131,8 +133,8 @@
    */
   stateAccounts.$inject = ['$q', 'Account'];
   function stateAccounts($q, Account) {
-    var accounts = Account.$findAll(mailAccounts);
-    var promises = [];
+    var accounts = Account.$findAll(mailAccounts),
+        promises = [];
     // Fetch list of mailboxes for each account
     angular.forEach(accounts, function(account, i) {
       var mailboxes = account.$getMailboxes();
@@ -158,9 +160,10 @@
    */
   stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
   function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
-    var mailboxId = decodeUriFilter($stateParams.mailboxId);
+    var mailboxId = decodeUriFilter($stateParams.mailboxId),
+        _find;
     // Recursive find function
-    var _find = function(mailboxes) {
+    _find = function(mailboxes) {
       var mailbox = _.find(mailboxes, function(o) {
         return o.path == mailboxId;
       });
@@ -187,6 +190,14 @@
   /**
    * @ngInject
    */
+  stateNewMessage.$inject = ['stateAccount'];
+  function stateNewMessage(stateAccount) {
+    return stateAccount.$newMessage();
+  }
+
+  /**
+   * @ngInject
+   */
   stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
   function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
     var message = _.find(stateMailbox.$messages, function(messageObject) {
@@ -197,7 +208,7 @@
       return message.$reload();
     else
       // Message not found
-      $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) }  );
+      $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
   }
 
   /**

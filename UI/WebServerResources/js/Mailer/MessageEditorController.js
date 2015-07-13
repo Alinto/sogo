@@ -6,60 +6,18 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook'];
-  function MessageEditorController($scope, $rootScope, $stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
-    $scope.autocomplete = {to: {}, cc: {}, bcc: {}};
-    $scope.hideCc = true;
-    $scope.hideBcc = true;
-    if ($stateParams.actionName == 'reply') {
-      stateMessage.$reply().then(function(msgObject) {
-        console.debug("foo");
+  MessageEditorController.$inject = ['$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook'];
+  function MessageEditorController($stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
+    var vm = this;
 
-        $scope.message = msgObject;
-        $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
-        $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
-      });
-    }
-    else if ($stateParams.actionName == 'replyall') {
-      stateMessage.$replyAll().then(function(msgObject) {
-        $scope.message = msgObject;
-        $scope.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
-        $scope.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
-      });
-    }
-    else if ($stateParams.actionName == 'forward') {
-      stateMessage.$forward().then(function(msgObject) {
-        $scope.message = msgObject;
-        $scope.hideCc = true;
-        $scope.hideBcc = true;
-      });
-    }
-    else if (angular.isDefined(stateMessage)) {
-      $scope.message = stateMessage;
-    }
-    $scope.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
-    $scope.cancel = function() {
-      if ($scope.mailbox)
-        $state.go('mail.account.mailbox', { accountId: $scope.mailbox.$account.id, mailboxId: encodeUriFilter($scope.mailbox.path) });
-      else
-        $state.go('mail');
-    };
-    $scope.send = function(message) {
-      message.$send().then(function(data) {
-        $rootScope.message = null;
-        $state.go('mail');
-      }, function(data) {
-        console.debug('failure ' + JSON.stringify(data, undefined, 2));
-      });
-    };
-    $scope.userFilter = function($query) {
-      var deferred = $q.defer();
-      AddressBook.$filterAll($query).then(function(results) {
-        deferred.resolve(_.invoke(results, '$shortFormat', $query));
-      });
-      return deferred.promise;
-    };
-    $scope.uploader = new FileUploader({
+    vm.autocomplete = {to: {}, cc: {}, bcc: {}};
+    vm.hideCc = true;
+    vm.hideBcc = true;
+    vm.cancel = cancel;
+    vm.send = send;
+    vm.userFilter = userFilter;
+    vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
+    vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
       alias: 'attachments',
@@ -82,6 +40,53 @@
         console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
       }
     });
+
+    if ($stateParams.actionName == 'reply') {
+      stateMessage.$reply().then(function(msgObject) {
+        vm.message = msgObject;
+        vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
+        vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
+      });
+    }
+    else if ($stateParams.actionName == 'replyall') {
+      stateMessage.$replyAll().then(function(msgObject) {
+        vm.message = msgObject;
+        vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length == 0);
+        vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length == 0);
+      });
+    }
+    else if ($stateParams.actionName == 'forward') {
+      stateMessage.$forward().then(function(msgObject) {
+        vm.message = msgObject;
+      });
+    }
+    else if (angular.isDefined(stateMessage)) {
+      vm.message = stateMessage;
+    }
+
+    function cancel() {
+      // TODO: delete draft?
+      if ($state.params.mailboxId)
+        $state.go('mail.account.mailbox', { accountId: $state.params.accountId, mailboxId: $state.params.mailboxId });
+      else
+        $state.go('mail');
+    }
+
+    function send() {
+      vm.message.$send().then(function(data) {
+        $state.go('mail');
+      }, function(data) {
+        console.debug('failure ' + JSON.stringify(data, undefined, 2));
+      });
+    }
+
+    function userFilter($query) {
+      var deferred = $q.defer();
+      AddressBook.$filterAll($query).then(function(results) {
+        deferred.resolve(_.invoke(results, '$shortFormat', $query));
+      });
+      return deferred.promise;
+    }
   }
 
   angular

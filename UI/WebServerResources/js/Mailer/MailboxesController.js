@@ -8,10 +8,31 @@
    */
   MailboxesController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'stateAccounts'];
   function MailboxesController($scope, $rootScope, $stateParams, $state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, stateAccounts) {
-    $scope.activeUser = Settings.activeUser;
-    $scope.accounts = stateAccounts;
+    var vm = this,
+        account,
+        mailbox;
 
-    $scope.newFolder = function(parentFolder) {
+    vm.service = Mailbox;
+    vm.accounts = stateAccounts;
+    vm.newFolder = newFolder;
+    vm.delegate = delegate;
+    vm.editFolder = editFolder;
+    vm.revertEditing = revertEditing;
+    vm.selectFolder = selectFolder;
+    vm.saveFolder = saveFolder;
+    vm.exportMails = exportMails;
+    vm.confirmDelete = confirmDelete;
+    vm.share = share;
+    vm.iconForFolder = iconForFolder;
+
+    if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
+      // Redirect to first mailbox of first account if no mailbox is selected
+      account = vm.accounts[0];
+      mailbox = account.$mailboxes[0];
+      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
+    }
+
+    function newFolder(parentFolder) {
       Dialog.prompt(l('New folder'),
                     l('Enter the new name of your folder :'))
         .then(function(name) {
@@ -23,8 +44,9 @@
                            l(data.error));
             });
         });
-    };
-    $scope.delegate = function(account) {
+    }
+
+    function delegate(account) {
       $mdDialog.show({
         templateUrl: account.id + '/delegation', // UI/Templates/MailerUI/UIxMailUserDelegation.wox
         controller: MailboxDelegationController,
@@ -56,7 +78,6 @@
         vm.selectUser = selectUser;
 
         function userFilter($query) {
-          //return User.$filter($query, folder.$acl.users);
           return User.$filter($query, account.delegates);
         }
 
@@ -70,7 +91,7 @@
               vm.selectedUser = null;
             }
           }, function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured please try again.'))
+            Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
         }
 
@@ -92,48 +113,47 @@
           }
         }
       }
-    };
-    $scope.editFolder = function(folder) {
-      $scope.editMode = folder.path;
+    } // delegate
+
+    function editFolder(folder) {
+      vm.editMode = folder.path;
       focus('mailboxName_' + folder.path);
-    };
-    $scope.revertEditing = function(folder) {
+    }
+
+    function revertEditing(folder) {
       folder.$reset();
-      $scope.editMode = false;
-    };
-    $scope.selectFolder = function(account, folder) {
-      if ($scope.editMode == folder.path)
+      vm.editMode = false;
+    }
+
+    function selectFolder(account, folder) {
+      if (vm.editMode == folder.path)
         return;
-      $rootScope.currentFolder = folder;
-      $scope.editMode = false;
-      $rootScope.message = null;
+      vm.editMode = false;
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
-    };
-    $scope.saveFolder = function(folder) {
+    }
+
+    function saveFolder(folder) {
       folder.$rename();
-    };
-    $scope.exportMails = function() {
-      window.location.href = ApplicationBaseURL + '/' + $rootScope.currentFolder.id + '/exportFolder';
-    };
-    $scope.confirmDelete = function(folder) {
-      if (folder.path != $scope.currentFolder.path) {
-        // Counter the possibility to click on the "hidden" secondary button
-        $scope.selectFolder(folder.$account, folder);
-        return;
-      }
+    }
+
+    function exportMails(folder) {
+      window.location.href = ApplicationBaseURL + '/' + folder.id + '/exportFolder';
+    }
+
+    function confirmDelete(folder) {
       Dialog.confirm(l('Confirmation'), l('Do you really want to move this folder into the trash ?'))
         .then(function() {
           folder.$delete()
             .then(function() {
-              $rootScope.currentFolder = null;
               $state.go('mail');
             }, function(data, status) {
               Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
                            l(data.error));
             });
         });
-    };
-    $scope.share = function(folder) {
+    }
+
+    function share(folder) {
       //if (addressbook.id != vm.service.selectedFolder.id) {
       // Counter the possibility to click on the "hidden" secondary button
       //select(addressbook);
@@ -208,7 +228,7 @@
               vm.selectedUser = null;
             }
           }, function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured please try again.'))
+            Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
         }
 
@@ -231,9 +251,9 @@
           }
         }
       }
-    };
+    } // share
 
-    $scope.iconForFolder = function(folder) {
+    function iconForFolder(folder) {
       if (folder.type == 'inbox')
         return 'inbox';
       else if (folder.type == 'draft')
@@ -247,51 +267,6 @@
       //  return 'folder_open';
 
       return 'folder';
-    };
-
-    $scope.unselectMessages = function() {
-      _.each($rootScope.mailbox.$messages, function(message) { message.selected = false; });
-    };
-
-    $scope.confirmDeleteSelectedMessages = function() {
-      Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected messages?'))
-        .then(function() {
-          // User confirmed the deletion
-          var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
-          var selectedUIDs = _.pluck(selectedMessages, 'uid');
-          $rootScope.mailbox.$deleteMessages(selectedUIDs).then(function() {
-            $rootScope.mailbox.$messages = _.difference($rootScope.mailbox.$messages, selectedMessages);
-          });
-        },  function(data, status) {
-          // Delete failed
-        });
-    };
-
-    $scope.copySelectedMessages = function(folder) {
-      var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
-      var selectedUIDs = _.pluck(selectedMessages, 'uid');
-      $rootScope.mailbox.$copyMessages(selectedUIDs, '/' + folder).then(function() {
-        // TODO: refresh target mailbox?
-      }, function(error) {
-        Dialog.alert(l('Error'), error.error);
-      });
-    };
-
-    // $scope.moveSelectedMessages = function(folder) {
-    //   var selectedMessages = _.filter($rootScope.mailbox.$messages, function(message) { return message.selected });
-    //   var selectedUIDs = _.pluck(selectedMessages, 'uid');
-    //   $rootScope.mailbox.$moveMessages(selectedUIDs, '/' + folder).then(function() {
-    //     // TODO: refresh target mailbox?
-    //     $rootScope.mailbox.$messages = _.difference($rootScope.mailbox.$messages, selectedMessages);
-    //   });
-    // };
-
-    if ($state.current.name == 'mail' && $scope.accounts.length > 0 && $scope.accounts[0].$mailboxes.length > 0) {
-      // Redirect to first mailbox of first account if no mailbox is selected
-      var account = $scope.accounts[0];
-      var mailbox = account.$mailboxes[0];
-      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
     }
   }
 
