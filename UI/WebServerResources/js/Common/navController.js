@@ -9,8 +9,10 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant'];
-  function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant) {
+  navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings'];
+  function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings) {
+
+    $scope.activeUser = sgSettings.activeUser;
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
