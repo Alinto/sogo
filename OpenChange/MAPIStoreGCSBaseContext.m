@@ -121,7 +121,6 @@
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: NULL];
-  [userContext activate];
   moduleName = [self MAPIModuleName];
   parentFolder = [[userContext rootFolders] objectForKey: moduleName];
   nameInContainer = nil;

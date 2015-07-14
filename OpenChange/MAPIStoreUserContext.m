@@ -159,6 +159,8 @@ static NSMapTable *contextsTable = nil;
       if ([userPassword length] == 0)
         userPassword = username;
       [authenticator setPassword: userPassword];
+      // Activate the profile on initialization
+      [self activate];
     }
 
   return self;

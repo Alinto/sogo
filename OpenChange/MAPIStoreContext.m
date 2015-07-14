@@ -108,13 +108,12 @@ static NSMutableDictionary *contextClassMapping;
   NSArray *classes;
   Class currentClass;
   NSUInteger count, max;
-  MAPIStoreUserContext *userContext;
 
   list = NULL;
 
-  userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexing];
-  [userContext activate];
+  // User context is activated on initialization
+  [MAPIStoreUserContext userContextWithUsername: userName
+                                 andTDBIndexing: indexing];
 
   classes = GSObjCAllSubclassesOfClass (self);
   max = [classes count];

@@ -198,7 +198,6 @@ MakeDisplayFolderName (NSString *folderName)
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: NULL];
-  [userContext activate];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   folderName = [NSString stringWithFormat: @"folder%@",
                          [newFolderName asCSSIdentifier]];
