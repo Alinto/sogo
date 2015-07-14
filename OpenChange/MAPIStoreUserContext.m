@@ -39,6 +39,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSString+Utilities.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
@@ -369,6 +370,11 @@ static NSMapTable *contextsTable = nil;
   return authenticator;
 }
 
+- (void) activate
+{
+  [self activateWithUser: [self sogoUser]];
+}
+
 - (void) activateWithUser: (SOGoUser *) activeUser;
 {
   NSMutableDictionary *info;
@@ -377,6 +383,26 @@ static NSMapTable *contextsTable = nil;
   [woContext setActiveUser: activeUser];
   info = [[NSThread currentThread] threadDictionary];
   [info setObject: woContext forKey: @"WOContext"];
+}
+
+- (void) deactivate
+{
+  NSMutableDictionary *info;
+
+  if (self == [MAPIApp userContext])
+    [MAPIApp setUserContext: nil];
+  else
+    [self errorWithFormat: @"Error: Tried to deactivate an user context "
+                           @"not enabled (%@ vs %@)",
+                           [self username], [[MAPIApp userContext] username]];
+
+  info = [[NSThread currentThread] threadDictionary];
+  if (woContext == [info objectForKey: @"WOContext"])
+    [info removeObjectForKey: @"WOContext"];
+  else
+    [self errorWithFormat: @"Error: Tried to deactivate a WOContext "
+                           @"not enabled (%@ vs %@)",
+                           woContext, [info objectForKey: @"WOContext"]];
 }
 
 @end

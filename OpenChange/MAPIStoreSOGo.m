@@ -74,10 +74,12 @@ static BOOL initialization_done = NO;
 #define TRYCATCH_END(pool)  \
           } @catch (NSException * e) { \
             enum mapistore_error ret = sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
+            mapiapp_cleanup(); \
             [pool release]; \
             NS_CURRENT_THREAD_TRY_UNREGISTER(); \
             return ret; \
-          }
+          } \
+        mapiapp_cleanup();
 
 
 static enum mapistore_error
@@ -200,11 +202,27 @@ sogo_backend_init (void)
 }
 
 /**
+   \details Cleanup operation to execute after an action has been performed
+   so there won't be any conflicts with future calls.
+   In practice this will deactivate the current user context set on MAPIApp
+   (which is the current WOApplication), this means two things: (1) set nil
+   as current user context on MAPIApp and (2) remove woContext from current
+   thread dictionary (this is used on WOContext.m).
+*/
+static void mapiapp_cleanup(void)
+{
+  Class MAPIApplicationK;
+  MAPIApplicationK = NSClassFromString (@"MAPIApplication");
+  if (MAPIApplicationK)
+    [[MAPIApplicationK application] cleanup];
+}
+
+/**
    \details Create a connection context to the sogo backend
 
    \param mem_ctx pointer to the memory context
    \param uri pointer to the sogo path
-   \param private_data pointer to the private backend context 
+   \param private_data pointer to the private backend context
 */
 
 static enum mapistore_error

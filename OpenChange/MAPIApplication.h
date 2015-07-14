@@ -33,8 +33,9 @@
 }
 
 - (id) authenticatorInContext: (id) context;
-
+- (MAPIStoreUserContext *) userContext;
 - (void) setUserContext: (MAPIStoreUserContext *) newContext;
+- (void) cleanup;
 
 @end
 
