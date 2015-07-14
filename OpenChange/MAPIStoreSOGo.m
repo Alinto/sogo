@@ -603,7 +603,7 @@ sogo_folder_create_message(void *folder_object,
       TRYCATCH_START
       rc = [folder createMessage: &message
                          withMID: mid
-		    isAssociated: associated];
+                    isAssociated: associated];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
       TRYCATCH_END(pool)
@@ -978,7 +978,6 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
       rc = [message createAttachment: &attachment inAID: aidp];
       if (rc == MAPISTORE_SUCCESS)
         *attachment_object = [attachment tallocWrapper: mem_ctx];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1013,7 +1012,6 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
       rc = [message getAttachment: &attachment withAID: aid];
       if (rc == MAPISTORE_SUCCESS)
         *attachment_object = [attachment tallocWrapper: mem_ctx];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1048,7 +1046,6 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
                            andRowCount: row_count];
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1084,7 +1081,6 @@ sogo_message_modify_recipients (void *message_object,
       rc = [message modifyRecipientsWithRecipients: recipients
                                           andCount: count
                                         andColumns: columns];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1115,7 +1111,6 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
 
       TRYCATCH_START
       rc = [message setReadFlag: flag];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1146,7 +1141,6 @@ sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
 
       TRYCATCH_START
       rc = [message saveMessage: mem_ctx];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1177,7 +1171,6 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
 
       TRYCATCH_START
       rc = [message submitWithFlags: flags];
-      // [context tearDownRequest];
       TRYCATCH_END(pool)
 
       [pool release];
@@ -1590,10 +1583,10 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
 }
 
 static enum mapistore_error
-sogo_manager_generate_uri (TALLOC_CTX *mem_ctx, 
-                           const char *user, 
-                           const char *folder, 
-                           const char *message, 
+sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
+                           const char *user,
+                           const char *folder,
+                           const char *message,
                            const char *rootURI,
                            char **uri)
 {
@@ -1645,9 +1638,9 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
 */
 int mapistore_init_backend(void)
 {
-  struct mapistore_backend	backend;
-  int				ret;
-  static BOOL                   registered = NO;
+  struct mapistore_backend backend;
+  int ret;
+  static BOOL registered = NO;
 
   if (registered)
     ret = MAPISTORE_SUCCESS;
