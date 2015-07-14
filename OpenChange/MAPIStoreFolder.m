@@ -231,30 +231,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (id) lookupFolder: (NSString *) folderKey
 {
-  MAPIStoreFolder *childFolder;
+  MAPIStoreFolder *childFolder = nil;
   SOGoFolder *sogoFolder;
-  WOContext *woContext;
 
-  childFolder = nil;
   if ([[self folderKeys] containsObject: folderKey])
     {
-      woContext = [[self userContext] woContext];
-      /* We activate the user for the context using the root folder
-         context as there are times where the active user is not
-         matching with the one stored in the application context
-         and SOGo object is storing cached data with the wrong user */
-      [[self userContext] activateWithUser: [woContext activeUser]];
-      sogoFolder = [sogoObject lookupName: folderKey inContext: woContext
+      [[self userContext] activate];
+      sogoFolder = [sogoObject lookupName: folderKey
+                                inContext: nil
                                   acquire: NO];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
-        {
-          [sogoFolder setContext: woContext];
-          childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
-                                               inContainer: self];
-        }
+        childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
+                                             inContainer: self];
     }
-  else
-    childFolder = nil;
 
   return childFolder;
 }
