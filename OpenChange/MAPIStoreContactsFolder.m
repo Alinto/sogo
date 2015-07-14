@@ -28,6 +28,7 @@
 #import <Contacts/SOGoContactFolders.h>
 
 #import "MAPIApplication.h"
+#import "MAPIStoreUserContext.h"
 #import "MAPIStoreContactsContext.h"
 #import "MAPIStoreContactsMessage.h"
 #import "MAPIStoreContactsMessageTable.h"
@@ -58,10 +59,12 @@
   SOGoContactGCSEntry *newEntry;
   NSString *name;
 
+  [[self userContext] activate];
+
   name = [NSString stringWithFormat: @"%@.vcf",
                    [SOGoObject globallyUniqueObjectId]];
   newEntry = [SOGoContactGCSEntry objectWithName: name
-				     inContainer: sogoObject];
+                                     inContainer: sogoObject];
   [newEntry setIsNew: YES];
   newMessage = [MAPIStoreContactsMessage mapiStoreObjectWithSOGoObject: newEntry
                                                            inContainer: self];
@@ -100,7 +103,7 @@
     rights |= RightsReadItems;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
- 
+
   return rights;
 }
 

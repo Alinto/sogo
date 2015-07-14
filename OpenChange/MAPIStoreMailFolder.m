@@ -250,7 +250,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -262,7 +262,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   if (!nonDeletedQualifier)
     {
       deletedQualifier
-        = [[EOKeyValueQualifier alloc] 
+        = [[EOKeyValueQualifier alloc]
                  initWithKey: @"FLAGS"
             operatorSelector: EOQualifierOperatorContains
                        value: [NSArray arrayWithObject: @"Deleted"]];
@@ -375,7 +375,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
         [self warnWithFormat: @"qualifier is only used for folders with name"];
       if (sortOrderings)
         [self errorWithFormat: @"sort orderings are not used for folders"];
-      
+
       /* FIXME: Flush any cache before retrieving the hierarchy, this
          slows things down but it is safer */
       if (!qualifier)
@@ -469,7 +469,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
     }
   else
     supportsSubFolders = YES;
-  
+
   return supportsSubFolders;
 }
 
@@ -638,7 +638,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults
         = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                          context: NULL];
-      
+
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
@@ -948,7 +948,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
     }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
-  
+
   [versionsMessage save];
 }
 
@@ -1175,7 +1175,7 @@ _parseIMAPRange (const unichar *uniString, NSArray **UIDsP)
       count++;
     }
   *UIDsP = UIDs;
- 
+
   return count;
 }
 
@@ -1453,7 +1453,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                   [uids addObject: [self messageUIDFromMessageKey: childKey]];
                 }
 
-              result = [client copyUids: uids 
+              result = [client copyUids: uids
                                toFolder: newFolderIMAPName];
               if ([[result objectForKey: @"result"] boolValue])
                 {
@@ -1492,9 +1492,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 {
   SOGoCacheObject *childObject;
 
-  childObject = [SOGoCacheObject objectWithName: [SOGoCacheObject
-                                                  globallyUniqueObjectId]
-                                   inContainer: sogoObject];
+  [[[self context] userContext] activate];
+
+  childObject = [SOGoCacheObject objectWithName: [SOGoCacheObject globallyUniqueObjectId]
+                                    inContainer: sogoObject];
   return [MAPIStoreMailVolatileMessage
            mapiStoreObjectWithSOGoObject: childObject
                              inContainer: self];
@@ -1570,7 +1571,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     rights |= RoleNone; /* actually "folder visible" */
 
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
- 
+
   return rights;
 }
 
@@ -1621,7 +1622,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                     }
                 }
             }
-      
+
           client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
           [client select: [sogoObject absoluteImap4Name]];
           response = [client fetchUids: [keyAssoc allKeys]
