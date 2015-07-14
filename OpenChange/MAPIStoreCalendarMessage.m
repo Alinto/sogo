@@ -494,6 +494,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   folder = [sogoObject container];
 
   /* reinstantiate the old sogo object and attach it to self */
+  [[self userContext] activate];
   woContext = [[self userContext] woContext];
   if (isNew)
     {
