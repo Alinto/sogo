@@ -114,7 +114,7 @@ static NSMutableDictionary *contextClassMapping;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: indexing];
-  [userContext activateWithUser: [userContext sogoUser]];
+  [userContext activate];
 
   classes = GSObjCAllSubclassesOfClass (self);
   max = [classes count];
@@ -426,7 +426,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSArray *pathComponents;
   NSUInteger count, max;
 
-  [userContext activateWithUser: activeUser];
+  [userContext activate];
   woContext = [userContext woContext];
 
   [self ensureContextFolder];

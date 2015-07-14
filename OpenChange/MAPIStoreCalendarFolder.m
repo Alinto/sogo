@@ -63,19 +63,15 @@
   SOGoAppointmentObject *newEntry;
   NSString *name;
 
-  //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [[self userContext] activate];
 
   name = [NSString stringWithFormat: @"%@.ics",
                    [SOGoObject globallyUniqueObjectId]];
   newEntry = [SOGoAppointmentObject objectWithName: name
                                        inContainer: sogoObject];
   [newEntry setIsNew: YES];
-  /* the WOContext is required here for resolving notification pages */
-  [newEntry setContext: [[self userContext] woContext]];
   newMessage = [MAPIStoreCalendarMessage mapiStoreObjectWithSOGoObject: newEntry
                                                            inContainer: self];
-
-  
   return newMessage;
 }
 

@@ -139,7 +139,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       [[self mapping] updateID: fid withURL: [self url]];
       [dbFolder setNameInContainer: newNameInContainer];
       [self cleanupCaches];
-      
+
       propsCopy = [newProperties mutableCopy];
       [propsCopy removeObjectForKey: key];
       [propsCopy autorelease];
@@ -186,10 +186,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       nameInContainer = [NSString stringWithFormat: @"folder%@",
                                   [[folderName stringByEncodingImap4FolderName] asCSSIdentifier]];
 
-      /* it may be the operation is interleaved with operations
-         from other users having cached information in the thread
-         with the other user, so it'd better activate the user again here... */
-      [[self userContext] activateWithUser: [[[self userContext] woContext] activeUser]];
+      [[self userContext] activate];
 
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
@@ -245,7 +242,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
                                          sortOrdering: nil]
                 count];
   *data = MAPILongValue (memCtx, longValue);
-  
+
   return MAPISTORE_SUCCESS;
 }
 

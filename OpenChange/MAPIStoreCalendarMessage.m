@@ -577,7 +577,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
     }
 }
 
-- (void) save: (TALLOC_CTX *) memCtx 
+- (void) save: (TALLOC_CTX *) memCtx
 {
   // iCalCalendar *vCalendar;
   // NSCalendarDate *now;
@@ -634,7 +634,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
                          withActiveUser: activeUser
 	                       inMemCtx: memCtx];
   [self _updateAttachedEvents];
-  [[self userContext] activateWithUser: activeUser];
+  [[self userContext] activate];
   [sogoObject updateContentWithCalendar: calendar
                             fromRequest: nil];
   [self updateVersions];
