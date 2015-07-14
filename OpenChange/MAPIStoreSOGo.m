@@ -61,11 +61,14 @@ static BOOL initialization_done = NO;
     if (!initialization_done) { \
         OC_DEBUG(5, "[SOGo] You should call sogo_backend_init() first. Current thread: %p, pid: %d\n", \
                  GSCurrentThread(), getpid());                         \
-    }
+    } \
+    OC_DEBUG(5, "[SOGo] --->");
+
 #define NS_CURRENT_THREAD_TRY_UNREGISTER() \
     if (__nsrct_thread_registered) { \
         GSUnregisterCurrentThread(); \
-    }
+    } \
+    OC_DEBUG(6, "[SOGo] <---");
 
 #define TRYCATCH_START @try {
 #define TRYCATCH_END(pool)  \
@@ -214,8 +217,6 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
   MAPIStoreContext *context;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
 
@@ -251,8 +252,6 @@ sogo_backend_create_root_folder (const char *username,
   NSString *mapistoreUri;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
 
@@ -287,8 +286,6 @@ sogo_backend_list_contexts(const char *username, struct indexing_context *indexi
   NSAutoreleasePool *pool;
   NSString *userName;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
@@ -336,8 +333,6 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
   MAPIStoreContext *context;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (backend_object)
     {
       wrapper = backend_object;
@@ -369,8 +364,6 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
   MAPIStoreContext *context;
   MAPIStoreFolder *folder;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (backend_object)
     {
@@ -413,8 +406,6 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
   MAPIStoreFolder *folder, *childFolder;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -442,7 +433,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
 
 /**
    \details Create a folder in the sogo backend
-   
+
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
@@ -456,8 +447,6 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder, *childFolder;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -500,8 +489,6 @@ sogo_folder_delete(void *folder_object)
   MAPIStoreFolder *folder;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -531,8 +518,6 @@ sogo_folder_get_child_count(void *folder_object, enum mapistore_table_type table
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -567,8 +552,6 @@ sogo_folder_open_message(void *folder_object,
   MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -610,8 +593,6 @@ sogo_folder_create_message(void *folder_object,
   MAPIStoreMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -645,8 +626,6 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -683,8 +662,6 @@ sogo_folder_move_copy_messages(void *folder_object,
   NSAutoreleasePool *pool;
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -727,8 +704,6 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
   NSString *newFolderName;
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -778,8 +753,6 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object, TALLOC_
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -822,8 +795,6 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
   MAPIStoreFolder *folder;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -860,8 +831,6 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
   MAPIStoreFolder *folder;
   MAPIStoreTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -900,8 +869,6 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
   MAPIStoreFolder *folder;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (folder_object)
     {
       wrapper = folder_object;
@@ -933,8 +900,6 @@ sogo_folder_preload_message_bodies(void *folder_object, enum mapistore_table_typ
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (folder_object)
     {
@@ -969,8 +934,6 @@ sogo_message_get_message_data(void *message_object,
   MAPIStoreMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (message_object)
     {
       wrapper = message_object;
@@ -1003,8 +966,6 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
   MAPIStoreMessage *message;
   MAPIStoreAttachment *attachment;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (message_object)
     {
@@ -1041,8 +1002,6 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
   MAPIStoreAttachment *attachment;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
   if (message_object)
     {
       wrapper = message_object;
@@ -1076,8 +1035,6 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
   MAPIStoreMessage *message;
   MAPIStoreAttachmentTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (message_object)
     {
@@ -1116,9 +1073,6 @@ sogo_message_modify_recipients (void *message_object,
   MAPIStoreMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (message_object)
     {
       wrapper = message_object;
@@ -1152,9 +1106,6 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
   MAPIStoreMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (message_object)
     {
       wrapper = message_object;
@@ -1186,9 +1137,6 @@ sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
   MAPIStoreMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (message_object)
     {
       wrapper = message_object;
@@ -1219,9 +1167,6 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
   NSAutoreleasePool *pool;
   MAPIStoreMailVolatileMessage *message;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (message_object)
     {
@@ -1258,9 +1203,6 @@ sogo_message_attachment_open_embedded_message (void *attachment_object,
   MAPIStoreAttachment *attachment;
   MAPIStoreEmbeddedMessage *message;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (attachment_object)
     {
@@ -1301,9 +1243,6 @@ sogo_message_attachment_create_embedded_message (void *attachment_object,
   MAPIStoreEmbeddedMessage *message;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (attachment_object)
     {
       wrapper = attachment_object;
@@ -1338,9 +1277,6 @@ static enum mapistore_error sogo_table_get_available_properties(void *table_obje
   MAPIStoreTable *table;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (table_object)
     {
       wrapper = table_object;
@@ -1370,9 +1306,6 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (table_object)
     {
@@ -1404,9 +1337,6 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (table_object)
     {
@@ -1440,9 +1370,6 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (table_object)
     {
@@ -1479,9 +1406,6 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
   MAPIStoreTable *table;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (table_object)
     {
       wrapper = table_object;
@@ -1515,9 +1439,6 @@ sogo_table_get_row_count (void *table_object,
   MAPIStoreTable *table;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (table_object)
     {
       wrapper = table_object;
@@ -1548,9 +1469,6 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (table_object)
     {
@@ -1583,9 +1501,6 @@ static enum mapistore_error sogo_properties_get_available_properties(void *objec
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (object)
     {
@@ -1620,9 +1535,6 @@ sogo_properties_get_properties (void *object,
   MAPIStoreObject *propObject;
   int rc;
 
-  OC_DEBUG(5, "[SOGo]");
-
-
   if (object)
     {
       wrapper = object;
@@ -1654,9 +1566,6 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
   int rc;
-
-  OC_DEBUG(5, "[SOGo]");
-
 
   if (object)
     {
@@ -1690,8 +1599,6 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
 {
   NSAutoreleasePool *pool;
   NSString *partialURLString, *username, *directory;
-
-  OC_DEBUG(5, "[SOGo]");
 
   if (uri == NULL) return MAPISTORE_ERR_INVALID_PARAMETER;
 
