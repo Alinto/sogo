@@ -2,7 +2,7 @@
 
 // Import from sources for extends
 // -------------------------------
-//@import "../../angular-material/src/core/style/typography";
+@import "../../angular-material/src/core/style/typography";
 
 // Fonts declaration
 // ----------------------------------------------------------------------------
@@ -115,96 +115,6 @@
   font-style: italic;
 }
 
-html {
-  // angular-material does it like in 2005
-  font-size: 62.5%;
-  // but we won't let evrything pass
-  line-height: 1;
-}
-body {
-  // angular-material does it like in 2005
-  font-size: 1.6rem;
-}
-html, body {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-touch-callout: none;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-}
-
-md-select, md-card, md-list, md-toolbar,
-ul, ol, p, h1, h2, h3, h4, h5, h6 {
-  text-rendering: optimizeLegibility;
-}
-
-// angular-material source
-
-
-/************
- * Headings
- ************/
-.md-display-4 {
-  font-size: $display-4-font-size-base;
-  font-weight: 300;
-  letter-spacing: -0.010em;
-  line-height: $display-4-font-size-base;
-}
-.md-display-3 {
-  font-size: $display-3-font-size-base;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: $display-3-font-size-base;
-}
-.md-display-2 {
-  font-size: $display-2-font-size-base;
-  font-weight: 400;
-  line-height: 6.4rem;
-}
-.md-display-1 {
-  font-size: $display-1-font-size-base;
-  font-weight: 400;
-  line-height: 4rem;
-}
-.md-headline {
-  font-size: $headline-font-size-base;
-  font-weight: 400;
-  line-height: 3.2rem;
-}
-.md-title {
-  font-size: $title-font-size-base;
-  font-weight: 500;
-  letter-spacing: 0.005em;
-}
-.md-subhead {
-  font-size: $subhead-font-size-base;
-  font-weight: 400;
-  letter-spacing: 0.010em;
-  line-height: 2.4rem;
-}
-/************
- * Body Copy
- ************/
-.md-body-1 {
-  font-size: $body-font-size-base;
-  font-weight: 400;
-  letter-spacing: 0.010em;
-  line-height: 2rem;
-}
-.md-body-2 {
-  font-size: $body-font-size-base;
-  font-weight: 500;
-  letter-spacing: 0.010em;
-  line-height: 2.4rem;
-}
-.md-caption {
-  font-size: $caption-font-size-base;
-  letter-spacing: 0.020em;
-}
-.md-button {
-  letter-spacing: 0.010em;
-}
-
-
 // Google's Material design specs are in 'sp' or 'dp' which are not css units
 // 'dp' is 'density independant pixels' and 'sp' is 'scale-independent pixels'
 // (same as dp, but will be scaled by the user's font size preference)
@@ -271,7 +181,6 @@ $typeSize: (
   display-4: 112,
 );
 
-
 // Basic line heights
 // ----------------------------------------------------------------------------
 $sg-line-height-1: $sg-font-size-1 + $sg-md-typo-baseline;
@@ -283,6 +192,7 @@ $sg-line-height-6: 40px;
 $sg-line-height-7: $sg-font-size-7 + $sg-md-typo-baseline;
 $sg-line-height-8: $sg-font-size-8 + $sg-md-typo-baseline;
 $sg-line-height-9: $sg-font-size-9 + $sg-md-typo-baseline;
+
 // Font weights
 // Google Material Design specifications strongly recommend to avoid bold
 // font weight. Here are some variables to define weights more conveniently
@@ -345,7 +255,6 @@ html p {
   line-height: $sg-base-line-height;
   margin: 0;
 }
-
 
 /// Gogle Material Design Standard styles
 /// as specified (http://www.google.com/design/spec/style/typography.html#typography-standard-styles)
@@ -475,34 +384,4 @@ $today-font-size: 72px; // Visualy adjusted
   font-size: $today-font-size;
   line-height: 56px; // Visualy adjusted
   font-weight: $sg-font-thin;
-}
-
-/************
- * Defaults
- ************/
-
-button,
-select,
-html,
-textarea,
-input {
-  font-family: $font-family;
-}
-
-select,
-button,
-textarea,
-input {
-  font-size: 100%;
-}
-
-a,
-a:hover,
-a:active,
-a:visited,
-link {
-  color: inherit;
-  text-decoration: none;
-  border: none;
-  outline: none;
 }

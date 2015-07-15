@@ -46,8 +46,7 @@ md-sidenav {
   }
 }
 
-// MAILER Folder tree (in the left sidenav
-// ---------------------------------------
+// Mailboxes tree
 $i: 1;
 @while $i < 12 {
   .sg-child-level-#{$i} { padding-left: $mg * $i; }

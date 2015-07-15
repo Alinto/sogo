@@ -3,17 +3,3 @@
 [id="contactsList"] .sg-md-subheader {
   transform: translateY(-100%); // Compensate the container top-margin
 }
-
-// md is overqualifying, we have to do the same to override
-md-content[ui-view="card"] {
-  margin: 0 auto;
-  background-color: sg-color($sogoPaper, 200);
-}
-
-// md is overqualifying, we have to do the same to override
-md-card.viewer {
-
-}
-
-// Contact editor
-// ----------------------------------------------------------------------------

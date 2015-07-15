@@ -1,11 +1,6 @@
 /// icon.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-// Override some md styles
-md-icon {
-  vertical-align: baseline;
-}
-
 // TODO: encode font in base64 to include it in the CSS
 // perl -MMIME::Base64 -0777 -ne 'print encode_base64($_, "")' < fonts/MaterialIcons-Regular.woff
 

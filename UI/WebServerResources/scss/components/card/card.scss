@@ -2,9 +2,9 @@
 @import 'extends';
 
 md-card {
-  overflow: hidden;
 
   md-card-content {
+    overflow-y: auto;
     transition: $swift-ease-in-out;
   }
 

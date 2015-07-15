@@ -1,11 +1,16 @@
 /// input.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-md-input-container.md-input-number {
-  flex-grow: 0;
-  width: 4em;
-  input {
-    text-align: center;
+md-input-container {
+  &.md-input-number {
+    flex-grow: 0;
+    width: 4em;
+    input {
+      text-align: center;
+    }
+  }
+  &.md-no-flex {
+    flex: none !important;
   }
 }
 

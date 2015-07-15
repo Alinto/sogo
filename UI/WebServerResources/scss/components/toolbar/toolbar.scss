@@ -13,7 +13,6 @@ $toolbar-padding: $mg;
 // INFO: because we make intensive use of border-box box sizing model, horizontal paddings
 // must be declare in containers with sg-padded
 md-toolbar {
-  padding: $toolbar-padding 0;
   z-index: $z-index-toolbar;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
@@ -82,6 +81,7 @@ hgroup {
 .sg-toolbar-search {
   background-color: sg-color($sogoPaper, 100);
   color: rgba(0,0,0,0.54);
+  padding: $toolbar-padding 0;
   md-icon {
     color: rgba(0,0,0,0.54);
   }
