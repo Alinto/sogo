@@ -216,17 +216,6 @@
             results = response.cards,
             cards = _this.cards;
 
-        // Add new cards
-        angular.forEach(results, function(data) {
-          if (!_.find(cards, function(card) {
-            return card.id == data.id;
-          })) {
-            var card = new AddressBook.$Card(data),
-                index = _.sortedIndex(cards, card, '$$fullname');
-            cards.splice(index, 0, card);
-          }
-        });
-
         // Remove cards that no longer exist
         for (index = cards.length - 1; index >= 0; index--) {
           card = cards[index];
@@ -236,6 +225,16 @@
             cards.splice(index, 1);
           }
         }
+
+        // Add new cards
+        _.each(results, function(data, index) {
+          if (!_.find(cards, function(card) {
+            return card.id == data.id;
+          })) {
+            var card = new AddressBook.$Card(data);
+            cards.splice(index, 0, card);
+          }
+        });
 
         return cards;
       });
@@ -298,16 +297,6 @@
       else {
         results = response.cards;
       }
-      // Add new cards matching the search query
-      angular.forEach(results, function(data) {
-        if (!_.find(cards, function(card) {
-          return card.id == data.id;
-        })) {
-          var card = new AddressBook.$Card(data, search),
-              index = _.sortedIndex(cards, card, '$$fullname');
-          cards.splice(index, 0, card);
-        }
-      });
       // Remove cards that no longer match the search query
       for (index = cards.length - 1; index >= 0; index--) {
         card = cards[index];
@@ -317,6 +306,15 @@
           cards.splice(index, 1);
         }
       }
+      // Add new cards matching the search query
+      _.each(results, function(data, index) {
+        if (!_.find(cards, function(card) {
+          return card.id == data.id;
+        })) {
+          var card = new AddressBook.$Card(data, search);
+          cards.splice(index, 0, card);
+        }
+      });
       return cards;
     });
   };
