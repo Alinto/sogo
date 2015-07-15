@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$state', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($state, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$state', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $state, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -44,7 +44,6 @@
           '</md-dialog>'
         ].join(''),
         locals: {
-          state: $state,
           addressbookId: vm.selectedFolder.id
         },
         controller: ComponentDialogController
@@ -53,11 +52,11 @@
       /**
        * @ngInject
        */
-      ComponentDialogController.$inject = ['scope', '$mdDialog', 'state', 'addressbookId'];
-      function ComponentDialogController(scope, $mdDialog, state, addressbookId) {
+      ComponentDialogController.$inject = ['scope', '$mdDialog', '$state', 'addressbookId'];
+      function ComponentDialogController(scope, $mdDialog, $state, addressbookId) {
         scope.create = function(type) {
           $mdDialog.hide();
-          state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
+          $state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
         }
       }
     }

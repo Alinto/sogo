@@ -127,6 +127,7 @@
   function stateNewCard($stateParams, stateAddressbook, Card) {
     var tag = 'v' + $stateParams.contactType,
         card = new Card({ pid: $stateParams.addressbookId, tag: tag });
+    stateAddressbook.selectedCard = true;
     return card;
   }
 
