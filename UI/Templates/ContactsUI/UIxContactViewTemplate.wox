@@ -7,9 +7,6 @@
     >
   <md-card class="viewer md-flex">
     <md-card-content>
-      <md-button class="sg-icon-button show-sm"
-                 label:aria-label="Close"
-                 ng-click="toggleDetailView()"><md-icon>close</md-icon></md-button>
       <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
           <sg-gravatar-image class="md-tile-left"
@@ -31,6 +28,11 @@
           </md-chips>
         </div>
         <div class="sg-icon-bar--vertical">
+          <md-button class="sg-icon-button show-sm"
+                     label:aria-label="Close"
+                     ng-click="toggleDetailView()">
+            <md-icon>close</md-icon>
+          </md-button>
           <md-button class="sg-icon-button"
                      label:aria-label="Edit"
                      ng-show="editor.currentFolder.isEditable"

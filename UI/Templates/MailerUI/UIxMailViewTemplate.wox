@@ -8,8 +8,6 @@
    xmlns:uix="OGo:uix">
 
   <md-content md-scroll-y="md-scroll-y" class="viewer md-padding md-flex bg-sogoPaper-50 md-whiteframe-z1">
-    <md-button class="sg-icon-button show-sm"
-               ng-click="toggleDetailView()"><md-icon>close</md-icon></md-button>
     <header class="msg-header">
       <div class="msg-header-content">
         <div layout="row" layout-align="start center">
@@ -57,39 +55,44 @@
 -->
 
       <div class="sg-icon-bar--vertical">
-      <!-- todo: Replace md-tooltip values by localizable string variable -->
-      <md-button class="sg-icon-button"
-                 ng-hide="viewer.message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'reply'})"
-                 aria-label="reply">
-        <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
-        <md-icon>reply</md-icon>
-      </md-button>
-      <md-button class="sg-icon-button" aria-label="Reply All"
-                 ng-hide="message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'replyall'})">
-        <md-icon>reply_all</md-icon>
-      </md-button>
-      <md-button class="sg-icon-button" aria-label="Forward"
-                 ng-hide="viewer.message.isDraft"
-                 ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'forward'})">
-        <md-icon>forward</md-icon>
-      </md-button>
-      <md-button class="sg-icon-button" aria-label="Edit"
-                 ng-show="viewer.message.isDraft"
-                 ui-sref="mail.account.mailbox.message.edit({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid})">
-        <md-icon>create</md-icon>
-      </md-button>
-      <md-button class="sg-icon-button" aria-label="Delete"
-                 ng-click="viewer.doDelete()">
-        <md-icon>delete</md-icon>
-      </md-button>
-      <md-button class="sg-icon-button" aria-label="Load Images"
-                 ng-show="viewer.message.$hasUnsafeContent"
-                 ng-click="viewer.message.loadUnsafeContent()">
-        <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
-        <md-icon>image</md-icon>
-      </md-button>
+        <md-button class="sg-icon-button show-sm"
+                   label:aria-label="Close"
+                   ng-click="toggleDetailView()">
+          <md-icon>close</md-icon>
+        </md-button>
+        <!-- todo: Replace md-tooltip values by localizable string variable -->
+        <md-button class="sg-icon-button"
+                   ng-hide="viewer.message.isDraft"
+                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'reply'})"
+                   aria-label="reply">
+          <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
+          <md-icon>reply</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" aria-label="Reply All"
+                   ng-hide="message.isDraft"
+                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'replyall'})">
+          <md-icon>reply_all</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" aria-label="Forward"
+                   ng-hide="viewer.message.isDraft"
+                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'forward'})">
+          <md-icon>forward</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" aria-label="Edit"
+                   ng-show="viewer.message.isDraft"
+                   ui-sref="mail.account.mailbox.message.edit({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid})">
+          <md-icon>create</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" aria-label="Delete"
+                   ng-click="viewer.doDelete()">
+          <md-icon>delete</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" aria-label="Load Images"
+                   ng-show="viewer.message.$hasUnsafeContent"
+                   ng-click="viewer.message.loadUnsafeContent()">
+          <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
+          <md-icon>image</md-icon>
+        </md-button>
       </div>
     </header>
     <md-divider><!-- divider --></md-divider>
