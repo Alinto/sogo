@@ -6,7 +6,7 @@
 
   angular.module('SOGo.ContactsUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -204,11 +204,14 @@
       return messageObject.uid == $stateParams.messageId;
     });
 
-    if (message)
+    if (message) {
+      stateMailbox.selectedMessage = $stateParams.messageId;
       return message.$reload();
-    else
+    }
+    else {
       // Message not found
       $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
+    }
   }
 
   /**

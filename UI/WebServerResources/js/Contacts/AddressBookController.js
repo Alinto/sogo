@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$state', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($state, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -63,7 +63,7 @@
     }
 
     function notSelectedComponent(currentCard, type) {
-      return (currentCard.tag == type && !currentCard.selected);
+      return (currentCard && currentCard.tag == type && !currentCard.selected);
     }
 
     function unselectCards() {

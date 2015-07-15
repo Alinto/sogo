@@ -6,7 +6,7 @@
 
   angular.module('SOGo.Common', []);
 
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'vs-repeat', 'SOGo.Common'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'SOGo.Common'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
@@ -135,6 +135,7 @@
    */
   stateCard.$inject = ['$stateParams', 'stateAddressbook'];
   function stateCard($stateParams, stateAddressbook) {
+    stateAddressbook.selectedCard = $stateParams.cardId;
     return stateAddressbook.$getCard($stateParams.cardId);
   }
 

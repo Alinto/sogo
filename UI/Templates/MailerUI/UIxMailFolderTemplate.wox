@@ -2,62 +2,55 @@
 <container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:label="OGo:label">
-  <div class="view-list md-layout-fill md-flex" layout="column" style="position: relative;">
-  <md-content id="messagesList">
-    <style>
-      .vs-repeat-repeated-element {
-        width: 100%;
-      }
-    </style>
-    <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
-    <header class="sg-md-subheader sg-md-subheader--fixed">
-      <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
-    </header>
-    <md-list vs-repeat="72"
-        vs-scroll-parent="#messagesList">
-      <md-list-item
-          ng-repeat="currentMessage in mailbox.selectedFolder.$messages track by currentMessage.id"
-          ng-class="{unread: !currentMessage.isread}"
-          ng-click="mailbox.selectMessage(currentMessage)"
-          ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})"
-          ui-sref-active="sg-active">
-        <div class="sg-selected-avatar" ng-show="currentMessage.selected"
-             ng-click="currentMessage.selected = !currentMessage.selected">
-          <!-- selected avatar -->
-        </div>
-        <sg-gravatar-image class="md-tile-left"
-                           ng-show="!currentMessage.selected"
-                           ng-click="currentMessage.selected = !currentMessage.selected"
-                           email="{{currentMessage['from'][0].email}}"
-                           size="48">
-          <!-- gravatar -->
-        </sg-gravatar-image>
-        <div class="sg-tile-content">
-          <span class="msg-date"
-                ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-          <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
-          <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
-          <i class="icon-ion-refresh"
-             ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
-        </div>
-        <div class="sg-tile-icons">
-          <md-icon ng-show="currentMessage.isflagged">star</md-icon>
-          <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
-          <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
-          <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
-        </div>
-      </md-list-item>
-    </md-list>
-  </md-content>
-  <md-button class="md-fab md-fab-bottom-right md-accent"
-             label:aria-label="Write a new message"
-             ui-sref="mail.account.mailbox.newMessage({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri)})">
-    <md-icon>add</md-icon>
-  </md-button>
+  <div class="view-list" layout="column">
+    <md-content id="messagesList" layout="column" class="md-flex">
+      <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
+      <header class="sg-md-subheader sg-md-subheader--fixed">
+        <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
+      </header>
+      <md-virtual-repeat-container class="md-flex">
+        <md-list>
+          <div md-virtual-repeat="currentMessage in mailbox.selectedFolder.$messages">
+            <md-list-item
+                ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
+                ng-click="mailbox.selectMessage(currentMessage)"
+                ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})">
+              <!-- ui-sref-active="sg-active"> -->
+              <div class="sg-selected-avatar"
+                   ng-show="currentMessage.selected"
+                   ng-click="currentMessage.selected = !currentMessage.selected"><!-- selected avatar --></div>
+              <sg-gravatar-image class="md-tile-left"
+                                 ng-show="!currentMessage.selected"
+                                 ng-click="currentMessage.selected = !currentMessage.selected"
+                                 email="{{currentMessage['from'][0].email}}"
+                                 size="48"><!-- avatar --></sg-gravatar-image>
+              <div class="sg-tile-content">
+                <span class="msg-date"
+                      ng-bind-html="currentMessage.relativedate"><!-- date --></span>
+                <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
+                <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
+                <i class="icon-ion-refresh"
+                   ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+              </div>
+              <div class="sg-tile-icons">
+                <md-icon ng-show="currentMessage.isflagged">star</md-icon>
+                <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
+                <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
+                <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
+              </div>
+            </md-list-item>
+          </div>
+        </md-list>
+      </md-virtual-repeat-container>
+      <md-button class="md-fab md-fab-bottom-right md-accent"
+                 label:aria-label="Write a new message"
+                 ui-sref="mail.account.mailbox.newMessage({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri)})">
+        <md-icon>add</md-icon>
+      </md-button>
+    </md-content>
   </div>
 
-  <!-- This extra container is used to animate views transitions
-       double quotes in ng-animate is not a typo                         -->
-    <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message" ng-animate="'view'"><!-- message view --></div>
+  <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message"
+       ng-show="mailbox.selectedFolder.selectedMessage"><!-- message view --></div>
 
 </container>

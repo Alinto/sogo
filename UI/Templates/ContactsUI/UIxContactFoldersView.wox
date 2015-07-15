@@ -304,68 +304,67 @@
       </div>
     </md-toolbar>
     <div layout="row" class="md-flex" layout-align="space-between">
-      <div class="view-list" layout="column" flex="true" style="position: relative;">
-      <md-content id="contactsList">
-        <header class="sg-md-subheader sg-md-subheader--fixed">
-          <h2 class="sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
-        </header>
-        <!-- Search field & special results
-             <input type="text" placeholder="Search" ng-model="search.filter" ng-keyup="doSearch($event)" />
-             <div ng-switch="search.status">
-             <div ng-switch-when="min-char" class="alert-bg">
-             <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
-             </div>
-             <div ng-switch-when="no-result" class="alert-bg">
-             <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
-             </div>
-             <div ng-switch-when="remote-addressbook" ng-show="addressbook.cards.length == 0" class="alert-bg">
-             <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
-             </div>
-             </div>
-        -->
-        <md-list vs-repeat="72" vs-scroll-parent="#contactsList">
-          <md-list-item
-              ng-repeat="currentCard in addressbook.selectedFolder.cards track by currentCard.id"
-              ng-click="addressbook.selectCard(currentCard)"
-              ui-sref-active="sg-active"
-              ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})">
-            <div class="sg-selected-avatar" ng-show="currentCard.selected"
-                 ng-click="currentCard.selected = !currentCard.selected">
-              <!-- selected avatar -->
-            </div>
-            <sg-gravatar-image class="md-tile-left"
-                               ng-show="addressbook.notSelectedComponent(currentCard,'vcard')"
-                               ng-click="currentCard.selected = !currentCard.selected"
-                               email="{{currentCard.$preferredEmail(addressbook.selectedFolder.$query)}}"
-                               size="48">
-              <!-- contact avatar -->
-            </sg-gravatar-image>
-            <div class="sg-list-avatar"
-                 ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
-                 ng-click="currentCard.selected = !currentCard.selected">
-              <!-- list avatar -->
-            </div>
-            <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-              <div class="sg-md-body-multi">{{currentCard.$preferredEmail(addressbook.selectedFolder.$query)}}</div>
-            </div>
-          </md-list-item>
-        </md-list>
-      </md-content>
-      
-      <md-button class="md-fab md-fab-bottom-right md-accent"
-                 label:aria-label="New Contact"
-                 ng-click="addressbook.newComponent($event)">
-        <md-icon>add</md-icon>
-      </md-button>
-
+      <div class="view-list" layout="column">
+        <md-content id="contactsList" layout="column" class="md-flex">
+          <header class="sg-md-subheader sg-md-subheader--fixed">
+            <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
+          </header>
+          <!-- Search field & special results
+               <input type="text" placeholder="Search" ng-model="search.filter" ng-keyup="doSearch($event)" />
+               <div ng-switch="search.status">
+               <div ng-switch-when="min-char" class="alert-bg">
+               <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
+               </div>
+               <div ng-switch-when="no-result" class="alert-bg">
+               <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
+               </div>
+               <div ng-switch-when="remote-addressbook" ng-show="addressbook.cards.length == 0" class="alert-bg">
+               <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
+               </div>
+               </div>
+          -->
+          <md-virtual-repeat-container class="md-flex">
+            <md-list>
+              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards">
+                <md-list-item
+                    ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
+                    ng-click="addressbook.selectCard(currentCard)"
+                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})">
+                  <!-- ui-sref-active="sg-active" -->
+                  <div class="sg-selected-avatar" ng-show="currentCard.selected"
+                       ng-click="currentCard.selected = !currentCard.selected">
+                    <!-- selected avatar -->
+                  </div>
+                  <sg-gravatar-image class="md-tile-left"
+                                     ng-show="addressbook.notSelectedComponent(currentCard,'vcard')"
+                                     ng-click="currentCard.selected = !currentCard.selected"
+                                     email="{{currentCard.$preferredEmail(addressbook.selectedFolder.$query)}}"
+                                     size="48">
+                    <!-- contact avatar -->
+                  </sg-gravatar-image>
+                  <div class="sg-list-avatar"
+                       ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
+                       ng-click="currentCard.selected = !currentCard.selected">
+                    <!-- list avatar -->
+                  </div>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                    <div class="sg-md-body-multi">{{currentCard.$preferredEmail(addressbook.selectedFolder.$query)}}</div>
+                  </div>
+                </md-list-item>
+              </div>
+            </md-list>
+          </md-virtual-repeat-container>
+          <md-button class="md-fab md-fab-bottom-right md-accent"
+                     label:aria-label="New Contact"
+                     ng-click="addressbook.newComponent($event)">
+            <md-icon>add</md-icon>
+          </md-button>
+        </md-content>
       </div>
 
-      <!-- This extra container is used to animate views transitions
-           double quotes in ng-animate is not a typo                         -->
-      <div id="detailView" class="view-detail ng-cloak" layout="column">
-        <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
-      </div>
+      <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="card"
+           ng-show="addressbook.selectedFolder.selectedCard"><!-- card view --></div>
 
     </div>
   </script>

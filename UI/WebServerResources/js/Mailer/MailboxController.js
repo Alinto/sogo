@@ -20,7 +20,7 @@
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
     // vm.moveSelectedMessages = moveSelectedMessages;
-    
+
     function selectMessage(message) {
       $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
     }

@@ -106,7 +106,6 @@ module.exports = function(grunt) {
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
       '<%= src %>/ui-router-extras/release/ct-ui-router-extras{,.min}.js',
       '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
-      '<%= src %>/angular-vs-repeat/src/angular-vs-repeat{,.min}.js',
       '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/underscore/underscore-min.{js,map}'

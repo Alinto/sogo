@@ -7,10 +7,9 @@
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
 
-  <md-content md-scroll-y="md-scroll-y" class="md-padding bg-sogoPaper-50 md-whiteframe-z1">
-    <md-button class="sg-icon-button show-sm" ng-click="toggleDetailView()">
-      <md-icon>close</md-icon>
-    </md-button>
+  <md-content md-scroll-y="md-scroll-y" class="viewer md-padding md-flex bg-sogoPaper-50 md-whiteframe-z1">
+    <md-button class="sg-icon-button show-sm"
+               ng-click="toggleDetailView()"><md-icon>close</md-icon></md-button>
     <header class="msg-header">
       <div class="msg-header-content">
         <div layout="row" layout-align="start center">

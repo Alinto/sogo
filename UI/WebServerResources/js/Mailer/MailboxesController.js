@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'stateAccounts'];
-  function MailboxesController($scope, $rootScope, $stateParams, $state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -179,8 +179,8 @@
       /**
        * @ngInject
        */
-      MailboxACLController.$inject = ['$scope', '$mdDialog', 'usersWithACL', 'User', 'folder'];
-      function MailboxACLController($scope, $mdDialog, usersWithACL, User, folder) {
+      MailboxACLController.$inject = ['$mdDialog', 'usersWithACL', 'User', 'folder'];
+      function MailboxACLController($mdDialog, usersWithACL, User, folder) {
         var vm = this;
 
         vm.users = usersWithACL; // ACL users

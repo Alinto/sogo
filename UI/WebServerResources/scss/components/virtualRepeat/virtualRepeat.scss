@@ -1,0 +1,9 @@
+/// virtualRepeater.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+@import 'extends';
+
+// Override some md styles
+.md-virtual-repeat-container {
+  .md-virtual-repeat-offsetter {
+    right: 0; // no need to keep space for the scrollbar
+  }
+}
