@@ -57,7 +57,7 @@
       focus('ref_' + i);
     };
     function userFilter($query, excludedCards) {
-      AddressBook.selectedFolder.$filter($query, excludedCards, {dry: true, excludeLists: true});
+      AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards);
       return AddressBook.selectedFolder.$cards;
     };
     function save(form) {
