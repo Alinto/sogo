@@ -278,6 +278,14 @@
     this.status = 'not-specified';
     angular.extend(this, data);
 
+    Component.$Preferences.ready().then(function() {
+      var type = (_this.type == 'appointment')? 'Events' : 'Tasks';
+
+      // Set default values from user's defaults
+      _this.classification = _this.classification
+        || Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
+    });
+
     if (this.startDate)
       this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
     if (this.endDate)
