@@ -248,7 +248,7 @@
    * @param {object} [options] - additional options to the query
    * @returns a collection of Cards instances
    */
-  AddressBook.prototype.$filter = function(search, excludedCards, options) {
+  AddressBook.prototype.$filter = function(search, options, excludedCards) {
     var _this = this,
         params = {
           search: 'name_or_address',
@@ -313,6 +313,17 @@
         })) {
           var card = new AddressBook.$Card(data, search);
           cards.splice(index, 0, card);
+        }
+      });
+      // Respect the order of the results
+      _.each(results, function(data, index) {
+        var oldIndex, removedCards;
+        if (cards[index].id != data.id) {
+          oldIndex = _.findIndex(cards, function(card) {
+            return card.id == data.id;
+          });
+          removedCards = cards.splice(oldIndex, 1);
+          cards.splice(index, 0, removedCards[0]);
         }
       });
       return cards;
