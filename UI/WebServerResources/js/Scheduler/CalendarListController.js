@@ -52,7 +52,7 @@
     }
 
     function filter(filterpopup) {
-      Component.$filter(vm.componentType, options);
+      Component.$filter(vm.componentType, { filterpopup: filterpopup });
     }
 
     function filteredBy(filterpopup) {
