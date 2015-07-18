@@ -1217,6 +1217,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
                         wantCopy: (uint8_t) wantCopy
                         inMemCtx: (TALLOC_CTX *) memCtx
 
@@ -1237,6 +1238,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     return [super moveCopyMessagesWithMIDs: srcMids andCount: midCount
                                 fromFolder: sourceFolder withMIDs: targetMids
                              andChangeKeys: targetChangeKeys
+                 andPredecessorChangeLists: targetPredecessorChangeLists
                                   wantCopy: wantCopy
                                   inMemCtx: memCtx];
 
