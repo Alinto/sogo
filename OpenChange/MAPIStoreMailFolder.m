@@ -526,8 +526,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSMutableDictionary *changeList;
 
   xid = [changeKey asXIDInMemCtx: NULL];
-  guid = [NSString stringWithGUID: &xid->GUID];
-  globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
+  guid = [NSString stringWithGUID: &xid->NameSpaceGuid];
+  globCnt = [NSData dataWithBytes: xid->LocalId.data length: xid->LocalId.length];
   talloc_free (xid);
 
   /* 1. set change key association */

@@ -270,8 +270,8 @@ static Class NSNumberK;
   NSMutableDictionary *changeList;
 
   xid = [changeKey asXIDInMemCtx: NULL];
-  guid = [NSString stringWithGUID: &xid->GUID];
-  globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
+  guid = [NSString stringWithGUID: &xid->NameSpaceGuid];
+  globCnt = [NSData dataWithBytes: xid->LocalId.data length: xid->LocalId.length];
   talloc_free (xid);
 
   if (!inChangeListOnly)

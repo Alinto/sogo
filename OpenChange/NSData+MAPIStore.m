@@ -136,11 +136,11 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
   NSMutableData *xidData;
   struct FlatUID_r flatUID;
 
-  _fillFlatUIDWithGUID (&flatUID, &xid->GUID);
+  _fillFlatUIDWithGUID (&flatUID, &xid->NameSpaceGuid);
 
-  xidData = [NSMutableData dataWithCapacity: 16 + xid->Size];
+  xidData = [NSMutableData dataWithCapacity: 16 + xid->LocalId.length];
   [xidData appendBytes: flatUID.ab length: 16];
-  [xidData appendBytes: xid->Data length: xid->Size];
+  [xidData appendBytes: xid->LocalId.data length: xid->LocalId.length];
 
   return xidData;
 }
@@ -156,12 +156,12 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
     {
       xid = talloc_zero (memCtx, struct XID);
 
-      [self _extractGUID: &xid->GUID];
+      [self _extractGUID: &xid->NameSpaceGuid];
 
-      xid->Size = max - 16;
+      xid->LocalId.length = max - 16;
 
       bytes = (uint8_t *) [self bytes];
-      xid->Data = talloc_memdup (xid, (bytes+16), xid->Size);
+      xid->LocalId.data = talloc_memdup (xid, (bytes+16), xid->LocalId.length);
     }
   else
     {
