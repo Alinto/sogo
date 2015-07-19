@@ -6,6 +6,9 @@ Enhancements
  - now always enforce the organizer's default identity in appointments
  - improved the handling of default calendar categories/colors (#3200) 
  - added support for DeletesAsMoves over EAS
+ - added create-folder subcommand to sogo-tool to create contact and calendar folders
+ - group mail addresses can be used as recipient in Outlook
+ - added 'ActiveSync' module constraints
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
