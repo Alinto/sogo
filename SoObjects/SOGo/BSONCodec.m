@@ -1,10 +1,12 @@
-//
-//  BSONCodec.m
-//  BSON Codec for Objective-C.
-//
-//  Created by Martin Kou on 8/17/10.
-//  MIT License, see LICENSE file for details.
-//
+/*
+ *  BSONCodec.m
+ *  BSON Codec for Objective-C.
+ *
+ *  Created by Martin Kou on 8/17/10.
+ *  MIT License, see LICENSE file for details.
+ *
+ *  Adapted by Ludovic Marcotte and Enrique J. Hernández
+*/
 
 #import "BSONCodec.h"
 #import <ctype.h>
@@ -570,7 +572,7 @@ static NSDictionary *BSONTypes()
 {
   NSString *v;
   
-  v = [self descriptionWithCalendarFormat: @"%Y-%m-%d %H:%M:%S %Z"
+  v = [self descriptionWithCalendarFormat: @"%Y-%m-%d %H:%M:%S %z"
                                    locale: nil];
   
   return [v BSONEncode];
@@ -599,7 +601,22 @@ static NSDictionary *BSONTypes()
 
   key = [NSString stringWithFormat: @"%s", timezone];
 
-  if (!(tz = [timezoneCache objectForKey: key]))
+  /* We may have the zone using the UTC offset
+     or abbreviation (deprecated) */
+  if (timezone && strlen(timezone) > 0 && (timezone[0] == '+' || timezone[0] == '-'))
+    {
+      NSCalendarDate *tzDate;
+
+      tzDate = [[NSCalendarDate alloc] initWithString: key
+                                       calendarFormat: @"%z"
+                                               locale: nil];
+      [tzDate autorelease];
+      if (tzDate)
+        tz = [tzDate timeZone];
+      else
+        tz = nil;
+    }
+  else if (!(tz = [timezoneCache objectForKey: key]))
     {
       tz = [NSTimeZone timeZoneWithAbbreviation: key];
 

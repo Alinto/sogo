@@ -46,33 +46,14 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 
-#import "SOGoTool.h"
+#import "SOGoToolRestore.h"
 
 /* TODO:
    - respond to "--help restore"
    - handle database connectivity errors
    - handle the case where the restored folder has been deleted
    - write methods in GDLContentStore to get/update displayname
-     and storing roles */ 
-
-typedef enum SOGoToolRestoreMode {
-  SOGoToolRestoreFolderMode,
-  SOGoToolRestoreFolderDestructiveMode,
-  SOGoToolRestoreListFoldersMode,
-  SOGoToolRestorePreferencesMode
-} SOGoToolRestoreMode;
-
-@interface SOGoToolRestore : SOGoTool
-{
-  NSString *directory;
-  NSString *userID;
-  NSString *filename;
-  NSString *restoreFolder;
-  BOOL destructive; /* destructive mode not handled */
-  SOGoToolRestoreMode restoreMode;
-}
-
-@end
+     and storing roles */
 
 @implementation SOGoToolRestore
 
@@ -176,8 +157,8 @@ typedef enum SOGoToolRestoreMode {
   SOGoSystemDefaults *sd;
   SOGoUserManager *lm;
   NSDictionary *infos;
-  NSString *uid;
-  
+  NSString *uid = nil;
+
   BOOL rc;
 
   lm = [SOGoUserManager sharedUserManager];
@@ -188,7 +169,7 @@ typedef enum SOGoToolRestoreMode {
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       uid = [infos objectForKey: @"c_uid"];
-      
+
       if ([sd enableDomainBasedUID] && [uid rangeOfString: @"@"].location == NSNotFound)
         uid = [NSString stringWithFormat: @"%@@%@",
                      [infos objectForKey: @"c_uid"],

@@ -438,14 +438,16 @@ static Class NSNullK;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
+  SOGoSystemDefaults *sd;
+  NSRange r;
 
   checkOK = NO;
-  
+
   authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
-      
+
       checkOK = [sogoSource checkLogin: login
                               password: password
                                   perr: perr
@@ -649,7 +651,7 @@ static Class NSNullK;
             [currentSource setBindPassword: _pwd];
           }
     }
-	    
+
   return checkOK;
 }
 
@@ -742,6 +744,12 @@ static Class NSNullK;
   NSNumber *isGroup;
   NSArray *c_emails;
   BOOL access;
+  NSEnumerator *enumerator;
+  NSString *access_type;
+  NSArray *access_types_list = [NSArray arrayWithObjects: @"CalendarAccess",
+                                                          @"MailAccess",
+                                                          @"ActiveSyncAccess",
+                                                          nil];
 
   emails = [NSMutableArray array];
   cn = nil;
@@ -751,10 +759,10 @@ static Class NSNullK;
   c_imaplogin = nil;
   c_sievehostname = nil;
 
-  [theCurrentUser setObject: [NSNumber numberWithBool: YES]
-                     forKey: @"CalendarAccess"];
-  [theCurrentUser setObject: [NSNumber numberWithBool: YES]
-                     forKey: @"MailAccess"];
+  enumerator = [access_types_list objectEnumerator];
+  while ((access_type = [enumerator nextObject]) != nil)
+    [theCurrentUser setObject: [NSNumber numberWithBool: YES]
+                       forKey: access_type];
 
   if ([[theCurrentUser objectForKey: @"DomainLessLogin"] boolValue])
     {
@@ -763,7 +771,6 @@ static Class NSNullK;
       r = [theUID rangeOfString: [NSString stringWithFormat: @"@%@", theDomain]];
       theUID = [theUID substringToIndex: r.location];
     }
-  
 
   sogoSources = [[self authenticationSourceIDsInDomain: theDomain] objectEnumerator];
   userEntry = nil;
@@ -791,14 +798,15 @@ static Class NSNullK;
             c_imaplogin = [userEntry objectForKey: @"c_imaplogin"];
           if (!c_sievehostname)
             c_sievehostname = [userEntry objectForKey: @"c_sievehostname"];
-          access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
-          if (!access)
-            [theCurrentUser setObject: [NSNumber numberWithBool: NO]
-                               forKey: @"CalendarAccess"];
-          access = [[userEntry objectForKey: @"MailAccess"] boolValue];
-          if (!access)
-            [theCurrentUser setObject: [NSNumber numberWithBool: NO]
-                               forKey: @"MailAccess"];
+
+          enumerator = [access_types_list objectEnumerator];
+          while ((access_type = [enumerator nextObject]) != nil)
+            {
+              access = [[userEntry objectForKey: access_type] boolValue];
+              if (!access)
+                [theCurrentUser setObject: [NSNumber numberWithBool: NO]
+                                   forKey: access_type];
+            }
 
           // We check if it's a group
           isGroup = [userEntry objectForKey: @"isGroup"];
