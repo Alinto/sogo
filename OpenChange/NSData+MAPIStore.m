@@ -22,6 +22,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
@@ -29,6 +30,7 @@
 
 #undef DEBUG
 #include <stdbool.h>
+#include <libmapi/libmapi.h>
 #include <talloc.h>
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
@@ -170,6 +172,38 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
     }
 
   return xid;
+}
+
+- (struct SizedXid *) asSizedXidArrayInMemCtx: (void *) memCtx
+                                         with: (uint32_t *) length
+{
+  struct Binary_r bin;
+  struct SizedXid *sizedXIDArray;
+
+  bin.cb = [self length];
+  bin.lpb = (uint8_t *)[self bytes];
+
+  sizedXIDArray = get_SizedXidArray(memCtx, &bin, length);
+  if (!sizedXIDArray)
+    {
+      NSLog (@"Impossible to parse SizedXID array");
+      return NULL;
+    }
+
+  return sizedXIDArray;
+}
+
+- (NSComparisonResult) compare: (NSData *) otherGlobCnt
+{
+  uint64_t globCnt = 0, oGlobCnt = 0;
+
+  if ([self length] > 0)
+    globCnt = *(uint64_t *) [self bytes];
+
+  if ([otherGlobCnt length] > 0)
+      oGlobCnt = *(uint64_t *) [otherGlobCnt bytes];
+
+  return MAPICNCompare (globCnt, oGlobCnt, NULL);
 }
 
 + (id) dataWithChangeKeyGUID: (NSString *) guidString

@@ -670,15 +670,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   [sourceMsg copyToMessage: destMsg  inMemCtx: memCtx];
 
-  if (targetChangeKey)
+  if (targetPredecessorChangeList)
     {
-      property.ulPropTag = PidTagChangeKey;
-      property.value.bin = *targetChangeKey;
+      property.ulPropTag = PidTagPredecessorChangeList;
+      property.value.bin = *targetPredecessorChangeList;
       aRow.cValues = 1;
       aRow.lpProps = &property;
       rc = [destMsg addPropertiesFromRow: &aRow];
       if (rc != MAPISTORE_SUCCESS)
-        goto end;
+        {
+          [self errorWithFormat: @"Cannot add PredecessorChangeList on move"];
+          goto end;
+        }
     }
   [destMsg save: memCtx];
   if (!wantCopy)
