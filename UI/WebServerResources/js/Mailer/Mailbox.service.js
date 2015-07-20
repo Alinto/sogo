@@ -170,19 +170,19 @@
    * @param {string} sort.match - either AND or OR
    * @param {string} sort.sort - either arrival, subject, from, to, date, or size
    * @param {boolean} sort.asc - sort is ascendant if true
-   * @param {object[]} [filers] - list of filters for the query
-   * @param {string} filers.searchBy - either subject, from, to, cc, or body
-   * @param {string} filers.searchInput - the search string to match
-   * @param {boolean} filers.negative - negate the condition
+   * @param {object[]} [filters] - list of filters for the query
+   * @param {string} filters.searchBy - either subject, from, to, cc, or body
+   * @param {string} filters.searchInput - the search string to match
+   * @param {boolean} filters.negative - negate the condition
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$filter = function(sort, filters) {
     var futureMailboxData, options;
 
-    if (angular.isUndefined(sort)) {
-      sort = { sortingAttributes: { match: 'OR', sort: 'date', asc: false } };
+    if (sort) {
+      angular.extend(this.$query, sort);
     }
-    options = { sortingAttributes: sort };
+    options = { sortingAttributes: this.$query };
     if (angular.isDefined(filters)) {
       options.filters = _.reject(filters, function(filter) {
         return angular.isUndefined(filter.searchInput) || filter.searchInput.length == 0;
@@ -474,6 +474,7 @@
         angular.extend(_this, data);
         _this.$messages = [];
         _this.uidsMap = {};
+        _this.$query = { sortingAttributes: { match: 'OR', sort: 'date', asc: false } };
 
         if (_this.uids) {
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');

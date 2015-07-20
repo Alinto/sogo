@@ -20,6 +20,10 @@
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
     // vm.moveSelectedMessages = moveSelectedMessages;
+    vm.sort = sort;
+    vm.sortedBy = sortedBy;
+    vm.cancelSearch = cancelSearch;
+    vm.mode = { search: false };
 
     function selectMessage(message) {
       $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
@@ -62,6 +66,19 @@
     //     vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
     //   });
     // }
+
+    function sort(field) {
+      vm.selectedFolder.$filter({ sort: field });
+    }
+
+    function sortedBy(field) {
+      return vm.selectedFolder.$query.sortingAttributes.sort == field;
+    }
+
+    function cancelSearch() {
+      vm.mode.search = false;
+      vm.selectedFolder.$filter();
+    }
   }
 
   angular

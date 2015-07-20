@@ -341,24 +341,82 @@
       <div class="md-toolbar-tools md-toolbar-tools-bottom"
            layout="row" layout-align="space-between center"
            ng-show="mailbox.selectedFolder.$selectedCount() == 0">
-        <div class="view-list cols-6 sg-padded" layout="row" layout-align="space-between center"
-             sg-search="mailbox.selectedFolder.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
-          <md-input-container class="sg-search-field-container">
-            <label style="color: white"><md-icon>search</md-icon><var:string label:value="Search"/></label>
-            <input name="folderSearch" type="search" style="color: white"/>
-          </md-input-container>
-
+        <div class="view-list" layout="row" layout-align="space-between center"
+             ng-hide="mailbox.mode.search">
           <div class="sg-toolbar-group">
-            <md-select class="sg-toolbar-sort md-contrast-light">
-              <md-option value="subject"><var:string label:value="Subject"/></md-option>
+            <md-button class="sg-icon-button" label:aria-label="Search"
+                       ng-click="mailbox.mode.search = true">
+              <md-icon>search</md-icon>
+            </md-button>
+          </div>
+                    <div class="sg-toolbar-group-last">
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="Sort"
+                         ng-click="$mdOpenMenu()">
+                <md-icon>sort</md-icon>
+              </md-button>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="mailbox.sort('subject')">
+                    <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('subject') }">
+                      <!-- selected --></md-icon> <var:string label:value="Subject"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="mailbox.sort('from')">
+                    <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('from') }">
+                      <!-- selected --></md-icon> <var:string label:value="From"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="mailbox.sort('date')">
+                    <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('date') }">
+                      <!-- selected --></md-icon> <var:string label:value="Date"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="mailbox.sort('size')">
+                    <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('size') }">
+                      <!-- selected --></md-icon> <var:string label:value="Size"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-divider> <!-- divider --></md-menu-divider>
+                <md-menu-item >
+                  <md-button ng-click="mailbox.sort()">
+                    <md-checkbox
+                        ng-model="mailbox.selectedFolder.$query.sortingAttributes.asc"
+                        ng-true-value="0"
+                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </div>
+        <!-- search mode -->
+        <div class="view-list sg-padded--right sg-toolbar-search" layout="row" layout-align="space-between center"
+             ng-show="mailbox.mode.search"
+             sg-search="mailbox.selectedFolder.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
+          <md-button class="sg-icon-button"
+                     sg-search-cancel="mailbox.cancelSearch()"
+                     label:aria-label="Back">
+            <md-icon>arrow_back</md-icon>
+          </md-button>
+          <md-input-container>
+            <input name="folderSearch" type="search" />
+          </md-input-container>
+          <md-input-container>
+            <md-select>
+              <md-option value="subject"  selected="selected"><var:string label:value="Subject"/></md-option>
               <md-option value="from"><var:string label:value="Sender"/></md-option>
               <md-option value="subject_or_from"><var:string label:value="Subject or Sender"/></md-option>
               <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
               <md-option value="body"><var:string label:value="Entire Message"/></md-option>
-            </md-select>
-          </div>
+          </md-select>
+          </md-input-container>
         </div>
       </div>
+     
       <div layout="row" layout-align="start center" ng-show="mailbox.selectedFolder.$selectedCount() > 0">
         <md-button class="sg-icon-button" ng-click="mailbox.unselectMessages()">
           <md-icon>arrow_back</md-icon>
