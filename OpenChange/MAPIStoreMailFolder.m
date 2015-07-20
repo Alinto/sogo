@@ -257,16 +257,6 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *displayName = [[sogoObject displayName] stringByDecodingImap4FolderName];
-  *data =  [displayName asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (EOQualifier *) nonDeletedQualifier
 {
   static EOQualifier *nonDeletedQualifier = nil;
