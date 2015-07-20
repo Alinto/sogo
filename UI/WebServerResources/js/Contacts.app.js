@@ -117,7 +117,7 @@
    */
   stateAddressbook.$inject = ['$stateParams', 'AddressBook'];
   function stateAddressbook($stateParams, AddressBook) {
-    return AddressBook.$find($stateParams.addressbookId);
+    return AddressBook.$find($stateParams.addressbookId).$futureAddressBookData;
   }
 
   /**

@@ -420,10 +420,8 @@
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
     var _this = this;
 
-    // Expose the promise
-    this.$futureAddressBookData = futureAddressBookData;
-    // Resolve the promise
-    this.$futureAddressBookData.then(function(data) {
+    // Expose and sesolve the promise
+    this.$futureAddressBookData = futureAddressBookData.then(function(data) {
       return AddressBook.$timeout(function() {
         // Extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
