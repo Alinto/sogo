@@ -288,6 +288,58 @@
               <md-option value="organization"><var:string label:value="Organization"/></md-option>
             </md-select>
           </div>
+          <div class="sg-toolbar-group-last">
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="Sort"
+                         ng-click="$mdOpenMenu()">
+                <md-icon>sort</md-icon>
+              </md-button>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_cn')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_cn') }">
+                      <!-- selected --></md-icon> <var:string label:value="Name"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_mail')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_mail') }">
+                      <!-- selected --></md-icon> <var:string label:value="Email"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_screenname')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_screenname') }">
+                      <!-- selected --></md-icon> <var:string
+                      label:value="Screen Name"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_o')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_o') }">
+                      <!-- selected --></md-icon> <var:string
+                      label:value="Organization"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_telephonenumber')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_telephonenumber') }">
+                      <!-- selected --></md-icon> <var:string
+                      label:value="Preferred Phone"/>
+                  </md-button>
+                </md-menu-item>
+              <md-menu-divider> <!-- divider --></md-menu-divider>
+              <md-menu-item >
+                <md-button ng-click="addressbook.sort()">
+                  <md-checkbox
+                      ng-model="addressbook.selectedFolder.$query.asc"
+                      ng-true-value="0"
+                      ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+                </md-button>
+              </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
         </div>
       </div>
       <div layout="row" layout-align="start center" ng-show="addressbook.selectedFolder.$selectedCount() > 0">

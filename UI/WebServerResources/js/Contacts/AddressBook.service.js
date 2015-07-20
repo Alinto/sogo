@@ -163,7 +163,7 @@
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
-    this.$query = undefined;
+    this.$query = {search: 'name_or_address', value: '', sort: 'c_cn', asc: 'true'};
   };
 
   /**
@@ -249,16 +249,10 @@
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
-    var _this = this,
-        params = {
-          search: 'name_or_address',
-          value: search,
-          sort: 'c_cn',
-          asc: 'true'
-        };
+    var _this = this;
 
     if (options) {
-      angular.extend(params, options);
+      angular.extend(this.$query, options);
 
       if (options.dry) {
         if (!search) {
@@ -266,16 +260,17 @@
           this.$cards = [];
           return AddressBook.$q.when(this.$cards);
         }
-        else if (this.$query == search) {
+        else if (this.$query.value == search) {
           // Query hasn't changed
           return AddressBook.$q.when(this.$cards);
         }
       }
     }
-    this.$query = search;
+
+    this.$query.value = search;
 
     return this.$id().then(function(addressbookId) {
-      return AddressBook.$$resource.fetch(addressbookId, 'view', params);
+      return AddressBook.$$resource.fetch(addressbookId, 'view', _this.$query);
     }).then(function(response) {
       var results, cards, card, index;
       if (options && options.dry) {

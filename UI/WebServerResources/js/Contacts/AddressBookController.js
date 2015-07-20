@@ -18,6 +18,9 @@
     vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
+    vm.sort = sort;
+    vm.sortedBy = sortedBy;
+
     
     function selectCard(card) {
       $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
@@ -79,6 +82,14 @@
         },  function(data, status) {
           // Delete failed
         });
+    }
+
+    function sort(field) {
+      vm.selectedFolder.$filter('', { sort: field });
+    }
+
+    function sortedBy(field) {
+      return vm.selectedFolder.$query.sort == field;
     }
   }
 
