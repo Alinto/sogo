@@ -20,7 +20,8 @@
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
-
+    vm.cancelSearch = cancelSearch;
+    vm.mode = { search: false };
     
     function selectCard(card) {
       $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
@@ -90,6 +91,11 @@
 
     function sortedBy(field) {
       return vm.selectedFolder.$query.sort == field;
+    }
+
+    function cancelSearch() {
+      vm.mode.search = false;
+      vm.selectedFolder.$filter('');
     }
   }
 

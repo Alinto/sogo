@@ -274,19 +274,14 @@
       <div class="md-toolbar-tools md-toolbar-tools-bottom"
            layout="row" layout-align="space-between center"
            ng-show="addressbook.selectedFolder.$selectedCount() == 0">
-        <div class="view-list sg-padded" layout="row" layout-align="space-between center"
-             sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
-          <md-input-container class="sg-search-field-container">
-            <label style="color: white"><md-icon>search</md-icon><var:string label:value="Search"/></label>
-            <input name="folderSearch" type="search" style="color: white"/>
-          </md-input-container>
 
+        <div class="view-list" layout="row" layout-align="space-between center"
+             ng-hide="addressbook.mode.search">
           <div class="sg-toolbar-group">
-            <md-select class="sg-toolbar-sort md-contrast-light">
-              <md-option value="name_or_address"><var:string label:value="Name or Email"/></md-option>
-              <md-option value="category"><var:string label:value="Category"/></md-option>
-              <md-option value="organization"><var:string label:value="Organization"/></md-option>
-            </md-select>
+            <md-button class="sg-icon-button" label:aria-label="Search"
+                       ng-click="addressbook.mode.search = true">
+              <md-icon>search</md-icon>
+            </md-button>
           </div>
           <div class="sg-toolbar-group-last">
             <md-menu>
@@ -328,20 +323,41 @@
                       label:value="Preferred Phone"/>
                   </md-button>
                 </md-menu-item>
-              <md-menu-divider> <!-- divider --></md-menu-divider>
-              <md-menu-item >
-                <md-button ng-click="addressbook.sort()">
-                  <md-checkbox
-                      ng-model="addressbook.selectedFolder.$query.asc"
-                      ng-true-value="0"
-                      ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                </md-button>
-              </md-menu-item>
+                <md-menu-divider> <!-- divider --></md-menu-divider>
+                <md-menu-item >
+                  <md-button ng-click="addressbook.sort()">
+                    <md-checkbox
+                        ng-model="addressbook.selectedFolder.$query.asc"
+                        ng-true-value="0"
+                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+                  </md-button>
+                </md-menu-item>
               </md-menu-content>
             </md-menu>
           </div>
         </div>
+        <!-- search mode -->
+        <div class="view-list sg-padded--right sg-toolbar-search" layout="row" layout-align="space-between center"
+             ng-show="addressbook.mode.search"
+             sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
+          <md-button class="sg-icon-button"
+                     sg-search-cancel="addressbook.cancelSearch()"
+                     label:aria-label="Back">
+            <md-icon>arrow_back</md-icon>
+          </md-button>
+          <md-input-container>
+            <input name="folderSearch" type="search" />
+          </md-input-container>
+          <md-input-container>
+            <md-select>
+              <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
+              <md-option value="category"><var:string label:value="Category"/></md-option>
+              <md-option value="organization"><var:string label:value="Organization"/></md-option>
+          </md-select>
+          </md-input-container>
+        </div>
       </div>
+
       <div layout="row" layout-align="start center" ng-show="addressbook.selectedFolder.$selectedCount() > 0">
         <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
           <md-icon>arrow_back</md-icon>
