@@ -258,7 +258,7 @@
    * @returns true if the mailbox is not a special folder.
    */
   Mailbox.prototype.$isEditable = function() {
-    return _.contains(['folder', 'inbox', 'draft', 'sent', 'trash'], this.type);
+    return this.type == 'folder';
   };
 
   /**

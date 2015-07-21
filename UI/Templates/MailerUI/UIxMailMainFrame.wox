@@ -291,7 +291,7 @@
                       <var:string label:value="Compact"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
+                  <md-menu-item  ng-show="folder.$isEditable()">
                     <md-button type="button" ng-click="app.confirmDelete(folder)">
                       <var:string label:value="Delete"/>
                     </md-button>
@@ -306,13 +306,13 @@
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
                   <!-- <md-menu-item>
                     <md-button type="button" ng-click="TODO">
                       <var:string label:value="Use This Folder For"/>
                     </md-button>
-                  </md-menu-item> -->
-                  <md-menu-item>
+                    </md-menu-item> -->
+                  <md-menu-divider ng-show="folder.type != 'additional'"><!-- divider --></md-menu-divider>
+                  <md-menu-item ng-show="folder.type != 'additional'">
                     <md-button type="button" ng-click="app.share(folder)">
                       <var:string label:value="Sharing..."/>
                     </md-button>
