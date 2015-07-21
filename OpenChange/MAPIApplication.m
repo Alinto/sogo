@@ -76,6 +76,11 @@ MAPIApplication *MAPIApp = nil;
   return NO;
 }
 
+- (MAPIStoreUserContext *) userContext
+{
+    return userContext;
+}
+
 - (void) setUserContext: (MAPIStoreUserContext *) newContext
 {
   /* user contexts must not be retained here ad their holder (mapistore)
@@ -86,6 +91,11 @@ MAPIApplication *MAPIApp = nil;
 - (id) authenticatorInContext: (id) context
 {
   return [userContext authenticator];
+}
+
+- (void) cleanup
+{
+  [userContext deactivate];
 }
 
 @end

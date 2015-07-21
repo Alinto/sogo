@@ -120,6 +120,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     folderName = [folderURL host];
 
   userContext = [self userContext];
+  [userContext activate];
   [userContext ensureFolderTableExists];
 
   ASSIGN (dbFolder,
@@ -231,30 +232,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (id) lookupFolder: (NSString *) folderKey
 {
-  MAPIStoreFolder *childFolder;
+  MAPIStoreFolder *childFolder = nil;
   SOGoFolder *sogoFolder;
-  WOContext *woContext;
 
-  childFolder = nil;
   if ([[self folderKeys] containsObject: folderKey])
     {
-      woContext = [[self userContext] woContext];
-      /* We activate the user for the context using the root folder
-         context as there are times where the active user is not
-         matching with the one stored in the application context
-         and SOGo object is storing cached data with the wrong user */
-      [[self userContext] activateWithUser: [woContext activeUser]];
-      sogoFolder = [sogoObject lookupName: folderKey inContext: woContext
+      [[self userContext] activate];
+      sogoFolder = [sogoObject lookupName: folderKey
+                                inContext: nil
                                   acquire: NO];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
-        {
-          [sogoFolder setContext: woContext];
-          childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
-                                               inContainer: self];
-        }
+        childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
+                                             inContainer: self];
     }
-  else
-    childFolder = nil;
 
   return childFolder;
 }
@@ -285,6 +275,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if (messageKey)
     {
+      [[self userContext] activate];
       msgObject = [sogoObject lookupName: messageKey
                                inContext: nil
                                  acquire: NO];
@@ -314,6 +305,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if (messageKey)
     {
+      [[self userContext] activate];
       if ([[self faiMessageKeys] containsObject: messageKey])
         {
           msgObject = [dbFolder lookupName: messageKey
@@ -546,6 +538,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
+  [[self userContext] activate];
 
   if ([[context activeUser] isEqual: ownerUser]
       || (!isAssociated && [self subscriberCanCreateMessages]))
@@ -758,9 +751,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
   else
     rc = MAPISTORE_ERR_DENIED;
-  
+
   //talloc_free (memCtx);
-  
+
   return rc;
 }
 
@@ -931,7 +924,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *newIDs;
   uint64_t idNbr;
   bool softDeleted;
-  
+
   baseURL = [self url];
 
   mapping = [self mapping];
@@ -1105,6 +1098,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {
+  [[self userContext] activate];
   return [dbFolder childKeysOfType: MAPIFAICacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
@@ -1213,7 +1207,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 /*
   Possible values are:
-  
+
   0x00000001 Modify
   0x00000002 Read
   0x00000004 Delete
@@ -1244,7 +1238,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     access |= 0x10;
   if (userIsOwner)
     access |= 0x20;
-  
+
   *data = MAPILongValue (memCtx, access);
 
   return MAPISTORE_SUCCESS;
@@ -1273,7 +1267,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     rights |= RightsCreateSubfolders;
   if (userIsOwner)
     rights |= RightsFolderOwner | RightsFolderContact;
-  
+
   *data = MAPILongValue (memCtx, rights);
 
   return MAPISTORE_SUCCESS;
@@ -1309,7 +1303,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, [self supportsSubFolders] && [[self folderKeys] count] > 0);
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -1317,7 +1311,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self folderKeys] count]);
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -1419,7 +1413,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [dbObject setIsNew: YES];
   newMessage = [MAPIStoreFAIMessageK mapiStoreObjectWithSOGoObject: dbObject
                                                        inContainer: self];
-  
+
   return newMessage;
 }
 
@@ -1427,6 +1421,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   MAPIStoreMessage *newMessage;
   WOContext *woContext;
+
+  [[self userContext] activate];
 
   if (isAssociated)
     newMessage = [self _createAssociatedMessage];
@@ -1627,7 +1623,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
       permissionUser = nil;
       permissionRoles = nil;
- 
+
       if (currentPermission->PermissionDataFlags == ROW_ADD)
         isAdd = YES;
       else if (currentPermission->PermissionDataFlags == ROW_MODIFY)
@@ -1778,7 +1774,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   [self subclassResponsibility: _cmd];
 
-  return nil;  
+  return nil;
 }
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum

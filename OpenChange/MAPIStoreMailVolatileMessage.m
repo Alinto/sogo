@@ -1077,6 +1077,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       dd = [activeUser domainDefaults];
       from = [[activeUser allEmails] objectAtIndex: 0];
 
+      [[self userContext] activate];
       woContext = [[self userContext] woContext];
       authenticator = [sogoObject authenticatorInContext: woContext];
       error = [[SOGoMailer mailerWithDomainDefaults: dd]
