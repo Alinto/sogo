@@ -130,6 +130,14 @@
           pageName    = "UIxCalUserRightsEditor";
           actionName  = "saveUserRights";
         };
+        UIxAppointmentViewTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxAppointmentViewTemplate";
+        };
+        UIxTaskViewTemplate = {
+          protectedBy = "View";
+          pageName    = "UIxTaskViewTemplate";
+        };
         UIxAppointmentEditorTemplate = {
           protectedBy = "View";
           pageName    = "UIxAppointmentEditorTemplate";
