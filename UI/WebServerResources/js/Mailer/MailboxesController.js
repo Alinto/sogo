@@ -20,8 +20,11 @@
     vm.revertEditing = revertEditing;
     vm.selectFolder = selectFolder;
     vm.saveFolder = saveFolder;
+    vm.compactFolder = compactFolder;
+    vm.emptyTrashFolder = emptyTrashFolder;
     vm.exportMails = exportMails;
     vm.confirmDelete = confirmDelete;
+    vm.markFolderRead = markFolderRead;
     vm.share = share;
     vm.iconForFolder = iconForFolder;
 
@@ -136,6 +139,22 @@
       folder.$rename();
     }
 
+    function compactFolder(folder) {
+      folder.$compact().then(function() {
+        // Success
+      }, function(error) {
+        Dialog.alert(l('Warning'), error);
+      });
+    }
+
+    function emptyTrashFolder(folder) {
+      folder.$emptyTrash().then(function() {
+        // Success
+      }, function(error) {
+        Dialog.alert(l('Warning'), error);
+      });
+    }
+
     function exportMails(folder) {
       window.location.href = ApplicationBaseURL + '/' + folder.id + '/exportFolder';
     }
@@ -151,6 +170,10 @@
                            l(data.error));
             });
         });
+    }
+
+    function markFolderRead(folder) {
+      folder.$markAsRead();
     }
 
     function share(folder) {

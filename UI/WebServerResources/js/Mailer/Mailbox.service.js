@@ -339,6 +339,36 @@
   };
 
   /**
+   * @function $compact
+   * @memberof Mailbox.prototype
+   * @desc Compact the mailbox
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$compact = function() {
+    return Mailbox.$$resource.post(this.id, 'expunge');
+  };
+
+  /**
+   * @function $emptyTrash
+   * @memberof Mailbox.prototype
+   * @desc Empty the Trash folder.
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$emptyTrash = function() {
+    return Mailbox.$$resource.post(this.id, 'emptyTrash');
+  };
+
+  /**
+   * @function $markAsRead
+   * @memberof Mailbox.prototype
+   * @desc Mark all messages from folder as read
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$markAsRead = function() {
+    return Mailbox.$$resource.post(this.id, 'markRead');
+  };
+
+  /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server
