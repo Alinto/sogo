@@ -101,7 +101,7 @@
             _this.$query[key] = options[key];
           else
             _this[queryKey][key] = options[key];
-        })
+        });
       }
 
       // Perform query with both common and type-specific parameters

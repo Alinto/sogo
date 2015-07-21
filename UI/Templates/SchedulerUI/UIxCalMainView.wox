@@ -406,7 +406,7 @@
                   </md-menu-item>
                   <md-menu-divider ng-if="list.componentType == 'tasks'"><!-- divider --></md-menu-divider>
                   <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.filter()">
+                    <md-button ng-click="list.component.$filter(list.componentType)">
                       <md-checkbox
                           ng-model="list.component.$queryTasks.show_completed"
                           ng-true-value="1"
