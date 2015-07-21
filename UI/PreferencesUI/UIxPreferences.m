@@ -190,11 +190,11 @@ static NSArray *reminderValues = nil;
 }
 
 //
-// Used by wox template
+// Used by wox template, as a var.
 //
-- (NSArray *) timeZonesList
+- (NSString *) timeZonesList
 {
-  return [[iCalTimeZone knownTimeZoneNames] sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  return [[[iCalTimeZone knownTimeZoneNames] sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)] jsonRepresentation];
 }
 
 // - (NSString *) userTimeZone

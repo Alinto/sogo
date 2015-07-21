@@ -16,6 +16,7 @@
 
   <script type="text/javascript">
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
+    var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
   </script>
 
   <script type="text/ng-template" id="preferences.html">
@@ -99,17 +100,17 @@
                   </var:foreach>
                 </md-select>
               </md-input-container>
-              
-              <md-input-container>
-                <label><var:string label:value="Current Time Zone :"/></label>
-                <md-select ng-model="app.preferences.defaults.SOGoTimeZone">
-                  <var:foreach list="timeZonesList" item="item">
-                    <md-option var:value="item">
-                      <var:string value="item"/>
-                    </md-option>
-                  </var:foreach>
-                </md-select>
-              </md-input-container>
+
+              <md-autocomplete
+                  md-search-text="app.timeZonesSearchText"
+                  md-selected-item="app.preferences.defaults.SOGoTimeZone"
+                  md-items="timezone in app.timeZonesListFilter(app.timeZonesSearchText)"
+                  md-item-text="timezone"
+                  md-min-length="3"
+                  md-no-cache="true"
+                  label:md-floating-label="Current Time Zone :">
+                <span md-highlight-text="app.timeZonesSearchText">{{timezone}}</span>
+              </md-autocomplete>
               
               <md-input-container>
                 <label><var:string label:value="Short Date Format :"/></label>

@@ -30,6 +30,9 @@
     vm.save = save;
     vm.canChangePassword = canChangePassword;
     vm.changePassword = changePassword;
+    vm.timeZonesList = window.timeZonesList;
+    vm.timeZonesListFilter = timeZonesListFilter;
+    vm.timeZonesSearchText = '';
     
     function addCalendarCategory() {
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
@@ -179,6 +182,12 @@
           .finally(function() {
             alert = undefined;
           });
+      });
+    }
+
+    function timeZonesListFilter(filter) {
+      return _.filter(vm.timeZonesList, function(value) {
+        return value.toUpperCase().indexOf(filter.toUpperCase()) >= 0;
       });
     }
   }
