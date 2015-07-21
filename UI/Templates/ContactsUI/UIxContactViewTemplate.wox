@@ -21,7 +21,7 @@
           <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
           <md-chips ng-model="editor.card.categories"
-                    readonly="true">
+                    class="sg-readonly" readonly="true">
             <md-chip-template>
               {{$chip.value}}
             </md-chip-template>

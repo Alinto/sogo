@@ -6,14 +6,16 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$scope', '$rootScope', '$timeout', '$state', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'Component', '$mdSidenav'];
-  function CalendarListController($scope, $rootScope, $timeout, $state, focus, encodeUriFilter, Dialog, Settings, Preferences, Calendar, Component, $mdSidenav) {
+  CalendarListController.$inject = ['$scope', '$timeout', '$state', '$mdDialog', 'encodeUriFilter', 'Dialog', 'Preferences', 'Calendar', 'Component'];
+  function CalendarListController($scope, $timeout, $state, $mdDialog, encodeUriFilter, Dialog, Preferences, Calendar, Component) {
     var vm = this;
 
     vm.component = Component;
     vm.componentType = 'events';
     vm.selectedList = 0;
     vm.selectComponentType = selectComponentType;
+    vm.openEvent = openEvent;
+    vm.openTask = openTask;
     vm.newComponent = newComponent;
     vm.filter = filter;
     vm.filteredBy = filteredBy;
@@ -42,13 +44,54 @@
       }
     }
 
-    function newComponent() {
-      var type = 'appointment';
+    function openEvent($event, event) {
+      openComponent($event, event, 'appointment');
+    }
+
+    function openTask($event, task) {
+      openComponent($event, task, 'task');
+    }
+
+    function openComponent($event, component, type) {
+      // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
+      // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
+      var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: templateUrl,
+        controller: 'ComponentController',
+        controllerAs: 'viewer',
+        locals: {
+          stateComponent: component
+        }
+      });
+    }
+
+    function newComponent($event) {
+      var type = 'appointment', component;
 
       if (vm.componentType == 'tasks')
         type = 'task';
+      component = new Component({ pid: 'personal', type: type });
 
-      $state.go('calendars.newComponent', { calendarId: 'personal', componentType: type });
+      // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
+      // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
+      var templateUrl = 'UIx' + type.capitalize() + 'EditorTemplate';
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: templateUrl,
+        controller: 'ComponentEditorController',
+        controllerAs: 'editor',
+        locals: {
+          stateComponent: component
+        }
+      });
     }
 
     function filter(filterpopup) {

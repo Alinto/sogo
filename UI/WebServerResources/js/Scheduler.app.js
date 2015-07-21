@@ -61,46 +61,6 @@
         resolve: {
           stateEventsBlocks: stateEventsBlocks
         }
-      })
-      .state('calendars.newComponent', {
-        url: '/:calendarId/{componentType:(?:appointment|task)}/new',
-        views: {
-          componentEditor: {
-            templateUrl: function($stateParams) {
-              // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
-              // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
-              return 'UIx' + $stateParams.componentType.capitalize() + 'EditorTemplate';
-            },
-            controller: 'ComponentController',
-            controllerAs: 'editor'
-          }
-        },
-        resolve: {
-          stateComponent: stateNewComponent
-        }
-      })
-      .state('calendars.component', {
-        url: '/:calendarId/{componentType:(?:appointment|task)}/:componentId',
-        views: {
-          componentEditor: {
-            templateUrl: function($stateParams) {
-              // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
-              // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
-              return 'UIx' + $stateParams.componentType.capitalize() + 'EditorTemplate';
-            },
-            controller: 'ComponentController',
-            controllerAs: 'editor'
-          }
-        },
-        // onEnter: ['$mdSidenav', function($mdSidenav) {
-        //   $mdSidenav('right').open()
-        //     .then(function() {
-        //       console.debug("toggle RIGHT is done");
-        //     });
-        // }],
-        resolve: {
-          stateComponent: stateComponent
-        }
       });
 
     $urlRouterProvider.when('/calendar/day', function() {
@@ -137,29 +97,6 @@
   stateEventsBlocks.$inject = ['$stateParams', 'Component'];
   function stateEventsBlocks($stateParams, Component) {
     return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate());
-  }
-
-  /**
-   * @ngInject
-   */
-  stateNewComponent.$inject = ['$stateParams', 'Component'];
-  function stateNewComponent($stateParams, Component) {
-    var component = new Component({ pid: $stateParams.calendarId, type: $stateParams.componentType });
-    return component;
-  }
-
-  /**
-   * @ngInject
-   */
-  stateComponent.$inject = ['$q', '$stateParams', 'Calendar'];
-  function stateComponent($q, $stateParams, Calendar) {
-    var component = Calendar.$get($stateParams.calendarId).$getComponent($stateParams.componentId);
-
-    return $q(function(resolve, reject) {
-      component.$futureComponentData.then(function() {
-        resolve(component);
-      }, reject);
-    });
   }
 
   /**

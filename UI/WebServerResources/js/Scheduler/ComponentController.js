@@ -6,11 +6,55 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$scope', '$log', '$q', '$timeout', '$state', '$previousState', '$mdSidenav', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'stateCalendars', 'stateComponent'];
-  function ComponentController($scope, $log, $q, $timeout, $state, $previousState, $mdSidenav, $mdDialog, User, Calendar, Component, AddressBook, Card, stateCalendars, stateComponent) {
-    var vm = this;
+  ComponentController.$inject = ['$mdDialog', 'Calendar', 'stateComponent'];
+  function ComponentController($mdDialog, Calendar, stateComponent) {
+    var vm = this, component;
 
-    vm.calendars = stateCalendars;
+    vm.component = stateComponent;
+    vm.close = close;
+    vm.edit = edit;
+
+    // Load all attributes of component
+    if (angular.isUndefined(vm.component.$futureComponentData)) {
+      component = Calendar.$get(vm.component.c_folder).$getComponent(vm.component.c_name);
+      component.$futureComponentData.then(function() {
+        vm.component = component;
+      });
+    }
+
+    function close() {
+      $mdDialog.hide();
+    }
+
+    function edit() {
+      var type = (vm.component.component == 'vevent')? 'Appointment':'Task';
+      $mdDialog.hide().then(function() {
+        // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
+        // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
+        var templateUrl = 'UIx' + type + 'EditorTemplate';
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          templateUrl: templateUrl,
+          controller: 'ComponentEditorController',
+          controllerAs: 'editor',
+          locals: {
+            stateComponent: vm.component
+          }
+        });
+      });
+    }
+  }
+
+  /**
+   * @ngInject
+   */
+  ComponentEditorController.$inject = ['$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'stateComponent'];
+  function ComponentEditorController($scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, stateComponent) {
+    var vm = this, component;
+
+    vm.calendars = Calendar.$calendars;
     vm.component = stateComponent;
     vm.categories = {};
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
@@ -29,24 +73,6 @@
       days: getDays(),
       hours: getHours()
     };
-
-    // Open sidenav when loading the view;
-    // Return to previous state when closing the sidenav.
-    $scope.$on('$viewContentLoaded', function(event) {
-      $timeout(function() {
-        $mdSidenav('right').open()
-          .then(function() {
-            $scope.$watch($mdSidenav('right').isOpen, function(isOpen, wasOpen) {
-              if (!isOpen) {
-                if ($previousState.get())
-                  $previousState.go()
-                else
-                  $state.go('calendars');
-              }
-            });
-          });
-      }, 100); // don't ask why
-    });
 
     $scope.$watch('editor.component.startDate', function(newStartDate, oldStartDate) {
       if (newStartDate) {
@@ -130,7 +156,7 @@
         vm.component.$save()
           .then(function(data) {
             $scope.$emit('calendars:list');
-            $mdSidenav('right').close();
+            $mdDialog.hide();
           }, function(data, status) {
             $log.debug('failed');
           });
@@ -143,7 +169,7 @@
         // Cancelling the creation of a component
         vm.component = null;
       }
-      $mdSidenav('right').close();
+      $mdDialog.hide();
     }
 
     function getDays() {
@@ -170,5 +196,6 @@
 
   angular
     .module('SOGo.SchedulerUI')  
-    .controller('ComponentController', ComponentController);
+    .controller('ComponentController', ComponentController)
+    .controller('ComponentEditorController', ComponentEditorController);
 })();

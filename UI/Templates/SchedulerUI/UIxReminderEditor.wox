@@ -3,8 +3,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label"
-    >
+    xmlns:label="OGo:label">
   <div layout="row" layout-align="start center">
     <md-input-container class="md-input-number">
       <input type="number" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>

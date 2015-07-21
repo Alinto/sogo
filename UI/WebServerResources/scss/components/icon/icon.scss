@@ -45,6 +45,13 @@
 // Define CSS styles to use ng-class with md-icon
 md-icon {
   transition: 240ms;
+  &.sg-icon-toolbar-bg {
+    font-size: 84px;
+    opacity: 0.2;
+    position: absolute;
+    right: $mg * 3;
+    transform: rotate(-15deg);
+  }
   &.md-rotate-45 {
     transform: rotate(45deg);
   }
@@ -56,7 +63,10 @@ md-icon {
   }
 //   &.icon-add:before {
 //     content: "\e317";
-//   }
+  //   }
+  &.icon-alarm:before {
+    content: "\e855";
+  }
   &.icon-check:before {
     content: "\e5ca";
   }
@@ -81,6 +91,12 @@ md-icon {
 //  &.icon_public:before {
 //    content: "\e80b";
 //  }
+  &.icon-visibility-off:before {
+    content: "\e8f5";
+  }
+  &.icon-vpn-key:before {
+    content: "\e0da";
+  }
 }
 
 // Message flag

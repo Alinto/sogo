@@ -433,7 +433,8 @@
  * @apiSuccess (Success 200) {String} location                Location
  * @apiSuccess (Success 200) {String} comment                 Comment
  * @apiSuccess (Success 200) {String} createdBy               Value of custom header X-SOGo-Component-Created-By or organizer's "SENT-BY"
- * @apiSuccess (Success 200) {Number} priority                Priority
+ * @apiSuccess (Success 200) {Number} priority                Priority (0-9)
+ * @apiSuccess (Success 200) {NSString} [classification]      Either public, confidential or private
  * @apiSuccess (Success 200) {String[]} [categories]          Categories
  * @apiSuccess (Success 200) {String} status                  Status (needs-action, in-process, completed, or cancelled)
  * @apiSuccess (Success 200) {Object} [organizer]             Appointment organizer

@@ -329,6 +329,24 @@
 
 @end
 
+/* Appointment Viewer */
+
+@interface UIxAppointmentViewTemplate : UIxComponent
+@end
+
+@implementation UIxAppointmentViewTemplate
+@end
+
+/* Task Viewer */
+
+@interface UIxTaskViewTemplate : UIxComponent
+@end
+
+@implementation UIxTaskViewTemplate
+@end
+
+/* Component Editor, parent class of Appointment Editor and Task Editor */
+
 @interface UIxComponentEditorTemplate : UIxComponent
 {
   id item;
@@ -388,11 +406,15 @@
 
 @end
 
+/* Appointment Editor */
+
 @interface UIxAppointmentEditorTemplate : UIxComponentEditorTemplate
 @end
 
 @implementation UIxAppointmentEditorTemplate
 @end
+
+/* Task Editor */
 
 @interface UIxTaskEditorTemplate : UIxComponentEditorTemplate
 @end

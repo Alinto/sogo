@@ -46,7 +46,7 @@ md-list-item {
 // Add some padding to the first icon in a list item
 .md-list-item-inner {
   > i:first-child {
-    padding-right: $mg;
+    margin-left: $mg;
   }
 }
 
