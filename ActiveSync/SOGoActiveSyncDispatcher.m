@@ -704,6 +704,7 @@ static BOOL debugOn = NO;
   SOGoCacheGCSObject *o;
   id currentFolder;
   NSData *d;
+  NSMutableDictionary *processedFolders;
 
   int status, command_count, i, type, fi, count;
 
@@ -727,7 +728,7 @@ static BOOL debugOn = NO;
       first_sync = YES;
       syncKey = @"1";
     }
-  else if (![syncKey isEqualToString: [metadata objectForKey: @"FolderSyncKey"]])
+  else if (!metadata)
     {
       // Synchronization key mismatch or invalid synchronization key
       //NSLog(@"FolderSync syncKey mismatch %@ <> %@", syncKey, metadata);
@@ -849,6 +850,7 @@ static BOOL debugOn = NO;
          }
       }
 
+  processedFolders = [NSMutableDictionary dictionary];
   // Handle addition and changes
   for (i = 0; i < [allFoldersMetadata count]; i++)
    {
@@ -862,6 +864,11 @@ static BOOL debugOn = NO;
 
      serverId = [NSString stringWithFormat: @"mail/%@",  [[imapGUIDs objectForKey: nameInCache] substringFromIndex: 6]];
      name = [folderMetadata objectForKey: @"displayName"];
+
+     // avoid a IMAP bug that shows duplicate folders
+     if ([[processedFolders objectForKey:serverId] intValue] == 42)
+       continue;
+     [processedFolders setObject:[NSNumber numberWithInt:42] forKey:serverId];
           
      if ([name hasPrefix: @"/"])
        name = [name substringFromIndex: 1];
@@ -872,11 +879,12 @@ static BOOL debugOn = NO;
      type = [[folderMetadata objectForKey: @"type"] activeSyncFolderType];
      parentId = @"0";
          
-     if ([folderMetadata objectForKey: @"parent"])
+     if (([folderMetadata objectForKey: @"parent"])&&((type <2)||(type > 6)))
        {
          parentId = [NSString stringWithFormat: @"mail/%@", [[imapGUIDs objectForKey: [NSString stringWithFormat: @"folder%@",  [[folderMetadata objectForKey: @"parent"] substringFromIndex: 1]]] substringFromIndex: 6]];
          name = [[name pathComponents] lastObject];
        }
+     name = [[name pathComponents] lastObject];
           
      // Decide between add and change
      if ([cachedGUIDs objectForKey: [imapGUIDs objectForKey: nameInCache]])
