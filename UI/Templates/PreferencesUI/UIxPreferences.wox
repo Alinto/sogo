@@ -544,7 +544,7 @@
                 <div layout="row" layout-align="space-around left">
                   <div><var:string label:value="Auto save every"/></div>
                   <md-input-container class="md-input-number">
-                    <input type="number" label:aria-label="minutes" ng-model="preferences.defaults.SOGoMailAutoSave"/>
+                    <input type="number" min="0" label:aria-label="minutes" ng-model="preferences.defaults.SOGoMailAutoSave"/>
                   </md-input-container>
                   <var:string label:value="minutes"/>
                 </div>

@@ -6,11 +6,13 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook'];
-  function MessageEditorController($stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook) {
+  MessageEditorController.$inject = ['$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
     var vm = this;
 
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
+    vm.autosave = null;
+    vm.autosaveDrafts = autosaveDrafts;
     vm.hideCc = true;
     vm.hideBcc = true;
     vm.cancel = cancel;
@@ -66,6 +68,9 @@
 
     function cancel() {
       // TODO: delete draft?
+      if (vm.autosave)
+        $timeout.cancel(vm.autosave);
+
       if ($state.params.mailboxId)
         $state.go('mail.account.mailbox', { accountId: $state.params.accountId, mailboxId: $state.params.mailboxId });
       else
@@ -73,6 +78,9 @@
     }
 
     function send() {
+      if (vm.autosave)
+        $timeout.cancel(vm.autosave);
+
       vm.message.$send().then(function(data) {
         $state.go('mail');
       }, function(data) {
@@ -87,6 +95,19 @@
       });
       return deferred.promise;
     }
+
+    // Drafts autosaving
+    function autosaveDrafts() {
+      vm.message.$save();
+      if (Preferences.defaults.SOGoMailAutoSave)
+        vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+    }
+
+    // Select list based on user's settings
+    Preferences.ready().then(function() {
+      if (Preferences.defaults.SOGoMailAutoSave)
+        vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+    });
   }
 
   angular

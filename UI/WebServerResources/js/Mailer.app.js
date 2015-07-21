@@ -5,8 +5,9 @@
   'use strict';
 
   angular.module('SOGo.ContactsUI', []);
+  angular.module('SOGo.PreferencesUI', []);
 
-  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate'])
+  angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate', 'SOGo.PreferencesUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,
