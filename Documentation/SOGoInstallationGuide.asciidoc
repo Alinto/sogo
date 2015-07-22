@@ -1035,8 +1035,8 @@ repository
 
 |ModulesConstraints (optional)
 |Limits the access of any module through a constraint based on an LDAP
-attribute; must be a dictionary with keys `Mail`, and/or `Calendar`, for
-example:
+attribute; must be a dictionary with keys `Mail`, and/or `Calendar`,
+and/or `ActiveSync` for example:
 
 ----
 ModulesConstraints = {
