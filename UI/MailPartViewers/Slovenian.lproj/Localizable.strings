@@ -1,0 +1,48 @@
+ACCEPTED = "sprejeto";
+COMPLETED = "dokončano";
+DECLINED = "zavrnjeno";
+DELEGATED = "dodeljeno";
+"IN-PROCESS" = "v teku";
+"NEEDS-ACTION" = "potrebuje dejanje";
+TENTATIVE = "pogojno";
+organized_by_you = "organizirano po tebi";
+you_are_an_attendee = "ti si udeleženec";
+add_info_text = "iMIP 'ADD' zahteva ni podprta v SOGo.";
+publish_info_text = "Pošiljatelj te obvešča o priloženem dogodku.";
+cancel_info_text = "Tvoje vabilo ali celoten dogodek je bil preklican.";
+request_info_no_attendee = "predlaga srečanje za udeležence. To pošto si prejel kot obvestilo, nisi pa razporejen kot sodelujoči.";
+Appointment = "Sestanek";
+"Status Update" = "Posodobitev statusa";
+was = "je bil";
+
+Organizer = "Organizator";
+Time = "Čas";
+Attendees = "Udeleženci";
+request_info = "te vabi, da sodeluješ na srečanju.";
+"Add to calendar" = "Dodaj v koledar";
+"Delete from calendar" = "Briši iz koledarja";
+"Update status" = "Posodobi status";
+Accept = "Sprejmi";
+Decline = "Zavrni";
+Tentative = "Pogojno";
+"Delegate ..." = "Dodeli ...";
+"Delegated to" = "Dodeljeno k";
+"Update status in calendar" = "Posodobi status v koledarju";
+"delegated from" = "Dodeljeno od";
+
+reply_info_no_attendee = "Prejel si odgovor na razporejen dogodek, toda pošiljatelj tega odgovora ni udeleženec.";
+reply_info = "To je odgovor na tvoje povabilo na dogodek.";
+
+"to" = "za";
+
+"Untitled" = "Brez naslova";
+
+"Size" = "Velikost";
+
+"Digital signature is not valid" = "Digitalno potrdilo ni veljavno";
+"Message is signed" = "Sporočilo je podpisano";
+"Subject" = "Zadeva";
+"From" = "Od";
+"Date" = "Datum";
+"To" = "Za";
+"Issuer" = "Izdajatelj";

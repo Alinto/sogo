@@ -17,7 +17,7 @@ SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "Czech", "Dutch", "Dan
                            "SpanishSpain", "SpanishArgentina", "French", "German",
                            "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese",
                            "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak",
-                           "Ukrainian", "Swedish" ];
+                           "Slovenian", "Ukrainian", "Swedish" ];
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):

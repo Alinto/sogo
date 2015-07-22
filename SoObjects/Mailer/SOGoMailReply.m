@@ -152,6 +152,9 @@
 @implementation SOGoMailSlovakReply
 @end
 
+@implementation SOGoMailSlovenianReply
+@end
+
 @implementation SOGoMailUkrainianReply
 @end
 

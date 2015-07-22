@@ -102,6 +102,9 @@
 @interface SOGoMailSlovakReply : SOGoMailReply
 @end
 
+@interface SOGoMailSlovenianReply : SOGoMailReply
+@end
+
 @interface SOGoMailUkrainianReply : SOGoMailReply
 @end
 
