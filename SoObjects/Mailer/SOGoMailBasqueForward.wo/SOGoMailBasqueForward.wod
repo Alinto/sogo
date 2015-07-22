@@ -86,12 +86,3 @@ signaturePlacementOnBottom: WOConditional {
   condition = signaturePlacementOnTop;
   negate = YES;
 }
-
-signaturePlacementOnTop: WOConditional {
-  condition = signaturePlacementOnTop;
-}
-
-signaturePlacementOnBottom: WOConditional {
-  condition = signaturePlacementOnTop;
-  negate = YES;
-}
