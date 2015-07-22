@@ -9,6 +9,7 @@ Enhancements
  - added create-folder subcommand to sogo-tool to create contact and calendar folders
  - group mail addresses can be used as recipient in Outlook
  - added 'ActiveSync' module constraints
+ - added Slovenian translation - thanks to Jens Riecken
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders

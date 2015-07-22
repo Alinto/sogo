@@ -103,6 +103,9 @@
 @interface SOGoMailSlovakForward : SOGoMailForward
 @end
 
+@interface SOGoMailSlovenianForward : SOGoMailForward
+@end
+
 @interface SOGoMailUkrainianForward : SOGoMailForward
 @end
 

@@ -314,6 +314,9 @@
 @implementation SOGoMailSlovakForward
 @end
 
+@implementation SOGoMailSlovenianForward
+@end
+
 @implementation SOGoMailUkrainianForward
 @end
 

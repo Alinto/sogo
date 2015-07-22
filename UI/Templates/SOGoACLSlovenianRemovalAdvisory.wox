@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> vas je odstranil
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> vas je odstranil iz seznama za dostop do njihove <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> mape.
+<!--
+Lahko se odjavite s klikom na to povezavo:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
+
+V nasprotnem primeru se lahko kasneje odjavite preko SoGo spletnega vmesnika.
+
+Ne morete se vec prijaviti preko SoGo spletnega vmesnika:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>
