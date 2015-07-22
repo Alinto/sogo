@@ -13,8 +13,6 @@
     this.defaults = {};
     this.settings = {};
 
-    this.mailboxes = Preferences.$Mailbox.$find({ id: 0 });
-
     this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
         // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
         var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
@@ -58,14 +56,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Mailbox', 'User', function($q, $timeout, $log, Settings, Resource, Mailbox, User) {
+  Preferences.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'User', function($q, $timeout, $log, Settings, Resource, User) {
     angular.extend(Preferences, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
       activeUser: Settings.activeUser,
-      $Mailbox: Mailbox,
       $User: User
     });
 

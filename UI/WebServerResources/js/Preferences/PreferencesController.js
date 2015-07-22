@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$scope', '$timeout', '$q', '$mdDialog', 'User', 'statePreferences', 'Authentication'];
-  function PreferencesController($scope, $timeout, $q, $mdDialog, User, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$scope', '$timeout', '$q', '$mdDialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
+  function PreferencesController($scope, $timeout, $q, $mdDialog, User, Mailbox, statePreferences, Authentication) {
     var vm = this;
 
     vm.preferences = statePreferences;
@@ -33,6 +33,7 @@
     vm.timeZonesList = window.timeZonesList;
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
+    vm.mailboxes = Mailbox.$find({ id: 0 });
     
     function addCalendarCategory() {
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
@@ -121,7 +122,7 @@
         targetEvent: ev,
         locals: {
           filter: filter,
-          mailboxes: vm.preferences.mailboxes,
+          mailboxes: vm.mailboxes,
           labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
       });
@@ -136,7 +137,7 @@
         targetEvent: null,
         locals: {
           filter: filter,
-          mailboxes: vm.preferences.mailboxes,
+          mailboxes: vm.mailboxes,
           labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
