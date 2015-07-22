@@ -271,8 +271,7 @@
       <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
         <var:component className="UIxTopnavToolbarTemplate" />
       </div>
-      <div class="md-toolbar-tools md-toolbar-tools-bottom"
-           layout="row" layout-align="space-between center"
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center"
            ng-show="addressbook.selectedFolder.$selectedCount() == 0">
 
         <div class="view-list" layout="row" layout-align="space-between center"
