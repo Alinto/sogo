@@ -489,10 +489,12 @@
                              forKey: [field substringFromIndex: 2]];
             }
 
+          // FIXME
           // We have to do this here since we do not manage modules
           // constraints right now over a SQL backend.
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"CalendarAccess"];
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
+          [response setObject: [NSNumber numberWithBool: YES] forKey: @"ActiveSyncAccess"];
 
 	  // We set the domain, if any
           value = nil;
