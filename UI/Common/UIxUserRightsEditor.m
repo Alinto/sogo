@@ -1,8 +1,6 @@
 /* UIxUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +17,8 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
@@ -86,6 +86,7 @@
 
 - (NSString *) userDisplayName
 {
+  NSDictionary *infos;
   SOGoUserManager *um;
 
   if ([self userIsAnonymousUser])
@@ -99,9 +100,15 @@
   else
     {
       um = [SOGoUserManager sharedUserManager];
-      return [NSString stringWithFormat: @"%@ <%@>",
-                        [um getCNForUID: uid],
-                     [um getEmailForUID: uid]];
+      infos = [um contactInfosForUserWithUIDorEmail: uid inDomain: [[context activeUser] domain]];
+      if (infos)
+        {
+          return [NSString stringWithFormat: @"%@ <%@>",
+                        [infos objectForKey: @"cn"],
+                        [infos objectForKey: @"c_email"]];
+        }
+      else
+        return uid;
     }
 }
 

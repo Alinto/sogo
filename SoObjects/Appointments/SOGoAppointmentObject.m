@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2015 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -317,7 +317,7 @@
   enumerator = [attendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
+      currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
         [self _removeEventFromUID: currentUID
                             owner: owner
@@ -398,7 +398,7 @@
   enumerator = [updateAttendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
+      currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
         [self _addOrUpdateEvent: newEvent
                          forUID: currentUID
@@ -438,7 +438,7 @@
 
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
+      currentUID = [currentAttendee uidInContext: context];
 
       if (currentUID)
         {
@@ -520,7 +520,7 @@
   enumerator = [theAttendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
+      currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
         {
           [attendees addObject: currentUID];
@@ -635,7 +635,7 @@
           for (i = 0; i < [theAttendees count]; i++)
             {
               currentAttendee = [theAttendees objectAtIndex: i];
-              if ([[currentAttendee uid] isEqualToString: currentUID])
+              if ([[currentAttendee uidInContext: context] isEqualToString: currentUID])
                 break;
               else
                 currentAttendee = nil;
@@ -713,7 +713,7 @@
   enumerator = [attendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
+      currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
       [self _addOrUpdateEvent: newEvent
                        forUID: currentUID
@@ -838,7 +838,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           enumerator = [updatedAttendees objectEnumerator];
           while ((currentAttendee = [enumerator nextObject]))
             {
-              currentUID = [currentAttendee uid];
+              currentUID = [currentAttendee uidInContext: context];
               if (currentUID)
                 [self _addOrUpdateEvent: newEvent
                                  forUID: currentUID
@@ -1215,7 +1215,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
               [delegates addObject: otherDelegate];
               
-              delegatedUID = [otherDelegate uid];
+              delegatedUID = [otherDelegate uidInContext: context];
               if (delegatedUID)
                 // Delegate attendee is a local user; remove event from their calendar
                 [self _removeEventFromUID: delegatedUID
@@ -1244,7 +1244,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       
       if (addDelegate)
         {
-          delegatedUID = [delegate uid];
+          delegatedUID = [delegate uidInContext: context];
           delegates = [NSArray arrayWithObject: delegate];
           [event addToAttendees: delegate];
           
@@ -1271,11 +1271,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             [self sendResponseToOrganizer: event
                                      from: ownerUser];
           
-          organizerUID = [[event organizer] uid];
+          organizerUID = [[event organizer] uidInContext: context];
           
           // Event is an exception to a recurring event; retrieve organizer from master event
           if (!organizerUID)
-            organizerUID = [[(iCalEntityObject*)[[event parent] firstChildWithTag: [self componentTag]] organizer] uid];
+            organizerUID = [[(iCalEntityObject*)[[event parent] firstChildWithTag: [self componentTag]] organizer] uidInContext: context];
           
           if (organizerUID)
             // Update the attendee in organizer's calendar.
@@ -1302,7 +1302,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       for (i = 0; i < [attendees count]; i++)
         {
           att = [attendees objectAtIndex: i];
-          uid = [att uid];
+          uid = [att uidInContext: context];
           if (uid && att != attendee && ![uid isEqualToString: delegatedUID])
             [self _updateAttendee: attendee
                      withDelegate: delegate
@@ -1461,7 +1461,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         {
           if (delegate && ![[delegate email] isEqualToString: [attendee delegatedTo]])
             {
-              delegatedUid = [delegate uid];
+              delegatedUid = [delegate uidInContext: context];
               if (delegatedUid)
                 delegatedUser = [SOGoUser userWithLogin: delegatedUid];
               if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
@@ -1831,7 +1831,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
           // We now make sure that the organizer, if managed by SOGo, is using
           // its default email when creating events and inviting attendees.
-          uid = [[SOGoUserManager sharedUserManager] getUIDForEmail: [[event organizer] rfc822Email]];
+          uid = [[event organizer] uidInContext: context];
           if (uid)
             {
               NSDictionary *defaultIdentity;
@@ -2144,7 +2144,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           // occurence, and invite someone, the PUT will have the organizer in the
           // recurrence-id and not in the master event. We must fix this, otherwise
           // SOGo will break.
-          if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid])
+          if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uidInContext: context])
             [[[[newEvent parent] events] objectAtIndex: 0] setOrganizer: [newEvent organizer]];
 
           if (userIsOrganizer)
