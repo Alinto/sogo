@@ -9,22 +9,14 @@
    * @param {object} futureMailboxData - either an object literal or a promise
    */
   function Mailbox(account, futureMailboxData) {
-    this.$isLoading = false;
     this.$account = account;
     // Data is immediately available
     if (typeof futureMailboxData.then !== 'function') {
-      angular.extend(this, futureMailboxData);
+      this.init(futureMailboxData);
       if (this.name && !this.path) {
         // Create a new mailbox on the server
         var newMailboxData = Mailbox.$$resource.create('createFolder', this.name);
         this.$unwrap(newMailboxData);
-      }
-      else {
-        this.id = this.$id();
-        this.isEditable = this.$isEditable();
-        // Make a copy of the data for an eventual reset
-        this.$shadowData = this.$omit();
-        this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
       }
     }
     else {
@@ -39,7 +31,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Mailbox constructor
    */
-  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Acl', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, Acl, PRELOAD) {
+  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Acl', 'Preferences', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, Acl, Preferences, PRELOAD) {
     angular.extend(Mailbox, {
       $q: $q,
       $timeout: $timeout,
@@ -47,8 +39,17 @@
       $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser),
       $Message: Message,
       $$Acl: Acl,
+      $Preferences: Preferences,
+      $query: { sort: 'date', asc: 0 },
       selectedFolder: null,
       PRELOAD: PRELOAD
+    });
+    // Initialize sort parameters from user's settings
+    Preferences.ready().then(function() {
+      if (Preferences.settings.Mail.SortingState) {
+        Mailbox.$query.sort = Preferences.settings.Mail.SortingState[0];
+        Mailbox.$query.asc = parseInt(Preferences.settings.Mail.SortingState[1]);
+      }
     });
 
     return Mailbox; // return constructor
@@ -137,6 +138,31 @@
   };
 
   /**
+   * @function init
+   * @memberof Mailbox.prototype
+   * @desc Extend instance with new data and compute additional attributes.
+   * @param {object} data - attributes of mailbox
+   */
+  Mailbox.prototype.init = function(data) {
+    var _this = this;
+    this.$isLoading = false;
+    this.$messages = [];
+    this.uidsMap = {};
+    angular.extend(this, data);
+    if (this.path) {
+      this.id = this.$id();
+      this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
+    }
+    if (this.type) {
+      this.$isEditable = this.isEditable();
+    }
+    if (angular.isUndefined(this.$shadowData)) {
+      // Make a copy of the data for an eventual reset
+      this.$shadowData = this.$omit();
+    }
+  }
+
+  /**
    * @function $id
    * @memberof Mailbox.prototype
    * @desc Build the unique ID to identified the mailbox.
@@ -176,34 +202,37 @@
    * @param {boolean} filters.negative - negate the condition
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$filter = function(sort, filters) {
-    var futureMailboxData, options;
-
-    if (sort) {
-      angular.extend(this.$query, sort);
-    }
-    options = { sortingAttributes: this.$query };
-    if (angular.isDefined(filters)) {
-      options.filters = _.reject(filters, function(filter) {
-        return angular.isUndefined(filter.searchInput) || filter.searchInput.length == 0;
-      });
-      _.each(options.filters, function(filter) {
-        var secondFilter,
-            match = filter.searchBy.match(/(\w+)_or_(\w+)/);
-        if (match) {
-          options.sortingAttributes.match = 'OR';
-          filter.searchBy = match[1];
-          secondFilter = angular.copy(filter);
-          secondFilter.searchBy = match[2];
-          options.filters.push(secondFilter);
-        }
-      });
-    }
+  Mailbox.prototype.$filter = function(sortingAttributes, filters) {
+    var _this = this, options = {};
 
     this.$isLoading = true;
-    futureMailboxData = Mailbox.$$resource.post(this.id, 'view', options);
 
-    return this.$unwrap(futureMailboxData);
+    return Mailbox.$Preferences.ready().then(function() {
+      if (sortingAttributes)
+        // Sorting preferences are common to all mailboxes
+        angular.extend(Mailbox.$query, sortingAttributes);
+
+      angular.extend(options, { sortingAttributes: Mailbox.$query });
+      if (angular.isDefined(filters)) {
+        options.filters = _.reject(filters, function(filter) {
+          return angular.isUndefined(filter.searchInput) || filter.searchInput.length == 0;
+        });
+        _.each(options.filters, function(filter) {
+          var secondFilter,
+              match = filter.searchBy.match(/(\w+)_or_(\w+)/);
+          if (match) {
+            options.sortingAttributes.match = 'OR';
+            filter.searchBy = match[1];
+            secondFilter = angular.copy(filter);
+            secondFilter.searchBy = match[2];
+            options.filters.push(secondFilter);
+          }
+        });
+      }
+
+      var futureMailboxData = Mailbox.$$resource.post(_this.id, 'view', options);
+      return _this.$unwrap(futureMailboxData);
+    });
   };
 
   /**
@@ -252,12 +281,12 @@
   };
 
   /**
-   * @function $isEditable
+   * @function isEditable
    * @memberof Mailbox.prototype
    * @desc Checks if the mailbox is editable based on its type.
    * @returns true if the mailbox is not a special folder.
    */
-  Mailbox.prototype.$isEditable = function() {
+  Mailbox.prototype.isEditable = function() {
     return this.type == 'folder';
   };
 
@@ -501,10 +530,7 @@
       Mailbox.$timeout(function() {
         var uids, headers;
 
-        angular.extend(_this, data);
-        _this.$messages = [];
-        _this.uidsMap = {};
-        _this.$query = { sortingAttributes: { match: 'OR', sort: 'date', asc: false } };
+        _this.init(data);
 
         if (_this.uids) {
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
@@ -542,9 +568,6 @@
             _.extend(_this.$messages[i], msg);
           });
         }
-        // Instanciate Acl object
-        _this.$acl = new Mailbox.$$Acl('Mail/' + _this.id);
-
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
         _this.$isLoading = false;
         deferred.resolve(_this.$messages);

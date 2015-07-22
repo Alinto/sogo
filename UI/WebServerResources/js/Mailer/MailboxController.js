@@ -12,6 +12,7 @@
 
     Mailbox.selectedFolder = stateMailbox;
 
+    vm.service = Mailbox;
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
     vm.selectedFolder = stateMailbox;
@@ -72,7 +73,7 @@
     }
 
     function sortedBy(field) {
-      return vm.selectedFolder.$query.sortingAttributes.sort == field;
+      return Mailbox.$query.sort == field;
     }
 
     function cancelSearch() {
