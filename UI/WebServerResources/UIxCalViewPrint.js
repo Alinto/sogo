@@ -581,7 +581,7 @@ function _parseEvent(event) {
 
     if (event[21] && event[21].length) {
       descriptionCell.innerHTML = description;
-      descriptionCellValue.innerHTML = event[21];
+      descriptionCellValue.innerHTML = event[21].replace(/(?:\r\n|\r|\n)/g, '<br/>');
     }
 
     if (printColors.checked) {

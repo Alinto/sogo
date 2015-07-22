@@ -24,6 +24,7 @@ Bug fixes
  - improved EAS email flagging handling (#3140)
  - fixed computation of GlobalObjectId (#3235)
  - fixed EAS conversation ID issues on BB10 (#3152)
+ - fixed CR/LF printing in event's description (#3228)
 
 2.3.0 (2015-06-01)
 -------------------
