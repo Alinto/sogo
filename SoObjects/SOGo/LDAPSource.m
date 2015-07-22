@@ -737,7 +737,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       }
   NS_HANDLER
     {
-      if ([[localException name] isEqual: @"LDAPException"] && ([[[localException userInfo] objectForKey: @"error_code"] intValue] == LDAP_CONSTRAINT_VIOLATION))
+      if ([[localException name] isEqual: @"LDAPException"] &&
+          ([[[localException userInfo] objectForKey: @"error_code"] intValue] == LDAP_CONSTRAINT_VIOLATION))
         {
           *perr = PolicyInsufficientPasswordQuality;
         }
@@ -1165,6 +1166,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   [self _fillConstraints: ldapEntry forModule: @"Calendar"
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
   [self _fillConstraints: ldapEntry forModule: @"Mail"
+          intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
+  [self _fillConstraints: ldapEntry forModule: @"ActiveSync"
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
 
   if (contactMapping)

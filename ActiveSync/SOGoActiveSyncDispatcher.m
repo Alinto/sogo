@@ -2862,6 +2862,7 @@ static BOOL debugOn = NO;
   NSAutoreleasePool *pool;
   id builder, dom;
   SEL aSelector;
+  id activeUser;
 
   NSString *cmdName, *deviceId;
   NSData *d;
@@ -2869,6 +2870,14 @@ static BOOL debugOn = NO;
   pool = [[NSAutoreleasePool alloc] init];
     
   ASSIGN(context, theContext);
+
+  activeUser = [context activeUser];
+  if (![activeUser canAccessModule: @"ActiveSync"]) 
+    {
+      [theResponse setStatus: 403];
+      [self logWithFormat: @"EAS - Forbidden access for user %@", [activeUser loginInDomain]];
+      return nil;
+    }     
 
   // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
