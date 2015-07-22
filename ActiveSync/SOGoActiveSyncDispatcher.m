@@ -2885,7 +2885,7 @@ static BOOL debugOn = NO;
   activeUser = [context activeUser];
   if (![activeUser canAccessModule: @"ActiveSync"]) 
     {
-      [theResponse setStatus: 403];
+      [(WOResponse *)theResponse setStatus: 403];
       [self logWithFormat: @"EAS - Forbidden access for user %@", [activeUser loginInDomain]];
       return nil;
     }     
