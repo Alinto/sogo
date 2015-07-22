@@ -550,6 +550,28 @@ struct GlobalObjectId {
   return d;
 }
 
+
+- (NSString *) _getNormalizedSubject
+{
+  NSString *subject;
+  NSUInteger colIdx;
+  NSString *stringValue;
+
+  subject = [[self subject] decodedHeader];
+
+  colIdx = [subject rangeOfString: @":" options:NSBackwardsSearch].location;
+  if (colIdx != NSNotFound && colIdx + 1 < [subject length])
+    stringValue = [[subject substringFromIndex: colIdx + 1] stringByTrimmingLeadSpaces];
+  else
+    stringValue = subject;
+
+  if (!stringValue)
+    stringValue = @"";
+
+  return stringValue;
+}
+
+
 //
 //
 //
@@ -663,7 +685,7 @@ struct GlobalObjectId {
   if (value)
     {
       [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentationInContext: context]];
-      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [[self _getNormalizedSubject] activeSyncRepresentationInContext: context]];
     }
 
   // DateReceived
@@ -1049,7 +1071,13 @@ struct GlobalObjectId {
   if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
       [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
     {
-      if ([self inReplyTo])
+      NSString *reference;
+
+      reference = [[[[self mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] objectAtIndex: 0];
+
+      if ([reference length] > 0)
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+      else if ([self inReplyTo])
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
       else if ([self messageId])
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];

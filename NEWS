@@ -20,6 +20,7 @@ Bug fixes
  - Android EAS Lollipop fixes (#3268 and #3269) 
  - improved EAS email flagging handling (#3140)
  - fixed computation of GlobalObjectId (#3235)
+ - fixed EAS conversation ID issues on BB10 (#3152)
 
 2.3.0 (2015-06-01)
 -------------------

@@ -2576,7 +2576,7 @@ static BOOL debugOn = NO;
       NGMimeFileData *fdata;
       NSException *error;
       NSArray *attachmentKeys;
-      NSMutableArray *attachments;
+      NSMutableArray *attachments, *references;
 
       id body, bodyFromSmartForward, htmlPart, textPart;
       NSString *fullName, *email, *charset, *s;
@@ -2615,7 +2615,25 @@ static BOOL debugOn = NO;
         [map setObject: email forKey: @"from"];
 
       if ([mailObject messageId])
-        [map setObject: [mailObject messageId] forKey: @"in-reply-to"];
+        {
+          [map setObject: [mailObject messageId] forKey: @"in-reply-to"];
+
+          references = [[[[[mailObject mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] mutableCopy] autorelease];
+          if ([references count] > 0)
+            {
+              // If there are more than ten identifiers listed, we eliminate the second one.
+              if ([references count] >= 10)
+                [references removeObjectAtIndex: 1];
+
+              [references addObject: [mailObject messageId]];
+
+              [map setObject: [references componentsJoinedByString:@" "] forKey: @"references"];
+            }
+          else
+            {
+              [map setObject: [mailObject messageId] forKey: @"references"];
+            }
+        }
 
       messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
       body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
