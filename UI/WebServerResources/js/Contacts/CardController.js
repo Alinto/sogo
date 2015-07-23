@@ -88,6 +88,7 @@
       if (vm.card.isNew) {
         // Cancelling the creation of a card
         vm.card = null;
+        delete AddressBook.selectedFolder.selectedCard;
         $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
       }
       else {
