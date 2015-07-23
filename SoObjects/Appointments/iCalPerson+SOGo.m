@@ -75,11 +75,18 @@ static SOGoUserManager *um = nil;
 
 - (NSString *) uidInDomain: (NSString *) domain
 {
+  NSDictionary *contact;
+  NSString *uid;
+
   if (!um)
     um = [SOGoUserManager sharedUserManager];
 
-  return [um contactInfosForUserWithUIDorEmail: [self rfc822Email]
-                                      inDomain: domain];
+  uid = nil;
+  contact = [um contactInfosForUserWithUIDorEmail: [self rfc822Email] inDomain: domain];
+  if (contact)
+    uid = [contact valueForKey: @"c_uid"];
+
+  return uid;
 }
 
 - (NSString *) contactIDInContext: (WOContext *) context
