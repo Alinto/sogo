@@ -9,6 +9,7 @@ Enhancements
  - added create-folder subcommand to sogo-tool to create contact and calendar folders
  - group mail addresses can be used as recipient in Outlook
  - added 'ActiveSync' module constraints
+ - updated CKEditor to version 4.5.1
  - added Slovenian translation - thanks to Jens Riecken
  - added Chinese (Taiwan) translation
 
