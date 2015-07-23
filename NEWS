@@ -1,3 +1,9 @@
+2.3.x (2015-MM-DD)
+------------------
+
+Bug fixes
+ - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
+
 2.3.1 (2015-07-23)
 ------------------
 

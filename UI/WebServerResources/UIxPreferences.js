@@ -299,11 +299,11 @@ function initPreferences() {
             textField.value = allValues[i];
             textField.setAttribute("uid", allKeys[i]);
             textField.hide();
-            span.innerText = allValues[i];
+            span.update(allValues[i].escapeHTML());
             
             td.appendChild(textField);
             td.appendChild(span);
-            row.appendChild (td);
+            row.appendChild(td);
             tablebody.appendChild(row);
             $(tablebody).deselectAll();
             
