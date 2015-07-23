@@ -21,6 +21,7 @@
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
     // vm.moveSelectedMessages = moveSelectedMessages;
+    vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
     vm.cancelSearch = cancelSearch;
@@ -67,6 +68,12 @@
     //     vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
     //   });
     // }
+
+    function selectAll() {
+      _.each(vm.selectedFolder.$messages, function(message) {
+        message.selected = true;
+      });
+    }
 
     function sort(field) {
       vm.selectedFolder.$filter({ sort: field });
