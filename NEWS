@@ -10,6 +10,7 @@ Enhancements
  - group mail addresses can be used as recipient in Outlook
  - added 'ActiveSync' module constraints
  - added Slovenian translation - thanks to Jens Riecken
+ - added Chinese (Taiwan) translation
 
 Bug fixes
  - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
