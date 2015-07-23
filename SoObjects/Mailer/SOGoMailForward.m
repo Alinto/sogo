@@ -260,6 +260,9 @@
 @implementation SOGoMailCatalanForward
 @end
 
+@implementation SOGoMailChineseTaiwanForward
+@end
+
 @implementation SOGoMailCzechForward
 @end
 
