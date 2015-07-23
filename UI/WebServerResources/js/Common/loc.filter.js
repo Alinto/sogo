@@ -1,7 +1,8 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 /**
- * @type {angular.Module}
+ * loc - A simple filter to return the localized version of a string.
+ * @memberof SOGo.Common
  */
 (function () {
   'use strict';
