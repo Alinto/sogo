@@ -823,7 +823,7 @@ static NSArray *infoKeys = nil;
       recipients_count += [[co allRecipients] count];
       messages_count += 1;
       
-      if ([dd maximumMessageSubmissionCount] > 0 && [dd maximumRecipientCount] > 0)
+      if ([dd maximumMessageSubmissionCount] > 0 || [dd maximumRecipientCount] > 0)
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: messages_count
                                               recipientsCount: recipients_count
