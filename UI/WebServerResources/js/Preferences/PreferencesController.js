@@ -59,16 +59,16 @@
 
       vm.preferences.defaults.AuxiliaryMailAccounts.push({});
       account = _.last(vm.preferences.defaults.AuxiliaryMailAccounts);
-      account['name'] = "New account";
-      account['identities'] = [];
-      account['identities'][0] = {};
-      account['identities'][0]['fullName'] = "";
-      account['identities'][0]['email'] = "";
-      account['receipts'] = {};
-      account['receipts']['receiptAction'] = "ignore";
-      account['receipts']['receiptNonRecipientAction'] = "ignore";
-      account['receipts']['receiptOutsideDomainAction'] = "ignore";
-      account['receipts']['receiptAnyAction'] = "ignore";
+      account.name = "New account";
+      account.identities = [];
+      account.identities[0] = {};
+      account.identities[0].fullName = "";
+      account.identities[0].email = "";
+      account.receipts = {};
+      account.receipts.receiptAction = "ignore";
+      account.receipts.receiptNonRecipientAction = "ignore";
+      account.receipts.receiptOutsideDomainAction = "ignore";
+      account.receipts.receiptAnyAction = "ignore";
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -103,7 +103,7 @@
     }
     
     function addMailLabel() {
-      vm.preferences.defaults.SOGoMailLabelsColors["new_label"] =  ["New label", "#aaa"];
+      vm.preferences.defaults.SOGoMailLabelsColors.new_label =  ["New label", "#aaa"];
     }
 
     function removeMailLabel(key) {

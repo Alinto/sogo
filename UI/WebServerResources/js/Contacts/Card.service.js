@@ -54,7 +54,7 @@
    * @desc Factory registration of Card in Angular module.
    */
   angular.module('SOGo.ContactsUI')
-    .factory('Card', Card.$factory)
+    .factory('Card', Card.$factory);
 
   /**
    * @memberof Card
@@ -171,7 +171,7 @@
 
   Card.prototype.$fullname = function() {
     var fn = this.fn || '', names;
-    if (fn.length == 0) {
+    if (fn.length === 0) {
       names = [];
       if (this.givenname && this.givenname.length > 0)
         names.push(this.givenname);
@@ -185,7 +185,7 @@
         fn = this.org;
       }
       else if (this.emails && this.emails.length > 0) {
-        fn = _.find(this.emails, function(i) { return i.value != ''; }).value;
+        fn = _.find(this.emails, function(i) { return i.value !== ''; }).value;
       }
       else if (this.c_cn && this.c_cn.length > 0) {
         fn = this.c_cn;
@@ -201,7 +201,7 @@
     if (this.role) description.push(this.role);
     if (this.orgUnits && this.orgUnits.length > 0)
       _.forEach(this.orgUnits, function(unit) {
-        if (unit.value != '')
+        if (unit.value !== '')
           description.push(unit.value);
       });
     if (this.org) description.push(this.org);
@@ -307,7 +307,7 @@
     if (angular.isUndefined(this.emails)) {
       this.emails = [{type: type, value: ''}];
     }
-    else if (!_.find(this.emails, function(i) { return i.value == ''; })) {
+    else if (_.isUndefined(_.find(this.emails, function(i) { return i.value === ''; }))) {
       this.emails.push({type: type, value: ''});
     }
     return this.emails.length - 1;
@@ -317,7 +317,7 @@
     if (angular.isUndefined(this.phones)) {
       this.phones = [{type: type, value: ''}];
     }
-    else if (!_.find(this.phones, function(i) { return i.value == ''; })) {
+    else if (_.isUndefined(_.find(this.phones, function(i) { return i.value === ''; }))) {
       this.phones.push({type: type, value: ''});
     }
     return this.phones.length - 1;
@@ -327,7 +327,7 @@
     if (angular.isUndefined(this.urls)) {
       this.urls = [{type: type, value: url}];
     }
-    else if (!_.find(this.urls, function(i) { return i.value == url; })) {
+    else if (_.isUndefined(_.find(this.urls, function(i) { return i.value == url; }))) {
       this.urls.push({type: type, value: url});
     }
     return this.urls.length - 1;
@@ -338,11 +338,11 @@
       this.addresses = [{type: type, postoffice: postoffice, street: street, street2: street2, locality: locality, region: region, country: country, postalcode: postalcode}];
     }
     else if (!_.find(this.addresses, function(i) {
-      return i.street == street
-        && i.street2 == street2
-        && i.locality == locality
-        && i.country == country
-        && i.postalcode == postalcode;
+      return i.street == street &&
+        i.street2 == street2 &&
+        i.locality == locality &&
+        i.country == country &&
+        i.postalcode == postalcode;
     })) {
       this.addresses.push({type: type, postoffice: postoffice, street: street, street2: street2, locality: locality, region: region, country: country, postalcode: postalcode});
     }
@@ -355,7 +355,7 @@
     if (angular.isUndefined(this.refs)) {
       this.refs = [card];
     }
-    else if (email.length == 0) {
+    else if (email.length === 0) {
       this.refs.push(card);
     }
     else {
@@ -468,5 +468,14 @@
       }
     });
     return card;
+  };
+
+  Card.prototype.toString = function() {
+    var desc = this.id + ' ' + this.$$fullname;
+
+    if (this.$$email)
+      desc += ' <' + this.$$email + '>';
+
+    return '[' + desc + ']';
   };
 })();

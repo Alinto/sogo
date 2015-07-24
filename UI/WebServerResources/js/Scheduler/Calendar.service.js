@@ -61,8 +61,8 @@
       list = this.$calendars;
 
     sibling = _.find(list, function(o) {
-      return (o.id != 'personal'
-              && o.name.localeCompare(calendar.name) === 1);
+      return (o.id != 'personal' &&
+              o.name.localeCompare(calendar.name) === 1);
     });
     i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, calendar);
@@ -103,11 +103,11 @@
   Calendar.$get = function(id) {
     var calendar;
 
-    calendar = _.find(Calendar.$calendars, function(o) { return o.id == id });
+    calendar = _.find(Calendar.$calendars, function(o) { return o.id == id; });
     if (!calendar)
-      calendar = _.find(Calendar.$subscriptions, function(o) { return o.id == id });
+      calendar = _.find(Calendar.$subscriptions, function(o) { return o.id == id; });
     if (!calendar)
-      calendar = _.find(Calendar.$webcalendars, function(o) { return o.id == id });
+      calendar = _.find(Calendar.$webcalendars, function(o) { return o.id == id; });
 
     return calendar;
   };

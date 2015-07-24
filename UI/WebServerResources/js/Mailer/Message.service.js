@@ -317,7 +317,7 @@
   Message.prototype.$sendMDN = function() {
     this.shouldAskReceipt = 0;
     return Message.$$resource.post(this.id, 'sendMDN');
-  }
+  };
 
   /**
    * @function $deleteAttachment
@@ -331,12 +331,13 @@
     Message.$$resource.post(this.$absolutePath({asDraft: true}), action).then(function(data) {
       Message.$timeout(function() {
         _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function(attachment) {
-          return attachment.filename != filename});
+          return attachment.filename != filename;
+        });
       }, function() {
         // TODO: show toast
       });
     });
-  }
+  };
 
   /**
    * @function $markAsFlaggedOrUnflagged
@@ -356,7 +357,7 @@
         _this.isflagged = !_this.isflagged;
       });
     });
-  }
+  };
 
   /**
    * @function $reload

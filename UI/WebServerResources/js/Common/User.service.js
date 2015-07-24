@@ -59,7 +59,10 @@
     User.$query = search;
 
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
-      var results, index, user;
+      var results, index, user,
+          compareUids = function(data) {
+            return user.uid == data.uid;
+          };
       if (excludedUsers) {
         // Remove excluded users from response
         results = _.filter(response.users, function(data) {
@@ -84,9 +87,7 @@
       // Remove users that no longer match the search query
       for (index = User.$users.length - 1; index >= 0; index--) {
         user = User.$users[index];
-        if (!_.find(results, function(data) {
-          return user.uid == data.uid;
-        })) {
+        if (!_.find(results, compareUids)) {
           User.$users.splice(index, 1);
         }
       }
@@ -107,10 +108,6 @@
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
       this.$$image = this.image || User.$gravatar(this.c_email);
-  };
-
-  User.prototype.toString = function() {
-    return '[User ' + this.c_email + ']';
   };
 
   /**
@@ -274,6 +271,10 @@
       }
     });
     return user;
+  };
+
+  User.prototype.toString = function() {
+    return '[User ' + this.c_email + ']';
   };
 
 })();

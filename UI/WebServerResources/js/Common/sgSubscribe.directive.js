@@ -1,6 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
+  /* jshint validthis: true */
   'use strict';
 
   /*
@@ -27,7 +28,12 @@
       controller: sgSubscribeDialogController,
       controllerAs: 'vm',
       link: link
-    }
+    };
+  }
+
+  function link(scope, element, attrs, controller) {
+    var inputEl = element.find('input');
+    element.on('click', controller.showDialog);
   }
 
   /**
@@ -84,12 +90,6 @@
       onFolderSelect({folderData: folder});
     };
   }
-
-  function link(scope, element, attrs, controller) {
-    var inputEl = element.find('input');
-    element.on('click', controller.showDialog);
-  }
-
 
   angular
     .module('SOGo.Common')

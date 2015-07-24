@@ -25,9 +25,9 @@
     $scope.$watch(
       function() {
         return _.union(
-          _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']) }),
-          _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']) }),
-          _.map(Calendar.$webcalendars, function(o) { return _.pick(o, ['id', 'active', 'color']) })
+          _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
+          _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
+          _.map(Calendar.$webcalendars, function(o) { return _.pick(o, ['id', 'active', 'color']); })
         );
       },
       function(newList, oldList) {
@@ -213,7 +213,7 @@
             if (user.uid == vm.selectedUser.uid)
               vm.selectedUser = null;
           }, function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured please try again.'))
+            Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
         }
 
@@ -234,9 +234,9 @@
             vm.selectedUser = user;
             vm.selectedUser.$rights();
           }
-        };
-      };
-    };
+        }
+      }
+    }
 
     // Callback of sgSubscribe directive
     function subscribeToFolder(calendarData) {

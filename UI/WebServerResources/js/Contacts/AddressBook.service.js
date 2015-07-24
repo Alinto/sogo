@@ -83,9 +83,9 @@
 
     list = addressbook.isSubscription? this.$subscriptions : this.$addressbooks;
     sibling = _.find(list, function(o) {
-      return (addressbook.id == 'personal'
-              || (o.id != 'personal'
-                  && o.name.localeCompare(addressbook.name) === 1));
+      return (addressbook.id == 'personal' ||
+              (o.id != 'personal' &&
+               o.name.localeCompare(addressbook.name) === 1));
     });
     i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, addressbook);
@@ -140,9 +140,9 @@
     var _this = this;
     return AddressBook.$$resource.userResource(uid).fetch(path, 'subscribe').then(function(addressbookData) {
       var addressbook = new AddressBook(addressbookData);
-      if (!_.find(_this.$subscriptions, function(o) {
+      if (_.isUndefined(_.find(_this.$subscriptions, function(o) {
         return o.id == addressbookData.id;
-      })) {
+      }))) {
         // Not already subscribed
         AddressBook.$add(addressbook);
       }
@@ -196,7 +196,7 @@
 
     count = 0;
     if (this.cards) {
-      count = (_.filter(this.cards, function(card) { return card.selected })).length;
+      count = (_.filter(this.cards, function(card) { return card.selected; })).length;
     }
     return count;
   };
@@ -214,23 +214,22 @@
       .then(function(response) {
         var index, card,
             results = response.cards,
-            cards = _this.cards;
+            cards = _this.cards,
+            compareIds = function(data) {
+              return this.id == data.id;
+            };
 
         // Remove cards that no longer exist
         for (index = cards.length - 1; index >= 0; index--) {
           card = cards[index];
-          if (!_.find(results, function(data) {
-            return card.id == data.id;
-          })) {
+          if (_.isUndefined(_.find(results, compareIds, card))) {
             cards.splice(index, 1);
           }
         }
 
         // Add new cards
         _.each(results, function(data, index) {
-          if (!_.find(cards, function(card) {
-            return card.id == data.id;
-          })) {
+          if (_.isUndefined(_.find(cards, compareIds, data))) {
             var card = new AddressBook.$Card(data);
             cards.splice(index, 0, card);
           }
@@ -272,7 +271,10 @@
     return this.$id().then(function(addressbookId) {
       return AddressBook.$$resource.fetch(addressbookId, 'view', _this.$query);
     }).then(function(response) {
-      var results, cards, card, index;
+      var results, cards, card, index,
+          compareIds = function(data) {
+            return this.id == data.id;
+          };
       if (options && options.dry) {
         // Don't keep a copy of the resulting cards.
         // This is usefull when doing autocompletion.
@@ -283,10 +285,8 @@
       }
       if (excludedCards) {
         // Remove excluded cards from results
-        results = _.filter(response.cards, function(data) {
-          return !_.find(excludedCards, function(card) {
-            return card.id == data.id;
-          });
+        results = _.filter(response.cards, function(card) {
+          return _.isUndefined(_.find(excludedCards, compareIds, card));
         });
       }
       else {
@@ -295,17 +295,13 @@
       // Remove cards that no longer match the search query
       for (index = cards.length - 1; index >= 0; index--) {
         card = cards[index];
-        if (!_.find(results, function(data) {
-          return card.id == data.id;
-        })) {
+        if (_.isUndefined(_.find(results, compareIds, card))) {
           cards.splice(index, 1);
         }
       }
       // Add new cards matching the search query
       _.each(results, function(data, index) {
-        if (!_.find(cards, function(card) {
-          return card.id == data.id;
-        })) {
+        if (_.isUndefined(_.find(cards, compareIds, data))) {
           var card = new AddressBook.$Card(data, search);
           cards.splice(index, 0, card);
         }
@@ -314,9 +310,7 @@
       _.each(results, function(data, index) {
         var oldIndex, removedCards;
         if (cards[index].id != data.id) {
-          oldIndex = _.findIndex(cards, function(card) {
-            return card.id == data.id;
-          });
+          oldIndex = _.findIndex(cards, compareIds, data);
           removedCards = cards.splice(oldIndex, 1);
           cards.splice(index, 0, removedCards[0]);
         }
@@ -379,7 +373,7 @@
    */
   AddressBook.prototype.$deleteCards = function(cards) {
 
-    var uids = _.map(cards, function(card) { return card.id });
+    var uids = _.map(cards, function(card) { return card.id; });
     var _this = this;
     
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: uids}).then(function() {

@@ -127,7 +127,7 @@
       function LinksDialogController(scope, $mdDialog) {
         scope.close = function() {
           $mdDialog.hide();
-        }
+        };
       }
     }
 
@@ -206,7 +206,7 @@
               vm.selectedUser = null;
             }
           }, function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured please try again.'))
+            Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
         }
 

@@ -97,7 +97,7 @@
     function addAttachUrl() {
       var i = vm.component.addAttachUrl('');
       focus('attachUrl_' + i);
-    };
+    }
 
     function toggleRecurrenceEditor() {
       vm.showRecurrenceEditor = !vm.showRecurrenceEditor;
@@ -113,16 +113,13 @@
       var index, indexResult, card;
       if ($query) {
         AddressBook.$filterAll($query).then(function(results) {
+          var compareIds = function(result) {
+            return this.id == result.id;
+          };
           // Remove cards that no longer match the search query
           for (index = vm.cardResults.length - 1; index >= 0; index--) {
             card = vm.cardResults[index];
-            indexResult = _.findIndex(results, function(result) {
-              return _.find(card.emails, function(data) {
-                return _.find(result.emails, function(resultData) {
-                  return resultData.value == data.value;
-                });
-              });
-            });
+            indexResult = _.findIndex(results, compareIds, card);
             if (indexResult >= 0)
               results.splice(indexResult, 1);
             else

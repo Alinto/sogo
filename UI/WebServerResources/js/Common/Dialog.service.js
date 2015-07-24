@@ -90,11 +90,11 @@
       scope.cancel = function() {
         d.reject();
         $mdDialog.hide();
-      }
+      };
       scope.ok = function() {
         d.resolve(scope.name);
         $mdDialog.hide();
-      }
+      };
     }
 
     return d.promise;
@@ -110,7 +110,7 @@
     angular.extend(Dialog, { $q: $q , $modal: $mdDialog });
 
     return Dialog; // return constructor
-  };
+  }
 
   /* Factory registration in Angular module */
   angular

@@ -160,7 +160,7 @@
       // Make a copy of the data for an eventual reset
       this.$shadowData = this.$omit();
     }
-  }
+  };
 
   /**
    * @function $id
@@ -183,7 +183,7 @@
 
     count = 0;
     if (this.$messages) {
-      count = (_.filter(this.$messages, function(message) { return message.selected })).length;
+      count = (_.filter(this.$messages, function(message) { return message.selected; })).length;
     }
     return count;
   };
@@ -215,7 +215,7 @@
       angular.extend(options, { sortingAttributes: Mailbox.$query });
       if (angular.isDefined(filters)) {
         options.filters = _.reject(filters, function(filter) {
-          return angular.isUndefined(filter.searchInput) || filter.searchInput.length == 0;
+          return angular.isUndefined(filter.searchInput) || filter.searchInput.length === 0;
         });
         _.each(options.filters, function(filter) {
           var secondFilter,
@@ -257,8 +257,8 @@
 
       // Preload more headers if possible
       endIndex = Math.min(startIndex + Mailbox.PRELOAD.LOOKAHEAD, max - 1);
-      if (!angular.isDefined(this.$messages[endIndex].subject)
-          && !angular.isDefined(this.$messages[endIndex].loading)) {
+      if (!angular.isDefined(this.$messages[endIndex].subject) &&
+          !angular.isDefined(this.$messages[endIndex].loading)) {
         endIndex = Math.min(startIndex + Mailbox.PRELOAD.SIZE, max);
         for (uids = []; startIndex < endIndex && startIndex < max; startIndex++) {
           if (angular.isDefined(this.$messages[startIndex].subject) || this.$messages[startIndex].loading) {
@@ -332,7 +332,7 @@
 
     // Find mailbox parent
     parent = findParent(null, this.$account.$mailboxes);
-    if (parent == null)
+    if (parent === null)
       children = this.$account.$mailboxes;
     else
       children = parent.children;

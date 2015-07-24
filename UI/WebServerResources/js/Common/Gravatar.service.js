@@ -21,8 +21,9 @@
       }
       hash = email.md5();
 
+      // return 'https://www.gravatar.com/avatar/' + hash + '?s=' + s + '&d=identicon';
       return 'https://www.gravatar.com/avatar/' + hash + '?s=' + s + '&d=wavatar';
-    }
+    };
   }
 
   angular

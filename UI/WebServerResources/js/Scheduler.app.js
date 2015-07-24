@@ -8,7 +8,7 @@
   angular.module('SOGo.MailerUI', []);
   angular.module('SOGo.PreferencesUI', []);
 
-  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'SOGo.Common', 'SOGo.ContactsUI', 'SOGo.MailerUI', 'SOGo.PreferencesUI'])
+  angular.module('SOGo.SchedulerUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.ContactsUI', 'SOGo.MailerUI', 'SOGo.PreferencesUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,

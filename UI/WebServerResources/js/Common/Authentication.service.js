@@ -2,6 +2,7 @@
 /* JavaScript for Authentication */
 
 (function() {
+  /* jshint validthis: true */
   'use strict';
 
   angular.module('SOGo.Authentication', [])
@@ -41,7 +42,7 @@
           start++;
         if (start > 0)
           currentPair = currentPair.substr(start);
-        if (currentPair.indexOf(prefix) == 0)
+        if (currentPair.indexOf(prefix) === 0)
           foundCookie = currentPair.substr(prefix.length);
       }
 
@@ -77,12 +78,11 @@
       parts = baseAddress.split('/');
       parts.splice(0, 3);
       altBaseAddress = parts.join('/');
-      newAddress;
-      if ((address.startsWith(baseAddress)
-           || address.startsWith(altBaseAddress))
-          && !address.endsWith('/logoff')) {
+      if ((address.startsWith(baseAddress) || address.startsWith(altBaseAddress)) &&
+          !address.endsWith('/logoff')) {
         newAddress = address;
-      } else {
+      }
+      else {
         newAddress = baseAddress;
       }
 
@@ -91,8 +91,9 @@
 
     this.$get = getService;
 
-    getService.$inject = ['$q', '$http', 'passwordPolicyConfig']
+    getService.$inject = ['$q', '$http', 'passwordPolicyConfig'];
     function getService($q, $http, passwordPolicyConfig) {
+
       var _this = this, service;
 
       service = {
@@ -183,7 +184,7 @@
             d.resolve();
           }).error(function(data, status) {
             var error,
-                perr = data["LDAPPasswordPolicyError"];
+                perr = data.LDAPPasswordPolicyError;
 
             if (!perr) {
               perr = passwordPolicyConfig.PolicyPasswordSystemUnknown;

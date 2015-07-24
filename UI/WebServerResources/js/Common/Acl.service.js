@@ -161,7 +161,7 @@
       if (!user.wasSubscribed && user.isSubscribed) {
         users.push(user.uid);
         // console.debug('subscribe ' + user.uid);
-      };
+      }
     });
     if (users.length) {
       param = {uids: users.join(',')};

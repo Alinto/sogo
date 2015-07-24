@@ -61,7 +61,7 @@
         scope.create = function(type) {
           $mdDialog.hide();
           $state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
-        }
+        };
       }
     }
 
@@ -78,8 +78,9 @@
                      l('Are you sure you want to delete the selected contacts?'))
         .then(function() {
           // User confirmed the deletion
-          var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected });
+          var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
           vm.selectedFolder.$deleteCards(selectedCards);
+          delete vm.selectedFolder.selectedCard;
         },  function(data, status) {
           // Delete failed
         });

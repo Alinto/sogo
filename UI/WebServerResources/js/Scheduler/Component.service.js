@@ -282,8 +282,8 @@
       var type = (_this.type == 'appointment')? 'Events' : 'Tasks';
 
       // Set default values from user's defaults
-      _this.classification = _this.classification
-        || Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
+      _this.classification = _this.classification ||
+        Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
     });
 
     if (this.startDate)
@@ -665,8 +665,8 @@
 
     // Update recurrence definition depending on selections
     if (this.$hasCustomRepeat) {
-      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday'
-          || this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
+      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
+          this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
         // BYDAY mask for a monthly or yearly recurrence
         delete component.repeat.monthdays;
         component.repeat.days = [{ day: this.repeat.month.day, occurrence: this.repeat.month.occurrence.toString() }];

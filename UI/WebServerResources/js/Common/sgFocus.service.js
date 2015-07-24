@@ -16,7 +16,7 @@
       $timeout(function() {
         $rootScope.$broadcast('sgFocusOn', name);
       });
-    }
+    };
   }
 
   angular

@@ -28,7 +28,7 @@
         };
       }],
       template: '<address ng-bind-html="addressLines(data)"></address>'
-    }
+    };
   }
   
   angular

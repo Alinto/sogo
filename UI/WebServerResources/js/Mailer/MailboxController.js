@@ -40,7 +40,7 @@
                      l('Are you sure you want to delete the selected messages?'))
         .then(function() {
           // User confirmed the deletion
-          var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected });
+          var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
           var selectedUIDs = _.pluck(selectedMessages, 'uid');
           vm.selectedFolder.$deleteMessages(selectedUIDs).then(function() {
             vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
@@ -51,7 +51,7 @@
     }
 
     function copySelectedMessages(folder) {
-      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected });
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
       var selectedUIDs = _.pluck(selectedMessages, 'uid');
       vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder).then(function() {
         // TODO: refresh target mailbox?

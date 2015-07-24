@@ -35,31 +35,31 @@
     function addOrgUnit() {
       var i = vm.card.$addOrgUnit('');
       focus('orgUnit_' + i);
-    };
+    }
     function addEmail() {
       var i = vm.card.$addEmail('');
       focus('email_' + i);
-    };
+    }
     function addPhone() {
       var i = vm.card.$addPhone('');
       focus('phone_' + i);
-    };
+    }
     function addUrl() {
       var i = vm.card.$addUrl('', '');
       focus('url_' + i);
-    };
+    }
     function addAddress() {
       var i = vm.card.$addAddress('', '', '', '', '', '', '', '');
       focus('address_' + i);
-    };
+    }
     function addMember() {
       var i = vm.card.$addMember('');
       focus('ref_' + i);
-    };
+    }
     function userFilter($query, excludedCards) {
       AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards);
       return AddressBook.selectedFolder.$cards;
-    };
+    }
     function save(form) {
       if (form.$valid) {
         vm.card.$save()
@@ -79,10 +79,10 @@
             console.log(err);
           });
       }
-    };
+    }
     function reset() {
       vm.card.$reset();
-    };
+    }
     function cancel() {
       vm.card.$reset();
       if (vm.card.isNew) {
@@ -95,7 +95,7 @@
         // Cancelling the edition of an existing card
         $state.go('app.addressbook.card.view', { cardId: vm.card.id });
       }
-    };
+    }
     function confirmDelete(card) {
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the card of %{0}?', card.$fullname()))
@@ -115,7 +115,7 @@
                                            card.$fullname()));
             });
         });
-    };
+    }
   }
 
   angular

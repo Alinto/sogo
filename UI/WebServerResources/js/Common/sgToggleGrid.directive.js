@@ -29,7 +29,8 @@
           i,
           modelDays,
           modelAttr,
-          ensureInitRunsOnce;
+          ensureInitRunsOnce,
+          toggleClass;
 
       ensureInitRunsOnce = scope.$watch(function() {
         // Parse attribute until it returns a valid object
@@ -51,18 +52,20 @@
           ensureInitRunsOnce();
         }
       });
-      
-      for (i = 0; i < tiles.length; i++) {
-        tile = angular.element(tiles[i]);
-        tile.addClass('iconButton');
-        tile.find('figure').addClass('md-icon');
-        tile.on('click', function() {
+
+      toggleClass = function() {
           // Toggle class on click event and call toggle function
           var tile = angular.element(this),
               day = tile.attr('value');
           tile.toggleClass('sg-active');
           toggle(day);
-        });
+      };
+
+      for (i = 0; i < tiles.length; i++) {
+        tile = angular.element(tiles[i]);
+        tile.addClass('iconButton');
+        tile.find('figure').addClass('md-icon');
+        tile.on('click', toggleClass);
       }
 
       function toggle(day) {

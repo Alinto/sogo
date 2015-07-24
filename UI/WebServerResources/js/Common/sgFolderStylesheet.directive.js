@@ -35,7 +35,7 @@
         '  }',
         '</style>'
       ].join('')
-    }
+    };
   }
 
   angular
