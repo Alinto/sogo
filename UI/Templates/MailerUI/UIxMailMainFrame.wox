@@ -256,9 +256,9 @@
                           ng-dblclick="app.editFolder(folder)"
                           ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
                           ui-sref-active="sg-active">
-              <md-icon ng-class="'sg-child-level-' + folder.level">{{app.iconForFolder(folder)}}</md-icon>
+              <md-icon ng-class="'sg-child-level-' + folder.level">{{app.metadataForFolder(folder).icon}}</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode != folder.path">{{folder.name}}</p>
+                 ng-show="app.editMode != folder.path">{{app.metadataForFolder(folder).name}}</p>
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode == folder.path">
                 <input class="folder-name" type="text"
@@ -275,7 +275,7 @@
                 <md-icon label:aria-label="Options"
                          ng-click="$mdOpenMenu()"
                          md-menu-origin="md-menu-origin">more_vert</md-icon>
-                <md-menu-content width="2">
+                <md-menu-content width="3">
                   <md-menu-item>
                     <md-button type="button" ng-click="app.markFolderRead(folder)">
                       <var:string label:value="Mark Folder Read"/>
@@ -306,11 +306,22 @@
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
-                  <!-- <md-menu-item>
-                    <md-button type="button" ng-click="TODO">
-                      <var:string label:value="Use This Folder For"/>
+                  <md-menu-divider ng-show="folder.type == 'folder'"><!-- divider --></md-menu-divider>
+                  <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-button type="button" ng-click="app.setFolderAs(folder, 'Drafts')">
+                      <var:string label:value="Set as Drafts"/>
                     </md-button>
-                    </md-menu-item> -->
+                  </md-menu-item>
+                  <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-button type="button" ng-click="app.setFolderAs(folder, 'Sent')">
+                      <var:string label:value="Set as Sent"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-button type="button" ng-click="app.setFolderAs(folder, 'Trash')">
+                      <var:string label:value="Set as Trash"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-divider ng-show="folder.type != 'additional'"><!-- divider --></md-menu-divider>
                   <md-menu-item ng-show="folder.type != 'additional'">
                     <md-button type="button" ng-click="app.share(folder)">

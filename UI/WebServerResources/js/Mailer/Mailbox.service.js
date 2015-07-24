@@ -378,6 +378,16 @@
   };
 
   /**
+   * @function $setFolderAs
+   * @memberof Mailbox.prototype
+   * @desc Set a folder as Drafts/Sent/Trash
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$setFolderAs = function(type) {
+    return Mailbox.$$resource.post(this.id, 'setAs' + type + 'Folder');
+  };
+
+  /**
    * @function $emptyTrash
    * @memberof Mailbox.prototype
    * @desc Empty the Trash folder.

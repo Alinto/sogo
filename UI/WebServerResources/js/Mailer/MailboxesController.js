@@ -26,7 +26,8 @@
     vm.confirmDelete = confirmDelete;
     vm.markFolderRead = markFolderRead;
     vm.share = share;
-    vm.iconForFolder = iconForFolder;
+    vm.metadataForFolder = metadataForFolder;
+    vm.setFolderAs = setFolderAs;
 
     if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
       // Redirect to first mailbox of first account if no mailbox is selected
@@ -276,22 +277,30 @@
       }
     } // share
 
-    function iconForFolder(folder) {
+    function metadataForFolder(folder) {
       if (folder.type == 'inbox')
-        return 'inbox';
+        return {name: folder.name, icon:'inbox'};
       else if (folder.type == 'draft')
-        return 'drafts';
+        return {name: l('DraftsFolderName'), icon: 'drafts'};
       else if (folder.type == 'sent')
-        return 'send';
+        return {name: l('SentFolderName'), icon: 'send'};
       else if (folder.type == 'trash')
-        return 'delete';
+        return {name: l('TrashFolderName'), icon: 'delete'};
       else if (folder.type == 'additional')
-        return 'folder_shared';
+        return {name: folder.name, icon: 'folder_shared'};
 
       //if ($rootScope.currentFolder == folder)
       //  return 'folder_open';
 
-      return 'folder';
+      return {name: folder.name, icon: 'folder'};
+    }
+
+    function setFolderAs(folder, type) {
+      folder.$setFolderAs(type).then(function() {
+        folder.$account.$getMailboxes({reload: true});
+      }, function(error) {
+        Dialog.alert(l('Warning'), error);
+      });
     }
   }
 
