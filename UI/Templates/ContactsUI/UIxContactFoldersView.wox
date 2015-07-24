@@ -374,7 +374,10 @@
       <div class="view-list" layout="column">
         <md-content id="contactsList" layout="column" class="md-flex">
           <header class="sg-md-subheader sg-md-subheader--fixed">
-            <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">Contacts</h2>
+            <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
+              <span ng-show="addressbook.selectedFolder.cards.length > 0">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
+              <span ng-show="addressbook.selectedFolder.cards.length == 0"><var:string label:value="No contact"/></span>
+            </h2>
           </header>
           <!-- Search field & special results
                <input type="text" placeholder="Search" ng-model="search.filter" ng-keyup="doSearch($event)" />

@@ -1,12 +1,16 @@
 <?xml version='1.0' standalone='yes'?>
 <container
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
   <div class="view-list" layout="column">
     <md-content id="messagesList" layout="column" class="md-flex">
       <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
       <header class="sg-md-subheader sg-md-subheader--fixed">
-        <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">Messages</h2>
+        <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
+          <span ng-show="mailbox.selectedFolder.$messages.length > 0">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
+          <span ng-show="mailbox.selectedFolder.$messages.length == 0"><var:string label:value="No message"/></span>
+        </h2>
       </header>
       <md-virtual-repeat-container class="md-flex">
         <md-list>
