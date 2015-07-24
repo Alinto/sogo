@@ -285,6 +285,8 @@
         return 'send';
       else if (folder.type == 'trash')
         return 'delete';
+      else if (folder.type == 'additional')
+        return 'folder_shared';
 
       //if ($rootScope.currentFolder == folder)
       //  return 'folder_open';
