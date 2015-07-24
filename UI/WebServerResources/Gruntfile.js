@@ -55,16 +55,20 @@ module.exports = function(grunt) {
         src: 'css/styles.css'
       }
     },
-    concat_sourcemap: {
+    jshint: {
+      files: [].concat(Object.keys(js_files).map(function(v) { return js_files[v]; }))
+    },
+    uglify: {
+      options: {
+        sourceMap: true
+      },
       dist: {
-        options: {
-          sourcesContent: false
-        },
         files: js_files
       },
       dev: {
         options: {
-          sourcesContent: true
+          mangle: false,
+          sourceMapIncludeSources: true
         },
         files: js_files
       }
@@ -86,7 +90,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-postcss');
-  grunt.loadNpmTasks('grunt-concat-sourcemap');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.task.registerTask('static', function() {
@@ -151,10 +156,10 @@ module.exports = function(grunt) {
     }
     */
   });
-  grunt.task.registerTask('build', ['static', 'concat_sourcemap:dist', 'sass:dist', 'postcss:dist']);
+  grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass:dist', 'postcss:dist']);
   // Tasks for developers
   grunt.task.registerTask('default', ['watch']);
   grunt.task.registerTask('css', ['sass:dev', 'postcss:dev']);
-  grunt.task.registerTask('js', ['concat_sourcemap:dev']);
+  grunt.task.registerTask('js', ['jshint', 'uglify:dev']);
   grunt.task.registerTask('dev', ['css', 'js']);
 };
