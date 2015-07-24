@@ -84,7 +84,7 @@
       vm.message.$send().then(function(data) {
         $state.go('mail');
       }, function(data) {
-        console.debug('failure ' + JSON.stringify(data, undefined, 2));
+        Dialog.alert(l(data.status), l(data.message));
       });
     }
 
