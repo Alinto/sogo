@@ -9,10 +9,10 @@
     <md-card-content>
       <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
-          <sg-gravatar-image class="md-tile-left"
-                             email="{{editor.card.$preferredEmail()}}"
-                             size="48"><!-- gravatar -->
-          </sg-gravatar-image>
+          <sg-avatar-image class="md-tile-left"
+                           sg-email="editor.card.$preferredEmail()"
+                           sg-src="editor.card.photoURL"
+                           size="48"><!-- avatar --></sg-avatar-image>
         </div>
         <div class="sg-list-avatar" ng-show="editor.card.tag == 'vlist'">
           <!--list avatar-->
@@ -66,11 +66,11 @@
           </label>
           <md-list>
             <md-list-item class="md-3-line" ng-repeat="ref in editor.card.refs track by ref.reference">
-              <sg-gravatar-image class="md-tile-left"
-                                 email="{{ref.$preferredEmail()}}"
-                                 size="48">
+              <sg-avatar-image class="md-tile-left"
+                               sg-email="ref.$preferredEmail()"
+                               size="48">
                 <!-- contact avatar -->
-              </sg-gravatar-image>
+              </sg-avatar-image>
               <div class="md-list-item-text">
                 <h3>
                   <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">

@@ -98,11 +98,9 @@
           <div class="pseudo-input-container">
             <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
             <div class="sg-avatars">
-              <sg-gravatar-image ng-repeat="currentAttendee in viewer.component.attendees track by currentAttendee.email"
-                                 email="{{currentAttendee.email}}"
-                                 size="32">
-                <!-- gravatar -->
-              </sg-gravatar-image>
+              <sg-avatar-image ng-repeat="currentAttendee in viewer.component.attendees track by currentAttendee.email"
+                               sg-email="currentAttendee.email"
+                               size="32"><!-- avatar --></sg-avatar-image>
             </div>
           </div>
         </md-list-item>

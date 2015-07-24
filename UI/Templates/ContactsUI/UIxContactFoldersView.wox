@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Contacts.app.js, Contacts.js, Common.js, Contacts.js"
+    const:jsFiles="Contacts.app.js, Contacts.js, Common.js"
     className="UIxPageFrame"
     title="name">
   <script type="text/javascript">
@@ -405,13 +405,13 @@
                        ng-click="currentCard.selected = !currentCard.selected">
                     <!-- selected avatar -->
                   </div>
-                  <sg-gravatar-image class="md-tile-left"
-                                     ng-show="addressbook.notSelectedComponent(currentCard,'vcard')"
-                                     ng-click="currentCard.selected = !currentCard.selected"
-                                     email="{{currentCard.$preferredEmail(addressbook.selectedFolder.$query)}}"
-                                     size="48">
+                  <sg-avatar-image class="md-tile-left"
+                                   ng-show="addressbook.notSelectedComponent(currentCard, 'vcard')"
+                                   ng-click="currentCard.selected = !currentCard.selected"
+                                   sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.$query)"
+                                   size="48">
                     <!-- contact avatar -->
-                  </sg-gravatar-image>
+                  </sg-avatar-image>
                   <div class="sg-list-avatar"
                        ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
                        ng-click="currentCard.selected = !currentCard.selected">

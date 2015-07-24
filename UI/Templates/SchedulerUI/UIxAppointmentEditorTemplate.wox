@@ -211,11 +211,9 @@
       </div>
       <div layout="row" layout-align="space-between end">
           <div class="sg-avatars" ng-hide="editor.showAttendeesEditor">
-            <sg-gravatar-image ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email"
-                               email="{{currentAttendee.email}}"
-                               size="32">
-              <!-- gravatar -->
-            </sg-gravatar-image>
+            <sg-avatar-image ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email"
+                             sg-email="currentAttendee.email"
+                             size="32"><!-- avatar --></sg-avatar-image>
         </div>
       </div>
       <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">
