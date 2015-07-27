@@ -496,7 +496,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
     {
       [self logWithFormat: @"No id exist yet for '%@', requesting one", childURL];
       ret = mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
-      if (ret == MAPI_E_SUCCESS)
+      if (ret == MAPISTORE_SUCCESS)
         [mapping registerURL: childURL withID: mappingId];
       else
         [self errorWithFormat: @"Error trying to get new folder id (%d): %s",
