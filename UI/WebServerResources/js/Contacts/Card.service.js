@@ -145,7 +145,7 @@
     var _this = this,
         action = 'saveAsContact';
 
-    if (this.tag == 'vlist') action = 'saveAsList';
+    if (this.c_component == 'vlist') action = 'saveAsList';
 
     return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
                                 this.$omit(),
@@ -170,19 +170,19 @@
   };
 
   Card.prototype.$fullname = function() {
-    var fn = this.fn || '', names;
+    var fn = this.c_cn || '', names;
     if (fn.length === 0) {
       names = [];
-      if (this.givenname && this.givenname.length > 0)
-        names.push(this.givenname);
+      if (this.c_givenname && this.c_givenname.length > 0)
+        names.push(this.c_givenname);
       if (this.nickname && this.nickname.length > 0)
         names.push('<em>' + this.nickname + '</em>');
-      if (this.sn && this.sn.length > 0)
-        names.push(this.sn);
+      if (this.c_sn && this.c_sn.length > 0)
+        names.push(this.c_sn);
       if (names.length > 0)
         fn = names.join(' ');
-      else if (this.org && this.org.length > 0) {
-        fn = this.org;
+      else if (this.c_org && this.c_org.length > 0) {
+        fn = this.c_org;
       }
       else if (this.emails && this.emails.length > 0) {
         fn = _.find(this.emails, function(i) { return i.value !== ''; }).value;
@@ -265,11 +265,11 @@
   };
 
   Card.prototype.$isCard = function() {
-    return this.tag == 'vcard';
+    return this.c_component == 'vcard';
   };
 
   Card.prototype.$isList = function() {
-    return this.tag == 'vlist';
+    return this.c_component == 'vlist';
   };
 
   Card.prototype.$addOrgUnit = function(orgUnit) {
@@ -408,7 +408,7 @@
       email: email,
       emails: [{value: email}],
       reference: card.c_name,
-      fn: card.$fullname()
+      c_cn: card.$fullname()
     };
     this.refs[index] = new Card(ref);
   };

@@ -166,7 +166,7 @@
       card = [[list cardReferences] objectAtIndex: i];
       [cards addObject: [NSDictionary dictionaryWithObjectsAndKeys:
                                         [card reference], @"reference",
-                                        [card fn], @"fn",
+                                        [card fn], @"c_cn",
                                       [card email], @"email",
                                       nil]];
     }
@@ -174,8 +174,8 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[co container] nameInContainer], @"pid",
                               [co nameInContainer], @"id",
-                              [[list tag] lowercaseString], @"tag",
-                              [list fn], @"fn",
+                              [[list tag] lowercaseString], @"c_component",
+                              [list fn], @"c_cn",
                               [list nickname], @"nickname",
                               [list description], @"description",
                               cards, @"refs",

@@ -351,11 +351,11 @@ static Class SOGoContactGCSEntryK = Nil;
   id o;
   unsigned int i, year, month, day;
 
-  [card setNWithFamily: [attributes objectForKey: @"sn"]
-                 given: [attributes objectForKey: @"givenname"]
+  [card setNWithFamily: [attributes objectForKey: @"c_sn"]
+                 given: [attributes objectForKey: @"c_givenname"]
             additional: nil prefixes: nil suffixes: nil];
   [card setNickname: [attributes objectForKey: @"nickname"]];
-  [card setFn: [attributes objectForKey: @"fn"]];
+  [card setFn: [attributes objectForKey: @"c_cn"]];
   [card setTitle: [attributes objectForKey: @"title"]];
 
   unsigned int seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
@@ -416,7 +416,7 @@ static Class SOGoContactGCSEntryK = Nil;
     {
       units = nil;
     }
-  [card setOrg: [attributes objectForKey: @"org"]
+  [card setOrg: [attributes objectForKey: @"c_org"]
          units: units];
 
   elements = [card childrenWithTag: @"tel"];
@@ -509,11 +509,11 @@ static Class SOGoContactGCSEntryK = Nil;
  *
  * @apiParam {String} id                   Card ID
  * @apiParam {String} pid                  Address book ID (card's container)
- * @apiParam {String} tag                  Either vcard or vlist
- * @apiParam {String} givenname            Firstname
+ * @apiParam {String} c_component          Either vcard or vlist
+ * @apiParam {String} c_givenname          Firstname
  * @apiParam {String} nickname             Nickname
- * @apiParam {String} sn                   Lastname
- * @apiParam {String} fn                   Fullname
+ * @apiParam {String} c_sn                 Lastname
+ * @apiParam {String} c_cn                 Fullname
  * @apiParam {String} tz                   Timezone
  * @apiParam {String} note                 Note
  * @apiParam {String[]} allCategories      All available categories

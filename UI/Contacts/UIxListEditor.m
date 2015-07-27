@@ -208,7 +208,7 @@
       if ([[references objectAtIndex: i] isKindOfClass: [NSDictionary class]])
         {
           currentReference = [references objectAtIndex: i];
-          uid = [currentReference objectForKey: @"reference"];
+          uid = [currentReference objectForKey: @"id"];
           if (![self cardReferences: [list cardReferences]
                             contain: uid])
             {
@@ -231,7 +231,7 @@
                   SOGoContactGCSEntry *newContact;
 
                   workMail = [currentReference objectForKey: @"email"];
-                  fn = [currentReference objectForKey: @"fn"];
+                  fn = [currentReference objectForKey: @"c_cn"];
 
                   // Create a new vCard
                   newUID = [NSString stringWithFormat: @"%@.vcf", [co globallyUniqueObjectId]];
@@ -290,7 +290,7 @@
 - (void) setAttributes: (NSDictionary *) attributes
 {
   [list setNickname: [attributes objectForKey: @"nickname"]];
-  [list setFn: [attributes objectForKey: @"fn"]];
+  [list setFn: [attributes objectForKey: @"c_cn"]];
   [list setDescription: [attributes objectForKey: @"description"]];
 }
 

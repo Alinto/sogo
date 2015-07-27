@@ -66,7 +66,7 @@
     }
 
     function notSelectedComponent(currentCard, type) {
-      return (currentCard && currentCard.tag == type && !currentCard.selected);
+      return (currentCard && currentCard.c_component == type && !currentCard.selected);
     }
 
     function unselectCards() {

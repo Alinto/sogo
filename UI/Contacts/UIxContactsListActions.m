@@ -162,12 +162,9 @@
  * @apiSuccess (Success 200) {Object[]} [cards]               Matching cards
  * @apiSuccess (Success 200) {String} cards.id                Card ID
  * @apiSuccess (Success 200) {String} cards.c_name            Card ID
- * @apiSuccess (Success 200) {String} cards.tag               Either vcard or vlist
  * @apiSuccess (Success 200) {String} cards.c_component       Either vcard or vlist
  * @apiSuccess (Success 200) {String} cards.c_cn              Fullname
- * @apiSuccess (Success 200) {String} cards.givenname         Fullname
  * @apiSuccess (Success 200) {String} cards.c_givenname       Firstname
- * @apiSuccess (Success 200) {String} cards.sn                Firstname
  * @apiSuccess (Success 200) {String} cards.c_sn              Lastname
  * @apiSuccess (Success 200) {String} cards.c_screenname      Screenname
  * @apiSuccess (Success 200) {String} cards.c_o               Organization name

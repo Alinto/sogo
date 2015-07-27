@@ -126,7 +126,7 @@
   stateNewCard.$inject = ['$stateParams', 'stateAddressbook', 'Card'];
   function stateNewCard($stateParams, stateAddressbook, Card) {
     var tag = 'v' + $stateParams.contactType,
-        card = new Card({ pid: $stateParams.addressbookId, tag: tag });
+        card = new Card({ pid: $stateParams.addressbookId, c_component: tag });
     stateAddressbook.selectedCard = true;
     return card;
   }

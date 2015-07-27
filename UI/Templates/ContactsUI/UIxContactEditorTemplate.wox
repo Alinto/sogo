@@ -16,7 +16,7 @@
             <label>
               <var:string label:value="Display"/>
             </label>
-            <input type="text" ng-maxlength="30" ng-model="editor.card.fn"/>
+            <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
           </md-input-container>
           <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles-->
           <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
@@ -24,13 +24,13 @@
               <label>
                 <var:string label:value="Firstname"/>
               </label>
-              <input type="text" ng-model="editor.card.givenname"/>
+              <input type="text" ng-model="editor.card.c_givenname"/>
             </md-input-container>
             <md-input-container flex="40">
               <label>
                 <var:string label:value="Lastname"/>
               </label>
-              <input type="text" ng-model="editor.card.sn"/>
+              <input type="text" ng-model="editor.card.c_sn"/>
             </md-input-container>
             <md-input-container flex="20">
               <label>
@@ -45,7 +45,7 @@
               <label>
                 <var:string label:value="Organization"/>
               </label>
-              <input type="text" ng-model="editor.card.org"/>
+              <input type="text" ng-model="editor.card.c_org"/>
             </md-input-container>
             <md-input-container>
               <label>
@@ -292,7 +292,7 @@
             <label>
               <var:string label:value="Display"/>
             </label>
-            <input type="text" ng-maxlength="30" ng-model="editor.card.fn"/>
+            <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
           </md-input-container>
           
           <md-input-container>

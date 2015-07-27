@@ -747,11 +747,11 @@
  *
  * @apiSuccess (Success 200) {String} id                   Card ID
  * @apiSuccess (Success 200) {String} pid                  Address book ID (card's container)
- * @apiSuccess (Success 200) {String} tag                  Either vcard or vlist
- * @apiSuccess (Success 200) {String} [givenname]          Firstname
+ * @apiSuccess (Success 200) {String} c_component          Either vcard or vlist
+ * @apiSuccess (Success 200) {String} [c_givenname]        Firstname
  * @apiSuccess (Success 200) {String} [nickname]           Nickname
- * @apiSuccess (Success 200) {String} [sn]                 Lastname
- * @apiSuccess (Success 200) {String} [fn]                 Fullname
+ * @apiSuccess (Success 200) {String} [c_sn]               Lastname
+ * @apiSuccess (Success 200) {String} [c_fn]               Fullname
  * @apiSuccess (Success 200) {String} [tz]                 Timezone
  * @apiSuccess (Success 200) {String} [note]               Note
  * @apiSuccess (Success 200) {String[]} allCategories      All available categories
@@ -799,19 +799,19 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [[contact container] nameInContainer], @"pid",
                               [contact nameInContainer], @"id",
-                              [[card tag] lowercaseString], @"tag",
+                              [[card tag] lowercaseString], @"c_component",
                               nil];
   o = [card fn];
-  if (o) [data setObject: o forKey: @"fn"];
+  if (o) [data setObject: o forKey: @"c_cn"];
   o = [card n];
   if (o)
     {
       NSString *lastName = [o flattenedValueAtIndex: 0 forKey: @""];
       NSString *firstName = [o flattenedValueAtIndex: 1 forKey: @""];
       if ([lastName length] > 0)
-        [data setObject: lastName forKey: @"sn"];
+        [data setObject: lastName forKey: @"c_sn"];
       if ([firstName length] > 0)
-        [data setObject: firstName forKey: @"givenname"];
+        [data setObject: firstName forKey: @"c_givenname"];
     }
   o = [card nickname];
   if (o) [data setObject: o forKey: @"nickname"];
@@ -833,7 +833,7 @@
   o = [card workCompany];
   if ([o length] > 0)
     {
-      [data setObject: o forKey: @"org"];
+      [data setObject: o forKey: @"c_org"];
     }
 
   o = [card birthday];

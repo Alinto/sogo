@@ -218,11 +218,6 @@ static NSArray *folderListingFields = nil;
 {
   NSString *data;
 
-  // c_component => tag
-  data = [contactRecord objectForKey: @"c_component"];
-  if ([data length])
-    [contactRecord setObject: data forKey: @"tag"];
-
   // c_categories => categories
   data = [contactRecord objectForKey: @"c_categories"];
   if ([data length])
@@ -235,9 +230,7 @@ static NSArray *folderListingFields = nil;
 
   // c_cn => fn
   data = [contactRecord objectForKey: @"c_cn"];
-  if ([data length])
-    [contactRecord setObject: data forKey: @"fn"];
-  else
+  if (![data length])
     {
       data = [contactRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
       if ([data length] > 1)
@@ -251,24 +244,9 @@ static NSArray *folderListingFields = nil;
         }
     }
 
-  // c_givenname => givenname
-  data = [contactRecord objectForKey: @"c_givenname"];
-  if ([data length])
-    [contactRecord setObject: data forKey: @"givenname"];
-
-  // c_sn => sn
-  data = [contactRecord objectForKey: @"c_sn"];
-  if ([data length])
-    [contactRecord setObject: data forKey: @"sn"];
-
   // c_screenname => X-AIM
   if (![contactRecord objectForKey: @"c_screenname"])
     [contactRecord setObject: @"" forKey: @"c_screenname"];
-
-  // c_o => org
-  data = [contactRecord objectForKey: @"c_o"];
-  if ([data length])
-      [contactRecord setObject: data forKey: @"org"];
 
   // c_mail => emails[]
   data = [contactRecord objectForKey: @"c_mail"];

@@ -318,12 +318,12 @@
   if (data)
     {
       [newRecord setObject: data forKey: @"isGroup"];
-      [newRecord setObject: @"vlist" forKey: @"tag"];
+      [newRecord setObject: @"vlist" forKey: @"c_component"];
     }
 #warning TODO: create a custom icon for resources
   else
     {
-      [newRecord setObject: @"vcard" forKey: @"tag"];
+      [newRecord setObject: @"vcard" forKey: @"c_component"];
     }
   
   // c_info => note
