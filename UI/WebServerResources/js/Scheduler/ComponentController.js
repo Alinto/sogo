@@ -50,8 +50,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'stateComponent'];
-  function ComponentEditorController($scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, stateComponent) {
     var vm = this, component;
 
     vm.calendars = Calendar.$calendars;
@@ -152,7 +152,7 @@
       if (form.$valid) {
         vm.component.$save()
           .then(function(data) {
-            $scope.$emit('calendars:list');
+            $rootScope.$broadcast('calendars:list');
             $mdDialog.hide();
           }, function(data, status) {
             $log.debug('failed');
