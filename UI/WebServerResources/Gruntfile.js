@@ -113,7 +113,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
       '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
-      '<%= src %>/underscore/underscore-min.{js,map}'
+      '<%= src %>/lodash/lodash{,.min}.js'
     ];
     for (var j = 0; j < js.length; j++) {
       var files = grunt.file.expand(grunt.template.process(js[j], {data: options}));

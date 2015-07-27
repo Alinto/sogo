@@ -6,12 +6,9 @@
     "angular-animate": "1.3.x",
     "angular-sanitize": "1.3.x",
     "angular-ui-router": "latest",
-    "ui-router-extras": "latest",
-    "angular-recursion": "latest",
     "angular-file-upload": "latest",
     "angular-material": "master",
-    "compass-mixins": "latest",
-    "underscore": "latest",
+    "lodash": "latest",
     "breakpoint-sass": ">=2.4.2"
   },
   "resolutions": {
