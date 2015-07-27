@@ -521,6 +521,8 @@ vtodo_class2 = "(Confidential task)";
 "editRepeatingItem" = "The item you are editing is a repeating item. Do you want to edit all occurences of it or only this single instance?";
 "button_thisOccurrenceOnly" = "This occurence only";
 "button_allOccurrences" = "All occurences";
+"Edit This Occurrence" = "Edit This Occurrence";
+"Edit All Occurrences" = "Edit All Occurrences";
 
 /* Properties dialog */
 "Name:" = "Name:";

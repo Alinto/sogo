@@ -158,6 +158,11 @@ static NSArray *reminderValues = nil;
   [componentCalendar retain];
 }
 
+- (BOOL) isChildOccurrence
+{
+  return [[self clientObject] isKindOfClass: [SOGoComponentOccurence class]];
+}
+
 //- (NSString *) title
 //{
 //  SOGoCalendarComponent *co;

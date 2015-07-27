@@ -124,10 +124,16 @@
    * @desc Fetch a component from a specific calendar.
    * @param {string} calendarId - the calendar ID
    * @param {string} componentId - the component ID
+   * @param {string} [occurrenceId] - the component ID
    * @see {@link Calendar.$getComponent}
    */
-  Component.$find = function(calendarId, componentId) {
-    var futureComponentData = this.$$resource.fetch([calendarId, componentId].join('/'), 'view');
+  Component.$find = function(calendarId, componentId, occurrenceId) {
+    var futureComponentData, path = [calendarId, componentId];
+
+    if (occurrenceId)
+      path.push(occurrenceId);
+
+    futureComponentData = this.$$resource.fetch(path.join('/'), 'view');
 
     return new Component(futureComponentData);
   };
@@ -608,12 +614,15 @@
    * @desc Save the component to the server.
    */
   Component.prototype.$save = function() {
-    var _this = this, options;
+    var _this = this, options, path = [this.pid, this.id];
 
     if (this.isNew)
       options = { action: 'saveAs' + this.type.capitalize() };
 
-    return Component.$$resource.save([this.pid, this.id].join('/'), this.$omit(), options)
+    if (this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    return Component.$$resource.save(path.join('/'), this.$omit(), options)
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);

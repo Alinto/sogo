@@ -274,8 +274,8 @@
    * @desc Fetch a component attributes from the server.
    * @returns a promise of the HTTP operation
    */
-  Calendar.prototype.$getComponent = function(componentId) {
-    return Calendar.$Component.$find(this.id, componentId);
+  Calendar.prototype.$getComponent = function(componentId, recurrenceId) {
+    return Calendar.$Component.$find(this.id, componentId, recurrenceId);
   };
 
   /**

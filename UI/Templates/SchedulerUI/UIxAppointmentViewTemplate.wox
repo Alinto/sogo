@@ -110,12 +110,18 @@
          <var:component className="UIxAttendeesEditor" />
       </div>
     </md-dialog-content>
-      <!-- edit -->
-      <div class="md-actions">
-      <md-button type="button" ng-click="viewer.edit()">
+    <!-- actions -->
+    <div class="md-actions">
+      <md-button type="button" ng-click="viewer.edit()" ng-hide="viewer.component.occurrenceId">
         <var:string label:value="Edit"/>
       </md-button>
-      </div>
+      <md-button type="button" ng-click="viewer.editAllOccurrences()" ng-show="viewer.component.occurrenceId">
+        <var:string label:value="Edit All Occurrences"/>
+      </md-button>
+      <md-button type="button" ng-click="viewer.edit()" ng-show="viewer.component.occurrenceId">
+        <var:string label:value="Edit This Occurrence"/>
+      </md-button>
+    </div>
   </form>
 </md-dialog>
 </container>

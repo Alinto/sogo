@@ -551,6 +551,7 @@
  * @apiSuccess {_} . _From [UIxAppointmentEditor viewAction]_
  *
  * @apiSuccess (Success 200) {String} id                      Event ID
+ * @apiSuccess (Success 200) {String} [occurrenceId]          Occurrence ID
  * @apiSuccess (Success 200) {String} pid                     Calendar ID (event's folder)
  * @apiSuccess (Success 200) {String} calendar                Human readable name of calendar
  * @apiSuccess (Success 200) {String} startDate               Start date (ISO8601)
@@ -683,7 +684,6 @@
     }
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                         [co nameInContainer], @"id",
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
@@ -691,6 +691,16 @@
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [self alarm], @"alarm",
                        nil];
+
+  if ([self isChildOccurrence])
+    {
+      [data setObject: [[co container] nameInContainer] forKey: @"id"];
+      [data setObject: [co nameInContainer] forKey: @"occurrenceId"];
+    }
+  else
+    {
+      [data setObject: [co nameInContainer] forKey: @"id"];
+    }
 
   attachUrls = [self attachUrls];
   if ([attachUrls count]) [data setObject: attachUrls forKey: @"attachUrls"];

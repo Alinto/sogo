@@ -696,7 +696,7 @@ static NSArray *tasksFields = nil;
  * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
  * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic
  * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
- * @apiSuccess (Success 200) {String} events.c_recurrence_id     Recurrence ID if event is cyclic
+ * @apiSuccess (Success 200) {String} [events.c_recurrence_id]   Recurrence ID if event is cyclic
  * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
  * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
  * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
@@ -723,6 +723,10 @@ static NSArray *tasksFields = nil;
   while ((oldEvent = [events nextObject]))
   {
     newEvent = [NSMutableArray arrayWithArray: oldEvent];
+    if (![[oldEvent objectAtIndex: eventRecurrenceIdIndex] isKindOfClass: [NSNull class]])
+      [newEvent replaceObjectAtIndex: eventRecurrenceIdIndex
+                          withObject: [NSString stringWithFormat: @"occurence%@",
+                                         [oldEvent objectAtIndex: eventRecurrenceIdIndex]]];
     isAllDay = [[oldEvent objectAtIndex: eventIsAllDayIndex] boolValue];
     interval = [[oldEvent objectAtIndex: eventStartDateIndex] intValue];
     [newEvent addObject: [self _formattedDateForSeconds: interval
@@ -1213,7 +1217,7 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
  * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic
  * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
- * @apiSuccess (Success 200) {String} events.c_recurrence_id     Recurrence ID if event is cyclic
+ * @apiSuccess (Success 200) {String} [events.c_recurrence_id]   Recurrence ID if event is cyclic
  * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
  * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
  * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
@@ -1383,7 +1387,7 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {Number} tasks.erasable          1 if task is erasable by the active user
  * @apiSuccess (Success 200) {String} tasks.c_priority        Priority (0-9)
  * @apiSuccess (Success 200) {String} tasks.c_owner           Username of owner
- * @apiSuccess (Success 200) {String} tasks.c_recurrence_id   Recurrence ID if task is cyclic
+ * @apiSuccess (Success 200) {String} [tasks.c_recurrence_id] Recurrence ID if task is cyclic
  * @apiSuccess (Success 200) {Number} tasks.isException       1 if task is cyclic and an exception
  * @apiSuccess (Success 200) {String} tasks.status            Either completed, overdue, duetoday, or duelater
  * @apiSuccess (Success 200) {String} tasks.formatted_enddate Localized end date
@@ -1422,10 +1426,14 @@ _computeBlocksPosition (NSArray *blocks)
   
   while ((task = [tasks nextObject]))
   {
-    statusCode = [[task objectAtIndex: 3] intValue];
+    statusCode = [[task objectAtIndex: taskStatusIndex] intValue];
     if (statusCode != 1 || showCompleted)
     {
       filteredTask = [NSMutableArray arrayWithArray: task];
+      if (![[task objectAtIndex: taskRecurrenceIdIndex] isKindOfClass: [NSNull class]])
+        [filteredTask replaceObjectAtIndex: taskRecurrenceIdIndex
+                                withObject: [NSString stringWithFormat: @"occurence%@",
+                                                   [task objectAtIndex: taskRecurrenceIdIndex]]];
       endDateStamp = [[task objectAtIndex: taskEndDateIndex] intValue];
       statusFlag = [self _getStatusClassForStatusCode: statusCode
                                       andEndDateStamp: endDateStamp];

@@ -34,6 +34,7 @@
 }
 
 - (BOOL) isReadOnly;
+- (BOOL) isChildOccurrence;
 - (void) setAttributes: (NSDictionary *) attributes;
 
 - (NSDictionary *) alarm;

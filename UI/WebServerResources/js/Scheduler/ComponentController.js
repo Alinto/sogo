@@ -13,10 +13,11 @@
     vm.component = stateComponent;
     vm.close = close;
     vm.edit = edit;
+    vm.editAllOccurrences = editAllOccurrences;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
-      component = Calendar.$get(vm.component.c_folder).$getComponent(vm.component.c_name);
+      component = Calendar.$get(vm.component.c_folder).$getComponent(vm.component.c_name, vm.component.c_recurrence_id);
       component.$futureComponentData.then(function() {
         vm.component = component;
       });
@@ -24,6 +25,14 @@
 
     function close() {
       $mdDialog.hide();
+    }
+
+    function editAllOccurrences() {
+      component = Calendar.$get(vm.component.pid).$getComponent(vm.component.id);
+      component.$futureComponentData.then(function() {
+        vm.component = component;
+        edit();
+      });
     }
 
     function edit() {
