@@ -9,8 +9,8 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings'];
-  function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings) {
+  navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
+  function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
     $scope.activeUser = sgSettings.activeUser;
 
@@ -52,6 +52,8 @@
     }, function(newVal) {
       $scope.isGtMedium = newVal;
     });
+
+    Alarm.getAlarms();
   }
 
   angular.module('SOGo.Common')

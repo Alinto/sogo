@@ -59,8 +59,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component;
 
     vm.calendars = Calendar.$calendars;
@@ -163,6 +163,7 @@
           .then(function(data) {
             $rootScope.$broadcast('calendars:list');
             $mdDialog.hide();
+            Alarm.getAlarms();
           }, function(data, status) {
             $log.debug('failed');
           });
