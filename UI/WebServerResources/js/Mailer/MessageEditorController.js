@@ -17,7 +17,7 @@
     vm.hideBcc = true;
     vm.cancel = cancel;
     vm.send = send;
-    vm.userFilter = userFilter;
+    vm.contactFilter = contactFilter;
     vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
@@ -88,7 +88,7 @@
       });
     }
 
-    function userFilter($query) {
+    function contactFilter($query) {
       var deferred = $q.defer();
       AddressBook.$filterAll($query).then(function(results) {
         deferred.resolve(_.invoke(results, '$shortFormat', $query));
