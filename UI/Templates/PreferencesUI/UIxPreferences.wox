@@ -20,26 +20,29 @@
   </script>
 
   <script type="text/ng-template" id="preferences.html">
-
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <md-list>
-          <md-list-item ui-sref-active="sg-active">
-            <button class="md-button md-flex sg-item-name"
-                    ui-sref="preferences.general"><var:string label:value="General"/></button>
+          <md-list-item ng-click="app.go('general')"
+                        ui-sref="preferences.general"
+                        ui-sref-active="sg-active">
+            <p class="sg-item-name"><var:string label:value="General"/></p>
           </md-list-item>
-          <md-list-item ui-sref-active="sg-active">
-            <button class="md-button md-flex sg-item-name"
-                    ui-sref="preferences.calendars"><var:string label:value="Calendar"/></button>
+          <md-list-item ng-click="app.go('calendars')"
+                        ui-sref="preferences.calendars"
+                        ui-sref-active="sg-active">
+            <p class="sg-item-name"><var:string label:value="Calendar"/></p>
           </md-list-item>
-          <md-list-item ui-sref-active="sg-active">
-            <button class="md-button md-flex sg-item-name"
-                    ui-sref="preferences.addressbooks"><var:string label:value="Contacts"/></button>
+          <md-list-item ng-click="app.go('addressbooks')"
+                        ui-sref="preferences.addressbooks"
+                        ui-sref-active="sg-active">
+            <p class="sg-item-name"><var:string label:value="Contacts"/></p>
           </md-list-item>
-          <md-list-item ui-sref-active="sg-active">
-            <button class="md-button md-flex sg-item-name"
-                    ui-sref="preferences.mailer"><var:string label:value="Mail"/></button>
+          <md-list-item ng-click="app.go('mailer')"
+                        ui-sref="preferences.mailer"
+                        ui-sref-active="sg-active">
+            <p class="sg-item-name"><var:string label:value="Mail"/></p>
           </md-list-item>
         </md-list>
       </md-content>

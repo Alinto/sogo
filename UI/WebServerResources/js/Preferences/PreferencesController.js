@@ -7,13 +7,14 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$scope', '$timeout', '$q', '$mdDialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
-  function PreferencesController($scope, $timeout, $q, $mdDialog, User, Mailbox, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$state', '$mdDialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
+  function PreferencesController($state, $mdDialog, User, Mailbox, statePreferences, Authentication) {
     var vm = this;
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
 
+    vm.go = go;
     vm.addCalendarCategory = addCalendarCategory;
     vm.removeCalendarCategory = removeCalendarCategory;
     vm.addContactCategory = addContactCategory;
@@ -34,7 +35,11 @@
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
     vm.mailboxes = Mailbox.$find({ id: 0 });
-    
+
+    function go(module) {
+      $state.go('preferences.' + module);
+    }
+
     function addCalendarCategory() {
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
       vm.preferences.defaults.SOGoCalendarCategories.push("New category");
