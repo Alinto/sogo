@@ -1920,11 +1920,10 @@ events. This parameter is an array of arbitrary strings.
 
 Defaults to a list that depends on the language.
 
-|U |SOGoCalendarCategoriesColors
-|Parameter used to define the colour of categories. This parameter
-is a dictionary of category name/color.
+|U |SOGoCalendarDefaultCategoryColor
+|Parameter used to define the default colour of categories.
 
-Defaults to `#F0F0F0` for all categories when unset.
+Defaults to `#F0F0F0` when unset.
 
 |U |SOGoCalendarEventsDefaultClassification
 |Parameter used to defined the default classification for new events.
@@ -2137,8 +2136,7 @@ Multi-domains Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want your installation to isolate two groups of users, you must
-define a distinct authentication source for each _domain_. Your domain keys
-must have the same value as your email domain you want to add. Following is
+define a distinct authentication source for each _domain_. Following is
 the same configuration that now includes two domains (acme.com and
 coyote.com):
 
@@ -2146,7 +2144,7 @@ coyote.com):
 {
 ...
     domains = {
-        acme.com = {
+        acme = {
             SOGoMailDomain = acme.com;
             SOGoDraftsFolderName = Drafts;
             SOGoUserSources = (
@@ -2167,7 +2165,7 @@ coyote.com):
                 }
             );
         };
-        coyote.com = {
+        coyote = {
             SOGoMailDomain = coyote.com;
             SOGoIMAPServer = imap.coyote.com;
             SOGoUserSources = (
@@ -2198,7 +2196,7 @@ domains.
 [cols="3,47,50a"]
 |=======================================================================
 |S |SOGoEnableDomainBasedUID
-|Parameter used to enable user identification by domain. Users will be
+|Parameter used to activate user identification by domain. Users will be
 able (without being required) to login using the form `username@domain`,
 meaning that values of _UIDFieldName_ no longer have to be unique among
 all domains but only within the same domain. Internally, users will
@@ -2713,20 +2711,12 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
-h|2.3.1
-|The SOGoCalendarDefaultCategoryColor default has been removed. If you
-want to customize the color of calendar categories, use the
-SOGoCalendarCategories and SOGoCalendarCategoriesColors defaults.
-
 h|2.3.0
 |Run the shell script `sql-update-2.2.17_to_2.3.0.sh` or
 `sql-update-2.2.17_to_2.3.0-mysql.sh` (if you use MySQL).
 
 This will grow the "participant states" field of calendar quick tables to a larger
 size and add the the "c_description" column to calendar quick tables.
-
-Moreover, if you are using a multi-domain configuration, make sure the keys for
-your domains match the email domains you have defined.
 
 h|2.2.8
 |The configuration configuration parameters were renamed:

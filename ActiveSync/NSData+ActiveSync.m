@@ -66,33 +66,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
-  NSString *tmp, *s;
-  unichar *buf, *start, c;
-  int len, i, j;
-
-  tmp = [self stringByEncodingBase64] ;
-
-  len = [tmp length];
-
-  start = buf = (unichar *)malloc(len*sizeof(unichar));
-  [tmp getCharacters: buf range: NSMakeRange(0, len)];
-
-  for (i = 0, j = 0; i < len; i++)
-    {
-      c = *buf;
-
-      if (!(c == 0xA))
-        {
-          *(start+j) = c;
-          j++;
-        }
-
-      buf++;
-    }
-
-  s = [[NSString alloc] initWithCharactersNoCopy: start  length: j  freeWhenDone: YES];
-
-  return AUTORELEASE(s);
+  return [[self stringByEncodingBase64] stringByReplacingString: @"\n" withString: @""];
 }
 
 - (NSData *) wbxml2xml

@@ -68,6 +68,8 @@
 - (NSArray *) refreshViewIntervals;
 - (NSString *) subscriptionFolderFormat;
 
+- (NSString *) calendarDefaultCategoryColor;
+
 - (NSArray *) freeBusyDefaultInterval;
 - (int) davCalendarStartTimeLimit;
 

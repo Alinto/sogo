@@ -165,9 +165,10 @@
               // The domain is probably appended to the username;
               // make sure it is defined as a domain in the configuration.
               domain = [newLogin substringFromIndex: (r.location + r.length)];
-              if ([[sd domainIds] containsObject: domain] &&
-                  ![sd enableDomainBasedUID])
+              if ([[sd domainIds] containsObject: domain])
                 newLogin = [newLogin substringToIndex: r.location];
+              else
+                domain = nil;
 
               if (domain != nil && ![sd enableDomainBasedUID])
                 // Login domains are enabled (SOGoLoginDomains) but not
@@ -196,25 +197,8 @@
           // When the user is associated to a domain, the [SOGoUser login]
           // method returns the combination login@domain while
           // [SOGoUser loginInDomain] only returns the login.
-          r = [realUID rangeOfString: domain  options: NSBackwardsSearch|NSCaseInsensitiveSearch];
-
-          // Do NOT strip @domain.com if SOGoEnableDomainBasedUID is enabled since
-          // the real login most likely is the email address.
-          if (r.location != NSNotFound && ![sd enableDomainBasedUID])
-            uid = [realUID substringToIndex: r.location-1];
-          // If we don't have the domain in the UID but SOGoEnableDomainBasedUID is
-          // enabled, let's add it internally so so it becomes unique across
-          // all potential domains.
-          else if (r.location == NSNotFound && [sd enableDomainBasedUID])
-            {
-              uid = [NSString stringWithString: realUID];
-              realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
-            }
-          // We found the domain and SOGoEnableDomainBasedUID is enabled,
-          // we keep realUID.. This would happen for example if the user
-          // authenticates with foo@bar.com and the UIDFieldName is also foo@bar.com
-          else if ([sd enableDomainBasedUID])
-            uid = [NSString stringWithString: realUID];
+          uid = [NSString stringWithString: realUID];
+          realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
         }
     }
 

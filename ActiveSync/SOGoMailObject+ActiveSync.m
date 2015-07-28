@@ -381,6 +381,11 @@ struct GlobalObjectId {
 
           if (s)
             {
+              // We sanitize the content immediately, in case we have non-UNICODE safe
+              // characters that would be re-encoded later in HTML entities and thus,
+              // ignore afterwards.
+              s = [s safeString];
+
               body = [s dataUsingEncoding: NSUTF8StringEncoding];
             }
 
@@ -861,41 +866,10 @@ struct GlobalObjectId {
   
   if (d)
     {
-      NSMutableData *sanitizedData;
       NSString *content;
       int len, truncated;
-
-      // Outlook fails to decode quoted-printable (see #3082) if lines are not termined by CRLF.
-      const char *bytes;
-      char *mbytes;
-      int mlen;
-
-      len = [d length];
-      mlen = 0;
-
-      sanitizedData = [NSMutableData dataWithLength: len*2];
-
-      bytes = [d bytes];
-      mbytes = [sanitizedData mutableBytes];
-
-      while (len > 0)
-        {
-          if (*bytes == '\n' && *(bytes-1) != '\r' && mlen > 0)
-            {
-              *mbytes = '\r';
-              mbytes++;
-              mlen++;
-            }
-
-          *mbytes = *bytes;
-          mbytes++; bytes++;
-          len--;
-          mlen++;
-        }
-
-      [sanitizedData setLength: mlen];
-
-      content = [[NSString alloc] initWithData: sanitizedData  encoding: NSUTF8StringEncoding];
+      
+      content = [[NSString alloc] initWithData: d  encoding: NSUTF8StringEncoding];
 
       // FIXME: This is a hack. We should normally avoid doing this as we might get
       // broken encodings. We should rather tell that the data was truncated and expect
@@ -905,15 +879,15 @@ struct GlobalObjectId {
       // for an "interesting" discussion around this.
       //
       if (!content)
-        content = [[NSString alloc] initWithData: sanitizedData  encoding: NSISOLatin1StringEncoding];
+        content = [[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding];
       
       AUTORELEASE(content);
       
       content = [content activeSyncRepresentationInContext: context];
       truncated = 0;
-
+    
       len = [content length];
-
+      
       if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
         {
           [s appendFormat: @"<Body xmlns=\"Email:\">%@</Body>", content];

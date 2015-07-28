@@ -17,7 +17,7 @@
        ><script type="text/javascript"
         ><var:if condition="hasRefreshMethod">
           var p = <var:if condition="singleWindowModeEnabled">parent</var:if><var:if condition="singleWindowModeEnabled" const:negate="YES">window.opener</var:if>;
-          if (p) p.setTimeout(<var:string value="refreshMethod" const:escapeHTML="NO" />, 50);
+          if (p) p.setTimeout('<var:string value="refreshMethod" const:escapeHTML="NO" />;', 50);
         </var:if>
         onCloseButtonClick();
       </script>

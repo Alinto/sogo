@@ -777,6 +777,8 @@ static BOOL debugSoParts       = NO;
           filename = [NSString stringWithFormat: @"unknown_%@", path];
       else if ([mimeType isEqualToString: @"message/rfc822"])
         filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      else if ([mimeType isEqualToString: @"text/calendar"])
+        filename = [NSString stringWithFormat: @"calendar_%@.ics", path];
   
 
   if (filename)
