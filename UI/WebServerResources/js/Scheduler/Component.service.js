@@ -93,7 +93,7 @@
       angular.extend(_this.$query, params);
 
       if (options) {
-        _.each(_.allKeys(options), function(key) {
+        _.each(_.keys(options), function(key) {
           // Query parameters common to events and tasks are compared
           dirty |= (_this.$query[key] && options[key] != Component.$query[key]);
           // Update either the common parameters or the type-specific parameters
