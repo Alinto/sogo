@@ -771,6 +771,12 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (subjectData)
     [subject appendString: subjectData];
+  if ([subject length] == 0)
+    {
+      subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
+      if (subjectData)
+        [subject appendString: subjectData];
+    }
   [headers setObject: [subject asQPSubjectString: @"utf-8"] forKey: @"subject"];
 
   messageId = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
