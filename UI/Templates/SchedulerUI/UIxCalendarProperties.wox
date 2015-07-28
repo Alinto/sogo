@@ -6,8 +6,13 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-
   <md-dialog>
+    <md-toolbar class="sg-padded">
+      <div class="pseudo-input-container">
+        <label class="pseudo-input-label"><var:string label:value="Properties"/></label>
+        <div class="pseudo-input-field sg-md-title">{{properties.calendar.name}}</div>
+      </div>
+    </md-toolbar>
     <md-dialog-content>
       <div id="colorPickerDialog" style="display: none;" class="dialog left">
         <div>
@@ -84,8 +89,6 @@
         </div>
       </div>
 
-      <h2 class="md-headline"><var:string label:value="Properties"/> - {{properties.calendar.name}}</h2>
-
       <md-input-container>
         <label><var:string label:value="Name:"/></label>
         <input ng-model="properties.calendar.name"/>
@@ -95,14 +98,14 @@
         <var:string label:value="Color:"/>
         <input type="color" value="{{properties.calendar.color}}"/>
       </span>
-      
+
       <md-checkbox
           ng-model="properties.calendar.includeInFreeBusy"
           ng-true-value="1"
           ng-false-value="0">
         <var:string label:value="Include in free-busy"/>
       </md-checkbox>
-      
+
       <md-checkbox
           ng-model="properties.calendar.showCalendarAlarms"
           ng-true-value="1"
@@ -125,7 +128,7 @@
         <var:string label:value="Reload on login"/>
       </md-checkbox>
 
-      
+
       <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned">
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
@@ -140,7 +143,7 @@
             ng-false-value="0">
           <var:string label:value="Receive a mail when someone else modifies my calendar"/>
         </md-checkbox>
-        
+
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyUserOnPersonalModifications"
             ng-true-value="1"
@@ -153,13 +156,12 @@
                ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
       </div>
 
-      
-      <div class="md-actions">
-        <md-button ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
-        <md-button class="md-primitive" ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
-      </div>
-      
     </md-dialog-content>
-  </md-dialog>
 
+    <div class="md-actions">
+      <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
+      <md-button type="button" ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
+    </div>
+
+  </md-dialog>
 </container>
