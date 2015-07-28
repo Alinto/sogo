@@ -58,6 +58,8 @@
   Alarm.showAlarm = function(url) {
     var _this = this;
 
+    this.$$resource.fetch(url, '?resetAlarm=yes');
+
     this.$toast.show({
       position: 'top right',
       hideDelay: 0,
