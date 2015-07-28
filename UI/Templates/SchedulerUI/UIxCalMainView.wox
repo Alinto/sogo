@@ -174,7 +174,7 @@
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
               <p class="sg-item-name">{{calendar.name}}</p>
-              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
+              <md-menu class="md-secondary" label:aria-label="Options">
                 <md-icon label:aria-label="Options"
                            ng-click="$mdOpenMenu()"
                            md-menu-origin="md-menu-origin">more_vert</md-icon>

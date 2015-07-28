@@ -270,7 +270,6 @@
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
               <md-menu class="md-secondary"
-                       ng-click="true"
                        ng-show="app.service.selectedFolder.path == folder.path">
                 <md-icon label:aria-label="Options"
                          ng-click="$mdOpenMenu()"
