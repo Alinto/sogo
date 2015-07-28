@@ -108,6 +108,9 @@
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
       this.$$image = this.image || User.$gravatar(this.c_email);
+
+    // An empty attribute to trick md-autocomplete when adding users from the ACLs editor
+    this.empty = ' ';
   };
 
   /**

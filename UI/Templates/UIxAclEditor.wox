@@ -61,16 +61,20 @@
           md-selected-item="acl.userToAdd"
           md-selected-item-change="acl.addUser(user)"
           md-items="user in acl.userFilter(acl.searchText)"
+          md-item-text="user.empty"
           md-min-length="3"
           md-no-cache="true"
           label:md-floating-label="Add User">
-        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-          <span class="md-contact-name"
-                md-highlight-text="acl.searchText"
-                md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                md-highlight-text="acl.searchText"
-                md-highlight-flags="^i">{{user.c_email}}</span>
-        </span>
+        <md-item-template>
+          <span class="md-contact-suggestion">
+            <span class="md-contact-name"
+                  md-highlight-text="acl.searchText"
+                  md-highlight-flags="^i">{{user.cn}}</span>
+            <span class="md-contact-email"
+                  md-highlight-text="acl.searchText"
+                  md-highlight-flags="^i">{{user.c_email}}</span>
+          </span>
+        </md-item-template>
       </md-autocomplete>
       <md-button ng-click="acl.closeModal()"><var:string label:value="Cancel"/></md-button>
       <md-button class="md-primitive" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
