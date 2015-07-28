@@ -453,7 +453,7 @@ static BOOL debugOn = NO;
   [s appendString: @"<FolderCreate xmlns=\"FolderHierarchy:\">"];
   [s appendFormat: @"<Status>%d</Status>", 1];
   [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
-  [s appendFormat: @"<ServerId>%@</ServerId>", [nameInContainer stringByEscapingURL]];
+  [s appendFormat: @"<ServerId>%@</ServerId>", nameInContainer];
   [s appendString: @"</FolderCreate>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -1084,8 +1084,6 @@ static BOOL debugOn = NO;
       SOGoMailAccounts *accountsFolder;
       SOGoUserFolder *userFolder;
       SOGoMailObject *mailObject;
-      NSArray *partKeys;
-      int p;
 
       NSRange r1, r2;
 
@@ -1105,14 +1103,7 @@ static BOOL debugOn = NO;
                                             acquire: NO];
 
       mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
-
-      partKeys = [pathToPart componentsSeparatedByString: @"."];
-
-      currentBodyPart = [mailObject lookupImap4BodyPartKey: [partKeys objectAtIndex:0]  inContext: context];
-      for (p = 1; p < [partKeys count]; p++)
-        {
-          currentBodyPart = [currentBodyPart lookupImap4BodyPartKey: [partKeys objectAtIndex:p]  inContext: context];
-        }
+      currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
 
       [theResponse setHeader: [NSString stringWithFormat: @"%@/%@", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]]
                  forKey: @"Content-Type"];
@@ -1167,11 +1158,11 @@ static BOOL debugOn = NO;
      {
        collectionId = [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"CollectionId"] lastObject] textValue];
        realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
-       
+
        if (folderType == ActiveSyncMailFolder)
-         nameInCache = [NSString stringWithFormat: @"folder%@", realCollectionId];
+          nameInCache = [NSString stringWithFormat: @"folder%@", realCollectionId];
        else
-         nameInCache = collectionId;
+          nameInCache = collectionId;
 
        realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
@@ -1243,11 +1234,10 @@ static BOOL debugOn = NO;
 - (void) processItemOperations: (id <DOMElement>) theDocumentElement
                     inResponse: (WOResponse *) theResponse
 {
-  NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *collectionId;
+  NSString *fileReference, *realCollectionId; 
   NSMutableString *s;
   NSArray *fetchRequests;
   id aFetch;
-  NSData *d;
   int i;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
@@ -1257,6 +1247,8 @@ static BOOL debugOn = NO;
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<ItemOperations xmlns=\"ItemOperations:\">"];
+  [s appendString: @"<Status>1</Status>"];
+  [s appendString: @"<Response>"];
 
   fetchRequests = (id)[theDocumentElement getElementsByTagName: @"Fetch"];
   
@@ -1264,25 +1256,17 @@ static BOOL debugOn = NO;
     {
       NSMutableData *bytes, *parts;
       NSMutableArray *partLength;
+      NSData *d;
 
       bytes = [NSMutableData data];
       parts = [NSMutableData data];
       partLength = [NSMutableArray array];
 
-      [s appendString: @"<Status>1</Status>"];
-      [s appendString: @"<Response>"];
-
       for (i = 0; i < [fetchRequests count]; i++)
         {
           aFetch = [fetchRequests objectAtIndex: i];
           fileReference = [[[(id)[aFetch getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
-          collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
-
-          // its either a itemOperation to fetch an attachment or an email
-          if ([fileReference length])
-             realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
-          else
-             realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+          realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
 
           if (folderType == ActiveSyncMailFolder)
             {
@@ -1292,80 +1276,43 @@ static BOOL debugOn = NO;
               SOGoUserFolder *userFolder;
               SOGoMailObject *mailObject;
 
-              if ([fileReference length])
-                {
-                  // fetch attachment
-                  NSRange r1, r2;
-                  NSArray *partKeys;
-                  int p;
+              NSRange r1, r2;
 
-                  r1 = [realCollectionId rangeOfString: @"/"];
-                  r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
+              r1 = [realCollectionId rangeOfString: @"/"];
+              r2 = [realCollectionId rangeOfString: @"/"  options: 0  range: NSMakeRange(NSMaxRange(r1)+1, [realCollectionId length]-NSMaxRange(r1)-1)];
       
-                  folderName = [realCollectionId substringToIndex: r1.location];
-                  messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
-                  pathToPart = [realCollectionId substringFromIndex: r2.location+1];
+              folderName = [realCollectionId substringToIndex: r1.location];
+              messageName = [realCollectionId substringWithRange: NSMakeRange(NSMaxRange(r1), r2.location-r1.location-1)];
+              pathToPart = [realCollectionId substringFromIndex: r2.location+1];
 
-                  userFolder = [[context activeUser] homeFolderInContext: context];
-                  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-                  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+              userFolder = [[context activeUser] homeFolderInContext: context];
+              accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+              currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
 
-                  currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
-                                                      inContext: context
-                                                        acquire: NO];
+              currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", folderName]
+                                                  inContext: context
+                                                    acquire: NO];
 
-                  mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
+              mailObject = [currentCollection lookupName: messageName  inContext: context  acquire: NO];
+              currentBodyPart = [mailObject lookupImap4BodyPartKey: pathToPart  inContext: context];
 
-                  partKeys = [pathToPart componentsSeparatedByString: @"."];
+              [s appendString: @"<Fetch>"];
+              [s appendString: @"<Status>1</Status>"];
+              [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
+              [s appendString: @"<Properties>"];
 
-                  currentBodyPart = [mailObject lookupImap4BodyPartKey: [partKeys objectAtIndex:0]  inContext: context];
-                  for (p = 1; p < [partKeys count]; p++)
-                  {
-                    currentBodyPart = [currentBodyPart lookupImap4BodyPartKey: [partKeys objectAtIndex:p]  inContext: context];
-                  }
-                  
-                  [s appendString: @"<Fetch>"];
-                  [s appendString: @"<Status>1</Status>"];
-                  [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
-                  [s appendString: @"<Properties>"];
+              [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
 
-                  [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
-
-                  if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
-                    {
-                      NSData *d;
-                      d = [currentBodyPart fetchBLOB];
-
-                      [s appendFormat: @"<Part>%d</Part>", i+1];
-                      [partLength addObject: [NSNumber numberWithInteger: [d length]]];
-                      [parts appendData: d];
-                    }
-                  else
-                    {
-                      NSString *a;
-                      a = [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context];
-
-                      [s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
-                      [s appendFormat: @"<Data>%@</Data>", a];
-                    }
+              if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
+                {
+                  [s appendFormat: @"<Part>%d</Part>", i+1];
+                  [partLength addObject: [NSNumber numberWithInteger: [[currentBodyPart fetchBLOB] length]]];
+                  [parts  appendData:[currentBodyPart fetchBLOB]];
                 }
               else
                 {
-                  // fetch mail
-                  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-                  serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
-                  bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
-                  [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
-
-                  currentCollection = [self collectionFromId: realCollectionId  type: folderType];
-
-                  mailObject = [currentCollection lookupName: serverId  inContext: context  acquire: NO];
-                  [s appendString: @"<Fetch>"];
-                  [s appendString: @"<Status>1</Status>"];
-                  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
-                  [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
-                  [s appendString: @"<Properties>"];
-                  [s appendString: [mailObject activeSyncRepresentationInContext: context]];
+                  [s appendFormat: @"<Range>0-%d</Range>", [[[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context] length]-1];
+                  [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context]];
                 }
 
               [s appendString: @"</Properties>"];
@@ -1418,62 +1365,6 @@ static BOOL debugOn = NO;
       else
         {
           [theResponse setContent: d];
-        }
-    } 
-  else if ([theDocumentElement getElementsByTagName: @"EmptyFolderContents"])
-    {
-      NGImap4Connection *connection;
-      NSEnumerator *subfolders;
-      NSException *error;
-      NSURL *currentURL;
-      id co; 
-
-      collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
-      realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
-      realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-
-      if (folderType == ActiveSyncMailFolder)
-        {
-          co = [self collectionFromId: realCollectionId  type: folderType];
-          error = [co addFlagsToAllMessages: @"deleted"];
-
-          if (!error)
-            error = [(SOGoMailFolder *)co expunge];
-
-          if (!error)
-            {
-              [co flushMailCaches];
-
-              if ([theDocumentElement getElementsByTagName: @"DeleteSubFolders"])
-                {
-                  // Delete sub-folders 
-                  connection = [co imap4Connection];
-                  subfolders = [[co allFolderURLs] objectEnumerator];
-
-                  while ((currentURL = [subfolders nextObject]))
-                    {
-                      [[connection client] unsubscribe: [currentURL path]];
-                      [connection deleteMailboxAtURL: currentURL];
-                    }
-                }
-
-              [s appendString: @"<Status>1</Status>"];
-              [s appendString: @"</ItemOperations>"];
-            }
-
-          if (error)
-            {
-              [s appendString: @"<Status>3</Status>"];
-              [s appendString: @"</ItemOperations>"];
-            }
-
-          d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-          [theResponse setContent: d];
-        }
-      else
-        {
-          [theResponse setStatus: 500];
-          return;
         }
     }
 }

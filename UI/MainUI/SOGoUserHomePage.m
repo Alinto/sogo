@@ -463,7 +463,7 @@
       if (!activeUserIsInDomain || ![uid isEqualToString: login])
         {
           jsonLine = [NSMutableArray arrayWithCapacity: 4];
-          if ([domain length] && [uid rangeOfString: @"@"].location == NSNotFound)
+          if ([domain length])
             uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
           [jsonLine addObject: uid];
           [jsonLine addObject: [contact objectForKey: @"cn"]];

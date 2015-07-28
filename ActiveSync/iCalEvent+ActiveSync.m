@@ -506,34 +506,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setOrganizer: person];
     }
 
+  //
+  // iOS is plain stupid here. It seends event invitations with no Organizer.
+  // We check this corner-case and if MeetingStatus == 1 (see http://msdn.microsoft.com/en-us/library/ee219342(v=exchg.80).aspx or details)
+  // and there's no organizer, we fake one.
+  //
   if ((o = [theValues objectForKey: @"MeetingStatus"]))
     {
-     //
-     // iOS is plain stupid here. It seends event invitations with no Organizer.
-     // We check this corner-case and if MeetingStatus == 1 (see http://msdn.microsoft.com/en-us/library/ee219342(v=exchg.80).aspx or details)
-     // and there's no organizer, we fake one.
-     //
-      if ([o intValue] == 1 && ![theValues objectForKey: @"Organizer_Email"] && ![[[self organizer] rfc822Email] length])
+      if ([o intValue] == 1 && ![theValues objectForKey: @"Organizer_Email"])
         {
           iCalPerson *person;
       
           person = [iCalPerson elementWithTag: @"organizer"];
           [person setEmail: [[[context activeUser] primaryIdentity] objectForKey: @"email"]];
           [person setCn: [[context activeUser] cn]];
-          [person setPartStat: @"ACCEPTED"];
-          [self setOrganizer: person];
-        }
-
-      //
-      // When MeetingResponse fails Outlook still sends a new calendar entry with MeetingStatus=3.
-      // Use the organizer from the request if the event has no organizer.
-      //
-      if ([o intValue] == 3 && [theValues objectForKey: @"Organizer_Email"] && ![[[self organizer] rfc822Email] length])
-        {
-          iCalPerson *person;
-          person = [iCalPerson elementWithTag: @"organizer"];
-          [person setEmail: [theValues objectForKey: @"Organizer_Email"]];
-          [person setCn: [theValues objectForKey: @"Organizer_Name"]];
           [person setPartStat: @"ACCEPTED"];
           [self setOrganizer: person];
         }

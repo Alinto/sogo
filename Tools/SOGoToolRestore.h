@@ -33,7 +33,6 @@ typedef enum SOGoToolRestoreMode {
 {
   NSString *directory;
   NSString *userID;
-  NSString *filename;
   NSString *restoreFolder;
   BOOL destructive; /* destructive mode not handled */
   SOGoToolRestoreMode restoreMode;

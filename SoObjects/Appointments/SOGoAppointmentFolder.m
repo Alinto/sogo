@@ -3157,8 +3157,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                     inContainer: self];
   [object setIsNew: YES];
   content = [NSMutableString stringWithString: @"BEGIN:VCALENDAR\n"];
-  [content appendFormat: @"PRODID:-//Inverse inc./SOGo %@//EN\n", SOGoVersion];
-
   if (timezone)
     [content appendFormat: @"%@\n",  [timezone versitString]];
   [content appendFormat: @"%@\nEND:VCALENDAR", [event versitString]];

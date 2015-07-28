@@ -702,7 +702,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSDictionary *) calendarCategoriesColors
 {
-  return [self objectForKey: @"SOGoCalendarCategoriesColors"];
+  return [self dictionaryForKey: @"SOGoCalendarCategoriesColors"];
 }
 
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue

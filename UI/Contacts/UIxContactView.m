@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2015 Inverse inc.
+  Copyright (C) 2005-2014 Inverse inc.
 
   This file is part of SOGo.
  
@@ -138,13 +138,9 @@
   if ([email length] > 0)
     {
       fn = [card fn];
-      if ([fn length] > 0)
-        attrs = [NSString stringWithFormat: @"%@ <%@>", fn, email];
-      else
-        attrs = email;
-      attrs = [attrs stringByReplacingString: @"'"  withString: @"\\'"];
-      attrs = [attrs stringByReplacingString: @"\""  withString: @"\\\""];
-      attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@');\"", attrs];
+      fn = [fn stringByReplacingString: @"\""  withString: @""];
+      fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
+      attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@ <%@>');\"", fn, email];
     }
   else
     {
@@ -185,23 +181,16 @@
       for (i = 0; i < [emails count]; i++)
 	{
 	  email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
-          if ([email length])
-            {
-              fn = [card fn];
-              if ([fn length])
-                attrs = [NSString stringWithFormat: @"%@ <%@>", fn, email];
-              else
-                attrs = email;
-              attrs = [attrs stringByReplacingString: @"'"  withString: @"\\'"];
-              attrs = [attrs stringByReplacingString: @"\""  withString: @"\\\""];
-              attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@');\"", attrs];
-
-              [secondaryEmails addObject: [self _cardStringWithLabel: nil
-                                                               value: email
-                                                byEscapingHTMLString: YES
-                                                        asLinkScheme: @"mailto:"
-                                                  withLinkAttributes: attrs]];
-            }
+          fn = [card fn];
+          fn = [fn stringByReplacingString: @"\""  withString: @""];
+          fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
+          attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@ <%@>');\"", fn, email];
+          
+          [secondaryEmails addObject: [self _cardStringWithLabel: nil
+                                                           value: email
+                                            byEscapingHTMLString: YES
+                                                    asLinkScheme: @"mailto:"
+                                              withLinkAttributes: attrs]];
         }
     }
   else

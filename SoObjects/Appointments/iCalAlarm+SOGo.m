@@ -1,6 +1,6 @@
 /* iCalAlarm+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2015 Inverse inc.
+ * Copyright (C) 2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
-#import <NGCards/iCalEntityObject.h>
 
 @implementation iCalAlarm (SOGoExtensions)
 
@@ -66,7 +65,7 @@
   [alarm addChild: aAttendee];
 }
 
-+ (id) alarmForEvent: (iCalEntityObject *) theEntity
++ (id) alarmForEvent: (iCalRepeatableEntityObject *) theEntity
                owner: (NSString *) theOwner
               action: (NSString *) reminderAction
                 unit: (NSString *) reminderUnit
