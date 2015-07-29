@@ -394,11 +394,22 @@ static Class NSNullK;
 
 - (NSString *) getUIDForEmail: (NSString *) email
 {
-  NSDictionary *contactInfos;
+  NSDictionary *info;
+  SOGoSystemDefaults *sd;
+  NSString *uid, *domain;
 
-  contactInfos = [self contactInfosForUserWithUIDorEmail: email];
+  info = [self contactInfosForUserWithUIDorEmail: email];
+  uid = [info objectForKey: @"c_uid"];
 
-  return [contactInfos objectForKey: @"c_uid"];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID]
+      && ![[info objectForKey: @"DomainLessLogin"] boolValue])
+    {
+      domain = [info objectForKey: @"c_domain"];
+      uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
+    }
+
+  return uid;
 }
 
 - (BOOL) _sourceChangePasswordForLogin: (NSString *) login
