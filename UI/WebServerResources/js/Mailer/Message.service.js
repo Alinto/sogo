@@ -51,7 +51,16 @@
     return Message; // return constructor
   }];
 
-  /* Factory registration in Angular module */
+  /**
+   * @module SOGo.MailerUI
+   * @desc Factory registration of Message in Angular module.
+   */
+  try {
+    angular.module('SOGo.MailerUI');
+  }
+  catch(e) {
+    angular.module('SOGo.MailerUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.MailerUI')
     .factory('Message', Message.$factory);
 

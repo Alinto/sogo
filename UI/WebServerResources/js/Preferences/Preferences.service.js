@@ -69,6 +69,14 @@
     return new Preferences(); // return unique instance
   }];
 
+  /* Initialize module if necessary */
+  try {
+    angular.module('SOGo.PreferencesUI');
+  }
+  catch(e) {
+    angular.module('SOGo.PreferencesUI', ['SOGo.Common']);
+  }
+
   /* Factory registration in Angular module */
   angular.module('SOGo.PreferencesUI')
     .factory('Preferences', Preferences.$factory);
