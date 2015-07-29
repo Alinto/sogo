@@ -356,7 +356,7 @@ static NSArray *tasksFields = nil;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *iCalString;
+  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime;
   NSRange match;
   iCalCalendar *calendar;
   iCalObject *master;
@@ -504,7 +504,12 @@ static NSArray *tasksFields = nil;
               if (![[newInfo objectForKey: @"c_title"] length])
                 [self _fixComponentTitle: newInfo withType: component];
 
-	      // Possible improvement: only call _fixDates if event is recurrent
+              // Add prefix to recurrence id
+              if ((recurrenceTime = [newInfo objectForKey: @"c_recurrence_id"]))
+                [newInfo setObject: [NSString stringWithFormat: @"occurence%@", recurrenceTime]
+                            forKey: @"c_recurrence_id"];
+
+              // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
               [self _fixDates: newInfo];
 
@@ -723,10 +728,6 @@ static NSArray *tasksFields = nil;
   while ((oldEvent = [events nextObject]))
   {
     newEvent = [NSMutableArray arrayWithArray: oldEvent];
-    if (![[oldEvent objectAtIndex: eventRecurrenceIdIndex] isKindOfClass: [NSNull class]])
-      [newEvent replaceObjectAtIndex: eventRecurrenceIdIndex
-                          withObject: [NSString stringWithFormat: @"occurence%@",
-                                         [oldEvent objectAtIndex: eventRecurrenceIdIndex]]];
     isAllDay = [[oldEvent objectAtIndex: eventIsAllDayIndex] boolValue];
     interval = [[oldEvent objectAtIndex: eventStartDateIndex] intValue];
     [newEvent addObject: [self _formattedDateForSeconds: interval
@@ -1430,10 +1431,6 @@ _computeBlocksPosition (NSArray *blocks)
     if (statusCode != 1 || showCompleted)
     {
       filteredTask = [NSMutableArray arrayWithArray: task];
-      if (![[task objectAtIndex: taskRecurrenceIdIndex] isKindOfClass: [NSNull class]])
-        [filteredTask replaceObjectAtIndex: taskRecurrenceIdIndex
-                                withObject: [NSString stringWithFormat: @"occurence%@",
-                                                   [task objectAtIndex: taskRecurrenceIdIndex]]];
       endDateStamp = [[task objectAtIndex: taskEndDateIndex] intValue];
       statusFlag = [self _getStatusClassForStatusCode: statusCode
                                       andEndDateStamp: endDateStamp];

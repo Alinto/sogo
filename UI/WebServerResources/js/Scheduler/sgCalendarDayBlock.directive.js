@@ -8,30 +8,38 @@
    * @memberof SOGo.Common
    * @restrict element
    * @param {object} sgBlock - the event block definition
-   * @ngInject
+   * @param {function} sgClick - the function to call when clicking on a block.
+   *        Two variables are available: clickEvent (the event that triggered the mouse click),
+   *        and clickComponent (a Component object)
+   *
    * @example:
 
    <sg-calendar-day-block
-   ng-repeat="block in blocks[day]"
-   sg-block="block"/>
+      ng-repeat="block in blocks[day]"
+      sg-block="block"
+      sg-click="open(clickEvent, clickComponent)" />
   */
   function sgCalendarDayBlock() {
     return {
       restrict: 'E',
       scope: {
-        block: '=sgBlock'
+        block: '=sgBlock',
+        clickBlock: '&sgClick'
       },
       replace: true,
       template: [
         '<div class="event draggable">',
-        '  <div class="eventInside">',
+        '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         '      <div class="gradient">',
         '      </div>',
         '      <div class="text">{{ block.component.c_title }}',
         '        <span class="icons">',
-        '          <i ng-if="block.component.c_nextalarm" class="md-icon-alarm"></i>',
-        '          <i ng-if="block.component.c_classification == 1" class="md-icon-visibility-off"></i>',
-        '          <i ng-if="block.component.c_classification == 2" class="md-icon-vpn-key"></i>',
+        // Component has an alarm
+        '          <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        // Component is confidential
+        '          <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        // Component is private
+        '          <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '       </span></div>',
         '    </div>',
         '    <div class="topDragGrip"></div>',

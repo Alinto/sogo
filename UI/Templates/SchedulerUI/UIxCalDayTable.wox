@@ -103,6 +103,7 @@
               </var:foreach>
               <sg-calendar-day-table
                   sg-blocks="calendar.blocks"
+                  sg-click="list.openEvent(event, component)"
                   var:sg-day="currentTableDay.shortDateString" />
             </div>
             <div class="events"><!-- space --></div>
