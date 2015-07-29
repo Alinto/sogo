@@ -63,6 +63,12 @@
    * @module SOGo.SchedulerUI
    * @desc Factory registration of Component in Angular module.
    */
+  try {
+    angular.module('SOGo.SchedulerUI');
+  }
+  catch(e) {
+    angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.SchedulerUI')
     .factory('Component', Component.$factory);
 

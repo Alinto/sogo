@@ -47,7 +47,16 @@
     return AddressBook; // return constructor
   }];
 
-  /* Factory registration in Angular module */
+  /**
+   * @module SOGo.ContactsUI
+   * @desc Factory registration of AddressBook in Angular module.
+   */
+  try {
+    angular.module('SOGo.ContactsUI');
+  }
+  catch(e) {
+    angular.module('SOGo.ContactsUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.ContactsUI')
     .factory('AddressBook', AddressBook.$factory);
 

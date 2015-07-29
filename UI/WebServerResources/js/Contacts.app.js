@@ -4,9 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', []);
-
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'SOGo.Common'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.PreferencesUI'])
 
     .constant('sgSettings', {
       baseURL: ApplicationBaseURL,

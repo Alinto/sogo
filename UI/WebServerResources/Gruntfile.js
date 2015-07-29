@@ -1,10 +1,14 @@
 module.exports = function(grunt) {
   var js_files = {
     'js/Common.js': ['js/Common/Common.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js'],
-    'js/Scheduler.js': ['js/Scheduler/*.js'],
-    'js/Contacts.js': ['js/Contacts/*.js'],
-    'js/Mailer.js': ['js/Mailer/*.js'],
-    'js/Preferences.js': ['js/Preferences/*service.js', 'js/Preferences/*Controller.js']
+    'js/Scheduler.services.js': ['js/Scheduler/*.service.js'],
+    'js/Scheduler.js': ['js/Scheduler.app.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
+    'js/Contacts.services.js': ['js/Contacts/*.service.js'],
+    'js/Contacts.js': ['js/Contacts.app.js', 'js/Contacts/*Controller.js', 'js/Contacts/*.directive.js'],
+    'js/Mailer.services.js': ['js/Mailer/*.service.js'],
+    'js/Mailer.js': ['js/Mailer.app.js', 'js/Mailer/*Controller.js', 'js/Mailer/*.directive.js'],
+    'js/Preferences.services.js': ['js/Preferences/*.service.js'],
+    'js/Preferences.js': ['js/Preferences.app.js', 'js/Preferences/*Controller.js']
   };
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),

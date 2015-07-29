@@ -4,6 +4,17 @@
   'use strict';
 
   angular.module('SOGo.Common', ['ngMaterial'])
+    .constant('sgSettings', {
+      baseURL: ApplicationBaseURL,
+      activeUser: {
+        login: UserLogin,
+        identification: UserIdentification,
+        language: UserLanguage,
+        folderURL: UserFolderURL,
+        isSuperUser: IsSuperUser
+      }
+    })
+
   // md break-points values are hard-coded in angular-material/src/core/util/constant.js
   // $mdMedia has a built-in support for those values but can also evaluate others
   // For some reasons, angular-material's break-points don't match the specs

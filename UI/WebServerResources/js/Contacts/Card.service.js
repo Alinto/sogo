@@ -53,6 +53,12 @@
    * @module SOGo.ContactsUI
    * @desc Factory registration of Card in Angular module.
    */
+  try {
+    angular.module('SOGo.ContactsUI');
+  }
+  catch(e) {
+    angular.module('SOGo.ContactsUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.ContactsUI')
     .factory('Card', Card.$factory);
 
@@ -403,15 +409,15 @@
    * @param {string} email
    * @param {Card} card
    */
-  Card.prototype.$updateMember = function(index, email, card) {
-    var ref = {
-      email: email,
-      emails: [{value: email}],
-      reference: card.c_name,
-      c_cn: card.$fullname()
-    };
-    this.refs[index] = new Card(ref);
-  };
+  // Card.prototype.$updateMember = function(index, email, card) {
+  //   var ref = {
+  //     email: email,
+  //     emails: [{value: email}],
+  //     reference: card.c_name,
+  //     c_cn: card.$fullname()
+  //   };
+  //   this.refs[index] = new Card(ref);
+  // };
 
   /**
    * @function $unwrap

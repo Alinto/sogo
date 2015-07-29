@@ -4,22 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.ContactsUI', []);
-  angular.module('SOGo.PreferencesUI', []);
-
   angular.module('SOGo.MailerUI', ['ngSanitize', 'ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate', 'SOGo.PreferencesUI'])
-
-    .constant('sgSettings', {
-      baseURL: ApplicationBaseURL,
-      activeUser: {
-        login: UserLogin,
-        identification: UserIdentification,
-        language: UserLanguage,
-        folderURL: UserFolderURL,
-        isSuperUser: IsSuperUser
-      }
-    })
-
     .config(configure)
     .run(runBlock);
 
@@ -229,8 +214,8 @@
   runBlock.$inject = ['$rootScope'];
   function runBlock($rootScope) {
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection)
-    })
+      console.error(event, current, previous, rejection);
+    });
   }
 
 })();

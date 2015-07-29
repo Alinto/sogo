@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Contacts.app.js, Contacts.js, Common.js"
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js"
     className="UIxPageFrame"
     title="name">
   <script type="text/javascript">

@@ -10,7 +10,7 @@
   title="title"
   const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors, SOGoDefaultCalendar, SOGoTimeFormat"
   const:userSettingsKeys="Calendar, ShowCompletedTasks"
-  const:jsFiles="Scheduler.app.js, Scheduler.js, Common.js, Contacts.js, Mailer.js, Preferences.js">
+  const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, Scheduler.js, Scheduler.services.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;

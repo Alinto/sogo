@@ -122,6 +122,6 @@
   }
   
   angular
-    .module('SOGo.SchedulerUI')  
+    .module('SOGo.SchedulerUI')
     .controller('CalendarListController', CalendarListController);
 })();

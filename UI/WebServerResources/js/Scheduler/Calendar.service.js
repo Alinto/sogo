@@ -40,7 +40,16 @@
     return Calendar; // return constructor
   }];
 
-  /* Factory registration in Angular module */
+  /**
+   * @module SOGo.SchedulerUI
+   * @desc Factory registration of Calendar in Angular module.
+   */
+  try {
+    angular.module('SOGo.SchedulerUI');
+  }
+  catch(e) {
+    angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.SchedulerUI')
     .factory('Calendar', Calendar.$factory);
 

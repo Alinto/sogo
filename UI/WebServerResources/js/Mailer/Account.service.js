@@ -44,7 +44,16 @@
     return Account; // return constructor
   }];
 
-  /* Factory registration in Angular module */
+  /**
+   * @module SOGo.MailerUI
+   * @desc Factory registration of Account in Angular module.
+   */
+  try {
+    angular.module('SOGo.MailerUI');
+  }
+  catch(e) {
+    angular.module('SOGo.MailerUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.MailerUI')
     .factory('Account', Account.$factory);
 

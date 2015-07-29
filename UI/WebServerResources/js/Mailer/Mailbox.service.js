@@ -57,15 +57,19 @@
 
   /**
    * @module SOGo.MailerUI
-   * @desc Factory registration of Card in Angular module.
+   * @desc Factory registration of Mailbox in Angular module.
    */
+  try {
+    angular.module('SOGo.MailerUI');
+  }
+  catch(e) {
+    angular.module('SOGo.MailerUI', ['SOGo.Common']);
+  }
   angular.module('SOGo.MailerUI')
-  /* Factory constants */
     .constant('sgMailbox_PRELOAD', {
       LOOKAHEAD: 50,
       SIZE: 100
     })
-  /* Factory registration in Angular module */
     .factory('Mailbox', Mailbox.$factory);
 
   /**
