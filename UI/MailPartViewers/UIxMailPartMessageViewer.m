@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2015 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -24,6 +24,8 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
 #import <NGExtensions/NSString+Encoding.h>
+
+#import <NGObjWeb/WOResponse.h>
 
 #import <SoObjects/Mailer/NSData+Mail.h>
 #import <SoObjects/Mailer/NSString+Mail.h>
