@@ -51,8 +51,8 @@
     SOGoTimeFormat = "%H:%M";
     SOGoFirstDayOfWeek = 0;
     SOGoFirstWeekOfYear = "January1";
-    SOGoShortDateFormat = "default";
-    SOGoLongDateFormat = "default";
+    SOGoShortDateFormat = "%d-%b-%y";
+    SOGoLongDateFormat = "%A, %B %d, %Y";
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";

@@ -257,7 +257,7 @@ static NSArray *reminderValues = nil;
   unsigned int nbr;
   BOOL done;
 
-  shortDateFormatsList = [NSMutableArray arrayWithObject: @"default"];
+  shortDateFormatsList = [NSMutableArray array];
 
   nbr = 0;
   done = NO;
@@ -2086,6 +2086,14 @@ static NSArray *reminderValues = nil;
       // We convert our object into a mutable one
       v = [[v mutableCopy] autorelease];
 
+
+      // We remove short/long date formats if they are default ones
+      if ([[v objectForKey: @"SOGoShortDateFormat"] isEqualToString: @"default"])
+        [v removeObjectForKey: @"SOGoShortDateFormat"];
+
+      if ([[v objectForKey: @"SOGoLongDateFormat"] isEqualToString: @"default"])
+        [v removeObjectForKey: @"SOGoLongDateFormat"];
+      
       //
       // We sanitize mail labels
       //
