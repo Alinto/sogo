@@ -8,7 +8,7 @@
     <form name="eventForm" ng-submit="viewer.save(eventForm)">
       <md-toolbar class="md-padding" ng-class="viewer.component.getClassName('bg')">
         <div class="md-toolbar-tools">
-        <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
+          <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
           <h2 class="md-flex">
             <!-- classification -->
             <md-icon ng-if="viewer.component.classification == 'confidential'">visibility_off</md-icon>
@@ -97,18 +97,20 @@
         <md-list-item ng-show="viewer.component.attendees.length > 0">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
-            <div class="sg-avatars">
-              <sg-avatar-image ng-repeat="currentAttendee in viewer.component.attendees track by currentAttendee.email"
-                               sg-email="currentAttendee.email"
-                               size="32"><!-- avatar --></sg-avatar-image>
-            </div>
+            <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+                 in readonly mode and a template similar to the one of md-contact-chips -->
+            <md-chips class="md-contact-chips"
+                      ng-model="viewer.component.attendees"
+                      readonly="true">
+              <md-chip-template>
+                <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+                <div class="md-contact-name">{{$chip.name}}</div>
+                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+              </md-chip-template>
+            </md-chips>
           </div>
         </md-list-item>
-      </md-list>        
-      <!-- attendees -->
-      <div ng-show="viewer.showAttendeesEditor" class="sg-subcontent attendees">
-         <var:component className="UIxAttendeesEditor" />
-      </div>
+      </md-list>
     </md-dialog-content>
     <!-- actions -->
     <div class="md-actions">

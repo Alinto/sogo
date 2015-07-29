@@ -31,12 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Resource', function($q, $timeout, $log, Settings, Preferences, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, Gravatar, Resource) {
     angular.extend(Component, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $Preferences: Preferences,
+      $gravatar: Gravatar,
       $$resource: new Resource(Settings.baseURL, Settings.activeUser),
       $categories: window.UserDefaults.SOGoCalendarCategoriesColors,
       // Filter parameters common to events and tasks
@@ -354,6 +355,7 @@
 
     if (this.attendees) {
       _.each(this.attendees, function(attendee) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
         _this.updateFreeBusy(attendee);
       });
     }
@@ -527,6 +529,7 @@
       if (!_.find(this.attendees, function(o) {
         return o.email == attendee.email;
       })) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
         if (this.attendees)
           this.attendees.push(attendee);
         else

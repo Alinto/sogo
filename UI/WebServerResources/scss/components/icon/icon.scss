@@ -67,9 +67,14 @@ md-icon {
   &.icon-alarm:before {
     content: "\e855";
   }
+  &.icon-delegated:before,
+  &.icon-arrow-forward:before {
+    content: "\e5c8";
+  }
   &.icon-check:before {
     content: "\e5ca";
   }
+  &.icon-accepted:before,
   &.icon-clear:before {
     content: "\e14c";
   }
@@ -85,12 +90,24 @@ md-icon {
   &.icon-expand-more:before {
     content: "\e5cf";
   }
+  &.icon-needs-action:before,
+  &.icon-help:before {
+    content: "\e887";
+  }
   &.icon-more-horiz:before {
     content: "\e5d3";
+  }
+  &.icon-tentative:before,
+  &.icon-person:before {
+    content: "\e7fd";
   }
 //  &.icon_public:before {
 //    content: "\e80b";
 //  }
+  &.icon-declined:before,
+  &.icon-remove-circle:before {
+    content: "\e15c";
+  }
   &.icon-visibility-off:before {
     content: "\e8f5";
   }

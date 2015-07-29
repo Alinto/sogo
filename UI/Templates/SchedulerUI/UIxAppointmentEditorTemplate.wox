@@ -188,9 +188,10 @@
                          md-search-text="editor.searchText"
                          md-selected-item-change="editor.addAttendee(card)"
                          md-items="card in editor.cardFilter(editor.searchText)"
-                         md-min-length="2"
-                         md-no-cache="true"
+                         md-item-text="user.empty"
+                         md-min-length="3"
                          md-delay="300"
+                         md-no-cache="true"
                          sg-enter="editor.addAttendee(editor.searchText)">
           <md-item-template>
             <div class="md-contact-suggestion" layout="row" layout-align="space-between center">
@@ -209,13 +210,18 @@
           <md-icon ng-class="{'md-rotate-180': editor.showAttendeesEditor}">expand_more</md-icon>
         </md-button>
       </div>
-      <div layout="row" layout-align="space-between end">
-          <div class="sg-avatars" ng-hide="editor.showAttendeesEditor">
-            <sg-avatar-image ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email"
-                             sg-email="currentAttendee.email"
-                             size="32"><!-- avatar --></sg-avatar-image>
-        </div>
-      </div>
+        <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+             in readonly mode and a template similar to the one of md-contact-chips -->
+        <md-chips class="md-contact-chips sg-readonly"
+                  ng-model="editor.component.attendees"
+                  ng-hide="editor.showAttendeesEditor"
+                  readonly="true">
+          <md-chip-template>
+            <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+            <div class="md-contact-name">{{$chip.name}}</div>
+            <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+          </md-chip-template>
+        </md-chips>
       <div ng-show="editor.showAttendeesEditor" class="sg-subcontent attendees">
          <var:component className="UIxAttendeesEditor" />
       </div>
