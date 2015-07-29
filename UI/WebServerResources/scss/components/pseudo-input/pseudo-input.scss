@@ -49,8 +49,8 @@ $input-padding-top: 2px !default;
 .button-label {
   display: inline-block;
   margin-top: $mg;
-  color: $colorGrayLight;
-  font-weight: $sg-font-regular; // 16px;
+  color: $colorGray;
+  font-weight: $sg-font-regular;
   font-size: sg-size(caption);
   line-height: $sg-line-height-1;
 }
