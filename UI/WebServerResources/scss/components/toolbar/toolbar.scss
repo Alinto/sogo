@@ -22,7 +22,7 @@ md-toolbar {
 }
 
 .md-toolbar-tools {
-  padding: 0 initial;
+  padding: 0;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
 }
