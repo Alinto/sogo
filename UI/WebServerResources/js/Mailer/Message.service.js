@@ -179,6 +179,7 @@
               return part.preferredPart == alternatePart.contentType;
             }));
           }
+          // Can be used for UIxMailPartMixedViewer and UIxMailPartMessageViewer
           else if (angular.isArray(part.content)) {
             _.each(part.content, function(mixedPart) {
               _visit(mixedPart);
