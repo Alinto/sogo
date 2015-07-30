@@ -401,6 +401,9 @@
                 </md-menu-item>
               </md-menu-content>
             </md-menu>
+            <md-button class="sg-icon-button" aria-label="Refresh" ng-click="mailbox.selectedFolder.$filter()" >
+              <md-icon>refresh</md-icon>
+            </md-button>
           </div>
         </div>
         <!-- search mode -->

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$state', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $state, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$state', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'Preferences', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $state, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Preferences, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -98,6 +98,24 @@
       vm.mode.search = false;
       vm.selectedFolder.$filter('');
     }
+
+    // Start the address book refresh timer based on user's preferences
+    Preferences.ready().then(function() {
+      var refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var interval;
+        if (refreshViewCheck == "once_per_hour")
+          interval = 3600;
+        else if (refreshViewCheck == "every_minute")
+          interval = 60;
+        else {
+          interval = parseInt(refreshViewCheck.substr(6)) * 60;
+        }
+
+        var f = angular.bind(vm.selectedFolder, AddressBook.prototype.$reload);
+        $timeout(f, interval*1000);
+      }
+    });
   }
 
   angular

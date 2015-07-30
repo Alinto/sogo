@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$state', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($state, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$state', '$timeout', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Preferences'];
+  function MailboxController($state, $timeout, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox, Preferences) {
     var vm = this;
 
     Mailbox.selectedFolder = stateMailbox;
@@ -87,6 +87,24 @@
       vm.mode.search = false;
       vm.selectedFolder.$filter();
     }
+
+    // Start the mailbox refresh timer based on user's preferences
+    Preferences.ready().then(function() {
+      var refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var interval;
+        if (refreshViewCheck == "once_per_hour")
+          interval = 3600;
+        else if (refreshViewCheck == "every_minute")
+          interval = 60;
+        else {
+          interval = parseInt(refreshViewCheck.substr(6)) * 60;
+        }
+
+        var f = angular.bind(vm.selectedFolder, Mailbox.prototype.$filter);
+        $timeout(f, interval*1000);
+      }
+    });
   }
 
   angular
