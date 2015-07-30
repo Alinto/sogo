@@ -321,15 +321,18 @@
 {
   NSDictionary *params;
   NSException *ex;
-  NSString *newCalendar, *jsonResponse;
-  SOGoAppointmentFolder *thisFolder, *newFolder;
+  NSString *jsonResponse;
+  SOGoAppointmentFolder *previousCalendar;
   SOGoTaskObject *co;
   SoSecurityManager *sm;
   WORequest *request;
   iCalToDo *todo;
+  unsigned int httpStatus;
 
   todo = [self todo];
   co = [self clientObject];
+  previousCalendar = [co container];
+  sm = [SoSecurityManager sharedSecurityManager];
 
   ex = nil;
   request = [context request];
@@ -343,40 +346,67 @@
   else
     {
       [self setAttributes: params];
-      ex = [co saveComponent: todo];
 
-      newCalendar = [self queryParameterForKey: @"moveToCalendar"];
-      if ([newCalendar length])
+      if ([co isNew])
         {
-          sm = [SoSecurityManager sharedSecurityManager];
-
-          thisFolder = [co container];
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                             onObject: thisFolder
-                            inContext: context])
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
             {
-              newFolder = [[thisFolder container] lookupName: newCalendar
-                                                   inContext: context
-                                                     acquire: NO];
+              // New task in a different calendar -- make sure the user can
+              // write to the selected calendar since the rights were verified
+              // on the calendar specified in the URL, not on the selected
+              // calendar of the popup menu.
               if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                 onObject: newFolder
+                                 onObject: componentCalendar
                                 inContext: context])
-                [co moveToFolder: newFolder];
+                co = [componentCalendar lookupName: [co nameInContainer]
+                                         inContext: context
+                                           acquire: NO];
+            }
+
+          // Save the task.
+          ex = [co saveComponent: todo];
+        }
+      else
+        {
+          // The task was modified -- save it.
+          ex = [co saveComponent: todo];
+
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
+            {
+              // The task was moved to a different calendar.
+              if (![sm validatePermission: SoPerm_DeleteObjects
+                                 onObject: previousCalendar
+                                inContext: context])
+                {
+                  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                                     onObject: componentCalendar
+                                    inContext: context])
+                    ex = [co moveToFolder: componentCalendar];
+                }
             }
         }
     }
 
   if (ex)
-    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   @"failure", @"status",
-                                 [ex reason],
-                                 @"message",
-                                 nil];
+    {
+      httpStatus = 500;
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"failure", @"status",
+                                   [ex reason], @"message",
+                                   nil];
+    }
   else
-    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   @"success", @"status", nil];
+    {
+      httpStatus = 200;
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"success", @"status", nil];
+    }
 
-  return [self responseWithStatus: 200
+  return [self responseWithStatus: httpStatus
             andJSONRepresentation: jsonResponse];
 }
 
