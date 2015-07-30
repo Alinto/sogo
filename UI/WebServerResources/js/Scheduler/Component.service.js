@@ -347,7 +347,21 @@
       this.repeat.end = 'never';
     this.$hasCustomRepeat = this.hasCustomRepeat();
 
-    this.$hasAlarm = angular.isDefined(data.alarm);
+    if (this.isNew) {
+      // Set default alarm
+      Component.$Preferences.ready().then(function() {
+        var units = { M: 'MINUTES', H: 'HOURS', D: 'DAYS', W: 'WEEKS' };
+        var match = /-PT?([0-9]+)([MHDW])/.exec(Component.$Preferences.defaults.SOGoCalendarDefaultReminder);
+        if (match) {
+          _this.$hasAlarm = true;
+          _this.alarm.quantity = parseInt(match[1]);
+          _this.alarm.unit = units[match[2]];
+        }
+      });
+    }
+    else {
+      this.$hasAlarm = angular.isDefined(data.alarm);
+    }
 
     // Allow the component to be moved to a different calendar
     this.destinationCalendar = this.pid;

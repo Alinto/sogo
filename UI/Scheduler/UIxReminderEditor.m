@@ -33,7 +33,7 @@
 
   if (!unitsList)
     {
-      unitsList = [NSArray arrayWithObjects: @"MINUTES", @"HOURS", @"DAYS", nil];
+      unitsList = [NSArray arrayWithObjects: @"MINUTES", @"HOURS", @"DAYS", @"WEEKS", nil];
       [unitsList retain];
     }
 

@@ -105,6 +105,9 @@
                     case 'M': /* min  */
                       unit = @"MINUTES";
                       break;
+                    case 'W': /* week  */
+                      unit = @"WEEKS";
+                      break;
                     default:
                       NSLog(@"Cannot process duration unit: '%c'", c);
                       break;
