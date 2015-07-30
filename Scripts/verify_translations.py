@@ -8,7 +8,7 @@ DEBUG=False
 
 dir_mappings = {"../UI/Templates":"../UI/Common",
                 "../UI/Templates/AdministrationUI":"../UI/AdministrationUI",
-                "../UI/Templates/Appointments":"../UI/Common",
+                "../UI/Templates/Appointments":"../SoObjects/Appointments",
                 "../UI/Templates/ContactsUI":"../UI/Contacts",
                 "../UI/Templates/MailerUI":"../UI/MailerUI",
                 "../UI/Templates/MailPartViewers":"../UI/MailPartViewers",
