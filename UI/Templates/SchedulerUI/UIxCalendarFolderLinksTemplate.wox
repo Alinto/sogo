@@ -7,7 +7,19 @@
     xmlns:label="OGo:label"
     >
 
-  <md-dialog>
+  <md-dialog flex="40">
+    <md-toolbar class="sg-padded">
+      <div class="md-toolbar-tools">
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Links to this Calendar"/></label>
+          <div class="pseudo-input-field sg-md-title"><var:string value="calendar.displayName"/></div>
+        </div>
+        <md-button class="md-icon-button" ng-click="close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
     <md-dialog-content>
       <div  layout="column" layout-padding="layout-padding">
 
@@ -20,8 +32,8 @@
             </md-input-container>
           </var:if>
           <var:if condition="isWebCalendar" const:negate="YES">
-            <span><var:string label:value="Authenticated User Access"/></span>
-            
+            <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
+
             <md-input-container>
               <label><var:string label:value="CalDAV URL"/></label>
               <input var:value="calDavURL" ng-readonly="true"/>
@@ -37,34 +49,28 @@
           </var:if>
         </div>
 
-        
         <var:if condition="isPublicAccessEnabled">
           <var:if condition="isWebCalendar" const:negate="YES">
             <div layout="column" layout-padding="layout-padding">
-              <span><var:string label:value="Public Access"/></span>
-              
+              <div class="sg-md-title"><var:string label:value="Public Access"/></div>
               <md-input-container>
                 <label><var:string label:value="CalDAV URL: "/></label>
                 <input var:value="publicCalDavURL" ng-readonly="true"/>
               </md-input-container>
+              <md-input-container>
+                <label><var:string label:value="WebDAV ICS URL"/></label>
+                <input var:value="publicWebDavICSURL" ng-readonly="true"/>
+              </md-input-container>
+              <md-input-container>
+                <label><var:string label:value="WebDAV XML URL"/></label>
+                <input var:value="publicWebDavXMLURL" ng-readonly="true"/>
+              </md-input-container>
             </div>
-            <md-input-container>
-              <label><var:string label:value="WebDAV ICS URL"/></label>
-              <input var:value="publicWebDavICSURL" ng-readonly="true"/>
-            </md-input-container>
-            <md-input-container>
-              <label><var:string label:value="WebDAV XML URL"/></label>
-              <input var:value="publicWebDavXMLURL" ng-readonly="true"/>
-            </md-input-container>
           </var:if>
         </var:if>
       </div>
-        
-      <md-button type="button" ng-click="close()">
-        <var:string label:value="OK"/>
-      </md-button>
-      
+
     </md-dialog-content>
   </md-dialog>
-  
+
 </container>
