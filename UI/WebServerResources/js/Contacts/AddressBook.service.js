@@ -32,7 +32,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the AddressBook constructor
    */
-  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Card', 'Acl', function($q, $timeout, $log, Settings, Resource, Card, Acl) {
+  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Card', 'Acl', 'Preferences', function($q, $timeout, $log, Settings, Resource, Card, Acl, Preferences) {
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
@@ -40,8 +40,10 @@
       $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
       $Card: Card,
       $$Acl: Acl,
+      $Preferences: Preferences,
       activeUser: Settings.activeUser,
-      selectedFolder: null
+      selectedFolder: null,
+      $refreshTimeout: null
     });
 
     return AddressBook; // return constructor
@@ -102,7 +104,7 @@
 
   /**
    * @memberof AddressBook
-   * @desc Set or get the list of addressbooks. Will instanciate a new AddressBook object for each item.
+   * @desc Set or get the list of addressbooks. Will instantiate a new AddressBook object for each item.
    * @param {array} [data] - the metadata of the addressbooks
    * @returns the list of addressbooks
    */
@@ -211,6 +213,27 @@
   };
 
   /**
+   * @function $startRefreshTimeout
+   * @memberof AddressBook.prototype
+   * @desc Starts the refresh timeout for the current selected address book
+   * /
+  AddressBook.prototype.$startRefreshTimeout = function() {
+    var _this = this;
+
+    if (AddressBook.$refreshTimeout)
+      AddressBook.$timeout.cancel(AddressBook.$refreshTimeout);
+
+    AddressBook.$Preferences.ready().then(function() {
+      // Restart the refresh timer, if needed
+      var refreshViewCheck = AddressBook.$Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var f = angular.bind(_this, AddressBook.prototype.$reload);
+        AddressBook.$refreshTimeout = AddressBook.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      }
+    });
+  };
+
+  /**
    * @function $reload
    * @memberof AddressBook.prototype
    * @desc Reload list of cards
@@ -218,6 +241,8 @@
    */
   AddressBook.prototype.$reload = function() {
     var _this = this;
+
+    this.$startRefreshTimeout();
 
     return AddressBook.$$resource.fetch(this.id, 'view')
       .then(function(response) {
@@ -441,6 +466,9 @@
         });
         // Instanciate Acl object
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
+
+        _this.$startRefreshTimeout();
+
         return _this;
       });
     }, function(data) {

@@ -42,6 +42,7 @@
       $Preferences: Preferences,
       $query: { sort: 'date', asc: 0 },
       selectedFolder: null,
+      $refreshTimeout: null,
       PRELOAD: PRELOAD
     });
     // Initialize sort parameters from user's settings
@@ -212,6 +213,10 @@
     this.$isLoading = true;
 
     return Mailbox.$Preferences.ready().then(function() {
+
+      if (Mailbox.$refreshTimeout)
+        Mailbox.$timeout.cancel(Mailbox.$refreshTimeout);
+
       if (sortingAttributes)
         // Sorting preferences are common to all mailboxes
         angular.extend(Mailbox.$query, sortingAttributes);
@@ -232,6 +237,13 @@
             options.filters.push(secondFilter);
           }
         });
+      }
+
+      // Restart the refresh timer, if needed
+      var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var f = angular.bind(_this, Mailbox.prototype.$filter);
+        Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
       }
 
       var futureMailboxData = Mailbox.$$resource.post(_this.id, 'view', options);
