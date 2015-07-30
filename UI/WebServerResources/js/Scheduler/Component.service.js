@@ -103,8 +103,10 @@
         _.each(_.keys(options), function(key) {
           // Query parameters common to events and tasks are compared
           dirty |= (_this.$query[key] && options[key] != Component.$query[key]);
+          if (key == 'reload' && options[key])
+            dirty = true;
           // Update either the common parameters or the type-specific parameters
-          if (angular.isDefined(_this.$query[key]))
+          else if (angular.isDefined(_this.$query[key]))
             _this.$query[key] = options[key];
           else
             _this[queryKey][key] = options[key];

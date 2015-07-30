@@ -34,6 +34,11 @@
       selectComponentType(type, { reload: true });
     });
 
+    // Refresh current list when the list of calendars is modified
+    $scope.$on('calendars:list', function() {
+      Component.$filter(vm.componentType, { reload: true });
+    });
+
     // Switch between components tabs
     function selectComponentType(type, options) {
       if (options && options.reload || vm.componentType != type) {
@@ -114,11 +119,6 @@
       vm.mode.search = false;
       Component.$filter(vm.componentType, { value: '' });
     }
-
-    // Refresh current list when the list of calendars is modified
-    $scope.$on('calendars:list', function() {
-      Component.$filter(vm.componentType);
-    });
   }
   
   angular
