@@ -1053,9 +1053,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
                                          PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
-                                         PR_CHANGE_KEY, 0x00000000 };
+                                         PR_CHANGE_KEY, PidTagChangeNumber, 0x00000000 };
   enum MAPITAGS *currentProp;
   NSMutableDictionary *propsCopy;
+  uint64_t cn;
 
   /* TODO: this should no longer be required once mapistore v2 API is in
      place, when we can then do this from -dealloc below */
@@ -1073,6 +1074,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
 
   [properties addEntriesFromDictionary: propsCopy];
+
+  /* Update change number after setting the properties */
+  cn = [[self context] getNewChangeNumber];
+  [properties setObject: [NSNumber numberWithUnsignedLongLong: cn]
+                 forKey: MAPIPropertyKey (PidTagChangeNumber)];
+
   [dbFolder save];
 }
 
