@@ -173,6 +173,19 @@ String.prototype.asCSSIdentifier = function() {
   return newString;
 };
 
+String.prototype.timeInterval = function () {
+  var interval;
+  if (this == "once_per_hour")
+    interval = 3600;
+  else if (this == "every_minute")
+    interval = 60;
+  else {
+    interval = parseInt(this.substr(6)) * 60;
+  }
+
+  return interval;
+};
+
 Date.prototype.stringWithSeparator = function(separator) {
     var month = '' + (this.getMonth() + 1);
     var day = '' + this.getDate();

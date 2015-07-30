@@ -103,17 +103,8 @@
     Preferences.ready().then(function() {
       var refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
       if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var interval;
-        if (refreshViewCheck == "once_per_hour")
-          interval = 3600;
-        else if (refreshViewCheck == "every_minute")
-          interval = 60;
-        else {
-          interval = parseInt(refreshViewCheck.substr(6)) * 60;
-        }
-
         var f = angular.bind(vm.selectedFolder, AddressBook.prototype.$reload);
-        $timeout(f, interval*1000);
+        $timeout(f, refreshViewCheck.timeInterval()*1000);
       }
     });
   }
