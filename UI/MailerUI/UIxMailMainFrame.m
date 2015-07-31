@@ -33,6 +33,9 @@
 #import <NGObjWeb/SoComponent.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NSString+Imap4.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactGCSList.h>
@@ -621,6 +624,72 @@
   return [self labelForKey: [currentColumn objectForKey: @"value"]];
 }
 
+- (unsigned int) _unseenCountForFolder: (NSString *) theFolder
+{
+  EOQualifier *searchQualifier;
+  NSArray *searchResult, *pathComponents;
+  NSDictionary *imapResult;
+  NGImap4Connection *connection;
+  NGImap4Client *client;
+  unsigned int unseen;
+
+  SOGoMailAccount *account;
+  SOGoMailFolder *folder;
+
+  pathComponents = [theFolder pathComponents];
+  account = [[self clientObject] lookupName: [pathComponents objectAtIndex: 0]
+                                  inContext: context
+                                    acquire: YES];
+
+  folder = [account lookupName: [NSString pathWithComponents: [pathComponents subarrayWithRange: NSMakeRange(1, [pathComponents count]-1)]]
+                     inContext: context
+                       acquire: YES];
+
+  connection = [folder imap4Connection];
+  client = [connection client];
+
+  if ([connection selectFolder: [folder imap4URL]])
+    {
+      searchQualifier
+        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
+                       @"unseen", @"deleted"];
+      imapResult = [client searchWithQualifier: searchQualifier];
+      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
+      unseen = [searchResult count];
+    }
+  else
+    unseen = 0;
+
+  return unseen;
+}
+
+- (WOResponse *) unseenCountAction
+{
+  NSMutableDictionary *data;
+  WOResponse *response;
+  NSArray *folders;
+  NSString *folder;
+  int i;
+
+  folders = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"mailboxes"];
+  data = [NSMutableDictionary dictionary];
+
+  for (i = 0; i < [folders count]; i++)
+    {
+      folder = [folders objectAtIndex: i];
+      [data setObject: [NSNumber numberWithUnsignedInt: [self _unseenCountForFolder: folder]]
+               forKey: folder];
+    }
+
+  response = [self responseWithStatus: 200];
+
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"content-type"];
+  [response appendContentString: [data jsonRepresentation]];
+
+  return response;
+}
+
 - (NSString *) unseenCountFolders
 {
   NSArray *pathComponents, *filters, *actions;
@@ -670,7 +739,7 @@
 			[path appendString: @"/"];
 		    }
 		  
-		  [folders addObject: [NSString stringWithFormat: @"/0/%@", path]];
+		  [folders addObject: [NSString stringWithFormat: @"0/%@", path]];
 		}
 	    }
 	}

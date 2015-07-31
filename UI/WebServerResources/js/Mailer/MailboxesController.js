@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -28,6 +28,7 @@
     vm.share = share;
     vm.metadataForFolder = metadataForFolder;
     vm.setFolderAs = setFolderAs;
+    vm.refreshUnseenCount = refreshUnseenCount;
 
     if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
       // Redirect to first mailbox of first account if no mailbox is selected
@@ -221,6 +222,40 @@
         Dialog.alert(l('Warning'), error);
       });
     }
+
+    function refreshUnseenCount() {
+      var unseenCountFolders = window.unseenCountFolders;
+
+      _.forEach(vm.accounts, function(account) {
+
+        // Always include the INBOX
+        if (!_.includes(unseenCountFolders, account.id + '/folderINBOX'))
+          unseenCountFolders.push(account.id + '/folderINBOX');
+
+        _.forEach(account.$mailboxes, function(mailbox) {
+          if (angular.isDefined(mailbox.unseenCount) &&
+              !_.includes(unseenCountFolders, mailbox.id))
+            unseenCountFolders.push(mailbox.id);
+        });
+      });
+
+      Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
+        _.forEach(vm.accounts, function(account) {
+          _.forEach(account.$mailboxes, function(mailbox) {
+            if (data[mailbox.id])
+              mailbox.unseenCount = data[mailbox.id];
+          });
+        });
+      });
+
+      Preferences.ready().then(function() {
+        var refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
+        if (refreshViewCheck && refreshViewCheck != 'manually')
+          $timeout(vm.refreshUnseenCount, refreshViewCheck.timeInterval()*1000);
+      });
+    }
+
+    vm.refreshUnseenCount();
   }
 
   angular

@@ -258,7 +258,10 @@
                           ui-sref-active="sg-active">
               <md-icon ng-class="'sg-child-level-' + folder.level">{{app.metadataForFolder(folder).icon}}</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode != folder.path">{{app.metadataForFolder(folder).name}}</p>
+                 ng-show="app.editMode != folder.path">
+                {{app.metadataForFolder(folder).name}}
+                <span ng-show="folder.unseenCount"> ({{folder.unseenCount}})</span>
+              </p>
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode == folder.path">
                 <input class="folder-name" type="text"

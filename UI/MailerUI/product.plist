@@ -167,11 +167,6 @@
           actionClass = "UIxMailFolderActions";
           actionName = "setAsTrashFolder";
         };
-        unseenCount = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName = "unseenCount";
-        };
         UIxMailUserRightsEditor = {
           protectedBy = "ReadAcls";
           pageName    = "UIxMailUserRightsEditor";
@@ -341,6 +336,11 @@
         search = {
           protectedBy = "View";
           pageName    = "UIxMailSearch";
+        };
+        unseenCount = {
+          protectedBy = "View";
+          actionClass = "UIxMailMainFrame";
+          actionName = "unseenCount";
         };
         // viewerTemplate = {
         //   protectedBy = "View";

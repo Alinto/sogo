@@ -728,54 +728,6 @@
   return [self _subscriptionStubAction];
 }
 
-- (NSDictionary *) _unseenCount
-{
-  EOQualifier *searchQualifier;
-  NSArray *searchResult;
-  NSDictionary *imapResult;
-//  NSMutableDictionary *data;
-  NGImap4Connection *connection;
-  NGImap4Client *client;
-  int unseen;
-  SOGoMailFolder *folder;
-
-  folder = [self clientObject];
-
-  connection = [folder imap4Connection];
-  client = [connection client];
-
-  if ([connection selectFolder: [folder imap4URL]])
-    {
-      searchQualifier
-        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
-                       @"unseen", @"deleted"];
-      imapResult = [client searchWithQualifier: searchQualifier];
-      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
-      unseen = [searchResult count];
-    }
-  else
-    unseen = 0;
-
-  return [NSDictionary
-           dictionaryWithObject: [NSNumber numberWithInt: unseen]
-                         forKey: @"unseen"];
-}
-
-- (WOResponse *) unseenCountAction
-{
-  WOResponse *response;
-  NSDictionary *data;
-  
-  response = [self responseWithStatus: 200];
-  data = [self _unseenCount];
-
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"content-type"];
-  [response appendContentString: [data jsonRepresentation]];
-
-  return response;
-}
-
 - (WOResponse *) addOrRemoveLabelAction
 {
   WOResponse *response;

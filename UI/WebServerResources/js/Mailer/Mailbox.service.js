@@ -210,6 +210,9 @@
   Mailbox.prototype.$filter = function(sortingAttributes, filters) {
     var _this = this, options = {};
 
+    if (!angular.isDefined(this.unseenCount))
+      this.unseenCount = 0;
+
     this.$isLoading = true;
 
     return Mailbox.$Preferences.ready().then(function() {
