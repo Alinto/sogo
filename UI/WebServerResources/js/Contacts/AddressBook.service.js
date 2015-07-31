@@ -216,7 +216,7 @@
    * @function $startRefreshTimeout
    * @memberof AddressBook.prototype
    * @desc Starts the refresh timeout for the current selected address book
-   * /
+   */
   AddressBook.prototype.$startRefreshTimeout = function() {
     var _this = this;
 
