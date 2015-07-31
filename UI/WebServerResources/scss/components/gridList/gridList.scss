@@ -1,5 +1,17 @@
 @import "extends";
 
+// Color picker
+.sg-color-picker {
+  md-grid-tile {
+    border-radius: 25%;
+    &:hover,
+    &:active {
+      cursor: pointer;
+      transform: scale(1.5);
+    }
+  }
+}
+
 // See sgToggleGrid directive
 [sg-toggle-grid] {
   md-grid-tile {
