@@ -7,8 +7,19 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="100">
+    <md-toolbar class="sg-padded">
+      <div class="md-toolbar-tools">
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Delegation"/></label>
+          <div class="pseudo-input-field sg-md-title">{{delegate.account.name}}</div>
+        </div>
+        <md-button class="md-icon-button" ng-click="delegate.closeModal()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
     <md-dialog-content>
-      <h2 class="md-headline"><var:string label:value="Delegation"/> - {{delegate.account.name}}</h2>
       <md-card ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']"
                ng-click="delegate.selectUser(user)"
                ng-class="{ 'sg-collapsed': user.uid != delegate.selectedUser.uid, 'sg-expanded': user.uid == delegate.selectedUser.uid }">
@@ -50,7 +61,6 @@
                 md-highlight-flags="^i">{{user.c_email}}</span>
         </span>
       </md-autocomplete>
-      <md-button ng-click="delegate.closeModal()"><var:string label:value="Close"/></md-button>
     </div>
   </md-dialog>
 
