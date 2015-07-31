@@ -12,16 +12,16 @@ vtodo_class2 = "(Zadanie poufne)";
 "The event \"%{Summary}\" was created" = "Utworzono wydarzenie \"%{Summary}\"";
 "The event \"%{Summary}\" was deleted" = "Skasowano wydarzenie \"%{Summary}\"";
 "The event \"%{Summary}\" was updated" = "Zaktualizowano wydarzenie \"%{Summary}\"";
-"The following attendees(s) were notified:" = "Następujący uczestnicy zostali powiadomieni:";
-"The following attendees(s) were added:" = "Następujący uczestnicy zostali dodani:";
-"The following attendees(s) were removed:" = "Następujący uczestnicy zostali usunięci:";
+"The following attendees(s) were notified" = "Następujący uczestnicy zostali powiadomieni";
+"The following attendees(s) were added" = "Następujący uczestnicy zostali dodani";
+"The following attendees(s) were removed" = "Następujący uczestnicy zostali usunięci";
 
 /* IMIP messages */
-"calendar_label" = "Kalendarz:";
-"startDate_label" = "Początek:";
-"endDate_label" = "Koniec:";
+"calendar_label" = "Kalendarz";
+"startDate_label" = "Początek";
+"endDate_label" = "Koniec";
 "due_label" = "Termin:";
-"location_label" = "Miejsce:";
+"location_label" = "Miejsce";
 "summary_label" = "Podsumowanie:";
 "comment_label" = "Komentarz:";
 

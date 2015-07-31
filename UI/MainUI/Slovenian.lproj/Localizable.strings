@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Uporabniško ime:";
-"Password:" = "Geslo:";
-"Domain:" = "Domena:";
+"Username" = "Uporabniško ime";
+"Password" = "Geslo";
+"Domain" = "Domena";
 "Remember username" = "Zapomni si up. ime";
 
 "Connect" = "Poveži";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Alternativno lahko uporabljaš tudi Safari.";
 "Download" = "Prenos";
 
-"Language:" = "Jezik:";
+"Language" = "Jezik";
 "choose" = "Izberi ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";

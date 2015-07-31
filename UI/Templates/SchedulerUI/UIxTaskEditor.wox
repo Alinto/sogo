@@ -14,7 +14,7 @@
   var:saveURL="saveURL">
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
-  <span class="checkBoxList"><var:string label:value="Start:" />
+  <span class="checkBoxList"><var:string label:value="Start" />
     <span class="content"><input var:checked="hasStartDate"
 	id="startDateCB" type="checkbox" class="checkBox"
 	onchange="onTimeControlCheck(this);"
@@ -25,7 +25,7 @@
 	const:dayStartHour="0"
 	const:dayEndHour="23"
 	/></span></span>
-  <span class="checkBoxList"><var:string label:value="Due Date:" />
+  <span class="checkBoxList"><var:string label:value="Due Date" />
     <span class="content"><input var:checked="hasDueDate"
 	id="dueDateCB" type="checkbox" class="checkBox"
 	onchange="onTimeControlCheck(this);"
@@ -36,7 +36,7 @@
 	const:dayStartHour="0"
 	const:dayEndHour="23"
 	/></span></span>
-  <span class="checkBoxList"><var:string label:value="Status:" />
+  <span class="checkBoxList"><var:string label:value="Status" />
     <span class="content"><var:popup list="statusList" item="item"
 	const:id="statusList"
         label:noSelectionString="status_NOT-SPECIFIED"
@@ -58,16 +58,16 @@
   </var:if>
   <var:if condition="eventIsReadOnly">
   <var:if condition="hasStartDate">
-  <label><var:string label:value="Start:" />
+  <label><var:string label:value="Start" />
     <span class="content"><var:string var:value="taskStartDateTimeText" /></span>
   </label>
   </var:if>
   <var:if condition="hasDueDate">
-  <label><var:string label:value="Due Date:" />
+  <label><var:string label:value="Due Date" />
     <span class="content"><var:string var:value="taskDueDateTimeText" /></span>
   </label>
   </var:if>
-  <span class="checkBoxList"><var:string label:value="Status:" />
+  <span class="checkBoxList"><var:string label:value="Status" />
     <span class="content"><var:string var:value="itemStatusText"
         /><var:if condition="statusDateDisabled" const:negate="YES"> <var:string var:value="statusDateText"/></var:if
 	><var:if condition="statusPercentDisabled" const:negate="YES"> (<var:string var:value="statusPercent"/> <var:string label:value="% complete"/>)</var:if>

@@ -21,11 +21,12 @@ def get_translations(path):
     try:
         transpath = dir_mappings.get(path, path)
         transname = transpath + '/English.lproj/Localizable.strings'
-        transall = open(transname).read().split('\n')
-        transgood = [l.strip() for l in transall if len(l.strip()) and l.strip()[0] != '#']
+        #transall = open(transname).read().split('\n')
+        #transgood = [l.strip() for l in transall if len(l.strip()) and l.strip()[0] != '#']
+        transall = open(transname).read()
     except:
-        transgood = ()
-    return transgood
+        transall = ""
+    return transall
 
 
 def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=()):
@@ -38,8 +39,7 @@ def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=(
                     continue
                 pathname = path + '/' + filename
                 lines = open(pathname).read().split("\n")
-                regex_results = [recomp.search(l) for l in lines]
-                values = [r.groups()[0] for r in regex_results if r]
+                values = [r.groups()[0] for r in [recomp.search(l) for l in lines] if r]
                 if values:
                     #- Get the current english translations for the path
                     transgood = get_translations(path)
@@ -50,9 +50,15 @@ def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=(
                     if DEBUG:print pathname
                     for value in values:
                         #- Try to find the value from the source file in the translation file
-                        found = [line for line in transgood if value in line]
+                        #compvalue = re.compile('"(%s)"\s=\s"(.*?)";' % value)
+                        escaped_value = re.escape(value)
+                        found = re.search('(%s|"%s")\s*=\s*"(.*?)";' % (escaped_value, escaped_value), transgood)
+                        #for line in transgood:
+                        #    found = compvalue.search(line)
+                        #    if found:
+                        #        break
                         if found:
-                            if DEBUG: print "\t", "[%s] FOUND --" % value, found[0].split("=")[0]
+                            if DEBUG: print "\t", '[%s] FOUND -- "%s"' % found.groups()
                         else:
                             notfound.append("-->\t[%s] ==== Not Found ====" % value)
                     if notfound:
@@ -73,7 +79,7 @@ def main():
     greylist = ('UIxFilterEditor.wox')
 
     #- Get only the label:value from all lines
-    recomp = re.compile('<var:string label:value="(.*?)"')
+    recomp = re.compile(' label:[^=]*="(.*?)"')
     find_missing_translations('../UI', 'wox', recomp, greylist)
 
     #- [self labelForKey: @"Issuer"]

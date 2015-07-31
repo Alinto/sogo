@@ -48,14 +48,14 @@
           <md-icon>access_time</md-icon>
           <div layout="row" class="md-flex">
             <div class="md-list-item-text" ng-show="viewer.component.startDate">
-              <p><var:string label:value="Start:"/></p>
+              <p><var:string label:value="Start"/></p>
               <h3>
                 {{viewer.component.localizedStartDate}}
                 <span ng-hide="viewer.component.isAllDay"> {{viewer.component.localizedStartTime}}</span>
               </h3>
             </div>
             <div class="md-list-item-text" ng-show="viewer.component.endDate">
-              <p><var:string label:value="End:"/></p>
+              <p><var:string label:value="End"/></p>
               <h3>
                 {{viewer.component.localizedEndDate}}
                 <span ng-hide="viewer.component.isAllDay">{{viewer.component.localizedEndTime}}</span>
@@ -96,7 +96,7 @@
         <!-- attendees -->
         <md-list-item ng-show="viewer.component.attendees.length > 0">
           <div class="pseudo-input-container">
-            <label class="pseudo-input-label"><var:string label:value="Attendees:"/></label>
+            <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
             <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                  in readonly mode and a template similar to the one of md-contact-chips -->
             <md-chips class="md-contact-chips"

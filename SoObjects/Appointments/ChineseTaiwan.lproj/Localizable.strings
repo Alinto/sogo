@@ -12,16 +12,16 @@ vtodo_class2 = "(機密任務)";
 "The event \"%{Summary}\" was created" = "事件 \"%{Summary}\" 已建立";
 "The event \"%{Summary}\" was deleted" = "事件\"%{Summary}\" 已刪除";
 "The event \"%{Summary}\" was updated" = "事件\"%{Summary}\" 已異動";
-"The following attendees(s) were notified:" = "已通知下列出席者:";
-"The following attendees(s) were added:" = "已增加下列出席者:";
-"The following attendees(s) were removed:" = "已移除下列出席者:";
+"The following attendees(s) were notified" = "已通知下列出席者";
+"The following attendees(s) were added" = "已增加下列出席者";
+"The following attendees(s) were removed" = "已移除下列出席者";
 
 /* IMIP messages */
-"calendar_label" = "行事曆:";
-"startDate_label" = "開始:";
-"endDate_label" = "結束:";
+"calendar_label" = "行事曆";
+"startDate_label" = "開始";
+"endDate_label" = "結束";
 "due_label" = "截止日期:";
-"location_label" = "地點:";
+"location_label" = "地點";
 "summary_label" = "事件主題:";
 "comment_label" = "備註:";
 

@@ -150,8 +150,8 @@
 
 "LIST" = "Lijst";
 "Print Settings" = "Print instellingen";
-"Title:" = "Titel:";
-"Layout:" = "Opmaak:";
+"Title" = "Titel";
+"Layout" = "Opmaak";
 "What to Print" = "Wat moet afgedrukt worden";
 "Options" = "Opties:";
 "Tasks with no due date" = "Taken zonder verloopdatum";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Afspraak aanpassen";
 "Appointment proposal" = "Afspraak voorstellen";
 "Appointment on" = "Afspraak op";
-"Start:" = "Begin:";
-"End:" = "Einde:";
-"Due Date:" = "Verloopdatum:";
-"Title:" = "Titel:";
-"Calendar:" = "Agenda:";
+"Start" = "Begin";
+"End" = "Einde";
+"Due Date" = "Verloopdatum";
+"Title" = "Titel";
+"Calendar" = "Agenda";
 "Name" = "Naam";
 "Email" = "E-mail";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% voltooid";
-"Location:" = "Plaats:";
-"Priority:" = "Prioriteit:";
+"Location" = "Plaats";
+"Priority" = "Prioriteit";
 "Privacy" = "Privacy";
 "Cycle" = "Herhalen";
 "Cycle End" = "Einde herhaling";
 "Categories" = "Categoriën";
 "Classification" = "Classificatie";
 "Duration" = "Duur";
-"Attendees:" = "Deelnemers:";
+"Attendees" = "Deelnemers";
 "Resources" = "Middelen";
-"Organizer:" = "Organisator:";
-"Description:" = "Omschrijving:";
-"Document:" = "Document:";
-"Category:" = "Categorie:";
-"Repeat:" = "Herhalen:";
-"Reminder:" = "Alarm:";
-"General:" = "Algemeen:";
-"Reply:" = "Antwoord:";
-"Created by:" = "Aangemaakt door:";
+"Organizer" = "Organisator";
+"Description" = "Omschrijving";
+"Document" = "Document";
+"Category" = "Categorie";
+"Repeat" = "Herhalen";
+"Reminder" = "Alarm";
+"General" = "Algemeen";
+"Reply" = "Antwoord";
+"Created by" = "Aangemaakt door";
 
 
 "Target:" = "Bestemming:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Achterstallige taken";
 "view_incomplete" = "Onvolledige taken";
 
-"View:" = "Bekijken:";
+"View" = "Bekijken";
 "Title, category or location" = "Titel, categorie of plaats";
 "Entire content" = "Volledige inhoud";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "button_allOccurrences" = "Alle herhalingen";
 
 /* Properties dialog */
-"Name:" = "Naam:";
-"Color:" = "Kleur:";
+"Name" = "Naam";
+"Color" = "Kleur";
 
 "Include in free-busy" = "In de beschikbaarheid insluiten";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Notifications" = "Notificaties";
 "Receive a mail when I modify my calendar" = "Ontvang een e-mail als ik mijn agenda verander";
 "Receive a mail when someone else modifies my calendar" = "Ontvang een e-mail als iemand anders mijn agenda verandert";
-"When I modify my calendar, send a mail to:" = "Als ik mijn agenda verander, stuur een e-mail naar:";
+"When I modify my calendar, send a mail to" = "Als ik mijn agenda verander, stuur een e-mail naar";
 
 "Links to this Calendar" = "Koppelingen naar deze agenda";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
-"CalDAV URL" = "CalDAV-URL:";
+"CalDAV URL" = "CalDAV-URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

@@ -76,19 +76,19 @@
 "No possible subscription" = "Brak możliwej subskrypcji";
 
 "Preferred" = "Preferowane";
-"Display:" = "Wyświetl:";
-"Display Name:" = "Nazwa wyświetlana:";
+"Display" = "Wyświetl";
+"Display Name" = "Nazwa wyświetlana";
 "Email:" = "E-mail:";
 "Additional Email:" = "Dodatkowy E-mail:";
 
-"Phone Number:" = "Numer telefonu:";
+"Phone Number" = "Numer telefonu";
 "Prefers to receive messages formatted as:" = "Preferuje wiadomości w formacie:";
 "Screen Name:" = "Nazwa ekranowa:";
 "Categories:" = "Kategorie:";
 
 "First:" = "Imię:";
 "Last:" = "Nazwisko:";
-"Nickname:" = "Pseudonim:";
+"Nickname" = "Pseudonim";
 
 "Telephone" = "Telefon";
 "Work:" = "Praca:";
@@ -103,25 +103,25 @@
 "New category" = "Nowa kategoria";
 
 /* adresses */
-"Title:" = "Tytuł:";
+"Title" = "Tytuł";
 "Service:" = "Usługa:";
 "Company:" = "Firma:";
 "Department:" = "Oddział:";
 "Organization:" = "Organizacja:";
 "Address:" = "Adres:";
-"City:" = "Miejscowość:";
+"City" = "Miejscowość";
 "State_Province:" = "Województwo:";
 "ZIP_Postal Code:" = "Kod pocztowy:";
-"Country:" = "Kraj:";
+"Country" = "Kraj";
 "Web Page:" = "Strona WWW:";
 
 "Work" = "Praca";
 "Other Infos" = "Inne informacje";
 
-"Note:" = "Uwagi:";
+"Note" = "Uwagi";
 "Timezone:" = "Strefa czasowa:";
-"Birthday:" = "Urodziny:";
-"Birthday (yyyy-mm-dd):" = "Urodziny (yyyy-mm-dd):";
+"Birthday" = "Urodziny";
+"Birthday (yyyy-mm-dd)" = "Urodziny (yyyy-mm-dd)";
 "Freebusy URL:" = "URL statusu wolny-zajęty:";
 
 "Add as..." = "Dodaj jako";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Szczegóły listy";
-"List name:" = "Nazwa listy:";
-"List nickname:" = "Nick listy:";
-"List description:" = "Opis listy:";
+"List name" = "Nazwa listy";
+"List nickname" = "Nick listy";
+"List description" = "Opis listy";
 "Members" = "Członkowie";
 "Contacts" = "Kontakty";
 "Add" = "Dodaj";

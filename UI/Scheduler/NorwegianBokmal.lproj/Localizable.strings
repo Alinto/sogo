@@ -150,8 +150,8 @@
 
 "LIST" = "Liste";
 "Print Settings" = "Utskrift instillinger";
-"Title:" = "Tittel:";
-"Layout:" = "Visning:";
+"Title" = "Tittel";
+"Layout" = "Visning";
 "What to Print" = "Hva som skal printes";
 "Options" = "Alternativer";
 "Tasks with no due date" = "Oppgaver uten forfallsdato";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Avtaleredigerer";
 "Appointment proposal" = "Avtaleforslag";
 "Appointment on" = "Møteavtale";
-"Start:" = "Starter:";
-"End:" = "Slutter:";
-"Due Date:" = "Dato:";
-"Title:" = "Tittel:";
-"Calendar:" = "Kalender:";
+"Start" = "Starter";
+"End" = "Slutter";
+"Due Date" = "Dato";
+"Title" = "Tittel";
+"Calendar" = "Kalender";
 "Name" = "Navn";
 "Email" = "E-post";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% utført";
-"Location:" = "Sted:";
-"Priority:" = "Prioritet:";
+"Location" = "Sted";
+"Priority" = "Prioritet";
 "Privacy" = "Personvern";
 "Cycle" = "Intervall";
 "Cycle End" = "Intervall slutter";
 "Categories" = "Kategorier";
 "Classification" = "Klassifisering";
 "Duration" = "Varighet";
-"Attendees:" = "Deltakere:";
+"Attendees" = "Deltakere";
 "Resources" = "Ressurser";
-"Organizer:" = "Organisator:";
-"Description:" = "Beskrivelse:";
-"Document:" = "Dokument:";
-"Category:" = "Kategori:";
-"Repeat:" = "Gjenta:";
-"Reminder:" = "Påminnelse:";
-"General:" = "Generell:";
-"Reply:" = "Svar:";
-"Created by:" = "Opprettet av:";
+"Organizer" = "Organisator";
+"Description" = "Beskrivelse";
+"Document" = "Dokument";
+"Category" = "Kategori";
+"Repeat" = "Gjenta";
+"Reminder" = "Påminnelse";
+"General" = "Generell";
+"Reply" = "Svar";
+"Created by" = "Opprettet av";
 
 
 "Target:" = "Mål:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Forfalte oppgaver";
 "view_incomplete" = "Ufullstendige oppgaver";
 
-"View:" = "Vis:";
+"View" = "Vis";
 "Title, category or location" = "Tittel, kategori eller sted";
 "Entire content" = "Fullstendig innhold";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "button_allOccurrences" = "Alle forekomster";
 
 /* Properties dialog */
-"Name:" = "Navn:";
-"Color:" = "Farge:";
+"Name" = "Navn";
+"Color" = "Farge";
 
 "Include in free-busy" = "Inkluder i fritt opptatt";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Notifications" = "Varslinger";
 "Receive a mail when I modify my calendar" = "Motta e-post når jeg oppdaterer kalenderen min";
 "Receive a mail when someone else modifies my calendar" = "Motta e-post når andre oppdaterer kalenderen min";
-"When I modify my calendar, send a mail to:" = "Når jeg endrer kalenderen, send e-post til:";
+"When I modify my calendar, send a mail to" = "Når jeg endrer kalenderen, send e-post til";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
 "Authenticated User Access" = "Autentisert brukertilgang";
-"CalDAV URL" = "CalDAV URL:";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

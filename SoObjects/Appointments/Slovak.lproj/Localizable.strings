@@ -11,16 +11,16 @@ vtodo_class2 = "(Dôverná úloha)";
 "The event \"%{Summary}\" was created" = "Udalosť \"%{Summary}\" bola vytvorená";
 "The event \"%{Summary}\" was deleted" = "Udalosť \"%{Summary}\" bola vymazaná";
 "The event \"%{Summary}\" was updated" = "Udalosť \"%{Summary}\" bola aktualizovaná";
-"The following attendees(s) were notified:" = "Nasledujúci účastník(ci) bol upozornený:";
-"The following attendees(s) were added:" = "Nasledujúci účastník(ci) bol pridaný:";
-"The following attendees(s) were removed:" = "Nasledujúci účastník(ci) bol odstránený:";
+"The following attendees(s) were notified" = "Nasledujúci účastník(ci) bol upozornený";
+"The following attendees(s) were added" = "Nasledujúci účastník(ci) bol pridaný";
+"The following attendees(s) were removed" = "Nasledujúci účastník(ci) bol odstránený";
 
 /* IMIP messages */
-"calendar_label" = "Kalendár:";
-"startDate_label" = "Začiatok:";
-"endDate_label" = "Koniec:";
+"calendar_label" = "Kalendár";
+"startDate_label" = "Začiatok";
+"endDate_label" = "Koniec";
 "due_label" = "Platnosť:";
-"location_label" = "Miesto:";
+"location_label" = "Miesto";
 "summary_label" = "Zhrnutie:";
 "comment_label" = "Komentár:";
 

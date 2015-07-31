@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Gebruikersnaam:";
-"Password:" = "Wachtwoord:";
-"Domain:" = "Domein:";
+"Username" = "Gebruikersnaam";
+"Password" = "Wachtwoord";
+"Domain" = "Domein";
 "Remember username" = "Onthoud gebruikersnaam";
 
 "Connect" = "Inloggen";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Als alternatief kunt u ook Safari gebruiken.";
 "Download" = "Download";
 
-"Language:" = "Taal:";
+"Language" = "Taal";
 "choose" = "Kies...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

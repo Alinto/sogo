@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Enw defnyddiwr:";
-"Password:" = "Cyfrinair:";
-"Domain:" = "Domain:";
+"Username" = "Enw defnyddiwr";
+"Password" = "Cyfrinair";
+"Domain" = "Domain";
 
 "Connect" = "Cysylltu";
 
@@ -16,7 +16,7 @@
 "alternativeBrowserSafari" = "Medrwch hefyd defnyddio Safari.";
 "Download" = "Lawrlwytho";
 
-"Language:" = "Iaith:";
+"Language" = "Iaith";
 "choose" = "Dewis ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

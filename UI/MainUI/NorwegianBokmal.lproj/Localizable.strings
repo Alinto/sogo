@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Brukernavn:";
-"Password:" = "Passord:";
-"Domain:" = "Domene:";
+"Username" = "Brukernavn";
+"Password" = "Passord";
+"Domain" = "Domene";
 "Remember username" = "Husk brukernavn";
 
 "Connect" = "Koble til";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Alternativt kan du også bruke Safari.";
 "Download" = "Last ned";
 
-"Language:" = "Språk:";
+"Language" = "Språk";
 "choose" = "Velg ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

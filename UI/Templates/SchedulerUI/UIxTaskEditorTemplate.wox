@@ -190,8 +190,8 @@
       </div>
       <!-- reminder -->
       <md-checkbox ng-model="editor.component.$hasAlarm"
-                   label:aria-label="Reminder:">
-        <var:string label:value="Reminder:"/>
+                   label:aria-label="Reminder">
+        <var:string label:value="Reminder"/>
       </md-checkbox>
       <div class="sg-subcontent"
            ng-show="editor.component.$hasAlarm">

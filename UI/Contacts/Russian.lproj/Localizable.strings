@@ -76,19 +76,19 @@
 "No possible subscription" = "Нет возможных подписок";
 
 "Preferred" = "Избранные";
-"Display:" = "Показывать:";
-"Display Name:" = "Отображаемое имя:";
+"Display" = "Показывать";
+"Display Name" = "Отображаемое имя";
 "Email:" = "E-mail:";
 "Additional Email:" = "Дополнительный E-mail:";
 
-"Phone Number:" = "Номер телефона:";
+"Phone Number" = "Номер телефона";
 "Prefers to receive messages formatted as:" = "Предпочитает принимать сообщения, отформатированные следующим образом:";
 "Screen Name:" = "Имя показа:";
 "Categories:" = "Категории:";
 
 "First:" = "Имя:";
 "Last:" = "Последнее:";
-"Nickname:" = "Ник:";
+"Nickname" = "Ник";
 
 "Telephone" = "Телефон";
 "Work:" = "Рабочий телефон:";
@@ -103,25 +103,25 @@
 "New category" = "Новые категории";
 
 /* adresses */
-"Title:" = "Звание:";
+"Title" = "Звание";
 "Service:" = "Сервис:";
 "Company:" = "Компания:";
 "Department:" = "Отдел:";
 "Organization:" = "Организация:";
 "Address:" = "Адрес:";
-"City:" = "Город:";
+"City" = "Город";
 "State_Province:" = "Область/штат:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
-"Country:" = "Страна:";
+"Country" = "Страна";
 "Web Page:" = "Веб-страница:";
 
 "Work" = "Работа";
 "Other Infos" = "Другая информация";
 
-"Note:" = "Примечание:";
+"Note" = "Примечание";
 "Timezone:" = "Часовой пояс:";
-"Birthday:" = "День рождения";
-"Birthday (yyyy-mm-dd):" = "День рождения (ГГГГ-ММ-ДД):";
+"Birthday" = "День рождения";
+"Birthday (yyyy-mm-dd)" = "День рождения (ГГГГ-ММ-ДД)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Добавить как...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Подробности списка";
-"List name:" = "Имя списка:";
-"List nickname:" = "Псевдоним списка:";
-"List description:" = "Описание списка:";
+"List name" = "Имя списка";
+"List nickname" = "Псевдоним списка";
+"List description" = "Описание списка";
 "Members" = "Члены";
 "Contacts" = "Контакты";
 "Add" = "Добавить";

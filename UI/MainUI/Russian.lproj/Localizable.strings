@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Логин:";
-"Password:" = "Пароль:";
-"Domain:" = "Домен:";
+"Username" = "Логин";
+"Password" = "Пароль";
+"Domain" = "Домен";
 "Remember username" = "Запомнить имя пользователя";
 
 "Connect" = "Соединение";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Также можно использовать Safari.";
 "Download" = "Скачать";
 
-"Language:" = "Язык:";
+"Language" = "Язык";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

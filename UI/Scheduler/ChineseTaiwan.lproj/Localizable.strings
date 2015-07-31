@@ -150,8 +150,8 @@
 
 "LIST" = "列表";
 "Print Settings" = "列印設定";
-"Title:" = "標題:";
-"Layout:" = "格式:";
+"Title" = "標題";
+"Layout" = "格式";
 "What to Print" = "列印內容";
 "Options" = "選項";
 "Tasks with no due date" = "無截止日期的任務";
@@ -167,34 +167,34 @@
 "Appointment editor" = "編輯議程";
 "Appointment proposal" = "安排議程";
 "Appointment on" = "會議安排在";
-"Start:" = "開始:";
-"End:" = "結束:";
-"Due Date:" = "到期日:";
-"Title:" = "標題:";
-"Calendar:" = "行事曆:";
+"Start" = "開始";
+"End" = "結束";
+"Due Date" = "到期日";
+"Title" = "標題";
+"Calendar" = "行事曆";
 "Name" = "名字";
 "Email" = "郵件";
-"Status:" = "狀態:";
+"Status" = "狀態";
 "% complete" = "% 完成";
-"Location:" = "地點:";
-"Priority:" = "優先順序";
+"Location" = "地點";
+"Priority" = "優先順序";
 "Privacy" = "私人";
 "Cycle" = "重複事件";
 "Cycle End" = "重複事件結束";
 "Categories" = "類别";
 "Classification" = "分類";
 "Duration" = "期間";
-"Attendees:" = "出席者:";
+"Attendees" = "出席者";
 "Resources" = "資源";
-"Organizer:" = "發起人:";
-"Description:" = "說明:";
-"Document:" = "文件:";
-"Category:" = "類別:";
-"Repeat:" = "重複:";
-"Reminder:" = "提醒:";
-"General:" = "一般";
-"Reply:" = "回覆:";
-"Created by:" = "建立者:";
+"Organizer" = "發起人";
+"Description" = "說明";
+"Document" = "文件";
+"Category" = "類別";
+"Repeat" = "重複";
+"Reminder" = "提醒";
+"General" = "一般";
+"Reply" = "回覆";
+"Created by" = "建立者";
 
 
 "Target:" = "目標:";
@@ -244,7 +244,7 @@
 "view_overdue" = "逾期的任務";
 "view_incomplete" = "未完任的任務";
 
-"View:" = "檢視:";
+"View" = "檢視";
 "Title, category or location" = "主題, 類別或地點";
 "Entire content" = "全部內容";
 
@@ -482,7 +482,7 @@ validate_endbeforestart    = "事件開始時間不能大於結束時間。";
 "Title" = "標題";
 "Start" = "開始";
 "End" = "結束";
-"Due Date" = "到期日:";
+"Due Date" = "到期日";
 "Location" = "地點";
 
 "(Private Event)" = "(私人事件)";
@@ -508,8 +508,8 @@ vtodo_class2 = "(機密任務)";
 "button_allOccurrences" = "所有重複事件";
 
 /* Properties dialog */
-"Name:" = "名稱:";
-"Color:" = "顏色:";
+"Name" = "名稱";
+"Color" = "顏色";
 
 "Include in free-busy" = "包括忙碌-空間";
 
@@ -524,11 +524,11 @@ vtodo_class2 = "(機密任務)";
 "Notifications" = "提醒";
 "Receive a mail when I modify my calendar" = "當我修改我的行事曆時以電子郵件通知我";
 "Receive a mail when someone else modifies my calendar" = "當有其他人修改我的行事曆時以電子郵件通知我";
-"When I modify my calendar, send a mail to:" = "當我修改我的行事曆時以電子郵件通知:";
+"When I modify my calendar, send a mail to" = "當我修改我的行事曆時以電子郵件通知";
 
 "Links to this Calendar" = "連結到這本行事曆";
 "Authenticated User Access" = "授權的使用者存取";
-"CalDAV URL" = "CalDAV URL: ";
+"CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

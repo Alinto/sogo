@@ -150,8 +150,8 @@
 
 "LIST" = "Seznam";
 "Print Settings" = "Tiskaj nastavitve";
-"Title:" = "Naslov:";
-"Layout:" = "Postavitev:";
+"Title" = "Naslov";
+"Layout" = "Postavitev";
 "What to Print" = "Kaj za tiskanje";
 "Options" = "Možnosti";
 "Tasks with no due date" = "Opravila brez datuma zapadlosti";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Urejevalnik sestankov";
 "Appointment proposal" = "Predlog sestanka";
 "Appointment on" = "Sestanek na";
-"Start:" = "Začetek:";
-"End:" = "Konec:";
-"Due Date:" = "Datum zapadlosti:";
-"Title:" = "Naslov:";
-"Calendar:" = "Koledar:";
+"Start" = "Začetek";
+"End" = "Konec";
+"Due Date" = "Datum zapadlosti";
+"Title" = "Naslov";
+"Calendar" = "Koledar";
 "Name" = "Ime";
 "Email" = "E-pošta";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% dokončan";
-"Location:" = "Mesto:";
-"Priority:" = "Prioriteta:";
+"Location" = "Mesto";
+"Priority" = "Prioriteta";
 "Privacy" = "Zasebnost";
 "Cycle" = "Cikel";
 "Cycle End" = "Konec cikla";
 "Categories" = "Kategorije";
 "Classification" = "Razvrstitev";
 "Duration" = "Trajanje";
-"Attendees:" = "Udeleženci:";
+"Attendees" = "Udeleženci";
 "Resources" = "Viri";
-"Organizer:" = "Organizator:";
-"Description:" = "Opis:";
-"Document:" = "Dokument:";
-"Category:" = "Kategorija:";
-"Repeat:" = "Ponovitev:";
-"Reminder:" = "Opomnik:";
-"General:" = "Splošno:";
-"Reply:" = "Odgovori:";
-"Created by:" = "Ustvaril:";
+"Organizer" = "Organizator";
+"Description" = "Opis";
+"Document" = "Dokument";
+"Category" = "Kategorija";
+"Repeat" = "Ponovitev";
+"Reminder" = "Opomnik";
+"General" = "Splošno";
+"Reply" = "Odgovori";
+"Created by" = "Ustvaril";
 
 
 "Target:" = "Cilj:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Zapadla opravila";
 "view_incomplete" = "Nedokončana opravila";
 
-"View:" = "Pregled:";
+"View" = "Pregled";
 "Title, category or location" = "Naslov, kategorija ali mesto";
 "Entire content" = "Vsa vsebina";
 
@@ -508,8 +508,8 @@ vtodo_class2 = "(Zaupno opravilo)";
 "button_allOccurrences" = "Vse ponovitve";
 
 /* Properties dialog */
-"Name:" = "Ime:";
-"Color:" = "Barva:";
+"Name" = "Ime";
+"Color" = "Barva";
 
 "Include in free-busy" = "Vključi v prosto-zasedeno";
 
@@ -524,11 +524,11 @@ vtodo_class2 = "(Zaupno opravilo)";
 "Notifications" = "Obvestila";
 "Receive a mail when I modify my calendar" = "Prejmi pošto, ko spremenim moj koledar";
 "Receive a mail when someone else modifies my calendar" = "Prejmi pošto, ko kdorkoli drugi spremeni moj koledar";
-"When I modify my calendar, send a mail to:" = "Ko spremenim moj koledar, pošlji pošto za:";
+"When I modify my calendar, send a mail to" = "Ko spremenim moj koledar, pošlji pošto za";
 
 "Links to this Calendar" = "Povezave do tega koledarja";
 "Authenticated User Access" = "Preverjeni uporabniški dostop";
-"CalDAV URL" = "CalDAV URL:";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

@@ -27,7 +27,7 @@
 
           <var:if condition="isWebCalendar">
             <md-input-container>
-              <label><var:string label:value="URL:"/></label>
+              <label><var:string label:value="URL"/></label>
               <input var:value="webCalendarURL" ng-readonly="true"/>
             </md-input-container>
           </var:if>
@@ -54,7 +54,7 @@
             <div layout="column" layout-padding="layout-padding">
               <div class="sg-md-title"><var:string label:value="Public Access"/></div>
               <md-input-container>
-                <label><var:string label:value="CalDAV URL: "/></label>
+                <label><var:string label:value="CalDAV URL"/></label>
                 <input var:value="publicCalDavURL" ng-readonly="true"/>
               </md-input-container>
               <md-input-container>
