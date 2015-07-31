@@ -133,16 +133,21 @@
       PropertiesDialogController.$inject = ['$mdDialog', 'calendar'];
       function PropertiesDialogController($mdDialog, calendar) {
         var vm = this;
-        vm.calendar = calendar;
 
-        vm.close = function() {
-          $mdDialog.hide();
-        };
+        vm.calendar = new Calendar(calendar.$omit());
+        vm.saveProperties = saveProperties;
+        vm.close = close;
 
-        vm.saveProperties = function() {
+        function saveProperties() {
           vm.calendar.$save();
+          // Refresh list instance
+          calendar.init(vm.calendar.$omit());
           $mdDialog.hide();
-        };
+        }
+
+        function close() {
+          $mdDialog.hide();
+        }
       }
     }
 

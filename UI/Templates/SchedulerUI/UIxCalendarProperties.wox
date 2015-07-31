@@ -7,119 +7,43 @@
     xmlns:label="OGo:label"
     >
   <md-dialog>
-    <md-toolbar class="sg-padded">
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label"><var:string label:value="Properties"/></label>
-        <div class="pseudo-input-field sg-md-title">{{properties.calendar.name}}</div>
+
+    <md-toolbar ng-style="{ 'background-color': properties.calendar.color }">
+      <div class="md-toolbar-tools sg-padded--right">
+        <!-- color -->
+        <sg-color-picker sg-on-select="properties.calendar.color = color"><!-- color picker --></sg-color-picker>
+        <!-- name -->
+        <md-input-container>
+          <label><var:string label:value="Name"/></label>
+          <input type="text"
+                 class="md-title"
+                 ng-model="properties.calendar.name"/>
+        </md-input-container>
+        <md-button class="md-icon-button" ng-click="properties.close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
       </div>
     </md-toolbar>
+
     <md-dialog-content>
-      <div id="colorPickerDialog" style="display: none;" class="dialog left">
-        <div>
-          <span class="blc-FFFFFF"><!-- --></span>
-          <span class="blc-330033"><!-- --></span>
-          <span class="blc-C0C0C0"><!-- --></span>
-          <span class="blc-999999"><!-- --></span>
-          <span class="blc-666666"><!-- --></span>
-          <span class="blc-333333"><!-- --></span>
-          <span class="blc-000000"><!-- --></span>
-          <span class="blc-FFCCCC"><!-- --></span>
-          <span class="blc-FF6666"><!-- --></span>
-          <span class="blc-FF0000"><!-- --></span>
-          <span class="blc-CC0000"><!-- --></span>
-          <span class="blc-990000"><!-- --></span>
-          <span class="blc-660000"><!-- --></span>
-          <span class="blc-330000"><!-- --></span>
-          <span class="blc-FFCC99"><!-- --></span>
-          <span class="blc-FF9966"><!-- --></span>
-          <span class="blc-FF9900"><!-- --></span>
-          <span class="blc-FF6600"><!-- --></span>
-          <span class="blc-CC6600"><!-- --></span>
-          <span class="blc-993300"><!-- --></span>
-          <span class="blc-663300"><!-- --></span>
-          <span class="blc-FFFF99"><!-- --></span>
-          <span class="blc-FFFF66"><!-- --></span>
-          <span class="blc-FFCC66"><!-- --></span>
-          <span class="blc-FFCC33"><!-- --></span>
-          <span class="blc-CC9933"><!-- --></span>
-          <span class="blc-996633"><!-- --></span>
-          <span class="blc-663333"><!-- --></span>
-          <span class="blc-FFFFCC"><!-- --></span>
-          <span class="blc-FFFF33"><!-- --></span>
-          <span class="blc-FFFF00"><!-- --></span>
-          <span class="blc-FFCC00"><!-- --></span>
-          <span class="blc-999900"><!-- --></span>
-          <span class="blc-666600"><!-- --></span>
-          <span class="blc-333300"><!-- --></span>
-          <span class="blc-CCCCCC"><!-- --></span>
-          <span class="blc-66FF99"><!-- --></span>
-          <span class="blc-33FF33"><!-- --></span>
-          <span class="blc-33CC00"><!-- --></span>
-          <span class="blc-009900"><!-- --></span>
-          <span class="blc-006600"><!-- --></span>
-          <span class="blc-003300"><!-- --></span>
-          <span class="blc-99FFFF"><!-- --></span>
-          <span class="blc-33FFFF"><!-- --></span>
-          <span class="blc-66CCCC"><!-- --></span>
-          <span class="blc-00CCCC"><!-- --></span>
-          <span class="blc-339999"><!-- --></span>
-          <span class="blc-336666"><!-- --></span>
-          <span class="blc-003333"><!-- --></span>
-          <span class="blc-CCFFFF"><!-- --></span>
-          <span class="blc-66FFFF"><!-- --></span>
-          <span class="blc-33CCFF"><!-- --></span>
-          <span class="blc-3366FF"><!-- --></span>
-          <span class="blc-3333FF"><!-- --></span>
-          <span class="blc-000099"><!-- --></span>
-          <span class="blc-000066"><!-- --></span>
-          <span class="blc-CCCCFF"><!-- --></span>
-          <span class="blc-9999FF"><!-- --></span>
-          <span class="blc-6666CC"><!-- --></span>
-          <span class="blc-6633FF"><!-- --></span>
-          <span class="blc-6600CC"><!-- --></span>
-          <span class="blc-333399"><!-- --></span>
-          <span class="blc-330099"><!-- --></span>
-          <span class="blc-FFCCFF"><!-- --></span>
-          <span class="blc-FF99FF"><!-- --></span>
-          <span class="blc-CC66CC"><!-- --></span>
-          <span class="blc-CC33CC"><!-- --></span>
-          <span class="blc-993399"><!-- --></span>
-          <span class="blc-663366"><!-- --></span>
-          <span class="blc-99FF99"><!-- --></span>
-        </div>
-      </div>
-
-      <md-input-container>
-        <label><var:string label:value="Name:"/></label>
-        <input ng-model="properties.calendar.name"/>
-      </md-input-container>
-
-      <span>
-        <var:string label:value="Color:"/>
-        <input type="color" value="{{properties.calendar.color}}"/>
-      </span>
-
       <md-checkbox
           ng-model="properties.calendar.includeInFreeBusy"
           ng-true-value="1"
           ng-false-value="0">
         <var:string label:value="Include in free-busy"/>
       </md-checkbox>
-
       <md-checkbox
           ng-model="properties.calendar.showCalendarAlarms"
           ng-true-value="1"
           ng-false-value="0">
         <var:string label:value="Show alarms"/>
       </md-checkbox>
-
       <md-checkbox
           ng-model="properties.calendar.showCalendarTasks"
           ng-true-value="1"
           ng-false-value="0">
         <var:string label:value="Show tasks"/>
       </md-checkbox>
-
       <md-checkbox
           ng-model="properties.calendar.reloadOnLogin"
           ng-show="properties.calendar.isWebCalendar"
@@ -127,40 +51,38 @@
           ng-false-value="0">
         <var:string label:value="Reload on login"/>
       </md-checkbox>
-
-
       <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned">
+        <md-divider><!-- divider --></md-divider>
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
             ng-true-value="1"
             ng-false-value="0">
           <var:string label:value="Receive a mail when I modify my calendar"/>
         </md-checkbox>
-
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnExternalModifications"
             ng-true-value="1"
             ng-false-value="0">
           <var:string label:value="Receive a mail when someone else modifies my calendar"/>
         </md-checkbox>
-
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyUserOnPersonalModifications"
             ng-true-value="1"
             ng-false-value="0">
-          <var:string label:value="When I modify my calendar, send a mail to"/>
+          <var:string label:value="When I modify my calendar, send a mail to:"/>
         </md-checkbox>
-
-        <input type="text"
-               ng-value="properties.calendar.notifications.notifiedUserOnPersonalModifications"
-               ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
+        <md-input-container md-no-float="md-no-float">
+          <input type="text"
+                 label:placeholder="Email Address"
+                 ng-value="properties.calendar.notifications.notifiedUserOnPersonalModifications"
+                 ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
+        </md-input-container>
       </div>
-
     </md-dialog-content>
 
     <div class="md-actions">
       <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
-      <md-button type="button" ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
+      <md-button ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
     </div>
 
   </md-dialog>
