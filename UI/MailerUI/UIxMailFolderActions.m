@@ -410,7 +410,7 @@
 
 - (WOResponse *) copyMessagesAction
 {
-  NSString *value, *destinationFolder;
+  NSString *destinationFolder;
   SOGoMailAccount *account;
   WOResponse *response;
   SOGoMailFolder *co;
@@ -450,7 +450,7 @@
   NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSMutableArray *mailboxThreadsCollapsed;
-  NSString *value, *destinationFolder;
+  NSString *destinationFolder;
   SOGoUserSettings *us;
   WOResponse *response;
   NSDictionary *data;

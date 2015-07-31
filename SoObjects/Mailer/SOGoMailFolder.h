@@ -56,6 +56,7 @@
 - (NSArray *) toManyRelationshipKeys;
 
 - (NSDictionary *) statusForFlags: (NSArray *) flags;
+- (unsigned int) unseenCount;
 
 - (NSException *) deleteUIDs: (NSArray *) uids
 	      useTrashFolder: (BOOL *) withTrash

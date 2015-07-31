@@ -801,6 +801,33 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return status;
 }
 
+- (unsigned int) unseenCount
+{
+  NSDictionary *imapResult;
+  NGImap4Connection *connection;
+  NGImap4Client *client;
+  EOQualifier *searchQualifier;
+  NSArray *searchResult;
+  unsigned int unseen;
+
+  connection = [self imap4Connection];
+  client = [connection client];
+
+  if ([connection selectFolder: [self imap4URL]])
+    {
+      searchQualifier
+        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
+                       @"unseen", @"deleted"];
+      imapResult = [client searchWithQualifier: searchQualifier];
+      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
+      unseen = [searchResult count];
+    }
+  else
+    unseen = 0;
+
+  return unseen;
+}
+
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
 			    sortOrdering: (id) _so
 {

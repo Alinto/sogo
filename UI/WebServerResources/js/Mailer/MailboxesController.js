@@ -232,7 +232,7 @@
         if (!_.includes(unseenCountFolders, account.id + '/folderINBOX'))
           unseenCountFolders.push(account.id + '/folderINBOX');
 
-        _.forEach(account.$mailboxes, function(mailbox) {
+        _.forEach(account.$$flattenMailboxes, function(mailbox) {
           if (angular.isDefined(mailbox.unseenCount) &&
               !_.includes(unseenCountFolders, mailbox.id))
             unseenCountFolders.push(mailbox.id);
@@ -241,7 +241,7 @@
 
       Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
         _.forEach(vm.accounts, function(account) {
-          _.forEach(account.$mailboxes, function(mailbox) {
+          _.forEach(account.$$flattenMailboxes, function(mailbox) {
             if (data[mailbox.id])
               mailbox.unseenCount = data[mailbox.id];
           });

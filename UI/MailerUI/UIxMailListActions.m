@@ -666,6 +666,9 @@
     [data setObject: uids forKey: @"uids"];
   [data setObject: [NSNumber numberWithBool: sortByThread] forKey: @"threaded"];
 
+  // We get the unseen count
+  [data setObject: [NSNumber numberWithUnsignedInt: [folder unseenCount]]  forKey: @"unseenCount"];
+
   // We also return the inbox quota
   account = [folder mailAccountFolder];
   quota = [account getInboxQuota];
@@ -699,6 +702,7 @@
  * @apiParam {String} [filters.negative]                     Reverse the condition when true. Defaults to false.
  *
  * @apiSuccess (Success 200) {Number} threaded               1 if threading is enabled for the user.
+ * @apiSuccess (Success 200) {Number} unseenCount            Number of unread messages
  * @apiSuccess (Success 200) {Number[]} uids                 List of uids matching the filters, in the requested order.
  * @apiSuccess (Success 200) {String[]} headers              The first entry are the fields names.
  * @apiSuccess (Success 200) {Object[]} headers.To           Recipients

@@ -33,9 +33,6 @@
 #import <NGObjWeb/SoComponent.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <NGImap4/NGImap4Connection.h>
-#import <NGImap4/NGImap4Client.h>
-#import <NGImap4/NSString+Imap4.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactGCSList.h>
@@ -626,15 +623,11 @@
 
 - (unsigned int) _unseenCountForFolder: (NSString *) theFolder
 {
-  EOQualifier *searchQualifier;
-  NSArray *searchResult, *pathComponents;
-  NSDictionary *imapResult;
-  NGImap4Connection *connection;
-  NGImap4Client *client;
-  unsigned int unseen;
-
+  NSArray *pathComponents;
   SOGoMailAccount *account;
   SOGoMailFolder *folder;
+
+  unsigned int unseen;
 
   pathComponents = [theFolder pathComponents];
   account = [[self clientObject] lookupName: [pathComponents objectAtIndex: 0]
@@ -645,22 +638,7 @@
                      inContext: context
                        acquire: YES];
 
-  connection = [folder imap4Connection];
-  client = [connection client];
-
-  if ([connection selectFolder: [folder imap4URL]])
-    {
-      searchQualifier
-        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
-                       @"unseen", @"deleted"];
-      imapResult = [client searchWithQualifier: searchQualifier];
-      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
-      unseen = [searchResult count];
-    }
-  else
-    unseen = 0;
-
-  return unseen;
+  return [folder unseenCount];
 }
 
 - (WOResponse *) unseenCountAction
