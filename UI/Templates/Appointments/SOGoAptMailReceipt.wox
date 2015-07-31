@@ -41,7 +41,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       ><tr>
         <td></td>
         <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
-          label:value="The following attendees(s) were notified:" const:escapeHTML="NO"/></th>
+          label:value="The following attendees(s) were notified" const:escapeHTML="NO"/></th>
       </tr>
       <var:foreach list="updatedAttendees" item="currentRecipient">
       <tr>
@@ -54,7 +54,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       ><tr>
         <td></td>
         <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
-          label:value="The following attendees(s) were added:" const:escapeHTML="NO"/></th>
+          label:value="The following attendees(s) were added" const:escapeHTML="NO"/></th>
       </tr>
       <var:foreach list="addedAttendees" item="currentRecipient">
       <tr>
@@ -67,7 +67,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       ><tr>
         <td></td>
         <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
-          label:value="The following attendees(s) were removed:" const:escapeHTML="NO"/></th>
+          label:value="The following attendees(s) were removed" const:escapeHTML="NO"/></th>
       </tr>
       <var:foreach list="deletedAttendees" item="currentRecipient">
       <tr>

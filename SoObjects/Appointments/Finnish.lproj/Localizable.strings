@@ -12,16 +12,16 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "The event \"%{Summary}\" was created" = "Tapahtuma \"%{Summary}\" luotiin";
 "The event \"%{Summary}\" was deleted" = "Tapahtuma \"%{Summary}\" poistettiin";
 "The event \"%{Summary}\" was updated" = "Tapahtuma \"%{Summary}\" päivitettiin";
-"The following attendees(s) were notified:" = "Seuraava(t) osallistuja(t) on informoitu:";
-"The following attendees(s) were added:" = "Seuraava(t) osalllistuja(t) on lisätty:";
-"The following attendees(s) were removed:" = "Seuraava(t) osalllistuja(t) poistettiin:";
+"The following attendees(s) were notified" = "Seuraava(t) osallistuja(t) on informoitu";
+"The following attendees(s) were added" = "Seuraava(t) osalllistuja(t) on lisätty";
+"The following attendees(s) were removed" = "Seuraava(t) osalllistuja(t) poistettiin";
 
 /* IMIP messages */
-"calendar_label" = "Kalenteri:";
-"startDate_label" = "Alkaa:";
-"endDate_label" = "Päättyy:";
+"calendar_label" = "Kalenteri";
+"startDate_label" = "Alkaa";
+"endDate_label" = "Päättyy";
 "due_label" = "Määräpäivä:";
-"location_label" = "Sijainti:";
+"location_label" = "Sijainti";
 "summary_label" = "Yhteenveto:";
 "comment_label" = "Kommentti:";
 

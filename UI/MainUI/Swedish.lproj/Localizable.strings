@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Användarnamn:";
-"Password:" = "Lösenord:";
-"Domain:" = "Domain:";
+"Username" = "Användarnamn";
+"Password" = "Lösenord";
+"Domain" = "Domain";
 
 "Connect" = "Logga in";
 
@@ -16,7 +16,7 @@
 "alternativeBrowserSafari" = "Alternativt kan du också använda Safari.";
 "Download" = "Ladda ner";
 
-"Language:" = "Språk:";
+"Language" = "Språk";
 "choose" = "Välj ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

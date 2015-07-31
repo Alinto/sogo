@@ -11,16 +11,16 @@ vtodo_class2 = "(Hemmelig opgave)";
 "The event \"%{Summary}\" was created" = "Begivenheden \"%{Summary}\" blev oprettet";
 "The event \"%{Summary}\" was deleted" = "Begivenheden \"%{Summary}\" blev slettet";
 "The event \"%{Summary}\" was updated" = "Begivenheden \"%{Summary}\" blev opdateret";
-"The following attendees(s) were notified:" = "Følgende deltager(e) blev underrettet:";
-"The following attendees(s) were added:" = "Følgende deltager(e) blev tilføjet:";
-"The following attendees(s) were removed:" = "Følgende deltager(e) blev fjernet:";
+"The following attendees(s) were notified" = "Følgende deltager(e) blev underrettet";
+"The following attendees(s) were added" = "Følgende deltager(e) blev tilføjet";
+"The following attendees(s) were removed" = "Følgende deltager(e) blev fjernet";
 
 /* IMIP messages */
-"calendar_label" = "Kalender:";
-"startDate_label" = "Start:";
-"endDate_label" = "Slut:";
+"calendar_label" = "Kalender";
+"startDate_label" = "Start";
+"endDate_label" = "Slut";
 "due_label" = "Forfaldsdato:";
-"location_label" = "Sted:";
+"location_label" = "Sted";
 "summary_label" = "Resumé:";
 "comment_label" = "Kommentér:";
 

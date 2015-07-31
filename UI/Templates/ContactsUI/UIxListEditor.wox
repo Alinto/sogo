@@ -20,13 +20,13 @@
     <form var:href="saveURL" name="editform" id="mainForm">
       <div id="listEditor">
         <span class="caption"><var:string label:value="List details" /></span>
-        <table class="frame"><tr><td width="35%"><var:string label:value="List name:"/></td>
+        <table class="frame"><tr><td width="35%"><var:string label:value="List name"/></td>
             <td><input type="text" const:id="listName" const:name="listName"
                 var:value="listName" class="textField" /></td></tr>
-          <tr><td><var:string label:value="List nickname:"/></td>
+          <tr><td><var:string label:value="List nickname"/></td>
             <td><input type="text" const:id="nickname" const:name="nickname"
                 var:value="nickname" class="textField" /></td></tr>
-          <tr><td><var:string label:value="List description:"/></td>
+          <tr><td><var:string label:value="List description"/></td>
             <td><input type="text" const:id="description" const:name="description"
                 var:value="description" class="textField" /></td></tr>
         </table>

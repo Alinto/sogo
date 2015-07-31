@@ -23,7 +23,7 @@
     <tbody>
       <tr>
         <td id="mailAccountsCell">
-          <label><var:string label:value="Search messages in:" /></label>
+          <label><var:string label:value="Search messages in" /></label>
           <var:popup const:id="mailAccountsList"
                      list="mailAccountsList"
                      item="item"

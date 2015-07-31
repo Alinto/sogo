@@ -115,7 +115,7 @@
 "Subscribe to a Calendar..." = "Feliratkozás naptárra...";
 "Remove the selected Calendar" = "Kijelölt naptár törlése";
 
-"Name of the Calendar" = "A naptár neve:";
+"Name of the Calendar" = "A naptár neve";
 
 "new" = "Új";
 "Print view" = "Nyomtatási nézet";
@@ -150,8 +150,8 @@
 
 "LIST" = "Lista";
 "Print Settings" = "Nyomtatási beállítások";
-"Title:" = "Cím:";
-"Layout:" = "Elrendezés:";
+"Title" = "Cím";
+"Layout" = "Elrendezés";
 "What to Print" = "Mi kerüljön nyomtatásra";
 "Options" = "Beállítások";
 "Tasks with no due date" = "Befejező dátum nélküli feladatok";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Találkozó szerkesztő";
 "Appointment proposal" = "Találkozó ajánló";
 "Appointment on" = "Találkozó ekkor";
-"Start:" = "Kezdete:";
-"End:" = "Vége:";
-"Due Date:" = "Lejárat:";
-"Title:" = "Cím:";
-"Calendar:" = "Naptár:";
+"Start" = "Kezdete";
+"End" = "Vége";
+"Due Date" = "Lejárat";
+"Title" = "Cím";
+"Calendar" = "Naptár";
 "Name" = "Név";
 "Email" = "Email";
-"Status:" = "Állapot";
+"Status" = "Állapot";
 "% complete" = "% kész";
-"Location:" = "Hely:";
-"Priority:" = "Prioritás:";
+"Location" = "Hely";
+"Priority" = "Prioritás";
 "Privacy" = "Adatvédelem";
 "Cycle" = "Ismétlődés";
 "Cycle End" = "Ismétlődés vége";
 "Categories" = "Kategória";
 "Classification" = "Besorolás";
 "Duration" = "Időtartam";
-"Attendees:" = "Résztvevők:";
+"Attendees" = "Résztvevők";
 "Resources" = "Erőforrások";
-"Organizer:" = "Szervező:";
-"Description:" = "Leírás:";
-"Document:" = "Dokumentum:";
-"Category:" = "Kategória:";
-"Repeat:" = "Ismétlés:";
-"Reminder:" = "Emlékeztető:";
-"General:" = "Általános:";
-"Reply:" = "Válasz:";
-"Created by:" = "Létrehozta:";
+"Organizer" = "Szervező";
+"Description" = "Leírás";
+"Document" = "Dokumentum";
+"Category" = "Kategória";
+"Repeat" = "Ismétlés";
+"Reminder" = "Emlékeztető";
+"General" = "Általános";
+"Reply" = "Válasz";
+"Created by" = "Létrehozta";
 
 
 "Target:" = "Cél:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Lejárt feladatok";
 "view_incomplete" = "Befejezetlen feladat";
 
-"View:" = "Nézet:";
+"View" = "Nézet";
 "Title, category or location" = "Cím, kategória vagy helyszin";
 "Entire content" = "Teljes tartalom";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Bizalmas feladat)";
 "button_allOccurrences" = "Az összes előfordulást";
 
 /* Properties dialog */
-"Name:" = "Név:";
-"Color:" = "Szín:";
+"Name" = "Név";
+"Color" = "Szín";
 
 "Include in free-busy" = "Foglaltság mutatása";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Notifications" = "Értesítések";
 "Receive a mail when I modify my calendar" = "Kapjak email értesítést, amikor módosítok a naptáramon";
 "Receive a mail when someone else modifies my calendar" = "Kapjak email értesítést, amikor mások módosítják a naptáramat";
-"When I modify my calendar, send a mail to:" = "Email értesítés küldése az alábbi címre a naptáram módosításakor";
+"When I modify my calendar, send a mail to" = "Email értesítés küldése az alábbi címre a naptáram módosításakor";
 
 "Links to this Calendar" = "Hivatkozások ehhez a naptárhoz";
 "Authenticated User Access" = "Belépett felhasználók";
-"CalDAV URL" = "CalDAV URL:";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

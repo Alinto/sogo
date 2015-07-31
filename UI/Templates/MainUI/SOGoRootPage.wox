@@ -36,13 +36,13 @@
 	    <img const:alt="*" id="splash" rsrc:src="sogo-logo.png"/>
 	  </td>
 	  <td id="loginCell" width="230">
-	    <label><var:string label:value="Username:"/><br/>
+	    <label><var:string label:value="Username"/><br/>
 	    <input class="textField" id="userName" name="userName"
 		   type="text" var:value="cookieUsername" /></label>
-	    <label><var:string label:value="Password:"/><br/>
+	    <label><var:string label:value="Password"/><br/>
 	    <input class="textField" id="password"
 		   name="password" type="password" var:value="password" /></label>
-	    <label><var:string label:value="Language:"/><br/>
+	    <label><var:string label:value="Language"/><br/>
 	    <var:popup const:id="language" const:name="language"
 		       list="languages"
 		       item="item"
@@ -51,7 +51,7 @@
 		       label:noSelectionString="choose"
 		       /></label>
             <var:if condition="hasLoginDomains">
-	    <label><var:string label:value="Domain:"/><br/>
+	    <label><var:string label:value="Domain"/><br/>
 	    <var:popup const:id="domain" const:name="domain"
 		       list="loginDomains"
 		       item="item"

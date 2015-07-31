@@ -76,19 +76,19 @@
 "No possible subscription" = "لا يوجد إشتراك";
 
 "Preferred" = "المفضل";
-"Display:" = "عرض:";
-"Display Name:" = "الاسم المعروض:";
+"Display" = "عرض";
+"Display Name" = "الاسم المعروض";
 "Email:" = "البريد الالكتروني:";
 "Additional Email:" = "بريد إلكتروني إضافي";
 
-"Phone Number:" = "رقم الهاتف:";
+"Phone Number" = "رقم الهاتف";
 "Prefers to receive messages formatted as:" = "يفضل تلقي رسائل منسقة على النحو التالي:";
 "Screen Name:" = "أسم التعريف:";
 "Categories:" = "الفئات:";
 
 "First:" = "الاول:";
 "Last:" = "الاخير:";
-"Nickname:" = "الاسم الرمزي:";
+"Nickname" = "الاسم الرمزي";
 
 "Telephone" = "رقم الهاتف:";
 "Work:" = "العمل:";
@@ -103,25 +103,25 @@
 "New category" = "فئة جديدة";
 
 /* adresses */
-"Title:" = "اللقب:";
+"Title" = "اللقب";
 "Service:" = "الخدمة:";
 "Company:" = "الشركة:";
 "Department:" = "الادارة:";
 "Organization:" = "الجهة";
 "Address:" = "العنوان:";
-"City:" = "المدينة:";
+"City" = "المدينة";
 "State_Province:" = "الولاية / الاقليم / المحافظة:";
 "ZIP_Postal Code:" = "الرمز البريدي:";
-"Country:" = "الدولة:";
+"Country" = "الدولة";
 "Web Page:" = "صفحة الانترنت:";
 
 "Work" = "العمل";
 "Other Infos" = "معلومات أخرى";
 
-"Note:" = "ملاحظة:";
+"Note" = "ملاحظة";
 "Timezone:" = "المنطقة الزمنية:";
-"Birthday:" = "تاريخ الميلاد:";
-"Birthday (yyyy-mm-dd):" = "تاريخ الميلاد (يوم-شهر-سنة):";
+"Birthday" = "تاريخ الميلاد";
+"Birthday (yyyy-mm-dd)" = "تاريخ الميلاد (يوم-شهر-سنة)";
 "Freebusy URL:" = "موقع مشغول /حر:";
 
 "Add as..." = "إضافة إلى ...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "تفاصيل القائمة";
-"List name:" = "اسم القائمة/";
-"List nickname:" = "اسم القائمة الرمزي:";
-"List description:" = "وصف القائمة:";
+"List name" = "اسم القائمة/";
+"List nickname" = "اسم القائمة الرمزي";
+"List description" = "وصف القائمة";
 "Members" = "أعضاء";
 "Contacts" = "جهات إتصال";
 "Add" = "إضافة";

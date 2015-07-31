@@ -150,8 +150,8 @@
 
 "LIST" = "Liste";
 "Print Settings" = "Druckeinstellungen";
-"Title:" = "Titel:";
-"Layout:" = "Formatierung:";
+"Title" = "Titel";
+"Layout" = "Formatierung";
 "What to Print" = "Was soll gedruckt werden";
 "Options" = "Optionen";
 "Tasks with no due date" = "Aufgaben ohne Fälligkeitsdatum";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Termin Bearbeiten";
 "Appointment proposal" = "Termin Vorschlag";
 "Appointment on" = "Termin am";
-"Start:" = "Beginn:";
-"End:" = "Ende:";
-"Due Date:" = "Fällig:";
-"Title:" = "Titel:";
-"Calendar:" = "Kalender:";
+"Start" = "Beginn";
+"End" = "Ende";
+"Due Date" = "Fällig";
+"Title" = "Titel";
+"Calendar" = "Kalender";
 "Name" = "Name";
 "Email" = "E-Mail";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% fertig";
-"Location:" = "Ort: ";
-"Priority:" = "Priorität: ";
+"Location" = "Ort ";
+"Priority" = "Priorität ";
 "Privacy" = "Vertraulichkeit";
 "Cycle" = "Wiederholen";
 "Cycle End" = "Wiederholungsende";
 "Categories" = "Kategorien";
 "Classification" = "Einordnung";
 "Duration" = "Dauer";
-"Attendees:" = "Teilnehmer:";
+"Attendees" = "Teilnehmer";
 "Resources" = "Ressourcen";
-"Organizer:" = "Organisator:";
-"Description:" = "Beschreibung:";
-"Document:" = "Dokument:";
-"Category:" = "Kategorie:";
-"Repeat:" = "Wiederholen:";
-"Reminder:" = "Erinnerung:";
-"General:" = "Allgemein:";
-"Reply:" = "Antwort:";
-"Created by:" = "Erstellt von:";
+"Organizer" = "Organisator";
+"Description" = "Beschreibung";
+"Document" = "Dokument";
+"Category" = "Kategorie";
+"Repeat" = "Wiederholen";
+"Reminder" = "Erinnerung";
+"General" = "Allgemein";
+"Reply" = "Antwort";
+"Created by" = "Erstellt von";
 
 
 "Target:" = "Ziel:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Überfällige Aufgaben";
 "view_incomplete" = "Unvollständige Aufgaben";
 
-"View:" = "Anzeigen:";
+"View" = "Anzeigen";
 "Title, category or location" = "Titel, Kategorie oder Ort";
 "Entire content" = "Gesamter Inhalt";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "button_allOccurrences" = "Alle Ereignisse";
 
 /* Properties dialog */
-"Name:" = "Name:";
-"Color:" = "Farbe:";
+"Name" = "Name";
+"Color" = "Farbe";
 
 "Include in free-busy" = "In der Verfügbarkeit einschließen";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Notifications" = "Benachrichtigungen";
 "Receive a mail when I modify my calendar" = "E-Mail erhalten, wenn ich meinen Kalender verändere";
 "Receive a mail when someone else modifies my calendar" = "E-Mail erhalten, wenn jemand anderes meinen Kalender verändert";
-"When I modify my calendar, send a mail to:" = "Wenn ich meinen Kalender verändere, schicke eine E-Mail an: ";
+"When I modify my calendar, send a mail to" = "Wenn ich meinen Kalender verändere, schicke eine E-Mail an ";
 
 "Links to this Calendar" = "Links zu diesem Kalender";
 "Authenticated User Access" = "Zugang für authentifizierte Benutzer";
-"CalDAV URL" = "CalDAV-URL:";
+"CalDAV URL" = "CalDAV-URL";
 "WebDAV ICS URL" = "WebDAV-ICS-URL";
 "WebDAV XML URL" = "WebDAV-XML-URL";
 

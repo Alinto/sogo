@@ -76,19 +76,19 @@
 "No possible subscription" = "Ez dago harpidetzarako aukerarik";
 
 "Preferred" = "Hobetsitakoa";
-"Display:" = "Bistaratzea:";
-"Display Name:" = "Erakusteko izena:";
+"Display" = "Bistaratzea";
+"Display Name" = "Erakusteko izena";
 "Email:" = "Emaila:";
 "Additional Email:" = "Beste emaila:";
 
-"Phone Number:" = "Telefono zenbakia";
+"Phone Number" = "Telefono zenbakia";
 "Prefers to receive messages formatted as:" = "Nahiago du mezuak honako formatuan jasotzea:";
 "Screen Name:" = "Pantailaren izena";
 "Categories:" = "Kategoriak:";
 
 "First:" = "Lehenengoa:";
 "Last:" = "Azkena:";
-"Nickname:" = "Goitizena:";
+"Nickname" = "Goitizena";
 
 "Telephone" = "Telefonoa:";
 "Work:" = "Lana:";
@@ -103,25 +103,25 @@
 "New category" = "Kategoria berria";
 
 /* adresses */
-"Title:" = "Izenburua";
+"Title" = "Izenburua";
 "Service:" = "Zerbitzua:";
 "Company:" = "Enpresa";
 "Department:" = "Saila";
 "Organization:" = "Saila:";
 "Address:" = "Helbidea";
-"City:" = "Herria";
+"City" = "Herria";
 "State_Province:" = "Estatua / Probintzia";
 "ZIP_Postal Code:" = "Posta kodea";
-"Country:" = "Herrialdea";
+"Country" = "Herrialdea";
 "Web Page:" = "Web orria";
 
 "Work" = "Lana";
 "Other Infos" = "Bestelako informazioak";
 
-"Note:" = "Ohar:";
+"Note" = "Ohar";
 "Timezone:" = "Ordu-zona:";
-"Birthday:" = "Jaiotze data:";
-"Birthday (yyyy-mm-dd):" = "Jaiotze data (uuuu-hh-ee):";
+"Birthday" = "Jaiotze data";
+"Birthday (yyyy-mm-dd)" = "Jaiotze data (uuuu-hh-ee)";
 "Freebusy URL:" = "LibreLanpetu URL-a:";
 
 "Add as..." = "Gehitu honela...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Zerrendaren xehetasunak";
-"List name:" = "Zerrendaren izena:";
-"List nickname:" = "Zerrendaren goitizena:";
-"List description:" = "Zerrendaren deskribapena:";
+"List name" = "Zerrendaren izena";
+"List nickname" = "Zerrendaren goitizena";
+"List description" = "Zerrendaren deskribapena";
 "Members" = "Kideak";
 "Contacts" = "Kontaktuak";
 "Add" = "Gehitu";

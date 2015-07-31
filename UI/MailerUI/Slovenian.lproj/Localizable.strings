@@ -240,7 +240,7 @@
 "As Not Junk" = "Kot zaželeno";
 "Run Junk Mail Controls" = "Poženi nadzor nezaželene pošte";
 
-"Search messages in:" = "Išči sporočila v:";
+"Search messages in" = "Išči sporočila v";
 "Search" = "Išči";
 "Search subfolders" = "Išči podmape";
 "Match any of the following" = "sklada se s katerimkoli od naslednjih";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Ime :";
-"Enter the new name of your folder :"
- = "Vpiši novo ime tvoje mape :";
+"Enter the new name of your folder "
+ = "Vpiši novo ime tvoje mape ";
 "Do you really want to move this folder into the trash ?"
  = "Zares želiš premakniti to mapo v koš?";
 "Operation failed" = "Dejanje ni uspelo";

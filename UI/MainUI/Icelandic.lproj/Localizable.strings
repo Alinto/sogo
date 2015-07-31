@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Notandanafn:";
-"Password:" = "Lykilorð:";
-"Domain:" = "Domain:";
+"Username" = "Notandanafn";
+"Password" = "Lykilorð";
+"Domain" = "Domain";
 
 "Connect" = "Tengjast";
 
@@ -16,7 +16,7 @@
 "alternativeBrowserSafari" = "Einnig er hægt að nota Safari.";
 "Download" = "Hala niður";
 
-"Language:" = "Tungumál:";
+"Language" = "Tungumál";
 "choose" = "Velja...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

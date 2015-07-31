@@ -12,16 +12,16 @@ vtodo_class2 = "(Isilpeko egitekoa)";
 "The event \"%{Summary}\" was created" = "\"%{Summary}\" ekitaldia sortu da";
 "The event \"%{Summary}\" was deleted" = "\"%{Summary}\" ekitaldia ezabatu da";
 "The event \"%{Summary}\" was updated" = "\"%{Summary}\" ekitaldia eguneratu da";
-"The following attendees(s) were notified:" = "Ondorengo partaidea(k) jakinarazi d(ir)a:";
-"The following attendees(s) were added:" = "Ondorengo partaidea(k) gehitu d(ir)a:";
-"The following attendees(s) were removed:" = "Ondorengo partaidea(k) ezabatu d(ir)a:";
+"The following attendees(s) were notified" = "Ondorengo partaidea(k) jakinarazi d(ir)a";
+"The following attendees(s) were added" = "Ondorengo partaidea(k) gehitu d(ir)a";
+"The following attendees(s) were removed" = "Ondorengo partaidea(k) ezabatu d(ir)a";
 
 /* IMIP messages */
 "calendar_label" = "Egutegia";
-"startDate_label" = "Hasi:";
-"endDate_label" = "Amaitu:";
+"startDate_label" = "Hasi";
+"endDate_label" = "Amaitu";
 "due_label" = "Epemuga:";
-"location_label" = "Kokapena:";
+"location_label" = "Kokapena";
 "summary_label" = "Laburpena:";
 "comment_label" = "Iruzkina:";
 

@@ -152,33 +152,33 @@
 "Appointment editor" = "Modifica appuntamenti";
 "Appointment proposal" = "Proponi appuntamenti";
 "Appointment on" = "Appuntamento del";
-"Start:" = "Inizio:";
-"End:" = "Fine:";
-"Due Date:" = "Scadenza:";
-"Title:" = "Titolo:";
-"Calendar:" = "Calendario:";
+"Start" = "Inizio";
+"End" = "Fine";
+"Due Date" = "Scadenza";
+"Title" = "Titolo";
+"Calendar" = "Calendario";
 "Name" = "Nome";
 "Email" = "Email";
-"Status:" = "Stato:";
+"Status" = "Stato";
 "% complete" = "% completato";
-"Location:" = "Luogo:";
-"Priority:" = "Priorità:";
+"Location" = "Luogo";
+"Priority" = "Priorità";
 "Privacy" = "Privacy";
 "Cycle" = "Ricorrenza";
 "Cycle End" = "Termine ricorrenza";
 "Categories" = "Categorie";
 "Classification" = "Classificazione";
 "Duration" = "Durata";
-"Attendees:" = "Partecipanti:";
+"Attendees" = "Partecipanti";
 "Resources" = "Risorse";
-"Organizer:" = "Proprietario:";
-"Description:" = "Descrizione:";
-"Document:" = "Documento:";
-"Category:" = "Categoria:";
-"Repeat:" = "Ripeti:";
-"Reminder:" = "Promemoria:";
-"General:" = "Generale:";
-"Reply:" = "Risposta:";
+"Organizer" = "Proprietario";
+"Description" = "Descrizione";
+"Document" = "Documento";
+"Category" = "Categoria";
+"Repeat" = "Ripeti";
+"Reminder" = "Promemoria";
+"General" = "Generale";
+"Reply" = "Risposta";
 
 "Target:" = "Percorso:";
 
@@ -223,7 +223,7 @@
 "view_future" = "Tutti i prossimi eventi";
 "view_selectedday" = "Giorno selezionato";
 
-"View:" = "Visualizza:";
+"View" = "Visualizza";
 "Title or Description" = "Titolo o descrizione";
 
 "Search" = "Cerca";
@@ -476,8 +476,8 @@ vtodo_class2 = "(Attività confidenziale)";
 "button_allOccurrences" = "Tutte le occorrenze";
 
 /* Properties dialog */
-"Name:" = "Nome:";
-"Color:" = "Colore:";
+"Name" = "Nome";
+"Color" = "Colore";
 
 "Include in free-busy" = "Includi nel libero-occupato";
 
@@ -491,7 +491,7 @@ vtodo_class2 = "(Attività confidenziale)";
 
 "Receive a mail when I modify my calendar" = "Ricevi una mail quando io modifico il mio calendario";
 "Receive a mail when someone else modifies my calendar" = "Ricevi una mail quando qualcuno modifica il mio calendario";
-"When I modify my calendar, send a mail to:" = "Quando modifico il mio calendario, invia una mail a:";
+"When I modify my calendar, send a mail to" = "Quando modifico il mio calendario, invia una mail a";
 
 "Links to this Calendar" = "Link a questo Calendario";
 "Authenticated User Access" = "Tutti gli utenti autenticati";

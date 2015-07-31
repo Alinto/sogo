@@ -12,16 +12,16 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "The event \"%{Summary}\" was created" = "Hendelsen \"%{Summary}\" ble opprettet";
 "The event \"%{Summary}\" was deleted" = "Hendelsen \"%{Summary}\" ble slettet";
 "The event \"%{Summary}\" was updated" = "Hendelsen \"%{Summary}\" ble oppdatert";
-"The following attendees(s) were notified:" = "Følgende deltaker(e) ble varslet:";
-"The following attendees(s) were added:" = "Følgende deltaker(e) ble lagt til:";
-"The following attendees(s) were removed:" = "Følgende deltaker(e) ble fjernet:";
+"The following attendees(s) were notified" = "Følgende deltaker(e) ble varslet";
+"The following attendees(s) were added" = "Følgende deltaker(e) ble lagt til";
+"The following attendees(s) were removed" = "Følgende deltaker(e) ble fjernet";
 
 /* IMIP messages */
-"calendar_label" = "Kalender:";
-"startDate_label" = "Start:";
-"endDate_label" = "Slutt:";
+"calendar_label" = "Kalender";
+"startDate_label" = "Start";
+"endDate_label" = "Slutt";
 "due_label" = "Forfallsdato:";
-"location_label" = "Sted:";
+"location_label" = "Sted";
 "summary_label" = "Sammendrag:";
 "comment_label" = "Kommentar:";
 

@@ -77,19 +77,19 @@
 
 "Preferred" = "Foretrukket";
 "Card for %@" = "Adressekort for %@";
-"Display:" = "Vise:";
-"Display Name:" = "Visningsnamn:";
+"Display" = "Vise";
+"Display Name" = "Visningsnamn";
 "Email:" = "E-post:";
 "Additional Email:" = "Ytterlige e-post:";
 
-"Phone Number:" = "Telefonnummer:";
+"Phone Number" = "Telefonnummer";
 "Prefers to receive messages formatted as:" = "Foretrekker å motta melding formatert som:";
 "Screen Name:" = "Skjermnavn:";
 "Categories:" = "Katagorier:";
 
 "First:" = "Fornavn:";
 "Last:" = "Etternavn:";
-"Nickname:" = "Kallenavn:";
+"Nickname" = "Kallenavn";
 
 "Telephone" = "Telefonnummer";
 "Work:" = "Arbeid:";
@@ -104,25 +104,25 @@
 "New category" = "Ny katagori";
 
 /* adresses */
-"Title:" = "Tittel:";
+"Title" = "Tittel";
 "Service:" = "Funksjon:";
 "Company:" = "Foretak:";
 "Department:" = "Avdelning:";
 "Organization:" = "Organisation:";
 "Address:" = "Adresse:";
-"City:" = "Poststed: ";
+"City" = "Poststed ";
 "State_Province:" = "Landsdel:";
 "ZIP_Postal Code:" = "Postnummer:";
-"Country:" = "Land:";
+"Country" = "Land";
 "Web Page:" = "Webside:";
 
 "Work" = "Arbeid";
 "Other Infos" = "Øvrig";
 
-"Note:" = "Anmerkning:";
+"Note" = "Anmerkning";
 "Timezone:" = "Tidssone:";
-"Birthday:" = "Fødselsdag:";
-"Birthday (yyyy-mm-dd):" = "Fødselsdag (yyyy-mm-dd):";
+"Birthday" = "Fødselsdag";
+"Birthday (yyyy-mm-dd)" = "Fødselsdag (yyyy-mm-dd)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Legg til som...";
@@ -185,9 +185,9 @@
 
 /* Lists */
 "List details" = "Informasjon om mailinglisten";
-"List name:" = "Navn på mailingliste:";
-"List nickname:" = "Kallenavn til mailingliste:";
-"List description:" = "Beskrivelse:";
+"List name" = "Navn på mailingliste";
+"List nickname" = "Kallenavn til mailingliste";
+"List description" = "Beskrivelse";
 "Members" = "Medlemmer";
 "Contacts" = "Kontakter";
 "Add" = "Legg til";

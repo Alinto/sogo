@@ -12,16 +12,16 @@ vtodo_class2 = "(Tarea confidencial)";
 "The event \"%{Summary}\" was created" = "El evento \"%{Summary}\" ha sido creado";
 "The event \"%{Summary}\" was deleted" = "El evento \"%{Summary}\" ha sido borrado";
 "The event \"%{Summary}\" was updated" = "El evento \"%{Summary}\" ha sido actualizado";
-"The following attendees(s) were notified:" = "Los invitados siguientes han sido notificado:";
-"The following attendees(s) were added:" = "Los invitados siguientes han sido añadido:";
-"The following attendees(s) were removed:" = "Los invitados siguientes han sido quitado:";
+"The following attendees(s) were notified" = "Los invitados siguientes han sido notificado";
+"The following attendees(s) were added" = "Los invitados siguientes han sido añadido";
+"The following attendees(s) were removed" = "Los invitados siguientes han sido quitado";
 
 /* IMIP messages */
-"calendar_label" = "Calendario:";
-"startDate_label" = "Inicio:";
-"endDate_label" = "Fin:";
+"calendar_label" = "Calendario";
+"startDate_label" = "Inicio";
+"endDate_label" = "Fin";
 "due_label" = "Fecha Fin:";
-"location_label" = "Localización:";
+"location_label" = "Localización";
 "summary_label" = "Resumen:";
 "comment_label" = "Comentario:";
 

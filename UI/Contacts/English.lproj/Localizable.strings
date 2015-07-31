@@ -76,19 +76,19 @@
 "No possible subscription" = "No possible subscription";
 
 "Preferred" = "Preferred";
-"Display:" = "Display:";
-"Display Name:" = "Display Name:";
+"Display" = "Display";
+"Display Name" = "Display Name";
 "Email:" = "Email:";
 "Additional Email:" = "Additional Email:";
 
-"Phone Number:" = "Phone Number:";
+"Phone Number" = "Phone Number";
 "Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
 "Screen Name:" = "Screen Name:";
 "Categories:" = "Categories:";
 
 "First:" = "First:";
 "Last:" = "Last:";
-"Nickname:" = "Nickname:";
+"Nickname" = "Nickname";
 
 "Telephone" = "Telephone";
 "Work:" = "Work:";
@@ -103,25 +103,25 @@
 "New category" = "New category";
 
 /* adresses */
-"Title:" = "Title:";
+"Title" = "Title";
 "Service:" = "Service:";
 "Company:" = "Company:";
 "Department:" = "Department:";
 "Organization:" = "Organization:";
 "Address:" = "Address:";
-"City:" = "City: ";
+"City" = "City ";
 "State_Province:" = "State/Province:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
-"Country:" = "Country:";
+"Country" = "Country";
 "Web Page:" = "Web Page:";
 
 "Work" = "Work";
 "Other Infos" = "Other Infos";
 
-"Note:" = "Note:";
+"Note" = "Note";
 "Timezone:" = "Timezone:";
-"Birthday:" = "Birthday:";
-"Birthday (yyyy-mm-dd):" = "Birthday (yyyy-mm-dd):";
+"Birthday" = "Birthday";
+"Birthday (yyyy-mm-dd)" = "Birthday (yyyy-mm-dd)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Add as...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
+"List name" = "List name";
+"List nickname" = "List nickname";
+"List description" = "List description";
 "Members" = "Members";
 "Contacts" = "Contacts";
 "Add" = "Add";

@@ -151,33 +151,33 @@
 "Appointment editor" = "Sýsla með tímapantanir";
 "Appointment proposal" = "Tillaga um tímapöntun";
 "Appointment on" = "Tímapöntun á";
-"Start:" = "Byrjun:";
-"End:" = "Endir:";
-"Due Date:" = "Lokadagur:";
-"Title:" = "Titill:";
-"Calendar:" = "Dagatal:";
+"Start" = "Byrjun";
+"End" = "Endir";
+"Due Date" = "Lokadagur";
+"Title" = "Titill";
+"Calendar" = "Dagatal";
 "Name" = "Nafn";
 "Email" = "Tölvupóstur";
-"Status:" = "Staða:";
+"Status" = "Staða";
 "% complete" = "% lokið";
-"Location:" = "Staðsetning:";
-"Priority:" = "Mikilvægi:";
+"Location" = "Staðsetning";
+"Priority" = "Mikilvægi";
 "Privacy" = "Friðhelgi";
 "Cycle" = "Cycle";
 "Cycle End" = "Cycle End";
 "Categories" = "Flokkar";
 "Classification" = "Classification";
 "Duration" = "Tímalengd";
-"Attendees:" = "Þáttakendur:";
+"Attendees" = "Þáttakendur";
 "Resources" = "Tilföng";
-"Organizer:" = "Skipuleggjandi:";
-"Description:" = "Lýsing:";
-"Document:" = "Skjal:";
-"Category:" = "Flokkun:";
-"Repeat:" = "Endurtaka:";
-"Reminder:" = "Áminning:";
-"General:" = "Almennt:";
-"Reply:" = "Reply:";
+"Organizer" = "Skipuleggjandi";
+"Description" = "Lýsing";
+"Document" = "Skjal";
+"Category" = "Flokkun";
+"Repeat" = "Endurtaka";
+"Reminder" = "Áminning";
+"General" = "Almennt";
+"Reply" = "Reply";
 
 "Target:" = "Target:";
 
@@ -222,7 +222,7 @@
 "view_future" = "Allir framtíðarviðburðir";
 "view_selectedday" = "Valinn Dagur";
 
-"View:" = "Sýn:";
+"View" = "Sýn";
 "Title or Description" = "Titill eða Lýsing";
 
 "Search" = "Leita";
@@ -475,8 +475,8 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "button_allOccurrences" = "Öllum atvikum";
 
 /* Properties dialog */
-"Name:" = "Nafn:";
-"Color:" = "Litur:";
+"Name" = "Nafn";
+"Color" = "Litur";
 
 "Include in free-busy" = "Taka með í upplýsingum um lausan og upptekin tíma";
 

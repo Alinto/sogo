@@ -40,54 +40,54 @@
 
   <form var:href="saveURL" name="editform">
     <div id="eventView">
-      <label><var:string label:value="Title:" /><span class="content"
+      <label><var:string label:value="Title" /><span class="content"
           ><input type="text" name="summary" id="summary"
             class="textField"
             var:value="title"
             /></span></label>
-      <label><var:string label:value="Location:" /><span class="content"
+      <label><var:string label:value="Location" /><span class="content"
           ><input type="text" name="location" id="location"
             class="textField"
             var:value="location"
             /></span></label>
-      <span class="checkBoxList"><var:string label:value="Category:" />
+      <span class="checkBoxList"><var:string label:value="Category" />
         <span class="content"><var:popup const:id="categoryList"
 	    list="categoryList" item="item"
             label:noSelectionString="category_none"
             string="item" selection="category"
-            /> <var:string label:value="Calendar:" />
+            /> <var:string label:value="Calendar" />
           <var:popup const:id="calendarList"
 	    var:disabled="isChildOccurence"
 	    list="calendarList" item="item"
             string="calendarDisplayName"
 	    var:selection="componentCalendar"
 	    /></span></span>
-      <span class="checkBoxList"><var:string label:value="Priority:" />
+      <span class="checkBoxList"><var:string label:value="Priority" />
          <span class="content"><var:popup const:id="priorityList" list="priorities" item="item"
             label:noSelectionString="prio_0"
             string="itemPriorityText" selection="priority"/>
       </span></span>
       <var:if condition="hasOrganizer"
-	><label id="organizerLabel"><var:string label:value="Organizer:"
+	><label id="organizerLabel"><var:string label:value="Organizer"
 	    /><span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
               ><var:string value="organizerName" /></a
               ></span></label>
       </var:if>
       <var:if condition="hasCreatedBy"
-	><label id="createdByLabel"><var:string label:value="Created by:"
+	><label id="createdByLabel"><var:string label:value="Created by"
 	    /><span class="content"><a var:href="createdByLink" var:email="createdBy"
 	      ><var:string value="createdByName" /></a
 	      ></span></label>
       </var:if>
       <!--<var:if condition="canBeOrganizer"
-	><label id="organizerListLabel"><var:string label:value="Organizer:"
+	><label id="organizerListLabel"><var:string label:value="Organizer"
 	    /><span class="content"><var:popup list="organizerList"
 	      item="item" string="itemOrganizerText"
 	      var:selection="organizerIdentity"/>
 	  </span></label></var:if>-->
       <var:component-content />
       <hr />
-      <label><var:string label:value="Repeat:" />
+      <label><var:string label:value="Repeat" />
        <span class="content"><var:popup list="repeatList" item="item"
           label:noSelectionString="repeat_NEVER"
 	  var:disabled="isChildOccurence"
@@ -98,7 +98,7 @@
           /> <a href="#" id="repeatHref" style="display: none;"
              ><var:string label:value="Edit"/></a></span></label>
       <hr />
-      <label><var:string label:value="Reminder:" />
+      <label><var:string label:value="Reminder" />
       <span class="content"><var:popup list="reminderList" item="item"
          const:disabledValue="-"
          label:noSelectionString="reminder_NONE"
@@ -108,9 +108,9 @@
          /> <a href="#" id="reminderHref" style="display: none;"
              ><var:string label:value="Edit"/></a></span></label>
       <hr />
-      <label id="commentArea"><var:string label:value="Description:"
+      <label id="commentArea"><var:string label:value="Description"
 	  /><span class="content"><textarea rows="20" name="comment" var:value="comment" /></span></label>
-      <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
+      <label id="documentLabel" style="display: none;"><var:string label:value="Document"
 	  /><span class="content"
 	  ><a href="#" id="documentHref"><!-- space --></a
 	    ><a id="changeAttachButton" class="button" var:href="#"
@@ -190,45 +190,45 @@
   <div id="eventView">
     <label class="calendarName"><var:string var:value="componentCalendarName" /></label>
     <div id="generalDiv">
-    <label class="title titleNoSpace"><var:string label:value="General:" />
+    <label class="title titleNoSpace"><var:string label:value="General" />
       <span class="content headerContent"><!-- line --></span>
     </label>
-  <label><var:string label:value="Title:" />
+  <label><var:string label:value="Title" />
     <span class="content"><var:string var:value="title"/></span>
   </label>
   <var:if condition="hasLocation">
-    <label><var:string label:value="Location:" />
+    <label><var:string label:value="Location" />
       <span class="content"><var:string var:value="location" /></span>
     </label>
   </var:if>
   <var:if condition="hasCategory">
-    <label><var:string label:value="Category:" />
+    <label><var:string label:value="Category" />
       <span class="content"><var:string var:value="category" /></span>
     </label>
   </var:if>
   <var:if condition="hasPriority">
-    <label><var:string label:value="Priority:" />
+    <label><var:string label:value="Priority" />
       <span class="content"><var:string var:value="priority"/></span>
     </label>
   </var:if>
   <var:component-content />
   <var:if condition="hasRepeat">
-    <label><var:string label:value="Repeat:" />
+    <label><var:string label:value="Repeat" />
       <span class="content"><var:string var:value="repeatLabel" /></span>
     </label>
   </var:if>
-  <label id="documentLabel" style="display: none;"><var:string label:value="Document:" />
+  <label id="documentLabel" style="display: none;"><var:string label:value="Document" />
     <span class="content"><a href="#" id="documentHref"><!-- space --></a></span>
   </label>
   <var:if condition="hasAttendees">
-    <label id="organizerLabel"><var:string label:value="Organizer:"/>
+    <label id="organizerLabel"><var:string label:value="Organizer"/>
     <span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
       ><var:string value="organizerName" /></a
     ></span>
     </label>
   </var:if>
   <var:if condition="hasCreatedBy">
-    <label id="createdByLabel"><var:string label:value="Created by:"/>
+    <label id="createdByLabel"><var:string label:value="Created by"/>
     <span class="content"><a var:href="createdBy" var:email="createdBy"
       ><var:string value="createdByName" /></a
     ></span>
@@ -238,7 +238,7 @@
   <var:if condition="userHasRSVP">
     <form var:href="rsvpURL" name="rsvpform">
 
-    <label><var:string label:value="Reply:" />
+    <label><var:string label:value="Reply" />
       <span class="content"><var:popup list="replyList" item="item"
           const:name="replyList"
           const:id="replyList"
@@ -276,7 +276,7 @@
 	    id="reminderEmailAttendees"
 	    var:value="reminderEmailAttendees"/>
     
-    <label><var:string label:value="Reminder:" />
+    <label><var:string label:value="Reminder" />
     <span class="content"><var:popup list="reminderList" item="item"
          const:disabledValue="-"
          label:noSelectionString="reminder_NONE"
@@ -290,7 +290,7 @@
     </div>
     <var:if condition="hasAttendees">
     <div id="attendeesDiv">
-      <label class="title"><var:string label:value="Attendees:" />
+      <label class="title"><var:string label:value="Attendees" />
         <span class="content headerContent"><!-- line --></span>
       </label>
       <label id="attendeesLabel">
@@ -310,7 +310,7 @@
     </var:if>
     <var:if condition="hasComment">
       <div id="descriptionDiv">
-        <label class="title"><var:string label:value="Description:" />
+        <label class="title"><var:string label:value="Description" />
           <span class="content headerContent"><!-- line --></span>
         </label>
         <label><span class="content">

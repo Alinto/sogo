@@ -25,10 +25,10 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "... from the following event:" = "... з участі в події:";
 
 /* IMIP messages */
-"startDate_label" = "Початок:";
-"endDate_label" = "Кінець:";
+"startDate_label" = "Початок";
+"endDate_label" = "Кінець";
 "due_label" = "Триватиме до:";
-"location_label" = "Місце:";
+"location_label" = "Місце";
 "summary_label" = "Резюме:";
 "comment_label" = "Коментар:";
 

@@ -12,16 +12,16 @@ vtodo_class2 = "(Конфиденциальная задача)";
 "The event \"%{Summary}\" was created" = "Было создано мероприятие \"%{Summary}\"";
 "The event \"%{Summary}\" was deleted" = "Мероприятие \"%{Summary}\" было удалено";
 "The event \"%{Summary}\" was updated" = "Мероприятие \"%{Summary}\" было обновлено";
-"The following attendees(s) were notified:" = "Следующие приглашенные были оповещены:";
-"The following attendees(s) were added:" = "Следующие люди были добавлены в список приглашенных:";
-"The following attendees(s) were removed:" = "Следующие люди были исключены из списка приглашенных:";
+"The following attendees(s) were notified" = "Следующие приглашенные были оповещены";
+"The following attendees(s) were added" = "Следующие люди были добавлены в список приглашенных";
+"The following attendees(s) were removed" = "Следующие люди были исключены из списка приглашенных";
 
 /* IMIP messages */
-"calendar_label" = "Календарь:";
-"startDate_label" = "Начало:";
-"endDate_label" = "Конец:";
+"calendar_label" = "Календарь";
+"startDate_label" = "Начало";
+"endDate_label" = "Конец";
 "due_label" = "Должно быть готово к:";
-"location_label" = "Местонахождение:";
+"location_label" = "Местонахождение";
 "summary_label" = "Краткое содержание:";
 "comment_label" = "Комментарий:";
 

@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Felhasználó:";
-"Password:" = "Jelszó:";
-"Domain:" = "Tartomány:";
+"Username" = "Felhasználó";
+"Password" = "Jelszó";
+"Domain" = "Tartomány";
 "Remember username" = "Felhasználónév megjegyzése";
 
 "Connect" = "Kapcsolódás";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "A Safari böngésző is használható.";
 "Download" = "Letöltés";
 
-"Language:" = "Nyelv:";
+"Language" = "Nyelv";
 "choose" = "Válasszon ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

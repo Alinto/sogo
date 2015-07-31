@@ -76,19 +76,19 @@
 "No possible subscription" = "Nincs mappa, melyre feliratkozhat";
 
 "Preferred" = "Preferált";
-"Display:" = "Megjelenítendő név:";
-"Display Name:" = "Megjelenítendő név:";
+"Display" = "Megjelenítendő név";
+"Display Name" = "Megjelenítendő név";
 "Email:" = "Email cím:";
 "Additional Email:" = "További email:";
 
-"Phone Number:" = "Telefon:";
+"Phone Number" = "Telefon";
 "Prefers to receive messages formatted as:" = "Előnyben részesített üzenet formátum:";
 "Screen Name:" = "Fedőnév:";
 "Categories:" = "Kategóriák:";
 
 "First:" = "Keresztnév:";
 "Last:" = "Vezetéknév:";
-"Nickname:" = "Becenév:";
+"Nickname" = "Becenév";
 
 "Telephone" = "Telefon";
 "Work:" = "Munkahely:";
@@ -103,25 +103,25 @@
 "New category" = "Új kategória";
 
 /* adresses */
-"Title:" = "Cím:";
+"Title" = "Cím";
 "Service:" = "Szolgáltatás:";
 "Company:" = "Vállalat:";
 "Department:" = "Részleg:";
 "Organization:" = "Szervezet:";
 "Address:" = "Cím:";
-"City:" = "Város:";
+"City" = "Város";
 "State_Province:" = "Állam/tartomány:";
 "ZIP_Postal Code:" = "Irányítószám:";
-"Country:" = "Ország:";
+"Country" = "Ország";
 "Web Page:" = "Web:";
 
 "Work" = "Munkahely";
 "Other Infos" = "Egyéb";
 
-"Note:" = "Megjegyzés:";
+"Note" = "Megjegyzés";
 "Timezone:" = "Időzóna:";
-"Birthday:" = "Születésnap:";
-"Birthday (yyyy-mm-dd):" = "Születésnap (éééé-hh-nn):";
+"Birthday" = "Születésnap";
+"Birthday (yyyy-mm-dd)" = "Születésnap (éééé-hh-nn)";
 "Freebusy URL:" = "Foglaltság URL:";
 
 "Add as..." = "Hozzáadás mint...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Lista részletek";
-"List name:" = "Lista név:";
-"List nickname:" = "Lista becenév:";
-"List description:" = "Lista leírás:";
+"List name" = "Lista név";
+"List nickname" = "Lista becenév";
+"List description" = "Lista leírás";
 "Members" = "Tagok";
 "Contacts" = "Kapcsolatok";
 "Add" = "Hozzáad";

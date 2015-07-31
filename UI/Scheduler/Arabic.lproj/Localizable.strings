@@ -152,33 +152,33 @@
 "Appointment editor" = "محرر المواعيد";
 "Appointment proposal" = "اقتراح المواعيد";
 "Appointment on" = "تشغيل المواعيد";
-"Start:" = "البدء:";
-"End:" = "النهاية:";
-"Due Date:" = "تاريخ الاستحقاق:";
-"Title:" = "العنوان:";
-"Calendar:" = "الحالة:";
+"Start" = "البدء";
+"End" = "النهاية";
+"Due Date" = "تاريخ الاستحقاق";
+"Title" = "العنوان";
+"Calendar" = "الحالة";
 "Name" = "الاسم";
 "Email" = "البريد الإلكتروني";
-"Status:" = "الحالة:";
+"Status" = "الحالة";
 "% complete" = "اكتمل %c";
-"Location:" = "المكان:";
-"Priority:" = "الأولوية:";
+"Location" = "المكان";
+"Priority" = "الأولوية";
 "Privacy" = "الخصوصية";
 "Cycle" = "الدورة";
 "Cycle End" = "نهاية الدورة";
 "Categories" = "التصنيفات";
 "Classification" = "التصنيف";
 "Duration" = "المدة";
-"Attendees:" = "الحضور:";
+"Attendees" = "الحضور";
 "Resources" = "الموارد";
-"Organizer:" = "المنظم:";
-"Description:" = "الوصف:";
-"Document:" = "المستند:";
-"Category:" = "التصنيف:";
-"Repeat:" = "التكرار:";
-"Reminder:" = "التنبيه:";
-"General:" = "العام:";
-"Reply:" = "الرد:";
+"Organizer" = "المنظم";
+"Description" = "الوصف";
+"Document" = "المستند";
+"Category" = "التصنيف";
+"Repeat" = "التكرار";
+"Reminder" = "التنبيه";
+"General" = "العام";
+"Reply" = "الرد";
 
 "Target:" = "الهدف:";
 
@@ -223,7 +223,7 @@
 "view_future" = "جميع الأحداث المستقبلية";
 "view_selectedday" = "اليوم المحدد";
 
-"View:" = "العرض:";
+"View" = "العرض";
 "Title or Description" = "العنوان أو الوصف";
 
 "Search" = "ابحث";
@@ -481,8 +481,8 @@ vtodo_class2 = "(مهمة سرية)";
 "button_allOccurrences" = "كل التكرارات";
 
 /* Properties dialog */
-"Name:" = "الاسم:";
-"Color:" = "اللون:";
+"Name" = "الاسم";
+"Color" = "اللون";
 
 "Include in free-busy" = "ضمن حالة التوفر-الانشغال";
 
@@ -497,7 +497,7 @@ vtodo_class2 = "(مهمة سرية)";
 "Notifications" = "الإشعارات";
 "Receive a mail when I modify my calendar" = "تلقي البريد عندما أقوم بتعديل التقويم الخاص بي";
 "Receive a mail when someone else modifies my calendar" = "تلقي البريد عندما يقوم شخص آخر بتعديل التقويم الخاص بي";
-"When I modify my calendar, send a mail to:" = "عندما أقوم بتعديل التقويم الخاص بي، أرسل رسالة بريد إلكتروني إلى:";
+"When I modify my calendar, send a mail to" = "عندما أقوم بتعديل التقويم الخاص بي، أرسل رسالة بريد إلكتروني إلى";
 
 "Links to this Calendar" = "روابط لهذا التقويم";
 "Authenticated User Access" = "مصادقة وصول المستخدم";

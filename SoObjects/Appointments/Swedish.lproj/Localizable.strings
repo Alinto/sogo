@@ -25,10 +25,10 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "... from the following event:" = "... från följande händelse:";
 
 /* IMIP messages */
-"startDate_label" = "Startdatum:";
-"endDate_label" = "Slutdatum:";
+"startDate_label" = "Startdatum";
+"endDate_label" = "Slutdatum";
 "due_label" = "Datum:";
-"location_label" = "Plats:";
+"location_label" = "Plats";
 "summary_label" = "Sammanfattning:";
 "comment_label" = "Kommentar:";
 

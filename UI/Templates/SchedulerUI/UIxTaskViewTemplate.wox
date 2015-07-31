@@ -1,0 +1,103 @@
+<?xml version='1.0' standalone='yes'?>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label">
+  <md-dialog flex="40">
+    <md-toolbar class="md-padding" ng-class="viewer.component.getClassName('bg')">
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
+        <h2 class="md-flex">
+          <!-- classification -->
+          <md-icon ng-if="viewer.component.classification == 'confidential'">visibility_off</md-icon>
+          <md-icon ng-if="viewer.component.classification == 'private'">vpn_key</md-icon>
+          <!-- summary -->
+          {{viewer.component.summary}}
+          <!-- priority -->
+          <md-icon ng-repeat="i in viewer.component.priority | range">star</md-icon>
+        </h2>
+        <md-button class="md-icon-button" ng-click="viewer.close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <md-list>
+        <!-- categories -->
+        <md-list-item ng-show="viewer.component.categories.length > 0">
+          <md-chips ng-model="viewer.component.categories" readonly="true">
+            <md-chip-template>
+              <span>{{$chip}}</span>
+            </md-chip-template>
+          </md-chips>
+        </md-list-item>
+        <!-- location -->
+        <md-list-item ng-show="viewer.component.location">
+          <md-icon>place</md-icon>
+          <p>{{viewer.component.location}}</p>
+        </md-list-item>
+        <!-- calendar -->
+        <md-list-item>
+          <md-icon>event</md-icon>
+          <p>{{viewer.component.calendar}}</p>
+        </md-list-item>
+        <!-- start/due dates -->
+        <md-list-item class="md-2-line">
+          <md-icon>access_time</md-icon>
+          <div layout="row" class="md-flex">
+            <div class="md-list-item-text" ng-show="viewer.component.startDate">
+              <p><var:string label:value="Start"/></p>
+              <h3>
+                {{viewer.component.localizedStartDate}}
+                <span ng-hide="viewer.component.isAllDay"> {{viewer.component.localizedStartTime}}</span>
+              </h3>
+            </div>
+            <div class="md-list-item-text" ng-show="viewer.component.dueDate">
+              <p><var:string label:value="Due Date"/></p>
+              <h3>
+                {{viewer.component.localizedDueDate}}
+                <span ng-hide="viewer.component.isAllDay">{{viewer.component.localizedDueTime}}</span>
+              </h3>
+            </div>
+          </div>
+        </md-list-item>
+        <!-- status -->
+        <md-list-item ng-show="viewer.component.status == 'completed'">
+          <md-icon>check</md-icon>
+          <p>{{viewer.component.localizedCompletedDate}} {{viewer.component.localizedCompletedTime}}</p>
+        </md-list-item>
+        <md-list-item ng-show="viewer.component.enablePercentComplete()">
+          <md-icon>call_made</md-icon>
+          <p>{{viewer.component.percentComplete}} %</p>
+        </md-list-item>
+        <!-- attach urls -->
+        <md-list-item ng-show="viewer.component.attachUrls.length > 0">
+          <md-icon>link</md-icon>
+          <p ng-repeat="url in viewer.component.attachUrls"><a ng-href="url.value">{{url.value}}</a></p>
+        </md-list-item>
+        <!-- comment -->
+        <md-list-item ng-show="viewer.component.comment">
+          <md-icon>mode_comment</md-icon>
+          <p>{{viewer.component.comment}}</p>
+        </md-list-item>
+        <!-- repeat -->
+        <md-list-item ng-show="viewer.component.repeat">
+          <md-icon>repeat</md-icon>
+          <p><!-- viewer.component.repeat.toString() --></p>
+        </md-list-item>
+        <!-- reminder -->
+        <md-list-item ng-show="viewer.component.$hasAlarm">
+          <md-icon>alarm</md-icon>
+          <p><!-- viewer.component.alarm.toString() --></p>
+        </md-list-item>
+      </md-list>
+    </md-dialog-content>
+    <!-- edit -->
+    <div class="md-actions">
+      <md-button ng-click="viewer.edit()">
+        <var:string label:value="Edit"/>
+      </md-button>
+    </div>
+  </md-dialog>
+</container>
