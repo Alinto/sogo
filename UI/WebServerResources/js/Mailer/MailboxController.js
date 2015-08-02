@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$state', '$timeout', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($state, $timeout, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     var vm = this;
 
     Mailbox.selectedFolder = stateMailbox;
@@ -25,6 +25,7 @@
     vm.sort = sort;
     vm.sortedBy = sortedBy;
     vm.cancelSearch = cancelSearch;
+    vm.newMessage = newMessage;
     vm.mode = { search: false };
 
     function selectMessage(message) {
@@ -88,6 +89,21 @@
       vm.selectedFolder.$filter();
     }
 
+    function newMessage($event) {
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: 'UIxMailEditor',
+        controller: 'MessageEditorController',
+        controllerAs: 'editor',
+        locals: {
+          stateAccounts: vm.accounts,
+          stateMessage: vm.account.$newMessage()
+        }
+      });
+    }
   }
 
   angular

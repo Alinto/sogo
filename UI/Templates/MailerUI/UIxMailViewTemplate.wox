@@ -63,24 +63,24 @@
         <!-- todo: Replace md-tooltip values by localizable string variable -->
         <md-button class="sg-icon-button"
                    ng-hide="viewer.message.isDraft"
-                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'reply'})"
+                   ng-click="viewer.reply($event)"
                    aria-label="reply">
           <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
           <md-icon>reply</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Reply All"
-                   ng-hide="message.isDraft"
-                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'replyall'})">
+                   ng-hide="viewer.message.isDraft"
+                    ng-click="viewer.replyAll($event)">
           <md-icon>reply_all</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Forward"
                    ng-hide="viewer.message.isDraft"
-                   ui-sref="mail.account.mailbox.message.action({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid, actionName: 'forward'})">
+                   ng-click="viewer.forward($event)">
           <md-icon>forward</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Edit"
                    ng-show="viewer.message.isDraft"
-                   ui-sref="mail.account.mailbox.message.edit({accountId: viewer.account.id, mailboxId: (viewer.mailbox.path | encodeUri), messageId: viewer.message.uid})">
+                   ng-click="viewer.edit($event)">
           <md-icon>create</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Delete"

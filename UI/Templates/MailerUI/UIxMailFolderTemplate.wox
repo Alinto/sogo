@@ -48,7 +48,7 @@
       </md-virtual-repeat-container>
       <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="Write a new message"
-                 ui-sref="mail.account.mailbox.newMessage({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri)})">
+                 ng-click="mailbox.newMessage($event)">
         <md-icon>add</md-icon>
       </md-button>
     </md-content>

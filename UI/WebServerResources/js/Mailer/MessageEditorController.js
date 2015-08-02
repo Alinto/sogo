@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$state', '$q', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $state, $q, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
+  MessageEditorController.$inject = ['$stateParams', '$state', '$q', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $state, $q, $mdDialog, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
     var vm = this;
 
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
@@ -71,10 +71,7 @@
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
 
-      if ($state.params.mailboxId)
-        $state.go('mail.account.mailbox', { accountId: $state.params.accountId, mailboxId: $state.params.mailboxId });
-      else
-        $state.go('mail');
+      $mdDialog.cancel();
     }
 
     function send() {
@@ -82,7 +79,7 @@
         $timeout.cancel(vm.autosave);
 
       vm.message.$send().then(function(data) {
-        $state.go('mail');
+        $mdDialog.hide();
       }, function(data) {
         Dialog.alert(l(data.status), l(data.message));
       });

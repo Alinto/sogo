@@ -53,19 +53,19 @@
           stateMessages: stateMessages
         }
       })
-      .state('mail.account.mailbox.newMessage', {
-        url: '/new',
-        views: {
-          'mailbox@mail': {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController',
-            controllerAs: 'editor'
-          }
-        },
-        resolve: {
-          stateMessage: stateNewMessage
-        }
-      })
+      // .state('mail.account.mailbox.newMessage', {
+      //   url: '/new',
+      //   views: {
+      //     'mailbox@mail': {
+      //       templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
+      //       controller: 'MessageEditorController',
+      //       controllerAs: 'editor'
+      //     }
+      //   },
+      //   resolve: {
+      //     stateMessage: stateNewMessage
+      //   }
+      // })
       .state('mail.account.mailbox.message', {
         url: '/:messageId',
         views: {
@@ -78,30 +78,30 @@
         resolve: {
           stateMessage: stateMessage
         }
-      })
-      .state('mail.account.mailbox.message.edit', {
-        url: '/edit',
-        views: {
-          'mailbox@mail': {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController',
-            controllerAs: 'editor'
-          }
-        },
-        resolve: {
-          stateContent: stateContent
-        }
-      })
-      .state('mail.account.mailbox.message.action', {
-        url: '/{actionName:(?:reply|replyall|forward)}',
-        views: {
-          'mailbox@mail': {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController',
-            controllerAs: 'editor'
-          }
-        }
       });
+      // .state('mail.account.mailbox.message.edit', {
+      //   url: '/edit',
+      //   views: {
+      //     'mailbox@mail': {
+      //       templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
+      //       controller: 'MessageEditorController',
+      //       controllerAs: 'editor'
+      //     }
+      //   },
+      //   resolve: {
+      //     stateContent: stateContent
+      //   }
+      // })
+      // .state('mail.account.mailbox.message.action', {
+      //   url: '/{actionName:(?:reply|replyall|forward)}',
+      //   views: {
+      //     'mailbox@mail': {
+      //       templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
+      //       controller: 'MessageEditorController',
+      //       controllerAs: 'editor'
+      //     }
+      //   }
+      // });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/Mail');
@@ -176,10 +176,10 @@
   /**
    * @ngInject
    */
-  stateNewMessage.$inject = ['stateAccount'];
-  function stateNewMessage(stateAccount) {
-    return stateAccount.$newMessage();
-  }
+  // stateNewMessage.$inject = ['stateAccount'];
+  // function stateNewMessage(stateAccount) {
+  //   return stateAccount.$newMessage();
+  // }
 
   /**
    * @ngInject
@@ -203,10 +203,10 @@
   /**
    * @ngInject
    */
-  stateContent.$inject = ['stateMessage'];
-  function stateContent(stateMessage) {
-    return stateMessage.$editableContent();
-  }
+  // stateContent.$inject = ['stateMessage'];
+  // function stateContent(stateMessage) {
+  //   return stateMessage.$editableContent();
+  // }
 
   /**
    * @ngInject

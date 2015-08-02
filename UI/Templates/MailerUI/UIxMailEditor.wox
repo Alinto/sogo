@@ -5,17 +5,59 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-    <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
-      <div class="sg-toolbar-group-last">
-        <md-button class="sg-icon-button" label:aria-label="More">
-          <md-icon>more_vert</md-icon>
-        </md-button>
-      </div>
+  <md-dialog flex="80" flex-sm="100">
+    <md-toolbar class="md-padding">
+      <!-- TOOLBAR TO SHOW CC/BCC/ATTACHMENT FIELDS -->
+
+      <div class="md-toolbar-tools">
+        <md-button ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
+        <md-button ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
+
+          <md-button>
+            <label for="file-input">
+              Add files
+            </label>
+          </md-button>
+          <input id="file-input" type="file"
+                 nv-file-select="nv-file-select"
+                 multiple="multiple"
+                 uploader="editor.uploader"
+                 ng-show="false"/>
+
+          <md-menu>
+            <md-button label:aria-label="More mail options" class="iconBtton" ng-click="$mdOpenMenu($event)">
+              <md-icon>more_vert</md-icon>
+            </md-button>
+            <md-menu-content width="4">
+              <md-menu-item>
+                <md-button>
+                  <md-checkbox ng-model="editor.message.editable.receipt">
+                    <var:string label:value="Receipt"/>
+                  </md-checkbox>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <div layout="row" layout-align="center center">
+                  <span>
+                    <var:string label:value="Priority"/>
+                  </span>
+                  <md-slider flex="flex"
+                             md-discrete="md-discrete"
+                             ng-model="editor.message.editable.priority"
+                             step="1"
+                             min="1"
+                             max="5"
+                             label:aria-label="Priority">
+                  </md-slider>
+                </div>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+
     </div>
   </md-toolbar>
 
-  <md-content class="md-padding bg-sogoPaper-50">
+  <md-dialog-content>
     <form>
       <header>
 
@@ -121,56 +163,6 @@
           </md-list>
         </div>
 
-        <!-- </div> -->
-
-        <!-- TOOLBAR TO SHOW CC/BCC/ATTACHMENT FIELDS -->
-        <div layout="column" layout-align="start end">
-          <md-button ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
-          <md-button ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
-
-          <md-button>
-            <label for="file-input">
-              Add files
-            </label>
-          </md-button>
-          <input id="file-input" type="file"
-                 nv-file-select="nv-file-select"
-                 multiple="multiple"
-                 uploader="editor.uploader"
-                 ng-show="false"/>
-
-          <md-menu>
-            <md-button label:aria-label="More mail options" class="iconBtton" ng-click="$mdOpenMenu($event)">
-              <md-icon>more_vert</md-icon>
-            </md-button>
-            <md-menu-content width="4">
-              <md-menu-item>
-                <md-button>
-                  <md-checkbox ng-model="editor.message.editable.receipt">
-                    <var:string label:value="Receipt"/>
-                  </md-checkbox>
-                </md-button>
-              </md-menu-item>
-              <md-menu-item>
-                <div layout="row" layout-align="center center">
-                  <span>
-                    <var:string label:value="Priority"/>
-                  </span>
-                  <md-slider flex="flex"
-                             md-discrete="md-discrete"
-                             ng-model="editor.message.editable.priority"
-                             step="1"
-                             min="1"
-                             max="5"
-                             label:aria-label="Priority">
-                  </md-slider>
-                </div>
-              </md-menu-item>
-            </md-menu-content>
-          </md-menu>
-
-        </div>
-
       </header>
 
       <!-- MESSAGE CONTENT -->
@@ -187,5 +179,6 @@
         </div>
       </div>
     </form>
-  </md-content>
+  </md-dialog-content>
+</md-dialog>
 </container>
