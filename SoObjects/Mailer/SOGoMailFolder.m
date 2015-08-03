@@ -1580,7 +1580,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSString *) displayName
 {
-  return [self relativeImap4Name];
+  return [[self relativeImap4Name] stringByDecodingImap4FolderName];
 }
 
 - (NSDictionary *) davIMAPFieldsTable

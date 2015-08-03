@@ -161,7 +161,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       else
         [dbFolder changePathTo: [NSString stringWithFormat: @"/fallback/%@", pathComponent]
               intoNewContainer: nil];
-      
+
       mapping = [self mapping];
 
       if (targetFolder)
@@ -193,6 +193,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   SOGoMAPIDBMessage *fsObject;
   NSString *newKey;
 
+  [[self userContext] activate];
+
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
   fsObject = [SOGoMAPIDBMessage objectWithName: newKey
@@ -214,10 +216,13 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
-    keys = [(SOGoCacheGCSFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
-                                             includeDeleted: NO
-                                          matchingQualifier: qualifier
-                                           andSortOrderings: sortOrderings];
+    {
+      [[self userContext] activate];
+      keys = [(SOGoCacheGCSFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
+                                                 includeDeleted: NO
+                                              matchingQualifier: qualifier
+                                               andSortOrderings: sortOrderings];
+    }
   else
     keys = [NSArray array];
 
@@ -227,6 +232,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
+  [[self userContext] activate];
   return [dbFolder childKeysOfType: MAPIFolderCacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
@@ -262,7 +268,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       if ([date laterDate: fileDate] == fileDate)
         {
           //[self logWithFormat: @"current date: %@", date];
-          
+
           date = fileDate;
         }
     }
@@ -326,7 +332,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
     rights |= RightsFolderContact;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
- 
+
   return rights;
 }
 
@@ -361,7 +367,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
      subscribed to read an open contained messages in order to enable them to
      find the "LocalFreebusy" message */
   [sogoObject reloadIfNeeded];
-  
+
   displayName = [[sogoObject properties]
                   objectForKey: MAPIPropertyKey (PidTagDisplayName)];
 

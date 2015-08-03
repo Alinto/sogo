@@ -67,7 +67,7 @@ MakeDisplayFolderName (NSString *folderName)
   NSArray *parts;
   NSString *lastFolder;
   NSUInteger max;
- 
+
   parts = [folderName componentsSeparatedByString: @"/"];
   max = [parts count];
   if (max > 1)
@@ -198,7 +198,6 @@ MakeDisplayFolderName (NSString *folderName)
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: NULL];
-  [MAPIApp setUserContext: userContext];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   folderName = [NSString stringWithFormat: @"folder%@",
                          [newFolderName asCSSIdentifier]];
@@ -213,7 +212,6 @@ MakeDisplayFolderName (NSString *folderName)
                              [[folderName stringByEncodingImap4FolderName] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     mapistoreURI = nil;
-  [MAPIApp setUserContext: nil];
 
   return mapistoreURI;
 }
