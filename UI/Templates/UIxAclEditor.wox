@@ -7,11 +7,16 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="100">
-    <md-toolbar class="sg-padded">
-      <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label"><var:string label:value="Access Rights"/></label>
-        <div class="pseudo-input-field sg-md-title">{{acl.folder.name}}</div>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Access Rights"/></label>
+          <div class="sg-md-title">{{acl.folder.name}}</div>
+        </div>
+        <md-button class="md-icon-button" ng-click="acl.closeModal()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
       </div>
     </md-toolbar>
     <md-dialog-content>
@@ -69,6 +74,7 @@
           md-items="user in acl.userFilter(acl.searchText)"
           md-item-text="user.empty"
           md-min-length="3"
+          md-delay="300"
           md-no-cache="true"
           label:md-floating-label="Add User">
         <md-item-template>
@@ -82,8 +88,7 @@
           </span>
         </md-item-template>
       </md-autocomplete>
-      <md-button ng-click="acl.closeModal()"><var:string label:value="Cancel"/></md-button>
-      <md-button class="md-primitive" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
+      <md-button ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
     </div>
   </md-dialog>
 

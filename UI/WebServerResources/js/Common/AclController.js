@@ -71,8 +71,10 @@
     }
 
     function selectUser(user) {
-      // Check if it is a different user
-      if (vm.selectedUser != user) {
+      if (vm.selectedUser == user) {
+        vm.selectedUser = null;
+      }
+      else {
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }

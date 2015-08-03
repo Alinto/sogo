@@ -15,7 +15,7 @@
           <div class="pseudo-input-field sg-md-title"><var:string value="calendar.displayName"/></div>
         </div>
         <md-button class="md-icon-button" ng-click="close()">
-          <md-icon aria-label="Close dialog">close</md-icon>
+          <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
       </div>
     </md-toolbar>
