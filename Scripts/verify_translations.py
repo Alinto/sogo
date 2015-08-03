@@ -21,8 +21,6 @@ def get_translations(path):
     try:
         transpath = dir_mappings.get(path, path)
         transname = transpath + '/English.lproj/Localizable.strings'
-        #transall = open(transname).read().split('\n')
-        #transgood = [l.strip() for l in transall if len(l.strip()) and l.strip()[0] != '#']
         transall = open(transname).read()
     except:
         transall = ""
@@ -50,13 +48,8 @@ def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=(
                     if DEBUG:print pathname
                     for value in values:
                         #- Try to find the value from the source file in the translation file
-                        #compvalue = re.compile('"(%s)"\s=\s"(.*?)";' % value)
                         escaped_value = re.escape(value)
                         found = re.search('(%s|"%s")\s*=\s*"(.*?)";' % (escaped_value, escaped_value), transgood)
-                        #for line in transgood:
-                        #    found = compvalue.search(line)
-                        #    if found:
-                        #        break
                         if found:
                             if DEBUG: print "\t", '[%s] FOUND -- "%s"' % found.groups()
                         else:

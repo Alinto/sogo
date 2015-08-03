@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar respuesta automática para vacaciones";
-"Auto reply message " = "Mensaje de respuesta automática ";
-"Email addresses (separated by commas) " = "Dirección de correo (separado por comas) ";
+"Auto reply message" ="Mensaje de respuesta automática";
+"Email addresses (separated by commas)" ="Dirección de correo (separado por comas)";
 "Add default email addresses" = "Añadir dirección de correo por defecto";
-"Days between responses " = "Dias entre respuestas ";
+"Days between responses" ="Dias entre respuestas";
 "Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
 "Disable auto reply on" = "Desactivar respuesta automatica";
 "Always send vacation message response" = "Siempre enviar mensaje de vacaciones";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Zona horaria actual ";
-"Short Date Format " = "Formato de fecha corto ";
-"Long Date Format " = "Formato de fecha largo ";
-"Time Format " = "Formato de hora ";
+"Current Time Zone" ="Zona horaria actual";
+"Short Date Format" ="Formato de fecha corto";
+"Long Date Format" ="Formato de fecha largo";
+"Time Format" ="Formato de hora";
 
 "default" = "Por defecto";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Semana empieza por ";
-"Day start time " = "Hora inicio ";
-"Day end time " = "Hora fin ";
+"Week begins on" ="Semana empieza por";
+"Day start time" ="Hora inicio";
+"Day end time" ="Hora fin";
 "Day start time must be prior to day end time." = "Hora de inicio del día debe ser anterior a la hora de fin del día.";
 "Show time as busy outside working hours" = "Mostrar tiempo ocupado fuera del horario laboral";
-"First week of year " = "Primera semana del año ";
+"First week of year" ="Primera semana del año";
 "Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
 "Play a sound when a reminder comes due" = "Señal acústica para los recordatorios";
-"Default reminder " = "Recordatorio por defecto ";
+"Default reminder" ="Recordatorio por defecto";
 
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
 "firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Nombres de Contacto";
 
 /* Default Calendar */
-"Default calendar " = "Calendario por defecto";
+"Default calendar" ="Calendario por defecto";
 "selectedCalendar" = "Calendario seleccionado";
 "personalCalendar" = "Calendario personal";
 "firstCalendar" = "Primer calendario disponible";
@@ -195,8 +195,8 @@
 "Change" = "Cambiar";
 
 /* Event+task classifications */
-"Default events classification " = "Clasificación de evento por defecto";
-"Default tasks classification " = "Clasificación de tarea por defecto";
+"Default events classification" ="Clasificación de evento por defecto";
+"Default tasks classification" ="Clasificación de tarea por defecto";
 "PUBLIC_item" = "Publico";
 "CONFIDENTIAL_item" = "Confidencial";
 "PRIVATE_item" = "Privado";
@@ -211,9 +211,9 @@
 "Mail" = "Correo";
 "Last" = "Ultimo usado";
 "Default Module " = "Módulo por defecto ";
-"SOGo Version " = "Versión de SOGo";
+"SOGo Version" ="Versión de SOGo";
 
-"Language " = "Idioma ";
+"Language" ="Idioma";
 "choose" = "Elija ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -241,7 +241,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Refrescar Vista";
+"Refresh View" ="Refrescar Vista";
 "refreshview_manually" = "Manualmente";
 "refreshview_every_minute" = "Cada minuto";
 "refreshview_every_2_minutes" = "Cada 2 minutos";

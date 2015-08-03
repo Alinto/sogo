@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
-"Auto reply message " = "Автоматически посылать этот текст каждому отправителю один раз ";
-"Email addresses (separated by commas) " = "Email адреса (разделенные запятыми) ";
+"Auto reply message" ="Автоматически посылать этот текст каждому отправителю один раз";
+"Email addresses (separated by commas)" ="Email адреса (разделенные запятыми)";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
-"Days between responses " = "Дни между ответами ";
+"Days between responses" ="Дни между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Disable auto reply on" = "Запрет автоответа включен";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Текущая временная зона ";
-"Short Date Format " = "Короткий формат даты ";
-"Long Date Format " = "Длинный формат даты ";
-"Time Format " = "Формат времени ";
+"Current Time Zone" ="Текущая временная зона";
+"Short Date Format" ="Короткий формат даты";
+"Long Date Format" ="Длинный формат даты";
+"Time Format" ="Формат времени";
 
 "default" = "Default";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Неделя начинается с";
-"Day start time " = "Рабочий день начинается в";
-"Day end time " = "Рабочий день заканчивается в ";
+"Week begins on" ="Неделя начинается с";
+"Day start time" ="Рабочий день начинается в";
+"Day end time" ="Рабочий день заканчивается в";
 "Day start time must be prior to day end time." = "Время начала дня должно быть перед временем его окончания.";
 "Show time as busy outside working hours" = "Показывать время, как занятое, если оно за границами рабочего времени.";
-"First week of year " = "Первая неделя года ";
+"First week of year" ="Первая неделя года";
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
 "Play a sound when a reminder comes due" = "Проигрывать звук когда срабатывает оповещение";
-"Default reminder " = "Обычное оповещение ";
+"Default reminder" ="Обычное оповещение";
 
 "firstWeekOfYear_January1" = "Начинается 1 января";
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Имена контактов";
 
 /* Default Calendar */
-"Default calendar " = "Календарь по-умолчанию";
+"Default calendar" ="Календарь по-умолчанию";
 "selectedCalendar" = "Выбранный календарь";
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
@@ -195,8 +195,8 @@
 "Change" = "Изменить";
 
 /* Event+task classifications */
-"Default events classification " = "Default events classification ";
-"Default tasks classification " = "Default tasks classification ";
+"Default events classification" ="Default events classification";
+"Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -211,9 +211,9 @@
 "Mail" = "Почта";
 "Last" = "Последнее использование";
 "Default Module " = "Модуль по умолчанию";
-"SOGo Version " = "Версия SOGo";
+"SOGo Version" ="Версия SOGo";
 
-"Language " = "Язык";
+"Language" ="Язык";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -242,7 +242,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Обновить вид";
+"Refresh View" ="Обновить вид";
 "refreshview_manually" = "Вручную";
 "refreshview_every_minute" = "Каждую минуту";
 "refreshview_every_2_minutes" = "Каждые 2 минуты";

@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "開啟休假自動回覆";
-"Auto reply message " = "自動回覆內容";
-"Email addresses (separated by commas) " = "電子郵件地址 (用逗號分隔)";
+"Auto reply message" ="自動回覆內容";
+"Email addresses (separated by commas)" ="電子郵件地址 (用逗號分隔)";
 "Add default email addresses" = "增加預設的電子郵件地址";
-"Days between responses " = "回覆間隔天數";
+"Days between responses" ="回覆間隔天數";
 "Do not send responses to mailing lists" = "不要寄送回覆給列表的帳號";
 "Disable auto reply on" = "關閉自動回覆功能";
 "Always send vacation message response" = "開啟休假自動回覆功能";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "時區";
-"Short Date Format " = "簡易日期格式";
-"Long Date Format " = "完整日期格式";
-"Time Format " = "時間格式";
+"Current Time Zone" ="時區";
+"Short Date Format" ="簡易日期格式";
+"Long Date Format" ="完整日期格式";
+"Time Format" ="時間格式";
 
 "default" = "預設";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "一週起始日為";
-"Day start time " = "每日開始時間是";
-"Day end time " = "每日結束時間是";
+"Week begins on" ="一週起始日為";
+"Day start time" ="每日開始時間是";
+"Day end time" ="每日結束時間是";
 "Day start time must be prior to day end time." = "每日開始時間必須早於結束時間。";
 "Show time as busy outside working hours" = "顯示工作時間以下時段顯示為忙碌";
-"First week of year " = "一年的第一週";
+"First week of year" ="一年的第一週";
 "Enable reminders for Calendar items" = "開啟行事曆的提醒功能";
 "Play a sound when a reminder comes due" = "提醒時撥放音效";
-"Default reminder " = "預設提醒";
+"Default reminder" ="預設提醒";
 
 "firstWeekOfYear_January1" = "開始於一月一日";
 "firstWeekOfYear_First4DayWeek" = "第一個只有四天的週";
@@ -114,7 +114,7 @@
 "Contacts Names" = "連絡人姓名";
 
 /* Default Calendar */
-"Default calendar " = "預設行事曆";
+"Default calendar" ="預設行事曆";
 "selectedCalendar" = "選擇的行事曆";
 "personalCalendar" = "個人行事曆";
 "firstCalendar" = "第一個有效的行事曆";
@@ -195,8 +195,8 @@
 "Change" = "修改";
 
 /* Event+task classifications */
-"Default events classification " = "預設的事件類別";
-"Default tasks classification " = "預設的任務類別";
+"Default events classification" ="預設的事件類別";
+"Default tasks classification" ="預設的任務類別";
 "PUBLIC_item" = "公開";
 "CONFIDENTIAL_item" = "機密";
 "PRIVATE_item" = "私人";
@@ -211,9 +211,9 @@
 "Mail" = "郵件";
 "Last" = "上次使用";
 "Default Module " = "預設模式";
-"SOGo Version " = "SOGo版本";
+"SOGo Version" ="SOGo版本";
 
-"Language " = "語言";
+"Language" ="語言";
 "choose" = "選擇...";
 "Arabic" = "العربية";
 "Catalan" = "Català";
@@ -239,7 +239,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "重新整理";
+"Refresh View" ="重新整理";
 "refreshview_manually" = "手動";
 "refreshview_every_minute" = "每分鐘";
 "refreshview_every_2_minutes" = "每2分鐘";

@@ -237,7 +237,7 @@
 
 /* Folder operations */
 "Name :" = "Navn:";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "Indtast det nye navn på din mappe";
 "Do you really want to move this folder into the trash ?"
  = "Er du sikker på, at du vil flytte denne mappe til papirkurven?";

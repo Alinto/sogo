@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar resposta automàtica";
-"Auto reply message " = "Respondre automàticament una sola vegada a cada remitent amb aquest text ";
-"Email addresses (separated by commas) " = "Adreces de correu (separades per comes) ";
+"Auto reply message" ="Respondre automàticament una sola vegada a cada remitent amb aquest text";
+"Email addresses (separated by commas)" ="Adreces de correu (separades per comes)";
 "Add default email addresses" = "Afegir adreces de correu per defecte";
-"Days between responses " = "Dies entre respostes ";
+"Days between responses" ="Dies entre respostes";
 "Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
 "Disable auto reply on" = "Desactivar la resposta automàtica en";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";
 
 /* d & t */
-"Current Time Zone " = "Zona horària actual ";
-"Short Date Format " = "Format de data curt ";
-"Long Date Format " = "Format de data llarg ";
-"Time Format " = "Format d'hora ";
+"Current Time Zone" ="Zona horària actual";
+"Short Date Format" ="Format de data curt";
+"Long Date Format" ="Format de data llarg";
+"Time Format" ="Format d'hora";
 
 "default" = "Per defecte";
 
@@ -90,15 +90,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Setmana comença en ";
-"Day start time " = "Hora inici dia ";
-"Day end time " = "Hora final dia ";
+"Week begins on" ="Setmana comença en";
+"Day start time" ="Hora inici dia";
+"Day end time" ="Hora final dia";
 "Day start time must be prior to day end time." = "L'hora de començament del dia ha de ser anterior a l'hora d'acabament.";
 "Show time as busy outside working hours" = "Mostra el temps com ocupat fora de les hores de treball";
-"First week of year " = "Primera setmana de l'any ";
+"First week of year" ="Primera setmana de l'any";
 "Enable reminders for Calendar items" = "Habilitar recordatoris per a ítems del calendari";
 "Play a sound when a reminder comes due" = "Usar senyal acústic per als recordatoris";
-"Default reminder " = "Recordatori per omissió ";
+"Default reminder" ="Recordatori per omissió";
 
 "firstWeekOfYear_January1" = "Comença l'1 de gener";
 "firstWeekOfYear_First4DayWeek" = "Primera setmana de 4 dies";
@@ -109,7 +109,7 @@
 "Contacts Names" = "Nom dels Contactes";
 
 /* Default Calendar */
-"Default calendar " = "Calendari per defecte";
+"Default calendar" ="Calendari per defecte";
 "selectedCalendar" = "Calendari seleccionat";
 "personalCalendar" = "Calendari personal";
 "firstCalendar" = "Primer calendari habilitat";
@@ -196,8 +196,8 @@
 "Change" = "Canviar";
 
 /* Event+task classifications */
-"Default events classification " = "Classificació per defecte dels esdeveniments ";
-"Default tasks classification " = "Classificació per defecte de les tasques ";
+"Default events classification" ="Classificació per defecte dels esdeveniments";
+"Default tasks classification" ="Classificació per defecte de les tasques";
 "PUBLIC_item" = "Públic ";
 "CONFIDENTIAL_item" = "Confidencial ";
 "PRIVATE_item" = "Privat ";
@@ -212,9 +212,9 @@
 "Mail" = "Correu";
 "Last" = "Últim usat";
 "Default Module " = "Pàgina per defecte ";
-"SOGo Version " = "Versió del SOGo";
+"SOGo Version" ="Versió del SOGo";
 
-"Language " = "Language ";
+"Language" ="Language";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

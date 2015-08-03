@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
-"Auto reply message " = "Текст автоматичної відповіді";
-"Email addresses (separated by commas) " = "Електронні адреси (розділені комами)";
+"Auto reply message" ="Текст автоматичної відповіді";
+"Email addresses (separated by commas)" ="Електронні адреси (розділені комами)";
 "Add default email addresses" = "Додати адреси за замовчанням";
-"Days between responses " = "Днів між відповідями ";
+"Days between responses" ="Днів між відповідями";
 "Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
 "Disable auto reply on" = "Вимкнути автоматичну відповідь";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";
 
 /* d & t */
-"Current Time Zone " = "Поточна часова зона ";
-"Short Date Format " = "Стислий формат дати ";
-"Long Date Format " = "Повний формат дати ";
-"Time Format " = "Формат часу ";
+"Current Time Zone" ="Поточна часова зона";
+"Short Date Format" ="Стислий формат дати";
+"Long Date Format" ="Повний формат дати";
+"Time Format" ="Формат часу";
 
 "default" = "Типово";
 
@@ -89,23 +89,23 @@
 "timeFmt_3" = "";
 
 /* calendar */
-"Week begins on " = "Тиждень починаєтья з ";
-"Day start time " = "Робочий день починається о ";
-"Day end time " = "Робочий день закінчується о ";
+"Week begins on" ="Тиждень починаєтья з";
+"Day start time" ="Робочий день починається о";
+"Day end time" ="Робочий день закінчується о";
 "Day start time must be prior to day end time." = "Початок дня має бути ранішим за кінець дня.";
 "Show time as busy outside working hours" = "Показувати час зайнятим якщо поза межами робочих годин";
-"First week of year " = "Перший тиждень року ";
+"First week of year" ="Перший тиждень року";
 "Enable reminders for Calendar items" = "Увімкнути нагадування подій календаря";
 "Play a sound when a reminder comes due"
 = "Програти звук у разі сповіщення";
-"Default reminder " = "Звичайне сповіщення ";
+"Default reminder" ="Звичайне сповіщення";
 
 "firstWeekOfYear_January1" = "Починається 1 січня";
 "firstWeekOfYear_First4DayWeek" = "Перший чотириденний тиждень";
 "firstWeekOfYear_FirstFullWeek" = "Перший повний тиждень";
 
 /* Default Calendar */
-"Default calendar " = "Типовий календар";
+"Default calendar" ="Типовий календар";
 "selectedCalendar" = "Вибраний календар";
 "personalCalendar" = "Особистий календар";
 "firstCalendar" = "Перший активний календар";
@@ -173,8 +173,8 @@
 "Change" = "Змінити";
 
 /* Event+task classifications */
-"Default events classification " = "Класифікація типових подій";
-"Default tasks classification " = "Класифікація типових завдань";
+"Default events classification" ="Класифікація типових подій";
+"Default tasks classification" ="Класифікація типових завдань";
 "PUBLIC_item" = "Загальний доступ";
 "CONFIDENTIAL_item" = "Обмежений доступ";
 "PRIVATE_item" = "Приватний доступ";
@@ -190,7 +190,7 @@
 "Last" = "Останнє";
 "Default Module " = "Модуль за замовчанням ";
 
-"Language " = "Мова ";
+"Language" ="Мова";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

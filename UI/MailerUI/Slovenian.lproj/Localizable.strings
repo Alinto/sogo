@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Ime :";
-"Enter the new name of your folder "
- = "Vpiši novo ime tvoje mape ";
+"Enter the new name of your folder"
+ = "Vpiši novo ime tvoje mape";
 "Do you really want to move this folder into the trash ?"
  = "Zares želiš premakniti to mapo v koš?";
 "Operation failed" = "Dejanje ni uspelo";

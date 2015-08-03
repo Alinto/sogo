@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatisch bericht bij afwezigheid inschakelen";
-"Auto reply message " = "Automatisch eenmalig met het volgende bericht beantwoorden";
-"Email addresses (separated by commas) " = "E-mailaddressen (gescheiden door komma's)";
+"Auto reply message" ="Automatisch eenmalig met het volgende bericht beantwoorden";
+"Email addresses (separated by commas)" ="E-mailaddressen (gescheiden door komma's)";
 "Add default email addresses" = "Standaard e-mailadres toevoegen";
-"Days between responses " = "Dagen tussen reacties";
+"Days between responses" ="Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Huidige tijdzone";
-"Short Date Format " = "Kort datumformaat";
-"Long Date Format " = "Lang datumformaat";
-"Time Format " = "Tijdformaat";
+"Current Time Zone" ="Huidige tijdzone";
+"Short Date Format" ="Kort datumformaat";
+"Long Date Format" ="Lang datumformaat";
+"Time Format" ="Tijdformaat";
 
 "default" = "Default";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Week begint op";
-"Day start time " = "Dag begint om";
-"Day end time " = "Dag eindigt om";
+"Week begins on" ="Week begint op";
+"Day start time" ="Dag begint om";
+"Day end time" ="Dag eindigt om";
 "Day start time must be prior to day end time." = "Het begin van de dag moet voor het einde liggen.";
 "Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
-"First week of year " = "Eerste week van het jaar";
+"First week of year" ="Eerste week van het jaar";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
 "Play a sound when a reminder comes due" = "Geluid afspelen bij herinnering";
-"Default reminder " = "Standaardherinnering";
+"Default reminder" ="Standaardherinnering";
 
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Contactnamen";
 
 /* Default Calendar */
-"Default calendar " = "Standaardagenda";
+"Default calendar" ="Standaardagenda";
 "selectedCalendar" = "Geselecteerde agenda";
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
@@ -195,8 +195,8 @@
 "Change" = "Veranderen";
 
 /* Event+task classifications */
-"Default events classification " = "Standaardclassificatie afspraken";
-"Default tasks classification " = "Standaardclassificatie taken";
+"Default events classification" ="Standaardclassificatie afspraken";
+"Default tasks classification" ="Standaardclassificatie taken";
 "PUBLIC_item" = "Publiek";
 "CONFIDENTIAL_item" = "Vertrouwelijk";
 "PRIVATE_item" = "Privé";
@@ -211,9 +211,9 @@
 "Mail" = "Mail";
 "Last" = "Laatst gebruikt";
 "Default Module " = "Standaardmodule";
-"SOGo Version " = "SOGo versie";
+"SOGo Version" ="SOGo versie";
 
-"Language " = "Taal";
+"Language" ="Taal";
 "choose" = "Kies...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -242,7 +242,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Overzicht verversen";
+"Refresh View" ="Overzicht verversen";
 "refreshview_manually" = "Handmatig";
 "refreshview_every_minute" = "Iedere minuut";
 "refreshview_every_2_minutes" = "Iedere 2 minuten";

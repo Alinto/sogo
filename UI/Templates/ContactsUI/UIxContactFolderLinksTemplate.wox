@@ -23,7 +23,7 @@
       <div layout="column" layout-padding="layout-padding">
         <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
         <md-input-container>
-          <label><var:string label:value="CardDAV URL "/></label>
+          <label><var:string label:value="CardDAV URL"/></label>
           <input var:value="cardDavURL" ng-readonly="true"/>
         </md-input-container>
       </div>
@@ -31,7 +31,7 @@
         <div layout="column" layout-padding="layout-padding">
           <div class="sg-md-title"><var:string label:value="Public Access"/></div>
           <md-input-container>
-            <label><var:string label:value="CardDAV URL "/></label>
+            <label><var:string label:value="CardDAV URL"/></label>
             <input var:value="publicCardDavURL" ng-readonly="true"/>
           </md-input-container>
         </div>
