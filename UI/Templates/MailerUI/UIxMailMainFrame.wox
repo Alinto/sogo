@@ -265,7 +265,7 @@
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode == folder.path">
                 <input class="folder-name" type="text"
-                       label:aria-label="Enter the new name of your folder "
+                       label:aria-label="Enter the new name of your folder"
                        ng-model="folder.name"
                        ng-blur="app.saveFolder(folder)"
                        sg-focus-on="mailboxName_{{folder.path}}"

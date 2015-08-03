@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Enable vacation auto reply";
-"Auto reply message " = "Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol ";
-"Email addresses (separated by commas) " = "Email addresses (separated by commas) ";
+"Auto reply message" ="Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol";
+"Email addresses (separated by commas)" ="Email addresses (separated by commas)";
 "Add default email addresses" = "Add default email addresses";
-"Days between responses " = "Days between responses ";
+"Days between responses" ="Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
@@ -37,10 +37,10 @@
 = "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
-"Current Time Zone " = "Amser Cyfredol ";
-"Short Date Format " = "Dyddiad fformat byr ";
-"Long Date Format " = "Dyddiad fformat hir ";
-"Time Format " = "Fformat amser ";
+"Current Time Zone" ="Amser Cyfredol";
+"Short Date Format" ="Dyddiad fformat byr";
+"Long Date Format" ="Dyddiad fformat hir";
+"Time Format" ="Fformat amser";
 
 "default" = "Default";
 
@@ -78,22 +78,22 @@
 "timeFmt_2" = "";
 
 /* calendar */
-"Week begins on " = "wythnos yn dechrau ";
-"Day start time " = "Amser dechrau'r diwrnod ";
-"Day end time " = "Amser diwedd y dydd ";
+"Week begins on" ="wythnos yn dechrau";
+"Day start time" ="Amser dechrau'r diwrnod";
+"Day end time" ="Amser diwedd y dydd";
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
-"First week of year " = "Wythnos cyntaf y flwyddyn ";
+"First week of year" ="Wythnos cyntaf y flwyddyn";
 "Enable reminders for Calendar items" = "Galluogu atgoffa ar gyfer eitemau calendr";
 "Play a sound when a reminder comes due"
 = "Chwarae swn pan fydd amser atgoffa";
-"Default reminder " = "Atgoffa gwreiddiol ";
+"Default reminder" ="Atgoffa gwreiddiol";
 
 "firstWeekOfYear_January1" = "Dechrau ar Ionawr 1";
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "Wythnos cyntaf llawn";
 
 /* Default Calendar */
-"Default calendar " = "Default calendar";
+"Default calendar" ="Default calendar";
 "selectedCalendar" = "Selected calendar";
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
@@ -161,8 +161,8 @@
 "Change" = "Change";
 
 /* Event+task classifications */
-"Default events classification " = "Default events classification ";
-"Default tasks classification " = "Default tasks classification ";
+"Default events classification" ="Default events classification";
+"Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -178,7 +178,7 @@
 "Last" = "Last used";
 "Default Module " = "Default module ";
 
-"Language " = "Iaith ";
+"Language" ="Iaith";
 "choose" = "Dewis ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatikus távollét üzenet engedélyezése";
-"Auto reply message " = "Automatikus válasz minden feladónak csak egy alkalommal ";
-"Email addresses (separated by commas) " = "Email címek (vesszővel elválasztva)";
+"Auto reply message" ="Automatikus válasz minden feladónak csak egy alkalommal";
+"Email addresses (separated by commas)" ="Email címek (vesszővel elválasztva)";
 "Add default email addresses" = "Saját email címek hozzáadása";
-"Days between responses " = "Válaszok közötti napok száma";
+"Days between responses" ="Válaszok közötti napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Időzóna ";
-"Short Date Format " = "Rövid dátumformátum ";
-"Long Date Format " = "Hosszú dátumformátum ";
-"Time Format " = "Időformátum ";
+"Current Time Zone" ="Időzóna";
+"Short Date Format" ="Rövid dátumformátum";
+"Long Date Format" ="Hosszú dátumformátum";
+"Time Format" ="Időformátum";
 
 "default" = "Alapértelmezett";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Hét kezdőnapja";
-"Day start time " = "Nap kezdete";
-"Day end time " = "Nap vége";
+"Week begins on" ="Hét kezdőnapja";
+"Day start time" ="Nap kezdete";
+"Day end time" ="Nap vége";
 "Day start time must be prior to day end time." = "A kezdőnap nem lehet későbbi, mint a befejező nap.";
 "Show time as busy outside working hours" = "A munkaidőn túli időszakokra foglaltság jelzése";
-"First week of year " = "Év első hete";
+"First week of year" ="Év első hete";
 "Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
 "Play a sound when a reminder comes due" = "Hang lejátszása az emlékeztetőhöz";
-"Default reminder " = "Alapértelmezett emlékeztető";
+"Default reminder" ="Alapértelmezett emlékeztető";
 
 "firstWeekOfYear_January1" = "Január 1-jétől";
 "firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Kapcsolatok nevei";
 
 /* Default Calendar */
-"Default calendar " = "Alapértelmezett naptár";
+"Default calendar" ="Alapértelmezett naptár";
 "selectedCalendar" = "Kiválasztott naptár";
 "personalCalendar" = "Személyes naptár";
 "firstCalendar" = "Első engedélyezett naptár";
@@ -195,8 +195,8 @@
 "Change" = "Megváltoztat";
 
 /* Event+task classifications */
-"Default events classification " = "Az események alapértelmezett besorolása";
-"Default tasks classification " = "Alapértelmezett feladat besorolás";
+"Default events classification" ="Az események alapértelmezett besorolása";
+"Default tasks classification" ="Alapértelmezett feladat besorolás";
 "PUBLIC_item" = "Nyilvános";
 "CONFIDENTIAL_item" = "Bizalmas";
 "PRIVATE_item" = "Magán";
@@ -211,9 +211,9 @@
 "Mail" = "Levél";
 "Last" = "Utoljára használt";
 "Default Module " = "Alapértelmezett modul";
-"SOGo Version " = "SOGo verzió";
+"SOGo Version" ="SOGo verzió";
 
-"Language " = "Nyelv ";
+"Language" ="Nyelv";
 "choose" = "Válasszon ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -241,7 +241,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Nézet frissítés";
+"Refresh View" ="Nézet frissítés";
 "refreshview_manually" = "Kézi";
 "refreshview_every_minute" = "Percenként";
 "refreshview_every_2_minutes" = "Kétpercenként";

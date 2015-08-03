@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Zapnout odpovědi v nepřítomnosti";
-"Auto reply message " = "Zpráva zasílaná v nepřítomnosti ";
-"Email addresses (separated by commas) " = "Emailové adresy (oddělené čárkami) ";
+"Auto reply message" ="Zpráva zasílaná v nepřítomnosti";
+"Email addresses (separated by commas)" ="Emailové adresy (oddělené čárkami)";
 "Add default email addresses" = "Přidat základní emailové adresy";
-"Days between responses " = "Počet dnů mezi odpověďmi ";
+"Days between responses" ="Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
 "Disable auto reply on" = "Automatické odpovědi vypnout dne";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Současné časové pásmo ";
-"Short Date Format " = "Krátký formát data ";
-"Long Date Format " = "Dlouhý formát data ";
-"Time Format " = "Formát času ";
+"Current Time Zone" ="Současné časové pásmo";
+"Short Date Format" ="Krátký formát data";
+"Long Date Format" ="Dlouhý formát data";
+"Time Format" ="Formát času";
 
 "default" = "výchozí";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Týden začíná v ";
-"Day start time " = "Začátek dne ";
-"Day end time " = "Konec dne ";
+"Week begins on" ="Týden začíná v";
+"Day start time" ="Začátek dne";
+"Day end time" ="Konec dne";
 "Day start time must be prior to day end time." = "Čas Začátek dne musí předcházet času Konec dne.";
 "Show time as busy outside working hours" = "Čas mimo pracovní dobu zobrazovat jako obsazený";
-"First week of year " = "První týden roku ";
+"First week of year" ="První týden roku";
 "Enable reminders for Calendar items" = "Povolit upozornění pro události v kalendáři";
 "Play a sound when a reminder comes due" = "Při upozornění přehrát zvuk";
-"Default reminder " = "Výchozí upozornění ";
+"Default reminder" ="Výchozí upozornění";
 
 "firstWeekOfYear_January1" = "Začíná 1. ledna";
 "firstWeekOfYear_First4DayWeek" = "První 4-denní týden";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Jména kontaktů";
 
 /* Default Calendar */
-"Default calendar " = "Výchozí kalendář ";
+"Default calendar" ="Výchozí kalendář";
 "selectedCalendar" = "Zvolený kalendář";
 "personalCalendar" = "Osobní kalendář";
 "firstCalendar" = "První kalendář";
@@ -195,8 +195,8 @@
 "Change" = "Změnit";
 
 /* Event+task classifications */
-"Default events classification " = "Výchozí druh události ";
-"Default tasks classification " = "Výchozí druh úkolu ";
+"Default events classification" ="Výchozí druh události";
+"Default tasks classification" ="Výchozí druh úkolu";
 "PUBLIC_item" = "Veřejné";
 "CONFIDENTIAL_item" = "Důvěrné";
 "PRIVATE_item" = "Soukromé";
@@ -211,9 +211,9 @@
 "Mail" = "Pošta";
 "Last" = "Naposledy použitý";
 "Default Module " = "Výchozí modul ";
-"SOGo Version " = "SOGo verze";
+"SOGo Version" ="SOGo verze";
 
-"Language " = "Jazyk ";
+"Language" ="Jazyk";
 "choose" = "Vybrat ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -242,7 +242,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Aktualizace zobrazení";
+"Refresh View" ="Aktualizace zobrazení";
 "refreshview_manually" = "Manuálně";
 "refreshview_every_minute" = "Každou minutu";
 "refreshview_every_2_minutes" = "Každé 2 minuty";

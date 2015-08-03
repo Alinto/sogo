@@ -237,7 +237,7 @@
 
 /* Folder operations */
 "Name :" = "Nome :";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "Inserisci il nuovo nome della cartella ";
 "Do you really want to move this folder into the trash ?"
  = "Sei sicuro di voler spostare la cartella nel cestino ?";
