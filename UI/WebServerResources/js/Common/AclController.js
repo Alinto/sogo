@@ -50,11 +50,7 @@
     }
 
     function removeUser(user) {
-      folder.$acl.$removeUser(user.uid).then(function() {
-        if (user.uid == vm.selectedUser.uid) {
-          vm.selectedUser = null;
-        }
-      }, function(data, status) {
+      folder.$acl.$removeUser(user.uid).catch(function(data, status) {
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
     }
