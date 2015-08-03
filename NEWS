@@ -1,3 +1,13 @@
+2.3.x (2015-MM-DD)
+------------------
+
+Bug fixes
+ - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
+ - Non-latin subfolder names are displayed correctly on Outlook (Zentyal)
+ - Fixed several sync issues on environments with multiple users (Zentyal)
+ - Folders from other users will no longer appear on your Outlook (Zentyal)
+ - Use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
+
 2.3.1 (2015-07-23)
 ------------------
 
