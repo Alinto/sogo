@@ -6,13 +6,13 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-dialog flex="50" flex-sm="100">
-    <md-toolbar class="sg-padded">
+  <md-dialog flex="30" flex-sm="100">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Delegation"/></label>
-          <div class="pseudo-input-field sg-md-title">{{delegate.account.name}}</div>
+          <div class="sg-md-title">{{delegate.account.name}}</div>
         </div>
         <md-button class="md-icon-button" ng-click="delegate.closeModal()">
           <md-icon aria-label="Close dialog">close</md-icon>
@@ -21,26 +21,22 @@
     </md-toolbar>
 
     <md-dialog-content>
-      <md-card ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']"
-               ng-click="delegate.selectUser(user)"
-               ng-class="{ 'sg-collapsed': user.uid != delegate.selectedUser.uid, 'sg-expanded': user.uid == delegate.selectedUser.uid }">
-        <md-button>
+      <md-list>
+        <md-list-item ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']">
           <div layout="row" layout-align="start center" class="md-flex">
-            <span class="card-picture" ng-switch="user.userClass">
-              <div class="sg-avatar"><!-- normal-user --></div>
-            </span>
+            <sg-avatar-image class="md-tile-left"
+                             sg-email="user.c_email"
+                             size="48"><!-- avatar --></sg-avatar-image>
             <div class="sg-tile-content">
               <div class="sg-md-subhead-multi">{{user.cn}}</div>
               <div class="sg-md-body-multi">{{user.c_email}}</div>
             </div>
-            <md-button ng-click="delegate.removeUser(user)"
-                       type="button"
-                       ng-hide="user.uid != delegate.selectedUser.uid || user.$isSpecial()">
+            <md-button class="sg-icon-button" ng-click="delegate.removeUser(user)">
               <md-icon>delete</md-icon>
             </md-button>
           </div>
-        </md-button>
-      </md-card>
+        </md-list-item>
+      </md-list>
     </md-dialog-content>
 
     <div class="md-actions">
@@ -51,6 +47,7 @@
           md-selected-item="delegate.userToAdd"
           md-selected-item-change="delegate.addUser(user)"
           md-items="user in delegate.userFilter(delegate.searchText)"
+          md-item-text="user.empty"
           md-min-length="3"
           md-no-cache="true"
           label:md-floating-label="Add User">
@@ -64,5 +61,4 @@
       </md-autocomplete>
     </div>
   </md-dialog>
-
 </container>

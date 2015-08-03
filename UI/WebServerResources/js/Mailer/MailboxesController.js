@@ -73,14 +73,12 @@
 
         vm.users = account.delegates;
         vm.account = account;
-        vm.selectedUser = null;
         vm.userToAdd = '';
         vm.searchText = '';
         vm.userFilter = userFilter;
         vm.closeModal = closeModal;
         vm.removeUser = removeUser;
         vm.addUser = addUser;
-        vm.selectUser = selectUser;
 
         function userFilter($query) {
           return User.$filter($query, account.delegates);
@@ -91,11 +89,7 @@
         }
 
         function removeUser(user) {
-          account.$removeDelegate(user.uid).then(function() {
-            if (user.uid == vm.selectedUser.uid) {
-              vm.selectedUser = null;
-            }
-          }, function(data, status) {
+          account.$removeDelegate(user.uid).catch(function(data, status) {
             Dialog.alert(l('Warning'), l('An error occured please try again.'));
           });
         }
@@ -108,13 +102,6 @@
             }, function(error) {
               Dialog.alert(l('Warning'), error);
             });
-          }
-        }
-
-        function selectUser(user) {
-          // Check if it is a different user
-          if (vm.selectedUser != user) {
-            vm.selectedUser = user;
           }
         }
       }
