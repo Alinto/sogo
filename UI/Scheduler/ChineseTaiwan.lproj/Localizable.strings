@@ -508,7 +508,6 @@ vtodo_class2 = "(機密任務)";
 "button_allOccurrences" = "所有重複事件";
 
 /* Properties dialog */
-"Name" = "名稱";
 "Color" = "顏色";
 
 "Include in free-busy" = "包括忙碌-空間";

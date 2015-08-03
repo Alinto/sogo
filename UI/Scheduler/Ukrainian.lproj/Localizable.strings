@@ -475,7 +475,6 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "button_allOccurrences" = "Всі повторення";
 
 /* Properties dialog */
-"Name" = "Назва";
 "Color" = "Колір";
 
 "Include in free-busy" = "Вставити до free-busy";

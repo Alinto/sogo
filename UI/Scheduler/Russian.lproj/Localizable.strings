@@ -506,7 +506,6 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "button_allOccurrences" = "Все повторы";
 
 /* Properties dialog */
-"Name" = "Название";
 "Color" = "Цвет";
 
 "Include in free-busy" = "Включить в free-busy";
