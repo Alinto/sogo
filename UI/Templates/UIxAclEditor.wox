@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="100">
-    <md-toolbar>
+    <md-toolbar class="sg-padded">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
@@ -21,12 +21,15 @@
     </md-toolbar>
     <md-dialog-content>
       <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
-               ng-click="acl.selectUser(user)"
                ng-class="{ 'sg-collapsed': user.uid != acl.selectedUser.uid, 'sg-expanded': user.uid == acl.selectedUser.uid }">
-        <md-button>
+        <md-button ng-click="acl.selectUser(user)">
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.userClass">
-              <div ng-switch-when="normal-user" class="sg-avatar"><!-- normal-user --></div>
+              <div ng-switch-when="normal-user">
+                <sg-avatar-image class="md-tile-left"
+                                 sg-email="user.c_email"
+                                 size="48"><!-- avatar --></sg-avatar-image>
+              </div>
               <div ng-switch-when="normal-group" class="sg-list-avatar"><!-- normal-group --></div>
               <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>
             </span>
