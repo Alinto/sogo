@@ -12,16 +12,16 @@ vtodo_class2 = "(Bizalmas feladat)";
 "The event \"%{Summary}\" was created" = "A \"%{Summary}\" esemény létre lett hozva";
 "The event \"%{Summary}\" was deleted" = "A \"%{Summary}\" esemény törölve lett";
 "The event \"%{Summary}\" was updated" = "A \"%{Summary}\" esemény módosítva lett";
-"The following attendees(s) were notified:" = "Az alábbi résztvevők lettek értesítve:";
-"The following attendees(s) were added:" = "Az alábbi résztvevők lettek hozzáadva:";
-"The following attendees(s) were removed:" = "Az alábbi résztvevők lettek eltávolítva:";
+"The following attendees(s) were notified" = "Az alábbi résztvevők lettek értesítve";
+"The following attendees(s) were added" = "Az alábbi résztvevők lettek hozzáadva";
+"The following attendees(s) were removed" = "Az alábbi résztvevők lettek eltávolítva";
 
 /* IMIP messages */
-"calendar_label" = "Naptár:";
-"startDate_label" = "Kezdete:";
-"endDate_label" = "Vége:";
+"calendar_label" = "Naptár";
+"startDate_label" = "Kezdete";
+"endDate_label" = "Vége";
 "due_label" = "Lejárat napja:";
-"location_label" = "Hely:";
+"location_label" = "Hely";
 "summary_label" = "Összegzés:";
 "comment_label" = "Megjegyzés:";
 

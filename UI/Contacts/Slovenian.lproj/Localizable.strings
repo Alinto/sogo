@@ -76,19 +76,19 @@
 "No possible subscription" = "Naročnina ni mogoča";
 
 "Preferred" = "Željeno";
-"Display:" = "Prikaz:";
-"Display Name:" = "Prikazno ime:";
+"Display" = "Prikaz";
+"Display Name" = "Prikazno ime";
 "Email:" = "E-pošta:";
 "Additional Email:" = "Dodatna e-pošta:";
 
-"Phone Number:" = "Telefonska številka:";
+"Phone Number" = "Telefonska številka";
 "Prefers to receive messages formatted as:" = "Željen format za prejeta sporočila:";
 "Screen Name:" = "Ime na zaslonu:";
 "Categories:" = "Kategorije:";
 
 "First:" = "Prvo:";
 "Last:" = "Zadnje:";
-"Nickname:" = "Vzdevek:";
+"Nickname" = "Vzdevek";
 
 "Telephone" = "Telefon";
 "Work:" = "Služba:";
@@ -103,25 +103,25 @@
 "New category" = "Nova kategorija";
 
 /* adresses */
-"Title:" = "Naslov:";
+"Title" = "Naslov";
 "Service:" = "Storitev:";
 "Company:" = "Podjetje:";
 "Department:" = "Oddelek:";
 "Organization:" = "Organizacija:";
 "Address:" = "Naslov:";
-"City:" = "Mesto:";
+"City" = "Mesto";
 "State_Province:" = "Država/Provinca:";
 "ZIP_Postal Code:" = "ZIP/Poštna številka:";
-"Country:" = "Država:";
+"Country" = "Država";
 "Web Page:" = "Spletna stran:";
 
 "Work" = "Delo";
 "Other Infos" = "Ostali podatki";
 
-"Note:" = "Opomba:";
+"Note" = "Opomba";
 "Timezone:" = "Časovni pas:";
-"Birthday:" = "Rojstni dan:";
-"Birthday (yyyy-mm-dd):" = "Rojstni dan (llll-mm-dd):";
+"Birthday" = "Rojstni dan";
+"Birthday (yyyy-mm-dd)" = "Rojstni dan (llll-mm-dd)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Dodaj kot...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Podrobnosti seznama";
-"List name:" = "Ime iz seznama:";
-"List nickname:" = "Vzdevek iz seznama:";
-"List description:" = "Opis iz seznama:";
+"List name" = "Ime iz seznama";
+"List nickname" = "Vzdevek iz seznama";
+"List description" = "Opis iz seznama";
 "Members" = "Člani";
 "Contacts" = "Stiki";
 "Add" = "Dodaj";

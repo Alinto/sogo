@@ -151,33 +151,33 @@
 "Appointment editor" = "Mötesredigerare";
 "Appointment proposal" = "Mötesförslag";
 "Appointment on" = "Möte";
-"Start:" = "Startar:";
-"End:" = "Slutar:";
-"Due Date:" = "Datum:";
-"Title:" = "Titel:";
-"Calendar:" = "Kalender:";
+"Start" = "Startar";
+"End" = "Slutar";
+"Due Date" = "Datum";
+"Title" = "Titel";
+"Calendar" = "Kalender";
 "Name" = "Namn";
 "Email" = "E-post";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% utfört";
-"Location:" = "Plats:";
-"Priority:" = "Prioritet:";
+"Location" = "Plats";
+"Priority" = "Prioritet";
 "Privacy" = "Sekretess";
 "Cycle" = "Intervall";
 "Cycle End" = "Intervall slutar";
 "Categories" = "Kategorier";
 "Classification" = "Klassifiering";
 "Duration" = "Längd";
-"Attendees:" = "Deltagare:";
+"Attendees" = "Deltagare";
 "Resources" = "Resurser";
-"Organizer:" = "Organisatör:";
-"Description:" = "Beskrivning:";
-"Document:" = "Dokument:";
-"Category:" = "Kategori:";
-"Repeat:" = "Upprepa:";
-"Reminder:" = "Påminnelse:";
-"General:" = "Allmännt:";
-"Reply:" = "Svara:";
+"Organizer" = "Organisatör";
+"Description" = "Beskrivning";
+"Document" = "Dokument";
+"Category" = "Kategori";
+"Repeat" = "Upprepa";
+"Reminder" = "Påminnelse";
+"General" = "Allmännt";
+"Reply" = "Svara";
 
 "Target:" = "Mål:";
 
@@ -222,7 +222,7 @@
 "view_future" = "Alla framtida händelser";
 "view_selectedday" = "Vald dag";
 
-"View:" = "Visa:";
+"View" = "Visa";
 "Title or Description" = "Titel eller beskrivning";
 
 "Search" = "Sök";
@@ -475,8 +475,8 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "button_allOccurrences" = "Alla förekomster";
 
 /* Properties dialog */
-"Name:" = "Namn:";
-"Color:" = "Färg:";
+"Name" = "Namn";
+"Color" = "Färg";
 
 "Include in free-busy" = "Inkludera i ledig/upptagen";
 

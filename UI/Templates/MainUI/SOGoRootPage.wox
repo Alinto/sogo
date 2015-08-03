@@ -57,13 +57,13 @@
             <div ng-show="warning" ng-cloak="ng-cloak" alert="alert" class="alert-box radius warning">{{warning}}</div>
             <md-input-container>
               <label>
-                <var:string label:value="Username:"/>
+                <var:string label:value="Username"/>
               </label>
               <input autocapitalize="off" type="text" ng-model="creds.username" required="required" />
             </md-input-container>
             <md-input-container>
               <label>
-                <var:string label:value="Password:"/>
+                <var:string label:value="Password"/>
               </label>
               <input type="password" ng-model="creds.password" required="required" />
             </md-input-container>
@@ -81,7 +81,7 @@
             <div layout="row" layout-align="start end">
               <md-input-container>
                 <label class="login-lang">
-                  <var:string label:value="Language:"/>
+                  <var:string label:value="Language"/>
                 </label>
                 <md-select flex="true" ng-model="creds.language">
                   <var:foreach list="languages" item="item">
@@ -97,7 +97,7 @@
             <var:if condition="hasLoginDomains">
               <div layout="row" layout-align="start end">
 	        <label>
-                <var:string label:value="Domain:"/>
+                <var:string label:value="Domain"/>
               </label>
               <md-select flex="true" ng-model="creds.domain" label:placeholder="choose">
                 <var:foreach list="loginDomains" item="item">

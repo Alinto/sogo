@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Käyttäjätunnus:";
-"Password:" = "Salasana:";
-"Domain:" = "Domain:";
+"Username" = "Käyttäjätunnus";
+"Password" = "Salasana";
+"Domain" = "Domain";
 "Remember username" = "Muista käyttäjätunnus";
 
 "Connect" = "Yhdistä";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Vaihtoehtoisesti voit myös käyttää Safaria.";
 "Download" = "Lataa";
 
-"Language:" = "Kieli:";
+"Language" = "Kieli";
 "choose" = "Valitse ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

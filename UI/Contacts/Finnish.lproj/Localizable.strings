@@ -76,19 +76,19 @@
 "No possible subscription" = "Tilaus ei mahdollinen";
 
 "Preferred" = "Ensisijainen";
-"Display:" = "Näyttö:";
-"Display Name:" = "Näyttönimi:";
+"Display" = "Näyttö";
+"Display Name" = "Näyttönimi";
 "Email:" = "Email:";
 "Additional Email:" = "Lisäsähköpostiosoite:";
 
-"Phone Number:" = "Puhelinnumero:";
+"Phone Number" = "Puhelinnumero";
 "Prefers to receive messages formatted as:" = "Vastaanottaa viestejä muotoiltuna ensisijaisesti:";
 "Screen Name:" = "Näytettävä nimi:";
 "Categories:" = "Kategoriat:";
 
 "First:" = "Etunimi:";
 "Last:" = "Sukunimi:";
-"Nickname:" = "Lempinimi:";
+"Nickname" = "Lempinimi";
 
 "Telephone" = "Puhelin";
 "Work:" = "Työ:";
@@ -103,25 +103,25 @@
 "New category" = "Uusi kategoria";
 
 /* adresses */
-"Title:" = "Titteli:";
+"Title" = "Titteli";
 "Service:" = "Palvelu:";
 "Company:" = "Yritys:";
 "Department:" = "Osasto:";
 "Organization:" = "Organisaatio:";
 "Address:" = "Osoite:";
-"City:" = "Kaupunki: ";
+"City" = "Kaupunki ";
 "State_Province:" = "Maakunta:";
 "ZIP_Postal Code:" = "Postinumero:";
-"Country:" = "Maa:";
+"Country" = "Maa";
 "Web Page:" = "Web sivu:";
 
 "Work" = "Työ";
 "Other Infos" = "Muuta tietoa";
 
-"Note:" = "Huomautus:";
+"Note" = "Huomautus";
 "Timezone:" = "Aikavyöhyke:";
-"Birthday:" = "Syntymäpäivä:";
-"Birthday (yyyy-mm-dd):" = "Syntymäpäivä (vvvv-kk-pp):";
+"Birthday" = "Syntymäpäivä";
+"Birthday (yyyy-mm-dd)" = "Syntymäpäivä (vvvv-kk-pp)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Lisää nimellä...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Luettelon tiedot";
-"List name:" = "Luettelon nimi:";
-"List nickname:" = "Luettelon lempinimi:";
-"List description:" = "Luettelon kuvaus:";
+"List name" = "Luettelon nimi";
+"List nickname" = "Luettelon lempinimi";
+"List description" = "Luettelon kuvaus";
 "Members" = "Jäsenet";
 "Contacts" = "Yhteystiedot";
 "Add" = "Lisää";

@@ -77,19 +77,19 @@
 
 "Preferred" = "Föredragen";
 "Card for %@" = "Adresskort för %@";
-"Display:" = "Visa:";
-"Display Name:" = "Visningsnamn:";
+"Display" = "Visa";
+"Display Name" = "Visningsnamn";
 "Email:" = "E-post:";
 "Additional Email:" = "Ytterligare e-post:";
 
-"Phone Number:" = "Telefonnummer:";
+"Phone Number" = "Telefonnummer";
 "Prefers to receive messages formatted as:" = "Föredrar att få mottagna meddelanden kodade som:";
 "Screen Name:" = "Skärmnamn:";
 "Categories:" = "Kategorier:";
 
 "First:" = "Förnamn:";
 "Last:" = "Efternamn:";
-"Nickname:" = "Kortnamn:";
+"Nickname" = "Kortnamn";
 
 "Telephone" = "Telefonnummer";
 "Work:" = "Arbete:";
@@ -104,25 +104,25 @@
 "New category" = "Ny kategori";
 
 /* adresses */
-"Title:" = "Titel:";
+"Title" = "Titel";
 "Service:" = "Befattning:";
 "Company:" = "Företag:";
 "Department:" = "Avdelning:";
 "Organization:" = "Organisation:";
 "Address:" = "Adress:";
-"City:" = "Stad: ";
+"City" = "Stad ";
 "State_Province:" = "Landsdel/Stat:";
 "ZIP_Postal Code:" = "Postnummer:";
-"Country:" = "Land:";
+"Country" = "Land";
 "Web Page:" = "Webbplats:";
 
 "Work" = "Arbete";
 "Other Infos" = "Övrigt";
 
-"Note:" = "Anteckning:";
+"Note" = "Anteckning";
 "Timezone:" = "Tidzon:";
-"Birthday:" = "Födelsedag:";
-"Birthday (yyyy-mm-dd):" = "Födelsedag (yyyy-mm-dd):";
+"Birthday" = "Födelsedag";
+"Birthday (yyyy-mm-dd)" = "Födelsedag (yyyy-mm-dd)";
 "Freebusy URL:" = "Ledig/upptagen URL:";
 
 "Add as..." = "Lägg till som...";
@@ -185,9 +185,9 @@
 
 /* Lists */
 "List details" = "Information om utskickslistan";
-"List name:" = "Namn på utskickslistan:";
-"List nickname:" = "Smeknamn på utskickslistan:";
-"List description:" = "Beskrivning:";
+"List name" = "Namn på utskickslistan";
+"List nickname" = "Smeknamn på utskickslistan";
+"List description" = "Beskrivning";
 "Members" = "Medlemmar";
 "Contacts" = "Kontakter";
 "Add" = "Lägg till";

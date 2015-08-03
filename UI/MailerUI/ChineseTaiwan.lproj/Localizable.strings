@@ -240,7 +240,7 @@
 "As Not Junk" = "這不是垃圾郵件";
 "Run Junk Mail Controls" = "執行垃圾郵件管制";
 
-"Search messages in:" = "搜尋信件在:";
+"Search messages in" = "搜尋信件在";
 "Search" = "搜尋";
 "Search subfolders" = "搜尋子資料匣";
 "Match any of the following" = "符合下列任一條件";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "名稱:";
-"Enter the new name of your folder :"
- = "輸入新資料匣名稱 :";
+"Enter the new name of your folder "
+ = "輸入新資料匣名稱 ";
 "Do you really want to move this folder into the trash ?"
  = "是否確定將這個資料匣移到垃圾桶?";
 "Operation failed" = "操作失敗";

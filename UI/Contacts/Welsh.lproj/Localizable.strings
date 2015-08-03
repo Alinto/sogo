@@ -71,7 +71,7 @@
 
 "Preferred" = "Fafriedig";
 "Card for %@" = "Cerdyn i %@";
-"Display Name:" = "Dangos Enw: ";
+"Display Name" = "Dangos Enw ";
 "Email:" = "Cyfeiriad ebost: ";
 "Additional Email:" = "Additional Email:";
 
@@ -80,7 +80,7 @@
 
 "First:" = "Enw cyntaf: ";
 "Last:" = "Cyfenw: ";
-"Nickname:" = "Llysenw: ";
+"Nickname" = "Llysenw ";
 
 "Telephone" = "Teleffon";
 "Work:" = "Gwaith: ";
@@ -95,23 +95,23 @@
 "New category" = "New category";
 
 /* adresses */
-"Title:" = "Teitl: ";
+"Title" = "Teitl ";
 "Service:" = "Gwasanaeth: ";
 "Company:" = "Cwmni: ";
 "Street Address:" = "Cyfeiriad Stryd: ";
-"City:" = "Dinas: ";
+"City" = "Dinas ";
 "State_Province:" = "Sir/Talaith:";
 "ZIP_Postal Code:" = "ZIP/Cod Post:";
-"Country:" = "Gwlad:";
+"Country" = "Gwlad";
 "Web:" = "We: ";
 
 "Work" = "gwaith";
 "Other Infos" = "Gwybodaeth Arall";
 
-"Note:" = "Nodyn: ";
+"Note" = "Nodyn ";
 "Timezone:" = "Cylchfa Amser: ";
-"Birthday:" = "Penblwydd:";
-"Birthday (yyyy-mm-dd):" = "Penblwydd (yyyy-mm-dd):";
+"Birthday" = "Penblwydd";
+"Birthday (yyyy-mm-dd)" = "Penblwydd (yyyy-mm-dd)";
 "Freebusy URL:" = "Freebusy URL: ";
 
 "Add as..." = "Ychwanegu fel...";
@@ -174,9 +174,9 @@
 
 /* Lists */
 "List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
+"List name" = "List name";
+"List nickname" = "List nickname";
+"List description" = "List description";
 "Members" = "Members";
 "Contacts" = "Contacts";
 "Add" = "Add";

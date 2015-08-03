@@ -22,13 +22,13 @@
     <table class="frame">
       <tr>
         <td style="width: 30%;">
-          <label id="labelTitle"><var:string label:value="Title:" /></label></td>
+          <label id="labelTitle"><var:string label:value="Title" /></label></td>
         <td>
           <input type="text" id="inputFieldTitle" value="" /></td>
       </tr>
       <tr>
         <td>
-          <label><var:string label:value="Layout:" /></label></td>
+          <label><var:string label:value="Layout" /></label></td>
         <td>
           <var:popup list="printLayoutList" item="item"
           const:id="printLayoutList"
@@ -64,7 +64,7 @@
             <var:string label:value="Custom date range" /></label></td></tr>
       <tr>
         <td id="dateRangeFrom" name="dateRange">
-          <label id="labelFrom"><var:string label:value="From:" /></label>
+          <label id="labelFrom"><var:string label:value="From" /></label>
           <var:component className="UIxDatePicker"
           const:dateID="startingDate"
           day="startDay"
@@ -73,7 +73,7 @@
           label:label="Select starting date"/></td></tr>
       <tr>
         <td id="dateRangeTo" name="dateRange">
-          <label id="labelTo"><var:string label:value="To:" /></label>
+          <label id="labelTo"><var:string label:value="To" /></label>
           <var:component className="UIxDatePicker"
           const:dateID="endingDate"
           day="endDay"

@@ -11,16 +11,16 @@ vtodo_class2 = "(مهمة سرية)";
 "The event \"%{Summary}\" was created" = "أُنشِئ الحدث \"%{Summary}\"";
 "The event \"%{Summary}\" was deleted" = "حُذِفَ الحدث \"%{Summary}\"";
 "The event \"%{Summary}\" was updated" = "حُدِّث الحدث \"%{Summary}\"";
-"The following attendees(s) were notified:" = "تم ابلاغ المدعو (المدعويين)  الأتي أسماءهم:";
-"The following attendees(s) were added:" = "تم أضافة المدعو (المدعويين) الأتي أسماءهم:";
-"The following attendees(s) were removed:" = "تم مسح المدعو (المدعويين) الأتي أسماءهم:";
+"The following attendees(s) were notified" = "تم ابلاغ المدعو (المدعويين)  الأتي أسماءهم";
+"The following attendees(s) were added" = "تم أضافة المدعو (المدعويين) الأتي أسماءهم";
+"The following attendees(s) were removed" = "تم مسح المدعو (المدعويين) الأتي أسماءهم";
 
 /* IMIP messages */
-"calendar_label" = "التقويم:";
-"startDate_label" = "البداية:";
-"endDate_label" = "النهاية:";
+"calendar_label" = "التقويم";
+"startDate_label" = "البداية";
+"endDate_label" = "النهاية";
 "due_label" = "تاريخ الاستحقاق:";
-"location_label" = "المكان:";
+"location_label" = "المكان";
 "summary_label" = "الملخص:";
 "comment_label" = "التعليق:";
 

@@ -25,10 +25,10 @@ vtodo_class2 = "(Tasg gyfrinachol)";
 "... from the following event:" = "... from the following event:";
 
 /* IMIP messages */
-"startDate_label" = "Start:";
-"endDate_label" = "End:";
+"startDate_label" = "Start";
+"endDate_label" = "End";
 "due_label" = "Due Date:";
-"location_label" = "Location:";
+"location_label" = "Location";
 "summary_label" = "Summary:";
 "comment_label" = "Comment:";
 

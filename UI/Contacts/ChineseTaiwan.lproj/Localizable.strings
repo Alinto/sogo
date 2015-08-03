@@ -76,19 +76,19 @@
 "No possible subscription" = "不可訂閱";
 
 "Preferred" = "首選";
-"Display:" = "顯示:";
-"Display Name:" = "顯示名稱:";
+"Display" = "顯示";
+"Display Name" = "顯示名稱";
 "Email:" = "郵件:";
 "Additional Email:" = "添加的郵件:";
 
-"Phone Number:" = "電話號碼:";
+"Phone Number" = "電話號碼";
 "Prefers to receive messages formatted as:" = "喜愛的接收訊息格式為:";
 "Screen Name:" = "顯示名稱:";
 "Categories:" = "類别:";
 
 "First:" = "名:";
 "Last:" = "姓:";
-"Nickname:" = "暱稱:";
+"Nickname" = "暱稱";
 
 "Telephone" = "電話";
 "Work:" = "辦公:";
@@ -103,25 +103,25 @@
 "New category" = "新類別";
 
 /* adresses */
-"Title:" = "頭銜:";
+"Title" = "頭銜";
 "Service:" = "服務:";
 "Company:" = "公司:";
 "Department:" = "部門:";
 "Organization:" = "组織:";
 "Address:" = "地址:";
-"City:" = "城市:";
+"City" = "城市";
 "State_Province:" = "州/省:";
 "ZIP_Postal Code:" = "ZIP/郵遞區號:";
-"Country:" = "國家:";
+"Country" = "國家";
 "Web Page:" = "網页:";
 
 "Work" = "辦公";
 "Other Infos" = "其他資訊";
 
-"Note:" = "備註:";
+"Note" = "備註";
 "Timezone:" = "時區:";
-"Birthday:" = "生日:";
-"Birthday (yyyy-mm-dd):" = "生日 (yyyy-mm-dd):";
+"Birthday" = "生日";
+"Birthday (yyyy-mm-dd)" = "生日 (yyyy-mm-dd)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "新增為...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "列出明细";
-"List name:" = "列出名字:";
-"List nickname:" = "列出暱稱:";
-"List description:" = "列出說明:";
+"List name" = "列出名字";
+"List nickname" = "列出暱稱";
+"List description" = "列出說明";
 "Members" = "成員";
 "Contacts" = "連絡人";
 "Add" = "新增";

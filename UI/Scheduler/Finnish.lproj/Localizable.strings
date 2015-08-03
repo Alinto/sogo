@@ -150,8 +150,8 @@
 
 "LIST" = "Lista";
 "Print Settings" = "Tulostusasetukset";
-"Title:" = "Otsikko:";
-"Layout:" = "Ulkoasu";
+"Title" = "Otsikko";
+"Layout" = "Ulkoasu";
 "What to Print" = "Tulostusvalinnat";
 "Options" = "Asetukset";
 "Tasks with no due date" = "Tehtävät ilman määräpäivää";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Tapaamisen muokkain";
 "Appointment proposal" = "Tapaamisehdotus";
 "Appointment on" = "Tapaaminen";
-"Start:" = "Alkaa:";
-"End:" = "Päättyy:";
-"Due Date:" = "Määräpäivä:";
-"Title:" = "Otsikko:";
-"Calendar:" = "Kalenteri:";
+"Start" = "Alkaa";
+"End" = "Päättyy";
+"Due Date" = "Määräpäivä";
+"Title" = "Otsikko";
+"Calendar" = "Kalenteri";
 "Name" = "Nimi";
 "Email" = "Sähköposti";
-"Status:" = "Tila:";
+"Status" = "Tila";
 "% complete" = "% valmiina";
-"Location:" = "Paikka:";
-"Priority:" = "Prioriteetti:";
+"Location" = "Paikka";
+"Priority" = "Prioriteetti";
 "Privacy" = "Yksityisyys";
 "Cycle" = "Kierto";
 "Cycle End" = "Kierto päättyy";
 "Categories" = "Luokat";
 "Classification" = "Luokittelu";
 "Duration" = "Kesto";
-"Attendees:" = "Osallistujat:";
+"Attendees" = "Osallistujat";
 "Resources" = "Resurssit";
-"Organizer:" = "Järjestäjä:";
-"Description:" = "Kuvaus:";
-"Document:" = "Tiedosto:";
-"Category:" = "Luokka:";
-"Repeat:" = "Toista:";
-"Reminder:" = "Muistuttaja:";
-"General:" = "Yleinen:";
-"Reply:" = "Vastaus:";
-"Created by:" = "Luonut:";
+"Organizer" = "Järjestäjä";
+"Description" = "Kuvaus";
+"Document" = "Tiedosto";
+"Category" = "Luokka";
+"Repeat" = "Toista";
+"Reminder" = "Muistuttaja";
+"General" = "Yleinen";
+"Reply" = "Vastaus";
+"Created by" = "Luonut";
 
 
 "Target:" = "Kohde:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Myöhästyneet tehtävät";
 "view_incomplete" = "Keskeneräiset tehtävät";
 
-"View:" = "Näytä:";
+"View" = "Näytä";
 "Title, category or location" = "Otsikko, luokka tai sijainti";
 "Entire content" = "Koko sisältö";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "button_allOccurrences" = "Kaikki esiintymät";
 
 /* Properties dialog */
-"Name:" = "Nimi:";
-"Color:" = "Väri:";
+"Name" = "Nimi";
+"Color" = "Väri";
 
 "Include in free-busy" = "Sisällytä vapaa-varattuun";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "Notifications" = "Ilmoitukset";
 "Receive a mail when I modify my calendar" = "Vastaanota sähköposti kun muokkaan kalenteriani";
 "Receive a mail when someone else modifies my calendar" = "Vastaanota sähköposti kun joku muu muokkaa kalenteriani";
-"When I modify my calendar, send a mail to:" = "Kun muokkaan kalenteriani lähetä viesti osoitteeseen:";
+"When I modify my calendar, send a mail to" = "Kun muokkaan kalenteriani lähetä viesti osoitteeseen";
 
 "Links to this Calendar" = "Linkit tähän kalenteriin";
 "Authenticated User Access" = "Kirjautuneiden käyttäjien pääsy";
-"CalDAV URL" = "CalDAV URL: ";
+"CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

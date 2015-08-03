@@ -151,33 +151,33 @@
 "Appointment editor" = "Зміна зустрічі";
 "Appointment proposal" = "Пропозиція зустрічі";
 "Appointment on" = "Зустріч";
-"Start:" = "Початок:";
-"End:" = "Кінець:";
-"Due Date:" = "Дійсно до:";
-"Title:" = "Назва:";
-"Calendar:" = "Календар:";
+"Start" = "Початок";
+"End" = "Кінець";
+"Due Date" = "Дійсно до";
+"Title" = "Назва";
+"Calendar" = "Календар";
 "Name" = "Ім’я";
 "Email" = "E-Mail";
-"Status:" = "Стан:";
+"Status" = "Стан";
 "% complete" = "% виконано";
-"Location:" = "Місце:";
-"Priority:" = "Пріоритет:";
+"Location" = "Місце";
+"Priority" = "Пріоритет";
 "Privacy" = "Конфіденційність";
 "Cycle" = "Цикл";
 "Cycle End" = "Закінчення циклу";
 "Categories" = "Категорії";
 "Classification" = "Визначення";
 "Duration" = "Термін";
-"Attendees:" = "Учасники:";
+"Attendees" = "Учасники";
 "Resources" = "Ресурси";
-"Organizer:" = "Організатор:";
-"Description:" = "Опис:";
-"Document:" = "Документ:";
-"Category:" = "Категорія:";
-"Repeat:" = "Повтор:";
-"Reminder:" = "Нагадування:";
-"General:" = "Загальне:";
-"Reply:" = "Відповідь:";
+"Organizer" = "Організатор";
+"Description" = "Опис";
+"Document" = "Документ";
+"Category" = "Категорія";
+"Repeat" = "Повтор";
+"Reminder" = "Нагадування";
+"General" = "Загальне";
+"Reply" = "Відповідь";
 
 "Target:" = "Введіть веб-сторінку або місце документа:";
 
@@ -222,7 +222,7 @@
 "view_future" = "Всі майбутні події";
 "view_selectedday" = "Вибраний день";
 
-"View:" = "Перегляд:";
+"View" = "Перегляд";
 "Title or Description" = "Назва або опис";
 
 "Search" = "Пошук";
@@ -475,8 +475,7 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "button_allOccurrences" = "Всі повторення";
 
 /* Properties dialog */
-"Name:" = "Назва:";
-"Color:" = "Колір:";
+"Color" = "Колір";
 
 "Include in free-busy" = "Вставити до free-busy";
 

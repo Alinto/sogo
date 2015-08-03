@@ -312,7 +312,7 @@
           <!-- list members -->
           <div class="pseudo-input-container">
             <label class="pseudo-input-label">
-                  <var:string label:value="Members:"/>
+                  <var:string label:value="Members"/>
             </label>
             <md-contact-chips
                 ng-model="editor.card.refs"

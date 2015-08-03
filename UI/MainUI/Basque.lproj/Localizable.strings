@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Erabiltzailea:";
-"Password:" = "Pasahitza:";
-"Domain:" = "Domeinua";
+"Username" = "Erabiltzailea";
+"Password" = "Pasahitza";
+"Domain" = "Domeinua";
 "Remember username" = "Gogoratu erabiltzaile-izena";
 
 "Connect" = "Konektatu";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Aukeran, Safari arakatzailea erabili dezakezu ere.";
 "Download" = "Deskargatu";
 
-"Language:" = "Hizkuntza";
+"Language" = "Hizkuntza";
 "choose" = "Aukeratu ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";

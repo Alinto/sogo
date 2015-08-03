@@ -76,19 +76,19 @@
 "No possible subscription" = "Відсутні підписки";
 
 "Preferred" = "Найзручніше";
-"Display:" = "Відображати як:";
-"Display Name:" = "Ім’я, що відображається:";
+"Display" = "Відображати як";
+"Display Name" = "Ім’я, що відображається";
 "Email:" = "Електронна пошта:";
 "Additional Email:" = "Дод. електронна адреса:";
 
-"Phone Number:" = "Номер телефону:";
+"Phone Number" = "Номер телефону";
 "Prefers to receive messages formatted as:" = "Вважає за краще отримувати пошту у форматі:";
 "Screen Name:" = "Інтернет-пейджер:";
 "Categories:" = "Категорії:";
 
 "First:" = "Ім’я:";
 "Last:" = "Прізвище:";
-"Nickname:" = "Псевдонім:";
+"Nickname" = "Псевдонім";
 
 "Telephone" = "Телефон";
 "Work:" = "Робочий:";
@@ -103,25 +103,25 @@
 "New category" = "Нова категорія";
 
 /* adresses */
-"Title:" = "Посада:";
+"Title" = "Посада";
 "Service:" = "Служба:";
 "Company:" = "Організація:";
 "Department:" = "Відділ:";
 "Organization:" = "Організація:";
 "Address:" = "Адреса:";
-"City:" = "Місто:";
+"City" = "Місто";
 "State_Province:" = "Область, регіон:";
 "ZIP_Postal Code:" = "Поштовий індекс:";
-"Country:" = "Країна:";
+"Country" = "Країна";
 "Web Page:" = "Веб-сторінка:";
 
 "Work" = "Робоча";
 "Other Infos" = "Інша інформація";
 
-"Note:" = "Примітки:";
+"Note" = "Примітки";
 "Timezone:" = "Часова зона:";
-"Birthday:" = "День народження:";
-"Birthday (yyyy-mm-dd):" = "Дата народження (рррр-мм-дд):";
+"Birthday" = "День народження";
+"Birthday (yyyy-mm-dd)" = "Дата народження (рррр-мм-дд)";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Додати як...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Деталі списку";
-"List name:" = "Назва списку:";
-"List nickname:" = "Псевдонім списку:";
-"List description:" = "Опис:";
+"List name" = "Назва списку";
+"List nickname" = "Псевдонім списку";
+"List description" = "Опис";
 "Members" = "Учасники";
 "Contacts" = "Контакти";
 "Add" = "Додати";

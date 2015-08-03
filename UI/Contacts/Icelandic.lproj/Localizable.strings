@@ -77,19 +77,19 @@
 
 "Preferred" = "Sjálfgefið";
 "Card for %@" = "Nafnspjald fyrir %@";
-"Display:" = "Birtingarnafn:";
-"Display Name:" = "Birt nafn:";
+"Display" = "Birtingarnafn";
+"Display Name" = "Birt nafn";
 "Email:" = "Tölvupóstfang:";
 "Additional Email:" = "Auka tölvupóstfang:";
 
-"Phone Number:" = "Símanúmer:";
+"Phone Number" = "Símanúmer";
 "Prefers to receive messages formatted as:" = "Kýs að taka á móti pósti með sniði:";
 "Screen Name:" = "Skjánafn:";
 "Categories:" = "Flokkar:";
 
 "First:" = "Fornafn:";
 "Last:" = "Eftirnafn:";
-"Nickname:" = "Gælunafn:";
+"Nickname" = "Gælunafn";
 
 "Telephone" = "Sími";
 "Work:" = "Vinnusími:";
@@ -104,25 +104,25 @@
 "New category" = "Nýr flokkur";
 
 /* adresses */
-"Title:" = "Titill:";
+"Title" = "Titill";
 "Service:" = "Þjónusta:";
 "Company:" = "Fyrirtæki:";
 "Department:" = "Deild:";
 "Organization:" = "Fyrirtæki/Stofnun:";
 "Address:" = "Heimilisfang:";
-"City:" = "Borg: ";
+"City" = "Borg ";
 "State_Province:" = "Hérað/Fylki:";
 "ZIP_Postal Code:" = "Póstnúmer:";
-"Country:" = "Land:";
+"Country" = "Land";
 "Web Page:" = "Vefsíða:";
 
 "Work" = "Vinna";
 "Other Infos" = "Aðrar upplýsingar";
 
-"Note:" = "Athugasemd:";
+"Note" = "Athugasemd";
 "Timezone:" = "Tímabelti:";
-"Birthday:" = "Afmælisdagur:";
-"Birthday (yyyy-mm-dd):" = "Afmælisdagur (yyyy-mm-dd):";
+"Birthday" = "Afmælisdagur";
+"Birthday (yyyy-mm-dd)" = "Afmælisdagur (yyyy-mm-dd)";
 "Freebusy URL:" = "LaustUpptekið URL";
 
 "Add as..." = "Bæta við sem...";
@@ -185,9 +185,9 @@
 
 /* Lists */
 "List details" = "Ítarleg lýsing á lista:";
-"List name:" = "Nafn lista:";
-"List nickname:" = "Gælunafn lista:";
-"List description:" = "Lýsing lista:";
+"List name" = "Nafn lista";
+"List nickname" = "Gælunafn lista";
+"List description" = "Lýsing lista";
 "Members" = "Meðlimir";
 "Contacts" = "Tengiliðir";
 "Add" = "Bæta við";

@@ -150,8 +150,8 @@
 
 "LIST" = "Llista";
 "Print Settings" = "Configuració d'Impressió";
-"Title:" = "Títol:";
-"Layout:" = "Disseny:";
+"Title" = "Títol";
+"Layout" = "Disseny";
 "What to Print" = "Què imprimir";
 "Options" = "Opcions";
 "Tasks with no due date" = "Tasques sense data de finalització";
@@ -164,34 +164,34 @@
 "Appointment editor" = "Modificar cita";
 "Appointment proposal" = "Proposta de cita";
 "Appointment on" = "Cita sobre";
-"Start:" = "Des de:";
-"End:" = "Fins a:";
-"Due Date:" = "Data límit:";
-"Title:" = "Títol:";
-"Calendar:" = "Calendari:";
+"Start" = "Des de";
+"End" = "Fins a";
+"Due Date" = "Data límit";
+"Title" = "Títol";
+"Calendar" = "Calendari";
 "Name" = "Nom";
 "Email" = "Correu";
-"Status:" = "Estat:";
+"Status" = "Estat";
 "% complete" = "% complet";
-"Location:" = "Lloc:";
-"Priority:" = "Prioritat:";
+"Location" = "Lloc";
+"Priority" = "Prioritat";
 "Privacy" = "Privacitat";
 "Cycle" = "Repetir";
 "Cycle End" = "Final repetició";
 "Categories" = "Categories";
 "Classification" = "Privacitat";
 "Duration" = "Duració";
-"Attendees:" = "Assistents:";
+"Attendees" = "Assistents";
 "Resources" = "Recursos";
-"Organizer:" = "Organitzador:";
-"Description:" = "Descripció:";
-"Document:" = "Document:";
-"Category:" = "Categoria:";
-"Repeat:" = "Repetir:";
-"Reminder:" = "Recordatori:";
-"General:" = "General:";
-"Reply:" = "Respondre:";
-"Created by:" = "Creat per:";
+"Organizer" = "Organitzador";
+"Description" = "Descripció";
+"Document" = "Document";
+"Category" = "Categoria";
+"Repeat" = "Repetir";
+"Reminder" = "Recordatori";
+"General" = "General";
+"Reply" = "Respondre";
+"Created by" = "Creat per";
 
 
 "Target:" = "URL document:";
@@ -241,7 +241,7 @@
 "view_overdue" = "Tasques vençudes";
 "view_incomplete" = "Incomplete tasks";
 
-"View:" = "Veure:";
+"View" = "Veure";
 "Title, category or location" = "Títol, categoria o ubicació";
 "Entire content" = "Tot el contingut";
 
@@ -329,7 +329,7 @@
 "No end date" = "Sense data final";
 "Create" = "Fins a crear";
 "appointment(s)" = "cita/es";
-"Repeat until" = "Fins a: ";
+"Repeat until" = "Fins a ";
 
 "First" = "Primer";
 "Second" = "Segon";
@@ -503,8 +503,8 @@ vtodo_class2 = "(Tasca confidencial)";
 "button_allOccurrences" = "Totes les ocurrències";
 
 /* Properties dialog */
-"Name:" = "Nom:";
-"Color:" = "Color:";
+"Name" = "Nom";
+"Color" = "Color";
 
 "Include in free-busy" = "Inclòs en lliure-ocupat";
 
@@ -519,11 +519,11 @@ vtodo_class2 = "(Tasca confidencial)";
 "Notifications" = "Notificacions";
 "Receive a mail when I modify my calendar" = "Rebre un correu de notificació quan modifique el meu calendari";
 "Receive a mail when someone else modifies my calendar" = "Rebre un correu de notificació quan altra persona modifique el meu calendari ";
-"When I modify my calendar, send a mail to:" = "Quan modifique el meu calendari, enviar un correu a: ";
+"When I modify my calendar, send a mail to" = "Quan modifique el meu calendari, enviar un correu a ";
 
 "Links to this Calendar" = "Enllaços a aquest calendari";
 "Authenticated User Access" = "Accés autenticat";
-"CalDAV URL" = "URL CalDAV:";
+"CalDAV URL" = "URL CalDAV";
 "WebDAV ICS URL" = "url WebDAV ICS";
 "WebDAV XML URL" = "url WebDAV XML";
 

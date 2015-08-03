@@ -12,16 +12,16 @@ vtodo_class2 = "(Zaupno opravilo)";
 "The event \"%{Summary}\" was created" = "Dogodek \"%{Summary}\" je bil ustvarjen";
 "The event \"%{Summary}\" was deleted" = "Dogodek \"%{Summary}\" je bil izbrisan";
 "The event \"%{Summary}\" was updated" = "Dogodek \"%{Summary}\" je bil posodobljen";
-"The following attendees(s) were notified:" = "Naslednji udeleženci so bili obveščeni:";
-"The following attendees(s) were added:" = "Naslednji udeleženci so bili dodani:";
-"The following attendees(s) were removed:" = "Naslednji udeleženci so bili odstranjeni:";
+"The following attendees(s) were notified" = "Naslednji udeleženci so bili obveščeni";
+"The following attendees(s) were added" = "Naslednji udeleženci so bili dodani";
+"The following attendees(s) were removed" = "Naslednji udeleženci so bili odstranjeni";
 
 /* IMIP messages */
-"calendar_label" = "Koledar:";
-"startDate_label" = "Začetek:";
-"endDate_label" = "Konec:";
+"calendar_label" = "Koledar";
+"startDate_label" = "Začetek";
+"endDate_label" = "Konec";
 "due_label" = "Datum zapadlosti:";
-"location_label" = "Mesto:";
+"location_label" = "Mesto";
 "summary_label" = "Povzetek:";
 "comment_label" = "Komentar:";
 

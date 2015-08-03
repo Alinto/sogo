@@ -150,8 +150,8 @@
 
 "LIST" = "Seznam";
 "Print Settings" = "Nastavení tisku";
-"Title:" = "Název:";
-"Layout:" = "Vzhled:";
+"Title" = "Název";
+"Layout" = "Vzhled";
 "What to Print" = "Rozsah tisku";
 "Options" = "Možnosti";
 "Tasks with no due date" = "Úkoly bez termínu";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Editovat schůzky";
 "Appointment proposal" = "Navrhnout schůzku";
 "Appointment on" = "Schůzka na";
-"Start:" = "Začátek:";
-"End:" = "Konec:";
-"Due Date:" = "Datum splnění:";
-"Title:" = "Název:";
-"Calendar:" = "Kalendář:";
+"Start" = "Začátek";
+"End" = "Konec";
+"Due Date" = "Datum splnění";
+"Title" = "Název";
+"Calendar" = "Kalendář";
 "Name" = "Jméno";
 "Email" = "E-Mail";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% hotovo";
-"Location:" = "Místo:";
-"Priority:" = "Priorita:";
+"Location" = "Místo";
+"Priority" = "Priorita";
 "Privacy" = "Soukromí";
 "Cycle" = "Cyklus opakování";
 "Cycle End" = "Konec cyklu";
 "Categories" = "Kategorie";
 "Classification" = "Klasifikace";
 "Duration" = "Trvání";
-"Attendees:" = "Účastníci:";
+"Attendees" = "Účastníci";
 "Resources" = "Zdroje";
-"Organizer:" = "Organizátor:";
-"Description:" = "Popis:";
-"Document:" = "Dokument:";
-"Category:" = "Kategorie:";
-"Repeat:" = "Opakování:";
-"Reminder:" = "Připomenutí:";
-"General:" = "Obecný:";
-"Reply:" = "Odpověď:";
-"Created by:" = "Vytvořeno:";
+"Organizer" = "Organizátor";
+"Description" = "Popis";
+"Document" = "Dokument";
+"Category" = "Kategorie";
+"Repeat" = "Opakování";
+"Reminder" = "Připomenutí";
+"General" = "Obecný";
+"Reply" = "Odpověď";
+"Created by" = "Vytvořeno";
 
 
 "Target:" = "Vložte adresu webové stránky nebo dokumentu.";
@@ -244,7 +244,7 @@
 "view_overdue" = "Nesplněné úkoly";
 "view_incomplete" = "Nedokončené úkoly";
 
-"View:" = "Zobrazit:";
+"View" = "Zobrazit";
 "Title, category or location" = "Název, kategorie nebo místo";
 "Entire content" = "Celý obsah";
 
@@ -506,8 +506,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "button_allOccurrences" = "Všechna opakování";
 
 /* Properties dialog */
-"Name:" = "Název:";
-"Color:" = "Barva:";
+"Color" = "Barva";
 
 "Include in free-busy" = "Zahrnout do obsazeného času (free-busy)";
 
@@ -522,11 +521,11 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Notifications" = "Připomenutí";
 "Receive a mail when I modify my calendar" = "Obdržet zprávu když upravím svůj kalendář";
 "Receive a mail when someone else modifies my calendar" = "Obdržet zprávu když někdo jiný upraví můj kalendář";
-"When I modify my calendar, send a mail to:" = "Když upravím svůj kalendář, poslat zprávu na:";
+"When I modify my calendar, send a mail to" = "Když upravím svůj kalendář, poslat zprávu na";
 
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
-"CalDAV URL" = "CalDAV URL:";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

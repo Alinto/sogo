@@ -76,19 +76,19 @@
 "No possible subscription" = "Sem possibilidades de inscrição";
 
 "Preferred" = "Preferido";
-"Display:" = "Exibição:";
-"Display Name:" = "Exibir Nome:";
+"Display" = "Exibição";
+"Display Name" = "Exibir Nome";
 "Email:" = "Endereço de Email:";
 "Additional Email:" = "Email Adicional:";
 
-"Phone Number:" = "Telefone:";
+"Phone Number" = "Telefone";
 "Prefers to receive messages formatted as:" = "Prefere receber mensagens formatadas como:";
 "Screen Name:" = "Nome de Exibição:";
 "Categories:" = "Categorias:";
 
 "First:" = "Primeiro Nome:";
 "Last:" = "Último Nome:";
-"Nickname:" = "Apelido:";
+"Nickname" = "Apelido";
 
 "Telephone" = "Telefone";
 "Work:" = "Comercial:";
@@ -103,25 +103,25 @@
 "New category" = "Nova categoria";
 
 /* adresses */
-"Title:" = "Título:";
+"Title" = "Título";
 "Service:" = "Serviço:";
 "Company:" = "Empresa:";
 "Department:" = "Departamento";
 "Organization:" = "Organização";
 "Address:" = "Endereço:";
-"City:" = "Cidade:";
+"City" = "Cidade";
 "State_Province:" = "Estado:";
 "ZIP_Postal Code:" = "CEP:";
-"Country:" = "País:";
+"Country" = "País";
 "Web Page:" = "Página Web:";
 
 "Work" = "Comercial";
 "Other Infos" = "Outras Informações";
 
-"Note:" = "Notas:";
+"Note" = "Notas";
 "Timezone:" = "Fuso Horário:";
-"Birthday:" = "Aniversário:";
-"Birthday (yyyy-mm-dd):" = "Aniversário (yyyy-mm-dd):";
+"Birthday" = "Aniversário";
+"Birthday (yyyy-mm-dd)" = "Aniversário (yyyy-mm-dd)";
 "Freebusy URL:" = "URL Livre/Ocupado:";
 
 "Add as..." = "Adicionar como...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Detalhes da lista";
-"List name:" = "Lista nome:";
-"List nickname:" = "Lista Apelido:";
-"List description:" = "Lista descrição:";
+"List name" = "Lista nome";
+"List nickname" = "Lista Apelido";
+"List description" = "Lista descrição";
 "Members" = "Membros";
 "Contacts" = "Contatos";
 "Add" = "Adicionar";

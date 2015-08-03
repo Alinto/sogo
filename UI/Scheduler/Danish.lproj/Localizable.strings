@@ -152,33 +152,33 @@
 "Appointment editor" = "Aftale editor";
 "Appointment proposal" = "Aftale Forslag";
 "Appointment on" = "Aftale på";
-"Start:" = "Start:";
-"End:" = "Slut:";
-"Due Date:" = "Forfaldsdato:";
-"Title:" = "Titel:";
-"Calendar:" = "Kalender:";
+"Start" = "Start";
+"End" = "Slut";
+"Due Date" = "Forfaldsdato";
+"Title" = "Titel";
+"Calendar" = "Kalender";
 "Name" = "Navn";
 "Email" = "E-mail";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% Færdig";
-"Location:" = "Sted:";
-"Priority:" = "Prioritet:";
+"Location" = "Sted";
+"Priority" = "Prioritet";
 "Privacy" = "Beskyttelse af personlige oplysninger";
 "Cycle" = "Cyklus";
 "Cycle End" = "Cyklus sluttidspunkt";
 "Categories" = "Kategorier";
 "Classification" = "Klassifikation";
 "Duration" = "Varighed";
-"Attendees:" = "Deltagere:";
+"Attendees" = "Deltagere";
 "Resources" = "Ressourcer";
-"Organizer:" = "Arrangør:";
-"Description:" = "Beskrivelse:";
-"Document:" = "Dokument:";
-"Category:" = "Kategori:";
-"Repeat:" = "Gentag:";
-"Reminder:" = "Påmindelse:";
-"General:" = "Generelt:";
-"Reply:" = "Svar:";
+"Organizer" = "Arrangør";
+"Description" = "Beskrivelse";
+"Document" = "Dokument";
+"Category" = "Kategori";
+"Repeat" = "Gentag";
+"Reminder" = "Påmindelse";
+"General" = "Generelt";
+"Reply" = "Svar";
 
 "Target:" = "Mål:";
 
@@ -223,7 +223,7 @@
 "view_future" = "Alle fremtidige begivenheder";
 "view_selectedday" = "Valgte dag";
 
-"View:" = "Vis:";
+"View" = "Vis";
 "Title or Description" = "Titel eller Beskrivelse";
 
 "Search" = "Søg";
@@ -481,8 +481,8 @@ vtodo_class2 = "(Hemmelig opgave)";
 "button_allOccurrences" = "Alle forekomster";
 
 /* Properties dialog */
-"Name:" = "Navn:";
-"Color:" = "Farve:";
+"Name" = "Navn";
+"Color" = "Farve";
 
 "Include in free-busy" = "Medtag i ledig-optaget";
 
@@ -497,7 +497,7 @@ vtodo_class2 = "(Hemmelig opgave)";
 "Notifications" = "Notifikationer";
 "Receive a mail when I modify my calendar" = "Modtag en mail, når jeg ændrer min kalender";
 "Receive a mail when someone else modifies my calendar" = "Modtag en mail, når andre ændrer min kalender";
-"When I modify my calendar, send a mail to:" = "Når jeg ændrer min kalender, så send en mail til:";
+"When I modify my calendar, send a mail to" = "Når jeg ændrer min kalender, så send en mail til";
 
 "Links to this Calendar" = "Links til denne kalender";
 "Authenticated User Access" = "Godkendt brugeradgang";
