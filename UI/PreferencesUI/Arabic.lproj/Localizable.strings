@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "تمكين الرد التلقائي أثناء العطلة";
-"Auto reply message " = "رسالة الرد التلقائي";
-"Email addresses (separated by commas) " = "عناوين البريد الإلكتروني (مفصولة بفواصل)";
+"Auto reply message" ="رسالة الرد التلقائي";
+"Email addresses (separated by commas)" ="عناوين البريد الإلكتروني (مفصولة بفواصل)";
 "Add default email addresses" = "إضافة عناوين البريد الإلكتروني الافتراضية";
-"Days between responses " = "عدد الأيام بين الردود";
+"Days between responses" ="عدد الأيام بين الردود";
 "Do not send responses to mailing lists" = "لا ترسل ردود الى القوائم البريدية";
 "Disable auto reply on" = "تعطيل الرد التلقائي في";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "يرجى تحديد العنوان الذي تريد إعادة توجيه رسائلك له.";
 
 /* d & t */
-"Current Time Zone " = "التوقيت الزمني الحالى";
-"Short Date Format " = "التاريخ بالصيغة المختصرة";
-"Long Date Format " = "التاريخ بالصيغة الكاملة";
-"Time Format " = "تنسيق الوقت";
+"Current Time Zone" ="التوقيت الزمني الحالى";
+"Short Date Format" ="التاريخ بالصيغة المختصرة";
+"Long Date Format" ="التاريخ بالصيغة الكاملة";
+"Time Format" ="تنسيق الوقت";
 
 "default" = "الافتراضي";
 
@@ -90,23 +90,23 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "بداية الاسبوع";
-"Day start time " = "بداية يوم العمل";
-"Day end time " = "نهاية يوم العمل";
+"Week begins on" ="بداية الاسبوع";
+"Day start time" ="بداية يوم العمل";
+"Day end time" ="نهاية يوم العمل";
 "Day start time must be prior to day end time." = "يجب أن يكون وقت بداية يوم العمل قبل وقت نهاية يوم العمل.";
 "Show time as busy outside working hours" = "إظهار الوقت  خارج ساعات العمل على أنه مشغول";
-"First week of year " = "الأسبوع الأول من السنة";
+"First week of year" ="الأسبوع الأول من السنة";
 "Enable reminders for Calendar items" = "تمكين التذكيرات لعناصر التقويم";
 "Play a sound when a reminder comes due"
 = "تشغيل صوت للتذكير بموعد اقترب وقته";
-"Default reminder " = "التذكير الإفتراضي";
+"Default reminder" ="التذكير الإفتراضي";
 
 "firstWeekOfYear_January1" = "يبدأ في 1 يناير";
 "firstWeekOfYear_First4DayWeek" = "أول 4 ايام في الاسبوع";
 "firstWeekOfYear_FirstFullWeek" = "أول اسبوع كامل";
 
 /* Default Calendar */
-"Default calendar " = "التقويم الإفتراضي";
+"Default calendar" ="التقويم الإفتراضي";
 "selectedCalendar" = "التقويم المحدد";
 "personalCalendar" = "التقويم الشخصي";
 "firstCalendar" = "أول تقويم ممكن";
@@ -184,8 +184,8 @@
 "Change" = "لا شيء";
 
 /* Event+task classifications */
-"Default events classification " = "تصنيف الأحداث الافتراضية";
-"Default tasks classification " = "تصنيف المهام الافتراضية  ";
+"Default events classification" ="تصنيف الأحداث الافتراضية";
+"Default tasks classification" ="تصنيف المهام الافتراضية ";
 "PUBLIC_item" = "علني";
 "CONFIDENTIAL_item" = "سري";
 "PRIVATE_item" = "خاص";
@@ -201,7 +201,7 @@
 "Last" = "أخر إستخدام";
 "Default Module " = "وحدة نمطية افتراضية ";
 
-"Language " = "اللغة";
+"Language" ="اللغة";
 "choose" = "اختيار ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

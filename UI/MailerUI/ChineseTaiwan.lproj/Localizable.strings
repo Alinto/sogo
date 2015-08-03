@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "名稱:";
-"Enter the new name of your folder "
- = "輸入新資料匣名稱 ";
+"Enter the new name of your folder"
+ = "輸入新資料匣名稱";
 "Do you really want to move this folder into the trash ?"
  = "是否確定將這個資料匣移到垃圾桶?";
 "Operation failed" = "操作失敗";

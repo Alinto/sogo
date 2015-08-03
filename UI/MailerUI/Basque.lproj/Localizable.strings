@@ -254,7 +254,7 @@
 
 /* Folder operations */
 "Name :" = "Izena:";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "Idatzi zure karpetaren izen berria";
 "Do you really want to move this folder into the trash ?"
  = "Ziur zaude karpeta hau zakarrontzira mugitu nahi duzula?";

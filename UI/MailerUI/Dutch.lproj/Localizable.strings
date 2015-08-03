@@ -254,7 +254,7 @@
 
 /* Folder operations */
 "Name :" = "Naam:";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "Geef de nieuw naam van de map op";
 "Do you really want to move this folder into the trash ?"
  = "Weet u zeker dat u deze map naar de prullenbak wilt verplaatsen?";

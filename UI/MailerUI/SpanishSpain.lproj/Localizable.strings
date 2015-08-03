@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Nombre: ";
-"Enter the new name of your folder "
- = "Introduzca el nuevo nombre de la carpeta ";
+"Enter the new name of your folder"
+ = "Introduzca el nuevo nombre de la carpeta";
 "Do you really want to move this folder into the trash ?"
  = "¿Seguro que desea mover la carpeta a la papelera?";
 "Operation failed" = "Operación fallida";

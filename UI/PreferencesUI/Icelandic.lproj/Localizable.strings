@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Virkja sjálfvirkt svar í fríi";
-"Auto reply message " = "Skilaboð fyrir sjálfvirkt svar ";
-"Email addresses (separated by commas) " = "Netföng (aðgreind með kommu) ";
+"Auto reply message" ="Skilaboð fyrir sjálfvirkt svar";
+"Email addresses (separated by commas)" ="Netföng (aðgreind með kommu)";
 "Add default email addresses" = "Bæta við sjálfgefnu netfangi";
-"Days between responses " = "Dagar milli svara ";
+"Days between responses" ="Dagar milli svara";
 "Do not send responses to mailing lists" = "Ekki senda svör til póstlista";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Hér þarf að skrá skilaboðin og netfangið til að virkja sjálfvirkt svar.";
@@ -37,10 +37,10 @@
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";
 
 /* d & t */
-"Current Time Zone " = "Núverandi tímabelti ";
-"Short Date Format " = "Stutt dagsetningarform ";
-"Long Date Format " = "Löng dagsetning ";
-"Time Format " = "Tímasnið ";
+"Current Time Zone" ="Núverandi tímabelti";
+"Short Date Format" ="Stutt dagsetningarform";
+"Long Date Format" ="Löng dagsetning";
+"Time Format" ="Tímasnið";
 
 "default" = "Sjálfgefið";
 
@@ -78,15 +78,15 @@
 "timeFmt_2" = "";
 
 /* calendar */
-"Week begins on " = "Vikan byrjar á ";
-"Day start time " = "Degi lýkur kl. ";
-"Day end time " = "Dagur hefst kl. ";
-"Day start time must be prior to day end time." = "Tími þegar dagur hefst, þarf að vera fyrir þann tíma sem degi lýkur. ";
-"First week of year " = "Fyrsta vika árs ";
+"Week begins on" ="Vikan byrjar á";
+"Day start time" ="Degi lýkur kl.";
+"Day end time" ="Dagur hefst kl.";
+"Day start time must be prior to day end time." = "Tími þegar dagur hefst, þarf að vera fyrir þann tíma sem degi lýkur.";
+"First week of year" ="Fyrsta vika árs";
 "Enable reminders for Calendar items" = "Virkja áminningar fyrir hluti í dagatali";
 "Play a sound when a reminder comes due"
 = "Spila hljóð við áminningu";
-"Default reminder " = "Sjálfgefin áminning ";
+"Default reminder" ="Sjálfgefin áminning";
 
 "firstWeekOfYear_January1" = "Byrjar 1. janúar";
 "firstWeekOfYear_First4DayWeek" = "Fyrstu 4 dagar viku";
@@ -154,8 +154,8 @@
 "Change" = "Breyta";
 
 /* Event+task classifications */
-"Default events classification " = "Default events classification ";
-"Default tasks classification " = "Default tasks classification ";
+"Default events classification" ="Default events classification";
+"Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -171,7 +171,7 @@
 "Last" = "Síðast notað";
 "Default Module " = "Sjálfgefið viðmót ";
 
-"Language " = "Tungumál ";
+"Language" ="Tungumál";
 "choose" = "Velja...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";

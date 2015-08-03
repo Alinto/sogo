@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Laita automaattinen lomavastaaja päälle";
-"Auto reply message " = "Automaattivastaus";
-"Email addresses (separated by commas) " = "Sähköpostiosoitteet (eroteltuna pilkuin)";
+"Auto reply message" ="Automaattivastaus";
+"Email addresses (separated by commas)" ="Sähköpostiosoitteet (eroteltuna pilkuin)";
 "Add default email addresses" = "Syötä oletussähköpostiosoite";
-"Days between responses " = "Päivät vastausten välillä";
+"Days between responses" ="Päivät vastausten välillä";
 "Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
 "Disable auto reply on" = "Poista automaattivastaus käytöstä";
 "Always send vacation message response" = "Lähetä lomaviestivastaus aina";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Nykyinen aikavyöhyke";
-"Short Date Format " = "Lyhyt ajan esitysmuoto";
-"Long Date Format " = "Pitkä ajan esitysmuoto";
-"Time Format " = "Ajan esitysmuoto";
+"Current Time Zone" ="Nykyinen aikavyöhyke";
+"Short Date Format" ="Lyhyt ajan esitysmuoto";
+"Long Date Format" ="Pitkä ajan esitysmuoto";
+"Time Format" ="Ajan esitysmuoto";
 
 "default" = "Oletus";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Viikon alkupäivä";
-"Day start time " = "Päivä alkaa klo";
-"Day end time " = "Päivä päättyy klo";
+"Week begins on" ="Viikon alkupäivä";
+"Day start time" ="Päivä alkaa klo";
+"Day end time" ="Päivä päättyy klo";
 "Day start time must be prior to day end time." = "Päivän alkuajan tulee olla ennen päättymisaikaa.";
 "Show time as busy outside working hours" = "Näytä työajan ulkopuolinen aika varattuna";
-"First week of year " = "Vuoden ensimmäinen viikko";
+"First week of year" ="Vuoden ensimmäinen viikko";
 "Enable reminders for Calendar items" = "Ota käyttöön kalenterimerkintöjen muistuttajat";
 "Play a sound when a reminder comes due" = "Soita äänimerkki kun muistuttaja aktivoituu";
-"Default reminder " = "Oletusmuistuttaja";
+"Default reminder" ="Oletusmuistuttaja";
 
 "firstWeekOfYear_January1" = "Alkaa Tammikuun 1.";
 "firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Yhteystietojen Nimet";
 
 /* Default Calendar */
-"Default calendar " = "Oletuskalenteri";
+"Default calendar" ="Oletuskalenteri";
 "selectedCalendar" = "Valittu kalenteri";
 "personalCalendar" = "Henkilökohtainen kalenteri";
 "firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
@@ -195,8 +195,8 @@
 "Change" = "Vaihda";
 
 /* Event+task classifications */
-"Default events classification " = "Oletus tapahtumaluokittelu";
-"Default tasks classification " = "Oletus tehtäväluokittelu";
+"Default events classification" ="Oletus tapahtumaluokittelu";
+"Default tasks classification" ="Oletus tehtäväluokittelu";
 "PUBLIC_item" = "Julkinen";
 "CONFIDENTIAL_item" = "Luottamuksellinen";
 "PRIVATE_item" = "Yksityinen";
@@ -211,9 +211,9 @@
 "Mail" = "Sähköposti";
 "Last" = "Viimeksi käytetty";
 "Default Module " = "Oletusmoduli";
-"SOGo Version " = "SOGo versio";
+"SOGo Version" ="SOGo versio";
 
-"Language " = "Kieli";
+"Language" ="Kieli";
 "choose" = "Valitse...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -242,7 +242,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Päivitä näkymä";
+"Refresh View" ="Päivitä näkymä";
 "refreshview_manually" = "Manuaalisesti";
 "refreshview_every_minute" = "Joka minuutti";
 "refreshview_every_2_minutes" = "Joka toinen minuutti";

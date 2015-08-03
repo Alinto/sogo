@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
-"Auto reply message " = "Mit folgender Nachricht auf jede eingehende E-Mail antworten";
-"Email addresses (separated by commas) " = "E-Mail-Adressen (getrennt durch Kommata)";
+"Auto reply message" ="Mit folgender Nachricht auf jede eingehende E-Mail antworten";
+"Email addresses (separated by commas)" ="E-Mail-Adressen (getrennt durch Kommata)";
 "Add default email addresses" = "Standardadresse hinzufügen";
-"Days between responses " = "Tage zwischen automatischen Abwesenheitsnachrichten";
+"Days between responses" ="Tage zwischen automatischen Abwesenheitsnachrichten";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone " = "Aktuelle Zeitzone";
-"Short Date Format " = "Kurzes Datumsformat";
-"Long Date Format " = "Langes Datumsformat";
-"Time Format " = "Zeitformat";
+"Current Time Zone" ="Aktuelle Zeitzone";
+"Short Date Format" ="Kurzes Datumsformat";
+"Long Date Format" ="Langes Datumsformat";
+"Time Format" ="Zeitformat";
 
 "default" = "Standard";
 
@@ -95,15 +95,15 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on " = "Erster Wochentag";
-"Day start time " = "Tagesanfang";
-"Day end time " = "Tagesende";
+"Week begins on" ="Erster Wochentag";
+"Day start time" ="Tagesanfang";
+"Day end time" ="Tagesende";
 "Day start time must be prior to day end time." = "Der Tagesanfang muss vor dem Tagesende liegen.";
 "Show time as busy outside working hours" = "Zeiten außerhalb der Arbeitszeit als belegt anzeigen";
-"First week of year " = "Erste Woche des Jahres";
+"First week of year" ="Erste Woche des Jahres";
 "Enable reminders for Calendar items" = "Termin- und Aufgabenerinnerungen aktivieren";
 "Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
-"Default reminder " = "Standard Terminerinnerung";
+"Default reminder" ="Standard Terminerinnerung";
 
 "firstWeekOfYear_January1" = "Beginnt am 1. Januar";
 "firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
@@ -114,7 +114,7 @@
 "Contacts Names" = "Kontaktnamen";
 
 /* Default Calendar */
-"Default calendar " = "Standardkalender";
+"Default calendar" ="Standardkalender";
 "selectedCalendar" = "Gewählter Kalender";
 "personalCalendar" = "Persönlicher Kalender";
 "firstCalendar" = "Erster eingeschalteter Kalender";
@@ -195,8 +195,8 @@
 "Change" = "Ändern";
 
 /* Event+task classifications */
-"Default events classification " = "Standard Einstufung Termine";
-"Default tasks classification " = "Standard Einstufung Aufgaben";
+"Default events classification" ="Standard Einstufung Termine";
+"Default tasks classification" ="Standard Einstufung Aufgaben";
 "PUBLIC_item" = "Öffentlich";
 "CONFIDENTIAL_item" = "Vertraulich";
 "PRIVATE_item" = "Privat";
@@ -211,9 +211,9 @@
 "Mail" = "E-Mail";
 "Last" = "Zuletzt benutztes";
 "Default Module " = "Standard Modul";
-"SOGo Version " = "SOGo Version";
+"SOGo Version" ="SOGo Version";
 
-"Language " = "Sprache";
+"Language" ="Sprache";
 "choose" = "Auswählen ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -242,7 +242,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View " = "Ansicht aktualisieren";
+"Refresh View" ="Ansicht aktualisieren";
 "refreshview_manually" = "Manuell";
 "refreshview_every_minute" = "Minütlich";
 "refreshview_every_2_minutes" = "Alle 2 Minuten";

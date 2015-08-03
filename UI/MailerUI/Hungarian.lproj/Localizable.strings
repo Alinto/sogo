@@ -254,7 +254,7 @@
 
 /* Folder operations */
 "Name :" = "Név:";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "Adja meg az új mappa nevét";
 "Do you really want to move this folder into the trash ?"
  = "Biztosan lomtárba kívánja helyezni ezt a mappát ?";

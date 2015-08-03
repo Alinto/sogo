@@ -237,7 +237,7 @@
 
 /* Folder operations */
 "Name :" = "أسم:";
-"Enter the new name of your folder "
+"Enter the new name of your folder"
  = "أدخل اسم جديد للمجلد";
 "Do you really want to move this folder into the trash ?"
  = "هل تريد حقا نقل هذا المجلد إلى سلة المهملات؟";
