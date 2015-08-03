@@ -41,7 +41,7 @@
       $Card: Card,
       $$Acl: Acl,
       $Preferences: Preferences,
-      activeUser: Settings.activeUser,
+      activeUser: Settings.activeUser(),
       selectedFolder: null,
       $refreshTimeout: null
     });
