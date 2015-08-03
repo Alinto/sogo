@@ -449,8 +449,6 @@ static Class NSNullK;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-  SOGoSystemDefaults *sd;
-  NSRange r;
 
   checkOK = NO;
 

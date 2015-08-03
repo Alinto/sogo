@@ -57,6 +57,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
@@ -64,6 +65,7 @@
 #import "EOQualifier+MailDAV.h"
 #import "SOGoMailObject.h"
 #import "SOGoMailAccount.h"
+#import "SOGoMailAccounts.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailFolder.h"
 #import "SOGoTrashFolder.h"

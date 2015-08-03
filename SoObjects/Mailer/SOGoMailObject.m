@@ -766,6 +766,7 @@ static BOOL debugSoParts       = NO;
 		       [part objectForKey: @"subtype"]];
 
   if (!filename)
+    {
       // We might end up here because of MUA that actually strips the
       // Content-Disposition (and thus, the filename) when mails containing
       // attachments have been forwarded. Thunderbird (2.x) does just that
@@ -777,7 +778,7 @@ static BOOL debugSoParts       = NO;
           filename = [NSString stringWithFormat: @"unknown_%@", path];
       else if ([mimeType isEqualToString: @"message/rfc822"])
         filename = [NSString stringWithFormat: @"email_%@.eml", path];
-  
+    }
 
   if (filename)
     {

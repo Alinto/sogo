@@ -97,8 +97,8 @@
 
 - (NSString *) davCollectionTag;
 
-- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
-                          matchingSyncToken: (NSString *) syncToken
+- (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
+                          matchingSyncToken: (NSString *) theSyncToken
                                    fromDate: (NSCalendarDate *) theStartDate;
 
 /* flags */
