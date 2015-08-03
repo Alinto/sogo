@@ -34,7 +34,7 @@
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       $Component: Component,
       $$Acl: Acl,
-      activeUser: Settings.activeUser
+      activeUser: Settings.activeUser()
     });
 
     return Calendar; // return constructor
