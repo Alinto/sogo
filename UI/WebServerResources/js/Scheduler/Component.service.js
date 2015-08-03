@@ -38,24 +38,26 @@
       $log: $log,
       $Preferences: Preferences,
       $gravatar: Gravatar,
-      $$resource: new Resource(Settings.baseURL, Settings.activeUser),
-      $categories: window.UserDefaults.SOGoCalendarCategoriesColors,
+      $$resource: new Resource(Settings.baseURL(), Settings.activeUser()),
+      timeFormat: "%H:%M",
       // Filter parameters common to events and tasks
       $query: { value: '', search: 'title_Category_Location' },
       // Filter paramaters specific to events
       $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
       // Filter parameters specific to tasks
-      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' }
+      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_next7' } //'view_incomplete' }
     });
-    // Initialize filter parameters from user's settings
     Preferences.ready().then(function() {
+      // Initialize filter parameters from user's settings
       Component.$queryEvents.filterpopup = Preferences.settings.CalendarDefaultFilter;
       Component.$queryTasks.show_completed = parseInt(Preferences.settings.ShowCompletedTasks);
+      // Initialize categories from user's defaults
+      Component.$categories = Preferences.defaults.SOGoCalendarCategoriesColors;
+      // Initialize time format from user's defaults
+      if (Preferences.defaults.SOGoTimeFormat) {
+        Component.timeFormat = Preferences.defaults.SOGoTimeFormat;
+      }
     });
-    if (window.UserDefaults && window.UserDefaults.SOGoTimeFormat)
-      Component.timeFormat = window.UserDefaults.SOGoTimeFormat;
-    else
-      Component.timeFormat = "%H:%M";
 
     return Component; // return constructor
   }];

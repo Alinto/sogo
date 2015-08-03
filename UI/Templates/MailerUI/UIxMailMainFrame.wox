@@ -4,11 +4,10 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:userDefaultsKeys="SOGoMailMessageCheck,SOGoRefreshViewCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder,SOGoMailDisplayRemoteInlineImages,SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailLabelsColors"
-    const:userSettingsKeys="Mail"
     const:jsFiles="Common.js, Contacts.services.js, Mailer.services.js, Preferences.services.js, Mailer.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.js">
   <script type="text/javascript">
     var mailAccounts =<var:string value="mailAccounts" const:escapeHTML="NO" />;

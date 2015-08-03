@@ -35,18 +35,20 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Resource', function($q, $timeout, $log, $sce, Settings, Resource) {
+  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Resource', 'Preferences', function($q, $timeout, $log, $sce, Settings, Resource, Preferences) {
     angular.extend(Message, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $sce: $sce,
-      $$resource: new Resource(Settings.activeUser.folderURL + 'Mail', Settings.activeUser)
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser())
     });
-
-    if (window.UserDefaults && window.UserDefaults.SOGoMailLabelsColors) {
-      Message.$tags = window.UserDefaults.SOGoMailLabelsColors;
-    }
+    // Initialize tags form user's defaults
+    Preferences.ready().then(function() {
+      if (Preferences.defaults.SOGoMailLabelsColors) {
+        Message.$tags = Preferences.defaults.SOGoMailLabelsColors;
+      }
+    });
 
     return Message; // return constructor
   }];

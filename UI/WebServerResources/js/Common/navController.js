@@ -12,7 +12,7 @@
   navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
   function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
-    $scope.activeUser = sgSettings.activeUser;
+    $scope.activeUser = sgSettings.activeUser();
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
@@ -23,7 +23,7 @@
           $scope.currentDay = data;
         });
       }, 24 * 3600 * 1000);
-    }, window.secondsBeforeTomorrow * 1000);
+    }, window.currentDay.secondsBeforeTomorrow * 1000);
 
     $scope.toggleLeft = function () {
       $mdSidenav('left').toggle()

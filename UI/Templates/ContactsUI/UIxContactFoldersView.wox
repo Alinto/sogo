@@ -4,11 +4,12 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js"
     className="UIxPageFrame"
-    title="name">
+    title="title"
+    const:userDefaultsKeys="SOGoContactsCategories"
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js">
   <script type="text/javascript">
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>

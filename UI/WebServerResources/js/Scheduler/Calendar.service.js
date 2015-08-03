@@ -31,7 +31,7 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.activeUser.folderURL + 'Calendar', Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       $Component: Component,
       $$Acl: Acl,
       activeUser: Settings.activeUser

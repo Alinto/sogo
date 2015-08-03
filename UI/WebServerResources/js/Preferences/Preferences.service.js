@@ -61,7 +61,7 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
       activeUser: Settings.activeUser,
       $User: User
     });

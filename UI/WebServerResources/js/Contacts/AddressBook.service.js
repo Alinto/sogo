@@ -37,7 +37,7 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $Card: Card,
       $$Acl: Acl,
       $Preferences: Preferences,

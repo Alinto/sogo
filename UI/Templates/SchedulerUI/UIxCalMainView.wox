@@ -1,16 +1,14 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="title"
-  const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors, SOGoDefaultCalendar, SOGoTimeFormat"
-  const:userSettingsKeys="Calendar, ShowCompletedTasks"
-  const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, Scheduler.js, Scheduler.services.js">
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, Scheduler.js, Scheduler.services.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -176,8 +174,8 @@
               <p class="sg-item-name">{{calendar.name}}</p>
               <md-menu class="md-secondary" label:aria-label="Options">
                 <md-icon label:aria-label="Options"
-                           ng-click="$mdOpenMenu()"
-                           md-menu-origin="md-menu-origin">more_vert</md-icon>
+                         ng-click="$mdOpenMenu()"
+                         md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
                     <md-button ng-click="calendars.confirmDelete(calendar)">

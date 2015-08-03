@@ -129,7 +129,7 @@
   function AlarmService($timeout, Settings, Resource, $mdToast) {
     angular.extend(Alarm, {
       $timeout: $timeout,
-      $$resource: new Resource(Settings.activeUser.folderURL + 'Calendar', Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       $toast: $mdToast
     });
 

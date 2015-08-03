@@ -4,14 +4,22 @@
   'use strict';
 
   angular.module('SOGo.Common', ['ngMaterial'])
-    .constant('sgSettings', {
-      baseURL: ApplicationBaseURL,
-      activeUser: {
-        login: UserLogin,
-        identification: UserIdentification,
-        language: UserLanguage,
-        folderURL: UserFolderURL,
-        isSuperUser: IsSuperUser
+    .value('sgSettings', {
+      baseURL: function() {
+        return ApplicationBaseURL || null;
+      },
+      activeUser: function(param) {
+        var settings = {
+          login: UserLogin || null,
+          identification: UserIdentification || null,
+          language: UserLanguage || null,
+          folderURL: UserFolderURL || null,
+          isSuperUser: IsSuperUser || null
+        };
+        if (param)
+          return settings[param];
+        else
+          return settings;
       }
     })
 

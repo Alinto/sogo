@@ -38,12 +38,17 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$timeout', 'sgSettings', 'Resource', 'Gravatar', function($timeout, Settings, Resource, Gravatar) {
+  Card.$factory = ['$timeout', 'sgSettings', 'Resource', 'Preferences', 'Gravatar', function($timeout, Settings, Resource, Preferences, Gravatar) {
     angular.extend(Card, {
-      $$resource: new Resource(Settings.activeUser.folderURL + 'Contacts', Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $timeout: $timeout,
-      $gravatar: Gravatar,
-      $categories: window.UserDefaults.SOGoContactsCategories
+      $gravatar: Gravatar
+    });
+    // Initialize categories from user's defaults
+    Preferences.ready().then(function() {
+      if (Preferences.defaults.SOGoContactsCategories) {
+        Card.$categories = Preferences.defaults.SOGoContactsCategories;
+      }
     });
 
     return Card; // return constructor

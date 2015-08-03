@@ -5,19 +5,8 @@
   'use strict';
 
   angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.PreferencesUI'])
-
-    .constant('sgSettings', {
-      baseURL: ApplicationBaseURL,
-      activeUser: {
-        login: UserLogin,
-        identification: UserIdentification,
-        language: UserLanguage,
-        folderURL: UserFolderURL,
-        isSuperUser: IsSuperUser
-      }
-    })
-
-    .config(configure);
+    .config(configure)
+    .run(runBlock);
 
   /**
    * @ngInject
@@ -136,6 +125,16 @@
   function stateCard($stateParams, stateAddressbook) {
     stateAddressbook.selectedCard = $stateParams.cardId;
     return stateAddressbook.$getCard($stateParams.cardId);
+  }
+
+  /**
+   * @ngInject
+   */
+  runBlock.$inject = ['$rootScope'];
+  function runBlock($rootScope) {
+    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+      console.error(event, current, previous, rejection);
+    });
   }
 
 })();

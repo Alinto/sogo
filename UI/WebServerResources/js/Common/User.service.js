@@ -21,7 +21,7 @@
     angular.extend(User, {
       $q: $q,
       $log: $log,
-      $$resource: new Resource(Settings.activeUser.folderURL, Settings.activeUser),
+      $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
       $gravatar: Gravatar
     });
 
