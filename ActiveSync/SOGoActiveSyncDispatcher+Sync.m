@@ -453,16 +453,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                          withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                          inBuffer: (NSMutableString *) theBuffer
 {
+
+  id aDelete, sogoObject, value;
   NSArray *deletions;
   NSString *serverId;
 
-  id aDelete, sogoObject;
+  BOOL deletesAsMoves, useTrash;
   int i;
 
   deletions = (id)[theDocumentElement getElementsByTagName: @"Delete"];
 
   if ([deletions count])
     {
+      // From the documention, if DeletesAsMoves is missing, we must assume it's a YES.
+      // See https://msdn.microsoft.com/en-us/library/gg675480(v=exchg.80).aspx for all details.
+      value = [theDocumentElement getElementsByTagName: @"DeletesAsMoves"];
+      deletesAsMoves = YES;
+      useTrash = YES;
+
+      if ([value count] && [[[value lastObject] textValue] length])
+        deletesAsMoves = [[[value lastObject] textValue] boolValue];
+
       for (i = 0; i < [deletions count]; i++)
         {
           aDelete = [deletions objectAtIndex: i];
@@ -474,7 +485,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                          acquire: NO];
 
           if (![sogoObject isKindOfClass: [NSException class]])
-            [sogoObject delete];
+            {
+              // FIXME: handle errors here
+              if (deletesAsMoves)
+                [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+              else
+                [sogoObject delete];
+            }
 
           [theBuffer appendString: @"<Delete>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];

@@ -1,6 +1,6 @@
 /* UIxListEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2014 Inverse inc.
+ * Copyright (C) 2008-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
+
+#import <SOGo/NSString+Utilities.h>
 
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
@@ -289,9 +291,8 @@
         result = [self redirectToLocation: [self modulePath]];
       else
         {
-          jsRefreshMethod
-            = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
-            [co nameInContainer]];
+          jsRefreshMethod = [NSString stringWithFormat: @"refreshContacts('%@')",
+                                      [co nameInContainer]];
           result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
         }
     }
