@@ -506,7 +506,6 @@ vtodo_class2 = "(Důvěrný úkol)";
 "button_allOccurrences" = "Všechna opakování";
 
 /* Properties dialog */
-"Name" = "Název";
 "Color" = "Barva";
 
 "Include in free-busy" = "Zahrnout do obsazeného času (free-busy)";

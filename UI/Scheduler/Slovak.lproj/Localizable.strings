@@ -502,7 +502,6 @@ vtodo_class2 = "(Dôverná úloha)";
 "button_allOccurrences" = "Všetky opakovania";
 
 /* Properties dialog */
-"Name" = "Názov";
 "Color" = "Farba";
 
 "Include in free-busy" = "Zahrnúť do voľný-obsadený";
