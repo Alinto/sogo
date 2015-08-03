@@ -8,6 +8,7 @@
     >
   <md-dialog flex="50" flex-sm="100">
     <md-toolbar class="sg-padded">
+      <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
       <div class="pseudo-input-container">
         <label class="pseudo-input-label"><var:string label:value="Access Rights"/></label>
         <div class="pseudo-input-field sg-md-title">{{acl.folder.name}}</div>
