@@ -33,7 +33,6 @@
 #import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreAttachment.h"
-// #import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreFallbackContext.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreFolderTable.h"
@@ -89,32 +88,31 @@ static NSMutableDictionary *contextClassMapping;
       currentClass = [classes objectAtIndex: count];
       moduleName = [currentClass MAPIModuleName];
       if (moduleName)
-	{
-	  [contextClassMapping setObject: currentClass
+        {
+          [contextClassMapping setObject: currentClass
                                   forKey: moduleName];
-	  NSLog (@"  registered class '%@' as handler of '%@' contexts",
-		 NSStringFromClass (currentClass), moduleName);
-	}
+          NSLog (@"  registered class '%@' as handler of '%@' contexts",
+                 NSStringFromClass (currentClass), moduleName);
+        }
     }
 
   MAPIStoreFallbackContextK = [MAPIStoreFallbackContext class];
 }
 
 + (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
-                                            withIndexing: (struct indexing_context *) indexing
+                                               withIndexing: (struct indexing_context *) indexing
                                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *list, *current;
   NSArray *classes;
   Class currentClass;
   NSUInteger count, max;
-  MAPIStoreUserContext *userContext;
 
   list = NULL;
 
-  userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexing];
-  [userContext activateWithUser: [userContext sogoUser]];
+  // User context is activated on initialization
+  [MAPIStoreUserContext userContextWithUsername: userName
+                                 andTDBIndexing: indexing];
 
   classes = GSObjCAllSubclassesOfClass (self);
   max = [classes count];
@@ -122,7 +120,7 @@ static NSMutableDictionary *contextClassMapping;
     {
       currentClass = [classes objectAtIndex: count];
       current = [currentClass listContextsForUser: userName
-                                  withIndexing: indexing
+                                     withIndexing: indexing
                                          inMemCtx: memCtx];
       if (current)
         DLIST_CONCATENATE(list, current, void);
@@ -132,7 +130,7 @@ static NSMutableDictionary *contextClassMapping;
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withIndexing: (struct indexing_context *) indexing
+                                            withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return NULL;
@@ -225,8 +223,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSURL *baseURL;
   int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  //NSLog (@"METHOD '%s' (%d) -- uri: '%s'", __FUNCTION__, __LINE__, newUri);
-
   context = nil;
 
   baseURL = CompleteURLFromMapistoreURI (newUri);
@@ -298,13 +294,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
       ASSIGN (userContext,
               [MAPIStoreUserContext userContextWithUsername: username
                                              andTDBIndexing: indexing]);
-
-#if 0
-      mapistore_mgmt_backend_register_user (newConnInfo,
-                                            "SOGo",
-                                            [username UTF8String]);
-#endif
-
       connInfo = newConnInfo;
       username = [NSString stringWithUTF8String: newConnInfo->username];
       ASSIGN (activeUser, [SOGoUser userWithLogin: username]);
@@ -322,12 +311,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
 - (void) dealloc
 {
-#if 0
-  mapistore_mgmt_backend_unregister_user ([self connectionInfo], "SOGo", 
-                                          [[userContext username]
-                                            UTF8String]);
-#endif
-
   [contextUrl release];
   [userContext release];
   [containersBag release];
@@ -355,27 +338,16 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return activeUser;
 }
 
-// - (void) logRestriction: (struct mapi_SRestriction *) res
-// 	      withState: (MAPIRestrictionState) state
-// {
-//   NSString *resStr;
-
-//   resStr = MAPIStringForRestriction (res);
-
-//   [self logWithFormat: @"%@  -->  %@", resStr, MAPIStringForRestrictionState (state)];
-// }
-
 - (int) getPath: (char **) path
          ofFMID: (uint64_t) fmid
        inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
   NSString *objectURL, *url;
-  // TDB_DATA key, dbuf;
 
   url = [contextUrl absoluteString];
   // FIXME transform percent escapes but not for user part of the url
-  //stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  //[xxxx stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
   objectURL = [[userContext mapping] urlFromID: fmid];
   if (objectURL)
     {
@@ -396,14 +368,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   else
     {
       [self errorWithFormat: @"%s: you should *never* get here", __PRETTY_FUNCTION__];
-      // /* attempt to populate our mapping dict with data from indexing.tdb */
-      // key.dptr = (unsigned char *) talloc_asprintf (memCtx, "0x%.16llx",
-      //                                               (long long unsigned int )fmid);
-      // key.dsize = strlen ((const char *) key.dptr);
-
-      // dbuf = tdb_fetch (memCtx->indexing_list->index_ctx->tdb, key);
-      // talloc_free (key.dptr);
-      // uri = talloc_strndup (memCtx, (const char *)dbuf.dptr, dbuf.dsize);
       *path = NULL;
       rc = MAPISTORE_SUCCESS;
     }
@@ -426,7 +390,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSArray *pathComponents;
   NSUInteger count, max;
 
-  [userContext activateWithUser: activeUser];
+  [userContext activate];
   woContext = [userContext woContext];
 
   [self ensureContextFolder];
@@ -488,7 +452,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 /* utils */
 
 - (NSString *) extractChildNameFromURL: (NSString *) objectURL
-			andFolderURLAt: (NSString **) folderURL;
+                        andFolderURLAt: (NSString **) folderURL;
 {
   NSString *childKey;
   NSRange lastSlash;
@@ -497,15 +461,15 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   if ([objectURL hasSuffix: @"/"])
     objectURL = [objectURL substringToIndex: [objectURL length] - 2];
   lastSlash = [objectURL rangeOfString: @"/"
-			       options: NSBackwardsSearch];
+                               options: NSBackwardsSearch];
   if (lastSlash.location != NSNotFound)
     {
       slashPtr = NSMaxRange (lastSlash);
       childKey = [objectURL substringFromIndex: slashPtr];
       if ([childKey length] == 0)
-	childKey = nil;
+        childKey = nil;
       if (folderURL)
-	*folderURL = [objectURL substringToIndex: slashPtr];
+        *folderURL = [objectURL substringToIndex: slashPtr];
     }
   else
     childKey = nil;
@@ -516,11 +480,10 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 - (uint64_t) idForObjectWithKey: (NSString *) key
                     inFolderURL: (NSString *) folderURL
 {
-  NSString *childURL, *owner;
+  NSString *childURL;
   MAPIStoreMapping *mapping;
   uint64_t mappingId;
-  uint32_t contextId;
-  void *rootObject;
+  enum mapistore_error ret;
 
   if (key)
     childURL = [NSString stringWithFormat: @"%@%@", folderURL,
@@ -531,17 +494,13 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
-      //[self warnWithFormat: @"no id exist yet for '%@', requesting one...",
-      //      childURL];
-      mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
-      [mapping registerURL: childURL withID: mappingId];
-      contextId = 0;
-
-      mapistore_search_context_by_uri (connInfo->mstore_ctx, [folderURL UTF8String],
-                                       &contextId, &rootObject);
-      owner = [userContext username];
-      mapistore_indexing_record_add_mid (connInfo->mstore_ctx, contextId,
-                                         [owner UTF8String], mappingId);
+      [self logWithFormat: @"No id exist yet for '%@', requesting one", childURL];
+      ret = mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
+      if (ret == MAPISTORE_SUCCESS)
+        [mapping registerURL: childURL withID: mappingId];
+      else
+        [self errorWithFormat: @"Error trying to get new folder id (%d): %s",
+              ret, mapistore_errstr (ret)];
     }
 
   return mappingId;
@@ -595,15 +554,14 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
   memCtx = talloc_zero(NULL, TALLOC_CTX);
   newFMIDs = [NSMutableArray arrayWithCapacity: max];
-  
+
   if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
                                             memCtx, max, &numbers)
       != MAPISTORE_SUCCESS || numbers->cValues != max)
     abort ();
   for (count = 0; count < max; count++)
     {
-      newNumber
-        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      newNumber = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
       [newFMIDs addObject: newNumber];
     }
 

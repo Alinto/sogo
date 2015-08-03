@@ -1614,6 +1614,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   max = [keyParts count];
   if (max > 0)
     {
+      [[self userContext] activate];
+
       currentPart = [sogoObject lookupName: [keyParts objectAtIndex: 0]
                                  inContext: nil
                                    acquire: NO];

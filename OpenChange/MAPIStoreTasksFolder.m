@@ -31,6 +31,7 @@
 #import <Appointments/SOGoTaskObject.h>
 
 #import "MAPIApplication.h"
+#import "MAPIStoreUserContext.h"
 #import "MAPIStoreTasksContext.h"
 #import "MAPIStoreTasksMessage.h"
 #import "MAPIStoreTasksMessageTable.h"
@@ -61,6 +62,7 @@
   SOGoTaskObject *newEntry;
   NSString *name;
 
+  [[[self context] userContext] activate];
   name = [NSString stringWithFormat: @"%@.ics",
                    [SOGoObject globallyUniqueObjectId]];
   newEntry = [SOGoTaskObject objectWithName: name
@@ -69,7 +71,7 @@
   newMessage = [MAPIStoreTasksMessage mapiStoreObjectWithSOGoObject: newEntry
                                                         inContainer: self];
 
-  
+
   return newMessage;
 }
 
@@ -116,7 +118,7 @@
     rights |= RightsReadItems;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
- 
+
   return rights;
 }
 

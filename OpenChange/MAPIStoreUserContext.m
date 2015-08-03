@@ -39,6 +39,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSString+Utilities.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
@@ -158,6 +159,8 @@ static NSMapTable *contextsTable = nil;
       if ([userPassword length] == 0)
         userPassword = username;
       [authenticator setPassword: userPassword];
+      // Activate the profile on initialization
+      [self activate];
     }
 
   return self;
@@ -214,7 +217,7 @@ static NSMapTable *contextsTable = nil;
   if (!userFolder)
     {
        userFolder = [SOGoUserFolder objectWithName: username
-                                       inContainer: MAPIApp];
+                                       inContainer: nil];
        [userFolder retain];
     }
 
@@ -232,7 +235,8 @@ static NSMapTable *contextsTable = nil;
   if (!rootFolders)
     {
       rootFolders = [NSMutableDictionary new];
-      [self userFolder];
+      [self activate];
+      [self userFolder]; // force lazy initialization
       [woContext setClientObject: userFolder];
 
       /* Calendar */
@@ -257,10 +261,10 @@ static NSMapTable *contextsTable = nil;
                                       acquire: NO];
       [containersBag addObject: accountsFolder];
       [woContext setClientObject: accountsFolder];
+
       currentFolder = [accountsFolder lookupName: @"0"
                                        inContext: woContext
                                          acquire: NO];
-
       [rootFolders setObject: currentFolder
                       forKey: @"mail"];
       connection = [currentFolder imap4Connection];
@@ -268,8 +272,7 @@ static NSMapTable *contextsTable = nil;
 
       /* ensure the folder cache is filled */
       [currentFolder toManyRelationshipKeysWithNamespaces: YES];
-      hierarchy = [connection
-                    cachedHierarchyResultsForURL: [currentFolder imap4URL]];
+      hierarchy = [connection cachedHierarchyResultsForURL: [currentFolder imap4URL]];
       flags = [[hierarchy  objectForKey: @"list"] objectForKey: @"/INBOX"];
       inboxHasNoInferiors = [flags containsObject: @"noinferiors"];
     }
@@ -338,7 +341,7 @@ static NSMapTable *contextsTable = nil;
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: folderTableURL];
-  
+
   /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
   tableName = [[folderTableURL path] lastPathComponent];
   if ([channel evaluateExpressionX:
@@ -355,7 +358,7 @@ static NSMapTable *contextsTable = nil;
     [channel cancelFetch];
 
 
-  [cm releaseChannel: channel]; 
+  [cm releaseChannel: channel];
 }
 
 /* SOGo context objects */
@@ -369,6 +372,11 @@ static NSMapTable *contextsTable = nil;
   return authenticator;
 }
 
+- (void) activate
+{
+  [self activateWithUser: [self sogoUser]];
+}
+
 - (void) activateWithUser: (SOGoUser *) activeUser;
 {
   NSMutableDictionary *info;
@@ -377,6 +385,26 @@ static NSMapTable *contextsTable = nil;
   [woContext setActiveUser: activeUser];
   info = [[NSThread currentThread] threadDictionary];
   [info setObject: woContext forKey: @"WOContext"];
+}
+
+- (void) deactivate
+{
+  NSMutableDictionary *info;
+
+  if (self == [MAPIApp userContext])
+    [MAPIApp setUserContext: nil];
+  else
+    [self errorWithFormat: @"Error: Tried to deactivate an user context "
+                           @"not enabled (%@ vs %@)",
+                           [self username], [[MAPIApp userContext] username]];
+
+  info = [[NSThread currentThread] threadDictionary];
+  if (woContext == [info objectForKey: @"WOContext"])
+    [info removeObjectForKey: @"WOContext"];
+  else
+    [self errorWithFormat: @"Error: Tried to deactivate a WOContext "
+                           @"not enabled (%@ vs %@)",
+                           woContext, [info objectForKey: @"WOContext"]];
 }
 
 @end

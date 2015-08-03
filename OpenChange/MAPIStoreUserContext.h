@@ -86,6 +86,8 @@
 
 /* SOGo hacky magic */
 - (void) activateWithUser: (SOGoUser *) activeUser;
+- (void) activate;
+- (void) deactivate;
 - (MAPIStoreAuthenticator *) authenticator;
 - (WOContext *) woContext;
 
