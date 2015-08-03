@@ -49,7 +49,7 @@
       <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="Write a new message"
                  ng-click="mailbox.newMessage($event)">
-        <md-icon>add</md-icon>
+        <md-icon>edit</md-icon>
       </md-button>
     </md-content>
   </div>
