@@ -32,7 +32,6 @@
 #import <NGExtensions/NSString+Ext.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <SOGo/CardElement+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>

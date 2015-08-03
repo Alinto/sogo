@@ -168,7 +168,6 @@
 
 - (void) collapseAction: (BOOL) isCollapsing
 {
-  SOGoMailObject *co;
   WORequest *request;
   NSMutableDictionary *moduleSettings, *threadsCollapsed, *content;
   NSMutableArray *mailboxThreadsCollapsed;
@@ -180,7 +179,6 @@
   keyForMsgUIDs = [content objectForKey:@"currentMailbox"];
   msguid = [content objectForKey:@"msguid"];
 
-  co = [self clientObject];
   us = [[context activeUser] userSettings];
   if (!(moduleSettings = [us objectForKey: @"Mail"]))
     [us setObject:[NSMutableDictionary dictionary] forKey: @"Mail"];

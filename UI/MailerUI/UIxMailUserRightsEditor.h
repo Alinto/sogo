@@ -49,8 +49,6 @@
 - (void) setUserIsAdministrator: (BOOL) userIsAdministrator;
 - (BOOL) userIsAdministrator;
 
-- (void) updateRights;
-
 @end
 
 #endif /* UIXMAILUSERRIGHTSEDITOR_H */

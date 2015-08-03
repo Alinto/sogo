@@ -627,8 +627,6 @@
   SOGoMailAccount *account;
   SOGoMailFolder *folder;
 
-  unsigned int unseen;
-
   pathComponents = [theFolder pathComponents];
   account = [[self clientObject] lookupName: [pathComponents objectAtIndex: 0]
                                   inContext: context
