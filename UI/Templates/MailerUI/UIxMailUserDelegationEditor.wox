@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="30" flex-sm="100">
-    <md-toolbar>
+    <md-toolbar class="sg-padded">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
