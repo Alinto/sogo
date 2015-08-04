@@ -113,9 +113,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-aria/angular-aria{,.min}.js{,.map}',
       '<%= src %>/angular-material/angular-material{,.min}.js{,.map}',
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
-      '<%= src %>/ui-router-extras/release/ct-ui-router-extras{,.min}.js',
-      '<%= src %>/angular-recursion/angular-recursion{,.min}.js',
-      '<%= src %>/angular-file-upload/angular-file-upload{,.min}.js{,map}',
+      '<%= src %>/angular-file-upload/dist/angular-file-upload.min.js{,map}',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/lodash/lodash{,.min}.js'
     ];
