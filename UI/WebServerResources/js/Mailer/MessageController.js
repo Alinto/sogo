@@ -77,8 +77,9 @@
     }
 
     function edit($event) {
-      var message = vm.message.$editableContent();
-      showMailEditor($event, message);
+      vm.message.$editableContent().then(function() {
+        showMailEditor($event, vm.message);
+      });
     }
   }
   

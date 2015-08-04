@@ -246,19 +246,16 @@
    * @returns the HTML representation of the body
    */
   Message.prototype.$editableContent = function() {
-    var _this = this,
-        deferred = Message.$q.defer();
+    var _this = this;
 
-    Message.$$resource.fetch(this.id, 'edit').then(function(data) {
+    return Message.$$resource.fetch(this.id, 'edit').then(function(data) {
       angular.extend(_this, data);
-      Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
         angular.extend(_this.editable, data);
-        deferred.resolve(data.text);
-      }, deferred.reject);
-    }, deferred.reject);
-
-    return deferred.promise;
+        return data.text;
+      });
+    });
   };
 
   /**
