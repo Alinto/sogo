@@ -1,8 +1,8 @@
-[![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.v2.final.png)](http://www.sogo.nu/)
+[![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.png)](http://www.sogo.nu/)
 
 Share your calendars, address books and mails in your community with a completely free and open source solution.
 
-Let your Mozilla Thunderbird/Lightning, Microsoft Outlook, Apple iCal/iPhone and BlackBerry users collaborate using a modern platform.
+Let your Mozilla Thunderbird/Lightning, Microsoft Outlook, Apple iCal/iPhone, Android and BlackBerry users collaborate using a modern platform.
 
 ## What is SOGo?
 
@@ -18,7 +18,7 @@ SOGo is the missing component of your infrastructure; it sits in the middle of y
 
 ## Microsoft Outlook Compatible
 
-SOGo offers native Microsoft Outlook compatibility using the [OpenChange](http://www.openchange.org/) backend developed by [Inverse](http://www.inverse.ca/). This means Microsoft Outlook 2003, 2007 and 2010 can talk directly to SOGo &ndash; just like if it was a Microsoft Exchange server. **No plugins are required in Outlook to make this work**.
+SOGo offers native Microsoft Outlook compatibility using the [OpenChange](http://www.openchange.org/) backend developed by [Inverse](http://www.inverse.ca/). This means Microsoft Outlook 2003, 2007, 2010 and 2013 can talk directly to SOGo &ndash; just like if it was a Microsoft Exchange server. **No plugins are required in Outlook to make this work**.
 
 The following screencast shows Outlook 2010 connected to SOGo as if it was an Exchange server, along the Web interface of SOGo.
 
