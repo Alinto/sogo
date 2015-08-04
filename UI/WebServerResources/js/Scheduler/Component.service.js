@@ -730,7 +730,8 @@
     }
 
     if (this.$hasAlarm) {
-      if (this.alarm.action == 'email' && !(this.attendees && this.attendees.length > 0)) {
+      if (this.alarm.action && this.alarm.action == 'email' &&
+          !(this.attendees && this.attendees.length > 0)) {
         // No attendees; email reminder must be sent to organizer only
         this.alarm.attendees = 0;
         this.alarm.organizer = 1;
