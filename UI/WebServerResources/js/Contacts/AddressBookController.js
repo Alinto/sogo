@@ -35,7 +35,7 @@
         escapeToClose: true,
         template: [
           '<md-dialog aria-label="' + l('Create component') + '">',
-          '  <md-content>',
+          '  <md-dialog-content>',
           '    <div layout="column">',
           '      <md-button ng-click="create(\'card\')">',
           '        ' + l('Contact'),
@@ -44,7 +44,7 @@
           '        ' + l('List'),
           '      </md-button>',
           '    </div>',
-          '  </md-content>',
+          '  </md-dialog-content>',
           '</md-dialog>'
         ].join(''),
         locals: {
