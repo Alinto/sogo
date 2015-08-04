@@ -71,11 +71,13 @@
         <md-button class="sg-icon-button" aria-label="Reply All"
                    ng-hide="viewer.message.isDraft"
                     ng-click="viewer.replyAll($event)">
+          <md-tooltip md-direction="left"><var:string label:value="Reply to sender and all recipients"/></md-tooltip>
           <md-icon>reply_all</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Forward"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.forward($event)">
+          <md-tooltip md-direction="left"><var:string label:value="Forward selected message"/></md-tooltip>
           <md-icon>forward</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Edit"
@@ -85,6 +87,7 @@
         </md-button>
         <md-button class="sg-icon-button" aria-label="Delete"
                    ng-click="viewer.doDelete()">
+          <md-tooltip md-direction="left"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
         </md-button>
         <md-button class="sg-icon-button" aria-label="Load Images"
