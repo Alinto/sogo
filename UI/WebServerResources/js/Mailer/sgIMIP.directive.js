@@ -47,7 +47,7 @@
         };
       }
 
-      $scope.message.$imipAction(vm.pathToAttachment, action, data);
+      $scope.viewer.message.$imipAction(vm.pathToAttachment, action, data);
     };
   }
 

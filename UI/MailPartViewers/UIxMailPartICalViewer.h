@@ -32,9 +32,7 @@
 {
   iCalCalendar *inCalendar;
   iCalEvent *inEvent;
-  id attendee;
   SOGoDateFormatter *dateFormatter;
-  id item;
   SOGoAppointmentObject *storedEventObject;
   BOOL storedEventFetched;
   iCalEvent *storedEvent;

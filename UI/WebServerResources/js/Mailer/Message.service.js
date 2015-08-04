@@ -35,12 +35,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Resource', 'Preferences', function($q, $timeout, $log, $sce, Settings, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, $sce, Settings, Gravatar, Resource, Preferences) {
     angular.extend(Message, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $sce: $sce,
+      $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser())
     });
     // Initialize tags form user's defaults
@@ -222,6 +223,14 @@
             else if (part.type == 'UIxMailPartICalViewer' ||
                      part.type == 'UIxMailPartImageViewer' ||
                      part.type == 'UIxMailPartLinkViewer') {
+
+              // UIxMailPartICalViewer injects 'participants'
+              if (part.participants) {
+                _.each(part.participants, function(participant) {
+                  participant.image = Message.$gravatar(participant.email, 32);
+                });
+              }
+
               // Trusted content that can be compiled (Angularly-speaking)
               part.compile = true;
               parts.push(part);

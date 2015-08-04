@@ -59,8 +59,6 @@
 {
   [storedEventObject release];
   [storedEvent release];
-  [attendee release];
-  [item release];
   [inCalendar release];
   [dateFormatter release];
   [super dealloc];
@@ -75,10 +73,6 @@
   [inCalendar release]; inCalendar = nil;
   [storedEventObject release]; storedEventObject = nil;
   [storedEvent release]; storedEvent = nil;
- 
-  /* not strictly path-related, but useless without it anyway: */
-  [attendee release]; attendee = nil;
-  [item release]; item = nil;
 }
 
 /* accessors */
@@ -127,18 +121,6 @@
   return dateFormatter;
 }
 
-/* below is copied from UIxAppointmentView, can we avoid that? */
-
-- (void) setAttendee: (id) _attendee
-{
-  ASSIGN (attendee, _attendee);
-}
-
-- (id) attendee
-{
-  return attendee;
-}
-
 - (NSString *) _personForDisplay: (iCalPerson *) person
 {
   NSString *fn, *email, *result;
@@ -147,26 +129,11 @@
   email = [person rfc822Email];
   if ([fn length])
     result = [NSString stringWithFormat: @"%@ <%@>",
-		       fn, email];
+                       fn, email];
   else
     result = email;
 
   return result;
-}
-
-- (NSString *) attendeeForDisplay
-{
-  return [self _personForDisplay: attendee];
-}
-
-- (void) setItem: (id) _item
-{
-  ASSIGN(item, _item);
-}
-
-- (id) item
-{
-  return item;
 }
 
 - (NSCalendarDate *) startCalendarDate
@@ -434,15 +401,6 @@
   return [[self authorativeEvent] userIsAttendee: [context activeUser]];
 }
 
-- (NSString *) currentAttendeeClass
-{
-  NSString *cssClass;
-
-  cssClass = [[attendee partStatWithDefault] lowercaseString];
-
-  return [NSString stringWithFormat: @"sg-%@", cssClass];
-}
-
 /* derived fields */
 
 - (NSString *) organizerDisplayName
@@ -569,6 +527,35 @@
 	  && [self hasSenderStatusChanged]
 	  && ([[inEvent sequence] compare: [storedEvent sequence]]
 	      != NSOrderedAscending));
+}
+
+- (id) renderedPart
+{
+  NSMutableDictionary *d;
+  NSArray *participants;
+  iCalPerson *person;
+  NSMutableArray *a;
+  int i;
+
+  d = [NSMutableDictionary dictionaryWithDictionary: [super renderedPart]];
+
+  // We also add our participants
+  participants = [[self authorativeEvent] participants];
+  a = [NSMutableArray array];
+
+  for (i = 0; i < [participants count]; i++)
+    {
+      person = [participants objectAtIndex: i];
+
+      if (![[person delegatedTo] length])
+        [a addObject: [NSDictionary dictionaryWithObjectsAndKeys: ([person cnWithoutQuotes] ? [person cnWithoutQuotes] : [person rfc822Email]), @"name",
+                                    [person rfc822Email], @"email",
+                                    [[person partStatWithDefault] lowercaseString], @"status", nil]];
+    }
+
+  [d setObject: a  forKey: @"participants"];
+
+  return d;
 }
 
 @end /* UIxMailPartICalViewer */

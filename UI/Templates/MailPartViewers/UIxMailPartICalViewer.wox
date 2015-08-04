@@ -243,28 +243,23 @@
           <var:string value="formattedDateTime"/>
         </div>
       </div>
-      
-      <md-list>
-        
-        <header class="sg-md-subheader">
-          <var:string label:value="Attendees"/>
-        </header>
 
-        <var:foreach list="authorativeEvent.participants"
-                     item="attendee">
-          <var:if condition="attendee.delegatedTo" const:negate="YES">
-            <md-list-item>
-              <div layout="row" layout-align="start center">
-                <div var:class="currentAttendeeClass"><!-- accepted/declided/tentative/delegated --></div>
-                <div class="md-list-item-text">
-                  <p><a var:href="attendee.email"><var:string value="attendeeForDisplay"/></a></p>
-                  <p>(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom.length">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</p>
-                </div>
-              </div>
-            </md-list-item>
-          </var:if>
-        </var:foreach>
-        
+      <!-- ATTENDEES -->
+      <md-list>
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
+          <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+               in readonly mode and a template similar to the one of md-contact-chips -->
+          <md-chips class="md-contact-chips"
+                    ng-model="part.participants"
+                    readonly="true">
+            <md-chip-template>
+              <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+              <div class="md-contact-name">{{$chip.name}}</div>
+              <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+              </md-chip-template>
+          </md-chips>
+        </div>
       </md-list>
 
       <var:if condition="authorativeEvent.comment.isNotEmpty">

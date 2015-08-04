@@ -71,10 +71,10 @@ md-icon {
   &.icon-arrow-forward:before {
     content: "\e5c8";
   }
+  &.icon-accepted:before,
   &.icon-check:before {
     content: "\e5ca";
   }
-  &.icon-accepted:before,
   &.icon-clear:before {
     content: "\e14c";
   }
