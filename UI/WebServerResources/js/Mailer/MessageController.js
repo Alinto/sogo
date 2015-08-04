@@ -21,6 +21,7 @@
     vm.replyAll = replyAll;
     vm.forward = forward;
     vm.edit = edit;
+    vm.viewRawSource = viewRawSource;
 
     // Watch the message model "flags" attribute to remove on-the-fly a tag from the IMAP message
     // when removed from the message viewer.
@@ -79,6 +80,40 @@
     function edit($event) {
       vm.message.$editableContent().then(function() {
         showMailEditor($event, vm.message);
+      });
+    }
+
+    function viewRawSource($event) {
+      Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template: [
+            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Message Source') + '">',
+            '  <md-dialog-content>',
+            '    <pre>',
+            data,
+            '    </pre>',
+            '  </md-dialog-content>',
+            '  <div class="md-actions">',
+            '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
+            '  </div>',
+            '</md-dialog>'
+          ].join(''),
+          controller: MessageRawSourceDialogController
+        });
+
+        /**
+         * @ngInject
+         */
+        MessageRawSourceDialogController.$inject = ['scope', '$mdDialog'];
+        function MessageRawSourceDialogController(scope, $mdDialog) {
+          scope.close = function() {
+            $mdDialog.hide();
+          };
+        }
       });
     }
   }

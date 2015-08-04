@@ -68,12 +68,6 @@
           <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
           <md-icon>reply</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" aria-label="Reply All"
-                   ng-hide="viewer.message.isDraft"
-                    ng-click="viewer.replyAll($event)">
-          <md-tooltip md-direction="left"><var:string label:value="Reply to sender and all recipients"/></md-tooltip>
-          <md-icon>reply_all</md-icon>
-        </md-button>
         <md-button class="sg-icon-button" aria-label="Forward"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.forward($event)">
@@ -90,12 +84,33 @@
           <md-tooltip md-direction="left"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" aria-label="Load Images"
-                   ng-show="viewer.message.$hasUnsafeContent"
-                   ng-click="viewer.message.loadUnsafeContent()">
-          <md-tooltip md-direction="left"><var:string label:value="Load Images"/></md-tooltip>
-          <md-icon>image</md-icon>
-        </md-button>
+
+        <md-menu>
+          <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item ng-hide="viewer.message.isDraft">
+              <md-button aria-label="Reply All"
+                         ng-click="viewer.replyAll($event)">
+                <var:string label:value="Reply All"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item ng-show="viewer.message.$hasUnsafeContent">
+              <md-button aria-label="Load Images"
+                         ng-click="viewer.message.loadUnsafeContent()">
+                <var:string label:value="Load Images"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button aria-label="View Message Source"
+                         ng-click="viewer.viewRawSource($event)">
+                <var:string label:value="View Message Source"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
       </div>
     </header>
     <md-divider><!-- divider --></md-divider>
