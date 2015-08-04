@@ -522,6 +522,7 @@
         Message.$$resource.fetch(_this.id, 'markMessageRead').then(function() {
           Message.$timeout(function() {
             _this.isread = true;
+            _this.$mailbox.unseenCount--;
           });
         });
       }
