@@ -121,6 +121,7 @@
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
                         wantCopy: (uint8_t) want_copy
                         inMemCtx: (TALLOC_CTX *) memCtx;
 

@@ -209,13 +209,16 @@
 
 - (void) updateVersions
 {
-  NSData *newChangeKey;
+  /* Update ChangeKey and PredecessorChangeList on message's save */
+  NSData *newChangeKey, *predecessorChangeList;
 
   newChangeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  predecessorChangeList = [properties objectForKey: MAPIPropertyKey (PR_PREDECESSOR_CHANGE_LIST)];
 
   [(MAPIStoreGCSFolder *) container
-    updateVersionsForMessageWithKey: [self nameInContainer]
-                      withChangeKey: newChangeKey];
+      updateVersionsForMessageWithKey: [self nameInContainer]
+                        withChangeKey: newChangeKey
+             andPredecessorChangeList: predecessorChangeList];
 }
 
 @end

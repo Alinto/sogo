@@ -68,6 +68,8 @@
 
 static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
+#include <gen_ndr/exchange.h>
+
 #undef DEBUG
 #include <util/attr.h>
 #include <libmapi/libmapi.h>
@@ -516,6 +518,44 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return [modseq1 compare: modseq2];
 }
 
+- (void) _updatePredecessorChangeListWith: (NSData *) predecessorChangeList
+                          forMessageEntry: (NSMutableDictionary *) messageEntry
+{
+  NSData *globCnt, *oldGlobCnt;
+  NSMutableDictionary *changeList;
+  NSString *guid;
+  struct SizedXid *sizedXIDList;
+  struct XID xid;
+  uint32_t i, length;
+
+  sizedXIDList = [predecessorChangeList asSizedXidArrayInMemCtx: NULL with: &length];
+
+  changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
+  if (!changeList)
+    {
+      changeList = [NSMutableDictionary new];
+      [messageEntry setObject: changeList
+                    forKey: @"PredecessorChangeList"];
+      [changeList release];
+    }
+
+  if (sizedXIDList) {
+    for (i = 0; i < length; i++)
+      {
+        xid = sizedXIDList[i].XID;
+        guid = [NSString stringWithGUID: &xid.NameSpaceGuid];
+        globCnt = [NSData dataWithBytes: xid.LocalId.data length: xid.LocalId.length];
+        oldGlobCnt = [changeList objectForKey: guid];
+        if (!oldGlobCnt || ([globCnt compare: oldGlobCnt] == NSOrderedDescending))
+          [changeList setObject: globCnt forKey: guid];
+      }
+
+    talloc_free (sizedXIDList);
+  }
+
+  [versionsMessage save];
+}
+
 - (void) _setChangeKey: (NSData *) changeKey
        forMessageEntry: (NSMutableDictionary *) messageEntry
 {
@@ -526,8 +566,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSMutableDictionary *changeList;
 
   xid = [changeKey asXIDInMemCtx: NULL];
-  guid = [NSString stringWithGUID: &xid->GUID];
-  globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
+  guid = [NSString stringWithGUID: &xid->NameSpaceGuid];
+  globCnt = [NSData dataWithBytes: xid->LocalId.data length: xid->LocalId.length];
   talloc_free (xid);
 
   /* 1. set change key association */
@@ -924,8 +964,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return changeNumber;
 }
 
-- (void) setChangeKey: (NSData *) changeKey
-    forMessageWithKey: (NSString *) messageKey
+- (NSMutableDictionary *) _messageEntryFromMessageKey: (NSString *) messageKey
 {
   NSMutableDictionary *messages, *messageEntry;
   NSString *messageUid;
@@ -936,7 +975,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   messageEntry = [messages objectForKey: messageUid];
   if (!messageEntry)
     {
-      [self warnWithFormat: @"attempting to synchronise to set the change key for "
+      [self warnWithFormat: @"attempting to synchronise to get the message entry for "
                             @"this message %@", messageKey];
       synced = [self synchroniseCacheForUID: messageUid];
       if (synced)
@@ -947,7 +986,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           abort ();
         }
     }
-  [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
+  return messageEntry;
+}
+
+- (void) setChangeKey: (NSData *) changeKey
+    forMessageWithKey: (NSString *) messageKey
+{
+  [self _setChangeKey: changeKey
+      forMessageEntry: [self _messageEntryFromMessageKey: messageKey]];
 
   [versionsMessage save];
 }
@@ -1217,6 +1264,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
                         wantCopy: (uint8_t) wantCopy
                         inMemCtx: (TALLOC_CTX *) memCtx
 
@@ -1231,12 +1279,13 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSDictionary *result;
   NSUInteger count;
   NSArray *a;
-  NSData *changeKey;
+  NSData *changeList;
 
   if (![sourceFolder isKindOfClass: [MAPIStoreMailFolder class]])
     return [super moveCopyMessagesWithMIDs: srcMids andCount: midCount
                                 fromFolder: sourceFolder withMIDs: targetMids
                              andChangeKeys: targetChangeKeys
+                 andPredecessorChangeLists: targetPredecessorChangeLists
                                   wantCopy: wantCopy
                                   inMemCtx: memCtx];
 
@@ -1325,11 +1374,11 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       [self synchroniseCache];
       for (count = 0; count < midCount; count++)
         {
-          changeKey = [NSData dataWithBinary: targetChangeKeys[count]];
+          changeList = [NSData dataWithBinary: targetPredecessorChangeLists[count]];
           messageKey = [NSString stringWithFormat: @"%@.eml",
                                  [destUIDs objectAtIndex: count]];
-          [self   setChangeKey: changeKey
-             forMessageWithKey: messageKey];
+          [self _updatePredecessorChangeListWith: changeList
+                                 forMessageEntry: [self _messageEntryFromMessageKey: messageKey]];
         }
     }
 

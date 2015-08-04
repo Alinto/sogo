@@ -41,6 +41,8 @@
 
 + (id) dataWithXID: (const struct XID *) xid;
 - (struct XID *) asXIDInMemCtx: (void *) memCtx;
+- (struct SizedXid *) asSizedXidArrayInMemCtx: (void *) memCtx
+                                         with: (uint32_t *) length;
 
 + (id) dataWithChangeKeyGUID: (NSString *) guidString
                       andCnt: (NSData *) globCnt;
