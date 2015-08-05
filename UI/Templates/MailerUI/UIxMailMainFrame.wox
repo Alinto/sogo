@@ -438,19 +438,15 @@
         </md-button>
         <label>{{mailbox.selectedFolder.$selectedCount()}} selected</label>
         <md-button class="sg-icon-button" ng-click="mailbox.selectAll()">
+          <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
           <md-icon>select_all</md-icon>
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages()">
           <md-icon>delete</md-icon>
         </md-button>
-        <md-button class="sg-icon-button">
-          <md-icon>star</md-icon>
-        </md-button>
-        <md-button class="sg-icon-button">
-          <md-icon>markunread</md-icon>
-        </md-button>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Copy messages" ng-click="$mdOpenMenu()">
+            <md-tooltip md-direction="left"><var:string label:value="Copy To"/></md-tooltip>
             <md-icon>content_copy</md-icon>
           </md-button>
           <md-menu-content width="4">
@@ -468,6 +464,28 @@
                 </md-button>
               </md-menu-item>
             </div>
+          </md-menu-content>
+        </md-menu>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button>
+                <var:string label:value="Flag"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button>
+                <var:string label:value="Mark as Unread"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.saveSelectedMessages()">
+                <var:string label:value="Save As..."/>
+              </md-button>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
       </div>

@@ -313,7 +313,7 @@
   data = [[request contentAsString] objectFromJSONString];
   withTrash = ![[data objectForKey: @"withoutTrash"] boolValue];
 
-  if ((uids = [data objectForKey: @"uids"]) && [uids isKindOfClass: [NSArray class]] && [uids length] > 0)
+  if ((uids = [data objectForKey: @"uids"]) && [uids isKindOfClass: [NSArray class]] && [uids count] > 0)
     {
       response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: &withTrash inContext: context];
       if (!response)

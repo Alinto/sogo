@@ -21,6 +21,7 @@
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
     // vm.moveSelectedMessages = moveSelectedMessages;
+    vm.saveSelectedMessages = saveSelectedMessages;
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -45,9 +46,9 @@
           var selectedUIDs = _.pluck(selectedMessages, 'uid');
           vm.selectedFolder.$deleteMessages(selectedUIDs).then(function() {
             vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
+          },  function(error) {
+            Dialog.alert(l('Error'), error);
           });
-        },  function(data, status) {
-          // Delete failed
         });
     }
 
@@ -57,7 +58,7 @@
       vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder).then(function() {
         // TODO: refresh target mailbox?
       }, function(error) {
-        Dialog.alert(l('Error'), error.error);
+        Dialog.alert(l('Error'), error);
       });
     }
 
@@ -69,6 +70,12 @@
     //     vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
     //   });
     // }
+
+    function saveSelectedMessages() {
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
+      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+      window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/saveMessages?uid=' + selectedUIDs.join(",");
+    }
 
     function selectAll() {
       _.each(vm.selectedFolder.$messages, function(message) {
