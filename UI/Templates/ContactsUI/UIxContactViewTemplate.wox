@@ -44,6 +44,21 @@
                      ng-click="editor.confirmDelete(editor.card)">
             <md-icon>delete</md-icon>
           </md-button>
+
+        <md-menu>
+          <md-button label:aria-label="More contact options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content>
+          <md-menu-item>
+              <md-button aria-label="View Raw Source"
+                         ng-click="editor.viewRawSource($event)">
+                <var:string label:value="View Raw Source"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
         </div>
       </header>
       <section class="msg-body">

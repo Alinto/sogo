@@ -7,8 +7,8 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$timeout', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $timeout, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
+  CardController.$inject = ['$scope', '$timeout', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, $mdDialog, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
     var vm = this;
 
     vm.card = stateCard;
@@ -31,6 +31,7 @@
     vm.reset = reset;
     vm.cancel = cancel;
     vm.confirmDelete = confirmDelete;
+    vm.viewRawSource = viewRawSource;
 
     function addOrgUnit() {
       var i = vm.card.$addOrgUnit('');
@@ -115,6 +116,40 @@
                                            card.$fullname()));
             });
         });
+    }
+
+    function viewRawSource($event) {
+      Card.$$resource.post(vm.currentFolder.id + '/' + vm.card.id, "raw").then(function(data) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template: [
+            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Card Source') + '">',
+            '  <md-dialog-content>',
+            '    <pre>',
+            data,
+            '    </pre>',
+            '  </md-dialog-content>',
+            '  <div class="md-actions">',
+            '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
+            '  </div>',
+            '</md-dialog>'
+          ].join(''),
+          controller: CardRawSourceDialogController
+        });
+
+        /**
+         * @ngInject
+         */
+        CardRawSourceDialogController.$inject = ['scope', '$mdDialog'];
+        function CardRawSourceDialogController(scope, $mdDialog) {
+          scope.close = function() {
+            $mdDialog.hide();
+          };
+        }
+      });
     }
   }
 
