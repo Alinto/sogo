@@ -364,6 +364,10 @@
           <md-icon>arrow_back</md-icon>
         </md-button>
         <label>{{addressbook.selectedFolder.$selectedCount()}} selected</label>
+        <md-button class="sg-icon-button" ng-click="addressbook.selectAll()">
+          <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
+          <md-icon>select_all</md-icon>
+        </md-button>
         <md-button class="sg-icon-button" ng-click="addressbook.confirmDeleteSelectedCards()">
           <md-icon>delete</md-icon>
         </md-button>

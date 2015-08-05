@@ -18,6 +18,7 @@
     vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
+    vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
     vm.cancelSearch = cancelSearch;
@@ -84,6 +85,12 @@
         },  function(data, status) {
           // Delete failed
         });
+    }
+
+    function selectAll() {
+      _.each(vm.selectedFolder.cards, function(card) {
+        card.selected = true;
+      });
     }
 
     function sort(field) {
