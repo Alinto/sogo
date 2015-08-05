@@ -64,22 +64,22 @@
         <md-button class="sg-icon-button"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.reply($event)"
-                   aria-label="reply">
+                   label:aria-label="reply">
           <md-tooltip md-direction="left"><var:string label:value="Reply to Sender Only"/></md-tooltip>
           <md-icon>reply</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" aria-label="Forward"
+        <md-button class="sg-icon-button" label:aria-label="Forward"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.forward($event)">
           <md-tooltip md-direction="left"><var:string label:value="Forward selected message"/></md-tooltip>
           <md-icon>forward</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" aria-label="Edit"
+        <md-button class="sg-icon-button" label:aria-label="Edit"
                    ng-show="viewer.message.isDraft"
                    ng-click="viewer.edit($event)">
           <md-icon>create</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" aria-label="Delete"
+        <md-button class="sg-icon-button" label:aria-label="Delete"
                    ng-click="viewer.doDelete()">
           <md-tooltip md-direction="left"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
@@ -91,19 +91,19 @@
           </md-button>
           <md-menu-content width="4">
             <md-menu-item ng-hide="viewer.message.isDraft">
-              <md-button aria-label="Reply All"
+              <md-button label:aria-label="Reply All"
                          ng-click="viewer.replyAll($event)">
                 <var:string label:value="Reply All"/>
               </md-button>
             </md-menu-item>
             <md-menu-item ng-show="viewer.message.$hasUnsafeContent">
-              <md-button aria-label="Load Images"
+              <md-button label:aria-label="Load Images"
                          ng-click="viewer.message.loadUnsafeContent()">
                 <var:string label:value="Load Images"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
-              <md-button aria-label="View Message Source"
+              <md-button label:aria-label="View Message Source"
                          ng-click="viewer.viewRawSource($event)">
                 <var:string label:value="View Message Source"/>
               </md-button>
@@ -124,10 +124,10 @@
         <div class="md-actions" layout="row">
           <md-button label:aria-label="Yes"
                      type="button" class="md-primary"
-                     ng-click="viewer.message.$sendMDN()">Yes</md-button>
+                     ng-click="viewer.message.$sendMDN()"><var:string label:value="Yes"/></md-button>
           <md-button label:aria-label="No"
                      type="button"
-                     ng-click="viewer.message.shouldAskReceipt = 0">No</md-button>
+                     ng-click="viewer.message.shouldAskReceipt = 0"><var:string label:value="No"/></md-button>
         </div>
       </md-whiteframe>
     </div>
