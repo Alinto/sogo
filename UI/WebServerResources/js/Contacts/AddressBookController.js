@@ -18,6 +18,7 @@
     vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
+    vm.saveSelectedCards = saveSelectedCards;
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -85,6 +86,12 @@
         },  function(data, status) {
           // Delete failed
         });
+    }
+
+    function saveSelectedCards() {
+      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      var selectedUIDs = _.pluck(selectedCards, 'id');
+      window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
     }
 
     function selectAll() {

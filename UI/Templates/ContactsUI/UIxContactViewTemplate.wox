@@ -52,7 +52,7 @@
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
-          <md-menu-item>
+            <md-menu-item>
               <md-button aria-label="View Raw Source"
                          ng-click="editor.viewRawSource($event)">
                 <var:string label:value="View Raw Source"/>
