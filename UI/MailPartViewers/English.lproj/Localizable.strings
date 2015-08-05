@@ -46,3 +46,8 @@ reply_info = "This is a reply to an event invitation done by you.";
 "Date" = "Date";
 "To" = "To";
 "Issuer" = "Issuer";
+
+/* Tooltips */
+
+"View Attachment" = "View Attachment";
+"Save Attachment" = "Save Attachment";
