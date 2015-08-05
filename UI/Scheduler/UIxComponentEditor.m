@@ -75,6 +75,10 @@
 #import "UIxComponentEditor.h"
 #import "UIxDatePicker.h"
 
+#define componentReadableWritable  0
+#define componentOwnerIsInvited    1
+#define componentReadableOnly      2
+
 static NSArray *reminderItems = nil;
 static NSArray *reminderValues = nil;
 
@@ -317,14 +321,21 @@ static NSArray *reminderValues = nil;
 //		  nil];
 //}
 //
-//- (NSNumber *) reply
-//{
-//  iCalPersonPartStat participationStatus;
-//
-//  participationStatus = [ownerAsAttendee participationStatus];
-//
-//  return [NSNumber numberWithInt: participationStatus];
-//}
+- (NSNumber *) reply
+{
+  NSString *owner, *ownerEmail;
+  SOGoUserManager *um;
+  iCalPerson *ownerAsAttendee;
+  iCalPersonPartStat participationStatus;
+
+  um = [SOGoUserManager sharedUserManager];
+  owner = [componentCalendar ownerInContext: context];
+  ownerEmail = [um getEmailForUID: owner];
+  ownerAsAttendee = [component findAttendeeWithEmail: (id)ownerEmail];
+  participationStatus = [ownerAsAttendee participationStatus];
+
+  return [NSNumber numberWithInt: participationStatus];
+}
 
 ///* priorities */
 //
@@ -798,7 +809,7 @@ static NSArray *reminderValues = nil;
  iCalPerson *ownerAttendee;
  int rc;
 
- rc = 0;
+ rc = componentReadableWritable;
 
  sm = [SoSecurityManager sharedSecurityManager];
  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
@@ -813,42 +824,42 @@ static NSArray *reminderValues = nil;
      ownerAttendee = [component userAsAttendee: ownerUser];
      if ([[ownerAttendee rsvp] isEqualToString: @"true"]
          && ![component userIsOrganizer: ownerUser])
-       rc = 1;
+       rc = componentOwnerIsInvited;
      else
-       rc = 2;
+       rc = componentReadableOnly;
    }
  else
-   rc = 2; // not invited, just RO
+   rc = componentReadableOnly;
 
  return rc;
 }
 
 - (int) getEventRWType
 {
- SOGoContentObject <SOGoComponentOccurence> *clientObject;
- SOGoUser *ownerUser;
- int rc;
+  SOGoContentObject <SOGoComponentOccurence> *clientObject;
+  SOGoUser *ownerUser;
+  int rc;
 
- clientObject = [self clientObject];
- ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
- if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
-   rc = 2;
- else
-   {
-     if ([ownerUser isEqual: [context activeUser]])
-       rc = [self ownerIsAttendee: ownerUser
-                  andClientObject: clientObject];
-     else
-       rc = [self delegateIsAttendee: ownerUser
-                     andClientObject: clientObject];
-   }
+  clientObject = [self clientObject];
+  ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
+  if ([clientObject isKindOfClass: [SOGoWebAppointmentFolder class]])
+    rc = componentReadableOnly;
+  else
+    {
+      if ([ownerUser isEqual: [context activeUser]])
+        rc = [self ownerIsAttendee: ownerUser
+                   andClientObject: clientObject];
+      else
+        rc = [self delegateIsAttendee: ownerUser
+                      andClientObject: clientObject];
+    }
 
- return rc;
+  return rc;
 }
 
 - (BOOL) isReadOnly
 {
- return [self getEventRWType] != 0;
+ return [self getEventRWType] != componentReadableWritable;
 }
 //
 //- (NSString *) emailAlarmsEnabled
@@ -862,10 +873,10 @@ static NSArray *reminderValues = nil;
 //          : @"false");
 //}
 
-//- (BOOL) userHasRSVP
-//{
-//  return ([self getEventRWType] == 1);
-//}
+- (BOOL) userHasRSVP
+{
+  return ([self getEventRWType] == componentOwnerIsInvited);
+}
 
 //- (unsigned int) firstDayOfWeek
 //{

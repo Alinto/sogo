@@ -30,6 +30,8 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <NGCards/iCalPerson.h>
+
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -329,9 +331,67 @@
 
 @end
 
+/* Component Viewer, parent class of Appointment Viewer and Task Viewer */
+
+@interface UIxComponentViewTemplate : UIxComponent
+{
+  id item;
+}
+@end
+
+@implementation UIxComponentViewTemplate
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      item = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [item release];
+  [super dealloc];
+}
+
+- (void) setItem: (id) _item
+{
+  ASSIGN (item, _item);
+}
+
+- (id) item
+{
+  return item;
+}
+
+- (NSArray *) replyList
+{
+  return [NSArray arrayWithObjects:
+                    [NSNumber numberWithInt: iCalPersonPartStatAccepted],
+	   [NSNumber numberWithInt: iCalPersonPartStatDeclined],
+	   [NSNumber numberWithInt: iCalPersonPartStatNeedsAction],
+	   [NSNumber numberWithInt: iCalPersonPartStatTentative],
+	   [NSNumber numberWithInt: iCalPersonPartStatDelegated],
+		  nil];
+}
+
+- (NSString *) itemReplyText
+{
+  NSString *word;
+
+  word = [iCalPerson descriptionForParticipationStatus: [item intValue]];
+
+  return [self labelForKey: [NSString stringWithFormat: @"partStat_%@", word]];
+}
+
+@end
+
 /* Appointment Viewer */
 
-@interface UIxAppointmentViewTemplate : UIxComponent
+@interface UIxAppointmentViewTemplate : UIxComponentViewTemplate
 @end
 
 @implementation UIxAppointmentViewTemplate
@@ -339,7 +399,7 @@
 
 /* Task Viewer */
 
-@interface UIxTaskViewTemplate : UIxComponent
+@interface UIxTaskViewTemplate : UIxComponentViewTemplate
 @end
 
 @implementation UIxTaskViewTemplate

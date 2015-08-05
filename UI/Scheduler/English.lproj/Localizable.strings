@@ -200,7 +200,7 @@
 "General" = "General";
 "Reply" = "Reply";
 "Created by" = "Created by";
-
+"You are invited to participate" = "You are invited to participate";
 
 "Target:" = "Target:";
 
@@ -431,6 +431,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "New Event" = "New Event";
 "New Task" = "New Task";
 "Edit" = "Edit";
+"Update" = "Update";
 "Delete" = "Delete";
 "Go to Today" = "Go to Today";
 "Day View" = "Day View";
@@ -523,6 +524,8 @@ vtodo_class2 = "(Confidential task)";
 "button_allOccurrences" = "All occurences";
 "Edit This Occurrence" = "Edit This Occurrence";
 "Edit All Occurrences" = "Edit All Occurrences";
+"Update This Occurrence" = "Update This Occurrence";
+"Update All Occurrences" = "Update All Occurrences";
 
 /* Properties dialog */
 "Name" = "Name";

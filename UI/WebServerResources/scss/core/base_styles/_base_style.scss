@@ -11,8 +11,14 @@ main {
 .sg-padded {
   padding-left: $mg;
   padding-right: $mg;
+  &--left {
+    padding-left: $mg;
+  }
   &--right {
     padding-right: $mg;
+  }
+  &--top {
+    padding-top: $mg;
   }
 }
 

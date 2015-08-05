@@ -6,20 +6,24 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$mdDialog', 'Calendar', 'stateComponent'];
-  function ComponentController($mdDialog, Calendar, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$mdDialog', 'Calendar', 'AddressBook', 'Alarm', 'stateComponent'];
+  function ComponentController($rootScope, $mdDialog, Calendar, AddressBook, Alarm, stateComponent) {
     var vm = this, component;
 
     vm.component = stateComponent;
     vm.close = close;
+    vm.cardFilter = cardFilter;
     vm.edit = edit;
     vm.editAllOccurrences = editAllOccurrences;
+    vm.reply = reply;
+    vm.replyAllOccurrences = replyAllOccurrences;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
       component = Calendar.$get(vm.component.c_folder).$getComponent(vm.component.c_name, vm.component.c_recurrence_id);
       component.$futureComponentData.then(function() {
         vm.component = component;
+        vm.organizer = [vm.component.organizer];
       });
     }
 
@@ -27,12 +31,10 @@
       $mdDialog.hide();
     }
 
-    function editAllOccurrences() {
-      component = Calendar.$get(vm.component.pid).$getComponent(vm.component.id);
-      component.$futureComponentData.then(function() {
-        vm.component = component;
-        edit();
-      });
+    // Autocomplete cards for attendees
+    function cardFilter($query) {
+      AddressBook.$filterAll($query);
+      return AddressBook.$cards;
     }
 
     function edit() {
@@ -54,6 +56,38 @@
         });
       });
     }
+
+    function editAllOccurrences() {
+      component = Calendar.$get(vm.component.pid).$getComponent(vm.component.id);
+      component.$futureComponentData.then(function() {
+        vm.component = component;
+        edit();
+      });
+    }
+
+    function reply(component) {
+      var c = component || vm.component;
+
+      c.$reply().then(function() {
+        $rootScope.$broadcast('calendars:list');
+        $mdDialog.hide();
+        Alarm.getAlarms();
+      });
+    }
+
+    function replyAllOccurrences() {
+      // Retrieve master event
+      component = Calendar.$get(vm.component.pid).$getComponent(vm.component.id);
+      component.$futureComponentData.then(function() {
+        // Propagate the participant status and alarm to the master event
+        component.reply = vm.component.reply;
+        component.delegatedTo = vm.component.delegatedTo;
+        component.$hasAlarm = vm.component.$hasAlarm;
+        component.alarm = vm.component.alarm;
+        // Send reply to the server
+        reply(component);
+      });
+    }
   }
 
   /**
@@ -71,7 +105,6 @@
     vm.showAttendeesEditor = angular.isDefined(vm.component.attendees);
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     vm.cardFilter = cardFilter;
-    vm.cardResults = [];
     vm.addAttendee = addAttendee;
     vm.addAttachUrl = addAttachUrl;
     vm.cancel = cancel;
@@ -119,29 +152,8 @@
 
     // Autocomplete cards for attendees
     function cardFilter($query) {
-      var index, indexResult, card;
-      if ($query) {
-        AddressBook.$filterAll($query).then(function(results) {
-          var compareIds = function(result) {
-            return this.id == result.id;
-          };
-          // Remove cards that no longer match the search query
-          for (index = vm.cardResults.length - 1; index >= 0; index--) {
-            card = vm.cardResults[index];
-            indexResult = _.findIndex(results, compareIds, card);
-            if (indexResult >= 0)
-              results.splice(indexResult, 1);
-            else
-              vm.cardResults.splice(index, 1);
-          }
-          _.each(results, function(card) {
-            // Add cards matching the search query but not already in the list of attendees
-            if (!vm.component.hasAttendee(card))
-              vm.cardResults.push(card);
-          });
-        });
-      }
-      return vm.cardResults;
+      AddressBook.$filterAll($query);
+      return AddressBook.$cards;
     }
 
     function addAttendee(card) {
@@ -202,7 +214,7 @@
   }
 
   angular
-    .module('SOGo.SchedulerUI')  
+    .module('SOGo.SchedulerUI')
     .controller('ComponentController', ComponentController)
     .controller('ComponentEditorController', ComponentEditorController);
 })();

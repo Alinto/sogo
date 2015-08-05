@@ -67,19 +67,58 @@
    * @desc Search for cards among all addressbooks matching some criterias.
    * @param {string} search - the search string to match
    * @param {object} [options] - additional options to the query (excludeGroups and excludeLists)
+   * @param {object[]} excludedCards - a list of Card objects that must be excluded from the results
    * @returns a collection of Cards instances
    */
-  AddressBook.$filterAll = function(search, options) {
+  AddressBook.$filterAll = function(search, options, excludedCards) {
     var params = {search: search};
 
+    if (!search) {
+      // No query specified
+      AddressBook.$cards = [];
+      return AddressBook.$q.when(AddressBook.$cards);
+    }
+    if (angular.isUndefined(AddressBook.$cards)) {
+      // First session query
+      AddressBook.$cards = [];
+    }
+    else if (AddressBook.$query == search) {
+      // Query hasn't changed
+      return AddressBook.$q.when(AddressBook.$cards);
+    }
+    AddressBook.$query = search;
+
     angular.extend(params, options);
+
     return AddressBook.$$resource.fetch(null, 'allContactSearch', params).then(function(response) {
-      var results = [];
-      angular.forEach(response.contacts, function(data) {
-        var card = new AddressBook.$Card(data);
-        results.push(card);
+      var results, card, index,
+          compareIds = function(data) {
+            return this.id == data.id;
+          };
+      if (excludedCards) {
+        // Remove excluded cards from results
+        results = _.filter(response.contacts, function(data) {
+          return _.isUndefined(_.find(excludedCards, compareIds, data));
+        });
+      }
+      else {
+        results = response.contacts;
+      }
+      // Remove cards that no longer match the search query
+      for (index = AddressBook.$cards.length - 1; index >= 0; index--) {
+        card = AddressBook.$cards[index];
+        if (_.isUndefined(_.find(results, compareIds, card))) {
+          AddressBook.$cards.splice(index, 1);
+        }
+      }
+      // Add new cards matching the search query
+      _.each(results, function(data, index) {
+        if (_.isUndefined(_.find(AddressBook.$cards, compareIds, data))) {
+          var card = new AddressBook.$Card(data, search);
+          AddressBook.$cards.splice(index, 0, card);
+        }
       });
-      return results;
+      return AddressBook.$cards;
     });
   };
 

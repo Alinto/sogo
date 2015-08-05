@@ -68,7 +68,7 @@
         escapeToClose: true,
         templateUrl: templateUrl,
         controller: 'ComponentController',
-        controllerAs: 'viewer',
+        controllerAs: 'editor',
         locals: {
           stateComponent: component
         }

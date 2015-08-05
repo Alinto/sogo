@@ -237,55 +237,77 @@
     }
 }
 
-//
-//
-//
+/**
+ * @api {post} /so/:username/Calendar/:calendarId/:appointmentId/rsvpAppointment Set participation state
+ * @apiVersion 1.0.0
+ * @apiName PostEventRsvp
+ * @apiGroup Calendar
+ * @apiDescription Set the participation state of an attendee.
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Calendar/personal/71B6-54904400-1-7C308500.ics/rsvpAppointment \
+ *          -H 'Content-Type: application/json' \
+ *          -d '{ "reply": 1, \
+ *                "alarm": { { "quantity": 15, "unit": "MINUTES", "action": "display", "reference": "BEFORE", "relation": "START" } }'
+ *
+ * @apiParam {Number} reply                   0 if needs-action, 1 if accepted, 2 if declined, 3 if tentative, 4 if delegated
+ * @apiParam {String} [delegatedTo]           Email address of delegated attendee
+ * @apiParam {Object[]} [alarm]               Set an alarm for the attendee
+ * @apiParam {String} alarm.action            Either display or email
+ * @apiParam {Number} alarm.quantity          Quantity of units
+ * @apiParam {String} alarm.unit              Either MINUTES, HOURS, or DAYS
+ * @apiParam {String} alarm.reference         Either BEFORE or AFTER
+ * @apiParam {String} alarm.relation          Either START or END
+ * @apiParam {Boolean} [alarm.attendees]      Alert attendees by email if 1 and action is email
+ * @apiParam {Boolean} [alarm.organizer]      Alert organizer by email if 1 and action is email
+ */
 - (id <WOActionResults>) rsvpAction
 {
   iCalPerson *delegatedAttendee;
-  NSDictionary *message;
+  NSDictionary *params, *jsonResponse;
   WOResponse *response;
   WORequest *request;
   iCalAlarm *anAlarm;
+  NSException *ex;
   NSString *status;
+  id alarm;
   
-  int replyList, reminderList;
+  int replyList;
   
   request = [context request];
-  message = [[request contentAsString] objectFromJSONString];
+  params = [[request contentAsString] objectFromJSONString];
 
   delegatedAttendee = nil;
   anAlarm = nil;
   status = nil;
 
-  replyList = [[message objectForKey: @"replyList"] intValue];
+  replyList = [[params objectForKey: @"reply"] intValue];
 
   switch (replyList)
     {
-    case 0:
+    case iCalPersonPartStatAccepted:
       status =  @"ACCEPTED";
       break;
 
-    case 1:
+    case iCalPersonPartStatDeclined:
       status = @"DECLINED";
       break;
 
-    case 2:
+    case iCalPersonPartStatNeedsAction:
       status = @"NEEDS-ACTION";
       break;
 
-    case 3:
+    case iCalPersonPartStatTentative:
       status = @"TENTATIVE";
       break;
 
-    case 4:
+    case iCalPersonPartStatDelegated:
     default:
       {
         NSString *delegatedEmail, *delegatedUid;
         SOGoUser *user;
         
         status = @"DELEGATED";
-        delegatedEmail = [[message objectForKey: @"delegatedTo"] stringByTrimmingSpaces];
+        delegatedEmail = [[params objectForKey: @"delegatedTo"] stringByTrimmingSpaces];
 
         if ([delegatedEmail length])
           {
@@ -308,60 +330,58 @@
                      [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
           }
         else
-          return [NSException exceptionWithHTTPStatus: 400
-                                               reason: @"missing 'to' parameter"];
+          {
+            jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           @"failure", @"status",
+                                         @"missing 'delegatedTo' parameter", @"message",
+                                         nil];
+            return [self responseWithStatus: 400
+                                  andString: [jsonResponse jsonRepresentation]];
+          }
       }
       break;
     }
 
-  // Extract the user alarm, if any
-  reminderList = [[message objectForKey: @"reminderList"] intValue];
+  // Set an alarm for the user
+  alarm = [params objectForKey: @"alarm"];
+  if ([alarm isKindOfClass: [NSDictionary class]])
+    {
+      NSString *reminderAction, *reminderUnit, *reminderQuantity, *reminderReference, *reminderRelation;
+      BOOL reminderEmailAttendees, reminderEmailOrganizer;
 
-  if ([[message objectForKey: @"reminderList"] isEqualToString: @"WONoSelectionString"] || reminderList == 5 || reminderList == 10 || reminderList == 14)
-    {
-      // No selection, wipe alarm which will be done in changeParticipationStatus...
-    }
-  else if (reminderList == 15)
-    {
-      // Custom
+      reminderAction = [alarm objectForKey: @"action"];
+      reminderUnit = [alarm objectForKey: @"unit"];
+      reminderQuantity = [alarm objectForKey: @"quantity"];
+      reminderReference = [alarm objectForKey: @"reference"];
+      reminderRelation = [alarm objectForKey: @"relation"];
+      reminderEmailAttendees = [[alarm objectForKey: @"attendees"] boolValue];
+      reminderEmailOrganizer = [[alarm objectForKey: @"organizer"] boolValue];
       anAlarm = [iCalAlarm alarmForEvent: [self event]
                                    owner: [[self clientObject] ownerInContext: context]
-                                  action: [message objectForKey: @"reminderAction"]
-                                    unit: [message objectForKey: @"reminderUnit"]
-                                quantity: [message objectForKey: @"reminderQuantity"]
-                               reference: [message objectForKey: @"reminderReference"]
-                        reminderRelation: [message objectForKey: @"reminderRelation"]
-                          emailAttendees: [[message objectForKey: @"reminderEmailAttendees"] boolValue]
-                          emailOrganizer: [[message objectForKey: @"reminderEmailOrganizer"] boolValue]];
+                                  action: reminderAction
+                                    unit: reminderUnit
+                                quantity: reminderQuantity
+                               reference: reminderReference
+                        reminderRelation: reminderRelation
+                          emailAttendees: reminderEmailAttendees
+                          emailOrganizer: reminderEmailOrganizer];
+    }
+
+  ex = [[self clientObject] changeParticipationStatus: status
+                                         withDelegate: delegatedAttendee
+                                                alarm: anAlarm];
+
+  if (ex)
+    {
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [ex reason], @"message",
+                                   nil];
+      response = [self responseWithStatus: [ex httpStatus]
+                                andString: [jsonResponse jsonRepresentation]];
     }
   else
-    {
-      // Standard
-      NSString *aValue;
-      
-      aValue = [[UIxComponentEditor reminderValues] objectAtIndex: reminderList];
-
-      // Predefined alarm
-      if ([aValue length])
-        {
-          iCalTrigger *aTrigger;
-
-          anAlarm = [[[iCalAlarm alloc] init] autorelease];
-          aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
-          [aTrigger setValueType: @"DURATION"];
-          [anAlarm setTrigger: aTrigger];
-          [anAlarm setAction: @"DISPLAY"];
-          [aTrigger setSingleValue: aValue forKey: @""];
-        }
-    }  
-
-  response = (WOResponse *)[[self clientObject] changeParticipationStatus: status
-                                                             withDelegate: delegatedAttendee
-                                                                    alarm: anAlarm];
-
-  if (!response)
     response = [self responseWith204];
-  
+
   return response;
 }
 
@@ -413,9 +433,7 @@
  * @apiParam {String} alarm.reference         Either BEFORE or AFTER
  * @apiParam {String} alarm.relation          Either START or END
  * @apiParam {Boolean} [alarm.attendees]      Alert attendees by email if true and action is email
- * @apiParam {Object} [alarm.organizer]       Alert organizer at this email address if action is email
- * @apiParam {String} [alarm.organizer.name]  Attendee's name
- * @apiParam {String} alarm.organizer.email   Attendee's email address
+ * @apiParam {Boolean} [alarm.organizer]      Alert organizer by email if true and action is email
  *
  * @apiParam {_} ... _Save in [iCalRepeatbleEntityObject+SOGo setAttributes:inContext:]_
  *
@@ -561,6 +579,8 @@
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
  * @apiSuccess (Success 200) {Number} isReadOnly              1 if event is read-only
+ * @apiSuccess (Success 200) {Number} userHasRSVP             1 if owner is invited
+ * @apiSuccess (Success 200) {Number} [reply]                 0 if needs-action, 1 if accepted, 2 if declined, 3 if tentative, 4 if delegated
  * @apiSuccess (Success 200) {Object[]} [attachUrls]          Attached URLs
  * @apiSuccess (Success 200) {String} attachUrls.value        URL
  *
@@ -572,10 +592,8 @@
  * @apiSuccess (Success 200) {String} alarm.unit              Either MINUTES, HOURS, or DAYS
  * @apiSuccess (Success 200) {String} alarm.reference         Either BEFORE or AFTER
  * @apiSuccess (Success 200) {String} alarm.relation          Either START or END
- * @apiSuccess (Success 200) {Object[]} [alarm.attendees]     List of attendees
- * @apiSuccess (Success 200) {String} [alarm.attendees.name]  Attendee's name
- * @apiSuccess (Success 200) {String} alarm.attendees.email   Attendee's email address
- * @apiSuccess (Success 200) {String} [alarm.attendees.uid]   System user ID
+ * @apiSuccess (Success 200) {Boolean} alarm.attendees        Alert attendees by email if true and action is email
+ * @apiSuccess (Success 200) {Boolean} alarm.organizer        Alert organizer by email if true and action is email
  *
  * @apiSuccess {_} ... _From [iCalEvent+SOGo attributes]_
  *
@@ -687,6 +705,7 @@
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
+                       [NSNumber numberWithBool: [self userHasRSVP]], @"userHasRSVP",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [self alarm], @"alarm",
@@ -710,6 +729,9 @@
       [data setObject: [dateFormatter formattedTime: eventStartDate] forKey: @"localizedStartTime"];
       [data setObject: [dateFormatter formattedTime: eventEndDate] forKey: @"localizedEndTime"];
     }
+
+  if ([self userHasRSVP])
+    [data setObject: [self reply] forKey: @"reply"];
 
   // Add attributes from iCalEvent+SOGo, iCalEntityObject+SOGo and iCalRepeatableEntityObject+SOGo
   [data addEntriesFromDictionary: [event attributesInContext: context]];

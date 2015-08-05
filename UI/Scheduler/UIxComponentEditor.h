@@ -34,6 +34,8 @@
 }
 
 - (BOOL) isReadOnly;
+- (BOOL) userHasRSVP;
+- (NSNumber *) reply;
 - (BOOL) isChildOccurrence;
 - (void) setAttributes: (NSDictionary *) attributes;
 

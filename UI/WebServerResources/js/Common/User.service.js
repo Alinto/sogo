@@ -38,6 +38,7 @@
    * @memberof User
    * @desc Search for users that match a string.
    * @param {string} search - a string used to performed the search
+   * @param {object[]} excludedUsers - a list of User objects that must be excluded from the results
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search, excludedUsers) {

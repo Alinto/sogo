@@ -311,6 +311,7 @@
       this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
 
     // Parse recurrence rule definition and initialize default values
+    this.$isRecurrent = angular.isDefined(data.repeat);
     if (this.repeat.days) {
       var byDayMask = _.find(this.repeat.days, function(o) {
         return angular.isDefined(o.occurrence);
@@ -368,6 +369,10 @@
     // Allow the component to be moved to a different calendar
     this.destinationCalendar = this.pid;
 
+    if (this.organizer && this.organizer.email) {
+      this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
+    }
+
     // Load freebusy of attendees
     this.freebusy = this.updateFreeBusyCoverage();
 
@@ -392,6 +397,56 @@
          this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
          this.repeat.months && this.repeat.months.length > 0);
     return b;
+  };
+
+  /**
+   * @function isEditable
+   * @memberof Component.prototype
+   * @desc Check if the component is editable and not an occurrence of a recurrent component
+   * @returns true or false
+   */
+  Component.prototype.isEditable = function() {
+    return (!this.occurrenceId && !this.isReadOnly);
+  };
+
+  /**
+   * @function isEditableOccurrence
+   * @memberof Component.prototype
+   * @desc Check if the component is editable and an occurrence of a recurrent component
+   * @returns true or false
+   */
+  Component.prototype.isEditableOccurrence = function() {
+    return (this.occurrenceId && !this.isReadOnly);
+  };
+
+  /**
+   * @function isInvitation
+   * @memberof Component.prototype
+   * @desc Check if the component an invitation and not an occurrence of a recurrent component
+   * @returns true or false
+   */
+  Component.prototype.isInvitation = function() {
+    return (!this.occurrenceId && this.userHasRSVP);
+  };
+
+  /**
+   * @function isInvitationOccurrence
+   * @memberof Component.prototype
+   * @desc Check if the component an invitation and an occurrence of a recurrent component
+   * @returns true or false
+   */
+  Component.prototype.isInvitationOccurrence = function() {
+    return (this.occurrenceId && this.userHasRSVP);
+  };
+
+  /**
+   * @function isReadOnly
+   * @memberof Component.prototype
+   * @desc Check if the component is not editable and not an invitation
+   * @returns true or false
+   */
+  Component.prototype.isReadOnly = function() {
+    return (this.isReadOnly && !this.userHasRSVP);
   };
 
   /**
@@ -581,6 +636,7 @@
    */
   Component.prototype.canRemindAttendeesByEmail = function() {
     return this.alarm.action == 'email' &&
+      !this.isReadOnly &&
       this.attendees && this.attendees.length > 0;
   };
 
@@ -633,6 +689,32 @@
     });
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit(true);
+  };
+
+  /**
+   * @function reply
+   * @memberof Component.prototype
+   * @desc Reply to an invitation.
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.$reply = function() {
+    var _this = this, data, path = [this.pid, this.id];
+
+    if (this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    data = {
+      reply: this.reply,
+      delegatedTo: this.delegatedTo,
+      alarm: this.$hasAlarm? this.alarm : {}
+    };
+
+    return Component.$$resource.save(path.join('/'), data, { action: 'rsvpAppointment' })
+      .then(function(data) {
+        // Make a copy of the data for an eventual reset
+        _this.$shadowData = _this.$omit(true);
+        return data;
+      });
   };
 
   /**

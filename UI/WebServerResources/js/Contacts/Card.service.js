@@ -133,6 +133,9 @@
     if (!this.$$image)
       this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32);
     this.selected = false;
+
+    // An empty attribute to trick md-autocomplete when adding attendees from the appointment editor
+    this.empty = ' ';
   };
 
   /**

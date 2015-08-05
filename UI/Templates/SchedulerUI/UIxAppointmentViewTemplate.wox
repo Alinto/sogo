@@ -4,21 +4,20 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="40">
-    <form name="eventForm" ng-submit="viewer.save(eventForm)">
-      <md-toolbar class="md-padding" ng-class="viewer.component.getClassName('bg')">
+  <md-dialog flex="40" flex-md="60" flex-sm="100">
+      <md-toolbar class="md-padding" ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
-          <h2 class="md-flex">
+          <div class="sg-md-title md-flex">
             <!-- classification -->
-            <md-icon ng-if="viewer.component.classification == 'confidential'">visibility_off</md-icon>
-            <md-icon ng-if="viewer.component.classification == 'private'">vpn_key</md-icon>
+            <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
+            <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
             <!-- summary -->
-            {{viewer.component.summary}}
+            {{::editor.component.summary}}
             <!-- priority -->
-            <md-icon ng-repeat="i in viewer.component.priority | range">star</md-icon>
-          </h2>
-          <md-button class="md-icon-button" ng-click="viewer.close()">
+            <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
+          </div>
+          <md-button class="md-icon-button" ng-click="editor.close()">
             <md-icon aria-label="Close dialog">close</md-icon>
           </md-button>
         </div>
@@ -26,104 +25,177 @@
       <md-dialog-content>
       <md-list>
         <!-- categories -->
-        <md-list-item ng-show="viewer.component.categories.length > 0">
-          <md-chips class="sg-readonly" ng-model="viewer.component.categories" readonly="true">
+        <md-list-item ng-show="editor.component.categories.length > 0">
+          <md-chips class="sg-readonly" ng-model="::editor.component.categories" readonly="true">
             <md-chip-template>
               <span>{{$chip}}</span>
             </md-chip-template>
           </md-chips>
         </md-list-item>
         <!-- location -->
-        <md-list-item ng-show="viewer.component.location">
+        <md-list-item ng-show="editor.component.location">
           <md-icon>place</md-icon>
-          <p>{{viewer.component.location}}</p>
+          <p>{{::editor.component.location}}</p>
         </md-list-item>
         <!-- calendar -->
         <md-list-item>
           <md-icon>event</md-icon>
-          <p>{{viewer.component.calendar}}</p>
+          <p>{{editor.component.calendar}}</p>
         </md-list-item>
         <!-- start/end dates -->
-        <md-list-item class="md-2-line">
+        <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }">
           <md-icon>access_time</md-icon>
           <div layout="row" class="md-flex">
-            <div class="md-list-item-text" ng-show="viewer.component.startDate">
+            <div class="md-list-item-text" ng-show="editor.component.startDate">
               <p><var:string label:value="Start"/></p>
-              <h3>
-                {{viewer.component.localizedStartDate}}
-                <span ng-hide="viewer.component.isAllDay"> {{viewer.component.localizedStartTime}}</span>
-              </h3>
+              <h3>{{::editor.component.localizedStartDate}}</h3>
+              <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedStartTime}}</h3>
             </div>
-            <div class="md-list-item-text" ng-show="viewer.component.endDate">
+            <div class="md-list-item-text" ng-show="editor.component.endDate">
               <p><var:string label:value="End"/></p>
-              <h3>
-                {{viewer.component.localizedEndDate}}
-                <span ng-hide="viewer.component.isAllDay">{{viewer.component.localizedEndTime}}</span>
-              </h3>
+              <h3>{{::editor.component.localizedEndDate}}</h3>
+              <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedEndTime}}</h3>
             </div>
           </div>
         </md-list-item>
         <!-- is transparent -->
-        <md-list-item ng-show="viewer.component.isTransparent">
+        <md-list-item ng-show="editor.component.isTransparent">
           <md-icon>event_available</md-icon>
           <p><var:string label:value="Show Time as Free"/></p>
         </md-list-item>
         <!-- send appointment notifications -->
-        <md-list-item ng-show="viewer.component.sendAppointmentNotifications">
+        <md-list-item ng-show="editor.component.sendAppointmentNotifications">
           <md-icon>send</md-icon>
           <p><var:string label:value="Send Appointment Notifications"/></p>
         </md-list-item>
         <!-- attach urls -->
-        <md-list-item ng-show="viewer.component.attachUrls.length > 0">
+        <md-list-item ng-show="editor.component.attachUrls.length > 0">
           <md-icon>link</md-icon>
-          <p ng-repeat="url in viewer.component.attachUrls"><a ng-href="{{url.value}}">{{url.value}}</a></p>
+          <p ng-repeat="url in ::editor.component.attachUrls"><a ng-href="{{url.value}}">{{url.value}}</a></p>
         </md-list-item>
         <!-- comment -->
-        <md-list-item ng-show="viewer.component.comment">
+        <md-list-item ng-show="editor.component.comment">
           <md-icon>mode_comment</md-icon>
-          <p>{{viewer.component.comment}}</p>
+          <p>{{::editor.component.comment}}</p>
         </md-list-item>
         <!-- repeat -->
-        <md-list-item ng-show="viewer.component.repeat">
+        <md-list-item ng-show="editor.component.$isRecurrent">
           <md-icon>repeat</md-icon>
-          <p><!-- viewer.component.repeat.toString() --></p>
+          <p><!-- editor.component.repeat.toString() --></p>
         </md-list-item>
         <!-- reminder -->
-        <md-list-item ng-show="viewer.component.$hasAlarm">
-          <md-icon>alarm</md-icon>
-          <p><!-- viewer.component.alarm.toString() --></p>
+        <md-list-item ng-show="editor.component.$hasAlarm" ng-hide="editor.component.userHasRSVP">
+          <md-icon>alarm_on</md-icon>
+          <p><!-- editor.component.alarm.toString() --></p>
         </md-list-item>
-        <!-- attendees -->
-        <md-list-item ng-show="viewer.component.attendees.length > 0">
-          <div class="pseudo-input-container">
-            <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
-            <!-- md-contact-chips don't support "readonly", so we build them using md-chips
-                 in readonly mode and a template similar to the one of md-contact-chips -->
-            <md-chips class="md-contact-chips"
-                      ng-model="viewer.component.attendees"
-                      readonly="true">
-              <md-chip-template>
-                <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
-                <div class="md-contact-name">{{$chip.name}}</div>
-                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
-              </md-chip-template>
-            </md-chips>
+        <md-list-item class="md-2-line" ng-show="editor.component.organizer">
+          <md-icon>people</md-icon>
+          <div layout="column" layout-fill="layout-fill">
+            <!-- organizer -->
+            <div class="pseudo-input-container" ng-show="editor.component.organizer">
+              <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
+              <md-chips class="md-contact-chips sg-readonly"
+                        ng-model="::editor.organizer"
+                        readonly="true">
+                <md-chip-template>
+                  <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.$image}}" alt="{{$chip.name}}"/></div>
+                  <div class="md-contact-name">{{$chip.name}}</div>
+                </md-chip-template>
+              </md-chips>
+            </div>
+            <!-- attendees -->
+            <div class="pseudo-input-container" ng-show="editor.component.attendees.length > 0">
+              <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
+              <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+                   in readonly mode and a template similar to the one of md-contact-chips -->
+              <md-chips class="md-contact-chips sg-readonly"
+                        ng-model="::editor.component.attendees"
+                        readonly="true">
+                <md-chip-template>
+                  <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+                  <div class="md-contact-name">{{$chip.name}}</div>
+                  <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+                </md-chip-template>
+              </md-chips>
+            </div>
           </div>
         </md-list-item>
       </md-list>
+      <!-- invitation -->
+      <md-list ng-show="editor.component.userHasRSVP">
+        <md-divider><!-- dividerd --></md-divider>
+        <md-subheader class="md-no-sticky sg-padded--top"><var:string label:value="You are invited to participate"/></md-subheader>
+        <!-- participation status -->
+        <md-list-item>
+          <md-icon>insert_invitation</md-icon>
+          <md-input-container class="md-no-flex">
+            <md-select ng-model="editor.component.reply">
+              <var:foreach list="replyList" item="item">
+                <md-option var:value="item">
+                  <var:string value="itemReplyText"/>
+                </md-option>
+              </var:foreach>
+            </md-select>
+          </md-input-container>
+        </md-list-item>
+        <md-list-item ng-show="editor.component.reply == 4">
+          <md-icon><!-- space --></md-icon>
+          <md-autocomplete
+              class="md-flex"
+              md-input-name="delegatedTo"
+              md-search-text="editor.component.delegatedTo"
+              md-selected-item="editor.cardToAdd"
+              md-items="card in editor.cardFilter(editor.component.delegatedTo)"
+              md-item-text="card.$$email"
+              md-min-length="3"
+              md-no-cache="true"
+              label:md-floating-label="Delegated to">
+            <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
+              <span class="md-contact-name"
+                    md-highlight-text="editor.component.delegatedTo"
+                    md-highlight-flags="^i">{{card.$$fullname}}</span> <span class="md-contact-email"
+                    md-highlight-text="editor.component.delegatedTo"
+                    md-highlight-flags="^i">{{card.$$email}}</span>
+            </span>
+          </md-autocomplete>
+        </md-list-item>
+        <!-- reminder -->
+        <md-list-item ng-show="editor.component.userHasRSVP">
+          <md-checkbox ng-model="editor.component.$hasAlarm"
+                       label:aria-label="Reminder"><!-- reminder --></md-checkbox>
+          <p><var:string label:value="Reminder"/></p>
+        </md-list-item>
+      </md-list>
+      <div class="sg-inset" ng-show="editor.component.userHasRSVP">
+        <span ng-show="editor.component.$hasAlarm"><var:component className="UIxReminderEditor" /></span>
+      </div>
     </md-dialog-content>
     <!-- actions -->
-    <div class="md-actions">
-      <md-button type="button" ng-click="viewer.edit()" ng-hide="viewer.component.occurrenceId">
+    <div class="md-actions" ng-show="editor.component.isEditable()">
+      <md-button type="button" ng-click="editor.edit()">
         <var:string label:value="Edit"/>
       </md-button>
-      <md-button type="button" ng-click="viewer.editAllOccurrences()" ng-show="viewer.component.occurrenceId">
+    </div>
+    <div class="md-actions" ng-show="editor.component.isEditableOccurrence()">
+      <md-button type="button" ng-click="editor.editAllOccurrences()">
         <var:string label:value="Edit All Occurrences"/>
       </md-button>
-      <md-button type="button" ng-click="viewer.edit()" ng-show="viewer.component.occurrenceId">
+      <md-button type="button" ng-click="editor.edit()">
         <var:string label:value="Edit This Occurrence"/>
       </md-button>
     </div>
-  </form>
-</md-dialog>
+    <div class="md-actions" ng-show="editor.component.isInvitation()">
+      <md-button type="button" ng-click="editor.reply()">
+        <var:string label:value="Update"/>
+      </md-button>
+    </div>
+    <div class="md-actions" ng-show="editor.component.isInvitationOccurrence()">
+      <md-button type="button" ng-click="editor.replyAllOccurrences()">
+        <var:string label:value="Update All Occurrences"/>
+      </md-button>
+      <md-button type="button" ng-click="editor.reply()">
+        <var:string label:value="Update This Occurrence"/>
+      </md-button>
+    </div>
+  </md-dialog>
 </container>
