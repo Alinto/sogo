@@ -50,8 +50,8 @@
       $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,
-        clickOutsideToClose: true,
-        escapeToClose: true,
+        clickOutsideToClose: false,
+        escapeToClose: false,
         templateUrl: 'UIxMailEditor',
         controller: 'MessageEditorController',
         controllerAs: 'editor',
