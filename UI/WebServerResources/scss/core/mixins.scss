@@ -1,25 +1,6 @@
 /// mixins.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import '../../angular-material/src/core/style/mixins.scss';
 
-@mixin margin-selectors($before:1em, $after:1em, $start:0px, $end:0px) {
-  -webkit-margin-before: $before;
-  -webkit-margin-after: $after;
-  -webkit-margin-start: $start;
-  -webkit-margin-end: $end;
-}
-
-@mixin not-selectable($value:none) {
-  user-select: $value;
-}
-
-@mixin input-placeholder-color($color) {
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder, /* Firefox 19+ */
-  &:-moz-placeholder, /* Firefox 18- */
-  &:-ms-input-placeholder {
-    color: $color;
-  }
-}
 // Utility to compensate for the the xml mandatory attribute values
 // Creates classes extending layout attributes with no values
 // ----------------------------------------------------------------

@@ -1,12 +1,2 @@
 /// divider.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
-
-md-divider {
-  display: block;
-  border-top: 1px solid;
-  margin: 0;
-
-  &.md-inset {
-    margin-left: $baseline-grid * 9;
-  }
-}

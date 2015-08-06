@@ -343,10 +343,10 @@ html p {
   white-space: nowrap;
 }
 .#{$md}-display-2--light {
-     $lineHeight: $sg-line-height-7;
-     font-size: $sg-font-size-7;
-     line-height: $lineHeight;
-     font-weight: $sg-font-light;
+  $lineHeight: $sg-line-height-7;
+  font-size: $sg-font-size-7;
+  line-height: $lineHeight;
+  font-weight: $sg-font-light;
  }
 .#{$md}-display-3 {
   $lineHeight : $sg-line-height-8;
