@@ -34,7 +34,7 @@
           </div>
         </div>
 
-        <md-chips ng-model="viewer.message.flags" ng-change="viewer.changeFlags()">
+        <md-chips class="sg-readonly" ng-model="viewer.message.flags" ng-change="viewer.changeFlags()">
           <md-chip-template>{{viewer.service.$tags[$chip][0]}}</md-chip-template>
           <md-autocomplete
               md-selected-item="viewer.tags.selected"
