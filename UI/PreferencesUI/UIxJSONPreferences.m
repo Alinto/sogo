@@ -61,7 +61,8 @@ static SoProduct *preferencesProduct = nil;
   SOGoUserDefaults *defaults;
   NSMutableArray *accounts;
   NSArray *categoryLabels;
-  
+  NSDictionary *locale;
+
   if (!preferencesProduct)
     {
       preferencesProduct = [[SoProduct alloc] initWithBundle:
@@ -78,7 +79,7 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoTimeZone"])
     [[defaults source] setObject: [defaults timeZoneName]  forKey: @"SOGoTimeZone"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoShortDateFormat"])
     [[defaults source] setObject: [defaults shortDateFormat]  forKey: @"SOGoShortDateFormat"];
 
@@ -90,7 +91,7 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoLoginModule"])
     [[defaults source] setObject: [defaults loginModule]  forKey: @"SOGoLoginModule"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoRefreshViewCheck"])
     [[defaults source] setObject: [defaults refreshViewCheck]  forKey: @"SOGoRefreshViewCheck"];
 
@@ -99,13 +100,13 @@ static SoProduct *preferencesProduct = nil;
   //
   if (![[defaults source] objectForKey: @"SOGoFirstDayOfWeek"])
     [[defaults source] setObject: [NSNumber numberWithInt: [defaults firstDayOfWeek]] forKey: @"SOGoFirstDayOfWeek"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoDayStartTime"])
     [[defaults source] setObject: [NSString stringWithFormat: @"%02d:00", [defaults dayStartHour]] forKey: @"SOGoDayStartTime"];
 
   if (![[defaults source] objectForKey: @"SOGoDayEndTime"])
     [[defaults source] setObject: [NSString stringWithFormat: @"%02d:00", [defaults dayEndHour]] forKey: @"SOGoDayEndTime"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoFirstWeekOfYear"])
     [[defaults source] setObject: [defaults firstWeekOfYear] forKey: @"SOGoFirstWeekOfYear"];
 
@@ -114,20 +115,20 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoCalendarEventsDefaultClassification"])
     [[defaults source] setObject: [defaults calendarEventsDefaultClassification] forKey: @"SOGoCalendarEventsDefaultClassification"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoCalendarTasksDefaultClassification"])
     [[defaults source] setObject: [defaults calendarTasksDefaultClassification] forKey: @"SOGoCalendarTasksDefaultClassification"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoCalendarDefaultReminder"])
     [[defaults source] setObject: [defaults calendarDefaultReminder] forKey: @"SOGoCalendarDefaultReminder"];
-  
+
   // Populate default calendar categories, based on the user's preferred language
   if (![defaults calendarCategories])
     {
       categoryLabels = [[[self labelForKey: @"calendar_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
                          componentsSeparatedByString: @","]
                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
-      
+
       [defaults setCalendarCategories: categoryLabels];
     }
   if (![defaults calendarCategoriesColors])
@@ -143,7 +144,7 @@ static SoProduct *preferencesProduct = nil;
 
       [defaults setCalendarCategoriesColors: colors];
     }
-  
+
   //
   // Default Contacts preferences
   //
@@ -154,10 +155,10 @@ static SoProduct *preferencesProduct = nil;
       categoryLabels = [[[self labelForKey: @"contacts_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
                           componentsSeparatedByString: @","]
                           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
-      
+
       if (!categoryLabels)
         categoryLabels = [NSArray array];
-      
+
       [defaults setContactsCategories: categoryLabels];
     }
 
@@ -172,27 +173,27 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoMailReplyPlacement"])
     [[defaults source] setObject: [defaults mailReplyPlacement] forKey: @"SOGoMailReplyPlacement"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoMailSignaturePlacement"])
     [[defaults source] setObject: [defaults mailSignaturePlacement] forKey: @"SOGoMailSignaturePlacement"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoMailComposeMessageType"])
     [[defaults source] setObject: [defaults mailComposeMessageType] forKey: @"SOGoMailComposeMessageType"];
-  
+
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
-  
+
   // Populate default mail lablels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
     {
       SOGoMailLabel *label;
       NSArray *labels;
       id v;
-      
+
       int i;
-      
+
       v = [defaults mailLabelsColors];
-      
+
       labels = [SOGoMailLabel labelsFromDefaults: v  component: self];
       v = [NSMutableDictionary dictionary];
       for (i = 0; i < [labels count]; i++)
@@ -201,7 +202,7 @@ static SoProduct *preferencesProduct = nil;
           [v setObject: [NSArray arrayWithObjects: [label label], [label color], nil]
                 forKey: [label name]];
         }
- 
+
       [defaults setMailLabelsColors: v];
     }
 
@@ -213,6 +214,10 @@ static SoProduct *preferencesProduct = nil;
   // call -synchronize on our defaults.
   //
   values = [[[[defaults source] values] mutableCopy] autorelease];
+
+  // Add locale code (used by CK Editor)
+  locale = [[preferencesProduct resourceManager] localeForLanguageNamed: [defaults language]];
+  [values setObject: [locale objectForKey: @"NSLocaleCode"] forKey: @"LocaleCode"];
 
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
   account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
