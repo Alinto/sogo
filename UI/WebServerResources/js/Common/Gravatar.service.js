@@ -12,9 +12,15 @@
    */
   function Gravatar() {
     return function(email, size) {
-      var hash, s = size;
+      var x, y, hash, s = size;
       if (!email) {
         return '';
+      }
+      x = email.indexOf('<');
+      if (x >= 0) {
+        y = email.indexOf('>', x);
+        if (y > x)
+          email = email.substring(x+1,y);
       }
       if (!size) {
         s = 48; // default to 48 pixels
