@@ -4,7 +4,8 @@
 (function() {
   'use strict';
 
-  angular.module('ck', []).directive('ckEditor', function() {
+  ckEditor.$inject = ['$parse'];
+  function ckEditor($parse) {
     var calledEarly, loaded;
     loaded = false;
     calledEarly = false;
@@ -39,7 +40,7 @@
       },
 
       link: function($scope, elm, attr, ngModel) {
-        var ck;
+        var ck, options = {}, locale;
         if (!ngModel) {
           return;
         }
@@ -49,7 +50,16 @@
         }
         loaded = false;
 
-        ck = CKEDITOR.replace(elm[0]);
+        if (attr.ckOptions)
+          options = angular.fromJson(attr.ckOptions.replace(/'/g, "\""));
+
+        if (attr.ckLocale) {
+          locale = $parse(attr.ckLocale)($scope);
+          options.language = locale;
+          options.scayt_sLang = locale;
+        }
+
+        ck = CKEDITOR.replace(elm[0], options);
         ck.on('pasteState', function() {
           $scope.$apply(function() {
             ngModel.$setViewValue(ck.getData());
@@ -61,6 +71,9 @@
         };
       }
     };
-  });
-  
+  }
+
+  angular
+    .module('ck', [])
+    .directive('ckEditor', ckEditor);
 })();
