@@ -31,12 +31,12 @@
    * @param {string} content
    * @returns a promise that resolves if the user has clicked on the 'OK' button
    */
-  Dialog.confirm = function(title, content) {
+  Dialog.confirm = function(title, content, options) {
     var confirm = this.$modal.confirm()
         .title(title)
         .content(content)
-        .ok(l('OK'))
-        .cancel(l('Cancel'));
+        .ok((options && options.ok)? options.ok : l('OK'))
+        .cancel((options && options.cancel)? options.cancel : l('Cancel'));
     return this.$modal.show(confirm);
   };
 

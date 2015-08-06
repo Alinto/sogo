@@ -99,7 +99,8 @@
     }
     function confirmDelete(card) {
       Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the card of %{0}?', card.$fullname()))
+                     l('Are you sure you want to delete the card of %{0}?', card.$fullname()),
+                     {ok: l('Yes'), cancel: l('No')})
         .then(function() {
           // User confirmed the deletion
           card.$delete()
