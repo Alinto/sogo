@@ -652,7 +652,7 @@ static NSArray *tasksFields = nil;
   return [self _responseWithData: data];
 }
 
-- (void) checkFilterValue
+- (void) saveFilterValue
 {
   NSString *filter;
   SOGoUserSettings *us;
@@ -664,6 +664,29 @@ static NSArray *tasksFields = nil;
   {
     us = [[context activeUser] userSettings];
     [us setObject: filter forKey: @"CalendarDefaultFilter"];
+    [us synchronize];
+  }
+}
+
+- (void) saveSortValue
+{
+  NSString *sort, *ascending;
+  SOGoUserSettings *us;
+  NSMutableDictionary *calendarSettings;
+  
+  sort = [[context request] formValueForKey: @"sort"];
+  ascending = [[context request] formValueForKey: @"asc"];
+  if ([sort length])
+  {
+    us = [[context activeUser] userSettings];
+    calendarSettings = [us objectForKey: @"Calendar"];
+    // Must create if it doesn't exist
+    if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [us setObject: calendarSettings forKey: @"Calendar"];
+    }
+    [calendarSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: @"EventsSortingState"];
     [us synchronize];
   }
 }
@@ -720,7 +743,8 @@ static NSArray *tasksFields = nil;
   NSString *sort, *ascending;
   
   [self _setupContext];
-  [self checkFilterValue];
+  [self saveFilterValue];
+  [self saveSortValue];
   
   newEvents = [NSMutableArray array];
   events = [[self _fetchFields: eventsFields
