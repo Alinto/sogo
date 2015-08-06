@@ -168,6 +168,7 @@
 
         <!-- MESSAGE CONTENT -->
         <textarea name="content" var:class="editorClass"
+                  ck-locale="editor.localeCode"
                   ng-model="editor.message.editable.text"/>
 
         <!-- TOOLBAR BUTTONS -->

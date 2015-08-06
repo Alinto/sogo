@@ -104,6 +104,7 @@
     Preferences.ready().then(function() {
       if (Preferences.defaults.SOGoMailAutoSave)
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+      vm.localeCode = Preferences.defaults.LocaleCode;
     });
   }
 
