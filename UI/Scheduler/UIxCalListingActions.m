@@ -652,10 +652,11 @@ static NSArray *tasksFields = nil;
   return [self _responseWithData: data];
 }
 
-- (void) saveEventFilterValue
+- (void) saveFilterValue: (NSString *) submodule
 {
   NSString *filter;
   SOGoUserSettings *us;
+  NSMutableDictionary *calendarSettings;
   
   filter = [[context request] formValueForKey: @"filterpopup"];
   if ([filter length]
@@ -663,7 +664,15 @@ static NSArray *tasksFields = nil;
       && ![filter isEqualToString: @"view_future"])
   {
     us = [[context activeUser] userSettings];
-    [us setObject: filter forKey: @"CalendarDefaultFilter"];
+    calendarSettings = [us objectForKey: @"Calendar"];
+    // Must create if it doesn't exist
+    if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [us setObject: calendarSettings forKey: @"Calendar"];
+    }
+    //[us setObject: filter forKey: submodule];
+    [calendarSettings setObject: filter forKey: submodule];
     [us synchronize];
   }
 }
@@ -743,7 +752,7 @@ static NSArray *tasksFields = nil;
   NSString *sort, *ascending;
   
   [self _setupContext];
-  [self saveEventFilterValue];
+  [self saveFilterValue: @"EventsFilterState"];
   [self saveSortValue: @"EventsSortingState"];
   
   newEvents = [NSMutableArray array];
@@ -1436,6 +1445,7 @@ _computeBlocksPosition (NSArray *blocks)
   filteredTasks = [NSMutableArray array];
   
   [self _setupContext];
+  [self saveFilterValue: @"TasksFilterState"];
   [self saveSortValue: @"TasksSortingState"];
   
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
