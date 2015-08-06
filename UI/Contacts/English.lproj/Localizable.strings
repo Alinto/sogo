@@ -132,6 +132,8 @@
 "New Addressbook..." = "New Addressbook...";
 "Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
+"Subscribe to a shared folder" = "Subscribe to a shared folder";
+"Search User" = "Search User";
 
 "Name of the Address Book" = "Name of the Address Book";
 "Are you sure you want to delete the selected address book?"
@@ -146,8 +148,6 @@
 
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
-
-
 
 "You cannot subscribe to a folder that you own!"
 = "You cannot subscribe to a folder that you own.";

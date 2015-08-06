@@ -6,7 +6,7 @@
 
   /*
    * sgSubscribe - Common subscription widget
-   * @restrict class or attribute
+   * @restrict attribute
    * @param {string} sgSubscribe - the folder type
    * @param {function} sgSubscribeOnSelect - the function to call when subscribing to a folder.
    *        One variable is available: folderData.
@@ -26,7 +26,7 @@
       replace: false,
       bindToController: true,
       controller: sgSubscribeDialogController,
-      controllerAs: 'vm',
+      controllerAs: '$sgSubscribeDialogController',
       link: link
     };
   }
@@ -51,7 +51,7 @@
           onFolderSelect: vm.onFolderSelect
         },
         controller: sgSubscribeController,
-        controllerAs: 'vm'
+        controllerAs: 'subscribe'
       });
     };
   }
@@ -62,7 +62,9 @@
   sgSubscribeController.$inject = ['folderType', 'onFolderSelect', 'User'];
   function sgSubscribeController(folderType, onFolderSelect, User) {
     var vm = this;
+
     vm.selectedUser = null;
+    vm.users = User.$users;
 
     vm.searchTextOptions = {
       updateOn: 'default blur',
@@ -73,16 +75,28 @@
     };
 
     vm.onChange = function() {
-      User.$filter(vm.searchText).then(function(matches) {
-        vm.users = matches;
+      User.$filter(vm.searchText).then(function() {
+        if (vm.selectedUser) {
+          // If selected user is no longer part of the matching users, unselect it
+          if (_.isUndefined(_.find(User.$users, function(user) {
+            return user.uid == vm.selectedUser.uid;
+          }))) {
+            vm.selectedUser = null;
+          }
+        }
       });
     };
 
     vm.selectUser = function(i) {
-      // Fetch folders of specific type for selected user
-      vm.users[i].$folders(folderType).then(function() {
-        vm.selectedUser = vm.users[i];
-      });
+      if (vm.selectedUser == vm.users[i]) {
+        vm.selectedUser = null;
+      }
+      else {
+        // Fetch folders of specific type for selected user
+        vm.users[i].$folders(folderType).then(function() {
+          vm.selectedUser = vm.users[i];
+        });
+      }
     };
 
     // Callback upon subscription to a folder

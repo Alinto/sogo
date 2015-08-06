@@ -8,31 +8,67 @@
     xmlns:uix="OGo:uix">
   <md-dialog flex="50" flex-sm="100">
     <md-dialog-content>
-      <h2 class="md-headline"><var:string label:value="Subscribe"/></h2>
+      <h2 class="md-title"><var:string label:value="Subscribe to a shared folder"/></h2>
       <md-input-container>
-        <label><md-icon>search</md-icon><var:string label:value="Search"/></label>
+        <label><md-icon>search</md-icon><var:string label:value="Search User"/></label>
         <input type="input"
                autocomplete="off"
-               ng-model="vm.searchText"
-               ng-model-options="vm.searchTextOptions"
-               ng-change="vm.onChange()"/>
+               ng-model="subscribe.searchText"
+               ng-model-options="subscribe.searchTextOptions"
+               ng-change="subscribe.onChange()"/>
       </md-input-container>
-      <md-list>
+      <md-card ng-repeat="user in subscribe.users"
+               ng-class="{ 'sg-collapsed': user.uid != subscribe.selectedUser.uid, 'sg-expanded': user.uid == subscribe.selectedUser.uid }">
+        <md-button ng-click="subscribe.selectUser($index)">
+          <div layout="row" layout-align="start center" class="md-flex">
+            <span class="card-picture" ng-switch="user.isGroup">
+              <div ng-switch-when="0">
+                <sg-avatar-image class="md-tile-left"
+                                 sg-email="user.c_email"
+                                 size="48"><!-- avatar --></sg-avatar-image>
+              </div>
+              <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>
+            </span>
+            <div class="sg-tile-content">
+              <div class="sg-md-subhead-multi">{{user.cn}} {{user.userClass}}</div>
+              <div class="sg-md-body-multi">{{user.c_email}}</div>
+            </div>
+            <md-icon ng-class="{ 'icon-expand-more': user.uid != subscribe.selectedUser.uid,
+                               'icon-expand-less': user.uid == subscribe.selectedUser.uid }"><!--icon--></md-icon>
+          </div>
+        </md-button>
+        <md-card-content ng-show="user == subscribe.selectedUser">
+          <div ng-show="user.$$folders.length == 0">
+            <md-icon>warning</md-icon>
+            <var:string label:value="No possible subscription"/>
+          </div>
+          <div layout="row" layout-align="start center" layout-fill="true"
+               ng-repeat="folder in user.$$folders">
+            <md-icon ng-class="{'icon-contacts': folder.type == 'Contact',
+                               'icon-event': folder.type == 'Appointment'}"><!--icon--></md-icon>
+            <p class="sg-padded--left md-flex">{{folder.displayName}}</p>
+            <md-button class="md-raised"
+                       ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
+          </div>
+        </md-card-content>
+      </md-card>
+
+      <md-list class="ng-hide">
         <md-list-item layout="column"
-                      ng-repeat="user in vm.users">
-          <md-button class="sg-expandable" ng-click="vm.selectUser($index)">
+                      ng-repeat="user in subscribe.users">
+          <md-button class="sg-expandable" ng-click="subscribe.selectUser($index)">
             <div layout="row" layout-align="start center"
                  layout-fill="true">
               <div class="sg-avatar"><!-- normal-user --></div>
               <span class="sg-item-name">{{user.$shortFormat()}}</span>
               <span class="md-secondary md-display-1">
-                <md-icon ng-class="{ 'icon-expand-more': user.uid != vm.selectedUser.uid,
-                                     'icon-expand-less': user.uid == vm.selectedUser.uid }"><!--icon--></md-icon>
+                <md-icon ng-class="{ 'icon-expand-more': user.uid != subscribe.selectedUser.uid,
+                                     'icon-expand-less': user.uid == subscribe.selectedUser.uid }"><!--icon--></md-icon>
               </span>
             </div>
           </md-button>
           <md-list layout-fill="true"
-                   ng-show="user == vm.selectedUser">
+                   ng-show="user == subscribe.selectedUser">
             <md-list-item ng-show="user.$$folders.length == 0">
               <md-icon>warning</md-icon>
               <var:string label:value="No possible subscription"/>
@@ -44,7 +80,7 @@
                 <p class="md-flex sg-item-name">{{folder.displayName}}</p>
               <md-button
                   class="md-raised"
-                  ng-click="vm.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
+                  ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
             </md-list-item>
           </md-list>
           <md-divider ng-if="!$last"><!-- divider --></md-divider>
