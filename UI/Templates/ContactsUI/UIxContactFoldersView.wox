@@ -97,35 +97,7 @@
       </ul>
     </div>
 
-    <!-- dropdown menu for new card split button
-    <ul id="newListDrop" class="f-dropdown">
-      <li><a class="tiny" ui-sref="addressbook.new({addressbookId: addressbook.id, contactType: 'list'})"><var:string label:value="New List"/></a></li>
-    </ul>
-    -->
-
-    <!-- dropdown menu for addressbook links
-    <div id="addressbookLinks" class="sg-dropdown-content joyride-tip-guide">
-      <span class="joyride-nub left">!- dropdown nub -</span>
-      <div class="joyride-content-wrapper">
-        <ul>
-          <li class="title"><var:string label:value="Links to this Address Book"/></li>
-          <li class="subtitle"><var:string label:value="CardDAV URL for Authenticated User Access"/></li>
-          <li class="value">{{addressbook.cardDavURL}}</li>
-          <var:if condition="isPublicAccessEnabled">
-            <li class="subtitle"><var:string label:value="CardDAV URL for Public Access"/></li>
-            <li class="value">{{addressbook.publicCardDavURL}}</li>
-          </var:if>
-        </ul>
-      </div>
-    </div>
-    -->
-
-    <!-- dropdown menu for subscriptions
-    <div id="folderSubscribe" class="sg-dropdown-content"
-         sg-subscribe="contact"
-         sg-subscribe-on-select="subscribeToFolder">!- subscription dropdown -</div>
-    -->
-<!-- Sidenav -->
+    <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <!-- <div style="position: relative; display: flex;"> -->
@@ -354,7 +326,7 @@
               <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
               <md-option value="category"><var:string label:value="Category"/></md-option>
               <md-option value="organization"><var:string label:value="Organization"/></md-option>
-          </md-select>
+            </md-select>
           </md-input-container>
         </div>
       </div>
