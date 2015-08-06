@@ -22,6 +22,8 @@
     vm.removeUser = removeUser;
     vm.addUser = addUser;
     vm.selectUser = selectUser;
+    vm.confirmation = { showing: false,
+                        message: ''};
 
     function userFilter($query) {
       return User.$filter($query, folder.$acl.users);
@@ -43,9 +45,8 @@
     function confirmChange(user) {
       var confirmation = user.$confirmRights();
       if (confirmation) {
-        Dialog.confirm(l('Warning'), confirmation).catch(function() {
-          user.$resetRights(true);
-        });
+        vm.confirmation.showing = true;
+        vm.confirmation.message = confirmation;
       }
     }
 

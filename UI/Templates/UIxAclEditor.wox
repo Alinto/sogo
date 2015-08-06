@@ -67,7 +67,7 @@
       </md-card>
     </md-dialog-content>
 
-    <div class="md-actions">
+    <div ng-hide="acl.confirmation.showing" class="md-actions">
       <md-autocomplete
           class="md-flex"
           md-input-name="addUser"
@@ -92,6 +92,15 @@
         </md-item-template>
       </md-autocomplete>
       <md-button ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
+    </div>
+    <div class="md-actions" ng-show="acl.confirmation.showing">
+      <span>{{acl.confirmation.message}}</span>
+      <md-button ng-click="acl.selectedUser.$resetRights(true); acl.confirmation.showing = false">
+        <var:string label:value="Cancel"/>
+      </md-button>
+      <md-button class="md-warn" ng-click="acl.confirmation.showing = false">
+        <var:string label:value="Ok"/>
+      </md-button>
     </div>
   </md-dialog>
 
