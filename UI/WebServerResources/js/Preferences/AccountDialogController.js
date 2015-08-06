@@ -7,22 +7,31 @@
   /**
    * @ngInject
    */
-  AccountDialogController.$inject = ['$scope', '$mdDialog', 'account', 'accountId', 'mailCustomFromEnabled'];
-  function AccountDialogController($scope, $mdDialog, account, accountId, mailCustomFromEnabled) {
-    $scope.account = account;
-    $scope.accountId = accountId;
-    $scope.customFromIsReadonly = function() {
+  AccountDialogController.$inject = ['$mdDialog', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
+  function AccountDialogController($mdDialog, defaults, account, accountId, mailCustomFromEnabled) {
+    var vm = this;
+
+    vm.defaults = defaults;
+    vm.account = account;
+    vm.accountId = accountId;
+    vm.customFromIsReadonly = customFromIsReadonly;
+    vm.cancel = cancel;
+    vm.save = save;
+
+    function customFromIsReadonly() {
       if (accountId > 0)
         return false;
 
       return !mailCustomFromEnabled;
-    };
-    $scope.cancel = function() {
+    }
+
+    function cancel() {
       $mdDialog.cancel();
-    };
-    $scope.save = function() {
+    }
+
+    function save() {
       $mdDialog.hide();
-    };
+    }
   }
 
   angular

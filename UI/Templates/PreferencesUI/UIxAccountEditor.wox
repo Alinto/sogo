@@ -17,66 +17,83 @@
         <md-input-container>
           <label><var:string label:value="Account Name"/></label>
           <input type="text" required="required"
-                 ng-readonly="accountId == 0" ng-model="account.name"/>
+                 ng-readonly="$AccountDialogController.accountId == 0"
+                 ng-model="$AccountDialogController.account.name"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Server Name"/></label>
           <input type="text" required="required"
-                 ng-readonly="accountId == 0" ng-model="account.serverName"/>
+                 ng-readonly="$AccountDialogController.accountId == 0"
+                 ng-model="$AccountDialogController.account.serverName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Port"/></label>
           <input type="number" required="required" min="1" max="65535"
-                 ng-readonly="accountId == 0" ng-model="account.port"/>
+                 ng-readonly="$AccountDialogController.accountId == 0"
+                 ng-model="$AccountDialogController.account.port"/>
         </md-input-container>
 
         <label><var:string label:value="Encryption"/></label>
-        <md-radio-group ng-model="account.encryption">
-          <md-radio-button ng-disabled="accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
-          <md-radio-button ng-disabled="accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
-          <md-radio-button ng-disabled="accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
+        <md-radio-group ng-model="$AccountDialogController.account.encryption">
+          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
+          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
+          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
         </md-radio-group>
 
         <md-input-container>
           <label><var:string label:value="User Name"/></label>
           <input type="text" required="required"
-                 ng-readonly="accountId == 0" ng-model="account.userName"/>
+                 ng-readonly="$AccountDialogController.accountId == 0"
+                 ng-model="$AccountDialogController.account.userName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Password"/></label>
-          <input type="password" ng-readonly="accountId == 0"
-                 ng-model="account.password"/>
+          <input type="password"
+                 ng-readonly="$AccountDialogController.accountId == 0"
+                 ng-model="$AccountDialogController.account.password"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Full Name"/></label>
           <input type="text" required="required"
-                 ng-readonly="customFromIsReadonly()"
-                 ng-model="account.identities[0].fullName"/>
+                 ng-readonly="$AccountDialogController.customFromIsReadonly()"
+                 ng-model="$AccountDialogController.account.identities[0].fullName"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Email"/></label>
           <input type="email" required="required"
-                 ng-readonly="customFromIsReadonly()"
-                 ng-model="account.identities[0].email"/>
+                 ng-readonly="$AccountDialogController.customFromIsReadonly()"
+                 ng-model="$AccountDialogController.account.identities[0].email"/>
         </md-input-container>
 
         <md-input-container>
           <label><var:string label:value="Reply To Email"/></label>
-          <input type="email" ng-model="account.identities[0].replyTo"/>
+          <input type="email" ng-model="$AccountDialogController.account.identities[0].replyTo"/>
         </md-input-container>
 
-        <!-- FIXME -->
-        <md-input-container>
-          <label><var:string label:value="Signature"/></label>
-        <input type="text" ng-model="account.identities[0].signature" />
-      </md-input-container>
+        <!-- To switch between a simple text editor and the CK/HTML editor, we use a ng-if and not
+             a ng-class as it doesn't get initialized by the ckEditor class directive -->
+        <md-input-container ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
+          <label><var:string label:value="Signature"/> {{$AccountDialogController.defaults.SOGoMailComposeMessageType}}</label>
+          <textarea ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
+        </md-input-container>
+        <div class="pseudo-input-container"
+             ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'html'">
+          <label class="pseudo-input-label"><var:string label:value="Signature"/> {{$AccountDialogController.defaults.LocaleCode}}</label>
+          <textarea class="ck-editor"
+                    ck-locale="$AccountDialogController.defaults.LocaleCode"
+                    ck-options="{ 'height': '70px',
+                                  'toolbar': [['Bold', 'Italic', '-', 'Link',
+                                             'Font','FontSize','-','TextColor',
+                                             'BGColor']] }"
+                    ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
+        </div>
 
-        <md-radio-group ng-model="account.receipts.receiptAction">
+        <md-radio-group ng-model="$AccountDialogController.account.receipts.receiptAction">
           <label><var:string label:value="When I receive a request for a return receipt"/></label>
           <md-radio-button value="ignore"><var:string label:value="Never send a return receipt"/></md-radio-button>
           <md-radio-button value="allow"><var:string label:value="Allow return receipts for some messages"/></md-radio-button>
@@ -84,7 +101,7 @@
 
         <label>
           <var:string label:value="If I'm not in the To or Cc of the message"/>
-          <md-select ng-model="account.receipts.receiptNonRecipientAction">
+          <md-select ng-model="$AccountDialogController.account.receipts.receiptNonRecipientAction">
             <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
             <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
             <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
@@ -93,7 +110,7 @@
 
         <label>
           <var:string  label:value="If the sender is outside my domain"/>
-          <md-select ng-model="account.receipts.receiptOutsideDomainAction">
+          <md-select ng-model="$AccountDialogController.account.receipts.receiptOutsideDomainAction">
             <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
             <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
             <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
@@ -102,20 +119,19 @@
 
         <label>
           <var:string label:value="In all other cases"/>
-          <md-select ng-model="account.receipts.receiptAnyAction">
+          <md-select ng-model="$AccountDialogController.account.receipts.receiptAnyAction">
             <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
             <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
             <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
           </md-select>
         </label>
 
-        <div class="md-actions" layout="row">
-          <md-button type="button" ng-click="cancel()">Cancel</md-button>
-          <md-button type="button" class="md-primary"
-                     ng-disabled="accountForm.$invalid" ng-click="save()">Save</md-button>
-        </div>
 
       </form>
     </md-dialog-content>
+    <div class="md-actions">
+      <md-button type="button" ng-click="$AccountDialogController.cancel()"><var:string label:value="Cancel"/></md-button>
+      <md-button ng-disabled="$AccountDialogController.accountForm.$invalid" ng-click="$AccountDialogController.save()"><var:string label:value="Save"/></md-button>
+    </div>
   </md-dialog>
 </var:component>

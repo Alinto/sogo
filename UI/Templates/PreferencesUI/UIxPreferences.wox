@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js">
+    const:jsFiles="Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
 
   <main class="view md-layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
@@ -660,7 +660,7 @@
                            ng-readonly="$index == 0"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
-                             ng-click="app.editMailAccount($index)"
+                             ng-click="app.editMailAccount($event, $index)"
                              layout="row"
                              layout-align="end center"
                              label:aria-label="Edit Account">

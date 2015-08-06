@@ -63,23 +63,29 @@
       var account;
 
       vm.preferences.defaults.AuxiliaryMailAccounts.push({});
+
       account = _.last(vm.preferences.defaults.AuxiliaryMailAccounts);
-      account.name = "New account";
-      account.identities = [];
-      account.identities[0] = {};
-      account.identities[0].fullName = "";
-      account.identities[0].email = "";
-      account.receipts = {};
-      account.receipts.receiptAction = "ignore";
-      account.receipts.receiptNonRecipientAction = "ignore";
-      account.receipts.receiptOutsideDomainAction = "ignore";
-      account.receipts.receiptAnyAction = "ignore";
+      account.name = l("New account");
+      account.identities = [
+        {
+          fullName: "",
+          email: ""
+        }
+      ];
+      account.receipts = {
+        receiptAction: "ignore",
+        receiptNonRecipientAction: "ignore",
+        receiptOutsideDomainAction: "ignore",
+        receiptAnyAction: "ignore"
+      };
 
       $mdDialog.show({
         controller: 'AccountDialogController',
+        controllerAs: '$AccountDialogController',
         templateUrl: 'editAccount?account=new',
         targetEvent: ev,
         locals: {
+          defaults: vm.preferences.defaults,
           account: account,
           accountId: (vm.preferences.defaults.AuxiliaryMailAccounts.length-1),
           mailCustomFromEnabled: window.mailCustomFromEnabled
@@ -87,13 +93,15 @@
       });
     }
 
-    function editMailAccount(index) {
+    function editMailAccount(event, index) {
       var account = vm.preferences.defaults.AuxiliaryMailAccounts[index];
       $mdDialog.show({
         controller: 'AccountDialogController',
+        controllerAs: '$AccountDialogController',
         templateUrl: 'editAccount?account=' + index,
-        targetEvent: null,
+        targetEvent: event,
         locals: {
+          defaults: vm.preferences.defaults,
           account: account,
           accountId: index,
           mailCustomFromEnabled: window.mailCustomFromEnabled
