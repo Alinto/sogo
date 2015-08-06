@@ -686,7 +686,7 @@ static NSArray *tasksFields = nil;
       calendarSettings = [NSMutableDictionary dictionary];
       [us setObject: calendarSettings forKey: @"Calendar"];
     }
-    [calendarSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: @"SortingState"];
+    [calendarSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: @"EventsSortingState"];
     [us synchronize];
   }
 }
