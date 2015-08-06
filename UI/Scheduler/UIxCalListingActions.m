@@ -652,7 +652,7 @@ static NSArray *tasksFields = nil;
   return [self _responseWithData: data];
 }
 
-- (void) saveFilterValue
+- (void) saveEventFilterValue
 {
   NSString *filter;
   SOGoUserSettings *us;
@@ -668,7 +668,7 @@ static NSArray *tasksFields = nil;
   }
 }
 
-- (void) saveSortValue
+- (void) saveSortValue: (NSString *) submodule
 {
   NSString *sort, *ascending;
   SOGoUserSettings *us;
@@ -686,7 +686,7 @@ static NSArray *tasksFields = nil;
       calendarSettings = [NSMutableDictionary dictionary];
       [us setObject: calendarSettings forKey: @"Calendar"];
     }
-    [calendarSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: @"SortingState"];
+    [calendarSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: submodule];
     [us synchronize];
   }
 }
@@ -743,8 +743,8 @@ static NSArray *tasksFields = nil;
   NSString *sort, *ascending;
   
   [self _setupContext];
-  [self saveFilterValue];
-  [self saveSortValue];
+  [self saveEventFilterValue];
+  [self saveSortValue: @"EventsSortingState"];
   
   newEvents = [NSMutableArray array];
   events = [[self _fetchFields: eventsFields
@@ -1436,6 +1436,7 @@ _computeBlocksPosition (NSArray *blocks)
   filteredTasks = [NSMutableArray array];
   
   [self _setupContext];
+  [self saveSortValue: @"TasksSortingState"];
   
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
   endsSecs = (unsigned int) [endDate timeIntervalSince1970];
