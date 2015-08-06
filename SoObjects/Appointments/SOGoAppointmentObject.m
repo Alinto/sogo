@@ -1493,8 +1493,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // the database. We do this ONLY when using SOGo from the
               // Web interface or over ActiveSync.
               // Over DAV, it'll be handled directly in PUTAction:
-              if (![context request] || [[context request] handledByDefaultHandler]
-                                     || [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
+              if (![context request] ||
+                  [[context request] handledByDefaultHandler] ||
+                  [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
                 {
                   // If an alarm was specified, let's use it. This would happen if an attendee accepts/declines/etc. an
                   // event invitation and also sets an alarm along the way. This would happen ONLY from the web interface.
