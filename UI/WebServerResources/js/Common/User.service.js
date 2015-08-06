@@ -22,7 +22,9 @@
       $q: $q,
       $log: $log,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
-      $gravatar: Gravatar
+      $gravatar: Gravatar,
+      $query: '',
+      $users: []
     });
 
     return User;
@@ -49,11 +51,7 @@
       User.$users = [];
       return User.$q.when(User.$users);
     }
-    if (angular.isUndefined(User.$users)) {
-      // First session query
-      User.$users = [];
-    }
-    else if (User.$query == search) {
+    if (User.$query == search) {
       // Query hasn't changed
       return User.$q.when(User.$users);
     }
@@ -62,36 +60,31 @@
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user,
           compareUids = function(data) {
-            return user.uid == data.uid;
+            return this.uid == data.uid;
           };
       if (excludedUsers) {
         // Remove excluded users from response
         results = _.filter(response.users, function(data) {
-          return !_.find(excludedUsers, function(user) {
-            return user.uid == data.uid;
-          });
+          return !_.find(excludedUsers, compareUids, user);
         });
       }
       else {
         results = response.users;
       }
-      // Add new users matching the search query
-      angular.forEach(results, function(data) {
-        if (!_.find(User.$users, function(user) {
-          return user.uid == data.uid;
-        })) {
-          var user = new User(data),
-              index = _.sortedIndex(User.$users, user, '$$shortFormat');
-          User.$users.splice(index, 0, user);
-        }
-      });
       // Remove users that no longer match the search query
       for (index = User.$users.length - 1; index >= 0; index--) {
         user = User.$users[index];
-        if (!_.find(results, compareUids)) {
+        if (!_.find(results, compareUids, user)) {
           User.$users.splice(index, 1);
         }
       }
+      // Add new users matching the search query
+      _.each(results, function(data, index) {
+        if (_.isUndefined(_.find(User.$users, compareUids, data))) {
+          var user = new User(data);
+          User.$users.splice(index, 0, user);
+        }
+      });
       User.$log.debug(User.$users);
       return User.$users;
     });
@@ -172,6 +165,7 @@
   /**
    * @function $isSpecial
    * @memberof User.prototype
+   * @desc Only accurate from the ACL editor.
    * @return true if the user is not a regular system user
    */
   User.prototype.$isSpecial = function() {
