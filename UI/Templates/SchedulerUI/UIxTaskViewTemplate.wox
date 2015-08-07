@@ -4,11 +4,11 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="40">
+  <md-dialog flex="40" flex-md="60" flex-sm="100">
     <md-toolbar class="md-padding" ng-class="editor.component.getClassName('bg')">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
-        <h2 class="md-flex">
+        <div class="sg-md-title md-flex">
           <!-- classification -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
@@ -16,7 +16,7 @@
           {{editor.component.summary}}
           <!-- priority -->
           <md-icon ng-repeat="i in editor.component.priority | range">star</md-icon>
-        </h2>
+        </div>
         <md-button class="md-icon-button" ng-click="editor.close()">
           <md-icon aria-label="Close dialog">close</md-icon>
         </md-button>
