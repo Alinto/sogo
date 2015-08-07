@@ -6,15 +6,15 @@
     xmlns:label="OGo:label">
   <md-dialog flex="60">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
-      <md-toolbar class="md-padding" ng-class="editor.component.getClassName('bg')">
-        <div class="md-toolbar-tools">
+      <md-toolbar ng-class="editor.component.getClassName('bg')">
+        <div class="md-toolbar-tools sg-padded">
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
-          <md-input-container md-no-float="true">
+          <md-input-container>
+            <label><var:string label:value="Title"/></label>
             <input type="text"
                    class="md-title"
-                   label:placeholder="Title"
                    ng-model="editor.component.summary"/>
           </md-input-container>
           <md-button class="md-icon-button" ng-click="editor.cancel()">

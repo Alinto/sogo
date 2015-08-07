@@ -6,15 +6,15 @@
     xmlns:label="OGo:label">
   <md-dialog flex="60">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
-      <md-toolbar class="md-padding" ng-class="editor.component.getClassName('bg')">
+      <md-toolbar class="sg-padded" ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
-          <md-input-container md-no-float="true">
+          <md-input-container>
+            <label><var:string label:value="Title"/></label>
             <input type="text"
                    class="md-title"
-                   label:placeholder="Title"
                    ng-model="editor.component.summary"/>
           </md-input-container>
           <md-button class="md-icon-button" ng-click="editor.cancel()">
@@ -22,14 +22,19 @@
           </md-button>
         </div>
       </md-toolbar>
-      <!--<md-chips>
-          <md-chip ng-repeat="category in editor.component.categories">{{category}}</md-chip>
-        </md-chips>-->
     <md-dialog-content>
       <!-- location -->
       <md-input-container>
         <label><var:string label:value="Location"/></label>
         <input type="text" ng-model="editor.component.location"/>
+      </md-input-container>
+      <!-- calendar -->
+      <md-input-container>
+        <label><var:string label:value="Calendar"/></label>
+        <md-select ng-model="editor.component.destinationCalendar">
+          <md-option ng-repeat="calendar in ::editor.calendars"
+                     ng-value="calendar.id">{{calendar.name}}</md-option>
+        </md-select>
       </md-input-container>
       <!-- categories -->
       <md-chips ng-model="editor.component.categories">
@@ -41,14 +46,6 @@
           <span md-highlight-text="editor.categories.searchText">{{category}}</span>
         </md-autocomplete>
       </md-chips>
-      <!-- calendar -->
-      <md-input-container>
-        <label><var:string label:value="Calendar"/></label>
-        <md-select ng-model="editor.component.destinationCalendar">
-          <md-option ng-repeat="calendar in ::editor.calendars"
-                     ng-value="calendar.id">{{calendar.name}}</md-option>
-        </md-select>
-      </md-input-container>
       <!-- classification -->
       <md-radio-group layout="row" layout-align="space-around center"
                       ng-model="editor.component.classification">
@@ -63,8 +60,8 @@
         </md-radio-button>
       </md-radio-group>
       <!-- priority -->
-      <div layout="row" layout-align="center center">
-        <div flex="20"><var:string label:value="Priority"/></div>
+      <div class="pseudo-input-container">
+        <label class="pseudo-input-label"><var:string label:value="Priority"/></label>
         <md-slider class="md-flex"
                    md-discrete="true"
                    ng-model="editor.component.priority"
@@ -188,7 +185,7 @@
                          md-search-text="editor.searchText"
                          md-selected-item-change="editor.addAttendee(card)"
                          md-items="card in editor.cardFilter(editor.searchText)"
-                         md-item-text="user.empty"
+                         md-item-text="card.empty"
                          md-min-length="3"
                          md-delay="300"
                          md-no-cache="true"

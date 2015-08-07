@@ -144,7 +144,7 @@
               class="md-flex"
               md-input-name="delegatedTo"
               md-search-text="editor.component.delegatedTo"
-              md-selected-item="editor.cardToAdd"
+              md-selected-item="cardToAdd"
               md-items="card in editor.cardFilter(editor.component.delegatedTo)"
               md-item-text="card.$$email"
               md-min-length="3"
