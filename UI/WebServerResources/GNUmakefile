@@ -4,7 +4,9 @@ include ../common.make
 
 WEBSERVER_RESOURCE_DIRS = css fonts img js
 
-build-static-files:
+.DEFAULT_GOAL := all
+
+dev:
 	npm install --production
 	@if [ ! -e angular-material/src ]; then \
 	  git submodule init; \
@@ -17,9 +19,10 @@ build-static-files:
 	fi
 	grunt --stack build
 
-all :: build-static-files
+all:
+	@echo "The 'all' target does nothing. Use 'make dev' to generate static files and 'make install' to install them."
 
-install ::
+install:
 	@if [ -L "$(SOGO_WEBSERVERRESOURCESDIR)" ]; then \
 	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Installation skipped."; \
 	else \
@@ -27,13 +30,13 @@ install ::
 	  cp -r $(WEBSERVER_RESOURCE_DIRS) $(SOGO_WEBSERVERRESOURCESDIR)/; \
 	fi
 
-check ::
+check:
 
-clean ::
+clean:
 
-distclean :: clean
+distclean: clean
 
-uninstall ::
+uninstall:
 	@if [ -L "$(SOGO_WEBSERVERRESOURCESDIR)" ]; then \
 	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Uninstallation skipped."; \
 	else \
