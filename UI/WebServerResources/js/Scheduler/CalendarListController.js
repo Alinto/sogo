@@ -46,6 +46,7 @@
         if (angular.isUndefined(Component['$' + type]))
           Component.$filter(type);
         vm.componentType = type;
+        Component.saveSelectedList(type);
       }
     }
 

@@ -45,11 +45,22 @@
       // Filter paramaters specific to events
       $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
       // Filter parameters specific to tasks
-      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_next7' } //'view_incomplete' }
+      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' }
     });
     Preferences.ready().then(function() {
       // Initialize filter parameters from user's settings
-      Component.$queryEvents.filterpopup = Preferences.settings.CalendarDefaultFilter;
+      if (Preferences.settings.Calendar.EventsFilterState)
+        Component.$queryEvents.filterpopup = Preferences.settings.Calendar.EventsFilterState;
+      if (Preferences.settings.Calendar.TasksFilterState)
+        Component.$queryTasks.filterpopup = Preferences.settings.Calendar.TasksFilterState;
+      if (Preferences.settings.Calendar.EventsSortingState) {
+        Component.$queryEvents.sort = Preferences.settings.Calendar.EventsSortingState[0];
+        Component.$queryEvents.asc = parseInt(Preferences.settings.Calendar.EventsSortingState[1]);
+      }
+      if (Preferences.settings.Calendar.TasksSortingState) {
+        Component.$queryTasks.sort = Preferences.settings.Calendar.TasksSortingState[0];
+        Component.$queryTasks.asc = parseInt(Preferences.settings.Calendar.TasksSortingState[1]);
+      }
       Component.$queryTasks.show_completed = parseInt(Preferences.settings.ShowCompletedTasks);
       // Initialize categories from user's defaults
       Component.$categories = Preferences.defaults.SOGoCalendarCategoriesColors;
@@ -160,6 +171,16 @@
     return _.filter(_.keys(Component.$categories), function(category) {
       return category.search(re) != -1;
     });
+  };
+
+  /**
+   * @function saveSelectedList
+   * @desc Save to the user's settings the currently selected list.
+   * @param {string} componentType - either "events" or "tasks"
+   * @returns a promise of the HTTP operation
+   */
+  Component.saveSelectedList = function(componentType) {
+    return this.$$resource.post(null, 'saveSelectedList', { list: componentType + 'ListView' });
   };
 
   /**

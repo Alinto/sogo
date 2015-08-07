@@ -33,6 +33,7 @@
 #import <NGCards/iCalPerson.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -261,12 +262,14 @@
 - (WOResponse *) saveSelectedListAction
 {
   WORequest *request;
+  NSDictionary *params;
   NSString *selectedList;
   
   [self _setupContext];
   request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
 
-  selectedList = [request formValueForKey: @"list"];
+  selectedList = [params objectForKey: @"list"];
   [moduleSettings setObject: selectedList
                      forKey: @"SelectedList"];
   [us synchronize];
