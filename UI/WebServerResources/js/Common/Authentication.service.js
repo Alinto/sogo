@@ -26,9 +26,6 @@
   // TODO: convert to a Factory recipe?
   .provider('Authentication', Authentication);
 
-  /**
-   * @ngInject
-   */
   function Authentication() {
     function readCookie(name) {
       var foundCookie, prefix, pairs, i, currentPair, start;
@@ -91,9 +88,11 @@
 
     this.$get = getService;
 
+    /**
+     * @ngInject
+     */
     getService.$inject = ['$q', '$http', 'passwordPolicyConfig'];
     function getService($q, $http, passwordPolicyConfig) {
-
       var _this = this, service;
 
       service = {

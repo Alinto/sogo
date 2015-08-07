@@ -17,30 +17,11 @@
   -->
   <main class="view md-layout-fill md-layout-padding" ui-view="login" layout="row" layout-align="center start">
     <md-content class="md-padding" md-scroll-y="true">
-      <div ng-controller="loginController">
+      <div ng-controller="LoginController as app">
 
         <script type="text/javascript">
           var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
         </script>
-        <!--   <div id="aboutBox" style="display:none;">
-             <div>
-             <p class="logo"><img const:alt="SOGo" rsrc:src="img/sogo-logo.png"/></p>
-             <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
-             <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
-             <img const:alt="Inverse" rsrc:src="img/inverse.png"/>
-             <p class="links"><a href="http://sogo.nu/" target="_new">sogo.nu</a> / 
-             <a href="http://inverse.ca/" target="_new">inverse.ca</a></p>
-             <p><a id="aboutClose" href="#" class="button">
-             <span><var:string label:value="OK" /></span></a></p>
-             </div>
-             </div> -->
-        <!-- <nav class="top-bar">
-             <section class="top-bar-section">
-             <ul class="right">
-             <li><a href="#"><var:string label:value="About" /></a></li>
-             </ul>
-             </section>
-             </nav> -->
         <div id="login">
           <div id="logo">
             <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
@@ -48,28 +29,26 @@
 
           <form name="loginForm" layout="column"
                 ng-cloak="ng-cloak"
-                ng-controller="loginController"
-                ng-submit="login(creds)">
+                ng-submit="app.login()">
             <var:if condition="hasLoginSuffix">
-              <input type="hidden" ng-model="creds.loginSuffix" var:value="loginSuffix"/>
+              <input type="hidden" ng-model="app.creds.loginSuffix" var:value="loginSuffix"/>
             </var:if>
-            <div ng-show="warning" ng-cloak="ng-cloak" alert="alert" class="alert-box radius warning">{{warning}}</div>
             <md-input-container>
               <label>
                 <var:string label:value="Username"/>
               </label>
-              <input autocapitalize="off" type="text" ng-model="creds.username" required="required" />
+              <input autocapitalize="off" type="text" ng-model="app.creds.username" required="required" />
             </md-input-container>
             <md-input-container>
               <label>
                 <var:string label:value="Password"/>
               </label>
-              <input type="password" ng-model="creds.password" required="required" />
+              <input type="password" ng-model="app.creds.password" required="required" />
             </md-input-container>
 
             <!-- CONNECT BUTTON -->
             <div layout="row" layout-align="end center">
-              <md-button class="md-raised" type="submit" ng-disabled='!loginForm.$valid'>
+              <md-button class="md-raised" type="submit" ng-disabled='app.loginForm.$invalid'>
                 <span>
                   <var:string label:value="Connect"/>
                 </span>
@@ -82,7 +61,7 @@
                 <label class="login-lang">
                   <var:string label:value="Language"/>
                 </label>
-                <md-select flex="true" ng-model="creds.language">
+                <md-select flex="true" ng-model="app.creds.language">
                   <var:foreach list="languages" item="item">
                     <md-option var:value="item">
                       <var:string value="languageText"/>
@@ -98,7 +77,7 @@
 	        <label>
                 <var:string label:value="Domain"/>
               </label>
-              <md-select flex="true" ng-model="creds.domain" label:placeholder="choose">
+              <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose">
                 <var:foreach list="loginDomains" item="item">
                   <md-option var:value="item">
                     <var:string value="item"/>
@@ -109,7 +88,7 @@
 	    </var:if>
             
             <div layout="row" layout-align="center center">
-              <md-switch ng-model="creds.rememberLogin" label:arial-label="Remember username">
+              <md-switch ng-model="app.creds.rememberLogin" label:arial-label="Remember username">
                 <var:string label:value="Remember username"/>
               </md-switch>
             </div>
@@ -117,7 +96,7 @@
           <div layout="row" layout-align="end end" ng-cloak="ng-cloak">
             <md-button class="sg-icon-button fg-sogoPaper-500"
                        label:aria-label="About"
-                       ng-click="showAbout()">
+                       ng-click="app.showAbout()">
               <md-icon class="material-icons fg-sogoPaper-500">info</md-icon>
             </md-button>
           </div>
@@ -136,7 +115,7 @@
         <!--<img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>-->
       </md-dialog-content>
       <div class="md-actions">
-        <md-button ng-click="closeDialog()"><var:string label:value="Close"/></md-button>
+        <md-button ng-click="about.closeDialog()"><var:string label:value="Close"/></md-button>
       </div>
     </md-dialog>
   </script>

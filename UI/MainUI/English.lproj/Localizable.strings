@@ -9,6 +9,7 @@
 
 "Connect" = "Connect";
 
+"Authentication Failed" = "Authentication Failed";
 "Wrong username or password." = "Wrong username or password.";
 "cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
 

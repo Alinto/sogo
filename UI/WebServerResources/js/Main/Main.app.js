@@ -4,35 +4,46 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.MainUI', ['SOGo.Common', 'SOGo.Authentication'])
-    .controller('loginController', loginController);
+  angular.module('SOGo.MainUI', ['SOGo.Common', 'SOGo.Authentication']);
 
-  loginController.$inject = ['$scope', '$mdDialog', 'Authentication'];
-  function loginController($scope, $mdDialog, Authentication) {
-    $scope.warning = false;
-    $scope.creds = { username: cookieUsername, password: null };
-    $scope.login = function(creds) {
-      $scope.warning = false;
-      Authentication.login(creds)
+  /**
+   * @ngInject
+   */
+  LoginController.$inject = ['$scope', 'Dialog', '$mdDialog', 'Authentication'];
+  function LoginController($scope, Dialog, $mdDialog, Authentication) {
+    var vm = this;
+
+    vm.creds = { username: cookieUsername, password: null };
+    vm.login = login;
+    vm.showAbout = showAbout;
+
+    function login() {
+      Authentication.login(vm.creds)
         .then(function(url) {
           window.location.href = url;
         }, function(msg) {
-          $scope.warning = msg.error;
+          Dialog.alert(l('Authentication Failed'), msg.error);
         });
       return false;
-    };
-    $scope.showAbout = function($event) {
+    }
+
+    function showAbout($event) {
       $mdDialog.show({
         targetEvent: $event,
         templateUrl: 'aboutBox.html',
-        controller: AboutDialogController
+        controller: AboutDialogController,
+        controllerAs: 'about'
       });
-      AboutDialogController.$inject = ['scope', '$mdDialog'];
-      function AboutDialogController(scope, $mdDialog) {
-        scope.closeDialog = function() {
+      AboutDialogController.$inject = ['$mdDialog'];
+      function AboutDialogController($mdDialog) {
+        this.closeDialog = function() {
           $mdDialog.hide();
         };
       }
-    };
+    }
   }
+
+  angular
+    .module('SOGo.MainUI')
+    .controller('LoginController', LoginController);
 })();
