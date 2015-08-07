@@ -14,20 +14,22 @@
 
    <sg-calendar-monh-day
       sg-blocks="calendar.blocks"
-      sg-day="20150408" />
+      sg-day="20150408"
+       sg-click="open({ event: clickEvent, component: clickComponent })"/>
   */
   function sgCalendarMonthDay() {
     return {
       restrict: 'E',
       scope: {
         blocks: '=sgBlocks',
-        day: '@sgDay'
+        day: '@sgDay',
+        clickBlock: '&sgClick'
       },
-      replace: true,
       template: [
         '<sg-calendar-month-event',
         '  ng-repeat="block in blocks[day]"',
-        '  sg-block="block"/>'
+        '  sg-block="block"',
+        '  sg-click="clickBlock({event: clickEvent, component: clickComponent})"/>'
       ].join('')
     };
   }

@@ -55,10 +55,12 @@
                   var:day-number="currentDayNumber"
                   var:id="currentDayId">
                 <div layout="column" layout-fill="true">
-                <div class="sg-calendar-tile-header"><var:string value="dayHeaderNumber"/></div>
-                <sg-calendar-month-day
-                    sg-blocks="calendar.blocks"
-                    var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day></div>
+                  <div class="sg-calendar-tile-header"><var:string value="dayHeaderNumber"/></div>
+                  <sg-calendar-month-day
+                      sg-blocks="calendar.blocks"
+                      sg-click="list.openEvent(event, component)"
+                      var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
+                </div>
               </md-grid-tile>
             </var:foreach>
           </var:foreach>

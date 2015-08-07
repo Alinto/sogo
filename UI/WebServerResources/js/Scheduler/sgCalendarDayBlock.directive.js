@@ -28,7 +28,7 @@
       },
       replace: true,
       template: [
-        '<div class="event draggable">',
+        '<div class="sg-event sg-draggable">',
         '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         '      <div class="gradient">',
         '      </div>',

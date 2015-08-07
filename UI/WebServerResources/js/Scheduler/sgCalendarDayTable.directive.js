@@ -29,10 +29,10 @@
         clickBlock: '&sgClick'
       },
       template: [
-        '<sg-calendar-day-block class="event draggable"',
-        '                   ng-repeat="block in blocks[day]"',
-        '                   sg-block="block"',
-        '                   sg-click="clickBlock({event: clickEvent, component: clickComponent})"/>'
+        '<sg-calendar-day-block class="sg-event draggable"',
+        '  ng-repeat="block in blocks[day]"',
+        '  sg-block="block"',
+        '  sg-click="clickBlock({event: clickEvent, component: clickComponent})"/>'
       ].join('')
     };
   }

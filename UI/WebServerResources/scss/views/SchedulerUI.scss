@@ -1,6 +1,10 @@
 /// SchedulerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
 
+.sg-draggable {
+  cursor: move;
+}
+
 .dayLabels {
   color: sg-color($sogoBlue, 700);
   height: 35px;
@@ -32,6 +36,7 @@ $hours_margin: 50px;
 
 .daysViewFor1Days {
   .day {
+    left: $hours_margin;
     width: 100%;
   }
   .days {
@@ -87,8 +92,8 @@ $hours_margin: 50px;
       top: 0;
     }
   }
-  .event {
-    cursor: default;
+  .sg-event {
+    border-radius: 10px;
     margin-right: 1px;
     position: absolute;
     left: 0%;
@@ -106,9 +111,6 @@ $hours_margin: 50px;
       bottom: 0px;
       left: 0px;
       right: 0px;
-      -webkit-border-radius: 2px;
-      border-radius: 2px;
-      cursor:move;
     }
   }
 }
