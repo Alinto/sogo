@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
   var js_files = {
-    'js/Common.js': ['js/Common/Common.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js'],
+    'js/Common.js': ['js/Common/Common.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js', 'js/Common/utils.js'],
     'js/Scheduler.services.js': ['js/Scheduler/*.service.js'],
     'js/Scheduler.js': ['js/Scheduler.app.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
     'js/Contacts.services.js': ['js/Contacts/*.service.js'],

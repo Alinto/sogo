@@ -80,7 +80,7 @@ String.prototype.md5 = function() {
 
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
 
 String.prototype.asDate = function () {
     var newDate;
@@ -129,7 +129,7 @@ String.prototype.formatTime = function(hours, minutes) {
 };
 
 Date.prototype.daysUpTo = function(otherDate) {
-    var days = new Array();
+    var days = [];
 
     var day1 = this.getTime();
     var day2 = otherDate.getTime();
@@ -155,10 +155,8 @@ String.prototype.isValidEmail = function() {
 };
 
 String.prototype.asCSSIdentifier = function() {
-  var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' '
-                     , "'", '&', '\\+' ];
-  var escapeds =   [ '_U_', '_D_', '_H_', '_A_', '_S_', '_C_', '_CO_',
-                     '_SP_', '_SQ_', '_AM_', '_P_' ];
+  var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' ',    "'",    '&',    '\\+' ];
+  var escapeds =   [ '_U_', '_D_', '_H_', '_A_', '_S_', '_C_', '_CO_', '_SP_', '_SQ_', '_AM_', '_P_' ];
 
   var newString = this;
   for (var i = 0; i < characters.length; i++) {
@@ -231,7 +229,7 @@ Date.prototype.beginOfDay = function() {
     beginOfDay.setMilliseconds(0);
 
     return beginOfDay;
-}
+};
 
 Date.prototype.beginOfWeek = function() {
     var offset = firstDayOfWeek - this.getDay();
