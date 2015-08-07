@@ -534,20 +534,20 @@
             <!-- Events list -->
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
-              <md-list>
-                <md-list-item class="md-clickable md-2-line"
+              <md-list class="sg-section-list">
+                <md-list-item class="md-2-line"
                               ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
-                  <i class="md-avatar" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
+                  <i class="md-tile-left" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
                   <div class="md-list-item-text">
                     <h3>{{event.c_title}}</h3>
                     <p>{{event.c_location}}</p>
                     <p class="md-secondary" layout="row">
                       {{event.formatted_startdate}}
-                      <span class="sg-tile-icons">
+                      <i class="sg-tile-icons">
                         <md-icon ng-show="event.c_iscycle">repeat</md-icon>
                         <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
-                      </span>
+                      </i>
                     </p>
                   </div>
                 </md-list-item>
@@ -559,11 +559,11 @@
             <!-- Tasks list -->
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
-              <md-list>
-                <md-list-item class="md-clickable md-2-line"
+              <md-list class="sg-section-list">
+                <md-list-item class="md-2-line"
                               ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <i class="md-avatar" ng-class="task.getClassName('bg')" ><!-- calendar color --></i>
+                  <i class="md-tile-left" ng-class="task.getClassName('bg')" ><!-- calendar color --></i>
                   <div class="md-list-item-text">
                     <h3>{{task.c_title}}</h3>
                     <p class="md-secondary" layout="row">
@@ -575,7 +575,7 @@
                     </p>
                   </div>
                 </md-list-item>
-                <md-list-item ng-if="list.component.$tasks.length == 0">
+                <md-list-item disabled="disabled" ng-if="list.component.$tasks.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No tasks for selected criteria"/></p>
                 </md-list-item>
               </md-list>

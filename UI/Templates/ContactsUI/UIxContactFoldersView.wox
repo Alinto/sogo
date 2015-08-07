@@ -386,7 +386,7 @@
                </div>
           -->
           <md-virtual-repeat-container class="md-flex">
-            <md-list>
+            <md-list class="sg-section-list">
               <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards">
                 <md-list-item
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"

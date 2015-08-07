@@ -13,7 +13,7 @@
         </h2>
       </header>
       <md-virtual-repeat-container class="md-flex">
-        <md-list>
+        <md-list class="sg-section-list">
           <div md-virtual-repeat="currentMessage in mailbox.selectedFolder.$messages">
             <md-list-item
                 ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
