@@ -53,8 +53,7 @@
               </md-chips>
             </div>
 
-            <div class="pseudo-input-container" ng-hide="editor.hideCc"> -->
-            <!-- <div class="pseudo-input-container"> -->
+            <div class="pseudo-input-container" ng-hide="editor.hideCc">
               <label class="pseudo-input-label">
                 <var:string label:value="Cc"/>
               </label>
