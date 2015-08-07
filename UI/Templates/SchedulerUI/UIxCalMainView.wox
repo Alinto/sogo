@@ -551,7 +551,7 @@
                     </p>
                   </div>
                 </md-list-item>
-                <md-list-item ng-if="list.component.$events.length == 0">
+                <md-list-item disabled="disabled" ng-if="list.component.$events.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No events for selected criteria"/></p>
                 </md-list-item>
               </md-list>
