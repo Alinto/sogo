@@ -78,7 +78,7 @@
     }
   }
 
- angular
- .module('SOGo.Common')
- .controller('AclController', AclController);
+  angular
+    .module('SOGo.Common')
+    .controller('AclController', AclController);
 })();
