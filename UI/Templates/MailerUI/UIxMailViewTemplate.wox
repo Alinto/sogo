@@ -136,9 +136,11 @@
       <div class="msg-date sg-md-body-multi">
         <time datetime="viewer.message.date" ng-bind="viewer.message.date"><!-- date --></time>
       </div>
-      <div class="mailer_mailcontent" ng-repeat="part in viewer.message.$content()">
-        <div ng-if="part.html" ng-bind-html="part.content"><!-- msg --></div>
-        <div ng-if="part.compile" sg-compile="part.content"><!-- msg --></div>
+      <div layout="row" layout-wrap="layout-wrap">
+        <div ng-class="part.msgclass" layout="row" layout-wrap="layout-wrap" class="mailer_mailcontent" ng-repeat="part in viewer.message.$content()">
+          <div ng-if="part.html" ng-bind-html="part.content"><!-- msg --></div>
+          <div ng-if="part.compile" sg-compile="part.content"><!-- msg --></div>
+        </div>
       </div>
     </div>
   </md-content>

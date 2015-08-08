@@ -11,7 +11,7 @@
          var:title="filenameForDisplay"
          class="md-card-image"></img>
     <md-card-content>
-      <p>
+      <p class="md-caption">
         <var:string value="filenameForDisplay" /><br/>
         <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
       </p>

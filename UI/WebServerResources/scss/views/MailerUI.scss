@@ -36,6 +36,27 @@
 .msg-date {
   text-align: right;
 }
+
+.msg-attachment-image {
+  @media (min-width: $layout-breakpoint-sm) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  @media (min-width: $layout-breakpoint-md) {
+    flex: 0 0 66.66%;
+    max-width: 66%;
+  }
+  @media (min-width: $layout-breakpoint-lg) {
+    flex: 0 0 33.33%;
+    max-width: 33%;
+  }
+}
+
+.msg-attachment-other {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
 // sg-md title don't fit in message headers
 .sg-md-title-msg {
   @extend .sg-md-title;

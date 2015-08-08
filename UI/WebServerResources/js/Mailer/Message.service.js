@@ -177,6 +177,7 @@
     var _this = this,
         parts = [],
         _visit = function(part) {
+          part.msgclass = 'msg-attachment-other';
           if (part.type == 'UIxMailPartAlternativeViewer') {
             _visit(_.find(part.content, function(alternatePart) {
               return part.preferredPart == alternatePart.contentType;
@@ -230,6 +231,9 @@
                   participant.image = Message.$gravatar(participant.email, 32);
                 });
               }
+
+              if (part.type == 'UIxMailPartImageViewer')
+                part.msgclass = 'msg-attachment-image';
 
               // Trusted content that can be compiled (Angularly-speaking)
               part.compile = true;
