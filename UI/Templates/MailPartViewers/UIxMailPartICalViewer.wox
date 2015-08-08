@@ -250,7 +250,7 @@
           <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
           <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                in readonly mode and a template similar to the one of md-contact-chips -->
-          <md-chips class="md-contact-chips"
+          <md-chips class="md-contact-chips sg-readonly"
                     ng-model="part.participants"
                     readonly="true">
             <md-chip-template>
