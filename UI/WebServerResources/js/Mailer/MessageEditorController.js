@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$state', '$q', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $state, $q, $mdDialog, FileUploader, stateAccounts, stateMessage, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
+  MessageEditorController.$inject = ['$stateParams', '$state', '$q', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $state, $q, $mdDialog, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
     var vm = this;
 
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
@@ -64,6 +64,10 @@
     }
     else if (angular.isDefined(stateMessage)) {
       vm.message = stateMessage;
+    }
+
+    if (angular.isDefined(stateRecipients)) {
+      vm.message.editable.to = _.union(vm.message.editable.to, _.pluck(stateRecipients, 'full'));
     }
 
     function cancel() {

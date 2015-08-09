@@ -21,6 +21,7 @@
     vm.replyAll = replyAll;
     vm.forward = forward;
     vm.edit = edit;
+    vm.newMessage = newMessage;
     vm.viewRawSource = viewRawSource;
 
     // Watch the message model "flags" attribute to remove on-the-fly a tag from the IMAP message
@@ -46,7 +47,11 @@
       });
     }
 
-    function showMailEditor($event, message) {
+    function showMailEditor($event, message, recipients) {
+
+      if (!angular.isDefined(recipients))
+        recipients = [];
+
       $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,
@@ -57,7 +62,8 @@
         controllerAs: 'editor',
         locals: {
           stateAccounts: vm.accounts,
-          stateMessage: message
+          stateMessage: message,
+          stateRecipients: recipients
         }
       });
     }
@@ -82,6 +88,12 @@
         showMailEditor($event, vm.message);
       });
     }
+
+    function newMessage($event, recipient) {
+      var message = vm.account.$newMessage();
+      showMailEditor($event, message, [recipient]);
+    }
+
 
     function viewRawSource($event) {
       Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {

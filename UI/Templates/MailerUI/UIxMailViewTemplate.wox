@@ -21,7 +21,9 @@
             <var:string label:value="From"/>
           </label>
           <div class="pseudo-input-field">
-            <a ng-href="mailto:{{viewer.message.from[0].email}}" ng-bind="viewer.message.from[0].full"><!-- from --></a>
+            <a href="#"
+               ng-bind="viewer.message.from[0].full"
+               ng-click="viewer.newMessage($event, viewer.message.from[0])"><!-- from --></a>
           </div>
         </div>
 
@@ -30,7 +32,9 @@
             <var:string label:value="To"/>
           </label>
           <div class="pseudo-input-field">
-            <a ng-href="mailto:{{viewer.message.to[0].email}}" ng-bind="viewer.message.to[0].full"><!-- to --></a>
+            <a href="#"
+               ng-bind="viewer.message.to[0].full"
+               ng-click="viewer.newMessage($event, viewer.message.to[0])"><!-- to --></a>
           </div>
         </div>
 

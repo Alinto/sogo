@@ -97,6 +97,8 @@
     }
 
     function newMessage($event) {
+      var message = vm.account.$newMessage();
+
       $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,
@@ -107,7 +109,8 @@
         controllerAs: 'editor',
         locals: {
           stateAccounts: vm.accounts,
-          stateMessage: vm.account.$newMessage()
+          stateMessage: message,
+          stateRecipients: [] 
         }
       });
     }
