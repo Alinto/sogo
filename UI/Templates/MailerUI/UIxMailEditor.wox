@@ -107,24 +107,44 @@
                 <md-menu-item>
                   <md-button>
                     <md-checkbox ng-model="editor.message.editable.receipt">
-                      <var:string label:value="Receipt"/>
+                      <var:string label:value="Return Receipt"/>
                     </md-checkbox>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <div layout="row" layout-align="center center">
-                    <span>
-                      <var:string label:value="Priority"/>
-                    </span>
-                    <md-slider flex="flex"
-                               md-discrete="md-discrete"
-                               ng-model="editor.message.editable.priority"
-                               step="1"
-                               min="1"
-                               max="5"
-                               label:aria-label="Priority">
-                    </md-slider>
-                  </div>
+                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editor.message.editable.priority = 1">
+                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 1}"><!-- highest --></md-icon>
+                    <var:string label:value="highest"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editor.message.editable.priority = 2">
+                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 2}"><!-- high --></md-icon>
+                    <var:string label:value="high"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editor.message.editable.priority = 3">
+                    <md-icon ng-class="{ 'icon-check':
+                                       !editor.message.editable.priority
+                                       || editor.message.editable.priority == 3}"><!-- normal --></md-icon>
+                    <var:string label:value="normal"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editor.message.editable.priority = 4">
+                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 4}"><!-- low --></md-icon>
+                    <var:string label:value="low"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="editor.message.editable.priority = 5">
+                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 5}"><!-- lowest --></md-icon>
+                    <var:string label:value="lowest"/>
+                  </md-button>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>
