@@ -22,6 +22,8 @@
     vm.copySelectedMessages = copySelectedMessages;
     // vm.moveSelectedMessages = moveSelectedMessages;
     vm.saveSelectedMessages = saveSelectedMessages;
+    vm.markSelectedMessagesAsFlagged = markSelectedMessagesAsFlagged;
+    vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -80,6 +82,31 @@
     function selectAll() {
       _.each(vm.selectedFolder.$messages, function(message) {
         message.selected = true;
+      });
+    }
+
+    function markSelectedMessagesAsFlagged() {
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
+      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+
+      vm.selectedFolder.$flagMessages(selectedUIDs, '\\Flagged', 'add').then(function(d) {
+        // Success
+        _.forEach(selectedMessages, function(message) {
+          message.isflagged = true;
+        });
+      });
+    }
+
+    function markSelectedMessagesAsUnread() {
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
+      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+
+      vm.selectedFolder.$flagMessages(selectedUIDs, 'seen', 'remove').then(function(d) {
+        // Success
+        _.forEach(selectedMessages, function(message) {
+          message.isread = false;
+          vm.selectedFolder.unseenCount++;
+        });
       });
     }
 

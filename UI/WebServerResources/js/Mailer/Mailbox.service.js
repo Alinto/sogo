@@ -427,6 +427,20 @@
   };
 
   /**
+   * @function $flagMessages
+   * @memberof Mailbox.prototype
+   * @desc Add or remove a flag on a message set
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$flagMessages = function(uids, flags, operation) {
+    var data = {msgUIDs: uids,
+                flags: flags,
+                operation: operation};
+
+    return Mailbox.$$resource.post(this.id, 'addOrRemoveLabel', data);
+  };
+
+  /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server

@@ -472,12 +472,12 @@
           </md-button>
           <md-menu-content width="2">
             <md-menu-item>
-              <md-button>
+              <md-button ng-click="mailbox.markSelectedMessagesAsFlagged()">
                 <var:string label:value="Flag"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
-              <md-button>
+              <md-button ng-click="mailbox.markSelectedMessagesAsUnread()">
                 <var:string label:value="Mark as Unread"/>
               </md-button>
             </md-menu-item>
