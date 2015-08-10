@@ -141,6 +141,11 @@
                          md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
+                    <md-button type="button" ng-click="app.edit(folder)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete()">
                       <var:string label:value="Delete"/>
                     </md-button>
@@ -205,6 +210,11 @@
                          ng-click="$mdOpenMenu()"
                          md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.edit(folder)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete(folder)">
                       <var:string label:value="Delete"/>

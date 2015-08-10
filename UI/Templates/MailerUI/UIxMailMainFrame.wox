@@ -287,12 +287,17 @@
                       <var:string label:value="New Subfolder..."/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item ng-show="folder.$isEditable">
+                    <md-button type="button" ng-click="app.editFolder(folder)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-item>
                     <md-button type="button" ng-click="app.compactFolder(folder)">
                       <var:string label:value="Compact"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item  ng-show="folder.$isEditable">
+                  <md-menu-item ng-show="folder.$isEditable">
                     <md-button type="button" ng-click="app.confirmDelete(folder)">
                       <var:string label:value="Delete"/>
                     </md-button>
