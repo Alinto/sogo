@@ -45,6 +45,7 @@
    */
   User.$filter = function(search, excludedUsers) {
     var param = {search: search};
+    var _this = this;
 
     if (!search) {
       // No query specified
@@ -60,7 +61,7 @@
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user,
           compareUids = function(data) {
-            return this.uid == data.uid;
+            return _this.uid == data.uid;
           };
       if (excludedUsers) {
         // Remove excluded users from response
