@@ -37,6 +37,7 @@
                    ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
               </div>
               <div class="sg-tile-icons">
+                <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
                 <md-icon ng-show="currentMessage.isflagged">star</md-icon>
                 <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
                 <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
