@@ -350,7 +350,7 @@
           </md-button>
           <md-menu-content width="4">
             <md-menu-item>
-              <md-button class="md-primary" ng-disabled="true">AddressBooks</md-button>
+              <md-button class="md-primary" ng-disabled="true"><var:string label:value="AddressBooks"/></md-button>
             </md-menu-item>
             <md-menu-divider><!-- divider --></md-menu-divider>
             <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
