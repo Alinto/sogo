@@ -408,16 +408,17 @@
 
 - (id <WOActionResults>) copyAction
 {
-  WORequest *request;
   id <WOActionResults> response;
   NSString *destinationFolderId;
   NSArray *contactsId;
+  NSDictionary *data;
   NSException *ex;
   
-  request = [context request];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  contactsId = [data objectForKey: @"uids"];
+  destinationFolderId = [data objectForKey: @"folder"];
 
-  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
-      (contactsId = [request formValuesForKey: @"uid"]))
+  if (destinationFolderId && [contactsId count])
     ex = [self _moveContacts: contactsId
                     toFolder: destinationFolderId
 		 andKeepCopy: YES];
@@ -436,16 +437,17 @@
 
 - (id <WOActionResults>) moveAction
 {
-  WORequest *request;
   id <WOActionResults> response;
   NSString *destinationFolderId;
+  NSDictionary *data;
   NSArray *contactsId;
   NSException *ex;
   
-  request = [context request];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  contactsId = [data objectForKey: @"uids"];
+  destinationFolderId = [data objectForKey: @"folder"];
 
-  if ((destinationFolderId = [request formValueForKey: @"folder"])
-      && (contactsId = [request formValuesForKey: @"uid"]))
+  if (destinationFolderId && [contactsId count])
     ex = [self _moveContacts: contactsId
                     toFolder: destinationFolderId
 		 andKeepCopy: NO];

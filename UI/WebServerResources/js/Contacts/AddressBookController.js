@@ -19,6 +19,7 @@
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
     vm.saveSelectedCards = saveSelectedCards;
+    vm.copySelectedCards = copySelectedCards;
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -92,6 +93,15 @@
       var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
       var selectedUIDs = _.pluck(selectedCards, 'id');
       window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
+    }
+
+    function copySelectedCards(folder) {
+      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      vm.selectedFolder.$copyCards(selectedCards, folder).then(function() {
+        // TODO: refresh target addressbook?
+      }, function(error) {
+        Dialog.alert(l('Error'), error);
+      });
     }
 
     function selectAll() {

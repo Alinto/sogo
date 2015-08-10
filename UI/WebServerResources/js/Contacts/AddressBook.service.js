@@ -455,6 +455,17 @@
   };
 
   /**
+   * @function $copyCards
+   * @memberof AddressBook.prototype
+   * @desc Copy multiple cards from addressbook to an other one.
+   * @return a promise of the HTTP operation
+   */
+  AddressBook.prototype.$copyCards = function(cards, folder) {
+    var uids = _.map(cards, function(card) { return card.id; });
+    return AddressBook.$$resource.post(this.id, 'copy', {uids: uids, folder: folder});
+  };
+
+  /**
    * @function $save
    * @memberof AddressBook.prototype
    * @desc Save the addressbook to the server. This currently can only affect the name of the addressbook.

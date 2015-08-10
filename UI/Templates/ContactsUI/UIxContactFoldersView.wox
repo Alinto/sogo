@@ -344,6 +344,24 @@
           <md-icon>delete</md-icon>
         </md-button>
         <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="Copy contacts" ng-click="$mdOpenMenu()">
+            <md-tooltip md-direction="left"><var:string label:value="Copy To"/></md-tooltip>
+            <md-icon>content_copy</md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <md-button class="md-primary" ng-disabled="true">AddressBooks</md-button>
+            </md-menu-item>
+            <md-menu-divider><!-- divider --></md-menu-divider>
+            <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
+                          ng-hide="addressbook.selectedFolder.id == folder.id">
+              <md-button ng-click="addressbook.copySelectedCards(folder.id)">
+                <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-menu>
           <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
             <md-icon>more_vert</md-icon>
           </md-button>
