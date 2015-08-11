@@ -17,7 +17,7 @@
   -->
   <main class="view md-layout-fill md-layout-padding" ui-view="login" layout="row" layout-align="center start">
     <md-content class="md-padding" md-scroll-y="true">
-      <div ng-controller="LoginController as app">
+      <div class="sg-login" ng-controller="LoginController as app">
 
         <script type="text/javascript">
           var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
@@ -34,16 +34,12 @@
               <input type="hidden" ng-model="app.creds.loginSuffix" var:value="loginSuffix"/>
             </var:if>
             <md-input-container>
-              <label>
-                <var:string label:value="Username"/>
-              </label>
-              <input autocapitalize="off" type="text" ng-model="app.creds.username" required="required" />
+              <md-icon>person</md-icon>
+              <input autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" label:placeholder="Username"/>
             </md-input-container>
-            <md-input-container>
-              <label>
-                <var:string label:value="Password"/>
-              </label>
-              <input type="password" ng-model="app.creds.password" required="required" />
+            <md-input-container md-no-float="md-no-float">
+              <md-icon>email</md-icon>
+              <input type="password" ng-model="app.creds.password" ng-required="true" label:placeholder="Password"/>
             </md-input-container>
 
             <!-- CONNECT BUTTON -->
@@ -57,33 +53,27 @@
 
             <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
-              <md-input-container>
-                <label class="login-lang">
-                  <var:string label:value="Language"/>
-                </label>
-                <md-select flex="true" ng-model="app.creds.language">
-                  <var:foreach list="languages" item="item">
-                    <md-option var:value="item">
-                      <var:string value="languageText"/>
-                    </md-option>
-                  </var:foreach>
+              <md-icon>language</md-icon>
+              <md-select flex="true" ng-model="app.creds.language" label:placeholder="choose">
+                <var:foreach list="languages" item="item">
+                  <md-option var:value="item">
+                    <var:string value="languageText"/>
+                  </md-option>
+                </var:foreach>
                 </md-select>
-              </md-input-container>
             </div>
 
             <!-- DOMAINS SELECT -->
             <var:if condition="hasLoginDomains">
               <div layout="row" layout-align="start end">
-	        <label>
-                <var:string label:value="Domain"/>
-              </label>
-              <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose">
-                <var:foreach list="loginDomains" item="item">
-                  <md-option var:value="item">
-                    <var:string value="item"/>
-                  </md-option>
-                </var:foreach>
-              </md-select>
+	        <md-icon>domain</md-icon>
+                <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose">
+                  <var:foreach list="loginDomains" item="item">
+                    <md-option var:value="item">
+                      <var:string value="item"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
               </div>
 	    </var:if>
             

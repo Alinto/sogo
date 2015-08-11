@@ -8,6 +8,24 @@
   max-width: 100%;
 }
 
-label.login-lang {
-  margin: 0 $bl $bl 0;
+.sg-login {
+  .md-button.md-raised {
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    height: 48px;
+  }
+  md-icon {
+    color: #526261;
+  }
+  md-input-container.md-input-invalid > md-icon {
+    color: red;
+  }
+  md-input-container.md-icon-float {
+    margin-bottom: 10px;
+  }
+  md-select {
+    margin-left: 14px;
+    margin-top: 10px;
+  }
 }
