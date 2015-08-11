@@ -138,10 +138,7 @@
 
     function emptyTrashFolder(folder) {
       folder.$emptyTrash().then(function() {
-        // Success - remove all messages from the mailbox
-        folder.$messages = [];
-        folder.uidsMap = {};
-        folder.unseenCount = 0;
+        // Success
       }, function(error) {
         Dialog.alert(l('Warning'), error);
       });

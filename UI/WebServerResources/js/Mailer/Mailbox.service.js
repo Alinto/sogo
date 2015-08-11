@@ -413,7 +413,22 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$emptyTrash = function() {
-    return Mailbox.$$resource.post(this.id, 'emptyTrash');
+    var _this = this,
+        deferred = Mailbox.$q.defer(),
+        promise;
+
+    promise = Mailbox.$$resource.post(this.id, 'emptyTrash');
+
+    promise.then(function() {
+      // Remove all messages from the mailbox
+      _this.$messages = [];
+      _this.uidsMap = {};
+      _this.unseenCount = 0;
+    }, function(data, status) {
+      deferred.reject(data);
+    });
+
+    return deferred.promise;
   };
 
   /**
