@@ -6,27 +6,29 @@
       xmlns:rsrc="OGo:url"
       xmlns:label="OGo:label">
 
-    <div layout="row" layout-align="center">
-      <h5>
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Previous Week"
-            var:date="prevWeekQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-        <var:string value="currentWeekName" />
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Next Week"
-            var:date="nextWeekQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
-      </h5>
-    </div>
-    <div id="calendarContent">
-      <var:component
-          className="UIxCalDayTable"
-          startDate="startDate"
-          const:CSSClass="weekOverview"
-          const:numberOfDays="7"
-          const:currentView="weekview"/>
-    </div>
+    <md-content>
+      <div layout="row" layout-align="center">
+        <h5>
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Previous Week"
+              var:date="prevWeekQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+          <var:string value="currentWeekName" />
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Next Week"
+              var:date="nextWeekQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+        </h5>
+      </div>
+      <div id="calendarContent">
+        <var:component
+            className="UIxCalDayTable"
+            startDate="startDate"
+            const:CSSClass="weekOverview"
+            const:numberOfDays="7"
+            const:currentView="weekview"/>
+      </div>
+    </md-content>
   </container>

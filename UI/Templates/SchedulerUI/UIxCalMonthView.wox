@@ -21,21 +21,22 @@
       </ul>
     </div>
 
-    <div layout="row" layout-align="center">
-      <h5>
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Previous Month"
-            var:date="prevMonthQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-        <var:string value="monthNameOfThisMonth" />
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Next Month"
-            var:date="nextMonthQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
-      </h5>
-    </div>
+    <md-content>
+      <div layout="row" layout-align="center">
+        <h5>
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Previous Month"
+              var:date="prevMonthQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+          <var:string value="monthNameOfThisMonth" />
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Next Month"
+              var:date="nextMonthQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+        </h5>
+      </div>
       <div class="monthView">
         <div layout="row" layout-align="center center">
           <var:foreach list="headerDaysToDisplay" item="currentTableDay">
@@ -66,4 +67,5 @@
           </var:foreach>
         </md-grid-list>
       </div>
+    </md-content>
   </container>

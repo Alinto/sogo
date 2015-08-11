@@ -18,28 +18,30 @@
         <li><var:string label:value="Copy event to my calendar"/></li>
         <li><var:string label:value="View Raw Source"/></li>
       </ul>
-    </div>-->
-    <div layout="row" layout-align="center">
-      <h5>
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Previous Day"
-            var:date="prevDayQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-        <var:string value="currentDayName" />
-        <md-button
-            class="sg-icon-button"
-            label:aria-label="Next Day"
-            var:date="nextDayQueryParameters.day"
-            ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
-      </h5>
-    </div>
-    <div id="calendarContent">
-      <var:component
-          className="UIxCalDayTable"
-          startDate="startDate"
-          const:CSSClass="dayOverview"
-          const:numberOfDays="1"
-          const:currentView="dayview"/>
-    </div>
+      </div>-->
+    <md-content>
+      <div layout="row" layout-align="center">
+        <h5>
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Previous Day"
+              var:date="prevDayQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+          <var:string value="currentDayName" />
+          <md-button
+              class="sg-icon-button"
+              label:aria-label="Next Day"
+              var:date="nextDayQueryParameters.day"
+              ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+        </h5>
+      </div>
+      <div id="calendarContent">
+        <var:component
+            className="UIxCalDayTable"
+            startDate="startDate"
+            const:CSSClass="dayOverview"
+            const:numberOfDays="1"
+            const:currentView="dayview"/>
+      </div>
+    </md-content>
   </container>
