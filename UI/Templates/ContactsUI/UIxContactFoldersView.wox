@@ -72,31 +72,6 @@
   <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxContactFoldersView">
 
-    <!-- dropdown menu for addressbook options button -->
-    <div id="addressbookProperties" class="f-dropdown icons-dropdown" ng-hide="true">
-      <ul class="button-group">
-        <li label:tooltip="Links to this Address Book"
-            tooltip-popup-delay="500">
-          <span class="button"
-              sg-dropdown-content-toggle="#addressbookLinks">
-            <i class="icon-hyperlink"><!-- links --></i>
-          </span>
-        </li>
-        <li label:tooltip="Rename"
-            tooltip-popup-delay="500">
-          <span class="button" ng-click="edit()">
-            <i class="icon-pencil"><!-- rename --></i>
-          </span>
-        </li>
-        <li label:tooltip="Import Cards"
-            tooltip-popup-delay="500">
-          <span class="button" ng-click="importCards()">
-            <i class="icon-file"><!-- import --></i>
-          </span>
-        </li>
-      </ul>
-    </div>
-
     <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
