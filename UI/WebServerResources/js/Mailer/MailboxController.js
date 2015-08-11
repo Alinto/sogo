@@ -47,7 +47,10 @@
           var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
           var selectedUIDs = _.pluck(selectedMessages, 'uid');
           vm.selectedFolder.$deleteMessages(selectedUIDs).then(function() {
+            // Decrement the unseenCount accordingly
+            var unseenCount = _.filter(selectedMessages, function(message) { return !message.isread; });
             vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
+            vm.selectedFolder.unseenCount =- unseenCount;
           },  function(error) {
             Dialog.alert(l('Error'), error);
           });
