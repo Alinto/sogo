@@ -5,8 +5,8 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-    <md-content md-scroll-y="true" class="md-padding md-whiteframe-z1 bg-sogoPaper-50">
-      <div class="editor md-padding">
+    <md-content md-scroll-y="md-scroll-y" class="viewer md-padding md-whiteframe-z1 bg-sogoPaper-50">
+      <!-- <div class="editor md-padding">-->
         <hgroup class="header">
           <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
@@ -342,7 +342,7 @@
             </var:if>
           </div>
         </form>
-      </div>
+      <!-- </div> -->
     </md-content>
 
 </container>
