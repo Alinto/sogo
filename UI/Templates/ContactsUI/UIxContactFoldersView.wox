@@ -374,20 +374,6 @@
               <span ng-show="addressbook.selectedFolder.cards.length == 0"><var:string label:value="No contact"/></span>
             </h2>
           </header>
-          <!-- Search field & special results
-               <input type="text" placeholder="Search" ng-model="search.filter" ng-keyup="doSearch($event)" />
-               <div ng-switch="search.status">
-               <div ng-switch-when="min-char" class="alert-bg">
-               <i class="icon-warning"></i><var:string label:value="Please enter at least three characters"/>
-               </div>
-               <div ng-switch-when="no-result" class="alert-bg">
-               <i class="icon-ion-search"></i><var:string label:value="No matching card"/>
-               </div>
-               <div ng-switch-when="remote-addressbook" ng-show="addressbook.cards.length == 0" class="alert-bg">
-               <i class="icon-ion-search"></i><var:string label:value="Initiate a search"/>
-               </div>
-               </div>
-          -->
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
               <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards">
