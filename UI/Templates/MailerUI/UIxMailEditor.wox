@@ -161,19 +161,19 @@
     <!-- TOOLBAR BUTTONS -->
     <div class="md-actions">
       <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
-      <div>
-        <md-button>
-          <md-icon>attach_file</md-icon>
-          <label for="file-input">
-            Attach
+        <div>
+          <!-- md-icon does not play well with Firefox - makes the
+               file input never appear. This should eventually be
+               fixed in Angular Material -->
+          <label class="md-button" for="file-input">
+            <span><var:string label:value="Attach"/></span>
           </label>
-        </md-button>
-        <input id="file-input" type="file"
-               nv-file-select="nv-file-select"
-               multiple="multiple"
-               uploader="editor.uploader"
-               ng-show="false"/>
-      </div>
+          <input id="file-input" type="file"
+                 nv-file-select="nv-file-select"
+                 multiple="multiple"
+                 uploader="editor.uploader"
+                 ng-show="false"/>
+        </div>
       <div>
         <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
              MAIL WITH ATTACHMENTS -->
