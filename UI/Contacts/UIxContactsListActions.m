@@ -39,6 +39,8 @@
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 
+#import <SOGo/SOGoUserSettings.h>
+
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 #import <SoObjects/Contacts/SOGoContactGCSEntry.h>
@@ -81,8 +83,32 @@
   s = [rq formValueForKey: @"sort"];
   if (![s length])
     s = [self defaultSortKey];
+  else
+    [self saveSortValue: s];
 
   return s;
+}
+
+- (void) saveSortValue: (NSString *) sort
+{ 
+  NSString *ascending;
+  SOGoUserSettings *us;
+  NSMutableDictionary *contactSettings;
+  
+  ascending = [[context request] formValueForKey: @"asc"];
+  if ([sort length])
+  { 
+    us = [[context activeUser] userSettings];
+    contactSettings = [us objectForKey: @"Contact"];
+    // Must create if it doesn't exist
+    if (!contactSettings)
+    { 
+      contactSettings = [NSMutableDictionary dictionary];
+      [us setObject: contactSettings forKey: @"Contact"];
+    }
+    [contactSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (ascending?1:0)], nil] forKey: @"SortingState"];
+    [us synchronize];
+  }
 }
 
 - (NSArray *) contactInfos
