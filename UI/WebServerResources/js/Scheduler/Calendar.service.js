@@ -277,7 +277,10 @@
       Calendar.$$resource.post(c_folder, 'batchDelete', {uids: uids});
     });
 
+    // We slice both arrays - might be useful if in the future, we can delete
+    // events and tasks at the same time.
     _this.$Component.$events = _.difference(_this.$Component.$events, components);
+    _this.$Component.$tasks = _.difference(_this.$Component.$tasks, components);
   };
 
   /**
