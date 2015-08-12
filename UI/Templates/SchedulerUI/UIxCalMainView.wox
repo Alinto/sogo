@@ -527,7 +527,7 @@
           </div>
         </div>
       </md-toolbar>
-      <md-content layout="row" layout-sm="column" class="md-flex">
+      <md-content layout="row" class="md-flex">
         <md-content class="view-list md-flex" layout="column">
           <md-tabs md-dynamic-height="true"
                    md-selected="list.selectedList">
