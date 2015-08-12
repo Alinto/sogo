@@ -81,7 +81,7 @@
         <section>
           <md-subheader class="sg-md-subheader">
             <div layout="row" layout-align="space-between center">
-              <span><var:string label:value="AddressBooks"/></span>
+              <span><var:string label:value="Address Books"/></span>
               <md-button class="sg-icon-button"
                          label:aria-label="New Addressbook..."
                          ng-click="app.newAddressbook()">
@@ -335,7 +335,7 @@
           </md-button>
           <md-menu-content width="4">
             <md-menu-item>
-              <md-button class="md-primary" ng-disabled="true"><var:string label:value="AddressBooks"/></md-button>
+              <md-button class="md-primary" ng-disabled="true"><var:string label:value="Address Books"/></md-button>
             </md-menu-item>
             <md-menu-divider><!-- divider --></md-menu-divider>
             <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
