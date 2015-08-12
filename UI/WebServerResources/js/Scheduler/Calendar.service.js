@@ -256,6 +256,31 @@
   };
 
   /**
+   * @function $deleteComponents
+   * @memberof Calendar
+   * @desc Delete multiple components from calendar.
+   * @return a promise of the HTTP operation
+   */
+  Calendar.$deleteComponents = function(components) {
+
+    // We create a c_folder -> event hash
+    var calendars = {}, _this = this;
+
+    _.forEach(components, function(component) {
+      if (!angular.isDefined(calendars[component.c_folder]))
+        calendars[component.c_folder] = [];
+
+      calendars[component.c_folder].push(component.c_name);
+    });
+
+    _.forEach(calendars, function(uids, c_folder) {
+      Calendar.$$resource.post(c_folder, 'batchDelete', {uids: uids});
+    });
+
+    _this.$Component.$events = _.difference(_this.$Component.$events, components);
+  };
+
+  /**
    * @function $save
    * @memberof Calendar.prototype
    * @desc Save the calendar properties to the server.

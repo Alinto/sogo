@@ -319,7 +319,9 @@
             </md-button>
           </div> -->
         </div><!-- .md-toolbar-tools -->
-        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div class="md-toolbar-tools" layout="row"
+             layout-align="space-between center"
+             ng-show="list.component.$selectedCount() == 0">
           <!-- sort/filter mode -->
           <div class="view-list" layout="row" layout-align="space-between center"
                ng-hide="list.mode.search">
@@ -526,6 +528,19 @@
                href="#/calendar/month"><md-icon>view_module</md-icon></a>
           </div>
         </div>
+        <div layout="row" layout-align="start center" ng-show="list.component.$selectedCount() > 0">
+          <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
+            <md-icon>arrow_back</md-icon>
+          </md-button>
+          <label>{{list.component.$selectedCount()}} selected</label>
+          <md-button class="sg-icon-button" ng-click="list.selectAll()">
+            <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
+            <md-icon>select_all</md-icon>
+          </md-button>
+          <md-button class="sg-icon-button" ng-click="list.confirmDeleteSelectedComponents()">
+            <md-icon>delete</md-icon>
+          </md-button>
+        </div>
       </md-toolbar>
       <md-content layout="row" class="md-flex">
         <md-content class="view-list md-flex" layout="column">
@@ -538,7 +553,11 @@
                 <md-list-item class="md-2-line"
                               ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
-                  <i class="md-tile-left" ng-class="event.getClassName('bg')" ><!-- calendar color --></i>
+                  <div class="sg-selected-avatar" ng-show="event.selected"
+                       ng-click="event.selected = !event.selected">
+                    <!-- selected avatar -->
+                  </div>
+                  <i class="md-tile-left" ng-class="event.getClassName('bg')" ng-show="!event.selected" ng-click="event.selected = !event.selected"><!-- calendar color --></i>
                   <div class="md-list-item-text">
                     <h3>{{event.c_title}}</h3>
                     <p>{{event.c_location}}</p>
@@ -563,7 +582,11 @@
                 <md-list-item class="md-2-line"
                               ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <i class="md-tile-left" ng-class="task.getClassName('bg')" ><!-- calendar color --></i>
+                  <div class="sg-selected-avatar" ng-show="task.selected"
+                       ng-click="task.selected = !task.selected">
+                    <!-- selected avatar -->
+                  </div>
+                  <i class="md-tile-left" ng-class="task.getClassName('bg')" ng-show="!task.selected" ng-click="task.selected = !task.selected"><!-- calendar color --></i>
                   <div class="md-list-item-text">
                     <h3>{{task.c_title}}</h3>
                     <p class="md-secondary" layout="row">

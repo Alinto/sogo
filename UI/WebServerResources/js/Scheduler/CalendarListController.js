@@ -14,6 +14,9 @@
     vm.componentType = 'events';
     vm.selectedList = 0;
     vm.selectComponentType = selectComponentType;
+    vm.unselectComponents = unselectComponents;
+    vm.selectAll = selectAll;
+    vm.confirmDeleteSelectedComponents = confirmDeleteSelectedComponents;
     vm.openEvent = openEvent;
     vm.openTask = openTask;
     vm.newComponent = newComponent;
@@ -45,9 +48,32 @@
         // TODO: save user settings (Calendar.SelectedList)
         if (angular.isUndefined(Component['$' + type]))
           Component.$filter(type);
+        vm.unselectComponents();
         vm.componentType = type;
         Component.saveSelectedList(type);
       }
+    }
+
+    function unselectComponents() {
+      _.each(Component['$' + vm.componentType], function(component) { component.selected = false; });
+    }
+
+    function selectAll() {
+      _.each(Component['$' + vm.componentType], function(component) {
+        component.selected = true;
+      });
+    }
+
+    function confirmDeleteSelectedComponents() {
+      Dialog.confirm(l('Warning'),
+                     l('Are you sure you want to delete the selected components?'))
+        .then(function() {
+          // User confirmed the deletion
+          var components = _.filter(Component['$' + vm.componentType], function(component) { return component.selected; });
+          Calendar.$deleteComponents(components);
+        },  function(data, status) {
+          // Delete failed
+        });
     }
 
     function openEvent($event, event) {

@@ -87,8 +87,27 @@
     .factory('Component', Component.$factory);
 
   /**
+   * @function $selectedCount
+   * @memberof Component
+   * @desc Return the number of events or tasks selected by the user.
+   * @returns the number of selected events or tasks
+   */
+  Component.$selectedCount = function() {
+    var count;
+
+    count = 0;
+    if (Component.$events) {
+      count = (_.filter(Component.$events, function(event) { return event.selected; })).length;
+    }
+    if (Component.$tasks) {
+      count = (_.filter(Component.$tasks, function(event) { return event.selected; })).length;
+    }
+    return count;
+  };
+
+  /**
    * @function $filter
-   * @memberof Component.prototype
+   * @memberof Component
    * @desc Search for components matching some criterias
    * @param {string} type - either 'events' or 'tasks'
    * @param {object} [options] - additional options to the query
@@ -403,6 +422,8 @@
         _this.updateFreeBusy(attendee);
       });
     }
+
+    this.selected = false;
   };
 
   /**
