@@ -3,8 +3,8 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label"
-    >
+    xmlns:label="OGo:label">
+
   <div class="sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="hide-gt-md sg-button-navicon sg-icon-button"
@@ -18,4 +18,53 @@
     </div>
     <p class="sg-md-display-3 sg-date-today" ng-bind="currentDay.day"><!-- day --></p>
   </div>
+
+  <div class="sg-toolbar-group-last">
+    <md-menu layout-fill="layout-fill">
+      <md-button aria-label="Open phone interactions menu"
+                 class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon>apps</md-icon>
+      </md-button>
+      <md-menu-content width="8">
+        <div class="md-toolbar-tools sg-padded" layout="row"
+             layout-align="space-around start">
+          <md-button class="sg-icon-button"
+                     ng-show="activeUser.path.calendar.length"
+                     ng-disabled="baseURL.endsWith('/Calendar')"
+                     ng-href="{{activeUser.path.calendar}}">
+            <md-icon>event</md-icon>
+            <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
+          </md-button>
+          <md-button class="sg-icon-button"
+                     ng-disabled="baseURL.endsWith('/Contacts')"
+                     ng-href="{{activeUser.path.contacts}}">
+            <md-icon>contacts</md-icon>
+            <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
+          </md-button>
+          <md-button class="sg-icon-button"
+                     ng-show="activeUser.path.mail.length"
+                     ng-disabled="baseURL.endsWith('/Mail')"
+                     ng-href="{{activeUser.path.mail}}">
+            <md-icon>email</md-icon>
+            <md-tooltip><var:string label:value="Mail"/></md-tooltip>
+          </md-button>
+          <md-button class="sg-icon-button"
+                     ng-disabled="baseURL.endsWith(activeUser.login)"
+                     ng-href="{{activeUser.path.preferences}}">
+            <md-icon>settings</md-icon>
+            <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
+          </md-button>
+          <md-button class="sg-icon-button" ng-show="activeUser.isSuperUser" ng-href="{{activeUser.path.administration}}">
+            <md-icon>settings_applications</md-icon>
+            <md-tooltip><var:string label:value="Administration"/></md-tooltip>
+          </md-button>
+          <md-button class="sg-icon-button" ng-show="activeUser.path.logoff.length" ng-href="{{activeUser.path.logoff}}">
+            <md-icon>settings_power</md-icon>
+            <md-tooltip><var:string label:value="Disconnect"/></md-tooltip>
+          </md-button>
+           </div>
+      </md-menu-content>
+    </md-menu>
+  </div>
+
 </container>

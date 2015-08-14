@@ -3,27 +3,14 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label"
-    >
-      <md-toolbar class="md-tall">
-        <div class="md-toolbar-tools sg-padded" layout="row" layout-align="start start">
-          <md-button class="sg-icon-button"
-              label:aria-label="Apps"
-              ng-click="openBottomSheet()">
-            <md-icon>apps</md-icon>
-          </md-button>
-          <span class="sg-logo"><!-- logo.svg --></span>
-        </div>
-
-        <div class="md-toolbar-tools sg-padded" layout="row">
-          <div layout="column">
-            <p class="sg-md-title">{{activeUser.identification}}</p>
-            <!--fixme: implement this with the proper model and actions -->
-            <!-- <md-select class="sg-logout" ng-model="accounts.options" var:placeholder="shortUserNameForDisplay">
-              <md-option var:value="relativePreferencesPath"><var:string label:value="Preferences"/></md-option>
-              <var:if condition="canLogoff"><md-option var:value="logoffPath"><var:string label:value="Disconnect" /></md-option></var:if>
-            </md-select> -->
-          </div>
-        </div>
-      </md-toolbar>
+    xmlns:label="OGo:label">
+  <md-toolbar class="md-tall sg-padded">
+    <div layout="column" layout-align="center start">
+      <sg-avatar-image class="md-tile-left"
+                       sg-email="activeUser.email"
+                       size="48"><!-- avatar --></sg-avatar-image>
+      <p class="sg-md-title">{{activeUser.identification}}</p>
+        <p class="md-caption">{{activeUser.email}}</p>
+    </div>
+  </md-toolbar>
 </container>

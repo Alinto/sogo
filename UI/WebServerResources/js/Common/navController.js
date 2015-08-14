@@ -13,6 +13,7 @@
   function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
     $scope.activeUser = sgSettings.activeUser();
+    $scope.baseURL = sgSettings.baseURL();
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;

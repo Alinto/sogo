@@ -235,17 +235,17 @@
             <div layout="row" layout-align="space-between center">
               <span>{{account.name}}</span>
               <div>
-              <md-button class="sg-icon-button"
-                         label:aria-label="New Folder..."
-                         ng-click="app.newFolder(account)">
-                <md-icon>add_circle_outline</md-icon>
-              </md-button>
-              <md-button class="sg-icon-button"
-                         ng-show="account.id == 0"
-                         label:aria-label="Delegation..."
-                         ng-click="app.delegate(account)">
-                <md-icon>people</md-icon>
-              </md-button>
+                <md-button class="sg-icon-button"
+                           label:aria-label="New Folder..."
+                           ng-click="app.newFolder(account)">
+                  <md-icon>add_circle_outline</md-icon>
+                </md-button>
+                <md-button class="sg-icon-button"
+                           ng-show="account.id == 0"
+                           label:aria-label="Delegation..."
+                           ng-click="app.delegate(account)">
+                  <md-icon>people</md-icon>
+                </md-button>
               </div>
             </div>
           </md-subheader>
@@ -346,14 +346,10 @@
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">
-    <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-      <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+    <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main" >
+      <div class="md-toolbar-tools md-toolbar-tools-top sg-padded"
+           layout="row" layout-align="space-between start">
         <var:component className="UIxTopnavToolbarTemplate" />
-        <div class="sg-toolbar-group-last">
-          <md-button class="sg-icon-button" label:aria-label="More">
-            <md-icon>more_vert</md-icon>
-          </md-button>
-        </div>
       </div>
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center"
            ng-show="mailbox.selectedFolder.$selectedCount() == 0">

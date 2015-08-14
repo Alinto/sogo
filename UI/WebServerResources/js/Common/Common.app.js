@@ -12,9 +12,18 @@
         var settings = {
           login: UserLogin || null,
           identification: UserIdentification || null,
+          email: UserEmail || null,
           language: UserLanguage || null,
           folderURL: UserFolderURL || null,
-          isSuperUser: IsSuperUser || null
+          isSuperUser: IsSuperUser || null,
+          path: {
+            calendar: UserCalendarPath || null,
+            contacts: UserContactsPath || null,
+            mail: UserMailPath || null,
+            preferences: UserPreferencesPath || null,
+            administration: (IsSuperUser ? UserAdministrationPath : null),
+            logoff: UserLogoffPath || null
+          }
         };
         if (param)
           return settings[param];

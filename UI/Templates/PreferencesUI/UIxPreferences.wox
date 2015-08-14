@@ -53,11 +53,6 @@
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
-          <div class="sg-toolbar-group-last">
-            <md-button class="sg-icon-button" label:aria-label="Menu">
-              <md-icon>more_vert</md-icon>
-            </md-button>
-          </div>
         </div>
       </md-toolbar>
 
