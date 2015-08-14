@@ -58,66 +58,67 @@
   Alarm.showAlarm = function(url) {
     var _this = this;
 
-    this.$$resource.fetch(url, '?resetAlarm=yes');
-
-    this.$toast.show({
-      position: 'top right',
-      hideDelay: 0,
-      template: [
-        '<md-toast>',
-        ' <md-input-container>',
-        '   <md-select ng-model="reminder">',
-        '    <md-option value=5>',
-              l('5 minutes'),
-        '    </md-option>',
-        '    <md-option value=10>',
-              l('10 minutes'),
-        '    </md-option>',
-        '    <md-option value=15>',
-              l('15 minutes'),
-        '    </md-option>',
-        '    <md-option value=30>',
-              l('30 minutes'),
-        '    </md-option>',
-        '    <md-option value=45>',
-              l('45 minutes'),
-        '    </md-option>',
-        '    <md-option value=60>',
-              l('1 hour'),
-        '    </md-option>',
-        '    <md-option value=1440>',
-              l('1 day'),
-        '    </md-option>',
-        '  </md-select>',
-        ' </md-input-container>',
-        ' <md-button ng-click="cancel()">',
-           l('Cancel'),
-        ' </md-button>',
-        ' <md-button ng-click="ok()">',
-           l('Ok'),
-        ' </md-button>',
-        '</md-toast>'
+    this.$$resource.fetch(url, '?resetAlarm=yes').then(function(data) {
+      _this.$toast.show({
+        position: 'top right',
+        hideDelay: 0,
+        template: [
+          '<md-toast>',
+          ' <md-input-container>',
+          '   <label style="color: white;">' + data.summary + '</label>',
+          '   <md-select ng-model="reminder">',
+          '    <md-option value=5>',
+                 l('5 minutes'),
+          '    </md-option>',
+          '    <md-option value=10>',
+                 l('10 minutes'),
+          '    </md-option>',
+          '    <md-option value=15>',
+                 l('15 minutes'),
+          '    </md-option>',
+          '    <md-option value=30>',
+                 l('30 minutes'),
+          '    </md-option>',
+          '    <md-option value=45>',
+                 l('45 minutes'),
+          '    </md-option>',
+          '    <md-option value=60>',
+                 l('1 hour'),
+          '    </md-option>',
+          '    <md-option value=1440>',
+                 l('1 day'),
+          '    </md-option>',
+          '  </md-select>',
+          ' </md-input-container>',
+          ' <md-button ng-click="cancel()">',
+              l('Cancel'),
+          ' </md-button>',
+          ' <md-button ng-click="ok()">',
+              l('Ok'),
+          ' </md-button>',
+          '</md-toast>'
         ].join(''),
-      locals: {
-        url: url
-      },
-      controller: AlarmController
+        locals: {
+          url: url
+        },
+        controller: AlarmController
+      });
+
+      /**
+       * @ngInject
+       */
+      AlarmController.$inject = ['scope', '$mdToast', 'url'];
+      function AlarmController(scope, $mdToast, url) {
+        scope.reminder = '10';
+        scope.cancel = function() {
+          $mdToast.hide();
+        };
+        scope.ok = function() {
+          _this.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
+          $mdToast.hide();
+        };
+      }
     });
-    
-    /**
-     * @ngInject
-     */
-    AlarmController.$inject = ['scope', '$mdToast', 'url'];
-    function AlarmController(scope, $mdToast, url) {
-      scope.reminder = '10';
-      scope.cancel = function() {
-        $mdToast.hide();
-      };
-      scope.ok = function() {
-        _this.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
-        $mdToast.hide();
-      };
-    }
   };
 
   /**
