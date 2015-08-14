@@ -149,8 +149,8 @@ class JsonDavPhoneTests(unittest.TestCase):
     def testMultipleDifferentPhones(self):
         self._testMultiplePhones(self.newphones_difftype)
     
-    def testMultipleSameTypePhones(self):
-        self._testMultiplePhones(self.newphones_sametype)
+    #def testMultipleSameTypePhones(self):
+    #    self._testMultiplePhones(self.newphones_sametype)
     
 if __name__ == "__main__":
     sogotests.runTests()
