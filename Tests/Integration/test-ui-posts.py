@@ -21,8 +21,8 @@ class UIPostsTests(unittest.TestCase):
     self.cookie = sogoLogin.getAuthCookie(hostname, port, username, password)
 
   def _urlPostData(self, client, url, data, exp_status=200):
-    post = webdavlib.HTTPPOST(url, data)
-    post.content_type = "application/x-www-form-urlencoded"
+    post = webdavlib.HTTPPOST(url, simplejson.dumps(data))
+    post.content_type = "application/json"
     post.cookie = self.cookie
 
     client.execute(post)
@@ -43,16 +43,14 @@ class UIPostsTests(unittest.TestCase):
     """ Add Web Calendar """
 
     ret=True
-    data = "url=%s" % webCalendarURL
+    data = {"url":"%s" % webCalendarURL}
     calendarBaseURL="/SOGo/so/%s/Calendar" % username
     addWebCalendarURL = "%s/addWebCalendar" % calendarBaseURL
     response = self._urlPostData(self.client, addWebCalendarURL, data)
 
     respJSON = simplejson.loads(response['body'])
-    folderID = respJSON['folderID']
+    calID = respJSON['id']
 
-    #sogo1:Calendar/C07-5006F300-1-370E2480
-    (_, calID) = folderID.split('/', 1)
     self.assertNotEqual(calID, None)
 
     # reload the cal
