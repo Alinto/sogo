@@ -115,7 +115,7 @@
     }
 
     function sortedBy(field) {
-      return vm.selectedFolder.$query.sort == field;
+      return AddressBook.$query.sort == field;
     }
 
     function cancelSearch() {

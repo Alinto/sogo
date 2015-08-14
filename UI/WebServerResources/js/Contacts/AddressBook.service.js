@@ -41,11 +41,18 @@
       $Card: Card,
       $$Acl: Acl,
       $Preferences: Preferences,
+      $query: {search: 'name_or_address', value: '', sort: 'c_cn', asc: 1},
       activeUser: Settings.activeUser(),
       selectedFolder: null,
       $refreshTimeout: null
     });
-
+    // Initialize sort parameters from user's settings
+    Preferences.ready().then(function() {
+      if (Preferences.settings.Contact.SortingState) {
+        AddressBook.$query.sort = Preferences.settings.Contact.SortingState[0];
+        AddressBook.$query.asc = parseInt(Preferences.settings.Contact.SortingState[1]);
+      }
+    });
     return AddressBook; // return constructor
   }];
 
@@ -174,8 +181,7 @@
    * @returns an AddressBook object instance
    */
   AddressBook.$find = function(addressbookId) {
-    var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view');
-
+    var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
     return new AddressBook(futureAddressBookData);
   };
 
@@ -213,7 +219,6 @@
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
-    this.$query = {search: 'name_or_address', value: '', sort: 'c_cn', asc: 'true'};
   };
 
   /**
@@ -323,72 +328,74 @@
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
     var _this = this;
 
-    if (options) {
-      angular.extend(this.$query, options);
+    return AddressBook.$Preferences.ready().then(function() {
+      if (options) {
+        angular.extend(AddressBook.$query, options);
 
-      if (options.dry) {
-        if (!search) {
-          // No query specified
-          this.$cards = [];
-          return AddressBook.$q.when(this.$cards);
+        if (options.dry) {
+          if (!search) {
+            // No query specified
+            _this.$cards = [];
+            return AddressBook.$q.when(_this.$cards);
+          }
+          else if (AddressBook.$query.value == search) {
+            // Query hasn't changed
+            return AddressBook.$q.when(_this.$cards);
+          }
         }
-        else if (this.$query.value == search) {
-          // Query hasn't changed
-          return AddressBook.$q.when(this.$cards);
+      }
+
+      AddressBook.$query.value = search;
+
+      return _this.$id().then(function(addressbookId) {
+        return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+      }).then(function(response) {
+        var results, cards, card, index,
+            compareIds = function(data) {
+              return _this.id == data.id;
+            };
+        if (options && options.dry) {
+          // Don't keep a copy of the resulting cards.
+          // This is usefull when doing autocompletion.
+          cards = _this.$cards;
         }
-      }
-    }
-
-    this.$query.value = search;
-
-    return this.$id().then(function(addressbookId) {
-      return AddressBook.$$resource.fetch(addressbookId, 'view', _this.$query);
-    }).then(function(response) {
-      var results, cards, card, index,
-          compareIds = function(data) {
-            return this.id == data.id;
-          };
-      if (options && options.dry) {
-        // Don't keep a copy of the resulting cards.
-        // This is usefull when doing autocompletion.
-        cards = _this.$cards;
-      }
-      else {
-        cards = _this.cards;
-      }
-      if (excludedCards) {
-        // Remove excluded cards from results
-        results = _.filter(response.cards, function(card) {
-          return _.isUndefined(_.find(excludedCards, compareIds, card));
+        else {
+          cards = _this.cards;
+        }
+        if (excludedCards) {
+          // Remove excluded cards from results
+          results = _.filter(response.cards, function(card) {
+            return _.isUndefined(_.find(excludedCards, compareIds, card));
+          });
+        }
+        else {
+          results = response.cards;
+        }
+        // Remove cards that no longer match the search query
+        for (index = cards.length - 1; index >= 0; index--) {
+          card = cards[index];
+          if (_.isUndefined(_.find(results, compareIds, card))) {
+            cards.splice(index, 1);
+          }
+        }
+        // Add new cards matching the search query
+        _.each(results, function(data, index) {
+          if (_.isUndefined(_.find(cards, compareIds, data))) {
+            var card = new AddressBook.$Card(data, search);
+            cards.splice(index, 0, card);
+          }
         });
-      }
-      else {
-        results = response.cards;
-      }
-      // Remove cards that no longer match the search query
-      for (index = cards.length - 1; index >= 0; index--) {
-        card = cards[index];
-        if (_.isUndefined(_.find(results, compareIds, card))) {
-          cards.splice(index, 1);
-        }
-      }
-      // Add new cards matching the search query
-      _.each(results, function(data, index) {
-        if (_.isUndefined(_.find(cards, compareIds, data))) {
-          var card = new AddressBook.$Card(data, search);
-          cards.splice(index, 0, card);
-        }
+        // Respect the order of the results
+        _.each(results, function(data, index) {
+          var oldIndex, removedCards;
+          if (cards[index].id != data.id) {
+            oldIndex = _.findIndex(cards, compareIds, data);
+            removedCards = cards.splice(oldIndex, 1);
+            cards.splice(index, 0, removedCards[0]);
+          }
+        });
+        return cards;
       });
-      // Respect the order of the results
-      _.each(results, function(data, index) {
-        var oldIndex, removedCards;
-        if (cards[index].id != data.id) {
-          oldIndex = _.findIndex(cards, compareIds, data);
-          removedCards = cards.splice(oldIndex, 1);
-          cards.splice(index, 0, removedCards[0]);
-        }
-      });
-      return cards;
     });
   };
 
