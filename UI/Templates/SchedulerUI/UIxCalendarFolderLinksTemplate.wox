@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
 
-  <md-dialog flex="40">
+  <md-dialog flex="40" flex-sm="100">
     <md-toolbar class="sg-padded">
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
