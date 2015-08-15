@@ -15,7 +15,8 @@
             <label><var:string label:value="Title"/></label>
             <input type="text"
                    class="md-title"
-                   ng-model="editor.component.summary"/>
+                   ng-model="editor.component.summary"
+                   required="required"/>
           </md-input-container>
           <md-button class="md-icon-button" ng-click="editor.cancel()">
             <md-icon aria-label="Close dialog">close</md-icon>
@@ -98,11 +99,11 @@
       <div layout="row">
         <md-input-container>
           <label><var:string label:value="From"/></label>
-          <input type="text" ng-model="editor.component.startDate"/>
+          <input type="text" ng-model="editor.component.startDate" required="required"/>
         </md-input-container>
         <md-input-container>
           <label><var:string label:value="To"/></label>
-          <input type="text" ng-model="editor.component.endDate"/>
+          <input type="text" ng-model="editor.component.endDate" required="required"/>
         </md-input-container>
       </div>
       <!-- attach urls -->
@@ -240,7 +241,8 @@
         <md-button type="button" ng-click="editor.component.$reset()">
           <var:string label:value="Reset"/>
         </md-button>
-        <md-button class="md-primary md-hue-3" type="submit">
+        <md-button class="md-primary md-hue-3" type="submit"
+                   ng-disabled="editor.eventForm.$invalid">
           <var:string label:value="Save"/>
         </md-button>
       </div>
