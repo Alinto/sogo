@@ -75,43 +75,49 @@
           .then(function() {
             $scope.$broadcast('calendars:list');
           }, function(data, status) {
-            Dialog.alert(l('An error occured while deleting the addressbook "%{0}".', folder.name),
+            Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                          l(data.error));
           });
       }
       else {
-        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?', folder.name))
+        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the calendar <em>%{0}</em>?', folder.name))
           .then(function() {
             folder.$delete()
               .then(function() {
                 $scope.$broadcast('calendars:list');
               }, function(data, status) {
-                Dialog.alert(l('An error occured while deleting the addressbook "%{0}".', folder.name),
+                Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                              l(data.error));
               });
           });
       }
     }
 
-    function showLinks(selectedFolder) {
+    function showLinks(calendar) {
       $mdDialog.show({
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         escapeToClose: true,
-        templateUrl: selectedFolder.id + '/links',
+        templateUrl: calendar.id + '/links',
+        controller: LinksDialogController,
+        controllerAs: 'links',
         locals: {
-        },
-        controller: LinksDialogController
+          calendar: calendar
+        }
       });
       
       /**
        * @ngInject
        */
-      LinksDialogController.$inject = ['scope', '$mdDialog'];
-      function LinksDialogController(scope, $mdDialog) {
-        scope.close = function() {
+      LinksDialogController.$inject = ['$mdDialog', 'calendar'];
+      function LinksDialogController($mdDialog, calendar) {
+        var vm = this;
+        vm.calendar = calendar;
+        vm.close = close;
+
+        function close() {
           $mdDialog.hide();
-        };
+        }
       }
     }
 

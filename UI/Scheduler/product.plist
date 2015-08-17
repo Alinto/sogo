@@ -193,7 +193,7 @@
           actionName  = "saveUserRights";
         };
         links = {
-          protectedBy = "View";
+          protectedBy = "Access Contents Information";
           pageName = "UIxCalendarFolderLinksTemplate";
         };
       };

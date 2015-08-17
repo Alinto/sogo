@@ -28,104 +28,11 @@
 
 @implementation UIxCalendarFolderLinksTemplate
 
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      calendar = [self clientObject];
-      baseCalDAVURL = nil;
-      basePublicCalDAVURL = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [baseCalDAVURL release];
-  [basePublicCalDAVURL release];
-  [super dealloc];
-}
-
-- (NSString *) _baseCalDAVURL
-{
-  NSString *davURL;
-
-  if (!baseCalDAVURL)
-    {
-      davURL = [[calendar realDavURL] absoluteString];
-      if ([davURL hasSuffix: @"/"])
-        baseCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
-      else
-        baseCalDAVURL = davURL;
-      [baseCalDAVURL retain];
-    }
-
-  return baseCalDAVURL;
-}
-
-- (NSString *) calDavURL
-{
-  return [NSString stringWithFormat: @"%@/", [self _baseCalDAVURL]];
-}
-
-- (NSString *) webDavICSURL
-{
-  return [calendar webDavICSURL];
-}
-
-- (NSString *) webDavXMLURL
-{
-  return [calendar webDavXMLURL];
-}
-
-- (NSString *) _basePublicCalDAVURL
-{
-  NSString *davURL;
-  
-  if (!basePublicCalDAVURL)
-    {
-      davURL = [[calendar publicDavURL] absoluteString];
-      if ([davURL hasSuffix: @"/"])
-        basePublicCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
-      else
-        basePublicCalDAVURL = davURL;
-      [basePublicCalDAVURL retain];
-    }
-  
-  return basePublicCalDAVURL;
-}
-
-- (NSString *) publicCalDavURL
-{
-  return [NSString stringWithFormat: @"%@/", [self _basePublicCalDAVURL]];
-}
-
-- (NSString *) publicWebDavICSURL
-{
-  return [calendar publicWebDavICSURL];
-}
-
-- (NSString *) publicWebDavXMLURL
-{
-  return [calendar publicWebDavXMLURL];
-}
-
 - (BOOL) isPublicAccessEnabled
 {
   // NOTE: This method is the same found in Common/UIxAclEditor.m
   return [[SOGoSystemDefaults sharedSystemDefaults]
            enablePublicAccess];
-}
-
-- (BOOL) isWebCalendar
-{
-  return ([calendar isKindOfClass: [SOGoWebAppointmentFolder class]]);
-}
-
-- (NSString *) webCalendarURL
-{
-  return [calendar folderPropertyValueInCategory: @"WebCalendars"];
 }
 
 @end

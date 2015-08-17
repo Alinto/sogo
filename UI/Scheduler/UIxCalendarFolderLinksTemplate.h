@@ -20,14 +20,6 @@
 
 #import <SOGoUI/UIxComponent.h>
 
-@class NSString;
-
-@class SOGoAppointmentFolder;
-
 @interface UIxCalendarFolderLinksTemplate : UIxComponent
-{
-  SOGoAppointmentFolder *calendar;
-  NSString *baseCalDAVURL, *basePublicCalDAVURL;
-}
 
 @end
