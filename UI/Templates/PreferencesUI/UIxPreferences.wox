@@ -748,11 +748,9 @@
                         <var:string label:value="Disable auto reply on" />
                       </md-checkbox>
 
-                      <div class="value">
-                        <p class="PseudoField-inputLike--underline">
-                          <input ng-disabled="app.preferences.defaults.Vacation.endDateEnabled == 0" type="date" ng-model="app.preferences.defaults.Vacation.endDate"/>
-                        </p>
-                      </div>
+                        <md-datepicker
+                            ng-disabled="app.preferences.defaults.Vacation.endDateEnabled == 0"
+                            ng-model="app.preferences.defaults.Vacation.endDate"><!-- datepicker --></md-datepicker>
 
                     </div>
 

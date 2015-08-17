@@ -14,23 +14,38 @@
     this.settings = {};
 
     this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
-        // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-        var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
-          if (key.charAt(0) == '$')
-            return ['_' + key, value];
-          return [key, value];
-        }));
+      // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
+      var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
+        if (key.charAt(0) == '$')
+          return ['_' + key, value];
+        return [key, value];
+      }));
 
-        data.SOGoMailLabelsColors = labels;
+      data.SOGoMailLabelsColors = labels;
 
-        // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
-        if (data.Vacation && data.Vacation.autoReplyEmailAddresses)
+      // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
+      // We also convert our date objects into real date, otherwise we'll have strings
+      // or undefined values and the md-datepicker does NOT like this.
+      if (data.Vacation) {
+        if (data.Vacation.endDate)
+          data.Vacation.endDate = new Date(parseInt(data.Vacation.endDate) * 1000);
+        else {
+          data.Vacation.endDateEnabled = 0;
+          data.Vacation.endDate = new Date();
+        }
+
+        if (data.Vacation.autoReplyEmailAddresses)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
+      } else {
+        data.Vacation = {};
+        data.Vacation.endDateEnabled = 0;
+        data.Vacation.endDate = new Date();
+      }
 
-        if (data.Forward && data.Forward.forwardAddress)
-          data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
+      if (data.Forward && data.Forward.forwardAddress)
+        data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
 
-        angular.extend(_this.defaults, data);
+      angular.extend(_this.defaults, data);
 
       return _this.defaults;
     });
@@ -42,8 +57,6 @@
             var match = /^(.+)\s<(\S+)>$/.exec(value);
             return new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
           });
-        else
-          data.Calendar.PreventInvitationsWhitelist = [];
 
       angular.extend(_this.settings, data);
 
@@ -134,8 +147,15 @@
 
     preferences.defaults.SOGoMailLabelsColors = labels;
 
-    if (preferences.defaults.Vacation && preferences.defaults.Vacation.autoReplyEmailAddresses)
-      preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+    if (preferences.defaults.Vacation) {
+      if (preferences.defaults.Vacation.endDateEnabled)
+        preferences.defaults.Vacation.endDate = preferences.defaults.Vacation.endDate.getTime()/1000;
+      else
+        preferences.defaults.Vacation.endDate = 0;
+
+      if (preferences.defaults.Vacation.autoReplyEmailAddresses)
+        preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+    }
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
       preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
