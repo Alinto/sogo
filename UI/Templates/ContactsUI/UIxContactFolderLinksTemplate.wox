@@ -8,6 +8,7 @@
     >
   <md-dialog flex="40" flex-sm="100">
     <md-toolbar class="sg-padded">
+      <md-icon class="material-icons sg-icon-toolbar-bg">link</md-icon>
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Links to this Address Book"/></label>
