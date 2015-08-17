@@ -255,6 +255,16 @@ static SoProduct *preferencesProduct = nil;
                                                forKey: @"PreventInvitationsWhitelist"];
     }
 
+  // Initialize some default values
+  if (![settings objectForKey: @"Calendar"])
+    [settings setObject: [NSMutableDictionary dictionary]  forKey: @"Calendar"];
+
+  if (![settings objectForKey: @"Contact"])
+    [settings setObject: [NSMutableDictionary dictionary]  forKey: @"Contact"];
+
+  if (![settings objectForKey: @"Mail"])
+    [settings setObject: [NSMutableDictionary dictionary]  forKey: @"Mail"];
+
   return [self _makeResponse: [[settings source] values]];
 }
 
