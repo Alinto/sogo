@@ -275,12 +275,19 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return [[self queryParameterForKey: @"popup"] boolValue];
 }
 
+- (BOOL) isPublicAccessEnabled
+{
+  // NOTE: This method is the same found in Common/UIxAclEditor.m
+  return [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess];
+}
+
 - (NSString *) contactFolders
 {
   SOGoContactFolders *folderContainer;
-  NSArray *folders;
   NSMutableArray *foldersAttrs;
+  NSMutableDictionary *urls;
   NSDictionary *folderAttrs;
+  NSArray *folders;
   id currentFolder;
   int max, i;
 
@@ -291,9 +298,25 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   folders = [folderContainer subFolders];
   max = [folders count];
   foldersAttrs = [NSMutableArray arrayWithCapacity: max];
+  urls = nil;
+
   for (i = 0; i < max; i++)
     {
       currentFolder = [folders objectAtIndex: i];
+
+      if ([currentFolder respondsToSelector: @selector(cardDavURL)])
+        {
+          urls = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                        [currentFolder cardDavURL], @"cardDavURL",
+                                      nil];
+          if ([self isPublicAccessEnabled])
+            {
+              [urls setObject: [currentFolder publicCardDavURL] forKey: @"publicCardDavURL"];
+            }
+        }
+
+      // NOTE: keep urls as the last key/value here, to avoid chopping the dictionary
+      //       if it is not a GCS folder
       folderAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSString stringWithFormat: @"%@", [currentFolder nameInContainer]], @"id",
                                   [currentFolder displayName], @"name",
@@ -301,6 +324,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
                                             && ![currentFolder isPersonalSource]], @"isRemote",
+                                  urls, @"urls",
                                   nil];
       [foldersAttrs addObject: folderAttrs];
     }
@@ -417,12 +441,6 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   
   // return response;
   return [super defaultAction];
-}
-
-- (BOOL) isPublicAccessEnabled
-{
-  // NOTE: This method is the same found in Common/UIxAclEditor.m
-  return [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess];
 }
 
 @end

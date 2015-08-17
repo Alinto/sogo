@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -32,9 +31,13 @@
 @class NSString;
 
 @interface SOGoContactGCSFolder : SOGoGCSFolder <SOGoContactFolder>
-
+{
+  NSString *baseCardDAVURL, *basePublicCardDAVURL;
+}
 - (void) fixupContactRecord: (NSMutableDictionary *) contactRecord;
 - (NSDictionary *) lookupContactWithName: (NSString *) aName;
+- (NSString *) cardDavURL;
+- (NSString *) publicCardDavURL;
 
 @end
 

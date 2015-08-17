@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2013-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -65,6 +64,24 @@ static NSArray *folderListingFields = nil;
                                            @"c_mail", @"c_telephonenumber",
                                            @"c_categories",
                                            @"c_component", nil];
+}
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      baseCardDAVURL = nil;
+      basePublicCardDAVURL = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [baseCardDAVURL release];
+  [basePublicCardDAVURL release];
+  [super dealloc];
 }
 
 - (Class) objectClassForContent: (NSString *) content
@@ -434,6 +451,50 @@ static NSArray *folderListingFields = nil;
     nsRep = @"D";
 
   return [NSString stringWithFormat: @"%@:%@", nsRep, nodeName];
+}
+
+- (NSString *) _baseCardDAVURL
+{
+  NSString *davURL;
+
+  if (!baseCardDAVURL)
+    {
+      davURL = [[self realDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+        baseCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        baseCardDAVURL = davURL;
+      [baseCardDAVURL retain];
+    }
+
+  return baseCardDAVURL;
+}
+
+- (NSString *) cardDavURL
+{
+  return [NSString stringWithFormat: @"%@/", [self _baseCardDAVURL]];
+}
+
+- (NSString *) _basePublicCardDAVURL
+{
+  NSString *davURL;
+
+  if (!basePublicCardDAVURL)
+    {
+      davURL = [[self publicDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+        basePublicCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        basePublicCardDAVURL = davURL;
+      [basePublicCardDAVURL retain];
+    }
+
+  return basePublicCardDAVURL;
+}
+
+- (NSString *) publicCardDavURL
+{
+  return [NSString stringWithFormat: @"%@/", [self _basePublicCardDAVURL]];
 }
 
 @end /* SOGoContactGCSFolder */

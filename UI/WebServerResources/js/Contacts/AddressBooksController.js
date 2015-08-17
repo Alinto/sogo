@@ -109,25 +109,31 @@
       window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
     }
 
-    function showLinks(selectedFolder) {
+    function showLinks(addressbook) {
       $mdDialog.show({
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         escapeToClose: true,
-        templateUrl: selectedFolder.id + '/links',
+        templateUrl: addressbook.id + '/links',
+        controller: LinksDialogController,
+        controllerAs: 'links',
         locals: {
-        },
-        controller: LinksDialogController
+          addressbook: addressbook
+        }
       });
       
       /**
        * @ngInject
        */
-      LinksDialogController.$inject = ['scope', '$mdDialog'];
-      function LinksDialogController(scope, $mdDialog) {
-        scope.close = function() {
+      LinksDialogController.$inject = ['$mdDialog', 'addressbook'];
+      function LinksDialogController($mdDialog, addressbook) {
+        var vm = this;
+        this.addressbook = addressbook;
+        this.close = close;
+
+        function close() {
           $mdDialog.hide();
-        };
+        }
       }
     }
 

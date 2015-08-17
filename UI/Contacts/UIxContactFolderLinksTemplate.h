@@ -20,14 +20,6 @@
 
 #import <SOGoUI/UIxComponent.h>
 
-@class NSString;
-
-@class SOGoContactGCSFolder;
-
 @interface UIxContactFolderLinksTemplate : UIxComponent
-{
-  SOGoContactGCSFolder *addressBook;
-  NSString *baseCardDAVURL, *basePublicCardDAVURL;
-}
 
 @end
