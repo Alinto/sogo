@@ -9,7 +9,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     >
-  <md-dialog>
+  <md-dialog flex="50" flex-sm="100">
     <md-dialog-content>
 
       <form id="mainForm" name="accountForm" var:href="ownPath">
