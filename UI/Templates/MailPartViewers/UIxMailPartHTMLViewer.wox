@@ -7,6 +7,7 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
   <var:string value="cssContent" const:escapeHTML="NO" />
-  <div class="SOGoHTMLMail-CSS-Delimiter mailer_htmlcontent"
-    ><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
+  <div class="SOGoHTMLMail-CSS-Delimiter mailer_htmlcontent">
+    <var:string value="flatContentAsString" const:escapeHTML="NO" />
+  </div>
 </container>
