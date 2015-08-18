@@ -424,6 +424,10 @@
       _this.$messages = [];
       _this.uidsMap = {};
       _this.unseenCount = 0;
+
+      // If we had any submailboxes, lets do a refresh of the mailboxes list
+      if (angular.isDefined(_this.children) && _this.children.length)
+        _this.$account.$getMailboxes({reload: true});
     }, function(data, status) {
       deferred.reject(data);
     });
