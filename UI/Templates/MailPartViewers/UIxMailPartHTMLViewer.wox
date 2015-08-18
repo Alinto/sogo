@@ -8,6 +8,7 @@
   xmlns:label="OGo:label">
   <var:string value="cssContent" const:escapeHTML="NO" />
   <div class="SOGoHTMLMail-CSS-Delimiter mailer_htmlcontent">
+    <base target="_blank"/>
     <var:string value="flatContentAsString" const:escapeHTML="NO" />
   </div>
 </container>
