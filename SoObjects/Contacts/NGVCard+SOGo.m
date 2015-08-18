@@ -188,8 +188,8 @@ convention:
 }
 
 - (void) addElementWithTag: (NSString *) elementTag
-                             ofType: (NSString *) type
-                          withValue: (id) value
+                    ofType: (NSString *) type
+                 withValue: (id) value
 {
   NSArray *allValues;
   NSEnumerator *list;

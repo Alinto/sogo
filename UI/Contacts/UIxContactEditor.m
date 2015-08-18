@@ -430,8 +430,9 @@ static Class SOGoContactGCSEntryK = Nil;
         {
           if ([attrs isKindOfClass: [NSDictionary class]])
             {
-              element = [card elementWithTag: @"tel" ofType: [attrs objectForKey: @"type"]];
-              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+              [card addElementWithTag: @"tel"
+                               ofType: [attrs objectForKey: @"type"]
+                            withValue: [attrs objectForKey: @"value"]];
             }
         }
   }
@@ -448,8 +449,9 @@ static Class SOGoContactGCSEntryK = Nil;
             {
               if ([o isKindOfClass: [NSDictionary class]])
                 {
-                  element = [card elementWithTag: @"email" ofType: [o objectForKey: @"type"]];
-                  [element setSingleValue: [o objectForKey: @"value"] forKey: @""];
+                  [card addElementWithTag: @"email"
+                                   ofType: [o objectForKey: @"type"]
+                                withValue: [o objectForKey: @"value"]];
                 }
             }
         }
@@ -466,8 +468,9 @@ static Class SOGoContactGCSEntryK = Nil;
         {
           if ([attrs isKindOfClass: [NSDictionary class]])
             {
-              element = [card elementWithTag: @"url" ofType: [attrs objectForKey: @"type"]];
-              [element setSingleValue: [attrs objectForKey: @"value"] forKey: @""];
+              [card addElementWithTag: @"url"
+                               ofType: [attrs objectForKey: @"type"]
+                            withValue: [attrs objectForKey: @"value"]];
             }
         }
   }
