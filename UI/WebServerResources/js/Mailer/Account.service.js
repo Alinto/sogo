@@ -189,7 +189,8 @@
     var _this = this,
         deferred = Account.$q.defer();
 
-    Account.$$resource.post(path, 'createFolder', {name: name}).then(function() {
+    // Prefix '' to the path since we might get an integer here (account's id)
+    Account.$$resource.post('' + path, 'createFolder', {name: name}).then(function() {
       _this.$getMailboxes({reload: true});
       deferred.resolve();
     }, function(response) {
