@@ -135,6 +135,12 @@
             <!-- FLAG WITH -->
             <md-input-container ng-show="action.method == 'addflag'" >
               <md-select ng-model="action.argument" >
+                <md-option value="seen"><var:string label:value="Seen"/></md-option>
+                <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
+                <md-option value="answered"><var:string label:value="Answered"/></md-option>
+                <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
+                <md-option value="junk"><var:string label:value="Junk"/></md-option>
+                <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
                 <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
               </md-select>
             </md-input-container>
