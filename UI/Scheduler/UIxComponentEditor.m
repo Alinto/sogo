@@ -842,7 +842,7 @@ static NSArray *reminderValues = nil;
 
   clientObject = [self clientObject];
   ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
-  if ([clientObject isKindOfClass: [SOGoWebAppointmentFolder class]])
+  if ([[clientObject container] isKindOfClass: [SOGoWebAppointmentFolder class]])
     rc = componentReadableOnly;
   else
     {
