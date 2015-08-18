@@ -27,6 +27,7 @@
     vm.addMailFilter = addMailFilter;
     vm.editMailFilter = editMailFilter;
     vm.removeMailFilter = removeMailFilter;
+    vm.addDefaultEmailAddresses = addDefaultEmailAddresses;
     vm.userFilter = User.$filter;
     vm.save = save;
     vm.canChangePassword = canChangePassword;
@@ -160,6 +161,16 @@
 
     function removeMailFilter(index) {
       vm.preferences.defaults.SOGoSieveFilters.splice(index, 1);
+    }
+
+    function addDefaultEmailAddresses() {
+      var v = [];
+
+      if (angular.isDefined(vm.preferences.defaults.Vacation.autoReplyEmailAddresses)) {
+        v = vm.preferences.defaults.Vacation.autoReplyEmailAddresses.split(',');
+      }
+
+      vm.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union(window.defaultEmailAddresses.split(','), v)).join(',');
     }
     
     function save() {

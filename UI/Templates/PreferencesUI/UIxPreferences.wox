@@ -16,6 +16,7 @@
   <script type="text/javascript">
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
+    var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
   </script>
 
   <script type="text/ng-template" id="preferences.html">
@@ -732,16 +733,13 @@
                 </md-input-container>
 
                 <md-input-container>
-                  <!-- <script>
-                       var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
-                       </script> -->
                   <label><var:string label:value="Email addresses (separated by commas)"/></label>
                   <textarea const:name="autoReplyEmailAddresses"
                             const:id="autoReplyEmailAddresses"
                             ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"/>
                 </md-input-container>
                 <div layout="row" layout-align="end center">
-                  <md-button>
+                  <md-button ng-click="app.addDefaultEmailAddresses()">
                     <var:string label:value="Add default email addresses" type="button"/>
                   </md-button>
                 </div>
