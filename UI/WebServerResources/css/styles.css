@@ -327,6 +327,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 /* Local overrides from angular-material src */
 /* mixin definition ; sets LTR and RTL within the same style call */
+/**
+ * Position a FAB button.
+ */
 html, body {
   height: 100%;
   color: rgba(0, 0, 0, 0.87);
@@ -428,21 +431,21 @@ input[type="search"] {
 
 .md-ripple {
   position: absolute;
-  -webkit-transform: scale(0);
-      -ms-transform: scale(0);
-          transform: scale(0);
+  -webkit-transform: translate(-50%, -50%) scale(0);
+      -ms-transform: translate(-50%, -50%) scale(0);
+          transform: translate(-50%, -50%) scale(0);
   -webkit-transform-origin: 50% 50%;
       -ms-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
   opacity: 0;
   border-radius: 50%; }
   .md-ripple.md-ripple-placed {
-    -webkit-transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transition: left 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), margin 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), border 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    -webkit-transition: margin 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: margin 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), border 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.9s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .md-ripple.md-ripple-scaled {
-    -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-            transform: scale(1); }
+    -webkit-transform: translate(-50%, -50%) scale(1);
+        -ms-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1); }
   .md-ripple.md-ripple-active, .md-ripple.md-ripple-full, .md-ripple.md-ripple-visible {
     opacity: 0.20; }
 
@@ -6023,16 +6026,16 @@ md-autocomplete {
         md-autocomplete md-autocomplete-wrap md-progress-linear[md-mode=indeterminate].ng-leave.ng-leave-active {
           opacity: 0; }
   md-autocomplete input:not(.md-input) {
-    width: 100%;
+    font-size: 14px;
     box-sizing: border-box;
     border: none;
     box-shadow: none;
-    padding: 0 15px;
-    font-size: 14px;
-    line-height: 40px;
-    height: 40px;
     outline: none;
-    background: transparent; }
+    background: transparent;
+    width: 100%;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px; }
     md-autocomplete input:not(.md-input)::-ms-clear {
       display: none; }
   md-autocomplete button {
@@ -6426,10 +6429,8 @@ md-bottom-sheet.md-default-theme .md-button.md-default-theme[disabled] {
   text-transform: uppercase; }
 
 /*! button/_extends.scss - */
-/**
- * Position a FAB button.
- */
 .md-button {
+  border-radius: 3px;
   box-sizing: border-box;
   color: currentColor;
   -webkit-user-select: none;
@@ -6549,6 +6550,11 @@ md-bottom-sheet.md-default-theme .md-button.md-default-theme[disabled] {
   .md-button:not([disabled]).md-raised:active,
   .md-button:not([disabled]).md-fab:active {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4); }
+  .md-button .md-ripple-container {
+    border-radius: 3px;
+    background-clip: padding-box;
+    overflow: hidden;
+    -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC"); }
 
 .md-toast-open-top .md-button.md-fab-top-left,
 .md-toast-open-top .md-button.md-fab-top-right {
@@ -6766,9 +6772,6 @@ md-card .md-button .sg-tile-content {
   text-align: left;
   text-transform: none; }
 
-md-card.sg-attachment {
-  background-color: rgba(211, 211, 211, 0.3); }
-
 /*! checkbox/_extends.scss - */
 md-checkbox {
   box-sizing: border-box;
@@ -6931,14 +6934,15 @@ md-sidenav md-checkbox {
 .md-chips {
   display: block;
   font-family: "Fira sans", "Helvetica Neue", sans-serif;
-  font-size: 13px;
-  padding: 0 0 8px 0;
-  vertical-align: middle;
-  cursor: text; }
+  font-size: 16px;
+  padding: 0 0 8px 3px;
+  vertical-align: middle; }
   .md-chips:after {
     content: '';
     display: table;
     clear: both; }
+  .md-chips:not('.md-readonly') {
+    cursor: text; }
   .md-chips .md-chip {
     cursor: default;
     border-radius: 16px;
@@ -7067,6 +7071,196 @@ md-content.md-padding {
 .sg-inset {
   margin-left: 80px; }
 
+/*! datepicker/_extends.scss - */
+/** Styles for mdCalendar. */
+md-calendar {
+  font-size: 13px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+
+.md-calendar-scroll-mask {
+  display: inline-block;
+  overflow: hidden;
+  height: 308px; }
+  .md-calendar-scroll-mask .md-virtual-repeat-scroller {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; }
+    .md-calendar-scroll-mask .md-virtual-repeat-scroller::-webkit-scrollbar {
+      display: none; }
+  .md-calendar-scroll-mask .md-virtual-repeat-offsetter {
+    width: 100%; }
+
+.md-calendar-scroll-container {
+  display: inline-block;
+  height: 308px;
+  width: 340px; }
+
+.md-calendar-date {
+  height: 44px;
+  width: 44px;
+  text-align: center;
+  padding: 0;
+  border: none; }
+  .md-calendar-date:first-child {
+    padding-left: 16px; }
+  .md-calendar-date:last-child {
+    padding-right: 16px; }
+
+.md-calendar-date-selection-indicator {
+  -webkit-transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+          transition: background-color, color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  line-height: 40px; }
+
+.md-calendar-month-label {
+  height: 44px;
+  font-size: 13px;
+  padding: 0 0 0 24px; }
+
+.md-calendar-day-header {
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse; }
+  .md-calendar-day-header th {
+    height: 44px;
+    width: 44px;
+    text-align: center;
+    padding: 0;
+    border: none;
+    font-weight: normal;
+    height: 40px; }
+    .md-calendar-day-header th:first-child {
+      padding-left: 16px; }
+    .md-calendar-day-header th:last-child {
+      padding-right: 16px; }
+
+.md-calendar {
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse; }
+  .md-calendar tr:last-child td {
+    border-bottom-width: 1px;
+    border-bottom-style: solid; }
+  .md-calendar:first-child {
+    border-top: 1px solid transparent; }
+
+/*! datepicker/_extends.scss - */
+/** Styles for mdDatepicker. */
+.md-datepicker-button {
+  display: inline-block;
+  box-sizing: border-box;
+  background: none; }
+
+.md-datepicker-input {
+  font-size: 14px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background: transparent;
+  min-width: 120px;
+  max-width: 328px; }
+  .md-datepicker-input::-ms-clear {
+    display: none; }
+
+.md-datepicker-input-container {
+  position: relative;
+  padding-bottom: 5px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  display: inline-block;
+  width: auto;
+  margin-left: 12px; }
+  .md-datepicker-input-container.md-datepicker-focused {
+    border-bottom-width: 2px; }
+
+.md-datepicker-calendar-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  border-width: 1px;
+  border-style: solid;
+  background: transparent;
+  -webkit-transform: scale(0);
+      -ms-transform: scale(0);
+          transform: scale(0);
+  -webkit-transform-origin: 0 0;
+      -ms-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+          transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .md-datepicker-calendar-pane.md-pane-open {
+    -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+            transform: scale(1); }
+
+.md-datepicker-input-mask {
+  height: 40px;
+  width: 340px;
+  background: transparent;
+  pointer-events: none;
+  cursor: text; }
+
+.md-datepicker-calendar {
+  opacity: 0;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1);
+          transition: opacity 0.2s cubic-bezier(0.5, 0, 0.25, 1); }
+  .md-pane-open .md-datepicker-calendar {
+    opacity: 1; }
+  .md-datepicker-calendar md-calendar:focus {
+    outline: none; }
+
+.md-datepicker-expand-triangle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(0, 0, 0, 0.2); }
+
+.md-datepicker-triangle-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  -webkit-transform: translateY(-25%) translateX(45%);
+      -ms-transform: translateY(-25%) translateX(45%);
+          transform: translateY(-25%) translateX(45%); }
+
+.md-datepicker-triangle-button.md-button.md-icon-button {
+  height: 100%;
+  width: 36px;
+  position: absolute; }
+
+md-datepicker[disabled] .md-datepicker-input-container {
+  border-bottom-color: transparent; }
+
+md-datepicker[disabled] .md-datepicker-triangle-button {
+  display: none; }
+
+.md-datepicker-open .md-datepicker-input-container {
+  min-width: 340px;
+  margin-left: -12px;
+  border: none; }
+
+.md-datepicker-open .md-datepicker-input {
+  margin-left: 24px;
+  height: 40px; }
+
+.md-datepicker-open .md-datepicker-triangle-button {
+  display: none; }
+
 /*! dialog/_extends.scss - */
 .md-dialog-is-showing {
   max-height: 100%; }
@@ -7158,6 +7352,8 @@ md-dialog {
       md-dialog md-dialog-content.sticky-container > div {
         padding: 24px;
         padding-top: 0; }
+    md-dialog md-dialog-content .md-dialog-content-body {
+      width: 100%; }
   md-dialog .md-actions {
     display: -webkit-box;
     display: -webkit-flex;
@@ -7225,6 +7421,30 @@ md-fab-speed-dial {
   /*
    * Handle the animations
    */ }
+  md-fab-speed-dial.md-fab-bottom-right {
+    top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    position: absolute; }
+  md-fab-speed-dial.md-fab-bottom-left {
+    top: auto;
+    right: auto;
+    bottom: 20px;
+    left: 20px;
+    position: absolute; }
+  md-fab-speed-dial.md-fab-top-right {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+    position: absolute; }
+  md-fab-speed-dial.md-fab-top-left {
+    top: 20px;
+    right: auto;
+    bottom: auto;
+    left: 20px;
+    position: absolute; }
   md-fab-speed-dial .md-css-variables {
     z-index: 20; }
   md-fab-speed-dial.md-is-open .md-fab-action-item {
@@ -7347,9 +7567,10 @@ md-grid-list {
   box-sizing: border-box;
   display: block;
   position: relative; }
-  md-grid-list *,
-  md-grid-list *:before,
-  md-grid-list *:after {
+  md-grid-list md-grid-tile,
+  md-grid-list md-grid-tile > figure,
+  md-grid-list md-grid-tile-header,
+  md-grid-list md-grid-tile-footer {
     box-sizing: border-box; }
   md-grid-list md-grid-tile {
     display: block;
@@ -8872,6 +9093,7 @@ md-select {
     -webkit-transform: translate3d(0, 2px, 0);
             transform: translate3d(0, 2px, 0); }
   .md-select-value .md-select-icon {
+    display: block;
     -webkit-box-align: end;
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -10089,10 +10311,6 @@ md-toolbar {
   md-toolbar.md-whiteframe-z1-add, md-toolbar.md-whiteframe-z1-remove {
     -webkit-transition: box-shadow 0.5s linear;
             transition: box-shadow 0.5s linear; }
-  md-toolbar *,
-  md-toolbar *:before,
-  md-toolbar *:after {
-    box-sizing: border-box; }
   md-toolbar.md-tall {
     height: 128px;
     min-height: 128px;
@@ -10115,6 +10333,7 @@ md-toolbar {
 .md-toolbar-tools {
   font-size: 20px;
   letter-spacing: 0.005em;
+  box-sizing: border-box;
   font-weight: 400;
   display: -webkit-box;
   display: -webkit-flex;
@@ -10164,6 +10383,20 @@ md-toolbar {
   @media screen and (-ms-high-contrast: active) {
     .md-toolbar-tools {
       border-bottom: 1px solid #fff; } }
+
+@media only screen and (min-width: 0) and (max-width: 600px) and (orientation: portrait) {
+  md-toolbar {
+    min-height: 56px; }
+  .md-toolbar-tools {
+    height: 56px;
+    max-height: 56px; } }
+
+@media only screen and (min-width: 0) and (max-width: 600px) and (orientation: landscape) {
+  md-toolbar {
+    min-height: 48px; }
+  .md-toolbar-tools {
+    height: 48px;
+    max-height: 48px; } }
 
 md-toolbar {
   z-index: 10;
@@ -10363,7 +10596,6 @@ md-tooltip {
     left: 0;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: auto;
     padding: 0;
     position: absolute;
     right: 0;
@@ -10415,9 +10647,6 @@ md-tooltip {
 @media screen and (-ms-high-contrast: active) {
   md-whiteframe {
     border: 1px solid #fff; } }
-
-.sg-attachment {
-  background-color: rgba(211, 211, 211, 0.3); }
 
 .pseudo-input-container {
   display: block;
