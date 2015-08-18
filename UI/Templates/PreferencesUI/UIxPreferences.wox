@@ -17,6 +17,7 @@
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
+    var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
   </script>
 
   <script type="text/ng-template" id="preferences.html">
@@ -815,11 +816,6 @@
                 </md-checkbox>
 
               </div>
-
-              <script type="text/javascript">
-                var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
-              </script>
-
             </div>
           </md-tab>
         </var:if>

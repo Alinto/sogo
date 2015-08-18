@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$state', '$mdDialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
-  function PreferencesController($state, $mdDialog, User, Mailbox, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$state', '$mdDialog', 'Dialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
+  function PreferencesController($state, $mdDialog, Dialog, User, Mailbox, statePreferences, Authentication) {
     var vm = this;
 
     vm.preferences = statePreferences;
@@ -174,7 +174,43 @@
     }
     
     function save() {
-      vm.preferences.$save();
+      var sendForm = true;
+
+      // We do some sanity checks
+      if (window.forwardConstraints > 0 &&
+          angular.isDefined(vm.preferences.defaults.Forward) &&
+          vm.preferences.defaults.Forward.enabled &&
+          angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
+
+        var addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
+
+        // We first extract the list of 'known domains' to SOGo
+        var defaultAddresses = window.defaultEmailAddresses.split(/, */);
+        var domains = [];
+
+        _.forEach(defaultAddresses, function(adr) {
+          var domain = adr.split("@")[1];
+          if (domain) {
+            domains.push(domain.toLowerCase());
+          }
+        });
+
+        // We check if we're allowed or not to forward based on the domain defaults
+        for (var i = 0; i < addresses.length && sendForm; i++) {
+          var domain = addresses[i].split("@")[1].toLowerCase();
+          if (domains.indexOf(domain) < 0 && window.forwardConstraints == 1) {
+            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
+            sendForm = false;
+          }
+          else if (domains.indexOf(domain) >= 0 && window.forwardConstraints == 2) {
+            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
+            sendForm = false;
+          }
+        }
+      }
+
+      if (sendForm)
+        vm.preferences.$save();
     }
 
     function canChangePassword() {
