@@ -186,18 +186,11 @@
    * @returns a promise of the HTTP operations
    */
   Account.prototype.$newMailbox = function(path, name) {
-    var _this = this,
-        deferred = Account.$q.defer();
+    var _this = this;
 
-    // Prefix '' to the path since we might get an integer here (account's id)
-    Account.$$resource.post('' + path, 'createFolder', {name: name}).then(function() {
+    return Account.$$resource.post(path.toString(), 'createFolder', {name: name}).then(function() {
       _this.$getMailboxes({reload: true});
-      deferred.resolve();
-    }, function(response) {
-      deferred.reject(response.error);
     });
-
-    return deferred.promise;
   };
 
   /**
