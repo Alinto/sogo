@@ -1569,9 +1569,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *parameters;
   NSUInteger count, max;
 
-  parameters = [[bodyInfo objectForKey: @"disposition"]
-                 objectForKey: @"parameterList"];
-  if ([[parameters objectForKey: @"filename"] length] > 0)
+  if ([[bodyInfo filename] length] > 0)
     {
       if ([keyPrefix length] == 0)
         keyPrefix = @"0";

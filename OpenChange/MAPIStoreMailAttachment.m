@@ -117,19 +117,7 @@
 
 - (NSString *) _fileName
 {
-  NSString *fileName;
-  NSDictionary *parameters;
-
-  fileName = [[bodyInfo objectForKey: @"parameterList"]
-               objectForKey: @"name"];
-  if (!fileName)
-    {
-      parameters = [[bodyInfo objectForKey: @"disposition"]
-                     objectForKey: @"parameterList"];
-      fileName = [parameters objectForKey: @"filename"];
-    }
-
-  return fileName;
+  return [bodyInfo filename];
 }
 
 - (int) getPidTagAttachLongFilename: (void **) data
