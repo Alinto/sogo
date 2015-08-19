@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  FiltersDialogController.$inject = ['$scope', '$mdDialog', 'filter', 'mailboxes', 'labels'];
-  function FiltersDialogController($scope, $mdDialog, filter, mailboxes, labels) {
+  FiltersDialogController.$inject = ['$scope', '$mdDialog', 'filter', 'mailboxes', 'labels', 'sieveCapabilities'];
+  function FiltersDialogController($scope, $mdDialog, filter, mailboxes, labels, sieveCapabilities) {
     $scope.filter = filter;
     $scope.mailboxes = mailboxes;
     $scope.labels = labels;
@@ -20,20 +20,28 @@
       "cc": l("Cc"),
       "to_or_cc": l("To or Cc"),
       "size": l("Size (Kb)"),
-      "header": l("Header"),
-      "body": l("Body")
+      "header": l("Header")
     };
 
+    if (sieveCapabilities.indexOf("body") > -1)
+      $scope.fieldLabels.body = l("Body");
+
     $scope.methodLabels = {
-      "addflag": l("Flag the message with:"),                         
       "discard": l("Discard the message"),
-      "fileinto": l("File the message in:"),
       "keep": l("Keep the message"),
       "redirect": l("Forward the message to:"),
-      "reject": l("Send a reject message:"),
       "vacation": l("Send a vacation message"),
       "stop": l("Stop processing filter rules")
     };
+
+    if (sieveCapabilities.indexOf("reject") > -1)
+      $scope.methodLabels.reject = l("Send a reject message:");
+
+    if (sieveCapabilities.indexOf("fileinto") > -1)
+      $scope.methodLabels.fileinto = l("File the message in:");
+
+    if (sieveCapabilities.indexOf("imapflags") > -1 || sieveCapabilities.indexOf("imap4flags") > -1)
+      $scope.methodLabels.addflag = l("Flag the message with:");
 
     $scope.numberOperatorLabels = {
       "under": l("is under"),
@@ -46,10 +54,13 @@
       "contains": l("contains"),
       "contains_not": l("does not contain"),
       "matches": l("matches"),
-      "matches_not": l("does not match"),
-      "regex": l("matches regex"),
-      "regex_not": l("does not match regex")
+      "matches_not": l("does not match")
     };
+
+    if (sieveCapabilities.indexOf("regex") > -1) {
+      $scope.textOperatorLabels.regex = l("matches regex");
+      $scope.textOperatorLabels.regex_not = l("does not match regex");
+    }
 
     $scope.flagLabels = {
       "seen": l("Seen"),

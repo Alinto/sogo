@@ -1064,7 +1064,7 @@ static NSArray *reminderValues = nil;
 
   if (!capabilities)
     {
-      if ([self _sieveClient])
+      if ([self isSieveScriptsEnabled] && [self _sieveClient])
         capabilities = [[self _sieveClient] capabilities];
       else
         capabilities = [NSArray array];

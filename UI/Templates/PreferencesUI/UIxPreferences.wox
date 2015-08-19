@@ -18,6 +18,7 @@
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
+    var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
   </script>
 
   <script type="text/ng-template" id="preferences.html">

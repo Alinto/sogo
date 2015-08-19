@@ -137,7 +137,8 @@
         locals: {
           filter: filter,
           mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors
+          labels: vm.preferences.defaults.SOGoMailLabelsColors,
+          sieveCapabilities: window.sieveCapabilities
         }
       });
     }
@@ -152,7 +153,8 @@
         locals: {
           filter: filter,
           mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors
+          labels: vm.preferences.defaults.SOGoMailLabelsColors,
+          sieveCapabilities: window.sieveCapabilities
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
