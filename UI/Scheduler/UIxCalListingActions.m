@@ -258,7 +258,7 @@ static NSArray *tasksFields = nil;
   
   labelKey = [NSString stringWithFormat: @"%@_class%@",
               type, [component objectForKey: @"c_classification"]];
-  [component setObject: [self labelForKey: labelKey]
+  [component setObject: [self labelForKey: labelKey  inContext: context]
                 forKey: @"c_title"];
 }
 
@@ -548,19 +548,19 @@ static NSArray *tasksFields = nil;
     {
       // Same day
       if (forAllDay)
-        return [self labelForKey: @"Today"];
+        return [self labelForKey: @"Today" inContext: context];
       else
         return [dateFormatter formattedTime: date];
     }
   else if ([now dayOfCommonEra] - [date dayOfCommonEra] == 1)
     {
       // Yesterday
-      return [self labelForKey: @"Yesterday"];
+      return [self labelForKey: @"Yesterday" inContext: context];
     }
   else if ([date dayOfCommonEra] - [now dayOfCommonEra] == 1)
     {
       // Tomorrow
-      return [self labelForKey: @"Tomorrow"];
+      return [self labelForKey: @"Tomorrow" inContext: context];
     }
   else if (abs(delta = [date dayOfCommonEra] - [now dayOfCommonEra]) < 7)
     {
@@ -573,7 +573,7 @@ static NSArray *tasksFields = nil;
         return dayOfWeek;
       else
         // With the past 7 days
-        return [NSString stringWithFormat: [self labelForKey: @"last %@"], dayOfWeek];
+        return [NSString stringWithFormat: [self labelForKey: @"last %@" inContext: context], dayOfWeek];
     }
   else
     {

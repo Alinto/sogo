@@ -55,6 +55,7 @@
 #import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
@@ -131,7 +132,7 @@
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] == 1)
     {
       // Yesterday
-      return [self labelForKey: @"Yesterday"];
+      return [self labelForKey: @"Yesterday" inContext: context];
     }
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] < 7)
     {
@@ -190,10 +191,10 @@
 	      s = [[s substringFromIndex: r.location+1]
 		    stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	      if ([s hasPrefix: @"1"]) result = [self labelForKey: @"highest"];
-	      else if ([s hasPrefix: @"2"]) result = [self labelForKey: @"high"];
-	      else if ([s hasPrefix: @"4"]) result = [self labelForKey: @"low"];
-	      else if ([s hasPrefix: @"5"]) result = [self labelForKey: @"lowest"];
+	      if ([s hasPrefix: @"1"]) result = [self labelForKey: @"highest" inContext: context];
+	      else if ([s hasPrefix: @"2"]) result = [self labelForKey: @"high" inContext: context];
+	      else if ([s hasPrefix: @"4"]) result = [self labelForKey: @"low" inContext: context];
+	      else if ([s hasPrefix: @"5"]) result = [self labelForKey: @"lowest" inContext: context];
 	    }
 	}
     }
@@ -242,7 +243,7 @@
 {
   NSString *s;
   
-  s = [self labelForKey:@"View Mail Folder"];
+  s = [self labelForKey:@"View Mail Folder" inContext: context];
   s = [s stringByAppendingString:@": "];
   s = [s stringByAppendingString:[self objectTitle]];
   return s;

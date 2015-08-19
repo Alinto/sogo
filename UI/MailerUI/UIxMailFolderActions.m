@@ -92,7 +92,7 @@
         }
       else
         {
-          errorFormat = [self labelForKey: @"The folder with name \"%@\" could not be created."];
+          errorFormat = [self labelForKey: @"The folder with name \"%@\" could not be created." inContext: context];
           jsonResponse = [NSDictionary dictionaryWithObject: [NSString stringWithFormat: errorFormat, folderName]
                                                      forKey: @"error"];
           response = [self responseWithStatus: 500
@@ -101,7 +101,7 @@
     }
   else
     {
-      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."]
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."  inContext: context]
                                                  forKey: @"error"];
       response = [self responseWithStatus: 500
                     andJSONRepresentation: jsonResponse];
@@ -149,7 +149,7 @@
 
   if (!newFolderName || [newFolderName length] == 0)
     {
-      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing name parameter"]
+      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing name parameter" inContext: context]
                                             forKey: @"error"];
       response = [self responseWithStatus: 500
                                 andString: [message jsonRepresentation]];
@@ -160,7 +160,7 @@
       error = [co renameTo: newFolderName];
       if (error)
         {
-          message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to rename folder."]
+          message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to rename folder." inContext: context]
                                                 forKey: @"error"];
           response = [self responseWithStatus: 500
                                     andString: [message jsonRepresentation]];
@@ -251,7 +251,7 @@
     error = [connection moveMailboxAtURL: srcURL toURL: destURL];
     if (error)
       {
-        jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder."]
+        jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
                                                  forKey: @"error"];
         response = [self responseWithStatus: 500
                                   andString: [jsonResponse jsonRepresentation]];
@@ -283,7 +283,7 @@
   }
   else
   {
-    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder."]
+    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
                                                forKey: @"error"];
     response = [self responseWithStatus: 500
                               andString: [jsonResponse jsonRepresentation]];
@@ -374,7 +374,7 @@
   {
     uids = [value componentsSeparatedByString: @","];
     response = [co archiveUIDs: uids
-                inArchiveNamed: [self labelForKey: @"Saved Messages.zip"]
+                inArchiveNamed: [self labelForKey: @"Saved Messages.zip" inContext: context]
                      inContext: context];
     if (!response)
       response = [self responseWith204];
