@@ -118,6 +118,7 @@
 "Subscribe to a Calendar..." = "Subscribe to a Calendar...";
 "Remove the selected Calendar" = "Remove the selected Calendar";
 
+"New calendar" = "New calendar";
 "Name of the Calendar" = "Name of the Calendar";
 
 "new" = "New";
@@ -182,6 +183,7 @@
 "Status" = "Status";
 "% complete" = "% complete";
 "Location" = "Location";
+"Add a category" = "Add a category";
 "Priority" = "Priority";
 "Privacy" = "Privacy";
 "Cycle" = "Cycle";
@@ -346,6 +348,7 @@
 "Never" = "Never";
 "After" = "After";
 "On Date" = "On Date";
+"times" = "times";
 
 "First" = "First";
 "Second" = "Second";
@@ -386,6 +389,7 @@
 "reminder_MINUTES" = "minutes";
 "reminder_HOURS" = "hours";
 "reminder_DAYS" = "days";
+"reminder_WEEKS" = "weeks";
 "reminder_BEFORE" = "before";
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
@@ -410,6 +414,9 @@
 
 /* email notifications */
 "Send Appointment Notifications" = "Send Appointment Notifications";
+
+"From" = "From";
+"To" = "To";
 
 /* validation errors */
 
@@ -495,6 +502,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Start" = "Start";
 "End" = "End";
 "Due Date" = "Due Date";
+"Due" = "Due";
 "Location" = "Location";
 
 "(Private Event)" = "(Private Event)";
@@ -545,7 +553,9 @@ vtodo_class2 = "(Confidential task)";
 "Receive a mail when I modify my calendar" = "Receive a mail when I modify my calendar";
 "Receive a mail when someone else modifies my calendar" = "Receive a mail when someone else modifies my calendar";
 "When I modify my calendar, send a mail to" = "When I modify my calendar, send a mail to";
+"Email Address" = "Email Address";
 
+"Export" = "Export";
 "Links to this Calendar" = "Links to this Calendar";
 "Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV URL ";
@@ -577,9 +587,31 @@ vtodo_class2 = "(Confidential task)";
 "Copy event to my calendar" = "Copy event to my calendar";
 "View Raw Source" = "View Raw Source";
 
+"Subscriptions" = "Subscriptions";
+"Subscribe to a shared folder" = "Subscribe to a shared folder";
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";
 "Web Calendar" = "Web Calendar";
+"Web Calendars" = "Web Calendars";
 "Reload on login" = "Reload on login";
 "Invalid number." = "Invalid number.";
 "Please identify yourself to %{0}" = "Please identify yourself to %{0}";
+
+"quantity" = "quantity";
+"Current view" = "Current view";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom date range" = "Custom date range";
+"Select starting date" = "Select starting date";
+"Select ending date" = "Select ending date";
+"Delegated to" = "Delegated to";
+"Keep sending me updates" = "Keep sending me updates";
+"OK" = "OK";
+"Confidential" = "Confidential";
+"Enable" = "Enable";
+"Filter" = "Filter";
+"Sort" = "Sort";
+"Back" = "Back";
+"Day" = "Day";
+"Month" = "Month";
+"New Appointment" = "New Appointment";
+"filters" = "filters";

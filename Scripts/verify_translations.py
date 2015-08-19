@@ -53,7 +53,8 @@ def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=(
                         if found:
                             if DEBUG: print "\t", '[%s] FOUND -- "%s"' % found.groups()
                         else:
-                            notfound.append("-->\t[%s] ==== Not Found ====" % value)
+                            #notfound.append("-->\t[%s] ==== Not Found ====" % value)
+                            notfound.append("""-->\t"%s" = "%s";""" % (value, value))
                     if notfound:
                         if not DEBUG:print pathname
                         print "\n".join(notfound)
@@ -69,10 +70,11 @@ def main():
             print 'Usage:', sys.argv[0], '[-g]\n\t\t-g: debug will show matching also'
             sys.exit(1)
 
-    greylist = ('UIxFilterEditor.wox')
+    #greylist = ('UIxFilterEditor.wox')
+    greylist = ()
 
     #- Get only the label:value from all lines
-    recomp = re.compile(' label:[^=]*="(.*?)"')
+    recomp = re.compile('.label:[^=]*="(.*?)"')
     find_missing_translations('../UI', 'wox', recomp, greylist)
 
     #- [self labelForKey: @"Issuer"]

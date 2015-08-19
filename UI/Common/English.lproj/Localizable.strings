@@ -12,6 +12,7 @@
 "Preferences" = "Preferences";
 "Administration" = "Administration";
 "Disconnect" = "Disconnect";
+"Toggle Menu" = "Toggle Menu";
 "Right Administration" = "Right Administration";
 "Log Console (dev.)" = "Log Console (dev.)";
 
@@ -116,3 +117,10 @@
 "a2_Thursday" = "Th";
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Sa";
+
+"Access Rights" = "Access Rights";
+"Add User" = "Add User";
+"Loading" = "Loading";
+"No such user." = "No such user.";
+"You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+"SOGo" = "SOGo";

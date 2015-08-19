@@ -83,3 +83,8 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Confirmation:" = "Confirmation:";
 "Cancel" = "Cancel";
 "Please wait..." = "Please wait...";
+
+"AboutBox" = "AboutBox";
+"Close" = "Close";
+"Missing search parameter" = "Missing search parameter";
+"Missing type parameter" = "Missing type parameter";
