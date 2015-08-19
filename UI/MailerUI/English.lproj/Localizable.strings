@@ -309,3 +309,29 @@
 /* Contacts list in mail editor */
 "Email" = "Email";
 "Name" = "Name";
+
+"More mail options" = "More mail options";
+"Delegation" = "Delegation";
+"Add User" = "Add User";
+"Add a tag" = "Add a tag";
+"reply" = "reply";
+"Edit" = "Edit";
+"More mail options" = "More mail options";
+"Yes" = "Yes";
+"No" = "No";
+"Location" = "Location";
+"Rename" = "Rename";
+"Compact" = "Compact";
+"Export" = "Export";
+"Set as Drafts" = "Set as Drafts";
+"Set as Sent" = "Set as Sent";
+"Set as Trash" = "Set as Trash";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Copy messages" = "Copy messages";
+"More messages options" = "More messages options";
+"Mark as Unread" = "Mark as Unread";
+"Closing Window ..." = "Closing Window ...";
+"Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
+"View Mail" = "View Mail";
