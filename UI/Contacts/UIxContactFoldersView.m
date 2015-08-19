@@ -292,10 +292,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   int max, i;
 
   folderContainer = [self clientObject];
-
-  // return [folderContainer subFolders];
-
   folders = [folderContainer subFolders];
+
   max = [folders count];
   foldersAttrs = [NSMutableArray arrayWithCapacity: max];
   urls = nil;
