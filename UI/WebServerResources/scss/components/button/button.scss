@@ -1,9 +1,11 @@
 /// button.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-// sometimes fabs get squized
-.md-button.md-fab {
-  min-width: $button-fab-width;
+.md-button.md-fab-overlap-bottom {
+  &.md-fab-bottom-right,
+  &.md-fab-bottom-left {
+    bottom: -(($button-fab-width + $button-fab-padding)/2);
+  }
 }
 
 // Buttons for the sidenav folder tree
