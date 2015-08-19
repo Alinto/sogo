@@ -413,13 +413,9 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$emptyTrash = function() {
-    var _this = this,
-        deferred = Mailbox.$q.defer(),
-        promise;
+    var _this = this;
 
-    promise = Mailbox.$$resource.post(this.id, 'emptyTrash');
-
-    promise.then(function() {
+    return Mailbox.$$resource.post(this.id, 'emptyTrash').then(function() {
       // Remove all messages from the mailbox
       _this.$messages = [];
       _this.uidsMap = {};
@@ -428,11 +424,7 @@
       // If we had any submailboxes, lets do a refresh of the mailboxes list
       if (angular.isDefined(_this.children) && _this.children.length)
         _this.$account.$getMailboxes({reload: true});
-    }, function(data, status) {
-      deferred.reject(data);
     });
-
-    return deferred.promise;
   };
 
   /**
