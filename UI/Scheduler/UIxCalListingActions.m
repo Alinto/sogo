@@ -94,7 +94,7 @@ static NSArray *tasksFields = nil;
                     @"c_classification", @"c_category",
                     @"c_partmails", @"c_partstates", @"c_owner",
                     @"c_iscycle", @"c_nextalarm",
-                    @"c_recurrence_id", @"isException", @"editable",
+                    @"c_recurrence_id", @"isException", @"viewable", @"editable",
                     @"erasable", @"ownerIsOrganizer", @"c_description", nil];
     [eventsFields retain];
   }
@@ -104,7 +104,7 @@ static NSArray *tasksFields = nil;
                    @"calendarName",
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
-                   @"editable", @"erasable",
+                   @"viewable", @"editable", @"erasable",
                    @"c_priority", @"c_owner",
                    @"c_iscycle", @"c_nextalarm",
                    @"c_recurrence_id", @"isException", @"c_description", nil];
@@ -441,21 +441,35 @@ static NSArray *tasksFields = nil;
             }
           else
             {
-              id foo;
-
-              foo = [currentFolder fetchCoreInfosFrom: startDate
+              currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
                                                              to: endDate
                                                           title: value
-                                            component: component];
-              currentInfos = [foo objectEnumerator];
+                                                      component: component]
+                               objectEnumerator];
             }
       
           owner = [currentFolder ownerInContext: context];
           ownerUser = [SOGoUser userWithLogin: owner];
           isErasable = ([owner isEqualToString: userLogin] || [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
-      
+
           while ((newInfo = [currentInfos nextObject]))
             {
+              if ([fields containsObject: @"viewable"])
+                {
+                  if ([owner isEqualToString: userLogin])
+                    [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
+                  else
+                    {
+                      role = [currentFolder roleForComponentsWithAccessClass: [[newInfo objectForKey: @"c_classification"] intValue]
+                                                                    forUser : userLogin];
+
+                      if ([role isEqualToString: @"ComponentViewer"])
+                        [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 0]  forKey: @"viewable"];
+                    }
+                }
+
               if ([fields containsObject: @"editable"])
                 {
                   if (folderIsRemote)
@@ -732,10 +746,11 @@ static NSArray *tasksFields = nil;
  * @apiSuccess (Success 200) {String[]} events.c_partmails       Participants email addresses
  * @apiSuccess (Success 200) {String[]} events.c_partstates      Participants states
  * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
- * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic
+ * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic/recurring
  * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
  * @apiSuccess (Success 200) {String} [events.c_recurrence_id]   Recurrence ID if event is cyclic
  * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
+ * @apiSuccess (Success 200) {Number} events.viewable            1 if active user can view the event
  * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
  * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
  * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
@@ -1254,6 +1269,7 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
  * @apiSuccess (Success 200) {String} [events.c_recurrence_id]   Recurrence ID if event is cyclic
  * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
+ * @apiSuccess (Success 200) {Number} events.viewable            1 if active user can view the event
  * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
  * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
  * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
@@ -1418,6 +1434,7 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {Number} tasks.c_classification  0: Public, 1: Private, 2: Confidential
  * @apiSuccess (Success 200) {String} tasks.c_location        Location
  * @apiSuccess (Success 200) {String} tasks.c_category        Category
+ * @apiSuccess (Success 200) {Number} tasks.viewable          1 if task is viewable by the active user
  * @apiSuccess (Success 200) {Number} tasks.editable          1 if task is editable by the active user
  * @apiSuccess (Success 200) {Number} tasks.erasable          1 if task is erasable by the active user
  * @apiSuccess (Success 200) {String} tasks.c_priority        Priority (0-9)

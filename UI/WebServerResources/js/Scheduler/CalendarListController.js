@@ -77,11 +77,13 @@
     }
 
     function openEvent($event, event) {
-      openComponent($event, event, 'appointment');
+      if (event.viewable)
+        openComponent($event, event, 'appointment');
     }
 
     function openTask($event, task) {
-      openComponent($event, task, 'task');
+      if (task.viewable)
+        openComponent($event, task, 'task');
     }
 
     function openComponent($event, component, type) {

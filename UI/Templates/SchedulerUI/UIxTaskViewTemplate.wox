@@ -94,7 +94,7 @@
       </md-list>
     </md-dialog-content>
     <!-- edit -->
-    <div class="md-actions">
+    <div class="md-actions" ng-show="editor.component.isEditable()">
       <md-button ng-click="editor.edit()">
         <var:string label:value="Edit"/>
       </md-button>
