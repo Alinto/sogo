@@ -394,7 +394,7 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
-                <md-menu-item >
+                <md-menu-item>
                   <md-button ng-click="mailbox.selectedFolder.$filter()">
                     <md-checkbox
                         ng-model="mailbox.service.$query.asc"
