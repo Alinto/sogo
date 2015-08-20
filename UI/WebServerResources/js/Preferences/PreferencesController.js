@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$state', '$mdDialog', 'Dialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
-  function PreferencesController($state, $mdDialog, Dialog, User, Mailbox, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
+  function PreferencesController($state, $mdDialog, $mdToast, Dialog, User, Mailbox, statePreferences, Authentication) {
     var vm = this;
 
     vm.preferences = statePreferences;
@@ -212,7 +212,14 @@
       }
 
       if (sendForm)
-        vm.preferences.$save();
+        vm.preferences.$save().then(function(data) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('Preferences saved!')
+                  .position('top right')
+                  .hideDelay(3000)
+              );
+        });
     }
 
     function canChangePassword() {
