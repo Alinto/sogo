@@ -838,11 +838,10 @@
   o = [card birthday];
   if (o)
     {
-      NSNumber *time = [NSNumber numberWithInt: [o timeIntervalSince1970]];
-      [data setObject: time forKey: @"birthday"];
+      [data setObject: [NSNumber numberWithInt: [o timeIntervalSince1970]]
+               forKey: @"birthday"];
     }
-  // o = [card source];
-  // if (o) [data setObject: o forKey: @"source"];
+
   o = [card tz];
   if (o) [data setObject: o forKey: @"tz"];
 

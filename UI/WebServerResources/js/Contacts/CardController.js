@@ -21,6 +21,7 @@
     vm.categories = {};
     vm.userFilterResults = [];
     vm.addOrgUnit = addOrgUnit;
+    vm.addBirthday = addBirthday;
     vm.addEmail = addEmail;
     vm.addPhone = addPhone;
     vm.addUrl = addUrl;
@@ -36,6 +37,9 @@
     function addOrgUnit() {
       var i = vm.card.$addOrgUnit('');
       focus('orgUnit_' + i);
+    }
+    function addBirthday() {
+      vm.card.birthday = new Date();
     }
     function addEmail() {
       var i = vm.card.$addEmail('');

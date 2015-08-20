@@ -115,7 +115,6 @@
                   <md-icon>remove_circle</md-icon>
                 </md-button>
               </div>
-
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
               <md-button class="sg-icon-button" type="button" ng-click="editor.addEmail()">
@@ -128,12 +127,25 @@
           </div>
 
           <!-- birthday -->
-          <md-input-container>
-            <label>
-              <var:string label:value="Birthday"/>
-            </label>
-            <input type="date" ng-model="editor.card.birthday"/>
-          </md-input-container>
+          <div class="section">
+            <div layout="row" layout-align="space-between end" ng-show="editor.card.birthday">
+              <label>
+                <var:string label:value="Birthday"/>
+              </label>
+              <md-datepicker ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
+            </div>
+            <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.card.birthday">
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addBirthday()">
+                <md-icon>add_circle</md-icon>
+              </md-button>
+              <label class="button-label">
+                <var:string label:value="Add Birthday"/>
+              </label>
+            </div>
+          </div>
 
           <!-- phones -->
           <div class="section">

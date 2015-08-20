@@ -65,14 +65,14 @@
       </header>
       <section class="msg-body">
 
-        <div class="pseudo-input-container" ng-show="editor.card.birthday">
+        <div class="pseudo-input-container" ng-show="editor.card.$birthday().length">
           <div class="key">
             <label class="pseudo-input-label">
               <var:string label:value="Birthday"/>
             </label>
           </div>
           <div class="pseudo-input-field">
-            <span>{{editor.card.$birthday() | date}}</span>
+            <span>{{editor.card.$birthday()}}</span>
           </div>
         </div>
 

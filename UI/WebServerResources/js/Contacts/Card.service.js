@@ -176,6 +176,8 @@
       if (index > -1 && this[attribute].length > index) {
         this[attribute].splice(index, 1);
       }
+      else
+        delete this[attribute];
     }
     else {
       // No arguments -- delete card
@@ -274,8 +276,16 @@
     return fullname;
   };
 
+  /**
+   * @function $birthday
+   * @memberof Card.prototype
+   * @returns the formatted birthday object
+   */
   Card.prototype.$birthday = function() {
-    return new Date(this.birthday * 1000);
+    if (this.birthday) {
+      return [this.birthday.getFullYear(), this.birthday.getMonth() + 1, this.birthday.getDate()].join('/');
+    }
+    return '';
   };
 
   Card.prototype.$isCard = function() {
@@ -481,6 +491,13 @@
           card[key] = value;
       }
     });
+
+    // We convert back our birthday object
+    if (card.birthday)
+      card.birthday = card.birthday.getTime()/1000;
+    else
+      card.birthday = 0;
+
     return card;
   };
 

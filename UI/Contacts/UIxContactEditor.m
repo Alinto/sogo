@@ -367,6 +367,8 @@ static Class SOGoContactGCSEntryK = Nil;
       day = [date dayOfMonth];
       [card setBday: [NSString stringWithFormat: @"%.4d%.2d%.2d", year, month, day]];
     }
+  else
+    [card setBday: nil];
 
   if ([[attributes objectForKey: @"addresses"] isKindOfClass: [NSArray class]])
     {
