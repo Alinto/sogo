@@ -171,7 +171,7 @@
           _this.$addressbooks.push(addressbook);
       });
     }
-    return this.$addressbooks;
+    return _.union(this.$addressbooks, this.$subscriptions, this.$remotes);
   };
 
   /**
