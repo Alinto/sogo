@@ -409,6 +409,7 @@
           </md-virtual-repeat-container>
           <md-button class="md-fab md-fab-bottom-right md-accent"
                      label:aria-label="New Contact"
+                     ng-show="addressbook.selectedFolder.acls.objectCreator"
                      ng-click="addressbook.newComponent($event)">
             <md-icon>add</md-icon>
           </md-button>

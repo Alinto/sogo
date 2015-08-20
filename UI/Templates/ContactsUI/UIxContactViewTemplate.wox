@@ -35,13 +35,14 @@
           </md-button>
           <md-button class="sg-icon-button"
                      label:aria-label="Edit"
-                     ng-show="editor.currentFolder.isEditable"
+                     ng-show="editor.currentFolder.acls.objectEditor"
                      ui-sref="app.addressbook.card.editor({addressbookId: editor.currentFolder.id, cardId: editor.card.id})">
             <md-tooltip md-direction="left"><var:string label:value="Edit"/></md-tooltip>
             <md-icon>mode_edit</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
                      label:aria-label="Delete"
+                     ng-show="editor.currentFolder.acls.objectEraser"
                      ng-click="editor.confirmDelete(editor.card)">
             <md-tooltip md-direction="left"><var:string label:value="Delete"/></md-tooltip>
             <md-icon>delete</md-icon>

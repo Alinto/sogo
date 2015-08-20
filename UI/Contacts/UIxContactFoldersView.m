@@ -284,13 +284,17 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
 - (NSString *) contactFolders
 {
   SOGoContactFolders *folderContainer;
+  NSMutableDictionary *urls, *acls;
   NSMutableArray *foldersAttrs;
-  NSMutableDictionary *urls;
+  NSString *userLogin, *owner;
+  NSArray *folders, *allACLs;
   NSDictionary *folderAttrs;
-  NSArray *folders;
   id currentFolder;
+
+  BOOL objectCreator, objectEditor, objectEraser;
   int max, i;
 
+  userLogin = [[context activeUser] login];
   folderContainer = [self clientObject];
   folders = [folderContainer subFolders];
 
@@ -301,7 +305,9 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   for (i = 0; i < max; i++)
     {
       currentFolder = [folders objectAtIndex: i];
+      owner = [currentFolder ownerInContext: context];
 
+      // We extract URLs for this address book
       if ([currentFolder respondsToSelector: @selector(cardDavURL)])
         {
           urls = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -313,6 +319,15 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
             }
         }
 
+      // We extract ACLs for this address book
+      allACLs = ([owner isEqualToString: userLogin] ? nil : [currentFolder aclsForUser: userLogin]);
+      objectCreator = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectCreator]);
+      objectEditor = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectEditor]);
+      objectEraser = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectEraser]);
+      acls = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: objectCreator], @"objectCreator",
+                               [NSNumber numberWithBool: objectEditor], @"objectEditor",
+                               [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
+
       // NOTE: keep urls as the last key/value here, to avoid chopping the dictionary
       //       if it is not a GCS folder
       folderAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -322,6 +337,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
                                             && ![currentFolder isPersonalSource]], @"isRemote",
+                                  acls, @"acls",
                                   urls, @"urls",
                                   nil];
       [foldersAttrs addObject: folderAttrs];
