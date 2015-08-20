@@ -215,7 +215,7 @@
         vm.preferences.$save().then(function(data) {
               $mdToast.show(
                 $mdToast.simple()
-                  .content('Preferences saved!')
+                  .content(l('Preferences saved'))
                   .position('top right')
                   .hideDelay(3000)
               );

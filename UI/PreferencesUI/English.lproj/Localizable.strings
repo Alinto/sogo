@@ -1,6 +1,7 @@
 /* toolbar */
 "Save and Close" = "Save and Close";
 "Close" = "Close";
+"Preferences saved" = "Preferences saved";
 
 /* tabs */
 "General" = "General";
