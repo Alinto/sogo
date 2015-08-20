@@ -493,10 +493,12 @@
     });
 
     // We convert back our birthday object
-    if (card.birthday)
-      card.birthday = card.birthday.getTime()/1000;
-    else
-      card.birthday = 0;
+    if (!deep) {
+      if (card.birthday)
+        card.birthday = card.birthday.getTime()/1000;
+      else
+        card.birthday = 0;
+    }
 
     return card;
   };
