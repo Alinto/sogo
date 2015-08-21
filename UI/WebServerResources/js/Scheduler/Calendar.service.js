@@ -100,7 +100,7 @@
           _this.$calendars.push(calendar);
       });
     }
-    return this.$calendars;
+    return _.union(this.$calendars, this.$subscriptions, this.$webcalendars);
   };
 
   /**
