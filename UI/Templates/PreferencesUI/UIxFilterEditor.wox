@@ -13,7 +13,7 @@
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
         <md-input-container>
-          <label><var:string label:value="Filter name:"/></label>
+          <label><var:string label:value="Filter name"/></label>
           <input class="md-title" type="text" ng-model="filter.name" required="required"/>
         </md-input-container>
         <md-button type="button" class="sg-icon-button " ng-click="cancel()">
@@ -33,10 +33,10 @@
         <md-input-container class="md-flex">
           <md-select ng-model="filter.match" required="required">
             <md-option const:value="all">
-              <var:string label:value="match all of the following rules:"/>
+              <var:string label:value="match all of the following rules"/>
             </md-option>
             <md-option const:value="any">
-              <var:string label:value="match any of the following rules:"/>
+              <var:string label:value="match any of the following rules"/>
             </md-option>
             <md-option const:value="allmessages">
               <var:string label:value="match all messages"/>
@@ -99,7 +99,7 @@
 
       <!-- ACTIONS -->
       <div layout="column">
-        <var:string label:value="Perform these actions:"/>
+        <var:string label:value="Perform these actions"/>
         <div id="filterActions"><!-- empty --></div>
 
         <md-list>

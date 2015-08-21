@@ -186,7 +186,7 @@
 "(Click to create)" = "(Click to create)";
 
 "Signature" = "Signature";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below" = "Please enter your signature below";
 
 "Please specify a valid sender address." = "Please specify a valid sender address.";
 "Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
@@ -284,12 +284,12 @@
 "Service temporarily unavailable" = "Service temporarily unavailable";
 
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Filter name:";
+"Filter name" = "Filter name";
 "For incoming messages that" = "For incoming messages that";
-"match all of the following rules:" = "match all of the following rules:";
-"match any of the following rules:" = "match any of the following rules:";
+"match all of the following rules" = "match all of the following rules";
+"match any of the following rules" = "match any of the following rules";
 "match all messages" = "match all messages";
-"Perform these actions:" = "Perform these actions:";
+"Perform these actions" = "Perform these actions";
 "Untitled Filter" = "Untitled Filter";
 
 "Subject" = "Subject";
