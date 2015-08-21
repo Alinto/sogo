@@ -333,7 +333,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
       folderAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSString stringWithFormat: @"%@", [currentFolder nameInContainer]], @"id",
                                   [currentFolder displayName], @"name",
-                                  [currentFolder ownerInContext: context], @"owner",
+                                  owner, @"owner",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
                                             && ![currentFolder isPersonalSource]], @"isRemote",
