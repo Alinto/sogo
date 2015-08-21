@@ -15,6 +15,7 @@
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
+    this.$showDetailedRecipients = false;
     this.editable = {to: [], cc: [], bcc: []};
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
@@ -128,19 +129,56 @@
    * @function $formatFullAddresses
    * @memberof Message.prototype
    * @desc Format all sender and recipients addresses with a complete description (name <email>).
+   *       This function also generates a gravatar for each email address, and a short name
    */
   Message.prototype.$formatFullAddresses = function() {
     var _this = this;
+    var identities = _.pluck(_this.$mailbox.$account.identities, 'email');
 
     // Build long representation of email addresses
     _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
       _.each(_this[type], function(data, i) {
-        if (data.name && data.name != data.email)
+        if (data.name && data.name != data.email) {
           data.full = data.name + ' <' + data.email + '>';
-        else
+
+          // If we have "Alice Foo" as name, we grab "Alice"
+          if (data.name.split(' ').length)
+            data.shortname = data.name.split(' ')[0].replace('\'','');
+        }
+        else {
           data.full = '<' + data.email + '>';
+          data.shortname = data.email.split('@')[0];
+        }
+
+        // Generate the gravatar
+        data.image = Message.$gravatar(data.email, 32);
+
+        // If the current user is the recepient, overwrite
+        // the short name with 'me'
+        if (_.indexOf(identities, data.email) >= 0)
+          data.shortname = 'me';
       });
     });
+  };
+
+  /**
+   * @function $shortRecipients
+   * @memberof Message.prototype
+   * @desc Format all recipients into a very compact string
+   * @returns a compacted string of all recipients
+   */
+  Message.prototype.$shortRecipients = function() {
+    var _this = this;
+    var result = [];
+
+    // Build long representation of email addresses
+    _.each(['to', 'cc', 'bcc'], function(type) {
+      _.each(_this[type], function(data, i) {
+        result.push(data.shortname);
+      });
+    });
+
+    return result.join(', ');
   };
 
   /**
@@ -165,6 +203,15 @@
    */
   Message.prototype.loadUnsafeContent = function() {
     this.$loadUnsafeContent = true;
+  };
+
+  /**
+   * @function showDetailedRecipients
+   * @memberof Message.prototype
+   * @desc Mark the message to show all to/cc recipients.
+   */
+  Message.prototype.showDetailedRecipients = function() {
+    this.$showDetailedRecipients = true;
   };
 
   /**

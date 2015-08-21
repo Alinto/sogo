@@ -20,10 +20,18 @@
           <label class="pseudo-input-label">
             <var:string label:value="From"/>
           </label>
-          <div class="pseudo-input-field">
-            <a href="#"
-               ng-bind="viewer.message.from[0].full"
-               ng-click="viewer.newMessage($event, viewer.message.from[0])"><!-- from --></a>
+          <div layout="row" layout-align="start center">
+            <sg-avatar-image class="md-tile-left"
+                             sg-email="viewer.message.from[0].email"
+                             size="48">
+              <!-- contact avatar -->
+            </sg-avatar-image>
+            <div class="md-list-item-text">
+              <span>{{ viewer.message.from[0].name }}</span><br/>
+              <a class="md-caption" href="#"
+                 ng-bind="viewer.message.from[0].email"
+                 ng-click="viewer.newMessage($event, viewer.message.from[0])"><!-- from --></a>
+            </div>
           </div>
         </div>
 
@@ -31,10 +39,26 @@
           <label class="pseudo-input-label">
             <var:string label:value="To"/>
           </label>
+          <div class="pseudo-input-field" ng-hide="viewer.message.$showDetailedRecipients">
+            <a href="#" ng-click="viewer.message.showDetailedRecipients()">{{viewer.message.$shortRecipients()}}</a>
+          </div>
+          <div class="pseudo-input-field" ng-show="viewer.message.$showDetailedRecipients">
+            <span ng-repeat="recipient in viewer.message.to">
+              <a href="#" ng-bind="recipient.full"
+                 ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
+            </span>
+          </div>
+        </div>
+
+        <div class="pseudo-input-container--compact" ng-show="viewer.message.$showDetailedRecipients">
+          <label class="pseudo-input-label" ng-show="viewer.message.cc.length > 0">
+            <var:string label:value="Cc"/>
+          </label>
           <div class="pseudo-input-field">
-            <a href="#"
-               ng-bind="viewer.message.to[0].full"
-               ng-click="viewer.newMessage($event, viewer.message.to[0])"><!-- to --></a>
+            <span ng-repeat="recipient in viewer.message.cc">
+              <a href="#" ng-bind="recipient.full"
+                 ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
+            </span>
           </div>
         </div>
 
