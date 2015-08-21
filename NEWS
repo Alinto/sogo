@@ -7,6 +7,7 @@ Bug fixes
  - Fixed several sync issues on environments with multiple users (Zentyal)
  - Folders from other users will no longer appear on your Outlook (Zentyal)
  - Use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
+ - Session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
 
 2.3.1 (2015-07-23)
 ------------------

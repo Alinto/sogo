@@ -183,7 +183,6 @@
   SOGoWebAuthenticator *auth;
   SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
-  SOGoSystemDefaults *sd;
   SOGoUser *loggedInUser;
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
@@ -226,13 +225,15 @@
       
       response = [self responseWithStatus: 200
 		       andJSONRepresentation: json];
-      
+
+      // We get the proper username for cookie creation. If we are using a multidomain
+      // environment with SOGoEnableDomainBasedUID, we could have to append the domain
+      // to the username. Also when SOGoEnableDomainBasedUID is enabled, we could be in
+      // the DomainLessLogin situation, so we would NOT add the domain. -getUIDForEmail
+      // has all the logic for this, so lets use it.
       if ([domain isNotNull])
         {
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID] &&
-              [username rangeOfString: @"@"].location == NSNotFound)
-            username = [NSString stringWithFormat: @"%@@%@", username, domain];
+          username = [[SOGoUserManager sharedUserManager]  getUIDForEmail: username];
         }
 
       authCookie = [auth cookieWithUsername: username
