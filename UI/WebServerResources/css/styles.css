@@ -326,10 +326,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: none !important; }
 
 /* Local overrides from angular-material src */
-/* mixin definition ; sets LTR and RTL within the same style call */
-/**
- * Position a FAB button.
- */
 html, body {
   height: 100%;
   color: rgba(0, 0, 0, 0.87);
@@ -6464,10 +6460,6 @@ md-bottom-sheet.md-default-theme .md-button.md-default-theme[disabled] {
   overflow: hidden;
   -webkit-transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
           transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  .md-button *,
-  .md-button *:before,
-  .md-button *:after {
-    box-sizing: border-box; }
   .md-button:focus {
     outline: none; }
   .md-button:hover, .md-button:focus {
@@ -6613,8 +6605,9 @@ md-bottom-sheet.md-default-theme .md-button.md-default-theme[disabled] {
   .md-button.md-fab {
     border: 1px solid #fff; } }
 
-.md-button.md-fab {
-  min-width: 56px; }
+.md-button.md-fab-overlap-bottom.md-fab-bottom-right,
+.md-button.md-fab-overlap-bottom.md-fab-bottom-left {
+  bottom: -36px; }
 
 md-sidenav md-list .md-button,
 .view-list md-list .md-button {
@@ -6791,13 +6784,29 @@ md-checkbox {
   min-width: 18px;
   min-height: 18px; }
   html[dir=rtl] md-checkbox {
-    padding-left: 0; }
+    padding-left: 0;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    padding-left: 0;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   html[dir=rtl] md-checkbox {
-    padding-right: 18px; }
-  md-checkbox *,
-  md-checkbox *:before,
-  md-checkbox *:after {
-    box-sizing: border-box; }
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-checkbox {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  md-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   md-checkbox.md-focused:not([disabled]) .md-container:before {
     left: -8px;
     top: -8px;
@@ -6811,16 +6820,38 @@ md-checkbox {
     -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
             transform: translateY(-50%);
+    box-sizing: border-box;
     display: inline-block;
     width: 18px;
     height: 18px;
     left: 0;
     right: auto; }
     html[dir=rtl] md-checkbox .md-container {
-      left: auto; }
+      left: auto;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox .md-container {
+      left: auto;
+      unicode-bidi: embed; }
+    md-checkbox .md-container bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox .md-container bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
     html[dir=rtl] md-checkbox .md-container {
-      right: 0; }
+      right: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox .md-container {
+      right: 0;
+      unicode-bidi: embed; }
+    md-checkbox .md-container bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox .md-container bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
     md-checkbox .md-container:before {
+      box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
       content: '';
@@ -6835,6 +6866,7 @@ md-checkbox {
               transition: all 0.5s;
       width: auto; }
     md-checkbox .md-container:after {
+      box-sizing: border-box;
       content: '';
       position: absolute;
       top: -10px;
@@ -6853,6 +6885,7 @@ md-checkbox {
   md-checkbox.md-align-top-left > div.md-container {
     top: 12px; }
   md-checkbox .md-icon {
+    box-sizing: border-box;
     -webkit-transition: 240ms;
             transition: 240ms;
     position: absolute;
@@ -6868,6 +6901,7 @@ md-checkbox {
   md-checkbox[disabled] {
     cursor: no-drop; }
   md-checkbox.md-checked .md-icon:after {
+    box-sizing: border-box;
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
             transform: rotate(45deg);
@@ -6883,6 +6917,7 @@ md-checkbox {
     border-left: 0;
     content: ''; }
   md-checkbox .md-label {
+    box-sizing: border-box;
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -6894,9 +6929,29 @@ md-checkbox {
     margin-left: 10px;
     margin-right: 0; }
     html[dir=rtl] md-checkbox .md-label {
-      margin-left: 0; }
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox .md-label {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-checkbox .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
     html[dir=rtl] md-checkbox .md-label {
-      margin-right: 10px; }
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-checkbox .md-label {
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    md-checkbox .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-checkbox .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
 
 md-sidenav md-checkbox {
   margin: 0; }
@@ -7152,6 +7207,9 @@ md-calendar {
 
 /*! datepicker/_extends.scss - */
 /** Styles for mdDatepicker. */
+md-datepicker {
+  white-space: nowrap; }
+
 .md-datepicker-button {
   display: inline-block;
   box-sizing: border-box;
@@ -7204,9 +7262,17 @@ md-calendar {
 .md-datepicker-input-mask {
   height: 40px;
   width: 340px;
+  position: relative;
   background: transparent;
   pointer-events: none;
   cursor: text; }
+
+.md-datepicker-input-mask-opaque {
+  position: absolute;
+  right: 0;
+  left: 120px;
+  background: white;
+  height: 100%; }
 
 .md-datepicker-calendar {
   opacity: 0;
@@ -7250,7 +7316,6 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
   display: none; }
 
 .md-datepicker-open .md-datepicker-input-container {
-  min-width: 340px;
   margin-left: -12px;
   border: none; }
 
@@ -7260,6 +7325,9 @@ md-datepicker[disabled] .md-datepicker-triangle-button {
 
 .md-datepicker-open .md-datepicker-triangle-button {
   display: none; }
+
+md-datepicker {
+  background: transparent; }
 
 /*! dialog/_extends.scss - */
 .md-dialog-is-showing {
@@ -7845,7 +7913,22 @@ md-input-container {
     html[dir=rtl] md-input-container .md-placeholder {
       -webkit-transform-origin: right top;
           -ms-transform-origin: right top;
-              transform-origin: right top; }
+              transform-origin: right top;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-input-container label:not(.md-no-float),
+    body[dir=rtl] md-input-container .md-placeholder {
+      -webkit-transform-origin: right top;
+          -ms-transform-origin: right top;
+              transform-origin: right top;
+      unicode-bidi: embed; }
+    md-input-container label:not(.md-no-float) bdo[dir=rtl],
+    md-input-container .md-placeholder bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-input-container label:not(.md-no-float) bdo[dir=ltr],
+    md-input-container .md-placeholder bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-input-container .md-placeholder {
     position: absolute;
     top: 0;
@@ -8892,18 +8975,9 @@ md-radio-button,
   margin: 15px;
   white-space: nowrap;
   cursor: pointer; }
-  md-radio-button *,
-  md-radio-button *:before,
-  md-radio-button *:after,
-  .md-switch-thumb *,
-  .md-switch-thumb *:before,
-  .md-switch-thumb *:after {
-    box-sizing: border-box; }
-  md-radio-button input,
-  .md-switch-thumb input {
-    display: none; }
   md-radio-button .md-container,
   .md-switch-thumb .md-container {
+    box-sizing: border-box;
     position: relative;
     top: 4px;
     display: inline-block;
@@ -8920,6 +8994,7 @@ md-radio-button,
       top: -16px; }
     md-radio-button .md-container:before,
     .md-switch-thumb .md-container:before {
+      box-sizing: border-box;
       background-color: transparent;
       border-radius: 50%;
       content: '';
@@ -8938,6 +9013,7 @@ md-radio-button,
     top: -15px; }
   md-radio-button .md-off,
   .md-switch-thumb .md-off {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -8950,6 +9026,7 @@ md-radio-button,
             transition: border-color ease 0.28s; }
   md-radio-button .md-on,
   .md-switch-thumb .md-on {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -8968,6 +9045,7 @@ md-radio-button,
             transform: scale(0.5); }
   md-radio-button .md-label,
   .md-switch-thumb .md-label {
+    box-sizing: border-box;
     position: relative;
     display: inline-block;
     margin-left: 10px;
@@ -8978,10 +9056,36 @@ md-radio-button,
     width: auto; }
     html[dir=rtl] md-radio-button .md-label,
     html[dir=rtl] .md-switch-thumb .md-label {
-      margin-left: 0; }
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-radio-button .md-label,
+    body[dir=rtl] .md-switch-thumb .md-label {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    md-radio-button .md-label bdo[dir=rtl],
+    .md-switch-thumb .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-radio-button .md-label bdo[dir=ltr],
+    .md-switch-thumb .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
     html[dir=rtl] md-radio-button .md-label,
     html[dir=rtl] .md-switch-thumb .md-label {
-      margin-right: 10px; }
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    body[dir=rtl] md-radio-button .md-label,
+    body[dir=rtl] .md-switch-thumb .md-label {
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    md-radio-button .md-label bdo[dir=rtl],
+    .md-switch-thumb .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    md-radio-button .md-label bdo[dir=ltr],
+    .md-switch-thumb .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
   md-radio-button .circle,
   .md-switch-thumb .circle {
     border-radius: 50%; }
@@ -9158,7 +9262,19 @@ md-select-menu {
   html[dir=rtl] md-select-menu {
     -webkit-transform-origin: right top;
         -ms-transform-origin: right top;
-            transform-origin: right top; }
+            transform-origin: right top;
+    unicode-bidi: embed; }
+  body[dir=rtl] md-select-menu {
+    -webkit-transform-origin: right top;
+        -ms-transform-origin: right top;
+            transform-origin: right top;
+    unicode-bidi: embed; }
+  md-select-menu bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  md-select-menu bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
   md-select-menu md-content {
     min-width: 136px;
     min-height: 48px;
@@ -9249,10 +9365,6 @@ md-sidenav {
   bottom: 0;
   background-color: white;
   overflow: auto; }
-  md-sidenav *,
-  md-sidenav *:before,
-  md-sidenav *:after {
-    box-sizing: border-box; }
   md-sidenav ul {
     list-style: none; }
   md-sidenav.md-closed {
@@ -9585,13 +9697,12 @@ md-slider {
     width: 48px;
     height: 48px;
     border-radius: 48px;
-    border: 2px solid #D6D6D6;
-    background-color: transparent;
     -webkit-transform: scale(0);
         -ms-transform: scale(0);
             transform: scale(0);
     -webkit-transition: all 0.2s linear;
-            transition: all 0.2s linear; }
+            transition: all 0.2s linear;
+    opacity: 0.26; }
   md-slider .md-disabled-thumb {
     position: absolute;
     left: -22px;
@@ -9704,6 +9815,26 @@ md-slider {
   100% {
     box-shadow: 0 0 0 0 transparent; } }
 
+.md-subheader-wrapper:not(.md-sticky-no-effect) {
+  -webkit-transition: 0.2s ease-out margin;
+          transition: 0.2s ease-out margin; }
+  .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader {
+    margin: 0; }
+  .md-subheader-wrapper:not(.md-sticky-no-effect) .md-subheader:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: -16px;
+    content: ''; }
+  .md-subheader-wrapper:not(.md-sticky-no-effect).md-sticky-clone {
+    z-index: 2; }
+  .md-subheader-wrapper:not(.md-sticky-no-effect)[sticky-state="active"] {
+    margin-top: -2px; }
+  .md-subheader-wrapper:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
+    -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
+            animation: subheaderStickyHoverOut 0.3s ease-out both; }
+
 .md-subheader {
   display: block;
   font-size: 14px;
@@ -9714,23 +9845,6 @@ md-slider {
   position: relative; }
   .md-subheader .md-subheader-inner {
     padding: 16px 0px 16px 16px; }
-  .md-subheader:not(.md-sticky-no-effect) {
-    -webkit-transition: 0.2s ease-out margin;
-            transition: 0.2s ease-out margin; }
-    .md-subheader:not(.md-sticky-no-effect):after {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      top: 0;
-      right: -16px;
-      content: ''; }
-    .md-subheader:not(.md-sticky-no-effect).md-sticky-clone {
-      z-index: 2; }
-    .md-subheader:not(.md-sticky-no-effect)[sticky-state="active"] {
-      margin-top: -2px; }
-    .md-subheader:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"] .md-subheader-inner:after {
-      -webkit-animation: subheaderStickyHoverOut 0.3s ease-out both;
-              animation: subheaderStickyHoverOut 0.3s ease-out both; }
   .md-subheader .md-subheader-content {
     z-index: 1;
     position: relative; }
