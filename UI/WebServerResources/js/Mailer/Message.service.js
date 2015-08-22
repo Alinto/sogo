@@ -156,7 +156,7 @@
         // If the current user is the recepient, overwrite
         // the short name with 'me'
         if (_.indexOf(identities, data.email) >= 0)
-          data.shortname = 'me';
+          data.shortname = l('me');
       });
     });
   };
