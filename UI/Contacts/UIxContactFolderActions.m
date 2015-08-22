@@ -112,15 +112,11 @@
 
   request = [context request];
   rc = [NSMutableDictionary dictionary];
-  data = [request formValueForKey: @"contactsFile"];
-  if ([data respondsToSelector: @selector(isEqualToString:)])
-    fileContent = (NSString *) data;
-  else
-    {
-      fileContent = [[NSString alloc] initWithData: (NSData *) data 
-                                          encoding: NSUTF8StringEncoding];
-      [fileContent autorelease];
-    }
+  data = [[[[[request httpRequest] body] parts] lastObject] body];
+
+  fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                      encoding: NSUTF8StringEncoding];
+  [fileContent autorelease];
 
   if (fileContent && [fileContent length])
     {
@@ -132,12 +128,10 @@
         imported = 0;
     }
 
-  [rc setObject: [NSNumber numberWithInt: imported]
-         forKey: @"imported"];
+  [rc setObject: [NSNumber numberWithInt: imported]  forKey: @"imported"];
 
   response = [self responseWithStatus: 200];
-  [response setHeader: @"text/html" 
-               forKey: @"content-type"];
+  [response setHeader: @"text/html"  forKey: @"content-type"];
   [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
 
   return response;

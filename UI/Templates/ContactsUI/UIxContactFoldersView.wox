@@ -9,64 +9,11 @@
     className="UIxPageFrame"
     title="title"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js">
   <script type="text/javascript">
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
 
-  <!--
-  <div id="uploadDialog" style="display: none" class="dialog left">
-    <div>
-      <h3><var:string label:value="Import Cards"/></h3>
-      <p class="prompt"><var:string label:value="Select a vCard or LDIF file."/></p>
-      <form const:href="" name="uploadForm" id="uploadForm" method="post"
-            enctype="multipart/form-data"
-            onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm,
-                      'onComplete' : uploadCompleted})">
-        <p class="prompt"><input type="file" name="contactsFile" id="contactsFile" class="textField" required="required" />
-        <a href="#" class="button actionButton" id="uploadSubmit"
-           onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
-        <span><var:string label:value="Upload" /></span></a>
-        <a href="#" class="button" const:id="uploadCancel">
-        <span><var:string label:value="Cancel" /></span></a></p>
-      </form>
-      <hr/>
-    </div>
-  </div>
-
-  <div id="uploadResults" dropdown-content="dropdown-content" class="f-dropdown">
-    <div>
-      <h3><var:string label:value="Import Cards"/></h3>
-      <p id="uploadResultsContent">!- empty -</p>
-      <p><a href="#" class="button" const:id="uploadOK">
-      <span><var:string label:value="Done" /></span></a></p>
-      <hr/>
-    </div>
-  </div>
-
-  <ul class="f-dropdown" dropdown-content="dropdown-content" id="contactMenu">
-    <li><var:string label:value="Properties" /></li>
-    <li><var:string label:value="Categories" /></li>
-    <li>!- separator -</li>
-    <li><var:string label:value="Write" /></li>
-    <li><var:string label:value="Instant Message" /></li>
-    <li>!- separator -</li>
-    <li><var:string label:value="Delete" /></li>
-    <li>!- separator -</li>
-    <li><var:string label:value="Move To" /></li>
-    <li><var:string label:value="Copy To" /></li>
-    <li><var:string label:value="Export" /></li>
-    <li><var:string label:value="View Raw Source" /></li>
-    </ul>
-    -->
-  <!--
-    MAIN CONTENT ROW
-    Content of the application view injected injected in the element bellow
-    MUST be the first html element after body
-    SHOULD  be a main tag (with role="main")
-
-    Templates script tag wrappers goes next
-  -->
   <main class="view md-layout-fill" ui-view="addressbooks" layout="row" ng-controller="navController"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
@@ -123,6 +70,12 @@
                   <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete()">
                       <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.importCards($event, folder)">
+                      <var:string label:value="Import"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
