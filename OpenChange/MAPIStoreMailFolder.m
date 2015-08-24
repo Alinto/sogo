@@ -999,6 +999,44 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   [versionsMessage save];
 }
 
+- (BOOL) updatePredecessorChangeListWith: (NSData *) changeKey
+                       forMessageWithKey: (NSString *) messageKey
+{
+  /* Update predecessor change list property given the change key. It
+     returns if the change key has been added to the list or not */
+  BOOL added = NO;
+  NSData *globCnt, *oldGlobCnt;
+  NSDictionary *messageEntry;
+  NSMutableDictionary *changeList;
+  NSString *guid;
+  struct XID *xid;
+
+  xid = [changeKey asXIDInMemCtx: NULL];
+  guid = [NSString stringWithGUID: &xid->NameSpaceGuid];
+  globCnt = [NSData dataWithBytes: xid->LocalId.data length: xid->LocalId.length];
+  talloc_free (xid);
+
+  messageEntry = [self _messageEntryFromMessageKey: messageKey];
+  if (messageEntry)
+    {
+      changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
+      if (changeList)
+        {
+          oldGlobCnt = [changeList objectForKey: guid];
+          if (!oldGlobCnt || ([globCnt compare: oldGlobCnt] == NSOrderedDescending))
+            {
+              [changeList setObject: globCnt forKey: guid];
+              [versionsMessage save];
+              added = YES;
+            }
+        }
+      else
+        [self errorWithFormat: @"Missing predecessor change list to update"];
+    }
+
+  return added;
+}
+
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
 {
   NSDictionary *messages, *changeKeyDict;
