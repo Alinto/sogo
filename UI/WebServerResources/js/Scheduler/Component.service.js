@@ -375,8 +375,10 @@
     if (angular.isUndefined(this.repeat.month))
       this.repeat.month = { occurrence: '1', day: 'SU', type: 'bymonthday' };
     if (angular.isUndefined(this.repeat.monthdays))
+      // TODO: initialize this.repeat.monthdays with month day of start date
       this.repeat.monthdays = [];
     if (angular.isUndefined(this.repeat.months))
+      // TODO: initialize this.repeat.months with month of start date
       this.repeat.months = [];
     if (angular.isUndefined(this.repeat.year))
       this.repeat.year = {};
@@ -729,7 +731,7 @@
         delete _this[key];
       }
     });
-    angular.extend(this, this.$shadowData);
+    this.init(this.$shadowData);
     this.$shadowData = this.$omit(true);
   };
 
