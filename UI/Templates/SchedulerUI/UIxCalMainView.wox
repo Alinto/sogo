@@ -138,7 +138,7 @@
     </div>
     -->
 
-  <main class="view md-layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
+  <main class="view layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
 
   <script type = "text/ng-template" id="UIxCalMainFrame">
     <!-- calendars colors -->
@@ -308,7 +308,7 @@
     </md-sidenav>
 
     <!-- Main section -->
-    <section layout="column" class="sg-app-content md-layout-fill"
+    <section layout="column" class="sg-app-content layout-fill"
              ng-controller="CalendarListController as list">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
         <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">

@@ -15,7 +15,7 @@
       MUST be the first html element after body
       SHOULD  be a main tag (with role="main")
   -->
-  <main class="view md-layout-fill md-layout-padding" ui-view="login" layout="row" layout-align="center start">
+  <main class="view layout-fill layout-padding" ui-view="login" layout="row" layout-align="center start">
     <md-content class="md-padding" md-scroll-y="true">
       <div class="sg-login" ng-controller="LoginController as app">
 

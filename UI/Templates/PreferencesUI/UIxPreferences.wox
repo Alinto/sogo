@@ -10,7 +10,7 @@
     title="title"
     const:jsFiles="Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
 
-  <main class="view md-layout-fill" ui-view="preferences" layout="row"
+  <main class="view layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
 
   <script type="text/javascript">
@@ -54,7 +54,7 @@
       </md-content>
     </md-sidenav>
 
-    <section  layout="column" class="md-layout-fill">
+    <section  layout="column" class="layout-fill">
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">

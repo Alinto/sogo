@@ -221,13 +221,13 @@
 
   Templates script tag wrappers go next
 -->
-  <main class="view md-layout-fill" ui-view="mailboxes" layout="row" ng-controller="navController"><!-- mailboxes list --></main>
+  <main class="view layout-fill" ui-view="mailboxes" layout="row" ng-controller="navController"><!-- mailboxes list --></main>
 
 <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 md-layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex">
         <section ng-repeat="account in app.accounts track by account.id">
@@ -342,7 +342,7 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="sg-app-content md-layout-fill" ui-view="mailbox"><!-- messages list --></section>
+    <section layout="column" class="sg-app-content layout-fill" ui-view="mailbox"><!-- messages list --></section>
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">

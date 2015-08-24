@@ -14,7 +14,7 @@
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
 
-  <main class="view md-layout-fill" ui-view="addressbooks" layout="row" ng-controller="navController"><!-- addressbooks list --></main>
+  <main class="view layout-fill" ui-view="addressbooks" layout="row" ng-controller="navController"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxContactFoldersView">
@@ -172,7 +172,7 @@
     <!-- </div> -->
     </md-sidenav>
 
-    <section layout="column" class="sg-app-content md-layout-fill" ui-view="addressbook"><!-- contacts list --></section>
+    <section layout="column" class="sg-app-content layout-fill" ui-view="addressbook"><!-- contacts list --></section>
   </script>
 
   <script type="text/ng-template" id="addressbook">
@@ -371,8 +371,9 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="card"
-           ng-show="addressbook.selectedFolder.selectedCard"><!-- card view --></div>
+      <div id="detailView" class="view-detail ng-cloak" layout="column">
+        <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
+      </div>
 
     </div>
   </script>
