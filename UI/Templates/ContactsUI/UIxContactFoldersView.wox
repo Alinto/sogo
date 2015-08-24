@@ -320,7 +320,7 @@
         </md-menu>
       </div>
     </md-toolbar>
-    <div layout="row" class="md-flex" layout-align="space-between">
+    <div layout="row" class="md-flex">
       <div class="view-list" layout="column">
         <md-content id="contactsList" layout="column" class="md-flex">
           <header class="sg-md-subheader sg-md-subheader--fixed">
@@ -331,7 +331,7 @@
           </header>
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
-              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards">
+              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="72">
                 <md-list-item
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
                     ng-click="addressbook.selectCard(currentCard)"
