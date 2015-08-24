@@ -9,20 +9,24 @@
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="100">
   <form id="mainForm" var:href="ownPath">
+    <md-toolbar class="md-padding">
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
+        <md-input-container>
+          <label><var:string label:value="Filter name:"/></label>
+          <input class="md-title" type="text" ng-model="filter.name" required="required"/>
+        </md-input-container>
+        <md-button type="button" class="sg-icon-button " ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
     <md-dialog-content>
       <script type="text/javascript">
         var filterId = '<var:string value="filterId"/>';
         var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
         var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
       </script>
-      <div id="filterNameContainer" class="container">
-        <md-input-container>
-          <label><var:string label:value="Filter name:"/></label>
-          <input const:name="filterName" type="text" ng-model="filter.name" required="required"/>
-        </md-input-container>
-      </div>
-
-      <div class="sg-padded"><var:entity const:name="nbsp"/></div>
 
       <div layout="row" layout-align="start center">
         <div><var:string label:value="For incoming messages that"/></div>
@@ -165,7 +169,6 @@
       </div>
     </md-dialog-content>
     <div class="md-actions">
-      <md-button type="button" ng-click="cancel()"><var:string label:value="Cancel"/></md-button>
       <md-button type="button" ng-click="save()"><var:string label:value="Save"/></md-button>
     </div>
   </form>
