@@ -21,7 +21,7 @@
 
   <div class="sg-toolbar-group-last">
     <md-menu layout-fill="layout-fill">
-      <md-button aria-label="Open phone interactions menu"
+      <md-button label:aria-label="Modules"
                  class="md-icon-button" ng-click="$mdOpenMenu($event)">
         <md-icon>apps</md-icon>
       </md-button>
