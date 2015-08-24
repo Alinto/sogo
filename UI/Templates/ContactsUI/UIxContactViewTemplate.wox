@@ -5,7 +5,6 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-card class="viewer md-flex">
     <md-card-content>
       <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
@@ -165,6 +164,5 @@
         </div>
       </section>
     </md-card-content>
-  </md-card>
 
 </container>
