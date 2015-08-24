@@ -26,6 +26,7 @@
 
     function select(folder) {
       vm.editMode = false;
+      AddressBook.$query.value = '';
       $state.go('app.addressbook', {addressbookId: folder.id});
     }
 
