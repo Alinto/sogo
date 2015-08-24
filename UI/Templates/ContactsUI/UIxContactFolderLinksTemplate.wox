@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-dialog flex="40" flex-sm="100">
+  <md-dialog flex="60" flex-sm="100">
     <md-toolbar class="sg-padded">
       <md-icon class="material-icons sg-icon-toolbar-bg">link</md-icon>
       <div class="md-toolbar-tools">
