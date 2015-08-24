@@ -22,15 +22,19 @@
       <md-input-container class="md-input-number">
         <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
-      <var:string label:value="Week(s)"/> <var:string label:value="On"/>
+      <var:string label:value="Week(s)"/>
     </div>
-    <md-grid-list md-cols="7" md-row-height="1:1" md-gutter="0.5em"
-                  sg-toggle-grid="editor.component.repeat.days"
-                  sg-toggle-grid-attr="day">
-      <var:foreach list="shortWeekDaysList" item="item">
-        <md-grid-tile var:value="valueForWeekDay"><var:string value="labelForWeekDay"/></md-grid-tile>
-      </var:foreach>
-    </md-grid-list>
+    <div class="pseudo-input-container layout-padding" layout="row" layout-align="center center">
+      <label class="pseudo-input-label"><var:string label:value="On"/></label>
+      <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
+                    flex="50" flex-md="80" flex-sm="100"
+                    sg-toggle-grid="editor.component.repeat.days"
+                    sg-toggle-grid-attr="day">
+        <var:foreach list="shortWeekDaysList" item="item">
+          <md-grid-tile var:value="valueForWeekDay"><var:string value="labelForWeekDay"/></md-grid-tile>
+        </var:foreach>
+      </md-grid-list>
+    </div>
   </div>
 
   <!-- monthly -->
@@ -46,40 +50,43 @@
       <md-radio-button value="bymonthday">
         <var:string label:value="Recur on day(s)"/>
       </md-radio-button>
-      <md-grid-list md-cols="7" md-row-height="1:1" md-gutter="0.5em"
-                    sg-toggle-grid="editor.component.repeat.monthdays">
-        <md-grid-tile value="1">1</md-grid-tile>
-        <md-grid-tile value="2">2</md-grid-tile>
-        <md-grid-tile value="3">3</md-grid-tile>
-        <md-grid-tile value="4">4</md-grid-tile>
-        <md-grid-tile value="5">5</md-grid-tile>
-        <md-grid-tile value="6">6</md-grid-tile>
-        <md-grid-tile value="7">7</md-grid-tile>
-        <md-grid-tile value="8">8</md-grid-tile>
-        <md-grid-tile value="9">9</md-grid-tile>
-        <md-grid-tile value="10">10</md-grid-tile>
-        <md-grid-tile value="11">11</md-grid-tile>
-        <md-grid-tile value="12">12</md-grid-tile>
-        <md-grid-tile value="13">13</md-grid-tile>
-        <md-grid-tile value="14">14</md-grid-tile>
-        <md-grid-tile value="15">15</md-grid-tile>
-        <md-grid-tile value="16">16</md-grid-tile>
-        <md-grid-tile value="17">17</md-grid-tile>
-        <md-grid-tile value="18">18</md-grid-tile>
-        <md-grid-tile value="19">19</md-grid-tile>
-        <md-grid-tile value="20">20</md-grid-tile>
-        <md-grid-tile value="21">21</md-grid-tile>
-        <md-grid-tile value="22">22</md-grid-tile>
-        <md-grid-tile value="23">23</md-grid-tile>
-        <md-grid-tile value="24">24</md-grid-tile>
-        <md-grid-tile value="25">25</md-grid-tile>
-        <md-grid-tile value="26">26</md-grid-tile>
-        <md-grid-tile value="27">27</md-grid-tile>
-        <md-grid-tile value="28">28</md-grid-tile>
-        <md-grid-tile value="29">29</md-grid-tile>
-        <md-grid-tile value="30">30</md-grid-tile>
-        <md-grid-tile value="31">31</md-grid-tile>
-      </md-grid-list>
+      <div layout="row" layout-align="start center">
+        <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
+                      flex="50" flex-md="80" flex-sm="100"
+                      sg-toggle-grid="editor.component.repeat.monthdays">
+          <md-grid-tile value="1">1</md-grid-tile>
+          <md-grid-tile value="2">2</md-grid-tile>
+          <md-grid-tile value="3">3</md-grid-tile>
+          <md-grid-tile value="4">4</md-grid-tile>
+          <md-grid-tile value="5">5</md-grid-tile>
+          <md-grid-tile value="6">6</md-grid-tile>
+          <md-grid-tile value="7">7</md-grid-tile>
+          <md-grid-tile value="8">8</md-grid-tile>
+          <md-grid-tile value="9">9</md-grid-tile>
+          <md-grid-tile value="10">10</md-grid-tile>
+          <md-grid-tile value="11">11</md-grid-tile>
+          <md-grid-tile value="12">12</md-grid-tile>
+          <md-grid-tile value="13">13</md-grid-tile>
+          <md-grid-tile value="14">14</md-grid-tile>
+          <md-grid-tile value="15">15</md-grid-tile>
+          <md-grid-tile value="16">16</md-grid-tile>
+          <md-grid-tile value="17">17</md-grid-tile>
+          <md-grid-tile value="18">18</md-grid-tile>
+          <md-grid-tile value="19">19</md-grid-tile>
+          <md-grid-tile value="20">20</md-grid-tile>
+          <md-grid-tile value="21">21</md-grid-tile>
+          <md-grid-tile value="22">22</md-grid-tile>
+          <md-grid-tile value="23">23</md-grid-tile>
+          <md-grid-tile value="24">24</md-grid-tile>
+          <md-grid-tile value="25">25</md-grid-tile>
+          <md-grid-tile value="26">26</md-grid-tile>
+          <md-grid-tile value="27">27</md-grid-tile>
+          <md-grid-tile value="28">28</md-grid-tile>
+          <md-grid-tile value="29">29</md-grid-tile>
+          <md-grid-tile value="30">30</md-grid-tile>
+          <md-grid-tile value="31">31</md-grid-tile>
+        </md-grid-list>
+      </div>
       <div layout="row" layout-align="start center">
         <md-radio-button value="byday">
           <var:string label:value="The"/>
@@ -111,27 +118,30 @@
       </md-input-container>
       <var:string label:value="Year(s)"/>
     </div>
-    <md-grid-list md-cols="6" md-row-height="1:1" md-gutter="0.5em"
-                  sg-toggle-grid="editor.component.repeat.months">
-      <var:foreach list="yearlyMonthList" item="item">
-        <md-grid-tile var:value="valueForYearlyMonth"><var:string value="item"/></md-grid-tile>
-      </var:foreach>
-    </md-grid-list>
-      <div layout="row" layout-align="start center">
-        <md-checkbox ng-model="editor.component.repeat.year.byday">
-          <var:string label:value="The"/>
-        </md-checkbox>
-        <md-select ng-model="editor.component.repeat.month.occurrence">
-          <var:foreach list="monthlyRepeatList" item="item">
-            <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
-          </var:foreach>
-        </md-select>
-        <md-select ng-model="editor.component.repeat.month.day">
-          <var:foreach list="yearlyDayList" item="item">
-            <md-option var:value="valueForYearlyDay"><var:string value="item"/></md-option>
-          </var:foreach>
-        </md-select>
-      </div>
+    <div layout="row" layout-align="start center">
+      <md-grid-list md-cols="6" md-row-height="2em" md-gutter="0.5em"
+                    flex="50" flex-md="80" flex-sm="100"
+                    sg-toggle-grid="editor.component.repeat.months">
+        <var:foreach list="yearlyMonthList" item="item">
+          <md-grid-tile var:value="valueForYearlyMonth"><var:string value="item"/></md-grid-tile>
+        </var:foreach>
+      </md-grid-list>
+    </div>
+    <div layout="row" layout-align="start center">
+      <md-checkbox ng-model="editor.component.repeat.year.byday">
+        <var:string label:value="The"/>
+      </md-checkbox>
+      <md-select ng-model="editor.component.repeat.month.occurrence">
+        <var:foreach list="monthlyRepeatList" item="item">
+          <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
+        </var:foreach>
+      </md-select>
+      <md-select ng-model="editor.component.repeat.month.day">
+        <var:foreach list="yearlyDayList" item="item">
+          <md-option var:value="valueForYearlyDay"><var:string value="item"/></md-option>
+        </var:foreach>
+      </md-select>
+    </div>
   </div>
 
 </container>
