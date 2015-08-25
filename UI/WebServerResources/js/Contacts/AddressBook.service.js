@@ -181,7 +181,9 @@
    * @returns an AddressBook object instance
    */
   AddressBook.$find = function(addressbookId) {
-    var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+    var futureAddressBookData = AddressBook.$Preferences.ready().then(function() {
+      return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+    });
     return new AddressBook(futureAddressBookData);
   };
 
