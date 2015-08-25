@@ -5,7 +5,6 @@
     xmlns:label="OGo:label">
   <div class="view-list" layout="column">
     <md-content id="messagesList" layout="column" class="md-flex">
-      <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
       <header class="sg-md-subheader sg-md-subheader--fixed">
         <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
           <span ng-show="mailbox.selectedFolder.$messages.length > 0">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
@@ -14,38 +13,43 @@
       </header>
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
-          <div md-virtual-repeat="currentMessage in
-                                  mailbox.selectedFolder" md-on-demand="md-on-demand">
-            <md-list-item
-                ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
-                ng-click="mailbox.selectMessage(currentMessage)"
-                ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})">
-              <!-- ui-sref-active="sg-active"> -->
-              <div class="sg-selected-avatar"
-                   ng-show="currentMessage.selected"
-                   ng-click="currentMessage.selected = !currentMessage.selected"><!-- selected avatar --></div>
-              <sg-avatar-image class="md-tile-left"
-                               ng-show="!currentMessage.selected"
-                               ng-click="currentMessage.selected = !currentMessage.selected"
-                               sg-email="currentMessage['from'][0].email"
-                               size="48"><!-- avatar --></sg-avatar-image>
-              <div class="sg-tile-content">
-                <span class="msg-date"
-                      ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-                <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
-                <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
-              </div>
-              <div class="sg-tile-icons">
-                <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
-                <md-icon ng-show="currentMessage.isflagged">star</md-icon>
-                <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
-                <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
-                <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
-              </div>
-            </md-list-item>
-          </div>
+          <md-list-item
+              md-virtual-repeat="currentMessage in mailbox.selectedFolder"
+              md-on-demand="md-on-demand"
+              ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
+              ng-click="mailbox.selectMessage(currentMessage)"
+              ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})">
+            <!-- ui-sref-active="sg-active"> -->
+            <div class="sg-selected-avatar"
+                 ng-show="currentMessage.selected"
+                 ng-click="currentMessage.selected = !currentMessage.selected"><!-- selected avatar --></div>
+            <sg-avatar-image class="md-tile-left"
+                             ng-show="!currentMessage.selected"
+                             ng-click="currentMessage.selected = !currentMessage.selected"
+                             sg-email="::currentMessage.from[0].email"
+                             size="48"><!-- avatar --></sg-avatar-image>
+            <div class="sg-tile-content">
+              <span class="msg-date"
+                    ng-bind-html="currentMessage.relativedate"><!-- date --></span>
+              <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
+              <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
+            </div>
+            <div class="sg-tile-icons">
+              <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
+              <md-icon ng-show="currentMessage.isflagged">star</md-icon>
+              <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
+              <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
+              <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
+            </div>
+          </md-list-item>
         </md-list>
       </md-virtual-repeat-container>
+      <div class="sg-progress-circular-floating"
+           ng-show="mailbox.selectedFolder.$isLoading">
+        <md-progress-circular class="md-accent"
+                              md-mode="indeterminate"
+                              md-diameter="32"><!-- progress --></md-progress-circular>
+      </div>
       <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="Write a new message"
                  ng-click="mailbox.newMessage($event)">

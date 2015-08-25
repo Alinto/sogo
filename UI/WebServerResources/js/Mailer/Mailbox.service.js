@@ -150,7 +150,7 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    this.$isLoading = false;
+    this.$isLoading = true;
     this.$messages = [];
     this.uidsMap = {};
     angular.extend(this, data);
