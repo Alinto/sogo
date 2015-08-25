@@ -143,10 +143,7 @@
   <script type = "text/ng-template" id="UIxCalMainFrame">
     <!-- calendars colors -->
     <div sg-folder-stylesheet="true"
-         ng-repeat="calendar in calendars.service.$calendars"
-         ng-model="calendar"><!-- stylesheet --></div>
-    <div sg-folder-stylesheet="true"
-         ng-repeat="calendar in calendars.service.$subscriptions"
+         ng-repeat="calendar in calendars.service.$findAll()"
          ng-model="calendar"><!-- stylesheet --></div>
     <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
