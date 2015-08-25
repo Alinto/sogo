@@ -6,7 +6,8 @@
 @import 'MessageEditorUI';
 @import 'SchedulerUI';
 
-.view[layout=row] {
+.view[layout=row],
+.view.layout-row {
   max-height: 100%;
 }
 
