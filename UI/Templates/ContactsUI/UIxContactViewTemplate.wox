@@ -53,13 +53,13 @@
           </md-button>
           <md-menu-content>
             <md-menu-item>
-              <md-button aria-label="Export"
+              <md-button label:aria-label="Export"
                          ng-click="editor.exportCard()">
                 <var:string label:value="Export"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
-              <md-button aria-label="View Raw Source"
+              <md-button label:aria-label="View Raw Source"
                          ng-click="editor.viewRawSource($event)">
                 <var:string label:value="View Raw Source"/>
               </md-button>
