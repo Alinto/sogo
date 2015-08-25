@@ -53,6 +53,8 @@
 "Time Format" ="Time Format";
 
 "default" = "Default";
+"Default Module" = "Default Module";
+"Save" = "Save";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -339,3 +341,19 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Password change is not supported.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
