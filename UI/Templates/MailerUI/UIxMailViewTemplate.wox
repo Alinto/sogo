@@ -131,6 +131,12 @@
               </md-button>
             </md-menu-item>
             <md-menu-item>
+              <md-button label:aria-label="Save As..."
+                         ng-click="viewer.saveMessage()">
+                <var:string label:value="Save As..."/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
               <md-button label:aria-label="View Message Source"
                          ng-click="viewer.viewRawSource($event)">
                 <var:string label:value="View Message Source"/>

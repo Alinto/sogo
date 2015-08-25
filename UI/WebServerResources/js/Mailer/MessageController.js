@@ -22,6 +22,7 @@
     vm.forward = forward;
     vm.edit = edit;
     vm.newMessage = newMessage;
+    vm.saveMessage = saveMessage;
     vm.viewRawSource = viewRawSource;
 
     // Watch the message model "flags" attribute to remove on-the-fly a tag from the IMAP message
@@ -94,6 +95,9 @@
       showMailEditor($event, message, [recipient]);
     }
 
+    function saveMessage() {
+      window.location.href = ApplicationBaseURL + '/' + vm.mailbox.id + '/saveMessages?uid=' + vm.message.uid;
+    }
 
     function viewRawSource($event) {
       Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
