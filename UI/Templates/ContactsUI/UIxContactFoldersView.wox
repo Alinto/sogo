@@ -182,7 +182,6 @@
       </div>
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center"
            ng-show="addressbook.selectedFolder.$selectedCount() == 0">
-
         <div class="view-list" layout="row" layout-align="space-between center"
              ng-hide="addressbook.mode.search">
           <div class="sg-toolbar-group">
@@ -268,12 +267,17 @@
           </md-input-container>
         </div>
       </div>
-
-      <div layout="row" layout-align="start center" ng-show="addressbook.selectedFolder.$selectedCount() > 0">
-        <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
-          <md-icon>arrow_back</md-icon>
-        </md-button>
-        <label>{{addressbook.selectedFolder.$selectedCount()}} selected</label>
+      <!-- multiple selection mode -->
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center"
+           ng-show="addressbook.selectedFolder.$selectedCount() > 0">
+        <div class="view-list" layout="row" layout-align="space-between center">
+          <div class="sg-toolbar-group">
+            <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
+              <md-icon>arrow_back</md-icon>
+            </md-button>
+            <label>{{addressbook.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
+          </div>
+          <div class="sg-toolbar-group-last">
         <md-button class="sg-icon-button" ng-click="addressbook.selectAll()">
           <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
           <md-icon>select_all</md-icon>
@@ -307,7 +311,7 @@
           </md-button>
           <md-menu-content width="2">
             <md-menu-item>
-              <md-button>
+              <md-button disabled="disabled">
                 <var:string label:value="Write"/>
               </md-button>
             </md-menu-item>
@@ -318,7 +322,9 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
+          </div>
       </div>
+    </div>
     </md-toolbar>
     <div layout="row" class="md-flex">
       <div class="view-list" layout="column">
@@ -336,7 +342,6 @@
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
                     ng-click="addressbook.selectCard(currentCard)"
                     ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})">
-                  <div>
                     <div class="sg-selected-avatar" ng-show="currentCard.selected"
                          ng-click="currentCard.selected = !currentCard.selected">
                       <!-- selected avatar -->
@@ -345,7 +350,7 @@
                                      ng-show="addressbook.notSelectedComponent(currentCard, 'vcard')"
                                      ng-click="currentCard.selected = !currentCard.selected"
                                      sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
-                                     size="48">
+                                     size="40">
                       <!-- contact avatar -->
                     </sg-avatar-image>
                     <div class="sg-list-avatar"
@@ -353,7 +358,6 @@
                          ng-click="currentCard.selected = !currentCard.selected">
                       <!-- list avatar -->
                     </div>
-                  </div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
                     <div class="sg-md-body-multi">{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>

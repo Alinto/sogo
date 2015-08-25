@@ -43,6 +43,9 @@
 "Copy To" = "Copy To";
 "Add to:" = "Add to:";
 
+/* Number of selected contacts in list */
+"selected" = "selected";
+
 /* Tooltips */
 
 "Create a new address book card" = "Create a new address book card";
