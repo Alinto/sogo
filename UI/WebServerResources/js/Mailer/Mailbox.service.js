@@ -168,6 +168,35 @@
   };
 
   /**
+   * @function getLength
+   * @memberof Mailbox.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the number of items in the mailbox
+   */
+  Mailbox.prototype.getLength = function() {
+    return this.$messages.length;
+  };
+
+  /**
+   * @function getItemAtIndex
+   * @memberof Mailbox.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the message as the specified index
+   */
+  Mailbox.prototype.getItemAtIndex = function(index) {
+    var message;
+
+    if (index >= 0 && index < this.$messages.length) {
+      message = this.$messages[index];
+
+      if (this.$loadMessage(message.uid))
+        return message;
+    }
+
+    return null;
+  };
+
+  /**
    * @function $id
    * @memberof Mailbox.prototype
    * @desc Build the unique ID to identified the mailbox.
@@ -588,7 +617,7 @@
 
         if (_this.uids) {
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
-          
+
           // First entry of 'headers' are keys
           headers = _.invoke(_this.headers[0], 'toLowerCase');
           _this.headers.splice(0, 1);

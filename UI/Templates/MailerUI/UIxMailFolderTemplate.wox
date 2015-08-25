@@ -14,7 +14,8 @@
       </header>
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
-          <div md-virtual-repeat="currentMessage in mailbox.selectedFolder.$messages">
+          <div md-virtual-repeat="currentMessage in
+                                  mailbox.selectedFolder" md-on-demand="md-on-demand">
             <md-list-item
                 ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
                 ng-click="mailbox.selectMessage(currentMessage)"
@@ -33,8 +34,6 @@
                       ng-bind-html="currentMessage.relativedate"><!-- date --></span>
                 <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
                 <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
-                <i class="icon-ion-refresh"
-                   ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
               </div>
               <div class="sg-tile-icons">
                 <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
