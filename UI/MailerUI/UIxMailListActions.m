@@ -623,11 +623,12 @@
 - (NSDictionary *) getUIDsInFolder: (SOGoMailFolder *) folder
                        withHeaders: (BOOL) includeHeaders
 {
-  NSMutableDictionary *data;
   NSArray *uids, *threadedUids, *headers;
-  NSRange r;
+  NSMutableDictionary *data;
   SOGoMailAccount *account;
   id quota;
+
+  NSRange r;
   int count;
 
   data = [NSMutableDictionary dictionary];
@@ -645,10 +646,14 @@
   if (includeHeaders)
     {
       // Also retrieve the first headers, up to 'headersPrefetchMaxSize'
-      count = [[uids flattenedArray] count];
-      if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
+      NSArray *a;
+
+      a = [uids flattenedArray];
+      count = [a count];
+      if (count > headersPrefetchMaxSize)
+        count = headersPrefetchMaxSize;
       r = NSMakeRange(0, count);
-      headers = [self getHeadersForUIDs: [[uids flattenedArray] subarrayWithRange: r]
+      headers = [self getHeadersForUIDs: [a subarrayWithRange: r]
                                inFolder: folder];
 
       [data setObject: headers forKey: @"headers"];
@@ -745,7 +750,6 @@
   noHeaders = [[[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"noHeaders"] boolValue];
   data = [self getUIDsInFolder: folder
                    withHeaders: !noHeaders];
-
   [response appendContentString: [data jsonRepresentation]];
 
   return response;
