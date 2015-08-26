@@ -9,26 +9,32 @@
    * @param {string} accountId - the account ID
    * @param {string} mailboxPath - an array of the mailbox path components
    * @param {object} futureAddressBookData - either an object literal or a promise
+   * @param {bool} lazy - do "lazy loading" so we are very quick at initializing message instances
    */
-  function Message(accountId, mailbox, futureMessageData) {
+  function Message(accountId, mailbox, futureMessageData, lazy) {
     this.accountId = accountId;
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
     this.$showDetailedRecipients = false;
     this.editable = {to: [], cc: [], bcc: []};
+    this.selected = false;
+
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
-      angular.extend(this, futureMessageData);
-      this.id = this.$absolutePath();
-      this.$formatFullAddresses();
+      if (angular.isDefined(lazy) && lazy) {
+        this.uid = futureMessageData.uid;
+      }
+      else {
+        angular.extend(this, futureMessageData);
+        this.$formatFullAddresses();
+      }
     }
     else {
       // The promise will be unwrapped first
       this.$unwrap(futureMessageData);
     }
-    this.selected = false;
   }
 
   /**
@@ -90,20 +96,23 @@
    * @returns a string representing the path relative to the mail module
    */
   Message.prototype.$absolutePath = function(options) {
-    var path;
+    if (angular.isUndefined(this.id)) {
+      var path;
+      path = _.map(this.$mailbox.path.split('/'), function(component) {
+        return 'folder' + component.asCSSIdentifier();
+      });
+      path.splice(0, 0, this.accountId); // insert account ID
+      if (options && options.asDraft && this.draftId) {
+        path.push(this.draftId); // add draft ID
+      }
+      else {
+        path.push(this.uid); // add message UID
+      }
 
-    path = _.map(this.$mailbox.path.split('/'), function(component) {
-      return 'folder' + component.asCSSIdentifier();
-    });
-    path.splice(0, 0, this.accountId); // insert account ID
-    if (options && options.asDraft && this.draftId) {
-      path.push(this.draftId); // add draft ID
-    }
-    else {
-      path.push(this.uid); // add message UID
+      this.id = path.join('/');
     }
 
-    return path.join('/');
+    return this.id;
   };
 
   /**
@@ -117,7 +126,6 @@
 
     if (oldUID != uid) {
       this.uid = uid;
-      this.id = this.$absolutePath();
       if (oldUID > -1 && this.$mailbox.uidsMap[oldUID]) {
         this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
         this.$mailbox.uidsMap[oldUID] = null;
@@ -308,7 +316,7 @@
   Message.prototype.$editableContent = function() {
     var _this = this;
 
-    return Message.$$resource.fetch(this.id, 'edit').then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), 'edit').then(function(data) {
       angular.extend(_this, data);
       return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
@@ -369,7 +377,7 @@
    */
   Message.prototype.$imipAction = function(path, action, data) {
     var _this = this;
-    Message.$$resource.post([this.id, path].join('/'), action, data).then(function(data) {
+    Message.$$resource.post([this.$absolutePath(), path].join('/'), action, data).then(function(data) {
       Message.$timeout(function() {
         _this.$reload();
       }, function() {
@@ -385,7 +393,7 @@
    */
   Message.prototype.$sendMDN = function() {
     this.shouldAskReceipt = 0;
-    return Message.$$resource.post(this.id, 'sendMDN');
+    return Message.$$resource.post(this.$absolutePath(), 'sendMDN');
   };
 
   /**
@@ -421,7 +429,7 @@
     if (this.isflagged)
       action = 'markMessageUnflagged';
 
-    return Message.$$resource.post(this.id, action).then(function(data) {
+    return Message.$$resource.post(this.$absolutePath(), action).then(function(data) {
       Message.$timeout(function() {
         _this.isflagged = !_this.isflagged;
       });
@@ -437,7 +445,7 @@
   Message.prototype.$reload = function() {
     var futureMessageData;
 
-    futureMessageData = Message.$$resource.fetch(this.id, 'view');
+    futureMessageData = Message.$$resource.fetch(this.$absolutePath(), 'view');
 
     return this.$unwrap(futureMessageData);
   };
@@ -489,7 +497,7 @@
     var _this = this;
 
     // Query server for draft folder and draft UID
-    return Message.$$resource.fetch(this.id, action).then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), action).then(function(data) {
       var mailbox, message;
       Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
       mailbox = _this.$mailbox.$account.$getMailboxByPath(data.mailboxPath);
@@ -564,13 +572,12 @@
       // Calling $timeout will force Angular to refresh the view
       Message.$timeout(function() {
         angular.extend(_this, data);
-        _this.id = _this.$absolutePath();
         _this.$formatFullAddresses();
         _this.$loadUnsafeContent = false;
         deferred.resolve(_this);
       });
       if (!_this.isread) {
-        Message.$$resource.fetch(_this.id, 'markMessageRead').then(function() {
+        Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
           Message.$timeout(function() {
             _this.isread = true;
             _this.$mailbox.unseenCount--;

@@ -639,7 +639,7 @@
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
 
-            msgs.push(new Mailbox.$Message(_this.$account.id, _this, data));
+            msgs.push(new Mailbox.$Message(_this.$account.id, _this, data, true));
 
             return msgs;
           }, _this.$messages);
