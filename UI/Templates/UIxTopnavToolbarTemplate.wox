@@ -11,7 +11,7 @@
                label:aria-label="Toggle Menu">
       <md-icon>menu</md-icon>
     </md-button>
-    <div class="sg-date-group" layout="column" layout-align="space-between end">
+    <div class="sg-date-group sg-padded" layout="column" layout-align="space-between end">
       <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
       <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
       <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
@@ -22,7 +22,7 @@
   <div class="sg-toolbar-group-last">
     <md-menu layout-fill="layout-fill">
       <md-button label:aria-label="Modules"
-                 class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                 class="sg-icon-button" ng-click="$mdOpenMenu($event)">
         <md-icon>apps</md-icon>
       </md-button>
       <md-menu-content width="8">

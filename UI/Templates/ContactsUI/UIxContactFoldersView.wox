@@ -177,7 +177,7 @@
 
   <script type="text/ng-template" id="addressbook">
     <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-      <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+      <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
         <var:component className="UIxTopnavToolbarTemplate" />
       </div>
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center"

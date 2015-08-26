@@ -308,7 +308,7 @@
     <section layout="column" class="sg-app-content layout-fill"
              ng-controller="CalendarListController as list">
       <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
           <!-- <div class="sg-toolbar-group-2">
             <md-button class="sg-icon-button" label:aria-label="Search">
@@ -516,7 +516,7 @@
             </md-input-container>
           </div>
           <!-- day/week/month views -->
-          <div class="sg-padded">
+          <div>
             <a class="sg-icon-button md-button"
                label:aria-label="Day"
                href="#/calendar/day"><md-icon>view_day</md-icon></a>

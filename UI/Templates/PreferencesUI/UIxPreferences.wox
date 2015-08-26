@@ -58,7 +58,7 @@
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
         </div>
         <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
