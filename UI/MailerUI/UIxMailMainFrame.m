@@ -118,6 +118,21 @@
   return [accounts jsonRepresentation];
 }
 
+- (WOResponse *) mailAccountsAction
+{
+  WOResponse *response;
+  NSString *s;
+
+  s = [self mailAccounts];
+  response = [self responseWithStatus: 200];
+
+  [response setHeader: @"text/plain; charset=utf-8"
+               forKey: @"content-type"];
+  [response appendContentString: s];
+
+  return response;
+}
+
 - (NSString *) userNames
 {
   NSArray *accounts, *userNames;
