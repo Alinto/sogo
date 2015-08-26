@@ -5,6 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
+  <md-card class="viewer flex-sm">
     <md-card-content>
       <header class="msg-header">
         <div ng-show="editor.card.tag == 'vcard'">
@@ -29,7 +30,7 @@
         <div class="sg-icon-bar--vertical">
           <md-button class="sg-icon-button show-sm"
                      label:aria-label="Close"
-                     ng-click="toggleDetailView()">
+                     ng-click="editor.close()">
             <md-icon>close</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
@@ -170,5 +171,5 @@
         </div>
       </section>
     </md-card-content>
-
+  </md-card>
 </container>

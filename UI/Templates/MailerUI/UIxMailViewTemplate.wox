@@ -85,7 +85,7 @@
       <div class="sg-icon-bar--vertical">
         <md-button class="sg-icon-button show-sm"
                    label:aria-label="Close"
-                   ng-click="toggleDetailView()">
+                   ng-click="viewer.close()">
           <md-icon>close</md-icon>
         </md-button>
         <!-- todo: Replace md-tooltip values by localizable string variable -->

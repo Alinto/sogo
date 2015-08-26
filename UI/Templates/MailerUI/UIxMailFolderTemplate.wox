@@ -58,7 +58,8 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message"
-       ng-show="mailbox.selectedFolder.selectedMessage"><!-- message view --></div>
+  <div id="detailView" class="view-detail" layout="column"
+       ng-class="{ 'sg-close': !mailbox.selectedFolder.selectedMessage }"
+       ui-view="message"><!-- message view --></div>
 
 </container>

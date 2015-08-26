@@ -29,6 +29,7 @@
     vm.addMember = addMember;
     vm.userFilter = userFilter;
     vm.save = save;
+    vm.close = close;
     vm.reset = reset;
     vm.cancel = cancel;
     vm.confirmDelete = confirmDelete;
@@ -85,6 +86,11 @@
             console.log(err);
           });
       }
+    }
+    function close() {
+      vm.card = null;
+      delete AddressBook.selectedFolder.selectedCard;
+      $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
     }
     function reset() {
       vm.card.$reset();

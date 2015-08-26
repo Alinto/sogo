@@ -375,9 +375,9 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail ng-cloak" layout="column">
-        <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
-      </div>
+      <div id="detailView" class="view-detail" layout="column"
+           ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
+           ui-view="card"><!-- card view --></div>
 
     </div>
   </script>

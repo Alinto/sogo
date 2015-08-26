@@ -17,6 +17,7 @@
     vm.service = Message;
     vm.tags = { searchText: '', selected: '' };
     vm.doDelete = doDelete;
+    vm.close = close;
     vm.reply = reply;
     vm.replyAll = replyAll;
     vm.forward = forward;
@@ -66,6 +67,13 @@
           stateMessage: message,
           stateRecipients: recipients
         }
+      });
+    }
+
+    function close() {
+      $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) }).then(function() {
+        vm.message = null;
+        delete stateMailbox.selectedMessage;
       });
     }
 
