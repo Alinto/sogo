@@ -1,8 +1,8 @@
 /// chips.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-// Remove the line under the tags of the message viewer
 md-chips {
+  // Remove the line under the tags of the message viewer
   &.sg-readonly {
     .md-chips {
       box-shadow: none;
@@ -16,6 +16,18 @@ md-chips {
   }
 }
 
+// Enlarge the default autocompletion menu
 .sg-chips-autocomplete {
   width: (3 * $contact-chip-name-width);
+}
+
+// In the autocompletion menu, don't limit the contact name to a fixed width
+// and show the email address right after it
+.md-contact-suggestion {
+  .md-contact-name {
+    width: auto;
+  }
+  .md-contact-email {
+    margin-left: $contact-chip-suggestion-margin;
+  }
 }
