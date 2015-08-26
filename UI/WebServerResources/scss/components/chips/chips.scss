@@ -15,3 +15,7 @@ md-chips {
     }
   }
 }
+
+.sg-chips-autocomplete {
+  width: (3 * $contact-chip-name-width);
+}

@@ -10,6 +10,7 @@
   function MessageEditorController($stateParams, $state, $q, $mdDialog, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
     var vm = this;
 
+    vm.addRecipient = addRecipient;
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
     vm.autosave = null;
     vm.autosaveDrafts = autosaveDrafts;
@@ -90,11 +91,20 @@
     }
 
     function contactFilter($query) {
-      var deferred = $q.defer();
-      AddressBook.$filterAll($query).then(function(results) {
-        deferred.resolve(_.invoke(results, '$shortFormat', $query));
-      });
-      return deferred.promise;
+      return AddressBook.$filterAll($query);
+    }
+
+    function addRecipient(user) {
+      var recipient = [];
+
+      if (angular.isString(user))
+        return user;
+      if (user.$$fullname)
+        recipient.push(user.$$fullname);
+      if (user.$$email)
+        recipient.push('<' + user.$$email + '>');
+
+      return recipient.join(' ');
     }
 
     // Drafts autosaving
