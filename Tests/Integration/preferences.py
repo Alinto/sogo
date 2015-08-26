@@ -89,9 +89,9 @@ class preferences:
         get = HTTPPreferencesGET(url)
         get.cookie = self.cookie
         self.client.execute(get)
-        if DEBUG: print "LUC (url):", url
-        if DEBUG: print "LUC (status):", get.response["status"]
-        if DEBUG: print "LUC (body):", get.response['body']
+        if DEBUG: print "DEBUG (url):", url
+        if DEBUG: print "DEBUG (status):", get.response["status"]
+        if DEBUG: print "DEBUG (body):", get.response['body']
         content = simplejson.loads(get.response['body'])
         result = None
         try:
@@ -117,7 +117,7 @@ class preferences:
         # Get the right sub-dict and change the key/value
         subdict = self.find_key(self.preferences, preference)
         if not subdict:
-            print "LUC(nosubdict):", preference, self.preferences
+            raise AttributeError("ERROR(nosubdict): looking for %s in: %s" %(preference, str(self.preferences)))
         subdict[preference] = value
 
     def set(self, preference, value=None):
