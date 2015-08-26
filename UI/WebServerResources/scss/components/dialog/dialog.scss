@@ -2,7 +2,8 @@
 @import 'extends';
 
 @media (max-width: $layout-breakpoint-sm) {
-  [flex-sm="100"] {
+  [flex-sm="100"],
+  .flex-sm-100 {
     max-width: 100%;
     max-height: 100%;
     width: 100%;
