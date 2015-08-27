@@ -8,7 +8,7 @@
    */
   MessageController.$inject = ['$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
   function MessageController($scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, focus, Dialog, Account, Mailbox, Message) {
-    var vm = this;
+    var vm = this, messageDialog = null;
 
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
@@ -50,24 +50,29 @@
     }
 
     function showMailEditor($event, message, recipients) {
+      if (messageDialog === null) {
+        if (!angular.isDefined(recipients))
+          recipients = [];
 
-      if (!angular.isDefined(recipients))
-        recipients = [];
-
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose: false,
-        escapeToClose: false,
-        templateUrl: 'UIxMailEditor',
-        controller: 'MessageEditorController',
-        controllerAs: 'editor',
-        locals: {
-          stateAccounts: vm.accounts,
-          stateMessage: message,
-          stateRecipients: recipients
-        }
-      });
+        messageDialog = $mdDialog
+          .show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: 'UIxMailEditor',
+            controller: 'MessageEditorController',
+            controllerAs: 'editor',
+            locals: {
+              stateAccounts: vm.accounts,
+              stateMessage: message,
+              stateRecipients: recipients
+            }
+          })
+          .finally(function() {
+            messageDialog = null;
+          });
+      }
     }
 
     function close() {

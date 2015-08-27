@@ -8,7 +8,7 @@
    */
   MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
   function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
-    var vm = this;
+    var vm = this, messageDialog = null;
 
     Mailbox.selectedFolder = stateMailbox;
 
@@ -127,22 +127,29 @@
     }
 
     function newMessage($event) {
-      var message = vm.account.$newMessage();
+      var message;
 
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose: false,
-        escapeToClose: false,
-        templateUrl: 'UIxMailEditor',
-        controller: 'MessageEditorController',
-        controllerAs: 'editor',
-        locals: {
-          stateAccounts: vm.accounts,
-          stateMessage: message,
-          stateRecipients: [] 
-        }
-      });
+      if (messageDialog === null) {
+        message = vm.account.$newMessage();
+        messageDialog = $mdDialog
+          .show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: 'UIxMailEditor',
+            controller: 'MessageEditorController',
+            controllerAs: 'editor',
+            locals: {
+              stateAccounts: vm.accounts,
+              stateMessage: message,
+              stateRecipients: []
+            }
+          })
+          .finally(function() {
+            messageDialog = null;
+          });
+      }
     }
   }
 
