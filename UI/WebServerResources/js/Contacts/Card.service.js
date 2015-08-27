@@ -447,26 +447,20 @@
     var _this = this;
 
     // Expose the promise
-    this.$futureCardData = futureCardData;
-
-    // Resolve the promise
-    this.$futureCardData.then(function(data) {
-      // Calling $timeout will force Angular to refresh the view
-      return Card.$timeout(function() {
-        _this.init(data);
-        // Instanciate Card objects for list members
-        angular.forEach(_this.refs, function(o, i) {
-          if (o.email) o.emails = [{value: o.email}];
-          o.id = o.reference;
-          _this.refs[i] = new Card(o);
-        });
-        if (_this.birthday) {
-          _this.birthday = new Date(_this.birthday * 1000);
-        }
-        // Make a copy of the data for an eventual reset
-        _this.$shadowData = _this.$omit(true);
-        return _this;
+    this.$futureCardData = futureCardData.then(function(data) {
+      _this.init(data);
+      // Instanciate Card objects for list members
+      angular.forEach(_this.refs, function(o, i) {
+        if (o.email) o.emails = [{value: o.email}];
+        o.id = o.reference;
+        _this.refs[i] = new Card(o);
       });
+      if (_this.birthday) {
+        _this.birthday = new Date(_this.birthday * 1000);
+      }
+      // Make a copy of the data for an eventual reset
+      _this.$shadowData = _this.$omit(true);
+      return _this;
     });
   };
 

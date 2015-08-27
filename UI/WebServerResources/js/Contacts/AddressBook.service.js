@@ -471,8 +471,25 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$getCard = function(cardId) {
+    var _this = this;
+
     return this.$id().then(function(addressbookId) {
-      return AddressBook.$Card.$find(addressbookId, cardId);
+      var fullCard,
+          cachedCard = _.find(_this.cards, function(data) {
+            return cardId == data.id;
+          });
+
+      if (cachedCard && cachedCard.$futureCardData)
+        // Full card is available
+        return cachedCard;
+
+      fullCard = AddressBook.$Card.$find(addressbookId, cardId);
+      fullCard.$id().then(function(cardId) {
+        // Extend the Card object of the addressbook list with the full card description
+        if (cachedCard)
+          angular.extend(cachedCard, fullCard);
+      });
+      return fullCard;
     });
   };
 
