@@ -6,8 +6,8 @@ module.exports = function(grunt) {
     'js/Scheduler.js': ['js/Scheduler/Scheduler.app.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
     'js/Contacts.services.js': ['js/Contacts/*.service.js'],
     'js/Contacts.js': ['js/Contacts/Contacts.app.js', 'js/Contacts/*Controller.js', 'js/Contacts/*.directive.js'],
-    'js/Mailer.services.js': ['js/Mailer/*.service.js'],
-    'js/Mailer.js': ['js/Mailer/Mailer.app.js', 'js/Mailer/*Controller.js', 'js/Mailer/*.directive.js'],
+    'js/Mailer.services.js': ['js/Mailer/*.service.js', 'js/Mailer/*Controller.js'],
+    'js/Mailer.js': ['js/Mailer/Mailer.app.js', 'js/Mailer/*.directive.js'],
     'js/Preferences.services.js': ['js/Preferences/*.service.js'],
     'js/Preferences.js': ['js/Preferences/Preferences.app.js', 'js/Preferences/*Controller.js']
   };

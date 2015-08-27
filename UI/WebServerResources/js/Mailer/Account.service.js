@@ -36,7 +36,7 @@
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.baseURL(), Settings.activeUser()),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
       $Mailbox: Mailbox,
       $Message: Message
     });
@@ -64,14 +64,27 @@
    * @returns the list of accounts
    */
   Account.$findAll = function(data) {
-    var collection = [];
-    if (data) {
-      // Each entry is spun up as an Account instance
-      angular.forEach(data, function(o, i) {
-        o.id = i;
-        collection[i] = new Account(o);
+    if (!data) {
+      return Account.$$resource.fetch('', 'mailAccounts').then(function(o) {
+        return Account.$unwrapCollection(o);
       });
     }
+    return Account.$unwrapCollection(data);
+  };
+
+  /**
+   * @memberof Account
+   * @desc Unwrap to a collection of Account instances.
+   * @param {object} data - the accounts information
+   * @returns a collection of Account objects
+   */
+  Account.$unwrapCollection = function(data) {
+    var collection = [];
+
+    angular.forEach(data, function(o, i) {
+      o.id = i;
+      collection[i] = new Account(o);
+    });
     return collection;
   };
 

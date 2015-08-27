@@ -118,7 +118,8 @@
             </div>
             
             <div class="pseudo-input-field">
-              <a href="mailto:{{email.value}}">{{email.value}}</a>
+              <a href="#" ng-bind="email.value"
+                 ng-click="addressbook.newMessageWithRecipient($event, email.value, editor.card.$fullname())"><!-- recipient --></a>
             </div>
             
           </div>

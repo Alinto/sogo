@@ -452,7 +452,7 @@
     // Resolve the promise
     this.$futureCardData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
-      Card.$timeout(function() {
+      return Card.$timeout(function() {
         _this.init(data);
         // Instanciate Card objects for list members
         angular.forEach(_this.refs, function(o, i) {
@@ -465,6 +465,7 @@
         }
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);
+        return _this;
       });
     });
   };

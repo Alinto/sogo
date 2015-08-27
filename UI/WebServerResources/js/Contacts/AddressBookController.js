@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$state', '$timeout', '$mdDialog', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $state, $timeout, $mdDialog, focus, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$state', '$timeout', '$mdDialog', 'sgFocus', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $state, $timeout, $mdDialog, focus, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -24,6 +24,9 @@
     vm.sort = sort;
     vm.sortedBy = sortedBy;
     vm.cancelSearch = cancelSearch;
+    vm.newMessage = newMessage;
+    vm.newMessageWithSelectedCards = newMessageWithSelectedCards;
+    vm.newMessageWithRecipient = newMessageWithRecipient;
     vm.mode = { search: false };
     
     function selectCard(card) {
@@ -121,6 +124,76 @@
     function cancelSearch() {
       vm.mode.search = false;
       vm.selectedFolder.$filter('');
+    }
+
+    function newMessage($event, recipients) {
+      Account.$findAll().then(function(accounts) {
+        var account = _.filter(accounts, function(o) {
+          if (o.id === 0)
+            return o;
+        })[0];
+
+        // We must initialize the Account with its mailbox
+        // list before proceeding with message's creation
+        account.$getMailboxes().then(function(mailboxes) {
+          account.$newMessage().then(function(message) {
+            $mdDialog.show({
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: '../Mail/UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccounts: accounts,
+                stateMessage: message,
+                stateRecipients: recipients
+              }
+            });
+          });
+        });
+      });
+    }
+
+    function newMessageWithRecipient($event, recipient, fn) {
+      var recipients = [{full: fn + ' <' + recipient + '>'}];
+      vm.newMessage($event, recipients);
+    }
+
+    function newMessageWithSelectedCards($event) {
+      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      var promises = [], recipients = [];
+
+      _.each(selectedCards, function(card) {
+        if (card.c_component == 'vcard' && card.c_mail.length) {
+          recipients.push({full: card.c_cn + ' <' + card.c_mail + '>'});
+        }
+        else if (card.c_component == 'vlist') {
+          // If the list's members were already fetch, use them
+          if (angular.isDefined(card.refs) && card.refs.length) {
+            _.each(card.refs, function(ref) {
+              if (ref.email.length)
+                recipients.push({full: ref.c_cn + ' <' + ref.email + '>'});
+            });
+          }
+          else {
+            promises.push(vm.selectedFolder.$getCard(card.id).then(function(card) {
+              return card.$futureCardData.then(function(data) {
+                _.each(data.refs, function(ref) {
+                  if (ref.email.length)
+                    recipients.push({full: ref.c_cn + ' <' + ref.email + '>'});
+                });
+              });
+            }));
+          }
+        }
+      });
+
+      $q.all(promises).then(function() {
+        if (recipients.length)
+          vm.newMessage($event, recipients);
+      });
     }
   }
 
