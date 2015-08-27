@@ -215,6 +215,7 @@
    * @param {object} data - attributes of addressbook
    */
   AddressBook.prototype.init = function(data) {
+    this.$isLoading = true;
     this.$cards = [];
     this.cards = [];
     angular.extend(this, data);
@@ -289,34 +290,7 @@
     var _this = this;
 
     this.$startRefreshTimeout();
-
-    return AddressBook.$$resource.fetch(this.id, 'view')
-      .then(function(response) {
-        var index, card,
-            results = response.cards,
-            cards = _this.cards,
-            compareIds = function(data) {
-              return this.id == data.id;
-            };
-
-        // Remove cards that no longer exist
-        for (index = cards.length - 1; index >= 0; index--) {
-          card = cards[index];
-          if (_.isUndefined(_.find(results, compareIds, card))) {
-            cards.splice(index, 1);
-          }
-        }
-
-        // Add new cards
-        _.each(results, function(data, index) {
-          if (_.isUndefined(_.find(cards, compareIds, data))) {
-            var card = new AddressBook.$Card(data);
-            cards.splice(index, 0, card);
-          }
-        });
-
-        return cards;
-      });
+    return this.$filter();
   };
 
     /**
@@ -329,6 +303,8 @@
    */
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
     var _this = this;
+
+    this.$isLoading = true;
 
     return AddressBook.$Preferences.ready().then(function() {
       if (options) {
@@ -347,7 +323,8 @@
         }
       }
 
-      AddressBook.$query.value = search;
+      if (angular.isDefined(search))
+        AddressBook.$query.value = search;
 
       return _this.$id().then(function(addressbookId) {
         return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
@@ -396,6 +373,7 @@
             cards.splice(index, 0, removedCards[0]);
           }
         });
+        _this.$isLoading = false;
         return cards;
       });
     });
@@ -527,6 +505,8 @@
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
 
         _this.$startRefreshTimeout();
+
+        _this.$isLoading = false;
 
         return _this;
       });

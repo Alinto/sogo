@@ -366,6 +366,12 @@
               </div>
             </md-list>
           </md-virtual-repeat-container>
+          <div class="sg-progress-circular-floating"
+               ng-show="addressbook.selectedFolder.$isLoading">
+            <md-progress-circular class="md-accent"
+                                  md-mode="indeterminate"
+                                  md-diameter="32"><!-- progress --></md-progress-circular>
+          </div>
           <md-button class="md-fab md-fab-bottom-right md-accent"
                      label:aria-label="New Contact"
                      ng-show="addressbook.selectedFolder.acls.objectCreator"
