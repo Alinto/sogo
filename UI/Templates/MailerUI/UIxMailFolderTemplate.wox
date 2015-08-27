@@ -58,8 +58,12 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail" layout="column"
+  <md-content id="detailView" class="view-detail md-hue-1" layout="column" layout-align="center center"
        ng-class="{ 'sg-close': !mailbox.selectedFolder.selectedMessage }"
-       ui-view="message"><!-- message view --></div>
+       ui-view="message">
+    <md-input-container class="hide-sm md-hue-1" style="flex-grow: 0">
+      <label class="sg-md-title"><var:string label:value="No message selected"/></label>
+    </md-input-container>
+  </md-content>
 
 </container>

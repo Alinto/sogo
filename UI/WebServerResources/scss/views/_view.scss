@@ -53,7 +53,6 @@ $detailView-width: grid-step(8) !global;
 .view-detail {
   z-index: $z-index-view;
   overflow-x: hidden;
-  background-color: transparent;
   @include at(md) {
     @include flex-col(md, 9);
     margin: 0;
@@ -69,6 +68,7 @@ $detailView-width: grid-step(8) !global;
   @include from(md) {
     .viewer {
       position: absolute;
+      top: 0;
       left: 0;
       right: 0;
       max-width: 100%;
@@ -94,30 +94,45 @@ $detailView-width: grid-step(8) !global;
     }
   }
 
-  // On small screens, the view slides from the right and takes all screen place
+  // On small screens, the view slides from the right and takes all screen place.
+  // Expected Display Steps:
+  //  1. The class sg-close is used when there's no selection
+  //  2. An list item is selected (ui-router state changes):
+  //   a. sg-close is removed from view-detail
+  //   b. view-detail (transparent) slides over view-list
+  //   c. viewer is inserted into the DOM and slides inside view-detail
+  //  3. An list item is closed (ui-router state changes):
+  //   a. viewer slides out of view-detail and is removed from the DOM
+  //   b. view-detail (transparent) slides outside view-list
+  //   c. sg-close is added to view-detail
   @include to(sm) {
+    display: block;
+    background-color: transparent !important;
     position: absolute;
-    width: 100%;
-    min-width: 100%;
     top: $toolbar-tall-height;
     bottom: 0;
     left: 0;
     right: 0;
-    transition: all 0.5s $swift-ease-in-out-timing-function;
+    transform: translateX(0);
+    transition: $swift-ease-in-out;
     &.sg-close {
       transform: translateX(100%);
     }
-    &.ng-leave {
-      &.ng-leave-active {
-        transform: translateX(100%);
-      }
+    &.ng-leave.ng-leave-active {
+      transform: translateX(100%);
     }
     &.ng-enter {
-      transition: all 0.5s $swift-ease-in-out-timing-function;
       transform: translateX(100%);
       &.ng-enter-active {
         transform: translateX(0);
       }
+    }
+    .viewer {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 }

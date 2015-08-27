@@ -65,6 +65,9 @@
 "Account: " = "Account: ";
 "Shared Account: " = "Shared Account: ";
 
+/* Empty right pane */
+"No message selected" = "No message selected";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";

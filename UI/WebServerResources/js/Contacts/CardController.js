@@ -88,9 +88,10 @@
       }
     }
     function close() {
-      vm.card = null;
-      delete AddressBook.selectedFolder.selectedCard;
-      $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
+      $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id }).then(function() {
+        vm.card = null;
+        delete AddressBook.selectedFolder.selectedCard;
+      });
     }
     function reset() {
       vm.card.$reset();

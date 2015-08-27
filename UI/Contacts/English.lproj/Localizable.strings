@@ -46,6 +46,9 @@
 /* Number of selected contacts in list */
 "selected" = "selected";
 
+/* Empty right pane */
+"No contact selected" = "No contact selected";
+
 /* Tooltips */
 
 "Create a new address book card" = "Create a new address book card";

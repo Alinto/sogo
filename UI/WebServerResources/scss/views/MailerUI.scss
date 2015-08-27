@@ -27,6 +27,11 @@
   flex: 1 1 auto;
   align-items: stretch;
   justify-content: flex-start;
+  overflow: hidden;
+  [class|="sg-md-display"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .msg-body {
