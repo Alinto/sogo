@@ -96,21 +96,18 @@
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function(options) {
-    var _this = this,
-        deferred = Account.$q.defer();
+    var _this = this;
 
     if (this.$mailboxes && !(options && options.reload)) {
-      deferred.resolve(this.$mailboxes);
+      return Account.$q.when(this.$mailboxes);
     }
     else {
-      Account.$Mailbox.$find(this).then(function(data) {
+      return Account.$Mailbox.$find(this).then(function(data) {
         _this.$mailboxes = data;
         _this.$flattenMailboxes({reload: true});
-        deferred.resolve(_this.$mailboxes);
+        return _this.$mailboxes;
       });
     }
-
-    return deferred.promise;
   };
 
   /**

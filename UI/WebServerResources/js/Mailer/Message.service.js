@@ -561,22 +561,12 @@
    * @param {promise} futureMessageData - a promise of some of the Message's data
    */
   Message.prototype.$unwrap = function(futureMessageData) {
-    var _this = this,
-        deferred = Message.$q.defer();
+    var _this = this;
 
-    // Expose the promise
-    this.$futureMessageData = futureMessageData;
-
-    // Resolve the promise
-    this.$futureMessageData.then(function(data) {
+    // Resolve and expose the promise
+    this.$futureMessageData = futureMessageData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
-      Message.$timeout(function() {
-        angular.extend(_this, data);
-        _this.$formatFullAddresses();
-        _this.$loadUnsafeContent = false;
-        deferred.resolve(_this);
-      });
-      if (!_this.isread) {
+      if (_this.isread === 0) {
         Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
           Message.$timeout(function() {
             _this.isread = true;
@@ -584,14 +574,15 @@
           });
         });
       }
-    }, function(data) {
-      angular.extend(_this, data);
-      _this.isError = true;
-      Message.$log.error(_this.error);
-      deferred.reject();
+      return Message.$timeout(function() {
+        angular.extend(_this, data);
+        _this.$formatFullAddresses();
+        _this.$loadUnsafeContent = false;
+        return _this;
+      });
     });
 
-    return deferred.promise;
+    return this.$futureMessageData;
   };
 
   /**
