@@ -504,8 +504,11 @@
       message = new Message(data.accountId, mailbox, data);
       // Fetch draft initial data
       return Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
-        Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
+        Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2) + ' original UID: ' + _this.uid);
         angular.extend(message.editable, data);
+
+        // We keep a reference to our original message in order to update the flags
+        message.origin = {message: _this, action: action};
         return message;
       });
     });
@@ -537,7 +540,8 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$send = function() {
-    var data = angular.copy(this.editable),
+    var _this = this,
+        data = angular.copy(this.editable),
         deferred = Message.$q.defer();
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
@@ -545,6 +549,12 @@
     Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
       if (data.status == 'success') {
         deferred.resolve(data);
+        if (angular.isDefined(_this.origin)) {
+          if (_this.origin.action.startsWith('reply'))
+            _this.origin.message.isanswered = true;
+          else if (_this.origin.action == 'forward')
+            _this.origin.message.isforwarded = true;
+        }
       }
       else {
         deferred.reject(data);
