@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-master-e4ca61f
+ * v0.10.1-master-e26a275
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -2632,7 +2632,6 @@ function InterimElementProvider() {
 "use strict";
 
 (function () {
-
   'use strict';
 
     /**
@@ -2674,131 +2673,175 @@ function InterimElementProvider() {
      *  }
      *  ```
      */
-    angular.module('material.layout', [ ])
+    angular.module('material.layout', [ 'ng' ])
 
       // Attribute directives with optional value(s)
 
-      .directive('layout'              , attribute_withValue('layout'      , true)  )
-      .directive('layoutSm'            , attribute_withValue('layout-sm'   , true)  )
-      .directive('layoutGtSm'          , attribute_withValue('layout-gt-sm', true)  )
-      .directive('layoutMd'            , attribute_withValue('layout-md'   , true)  )
-      .directive('layoutGtMd'          , attribute_withValue('layout-gt-md', true)  )
-      .directive('layoutLg'            , attribute_withValue('layout-lg'   , true)  )
-      .directive('layoutGtLg'          , attribute_withValue('layout-gt-lg', true)  )
+      .directive('layout'              , attributeWithObserve('layout' , true)       )
+      .directive('layoutSm'            , attributeWithObserve('layout-sm'   , true)  )
+      .directive('layoutGtSm'          , attributeWithObserve('layout-gt-sm', true)  )
+      .directive('layoutLtMd'          , warnAttrNotSupported('layout-lt-md',true)   )
+      .directive('layoutMd'            , attributeWithObserve('layout-md'   , true)  )
+      .directive('layoutGtMd'          , attributeWithObserve('layout-gt-md', true)  )
+      .directive('layoutLtLg'          , warnAttrNotSupported('layout-lt-lg',true)   )
+      .directive('layoutLg'            , attributeWithObserve('layout-lg'   , true)  )
+      .directive('layoutGtLg'          , attributeWithObserve('layout-gt-lg', true)  )
 
-      .directive('flex'                , attribute_withValue('flex'        , true)  )
-      .directive('flexSm'              , attribute_withValue('flex-sm'     , true)  )
-      .directive('flexGtSm'            , attribute_withValue('flex-gt-sm'  , true)  )
-      .directive('flexMd'              , attribute_withValue('flex-md'     , true)  )
-      .directive('flexGtMd'            , attribute_withValue('flex-gt-md'  , true)  )
-      .directive('flexLg'              , attribute_withValue('flex-lg'     , true)  )
-      .directive('flexGtLg'            , attribute_withValue('flex-gt-lg'  , true)  )
+      .directive('flex'                , attributeWithObserve('flex'        , true)  )
+      .directive('flexSm'              , attributeWithObserve('flex-sm'     , true)  )
+      .directive('flexGtSm'            , attributeWithObserve('flex-gt-sm'  , true)  )
+      .directive('flexLtMd'            , warnAttrNotSupported('flex-lt-md'  ,true)   )
+      .directive('flexMd'              , attributeWithObserve('flex-md'     , true)  )
+      .directive('flexGtMd'            , attributeWithObserve('flex-gt-md'  , true)  )
+      .directive('flexLtLg'            , warnAttrNotSupported('flex-lt-lg'  ,true)   )
+      .directive('flexLg'              , attributeWithObserve('flex-lg'     , true)  )
+      .directive('flexGtLg'            , attributeWithObserve('flex-gt-lg'  , true)  )
 
       // Attribute directives with optional value(s) but directiveName is NOT added as a class
 
-      .directive('layoutAlign'         , attribute_withValue('layout-align')        )
-      .directive('layoutAlignSm'       , attribute_withValue('layout-align-sm')     )
-      .directive('layoutAlignGtSm'     , attribute_withValue('layout-align-gt-sm')  )
-      .directive('layoutAlignMd'       , attribute_withValue('layout-align-md')     )
-      .directive('layoutAlignGtMd'     , attribute_withValue('layout-align-gt-md')  )
-      .directive('layoutAlignLg'       , attribute_withValue('layout-align-lg')     )
-      .directive('layoutAlignGtLg'     , attribute_withValue('layout-align-gt-lg')  )
+      .directive('layoutAlign'         , attributeWithObserve('layout-align')        )
+      .directive('layoutAlignSm'       , attributeWithObserve('layout-align-sm')     )
+      .directive('layoutAlignGtSm'     , attributeWithObserve('layout-align-gt-sm')  )
+      .directive('layoutAlignLtMd'     , warnAttrNotSupported('layout-align-lt-md')  )
+      .directive('layoutAlignMd'       , attributeWithObserve('layout-align-md')     )
+      .directive('layoutAlignGtMd'     , attributeWithObserve('layout-align-gt-md')  )
+      .directive('layoutAlignLtLg'     , warnAttrNotSupported('layout-align-lt-lg')  )
+      .directive('layoutAlignLg'       , attributeWithObserve('layout-align-lg')     )
+      .directive('layoutAlignGtLg'     , attributeWithObserve('layout-align-gt-lg')  )
 
-      .directive('flexOrder'           , attribute_withValue('flex-order')          )
-      .directive('flexOrderSm'         , attribute_withValue('flex-order-sm')       )
-      .directive('flexOrderGtSm'       , attribute_withValue('flex-order-gt-sm')    )
-      .directive('flexOrderMd'         , attribute_withValue('flex-order-md')       )
-      .directive('flexOrderGtMd'       , attribute_withValue('flex-order-gt-md')    )
-      .directive('flexOrderLg'         , attribute_withValue('flex-order-lg')       )
-      .directive('flexOrderGtLg'       , attribute_withValue('flex-order-gt-lg')    )
+      .directive('flexOrder'           , attributeWithObserve('flex-order')          )
+      .directive('flexOrderSm'         , attributeWithObserve('flex-order-sm')       )
+      .directive('flexOrderGtSm'       , attributeWithObserve('flex-order-gt-sm')    )
+      .directive('flexOrderLtMd'       , warnAttrNotSupported('flex-order-lt-md')    )
+      .directive('flexOrderMd'         , attributeWithObserve('flex-order-md')       )
+      .directive('flexOrderGtMd'       , attributeWithObserve('flex-order-gt-md')    )
+      .directive('flexOrderLtLg'       , warnAttrNotSupported('flex-order-lt-lg')    )
+      .directive('flexOrderLg'         , attributeWithObserve('flex-order-lg')       )
+      .directive('flexOrderGtLg'       , attributeWithObserve('flex-order-gt-lg')    )
 
-      .directive('offset'              , attribute_withValue('offset')              )
-      .directive('offsetSm'            , attribute_withValue('offset-sm')           )
-      .directive('offsetGtSm'          , attribute_withValue('offset-gt-sm')        )
-      .directive('offsetMd'            , attribute_withValue('offset-md')           )
-      .directive('offsetGtMd'          , attribute_withValue('offset-gt-md')        )
-      .directive('offsetLg'            , attribute_withValue('offset-lg')           )
-      .directive('offsetGtLg'          , attribute_withValue('offset-gt-lg')        )
+      .directive('offset'              , attributeWithObserve('offset')              )
+      .directive('offsetSm'            , attributeWithObserve('offset-sm')           )
+      .directive('offsetGtSm'          , attributeWithObserve('offset-gt-sm')        )
+      .directive('offsetLtMd'          , warnAttrNotSupported('offset-lt-md')        )
+      .directive('offsetMd'            , attributeWithObserve('offset-md')           )
+      .directive('offsetGtMd'          , attributeWithObserve('offset-gt-md')        )
+      .directive('offsetLtLg'          , warnAttrNotSupported('offset-lt-lg')        )
+      .directive('offsetLg'            , attributeWithObserve('offset-lg')           )
+      .directive('offsetGtLg'          , attributeWithObserve('offset-gt-lg')        )
 
-      // Attribute directives with no value(s )
+      // Attribute directives with no value(s)
 
-      .directive('layoutMargin'        , attribute_noValue('layout-margin')         )
-      .directive('layoutPadding'       , attribute_noValue('layout-padding')        )
-      .directive('layoutWrap'          , attribute_noValue('layout-wrap')           )
-      .directive('layoutFill'          , attribute_noValue('layout-fill')           )
+      .directive('layoutMargin'        , attributeWithoutValue('layout-margin')      )
+      .directive('layoutPadding'       , attributeWithoutValue('layout-padding')     )
+      .directive('layoutWrap'          , attributeWithoutValue('layout-wrap')        )
+      .directive('layoutFill'          , attributeWithoutValue('layout-fill')        )
 
-      .directive('hide'                , attribute_noValue('hide')                  )
-      .directive('hideSm'              , attribute_noValue('hide-sm')               )
-      .directive('hideGtSm'            , attribute_noValue('hide-gt-sm')            )
-      .directive('hideMd'              , attribute_noValue('hide-md')               )
-      .directive('hideGtMd'            , attribute_noValue('hide-gt-md')            )
-      .directive('hideLg'              , attribute_noValue('hide-lg')               )
-      .directive('hideGtLg'            , attribute_noValue('hide-gt-lg')            )
-      .directive('show'                , attribute_noValue('show')                  )
-      .directive('showSm'              , attribute_noValue('show-sm')               )
-      .directive('showGtSm'            , attribute_noValue('show-gt-sm')            )
-      .directive('showMd'              , attribute_noValue('show-md')               )
-      .directive('showGtMd'            , attribute_noValue('show-gt-md')            )
-      .directive('showLg'              , attribute_noValue('show-lg')               )
-      .directive('showGtLg'            , attribute_noValue('show-gt-lg')            );
+      .directive('hide'                , attributeWithoutValue('hide')               )
+      .directive('hideSm'              , attributeWithoutValue('hide-sm')            )
+      .directive('hideGtSm'            , attributeWithoutValue('hide-gt-sm')         )
+      .directive('hideLtMd'            , warnAttrNotSupported ('hide-lt-md')         )
+      .directive('hideMd'              , attributeWithoutValue('hide-md')            )
+      .directive('hideGtMd'            , attributeWithoutValue('hide-gt-md')         )
+      .directive('hideLtLg'            , warnAttrNotSupported ('hide-lt-lg')         )
+      .directive('hideLg'              , attributeWithoutValue('hide-lg')            )
+      .directive('hideGtLg'            , attributeWithoutValue('hide-gt-lg')         )
+      .directive('show'                , attributeWithoutValue('show')               )
+      .directive('showSm'              , attributeWithoutValue('show-sm')            )
+      .directive('showGtSm'            , attributeWithoutValue('show-gt-sm')         )
+      .directive('showLtMd'            , warnAttrNotSupported ('show-lt-md')         )
+      .directive('showMd'              , attributeWithoutValue('show-md')            )
+      .directive('showGtMd'            , attributeWithoutValue('show-gt-md')         )
+      .directive('showLtLg'            , warnAttrNotSupported ('show-lt-lg')         )
+      .directive('showLg'              , attributeWithoutValue('show-lg')            )
+      .directive('showGtLg'            , attributeWithoutValue('show-gt-lg')         );
 
     /**
-     * Creates a registration function with for ngMaterial Layout attribute directive
-     *
-     * Note: This provides easy translation to switch ngMaterial
-     * attribute selectors to CLASS selectors and directives.
-     *
-     * !! This is important for IE Browser performance
-     *
-     * @param classname String attribute name; eg `layout-gt-md` with value ="row"
-     * @param addDirectiveAsClass Boolean
+     * These functions create registration functions for ngMaterial Layout attribute directives
+     * This provides easy translation to switch ngMaterial attribute selectors to
+     * CLASS selectors and directives; which has huge performance implications
+     * for IE Browsers
      */
-    function attribute_withValue(className, addDirectiveAsClass) {
-        return [function() {
-            return {
-                compile : function (element, attr) {
-                  attributeValueToClass(null, element, attr);
 
-                  // !! use for postLink to account for transforms after ng-transclude
-                  return attributeValueToClass;
-                }
-            };
-        }];
+    /**
+     * Creates a directive registration function where a possbile dynamic attribute value will
+     * be observed/watched.
+     * @param {string} className attribute name; eg `md-layout-gt-md` with value ="row"
+     * @param {boolean=} addDirectiveAsClass
+     */
+    function attributeWithObserve(className, addDirectiveAsClass) {
+      return function() {
+        return {
+            compile: function(element, attr) {
+              attributeValueToClass(null, element, attr);
 
-        /**
-         * Add as transformed class selector(s), then
-         * remove the deprecated attribute selector
-         */
-        function attributeValueToClass(scope, element, attr) {
-          var directive = attr.$normalize(className);
+              // Use for postLink to account for transforms after ng-transclude.
+              return attributeValueToClass;
+            }
+        };
+      };
 
-          // Add transformed class selector(s)
-          if (addDirectiveAsClass)  element.addClass(className);
-          if (attr[directive])
-              element.addClass(className + "-" + attr[directive].replace(/\s+/g, "-"));
+      /**
+       * Add as transformed class selector(s), then
+       * remove the deprecated attribute selector
+       */
+      function attributeValueToClass(scope, element, attr) {
+        var directive = attr.$normalize(className);
 
-          try {
-            element.removeAttr(className);
-          } catch(e) { }
+        // Add transformed class selector(s)
+        if (addDirectiveAsClass) {
+          element.addClass(className);
         }
+
+        if (attr[directive]) {
+          element.addClass(className + "-" + attr[directive].replace(/\s+/g, "-"));
+        }
+
+        if ( scope ) {
+          /**
+           * After link-phase, do NOT remove deprecated layout attribute selector.
+           * Instead watch the attribute so interpolated data-bindings to layout
+           * selectors will continue to be supported.
+           *
+           * $observe the className and update with new class (after removing the last one)
+           *
+           * e.g. `layout="{{layoutDemo.direction}}"` will update...
+           */
+          var lastClass;
+
+          attr.$observe(function() {
+
+            return attr[className];
+
+          }, function(newVal) {
+
+            element.removeClass(lastClass);
+
+              lastClass = className + "-" + String(newVal).replace(/\s+/g, "-");
+
+            element.addClass(lastClass);
+
+          });
+
+        }
+
+      }
     }
 
     /**
-     * Creates a registration function with for ngMaterial Layout attribute directive
-     *
-     * Simple transpose of attribute usage to class usage
+     * Creates a registration function with for ngMaterial Layout attribute directive.
+     * This is a `simple` transpose of attribute usage to class usage
      */
-    function attribute_noValue(className) {
-        return [function() {
-            return {
-              compile : function (element, attr) {
-                  attributeToClass(null, element);
+    function attributeWithoutValue(className) {
+      return function() {
+        return {
+          compile: function(element, attr) {
+            attributeToClass(null, element);
 
-                  // !! use for postLink to account for transforms after ng-transclude
-                  return attributeToClass;
-                }
-            };
-        }];
+            // Use for postLink to account for transforms after ng-transclude.
+            return attributeToClass;
+          }
+        };
+      };
 
       /**
        * Add as transformed class selector, then
@@ -2806,10 +2849,25 @@ function InterimElementProvider() {
        */
       function attributeToClass(scope, element) {
         element.addClass(className);
-        try {
+
+        if ( scope ) {
+          // After link-phase, remove deprecated layout attribute selector
           element.removeAttr(className);
-        } catch(e) { }
+        }
       }
+    }
+
+    /**
+     * Provide console warning that this layout attribute has been deprecated
+     */
+    function warnAttrNotSupported(className) {
+      var parts = className.split("-");
+
+      return ["$log", function($log) {
+        $log.warn( className + "has been deprecated. Please use a `" + parts[0] + "-gt-<xxx>` variant.");
+        return angular.noop;
+      }];
+
     }
 
 })();
@@ -3776,9 +3834,9 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
   .run(generateThemes);
 
 /**
- * @ngdoc provider
+ * @ngdoc service
  * @name $mdThemingProvider
- * @module material.core
+ * @module material.core.theming
  *
  * @description Provider to configure the `$mdTheming` service.
  */
@@ -5125,10 +5183,11 @@ angular
  * @description
  * BottomSheet
  */
-angular.module('material.components.bottomSheet', [
-  'material.core',
-  'material.components.backdrop'
-])
+angular
+  .module('material.components.bottomSheet', [
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdBottomSheet', MdBottomSheetDirective)
   .provider('$mdBottomSheet', MdBottomSheetProvider);
 
@@ -5282,7 +5341,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
       $mdTheming.inherit(bottomSheet.element, options.parent);
 
       if (options.disableParentScroll) {
-        options.restoreScroll = $mdUtil.disableScrollAround(options.parent);
+        options.restoreScroll = $mdUtil.disableScrollAround(bottomSheet.element, options.parent);
       }
 
       return $animate.enter(bottomSheet.element, options.parent)
@@ -11339,9 +11398,9 @@ var SELECT_EDGE_MARGIN = 8;
 var selectNextId = 0;
 
 angular.module('material.components.select', [
-  'material.core',
-  'material.components.backdrop'
-])
+    'material.core',
+    'material.components.backdrop'
+  ])
   .directive('mdSelect', SelectDirective)
   .directive('mdSelectMenu', SelectMenuDirective)
   .directive('mdOption', OptionDirective)
@@ -12668,7 +12727,8 @@ SelectProvider.$inject = ["$$interimElementProvider"];
  * @description
  * A Sidenav QP component.
  */
-angular.module('material.components.sidenav', [
+angular
+  .module('material.components.sidenav', [
     'material.core',
     'material.components.backdrop'
   ])
@@ -12679,7 +12739,6 @@ angular.module('material.components.sidenav', [
 
 
 /**
- * @private
  * @ngdoc service
  * @name $mdSidenav
  * @module material.components.sidenav
@@ -13478,21 +13537,21 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
 (function(){
 "use strict";
 
-/*
+/**
  * @ngdoc module
  * @name material.components.sticky
  * @description
- *
  * Sticky effects for md
+ *
  */
-
-angular.module('material.components.sticky', [
-  'material.core',
-  'material.components.content'
-])
+angular
+  .module('material.components.sticky', [
+    'material.core',
+    'material.components.content'
+  ])
   .factory('$mdSticky', MdSticky);
 
-/*
+/**
  * @ngdoc service
  * @name $mdSticky
  * @module material.components.sticky
@@ -13507,7 +13566,6 @@ angular.module('material.components.sticky', [
  *     when the user starts scrolling past the original element.
  *     If not provided, it will use the result of `element.clone()`.
  */
-
 function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
 
   var browserStickySupport = checkStickySupport();
@@ -13614,7 +13672,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
       setCurrentItem(item);
     }
 
-
     /***************
      * Private
      ***************/
@@ -13638,7 +13695,6 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         item.clone.css('margin-right', '0');
       }
     }
-
 
     // As we scroll, push in and select the correct sticky element.
     function onScroll() {
@@ -13687,7 +13743,7 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         }
 
         // If the next item is close to the current one, pull the current one down into view
-        if (self.next && scrollTop >= self.next.top - self.current.height) {
+        if (self.next && self.current && (scrollTop >= (self.next.top - self.current.height))) {
           translate(self.current, scrollTop + (self.next.top - scrollTop - self.current.height));
           return;
         }
@@ -13700,55 +13756,55 @@ function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
         translate(self.current, scrollTop);
       }
     }
-     
-   function setCurrentItem(item) {
-     if (self.current === item) return;
-     // Deactivate currently active item
-     if (self.current) {
-       translate(self.current, null);
-       setStickyState(self.current, null);
-     }
 
-     // Activate new item if given
-     if (item) {
-       setStickyState(item, 'active');
-     }
+    function setCurrentItem(item) {
+      if (self.current === item) return;
+      // Deactivate currently active item
+      if (self.current) {
+        translate(self.current, null);
+        setStickyState(self.current, null);
+      }
 
-     self.current = item;
-     var index = self.items.indexOf(item);
-     // If index === -1, index + 1 = 0. It works out.
-     self.next = self.items[index + 1];
-     self.prev = self.items[index - 1];
-     setStickyState(self.next, 'next');
-     setStickyState(self.prev, 'prev');
-   }
+      // Activate new item if given
+      if (item) {
+        setStickyState(item, 'active');
+      }
 
-   function setStickyState(item, state) {
-     if (!item || item.state === state) return;
-     if (item.state) {
-       item.clone.attr('sticky-prev-state', item.state);
-       item.element.attr('sticky-prev-state', item.state);
-     }
-     item.clone.attr('sticky-state', state);
-     item.element.attr('sticky-state', state);
-     item.state = state;
-   }
+      self.current = item;
+      var index = self.items.indexOf(item);
+      // If index === -1, index + 1 = 0. It works out.
+      self.next = self.items[index + 1];
+      self.prev = self.items[index - 1];
+      setStickyState(self.next, 'next');
+      setStickyState(self.prev, 'prev');
+    }
 
-   function translate(item, amount) {
-     if (!item) return;
-     if (amount === null || amount === undefined) {
-       if (item.translateY) {
-         item.translateY = null;
-         item.clone.css($mdConstant.CSS.TRANSFORM, '');
-       }
-     } else {
-       item.translateY = amount;
-       item.clone.css(
-         $mdConstant.CSS.TRANSFORM, 
-         'translate3d(' + item.left + 'px,' + amount + 'px,0)'
-       );
-     }
-   }
+    function setStickyState(item, state) {
+      if (!item || item.state === state) return;
+      if (item.state) {
+        item.clone.attr('sticky-prev-state', item.state);
+        item.element.attr('sticky-prev-state', item.state);
+      }
+      item.clone.attr('sticky-state', state);
+      item.element.attr('sticky-state', state);
+      item.state = state;
+    }
+
+    function translate(item, amount) {
+      if (!item) return;
+      if (amount === null || amount === undefined) {
+        if (item.translateY) {
+          item.translateY = null;
+          item.clone.css($mdConstant.CSS.TRANSFORM, '');
+        }
+      } else {
+        item.translateY = amount;
+        item.clone.css(
+          $mdConstant.CSS.TRANSFORM,
+          'translate3d(' + item.left + 'px,' + amount + 'px,0)'
+        );
+      }
+    }
   }
 
   // Function to check for browser sticky support
@@ -13824,10 +13880,11 @@ MdSticky.$inject = ["$document", "$mdConstant", "$$rAF", "$mdUtil"];
  *  > To improve the visual grouping of content, use the system color for your subheaders.
  *
  */
-angular.module('material.components.subheader', [
-  'material.core',
-  'material.components.sticky'
-])
+angular
+  .module('material.components.subheader', [
+    'material.core',
+    'material.components.sticky'
+  ])
   .directive('mdSubheader', MdSubheaderDirective);
 
 /**
@@ -20230,7 +20287,7 @@ angular
  * @ngInject
  */
 function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipple,
-                           $mdUtil, $animate, $attrs, $compile, $mdTheming) {
+                           $mdUtil, $animateCss, $attrs, $compile, $mdTheming) {
   // define private properties
   var ctrl      = this,
       locked    = false,
@@ -20859,17 +20916,41 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
         newHeight     = contentHeight + tabsHeight,
         currentHeight = $element.prop('clientHeight');
     if (currentHeight === newHeight) return;
+
+    // Lock during animation so the user can't change tabs
     locked = true;
-    $animate
-        .animate(
-        $element,
-        { height: currentHeight + 'px' },
-        { height: newHeight + 'px' }
-    )
-        .then(function () {
-                $element.css('height', '');
-                locked = false;
-              });
+
+    var fromHeight = { height: currentHeight + 'px'},
+        toHeight = { height: newHeight + 'px' };
+
+    // Set the height to the current, specific pixel height to fix a bug on iOS where the height
+    // first animates to 0, then back to the proper height causing a visual glitch
+    $element.css(fromHeight);
+
+    // Animate the height from the old to the new
+    $animateCss($element, {
+      from: fromHeight,
+      to: toHeight,
+      easing: 'cubic-bezier(0.35, 0, 0.25, 1)',
+      duration: 0.5
+    }).start().done(function () {
+      // Then (to fix the same iOS issue as above), disable transitions and remove the specific
+      // pixel height so the height can size with browser width/content changes, etc.
+      $element.css({
+        transition: 'none',
+        height: ''
+      });
+
+      // In the next tick, re-allow transitions (if we do it all at once, $element.css is "smart"
+      // enough to batch it for us instead of doing it immediately, which undoes the original
+      // transition: none)
+      $mdUtil.nextTick(function() {
+        $element.css('transition', '');
+      });
+
+      // And unlock so tab changes can occur
+      locked = false;
+    });
   }
 
   /**
@@ -20938,7 +21019,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     $mdTabInkRipple.attach(scope, element, options);
   }
 }
-MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animate", "$attrs", "$compile", "$mdTheming"];
+MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animateCss", "$attrs", "$compile", "$mdTheming"];
 
 })();
 (function(){
