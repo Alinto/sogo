@@ -1,0 +1,240 @@
+/** Styles for sgTimePane. */
+$sg-time-pane-cell-size: 40px;
+
+$md-calendar-cell-size: 44px !default;
+$md-calendar-header-height: 40px;
+$md-calendar-cell-emphasis-size: 40px !default;
+$md-calendar-side-padding: 16px !default;
+$md-calendar-weeks-to-show: 7 !default;
+
+$md-calendar-month-label-padding: 8px !default;
+$md-calendar-month-label-font-size: 13px !default;
+
+$md-calendar-width: (7 * $md-calendar-cell-size) + (2 * $md-calendar-side-padding);
+$md-calendar-height:
+($md-calendar-weeks-to-show * $md-calendar-cell-size) + $md-calendar-header-height;
+
+sg-time-pane {
+  font-size: 13px;
+  user-select: none;
+}
+
+.hours-pane {
+  border-bottom: solid 1px rgb(224,224,224);
+}
+
+.toggle-pane {
+  border-top: solid 1px rgb(224,224,224);
+}
+
+.md-button.md-fab.hourBtn,
+.md-button.md-fab.minuteBtn,
+.md-button.md-fab.toggleBtn,
+.md-button.md-fab.hourBtn.md-focused,
+.md-button.md-fab.minuteBtn.md-focused,
+.md-button.md-fab.toggleBtn.md-focused,
+.md-button.md-fab.hourBtn.md-focus,
+.md-button.md-fab.minuteBtn.md-focus,
+.md-button.md-fab.toggleBtn.md-focus{
+  min-width: 10px;
+  min-height: 10px;
+  background-color: transparent;
+  border-color: transparent;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight:normal;
+  color: rgba(0,0,0,0.5);
+  height:$sg-time-pane-cell-size;
+  width:$sg-time-pane-cell-size;
+  line-height: $sg-time-pane-cell-size;
+  box-shadow: none;
+  margin: 2px;
+}
+.md-button.md-fab.toggleBtn{
+  background-color: rgb(63, 81, 181);
+  color: white;
+  margin: 5px;
+}
+
+.md-button.md-fab.hourBtn:hover, .md-button.md-fab.minuteBtn:hover {
+  background-color: lightgrey;
+  color: #666666;
+}
+
+.md-button.md-fab.hourBtn.md-primary, .md-button.md-fab.minuteBtn.md-primary,
+.md-button.md-fab.hourBtn.md-primary:hover, .md-button.md-fab.minuteBtn.md-primary:hover,
+.md-button.md-fab.hourBtn.md-primary.md-focus, .md-button.md-fab.minuteBtn.md-primary.md-focus,
+.md-button.md-fab.hourBtn.md-primary.md-focused, .md-button.md-fab.minuteBtn.md-primary.md-focused{
+  background-color: lightgrey;
+  color: rgb(63, 81, 181);;
+}
+
+/** Styles for sgTimepicker. */
+$md-datepicker-button-gap: 12px;  // Space between the text input and the calendar-icon button.
+$md-datepicker-border-bottom-gap: 5px;  // Space between input and the grey underline.
+$md-datepicker-open-animation-duration: 0.2s;
+
+sg-timepicker {
+  // Don't let linebreaks happen between the open icon-button and the input.
+  white-space: nowrap;
+}
+
+// The calendar icon button used to open the calendar pane.
+// Need absurd specificty to override md-button.md-icon-button.
+.sg-timepicker-button {
+  display: inline-block;
+  box-sizing: border-box;
+  background: none;
+}
+
+// The input into which the user can type the date.
+.sg-timepicker-input {
+  //@include md-flat-input();
+  min-width: 120px;
+  max-width: $md-calendar-width - $md-datepicker-button-gap;
+  background: inherit;
+  border: none;
+}
+
+// Container for the datepicker input.
+.sg-timepicker-input-container {
+  // Position relative in order to absolutely position the down-triangle button within.
+  position: relative;
+
+  padding-bottom: $md-datepicker-border-bottom-gap;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(224,224,224);
+
+  display: inline-block;
+  width: auto;
+  margin-left: $md-datepicker-button-gap;
+
+  &.sg-timepicker-focused {
+    border-bottom-width: 2px;
+  }
+}
+
+
+// Floating pane that contains the time at the bottom of the input.
+.sg-timepicker-time-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $z-index-menu;
+
+  border-width: 1px;
+  border-style: solid;
+  background: inherit;
+  border-color: rgb(224,224,224);
+  box-shadow: rgba(0, 0, 0, 0.137255) 0 3px 1px -2px, rgba(0, 0, 0, 0.0980392) 0 2px 2px 0, rgba(0, 0, 0, 0.0823529) 0 1px 5px 0;
+  transform: scale(0);
+  transform-origin: 0 0;
+  //transition: transform $md-datepicker-open-animation-duration $swift-ease-out-timing-function;
+
+  &.md-pane-open {
+    transform: scale(1);
+  }
+}
+
+// Portion of the floating panel that sits, invisibly, on top of the input.
+.sg-timepicker-input-mask {
+  height: 40px;
+  width: $md-calendar-width;
+  position: relative;
+
+  background: transparent;
+  pointer-events: none;
+  cursor: text;
+}
+
+.sg-timepicker-input-mask-opaque {
+  position: absolute;
+  right: 0;
+  left: 120px;
+  background: white;
+
+  height: 100%;
+}
+
+// The time portion of the floating pane (vs. the input mask).
+.sg-timepicker-time {
+  opacity: 0;
+  // Use a modified timing function (from swift-ease-out) so that the opacity part of the
+  // animation doesn't come in as quickly so that the floating pane doesn't ever seem to
+  // cover up the trigger input.
+  transition: opacity $md-datepicker-open-animation-duration cubic-bezier(0.5, 0, 0.25, 1);
+
+  .md-pane-open & {
+    opacity: 1;
+  }
+
+  sg-time:focus {
+    outline: none;
+  }
+}
+
+// Down triangle/arrow indicating that the datepicker can be opened.
+// We can do this entirely with CSS without needing to load an icon.
+// See https://css-tricks.com/snippets/css/css-triangle/
+$md-date-arrow-size: 5px;
+.sg-timepicker-expand-triangle {
+  // Center the triangle inside of the button so that the
+  // ink ripple origin looks correct.
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 0;
+  height: 0;
+  border-left: $md-date-arrow-size solid transparent;
+  border-right: $md-date-arrow-size solid transparent;
+  border-top: $md-date-arrow-size solid rgba(black, 0.20);
+}
+
+// Button containing the down "disclosure" triangle/arrow.
+.sg-timepicker-triangle-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  // TODO(jelbourn): This position isn't great on all platforms.
+  transform: translateY(-25%) translateX(45%);
+}
+
+// Need crazy specificity to override .md-button.md-icon-button.
+// Only apply this high specifiy to the property we need to override.
+.sg-timepicker-triangle-button.md-button.md-icon-button {
+  height: 100%;
+  width: 36px;
+  position: absolute;
+}
+
+// Disabled state for all elements of the picker.
+sg-timepicker[disabled] {
+  .sg-timepicker-input-container {
+    border-bottom-color: transparent;
+  }
+
+  .sg-timepicker-triangle-button {
+    display: none;
+  }
+}
+
+// Open state for all of the elements of the picker.
+.sg-timepicker-open {
+  .sg-timepicker-input-container {
+    margin-left: -$md-datepicker-button-gap;
+    border: none;
+  }
+
+  .sg-timepicker-input {
+    margin-left: 24px;
+    height: 40px;
+  }
+
+  .sg-timepicker-triangle-button {
+    display: none;
+  }
+}

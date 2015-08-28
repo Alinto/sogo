@@ -80,15 +80,35 @@
         <var:string label:value="All day Event"/>
       </md-checkbox>
       <!-- start + end -->
-      <div layout="row">
-        <md-input-container>
-          <label><var:string label:value="Start"/></label>
-          <input type="text" ng-model="editor.component.startDate"/>
-        </md-input-container>
-        <md-input-container>
-          <label><var:string label:value="Due"/></label>
-          <input type="text" ng-model="editor.component.dueDate"/>
-        </md-input-container>
+      <div class="section" layout="column">
+        <div layout="row" layout-align="start center" ng-show="editor.component.start">
+          <label><var:string label:value="From"/></label>
+          <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
+          <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
+          <md-button class="sg-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
+            <md-icon>remove_circle</md-icon>
+          </md-button>
+        </div>
+        <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.start">
+          <md-button class="sg-icon-button" type="button" ng-click="editor.component.$addStartDate()">
+            <md-icon>add_circle</md-icon>
+          </md-button>
+          <label class="button-label"><var:string label:value="Add From"/></label>
+        </div>
+      </div>
+      <div layout="row" layout-align="start center" ng-show="editor.component.due">
+        <label><var:string label:value="Due"/></label>
+        <md-datepicker ng-model="editor.component.due"> <!-- date picker--></md-datepicker>
+        <sg-timepicker ng-model="editor.component.due"><!-- time picker --></sg-timepicker>
+        <md-button class="sg-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
+          <md-icon>remove_circle</md-icon>
+        </md-button>
+      </div>
+      <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.due">
+        <md-button class="sg-icon-button" type="button" ng-click="editor.component.$addDueDate()">
+          <md-icon>add_circle</md-icon>
+        </md-button>
+        <label class="button-label"><var:string label:value="Add Due"/></label>
       </div>
       <!-- status -->
       <div layout="row">

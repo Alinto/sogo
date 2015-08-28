@@ -96,15 +96,17 @@
         <var:string label:value="Send Appointment Notifications"/>
       </md-checkbox>
       <!-- start + end -->
-      <div layout="row">
-        <md-input-container>
-          <label><var:string label:value="From"/></label>
-          <input type="text" ng-model="editor.component.startDate" required="required"/>
-        </md-input-container>
-        <md-input-container>
-          <label><var:string label:value="To"/></label>
-          <input type="text" ng-model="editor.component.endDate" required="required"/>
-        </md-input-container>
+      <div layout="column">
+        <div layout="row" layout-align="start center">
+          <span><var:string label:value="From"/></span>
+          <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
+          <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
+        </div>
+        <div layout="row" layout-align="start center">
+          <span><var:string label:value="To"/></span>
+          <md-datepicker ng-model="editor.component.end"> <!-- date picker--></md-datepicker>
+          <sg-timepicker ng-model="editor.component.end"><!-- time picker --></sg-timepicker>
+        </div>
       </div>
       <!-- attach urls -->
       <div class="attr" ng-repeat="attach in editor.component.attachUrls">

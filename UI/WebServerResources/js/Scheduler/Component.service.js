@@ -345,8 +345,17 @@
 
     if (this.startDate)
       this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+    else if (this.type == 'appointment') {
+      this.start = new Date();
+    }
+
     if (this.endDate)
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
+    else if (this.type == 'appointment') {
+      this.end = new Date();
+      this.end.addHours(1);
+    }
+
     if (this.dueDate)
       this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
 
@@ -720,6 +729,45 @@
   };
 
   /**
+   * @function $addDueDate
+   * @memberof Component.prototype
+   * @desc Add a due date
+   */
+  Component.prototype.$addDueDate = function() {
+    this.due = new Date();
+    this.dueDate = this.due.toISOString();
+  };
+
+  /**
+   * @function $deleteDueDate
+   * @memberof Component.prototype
+   * @desc Delete a due date
+   */
+  Component.prototype.$deleteDueDate = function() {
+    delete this.due;
+    delete this.dueDate;
+  };
+
+  /**
+   * @function $addStartDate
+   * @memberof Component.prototype
+   * @desc Add a start date
+   */
+  Component.prototype.$addStartDate = function() {
+    this.start = new Date();
+  };
+
+  /**
+   * @function $deleteStartDate
+   * @memberof Component.prototype
+   * @desc Delete a start date
+   */
+  Component.prototype.$deleteStartDate = function() {
+    delete this.start;
+    delete this.startDate;
+  };
+
+  /**
    * @function $reset
    * @memberof Component.prototype
    * @desc Reset the original state the component's data.
@@ -821,9 +869,13 @@
       }
     });
 
-    // Format times
-    component.startTime = component.startDate ? formatTime(component.startDate) : '';
-    component.endTime   = component.endDate   ? formatTime(component.endDate)   : '';
+    // Format dates and times
+    component.startDate = component.start ? formatDate(component.start) : '';
+    component.startTime = component.start ? formatTime(component.start) : '';
+    component.endDate = component.end ? formatDate(component.end) : '';
+    component.endTime = component.end ? formatTime(component.end) : '';
+    component.dueDate = component.due ? formatDate(component.due) : '';
+    component.dueTime = component.due ? formatTime(component.due) : '';
 
     // Update recurrence definition depending on selections
     if (this.$hasCustomRepeat) {
@@ -867,16 +919,28 @@
       component.alarm = {};
     }
 
-    function formatTime(dateString) {
-      // YYYY-MM-DDTHH:MM-ZZ:00 => YYYY-MM-DD HH:MM
-      var date = new Date(dateString.substring(0,10) + ' ' + dateString.substring(11,16)),
-          hours = date.getHours(),
-          minutes = date.getMinutes();
-
+    function formatTime(date) {
+      var hours = date.getHours();
       if (hours < 10) hours = '0' + hours;
-      if (minutes < 10) minutes = '0' + minutes;
 
+      var minutes = date.getMinutes();
+      if (minutes < 10) minutes = '0' + minutes;
       return hours + ':' + minutes;
+    }
+
+    function formatDate(date) {
+      var year = date.getYear();
+      if (year < 1000) year += 1900;
+
+      var month = '' + (date.getMonth() + 1);
+      if (month.length == 1)
+        month = '0' + month;
+
+      var day = '' + date.getDate();
+      if (day.length == 1)
+        day = '0' + day;
+
+      return year + '-' + month + '-' + day;
     }
 
     return component;
