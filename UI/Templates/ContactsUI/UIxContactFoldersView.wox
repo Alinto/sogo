@@ -232,8 +232,9 @@
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
                 <md-menu-item >
-                  <md-button ng-click="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)">
+                  <md-button ng-href="#">
                     <md-checkbox
+                        ng-change="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)"
                         ng-model="addressbook.selectedFolder.constructor.$query.asc"
                         ng-true-value="0"
                         ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>

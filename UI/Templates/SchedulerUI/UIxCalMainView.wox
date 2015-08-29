@@ -474,16 +474,18 @@
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.component.$filter(list.componentType)">
+                    <md-button ng-href="#">
                       <md-checkbox
+                          ng-change="list.component.$filter(list.componentType)"
                           ng-model="list.component.$queryEvents.asc"
                           ng-true-value="0"
                           ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.component.$filter(list.componentType)">
+                    <md-button ng-href="#">
                       <md-checkbox
+                          ng-change="list.component.$filter(list.componentType)"
                           ng-model="list.component.$queryTasks.asc"
                           ng-true-value="0"
                           ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>

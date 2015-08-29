@@ -395,8 +395,9 @@
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
                 <md-menu-item>
-                  <md-button ng-click="mailbox.selectedFolder.$filter()">
+                  <md-button ng-href="#">
                     <md-checkbox
+                        ng-change="mailbox.selectedFolder.$filter()" 
                         ng-model="mailbox.service.$query.asc"
                         ng-true-value="0"
                         ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
