@@ -883,7 +883,7 @@
       data = [NSDictionary dictionaryWithObjectsAndKeys:
                              @"No UID specified", @"error", nil];
       return [self responseWithStatus: 404 /* Not Found */
-                                    andString: [data jsonRepresentation]];
+                            andString: [data jsonRepresentation]];
     }
 
   uids = [data objectForKey: @"uids"];

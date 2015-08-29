@@ -124,11 +124,8 @@
   NSString *s;
 
   s = [self mailAccounts];
-  response = [self responseWithStatus: 200];
-
-  [response setHeader: @"text/plain; charset=utf-8"
-               forKey: @"content-type"];
-  [response appendContentString: s];
+  response = [self responseWithStatus: 200
+                            andString: s];
 
   return response;
 }
