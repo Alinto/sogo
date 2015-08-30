@@ -52,6 +52,8 @@
 
 - (BOOL) run;
 
+- (NSString*) stringFromDiffBetween: (NSString*) str1
+                                and: (NSString*) str2;
 @end
 
 #define test(c) { \
