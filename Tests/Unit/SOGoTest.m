@@ -185,4 +185,79 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
   return YES;
 }
 
+/* Helper function for diffForString:andString */
+NSString *_stringForCharacterAtIndex(NSUInteger index, NSString *str, NSUInteger length)
+{
+  NSString *chrStr;
+  unichar chr;
+  if (index < length)
+    {
+      chr = [str characterAtIndex: index];
+      if (isprint(chr)) 
+        {
+          chrStr = [NSString stringWithFormat: @"%c", chr];
+        }
+      else
+        {
+          if (chr == 10) 
+            chrStr = @"[NL]";
+          else if (chr == 0)
+            chrStr = @"[\0]";
+          else    
+            chrStr = [NSString stringWithFormat: @"[NP: %u]", chr];
+        }
+    }
+  else
+    {
+      chrStr = @"[none]";
+    }
+
+  return chrStr;
+}
+
+/*
+  Returns a string with a very verbose diff of the two strings.
+  In case the strings are equal it returns an empty string.
+  Example output for the strings 'flower' and 'flotera':
+  <begin of example>
+0 |f|
+1 |l|
+2 |o|
+3 |w|t|<--
+4 |e|
+5 |r|
+6 |[none]|a|<--
+  <end of example>
+*/
+- (NSString*) stringFromDiffBetween: (NSString*) str1
+                                and: (NSString*) str2
+{
+  BOOL differencesFound = NO;
+  NSString *finalSTR = @"";
+  NSUInteger i, length1, length2;
+  NSString *sc1, *sc2;
+
+  length1 = [str1 length];
+  length2 = [str2 length];
+  for (i = 0; i < length1 || i < length2; i++)
+    {
+      sc1 = _stringForCharacterAtIndex(i, str1, length1);
+      sc2 = _stringForCharacterAtIndex(i, str2, length2);
+
+      if ([sc1 isEqualToString: sc2]) 
+        finalSTR = [finalSTR stringByAppendingFormat: @"%u |%@|\n", i, sc1];
+      else
+        {
+          finalSTR = [finalSTR stringByAppendingFormat: @"%u |%@|%@|<--\n", i, sc1, sc2];
+          differencesFound = YES;
+        }
+    }
+
+  if (!differencesFound)
+    return @"";
+
+  return finalSTR;
+}
+
+
 @end
