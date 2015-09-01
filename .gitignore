@@ -20,11 +20,8 @@ UI/WebServerResources/bower_components/
 UI/WebServerResources/css/
 UI/WebServerResources/css/styles.css
 UI/WebServerResources/css/styles.css.map
-UI/WebServerResources/js/Common.js*
-UI/WebServerResources/js/Contacts.js*
-UI/WebServerResources/js/Mailer.js*
-UI/WebServerResources/js/Preferences.js*
-UI/WebServerResources/js/Scheduler.js*
+UI/WebServerResources/js/*.js
+UI/WebServerResources/js/*.js.map
 UI/WebServerResources/js/vendor/
 UI/WebServerResources/node_modules/
 UI/WebServerResources/scss/.sass-cache/
