@@ -45,7 +45,8 @@
       // Filter paramaters specific to events
       $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
       // Filter parameters specific to tasks
-      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' }
+      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' },
+      $refreshTimeout: null
     });
     Preferences.ready().then(function() {
       // Initialize filter parameters from user's settings
@@ -106,6 +107,27 @@
   };
 
   /**
+   * @function $startRefreshTimeout
+   * @memberof Component
+   * @desc Starts the refresh timeout for the current selected component type, for all calendars
+   */
+  Component.$startRefreshTimeout = function(type) {
+    var _this = this;
+
+    if (Component.$refreshTimeout)
+      Component.$timeout.cancel(Component.$refreshTimeout);
+
+    Component.$Preferences.ready().then(function() {
+      // Restart the refresh timer, if needed
+      var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var f = angular.bind(_this, Component.$filter, type);
+        Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      }
+    });
+  };
+
+  /**
    * @function $filter
    * @memberof Component
    * @desc Search for components matching some criterias
@@ -123,6 +145,8 @@
         params = {
           day: '' + year + (month < 10?'0':'') + month + (day < 10?'0':'') + day,
         };
+
+    Component.$startRefreshTimeout(type);
 
     return this.$Preferences.ready().then(function() {
       var futureComponentData,
