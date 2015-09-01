@@ -2086,6 +2086,10 @@ static NSArray *reminderValues = nil;
       // We convert our object into a mutable one
       v = [[v mutableCopy] autorelease];
 
+      if ([[v objectForKey: @"SOGoLoginModule"] isEqualToString: @"Last"])
+        [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+      else
+        [v setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoRememberLastModule"];
 
       // We remove short/long date formats if they are default ones
       if ([[v objectForKey: @"SOGoShortDateFormat"] isEqualToString: @"default"])
