@@ -96,7 +96,7 @@
    * @returns a string representing the path relative to the mail module
    */
   Message.prototype.$absolutePath = function(options) {
-    if (angular.isUndefined(this.id)) {
+    if (angular.isUndefined(this.id) || options) {
       var path;
       path = _.map(this.$mailbox.path.split('/'), function(component) {
         return 'folder' + component.asCSSIdentifier();
