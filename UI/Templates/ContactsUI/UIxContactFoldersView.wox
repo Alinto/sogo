@@ -155,7 +155,7 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader md-padding">
+          <md-subheader class="sg-md-subheader">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>
