@@ -5,8 +5,29 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-    <md-content md-scroll-y="md-scroll-y" class="viewer md-padding md-whiteframe-z1 bg-sogoPaper-50">
-      <!-- <div class="editor md-padding">-->
+  <div layout="column" class="layout-fill">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="sg-icon-button"
+                   label:aria-label="Cancel"
+                   ng-click="editor.cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+        <div class="md-flex"><!-- spacer --></div>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Reset"
+                   ng-click="editor.reset()">
+          <md-icon>undo</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Save"
+                   ng-click="editor.save(editor.card.$isCard()?cardForm:listForm)">
+          <md-icon>save</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content class="md-flex md-static">
+      <div layout="column" class="viewer md-padding">
         <hgroup class="header">
           <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
@@ -21,7 +42,7 @@
             </label>
             <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
           </md-input-container>
-          <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles-->
+          <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles -->
           <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
             <md-input-container flex="40">
               <label>
@@ -298,22 +319,10 @@
             </label>
             <textarea ng-model="editor.card.note"><!-- note --></textarea>
           </md-input-container>
-
-          <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button type="button" ng-click="editor.cancel()">
-              <var:string label:value="Cancel"/>
-            </md-button>
-            <md-button type="button" ng-click="editor.reset()">
-              <var:string label:value="Reset"/>
-            </md-button>
-            <md-button class="md-primary md-hue-3" type="submit">
-              <var:string label:value="Save"/>
-            </md-button>
-          </div>
         </form>
 
         <!-- list editor -->
-        <form name="listForm" ng-if="editor.card.$isList()" ng-submit="editor.save(listForm)">
+        <form name="listForm" ng-show="editor.card.$isList()" ng-submit="editor.save(listForm)">
           <md-input-container>
             <label>
               <var:string label:value="Display"/>
@@ -350,22 +359,8 @@
                 filter-selected="false"
                 label:placeholder="Add Member"><!-- members --></md-contact-chips>
           </div>
-          
-          <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button type="button" ng-click="editor.cancel()">
-              <var:string label:value="Cancel"/>
-            </md-button>
-            <md-button type="button" ng-click="editor.reset()">
-              <var:string label:value="Reset"/>
-            </md-button>
-            <var:if condition="canCreateOrModify">
-              <md-button class="md-primary md-hue-3" type="submit">
-                <var:string label:value="Save"/>
-              </md-button>
-            </var:if>
-          </div>
         </form>
-      <!-- </div> -->
+      </div>
     </md-content>
-
+  </div>
 </container>

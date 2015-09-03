@@ -38,7 +38,7 @@ $detailView-width: grid-step(8) !global;
   z-index: ($z-index-view - 1);
   min-width: ($listView-width - ($pitch * 2));
   @include at(md){
-    @include flex-col(md, 7, 1, 1);
+    @include flex-col(md, 6, 1, 1);
     min-width: ($pitch * 3);
   }
   @include from(lg) {
@@ -52,26 +52,30 @@ $detailView-width: grid-step(8) !global;
 
 .view-detail {
   z-index: $z-index-view;
-  overflow-x: hidden;
+  //overflow-x: hidden;
+  overflow: hidden;
   @include at(md) {
-    @include flex-col(md, 9);
+    @include flex-col(md, 10);
     margin: 0;
-
   }
   @include from(lg) {
     @include flex-col(lg, 10, 2, 1);
     margin: 0;
-
   }
 
   // No animation on medium to large screens
   @include from(md) {
+    .md-static {
+      position: static;
+    }
     .viewer {
       position: absolute;
-      top: 0;
+      top: $toolbar-height;
       left: 0;
       right: 0;
+      bottom: 0;
       max-width: 100%;
+      overflow-y: auto;
 //      transform: translate3d(0, 0, 0);
 //      transition: all 0.5s $swift-ease-in-out-timing-function;
 //      &.ng-enter {
@@ -109,10 +113,12 @@ $detailView-width: grid-step(8) !global;
     display: block;
     background-color: transparent !important;
     position: absolute;
-    top: $toolbar-tall-height;
+    //top: $toolbar-tall-height;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: ($z-index-toolbar + 1);
     transform: translateX(0);
     transition: $swift-ease-in-out;
     &.sg-close {
@@ -133,6 +139,7 @@ $detailView-width: grid-step(8) !global;
       bottom: 0;
       left: 0;
       right: 0;
+      overflow-x: hidden;
     }
   }
 }

@@ -45,8 +45,11 @@ md-list-item {
   padding: $layout-gutter-width;
   width: $sg-md-grid-pitch + $baseline-grid;
   height: $sg-md-grid-pitch + $baseline-grid;
-  line-height: $sg-md-grid-pitch + $baseline-grid;
+  //line-height: $sg-md-grid-pitch + $baseline-grid;
   background-clip: content-box;
+  md-icon {
+    font-size: $sg-md-grid-pitch + $baseline-grid - 2 * $layout-gutter-width;
+  }
 }
 .md-tile-right {
   margin-right: -$layout-gutter-width;

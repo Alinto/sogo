@@ -39,8 +39,10 @@
 }
 
 .msg-date {
+  font-size: $sg-font-size-2;
   text-align: right;
-  margin-bottom: 10px;
+//  margin-bottom: 10px;
+//  margin-bottom: ($mg/2);
 }
 
 .msg-attachment-image {

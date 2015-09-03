@@ -3,51 +3,31 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label"
-    >
-  <md-card class="viewer flex-sm">
-    <md-card-content>
-      <header class="msg-header">
-        <div ng-show="editor.card.tag == 'vcard'">
-          <sg-avatar-image class="md-tile-left"
-                           sg-email="editor.card.$preferredEmail()"
-                           sg-src="editor.card.photoURL"
-                           size="48"><!-- avatar --></sg-avatar-image>
-        </div>
-        <div class="sg-list-avatar" ng-show="editor.card.tag == 'vlist'">
-          <!--list avatar-->
-        </div>
-        <div class="msg-header-content">
-          <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
-          <md-chips ng-model="editor.card.categories"
-                    class="sg-readonly" readonly="true">
-            <md-chip-template>
-              {{$chip.value}}
-            </md-chip-template>
-          </md-chips>
-        </div>
-        <div class="sg-icon-bar--vertical">
-          <md-button class="sg-icon-button show-sm"
-                     label:aria-label="Close"
-                     ng-click="editor.close()">
-            <md-icon>close</md-icon>
-          </md-button>
-          <md-button class="sg-icon-button"
-                     label:aria-label="Edit"
-                     ng-show="editor.currentFolder.acls.objectEditor"
-                     ui-sref="app.addressbook.card.editor({addressbookId: editor.currentFolder.id, cardId: editor.card.id})">
-            <md-tooltip md-direction="left"><var:string label:value="Edit"/></md-tooltip>
-            <md-icon>mode_edit</md-icon>
-          </md-button>
-          <md-button class="sg-icon-button"
-                     label:aria-label="Delete"
-                     ng-show="editor.currentFolder.acls.objectEraser"
-                     ng-click="editor.confirmDelete(editor.card)">
-            <md-tooltip md-direction="left"><var:string label:value="Delete"/></md-tooltip>
-            <md-icon>delete</md-icon>
-          </md-button>
+    xmlns:label="OGo:label">
 
+  <div layout="column" class="layout-fill">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="sg-icon-button hide show-sm"
+                   label:aria-label="Close"
+                   ng-click="editor.close()">
+          <md-icon>close</md-icon>
+        </md-button>
+        <div class="md-flex"><!-- spacer --></div>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Edit"
+                   ng-show="editor.currentFolder.acls.objectEditor"
+                   ui-sref="app.addressbook.card.editor({addressbookId: editor.currentFolder.id, cardId: editor.card.id})">
+          <md-tooltip md-direction="left"><var:string label:value="Edit"/></md-tooltip>
+          <md-icon>mode_edit</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Delete"
+                   ng-show="editor.currentFolder.acls.objectEraser"
+                   ng-click="editor.confirmDelete(editor.card)">
+          <md-tooltip md-direction="left"><var:string label:value="Delete"/></md-tooltip>
+          <md-icon>delete</md-icon>
+        </md-button>
         <md-menu>
           <md-button label:aria-label="More contact options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon>more_vert</md-icon>
@@ -67,110 +47,133 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-
-        </div>
-      </header>
-      <section class="msg-body">
-
-        <div class="pseudo-input-container" ng-show="editor.card.$birthday().length">
-          <div class="key">
-            <label class="pseudo-input-label">
-              <var:string label:value="Birthday"/>
-            </label>
+      </div>
+    </md-toolbar>
+    <md-content class="md-flex md-static">
+      <div layout="column" class="viewer md-padding">
+        <header class="msg-header">
+          <div ng-show="editor.card.c_component == 'vcard'">
+            <sg-avatar-image class="md-tile-left"
+                             sg-email="editor.card.$preferredEmail()"
+                             sg-src="editor.card.photoURL"
+                             size="48"><!-- avatar --></sg-avatar-image>
           </div>
-          <div class="pseudo-input-field">
-            <span>{{editor.card.$birthday()}}</span>
+          <div class="sg-list-avatar" ng-show="editor.card.c_component == 'vlist'">
+            <!--list avatar-->
           </div>
-        </div>
+          <div class="msg-header-content">
+            <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+            <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
+            <md-chips ng-model="editor.card.categories"
+                      class="sg-readonly" readonly="true">
+              <md-chip-template>
+                {{$chip.value}}
+              </md-chip-template>
+            </md-chips>
+          </div>
+        </header>
+        <section class="msg-body">
 
-        <!-- list members -->
-        <div class="section" ng-show="editor.card.refs.length > 0">
-          <label class="pseudo-input-label">
-            <var:string label:value="Members"/>
-          </label>
-          <md-list>
-            <md-list-item class="md-3-line" ng-repeat="ref in editor.card.refs track by ref.reference">
-              <sg-avatar-image class="md-tile-left"
-                               sg-email="ref.$preferredEmail()"
-                               size="48">
-                <!-- contact avatar -->
-              </sg-avatar-image>
-              <div class="md-list-item-text">
-                <h3>
-                  <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">
-                    {{ ref.$fullname() }}
-                  </a>
-                </h3>
-                <h4 ng-show="ref.email">
-                  <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
-                    {{ ref.email }}
-                  </a>
-                </h4>
-              </div>
-            </md-list-item>
-          </md-list>
-        </div>
-        
-        <div class="section" ng-show="editor.card.emails.length > 0">
-          <div class="pseudo-input-container" ng-repeat="email in editor.card.emails">
+          <div class="pseudo-input-container" ng-show="editor.card.$birthday().length">
             <div class="key">
-              <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
-            </div>
-            
-            <div class="pseudo-input-field">
-              <a href="#" ng-bind="email.value"
-                 ng-click="addressbook.newMessageWithRecipient($event, email.value, editor.card.$fullname())"><!-- recipient --></a>
-            </div>
-            
-          </div>
-        </div>
-        
-        <div class="section" ng-show="editor.card.phones.length > 0">
-          <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
-            <div class="key">
-              <label class="pseudo-input-label">{{phone.type}}</label>
-            </div>
-
-            <div class="pseudo-input-field">
-              <a href="tel:{{phone.value}}">{{phone.value}}</a>
-            </div>
-
-          </div>
-        </div>
-        <div class="section" ng-show="editor.card.urls">
-          <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
-            <div class="key">
-              <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}
+              <label class="pseudo-input-label">
+                <var:string label:value="Birthday"/>
               </label>
             </div>
-
             <div class="pseudo-input-field">
-              <a href="#" ng-href="{{url.value}}">{{url.value}}</a>
-            </div>
-
-          </div>
-        </div>
-        <div class="section" ng-show="editor.card.addresses">
-          <div class="pseudo-input-container" ng-repeat="address in editor.card.addresses">
-            <div class="key">
-              <label class="pseudo-input-label">{{address.type}}</label>
-            </div>
-            <div class="pseudo-input-field">
-              <div sg-address="address"><!-- address --></div>
+              <span>{{editor.card.$birthday()}}</span>
             </div>
           </div>
-        </div>
-        <div class="pseudo-input-container" ng-show="editor.card.note">
-          <div class="key">
+
+          <!-- list members -->
+          <div class="section" ng-show="editor.card.refs.length > 0">
             <label class="pseudo-input-label">
-              <var:string label:value="Note"/>
+              <var:string label:value="Members"/>
             </label>
+            <md-list>
+              <md-list-item class="md-3-line" ng-repeat="ref in editor.card.refs track by ref.reference">
+                <sg-avatar-image class="md-tile-left"
+                                 sg-email="ref.$preferredEmail()"
+                                 size="48">
+                  <!-- contact avatar -->
+                </sg-avatar-image>
+                <div class="md-list-item-text">
+                  <h3>
+                    <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">
+                      {{ ref.$fullname() }}
+                    </a>
+                  </h3>
+                  <h4 ng-show="ref.email">
+                    <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
+                      {{ ref.email }}
+                    </a>
+                  </h4>
+                </div>
+              </md-list-item>
+            </md-list>
           </div>
-          <div class="pseudo-input-field">
-            <div ng-bind-html="editor.card.note"><!-- note --></div>
+
+          <div class="section" ng-show="editor.card.emails.length > 0">
+            <div class="pseudo-input-container" ng-repeat="email in editor.card.emails">
+              <div class="key">
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
+              </div>
+
+              <div class="pseudo-input-field">
+                <a href="#" ng-bind="email.value"
+                   ng-click="addressbook.newMessageWithRecipient($event, email.value, editor.card.$fullname())"><!-- recipient --></a>
+              </div>
+
+            </div>
           </div>
-        </div>
-      </section>
-    </md-card-content>
-  </md-card>
+
+          <div class="section" ng-show="editor.card.phones.length > 0">
+            <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
+              <div class="key">
+                <label class="pseudo-input-label">{{phone.type}}</label>
+              </div>
+
+              <div class="pseudo-input-field">
+                <a href="tel:{{phone.value}}">{{phone.value}}</a>
+              </div>
+
+            </div>
+          </div>
+          <div class="section" ng-show="editor.card.urls">
+            <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
+              <div class="key">
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}
+                </label>
+              </div>
+
+              <div class="pseudo-input-field">
+                <a href="#" ng-href="{{url.value}}">{{url.value}}</a>
+              </div>
+
+            </div>
+          </div>
+          <div class="section" ng-show="editor.card.addresses">
+            <div class="pseudo-input-container" ng-repeat="address in editor.card.addresses">
+              <div class="key">
+                <label class="pseudo-input-label">{{address.type}}</label>
+              </div>
+              <div class="pseudo-input-field">
+                <div sg-address="address"><!-- address --></div>
+              </div>
+            </div>
+          </div>
+          <div class="pseudo-input-container" ng-show="editor.card.note">
+            <div class="key">
+              <label class="pseudo-input-label">
+                <var:string label:value="Note"/>
+              </label>
+            </div>
+            <div class="pseudo-input-field">
+              <div ng-bind-html="editor.card.note"><!-- note --></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </md-content>
+  </div>
 </container>

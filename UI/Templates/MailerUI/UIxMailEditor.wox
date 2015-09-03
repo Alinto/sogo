@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
 
   <md-dialog flex="80" flex-sm="100">
-    <md-toolbar class="sg-padded--right">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">edit</md-icon>
         <!-- from -->
@@ -34,166 +34,166 @@
     </md-toolbar>
 
     <md-dialog-content>
-        <header>
-          <div class="msg-header-content">
+      <header>
+        <div class="msg-header-content">
 
-            <!-- to -->
-            <div class="pseudo-input-container">
-              <label class="pseudo-input-label">
-                <var:string label:value="To"/>
-              </label>
-              <md-chips ng-model="editor.message.editable.to"
-                        md-on-append="editor.addRecipient($chip)">
-                <md-autocomplete
-                    class="sg-chips-autocomplete"
-                    md-search-text="editor.autocomplete.to.searchText"
-                    md-selected-item="editor.autocomplete.to.selected"
-                    md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
-                    md-min-length="3"
-                    md-delay="300"
-                    md-no-cache="true"
-                    label:placeholder="Add a recipient">
-                  <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
-                  </md-item-template>
-                </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
-              </md-chips>
-            </div>
-
-            <!-- cc -->
-            <div class="pseudo-input-container" ng-hide="editor.hideCc">
-              <label class="pseudo-input-label">
-                <var:string label:value="Cc"/>
-              </label>
-              <md-chips ng-model="editor.message.editable.cc"
-                        md-on-append="editor.addRecipient($chip)">
-                <md-autocomplete
-                    class="sg-chips-autocomplete"
-                    md-search-text="editor.autocomplete.cc.searchText"
-                    md-selected-item="editor.autocomplete.cc.selected"
-                    md-items="user in editor.contactFilter(editor.autocomplete.cc.searchText)"
-                    label:placeholder="Add a recipient">
-                   <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
-                  </md-item-template>
-                </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
-              </md-chips>
-            </div>
-
-            <!-- bcc -->
-            <div class="pseudo-input-container" ng-hide="editor.hideBcc">
-              <label class="pseudo-input-label">
-                <var:string label:value="Bcc"/>
-              </label>
-              <md-chips ng-model="editor.message.editable.bcc"
-                        md-on-append="editor.addRecipient($chip)">
-                <md-autocomplete
-                    class="sg-chips-autocomplete"
-                    md-selected-item="editor.autocomplete.bcc.selected"
-                    md-search-text="editor.autocomplete.bcc.searchText"
-                    md-items="user in editor.contactFilter(editor.autocomplete.bcc.searchText)"
-                    label:placeholder="Add a recipient">
-                  <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
-                  </md-item-template>
-                </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
-              </md-chips>
-            </div>
-
-            <!-- subject -->
-            <md-input-container>
-              <label>
-                <var:string label:value="Subject"/>
-              </label>
-              <input type="text" name="subject" ng-model="editor.message.editable.subject"/>
-            </md-input-container>
+          <!-- to -->
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label">
+              <var:string label:value="To"/>
+            </label>
+            <md-chips ng-model="editor.message.editable.to"
+                      md-on-append="editor.addRecipient($chip)">
+              <md-autocomplete
+                  class="sg-chips-autocomplete"
+                  md-search-text="editor.autocomplete.to.searchText"
+                  md-selected-item="editor.autocomplete.to.selected"
+                  md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
+                  md-min-length="3"
+                  md-delay="300"
+                  md-no-cache="true"
+                  label:placeholder="Add a recipient">
+                <md-item-template>
+                  <span class="md-contact-suggestion">
+                    <span class="md-contact-name"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$fullname}}</span>
+                    <span class="md-contact-email"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$email}}</span>
+                  </span>
+                </md-item-template>
+              </md-autocomplete>
+              <md-chip-template>{{$chip}}</md-chip-template>
+            </md-chips>
           </div>
 
-          <!-- toolbar to show cc/bcc/attachment fields -->
-          <div layout="column" layout-align="start end">
-            <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
-            <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
-            <md-menu>
-              <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
-                <md-icon>more_vert</md-icon>
-              </md-button>
-              <md-menu-content width="4">
-                <md-menu-item>
-                  <md-button ng-href="#">
-                    <md-checkbox ng-model="editor.message.editable.receipt">
-                      <var:string label:value="Return Receipt"/>
-                    </md-checkbox>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 1">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 1}"><!-- highest --></md-icon>
-                    <var:string label:value="highest"/>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 2">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 2}"><!-- high --></md-icon>
-                    <var:string label:value="high"/>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 3">
-                    <md-icon ng-class="{ 'icon-check':
-                                       !editor.message.editable.priority
-                                       || editor.message.editable.priority == 3}"><!-- normal --></md-icon>
-                    <var:string label:value="normal"/>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 4">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 4}"><!-- low --></md-icon>
-                    <var:string label:value="low"/>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 5">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 5}"><!-- lowest --></md-icon>
-                    <var:string label:value="lowest"/>
-                  </md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
-
+          <!-- cc -->
+          <div class="pseudo-input-container" ng-hide="editor.hideCc">
+            <label class="pseudo-input-label">
+              <var:string label:value="Cc"/>
+            </label>
+            <md-chips ng-model="editor.message.editable.cc"
+                      md-on-append="editor.addRecipient($chip)">
+              <md-autocomplete
+                  class="sg-chips-autocomplete"
+                  md-search-text="editor.autocomplete.cc.searchText"
+                  md-selected-item="editor.autocomplete.cc.selected"
+                  md-items="user in editor.contactFilter(editor.autocomplete.cc.searchText)"
+                  label:placeholder="Add a recipient">
+                <md-item-template>
+                  <span class="md-contact-suggestion">
+                    <span class="md-contact-name"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$fullname}}</span>
+                    <span class="md-contact-email"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$email}}</span>
+                  </span>
+                </md-item-template>
+              </md-autocomplete>
+              <md-chip-template>{{$chip}}</md-chip-template>
+            </md-chips>
           </div>
-        </header>
 
-        <!-- MESSAGE CONTENT -->
-        <textarea name="content" var:class="editorClass"
-                  ck-locale="editor.localeCode"
-                  ng-model="editor.message.editable.text"/>
+          <!-- bcc -->
+          <div class="pseudo-input-container" ng-hide="editor.hideBcc">
+            <label class="pseudo-input-label">
+              <var:string label:value="Bcc"/>
+            </label>
+            <md-chips ng-model="editor.message.editable.bcc"
+                      md-on-append="editor.addRecipient($chip)">
+              <md-autocomplete
+                  class="sg-chips-autocomplete"
+                  md-selected-item="editor.autocomplete.bcc.selected"
+                  md-search-text="editor.autocomplete.bcc.searchText"
+                  md-items="user in editor.contactFilter(editor.autocomplete.bcc.searchText)"
+                  label:placeholder="Add a recipient">
+                <md-item-template>
+                  <span class="md-contact-suggestion">
+                    <span class="md-contact-name"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$fullname}}</span>
+                    <span class="md-contact-email"
+                          md-highlight-text="editor.autocomplete.to.searchText"
+                          md-highlight-flags="^i">{{user.$$email}}</span>
+                  </span>
+                </md-item-template>
+              </md-autocomplete>
+              <md-chip-template>{{$chip}}</md-chip-template>
+            </md-chips>
+          </div>
+
+          <!-- subject -->
+          <md-input-container>
+            <label>
+              <var:string label:value="Subject"/>
+            </label>
+            <input type="text" name="subject" ng-model="editor.message.editable.subject"/>
+          </md-input-container>
+        </div>
+
+        <!-- toolbar to show cc/bcc/attachment fields -->
+        <div layout="column" layout-align="end end">
+          <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
+          <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
+          <md-menu>
+            <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+              <md-icon>more_vert</md-icon>
+            </md-button>
+            <md-menu-content width="4">
+              <md-menu-item>
+                <md-button ng-href="#">
+                  <md-checkbox ng-model="editor.message.editable.receipt">
+                    <var:string label:value="Return Receipt"/>
+                  </md-checkbox>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="editor.message.editable.priority = 1">
+                  <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 1}"><!-- highest --></md-icon>
+                  <var:string label:value="highest"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="editor.message.editable.priority = 2">
+                  <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 2}"><!-- high --></md-icon>
+                  <var:string label:value="high"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="editor.message.editable.priority = 3">
+                  <md-icon ng-class="{ 'icon-check':
+                                     !editor.message.editable.priority
+                                     || editor.message.editable.priority == 3}"><!-- normal --></md-icon>
+                  <var:string label:value="normal"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="editor.message.editable.priority = 4">
+                  <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 4}"><!-- low --></md-icon>
+                  <var:string label:value="low"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="editor.message.editable.priority = 5">
+                  <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 5}"><!-- lowest --></md-icon>
+                  <var:string label:value="lowest"/>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+
+        </div>
+      </header>
+
+      <!-- MESSAGE CONTENT -->
+      <textarea name="content" var:class="editorClass"
+                ck-locale="editor.localeCode"
+                ng-model="editor.message.editable.text"/>
     </md-dialog-content>
 
     <!-- TOOLBAR BUTTONS -->
@@ -212,32 +212,32 @@
                  uploader="editor.uploader"
                  ng-show="false"/>
         </div>
-      <div>
-        <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
-             MAIL WITH ATTACHMENTS -->
-        <md-chips ng-model="editor.message.editable.attachmentAttrs"
-                  class="sg-readonly" readonly="true">
-          <md-chip-template>
-            <span>{{$chip.filename}}</span>
+        <div>
+          <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
+               MAIL WITH ATTACHMENTS -->
+          <md-chips ng-model="editor.message.editable.attachmentAttrs"
+                    class="sg-readonly" readonly="true">
+            <md-chip-template>
+              <span>{{$chip.filename}}</span>
               <md-icon ng-click="editor.message.$deleteAttachment($chip.filename);">close</md-icon>
-          </md-chip-template>
-        </md-chips>
-        <!-- FILE BEING ATTACHED TO A MAIL -->
-        <md-chips ng-model="editor.uploader.queue"
-                  class="sg-readonly" readonly="true">
-          <md-chip-template>
-            <span>{{$chip.file.name}}</span>
-            <md-icon ng-show="!$chip.isUploading"
-                     ng-click="editor.message.$deleteAttachment($chip.file.name);
-                               $chip.remove();">close</md-icon>
-            <md-icon ng-show="$chip.isUploading"
-                     ng-click="editor.uploader.cancelItem($chip)"
-                     ng-style="{ 'color': '#F00' }">cancel</md-icon>
-            <span ng-show="$chip.isUploading">{{$chip.progress}} %</span>
-          </md-chip-template>
-        </md-chips>
-      </div>
+            </md-chip-template>
+          </md-chips>
+          <!-- FILE BEING ATTACHED TO A MAIL -->
+          <md-chips ng-model="editor.uploader.queue"
+                    class="sg-readonly" readonly="true">
+            <md-chip-template>
+              <span>{{$chip.file.name}}</span>
+              <md-icon ng-show="!$chip.isUploading"
+                       ng-click="editor.message.$deleteAttachment($chip.file.name);
+                                 $chip.remove();">close</md-icon>
+              <md-icon ng-show="$chip.isUploading"
+                       ng-click="editor.uploader.cancelItem($chip)"
+                       ng-style="{ 'color': '#F00' }">cancel</md-icon>
+              <span ng-show="$chip.isUploading">{{$chip.progress}} %</span>
+            </md-chip-template>
+          </md-chips>
+        </div>
       </div>
     </div>
-</md-dialog>
+  </md-dialog>
 </container>

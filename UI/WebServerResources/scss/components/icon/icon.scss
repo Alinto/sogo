@@ -123,11 +123,11 @@ md-icon {
 }
 
 // Message flag
-.sg-msg-flag {
-  md-icon {
-    color: sg-color($sogoGreen, 50) !important;
-    &.flagged {
-      color: sg-color($sogoBlue, 600) !important;
-    }
-  }
-}
+//.sg-msg-flag {
+//  md-icon {
+//    color: sg-color($sogoGreen, 50) !important;
+//    &.flagged {
+//      color: sg-color($sogoBlue, 600) !important;
+//    }
+//  }
+//}

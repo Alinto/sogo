@@ -108,7 +108,7 @@ md-list md-list-item button.md-button.sg-icon-button {
 .sg-icon-bar--vertical {
   display: flex;
   flex-direction: column;
-  margin: 0 ($mg * -1) 0 $mg;
+  //margin: 0 ($mg * -1) 0 $mg;
   font-size: $sg-font-size-3;
   align-items: center;
   // Containers have padding, we compensate to align according to specs

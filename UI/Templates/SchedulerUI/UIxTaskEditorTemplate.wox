@@ -7,7 +7,7 @@
   <md-dialog flex="60" flex-sm="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
-        <div class="md-toolbar-tools sg-padded">
+        <div class="md-toolbar-tools">
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
