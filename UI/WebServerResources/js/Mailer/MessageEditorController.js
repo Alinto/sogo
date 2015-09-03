@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$state', '$q', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $state, $q, $mdDialog, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, encodeUriFilter, focus, Dialog, Account, Mailbox, AddressBook, Preferences) {
+  MessageEditorController.$inject = ['$stateParams', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $mdDialog, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, focus, Dialog, AddressBook, Preferences) {
     var vm = this;
 
     vm.addRecipient = addRecipient;
