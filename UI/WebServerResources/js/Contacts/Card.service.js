@@ -220,7 +220,7 @@
         if (unit.value !== '')
           description.push(unit.value);
       });
-    if (this.org) description.push(this.org);
+    if (this.c_org) description.push(this.c_org);
     if (this.description) description.push(this.description);
 
     return description.join(', ');
