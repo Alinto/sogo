@@ -26,102 +26,102 @@
 */
 
 // SMALL SCREEN
-@include at(sm) {
-  .hide-sm, .hide {
-    &:not(.show-sm):not(.show) {
-      display: none !important;
-    }
-  }
+//@include at(sm) {
+//  .hide-sm, .hide {
+//    &:not(.show-sm):not(.show) {
+//      display: none !important;
+//    }
+//  }
+//
+//  @include flex-order-for-name(sm);
+//  @include layout-align-for-name(sm);
+//  @include layout-for-name(sm);
+//  @include flex-properties-for-name(sm);
+//}
 
-  @include flex-order-for-name(sm);
-  @include layout-align-for-name(sm);
-  @include layout-for-name(sm);
-  @include flex-properties-for-name(sm);
-}
-
-@include from(md) {
-  .show-sm {
-    display: none !important;
-  }
-}
+//@include from(md) {
+//  .show-sm {
+//    display: none !important;
+//  }
+//}
 
 
 // BIGGER THAN SMALL SCREEN
-@include from(md) {
-  @include flex-order-for-name(gt-sm);
-  @include layout-align-for-name(gt-sm);
-  @include layout-for-name(gt-sm);
-  @include flex-properties-for-name(gt-sm);
-}
+//@include from(md) {
+//  @include flex-order-for-name(gt-sm);
+//  @include layout-align-for-name(gt-sm);
+//  @include layout-for-name(gt-sm);
+//  @include flex-properties-for-name(gt-sm);
+//}
 
 // MEDIUM SCREEN
-@include at(md) {
-  .hide, .hide-gt-sm {
-    &:not(.show-gt-sm):not(.show-md):not(.show) {
-      display: none;
-    }
-  }
-  .hide-md:not(.show-md):not(.show) {
-    display: none;
-  }
-
-  @include flex-order-for-name(md);
-  @include layout-align-for-name(md);
-  @include layout-for-name(md);
-  @include flex-properties-for-name(md);
-}
+//@include at(md) {
+//  .hide, .hide-gt-sm {
+//    &:not(.show-gt-sm):not(.show-md):not(.show) {
+//      display: none;
+//    }
+//  }
+//  .hide-md:not(.show-md):not(.show) {
+//    display: none;
+//  }
+//
+//  @include flex-order-for-name(md);
+//  @include layout-align-for-name(md);
+//  @include layout-for-name(md);
+//  @include flex-properties-for-name(md);
+//}
 
 // BIGGER THAN MEDIUM SCREEN
-@include from(lg) {
-  @include flex-order-for-name(gt-md);
-  @include layout-align-for-name(gt-md);
-  @include layout-for-name(gt-md);
-  @include flex-properties-for-name(gt-md);
-  @include flex-order-for-name(lg);
-  @include layout-align-for-name(lg);
-  @include layout-for-name(lg);
-  @include flex-properties-for-name(lg);
-}
+//@include from(lg) {
+//  @include flex-order-for-name(gt-md);
+//  @include layout-align-for-name(gt-md);
+//  @include layout-for-name(gt-md);
+//  @include flex-properties-for-name(gt-md);
+//  @include flex-order-for-name(lg);
+//  @include layout-align-for-name(lg);
+//  @include layout-for-name(lg);
+//  @include flex-properties-for-name(lg);
+//}
 // BIGGER THAN LARGE SCREEN
-@include  from(lg) {
-  .hide, .hide-gt-sm, .hide-gt-md {
-    &:not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
-      display: none;
-    }
-  }
-  .hide-lg:not(.show-lg):not(.show) {
-    display: none;
-  }
-}
+//@include  from(lg) {
+//  .hide, .hide-gt-sm, .hide-gt-md {
+//    &:not(.show-gt-sm):not(.show-gt-md):not(.show-lg):not(.show) {
+//      display: none;
+//    }
+//  }
+//  .hide-lg:not(.show-lg):not(.show) {
+//    display: none;
+//  }
+//}
 
 // BIGGER THAN X-LARGE SCREEN in needed
-@include from(xl) {
-  .hide-gt-sm, .hide-gt-md, .hide-gt-lg, .hide {
-    &:not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show) {
-      display: none;
-    }
-  }
-
-  @include flex-order-for-name(gt-lg);
-  @include layout-align-for-name(gt-lg);
-  @include layout-for-name(gt-lg);
-  @include flex-properties-for-name(gt-lg);
-}
+//@include from(xl) {
+//  .hide-gt-sm, .hide-gt-md, .hide-gt-lg, .hide {
+//    &:not(.show-gt-sm):not(.show-gt-md):not(.show-gt-lg):not(.show) {
+//      display: none;
+//    }
+//  }
+//
+//  @include flex-order-for-name(gt-lg);
+//  @include layout-align-for-name(gt-lg);
+//  @include layout-for-name(gt-lg);
+//  @include flex-properties-for-name(gt-lg);
+//}
 
 
 // Utility classes to compensate for the the xml mandatory attribute values
 // ------------------------------------------------------------------------
-$selectors: layout, layout-align, layout-padding, layout-margin, layout-wrap, layout-fill,
-flex, hide, show, show-sm;
+//$selectors: layout, layout-align, layout-padding, layout-margin, layout-wrap, layout-fill,
+//flex, hide, show, show-sm;
 
-@include attributesToClasses($selectors);
-
+//@include attributesToClasses($selectors);
+//
 // We need to silently extend this class
-%md-layout-fill {
-  margin: 0;
-  min-height: 100%;
-  width: 100%;
-}
+//%md-layout-fill {
+//  margin: 0;
+//  min-height: 100%;
+//  width: 100%;
+//}
 
 .md-flex {
   flex: 1 1 auto;
@@ -133,49 +133,49 @@ flex, hide, show, show-sm;
 
 // Generate responsive columns
 // ----------------------------------------------------------------------------
-@mixin responsive-columns($breakpoint, $query) {
-  $cols: map-get($base-grid-total-columns, $breakpoint);
-  $colWidth: ((100 / $cols) * 1vw);
-  // there must be a way to escape the rule but we didn't found-out
-  @if ($query == 'from') {
-    @include from($breakpoint)  {
-      @for $i from 1 to $cols {
-        .cols-#{$i}, {
-          max-width: ($colWidth * $i);
-          flex: 1 1 ($colWidth * $i);
-        }
-      }
-    }
-  } @else {
-    @include at($breakpoint) {
-      @for $i from 1 to $cols {
-        .cols-#{$i} {
-          max-width: ($colWidth * $i);
-          flex: 1 1 ($colWidth * $i);
-        }
-      }
-    }
-  }
-}
-@include responsive-columns('md', 'at');
-@include responsive-columns('lg', 'from');
+//@mixin responsive-columns($breakpoint, $query) {
+//  $cols: map-get($base-grid-total-columns, $breakpoint);
+//  $colWidth: ((100 / $cols) * 1vw);
+//  // there must be a way to escape the rule but we didn't found-out
+//  @if ($query == 'from') {
+//    @include from($breakpoint)  {
+//      @for $i from 1 to $cols {
+//        .cols-#{$i}, {
+//          max-width: ($colWidth * $i);
+//          flex: 1 1 ($colWidth * $i);
+//        }
+//      }
+//    }
+//  } @else {
+//    @include at($breakpoint) {
+//      @for $i from 1 to $cols {
+//        .cols-#{$i} {
+//          max-width: ($colWidth * $i);
+//          flex: 1 1 ($colWidth * $i);
+//        }
+//      }
+//    }
+//  }
+//}
+//@include responsive-columns('md', 'at');
+//@include responsive-columns('lg', 'from');
 
 // Utility to implement a specific one without extending
 // todo: include error handling
 
 @mixin flex-col($breakpoint, $nb, $grow: 1, $shrink: 1) {
-    $cols: map-get($base-grid-total-columns, $breakpoint);
-    $colWidth: ((100 / $cols) * 1vw);
-      max-width: ($colWidth * $nb);
-      flex: $grow $shrink ($colWidth * $nb);
+   $cols: map-get($base-grid-total-columns, $breakpoint);
+   $colWidth: ((100 / $cols) * 1vw);
+     max-width: ($colWidth * $nb);
+     flex: $grow $shrink ($colWidth * $nb);
 }
 
 // Rows are included in padded containers, margins are used for vertical spacing
 // ----------------------------------------------------------------------------
-[layout="row"].md-layout-margin {
-  margin-right: 0;
-  margin-left: 0;
-}
+//[layout="row"].md-layout-margin {
+//  margin-right: 0;
+//  margin-left: 0;
+//}
 
 // App container for responsive
 .sg-app-content {

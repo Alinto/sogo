@@ -60,11 +60,11 @@ $input-padding-top: 2px !default;
   margin-top: 0;
 }
 // md overqualifies so we are
-.md-input-focused label.pseudo-input-label,
-.md-input-has-value label.pseudo-input-label {
-  transform: translate3d(0, 4px, 0) scale(1);
-  margin-top: $mg;
-}
+//.md-input-focused label.pseudo-input-label,
+//.md-input-has-value label.pseudo-input-label {
+//  transform: translate3d(0, 4px, 0) scale(1);
+//  margin-top: $mg;
+//}
 
 .pseudo-input-field {
   display: block;

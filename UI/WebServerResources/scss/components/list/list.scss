@@ -150,46 +150,52 @@ div.md-tile-left {
   font-size: 40px;
   color: rgba(0, 0, 0, 0.26);
 }
-.md-tile-left-card:before {
+.md-tile-left-card {
   @extend .md-tile-left;
-  content: "\e7fd"; // person
+  &:before {
+    content: "\e7fd"; // person
+  }
 }
-.md-tile-left-list:before {
+.md-tile-left-list {
   @extend .md-tile-left;
-  content: "\e7ef"; // group
+  &:before {
+    content: "\e7ef"; // group
+  }
 }
-.md-tile-left-selected:before {
+.md-tile-left-selected {
   @extend .md-tile-left;
-  content: "\e5ca"; // check
+  &:before {
+    content: "\e5ca"; // check
+  }
 }
-.md-tile-left-accepted:before {
-  @extend .md-tile-left;
-  background-color: rgba(0, 255, 0, 0.3) !important;
-  content: "\e5ca"; // check
-  color: rgba(0, 0, 0, 0.5);
-}
-.md-tile-left-declined:before {
-  @extend .md-tile-left;
-  background-color: rgba(255, 0, 0, 0.3) !important;
-  content: "\e15b"; // remove
-  color: rgba(0, 0, 0, 0.5);
-}
-.md-tile-left-delegated:before {
-  @extend .md-tile-left;
-  background-color: rgba(192, 192, 192, 0.3) !important;
-  content: "\e5c8"; // arrow-forward
-  color: rgba(0, 0, 0, 0.5);
-}
-.md-tile-left-needs-action:before {
-  @extend .md-tile-left;
-  background-color: rgba(255, 255, 0, 0.3) !important;
-  content: "?";
-}
-.md-tile-left-tentative:before {
-  @extend .md-tile-left;
-  background-color: rgba(255, 255, 0, 0.3) !important;
-  content: "\e7fd"; // person
-}
+//.md-tile-left-accepted:before {
+//  @extend .md-tile-left;
+//  background-color: rgba(0, 255, 0, 0.3) !important;
+//  content: "\e5ca"; // check
+//  color: rgba(0, 0, 0, 0.5);
+//}
+//.md-tile-left-declined:before {
+//  @extend .md-tile-left;
+//  background-color: rgba(255, 0, 0, 0.3) !important;
+//  content: "\e15b"; // remove
+//  color: rgba(0, 0, 0, 0.5);
+//}
+//.md-tile-left-delegated:before {
+//  @extend .md-tile-left;
+//  background-color: rgba(192, 192, 192, 0.3) !important;
+//  content: "\e5c8"; // arrow-forward
+//  color: rgba(0, 0, 0, 0.5);
+//}
+//.md-tile-left-needs-action:before {
+//  @extend .md-tile-left;
+//  background-color: rgba(255, 255, 0, 0.3) !important;
+//  content: "?";
+//}
+//.md-tile-left-tentative:before {
+//  @extend .md-tile-left;
+//  background-color: rgba(255, 255, 0, 0.3) !important;
+//  content: "\e7fd"; // person
+//}
 .sg-avatar {
   @extend .md-tile-left-card;
   margin-right: 0;
@@ -205,28 +211,28 @@ div.md-tile-left {
   margin-right: 0;
   margin-left: 0;
 }
-.sg-accepted {
-  @extend .md-tile-left-accepted;
-  margin-right: 0;
-  margin-left: 0;
-}
-.sg-declined {
-  @extend .md-tile-left-declined;
-  margin-right: 0;
-  margin-left: 0;
-}
-.sg-delegated {
-  @extend .md-tile-left-delegated;
-  margin-right: 0;
-  margin-left: 0;
-}
-.sg-needs-action {
-  @extend .md-tile-left-needs-action;
-  margin-right: 0;
-  margin-left: 0;
-}
-.sg-tentative {
-  @extend .md-tile-left-tentative;
-  margin-right: 0;
-  margin-left: 0;
-}
+//.sg-accepted {
+//  @extend .md-tile-left-accepted;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
+//.sg-declined {
+//  @extend .md-tile-left-declined;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
+//.sg-delegated {
+//  @extend .md-tile-left-delegated;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
+//.sg-needs-action {
+//  @extend .md-tile-left-needs-action;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
+//.sg-tentative {
+//  @extend .md-tile-left-tentative;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
