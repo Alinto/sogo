@@ -101,9 +101,11 @@
           <div class="section">
             <div class="attr" ng-repeat="email in editor.card.emails">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="email.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="email.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="Email Address"/>
@@ -129,10 +131,13 @@
           <!-- birthday -->
           <div class="section">
             <div layout="row" layout-align="space-between end" ng-show="editor.card.birthday">
-              <label>
-                <var:string label:value="Birthday"/>
-              </label>
-              <md-datepicker ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label">
+                  <var:string label:value="Birthday"/>
+                </label>
+                <md-datepicker class="pseudo-input-field"
+                               ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+              </div>
               <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
                 <md-icon>remove_circle</md-icon>
               </md-button>
@@ -151,9 +156,11 @@
           <div class="section">
             <div class="attr" ng-repeat="phone in editor.card.phones">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="phone.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="phone.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="Phone Number"/>
@@ -181,9 +188,11 @@
           <div class="section">
             <div class="attr" ng-repeat="url in editor.card.urls">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="url.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="url.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="URL"/>
@@ -209,9 +218,11 @@
           <div class="section">
             <div class="attr" ng-repeat="address in editor.card.addresses">
               <div layout="row" layout-align="center end">
-                <md-select ng-model="address.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="address.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="street"/>
