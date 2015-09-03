@@ -231,6 +231,9 @@
 "Delete Message" = "Delete Message";
 "Delete Selected Messages" = "Delete Selected Messages";
 
+/* Number of selected messages in list */
+"selected" = "selected";
+
 "This Folder" = "This Folder";
 
 /* Label popup menu */
