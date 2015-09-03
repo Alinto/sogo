@@ -9,7 +9,7 @@ md-sidenav {
   background-color: sg-color($sogoPaper, 400);
   &.md-locked-open {
     @include from(lg) {
-      @include flex-col(lg, 4, 1, 1)
+      @include flex-col(lg, 4, 1, 0)
     }
 
   }
