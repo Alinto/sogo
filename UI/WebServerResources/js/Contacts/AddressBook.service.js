@@ -304,7 +304,8 @@
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
     var _this = this;
 
-    this.$isLoading = true;
+    if (!options || !options.dry)
+      this.$isLoading = true;
 
     return AddressBook.$Preferences.ready().then(function() {
       if (options) {
