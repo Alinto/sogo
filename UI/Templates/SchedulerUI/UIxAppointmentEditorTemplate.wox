@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
   <md-dialog flex="60" flex-sm="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
-      <md-toolbar class="sg-padded" ng-class="editor.component.getClassName('bg')">
+      <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
@@ -150,6 +150,7 @@
         </div>
         <md-button type="button" class="sg-icon-button"
                    label:aria-label="repeat_CUSTOM"
+                   ng-disabled="editor.component.occurrenceId"
                    ng-show="editor.component.repeat.frequency != 'never'"
                    ng-click="editor.toggleRecurrenceEditor()">
           <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
@@ -163,7 +164,8 @@
         <div ng-show="editor.component.repeat.frequency != 'never'">
           <md-input-container>
             <label><var:string label:value="End Repeat"/></label>
-            <md-select ng-model="editor.component.repeat.end">
+            <md-select ng-model="editor.component.repeat.end"
+                       ng-disabled="editor.component.occurrenceId">
               <md-option value="never"><var:string label:value="Never"/></md-option>
               <md-option value="count"><var:string label:value="After"/></md-option>
               <md-option value="until"><var:string label:value="On Date"/></md-option>
@@ -194,7 +196,7 @@
                          md-no-cache="true"
                          sg-enter="editor.addAttendee(editor.searchText)">
           <md-item-template>
-            <div class="md-contact-suggestion" layout="row" layout-align="space-between center">
+            <div class="md-contact-suggestion">
               <span class="md-contact-name"
                     md-highlight-text="editor.searchText"
                     md-highlight-flags="^i">{{card.$$fullname}}</span>
