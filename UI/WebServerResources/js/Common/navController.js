@@ -38,12 +38,12 @@
           $log.debug("toggle RIGHT is done");
         });
     };
-    $scope.openBottomSheet = function() {
-      $mdBottomSheet.show({
-        parent: angular.element(document.getElementById('left-sidenav')),
-        templateUrl: 'bottomSheetTemplate.html'
-      });
-    };
+    // $scope.openBottomSheet = function() {
+    //   $mdBottomSheet.show({
+    //     parent: angular.element(document.getElementById('left-sidenav')),
+    //     templateUrl: 'bottomSheetTemplate.html'
+    //   });
+    // };
     $scope.toggleDetailView = function() {
       var detail = angular.element(document.getElementById('detailView'));
       detail.toggleClass('sg-close');
