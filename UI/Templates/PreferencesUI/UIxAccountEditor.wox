@@ -10,7 +10,7 @@
     className="UIxPageFrame"
     >
   <md-dialog flex="50" flex-sm="100">
-    <md-toolbar class="md-padding">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">account_box</md-icon>
         <md-input-container>

@@ -9,7 +9,7 @@
   <md-dialog flex-sm="100">
 
     <md-toolbar ng-style="{ 'background-color': properties.calendar.color }">
-      <div class="md-toolbar-tools sg-padded--right">
+      <div class="md-toolbar-tools">
         <!-- color -->
         <sg-color-picker sg-on-select="properties.calendar.color = color"><!-- color picker --></sg-color-picker>
         <!-- name -->

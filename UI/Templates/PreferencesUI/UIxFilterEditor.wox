@@ -9,7 +9,7 @@
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="100">
   <form id="mainForm" var:href="ownPath">
-    <md-toolbar class="md-padding">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
         <md-input-container>
