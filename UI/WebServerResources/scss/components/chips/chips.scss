@@ -21,6 +21,20 @@ md-chips {
   width: (3 * $contact-chip-name-width);
 }
 
+// Adjust avatar size according to chips dimensions
+.md-contact-chips {
+  .md-chips {
+    .md-chip {
+      .md-contact-avatar {
+        md-icon {
+          height: ($chip-height * .75);
+          margin: ($chip-height * .25/2);
+        }
+      }
+    }
+  }
+}
+
 // In the autocompletion menu, don't limit the contact name to a fixed width
 // and show the email address right after it
 .md-contact-suggestion {

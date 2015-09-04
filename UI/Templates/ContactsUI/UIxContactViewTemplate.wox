@@ -56,7 +56,7 @@
             <sg-avatar-image class="md-tile-left"
                              sg-email="editor.card.$preferredEmail()"
                              sg-src="editor.card.photoURL"
-                             size="48"><!-- avatar --></sg-avatar-image>
+                             size="40"><!-- avatar --></sg-avatar-image>
           </div>
           <div class="sg-list-avatar" ng-show="editor.card.c_component == 'vlist'">
             <!--list avatar-->

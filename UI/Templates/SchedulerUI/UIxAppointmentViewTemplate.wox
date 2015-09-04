@@ -98,7 +98,9 @@
                         ng-model="::editor.organizer"
                         readonly="true">
                 <md-chip-template>
-                  <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.$image}}" alt="{{$chip.name}}"/></div>
+                  <div class="md-contact-avatar">
+                    <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                  </div>
                   <div class="md-contact-name">{{$chip.name}}</div>
                 </md-chip-template>
               </md-chips>
@@ -112,7 +114,9 @@
                         ng-model="::editor.component.attendees"
                         readonly="true">
                 <md-chip-template>
-                  <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+                  <div class="md-contact-avatar">
+                    <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                  </div>
                   <div class="md-contact-name">{{$chip.name}}</div>
                   <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
                 </md-chip-template>

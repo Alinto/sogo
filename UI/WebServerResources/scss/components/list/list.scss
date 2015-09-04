@@ -42,6 +42,7 @@ md-list-item {
 
 .md-tile-left,
 .md-tile-right {
+  display: block;
   border-radius: 100%;
   padding: $layout-gutter-width;
   width: $sg-md-grid-pitch + $baseline-grid;
@@ -149,17 +150,18 @@ div.md-tile-left {
 
 // Avatar placeholder
 // ------------------------------------
-.md-tile-left:before {
+.md-tile-left:before,
+.md-tile-left md-icon {
   font-family: 'Material Icons';
   font-size: 40px;
   color: rgba(0, 0, 0, 0.26);
 }
-.md-tile-left-card {
-  @extend .md-tile-left;
-  &:before {
-    content: "\e7fd"; // person
-  }
-}
+//.md-tile-left-card {
+//  @extend .md-tile-left;
+//  &:before {
+//    content: "\e7fd"; // person
+//  }
+//}
 .md-tile-left-list {
   @extend .md-tile-left;
   &:before {
@@ -201,9 +203,9 @@ div.md-tile-left {
 //  content: "\e7fd"; // person
 //}
 .sg-avatar {
-  @extend .md-tile-left-card;
-  margin-right: 0;
-  margin-left: 0;
+//  @extend .md-tile-left-card;
+//  margin-right: 0;
+//  margin-left: 0;
 }
 .sg-list-avatar {
   @extend .md-tile-left-list;

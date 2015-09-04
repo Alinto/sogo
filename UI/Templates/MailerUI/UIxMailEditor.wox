@@ -10,7 +10,7 @@
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">edit</md-icon>
         <!-- from -->
-        <sg-avatar-image class="md-tile-left" hide-sm="hide-sm"
+        <sg-avatar-image hide-sm="hide-sm"
                          sg-email="editor.message.editable.from"
                          size="32"><!-- avatar --></sg-avatar-image>
         <md-input-container flex="flex">

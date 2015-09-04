@@ -168,7 +168,7 @@
                              ng-show="!currentMessage.selected"
                              ng-click="currentMessage.selected = !currentMessage.selected"
                              sg-email="::currentMessage.from[0].email"
-                             size="48"><!-- avatar --></sg-avatar-image>
+                             size="40"><!-- avatar --></sg-avatar-image>
             <div class="sg-tile-content">
               <span class="msg-date"
                     ng-bind-html="currentMessage.relativedate"><!-- date --></span>

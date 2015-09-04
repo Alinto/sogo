@@ -23,8 +23,7 @@
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.isGroup">
               <div ng-switch-when="0">
-                <sg-avatar-image class="md-tile-left"
-                                 sg-email="user.c_email"
+                <sg-avatar-image sg-email="user.c_email"
                                  size="48"><!-- avatar --></sg-avatar-image>
               </div>
               <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>

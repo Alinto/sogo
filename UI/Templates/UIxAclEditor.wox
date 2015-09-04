@@ -28,7 +28,7 @@
               <div ng-switch-when="normal-user">
                 <sg-avatar-image class="md-tile-left"
                                  sg-email="user.c_email"
-                                 size="48"><!-- avatar --></sg-avatar-image>
+                                 size="40"><!-- avatar --></sg-avatar-image>
               </div>
               <div ng-switch-when="normal-group" class="sg-list-avatar"><!-- normal-group --></div>
               <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>

@@ -26,7 +26,7 @@
           <div layout="row" layout-align="start center" class="md-flex">
             <sg-avatar-image class="md-tile-left"
                              sg-email="user.c_email"
-                             size="48"><!-- avatar --></sg-avatar-image>
+                             size="40"><!-- avatar --></sg-avatar-image>
             <div class="sg-tile-content">
               <div class="sg-md-subhead-multi">{{user.cn}}</div>
               <div class="sg-md-body-multi">{{user.c_email}}</div>
