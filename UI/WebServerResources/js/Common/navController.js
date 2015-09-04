@@ -12,6 +12,7 @@
   navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
   function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
+    $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
 

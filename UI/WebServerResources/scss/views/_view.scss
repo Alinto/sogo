@@ -11,6 +11,20 @@
   max-height: 100%;
 }
 
+body.popup {
+  .viewer {
+    width: 100%;
+  }
+  .view-detail {
+    max-width: 100%;
+  }
+  @include from(md) {
+    [class|="view"] {
+      position: static;
+    }
+  }
+}
+
 // We make intensive use of the list/detail view pattern, here are some base
 // definitions for this
 // ----------------------------------------------------------------------------

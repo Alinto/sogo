@@ -10,11 +10,24 @@
   <div layout="column" class="layout-fill">
     <md-toolbar>
       <div class="md-toolbar-tools">
+        <md-button class="sg-icon-button"
+                   ng-if="isPopup"
+                   label:aria-label="Close"
+                   ng-click="viewer.closePopup()">
+          <md-icon>close</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button hide show-sm"
+                   ng-hide="isPopup"
+                   label:aria-label="Close"
+                   ng-click="viewer.close()">
+          <md-icon>arrow_back</md-icon>
+        </md-button>
+        <div class="md-flex hide show-sm"><!-- spacer --></div>
         <md-button class="sg-icon-button" label:aria-label="flagged" ng-click="viewer.message.toggleFlag()">
           <md-icon ng-class="{'icon-star': viewer.message.isflagged,
                              'icon-star-border': !viewer.message.isflagged}"><!-- flag --></md-icon>
         </md-button>
-        <div class="md-flex"><!-- spacer --></div>
+        <div class="md-flex hide-sm"><!-- spacer --></div>
         <md-button class="sg-icon-button"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.reply($event)"
@@ -37,6 +50,12 @@
                    ng-click="viewer.doDelete()">
           <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" label:aria-label="Delete"
+                   ng-hide="isPopup"
+                   ng-click="viewer.openPopup()">
+          <md-tooltip md-direction="bottom"><var:string label:value="Open in New Mail Window"/></md-tooltip>
+          <md-icon>open_in_new</md-icon>
         </md-button>
         <md-menu>
           <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
@@ -63,11 +82,6 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-        <md-button class="sg-icon-button hide show-sm"
-                   label:aria-label="Close"
-                   ng-click="viewer.close()">
-          <md-icon>close</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     <md-content class="md-flex md-static">

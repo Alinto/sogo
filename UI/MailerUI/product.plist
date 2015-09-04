@@ -351,6 +351,10 @@
         //   protectedBy = "View";
         //   pageName    = "UIxMailViewTemplate";
         // };
+        UIxMailPopupView = {
+          protectedBy = "View";
+          pageName    = "UIxMailPopupView";
+        };
         UIxMailEditor = {
           protectedBy = "View";
           pageName    = "UIxMailEditor";

@@ -3,8 +3,9 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', ['ngMaterial'])
+  angular.module('SOGo.Common', ['ngAnimate', 'ngMaterial'])
     .value('sgSettings', {
+      isPopup: document.body.classList.contains('popup'),
       baseURL: function() {
         return ApplicationBaseURL || null;
       },

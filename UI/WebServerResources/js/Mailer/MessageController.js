@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
-  function MessageController($scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, focus, Dialog, Account, Mailbox, Message) {
-    var vm = this, messageDialog = null;
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox, Message) {
+    var vm = this, messageDialog = null, popupWindow = null;
 
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
@@ -22,6 +22,8 @@
     vm.replyAll = replyAll;
     vm.forward = forward;
     vm.edit = edit;
+    vm.openPopup = openPopup;
+    vm.closePopup = closePopup;
     vm.newMessage = newMessage;
     vm.saveMessage = saveMessage;
     vm.viewRawSource = viewRawSource;
@@ -101,6 +103,33 @@
       vm.message.$editableContent().then(function() {
         showMailEditor($event, vm.message);
       });
+    }
+
+    function openPopup() {
+      var url = [sgSettings.baseURL(),
+                 'UIxMailPopupView#/Mail',
+                 vm.message.accountId,
+                 // The double-encoding is necessary
+                 encodeUriFilter(encodeUriFilter(vm.message.$mailbox.path)),
+                 vm.message.uid]
+          .join('/'),
+          wId = vm.message.$absolutePath();
+      popupWindow = $window.open(url, wId,
+                                 ["width=680",
+                                  "height=520",
+                                  "resizable=1",
+                                  "scrollbars=1",
+                                  "toolbar=0",
+                                  "location=0",
+                                  "directories=0",
+                                  "status=0",
+                                  "menubar=0",
+                                  "copyhistory=0"]
+                                 .join(','));
+    }
+
+    function closePopup() {
+      $window.close();
     }
 
     function newMessage($event, recipient) {

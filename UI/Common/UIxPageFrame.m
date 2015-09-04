@@ -249,14 +249,7 @@
 
 - (NSString *) commonLocalizableStrings
 {
-  NSString *rc;
-
-  if (isPopup)
-    rc = @"";
-  else
-    rc = [NSString stringWithFormat: @"var clabels = %@;", [self _stringsForFramework: nil]];
-
-  return rc;
+  return [NSString stringWithFormat: @"var clabels = %@;", [self _stringsForFramework: nil]];
 }
 
 - (NSString *) productLocalizableStrings
