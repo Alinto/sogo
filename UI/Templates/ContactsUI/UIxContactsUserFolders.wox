@@ -23,7 +23,8 @@
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.isGroup">
               <div ng-switch-when="0">
-                <sg-avatar-image sg-email="user.c_email"
+                <sg-avatar-image class="md-tile-left"
+                                 sg-email="user.c_email"
                                  size="48"><!-- avatar --></sg-avatar-image>
               </div>
               <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>
@@ -32,8 +33,7 @@
               <div class="sg-md-subhead-multi">{{user.cn}} {{user.userClass}}</div>
               <div class="sg-md-body-multi">{{user.c_email}}</div>
             </div>
-            <md-icon ng-class="{ 'icon-expand-more': user.uid != subscribe.selectedUser.uid,
-                               'icon-expand-less': user.uid == subscribe.selectedUser.uid }"><!--icon--></md-icon>
+            <md-icon ng-class="{'md-rotate-180': user.uid == subscribe.selectedUser.uid}">expand_more</md-icon>
           </div>
         </md-button>
         <md-card-content ng-show="user == subscribe.selectedUser">
