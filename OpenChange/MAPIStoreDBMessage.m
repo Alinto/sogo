@@ -313,4 +313,36 @@
   return [sogoObject lastModified];
 }
 
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
+{
+  /* Modify PidTagMessageFlags from SetMessageReadFlag and
+     SyncImportReadStateChanges ROPs */
+  NSNumber *flags;
+  uint32_t newFlag;
+
+  flags = [properties objectForKey: MAPIPropertyKey (PR_MESSAGE_FLAGS)];
+  if (flags)
+    {
+      newFlag = [flags unsignedLongValue];
+      if (flag & SUPPRESS_RECEIPT)
+        newFlag |= MSGFLAG_READ;
+      if (flag & CLEAR_RN_PENDING)
+        newFlag &= ~MSGFLAG_RN_PENDING;
+      if (flag & CLEAR_READ_FLAG)
+        newFlag &= ~MSGFLAG_READ;
+      if (flag & CLEAR_NRN_PENDING)
+        newFlag &= ~MSGFLAG_NRN_PENDING;
+    }
+  else
+    {
+      newFlag = MSGFLAG_READ;
+      if (flag & CLEAR_READ_FLAG)
+        newFlag = 0x0;
+    }
+  [properties setObject: [NSNumber numberWithUnsignedLong: newFlag]
+                 forKey: MAPIPropertyKey (PR_MESSAGE_FLAGS)];
+
+  return MAPISTORE_SUCCESS;
+}
+
 @end
