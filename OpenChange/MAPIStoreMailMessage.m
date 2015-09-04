@@ -1643,7 +1643,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return attachment;
 }
 
-- (int) setReadFlag: (uint8_t) flag
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
   NSString *imapFlag = @"\\Seen";
 
