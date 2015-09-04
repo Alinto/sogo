@@ -166,7 +166,6 @@
       </md-input-container>
       <!-- repeat -->
       <div layout="row" layout-align="start end">
-        <div class="md-flex">
           <md-input-container>
             <label><var:string label:value="Repeat"/></label>
             <md-select class="pseudo-input-field" ng-model="editor.component.repeat.frequency">
@@ -175,13 +174,12 @@
               </var:foreach>
             </md-select>
           </md-input-container>
-        </div>
+        <div class="md-flex"><!-- spacer --></div>
         <md-button type="button" class="sg-icon-button"
                    label:aria-label="repeat_CUSTOM"
                    ng-show="editor.component.repeat.frequency != 'never'"
                    ng-click="editor.toggleRecurrenceEditor()">
-          <md-icon ng-class="{'icon-more-horiz': !editor.showRecurrenceEditor,
-                              'icon-clear': editor.showRecurrenceEditor}"><!-- toggle custom rule --></md-icon>
+          <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
         </md-button>
       </div>
       <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
