@@ -17,8 +17,9 @@
         <div><!-- empty --></div>
       </md-list-item>
       <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
-        <sg-avatar-image sg-email="currentAttendee.email"
-                         size="32"><!-- avatar --></sg-avatar-image>
+        <sg-avatar-image class="md-tile-left"
+                         sg-email="currentAttendee.email"
+                         size="40"><!-- avatar --></sg-avatar-image>
         <div class="sg-tile-content">
           <div class="sg-md-subhead-multi">{{currentAttendee.name}}</div>
           <div class="sg-md-body-multi">{{currentAttendee.email}}</div>
