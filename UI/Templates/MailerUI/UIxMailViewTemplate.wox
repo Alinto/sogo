@@ -138,11 +138,16 @@
           <!-- Load external images -->
           <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
                          ng-show="viewer.message.$hasUnsafeContent">
-            <p class="sg-padded"><var:string label:value="This message contains external images."/></p>
-            <md-button label:aria-label="Load Images"
-                       ng-click="viewer.message.loadUnsafeContent()">
-              <var:string label:value="Load Images"/>
-            </md-button>
+            <div layout="row" layout-align="start center" class="layout-fill">
+              <div class="md-tile-left">
+                <md-icon>collections</md-icon>
+              </div>
+              <p class="sg-padded--right md-flex"><var:string label:value="This message contains external images."/></p>
+              <md-button label:aria-label="Load Images"
+                         ng-click="viewer.message.loadUnsafeContent()">
+                <var:string label:value="Load Images"/>
+              </md-button>
+            </div>
           </md-whiteframe>
 
           <!-- Send MDN -->
