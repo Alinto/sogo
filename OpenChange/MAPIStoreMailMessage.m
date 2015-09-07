@@ -1645,13 +1645,27 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
+  BOOL modified = NO;
+  BOOL alreadyRead = NO;
   NSString *imapFlag = @"\\Seen";
+
+  alreadyRead = [[[sogoObject fetchCoreInfos] objectForKey: @"flags"]
+                  containsObject: @"seen"];
 
   /* TODO: notifications should probably be emitted from here */
   if (flag & CLEAR_READ_FLAG)
-    [sogoObject removeFlags: imapFlag];
+    {
+      [sogoObject removeFlags: imapFlag];
+      modified = alreadyRead;
+    }
   else
-    [sogoObject addFlags: imapFlag];
+    {
+      [sogoObject addFlags: imapFlag];
+      modified = !alreadyRead;
+    }
+
+  if (modified)
+    [(MAPIStoreMailFolder *)[self container] synchroniseCache];
 
   return MAPISTORE_SUCCESS;
 }
