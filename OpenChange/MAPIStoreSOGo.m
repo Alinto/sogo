@@ -1120,7 +1120,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {

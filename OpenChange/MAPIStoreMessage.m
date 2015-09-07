@@ -919,7 +919,7 @@ rtf2html (NSData *compressedRTF)
   return [self getNo: data inMemCtx: memCtx];;
 }
 
-- (int) setReadFlag: (uint8_t) flag
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
   // [self subclassResponsibility: _cmd];
 
