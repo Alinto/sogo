@@ -447,10 +447,10 @@
    * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$reload = function() {
+  Message.prototype.$reload = function(options) {
     var futureMessageData;
 
-    futureMessageData = Message.$$resource.fetch(this.$absolutePath(), 'view');
+    futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
 
     return this.$unwrap(futureMessageData);
   };
@@ -534,7 +534,7 @@
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
-      _this.$reload(); // fetch a new viewable version of the message
+      _this.$reload({asDraft: false}); // fetch a new viewable version of the message
     });
   };
 
