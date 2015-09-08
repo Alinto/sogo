@@ -88,8 +88,7 @@
   Message.filterTags = function(query) {
     var re = new RegExp(query, 'i');
     return _.filter(_.keys(Message.$tags), function(tag) {
-      var value = Message.$tags[tag];
-      return value[0].search(re) != -1;
+      return tag.search(re) != -1;
     });
   };
 

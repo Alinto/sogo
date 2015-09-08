@@ -143,7 +143,10 @@
                 md-search-text="viewer.tags.searchText"
                 md-items="tag in viewer.service.filterTags(viewer.tags.searchText)"
                 label:placeholder="Add a tag">
-              <span md-highlight-text="viewer.tags.searchText">{{viewer.service.$tags[tag][0]}}</span>
+                <md-item-template>
+                  <span md-highlight-text="viewer.tags.searchText"
+                        md-highlight-flags="^i">{{tag}}</span>
+                </md-item-template>
             </md-autocomplete>
           </md-chips>
         </md-toolbar>
