@@ -25,6 +25,8 @@
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSValue.h>
 
 @class NSArray;
@@ -52,6 +54,8 @@
 
 - (BOOL) run;
 
+- (NSString*) stringFromDiffBetween: (NSString*) str1
+                                and: (NSString*) str2;
 @end
 
 #define test(c) { \

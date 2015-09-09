@@ -40,6 +40,7 @@
 #import <Mailer/NSData+Mail.h>
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
+#import <Mailer/NSDictionary+Mail.h>
 
 #import "Codepages.h"
 #import "NSData+MAPIStore.h"
@@ -196,7 +197,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   count1 = [keys indexOfObject: data1];
   data2 = [entry2 objectForKey: @"mimeType"];
   count2 = [keys indexOfObject: data2];
-  
+
   if (count1 == count2)
     {
       data1 = [entry1 objectForKey: @"key"];
@@ -529,7 +530,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   else
     stringValue = @"";
   *data = [stringValue asUnicodeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -624,7 +625,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *coreInfos;
   NSArray *flags;
   unsigned int v = 0;
-    
+
   coreInfos = [sogoObject fetchCoreInfos];
   flags = [coreInfos objectForKey: @"flags"];
 
@@ -636,7 +637,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if ([[self attachmentKeys]
         count] > 0)
     v |= MSGFLAG_HASATTACH;
-    
+
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
@@ -656,7 +657,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     v = 2;
   else
     v = 0;
-    
+
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
@@ -668,15 +669,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *coreInfos;
   NSArray *flags;
   unsigned int v;
-    
+
   coreInfos = [sogoObject fetchCoreInfos];
-  
+
   flags = [coreInfos objectForKey: @"flags"];
   if ([flags containsObject: @"flagged"])
     v = 6;
   else
     v = 0;
-    
+
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
@@ -755,7 +756,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if ([ngAddress isKindOfClass: [NGMailAddress class]])
     {
       cn = [ngAddress displayName];
-      
+
       // If we don't have a displayName, we use the email address instead. This
       // avoid bug #2119 - where Outlook won't display anything in the "From" field,
       // nor in the recipient field if we reply to the email.
@@ -809,7 +810,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
         entryId = MAPIStoreExternalEntryId (cn, email);
 
       *data = [entryId asBinaryInMemCtx: memCtx];
-      
+
       rc = MAPISTORE_SUCCESS;
     }
   else
@@ -966,15 +967,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   uint32_t v;
   NSString *s;
-    
+
   s = [[sogoObject mailHeaders] objectForKey: @"x-priority"];
   v = 0x1;
-    
+
   if ([s hasPrefix: @"1"]) v = 0x2;
   else if ([s hasPrefix: @"2"]) v = 0x2;
   else if ([s hasPrefix: @"4"]) v = 0x0;
   else if ([s hasPrefix: @"5"]) v = 0x0;
-    
+
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
@@ -1163,14 +1164,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
   if (!headerSetup)
     [self _fetchHeaderData];
-    
+
   if ([headerMimeType isEqualToString: @"text/plain"])
     format = EDITOR_FORMAT_PLAINTEXT;
   else if ([headerMimeType isEqualToString: @"text/html"])
     format = EDITOR_FORMAT_HTML;
   else
     format = 0; /* EDITOR_FORMAT_DONTKNOW */
-    
+
   *data = MAPILongValue (memCtx, format);
 
   return MAPISTORE_SUCCESS;
@@ -1517,7 +1518,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   p = 0;
                   recipient->data = talloc_array (msgData, void *, msgData->columns->cValues);
                   memset (recipient->data, 0, msgData->columns->cValues * sizeof (void *));
-                  
+
                   // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
                   recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
                   p++;
@@ -1525,7 +1526,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
                   recipient->data[p] = MAPILongValue (msgData, 0);
                   p++;
-              
+
                   // PR_7BIT_DISPLAY_NAME_UNICODE
                   recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
                   p++;
@@ -1533,7 +1534,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   // PR_SMTP_ADDRESS_UNICODE
                   recipient->data[p] = [email asUnicodeInMemCtx: msgData];
                   p++;
-              
+
                   // PR_SEND_INTERNET_ENCODING = 0x00060000 (plain text, see OXCMAIL)
                   recipient->data[p] = MAPILongValue (msgData, 0x00060000);
                   p++;
@@ -1566,12 +1567,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                               withPrefix: (NSString *) keyPrefix
 {
   NSArray *parts;
-  NSDictionary *parameters;
   NSUInteger count, max;
 
-  parameters = [[bodyInfo objectForKey: @"disposition"]
-                 objectForKey: @"parameterList"];
-  if ([[parameters objectForKey: @"filename"] length] > 0)
+  if ([[bodyInfo filename] length] > 0)
     {
       if ([keyPrefix length] == 0)
         keyPrefix = @"0";
@@ -1645,15 +1643,29 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return attachment;
 }
 
-- (int) setReadFlag: (uint8_t) flag
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
+  BOOL modified = NO;
+  BOOL alreadyRead = NO;
   NSString *imapFlag = @"\\Seen";
+
+  alreadyRead = [[[sogoObject fetchCoreInfos] objectForKey: @"flags"]
+                  containsObject: @"seen"];
 
   /* TODO: notifications should probably be emitted from here */
   if (flag & CLEAR_READ_FLAG)
-    [sogoObject removeFlags: imapFlag];
+    {
+      [sogoObject removeFlags: imapFlag];
+      modified = alreadyRead;
+    }
   else
-    [sogoObject addFlags: imapFlag];
+    {
+      [sogoObject addFlags: imapFlag];
+      modified = !alreadyRead;
+    }
+
+  if (modified)
+    [(MAPIStoreMailFolder *)[self container] synchroniseCache];
 
   return MAPISTORE_SUCCESS;
 }
@@ -1694,7 +1706,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return nil;
 }
 
-- (void) save: (TALLOC_CTX *) memCtx 
+- (void) save: (TALLOC_CTX *) memCtx
 {
   NSNumber *value;
 

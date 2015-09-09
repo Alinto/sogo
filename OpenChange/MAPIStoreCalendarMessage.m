@@ -671,7 +671,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return newAttachment;
 }
 
-- (int) setReadFlag: (uint8_t) flag
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
   return MAPISTORE_SUCCESS;
 }

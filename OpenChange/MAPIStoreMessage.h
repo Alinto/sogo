@@ -63,7 +63,7 @@
               withAID: (uint32_t) aid;
 - (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) countPtr;
-- (int) setReadFlag: (uint8_t) flag;
+- (enum mapistore_error) setReadFlag: (uint8_t) flag;
 - (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx;
 
 - (NSArray *) activeContainerMessageTables;

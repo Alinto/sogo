@@ -22,6 +22,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
@@ -29,6 +30,7 @@
 
 #undef DEBUG
 #include <stdbool.h>
+#include <libmapi/libmapi.h>
 #include <talloc.h>
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
@@ -136,11 +138,11 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
   NSMutableData *xidData;
   struct FlatUID_r flatUID;
 
-  _fillFlatUIDWithGUID (&flatUID, &xid->GUID);
+  _fillFlatUIDWithGUID (&flatUID, &xid->NameSpaceGuid);
 
-  xidData = [NSMutableData dataWithCapacity: 16 + xid->Size];
+  xidData = [NSMutableData dataWithCapacity: 16 + xid->LocalId.length];
   [xidData appendBytes: flatUID.ab length: 16];
-  [xidData appendBytes: xid->Data length: xid->Size];
+  [xidData appendBytes: xid->LocalId.data length: xid->LocalId.length];
 
   return xidData;
 }
@@ -156,12 +158,12 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
     {
       xid = talloc_zero (memCtx, struct XID);
 
-      [self _extractGUID: &xid->GUID];
+      [self _extractGUID: &xid->NameSpaceGuid];
 
-      xid->Size = max - 16;
+      xid->LocalId.length = max - 16;
 
       bytes = (uint8_t *) [self bytes];
-      xid->Data = talloc_memdup (xid, (bytes+16), xid->Size);
+      xid->LocalId.data = talloc_memdup (xid, (bytes+16), xid->LocalId.length);
     }
   else
     {
@@ -170,6 +172,38 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
     }
 
   return xid;
+}
+
+- (struct SizedXid *) asSizedXidArrayInMemCtx: (void *) memCtx
+                                         with: (uint32_t *) length
+{
+  struct Binary_r bin;
+  struct SizedXid *sizedXIDArray;
+
+  bin.cb = [self length];
+  bin.lpb = (uint8_t *)[self bytes];
+
+  sizedXIDArray = get_SizedXidArray(memCtx, &bin, length);
+  if (!sizedXIDArray)
+    {
+      NSLog (@"Impossible to parse SizedXID array");
+      return NULL;
+    }
+
+  return sizedXIDArray;
+}
+
+- (NSComparisonResult) compare: (NSData *) otherGlobCnt
+{
+  uint64_t globCnt = 0, oGlobCnt = 0;
+
+  if ([self length] > 0)
+    globCnt = *(uint64_t *) [self bytes];
+
+  if ([otherGlobCnt length] > 0)
+      oGlobCnt = *(uint64_t *) [otherGlobCnt bytes];
+
+  return MAPICNCompare (globCnt, oGlobCnt, NULL);
 }
 
 + (id) dataWithChangeKeyGUID: (NSString *) guidString
