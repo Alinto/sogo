@@ -327,12 +327,12 @@
         </md-toolbar>
 
         <md-content id="contactsList" layout="column" class="md-flex">
-          <header class="sg-md-subheader sg-md-subheader--fixed">
-            <h2 ng-switch="addressbook.selectedFolder.cards.length">
+          <md-subheader>
+            <span ng-switch="addressbook.selectedFolder.cards.length">
               <span ng-switch-when="0"><var:string label:value="No contact"/></span>
               <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
-            </h2>
-          </header>
+            </span>
+          </md-subheader>
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
               <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="72">

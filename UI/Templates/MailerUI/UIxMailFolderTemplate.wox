@@ -7,13 +7,13 @@
 
     <!-- single-selection toolbars -->
     <md-toolbar ng-show="mailbox.selectedFolder.$selectedCount() == 0">
-      <!-- sort mode -->
+      <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
                    ng-click="mailbox.mode.search = true">
           <md-icon>search</md-icon>
         </md-button>
-        <div class="md-flex"><!-- spacer --></div>
+        <div class="md-flex">{{mailbox.selectedFolder.name}}</div>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdOpenMenu()">
@@ -146,12 +146,12 @@
     </md-toolbar>
 
     <md-content id="messagesList" layout="column" class="md-flex">
-      <header class="sg-md-subheader sg-md-subheader--fixed">
-        <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
-          <span ng-show="mailbox.selectedFolder.$messages.length > 0">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
-          <span ng-show="mailbox.selectedFolder.$messages.length == 0"><var:string label:value="No message"/></span>
-        </h2>
-      </header>
+      <md-subheader>
+        <span ng-switch="mailbox.selectedFolder.$messages.length">
+          <span ng-switch-when="0"><var:string label:value="No message"/></span>
+          <span ng-switch-default="true">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
+        </span>
+      </md-subheader>
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
           <md-list-item
