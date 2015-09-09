@@ -30,6 +30,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
+#import <Mailer/NSDictionary+Mail.h>
 
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreMailMessage.h"
@@ -108,7 +109,7 @@
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
                                0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b,
                                0x68};
-  
+
   *data = [[NSData dataWithBytes: recordBytes length: 16]
             asBinaryInMemCtx: memCtx];
 
@@ -117,19 +118,7 @@
 
 - (NSString *) _fileName
 {
-  NSString *fileName;
-  NSDictionary *parameters;
-
-  fileName = [[bodyInfo objectForKey: @"parameterList"]
-               objectForKey: @"name"];
-  if (!fileName)
-    {
-      parameters = [[bodyInfo objectForKey: @"disposition"]
-                     objectForKey: @"parameterList"];
-      fileName = [parameters objectForKey: @"filename"];
-    }
-
-  return fileName;
+  return [bodyInfo filename];
 }
 
 - (int) getPidTagAttachLongFilename: (void **) data
@@ -178,7 +167,7 @@
 
 - (int) getPidTagAttachContentId: (void **) data
                         inMemCtx: (TALLOC_CTX *) memCtx
-{ 
+{
   *data = [[bodyInfo objectForKey: @"bodyId"]
             asUnicodeInMemCtx: memCtx];
 

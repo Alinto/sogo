@@ -642,6 +642,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                      fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMID: (uint64_t) targetMid
                    andChangeKey: (struct Binary_r *) targetChangeKey
+       andPredecessorChangeList: (struct Binary_r *) targetPredecessorChangeList
                        wantCopy: (uint8_t) wantCopy
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -669,15 +670,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   [sourceMsg copyToMessage: destMsg  inMemCtx: memCtx];
 
-  if (targetChangeKey)
+  if (targetPredecessorChangeList)
     {
-      property.ulPropTag = PidTagChangeKey;
-      property.value.bin = *targetChangeKey;
+      property.ulPropTag = PidTagPredecessorChangeList;
+      property.value.bin = *targetPredecessorChangeList;
       aRow.cValues = 1;
       aRow.lpProps = &property;
       rc = [destMsg addPropertiesFromRow: &aRow];
       if (rc != MAPISTORE_SUCCESS)
-        goto end;
+        {
+          [self errorWithFormat: @"Cannot add PredecessorChangeList on move"];
+          goto end;
+        }
     }
   [destMsg save: memCtx];
   if (!wantCopy)
@@ -696,6 +700,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
                         wantCopy: (uint8_t) wantCopy
                         inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -705,7 +710,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *oldMessageURL;
   MAPIStoreMapping *mapping;
   SOGoUser *ownerUser;
-  struct Binary_r *targetChangeKey;
+  struct Binary_r *targetChangeKey, *targetPredecessorChangeList;
   //TALLOC_CTX *memCtx;
 
   //memCtx = talloc_zero (NULL, TALLOC_CTX);
@@ -726,14 +731,21 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           if (oldMessageURL)
             {
               [oldMessageURLs addObject: oldMessageURL];
-              if (targetChangeKeys)
-                targetChangeKey = targetChangeKeys[count];
+              if (targetChangeKeys && targetPredecessorChangeList)
+                {
+                  targetChangeKey = targetChangeKeys[count];
+                  targetPredecessorChangeList = targetPredecessorChangeLists[count];
+                }
               else
-                targetChangeKey = NULL;
+                {
+                  targetChangeKey = NULL;
+                  targetPredecessorChangeList = NULL;
+                }
               rc = [self _moveCopyMessageWithMID: srcMids[count]
                                       fromFolder: sourceFolder
                                          withMID: targetMids[count]
                                     andChangeKey: targetChangeKey
+                        andPredecessorChangeList: targetPredecessorChangeList
                                         wantCopy: wantCopy
                                         inMemCtx: memCtx];
             }

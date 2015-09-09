@@ -161,15 +161,30 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
         //[self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
         //[self logWithFormat: @"  modseq: %.16lx", [modseq unsignedLongLongValue]];
         if (modseq)
-          modseq = [NSNumber numberWithUnsignedLongLong:
-                               [modseq unsignedLongLongValue] + 1];
+          {
+            if (res->relop == RELOP_GT)
+              modseq = [NSNumber numberWithUnsignedLongLong:
+                                   [modseq unsignedLongLongValue] + 1];
+
+          }
         else
           modseq = [NSNumber numberWithUnsignedLongLong: 0];
-        *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"MODSEQ"
-                                                  operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
-                                                  value: modseq];
-        [*qualifier autorelease];
-        rc = MAPIRestrictionStateNeedsEval;
+
+        if (res->relop == RELOP_GT || res->relop == RELOP_GE)
+          {
+            *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"MODSEQ"
+                                                 operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                                            value: modseq];
+            [*qualifier autorelease];
+            rc = MAPIRestrictionStateNeedsEval;
+          }
+        else
+          {
+            /* Ignore other operations as IMAP only support MODSEQ >= X */
+            [self warnWithFormat: @"Ignoring %@ as only supported operators are > and >=",
+                  [self operatorFromRestrictionOperator: res->relop]];
+            rc = MAPIRestrictionStateAlwaysTrue;
+          }
       }
       break;
       
