@@ -98,7 +98,8 @@
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
                           matchingSyncToken: (NSString *) syncToken
-                                   fromDate: (NSCalendarDate *) theStartDate;
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress;
 
 /* flags */
 

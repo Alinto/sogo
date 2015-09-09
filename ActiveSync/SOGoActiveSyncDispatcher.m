@@ -944,6 +944,7 @@ static BOOL debugOn = NO;
          [[o properties] removeObjectForKey: @"MoreAvailable"];
          [[o properties] removeObjectForKey: @"BodyPreferenceType"];
          [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+         [[o properties] removeObjectForKey: @"InitialLoadSequence"];
          [o save];
               
          command_count++;
@@ -1029,6 +1030,7 @@ static BOOL debugOn = NO;
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }
 
                [o save];
@@ -1052,6 +1054,7 @@ static BOOL debugOn = NO;
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }
 
                [o save];
@@ -1210,7 +1213,7 @@ static BOOL debugOn = NO;
            filter = [NSCalendarDate dateFromFilterType: [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"FilterType"] lastObject] textValue]];
            syncKey = [[(id)[[allCollections objectAtIndex: j] getElementsByTagName: @"SyncKey"] lastObject] textValue];
       
-           allMessages = [currentCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: syncKey  fromDate: filter];
+           allMessages = [currentCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: syncKey  fromDate: filter initialLoad: NO];
 
            count = [allMessages count];
       

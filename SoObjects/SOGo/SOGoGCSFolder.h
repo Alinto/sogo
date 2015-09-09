@@ -128,8 +128,8 @@
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
                           matchingSyncToken: (NSString *) syncToken
-                                   fromDate: (NSCalendarDate *) theStartDate;
-
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress;
 
 /* multiget helper */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext
