@@ -17,6 +17,7 @@
     vm.account = stateAccount;
     vm.selectedFolder = stateMailbox;
     vm.selectMessage = selectMessage;
+    vm.toggleMessageSelection = toggleMessageSelection;
     vm.unselectMessages = unselectMessages;
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
@@ -33,6 +34,12 @@
 
     function selectMessage(message) {
       $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
+    }
+
+    function toggleMessageSelection($event, message) {
+      message.selected = !message.selected;
+      $event.preventDefault();
+      $event.stopPropagation();
     }
 
     function unselectMessages() {
@@ -154,7 +161,7 @@
   }
 
   angular
-    .module('SOGo.MailerUI')  
-    .controller('MailboxController', MailboxController);                                    
+    .module('SOGo.MailerUI')
+    .controller('MailboxController', MailboxController);
 })();
 

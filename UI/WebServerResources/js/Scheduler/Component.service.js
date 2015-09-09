@@ -101,7 +101,7 @@
       count = (_.filter(Component.$events, function(event) { return event.selected; })).length;
     }
     if (Component.$tasks) {
-      count = (_.filter(Component.$tasks, function(event) { return event.selected; })).length;
+      count = (_.filter(Component.$tasks, function(task) { return task.selected; })).length;
     }
     return count;
   };

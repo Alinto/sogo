@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$scope', '$timeout', '$state', '$mdDialog', 'encodeUriFilter', 'Dialog', 'Preferences', 'Calendar', 'Component'];
-  function CalendarListController($scope, $timeout, $state, $mdDialog, encodeUriFilter, Dialog, Preferences, Calendar, Component) {
+  CalendarListController.$inject = ['$scope', '$timeout', '$state', '$mdDialog', 'Dialog', 'Preferences', 'Calendar', 'Component'];
+  function CalendarListController($scope, $timeout, $state, $mdDialog, Dialog, Preferences, Calendar, Component) {
     var vm = this;
 
     vm.component = Component;
@@ -16,6 +16,7 @@
     vm.selectComponentType = selectComponentType;
     vm.unselectComponents = unselectComponents;
     vm.selectAll = selectAll;
+    vm.toggleComponentSelection = toggleComponentSelection;
     vm.confirmDeleteSelectedComponents = confirmDeleteSelectedComponents;
     vm.openEvent = openEvent;
     vm.openTask = openTask;
@@ -62,6 +63,12 @@
       _.each(Component['$' + vm.componentType], function(component) {
         component.selected = true;
       });
+    }
+
+    function toggleComponentSelection($event, component) {
+      component.selected = !component.selected;
+      $event.preventDefault();
+      $event.stopPropagation();
     }
 
     function confirmDeleteSelectedComponents() {
