@@ -3,6 +3,7 @@
 
 Enhancements
  - improved EAS speed and memory usage, avoiding many IMAP LIST commands (#3294)
+ - improved EAS speed during initial syncing of large mailboxes (#3293)
 
 Bug fixes
  - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)

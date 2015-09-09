@@ -2119,6 +2119,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 - (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
                           matchingSyncToken: (NSString *) theSyncToken
                                    fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress
 {
   EOQualifier *searchQualifier;
   NSMutableArray *allTokens;
@@ -2195,6 +2196,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   for (i = 0; i < [fetchResults count]; i++)
     { 
+      if ([[[fetchResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"] && initialLoadInProgress)
+        continue;
+
       d = [NSDictionary dictionaryWithObject: ([[[fetchResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"]) ? [NSNull null] : [[fetchResults objectAtIndex: i] objectForKey: @"modseq"]
                                       forKey: [[[fetchResults objectAtIndex: i] objectForKey: @"uid"] stringValue]];
       [allTokens addObject: d];
@@ -2205,7 +2209,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   if (highestmodseq == 0)
     highestmodseq = 1;
 
-  if (highestmodseq > 0)
+  if (highestmodseq > 0 && !initialLoadInProgress)
     {
       id uid;
 

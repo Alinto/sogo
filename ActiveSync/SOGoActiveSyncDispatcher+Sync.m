@@ -133,6 +133,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"MoreAvailable"];
   [[o properties] removeObjectForKey: @"BodyPreferenceType"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+  [[o properties] removeObjectForKey: @"InitialLoadSequence"];
 
   [[o properties] addEntriesFromDictionary: values];
   [o save];
@@ -673,7 +674,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         NSDictionary *component;
         NSArray *allComponents;
 
-        BOOL updated;
+        BOOL updated, initialLoadInProgress;
         int deleted, return_count;
           
         if (theFolderType == ActiveSyncContactFolder)
@@ -683,7 +684,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           component_name = @"vtodo";
 
-        allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
+        initialLoadInProgress = NO;
+
+        if ([theSyncKey isEqualToString: @"-1"])
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"InitialLoadSequence"];
+
+        if ([folderMetadata objectForKey: @"InitialLoadSequence"])
+          {
+            if ([theSyncKey intValue] < [[folderMetadata objectForKey: @"InitialLoadSequence"] intValue])
+              initialLoadInProgress = YES;
+            else
+              [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+          }
+
+        allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType initialLoad: initialLoadInProgress];
         allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObjects: [[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending:YES], nil]];
 
         
@@ -847,12 +861,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         NSMutableArray *allCacheObjects, *sortedBySequence;
 
         SOGoMailObject *mailObject;
-        NSArray *allMessages;
+        NSArray *allMessages, *a;
 
-        int j, k, return_count;
-        BOOL found_in_cache;
+        int j, k, return_count, highestmodseq;
+        BOOL found_in_cache, initialLoadInProgress;
 
-        allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
+        initialLoadInProgress = NO; 
+
+        if ([theSyncKey isEqualToString: @"-1"])
+          {
+            highestmodseq = 0;
+
+            a = [[theCollection davCollectionTag] componentsSeparatedByString: @"-"];
+            [folderMetadata setObject: [a objectAtIndex: 1] forKey: @"InitialLoadSequence"];
+          }
+        else
+         {
+           a = [theSyncKey componentsSeparatedByString: @"-"];
+           highestmodseq = [[a objectAtIndex: 1] intValue];
+         }
+
+        if ([folderMetadata objectForKey: @"InitialLoadSequence"])
+          {
+            if (highestmodseq < [[folderMetadata objectForKey: @"InitialLoadSequence"] intValue])
+              initialLoadInProgress = YES;
+            else
+              [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+          }
+
+        allMessages = [theCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: theSyncKey  fromDate: theFilterType  initialLoad: initialLoadInProgress];
         max = [allMessages count];
         
         allCacheObjects = [NSMutableArray array];
@@ -911,7 +948,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 NSString *lastSequence;
                 more_available = YES;
                 
-                lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? @"1" : [aCacheObject sequence]);
+                lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? [NSString stringWithFormat:@"%d", highestmodseq] : [aCacheObject sequence]);
                 *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
                 //NSLog(@"Reached windowSize - lastUID will be: %@", *theLastServerKey);
                 DESTROY(pool);
