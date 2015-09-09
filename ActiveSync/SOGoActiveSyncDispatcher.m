@@ -151,12 +151,14 @@ static BOOL debugOn = NO;
 
   debugOn = [[SOGoSystemDefaults sharedSystemDefaults] easDebugEnabled];
   folderTableURL = nil;
+  imapFolderGUIDS = nil;
   return self;
 }
 
 - (void) dealloc
 {
   RELEASE(folderTableURL);
+  RELEASE(imapFolderGUIDS);
   [super dealloc];
 }
 
@@ -229,21 +231,25 @@ static BOOL debugOn = NO;
       SOGoMailAccounts *accountsFolder;
       SOGoMailAccount *accountFolder;
       SOGoUserFolder *userFolder;
-      NSDictionary *imapGUIDs;
 
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
-      accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
-      
-      // Get the GUID of the IMAP folder
-      imapGUIDs = [accountFolder imapFolderGUIDs];
-      
-      //return [[imapGUIDs allKeysForObject: theIdToTranslate] objectAtIndex: 0];
-      return [[[imapGUIDs allKeysForObject:  [NSString stringWithFormat: @"folder%@", theIdToTranslate]] objectAtIndex: 0] substringFromIndex: 6] ;
+      if (!imapFolderGUIDS)
+        {
+          userFolder = [[context activeUser] homeFolderInContext: context];
+          accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
+          accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+
+          // Get the GUID of the IMAP folder
+          imapFolderGUIDS = [accountFolder imapFolderGUIDs];
+          [imapFolderGUIDS retain];
+
+        }
+
+        return [[[imapFolderGUIDS allKeysForObject:  [NSString stringWithFormat: @"folder%@", theIdToTranslate]] objectAtIndex: 0] substringFromIndex: 6] ;
     }
   
   return theIdToTranslate;
 }
+
 
 
 //

@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface SOGoActiveSyncDispatcher : NSObject
 {
   NSURL *folderTableURL;
+  NSDictionary *imapFolderGUIDS;
   id context;
 }
 

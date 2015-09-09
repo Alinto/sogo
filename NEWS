@@ -1,6 +1,9 @@
 2.3.x (2015-MM-DD)
 ------------------
 
+Enhancements
+ - improved EAS speed and memory usage, avoiding many IMAP LIST commands (#3294)
+
 Bug fixes
  - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
  - Non-latin subfolder names are displayed correctly on Outlook (Zentyal)

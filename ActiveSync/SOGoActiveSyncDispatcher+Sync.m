@@ -159,7 +159,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString  *nameInCache;
   
   if (theFolderType == ActiveSyncMailFolder)
-    nameInCache= [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]];
+    nameInCache = [imapFolderGUIDS objectForKey: [theCollection nameInContainer]];
   else
     {
       NSString  *component_name;
@@ -170,7 +170,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         component_name = @"vtodo";
       
-      nameInCache= [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]];
+      nameInCache = [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]];
     }
   
   return nameInCache;
