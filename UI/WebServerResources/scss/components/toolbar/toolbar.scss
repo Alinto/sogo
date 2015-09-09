@@ -16,9 +16,6 @@ md-toolbar {
   z-index: $z-index-toolbar;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
-  background-image: url("../img/felt-transp.png");
-  background-blend-mode: luminosity;
-  //box-shadow: $whiteframe-shadow-z1;
 }
 
 .md-toolbar-tools {
@@ -43,11 +40,6 @@ md-toolbar,
   }
 }
 
-// angular-material is overspecifying so we are
-.md-toolbar-tools[layout-align="start start"] {
-  //align-items: flex-start;
-}
-
 .md-toolbar-tools.md-toolbar-tools-top {
   align-items: flex-start;
 }
@@ -66,14 +58,9 @@ header {
 }
 hgroup {
   align-items: center;
-  //flex: 1 1 auto;
   &h3 {
     margin-bottom: 0;
   }
-}
-.toolbar-main .md-button {
-//  color: inherit;
-//  font-size: sg-size(headline);
 }
 
 .sg-toolbar-group {
@@ -81,9 +68,6 @@ hgroup {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-//  & > .sg-icon-button:first-child {
-//    padding-left: 0;
-//  }
   &-1 {
     order: 1;
     max-width: $listView-width;
@@ -98,10 +82,5 @@ hgroup {
 }
 
 .sg-toolbar-search {
-  background-color: sg-color($sogoPaper, 100);
-  color: rgba(0,0,0,0.54);
   padding: $toolbar-padding 0;
-  md-icon {
-    color: rgba(0,0,0,0.54);
-  }
 }

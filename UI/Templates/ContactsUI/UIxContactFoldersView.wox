@@ -23,10 +23,10 @@
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <!-- <div style="position: relative; display: flex;"> -->
-      <md-content md-scroll-y="md-scroll-y">
+      <md-content md-scroll-y="md-scroll-y" class="md-hue-2">
         <!-- User's addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Address Books"/></span>
               <md-button class="sg-icon-button"
@@ -41,7 +41,7 @@
                           ng-click="app.select(folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="app.editMode!=folder.id">{{folder.name}}</p>
@@ -101,7 +101,7 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -117,7 +117,7 @@
                           ng-click="app.select(folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="editMode!=folder.id">{{folder.name}}</p>
@@ -155,14 +155,14 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$remotes track by folder.id"
                           ng-click="app.select(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>public</md-icon>
               <p class="sg-item-name">{{folder.name}}</p>
             </md-list-item>
@@ -186,7 +186,7 @@
 
         <!-- single-selection toolbar -->
         <md-toolbar ng-show="addressbook.selectedFolder.$selectedCount() == 0">
-          <!-- sort mode -->
+          <!-- sort mode (default) -->
           <div class="md-toolbar-tools" ng-hide="addressbook.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
                        ng-click="addressbook.mode.search = true">
@@ -339,7 +339,8 @@
                 <md-list-item
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
                     ng-click="addressbook.selectCard(currentCard)"
-                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})">
+                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})"
+                    ui-sref-active="md-default-theme md-background md-bg md-hue-1">
                   <div class="sg-selected-avatar" ng-show="currentCard.selected"
                        ng-click="currentCard.selected = !currentCard.selected">
                     <!-- selected avatar -->

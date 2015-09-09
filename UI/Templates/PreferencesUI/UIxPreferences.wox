@@ -24,29 +24,33 @@
   <script type="text/ng-template" id="preferences.html">
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <md-list>
           <md-list-item ng-click="app.go('general')"
                         ui-sref="preferences.general"
-                        ui-sref-active="sg-active">
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>settings</md-icon>
             <p class="sg-item-name"><var:string label:value="General"/></p>
           </md-list-item>
           <var:if condition="userHasCalendarAccess">
             <md-list-item ng-click="app.go('calendars')"
                           ui-sref="preferences.calendars"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-icon>event</md-icon>
               <p class="sg-item-name"><var:string label:value="Calendar"/></p>
             </md-list-item>
           </var:if>
           <md-list-item ng-click="app.go('addressbooks')"
                         ui-sref="preferences.addressbooks"
-                        ui-sref-active="sg-active">
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>contacts</md-icon>
             <p class="sg-item-name"><var:string label:value="Contacts"/></p>
           </md-list-item>
           <var:if condition="userHasMailAccess">
             <md-list-item ng-click="app.go('mailer')"
                           ui-sref="preferences.mailer"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-icon>email</md-icon>
               <p class="sg-item-name"><var:string label:value="Mail"/></p>
             </md-list-item>
           </var:if>

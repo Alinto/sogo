@@ -28,13 +28,3 @@
     font-weight: $sg-font-medium;
   }
 }
-
-md-list .md-subheader.sg-md-subheader {
-  font-weight: $sg-font-medium;
-  font-size: $sg-font-size-2;
-}
-
-.sg-md-subheader > * {
-  font-weight: inherit;
-  font-size: inherit;
-}

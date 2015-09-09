@@ -61,28 +61,8 @@ div.md-tile-left {
   min-width: $sg-md-grid-pitch + $baseline-grid;
 }
 
-// Specific lists with a single subheader (sg-md-subheader--fixed) at the top
-[id='messagesList'],
-[id='contactsList'] {
-  border-top: 44px solid transparent;   // padding for the header.subheader until md-subheader is fixed
-}
-
 .sg-section-list {
   md-list-item {
-    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
-                color 0.12s linear;
-    &:hover:not([disabled]) {
-      background-color: sg-color($sogoPaper, 300);
-      color: sg-color($sogoBlue, 800);
-      cursor: pointer;
-    }
-    &:active {
-      color: sg-color($sogoBlue, 800);
-    }
-    &:focus,
-    &.sg-active {
-      background-color: sg-color($sogoBlue, 100);
-    }
     .md-list-item-inner {
       .md-secondary {
         // Expect the container to include a sg-tile-icons

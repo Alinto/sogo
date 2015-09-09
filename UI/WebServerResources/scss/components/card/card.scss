@@ -8,10 +8,6 @@ md-card {
     transition: $swift-ease-in-out;
   }
 
-  &.md-default-theme {
-    background-color: sg-color($sogoPaper, 50);
-  }
-
   // Collapsed/expanded states for cards in ACL editor
   &.sg-collapsed, &.sg-expanded {
     transition: $swift-ease-in-out;

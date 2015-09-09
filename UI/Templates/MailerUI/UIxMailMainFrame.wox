@@ -223,7 +223,6 @@
 -->
   <main class="view layout-fill" ui-view="mailboxes" layout="row" ng-controller="navController"><!-- mailboxes list --></main>
 
-<!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- Sidenav -->
@@ -231,7 +230,7 @@
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <section ng-repeat="account in app.accounts track by account.id">
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span>{{account.name}}</span>
               <div>
@@ -254,7 +253,7 @@
                           ng-click="app.selectFolder(account, folder)"
                           ng-dblclick="app.editFolder(folder)"
                           ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon ng-class="'sg-child-level-' + folder.level">{{app.metadataForFolder(folder).icon}}</md-icon>
               <p class="sg-item-name"
                  ng-show="app.editMode != folder.path">

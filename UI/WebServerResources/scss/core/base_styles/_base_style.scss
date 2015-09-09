@@ -1,10 +1,5 @@
 /// _base_style.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-
-main {
-  background-color: $background-base-color;
-}
-
 // Utility class to add padding on containers
 // Because of the border-box sizing model, padding can affect width specialy
 // in nested containers

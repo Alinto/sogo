@@ -2,11 +2,9 @@
 @import "extends";
 $sidenav-default-width: (4 * $pitch);
 $sidenav-min-space: $pitch;
-
-$sidenav-right-width: (8 * $pitch);
+//$sidenav-right-width: (8 * $pitch);
 
 md-sidenav {
-  background-color: sg-color($sogoPaper, 400);
   &.md-locked-open {
     @include from(lg) {
       @include flex-col(lg, 4, 1, 0)
@@ -15,36 +13,8 @@ md-sidenav {
   }
 }
 
-.md-sidenav-left {
-  &.md-whiteframe-z2 {
-    box-shadow: $sidenav-shadow-z2;
-  }
-}
-
 // MAIN SIDENAV, actually to the left
 // ----------------------------------------------------------------------------
-.md-sidenav-left {
-  & md-content,
-  & md-toolbar {
-    background-color: inherit;
-    background-image: url("../img/cardboard-transp.png");
-    background-blend-mode: multiply;
-  }
-}
-
-.md-sidenav-left md-toolbar {
-  box-shadow: none;
-}
-
-.md-sidenav-right {
-  width: $sidenav-right-width;
-  max-width: $sidenav-right-width;
-  & md-content,
-  & md-toolbar {
-    background-color: inherit;
-    background-image: none;
-  }
-}
 
 // Mailboxes tree
 $i: 1;
@@ -69,27 +39,9 @@ $i: 1;
 }
 
 .md-sidenav-left {
-  &.md-whiteframe-z1 {
-    box-shadow: $sidenav-shadow-z1;
-  }
   md-list-item {
-    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
-                color 0.12s linear;
-    &:hover {
-      background-color: sg-color($sogoBlue, 500);
-    }
-    &.sg-active {
-      background-color: sg-color($sogoBlue, 400);
-    }
-    &.sg-loading {
-      color: sg-color($sogoBlue, 200);
-    }
-  }
-}
-.md-sidenav-left {
-  md-bottom-sheet {
-    md-list-item:hover {
-      background-color: transparent;
+    .md-button {
+      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
     }
   }
 }

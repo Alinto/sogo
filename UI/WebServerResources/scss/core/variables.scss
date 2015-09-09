@@ -18,10 +18,10 @@ $version: '3.0.0';
 //@import '../themes/color-palette'; // fixme : clarify if it is needed or assure by javascript
 @import 'components/palette';        // fixme : The maps in color-palettes are more js then scss
 
-$primary-color:            sg-color($sogoBlue, 300) !default;
+//$primary-color:            sg-color($sogoBlue, 300) !default;
 //$foreground-primary-color: rgba($foreground-base-color, 0.73) !default;
-$foreground-primary-color: rgba($primary-color, 0.87);//override
-$background-base-color:    sg-color($sogoPaper, 200);
+//$foreground-primary-color: rgba($primary-color, 0.87);//override
+//$background-base-color:    sg-color($sogoPaper, 200);
 
 // Typography
 // ------------------------------

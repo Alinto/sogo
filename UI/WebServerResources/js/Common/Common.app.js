@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', ['ngAnimate', 'ngMaterial'])
+  angular.module('SOGo.Common', ['ngAnimate', 'ngMaterial', 'mdColors'])
     .value('sgSettings', {
       isPopup: document.body.classList.contains('popup'),
       baseURL: function() {
@@ -123,6 +123,9 @@
 
     .config(configure);
 
+  /**
+   * @ngInject
+   */
   configure.$inject = ['$mdThemingProvider'];
   function configure($mdThemingProvider) {
     $mdThemingProvider.definePalette('sogo-green', {
@@ -141,8 +144,8 @@
       'A400': '00e676',
       'A700': '00c853',
       'contrastDefaultColor': 'dark',
-      'contrastDarkColors': '50 100 200',
-      'contrastLightColors': '300 400 500 600 700 800 900'
+      'contrastDarkColors': ['50', '100', '200'],
+      'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900']
     });
     $mdThemingProvider.definePalette('sogo-blue', {
       '50': 'f0faf9',
@@ -180,10 +183,9 @@
       'A400': 'bdbdbd',
       'A700': '616161',
       'contrastDefaultColor': 'dark',
-      'contrastLightColors': '800 900'
+      'contrastLightColors': ['800', '900']
     });
     // Default theme definition
-    // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
     $mdThemingProvider.theme('default')
       .primaryPalette('sogo-blue', {
         'default': '300',
@@ -197,10 +199,10 @@
         'hue-2': '300',
         'hue-3': 'A700'
       })
-      .backgroundPalette('sogo-paper', {
-        'default': '100',
+      .backgroundPalette('grey', {
+        'default': 'A100',
         'hue-1': '200',
-        'hue-2': '50',
+        'hue-2': '300',
         'hue-3': '500'
       });
   }

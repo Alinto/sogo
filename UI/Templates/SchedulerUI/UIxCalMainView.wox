@@ -148,10 +148,10 @@
     <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's calendars -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
               <md-button class="sg-icon-button"
@@ -208,7 +208,7 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -256,7 +256,7 @@
         </section>
         <!-- Web Calendars -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Web Calendars"/></span>
               <md-button class="sg-icon-button"
@@ -530,6 +530,7 @@
             </md-button>
           </div>
         </md-toolbar>
+
         <!-- day/week/month views -->
         <md-toolbar class="view-detail">
           <div class="md-toolbar-tools" layout-align="end center">

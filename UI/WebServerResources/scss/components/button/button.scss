@@ -10,12 +10,6 @@
 
 // Buttons for the sidenav folder tree
 // ------------------------------------
-md-sidenav md-list .md-button,
-.view-list md-list .md-button {
-  // dirty fix to squash the theme style
-  background-color: transparent !important;
-}
-
 .view-list md-list .md-button {
   // Gain some space in lists
   padding: 0;
@@ -61,11 +55,6 @@ md-list md-list-item button.md-button.sg-icon-button {
   border-radius: 50%;
   min-width: $iconButton-size;
   transition: $iconButton-transition;
-  &:hover,
-  &:active {
-    background-color: transparent;
-    transform: scale($iconButton-hover-scale);
-  }
   .md-ripple-container {
     border-radius: 50%;
   }
