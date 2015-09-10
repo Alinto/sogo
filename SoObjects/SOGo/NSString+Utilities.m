@@ -373,6 +373,7 @@ static int cssEscapingCount;
 
 - (NSString *) asCSSIdentifier
 {
+  NSCharacterSet *numericSet;
   NSMutableString *cssIdentifier;
   unichar currentChar;
   int count, max, idx;
@@ -381,10 +382,12 @@ static int cssEscapingCount;
     [self _setupCSSEscaping];
 
   cssIdentifier = [NSMutableString string];
+  numericSet = [NSCharacterSet decimalDigitCharacterSet];
   max = [self length];
+
   if (max > 0)
     {
-      if (isdigit([self characterAtIndex: 0]))
+      if ([numericSet characterIsMember: [self characterAtIndex: 0]])
         // A CSS identifier can't start with a digit; we add an underscore
         [cssIdentifier appendString: @"_"];
       for (count = 0; count < max; count++)
@@ -415,6 +418,7 @@ static int cssEscapingCount;
 
 - (NSString *) fromCSSIdentifier
 {
+  NSCharacterSet *numericSet;
   NSMutableString *newString;
   NSString *currentString;
   int count, length, max, idx;
@@ -423,12 +427,14 @@ static int cssEscapingCount;
   if (!cssEscapingStrings)
     [self _setupCSSEscaping];
 
+  numericSet = [NSCharacterSet decimalDigitCharacterSet];
   newString = [NSMutableString string];
   max = [self length];
   count = 0;
+
   if (max > 0
       && [self characterAtIndex: 0] == '_'
-      && isdigit([self characterAtIndex: 1]))
+      && [numericSet characterIsMember: [self characterAtIndex: 1]])
     {
       /* If the identifier starts with an underscore followed by a digit,
          we remove the underscore */
