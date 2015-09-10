@@ -311,6 +311,12 @@
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button"
+                               ng-click="app.showAdvancedSearch(folder.path)">
+                      <var:string label:value="Search"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-divider ng-show="folder.type == 'folder'"><!-- divider --></md-menu-divider>
                   <md-menu-item ng-show="folder.type == 'folder'">
                     <md-button type="button" ng-click="app.setFolderAs(folder, 'Drafts')">
@@ -345,8 +351,100 @@
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">
-    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" >
-      <var:component className="UIxTopnavToolbarTemplate" />
+    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" ng-hide="app.showingAdvancedSearch">
+      <var:component className="UIxTopnavToolbarTemplate"/>
+    </md-toolbar>
+    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" ng-show="app.showingAdvancedSearch">
+      <div class="sg-padded" layout="column">
+        <div layout="row" layout-align="space-between center">
+          <md-input-container>
+            <label><var:string label:value="Search messages in"/></label>
+            <md-select ng-model="app.search.mailbox">
+              <md-option ng-value="">
+                <span>{{app.accounts[0].name}}</span>
+              </md-option>
+              <md-option ng-repeat="folder in
+                                    app.accounts[0].$flattenMailboxes()
+                                    track by folder.path"
+                         ng-value="folder.path">
+                <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-menu>
+            <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdOpenMenu()">
+              <md-icon>settings</md-icon>
+            </md-button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-href="#">
+                  <md-checkbox ng-model="app.search.subfolders"
+                               ng-true-value="1"
+                               ng-false-value="0">
+                    <var:string label:value="Search subfolders"/>
+                  </md-checkbox>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="app.search.match='AND'">
+                  <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}">
+                    <!-- all --></md-icon><var:string label:value="Match all of the following"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+              <md-button ng-click="app.search.match='OR'">
+                <md-icon ng-class="{ 'icon-check': app.search.match == 'OR'}">
+                  <!-- any --></md-icon><var:string label:value="Match any of the following"/>
+              </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-chips ng-model="app.search.params"
+                    md-on-append="app.newSearchParam($chip)">
+            <input type="text" ng-disabled="app.currentSearchParam.length == 0" sg-placeholder="app.search.options[app.currentSearchParam]"/>
+            <md-chip-template>
+              <span class="md-caption" ng-show="$chip.negative == 0">(match</span>
+              <span class="md-caption" ng-show="$chip.negative == 1">(does not match</span>
+              <span class="md-caption">{{$chip.searchBy}})</span>
+              <span>{{$chip.searchInput}}</span>
+            </md-chip-template>
+          </md-chips>
+        </div>
+        <div layout="row" layout-align="space-between center">
+          <md-button type="button" ng-click="app.addSearchParam('subject')">
+            <var:string label:value="Subject"/>
+          </md-button>
+          <md-button type="button" ng-click="app.addSearchParam('from')">
+            <var:string label:value="From"/>
+          </md-button>
+          <md-button type="button" ng-click="app.addSearchParam('to')">
+            <var:string label:value="To"/>
+          </md-button>
+          <md-button type="button" ng-click="app.addSearchParam('cc')">
+            <var:string label:value="Cc"/>
+          </md-button>
+          <md-button type="button" ng-click="app.addSearchParam('body')">
+            <var:string label:value="Body"/>
+          </md-button>
+          <div class="md-flex"><!-- spacer --></div>
+          <md-button type="button" class="sg-button"
+                     ng-disabled="app.search.params.length == 0"
+                     ng-hide="app.service. selectedFolder.$isLoading"
+                     ng-click="app.startAdvancedSearch()">
+            <md-icon>search</md-icon>
+          </md-button>
+          <md-button type="button" class="sg-button"
+                     ng-show="app.service.selectedFolder.$isLoading"
+                     ng-click="app.stopAdvancedSearch()">
+            <md-icon>stop</md-icon>
+          </md-button>
+        </div>
+      </div>
+      <div class="sg-toolbar-group-last">
+        <md-button type="button" class="sg-button" ng-click="app.hideAdvancedSearch()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
     </md-toolbar>
 
     <div layout="row" class="md-flex">

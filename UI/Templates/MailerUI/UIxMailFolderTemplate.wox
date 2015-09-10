@@ -5,8 +5,11 @@
     xmlns:label="OGo:label">
   <div class="view-list" layout="column">
 
+    <!-- in virtual mailbox mode -->
+    <md-toolbar ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+    </md-toolbar>
     <!-- single-selection toolbars -->
-    <md-toolbar ng-show="mailbox.selectedFolder.$selectedCount() == 0">
+    <md-toolbar ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
@@ -89,7 +92,7 @@
         <md-button class="sg-icon-button" ng-click="mailbox.unselectMessages()">
           <md-icon>arrow_back</md-icon>
         </md-button>
-        <label>{{mailbox.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
+        <label>{{mailbox.service.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
         <div class="md-flex"><!-- spacer --></div>
         <md-button class="sg-icon-button" ng-click="mailbox.selectAll()">
           <md-tooltip md-direction="bottom"><var:string label:value="Select All"/></md-tooltip>
@@ -147,17 +150,17 @@
 
     <md-content id="messagesList" layout="column" class="md-flex">
       <md-subheader>
-        <span ng-switch="mailbox.selectedFolder.$messages.length">
+        <span ng-switch="mailbox.service.selectedFolder.getLength()">
           <span ng-switch-when="0"><var:string label:value="No message"/></span>
-          <span ng-switch-default="true">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
+          <span ng-switch-default="true">{{mailbox.service.selectedFolder.getLength()}} <var:string label:value="messages"/></span>
         </span>
       </md-subheader>
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
           <md-list-item
-              md-virtual-repeat="currentMessage in mailbox.selectedFolder"
+              md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand"
-              ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
+              ng-class="{'sg-active': currentMessage.uid == mailbox.service.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
               ng-click="mailbox.selectMessage(currentMessage)"
               ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})"
               ui-sref-active="md-default-theme md-background md-bg md-hue-1">
@@ -172,7 +175,10 @@
             <div class="sg-tile-content">
               <span class="msg-date"
                     ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-              <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
+              <div class="sg-md-subhead-multi">
+                <span ng-show="mailbox.service.$virtualMode">({{currentMessage.$mailbox.path}})</span>
+                {{currentMessage.$shortAddress('from')}}
+              </div>
               <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
             </div>
             <div class="sg-tile-icons">
@@ -186,7 +192,7 @@
         </md-list>
       </md-virtual-repeat-container>
       <div class="sg-progress-circular-floating"
-           ng-show="mailbox.selectedFolder.$isLoading">
+           ng-show="mailbox.service.selectedFolder.$isLoading">
         <md-progress-circular class="md-accent"
                               md-mode="indeterminate"
                               md-diameter="32"><!-- progress --></md-progress-circular>
@@ -200,7 +206,7 @@
   </div>
 
   <div id="detailView" class="view-detail" layout="column" layout-align="start center"
-       ng-class="{ 'sg-close': !mailbox.selectedFolder.selectedMessage }"
+       ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
     <md-toolbar class="hide-sm"><!-- empty toolbar --></md-toolbar>
     <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">

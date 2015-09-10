@@ -10,7 +10,8 @@
   function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
-    Mailbox.selectedFolder = stateMailbox;
+    if (!Mailbox.$virtualMode)
+      Mailbox.selectedFolder = stateMailbox;
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
@@ -33,7 +34,10 @@
     vm.mode = { search: false };
 
     function selectMessage(message) {
-      $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
+      if (Mailbox.$virtualMode)
+        $state.go('mail.account.virtualMailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
+      else
+        $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
     }
 
     function toggleMessageSelection($event, message) {

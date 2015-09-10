@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -29,6 +29,93 @@
     vm.metadataForFolder = metadataForFolder;
     vm.setFolderAs = setFolderAs;
     vm.refreshUnseenCount = refreshUnseenCount;
+
+    // Advanced search options
+    vm.showingAdvancedSearch = false;
+    vm.currentSearchParam = '';
+    vm.addSearchParam = addSearchParam;
+    vm.newSearchParam = newSearchParam;
+    vm.showAdvancedSearch = showAdvancedSearch;
+    vm.hideAdvancedSearch = hideAdvancedSearch;
+    vm.startAdvancedSearch = startAdvancedSearch;
+    vm.stopAdvancedSearch = stopAdvancedSearch;
+    vm.search = {
+      options: {'': l('Select a criteria'),
+                subject: l('Enter Subject'),
+                from: l('Enter From'),
+                to: l('Enter To'),
+                cc: l('Enter Cc'),
+                body: l('Enter Body')
+               },
+      mailbox: 'INBOX',
+      subfolders: 1,
+      match: 'AND',
+      params: []
+    };
+
+    function showAdvancedSearch(path) {
+      vm.showingAdvancedSearch = true;
+      vm.search.mailbox = path;
+    }
+
+    function hideAdvancedSearch() {
+      vm.showingAdvancedSearch = false;
+      vm.service.$virtualMode = false;
+
+      account = vm.accounts[0];
+      mailbox = vm.searchPreviousMailbox;
+      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
+    }
+
+    function startAdvancedSearch() {
+      var root, mailboxes = [];
+
+      vm.virtualMailbox = new VirtualMailbox(vm.accounts[0]);
+
+      // Don't set the previous selected mailbox if we're in virtual mode
+      // That allows users to do multiple advanced search but return
+      // correctly to the previously selected mailbox once done.
+      if (!Mailbox.$virtualMode)
+        vm.searchPreviousMailbox = Mailbox.selectedFolder;
+
+      Mailbox.selectedFolder = vm.virtualMailbox;
+      Mailbox.$virtualMode = true;
+
+      if (angular.isDefined(vm.search.mailbox)) {
+        root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
+        mailboxes.push(root);
+
+        if (vm.search.subfolders && root.children.length)
+          mailboxes.push(root.children);
+      }
+      else {
+        mailboxes = vm.accounts[0].$flattenMailboxes();
+      }
+
+      vm.virtualMailbox.setMailboxes(mailboxes);
+      vm.virtualMailbox.startSearch(vm.search.match, vm.search.params);
+      $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
+    }
+
+    function stopAdvancedSearch() {
+      vm.virtualMailbox.stopSearch();
+    }
+
+    function addSearchParam(v) {
+      vm.currentSearchParam = v;
+    }
+
+    function newSearchParam(v) {
+      if (v.length && vm.currentSearchParam.length) {
+        var n = 0;
+        if (v.startsWith("!")) {
+          n = 1;
+          v = v.substring(1).trim();
+        }
+        vm.search.params.push({searchBy:vm.currentSearchParam, searchInput: v, negative: n});
+        vm.currentSearchParam = '';
+      }
+    }
 
     if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
       // Redirect to first mailbox of first account if no mailbox is selected
@@ -121,6 +208,8 @@
       if (vm.editMode == folder.path)
         return;
       vm.editMode = false;
+      vm.showingAdvancedSearch = false;
+      vm.service.$virtualMode = false;
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
     }
 

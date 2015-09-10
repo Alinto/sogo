@@ -39,6 +39,33 @@
           stateAccount: stateAccount
         }
       })
+      .state('mail.account.virtualMailbox', {
+        url: '/virtual',
+        views: {
+          'mailbox@mail': {
+            templateUrl: 'UIxMailFolderTemplate', // UI/Templates/MailerUI/UIxMailFolderTemplate.wox
+            controller: 'MailboxController',
+            controllerAs: 'mailbox'
+          }
+        },
+        resolve: {
+          stateMailbox: function(Mailbox) { return Mailbox.selectedFolder; }
+        }
+      })
+      .state('mail.account.virtualMailbox.message', {
+        url: '/:mailboxId/:messageId',
+        views: {
+           message: {
+            templateUrl: 'UIxMailViewTemplate', // UI/Templates/MailerUI/UIxMailViewTemplate.wox
+            controller: 'MessageController',
+            controllerAs: 'viewer'
+          }
+        },
+        resolve: {
+          stateMailbox: stateVirtualMailbox,
+          stateMessage: stateMessage
+        }
+      })
       .state('mail.account.mailbox', {
         url: '/:mailboxId',
         views: {
@@ -144,8 +171,8 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
-  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
+  stateMailbox.$inject = ['Mailbox', '$stateParams', 'stateAccount', 'decodeUriFilter'];
+  function stateMailbox(Mailbox, $stateParams, stateAccount, decodeUriFilter) {
     var mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
     // Recursive find function
@@ -162,14 +189,22 @@
       }
       return mailbox;
     };
+
+    if (Mailbox.$virtualMode)
+      return Mailbox.selectedFolder;
+      //return $q.when(Mailbox.selectedFolder);
+
     return _find(stateAccount.$mailboxes);
   }
 
   /**
    * @ngInject
    */
-  stateMessages.$inject = ['stateMailbox'];
-  function stateMessages(stateMailbox) {
+  stateMessages.$inject = ['$q', 'Mailbox', 'stateMailbox'];
+  function stateMessages($q, Mailbox, stateMailbox) {
+    if (Mailbox.$virtualMode)
+      return [];
+
     return stateMailbox.$filter();
   }
 
@@ -181,12 +216,22 @@
   //   return stateAccount.$newMessage();
   // }
 
+  stateVirtualMailbox.$inject = ['Mailbox', '$stateParams'];
+  function stateVirtualMailbox(Mailbox, $stateParams) {
+
+    return _.find(Mailbox.selectedFolder.$mailboxes, function(mailboxObject) {
+      return mailboxObject.path == $stateParams.mailboxId;
+    });
+  }
+
   /**
    * @ngInject
    */
-  stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
-  function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
-    var message = _.find(stateMailbox.$messages, function(messageObject) {
+  stateMessage.$inject = ['Mailbox', 'encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
+  function stateMessage(Mailbox, encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
+    var message;
+
+    message = _.find(stateMailbox.$messages, function(messageObject) {
       return messageObject.uid == $stateParams.messageId;
     });
 

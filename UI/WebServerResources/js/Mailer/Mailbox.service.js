@@ -43,6 +43,7 @@
       $query: { sort: 'date', asc: 0 },
       selectedFolder: null,
       $refreshTimeout: null,
+      $virtualMode: false,
       PRELOAD: PRELOAD
     });
     // Initialize sort parameters from user's settings
@@ -272,10 +273,12 @@
       }
 
       // Restart the refresh timer, if needed
-      var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(_this, Mailbox.prototype.$filter);
-        Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      if (!Mailbox.$virtualMode) {
+        var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
+        if (refreshViewCheck && refreshViewCheck != 'manually') {
+          var f = angular.bind(_this, Mailbox.prototype.$filter);
+          Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+        }
       }
 
       var futureMailboxData = Mailbox.$$resource.post(_this.id, 'view', options);
