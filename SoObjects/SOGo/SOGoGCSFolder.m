@@ -1201,7 +1201,7 @@ static NSArray *childRecordFields = nil;
       mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
                                                       withQualifier: qualifier
                                                       ignoreDeleted: YES]];
-      if (initialLoadInProgress)
+      if (!initialLoadInProgress)
         {
           qualifier = [EOQualifier qualifierWithQualifierFormat:
                                    @"c_lastmodified > %d and c_deleted == 1",
