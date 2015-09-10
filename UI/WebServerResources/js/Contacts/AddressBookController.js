@@ -14,6 +14,7 @@
 
     vm.selectedFolder = stateAddressbook;
     vm.selectCard = selectCard;
+    vm.toggleCardSelection = toggleCardSelection;
     vm.newComponent = newComponent;
     vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
@@ -33,6 +34,12 @@
       $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
     }
     
+    function toggleCardSelection($event, card) {
+      card.selected = !card.selected;
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
+
     function newComponent(ev) {
       $mdDialog.show({
         parent: angular.element(document.body),

@@ -192,7 +192,7 @@
                        ng-click="addressbook.mode.search = true">
               <md-icon>search</md-icon>
             </md-button>
-            <div class="md-flex"><!-- spacer --></div>
+            <div class="md-flex">{{addressbook.selectedFolder.name}}</div>
             <md-menu>
               <md-button class="sg-icon-button" label:aria-label="Sort"
                          ng-click="$mdOpenMenu()">
@@ -342,12 +342,12 @@
                     ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})"
                     ui-sref-active="md-default-theme md-background md-bg md-hue-1">
                   <div class="sg-selected-avatar" ng-show="currentCard.selected"
-                       ng-click="currentCard.selected = !currentCard.selected">
+                       ng-click="addressbook.toggleCardSelection($event, currentCard)">
                     <!-- selected avatar -->
                   </div>
                   <sg-avatar-image class="md-tile-left"
                                    ng-show="addressbook.notSelectedComponent(currentCard, 'vcard')"
-                                   ng-click="currentCard.selected = !currentCard.selected"
+                                   ng-click="addressbook.toggleCardSelection($event, currentCard)"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
                                    size="40">
                     <!-- contact avatar -->
