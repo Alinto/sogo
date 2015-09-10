@@ -86,10 +86,16 @@
    * @returns a collection of strings
    */
   Message.filterTags = function(query) {
-    var re = new RegExp(query, 'i');
-    return _.filter(_.keys(Message.$tags), function(tag) {
-      return tag.search(re) != -1;
+    var re = new RegExp(query, 'i'),
+        results = [];
+
+    _.forEach(_.keys(Message.$tags), function(tag) {
+      var pair = Message.$tags[tag];
+      if (pair[0].search(re) != -1) {
+        results.push({ name: tag, description: pair[0], color: pair[1] });
+      }
     });
+    return results;
   };
 
   /**

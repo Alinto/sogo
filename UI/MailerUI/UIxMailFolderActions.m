@@ -739,6 +739,7 @@
   NSDictionary *content, *result;
   BOOL addOrRemove;
   NGImap4Client *client;
+  id flag;
 
   int i;
 
@@ -751,7 +752,13 @@
 
   // We unescape our flags
   for (i = [flags count]-1; i >= 0; i--)
-    [flags replaceObjectAtIndex: i  withObject: [[flags objectAtIndex: i] fromCSSIdentifier]];
+    {
+      flag = [flags objectAtIndex: i];
+      if ([flag isKindOfClass: [NSString class]])
+        [flags replaceObjectAtIndex: i  withObject: [flag fromCSSIdentifier]];
+      else
+        [flags removeObjectAtIndex: i];
+    }
 
   co = [self clientObject];
   client = [[co imap4Connection] client];

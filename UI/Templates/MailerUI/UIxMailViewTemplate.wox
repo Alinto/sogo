@@ -135,18 +135,21 @@
               </span>
             </div>
           </div>
-          <md-chips class="sg-readonly" ng-model="viewer.message.flags" ng-change="viewer.changeFlags()">
+          <md-chips class="sg-readonly"
+                    ng-model="viewer.message.flags"
+                    md-on-append="$chip.name"
+                    md-on-remove="viewer.message.removeTag($chip)">
             <md-chip-template>{{viewer.service.$tags[$chip][0]}}</md-chip-template>
             <md-autocomplete
                 md-selected-item="viewer.tags.selected"
-                md-selected-item-change="viewer.message.addTag(viewer.tags.selected)"
+                md-selected-item-change="viewer.message.addTag(viewer.tags.selected.name)"
                 md-search-text="viewer.tags.searchText"
                 md-items="tag in viewer.service.filterTags(viewer.tags.searchText)"
                 label:placeholder="Add a tag">
-                <md-item-template>
-                  <span md-highlight-text="viewer.tags.searchText"
-                        md-highlight-flags="^i">{{tag}}</span>
-                </md-item-template>
+              <md-item-template>
+                <span md-highlight-text="viewer.tags.searchText"
+                      md-highlight-flags="^i">{{tag.description}}</span>
+              </md-item-template>
             </md-autocomplete>
           </md-chips>
         </md-toolbar>
