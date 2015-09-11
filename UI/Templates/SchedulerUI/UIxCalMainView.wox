@@ -532,7 +532,7 @@
         </md-toolbar>
 
         <!-- day/week/month views -->
-        <md-toolbar class="view-detail">
+        <md-toolbar class="view-detail" hide-sm="hide-sm">
           <div class="md-toolbar-tools" layout-align="end center">
             <a class="sg-icon-button md-button"
                label:aria-label="Day"
@@ -619,7 +619,7 @@
             <md-icon>add</md-icon>
           </md-button>
         </md-content>
-        <div id="detailView" hide-sm="hide-sm" class="view-detail" layout="column" ui-view="calendarView"><!-- calendar view --></div>
+        <div id="detailView" class="view-detail" hide-sm="hide-sm" layout="column" ui-view="calendarView"><!-- calendar view --></div>
       </md-content>
     </section>
   </script>
