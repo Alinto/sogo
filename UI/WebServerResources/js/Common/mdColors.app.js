@@ -11,7 +11,7 @@
   var _$mdThemingProvider;
 
   angular
-    .module('mdColors', ['mdColors'])
+    .module('mdColors', ['ngMaterial'])
     .config(configure)
     .run(runBlock);
 
