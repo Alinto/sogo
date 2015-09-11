@@ -4,7 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="60" flex-sm="100">
+  <md-dialog flex="60" flex-md="80" flex-sm="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
@@ -96,16 +96,24 @@
         <var:string label:value="Send Appointment Notifications"/>
       </md-checkbox>
       <!-- start + end -->
-      <div layout="column">
-        <div layout="row" layout-align="start center">
-          <span><var:string label:value="From"/></span>
-          <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
-          <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
+      <div layout="row">
+        <div flex="50">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="From"/></label>
+          </div>
+          <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+            <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
+            <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
+          </div>
         </div>
-        <div layout="row" layout-align="start center">
-          <span><var:string label:value="To"/></span>
-          <md-datepicker ng-model="editor.component.end"> <!-- date picker--></md-datepicker>
-          <sg-timepicker ng-model="editor.component.end"><!-- time picker --></sg-timepicker>
+        <div flex="50">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="To"/></label>
+          </div>
+          <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+            <md-datepicker ng-model="editor.component.end"> <!-- date picker--></md-datepicker>
+            <sg-timepicker ng-model="editor.component.end"><!-- time picker --></sg-timepicker>
+          </div>
         </div>
       </div>
       <!-- attach urls -->
