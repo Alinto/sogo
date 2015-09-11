@@ -79,33 +79,40 @@
           label:aria-label="All day Event">
         <var:string label:value="All day Event"/>
       </md-checkbox>
-      <!-- start + end -->
-      <div class="section" layout="column">
-        <div layout="row" layout-align="start center" ng-show="editor.component.start">
-          <label><var:string label:value="From"/></label>
+      <!-- start -->
+      <div ng-show="editor.component.start">
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="From"/></label>
+        </div>
+        <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
           <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
           <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
-          <md-button class="sg-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
+          <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
             <md-icon>remove_circle</md-icon>
           </md-button>
         </div>
-        <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.start">
-          <md-button class="sg-icon-button" type="button" ng-click="editor.component.$addStartDate()">
-            <md-icon>add_circle</md-icon>
+      </div>
+      <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.start">
+        <md-button class="md-icon-button" type="button" ng-click="editor.component.$addStartDate()">
+          <md-icon>add_circle</md-icon>
+        </md-button>
+        <label class="button-label"><var:string label:value="Add From"/></label>
+      </div>
+      <!-- due -->
+      <div ng-show="editor.component.due">
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Due"/></label>
+        </div>
+        <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+          <md-datepicker ng-model="editor.component.due"> <!-- date picker--></md-datepicker>
+          <sg-timepicker ng-model="editor.component.due"><!-- time picker --></sg-timepicker>
+          <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
+            <md-icon>remove_circle</md-icon>
           </md-button>
-          <label class="button-label"><var:string label:value="Add From"/></label>
         </div>
       </div>
-      <div layout="row" layout-align="start center" ng-show="editor.component.due">
-        <label><var:string label:value="Due"/></label>
-        <md-datepicker ng-model="editor.component.due"> <!-- date picker--></md-datepicker>
-        <sg-timepicker ng-model="editor.component.due"><!-- time picker --></sg-timepicker>
-        <md-button class="sg-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
-          <md-icon>remove_circle</md-icon>
-        </md-button>
-      </div>
       <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.due">
-        <md-button class="sg-icon-button" type="button" ng-click="editor.component.$addDueDate()">
+        <md-button class="md-icon-button" type="button" ng-click="editor.component.$addDueDate()">
           <md-icon>add_circle</md-icon>
         </md-button>
         <label class="button-label"><var:string label:value="Add Due"/></label>
@@ -146,13 +153,13 @@
             <input type="text" ng-model="attach.value"
                    sg-focus-on="attachUrl_{{$index}}"/>
           </md-input-container>
-          <md-button class="sg-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+          <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
             <md-icon>remove_circle</md-icon>
           </md-button>
         </div>
       </div>
       <div class="md-layout-margin" layout="row" layout-align="start center">
-        <md-button class="sg-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
+        <md-button class="md-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
           <md-icon>add_circle</md-icon>
         </md-button>
         <label class="button-label">
@@ -175,7 +182,7 @@
             </md-select>
           </md-input-container>
         <div class="md-flex"><!-- spacer --></div>
-        <md-button type="button" class="sg-icon-button"
+        <md-button type="button" class="md-icon-button"
                    label:aria-label="repeat_CUSTOM"
                    ng-show="editor.component.repeat.frequency != 'never'"
                    ng-click="editor.toggleRecurrenceEditor()">
