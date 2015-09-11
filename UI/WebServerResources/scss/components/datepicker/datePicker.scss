@@ -1,6 +1,14 @@
 /// datePicker.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends-datePicker';
 
-md-datepicker {
-  background: transparent;
+.md-calendar-scroll-container,
+.md-datepicker-input-mask {
+  // Let the content set the container width instead of using a fixed width
+  width: auto;
 }
+
+.md-datepicker-input-container {
+  // Gain some space
+  margin-left: 0;
+}
+
