@@ -6,7 +6,7 @@
    xmlns:rsrc="OGo:url"
    xmlns:label="OGo:label"
    xmlns:uix="OGo:uix">
-  <div class="addressbookUserRights" layout="column">
+  <div layout="column">
     
     <md-checkbox name="canViewObjects"
                  ng-model="acl.selectedUser.rights.canViewObjects"
