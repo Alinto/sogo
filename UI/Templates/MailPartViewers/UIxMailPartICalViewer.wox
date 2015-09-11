@@ -251,13 +251,15 @@
           <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                in readonly mode and a template similar to the one of md-contact-chips -->
           <md-chips class="md-contact-chips sg-readonly"
-                    ng-model="part.participants"
+                    ng-model="::part.participants"
                     readonly="true">
             <md-chip-template>
-              <div class="md-contact-avatar"><img src="#" ng-src="{{$chip.image}}" alt="{{$chip.name}}"/></div>
+              <div class="md-contact-avatar">
+                <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+              </div>
               <div class="md-contact-name">{{$chip.name}}</div>
               <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
-              </md-chip-template>
+            </md-chip-template>
           </md-chips>
         </div>
       </md-list>
