@@ -26,8 +26,8 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$interpolate', '$document'];
-  function runBlock($interpolate, $document) {
+  runBlock.$inject = ['$interpolate', '$document', '$log'];
+  function runBlock($interpolate, $document, $log) {
 
     function buildCssSelectors(selectors) {
       var result = selectors.join('');
@@ -72,6 +72,8 @@
         addRule(fgHue, bgHue, themeName, paletteName, _$mdThemingProvider._PALETTES[color.name][color.hues['hue-3'] ], 'hue-3');
         addRule(fgHue, bgHue, themeName, paletteName, _$mdThemingProvider._PALETTES[color.name][color.hues['hue-1'] ], 'hue-1');
       });
+
+      //$log.debug(_.pluck(customSheet.cssRules, 'cssText').join("\n"));
     });
 
     function addRule(fgInterpolate, bgInterpolate, themeName, paletteName, colorArray, hueName){
@@ -88,13 +90,6 @@
       }), index);
       index += 1;
 
-      console.debug(fgInterpolate({
-        theme: themeName,
-        palette: paletteName,
-        value: colorValue,
-        hue: hueName
-      }));
-
       // Insert background color rule
       customSheet.insertRule(bgInterpolate({
         theme: themeName,
@@ -103,13 +98,6 @@
         hue: hueName
       }), index);
       index += 1;
-
-      console.debug(bgInterpolate({
-        theme: themeName,
-        palette: paletteName,
-        value: colorValue,
-        hue: hueName
-      }));
     }
 
     function addBorderRule(bdrInterpolate, themeName, paletteName, colorArray, hueName){

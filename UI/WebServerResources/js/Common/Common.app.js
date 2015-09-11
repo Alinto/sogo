@@ -126,8 +126,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$mdThemingProvider'];
-  function configure($mdThemingProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider'];
+  function configure($logProvider, $compileProvider, $mdThemingProvider) {
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
       '100': 'cbe5c8',
@@ -205,6 +205,12 @@
         'hue-2': '300',
         'hue-3': '500'
       });
+
+    if (!DebugEnabled) {
+      // Disable debug data
+      $logProvider.debugEnabled(false);
+      $compileProvider.debugInfoEnabled(false);
+    }
   }
 
 })();
