@@ -2988,7 +2988,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   theUser = [SOGoUser userWithLogin: theUID];
   aParent = [theUser calendarsFolderInContext: context];
-  
+
+  if ([aParent isKindOfClass: [NSException class]])
+    return nil;
+
   aFolders = [aParent subFolders];
   e = [aFolders objectEnumerator];
   while ((aFolder = [e nextObject]))
