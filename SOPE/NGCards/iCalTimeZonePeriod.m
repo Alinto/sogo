@@ -161,8 +161,11 @@
                                   minute: [tzStart minuteOfHour] second: 0
                                 timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
 
-  tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
-                         day: 0 hour: 0 minute: 0
+  tmpDate = [tmpDate addYear: 0
+                       month: ((pos > 0) ? 0 : 1)
+                         day: 0
+                        hour: 0
+                      minute: 0
                       second: 0];
 
   /* If the day of the time change is "-XSU", we need to determine whether the
@@ -197,12 +200,41 @@
      END:STANDARD
      END:VTIMEZONE
      
-     The time changes occure on a Sunday, but in March, the 1st is a Sunday itself and in November
+     The time changes occur on a Sunday, but in March, the 1st is a Sunday itself and in November
      the 1st is also a Sunday. If we don't decrement "pos" by one, tmpDate (which is set to March or November 1st
      because of "day: 1" will have 14 more days added for March and 7 more days added for November - which will
      effectively shift the time change by a whole week.
+
+     In Europe/Berlin, we have a different use-case for November. In 2015, November 1st is a Sunday.
+     The time change in November must occur on October 25th but since tmpDate will be November 1st,
+     so a Sunday, dateDayOfWeek will be 0 and dayOfWeek will also be 0 we would decrement tmpDate by 14 days,
+     which is incorrect because it would shift the timezone change one week earlier. We take care about this
+     one with check if pos is greater or equal than 0 and if so, we don't decrement it.
+
+     BEGIN:VCALENDAR
+     PRODID:-//Inverse inc.//NONSGML Olson 2014g//EN
+     VERSION:2.0
+     BEGIN:VTIMEZONE
+     TZID:Europe/Berlin
+     X-LIC-LOCATION:Europe/Berlin
+     BEGIN:DAYLIGHT
+     TZOFFSETFROM:+0100
+     TZOFFSETTO:+0200
+     TZNAME:CEST
+     DTSTART:19700329T020000
+     RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+     END:DAYLIGHT
+     BEGIN:STANDARD
+     TZOFFSETFROM:+0200
+     TZOFFSETTO:+0100
+     TZNAME:CET
+     DTSTART:19701025T030000
+     RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+     END:STANDARD
+     END:VTIMEZONE
+     END:VCALENDAR
   */
-  if (dayOfWeek == dateDayOfWeek)
+  if (dayOfWeek == dateDayOfWeek && pos >= 0)
     pos--;
 
   offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
