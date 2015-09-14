@@ -10,7 +10,10 @@ module.exports = function(grunt) {
     'js/Mailer.js': ['js/Mailer/Mailer.app.js'],
     'js/Mailer.app.popup.js': ['js/Mailer/Mailer.popup.js'],
     'js/Preferences.services.js': ['js/Preferences/*.service.js'],
-    'js/Preferences.js': ['js/Preferences/Preferences.app.js', 'js/Preferences/*Controller.js']
+    'js/Preferences.js': ['js/Preferences/Preferences.app.js', 'js/Preferences/*Controller.js'],
+    'js/Administration.services.js': ['js/Administration/*.service.js'],
+    'js/Administration.js': ['js/Administration/Administration.app.js', 'js/Administration/*Controller.js']
+
   };
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),

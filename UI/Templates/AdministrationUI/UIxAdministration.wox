@@ -7,34 +7,51 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  const:toolbar="UIxAdministration.toolbar"
-  const:jsFiles="dtree.js">
+  const:jsFiles="Common.js, Administration.js, Administration.services.js, Contacts.services.js">
 
-  <div id="helpDialog" style="display: none" class="dialog left">
+  <main class="view layout-fill" ui-view="administration" layout="row" ng-controller="navController">
+    <!-- administration -->
+  </main>
+
+  <script type="text/ng-template" id="administration.html">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+      <var:component className="UIxSidenavToolbarTemplate" />
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
+        <md-list>
+          <md-list-item ng-click="app.go('rights')"
+                        ui-sref="administration.rights"
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>security</md-icon>
+            <p class="sg-item-name"><var:string label:value="Rights"/></p>
+          </md-list-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+
+    <section  layout="column" class="layout-fill">
+
+      <!-- TOP RIGHT TOOLBAR -->
+      <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
+          <var:component className="UIxTopnavToolbarTemplate" />
+        </div>
+      </md-toolbar>
+      <md-content>
+        <div ui-view="module"><!-- view --></div>
+      </md-content>
+    </section>
+
+  </script>
+
+  <!--
+      RIGHTS ADMINISTRATION PANEL
+  -->
+  <script type="text/ng-template" id="rights.html">
     <div>
-      <h3><!-- module title --></h3>
-      <div><!-- module description --></div>
-      <a href="#" class="button" id="helpDialogClose"><span><var:string label:value="Close"/></span></a>
+      <label>TODO!</label>
     </div>
-  </div>
+  </script>
 
-  <div id="leftPanel">
-    <div class="titlediv"><var:string label:value="Modules" /></div>
-    <div id="administrationModules">
-      <ul>
-	<li id="ACLs" class="_selected"><var:string label:value="ACLs"/></li>
-      </ul>
-    </div>
-  </div>
 
-  <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
-
-  <div id="rightPanel">
-    <span><h1 id="moduleTitle"><var:string label:value="ACLs_title"/></h1>
-    <div id="moduleDescription" style="display: none"><var:string label:value="ACLs_description" const:escapeHTML="NO"/></div></span>
-    <var:component className="UIxAdministrationFilterPanel" qualifier="qualifier" />
-    <div id="administrationContent"><!-- space --></div>
-  </div>
-
-  <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
 </var:component>
+
