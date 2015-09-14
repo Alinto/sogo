@@ -81,6 +81,13 @@ hgroup {
   }
 }
 
+.sg-folder-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
+
 .sg-toolbar-search {
   padding: $toolbar-padding 0;
 }
