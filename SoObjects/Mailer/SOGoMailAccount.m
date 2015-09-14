@@ -206,8 +206,8 @@ static NSString *inboxFolderName = @"INBOX";
         [folders removeObjectsInArray: nss];
     }
 
-  return [[folders stringsWithFormat: @"folder%@"]
-           resultsOfSelector: @selector (asCSSIdentifier)];
+  return [[folders resultsOfSelector: @selector (asCSSIdentifier)]
+           stringsWithFormat: @"folder%@"];
 }
 
 - (NSArray *) toManyRelationshipKeys

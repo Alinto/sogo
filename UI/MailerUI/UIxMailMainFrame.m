@@ -688,8 +688,8 @@
 
 		  for (k = 0; k < [pathComponents count]; k++)
 		    {
-                      component = [NSString stringWithFormat: @"folder%@", [pathComponents objectAtIndex: k]];
-                      [path appendString: [component asCSSIdentifier]];
+                      component = [[pathComponents objectAtIndex: k] asCSSIdentifier];
+                      [path appendString: [NSString stringWithFormat: @"folder%@", component]];
 		      if (k < [pathComponents count] - 1)
 			[path appendString: @"/"];
 		    }

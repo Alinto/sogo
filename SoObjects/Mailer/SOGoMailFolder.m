@@ -197,9 +197,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   NSArray *subfolders;
 
-  subfolders = [[self subfolders] stringsWithFormat: @"folder%@"];
+  subfolders = [[self subfolders] resultsOfSelector: @selector (asCSSIdentifier)];
 
-  return [subfolders resultsOfSelector: @selector (asCSSIdentifier)];
+  return [subfolders stringsWithFormat: @"folder%@"];
 }
 
 - (NSArray *) subfolders
@@ -632,7 +632,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 		inContext: (id) localContext
 {
   NSArray *folders;
-  NSString *currentFolderName, *currentAccountName;
+  NSString *currentFolderName, *currentAccountName, *destinationAccountName;
   NSMutableString *imapDestinationFolder;
   NGImap4Client *client;
   id result;
@@ -640,24 +640,24 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 #warning this code will fail on implementation using something else than '/' as delimiter
   imapDestinationFolder = [NSMutableString string];
-  folders = [[destinationFolder componentsSeparatedByString: @"/"]
-              resultsOfSelector: @selector (fromCSSIdentifier)];
+  folders = [destinationFolder componentsSeparatedByString: @"/"];
   max = [folders count];
   if (max > 1)
     {
       currentAccountName = [[self mailAccountFolder] nameInContainer];
       client = [[self imap4Connection] client];
       [imap4 selectFolder: [self imap4URL]];
+      destinationAccountName = [[folders objectAtIndex: 1] fromCSSIdentifier];
 
       for (count = 2; count < max; count++)
         {
-          currentFolderName = [[folders objectAtIndex: count] substringFromIndex: 6];
+          currentFolderName = [[[folders objectAtIndex: count] substringFromIndex: 6] fromCSSIdentifier];
           [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
         }
 
       if (client)
         {
-          if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
+          if ([destinationAccountName isEqualToString: currentAccountName])
             {
               // We make sure the destination IMAP folder exist, if not, we create it.
               result = [[client status: imapDestinationFolder
@@ -686,7 +686,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
               
               userFolder = [[context activeUser] homeFolderInContext: context];
               accounts = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-              account = [accounts lookupName: [folders objectAtIndex: 1] inContext: localContext acquire: NO];
+              account = [accounts lookupName: destinationAccountName inContext: localContext acquire: NO];
 
               if ([account isKindOfClass: [NSException class]])
                 {
