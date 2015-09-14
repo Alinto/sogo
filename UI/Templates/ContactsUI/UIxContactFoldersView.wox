@@ -23,7 +23,7 @@
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
       <!-- <div style="position: relative; display: flex;"> -->
-      <md-content md-scroll-y="md-scroll-y" class="md-hue-2">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's addressbooks -->
         <section>
           <md-subheader class="sg-md-subheader md-hue-2">
