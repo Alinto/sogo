@@ -10,8 +10,7 @@
   function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
-    if (!Mailbox.$virtualMode)
-      Mailbox.selectedFolder = stateMailbox;
+    Mailbox.selectedFolder = stateMailbox;
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;

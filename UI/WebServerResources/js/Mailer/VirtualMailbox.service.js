@@ -80,7 +80,7 @@
     });
   };
 
-  VirtualMailbox.prototype.startSearch = function(match, params) {    
+  VirtualMailbox.prototype.startSearch = function(match, params) {
     var _this = this,
         search = VirtualMailbox.$q.when();
 
@@ -89,20 +89,20 @@
     _.each(this.$mailboxes, function(mailbox) {
       search = search.then(function() {
         if (_this.$isLoading) {
-          console.log("searching mailbox " + mailbox.path);
+          VirtualMailbox.$log.debug("searching mailbox " + mailbox.path);
           return mailbox.$filter( {sort: "date", asc: false, match: match}, params);
         }
       });
     });
-    
+
     search.finally(function() { _this.$isLoading = false; });
   };
 
   VirtualMailbox.prototype.stopSearch = function() {
-    console.log("stopping search...");
+    VirtualMailbox.$log.debug("stopping search...");
     this.$isLoading = false;
   };
-  
+
   /**
    * @function getLength
    * @memberof Mailbox.prototype
@@ -114,7 +114,7 @@
 
     if (!angular.isDefined(this.$mailboxes))
       return len;
-    
+
     _.each(this.$mailboxes, function(mailbox) {
       len += mailbox.$messages.length;
     });
@@ -130,7 +130,7 @@
    */
   VirtualMailbox.prototype.getItemAtIndex = function(index) {
     var i, j, k, mailbox, message;
-    
+
     if (angular.isDefined(this.$mailboxes) && index >= 0) {
       i = 0;
       for (j = 0; j < this.$mailboxes.length; j++) {
@@ -138,7 +138,8 @@
         for (k = 0; k < mailbox.$messages.length; i++, k++) {
           message = mailbox.$messages[k];
           if (i == index) {
-            return message;
+            if (mailbox.$loadMessage(message.uid))
+              return message;
           }
         }
       }

@@ -68,7 +68,15 @@
     }
 
     function startAdvancedSearch() {
-      var root, mailboxes = [];
+      var root, mailboxes = [],
+          _visit = function(folders) {
+            _.each(folders, function(o) {
+              mailboxes.push(o);
+              if (o.children && o.children.length > 0) {
+                _visit(o.children);
+              }
+            });
+          };
 
       vm.virtualMailbox = new VirtualMailbox(vm.accounts[0]);
 
@@ -84,9 +92,8 @@
       if (angular.isDefined(vm.search.mailbox)) {
         root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
         mailboxes.push(root);
-
         if (vm.search.subfolders && root.children.length)
-          mailboxes.push(root.children);
+          _visit(root.children);
       }
       else {
         mailboxes = vm.accounts[0].$flattenMailboxes();
