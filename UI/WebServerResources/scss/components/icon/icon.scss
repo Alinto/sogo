@@ -108,11 +108,17 @@ md-icon {
   &.icon-remove-circle:before {
     content: "\e15c";
   }
+  &.icon-search:before {
+    content: "\e8b6";
+  }
   &.icon-star:before {
     content: "\e838";
   }
   &.icon-star-border:before {
     content: "\e83a";
+  }
+  &.icon-stop:before {
+    content: "\e047";
   }
   &.icon-visibility-off:before {
     content: "\e8f5";

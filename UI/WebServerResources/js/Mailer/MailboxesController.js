@@ -37,8 +37,7 @@
     vm.newSearchParam = newSearchParam;
     vm.showAdvancedSearch = showAdvancedSearch;
     vm.hideAdvancedSearch = hideAdvancedSearch;
-    vm.startAdvancedSearch = startAdvancedSearch;
-    vm.stopAdvancedSearch = stopAdvancedSearch;
+    vm.toggleAdvancedSearch = toggleAdvancedSearch;
     vm.search = {
       options: {'': l('Select a criteria'),
                 subject: l('Enter Subject'),
@@ -67,49 +66,51 @@
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
     }
 
-    function startAdvancedSearch() {
-      var root, mailboxes = [],
-          _visit = function(folders) {
-            _.each(folders, function(o) {
-              mailboxes.push(o);
-              if (o.children && o.children.length > 0) {
-                _visit(o.children);
-              }
-            });
-          };
-
-      vm.virtualMailbox = new VirtualMailbox(vm.accounts[0]);
-
-      // Don't set the previous selected mailbox if we're in virtual mode
-      // That allows users to do multiple advanced search but return
-      // correctly to the previously selected mailbox once done.
-      if (!Mailbox.$virtualMode)
-        vm.searchPreviousMailbox = Mailbox.selectedFolder;
-
-      Mailbox.selectedFolder = vm.virtualMailbox;
-      Mailbox.$virtualMode = true;
-
-      if (angular.isDefined(vm.search.mailbox)) {
-        root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
-        mailboxes.push(root);
-        if (vm.search.subfolders && root.children.length)
-          _visit(root.children);
+    function toggleAdvancedSearch() {
+      if (Mailbox.selectedFolder.$isLoading) {
+        vm.virtualMailbox.stopSearch();
       }
       else {
-        mailboxes = vm.accounts[0].$flattenMailboxes();
+        var root, mailboxes = [],
+            _visit = function(folders) {
+              _.each(folders, function(o) {
+                mailboxes.push(o);
+                if (o.children && o.children.length > 0) {
+                  _visit(o.children);
+                }
+              });
+            };
+
+        vm.virtualMailbox = new VirtualMailbox(vm.accounts[0]);
+
+        // Don't set the previous selected mailbox if we're in virtual mode
+        // That allows users to do multiple advanced search but return
+        // correctly to the previously selected mailbox once done.
+        if (!Mailbox.$virtualMode)
+          vm.searchPreviousMailbox = Mailbox.selectedFolder;
+
+        Mailbox.selectedFolder = vm.virtualMailbox;
+        Mailbox.$virtualMode = true;
+
+        if (angular.isDefined(vm.search.mailbox)) {
+          root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
+          mailboxes.push(root);
+          if (vm.search.subfolders && root.children.length)
+            _visit(root.children);
+        }
+        else {
+          mailboxes = vm.accounts[0].$flattenMailboxes();
+        }
+
+        vm.virtualMailbox.setMailboxes(mailboxes);
+        vm.virtualMailbox.startSearch(vm.search.match, vm.search.params);
+        $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
       }
-
-      vm.virtualMailbox.setMailboxes(mailboxes);
-      vm.virtualMailbox.startSearch(vm.search.match, vm.search.params);
-      $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
-    }
-
-    function stopAdvancedSearch() {
-      vm.virtualMailbox.stopSearch();
     }
 
     function addSearchParam(v) {
       vm.currentSearchParam = v;
+      focus('advancedSearch');
     }
 
     function newSearchParam(v) {

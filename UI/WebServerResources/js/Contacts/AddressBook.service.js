@@ -89,11 +89,11 @@
       // First session query
       AddressBook.$cards = [];
     }
-    else if (AddressBook.$query == search) {
+    else if (AddressBook.$query.value == search) {
       // Query hasn't changed
       return AddressBook.$q.when(AddressBook.$cards);
     }
-    AddressBook.$query = search;
+    AddressBook.$query.value = search;
 
     angular.extend(params, options);
 
@@ -125,6 +125,7 @@
           AddressBook.$cards.splice(index, 0, card);
         }
       });
+      AddressBook.$log.debug(AddressBook.$cards);
       return AddressBook.$cards;
     });
   };

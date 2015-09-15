@@ -12,6 +12,7 @@
 
     AddressBook.selectedFolder = stateAddressbook;
 
+    vm.service = AddressBook;
     vm.selectedFolder = stateAddressbook;
     vm.selectCard = selectCard;
     vm.toggleCardSelection = toggleCardSelection;

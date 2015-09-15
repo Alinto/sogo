@@ -7,6 +7,56 @@
 
     <!-- in virtual mailbox mode -->
     <md-toolbar ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+      <div class="md-toolbar-tools">
+        <md-input-container>
+          <label><var:string label:value="Search messages in"/></label>
+          <md-select ng-model="app.search.mailbox">
+            <md-option ng-value="">
+              <span>{{app.accounts[0].name}}</span>
+            </md-option>
+            <md-option ng-repeat="folder in
+                                  app.accounts[0].$flattenMailboxes()
+                                  track by folder.path"
+                       ng-value="folder.path">
+              <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdOpenMenu()">
+            <md-icon>settings</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-href="#">
+                <md-checkbox ng-model="app.search.subfolders"
+                             ng-true-value="1"
+                             ng-false-value="0">
+                  <var:string label:value="Search subfolders"/>
+                </md-checkbox>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="app.search.match='AND'">
+                <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}">
+                  <!-- all --></md-icon><var:string label:value="Match all of the following"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="app.search.match='OR'">
+                <md-icon ng-class="{ 'icon-check': app.search.match == 'OR'}">
+                  <!-- any --></md-icon><var:string label:value="Match any of the following"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-button class="sg-icon-button"
+                   ng-click="app.toggleAdvancedSearch()"
+                   ng-disabled="app.search.params.length == 0">
+          <md-icon ng-class="{'icon-stop': app.service.selectedFolder.$isLoading,
+                              'icon-search': !app.service.selectedFolder.$isLoading}"><!-- icon --></md-icon>
+        </md-button>
+      </div>
     </md-toolbar>
     <!-- single-selection toolbars -->
     <md-toolbar ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
@@ -72,7 +122,7 @@
           <md-icon>arrow_back</md-icon>
         </md-button>
         <md-input-container>
-          <input name="folderSearch" type="search" />
+          <input name="folderSearch" type="search" ng-minlength="3"/>
         </md-input-container>
         <md-input-container>
           <md-select>
@@ -176,7 +226,8 @@
               <span class="msg-date"
                     ng-bind-html="currentMessage.relativedate"><!-- date --></span>
               <div class="sg-md-subhead-multi">
-                <span ng-show="mailbox.service.$virtualMode">({{currentMessage.$mailbox.path}})</span>
+                <span class="sg-label-outline"
+                      ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
                 {{currentMessage.$shortAddress('from')}}
               </div>
               <div class="sg-md-body-multi">{{currentMessage.subject}}</div>

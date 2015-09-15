@@ -129,3 +129,14 @@ md-list md-list-item button.md-button.sg-icon-button {
   padding: 0;
   font-size: $iconButton-menu-size;
 }
+
+.sg-outline-button {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: $button-border-radius;
+  margin: rem(0.500);
+  padding: rem(0.500);
+  font-size: $sg-font-size-1;
+  font-weight: $sg-font-medium;
+  text-transform: uppercase;
+}

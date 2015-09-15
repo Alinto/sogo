@@ -43,6 +43,18 @@
 "Copy To" = "Copy To";
 "Add to:" = "Add to:";
 
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+
 /* Number of selected contacts in list */
 "selected" = "selected";
 

@@ -258,7 +258,7 @@
               <md-icon>arrow_back</md-icon>
             </md-button>
             <md-input-container>
-              <input name="folderSearch" type="search" />
+              <input name="folderSearch" type="search" ng-minlength="3"/>
             </md-input-container>
             <md-input-container>
               <md-select>
@@ -327,10 +327,22 @@
         </md-toolbar>
 
         <md-content id="contactsList" layout="column" class="md-flex">
-          <md-subheader>
+          <md-subheader ng-show="addressbook.service.$query.value">
             <span ng-switch="addressbook.selectedFolder.cards.length">
-              <span ng-switch-when="0"><var:string label:value="No contact"/></span>
-              <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
+              <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
+              <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="matching contacts"/></span>
+            </span>
+          </md-subheader>
+          <md-subheader ng-hide="addressbook.service.$query.value"
+                        ng-switch="addressbook.selectedFolder.isRemote">
+            <span ng-switch-when="1">
+              <var:string label:value="Start a search to browse this address book"/>
+            </span>
+            <span ng-switch-default="true">
+              <span ng-switch="addressbook.selectedFolder.cards.length">
+                <span ng-switch-when="0"><var:string label:value="No contact"/></span>
+                <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
+              </span>
             </span>
           </md-subheader>
           <md-virtual-repeat-container class="md-flex">

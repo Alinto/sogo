@@ -369,6 +369,18 @@ html p {
   white-space: normal;
 }
 
+.sg-label-outline {
+  // See also .sg-outline-button in button.scss
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px; // $button-border-radius
+  margin: 0;
+  padding: 0 rem(0.500);
+  font-size: $sg-font-size-1;
+  font-weight: $sg-font-medium;
+  text-transform: uppercase;
+}
+
 // Date bloc in use on the toolbar
 // ----------------------------------------------------------------------------
 $today-font-size: 72px; // Visualy adjusted
