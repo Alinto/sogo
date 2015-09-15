@@ -9,13 +9,16 @@
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', 'Dialog', '$mdDialog', 'Authentication'];
-  function LoginController($scope, Dialog, $mdDialog, Authentication) {
+  LoginController.$inject = ['$scope', '$timeout', 'Dialog', '$mdDialog', 'Authentication'];
+  function LoginController($scope, $timeout, Dialog, $mdDialog, Authentication) {
     var vm = this;
 
     vm.creds = { username: cookieUsername, password: null };
     vm.login = login;
     vm.showAbout = showAbout;
+
+    vm.showLogin = false;
+    $timeout(function() { vm.showLogin = true; }, 100);
 
     function login() {
       Authentication.login(vm.creds)

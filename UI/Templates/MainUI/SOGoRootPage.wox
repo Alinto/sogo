@@ -15,17 +15,23 @@
       MUST be the first html element after body
       SHOULD  be a main tag (with role="main")
   -->
-  <main class="view layout-fill layout-padding" ui-view="login" layout="row" layout-align="center start">
-    <md-content class="md-padding" md-scroll-y="true">
-      <div class="sg-login" ng-controller="LoginController as app">
-
+  <main class="view layout-fill layout-padding md-default-theme md-background md-hue-1 md-bg"
+        ui-view="login"
+        layout="row" layout-align="center start"
+        ng-controller="LoginController as app">
+    <md-content class="ng-cloak md-whiteframe-z1"
+                layout="row" layout-align="center center"
+                layout-sm="column" layout-align-sm="space-between center"
+                md-scroll-y="true"
+                ng-show="app.showLogin">
+      <div id="logo" class="md-padding">
+        <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
+      </div>
+      <div class="sg-login md-padding md-default-theme md-bg md-accent layout-fill">
         <script type="text/javascript">
           var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
         </script>
         <div id="login">
-          <div id="logo">
-            <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
-          </div>
 
           <form name="loginForm" layout="column"
                 ng-cloak="ng-cloak"
@@ -44,10 +50,8 @@
 
             <!-- CONNECT BUTTON -->
             <div layout="row" layout-align="end center">
-              <md-button class="md-raised" type="submit" ng-disabled='app.loginForm.$invalid'>
-                <span>
-                  <var:string label:value="Connect"/>
-                </span>
+              <md-button class="md-primary md-hue-1" type="submit" ng-disabled='app.loginForm.$invalid'>
+                <var:string label:value="Connect"/>
               </md-button>
             </div>
 
@@ -84,10 +88,10 @@
             </div>
           </form>
           <div layout="row" layout-align="end end" ng-cloak="ng-cloak">
-            <md-button class="sg-icon-button fg-sogoPaper-500"
+            <md-button class="md-icon-button"
                        label:aria-label="About"
                        ng-click="app.showAbout()">
-              <md-icon class="material-icons fg-sogoPaper-500">info</md-icon>
+              <md-icon class="md-fg">info</md-icon>
             </md-button>
           </div>
         </div>
@@ -96,7 +100,7 @@
   </main>
 
   <script type="text/ng-template" id="aboutBox.html">
-    <md-dialog flex="50">
+    <md-dialog flex="50" sm-flex="100">
       <md-dialog-content>
         <p><a href="http://sogo.nu/" target="_new">sogo.nu</a></p>
         <p>Version <var:string value="version"/> (<var:string value="buildDate" />)</p>
