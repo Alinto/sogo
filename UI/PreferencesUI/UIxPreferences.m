@@ -26,6 +26,7 @@
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
@@ -643,7 +644,7 @@ static NSArray *reminderValues = nil;
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
   id whiteList;
-  
+
   us = [user userSettings];
   moduleSettings = [us objectForKey: @"Calendar"];
   whiteList = [moduleSettings objectForKey: @"PreventInvitationsWhitelist"];
@@ -652,7 +653,7 @@ static NSArray *reminderValues = nil;
     {
       whiteList = [whiteList jsonRepresentation];
     }
-  
+
   return whiteList;
 }
 
@@ -661,13 +662,13 @@ static NSArray *reminderValues = nil;
   NSMutableDictionary *moduleSettings;
   SOGoUserSettings *us;
   id o;
-  
+
   us = [user userSettings];
   moduleSettings = [us objectForKey: @"Calendar"];
 
   if (!(o = [whiteListString objectFromJSONString]))
     o = [NSDictionary dictionary];
-  
+
   [moduleSettings setObject: o forKey: @"PreventInvitationsWhitelist"];
   [us synchronize];
 }
@@ -752,35 +753,35 @@ static NSArray *reminderValues = nil;
   /* We want all the SourceIDS */
   NSMutableArray *folders, *availableAddressBooksID, *availableAddressBooksName;
   SOGoParentFolder *contactFolders;
-  
+
   int i, count;
   BOOL collectedAlreadyExist;
-  
+
   contactFolders = [[[context activeUser] homeFolderInContext: context]
                      lookupName: @"Contacts"
                       inContext: context
                         acquire: NO];
   folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
   count = [folders count]-1;
-  
+
   // Inside this loop we remove all the public or shared addressbooks
   for (; count >= 0; count--)
     {
       if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
         [folders removeObjectAtIndex: count];
     }
-  
+
   // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
   availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
   availableAddressBooksName = [NSMutableArray arrayWithCapacity: [folders count]];
   count = [folders count]-1;
   collectedAlreadyExist = NO;
-  
+
   for (i = 0; i <= count ; i++)
     {
       [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
       [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
-      
+
       if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
         collectedAlreadyExist = YES;
     }
@@ -795,7 +796,7 @@ static NSArray *reminderValues = nil;
       [availableAddressBooksID addObject: @"collected"];
       [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"]  forKey: @"collected"];
     }
-  
+
   return availableAddressBooksID;
 }
 
@@ -832,7 +833,7 @@ static NSArray *reminderValues = nil;
         value = @"every_minute";
       else if (interval == 60)
         value = @"once_per_hour";
-      else if (interval == 2 || interval == 5 || interval == 10 
+      else if (interval == 2 || interval == 5 || interval == 10
                || interval == 20 || interval == 30)
         value = [NSString stringWithFormat: @"every_%d_minutes", interval];
       else
@@ -1250,7 +1251,7 @@ static NSArray *reminderValues = nil;
 - (NSString *) forwardConstraints
 {
   SOGoDomainDefaults *dd;
-  
+
   dd = [[context activeUser] domainDefaults];
 
   return [NSString stringWithFormat: @"%d", [dd forwardConstraints]];
@@ -1512,11 +1513,46 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) categoryColor
 {
-  SOGoDomainDefaults *dd;
+  NSDictionary *defaultCalendarCategoriesColors;
   NSString *categoryColor;
 
   if (!calendarCategoriesColors)
-    ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
+    {
+      NSArray *defaultCalendarCategories, *localizedCalendarCategories;
+      NSMutableDictionary *localizedCalendarCategoriesColors;
+      NSString *localizedCategory, *defaultCategory;
+      NSUInteger count, max;
+
+      defaultCalendarCategories = [userDefaults calendarCategories];
+      if (defaultCalendarCategories)
+        {
+          // User has custom calendar categories
+          ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
+        }
+      else
+        {
+          // Build categories colors dictionary with localized keys
+          defaultCalendarCategories = [[[self pageResourceManager] stringForKey: @"calendar_category_labels"
+                                                                   inTableNamed: nil
+                                                               withDefaultValue: nil
+                                                                      languages: [NSArray arrayWithObject: @"English"]]
+                                        componentsSeparatedByString: @","];
+          defaultCalendarCategoriesColors = [userDefaults calendarCategoriesColors];
+          max = [defaultCalendarCategories count];
+          localizedCalendarCategories = [self _languageCalendarCategories];
+          localizedCalendarCategoriesColors = [NSMutableDictionary dictionaryWithCapacity: max];
+
+          for (count = 0; count < max; count++)
+            {
+              localizedCategory = [localizedCalendarCategories objectAtIndex: count];
+              defaultCategory = [defaultCalendarCategories objectAtIndex: count];
+              [localizedCalendarCategoriesColors setObject: [defaultCalendarCategoriesColors objectForKey: defaultCategory]
+                                                    forKey: localizedCategory];
+            }
+
+          ASSIGN (calendarCategoriesColors, localizedCalendarCategoriesColors);
+        }
+    }
 
   categoryColor = [calendarCategoriesColors objectForKey: category];
 

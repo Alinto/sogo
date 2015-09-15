@@ -18,6 +18,7 @@ Bug fixes
  - Avoid conflicting message on saving a draft mail (Zentyal)
  - Less conflicting messages in Outlook while moving messages between folders (Zentyal)
  - Start/end shifting by 1 hour due to timezone change on last Sunday of October 2015 (#3344)
+ - Fixed localization of calendar categories with empty profile (#3295)
 
 2.3.1 (2015-07-23)
 ------------------
