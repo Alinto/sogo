@@ -9,6 +9,7 @@
 */*/obj/
 */obj/
 .scss-lint-config.yml_
+ActiveSync/ActiveSync.SOGo
 Documentation/*.docbook
 Documentation/*.pdf
 SoObjects/SOGo/SOGo.framework/
