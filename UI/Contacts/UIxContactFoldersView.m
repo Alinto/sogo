@@ -251,6 +251,24 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           ? @"available": @"unavailable");
 }
 
+- (NSDictionary *) currentContactFolderCardRights
+{
+  NSArray *roles;
+  NSString *userLogin, *owner;
+  BOOL objectEditor, objectEraser;
+
+  userLogin = [[context activeUser] login];
+  owner = [currentFolder ownerInContext: context];
+  roles = [currentFolder aclsForUser: userLogin];
+  objectEditor = ([owner isEqualToString: userLogin] || [roles containsObject: SOGoRole_ObjectEditor]);
+  objectEraser = ([owner isEqualToString: userLogin] || [roles containsObject: SOGoRole_ObjectEraser]);
+
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                        (objectEditor? @"available": @"unavailable"), @"editing",
+                        (objectEraser? @"available": @"unavailable"), @"deleting",
+                       nil];
+}
+
 - (NSString *) verticalDragHandleStyle
 {
   NSString *vertical;
