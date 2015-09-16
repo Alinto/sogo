@@ -110,7 +110,7 @@
 
     // Method to call on data changes
     vm.onChange = function() {
-      if (vm.searchText !== null) {
+      if (typeof vm.searchText !== 'undefined' && vm.searchText !== null) {
         if (vm.searchText != vm.previous.searchText || vm.searchField != vm.previous.searchField) {
           if (vm.searchText.length > 2 || vm.searchText.length === 0) {
             // doSearch is the compiled expression of the sg-search attribute
