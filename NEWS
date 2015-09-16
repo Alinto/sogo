@@ -1,4 +1,4 @@
-2.3.x (2015-MM-DD)
+2.3.2 (2015-09-16)
 ------------------
 
 Enhancements
@@ -8,17 +8,19 @@ Enhancements
 
 Bug fixes
  - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
- - Non-latin subfolder names are displayed correctly on Outlook (Zentyal)
- - Fixed several sync issues on environments with multiple users (Zentyal)
- - Folders from other users will no longer appear on your Outlook (Zentyal)
- - Use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
- - Session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
- - Less sync issues when setting read flag (Zentyal)
- - Attachments with non-latin filenames sent by Outlook are now received (Zentyal)
- - Support attachments from more mail clients (Zentyal)
- - Avoid conflicting message on saving a draft mail (Zentyal)
- - Less conflicting messages in Outlook while moving messages between folders (Zentyal)
- - Start/end shifting by 1 hour due to timezone change on last Sunday of October 2015 (#3344)
+ - non-latin subfolder names are displayed correctly on Outlook (Zentyal)
+ - fixed several sync issues on environments with multiple users (Zentyal)
+ - folders from other users will no longer appear on your Outlook (Zentyal)
+ - use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
+ - session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
+ - less sync issues when setting read flag (Zentyal)
+ - attachments with non-latin filenames sent by Outlook are now received (Zentyal)
+ - support attachments from more mail clients (Zentyal)
+ - avoid conflicting message on saving a draft mail (Zentyal)
+ - less conflicting messages in Outlook while moving messages between folders (Zentyal)
+ - start/end shifting by 1 hour due to timezone change on last Sunday of October 2015 (#3344)
+ - fixed localization of calendar categories with empty profile (#3295)
+ - fixed options availability in contextual menu of Contacts module (#3342)
 
 2.3.1 (2015-07-23)
 ------------------
@@ -31,6 +33,7 @@ Enhancements
  - added create-folder subcommand to sogo-tool to create contact and calendar folders
  - group mail addresses can be used as recipient in Outlook
  - added 'ActiveSync' module constraints
+ - updated CKEditor to version 4.5.1
  - added Slovenian translation - thanks to Jens Riecken
  - added Chinese (Taiwan) translation
 
