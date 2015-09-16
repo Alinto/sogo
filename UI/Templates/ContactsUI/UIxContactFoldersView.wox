@@ -47,7 +47,7 @@
                  ng-show="app.editMode!=folder.id">{{folder.name}}</p>
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode == folder.id">
-                <input class="folder-name" type="text"
+                <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"
@@ -123,7 +123,7 @@
                  ng-show="editMode!=folder.id">{{folder.name}}</p>
               <md-input-container class="md-flex md-tile-content"
                                   ng-show="app.editMode==folder.id">
-                <input class="folder-name" type="text"
+                <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"

@@ -222,7 +222,12 @@
     }
 
     function saveFolder(folder) {
-      folder.$rename();
+      folder.$rename()
+        .then(function(data) {
+          vm.editMode = false;
+        }, function(data, status) {
+          Dialog.alert(l('Warning'), data);
+        });
     }
 
     function compactFolder(folder) {

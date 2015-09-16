@@ -260,9 +260,9 @@
                 {{app.metadataForFolder(folder).name}}
                 <span ng-show="folder.unseenCount"> ({{folder.unseenCount}})</span>
               </p>
-              <md-input-container class="md-flex md-tile-content"
+              <md-input-container class="md-flex"
                                   ng-show="app.editMode == folder.path">
-                <input class="folder-name" type="text"
+                <input class="sg-item-name" type="text"
                        label:aria-label="Enter the new name of your folder"
                        ng-model="folder.name"
                        ng-blur="app.saveFolder(folder)"

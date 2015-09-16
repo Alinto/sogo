@@ -25,6 +25,16 @@ md-list-item {
   }
 }
 
+// Remove padding of input fields in the sidenav for better transitions between read and edit mode of a folder
+md-sidenav {
+  md-input-container {
+    padding: 0;
+    .md-input {
+      padding-left: 0;
+    }
+  }
+}
+
 // Add some padding to the first icon in a list item
 //.md-list-item-inner {
 //  > i:first-child {

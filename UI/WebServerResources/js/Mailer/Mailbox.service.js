@@ -351,15 +351,13 @@
   Mailbox.prototype.$rename = function() {
     var _this = this,
         findParent,
-        deferred = Mailbox.$q.defer(),
         parent,
         children,
         i;
 
     if (this.name == this.$shadowData.name) {
       // Name hasn't changed
-      deferred.resolve();
-      return deferred.promise;
+      return Mailbox.$q.when();
     }
 
     // Local recursive function
@@ -391,7 +389,7 @@
     // Find index of mailbox among siblings
     i = _.indexOf(_.pluck(children, 'id'), this.id);
 
-    this.$save().then(function(data) {
+    return this.$save().then(function(data) {
       var sibling;
       angular.extend(_this, data); // update the path attribute
       _this.id = _this.$id();
@@ -409,13 +407,7 @@
         i = children.length;
       }
       children.splice(i, 0, _this);
-
-      deferred.resolve();
-    }, function(data) {
-      deferred.reject(data);
     });
-
-    return deferred.promise;
   };
 
   /**
