@@ -59,8 +59,8 @@
   /**
    * @ngInject
    */
-  sgSubscribeController.$inject = ['folderType', 'onFolderSelect', 'User'];
-  function sgSubscribeController(folderType, onFolderSelect, User) {
+  sgSubscribeController.$inject = ['$mdDialog', 'folderType', 'onFolderSelect', 'User'];
+  function sgSubscribeController($mdDialog, folderType, onFolderSelect, User) {
     var vm = this;
 
     vm.selectedUser = null;
@@ -102,6 +102,10 @@
     // Callback upon subscription to a folder
     vm.selectFolder = function(folder) {
       onFolderSelect({folderData: folder});
+    };
+
+    vm.close = function() {
+      $mdDialog.hide();
     };
   }
 

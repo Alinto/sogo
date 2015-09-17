@@ -7,8 +7,15 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
   <md-dialog flex="50" flex-sm="100">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <div class="sg-md-title md-flex"><var:string label:value="Subscribe to a shared folder"/></div>
+        <md-button class="md-icon-button" ng-click="subscribe.close()">
+          <md-icon label:aria-label="Close">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
     <md-dialog-content>
-      <h2 class="md-title"><var:string label:value="Subscribe to a shared folder"/></h2>
       <md-input-container>
         <label><md-icon>search</md-icon><var:string label:value="Search User"/></label>
         <input type="input"
