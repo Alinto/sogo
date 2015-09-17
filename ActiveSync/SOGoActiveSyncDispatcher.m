@@ -2628,6 +2628,11 @@ static BOOL debugOn = NO;
           [map setObject: [mailObject messageId] forKey: @"in-reply-to"];
 
           references = [[[[[mailObject mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] mutableCopy] autorelease];
+
+          // If there is no References: header, initialize it with In-Reply-To.
+          if ([mailObject inReplyTo] && ![references count])
+             references = [NSMutableArray arrayWithObject: [mailObject inReplyTo]];
+
           if ([references count] > 0)
             {
               // If there are more than ten identifiers listed, we eliminate the second one.
