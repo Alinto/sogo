@@ -122,6 +122,24 @@
   };
 
   /**
+   * @memberof Calendar
+   * @desc Find a calendar among local instances (personal calendars, subscriptions and Web calendars).
+   * @param {string} id - the calendar ID
+   * @returns an object literal of the matching Calendar instance
+   */
+  Calendar.$getIndex = function(id) {
+    var i;
+
+    i = _.indexOf(_.pluck(Calendar.$calendars, 'id'), id);
+    if (i < 0)
+      i = _.indexOf(_.pluck(Calendar.$subscriptions, 'id'), id);
+    if (i < 0)
+      i = _.indexOf(_.pluck(Calendar.$webcalendars, 'id'), id);
+
+    return i;
+  };
+
+  /**
    * @memberOf Calendar
    * @desc Subscribe to another user's calendar and add it to the list of calendars.
    * @param {string} uid - user id
@@ -182,80 +200,6 @@
   };
 
   /**
-   * @function init
-   * @memberof Calendar.prototype
-   * @desc Extend instance with new data and compute additional attributes.
-   * @param {object} data - attributes of calendar
-   */
-  Calendar.prototype.init = function(data) {
-    angular.extend(this, data);
-    // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
-    this.isOwned = Calendar.activeUser.isSuperUser || this.owner == Calendar.activeUser.login;
-    this.isSubscription = !this.isRemote && this.owner != Calendar.activeUser.login;
-  };
-
-  /**
-   * @function getClassName
-   * @memberof Calendar.prototype
-   * @desc Return the calendar CSS class name based on its ID.
-   * @returns a string representing the foreground CSS class name
-   */
-  Calendar.prototype.getClassName = function(base) {
-    if (angular.isUndefined(base))
-      base = 'fg';
-    return base + '-folder' + this.id;
-  };
-
-  /**
-   * @function $rename
-   * @memberof Calendar.prototype
-   * @desc Rename the calendar and keep the list sorted
-   * @param {string} name - the new name
-   * @returns a promise of the HTTP operation
-   */
-  Calendar.prototype.$rename = function(name) {
-    var i = _.indexOf(_.pluck(Calendar.$calendars, 'id'), this.id);
-    this.name = name;
-    Calendar.$calendars.splice(i, 1);
-    Calendar.$add(this);
-    return this.$save();
-  };
-
-  /**
-   * @function $delete
-   * @memberof Calendar.prototype
-   * @desc Delete the calendar from the server and the static list of calendars.
-   * @returns a promise of the HTTP operation
-   */
-  Calendar.prototype.$delete = function() {
-    var _this = this,
-        d = Calendar.$q.defer(),
-        list,
-        promise;
-
-    if (this.isSubscription) {
-      promise = Calendar.$$resource.fetch(this.id, 'unsubscribe');
-      list = Calendar.$subscriptions;
-    }
-    else {
-      promise = Calendar.$$resource.remove(this.id);
-      if (this.isWebCalendar)
-        list = Calendar.$webcalendars;
-      else
-        list = Calendar.$calendars;
-    }
-
-    promise.then(function() {
-      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
-      list.splice(i, 1);
-      d.resolve();
-    }, function(data, status) {
-      d.reject(data);
-    });
-    return d.promise;
-  };
-
-  /**
    * @function $deleteComponents
    * @memberof Calendar
    * @desc Delete multiple components from calendar.
@@ -284,13 +228,132 @@
   };
 
   /**
+   * @function init
+   * @memberof Calendar.prototype
+   * @desc Extend instance with new data and compute additional attributes.
+   * @param {object} data - attributes of calendar
+   */
+  Calendar.prototype.init = function(data) {
+    angular.extend(this, data);
+    // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
+    this.isOwned = Calendar.activeUser.isSuperUser || this.owner == Calendar.activeUser.login;
+    this.isSubscription = !this.isRemote && this.owner != Calendar.activeUser.login;
+    if (angular.isUndefined(this.$shadowData)) {
+      // Make a copy of the data for an eventual reset
+      this.$shadowData = this.$omit();
+    }
+  };
+
+  /**
+   * @function getClassName
+   * @memberof Calendar.prototype
+   * @desc Return the calendar CSS class name based on its ID.
+   * @returns a string representing the foreground CSS class name
+   */
+  Calendar.prototype.getClassName = function(base) {
+    if (angular.isUndefined(base))
+      base = 'fg';
+    return base + '-folder' + this.id;
+  };
+
+  /**
+   * @function $rename
+   * @memberof Calendar.prototype
+   * @desc Rename the calendar and keep the list sorted
+   * @param {string} name - the new name
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.$rename = function() {
+    var _this = this,
+        i,
+        calendars;
+
+    if (this.name == this.$shadowData.name) {
+      // Name hasn't changed
+      return Calendar.$q.when();
+    }
+
+    if (this.isWebCalendar)
+      calendars = Calendar.$webcalendars;
+    else if (this.isSubscription)
+      calendars = Calendar.$subscriptions;
+    else
+      calendars = Calendar.$calendars;
+
+    i = _.indexOf(_.pluck(calendars, 'id'), this.id);
+    if (i > -1) {
+      return this.$save().then(function() {
+        calendars.splice(i, 1);
+        Calendar.$add(_this);
+      });
+    }
+    else {
+      return Calendar.$q.reject();
+    }
+  };
+
+  /**
+   * @function $delete
+   * @memberof Calendar.prototype
+   * @desc Delete the calendar from the server and the static list of calendars.
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.$delete = function() {
+    var _this = this,
+        list,
+        promise;
+
+    if (this.isSubscription) {
+      promise = Calendar.$$resource.fetch(this.id, 'unsubscribe');
+      list = Calendar.$subscriptions;
+    }
+    else {
+      promise = Calendar.$$resource.remove(this.id);
+      if (this.isWebCalendar)
+        list = Calendar.$webcalendars;
+      else
+        list = Calendar.$calendars;
+    }
+
+    return promise.then(function() {
+      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
+      list.splice(i, 1);
+    });
+  };
+
+  /**
+   * @function $reset
+   * @memberof Mailbox.prototype
+   * @desc Reset the original state the mailbox's data.
+   */
+  Calendar.prototype.$reset = function() {
+    var _this = this;
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key[0] != '$') {
+        delete _this[key];
+      }
+    });
+    angular.extend(this, this.$shadowData);
+    this.$shadowData = this.$omit();
+  };
+
+  /**
    * @function $save
    * @memberof Calendar.prototype
    * @desc Save the calendar properties to the server.
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.$save = function() {
+    var _this = this;
+
     return Calendar.$$resource.save(this.id, this.$omit()).then(function(data) {
+      // Make a copy of the data for an eventual reset
+      _this.$shadowData = _this.$omit();
+      return data;
+    }, function(data) {
+      Calendar.$log.error(JSON.stringify(data, undefined, 2));
+      // Restore previous version
+      _this.$reset();
       return data;
     });
   };

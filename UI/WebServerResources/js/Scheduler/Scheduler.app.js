@@ -20,7 +20,7 @@
           calendars: {
             templateUrl: 'UIxCalMainFrame', // UI/Templates/SchedulerUI/UIxCalMainFrame.wox
             controller: 'CalendarsController',
-            controllerAs: 'calendars'
+            controllerAs: 'app'
           }
         },
         resolve: {

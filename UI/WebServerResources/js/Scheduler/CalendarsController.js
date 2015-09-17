@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$q', '$mdDialog', '$log', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
-  function CalendarsController($scope, $rootScope, $stateParams, $state, $timeout, $q, $mdDialog, $log, focus, encodeUriFilter, Dialog, Settings, Calendar, User, stateCalendars) {
+  CalendarsController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$q', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
+  function CalendarsController($scope, $rootScope, $stateParams, $state, $timeout, $q, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -15,6 +15,9 @@
     vm.newCalendar = newCalendar;
     vm.addWebCalendar = addWebCalendar;
     vm.confirmDelete = confirmDelete;
+    vm.editFolder = editFolder;
+    vm.revertEditing = revertEditing;
+    vm.renameFolder = renameFolder;
     vm.share = share;
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
@@ -155,6 +158,26 @@
           $mdDialog.hide();
         }
       }
+    }
+
+    function editFolder(folder) {
+      vm.calendarName = folder.name;
+      vm.editMode = folder.id;
+      focus('calendarName_' + folder.id);
+    }
+
+    function revertEditing(folder) {
+      folder.$reset();
+      vm.editMode = false;
+    }
+
+    function renameFolder(folder) {
+      folder.$rename()
+        .then(function(data) {
+          vm.editMode = false;
+        }, function(data, status) {
+          Dialog.alert(l('Warning'), data);
+        });
     }
 
     function share(calendar) {
