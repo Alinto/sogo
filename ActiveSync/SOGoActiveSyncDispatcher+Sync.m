@@ -701,7 +701,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                    matchingSyncToken: theSyncKey
                                                             fromDate: theFilterType
                                                          initialLoad: initialLoadInProgress];
-        allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending: YES] autorelease]];
+        allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending: YES] autorelease]]];
 
         
         // Check for the WindowSize
