@@ -258,7 +258,7 @@
               <p class="sg-item-name"
                  ng-show="app.editMode != folder.path">
                 {{app.metadataForFolder(folder).name}}
-                <span ng-show="folder.unseenCount"> ({{folder.unseenCount}})</span>
+                <span class="sg-unread-badge" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
               </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == folder.path">
@@ -383,21 +383,21 @@
             <label class="pseudo-input-label"><var:string label:value="Add a Criteria"/></label>
           </div>
           <div layout="row">
-            <a class="sg-outline-button" href="#" ng-click="app.addSearchParam('subject')">
+            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('subject')">
               <var:string label:value="Subject"/>
-            </a>
-            <a class="sg-outline-button" href="#" ng-click="app.addSearchParam('from')">
+            </span>
+            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('from')">
               <var:string label:value="From"/>
-            </a>
-            <a class="sg-outline-button" href="#" ng-click="app.addSearchParam('to')">
+            </span>
+            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('to')">
               <var:string label:value="To"/>
-            </a>
-            <a class="sg-outline-button" href="#" ng-click="app.addSearchParam('cc')">
+            </span>
+            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('cc')">
               <var:string label:value="Cc"/>
-            </a>
-            <a class="sg-outline-button" href="#" ng-click="app.addSearchParam('body')">
+            </span>
+            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('body')">
               <var:string label:value="Body"/>
-            </a>
+            </span>
           </div>
         </div>
       </div>
