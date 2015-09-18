@@ -155,6 +155,8 @@
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
         preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+      else
+        preferences.defaults.Vacation.autoReplyEmailAddresses = [];
     }
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
