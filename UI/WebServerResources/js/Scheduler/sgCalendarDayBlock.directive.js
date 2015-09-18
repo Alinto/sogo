@@ -34,11 +34,11 @@
         '      </div>',
         '      <div class="text">{{ block.component.c_title }}',
         '        <span class="icons">',
-        // Component has an alarm
+        //         Component has an alarm
         '          <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
-        // Component is confidential
+        //         Component is confidential
         '          <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
-        // Component is private
+        //         Component is private
         '          <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '       </span></div>',
         '    </div>',

@@ -6,27 +6,19 @@ $hours_margin: 50px;
 }
 
 .dayLabels {
-  color: sg-color($sogoBlue, 700);
-  height: 35px;
-  left: 0;
+  //color: sg-color($sogoBlue, 700);
   overflow: hidden;
-  position: relative;
   .day {
-    height: 100%;
-    position: absolute;
     text-align: center;
   }
 }
 
 .days {
-  left: 0;
-  right: 0;
-  top: 0;
-  margin-left: $hours_margin;
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
   .day {
     border-left: 1px solid sg-color($sogoPaper, 300);
-    position: absolute;
     .clickableHourCell {
       height: 40px;
       border-bottom: 1px solid sg-color($sogoPaper, 300);
@@ -34,24 +26,12 @@ $hours_margin: 50px;
   }
 }
 
-.daysViewFor1Days {
-  .day {
-    left: $hours_margin;
-    width: 100%;
-  }
-  .days {
-    margin-left: 0;
-  }
-}
-
+.daysViewFor1Days,
 .daysViewFor7Days {
+  margin-left: $hours_margin;
   .day {
-    width: (100% / 7);
-  }
-  $i: 0;
-  @while $i < 7 {
-    .day#{$i} { left: 1% * 100 / 7 * $i; }
-    $i: $i + 1;
+    flex-grow: 1;
+    flex-basis: 0;
   }
 }
 
@@ -66,31 +46,35 @@ $hours_margin: 50px;
   padding: 2px;
 }
 
+.hours {
+  color: sg-color($sogoBlue, 700);
+  display: inline-block;
+  float: left;
+  clear: left;
+  font-weight: $sg-font-light;
+  height: auto;
+  left: 0;
+  position: relative;
+  top: 0;
+  width: $hours_margin;
+  .hour {
+    border-bottom: 1px solid sg-color($sogoPaper, 300);
+    height: 40px;
+    left: 0;
+    padding: 2px;
+    position: relative;
+    right: 0;
+    top: 0;
+  }
+}
+
 .daysView {
   bottom: 0;
   overflow-x: hidden;
   overflow: auto;
-  position: relative;
   top: 0;
-  .hours {
-    color: sg-color($sogoBlue, 700);
-    display: inline-block;
-    float: left;
-    font-weight: $sg-font-light;
-    height: auto;
-    left: 0;
+  .hourCells {
     position: relative;
-    top: 0;
-    width: $hours_margin;
-    .hour {
-      border-bottom: 1px solid sg-color($sogoPaper, 300);
-      height: 40px;
-      left: 0;
-      padding: 2px;
-      position: relative;
-      right: 0;
-      top: 0;
-    }
   }
   .sg-event {
     border-radius: 10px;
@@ -98,6 +82,7 @@ $hours_margin: 50px;
     position: absolute;
     left: 0%;
     right: 0%;
+    overflow: hidden;
     $i: 0;
     @while $i < 96 { // number of 15-minutes blocks in a day
       &.starts#{$i} { top: 10px * $i; }
@@ -105,12 +90,12 @@ $hours_margin: 50px;
       $i: $i + 1;
     }
     .eventInside {
-      position: absolute;
       overflow: hidden;
-      top: 0px;
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
+    }
+  }
+  &.daysHeader {
+    .sg-event {
+      position: relative;
     }
   }
 }
@@ -150,6 +135,9 @@ $hours_margin: 50px;
   right: 1px;
   bottom: 1px;
   overflow: hidden;
+  .allDays & {
+    position: relative;
+  }
 }
 
 .gradient > IMG {
@@ -166,7 +154,7 @@ $hours_margin: 50px;
 /* Attendees Editor */
 .attendees {
   overflow: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
   md-content {
     display: table-row;
   }
@@ -180,12 +168,13 @@ $hours_margin: 50px;
       }
     }
     md-list-item {
+      padding-left: 0;
       &:hover {
         background-color: initial;
       }
-      img {
-        margin-right: $mg/4;
-      }
+//      img {
+//        margin-right: $mg/4;
+//      }
     }
     .hours {
       font-size: 9px;

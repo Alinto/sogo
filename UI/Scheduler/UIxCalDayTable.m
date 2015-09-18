@@ -37,6 +37,9 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
+
 #import "UIxCalDayTable.h"
 
 @class SOGoAppointment;
@@ -292,6 +295,28 @@
   return [weekDays objectAtIndex: [currentTableDay dayOfWeek]];
 }
 
+- (NSString *) labelForMonth
+{
+  NSCalendarDate *nextDay;
+  BOOL isLastOrFirstDay;
+
+  isLastOrFirstDay = NO;
+  if ([currentTableDay dayOfMonth] == 1)
+    {
+      isLastOrFirstDay = YES;
+    }
+  else if ([currentTableDay dayOfMonth] > 27)
+    {
+      nextDay = [currentTableDay dateByAddingYears: 0
+                                            months: 0
+                                              days: 1];
+      if ([nextDay dayOfMonth] == 1)
+        isLastOrFirstDay = YES;
+    }
+
+  return isLastOrFirstDay? [currentTableDay descriptionWithCalendarFormat: @"%b" locale: locale] : nil;
+}
+
 - (NSString *) labelForDate
 {
   return [dateFormatter shortFormattedDate: currentTableDay];
@@ -410,6 +435,11 @@
   return daysView;
 }
 
+- (NSString *) daysViewHeaderClasses
+{
+  return [NSString stringWithFormat: @"%@ daysHeader", [self daysViewClasses]];
+}
+
 - (NSString *) dayClasses
 {
   NSMutableString *classes;
@@ -466,6 +496,11 @@
     return YES;
   
   return NO;
+}
+
+- (BOOL) isWeekView
+{
+  return [currentView isEqualToString:@"weekview"];
 }
 
 @end

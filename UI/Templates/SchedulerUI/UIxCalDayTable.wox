@@ -6,7 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
-  <div var:class="daysViewClasses">
+  <div var:class="daysViewHeaderClasses">
 
 <!-- MultiColumnView -->
     <!-- Display the name of the calendar -->
@@ -18,7 +18,7 @@
           </div>
         </var:foreach>
       </div>
-      
+
       <!-- Display today abreviation and date -->
       <div class="days dayLabels">
         <var:foreach list="daysToDisplay" item="currentTableDay">
@@ -28,7 +28,7 @@
           </div>
         </var:foreach>
       </div>
-      
+
       <!-- All day cells -->
       <div class="days">
         <var:foreach list="calendarsToDisplay" item="currentCalendar">
@@ -45,24 +45,33 @@
       <div class="days dayLabels">
         <var:foreach list="daysToDisplay" item="currentTableDay">
           <div var:class="dayClasses">
-            <var:string value="labelForDate"/><br/>
-            <span class="dayOfWeek"><var:string value="labelForDay"/></span>
+            <var:if condition="isWeekView"><div><var:string value="labelForDay"/></div></var:if>
+            <var:if condition="currentTableDay.isToday">
+              <div class="sg-md-display-2 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+            </var:if>
+            <var:if condition="currentTableDay.isToday" const:negate="YES">
+              <div class="sg-md-display-2 md-default-theme md-fg md-hue-1"><var:string value="currentTableDay.dayOfMonth"/></div>
+            </var:if>
+            <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
           </div>
         </var:foreach>
       </div>
-    
+
       <!-- All day cells -->
-      <div class="days">
+      <div class="days allDays">
         <var:foreach list="daysToDisplay" item="currentTableDay">
-          <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" hour="allday"><!-- space --></div>
+          <div var:class="dayClasses" var:day="currentTableDay.shortDateString" var:id="currentAllDayId" hour="allday">
+              <sg-calendar-day-table
+                  sg-blocks="calendar.allDayBlocks"
+                  sg-click="list.openEvent(event, component)"
+                  var:sg-day="currentTableDay.shortDateString" />
+          </div>
         </var:foreach>
       </div>
     </var:if>
   </div>
-  
-  
-  <!-- The hours cells -->
-  <div var:class="daysViewClasses">
+
+  <!-- The hours -->
     <div class="hours">
       <var:foreach list="hoursToDisplay" item="currentTableHour">
         <div class="hour" var:id="currentHourId">
@@ -70,6 +79,9 @@
         </div>
       </var:foreach>
     </div>
+
+  <!-- The hours cells -->
+  <div var:class="daysViewClasses">
     <div class="days">
       <!-- MultiColumnView -->
       <var:if condition="isMultiColumnView">

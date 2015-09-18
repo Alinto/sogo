@@ -278,7 +278,7 @@
     futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
     futureComponentData.then(function(data) {
       Component.$timeout(function() {
-        var components = [], blocks = {};
+        var components = [], blocks = {}, allDayBlocks = {}, dates = [];
 
         // Instantiate Component objects
         _.reduce(data.events, function(objects, eventData, i) {
@@ -294,18 +294,35 @@
           block.component = components[block.nbr];
         });
 
-        // Convert array of blocks to object with days as keys
+        // Associate Component objects to all-day blocks positions
+        _.each(_.flatten(data.allDayBlocks), function(allDayBlock) {
+          allDayBlock.component = components[allDayBlock.nbr];
+        });
+
+        // Build array of dates
         for (i = 0; i < data.blocks.length; i++) {
-          blocks[startDate.getDayString()] = data.blocks[i];
+          dates.push(startDate.getDayString());
           startDate.addDays(1);
         }
 
-        Component.$log.debug('blocks ready (' + _.keys(blocks).length + ')');
+        // Convert array of blocks to object with days as keys
+        for (i = 0; i < data.blocks.length; i++) {
+          blocks[dates[i]] = data.blocks[i];
+        }
+
+        // Convert array of all-day blocks to object with days as keys
+        for (i = 0; i < data.allDayBlocks.length; i++) {
+          allDayBlocks[dates[i]] = data.allDayBlocks[i];
+        }
+
+        Component.$log.debug('blocks ready (' + _.flatten(data.blocks).length + ')');
+        Component.$log.debug('all day blocks ready (' + _.flatten(data.allDayBlocks).length + ')');
 
         // Save the blocks to the object model
         Component.$blocks = blocks;
+        Component.$allDayBlocks = allDayBlocks;
 
-        deferred.resolve(blocks);
+        deferred.resolve({ blocks: blocks, allDayBlocks: allDayBlocks });
       });
     }, deferred.reject);
 

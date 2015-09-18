@@ -39,7 +39,7 @@
   NSArray *weekDays;
   NSString *currentView, *timeFormat, *currentTableHour;
   NSCalendarDate *startDate, *currentTableDay;
-  NSMutableArray *daysToDisplay, *calendarsToDisplay,  *currentCalendar, *hoursToDisplay;
+  NSMutableArray *daysToDisplay, *calendarsToDisplay, *currentCalendar, *hoursToDisplay;
   unsigned int numberOfDays;
 }
 

@@ -10,13 +10,15 @@
   function CalendarController($scope, $state, $stateParams, $timeout, $interval, $log, focus, Calendar, Component, stateEventsBlocks) {
     var vm = this;
 
-    vm.blocks = stateEventsBlocks;
+    vm.blocks = stateEventsBlocks.blocks;
+    vm.allDayBlocks = stateEventsBlocks.allDayBlocks;
     vm.changeView = changeView;
 
     // Refresh current view when the list of calendars is modified
     $scope.$on('calendars:list', function() {
       Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
-        vm.blocks = data;
+        vm.blocks = data.blocks;
+        vm.allDayBlocks = data.allDayBlocks;
       });
     });
 
