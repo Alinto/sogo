@@ -76,6 +76,13 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self class] getAvailableProperties: propertiesP
+                                     inMemCtx: memCtx];
+}
+
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newContainer
 {
