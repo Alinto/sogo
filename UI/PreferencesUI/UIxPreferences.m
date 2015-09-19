@@ -169,6 +169,11 @@ static NSArray *reminderValues = nil;
   [super dealloc];
 }
 
+- (NSString *) modulePath
+{
+  return @"Preferences";
+}
+
 // - (void) setHasChanged: (BOOL) newHasChanged
 // {
 //   hasChanged = newHasChanged;

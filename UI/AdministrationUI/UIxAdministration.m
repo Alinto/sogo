@@ -46,6 +46,11 @@
   [super dealloc];
 }
 
+- (NSString *) modulePath
+{
+  return @"Administration";
+}
+
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {

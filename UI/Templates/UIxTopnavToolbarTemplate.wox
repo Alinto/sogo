@@ -49,12 +49,13 @@
             <md-tooltip><var:string label:value="Mail"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith(activeUser.login)"
+                     ng-disabled="baseURL.endsWith('/Preferences')"
                      ng-href="{{activeUser.path.preferences}}">
             <md-icon>settings</md-icon>
             <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
+                     ng-disabled="baseURL.endsWith('/Administration')"
                      ng-show="activeUser.isSuperUser"
                      ng-href="{{activeUser.path.administration}}">
             <md-icon>settings_applications</md-icon>

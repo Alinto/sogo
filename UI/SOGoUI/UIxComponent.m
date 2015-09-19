@@ -364,25 +364,23 @@ static SoProduct      *commonProduct      = nil;
   BOOL found;
   NSString *hostLessURL;
   Class objectClass, userFolderClass;
-// , groupFolderClass
+
+  if ([[self parent] respondsToSelector: @selector(modulePath)])
+    return [NSString stringWithFormat: @"%@/%@", [[self clientObject] baseURLInContext: context], [[self parent] modulePath]];
 
   currentClient = [self clientObject];
   if (currentClient
       && [currentClient isKindOfClass: [SOGoObject class]])
     {
-//       groupFolderClass = [SOGoCustomGroupFolder class];
       userFolderClass = [SOGoUserFolder class];
 
       objectClass = [currentClient class];
-//       found = (objectClass == groupFolderClass || objectClass == userFolderClass);
       found = (objectClass == userFolderClass);
       while (!found && currentClient)
 	{
 	  parent = [currentClient container];
 	  objectClass = [parent class];
-	  if (// objectClass == groupFolderClass
-// 	      || 
-	      objectClass == userFolderClass)
+	  if (objectClass == userFolderClass)
 	    found = YES;
 	  else
 	    currentClient = parent;
