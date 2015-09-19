@@ -103,7 +103,8 @@
           </div>
           <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
             <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
-            <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
+            <sg-timepicker ng-model="editor.component.start"
+                           ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
           </div>
         </div>
         <div flex="50">
@@ -112,7 +113,8 @@
           </div>
           <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
             <md-datepicker ng-model="editor.component.end"> <!-- date picker--></md-datepicker>
-            <sg-timepicker ng-model="editor.component.end"><!-- time picker --></sg-timepicker>
+            <sg-timepicker ng-model="editor.component.end"
+                           ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
           </div>
         </div>
       </div>
