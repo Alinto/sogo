@@ -62,6 +62,12 @@
           right -= 5;
       }
 
+      // Add some padding (2%)
+      if (left === 0)
+        left = 2;
+      if (right === 0)
+        right = 2;
+
       // Set position
       iElement.css('left', left + '%');
       iElement.css('right', right + '%');
