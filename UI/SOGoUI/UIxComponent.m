@@ -372,7 +372,7 @@ static SoProduct      *commonProduct      = nil;
       return [NSString stringWithFormat: @"%@%@", baseURL, [[self parent] modulePath]];
     }
 
-  return nil;
+  return @"SOGo";
 }
 
 - (NSString *) ownPath
