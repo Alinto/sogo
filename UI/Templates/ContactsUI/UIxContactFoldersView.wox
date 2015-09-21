@@ -67,7 +67,7 @@
                       <var:string label:value="Rename"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
+                  <md-menu-item ng-show="folder.id != 'personal'">
                     <md-button type="button" ng-click="app.confirmDelete()">
                       <var:string label:value="Delete"/>
                     </md-button>

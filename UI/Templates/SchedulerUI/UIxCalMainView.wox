@@ -194,7 +194,7 @@
                       <var:string label:value="Rename"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
+                  <md-menu-item ng-show="calendar.id != 'personal'">
                     <md-button ng-click="app.confirmDelete(calendar)">
                       <var:string label:value="Delete"/>
                     </md-button>
