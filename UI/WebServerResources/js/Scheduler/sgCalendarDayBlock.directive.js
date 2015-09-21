@@ -50,16 +50,16 @@
     };
 
     function link(scope, iElement, attrs) {
-      // Compute overlapping (5%)
+      // Compute overlapping (2%)
       var pc = 100 / scope.block.siblings,
           left = scope.block.position * pc,
           right = 100 - (scope.block.position + 1) * pc;
 
       if (pc < 100) {
         if (left > 0)
-          left -= 5;
+          left -= 2;
         if (right > 0)
-          right -= 5;
+          right -= 2;
       }
 
       // Add some padding (2%)
