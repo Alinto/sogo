@@ -556,7 +556,7 @@
             <md-input-container>
               <input name="folderSearch" type="search" />
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex="25">
               <md-select>
                 <md-option value="title_Category_Location" selected="selected"><var:string label:value="Title, category or location"/></md-option>
                 <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>

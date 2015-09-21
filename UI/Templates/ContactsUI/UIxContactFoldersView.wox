@@ -260,7 +260,7 @@
             <md-input-container>
               <input name="folderSearch" type="search" ng-minlength="3"/>
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex="25">
               <md-select>
                 <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
                 <md-option value="category"><var:string label:value="Category"/></md-option>
