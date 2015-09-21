@@ -129,6 +129,17 @@ div.md-tile-left {
     width: (2 * $mg);
     height:(7 * $line);
   }
+
+  &-counter-badge {
+    border-left-width: 1px;
+    border-left-color: #999;
+    border-style: solid;
+    margin: 0;
+    padding: 0 rem(0.500);
+    font-size: $sg-font-size-1;
+    font-weight: $sg-font-medium;
+    text-transform: uppercase;
+  }
 }
 .sg-avatars {
   margin: ($mg / 2) 0 0 ($mg / 2);

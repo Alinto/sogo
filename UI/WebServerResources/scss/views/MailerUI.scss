@@ -11,17 +11,6 @@
   transform: translateY(-100%); // Compensate the container top-margin
 }
 
-.sg-unread-badge {
-  border-left-width: 1px;
-  border-left-color: #999;
-  border-style: solid;
-  margin: 0;
-  padding: 0 rem(0.500);
-  font-size: $sg-font-size-1;
-  font-weight: $sg-font-medium;
-  text-transform: uppercase;
-}
-
 .unread {
   .#{$md}-subhead-multi,
   .#{$md}-body-multi {

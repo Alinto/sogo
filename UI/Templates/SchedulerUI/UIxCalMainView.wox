@@ -170,7 +170,10 @@
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name" ng-show="app.editMode != calendar.id">{{calendar.name}}</p>
+              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+                {{calendar.name}}
+                <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
+              </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == calendar.id">
                 <input class="sg-item-name" type="text"
