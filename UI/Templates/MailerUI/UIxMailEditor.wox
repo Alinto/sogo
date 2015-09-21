@@ -46,6 +46,7 @@
                       md-on-append="editor.addRecipient($chip)">
               <md-autocomplete
                   class="sg-chips-autocomplete"
+                  md-autofocus="true"
                   md-search-text="editor.autocomplete.to.searchText"
                   md-selected-item="editor.autocomplete.to.selected"
                   md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
@@ -80,6 +81,9 @@
                   md-search-text="editor.autocomplete.cc.searchText"
                   md-selected-item="editor.autocomplete.cc.selected"
                   md-items="user in editor.contactFilter(editor.autocomplete.cc.searchText)"
+                  md-min-length="3"
+                  md-delay="300"
+                  md-no-cache="true"
                   label:placeholder="Add a recipient">
                 <md-item-template>
                   <span class="md-contact-suggestion">
@@ -108,6 +112,9 @@
                   md-selected-item="editor.autocomplete.bcc.selected"
                   md-search-text="editor.autocomplete.bcc.searchText"
                   md-items="user in editor.contactFilter(editor.autocomplete.bcc.searchText)"
+                  md-min-length="3"
+                  md-delay="300"
+                  md-no-cache="true"
                   label:placeholder="Add a recipient">
                 <md-item-template>
                   <span class="md-contact-suggestion">
