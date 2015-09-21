@@ -71,6 +71,11 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return self;
 }
 
+- (NSString *) modulePath
+{
+  return @"Contacts";
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;

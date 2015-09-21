@@ -87,6 +87,11 @@
   [super dealloc];
 }
 
+- (NSString *) modulePath
+{
+  return @"Mail";
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
