@@ -1,222 +1,225 @@
 /// SchedulerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
 
-.sg-draggable {
-  cursor: move;
-}
-
-.dayLabels {
-  //color: sg-color($sogoBlue, 700);
-  overflow: hidden;
-  .day {
-    text-align: center;
+[ui-view=calendars] {
+  .sg-draggable {
+    cursor: move;
   }
-}
 
-.allDays {
-  border-bottom: 1px solid sg-color($sogoPaper, 300);
-}
-
-.days {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  .day {
-    border-left: 1px solid sg-color($sogoPaper, 300);
-    .clickableHourCell {
-      height: 40px;
-      border-bottom: 1px solid sg-color($sogoPaper, 300);
-    }
-  }
-}
-
-.daysViewFor1Days,
-.daysViewFor7Days {
-  margin-left: $hours_margin;
-  .day {
-    flex-grow: 1;
-    flex-basis: 0;
-  }
-}
-
-.sg-calendar-tile-header {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: sg-color($sogoPaper, 800);
-  font-size: $sg-font-size-2;
-  font-weight: $sg-font-light;
-  overflow: hidden;
-  padding: 2px;
-}
-
-.hours {
-  color: sg-color($sogoBlue, 700);
-  display: inline-block;
-  float: left;
-  clear: left;
-  font-weight: $sg-font-light;
-  height: auto;
-  left: 0;
-  position: relative;
-  top: 0;
-  width: $hours_margin;
-  .hour {
-    border-bottom: 1px solid sg-color($sogoPaper, 300);
-    height: 40px;
-    left: 0;
-    padding: 2px;
-    position: relative;
-    right: 0;
-    top: 0;
-  }
-}
-
-.sg-event {
-  font-size: $sg-font-size-2;
-  &, md-icon {
-    color: #fff;
-  }
-  .material-icons {
-    font-size: $sg-font-size-2;
-  }
-  .allDays & {
-    margin: 2%; // See sgCalendarDayBlock.directive.js
-    line-height: initial;
-  }
-}
-
-.daysView {
-  bottom: 0;
-  overflow-x: hidden;
-  overflow: auto;
-  top: 0;
-  .hourCells {
-    position: relative;
-  }
-  .sg-event {
-    border-radius: 3px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
+  .dayLabels {
+    //color: sg-color($sogoBlue, 700);
     overflow: hidden;
-    $i: 0;
-    @while $i < 96 { // number of 15-minutes blocks in a day
-      &.starts#{$i} { top: 10px * $i; }
-      &.lasts#{$i} { height: 10px * $i; }
-      $i: $i + 1;
-    }
-    .eventInside {
-      overflow: hidden;
+    .day {
+      text-align: center;
     }
   }
-  &.daysHeader {
+
+  .allDays {
+    border-bottom: 1px solid sg-color($sogoPaper, 300);
+  }
+
+  .days {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    .day {
+      border-left: 1px solid sg-color($sogoPaper, 300);
+      .clickableHourCell {
+        height: 40px;
+        border-bottom: 1px solid sg-color($sogoPaper, 300);
+      }
+    }
+  }
+
+  .daysViewFor1Days,
+  .daysViewFor7Days {
+    margin-left: $hours_margin;
+    .day {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+
+  .sg-calendar-tile-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: sg-color($sogoPaper, 800);
+    font-size: $sg-font-size-2;
+    font-weight: $sg-font-light;
+    overflow: hidden;
+    padding: 2px;
+  }
+
+  .hours {
+    color: sg-color($sogoBlue, 700);
+    display: inline-block;
+    float: left;
+    clear: left;
+    font-weight: $sg-font-light;
+    height: auto;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: $hours_margin;
+    .hour {
+      border-bottom: 1px solid sg-color($sogoPaper, 300);
+      text-align: right;
+      height: 40px;
+      left: 0;
+      padding: 2px;
+      position: relative;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .sg-event {
+    font-size: $sg-font-size-2;
+    &, md-icon {
+      color: #fff;
+    }
+    .material-icons {
+      font-size: $sg-font-size-2;
+    }
+    .allDays & {
+      margin: 2%; // See sgCalendarDayBlock.directive.js
+      line-height: initial;
+    }
+  }
+
+  .daysView {
+    bottom: 0;
+    overflow-x: hidden;
+    overflow: auto;
+    top: 0;
+    .hourCells {
+      position: relative;
+    }
     .sg-event {
+      border-radius: 3px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
+      overflow: hidden;
+      $i: 0;
+      @while $i < 96 { // number of 15-minutes blocks in a day
+        &.starts#{$i} { top: 10px * $i; }
+        &.lasts#{$i} { height: 10px * $i; }
+        $i: $i + 1;
+      }
+      .eventInside {
+        overflow: hidden;
+      }
+    }
+    &.daysHeader {
+      .sg-event {
+        position: relative;
+      }
+    }
+  }
+
+  .monthView {
+    md-grid-tile {
+      border: 1px solid sg-color($sogoPaper, 300);
+      overflow: auto;
+    }
+    .sg-event {
+      border-radius: 1px;
+      overflow: hidden;
+      padding: 2px;
+      margin-bottom: 1px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      span { // hours
+        font-weight: $sg-font-light;
+      }
+    }
+  }
+
+  .minutes15, .minutes30, .minutes45 {
+    display: block;
+    height: 25%;
+  }
+
+  .minutes30 {
+    border-bottom: 1px dotted sg-color($sogoPaper, 300);
+  }
+
+  .gradient, .text {
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    right: 2px;
+    bottom: 1px;
+    overflow: hidden;
+    .allDays & {
       position: relative;
     }
   }
-}
 
-.monthView {
-  md-grid-tile {
-    border: 1px solid sg-color($sogoPaper, 300);
-    overflow: auto;
+  .gradient > IMG {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    min-height: 15px; /* for 15-minute events */
+    width: 100%;
   }
-  .sg-event {
-    border-radius: 1px;
+
+  /* Attendees Editor */
+  .attendees {
     overflow: hidden;
-    padding: 2px;
-    margin-bottom: 1px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    span { // hours
-      font-weight: $sg-font-light;
+    overflow-x: auto;
+    md-content {
+      display: table-row;
     }
-  }
-}
-
-.minutes15, .minutes30, .minutes45 {
-  display: block;
-  height: 25%;
-}
-
-.minutes30 {
-  border-bottom: 1px dotted sg-color($sogoPaper, 300);
-}
-
-.gradient, .text {
-  position: absolute;
-  top: 1px;
-  left: 4px;
-  right: 2px;
-  bottom: 1px;
-  overflow: hidden;
-  .allDays & {
-    position: relative;
-  }
-}
-
-.gradient > IMG {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  min-height: 15px; /* for 15-minute events */
-  width: 100%;
-}
-
-/* Attendees Editor */
-.attendees {
-  overflow: hidden;
-  overflow-x: auto;
-  md-content {
-    display: table-row;
-  }
-  md-list {
-    display: table-cell;
-    &.day {
-      min-width: 408px;
+    md-list {
+      display: table-cell;
+      &.day {
+        min-width: 408px;
+        md-list-item {
+          padding: 0;
+          align-items: stretch;
+        }
+      }
       md-list-item {
-        padding: 0;
-        align-items: stretch;
-      }
-    }
-    md-list-item {
-      padding-left: 0;
-      &:hover {
-        background-color: initial;
-      }
+        padding-left: 0;
+        &:hover {
+          background-color: initial;
+        }
 //      img {
 //        margin-right: $mg/4;
 //      }
-    }
-    .hours {
-      font-size: 9px;
-    }
-    .hour {
-      display: flex;
-      border-left: 1px solid sg-color($sogoPaper, 100);
-      min-width: 16px;
-      min-height: 16px;
-      flex-wrap: nowrap;
-      flex-grow: 0;
-      flex-basis: 17px; // hour's width + hour's border
-      align-items: stretch;
-    }
-    .quarter {
-      min-width: 4px;
-      display: flex;
-      align-items: stretch;
-      .busy {
-        margin: 8px 0;
-        min-width: 4px;
-        background-color: sg-color($sogoPaper, 600);
       }
-      &.event {
-        background-color: sg-color($sogoBlue, 300);
+      .hours {
+        font-size: 9px;
+      }
+      .hour {
+        display: flex;
+        border-left: 1px solid sg-color($sogoPaper, 100);
+        min-width: 16px;
+        min-height: 16px;
+        flex-wrap: nowrap;
+        flex-grow: 0;
+        flex-basis: 17px; // hour's width + hour's border
+        align-items: stretch;
+      }
+      .quarter {
+        min-width: 4px;
+        display: flex;
+        align-items: stretch;
+        .busy {
+          margin: 8px 0;
+          min-width: 4px;
+          background-color: sg-color($sogoPaper, 600);
+        }
+        &.event {
+          background-color: sg-color($sogoBlue, 300);
+        }
       }
     }
   }
