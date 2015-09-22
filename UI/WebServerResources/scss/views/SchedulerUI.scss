@@ -2,6 +2,29 @@
 $hours_margin: 50px;
 
 [ui-view=calendars] {
+  $listView-width: grid-step(5) !global;
+  $detailView-width: grid-step(11) !global;
+
+  .view-list {
+    min-width: ($listView-width - ($pitch * 2));
+    @include at(md){
+      @include flex-col(md, 6, 1, 1);
+      min-width: ($pitch * 3);
+    }
+    @include from(lg) {
+      @include flex-col(lg, 5, 1, 0);
+    }
+  }
+
+  .view-detail {
+    @include at(md) {
+      @include flex-col(md, 10);
+    }
+    @include from(lg) {
+      @include flex-col(lg, 11, 2, 1);
+    }
+  }
+
   .sg-draggable {
     cursor: move;
   }
@@ -169,58 +192,66 @@ $hours_margin: 50px;
     min-height: 15px; /* for 15-minute events */
     width: 100%;
   }
+}
 
-  /* Attendees Editor */
-  .attendees {
-    overflow: hidden;
-    overflow-x: auto;
-    md-content {
-      display: table-row;
-    }
-    md-list {
-      display: table-cell;
-      &.day {
-        min-width: 408px;
-        md-list-item {
-          padding: 0;
-          align-items: stretch;
-        }
-      }
+/* Attendees Editor */
+.attendees {
+  overflow: hidden;
+  overflow-x: auto;
+  md-content {
+    display: table-row;
+  }
+  md-list {
+    display: table-cell;
+    vertical-align: top;
+    padding-top: 0;
+    &.day {
+      min-width: 408px;
       md-list-item {
-        padding-left: 0;
-        &:hover {
-          background-color: initial;
-        }
+        //padding: 0;
+        align-items: stretch;
+      }
+    }
+  }
+  md-list-item {
+    padding-left: 0;
+    &:hover {
+      background-color: initial;
+    }
 //      img {
 //        margin-right: $mg/4;
 //      }
-      }
-      .hours {
-        font-size: 9px;
-      }
-      .hour {
-        display: flex;
-        border-left: 1px solid sg-color($sogoPaper, 100);
-        min-width: 16px;
-        min-height: 16px;
-        flex-wrap: nowrap;
-        flex-grow: 0;
-        flex-basis: 17px; // hour's width + hour's border
-        align-items: stretch;
-      }
-      .quarter {
-        min-width: 4px;
-        display: flex;
-        align-items: stretch;
-        .busy {
-          margin: 8px 0;
-          min-width: 4px;
-          background-color: sg-color($sogoPaper, 600);
-        }
-        &.event {
-          background-color: sg-color($sogoBlue, 300);
-        }
-      }
+  }
+  .md-tile-left {
+    height: initial;
+    min-height: 48px;
+    width: initial;
+    padding: 4px;
+  }
+  .hours {
+    font-size: 9px;
+  }
+  .hour {
+    display: flex;
+    border-left: 1px solid sg-color($sogoPaper, 100);
+    min-width: 16px;
+    min-height: 16px;
+    flex-wrap: nowrap;
+    flex-grow: 0;
+    flex-basis: 17px; // hour's width + hour's border
+    align-items: stretch;
+  }
+  .quarter {
+    min-width: 4px;
+    display: flex;
+    align-items: stretch;
+    .busy {
+      margin: 8px 0;
+      min-width: 4px;
+      background-color: sg-color($sogoPaper, 600);
+    }
+    &.event {
+      background-color: sg-color($sogoBlue, 300);
     }
   }
 }
