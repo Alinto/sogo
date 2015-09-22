@@ -25,10 +25,12 @@
         '      </div>',
         '    </div>',
         '  </div>',
-        '  <div class="min1" ng-hide="is5min()" layout="row" layout-sm="column" layout-wrap>',
-        '    <div ng-repeat="minutesLine in min1" layout="row" layout-align="space-around center" flex="50">',
-        '      <md-button class="minuteBtn md-fab md-mini" ng-repeat="minute in minutesLine" id="{{minute.id}}"',
-        '                 ng-click="minuteClickHandler(minute.displayName)">{{minute.displayName}}</md-button>',
+        '  <div class="sg-time-scroll-mask" ng-hide="is5min()">',
+        '    <div class="min1" layout="row" layout-sm="column" layout-wrap>',
+        '      <div ng-repeat="minutesLine in min1" layout="row" layout-align="space-around center" flex="50">',
+        '        <md-button class="minuteBtn md-fab md-mini" ng-repeat="minute in minutesLine" id="{{minute.id}}"',
+        '                   ng-click="minuteClickHandler(minute.displayName)">{{minute.displayName}}</md-button>',
+        '      </div>',
         '    </div>',
         '  </div>',
         '  <div flex layout="row" layout-align="center center" class="toggle-pane">',
@@ -44,9 +46,8 @@
       link: function(scope, element, attrs, controllers) {
         var ngModelCtrl = controllers[0];
         var sgTimePaneCtrl = controllers[1];
-        console.log(element);
         var timePaneElement = element;
-        sgTimePaneCtrl.configureNgModel(ngModelCtrl,sgTimePaneCtrl, timePaneElement);
+        sgTimePaneCtrl.configureNgModel(ngModelCtrl, sgTimePaneCtrl, timePaneElement);
       }
     };
   }
@@ -110,15 +111,15 @@
       }
     }
 
-    $scope.show5min=true;
+    $scope.show5min = true;
     $scope.getToggleBtnLbl = function() {
       return ($scope.is5min()) ? '>>' : '<<';
     };
     $scope.toggleManual5min = function() {
       $scope.manual5min = !$scope.is5min();
     };
-    $scope.is5min=function(){
-      if($scope.manual5min === true || $scope.manual5min === false) {
+    $scope.is5min = function() {
+      if ($scope.manual5min === true || $scope.manual5min === false) {
         return $scope.manual5min;
       }
       else {
@@ -133,7 +134,8 @@
     var self = this;
 
     this.hourClickHandler = function(displayVal) {
-      var updated = new Date(self.displayTime).setHours(Number(displayVal));
+      var updated = new Date(self.displayTime);
+      updated.setHours(Number(displayVal));
       self.setNgModelValue(updated, 'hours');
     };
     $scope.hourClickHandler = this.hourClickHandler;
@@ -141,7 +143,8 @@
     this.minuteClickHandler = function(displayVal) {
       //remove leading ':'
       var val = displayVal.substr(1);
-      var updated = new Date(self.displayTime).setMinutes(Number(val));
+      var updated = new Date(self.displayTime);
+      updated.setMinutes(Number(val));
       self.setNgModelValue(updated, 'minutes');
     };
     $scope.minuteClickHandler = this.minuteClickHandler;
@@ -152,6 +155,7 @@
 
   TimePaneCtrl.prototype.configureNgModel = function(ngModelCtrl, sgTimePaneCtrl, timePaneElement) {
     this.ngModelCtrl = ngModelCtrl;
+
     var self = this;
     ngModelCtrl.$render = function() {
       self.changeSelectedTime(self.ngModelCtrl.$viewValue, sgTimePaneCtrl, timePaneElement);
@@ -164,8 +168,9 @@
   TimePaneCtrl.prototype.changeSelectedTime = function(date, sgTimePaneCtrl, timePaneElement) {
     var self = this;
     var previousSelectedTime = this.selectedTime;
-    this.selectedTime = new Date(date);
+    this.selectedTime = date;
     this.changeDisplayTime(date).then(function() {
+
       // Remove the selected class from the previously selected date, if any.
       if (previousSelectedTime) {
         var prevH = previousSelectedTime.getHours();
@@ -189,14 +194,13 @@
 
       // Apply the select class to the new selected date if it is set.
       if (date) {
-        var d = new Date(date);
-        var newH = d.getHours();
+        var newH = date.getHours();
         var mCell, hCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+newH);
         if (hCell) {
           hCell.classList.add(SELECTED_TIME_CLASS);
           hCell.setAttribute('aria-selected', 'true');
         }
-        var newM = d.getMinutes();
+        var newM = date.getMinutes();
         if (newM % 5 === 0) {
           sgTimePaneCtrl.$scope.show5min = true;
           mCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute5-'+newM);
@@ -372,7 +376,8 @@
         // This pane will be detached from here and re-attached to the document body.
         '<div class="sg-timepicker-time-pane md-whiteframe-z1">',
         '  <div class="sg-timepicker-input-mask">',
-        '    <div class="sg-timepicker-input-mask-opaque"></div>',
+        '    <div class="sg-timepicker-input-mask-opaque',
+        '                md-default-theme md-background md-bg"></div>', // using mdColors
         '  </div>',
         '  <div class="sg-timepicker-time md-default-theme md-bg md-background">',
         '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
@@ -406,11 +411,32 @@
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
 
   /**
+   * Height of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-height is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var TIME_PANE_HEIGHT = { MIN5: { GTSM: 172 + 20, SM: 292 + 20 },
+                           MIN1: { GTSM: 364 + 20, SM: 454 + 20 } };
+
+  /**
+   * Width of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-width is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var TIME_PANE_WIDTH = { GTSM: 510 + 20, SM: 272 + 20 };
+
+  /**
    * Controller for sg-timepicker.
    *
    * ngInject @constructor
    */
-  function TimePickerCtrl($scope, $element, $attrs, $compile, $timeout, $mdConstant, $mdTheming,
+  function TimePickerCtrl($scope, $element, $attrs, $compile, $timeout, $mdConstant, $mdMedia, $mdTheming,
                           $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
     /** @final */
     this.$compile = $compile;
@@ -427,6 +453,9 @@
     /** @final */
     this.$mdConstant = $mdConstant;
 
+    /** @final */
+    this.$mdMedia = $mdMedia;
+
     /* @final */
     this.$mdUtil = $mdUtil;
 
@@ -441,6 +470,9 @@
 
     /** @type {HTMLElement} */
     this.inputContainer = $element[0].querySelector('.sg-timepicker-input-container');
+
+    /** @final {!angular.JQLite} */
+    this.ngInputElement = angular.element(this.inputElement);
 
     /** @type {HTMLElement} Floating time pane. */
     this.timePane = $element[0].querySelector('.sg-timepicker-time-pane');
@@ -490,6 +522,9 @@
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
 
+    /** Pre-bound resize handler so that the event listener can be removed. */
+    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeTimePane), 100);
+
     // Unless the user specifies so, the datepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
     // (based on whether or not the user has turned that particular feature on/off).
@@ -507,7 +542,7 @@
     });
   }
 
-  TimePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$mdConstant", "$mdTheming",
+  TimePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$mdConstant", "$mdMedia", "$mdTheming",
                             "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
 
   /**
@@ -526,10 +561,10 @@
 
   TimePickerCtrl.prototype.formatTime = function(time) {
     var t = new Date(time);
-    if(t) {
-      var h= t.getHours();
-      var m= t.getMinutes();
-      return (h<10?('0'+ h) : h) + ':' + (m<10?'0'+ m : m);
+    if (t) {
+      var h = t.getHours();
+      var m = t.getMinutes();
+      return (h < 10? ('0' + h) : h) + ':' + (m < 10? ('0' + m) : m);
     }
     else return '';
   };
@@ -546,16 +581,15 @@
       self.ngModelCtrl.$setViewValue(time);
       self.time = time;
       self.inputElement.value = self.formatTime(self.time);
-      if(data.changed == 'minutes') {
+      if (data.changed == 'minutes') {
         self.closeTimePane();
       }
       self.resizeInputElement();
       self.inputContainer.classList.remove(INVALID_CLASS);
     });
 
-    var ngElement = angular.element(self.inputElement);
-    ngElement.on('input', angular.bind(self, self.resizeInputElement));
-    ngElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
+    self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
+    self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
                                                 DEFAULT_DEBOUNCE_INTERVAL, self));
   };
 
@@ -566,7 +600,7 @@
     var keyCodes = this.$mdConstant.KEY_CODE;
 
     // Add event listener through angular so that we can triggerHandler in unit tests.
-    angular.element(self.inputElement).on('keydown', function(event) {
+    self.ngInputElement.on('keydown', function(event) {
       if (event.altKey && event.keyCode == keyCodes.DOWN_ARROW) {
         self.openTimePane(event);
         $scope.$digest();
@@ -588,9 +622,12 @@
     if (this.$attrs.ngDisabled) {
       // The expression is to be evaluated against the directive element's scope and not
       // the directive's isolate scope.
-      this.$element.scope().$watch(this.$attrs.ngDisabled, function(isDisabled) {
-        self.setDisabled(isDisabled);
-      });
+      var scope = this.$mdUtil.validateScope(this.$element) ? this.$element.scope() : null;
+      if (scope) {
+        scope.$watch(this.$attrs.ngDisabled, function(isDisabled) {
+          self.setDisabled(isDisabled);
+        });
+      }
     }
 
     Object.defineProperty(this, 'placeholder', {
@@ -623,20 +660,29 @@
   TimePickerCtrl.prototype.handleInputEvent = function(self) {
     var inputString = this.inputElement.value;
     var arr = inputString.split(':');
-    if(arr.length < 2) {return;}
-    var h=Number(arr[0]);
-    var m=Number(arr[1]);
-    var newVal = new Date(this.time);
-    if (h && h>=0 && h<=23 && m && m>=0 && m<= 59 && angular.isDate(newVal)) {
-      newVal.setHours(h);
-      newVal.setMinutes(m);
-      this.ngModelCtrl.$setViewValue(newVal);
-      this.time = newVal;
+
+    if (inputString === '') {
+      this.ngModelCtrl.$setViewValue(null);
+      this.time = null;
       this.inputContainer.classList.remove(INVALID_CLASS);
     }
-    else {
-      // If there's an input string, it's an invalid time.
+    else if (arr.length < 2) {
       this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
+    }
+    else {
+      var h = Number(arr[0]);
+      var m = Number(arr[1]);
+      var newVal = new Date(this.time);
+      if (h && h >= 0 && h <= 23 && m && m >= 0 && m <= 59 && angular.isDate(newVal)) {
+        newVal.setHours(h);
+        newVal.setMinutes(m);
+        this.ngModelCtrl.$setViewValue(newVal);
+        this.time = newVal;
+        this.inputContainer.classList.remove(INVALID_CLASS);
+      }
+      else {
+        this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
+      }
     }
   };
 
@@ -649,12 +695,36 @@
     var elementRect = this.inputContainer.getBoundingClientRect();
     var bodyRect = document.body.getBoundingClientRect();
 
-    timePane.style.left = (elementRect.left - bodyRect.left) + 'px';
-    timePane.style.top = (elementRect.top - bodyRect.top) + 'px';
+    // Check to see if the calendar pane would go off the screen. If so, adjust position
+    // accordingly to keep it within the viewport.
+    var paneTop = elementRect.top - bodyRect.top;
+    var paneLeft = elementRect.left - bodyRect.left;
+
+    // If the right edge of the pane would be off the screen and shifting it left by the
+    // difference would not go past the left edge of the screen.
+    var paneWidth = this.$mdMedia('sm')? TIME_PANE_WIDTH.SM : TIME_PANE_WIDTH.GTSM;
+    if (paneLeft + paneWidth > bodyRect.right &&
+        bodyRect.right - paneWidth > 0) {
+      paneLeft = bodyRect.right - paneWidth;
+      timePane.classList.add('sg-timepicker-pos-adjusted');
+    }
+    timePane.style.left = paneLeft + 'px';
+
+    // If the bottom edge of the pane would be off the screen and shifting it up by the
+    // difference would not go past the top edge of the screen.
+    var min = (typeof this.time == 'object' && this.time.getMinutes() % 5 === 0)? 'MIN5' : 'MIN1';
+    var paneHeight = this.$mdMedia('sm')? TIME_PANE_HEIGHT[min].SM : TIME_PANE_HEIGHT[min].GTSM;
+    if (paneTop + paneHeight > bodyRect.bottom &&
+        bodyRect.bottom - paneHeight > 0) {
+      paneTop = bodyRect.bottom - paneHeight;
+      timePane.classList.add('sg-timepicker-pos-adjusted');
+    }
+
+    timePane.style.top = paneTop + 'px';
     document.body.appendChild(this.timePane);
 
     // The top of the calendar pane is a transparent box that shows the text input underneath.
-    // Since the pane is flowing, though, the page underneath the pane *adjacent* to the input is
+    // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
     // also shown unless we cover it up. The inputMask does this by filling up the remaining space
     // based on the width of the input.
     this.inputMask.style.left = elementRect.width + 'px';
@@ -670,6 +740,7 @@
     this.$element.removeClass('sg-timepicker-open');
     this.$element.find('button').removeClass('md-primary');
     this.timePane.classList.remove('md-pane-open');
+    this.timePane.classList.remove('md-timepicker-pos-adjusted');
 
     if (this.timePane.parentNode) {
       // Use native DOM removal because we do not want any of the angular state of this element
@@ -702,6 +773,8 @@
       this.$mdUtil.nextTick(function() {
         document.body.addEventListener('click', self.bodyClickHandler);
       }, false);
+
+      window.addEventListener('resize', this.windowResizeHandler);
     }
   };
 
@@ -714,6 +787,7 @@
     this.$mdUtil.enableScrolling();
 
     document.body.removeEventListener('click', this.bodyClickHandler);
+    window.removeEventListener('resize', this.windowResizeHandler);
   };
 
   /** Gets the controller instance for the time in the floating pane. */

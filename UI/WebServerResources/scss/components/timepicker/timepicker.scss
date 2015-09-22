@@ -17,6 +17,22 @@ sg-time-pane {
   border-top: solid 1px rgb(224,224,224);
 }
 
+.sg-time-scroll-mask {
+  display: inline-block;
+  overflow: hidden;
+  height: 6 * $sg-time-pane-cell-size;
+  width: 100%;
+
+  // These two properties are needed to get touch momentum to work.
+  // See https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .hours-pane,
 .min1,
 .min5 {
@@ -178,4 +194,11 @@ sg-timepicker[disabled] {
   .sg-timepicker-triangle-button {
     display: none;
   }
+}
+
+// When the position of the floating calendar pane is adjusted to remain inside
+// of the viewport, hide the inputput mask, as the text input will no longer be
+// directly underneath it.
+.sg-timepicker-pos-adjusted .sg-timepicker-input-mask {
+  display: none;
 }
