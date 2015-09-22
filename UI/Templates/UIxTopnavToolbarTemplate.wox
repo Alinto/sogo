@@ -30,32 +30,32 @@
              layout-align="space-around start">
           <md-button class="sg-icon-button"
                      ng-show="activeUser.path.calendar.length"
-                     ng-disabled="baseURL.endsWith('/Calendar')"
+                     ng-disabled="baseURL.endsWith('/Calendar/')"
                      ng-href="{{activeUser.path.calendar}}">
             <md-icon>event</md-icon>
             <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith('/Contacts')"
+                     ng-disabled="baseURL.endsWith('/Contacts/')"
                      ng-href="{{activeUser.path.contacts}}">
             <md-icon>contacts</md-icon>
             <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
                      ng-show="activeUser.path.mail.length"
-                     ng-disabled="baseURL.endsWith('/Mail')"
+                     ng-disabled="baseURL.endsWith('/Mail/')"
                      ng-href="{{activeUser.path.mail}}">
             <md-icon>email</md-icon>
             <md-tooltip><var:string label:value="Mail"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith('/Preferences')"
+                     ng-disabled="baseURL.endsWith('/Preferences/')"
                      ng-href="{{activeUser.path.preferences}}">
             <md-icon>settings</md-icon>
             <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith('/Administration')"
+                     ng-disabled="baseURL.endsWith('/Administration/')"
                      ng-show="activeUser.isSuperUser"
                      ng-href="{{activeUser.path.administration}}">
             <md-icon>settings_applications</md-icon>
