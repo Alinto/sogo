@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$timeout', '$q', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
-  function CalendarsController($scope, $rootScope, $stateParams, $state, $timeout, $q, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
+  CalendarsController.$inject = ['$scope', '$window', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
+  function CalendarsController($scope, $window, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -22,6 +22,7 @@
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
+    vm.today = today;
 
     // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
     // when the color of a calendar is changed
@@ -203,6 +204,15 @@
       Calendar.$subscribe(calendarData.owner, calendarData.name).catch(function(data) {
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
+    }
+
+    function today() {
+      var fragments = $window.location.hash.split('/'),
+          state = fragments[1],
+          view = fragments[2],
+          now = new Date(),
+          path = ['#', state, view, now.getDayString()];
+      $window.location = path.join('/');
     }
   }
 

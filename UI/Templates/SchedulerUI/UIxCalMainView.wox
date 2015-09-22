@@ -585,14 +585,18 @@
 
         <!-- day/week/month views -->
         <md-toolbar class="view-detail" hide-sm="hide-sm">
-          <div class="md-toolbar-tools" layout-align="end center">
-            <a class="sg-icon-button md-button"
+          <div class="md-toolbar-tools">
+            <md-button class="md-icon-button"
+                       label:aria-label="Today"
+                       ng-click="app.today()"><md-icon>today</md-icon></md-button>
+            <div class="md-flex"><!-- spacer --></div>
+            <a class="md-icon-button md-button"
                label:aria-label="Day"
                href="#/calendar/day"><md-icon>view_day</md-icon></a>
-            <a class="sg-icon-button md-button"
+            <a class="md-icon-button md-button"
                label:aria-label="Week"
                href="#/calendar/week"><md-icon>view_week</md-icon></a>
-            <a class="sg-icon-button md-button"
+            <a class="md-icon-button md-button"
                label:aria-label="Month"
                href="#/calendar/month"><md-icon>view_module</md-icon></a>
           </div>
