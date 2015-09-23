@@ -477,7 +477,24 @@ static Class NSNullK;
     }
 
   if (checkOK && *domain == nil)
-    *domain = [sogoSource domain];
+    {
+      SOGoSystemDefaults *sd = [SOGoSystemDefaults sharedSystemDefaults];
+      BOOL multidomainSource = [sd enableDomainBasedUID] &&
+                               [sogoSource domain] == nil;
+      if (multidomainSource)
+        {
+          NSArray *parts = [login componentsSeparatedByString: @"@"];
+          if ([parts count] != 2)
+            {
+              [self errorWithFormat: @"Authenticated with multidomain source "
+                                     @"but login is not an email (%@).", login];
+              return NO;
+            }
+          *domain = [parts objectAtIndex: 1];
+        }
+      else
+        *domain = [sogoSource domain];
+    }
 
   return checkOK;
 }
