@@ -749,21 +749,19 @@ static Class NSNullK;
   SOGoDomainDefaults *dd;
 
   domain = [contact objectForKey: @"c_domain"];
-  if ([domain length])
-    dd = [SOGoDomainDefaults defaultsForDomain: domain];
-  else
-    dd = [SOGoSystemDefaults sharedSystemDefaults];
+  dd = [SOGoDomainDefaults defaultsForDomain: domain];
   emails = [contact objectForKey: @"emails"];
-  uid = [contact objectForKey: @"c_uid"];
-  if ([uid rangeOfString: @"@"].location == NSNotFound)
-    systemEmail
-      = [NSString stringWithFormat: @"%@@%@", uid, [dd mailDomain]];
-  else
-    systemEmail = uid;
-
-  // We always add the system email, which will always be returned
-  // by SOGoUser -systemEmail.
-  [emails addObject: systemEmail];
+  if ([emails count] == 0)
+    {
+      uid = [contact objectForKey: @"c_uid"];
+      if ([uid rangeOfString: @"@"].location == NSNotFound)
+        systemEmail = [NSString stringWithFormat: @"%@@%@", uid, [dd mailDomain]];
+      else
+        systemEmail = uid;
+      // We always add the system email, which will always be returned
+      // by SOGoUser -systemEmail.
+      [emails addObject: systemEmail];
+    }
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 
