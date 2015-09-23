@@ -163,7 +163,6 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="calendar in app.service.$calendars"
-                          ng-click="app.editMode = false"
                           ng-dblclick="app.editFolder(calendar)">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
