@@ -363,6 +363,7 @@
 }
 
 - (BOOL) extractUserLDIFRecord: (NSString *) uid
+                      inDomain: (NSString *) domain
                     intoRecord: (NSMutableDictionary *) userRecord
 {
   NSEnumerator *ldapSources;
@@ -375,11 +376,11 @@
   lm = [SOGoUserManager sharedUserManager];
 
   done = NO;
-  ldapSources = [[lm authenticationSourceIDsInDomain: nil] objectEnumerator];
+  ldapSources = [[lm authenticationSourceIDsInDomain: domain] objectEnumerator];
   while (!done && (sourceID = [ldapSources nextObject]))
     {
       currentSource = [lm sourceWithID: sourceID];
-      userEntry = [currentSource lookupContactEntry: uid];
+      userEntry = [currentSource lookupContactEntry: uid inDomain: domain];
       if (userEntry)
 	{
           [userRecord setObject: [userEntry ldifRecordAsString]
@@ -411,25 +412,26 @@
 
 - (BOOL) exportUser: (NSDictionary *) theUser
 {
-  NSString *exportPath, *gcsUID, *ldapUID;
+  NSString *exportPath, *gcsUID, *ldapUID, *domain;
   NSMutableDictionary *userRecord;
   SOGoSystemDefaults *sd;
-  
+
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   userRecord = [NSMutableDictionary dictionary];
 
   ldapUID = [theUser objectForKey: @"c_uid"];
   exportPath = [directory stringByAppendingPathComponent: ldapUID];
-  
+  domain = [theUser objectForKey: @"c_domain"];
   gcsUID = [theUser objectForKey: @"c_uid"];
 
   if ([sd enableDomainBasedUID] && [gcsUID rangeOfString: @"@"].location == NSNotFound)
     gcsUID = [NSString stringWithFormat: @"%@@%@", gcsUID, [theUser objectForKey: @"c_domain"]];
 
-  
+
   return ([self extractUserFolders: gcsUID
                         intoRecord: userRecord]
           && [self extractUserLDIFRecord: ldapUID
+                                inDomain: domain
                               intoRecord: userRecord]
           && [self extractUserPreferences: gcsUID
                                intoRecord: userRecord]

@@ -1047,7 +1047,7 @@ static Class NSNullK;
   while ((sourceID = [sources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
-      contact = [currentSource lookupContactEntry: uid];
+      contact = [currentSource lookupContactEntry: uid inDomain: domain];
       if (contact)
         [contacts addObject: contact];
     }

@@ -1242,6 +1242,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
+                             inDomain: (NSString *) domain
 {
   NGLdapEntry *ldapEntry;
   EOQualifier *qualifier;
