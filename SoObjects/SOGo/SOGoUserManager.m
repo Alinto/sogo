@@ -104,65 +104,58 @@ static Class NSNullK;
   NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
   NSObject <SOGoSource> *sogoSource;
-  BOOL isAddressBook, result;
+  BOOL isAddressBook;
   Class c;
 
-  result = NO;
   sourceID = [udSource objectForKey: @"id"];
-  if ([sourceID length] > 0)
+  if (!sourceID || [sourceID length] == 0)
     {
-      if ([_sourcesMetadata objectForKey: sourceID])
-        [self errorWithFormat: @"attempted to register a contact/user source"
-              @" with duplicated id (%@)", sourceID];
-      else
-        {
-          type = [[udSource objectForKey: @"type"] lowercaseString];
-          c = NSClassFromString([_registry sourceClassForType: type]);
-          sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
-          if (sourceID)
-            [_sources setObject: sogoSource forKey: sourceID];
-          else
-            [self errorWithFormat: @"id field missing in an user source,"
-                  @" check the SOGoUserSources defaults"];
-          metadata = [NSMutableDictionary dictionary];
-          if (domain)
-            [metadata setObject: domain forKey: @"domain"];
-          value = [udSource objectForKey: @"canAuthenticate"];
-          if (value)
-            [metadata setObject: value forKey: @"canAuthenticate"];
-          value = [udSource objectForKey: @"isAddressBook"];
-          if (value)
-            {
-              [metadata setObject: value forKey: @"isAddressBook"];
-              isAddressBook = [value boolValue];
-            }
-          else
-            isAddressBook = NO;
-          value = [udSource objectForKey: @"displayName"];
-          if (value)
-            [metadata setObject: value forKey: @"displayName"];
-          else
-            {
-              if (isAddressBook)
-                [self errorWithFormat: @"addressbook source '%@' has"
-                      @" no displayname", sourceID];
-            }
-          value = [udSource objectForKey: @"MailFieldNames"];
-          if (value)
-            [metadata setObject: value forKey: @"MailFieldNames"];
-          value = [udSource objectForKey: @"SearchFieldNames"];
-          if (value)
-            [metadata setObject: value forKey: @"SearchFieldNames"];
- 
-          [_sourcesMetadata setObject: metadata forKey: sourceID];
-          result = YES;
-        }
+      [self errorWithFormat: @"attempted to register a contact/user source "
+                             @"without id (skipped)"];
+      return NO;
+    }
+  if ([_sourcesMetadata objectForKey: sourceID])
+    {
+      [self errorWithFormat: @"attempted to register a contact/user source "
+                             @"with duplicated id (%@)", sourceID];
+      return NO;
+    }
+
+  type = [[udSource objectForKey: @"type"] lowercaseString];
+  c = NSClassFromString([_registry sourceClassForType: type]);
+  sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
+  [_sources setObject: sogoSource forKey: sourceID];
+
+  metadata = [NSMutableDictionary dictionary];
+  if (domain)
+    [metadata setObject: domain forKey: @"domain"];
+  value = [udSource objectForKey: @"canAuthenticate"];
+  if (value)
+    [metadata setObject: value forKey: @"canAuthenticate"];
+  value = [udSource objectForKey: @"isAddressBook"];
+  if (value)
+    {
+      [metadata setObject: value forKey: @"isAddressBook"];
+      isAddressBook = [value boolValue];
     }
   else
-    [self errorWithFormat: @"attempted to register a contact/user source"
-          @" without id (skipped)"];
+    isAddressBook = NO;
+  value = [udSource objectForKey: @"displayName"];
+  if (value)
+    [metadata setObject: value forKey: @"displayName"];
+  else if (isAddressBook)
+    [self errorWithFormat: @"addressbook source '%@' has no displayname", sourceID];
 
-  return result;
+  value = [udSource objectForKey: @"MailFieldNames"];
+  if (value)
+    [metadata setObject: value forKey: @"MailFieldNames"];
+  value = [udSource objectForKey: @"SearchFieldNames"];
+  if (value)
+    [metadata setObject: value forKey: @"SearchFieldNames"];
+
+  [_sourcesMetadata setObject: metadata forKey: sourceID];
+
+  return YES;
 }
 
 - (int) _registerSourcesInDomain: (NSString *) domain
@@ -171,11 +164,7 @@ static Class NSNullK;
   unsigned int count, max, total;
   SOGoDomainDefaults *dd;
 
-  if (domain)
-    dd = [SOGoDomainDefaults defaultsForDomain: domain];
-  else
-    dd = [SOGoSystemDefaults sharedSystemDefaults];
-
+  dd = [SOGoDomainDefaults defaultsForDomain: domain];
   userSources = [dd userSources];
   max = [userSources count];
   total = 0;
@@ -357,7 +346,6 @@ static Class NSNullK;
 {
   NSDictionary *contactInfos;
 
-//   NSLog (@"getEmailForUID: %@", uid);
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
 
   return [contactInfos objectForKey: @"c_email"];
@@ -374,8 +362,7 @@ static Class NSNullK;
   if ([cn length] > 0)
     {
       if ([email length] > 0)
-        fullEmail = [NSString stringWithFormat: @"%@ <%@>",
-                              cn, email];
+        fullEmail = [NSString stringWithFormat: @"%@ <%@>", cn, email];
       else
         fullEmail = cn;
     }
@@ -398,11 +385,7 @@ static Class NSNullK;
   login = [contactInfos objectForKey: @"c_imaplogin"];
   if (login == nil)
     {
-      if ([domain length])
-        dd = [SOGoDomainDefaults defaultsForDomain: domain];
-      else
-        dd = [SOGoSystemDefaults sharedSystemDefaults];
-
+      dd = [SOGoDomainDefaults defaultsForDomain: domain];
       if ([dd forceExternalLoginWithEmail])
         {
           sd = [SOGoSystemDefaults sharedSystemDefaults];
@@ -444,16 +427,16 @@ static Class NSNullK;
 - (BOOL) _sourceChangePasswordForLogin: (NSString *) login
                               inDomain: (NSString *) domain
                            oldPassword: (NSString *) oldPassword
-			   newPassword: (NSString *) newPassword
-			   perr: (SOGoPasswordPolicyError *) perr
+                           newPassword: (NSString *) newPassword
+                           perr: (SOGoPasswordPolicyError *) perr
 {
   NSObject <SOGoSource> *sogoSource;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL didChange;
-  
+
   didChange = NO;
-  
+
   authIDs = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
   while (!didChange && (currentID = [authIDs nextObject]))
     {
@@ -478,8 +461,6 @@ static Class NSNullK;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-  SOGoSystemDefaults *sd;
-  NSRange r;
 
   checkOK = NO;
 
@@ -577,7 +558,7 @@ static Class NSNullK;
       delta = current_time - start_time;
 
       block_time = [sd failedLoginBlockInterval];
-      
+
       if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [sd maximumFailedLoginCount] &&
           delta >= [sd maximumFailedLoginInterval] &&
           delta <= block_time )
@@ -585,7 +566,7 @@ static Class NSNullK;
           *_perr = PolicyAccountLocked;
           return NO;
         }
-      
+
       if (delta > block_time)
         {
           [[SOGoCache sharedCache] setFailedCount: 0
@@ -669,7 +650,7 @@ static Class NSNullK;
           [[SOGoCache sharedCache] setFailedCount: ([[failedCount objectForKey: @"FailedCount"] intValue] + 1)
                                          forLogin: username];
         }
-      
+
       checkOK = NO;
     }
 
@@ -680,7 +661,7 @@ static Class NSNullK;
     {
       NSObject <SOGoDNSource> *currentSource;
       NSEnumerator *sources;
-      
+
       sources = [[_sources allValues] objectEnumerator];
       while ((currentSource = [sources nextObject]))
         if ([currentSource conformsToProtocol: @protocol(SOGoDNSource)] &&
@@ -700,9 +681,9 @@ static Class NSNullK;
 //
 - (BOOL) changePasswordForLogin: (NSString *) login
                        inDomain: (NSString *) domain
-		    oldPassword: (NSString *) oldPassword
-		    newPassword: (NSString *) newPassword
-			   perr: (SOGoPasswordPolicyError *) perr
+                    oldPassword: (NSString *) oldPassword
+                    newPassword: (NSString *) newPassword
+                           perr: (SOGoPasswordPolicyError *) perr
 {
   NSString *jsonUser, *userLogin;
   NSMutableDictionary *currentUser;
@@ -817,7 +798,7 @@ static Class NSNullK;
   while (!userEntry && (sourceID = [sogoSources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
-      
+
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: theUID
                                                          inDomain: theDomain];
       if (userEntry)
@@ -932,7 +913,7 @@ static Class NSNullK;
       [user setObject: [NSNumber numberWithBool: YES]
                forKey: @"CalendarAccess"];
       [user setObject: [NSNumber numberWithBool: NO]
-	       forKey: @"MailAccess"];
+               forKey: @"MailAccess"];
     }
 
   return user;
@@ -976,7 +957,7 @@ static Class NSNullK;
     // search using the original uid.
     infos = [self contactInfosForUserWithUIDorEmail: uid
                                            inDomain: nil];
-  
+
   return infos;
 }
 
@@ -1005,29 +986,29 @@ static Class NSNullK;
       if ([currentUser isKindOfClass: NSNullK])
         currentUser = nil;
       else if (!([currentUser objectForKey: @"emails"]
-	    && [currentUser objectForKey: @"cn"]))
-	{
-	  // We make sure that we either have no occurence of a cache entry or
-	  // that we have an occurence with only a cached password. In the
-	  // latter case, we update the entry with the remaining information
-	  // and recache the value.
-	  if (!currentUser ||
+            && [currentUser objectForKey: @"cn"]))
+        {
+          // We make sure that we either have no occurence of a cache entry or
+          // that we have an occurence with only a cached password. In the
+          // latter case, we update the entry with the remaining information
+          // and recache the value.
+          if (!currentUser ||
               ([currentUser count] == 1 && [currentUser objectForKey: @"password"]) ||
               ([currentUser count] == 2 && [currentUser objectForKey: @"password"] &&  [currentUser objectForKey: @"DomainLessLogin"]))
               {
-	      newUser = YES;
+              newUser = YES;
 
-	      if (!currentUser)
-		currentUser = [NSMutableDictionary dictionary];
-	    }
-	  else
-	    newUser = NO;
-	  [self _fillContactInfosForUser: currentUser
+              if (!currentUser)
+                currentUser = [NSMutableDictionary dictionary];
+            }
+          else
+            newUser = NO;
+          [self _fillContactInfosForUser: currentUser
                           withUIDorEmail: aUID
                                 inDomain: domain];
-	  if (newUser)
-	    {
-	      if ([[currentUser objectForKey: @"c_uid"] length] == 0)
+          if (newUser)
+            {
+              if ([[currentUser objectForKey: @"c_uid"] length] == 0)
                 {
                   [self _retainUser: (NSDictionary *) [NSNull null]
                           withLogin: cacheUid];
@@ -1050,7 +1031,7 @@ static Class NSNullK;
                   [self _retainUser: currentUser  withLogin: cacheUid];
                 }
             }
-	}
+        }
     }
   else
     currentUser = nil;
@@ -1105,30 +1086,30 @@ static Class NSNullK;
     {
       uid = [userEntry objectForKey: @"c_uid"];
       if ([uid length])
-	{
-	  returnContact = [compactContacts objectForKey: uid];
-	  if (!returnContact)
-	    {
-	      returnContact = [NSMutableDictionary dictionary];
-	      [returnContact setObject: uid forKey: @"c_uid"];
+        {
+          returnContact = [compactContacts objectForKey: uid];
+          if (!returnContact)
+            {
+              returnContact = [NSMutableDictionary dictionary];
+              [returnContact setObject: uid forKey: @"c_uid"];
               source = [userEntry objectForKey: @"source"];
               if (source)
                 [returnContact setObject: source forKey: @"source"];
               [compactContacts setObject: returnContact forKey: uid];
             }
-	  if (![[returnContact objectForKey: @"c_name"] length])
-	    [returnContact setObject: [userEntry objectForKey: @"c_name"]
-			   forKey: @"c_name"];
-	  if (![[returnContact objectForKey: @"cn"] length])
-	    [returnContact setObject: [userEntry objectForKey: @"c_cn"]
-			   forKey: @"cn"];
-	  emails = [returnContact objectForKey: @"emails"];
-	  if (!emails)
-	    {
-	      emails = [NSMutableArray array];
-	      [returnContact setObject: emails forKey: @"emails"];
-	    }
-	  email = [userEntry objectForKey: @"mail"];
+          if (![[returnContact objectForKey: @"c_name"] length])
+            [returnContact setObject: [userEntry objectForKey: @"c_name"]
+                           forKey: @"c_name"];
+          if (![[returnContact objectForKey: @"cn"] length])
+            [returnContact setObject: [userEntry objectForKey: @"c_cn"]
+                           forKey: @"cn"];
+          emails = [returnContact objectForKey: @"emails"];
+          if (!emails)
+            {
+              emails = [NSMutableArray array];
+              [returnContact setObject: emails forKey: @"emails"];
+            }
+          email = [userEntry objectForKey: @"mail"];
           if ([email isKindOfClass: [NSArray class]])
             {
               allEmails = (NSArray *) email;
@@ -1140,22 +1121,22 @@ static Class NSNullK;
                 }
             }
           else if (email && ![emails containsObject: email])
-	    [emails addObject: email];
-	  email = [userEntry objectForKey: @"mozillasecondemail"];
-	  if (email && ![emails containsObject: email])
-	    [emails addObject: email];
-	  email = [userEntry objectForKey: @"xmozillasecondemail"];
-	  if (email && ![emails containsObject: email])
-	    [emails addObject: email];
+            [emails addObject: email];
+          email = [userEntry objectForKey: @"mozillasecondemail"];
+          if (email && ![emails containsObject: email])
+            [emails addObject: email];
+          email = [userEntry objectForKey: @"xmozillasecondemail"];
+          if (email && ![emails containsObject: email])
+            [emails addObject: email];
           info = [userEntry objectForKey: @"c_info"];
           if ([info length] > 0
               && ![[returnContact objectForKey: @"c_info"] length])
             [returnContact setObject: info forKey: @"c_info"];
-	  [self _fillContactMailRecords: returnContact];
+          [self _fillContactMailRecords: returnContact];
           isGroup = [userEntry objectForKey: @"isGroup"];
           if (isGroup)
             [returnContact setObject: isGroup forKey: @"isGroup"];
-	}
+        }
     }
 
   newContacts = [compactContacts allValues];
@@ -1164,7 +1145,7 @@ static Class NSNullK;
 }
 
 - (NSArray *) _fetchEntriesInSources: (NSArray *) sourcesList
-			    matching: (NSString *) filter
+                            matching: (NSString *) filter
                             inDomain: (NSString *) domain
 {
   NSMutableArray *contacts;
@@ -1178,7 +1159,7 @@ static Class NSNullK;
     {
       currentSource = [_sources objectForKey: sourceID];
       [contacts addObjectsFromArray:
-		  [currentSource fetchContactsMatching: filter
+                  [currentSource fetchContactsMatching: filter
                                               inDomain: domain]];
     }
 
