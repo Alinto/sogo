@@ -305,6 +305,35 @@ static Class NSNullK;
   return sourceIDs;
 }
 
+- (BOOL) isDomainDefined: (NSString *) domain
+{
+  NSEnumerator *allIDs;
+  NSArray *ids;
+  NSString *currentID, *sourceDomain;
+  SOGoSystemDefaults *sd;
+
+  if (!domain) return NO;
+
+  ids = [_sources allKeys];
+  if ([ids containsObject: domain])
+    // FIXME check SOGoMailDomain?
+    // Now source id is being considered as the domain
+    return YES;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID])
+    {
+      allIDs = [ids objectEnumerator];
+      while ((currentID = [allIDs nextObject]))
+        {
+          sourceDomain = [[_sources objectForKey: currentID] domain];
+          if (!sourceDomain) // source that can identify any domain
+            return YES;
+        }
+    }
+
+  return NO;
+}
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID
 {
   NSDictionary *metadata;
@@ -932,7 +961,7 @@ static Class NSNullK;
           // The domain is probably appended to the username;
           // make sure it is a defined domain in the configuration.
           domain = [uid substringFromIndex: (r.location + r.length)];
-          if ([[sd domainIds] containsObject: domain])
+          if ([self isDomainDefined: domain])
             username = [uid substringToIndex: r.location];
           else
             domain = nil;
