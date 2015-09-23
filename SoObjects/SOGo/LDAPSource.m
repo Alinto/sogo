@@ -162,6 +162,7 @@ static Class NSStringK;
   [multipleBookingsField release];
   [MSExchangeHostname release];
   [modifiers release];
+  [displayName release];
   [super dealloc];
 }
 
