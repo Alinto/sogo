@@ -1339,12 +1339,14 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
+                               inDomain: (NSString *) domain
 {
   return [self _lookupGroupEntryByAttributes: [NSArray arrayWithObject: UIDField]
 				    andValue: theUID];
 }
 
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
+                                 inDomain: (NSString *) domain
 {
   return [self _lookupGroupEntryByAttributes: mailFields
 				    andValue: theEmail];
