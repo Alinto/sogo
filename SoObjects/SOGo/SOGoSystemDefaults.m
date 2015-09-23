@@ -261,7 +261,7 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 
 - (BOOL) enableDomainBasedUID
 {
-  return ([[self domainIds] count] > 0 && [self boolForKey: @"SOGoEnableDomainBasedUID"]);
+  return [self boolForKey: @"SOGoEnableDomainBasedUID"];
 }
 
 - (NSArray *) loginDomains
