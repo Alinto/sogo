@@ -187,7 +187,6 @@
 {
   if (!calendarsToDisplay)
   {
-    int max=0, i;
     NSArray *folders;
     SOGoAppointmentFolders *co;
     SOGoAppointmentFolder *folder;
@@ -298,23 +297,34 @@
 - (NSString *) labelForMonth
 {
   NSCalendarDate *nextDay;
+  NSString *calendarFormat;
   BOOL isLastOrFirstDay;
 
   isLastOrFirstDay = NO;
-  if ([currentTableDay dayOfMonth] == 1)
+  calendarFormat = @"%b";
+
+  if ([currentView isEqualToString:@"dayview"])
     {
       isLastOrFirstDay = YES;
+      calendarFormat = @"%B";
     }
-  else if ([currentTableDay dayOfMonth] > 27)
+  else
     {
-      nextDay = [currentTableDay dateByAddingYears: 0
-                                            months: 0
-                                              days: 1];
-      if ([nextDay dayOfMonth] == 1)
-        isLastOrFirstDay = YES;
+      if ([currentTableDay dayOfMonth] == 1)
+        {
+          isLastOrFirstDay = YES;
+        }
+      else if ([currentTableDay dayOfMonth] > 27)
+        {
+          nextDay = [currentTableDay dateByAddingYears: 0
+                                                months: 0
+                                                  days: 1];
+          if ([nextDay dayOfMonth] == 1)
+            isLastOrFirstDay = YES;
+        }
     }
 
-  return isLastOrFirstDay? [currentTableDay descriptionWithCalendarFormat: @"%b" locale: locale] : nil;
+  return isLastOrFirstDay? [currentTableDay descriptionWithCalendarFormat: calendarFormat locale: locale] : nil;
 }
 
 - (NSString *) labelForDate
@@ -422,23 +432,23 @@
                    numberOfDays];
 }
 
-- (NSString *) daysViewClasses
-{
-  NSString *daysView;
+// - (NSString *) daysViewClasses
+// {
+//   NSString *daysView;
   
-  if ([currentView isEqualToString:@"multicolumndayview"])
-    daysView = @"daysView daysViewForMultipleDays";
+//   if ([currentView isEqualToString:@"multicolumndayview"])
+//     daysView = @"daysView daysViewForMultipleDays";
 
-  else
-    daysView = [NSString stringWithFormat: @"daysView daysViewFor%dDays", numberOfDays];
+//   else
+//     daysView = [NSString stringWithFormat: @"daysView daysViewFor%dDays", numberOfDays];
   
-  return daysView;
-}
+//   return daysView;
+//}
 
-- (NSString *) daysViewHeaderClasses
-{
-  return [NSString stringWithFormat: @"%@ daysHeader", [self daysViewClasses]];
-}
+// - (NSString *) daysViewHeaderClasses
+// {
+//   return [NSString stringWithFormat: @"%@ daysHeader", [self daysViewClasses]];
+// }
 
 - (NSString *) dayClasses
 {

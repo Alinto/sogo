@@ -1,47 +1,40 @@
 <?xml version="1.0" standalone="yes"?>
-  <container
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:var="http://www.skyrix.com/od/binding"
-      xmlns:const="http://www.skyrix.com/od/constant"
-      xmlns:rsrc="OGo:url"
-      xmlns:label="OGo:label">
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
 
-    <!-- <div class="menu" id="currentViewMenu">
-      <ul>
-        <li><var:string label:value="New Event..."/></li>
-        <li><var:string label:value="New Task..."/></li>
-        <li>!- separator -</li>
-        <li><var:string label:value="Previous Day"/></li>
-        <li><var:string label:value="Next Day"/></li>
-        <li>!- separator -</li>
-        <li><var:string label:value="Delete Event"/></li>
-        <li><var:string label:value="Copy event to my calendar"/></li>
-        <li><var:string label:value="View Raw Source"/></li>
-      </ul>
-      </div>-->
-    <md-content>
-      <div layout="row" layout-align="center">
-        <h5>
-          <md-button
-              class="sg-icon-button"
-              label:aria-label="Previous Day"
-              var:date="prevDayQueryParameters.day"
-              ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-          <var:string value="currentDayName" />
-          <md-button
-              class="sg-icon-button"
-              label:aria-label="Next Day"
-              var:date="nextDayQueryParameters.day"
-              ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
-        </h5>
-      </div>
-      <div id="calendarContent">
-        <var:component
-            className="UIxCalDayTable"
-            startDate="startDate"
-            const:CSSClass="dayOverview"
-            const:numberOfDays="1"
-            const:currentView="dayview"/>
-      </div>
-    </md-content>
-  </container>
+  <md-toolbar hide-sm="hide-sm">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button"
+                 label:aria-label="Previous Day"
+                 var:date="prevDayQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+      <div><var:string value="currentDayName" /></div>
+      <md-button class="md-icon-button"
+                 label:aria-label="Next Day"
+                 var:date="nextDayQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+      <div class="md-flex"><!-- spacer --></div>
+      <md-button class="md-icon-button md-accent"
+                 label:aria-label="Today"
+                 ng-click="app.today()"><md-icon>today</md-icon></md-button>
+      <a class="md-icon-button md-button"
+         label:aria-label="Week"
+         href="#/calendar/week"><md-icon>view_week</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Month"
+         href="#/calendar/month"><md-icon>view_module</md-icon></a>
+    </div>
+  </md-toolbar>
+
+  <var:component
+      className="UIxCalDayTable"
+      startDate="startDate"
+      const:CSSClass="dayOverview"
+      const:numberOfDays="1"
+      const:currentView="dayview"/>
+</container>

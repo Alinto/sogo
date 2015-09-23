@@ -1,71 +1,75 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-  <container
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:var="http://www.skyrix.com/od/binding"
-      xmlns:const="http://www.skyrix.com/od/constant"
-      xmlns:rsrc="OGo:url"
-      xmlns:label="OGo:label">
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
 
-    <div class="menu" id="currentViewMenu" ng-hide="true">
-      <ul>
-        <li><var:string label:value="New Event..."/></li>
-        <li><var:string label:value="New Task..."/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Previous Month"/></li>
-        <li><var:string label:value="Next Month"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Delete Event"/></li>
-        <li><var:string label:value="Copy event to my calendar"/></li>
-        <li><var:string label:value="View Raw Source"/></li>
-      </ul>
+  <md-toolbar hide-sm="hide-sm">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button"
+                 label:aria-label="Previous Month"
+                 var:date="prevMonthQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+      <div><var:string value="monthNameOfThisMonth" /> <var:string value="selectedDate.yearOfCommonEra" /></div>
+      <md-button class="md-icon-button"
+                 label:aria-label="Next Month"
+                 var:date="nextMonthQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+      <div class="md-flex"><!-- spacer --></div>
+      <md-button class="md-icon-button md-accent"
+                 label:aria-label="Today"
+                 ng-click="app.today()"><md-icon>today</md-icon></md-button>
+      <a class="md-icon-button md-button"
+         label:aria-label="Day"
+         href="#/calendar/day"><md-icon>view_day</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Week"
+         href="#/calendar/week"><md-icon>view_week</md-icon></a>
     </div>
+  </md-toolbar>
 
-    <md-content>
-      <div layout="row" layout-align="center">
-        <h5>
-          <md-button
-              class="sg-icon-button"
-              label:aria-label="Previous Month"
-              var:date="prevMonthQueryParameters.day"
-              ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-          <var:string value="monthNameOfThisMonth" />
-          <md-button
-              class="sg-icon-button"
-              label:aria-label="Next Month"
-              var:date="nextMonthQueryParameters.day"
-              ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
-        </h5>
-      </div>
-      <div class="monthView">
-        <div layout="row" layout-align="center center">
-          <var:foreach list="headerDaysToDisplay" item="currentTableDay">
-            <div class="md-flex-fix dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
+  <md-toolbar md-scroll-shrink="true" class="monthView md-hue-1">
+    <div layout="row" layout-align="center center"
+         class="md-flex md-default-theme md-fg md-hue-2">
+      <var:foreach list="headerDaysToDisplay" item="currentTableDay">
+        <div class="md-flex-fix dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
+      </var:foreach>
+    </div>
+  </md-toolbar>
+
+  <md-content class="md-flex" md-scroll-y="md-scroll-y">
+    <div class="calendarView monthView">
+      <md-grid-list
+          md-cols="7"
+          md-row-height="1:1">
+        <var:foreach list="weeksToDisplay" item="currentWeek">
+          <var:foreach list="currentWeek" item="currentTableDay">
+            <md-grid-tile
+                md-rowspan="1"
+                md-colspan="1"
+                class="day"
+                var:day="currentTableDay.shortDateString"
+                var:day-number="currentDayNumber"
+                var:id="currentDayId">
+              <div layout="column" layout-fill="true">
+                <var:if condition="currentTableDay.isToday">
+                  <div class="sg-calendar-tile-header md-default-theme md-fg md-accent md-hue-2"><var:string value="dayHeaderNumber"/></div>
+                </var:if>
+                <var:if condition="currentTableDay.isToday" const:negate="YES">
+                  <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2"><var:string value="dayHeaderNumber"/></div>
+                </var:if>
+                <sg-calendar-month-day
+                    sg-blocks="calendar.blocks"
+                    sg-click="list.openEvent(event, component)"
+                    var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
+              </div>
+            </md-grid-tile>
           </var:foreach>
-        </div>
-        <md-grid-list
-            md-cols="7"
-            md-row-height="1:1">
-          <var:foreach list="weeksToDisplay" item="currentWeek">
-            <var:foreach list="currentWeek" item="currentTableDay">
-              <md-grid-tile
-                  md-rowspan="1"
-                  md-colspan="1"
-                  class="day"
-                  var:day="currentTableDay.shortDateString"
-                  var:day-number="currentDayNumber"
-                  var:id="currentDayId">
-                <div layout="column" layout-fill="true">
-                  <div class="sg-calendar-tile-header"><var:string value="dayHeaderNumber"/></div>
-                  <sg-calendar-month-day
-                      sg-blocks="calendar.blocks"
-                      sg-click="list.openEvent(event, component)"
-                      var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
-                </div>
-              </md-grid-tile>
-            </var:foreach>
-          </var:foreach>
-        </md-grid-list>
-      </div>
-    </md-content>
-  </container>
+        </var:foreach>
+      </md-grid-list>
+    </div>
+  </md-content>
+</container>

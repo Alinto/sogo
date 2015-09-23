@@ -366,8 +366,10 @@
              </md-button>
              </div> -->
       </md-toolbar>
-      <div layout="row">
-        <md-toolbar class="view-list" ng-show="list.component.$selectedCount() == 0">
+      <div layout="row" class="md-flex">
+      <div class="view-list" layout="column">
+
+        <md-toolbar ng-show="list.component.$selectedCount() == 0">
           <!-- sort/filter mode (default) -->
           <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
@@ -565,7 +567,7 @@
         </md-toolbar>
 
         <!-- multiple-selection mode -->
-        <md-toolbar class="view-list md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
+        <md-toolbar class="md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
           <div class="md-toolbar-tools">
             <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
               <md-icon>arrow_back</md-icon>
@@ -582,28 +584,7 @@
           </div>
         </md-toolbar>
 
-        <!-- day/week/month views -->
-        <md-toolbar class="view-detail" hide-sm="hide-sm">
-          <div class="md-toolbar-tools">
-            <md-button class="md-icon-button"
-                       label:aria-label="Today"
-                       ng-click="app.today()"><md-icon>today</md-icon></md-button>
-            <div class="md-flex"><!-- spacer --></div>
-            <a class="md-icon-button md-button"
-               label:aria-label="Day"
-               href="#/calendar/day"><md-icon>view_day</md-icon></a>
-            <a class="md-icon-button md-button"
-               label:aria-label="Week"
-               href="#/calendar/week"><md-icon>view_week</md-icon></a>
-            <a class="md-icon-button md-button"
-               label:aria-label="Month"
-               href="#/calendar/month"><md-icon>view_module</md-icon></a>
-          </div>
-        </md-toolbar>
-      </div>
-
-      <md-content layout="row" class="md-flex">
-        <md-content class="view-list md-flex" layout="column">
+        <md-content layout="column" class="view-list">
           <md-tabs md-dynamic-height="true"
                    md-selected="list.selectedList">
             <!-- Events list -->
@@ -674,8 +655,11 @@
             <md-icon>add</md-icon>
           </md-button>
         </md-content>
-        <div id="detailView" class="view-detail" hide-sm="hide-sm" layout="column" ui-view="calendarView"><!-- calendar view --></div>
-      </md-content>
+        </div>
+        <div id="detailView" class="view-detail" hide-sm="hide-sm" layout="column" ui-view="calendarView">
+          <!-- calendar view -->
+        </div>
+      </div>
     </section>
   </script>
 

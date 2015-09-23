@@ -1,7 +1,18 @@
 /// SchedulerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
+$scrollbar_width: 16px;
+
+/**
+ * Affected templates:
+ * - SchedulerUI/UIxCalDayView.wox
+ * - SchedulerUI/UIxCalWeekView.wox
+ * - SchedulerUI/UIxCalDayTable.wox
+ * - SchedulerUI/UIxCalMonthView.wox
+ */
 
 [ui-view=calendars] {
+
+  // Decrease with of middle column (list of events and tasks)
   $listView-width: grid-step(5) !global;
   $detailView-width: grid-step(11) !global;
 
@@ -21,31 +32,73 @@ $hours_margin: 50px;
       @include flex-col(md, 10);
     }
     @include from(lg) {
-      @include flex-col(lg, 11, 2, 1);
+      @include flex-col(lg, 11, 1, 1);
     }
   }
 
-  .sg-draggable {
-    cursor: move;
+  // The calendar view container
+  .calendarView {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
   }
 
-  .dayLabels {
-    //color: sg-color($sogoBlue, 700);
-    overflow: hidden;
-    .day {
-      text-align: center;
+  // The days labels appear in the toolbar
+  md-toolbar {
+    &.daysView {
+      overflow: hidden;
+      z-index: $z-index-toolbar - 1;
+      .days {
+        margin-left: $hours_margin;
+        margin-right: $scrollbar_width; // scrollbar
+        &.dayLabels {
+          .day {
+            padding-left: 1%;
+          }
+        }
+      }
     }
+    &[sg-view=dayview] {
+      .dayLabels {
+        .day {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+//    &.monthView {
+//      > div {
+//        margin-right: $scrollbar_width;
+//      }
+//    }
   }
 
-  .allDays {
+  // The all-day events appear in the shrinkable toolbar, bellow the days labels
+  .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
+    max-height: $sg-font-size-4 * 6;
+
+    .sg-event {
+      margin: 2%; // See sgCalendarDayBlock.directive.js
+      line-height: initial;
+      position: relative;
+    }
+
+    .gradient, .text {
+      position: relative;
+    }
   }
 
+  // Days row
   .days {
     display: flex;
     flex-direction: row;
     align-items: stretch;
     .day {
+      flex-grow: 1;
+      flex-basis: 0;
       border-left: 1px solid sg-color($sogoPaper, 300);
       .clickableHourCell {
         height: 40px;
@@ -54,26 +107,18 @@ $hours_margin: 50px;
     }
   }
 
-  .daysViewFor1Days,
-  .daysViewFor7Days {
-    margin-left: $hours_margin;
-    .day {
-      flex-grow: 1;
-      flex-basis: 0;
-    }
-  }
-
+  // Header of month tiles
   .sg-calendar-tile-header {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: sg-color($sogoPaper, 800);
     font-size: $sg-font-size-2;
-    font-weight: $sg-font-light;
+    //font-weight: $sg-font-light;
     overflow: hidden;
     padding: 2px;
   }
 
+  // The left column of hours
   .hours {
     color: sg-color($sogoBlue, 700);
     display: inline-block;
@@ -97,6 +142,12 @@ $hours_margin: 50px;
     }
   }
 
+  // A container for a day-long (column) of hour cells
+  .hourCells {
+    position: relative;
+  }
+
+  // The outer event container
   .sg-event {
     font-size: $sg-font-size-2;
     &, md-icon {
@@ -105,41 +156,28 @@ $hours_margin: 50px;
     .material-icons {
       font-size: $sg-font-size-2;
     }
-    .allDays & {
-      margin: 2%; // See sgCalendarDayBlock.directive.js
-      line-height: initial;
-    }
   }
 
-  .daysView {
-    bottom: 0;
-    overflow-x: hidden;
-    overflow: auto;
-    top: 0;
-    .hourCells {
-      position: relative;
+  // Events from editable calendars are draggable
+  .sg-draggable {
+    cursor: move;
+  }
+
+  .sg-event {
+    border-radius: 3px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
+    overflow: hidden;
+    $i: 0;
+    @while $i < 96 { // number of 15-minutes blocks in a day
+      &.starts#{$i} { top: 10px * $i; }
+      &.lasts#{$i} { height: 10px * $i; }
+      $i: $i + 1;
     }
-    .sg-event {
-      border-radius: 3px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
+    .eventInside {
       overflow: hidden;
-      $i: 0;
-      @while $i < 96 { // number of 15-minutes blocks in a day
-        &.starts#{$i} { top: 10px * $i; }
-        &.lasts#{$i} { height: 10px * $i; }
-        $i: $i + 1;
-      }
-      .eventInside {
-        overflow: hidden;
-      }
-    }
-    &.daysHeader {
-      .sg-event {
-        position: relative;
-      }
     }
   }
 
@@ -149,10 +187,11 @@ $hours_margin: 50px;
       overflow: auto;
     }
     .sg-event {
+      position: relative;
       border-radius: 1px;
       overflow: hidden;
-      padding: 2px;
-      margin-bottom: 1px;
+      padding: 2%;
+      margin: 2%;
       text-overflow: ellipsis;
       white-space: nowrap;
       span { // hours
@@ -177,9 +216,6 @@ $hours_margin: 50px;
     right: 2px;
     bottom: 1px;
     overflow: hidden;
-    .allDays & {
-      position: relative;
-    }
   }
 
   .gradient > IMG {
@@ -218,9 +254,9 @@ $hours_margin: 50px;
     &:hover {
       background-color: initial;
     }
-//      img {
-//        margin-right: $mg/4;
-//      }
+    //      img {
+    //        margin-right: $mg/4;
+    //      }
   }
   .md-tile-left {
     height: initial;
