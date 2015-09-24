@@ -328,16 +328,24 @@ static NSArray *tasksFields = nil;
   iCalPersonPartStat stat;
   NSUInteger count, max;
 
-  if ([[theRecord objectForKey: @"c_partmails"] length] > 0 &&
-      [[theRecord objectForKey: @"c_partstates"] length] > 0)
+  states = nil;
+
+  if ([[theRecord objectForKey: @"c_partmails"] length] > 0)
     {
       mails = [[theRecord objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
-      states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+
+      // We add some robustness here, in case the quick table had c_partmails defined but
+      // no corresponding c_partstates entries. This can happen if folks toy around the database
+      // or if Funambol was used in the past, with a broken connector.
+      if ([[theRecord objectForKey: @"c_partstates"] length] > 0)
+        states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+
       max = [mails count];
       statesDescription = [NSMutableArray arrayWithCapacity: max];
+
       for (count = 0; count < max; count++)
         {
-          stat = [[states objectAtIndex: count] intValue];
+          stat = (states ? [[states objectAtIndex: count] intValue] : 0);
           [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
         }
 
