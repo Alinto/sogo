@@ -164,13 +164,15 @@
 //
 // Sometimes, the MUAs don't send over the string in () so we ignore it.
 //
-- (NSString *) messagePriority
+- (NSDictionary *) messagePriority
 {
-  NSString *result;
+  NSUInteger priority;
+  NSString *description;
   NSData *data;
     
   data = [message objectForKey: @"header"];
-  result = @"";
+  priority = 3;
+  description = [self labelForKey: @"normal" inContext: context];
 
   if (data)
     {
@@ -191,15 +193,34 @@
 	      s = [[s substringFromIndex: r.location+1]
 		    stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	      if ([s hasPrefix: @"1"]) result = [self labelForKey: @"highest" inContext: context];
-	      else if ([s hasPrefix: @"2"]) result = [self labelForKey: @"high" inContext: context];
-	      else if ([s hasPrefix: @"4"]) result = [self labelForKey: @"low" inContext: context];
-	      else if ([s hasPrefix: @"5"]) result = [self labelForKey: @"lowest" inContext: context];
+	      if ([s hasPrefix: @"1"])
+                {
+                  priority = 1;
+                  description = [self labelForKey: @"highest" inContext: context];
+                }
+	      else if ([s hasPrefix: @"2"])
+                {
+                  priority = 2;
+                  description = [self labelForKey: @"high" inContext: context];
+                }
+	      else if ([s hasPrefix: @"4"])
+                {
+                  priority = 4;
+                  description = [self labelForKey: @"low" inContext: context];
+                }
+	      else if ([s hasPrefix: @"5"])
+                {
+                  priority = 5;
+                  description = [self labelForKey: @"lowest" inContext: context];
+                }
 	    }
 	}
     }
   
-  return result;
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithInt: priority], @"level",
+                       description, @"name",
+                       nil];
 }
 
 - (NSString *) messageSubject
@@ -722,6 +743,8 @@
  * @apiSuccess (Success 200) {String} headers.From.email     Sender's email address
  * @apiSuccess (Success 200) {Number} headers.isRead         1 if message is read
  * @apiSuccess (Success 200) {String} headers.Priority       Priority
+ * @apiSuccess (Success 200) {String} headers.Priority.level Priority number
+ * @apiSuccess (Success 200) {String} headers.Priority.name  Priority description
  * @apiSuccess (Success 200) {String} headers.RelativeDate   Message date relative to now
  * @apiSuccess (Success 200) {String} headers.Size           Formatted message size
  * @apiSuccess (Success 200) {String[]} headers.Flags        Flags, such as "answered" and "seen"

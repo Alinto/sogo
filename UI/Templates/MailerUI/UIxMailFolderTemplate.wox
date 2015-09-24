@@ -233,7 +233,7 @@
               <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
             </div>
             <div class="sg-tile-icons">
-              <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
+              <md-icon ng-show="currentMessage.priority.level == 1 || currentMessage.priority.level == 2">warning</md-icon>
               <md-icon ng-show="currentMessage.isflagged">star</md-icon>
               <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
               <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
