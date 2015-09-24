@@ -46,6 +46,9 @@
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
 
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contacts";
 
