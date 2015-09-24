@@ -221,9 +221,11 @@ function performSearchCallback(http) {
                     node.address = completeEmail;
                     // log("node.address: " + node.address);
                     if (contact["c_uid"]) {
-                        node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
-                    }
-                    else {
+                        var login = contact["c_uid"];
+                        if (contact["c_domain"])
+                            login += "@" + contact["c_domain"];
+                        node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + login;
+                    } else
                         node.uid = null;
                         node.appendChild(new Element('div').addClassName('colorBox').addClassName('noFreeBusy'));
                     }
@@ -275,13 +277,16 @@ function performSearchCallback(http) {
             else {
                 if (document.currentPopupMenu)
                     hideMenu(document.currentPopupMenu);
-                
+
                 if (data.contacts.length == 1) {
                     // Single result
                     var contact = data.contacts[0];
-                    if (contact["c_uid"])
-                        input.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
-                    else
+                    if (contact["c_uid"]) {
+                        var login = contact["c_uid"];
+                        if (contact["c_domain"])
+                            login += "@" + contact["c_domain"];
+                        input.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + login;
+                    } else
                         input.uid = null;
                     var isList = (contact["c_component"] &&
                                   contact["c_component"] == "vlist");
