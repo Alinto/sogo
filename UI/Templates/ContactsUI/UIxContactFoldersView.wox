@@ -206,6 +206,18 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_sn')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_sn') }">
+                      <!-- selected --></md-icon> <var:string label:value="Lastname"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_givenname')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_givenname') }">
+                      <!-- selected --></md-icon> <var:string label:value="Firstname"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_mail')">
                     <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_mail') }">
                       <!-- selected --></md-icon> <var:string label:value="Email"/>
