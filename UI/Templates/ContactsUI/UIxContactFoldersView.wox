@@ -38,14 +38,14 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="app.editMode!=folder.id">{{folder.name}}</p>
-              <md-input-container class="md-flex md-tile-content"
+              <md-input-container class="md-flex"
                                   ng-show="app.editMode == folder.id">
                 <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
@@ -114,14 +114,14 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$subscriptions track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="editMode!=folder.id">{{folder.name}}</p>
-              <md-input-container class="md-flex md-tile-content"
+              <md-input-container class="md-flex"
                                   ng-show="app.editMode==folder.id">
                 <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
@@ -160,7 +160,7 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$remotes track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>public</md-icon>

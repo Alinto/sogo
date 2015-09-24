@@ -24,10 +24,17 @@
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
 
-    function select(folder) {
-      vm.editMode = false;
-      AddressBook.$query.value = '';
-      $state.go('app.addressbook', {addressbookId: folder.id});
+    function select($event, folder) {
+      if ($state.params.addressbookId != folder.id &&
+          vm.editMode != folder.id) {
+        vm.editMode = false;
+        AddressBook.$query.value = '';
+        $state.go('app.addressbook', {addressbookId: folder.id});
+      }
+      else {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
     }
 
     function newAddressbook() {
