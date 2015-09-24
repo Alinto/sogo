@@ -147,7 +147,7 @@
               </div>
 
               <div class="pseudo-input-field">
-                <a href="#" ng-href="{{url.value}}">{{url.value}}</a>
+                <a href="#" target="_new" ng-href="{{url.value}}">{{url.value}}</a>
               </div>
 
             </div>
