@@ -892,10 +892,10 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
   states = [event objectAtIndex: eventPartStatesIndex];
   count = 0;
   max = [participants count];
+  user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
+                           roles: nil];
   while (state == iCalPersonPartStatOther && count < max)
     {
-      user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
-                               roles: nil];
       if ([user hasEmail: [participants objectAtIndex: count]])
         state = [[states objectAtIndex: count] intValue];
       else
