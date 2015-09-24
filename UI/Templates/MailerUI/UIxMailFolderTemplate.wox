@@ -208,12 +208,12 @@
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
           <md-list-item
+              class="md-default-theme md-background md-hue-1"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand"
-              ng-class="{'sg-active': currentMessage.uid == mailbox.service.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
-              ng-click="mailbox.selectMessage(currentMessage)"
-              ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})"
-              ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
+                          unread: !currentMessage.isread}"
+              ng-click="mailbox.selectMessage(currentMessage)">
             <div class="sg-selected-avatar"
                  ng-show="currentMessage.selected"
                  ng-click="mailbox.toggleMessageSelection($event, currentMessage)"><!-- selected avatar --></div>

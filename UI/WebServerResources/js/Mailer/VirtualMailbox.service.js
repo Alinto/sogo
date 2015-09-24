@@ -59,7 +59,7 @@
 
   /**
    * @function init
-   * @memberof Mailbox.prototype
+   * @memberof VirtualMailbox.prototype
    * @desc Extend instance with new data and compute additional attributes.
    * @param {object} data - attributes of mailbox
    */
@@ -104,8 +104,33 @@
   };
 
   /**
+   * @function resetSelectedMessage
+   * @memberof VirtualMailbox.prototype
+   * @desc Delete 'selectedMessage' attribute of all submailboxes.
+   */
+  VirtualMailbox.prototype.resetSelectedMessage = function() {
+    _.each(this.$mailboxes, function(mailbox) {
+      delete mailbox.selectedMessage;
+    });
+  };
+
+  /**
+   * @function isSelectedMessage
+   * @memberof VirtualMailbox.prototype
+   * @desc Check if the message of the specified mailbox is selected.
+   * @param {string} messageId
+   * @param {string} mailboxPath
+   * @returns true if the specified message is selected
+   */
+  VirtualMailbox.prototype.isSelectedMessage = function(messageId, mailboxPath) {
+    return angular.isDefined(_.find(this.$mailboxes, function(mailbox) {
+      return mailbox.path == mailboxPath && mailbox.selectedMessage == messageId;
+    }));
+  };
+
+  /**
    * @function getLength
-   * @memberof Mailbox.prototype
+   * @memberof VirtualMailbox.prototype
    * @desc Used by md-virtual-repeat / md-on-demand
    * @returns the number of items in the mailbox
    */
@@ -124,7 +149,7 @@
 
   /**
    * @function getItemAtIndex
-   * @memberof Mailbox.prototype
+   * @memberof VirtualMailbox.prototype
    * @desc Used by md-virtual-repeat / md-on-demand
    * @returns the message as the specified index
    */

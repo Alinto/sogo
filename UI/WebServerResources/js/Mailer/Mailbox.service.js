@@ -224,6 +224,17 @@
   };
 
   /**
+   * @function isSelectedMessage
+   * @memberof Mailbox.prototype
+   * @desc Check if the specified message is selected.
+   * @param {string} messageId
+   * @returns true if the specified message is selected
+   */
+  Mailbox.prototype.isSelectedMessage = function(messageId) {
+    return this.selectedMessage == messageId;
+  };
+
+    /**
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox

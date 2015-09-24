@@ -191,17 +191,14 @@
       return mailbox;
     };
 
-    if (Mailbox.$virtualMode)
-      return Mailbox.selectedFolder;
-
     return _find(stateAccount.$mailboxes);
   }
 
   /**
    * @ngInject
    */
-  stateMessages.$inject = ['$q', 'Mailbox', 'stateMailbox'];
-  function stateMessages($q, Mailbox, stateMailbox) {
+  stateMessages.$inject = ['Mailbox', 'stateMailbox'];
+  function stateMessages(Mailbox, stateMailbox) {
     if (Mailbox.$virtualMode)
       return [];
 
@@ -236,10 +233,12 @@
   function stateVirtualMailboxOfMessage($q, Mailbox, decodeUriFilter, $stateParams) {
     var mailboxId = decodeUriFilter($stateParams.mailboxId);
 
-    if (Mailbox.$virtualMode)
+    if (Mailbox.$virtualMode) {
+      Mailbox.selectedFolder.resetSelectedMessage();
       return _.find(Mailbox.selectedFolder.$mailboxes, function(mailboxObject) {
         return mailboxObject.path == mailboxId;
       });
+    }
     else
       return $q.reject("No virtual mailbox defined for message");
   }
@@ -247,8 +246,8 @@
   /**
    * @ngInject
    */
-  stateMessage.$inject = ['Mailbox', 'encodeUriFilter', '$stateParams', '$state', 'stateMailbox'];
-  function stateMessage(Mailbox, encodeUriFilter, $stateParams, $state, stateMailbox) {
+  stateMessage.$inject = ['Mailbox', 'encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
+  function stateMessage(Mailbox, encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
     var message;
 
     message = _.find(stateMailbox.$messages, function(messageObject) {

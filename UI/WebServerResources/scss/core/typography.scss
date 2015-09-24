@@ -369,6 +369,12 @@ html p {
   white-space: normal;
 }
 
+.sg-no-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sg-label-outline {
   // See also .sg-outline-button in button.scss
   border-width: 1px;
