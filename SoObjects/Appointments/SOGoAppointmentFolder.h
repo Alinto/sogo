@@ -160,9 +160,6 @@ typedef enum {
 - (NSString *) syncTag;
 - (void) setSyncTag: (NSString *) newSyncTag;
 
-- (BOOL) synchronizeCalendar;
-- (void) setSynchronizeCalendar: (BOOL) new;
-
 - (BOOL) includeInFreeBusy;
 - (void) setIncludeInFreeBusy: (BOOL) newInclude;
 
