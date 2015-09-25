@@ -25,7 +25,7 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content">
+    <md-dialog-content class="md-dialog-content" layout="column">
       <md-checkbox
           ng-model="properties.calendar.includeInFreeBusy"
           ng-true-value="1"
@@ -45,13 +45,21 @@
         <var:string label:value="Show tasks"/>
       </md-checkbox>
       <md-checkbox
+          ng-model="properties.calendar.synchronize"
+          ng-show="!properties.calendar.isWebCalendar"
+          ng-disabled="properties.calendar.id == 'personal'"
+          ng-true-value="1"
+          ng-false-value="0">
+        <var:string label:value="Synchronize"/>
+      </md-checkbox>
+      <md-checkbox
           ng-model="properties.calendar.reloadOnLogin"
           ng-show="properties.calendar.isWebCalendar"
           ng-true-value="1"
           ng-false-value="0">
         <var:string label:value="Reload on login"/>
       </md-checkbox>
-      <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned">
+      <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
         <md-divider><!-- divider --></md-divider>
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnPersonalModifications"

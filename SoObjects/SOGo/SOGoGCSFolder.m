@@ -301,6 +301,29 @@ static NSArray *childRecordFields = nil;
   return name;
 }
 
+- (BOOL) synchronize
+{
+  NSNumber *synchronize;
+
+  synchronize = [self folderPropertyValueInCategory: @"FolderSynchronize"];
+
+  return [synchronize boolValue];
+}
+
+- (void) setSynchronize: (BOOL) new
+{
+  NSNumber *synchronize;
+
+  if (new)
+    synchronize = [NSNumber numberWithBool: YES];
+  else
+    synchronize = nil;
+
+  [self setFolderPropertyValue: synchronize
+                    inCategory: @"FolderSynchronize"];
+}
+
+
 /* This method fetches the display name defined by the owner, but is also the
    fallback when a subscriber has not redefined the display name yet in their
    environment. */

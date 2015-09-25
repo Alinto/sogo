@@ -77,6 +77,9 @@
 - (id) folderPropertyValueInCategory: (NSString *) theKey
 			     forUser: (SOGoUser *) theUser;
 
+- (BOOL) synchronize;
+- (void) setSynchronize: (BOOL) new;
+
 /* lower level fetches */
 - (void) deleteEntriesWithIds: (NSArray *) ids;
 

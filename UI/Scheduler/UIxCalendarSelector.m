@@ -99,7 +99,7 @@ _intValueFromHex (NSString *hexString)
   NSNumber *isActive, *fActiveTasks;
   SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
-  BOOL reloadOnLogin;
+  BOOL reloadOnLogin, synchronize;
   
   if (!calendars)
   {
@@ -132,6 +132,16 @@ _intValueFromHex (NSString *hexString)
       [calendar setObject: [NSNumber numberWithBool: [folder includeInFreeBusy]] forKey: @"includeInFreeBusy"];
       [calendar setObject: [NSNumber numberWithBool: [folder showCalendarAlarms]] forKey: @"showCalendarAlarms"];
       [calendar setObject: [NSNumber numberWithBool: [folder showCalendarTasks]] forKey: @"showCalendarTasks"];
+
+      if ([folder isKindOfClass: [SOGoWebAppointmentFolder class]])
+        synchronize = NO;
+      else
+        synchronize = [folder synchronize];
+
+      if ([[folder nameInContainer] isEqualToString: @"personal"])
+        synchronize = YES;
+
+      [calendar setObject: [NSNumber numberWithBool: synchronize] forKey: @"synchronize"];
 
       if ([folder isWebCalendar])
         {

@@ -68,6 +68,7 @@
  * @apiParam {Number} includeInFreeBusy   1 if calendar must be include in freebusy
  * @apiParam {Number} showCalendarAlarms  1 if alarms must be enabled
  * @apiParam {Number} showCalendarTasks   1 if tasks must be enabled
+ * @apiParam {Number} synchronize         1 if we enable EAS synchronization for this calendar
  * @apiParam {Number} reloadOnLogin       1 if calendar is a Web calendar that must be reload when user logins
  * @apiParam {Object} [notifications]     Notification (if active user is the calendar's owner)
  * @apiParam {Number} notifications.notifyOnPersonalModifications 1 if a mail is sent for each modification made by the owner
@@ -107,6 +108,10 @@
   o = [params objectForKey: @"showCalendarTasks"];
   if ([o isKindOfClass: [NSNumber class]])
     [calendar setShowCalendarTasks: [o boolValue]];
+
+  o = [params objectForKey: @"synchronize"];
+  if ([o isKindOfClass: [NSNumber class]])
+    [calendar setSynchronize: [o boolValue]];
 
   values = [params objectForKey: @"notifications"];
   if ([values isKindOfClass: [NSDictionary class]])
