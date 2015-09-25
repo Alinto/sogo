@@ -133,25 +133,7 @@
               var:disabled="mustSynchronize"
               /><var:string label:value="Synchronize"
               /></label></div>
-            
-            <var:if condition="mustSynchronize" const:negate="YES"
-              ><div><span class="label"><var:string
-                label:value="Tag:"/></span
-              ><span class="content"><input type="text"
-                name="calendarSyncTag"
-                id="calendarSyncTag"
-                class="textField"
-                var:value="calendarSyncTag"
-                /></span
-              ><var:if condition="synchronizeCalendar"><input type="hidden"
-                name="originalCalendarSyncTag"
-                id="originalCalendarSyncTag"
-                var:value="originalCalendarSyncTag"
-                /></var:if><input type="hidden"
-              name="allCalendarSyncTags"
-              id="allCalendarSyncTags"
-              var:value="allCalendarSyncTags"
-                /></div></var:if>
+
           </fieldset>
           
           <fieldset>

@@ -48,6 +48,41 @@
   return [addressBook displayName];
 }
 
+- (NSString *) setAddressBookName: (NSString *) newName
+{
+  [addressBook renameTo: newName];
+}
+
+- (BOOL) synchronizeAddressBook
+{
+  return [self mustSynchronize] || [addressBook synchronize];
+}
+
+- (void) setSynchronizeAddressBook: (BOOL) new
+{
+  [addressBook setSynchronize: new];
+}
+
+- (BOOL) mustSynchronize
+{
+  return [[addressBook nameInContainer] isEqualToString: @"personal"];
+}
+
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+                           inContext: (WOContext*) context
+{
+  NSString *method;
+
+  method = [[request uri] lastPathComponent];
+
+  return [method isEqualToString: @"saveProperties"];
+}
+
+- (id <WOActionResults>) savePropertiesAction
+{
+  return [self jsCloseWithRefreshMethod: nil];
+}
+
 - (NSString *) _baseCardDAVURL
 {
   NSString *davURL;
