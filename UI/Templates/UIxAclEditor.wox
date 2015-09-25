@@ -26,16 +26,16 @@
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.userClass">
               <div ng-switch-when="normal-user">
-                <sg-avatar-image class="md-tile-left"
+                <sg-avatar-image class="md-avatar"
                                  sg-email="user.c_email"
                                  size="40"><!-- avatar --></sg-avatar-image>
               </div>
-              <div ng-switch-when="normal-group" class="sg-list-avatar"><!-- normal-group --></div>
-              <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>
+              <div ng-switch-when="normal-group" class="md-avatar sg-avatar-list"><!-- normal-group --></div>
+              <div ng-switch-when="public-user" class="md-avatar sg-avatar-list"><!-- public-user --></div>
             </span>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi">{{user.cn}}</div>
-              <div class="sg-md-body-multi">{{user.c_email}}</div>
+              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
             </div>
             <md-button class="sg-icon-button" type="button"
                        ng-click="acl.removeUser(user)"

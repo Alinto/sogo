@@ -214,26 +214,29 @@
               ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
                           unread: !currentMessage.isread}"
               ng-click="mailbox.selectMessage(currentMessage)">
-            <div class="sg-selected-avatar"
-                 ng-show="currentMessage.selected"
-                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"><!-- selected avatar --></div>
-            <sg-avatar-image class="md-tile-left"
-                             ng-show="!currentMessage.selected"
+            <sg-avatar-image class="md-avatar"
+                             ng-if="!currentMessage.selected"
                              ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
                              sg-email="::currentMessage.from[0].email"
                              size="40"><!-- avatar --></sg-avatar-image>
+            <div class="md-avatar sg-avatar-selected"
+                 ng-if="currentMessage.selected"
+                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"><!-- selected avatar --></div>
             <div class="sg-tile-content">
-              <span class="msg-date"
-                    ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-              <div class="sg-md-subhead-multi">
-                <span class="sg-label-outline"
-                      ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
-                {{currentMessage.$shortAddress('from')}}
+              <div class="sg-md-subhead">
+                <div>
+                  <span class="sg-label-outline"
+                           ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
+                  {{currentMessage.$shortAddress('from')}}
+                  <md-icon ng-show="currentMessage.priority.level == 1 || currentMessage.priority.level == 2">warning</md-icon>
+                </div>
+                <div class="sg-tile-date" ng-bind="currentMessage.relativedate"><!-- date --></div>
               </div>
-              <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
+              <div class="sg-md-body">
+                <div>{{currentMessage.subject}}</div>
+              </div>
             </div>
             <div class="sg-tile-icons">
-              <md-icon ng-show="currentMessage.priority.level == 1 || currentMessage.priority.level == 2">warning</md-icon>
               <md-icon ng-show="currentMessage.isflagged">star</md-icon>
               <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
               <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>

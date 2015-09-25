@@ -12,11 +12,11 @@
 }
 
 .unread {
-  .#{$md}-subhead-multi,
-  .#{$md}-body-multi {
+  .#{$md}-subhead,
+  .#{$md}-body {
     font-weight: $sg-font-medium;
   }
-  .msg-date {
+  .sg-tile-date {
     color: sg-color($sogoBlue, 600);
   }
 }

@@ -25,6 +25,16 @@ $scrollbar_width: 16px;
     @include from(lg) {
       @include flex-col(lg, 5, 1, 0);
     }
+
+    // The color chip is smaller; adjust the "selected" icon accordingly
+    .sg-avatar-selected {
+      &:before {
+        margin-left: -($bl);
+      }
+      &.md-avatar:first-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .view-detail {

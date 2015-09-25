@@ -591,26 +591,27 @@
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
               <md-list class="sg-section-list">
-                <md-list-item class="md-2-line"
-                              ng-repeat="event in list.component.$events"
+                <md-list-item ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
-                  <div class="sg-selected-avatar" ng-show="event.selected"
+                  <div class="md-avatar sg-avatar-selected" ng-show="event.selected"
                        ng-click="list.toggleComponentSelection($event, event)">
                     <!-- selected avatar -->
                   </div>
-                  <i class="md-tile-left" ng-class="event.getClassName('bg')"
+                  <div class="sg-color-chip" ng-class="event.getClassName('bg')"
                      ng-show="!event.selected"
-                     ng-click="list.toggleComponentSelection($event, event)"><!-- calendar color --></i>
-                  <div class="md-list-item-text">
-                    <h3>{{event.c_title}}</h3>
-                    <p>{{event.c_location}}</p>
-                    <p class="md-secondary" layout="row">
-                      {{event.formatted_startdate}}
-                      <i class="sg-tile-icons">
-                        <md-icon ng-show="event.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
-                      </i>
-                    </p>
+                     ng-click="list.toggleComponentSelection($event, event)"><!-- calendar color --></div>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead">
+                      <div>{{event.c_title}}</div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div>{{event.c_location}}</div>
+                      <div class="sg-tile-date" ng-bind="event.formatted_startdate"><!-- start --></div>
+                    </div>
+                  </div>
+                  <div class="sg-tile-icons">
+                    <md-icon ng-show="event.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                   </div>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$events.length == 0">
@@ -622,25 +623,27 @@
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
               <md-list class="sg-section-list">
-                <md-list-item class="md-2-line"
-                              ng-repeat="task in list.component.$tasks"
+                <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <div class="sg-selected-avatar" ng-show="task.selected"
+                  <div class="md-avatar sg-selected-avatar" ng-show="task.selected"
                        ng-click="list.toggleComponentSelection($event, task)">
                     <!-- selected avatar -->
                   </div>
-                  <i class="md-tile-left" ng-class="task.getClassName('bg')"
-                     ng-show="!task.selected"
-                     ng-click="list.toggleComponentSelection($event, task)"><!-- calendar color --></i>
-                  <div class="md-list-item-text">
-                    <h3>{{task.c_title}}</h3>
-                    <p class="md-secondary" layout="row">
-                      {{task.formatted_enddate}}
-                      <span class="sg-tile-icons">
-                        <md-icon ng-show="task.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
-                      </span>
-                    </p>
+                  <div class="sg-color-chip" ng-class="task.getClassName('bg')"
+                       ng-show="!task.selected"
+                       ng-click="list.toggleComponentSelection($event, task)"><!-- calendar color --></div>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead">
+                      <div>{{task.c_title}}</div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div><!-- spacer --></div>
+                      <div>{{task.formatted_enddate}}</div>
+                    </div>
+                  </div>
+                  <div class="sg-tile-icons">
+                    <md-icon ng-show="task.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                   </div>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$tasks.length == 0">

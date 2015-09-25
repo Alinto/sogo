@@ -366,12 +366,13 @@
                     ng-click="addressbook.selectCard(currentCard)"
                     ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})"
                     ui-sref-active="md-default-theme md-background md-bg md-hue-1">
-                  <div class="sg-selected-avatar" ng-show="currentCard.selected"
+                  <div class="md-avatar sg-avatar-selected"
+                       ng-if="currentCard.selected"
                        ng-click="addressbook.toggleCardSelection($event, currentCard)">
                     <!-- selected avatar -->
                   </div>
-                  <sg-avatar-image class="md-tile-left"
-                                   ng-show="addressbook.notSelectedComponent(currentCard, 'vcard')"
+                  <sg-avatar-image class="md-avatar"
+                                   ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
                                    ng-click="addressbook.toggleCardSelection($event, currentCard)"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
                                    size="40">
@@ -383,8 +384,12 @@
                     <!-- list avatar -->
                   </div>
                   <div class="sg-tile-content">
-                    <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                    <div class="sg-md-body-multi">{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                    <div class="sg-md-subhead">
+                      <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                    </div>
                   </div>
                 </md-list-item>
               </div>

@@ -37,11 +37,3 @@ $i: 1;
 .sg-active i.md-icon-folder:before {
   @extend .md-icon-folder-open:before;
 }
-
-.md-sidenav-left {
-  md-list-item {
-    .md-button {
-      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
-    }
-  }
-}

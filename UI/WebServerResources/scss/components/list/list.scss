@@ -1,6 +1,21 @@
 /// list.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
-$list-item-height: 6 * $baseline-grid;
+
+// Increase header line height
+$list-header-line-height: 1em;
+
+// Decrease the margin of H3 to counter the larger line height
+$list-h3-margin: 0;
+
+// Decrease default list item height
+$list-item-height: 6 * $baseline-grid; // 48px
+
 @import 'extends';
+
+// Circle diameter of avatars
+$sg-avatar-width: 40px;
+
+// Circle diamter of color chips
+$sg-color-chip-width: $subhead-font-size-base;
 
 // List item label
 md-list-item {
@@ -25,12 +40,23 @@ md-list-item {
   }
 }
 
-// Remove padding of input fields in the sidenav for better transitions between read and edit mode of a folder
-md-sidenav {
+.md-sidenav-left {
+  // Remove padding of input fields in the sidenav for better transitions between read and edit mode of a folder
   md-input-container {
     padding: 0;
     .md-input {
       padding-left: 0;
+    }
+  }
+
+  md-list-item {
+    .md-button {
+      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
+    }
+    // Gain some space on the right side of the folder icon
+    .md-list-item-inner > md-icon:first-child,
+    .md-list-item-inner > md-checkbox:first-child {
+      margin-right: $bl * 2;
     }
   }
 }
@@ -53,10 +79,12 @@ md-sidenav {
 .md-tile-left,
 .md-tile-right {
   display: block;
-  border-radius: 100%;
+  border-radius: 50%;
   padding: $layout-gutter-width;
-  width: $sg-md-grid-pitch + $baseline-grid;
-  height: $sg-md-grid-pitch + $baseline-grid;
+  padding: $baseline-grid * 1.5;
+  padding: ($sg-md-grid-pitch - $sg-avatar-width) / 2;
+  width: $sg-md-grid-pitch;
+  height: $sg-md-grid-pitch;
   //line-height: $sg-md-grid-pitch + $baseline-grid;
   background-clip: content-box;
   md-icon {
@@ -83,51 +111,55 @@ div.md-tile-left {
 }
 
 .sg {
+  &-color-chip {
+    display: block;
+    border-radius: 50%;
+    margin-right: $bl;
+    margin-left: -($bl);
+    border-width: ($sg-avatar-width - $sg-color-chip-width) / 2;
+    border-color: white;
+    border-style: solid;
+    width: $sg-color-chip-width;
+    height: $sg-color-chip-width;
+    width: $sg-avatar-width;
+    height: $sg-avatar-width;
+  }
+
   &-tile-content {
-    align-items: baseline;
-    flex-direction: row;
-    flex-wrap: wrap;
     flex: 1;
-    justify-content: space-between;
-    p {
-      margin: $list-p-margin;
-      font-size: sg-size(body);
-    }
-    .msg-date {
-      float: right;
+    .sg-tile-date {
       font-size: sg-size(body);
       font-weight: $sg-font-light;
       line-height: $sg-line-height-2;
-      margin-left: 1em;
+      flex-shrink: 0;
     }
-    .#{$md}-subhead-multi,
-    .#{$md}-subhead-solo,
-    .#{$md}-body-multi {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .#{$md}-subhead-multi {
+    .#{$md}-subhead {
       @extend .#{$md}-body-1;
       font-size: initial;
     }
-    .#{$md}-body-multi {
+    .#{$md}-body {
       @extend .#{$md}-caption;
+    }
+    .#{$md}-subhead,
+    .#{$md}-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > * {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
   // Small tile of vertically-aligned icons
   &-tile-icons {
-    md-icon {
-      font-size: $sg-font-size-1;
-      color: $colorGray;
-      margin: 2px;
-    }
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     width: (2 * $mg);
-    height:(7 * $line);
+    height:(2 + $sg-font-size-1) * 4; // (vertical padding + icon size) * max number of icons
   }
 
   &-counter-badge {
@@ -140,37 +172,59 @@ div.md-tile-left {
     font-weight: $sg-font-medium;
     text-transform: uppercase;
   }
+
+  &-tile-content,
+  &-tile-icons {
+    md-icon {
+      font-size: $sg-font-size-1;
+      color: $colorGray;
+      margin: 1px 2px;
+    }
+  }
 }
-.sg-avatars {
-  margin: ($mg / 2) 0 0 ($mg / 2);
+
+.card-picture {
+  .md-avatar {
+    display: block;
+    // From md-list-item > .md-avatar:first-child
+    width: $list-item-primary-avatar-width;
+    height: $list-item-primary-avatar-width;
+    margin-top: $baseline-grid;
+    margin-bottom: $baseline-grid;
+    margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
+    border-radius: 50%;
+    box-sizing: content-box;
+    img {
+      width: initial !important;
+    }
+  }
+}
+
+sg-avatar-image {
   img {
-    border-radius: 100%;
-    margin-right: ($mg / 2);
+    border-radius: 50%;
   }
 }
 
 // Avatar placeholder
 // ------------------------------------
-.md-tile-left:before,
-.md-tile-left md-icon {
+.md-avatar:before,
+.md-avatar md-icon {
   font-family: 'Material Icons';
-  font-size: 40px;
+  font-size: $sg-avatar-width;
   color: rgba(0, 0, 0, 0.26);
 }
-//.md-tile-left-card {
-//  @extend .md-tile-left;
-//  &:before {
-//    content: "\e7fd"; // person
-//  }
-//}
-.md-tile-left-list {
-  @extend .md-tile-left;
+.sg-avatar-list {
   &:before {
     content: "\e7ef"; // group
   }
 }
-.md-tile-left-selected {
-  @extend .md-tile-left;
+.sg-avatar-public {
+  &:before {
+    content: "\e80b"; // public
+  }
+}
+.sg-avatar-selected {
   &:before {
     content: "\e5ca"; // check
   }
@@ -203,21 +257,21 @@ div.md-tile-left {
 //  background-color: rgba(255, 255, 0, 0.3) !important;
 //  content: "\e7fd"; // person
 //}
-.sg-avatar {
+//.sg-avatar {
 //  @extend .md-tile-left-card;
 //  margin-right: 0;
 //  margin-left: 0;
-}
-.sg-list-avatar {
-  @extend .md-tile-left-list;
-  margin-right: 0;
-  margin-left: 0;
-}
-.sg-selected-avatar {
-  @extend .md-tile-left-selected;
-  margin-right: 0;
-  margin-left: 0;
-}
+//}
+//.sg-list-avatar {
+//  @extend .md-tile-left-list;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
+//.sg-selected-avatar {
+//  @extend .md-tile-left-selected;
+//  margin-right: 0;
+//  margin-left: 0;
+//}
 //.sg-accepted {
 //  @extend .md-tile-left-accepted;
 //  margin-right: 0;

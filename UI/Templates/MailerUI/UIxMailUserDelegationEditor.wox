@@ -23,13 +23,13 @@
     <md-dialog-content>
       <md-list>
         <md-list-item ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']">
-          <div layout="row" layout-align="start center" class="md-flex">
-            <sg-avatar-image class="md-tile-left"
+          <div layout="row" layout-align="start center" class="md-flex card-picture">
+            <sg-avatar-image class="md-avatar"
                              sg-email="user.c_email"
                              size="40"><!-- avatar --></sg-avatar-image>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi">{{user.cn}}</div>
-              <div class="sg-md-body-multi">{{user.c_email}}</div>
+              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
             </div>
             <md-button class="sg-icon-button" ng-click="delegate.removeUser(user)">
               <md-icon>delete</md-icon>
