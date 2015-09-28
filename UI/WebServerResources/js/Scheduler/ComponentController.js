@@ -17,6 +17,8 @@
     vm.editAllOccurrences = editAllOccurrences;
     vm.reply = reply;
     vm.replyAllOccurrences = replyAllOccurrences;
+    vm.deleteOccurrence = deleteOccurrence;
+    vm.deleteAllOccurrences = deleteAllOccurrences;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
@@ -88,7 +90,21 @@
         reply(component);
       });
     }
-  }
+
+    function deleteOccurrence() {
+      vm.component.remove(true).then(function() {
+        $rootScope.$broadcast('calendars:list');
+        $mdDialog.hide();
+      });
+    }
+
+    function deleteAllOccurrences() {
+      vm.component.remove().then(function() {
+        $rootScope.$broadcast('calendars:list');
+        $mdDialog.hide();
+      });
+    }
+}
 
   /**
    * @ngInject

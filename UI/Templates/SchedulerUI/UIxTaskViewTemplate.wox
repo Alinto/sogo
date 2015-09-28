@@ -17,8 +17,34 @@
           <!-- priority -->
           <md-icon ng-repeat="i in editor.component.priority | range">star</md-icon>
         </div>
+        <md-button class="md-icon-button"
+                   label:aria-label="Delete Task"
+                   ng-show="editor.component.isEditable() || editor.component.isInvitation()"
+                   ng-click="editor.deleteAllOccurrences()">
+          <md-icon>delete</md-icon>
+        </md-button>
+        <md-menu ng-show="editor.component.isEditableOccurrence() || editor.component.isInvitationOccurrence()">
+          <md-button type="button" class="md-icon-button"
+                     label:aria-label="Delete Task"
+                     ng-click="$mdOpenMenu()"
+                     md-menu-origin="md-menu-origin"><md-icon>delete</md-icon></md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button type="button" class="md-warn"
+                         ng-click="editor.deleteOccurrence()">
+                <var:string label:value="Delete This Occurrence"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button type="button" class="md-warn"
+                         ng-click="editor.deleteAllOccurrences()">
+                <var:string label:value="Delete All Occurrences"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
         <md-button class="md-icon-button" ng-click="editor.close()">
-          <md-icon aria-label="Close dialog">close</md-icon>
+          <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
       </div>
     </md-toolbar>

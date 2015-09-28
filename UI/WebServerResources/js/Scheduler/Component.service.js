@@ -873,6 +873,21 @@
   };
 
   /**
+   * @function $delete
+   * @memberof Component.prototype
+   * @desc Delete the component from the server.
+   * @param {boolean} occurrenceOnly - delete this occurrence only
+   */
+  Component.prototype.remove = function(occurrenceOnly) {
+    var _this = this, path = [this.pid, this.id];
+
+    if (occurrenceOnly && this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    return Component.$$resource.remove(path.join('/'));
+  };
+
+  /**
    * @function $unwrap
    * @memberof Component.prototype
    * @desc Unwrap a promise.
