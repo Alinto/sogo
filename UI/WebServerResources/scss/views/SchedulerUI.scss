@@ -8,6 +8,7 @@ $scrollbar_width: 16px;
  * - SchedulerUI/UIxCalWeekView.wox
  * - SchedulerUI/UIxCalDayTable.wox
  * - SchedulerUI/UIxCalMonthView.wox
+ * - SchedulerUI/UIxCalMulticolumnDayView.wox
  */
 
 [ui-view=calendars] {
@@ -57,7 +58,7 @@ $scrollbar_width: 16px;
 
   // The days labels appear in the toolbar
   md-toolbar {
-    &.daysView {
+    &.daysView, &.monthView {
       overflow: hidden;
       z-index: $z-index-toolbar - 1;
       .days {
@@ -70,7 +71,7 @@ $scrollbar_width: 16px;
         }
       }
     }
-    &[sg-view=dayview] {
+    &[sg-view$=dayview] {
       .dayLabels {
         .day {
           display: flex;
@@ -123,9 +124,10 @@ $scrollbar_width: 16px;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: $sg-font-size-2;
+    padding: 2px;
+    min-height: $sg-font-size-2 + 4px;
     //font-weight: $sg-font-light;
     overflow: hidden;
-    padding: 2px;
   }
 
   // The left column of hours
@@ -161,7 +163,7 @@ $scrollbar_width: 16px;
   .sg-event {
     font-size: $sg-font-size-2;
     &, md-icon {
-      color: #fff;
+      color: #fff !important; // Overwrite dynamic CSS theme
     }
     .material-icons {
       font-size: $sg-font-size-2;
@@ -191,10 +193,41 @@ $scrollbar_width: 16px;
     }
   }
 
+  // Multicolumn day cell that contains the calendar name
+  .multicolumnDay {
+    font-size: $subhead-font-size-base;
+    font-weight: $sg-font-light;
+    overflow: hidden;
+    max-height: $subhead-font-size-base * 3;
+    padding-left: 2px;
+    margin-right: 2px;
+  }
+
   .monthView {
     md-grid-tile {
-      border: 1px solid sg-color($sogoPaper, 300);
+      //border: 1px solid sg-color($sogoPaper, 300);
+      border-right: 1px solid rgb(242, 242, 242);
+      border-bottom: 1px solid rgb(242, 242, 242);
       overflow: auto;
+      &.dayOfAnotherMonth {
+        background-color: rgb(250, 250, 250);
+        //border-color: #ddd;
+        .sg-calendar-tile-header {
+          color: rgb(221, 221, 221) !important; // Overwrite dynamic CSS theme
+        }
+      }
+      &.dayOfToday {
+        .sg-calendar-tile-header {
+          border-radius: 50%;
+          color: #fff;
+          display: inline;
+          font-weight: 600;
+          margin-right: auto;
+        }
+      }
+    }
+    md-content {
+      background-color: transparent; // See the grid tile background color
     }
     .sg-event {
       position: relative;

@@ -240,6 +240,10 @@
       viewAction = 'dayView';
       startDate = endDate = date;
     }
+    else if (view == 'multicolumnday') {
+      viewAction = 'multicolumndayView';
+      startDate = endDate = date;
+    }
     else if (view == 'week') {
       viewAction = 'weekView';
       startDate = date.beginOfWeek();
@@ -264,65 +268,79 @@
   /**
    * @function $eventsBlocks
    * @desc Events blocks for a specific view and period
-   * @param {string} view - Either 'day' or 'week'
+   * @param {string} view - Either 'day', 'multicolumnday', 'week' or 'month'
    * @param {Date} startDate - period's start date
    * @param {Date} endDate - period's end date
    * @returns a promise of a collection of objects describing the events blocks
    */
   Component.$eventsBlocks = function(view, startDate, endDate) {
-    var params, futureComponentData, i,
+    var params, futureComponentData, i, dates = [],
         deferred = Component.$q.defer();
 
     params = { view: view.toLowerCase(), sd: startDate.getDayString(), ed: endDate.getDayString() };
     Component.$log.debug('eventsblocks ' + JSON.stringify(params, undefined, 2));
     futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
-    futureComponentData.then(function(data) {
+    futureComponentData.then(function(views) {
+      var reduceComponent, associateComponent;
+
+      reduceComponent = function(objects, eventData, i) {
+        var componentData = _.object(this.eventsFields, eventData),
+            start = new Date(componentData.c_startdate * 1000);
+        componentData.hour = start.getHourString();
+        objects.push(new Component(componentData));
+        return objects;
+      };
+
+      associateComponent = function(block) {
+        block.component = this[block.nbr];
+      };
+
+      Component.$views = [];
       Component.$timeout(function() {
-        var components = [], blocks = {}, allDayBlocks = {}, dates = [];
+        _.forEach(views, function(data) {
+          var components = [], blocks = {}, allDayBlocks = {}, viewData;
 
-        // Instantiate Component objects
-        _.reduce(data.events, function(objects, eventData, i) {
-          var componentData = _.object(data.eventsFields, eventData),
-              start = new Date(componentData.c_startdate * 1000);
-          componentData.hour = start.getHourString();
-          objects.push(new Component(componentData));
-          return objects;
-        }, components);
+          // Instantiate Component objects
+          _.reduce(data.events, reduceComponent, components, data);
 
-        // Associate Component objects to blocks positions
-        _.each(_.flatten(data.blocks), function(block) {
-          block.component = components[block.nbr];
+          // Associate Component objects to blocks positions
+          _.forEach(_.flatten(data.blocks), associateComponent, components);
+
+          // Associate Component objects to all-day blocks positions
+          _.each(_.flatten(data.allDayBlocks), associateComponent, components);
+
+          // Build array of dates
+          if (dates.length === 0)
+            for (i = 0; i < data.blocks.length; i++) {
+              dates.push(startDate.getDayString());
+              startDate.addDays(1);
+            }
+
+          // Convert array of blocks to object with days as keys
+          for (i = 0; i < data.blocks.length; i++) {
+            blocks[dates[i]] = data.blocks[i];
+          }
+
+          // Convert array of all-day blocks to object with days as keys
+          for (i = 0; i < data.allDayBlocks.length; i++) {
+            allDayBlocks[dates[i]] = data.allDayBlocks[i];
+          }
+
+          Component.$log.debug('blocks ready (' + _.flatten(data.blocks).length + ')');
+          Component.$log.debug('all day blocks ready (' + _.flatten(data.allDayBlocks).length + ')');
+
+          // Save the blocks to the object model
+          viewData = { blocks: blocks, allDayBlocks: allDayBlocks };
+          if (data.id && data.calendarName) {
+            // The multicolumnday view also includes calendar information
+            viewData.id = data.id;
+            viewData.calendarName = data.calendarName;
+          }
+          Component.$views.push(viewData);
         });
 
-        // Associate Component objects to all-day blocks positions
-        _.each(_.flatten(data.allDayBlocks), function(allDayBlock) {
-          allDayBlock.component = components[allDayBlock.nbr];
-        });
-
-        // Build array of dates
-        for (i = 0; i < data.blocks.length; i++) {
-          dates.push(startDate.getDayString());
-          startDate.addDays(1);
-        }
-
-        // Convert array of blocks to object with days as keys
-        for (i = 0; i < data.blocks.length; i++) {
-          blocks[dates[i]] = data.blocks[i];
-        }
-
-        // Convert array of all-day blocks to object with days as keys
-        for (i = 0; i < data.allDayBlocks.length; i++) {
-          allDayBlocks[dates[i]] = data.allDayBlocks[i];
-        }
-
-        Component.$log.debug('blocks ready (' + _.flatten(data.blocks).length + ')');
-        Component.$log.debug('all day blocks ready (' + _.flatten(data.allDayBlocks).length + ')');
-
-        // Save the blocks to the object model
-        Component.$blocks = blocks;
-        Component.$allDayBlocks = allDayBlocks;
-
-        deferred.resolve({ blocks: blocks, allDayBlocks: allDayBlocks });
+        Component.$log.debug(JSON.stringify(Component.$views, undefined, 2));
+        deferred.resolve(Component.$views);
       });
     }, deferred.reject);
 

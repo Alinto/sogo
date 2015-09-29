@@ -26,8 +26,15 @@
          label:aria-label="Day"
          href="#/calendar/day"><md-icon>view_day</md-icon></a>
       <a class="md-icon-button md-button"
+         label:aria-label="Week"
+         ng-disabled="true"
+         href="#/calendar/week"><md-icon>view_week</md-icon></a>
+      <a class="md-icon-button md-button"
          label:aria-label="Month"
          href="#/calendar/month"><md-icon>view_module</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Multicolumn Day View"
+         href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
     </div>
   </md-toolbar>
 

@@ -10,15 +10,19 @@
   function CalendarController($scope, $state, $stateParams, $timeout, $interval, $log, focus, Calendar, Component, stateEventsBlocks) {
     var vm = this;
 
-    vm.blocks = stateEventsBlocks.blocks;
-    vm.allDayBlocks = stateEventsBlocks.allDayBlocks;
+    vm.views = stateEventsBlocks;
     vm.changeView = changeView;
 
     // Refresh current view when the list of calendars is modified
     $scope.$on('calendars:list', function() {
+      // See stateEventsBlocks in Scheduler.app.js
       Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
-        vm.blocks = data.blocks;
-        vm.allDayBlocks = data.allDayBlocks;
+        vm.views = data;
+        _.forEach(vm.views, function(view) {
+          if (view.id) {
+            view.calendar = new Calendar({ id: view.id, name: view.calendarName });
+          }
+        });
       });
     });
 
@@ -28,7 +32,7 @@
       $state.go('calendars.view', { view: $stateParams.view, day: date });
     }
   }
-  
+
   angular
     .module('SOGo.SchedulerUI')  
     .controller('CalendarController', CalendarController);

@@ -28,7 +28,7 @@
         }
       })
       .state('calendars.view', {
-        url: '/{view:(?:day|week|month)}/:day',
+        url: '/{view:(?:day|week|month|multicolumnday)}/:day',
         sticky: true,
         deepStateRedirect: true,
         views: {
@@ -36,7 +36,8 @@
             templateUrl: function($stateParams) {
               // UI/Templates/SchedulerUI/UIxCalDayView.wox or
               // UI/Templates/SchedulerUI/UIxCalWeekView.wox or
-              // UI/Templates/SchedulerUI/UIxCalMonthView.wox
+              // UI/Templates/SchedulerUI/UIxCalMonthView.wox or
+              // UI/Templates/SchedulerUI/UIxCalMulticolumnDayView.wox
               return $stateParams.view + 'view?day=' + $stateParams.day;
             },
             controller: 'CalendarController',
@@ -52,6 +53,11 @@
       // If no date is specified, show today
       var now = new Date();
       return '/calendar/day/' + now.getDayString();
+    });
+    $urlRouterProvider.when('/calendar/multicolumnday', function() {
+      // If no date is specified, show today
+      var now = new Date();
+      return '/calendar/multicolumnday/' + now.getDayString();
     });
     $urlRouterProvider.when('/calendar/week', function() {
       // If no date is specified, show today's week
@@ -80,18 +86,31 @@
   /**
    * @ngInject
    */
-  stateEventsBlocks.$inject = ['$stateParams', 'Component'];
-  function stateEventsBlocks($stateParams, Component) {
-    return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate());
+  stateEventsBlocks.$inject = ['$stateParams', 'Component', 'Calendar', ];
+  function stateEventsBlocks($stateParams, Component, Calendar) {
+    // See CalendarController.js
+    return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate())
+      .then(function(views) {
+        _.forEach(views, function(view) {
+          if (view.id) {
+            view.calendar = new Calendar({ id: view.id, name: view.calendarName });
+          }
+        });
+        return views;
+      });
   }
 
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope', '$location', 'Preferences'];
-  function runBlock($rootScope, $location, Preferences) {
+  runBlock.$inject = ['$rootScope', '$log', '$location', 'Preferences'];
+  function runBlock($rootScope, $log, $location, Preferences) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $state.go('calendar');
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
     if ($location.url().length === 0) {
       // Restore user's last view

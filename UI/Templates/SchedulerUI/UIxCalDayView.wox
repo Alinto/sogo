@@ -23,11 +23,18 @@
                  label:aria-label="Today"
                  ng-click="app.today()"><md-icon>today</md-icon></md-button>
       <a class="md-icon-button md-button"
+         label:aria-label="Day"
+         ng-disabled="true"
+         href="#/calendar/day"><md-icon>view_day</md-icon></a>
+      <a class="md-icon-button md-button"
          label:aria-label="Week"
          href="#/calendar/week"><md-icon>view_week</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Month"
          href="#/calendar/month"><md-icon>view_module</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Multicolumn Day View"
+         href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
     </div>
   </md-toolbar>
 

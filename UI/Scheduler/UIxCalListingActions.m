@@ -1225,7 +1225,7 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoAppointmentFolder *folder;
   NSMutableArray *selectedCalendars;
   NSArray *folders;
-  NSString *fUID;
+  NSString *fUID, *fName;
   NSNumber *isActive;
   unsigned int count, foldersCount;
   
@@ -1239,7 +1239,11 @@ _computeBlocksPosition (NSArray *blocks)
     isActive = [NSNumber numberWithBool: [folder isActive]];
     if ([isActive intValue] != 0) {
       fUID = [folder nameInContainer];
-      [selectedCalendars addObject: fUID];
+      fName = [folder displayName];
+      [selectedCalendars addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    fUID, @"id",
+                                                  fName, @"name",
+                                                  nil]];
     }
   }
   return selectedCalendars;
@@ -1297,9 +1301,10 @@ _computeBlocksPosition (NSArray *blocks)
 {
   int count, max;
   NSArray *events, *event, *calendars;
-  NSDictionary *eventsBlocks;
-  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsByCalendars, *eventsForCalendar;
+  NSDictionary *eventsBlocks, *calendar;
+  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsForCalendar, *eventsByCalendars;
   NSNumber *eventNbr;
+  NSString *calendarName, *calendarId;
   BOOL isAllDay;
   int i, j;
   
@@ -1313,16 +1318,21 @@ _computeBlocksPosition (NSArray *blocks)
     eventsByCalendars = [NSMutableArray arrayWithCapacity:[calendars count]];
     for (i = 0; i < [calendars count]; i++) // For each calendar
     {
+      calendar = [calendars objectAtIndex:i];
+      calendarName =[calendar objectForKey: @"name"];
+      calendarId = [calendar objectForKey: @"id"];
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
       for (j = 0; j < [events count]; j++) {
-        if ([[[events objectAtIndex:j] objectAtIndex:eventFolderIndex] isEqualToString:[calendars objectAtIndex:i]]) {
+        if ([[[events objectAtIndex:j] objectAtIndex:eventFolderIndex] isEqualToString: calendarId]) {
           // Event is in current calendar
           [eventsForCalendar addObject: [events objectAtIndex:j]];
         }
       }
       eventsBlocks = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     eventsFields, @"eventsFields",
+                                     calendarId , @"id",
+                                   calendarName, @"calendarName",
+                                   eventsFields, @"eventsFields",
                                    eventsForCalendar, @"events",
                                    allDayBlocks, @"allDayBlocks",
                                    blocks, @"blocks", nil];
@@ -1344,8 +1354,7 @@ _computeBlocksPosition (NSArray *blocks)
         [currentDay sortUsingSelector: @selector (compareEventByStart:)];
         [self _addBlocksWidth: currentDay];
       }
-      
-      [eventsByCalendars insertObject:eventsBlocks atIndex:i];
+      [eventsByCalendars addObject: eventsBlocks];
     }
     return [self _responseWithData: eventsByCalendars];
   }
@@ -1381,7 +1390,7 @@ _computeBlocksPosition (NSArray *blocks)
       [currentDay sortUsingSelector: @selector (compareEventByStart:)];
       [self _addBlocksWidth: currentDay];
     }
-    return [self _responseWithData: eventsBlocks];
+    return [self _responseWithData: [NSArray arrayWithObject: eventsBlocks]];
   }
 }
 

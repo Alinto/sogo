@@ -303,7 +303,7 @@
   isLastOrFirstDay = NO;
   calendarFormat = @"%b";
 
-  if ([currentView isEqualToString:@"dayview"])
+  if ([currentView hasSuffix: @"dayview"])
     {
       isLastOrFirstDay = YES;
       calendarFormat = @"%B";
@@ -456,22 +456,18 @@
   unsigned int currentDayNbr, realDayOfWeek;
   
   classes = [NSMutableString string];
-  if ([currentView isEqualToString:@"multicolumndayview"])
-    [classes appendFormat:@"day dayColumn"];
-  else {
-    currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
-    realDayOfWeek = [currentTableDay dayOfWeek];
+  currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
+  realDayOfWeek = [currentTableDay dayOfWeek];
     
-    [classes appendFormat: @"day day%d", currentDayNbr];
+  [classes appendFormat: @"day day%d", currentDayNbr];
     
-    if (numberOfDays > 1)
+  if (numberOfDays > 1)
     {
       if (realDayOfWeek == 0 || realDayOfWeek == 6)
         [classes appendString: @" weekEndDay"];
       if ([currentTableDay isToday])
         [classes appendString: @" dayOfToday"];
     }
-  }
        
   return classes;
 }

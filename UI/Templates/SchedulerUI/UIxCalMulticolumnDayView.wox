@@ -1,56 +1,46 @@
 <?xml version="1.0" standalone="yes"?>
-  <container
+<!DOCTYPE container>
+<container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
     
-    <div class="menu" id="currentViewMenu">
-      <ul>
-        <li><var:string label:value="New Event..."/></li>
-        <li><var:string label:value="New Task..."/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Previous Day"/></li>
-        <li><var:string label:value="Next Day"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Delete Event"/></li>
-        <li><var:string label:value="Copy event to my calendar"/></li>
-        <li><var:string label:value="View Raw Source"/></li>
-      </ul>
+  <md-toolbar hide-sm="hide-sm">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button"
+                 label:aria-label="Previous Day"
+                 var:date="prevDayQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+      <div><var:string value="currentDayName" /></div>
+      <md-button class="md-icon-button"
+                 label:aria-label="Next Day"
+                 var:date="nextDayQueryParameters.day"
+                 ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+      <div class="md-flex"><!-- spacer --></div>
+      <md-button class="md-icon-button md-accent"
+                 label:aria-label="Today"
+                 ng-click="app.today()"><md-icon>today</md-icon></md-button>
+      <a class="md-icon-button md-button"
+         label:aria-label="Day"
+         href="#/calendar/day"><md-icon>view_day</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Week"
+         href="#/calendar/week"><md-icon>view_week</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Month"
+         href="#/calendar/month"><md-icon>view_module</md-icon></a>
+      <a class="md-icon-button md-button"
+         label:aria-label="Multicolumn Day View"
+         ng-disabled="true"
+         href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
     </div>
-    <!-- Navigation header -->
-    <span class="daysHeader">
-      <span class="day1">
-        <a href="#" id="leftNavigationArrow" var:date="prevDayQueryParameters.day" onclick="return onCalendarGotoDay(this);">
-          <img rsrc:src="arrow-left.png"/></a></span>
-      <span class="day0"><var:string value="currentDayName" /></span>
-      <span class="day1">
-        <a href="#" id="rightNavigationArrow" var:date="nextDayQueryParameters.day" onclick="return onCalendarGotoDay(this);">
-          <img rsrc:src="arrow-right.png"/></a></span>
-      <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
-    </span>
+  </md-toolbar>
 
-    <!-- TODO : Move this inside the schedulerUI.css -->
-    <style type="text/css">
-      DIV.day
-      {
-        width: <var:string value="dayWidthPercentage" />% !important;
-      }
-      <var:foreach list="subscriptionUsers" item="currentTableUser">
-      DIV[class~='day'].appointmentsOf<var:string value="currentTableUser" />
-      {
-        left: <var:string value="currentTableUserDayLeftPercentage" />% !important;
-      }
-      </var:foreach>
-    </style>
-    
-    <!-- Display the calendar header and the table view -->
-    <div id="calendarContent">
-      <var:component
+  <var:component
       className="UIxCalDayTable"
       startDate="startDate"
-      const:CSSClass="dayOverview"
+      const:numberOfDays="1"
       const:currentView="multicolumndayview"/>
-    </div>
-  </container>
+</container>
