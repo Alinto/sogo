@@ -63,6 +63,7 @@
         },
         resolve: {
           stateMailbox: stateVirtualMailboxOfMessage,
+          stateMessages: stateMessages,
           stateMessage: stateMessage
         }
       })
