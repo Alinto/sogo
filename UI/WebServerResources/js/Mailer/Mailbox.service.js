@@ -493,19 +493,13 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$delete = function() {
-    var _this = this,
-        deferred = Mailbox.$q.defer(),
-        promise;
+    var _this = this;
 
-    promise = Mailbox.$$resource.remove(this.id);
-
-    promise.then(function() {
-      _this.$account.$getMailboxes({reload: true});
-      deferred.resolve(true);
-    }, function(data, status) {
-      deferred.reject(data);
-    });
-    return deferred.promise;
+    return Mailbox.$$resource.remove(this.id)
+      .then(function() {
+        _this.$account.$getMailboxes({reload: true});
+        return true;
+      });
   };
 
   /**
