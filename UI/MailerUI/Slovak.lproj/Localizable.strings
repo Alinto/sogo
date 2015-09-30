@@ -239,8 +239,8 @@
 
 /* Folder operations */
 "Name :" = "Meno:";
-"Enter the new name of your folder :"
- = "Zadajte nové meno adresára:";
+"Enter the new name of your folder"
+ = "Zadajte nové meno adresára";
 "Do you really want to move this folder into the trash ?"
  = "Skutočne chcete presunúť tento priečinok do koša?";
 "Operation failed" = "Operácia zlyhala";

@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Usuari:";
-"Password:" = "Contrasenya:";
-"Domain:" = "Domini:";
+"Username" = "Usuari";
+"Password" = "Contrasenya";
+"Domain" = "Domini";
 "Remember username" = "recordar usuari";
 
 "Connect" = "Connectar";
@@ -17,11 +17,12 @@
 "alternativeBrowserSafari" = "Safari.";
 "Download" = "Descàrrega";
 
-"Language:" = "Llengua:";
+"Language" = "Llengua";
 "choose" = "Triar ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -38,6 +39,7 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

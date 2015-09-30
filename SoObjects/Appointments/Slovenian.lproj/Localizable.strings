@@ -1,0 +1,67 @@
+"Inviting the following persons is prohibited:" = "Povabilo za naslednje osebe je prepovedano:";
+"Personal Calendar" = "Osebni koledar";
+vevent_class0 = "(Javni dogodek)";
+vevent_class1 = "(Osebni dogodek)";
+vevent_class2 = "(Zaupni dogodek)";
+
+vtodo_class0 = "(Javno opravilo)";
+vtodo_class1 = "(Osebno opravilo)";
+vtodo_class2 = "(Zaupno opravilo)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Dogodek \"%{Summary}\" je bil ustvarjen";
+"The event \"%{Summary}\" was deleted" = "Dogodek \"%{Summary}\" je bil izbrisan";
+"The event \"%{Summary}\" was updated" = "Dogodek \"%{Summary}\" je bil posodobljen";
+"The following attendees(s) were notified" = "Naslednji udeleženci so bili obveščeni";
+"The following attendees(s) were added" = "Naslednji udeleženci so bili dodani";
+"The following attendees(s) were removed" = "Naslednji udeleženci so bili odstranjeni";
+
+/* IMIP messages */
+"calendar_label" = "Koledar";
+"startDate_label" = "Začetek";
+"endDate_label" = "Konec";
+"due_label" = "Datum zapadlosti:";
+"location_label" = "Mesto";
+"summary_label" = "Povzetek:";
+"comment_label" = "Komentar:";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Povabila na dogodek: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(posladno od %{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} te je povabil na %{Summary}.\n\n\nZačetek: %{StartDate}\nKonec: %{EndDate}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} te je povabil na %{Summary}.\n\n\nZačetek: %{StartDate} at %{StartTime}\nKonec: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Dogodek odpovedan: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} je odpovedal ta dogodek: %{Summary}.\n\n\nZačetek: %{StartDate}\nKonec: %{EndDate}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} je odpovedal ta dogodek: %{Summary}.\n\n\nZačetek: %{StartDate} at %{StartTime}\nKonec: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Sestanek \"%{Summary}\" za %{OldStartDate} se je spremenil";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Sestanek \"%{Summary}\" za %{OldStartDate} at %{OldStartTime} se je spremenil";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Naslednji parametri so se spremenil v \"%{Summary}\" srečanju:";
+"Please accept or decline those changes."
+= "Prosim sprejmi ali zavrni te spremembe.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Sprejeto povabilo: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Zavrnjeno povabilo: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Dodeljeno povabilo: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Še neodločeno glede povabila: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} je sprejel tvoje povabilo.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} je zavrnil tvoje povabilo.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} je posredoval povabilo k %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} se še ni odločil glede tvojega povabila.";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ne morem dostopati do vira: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Doseženo je največje število sočasnih rezervacij (%{NumberOfSimultaneousBookings}) za vir \"%{Cn} %{SystemEmail}\". Konfliktni dogodek je \"%{EventTitle}\", začel se je %{StartDate}.";

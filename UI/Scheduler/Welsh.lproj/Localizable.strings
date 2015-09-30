@@ -151,33 +151,33 @@
 "Appointment editor" = "Golygydd Apwyntiadau";
 "Appointment proposal" = "Cynnig Apwyntiad";
 "Appointment on" = "Apwyntiad ar";
-"Start:" = "Dechrau:";
-"End:" = "Diwedd:";
-"Due Date:" = "Dyddiad dyledus:";
-"Title:" = "Teitl:";
-"Calendar:" = "Calendr:";
+"Start" = "Dechrau";
+"End" = "Diwedd";
+"Due Date" = "Dyddiad dyledus";
+"Title" = "Teitl";
+"Calendar" = "Calendr";
 "Name" = "Enw";
 "Email" = "Ebost";
-"Status:" = "Statws:";
+"Status" = "Statws";
 "% complete" = "% cwblhau";
-"Location:" = "Lleoliad:";
-"Priority:" = "Blaenoriaeth:";
+"Location" = "Lleoliad";
+"Priority" = "Blaenoriaeth";
 "Privacy" = "Preifatrwydd";
 "Cycle" = "Cylch";
 "Cycle End" = "Diwedd Cylch";
 "Categories" = "Categoriau";
 "Classification" = "Dosbarthiad";
 "Duration" = "Parhad";
-"Attendees:" = "Mynychwyr:";
+"Attendees" = "Mynychwyr";
 "Resources" = "Adnoddau";
-"Organizer:" = "Trefnwr:";
-"Description:" = "Disgrifiad:";
-"Document:" = "Dogfen:";
-"Category:" = "Categori:";
-"Repeat:" = "Ailwneud:";
-"Reminder:" = "Atgoffa:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+"Organizer" = "Trefnwr";
+"Description" = "Disgrifiad";
+"Document" = "Dogfen";
+"Category" = "Categori";
+"Repeat" = "Ailwneud";
+"Reminder" = "Atgoffa";
+"General" = "General";
+"Reply" = "Reply";
 
 "Target:" = "Targed:";
 
@@ -222,7 +222,7 @@
 "view_future" = "Holl digwyddiadau'r dyfodol";
 "view_selectedday" = "Diwrnod dewisol";
 
-"View:" = "Golygfa:";
+"View" = "Golygfa";
 "Title or Description" = "Teitl neu disgrifiad";
 
 "Search" = "Chwilio";
@@ -475,8 +475,8 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "button_allOccurrences" = "Pob achlysur";
 
 /* Properties dialog */
-"Name:" = "Enw:";
-"Color:" = "Lliw:";
+"Name" = "Enw";
+"Color" = "Lliw";
 
 "Include in free-busy" = "Include in free-busy";
 

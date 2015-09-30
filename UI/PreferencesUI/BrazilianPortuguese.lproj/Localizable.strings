@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Habilitar auto resposta de férias";
-"Auto reply message :" = "Auto Responder somente uma vez a cada remetente com o seguinte texto:";
-"Email addresses (separated by commas) :" = "Endereço de e-mail (separado por vírgulas):";
+"Auto reply message" ="Auto Responder somente uma vez a cada remetente com o seguinte texto";
+"Email addresses (separated by commas)" ="Endereço de e-mail (separado por vírgulas)";
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
-"Days between responses :" = "Dias entre respostas:";
+"Days between responses" ="Dias entre respostas";
 "Do not send responses to mailing lists" = "Não envie respostas para lista de e-mails";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone :" = "Fuso Horário:";
-"Short Date Format :" = "Formato da Data (Curto) :";
-"Long Date Format :" = "Formato da Data (Longo) :";
-"Time Format :" = "Formato da Hora :";
+"Current Time Zone" ="Fuso Horário";
+"Short Date Format" ="Formato da Data (Curto)";
+"Long Date Format" ="Formato da Data (Longo)";
+"Time Format" ="Formato da Hora";
 
 "default" = "Padrão";
 
@@ -95,26 +95,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "A Semana começa em :";
-"Day start time :" = "O Dia começa as :";
-"Day end time :" = "O Dia termina as :";
+"Week begins on" ="A Semana começa em";
+"Day start time" ="O Dia começa as";
+"Day end time" ="O Dia termina as";
 "Day start time must be prior to day end time." = "Dia de inicio deve ser anterior ao dia de fim.";
 "Show time as busy outside working hours" = "Exibir horas como ocupadas quando fora do horário de serviço";
-"First week of year :" = "Primeira semana do ano :";
+"First week of year" ="Primeira semana do ano";
 "Enable reminders for Calendar items" = "Habilitar lembretes para os itens do Calendário";
 "Play a sound when a reminder comes due" = "Executar um som quando existir um lembrete";
-"Default reminder :" = "Lembrete padrão :";
+"Default reminder" ="Lembrete padrão";
 
 "firstWeekOfYear_January1" = "Inicia em 01 de janeiro";
 "firstWeekOfYear_First4DayWeek" = "Primeira semana com 4 dias";
 "firstWeekOfYear_FirstFullWeek" = "Primeira semana com 5 dias";
 
 "Prevent from being invited to appointments" = "Impedir de ser convidado para um compromisso";
-"White list for appointment invitations:" = "Lista branca para convites de compromissos:";
+"White list for appointment invitations" = "Lista branca para convites de compromissos";
 "Contacts Names" = "Nomes de Contatos";
 
 /* Default Calendar */
-"Default calendar :" = "Calendário Padrão";
+"Default calendar" ="Calendário Padrão";
 "selectedCalendar" = "Calendário selecionado";
 "personalCalendar" = "Calendário pessoal";
 "firstCalendar" = "Calendário habilizado pela primeira vez";
@@ -140,11 +140,11 @@
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
 "When sending mail, add unknown recipients to my" = "Ao enviar e-mail, adicionar destinatários desconhecidos ao meu";
 
-"Forward messages:" = "Encaminhar mensagens:";
+"Forward messages" = "Encaminhar mensagens";
 "messageforward_inline" = "No corpo da mensagem";
 "messageforward_attached" = "Como anexo";
 
-"When replying to a message:" = "Ao responder a uma mensagem:";
+"When replying to a message" = "Ao responder a uma mensagem";
 "replyplacement_above" = "Começar minha resposta acima das citações";
 "replyplacement_below" = "Começar minha resposta abaixo das citações";
 "And place my signature" = "E colocar minha assinatura";
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Nova conta de e-mail";
 
-"Server Name:" = "Nome do Servidor:";
-"Port:" = "Porta:";
-"Encryption:" = "Encriptação:";
+"Server Name" = "Nome do Servidor";
+"Port" = "Porta";
+"Encryption" = "Encriptação";
 "None" = "Nenhum";
-"User Name:" = "Nome do Usuário:";
-"Password:" = "Senha:";
+"User Name" = "Nome do Usuário";
+"Password" = "Senha";
 
-"Full Name:" = "Nome Completo:";
-"Email:" = "E-mail:";
-"Reply To Email:" = "Responder para o Email:";
-"Signature:" = "Assinatura:";
+"Full Name" = "Nome Completo";
+"Email" = "E-mail";
+"Reply To Email" = "Responder para o Email";
+"Signature" = "Assinatura";
 "(Click to create)" = "(Click para criar)";
 
 "Signature" = "Assinatura";
@@ -190,13 +190,13 @@
 "Additional Parameters" = "Parâmetros Adicionais";
 
 /* password */
-"New password:" = "Nova senha:";
-"Confirmation:" = "Confirmação:";
+"New password" = "Nova senha";
+"Confirmation" = "Confirmação";
 "Change" = "Alterar";
 
 /* Event+task classifications */
-"Default events classification :" = "Classificação padrão do compromisso:";
-"Default tasks classification :" = "Classificação padrão da tarefa:";
+"Default events classification" ="Classificação padrão do compromisso";
+"Default tasks classification" ="Classificação padrão da tarefa";
 "PUBLIC_item" = "Público";
 "CONFIDENTIAL_item" = "Confidencial";
 "PRIVATE_item" = "Particular";
@@ -210,14 +210,15 @@
 "Contacts" = "Catálogo";
 "Mail" = "Correio";
 "Last" = "Último usado";
-"Default Module :" = "Módulo Padrão:";
-"SOGo Version :" = "Versão do SOGo:";
+"Default Module " = "Módulo Padrão";
+"SOGo Version" ="Versão do SOGo";
 
-"Language :" = "Idioma :";
+"Language" ="Idioma";
 "choose" = "Escolha ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -240,7 +241,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View :" = "Atualizar a Visualização:";
+"Refresh View" ="Atualizar a Visualização";
 "refreshview_manually" = "Manualmente";
 "refreshview_every_minute" = "A cada minuto";
 "refreshview_every_2_minutes" = "A cada 2 minutos";
@@ -251,12 +252,12 @@
 "refreshview_once_per_hour" = "Uma vez por hora";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Quando eu receber uma confirmação de leitura:";
+"When I receive a request for a return receipt" = "Quando eu receber uma confirmação de leitura";
 "Never send a return receipt" = "Nunca enviar confirmação";
 "Allow return receipts for some messages" = "Permitir confirmação para algumas mensagens";
-"If I'm not in the To or Cc of the message:" = "Se eu não estiver no Para ou Cc da mensagem:";
-"If the sender is outside my domain:" = "Se o remetente está fora do meu domínio:";
-"In all other cases:" = "Em todos os outros casos:";
+"If I'm not in the To or Cc of the message" = "Se eu não estiver no Para ou Cc da mensagem";
+"If the sender is outside my domain" = "Se o remetente está fora do meu domínio";
+"In all other cases" = "Em todos os outros casos";
 
 "Never send" = "Nunca envia";
 "Always send" = "Sempre envia";

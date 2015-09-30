@@ -780,7 +780,10 @@ static Class NSNullK;
       NSRange r;
 
       r = [theUID rangeOfString: [NSString stringWithFormat: @"@%@", theDomain]];
-      theUID = [theUID substringToIndex: r.location];
+
+      // We check if the range is ok here since we could be using DomainLessLogin
+      if (r.location != NSNotFound)
+        theUID = [theUID substringToIndex: r.location];
     }
 
   sogoSources = [[self authenticationSourceIDsInDomain: theDomain] objectEnumerator];

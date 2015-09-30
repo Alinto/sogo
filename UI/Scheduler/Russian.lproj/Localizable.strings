@@ -150,8 +150,8 @@
 
 "LIST" = "Список";
 "Print Settings" = "Настройки печати";
-"Title:" = "Заголовок:";
-"Layout:" = "Разметка:";
+"Title" = "Заголовок";
+"Layout" = "Разметка";
 "What to Print" = "Что печатать";
 "Options" = "Опции";
 "Tasks with no due date" = "Задачи без указания времени окончания";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Редактор встреч";
 "Appointment proposal" = "Предложение встреч";
 "Appointment on" = "Встреча";
-"Start:" = "Начало:";
-"End:" = "Конец:";
-"Due Date:" = "К дате:";
-"Title:" = "Заголовок:";
-"Calendar:" = "Календарь:";
+"Start" = "Начало";
+"End" = "Конец";
+"Due Date" = "К дате";
+"Title" = "Заголовок";
+"Calendar" = "Календарь";
 "Name" = "Имя";
 "Email" = "Email";
-"Status:" = "Статус:";
+"Status" = "Статус";
 "% complete" = "% выполнено";
-"Location:" = "Место:";
-"Priority:" = "Приоритет:";
+"Location" = "Место";
+"Priority" = "Приоритет";
 "Privacy" = "Приватность";
 "Cycle" = "Цикл";
 "Cycle End" = "Конец цикла";
 "Categories" = "Категории";
 "Classification" = "Классификация";
 "Duration" = "Продолжительность";
-"Attendees:" = "Участники:";
+"Attendees" = "Участники";
 "Resources" = "Ресурсы";
-"Organizer:" = "Организатор:";
-"Description:" = "Описание:";
-"Document:" = "Документ:";
-"Category:" = "Категория:";
-"Repeat:" = "Повторять:";
-"Reminder:" = "Напоминание:";
-"General:" = "Общее:";
-"Reply:" = "Ответ:";
-"Created by:" = "Создано:";
+"Organizer" = "Организатор";
+"Description" = "Описание";
+"Document" = "Документ";
+"Category" = "Категория";
+"Repeat" = "Повторять";
+"Reminder" = "Напоминание";
+"General" = "Общее";
+"Reply" = "Ответ";
+"Created by" = "Создано";
 
 
 "Target:" = "Цель:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Просроченные задачи";
 "view_incomplete" = "Незаконченные задачи";
 
-"View:" = "Вид:";
+"View" = "Вид";
 "Title, category or location" = "Заголовок, категория или место";
 "Entire content" = "Всё содержимое";
 
@@ -506,8 +506,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "button_allOccurrences" = "Все повторы";
 
 /* Properties dialog */
-"Name:" = "Название:";
-"Color:" = "Цвет:";
+"Color" = "Цвет";
 
 "Include in free-busy" = "Включить в free-busy";
 
@@ -522,11 +521,11 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Notifications" = "Напоминания";
 "Receive a mail when I modify my calendar" = "Получать письмо в случае если я изменю свой календарь";
 "Receive a mail when someone else modifies my calendar" = "Получать письмо если кто-то изменит мой календарь";
-"When I modify my calendar, send a mail to:" = "Если я изменю свой календарь, отправить письмо на адрес: ";
+"When I modify my calendar, send a mail to" = "Если я изменю свой календарь, отправить письмо на адрес ";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
 "Authenticated User Access" = "Доступ авторизированных пользователей";
-"CalDAV URL" = "CalDAV URL: ";
+"CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

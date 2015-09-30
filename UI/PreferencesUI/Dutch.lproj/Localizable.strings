@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatisch bericht bij afwezigheid inschakelen";
-"Auto reply message :" = "Automatisch eenmalig met het volgende bericht beantwoorden:";
-"Email addresses (separated by commas) :" = "E-mailaddressen (gescheiden door komma's):";
+"Auto reply message" ="Automatisch eenmalig met het volgende bericht beantwoorden";
+"Email addresses (separated by commas)" ="E-mailaddressen (gescheiden door komma's)";
 "Add default email addresses" = "Standaard e-mailadres toevoegen";
-"Days between responses :" = "Dagen tussen reacties:";
+"Days between responses" ="Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone :" = "Huidige tijdzone:";
-"Short Date Format :" = "Kort datumformaat:";
-"Long Date Format :" = "Lang datumformaat:";
-"Time Format :" = "Tijdformaat:";
+"Current Time Zone" ="Huidige tijdzone";
+"Short Date Format" ="Kort datumformaat";
+"Long Date Format" ="Lang datumformaat";
+"Time Format" ="Tijdformaat";
 
 "default" = "Default";
 
@@ -95,26 +95,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Week begint op:";
-"Day start time :" = "Dag begint om:";
-"Day end time :" = "Dag eindigt om:";
+"Week begins on" ="Week begint op";
+"Day start time" ="Dag begint om";
+"Day end time" ="Dag eindigt om";
 "Day start time must be prior to day end time." = "Het begin van de dag moet voor het einde liggen.";
 "Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
-"First week of year :" = "Eerste week van het jaar:";
+"First week of year" ="Eerste week van het jaar";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
 "Play a sound when a reminder comes due" = "Geluid afspelen bij herinnering";
-"Default reminder :" = "Standaardherinnering:";
+"Default reminder" ="Standaardherinnering";
 
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
 
 "Prevent from being invited to appointments" = "Voorkom uitgenodigingen voor gebeurtenissen";
-"White list for appointment invitations:" = "Whitelist voor uitnodigingen:";
+"White list for appointment invitations" = "Whitelist voor uitnodigingen";
 "Contacts Names" = "Contactnamen";
 
 /* Default Calendar */
-"Default calendar :" = "Standaardagenda:";
+"Default calendar" ="Standaardagenda";
 "selectedCalendar" = "Geselecteerde agenda";
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
@@ -140,11 +140,11 @@
 "Sort messages by threads" = "Berichten sorteren op threads";
 "When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
 
-"Forward messages:" = "Berichten doorsturen:";
+"Forward messages" = "Berichten doorsturen";
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
 
-"When replying to a message:" = "Bij het beantwoorden van een bericht:";
+"When replying to a message" = "Bij het beantwoorden van een bericht";
 "replyplacement_above" = "Reactie boven orginele tekst";
 "replyplacement_below" = "Reactie onder orginele tekst";
 "And place my signature" = "Ondertekening plaatsen";
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Nieuw mailaccount";
 
-"Server Name:" = "Servernaam:";
-"Port:" = "Poort:";
-"Encryption:" = "Encryptie:";
+"Server Name" = "Servernaam";
+"Port" = "Poort";
+"Encryption" = "Encryptie";
 "None" = "Geen";
-"User Name:" = "Gebruikersnaam:";
-"Password:" = "Wachtwoord:";
+"User Name" = "Gebruikersnaam";
+"Password" = "Wachtwoord";
 
-"Full Name:" = "Naam:";
-"Email:" = "E-mail:";
-"Reply To Email:" = "Antwoord op e-mail:";
-"Signature:" = "Ondertekening:";
+"Full Name" = "Naam";
+"Email" = "E-mail";
+"Reply To Email" = "Antwoord op e-mail";
+"Signature" = "Ondertekening";
 "(Click to create)" = "(Klik om op te stellen)";
 
 "Signature" = "Ondertekening";
@@ -190,13 +190,13 @@
 "Additional Parameters" = "Extra Parameters";
 
 /* password */
-"New password:" = "Nieuw wachtwoord:";
-"Confirmation:" = "Bevestig wachtwoord:";
+"New password" = "Nieuw wachtwoord";
+"Confirmation" = "Bevestig wachtwoord";
 "Change" = "Veranderen";
 
 /* Event+task classifications */
-"Default events classification :" = "Standaardclassificatie afspraken:";
-"Default tasks classification :" = "Standaardclassificatie taken:";
+"Default events classification" ="Standaardclassificatie afspraken";
+"Default tasks classification" ="Standaardclassificatie taken";
 "PUBLIC_item" = "Publiek";
 "CONFIDENTIAL_item" = "Vertrouwelijk";
 "PRIVATE_item" = "Privé";
@@ -210,14 +210,15 @@
 "Contacts" = "Adresboek";
 "Mail" = "Mail";
 "Last" = "Laatst gebruikt";
-"Default Module :" = "Standaardmodule:";
-"SOGo Version :" = "SOGo versie:";
+"Default Module " = "Standaardmodule";
+"SOGo Version" ="SOGo versie";
 
-"Language :" = "Taal:";
+"Language" ="Taal";
 "choose" = "Kies...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -234,13 +235,14 @@
 "Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentinië)";
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View :" = "Overzicht verversen";
+"Refresh View" ="Overzicht verversen";
 "refreshview_manually" = "Handmatig";
 "refreshview_every_minute" = "Iedere minuut";
 "refreshview_every_2_minutes" = "Iedere 2 minuten";
@@ -251,12 +253,12 @@
 "refreshview_once_per_hour" = "Ieder uur";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Bij aanvraag van een ontvangstbevestiging:";
+"When I receive a request for a return receipt" = "Bij aanvraag van een ontvangstbevestiging";
 "Never send a return receipt" = "Ontvangstbevestiging nooit sturen";
 "Allow return receipts for some messages" = "Ontvangstbevestigingen voor sommige berichten toestaan";
-"If I'm not in the To or Cc of the message:" = "Als ik niet in aan of cc van het bericht sta:";
-"If the sender is outside my domain:" = "Als de afzender buiten mijn domein zit:";
-"In all other cases:" = "In alle andere gevallen:";
+"If I'm not in the To or Cc of the message" = "Als ik niet in aan of cc van het bericht sta";
+"If the sender is outside my domain" = "Als de afzender buiten mijn domein zit";
+"In all other cases" = "In alle andere gevallen";
 
 "Never send" = "Nooit sturen";
 "Always send" = "Altijd sturen";

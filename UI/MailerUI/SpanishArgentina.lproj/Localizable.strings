@@ -26,7 +26,7 @@
 /* Tooltips */
 
 "Send this message now" = "Enviar este mensaje ahora";
-"Select a recipient from an Address Book" = "Seleccione un destinatario de alguna de las libretas de direcciones";
+"Select a recipient from an Address Book" = "Seleccione un destinatario de una libreta de direcciones";
 "Include an attachment" = "Incluir un adjunto";
 "Save this message" = "Guardar este mensaje";
 "Get new messages" = "Recibir mensajes nuevos";
@@ -144,7 +144,7 @@
 "Sender" = "Remitente";
 "Subject or Sender" = "Asunto o remitente";
 "To or Cc" = "Para o CC";
-"Entire Message" = "Mensage completo";
+"Entire Message" = "Mensaje completo";
 
 "Date"          = "Fecha";
 "View"          = "Vista";
@@ -205,7 +205,7 @@
 "Delegation..." = "Delegación...";
 
 /* Use This Folder menu */
-"Sent Messages" = "Enviar mensajes";
+"Sent Messages" = "Mensajes enviados";
 "Drafts" = "Borradores";
 "Deleted Messages" = "Mensajes borrados";
 
@@ -216,7 +216,7 @@
 "Edit As New..." = "Editar como nuevo...";
 "Move To" = "Mover a";
 "Copy To" = "Copiar a";
-"Label" = "Etiquetar";
+"Label" = "Etiqueta";
 "Mark" = "Marcar";
 "Save As..." = "Guardar como...";
 "Print Preview" = "Vista preliminar";
@@ -240,11 +240,11 @@
 "As Not Junk" = "Como correo normal";
 "Run Junk Mail Controls" = "Ejecutar controles de correo basura";
 
-"Search messages in:" = "Buscar mensajes en:";
+"Search messages in" = "Buscar mensajes en";
 "Search" = "Buscar";
 "Search subfolders" = "Buscar en subcarpetas";
-"Match any of the following" = "Coincidir con cualquiera de los siguientes";
-"Match all of the following" = "Coincidir con alguno de los siguientes";
+"Match any of the following" = "Coincidir con cualquiera de los siguientes criterios:";
+"Match all of the following" = "Coincidir con todos estos criterios:";
 "contains" = "contiene";
 "does not contain" = "no contiene";
 "No matches found" = "No se encontraron coincidencias";
@@ -254,10 +254,10 @@
 
 /* Folder operations */
 "Name :" = "Nombre: ";
-"Enter the new name of your folder :"
- = "Introduzca el nuevo nombre de la carpeta: ";
+"Enter the new name of your folder"
+ = "Introduzca el nuevo nombre de la carpeta";
 "Do you really want to move this folder into the trash ?"
- = "¿Seguro que desea mover la carpeta a la papelera?";
+ = "¿Está seguro de que desea mover la carpeta a la papelera?";
 "Operation failed" = "Operación fallida";
 
 "Quota" = "Cuota";
@@ -279,12 +279,12 @@
 "The folder functionality could not be changed."
 = "La funcionalidad de la carpeta no puede ser cambiada.";
 
-"You need to choose a non-virtual folder!" = "¡Ha de seleccionar una carpeta no virtual!";
+"You need to choose a non-virtual folder!" = "La carpeta seleccionada no debe ser virtual";
 
 "Moving a message into its own folder is impossible!"
-= "¡Es imposible mover los mensajes en su propia carpeta!";
+= "¡Es imposible mover los mensajes a la misma carpeta!";
 "Copying a message into its own folder is impossible!"
-= "¡Es imposible copiar mensajes en su propia carpeta!";
+= "¡Es imposible copiar mensajes a la misma carpeta!";
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
@@ -299,9 +299,9 @@
 "There is an active file upload. Closing the window will interrupt it." = "Se está subiendo un archivo. Si cierra la ventana se cancelará la operación.";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";
-"cannot send message (smtp) - recipients discarded:" = "No se puede enviar el mensaje: (smtp) destinatarios descartados:";
-"cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: (smtp) error de conexión";
+"cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: Ninguno de los destinatarios es válido.";
+"cannot send message (smtp) - recipients discarded:" = "No se puede enviar el mensaje:  Las siguientes direcciones no son válidas:";
+"cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: Error de conexión mientras se trataba de conectar con el servidor SMTP.";
 
 /* Contacts list in mail editor */
 "Email" = "Correo";

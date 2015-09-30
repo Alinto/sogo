@@ -240,7 +240,7 @@
 "As Not Junk" = "Jako vyžádané";
 "Run Junk Mail Controls" = "Spustit kontrolu nevyžádaných";
 
-"Search messages in:" = "Hledat zprávy v:";
+"Search messages in" = "Hledat zprávy v";
 "Search" = "Hledat";
 "Search subfolders" = "Hledat v podsložkách";
 "Match any of the following" = "Odpovídající některému pravidlu";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Jméno :";
-"Enter the new name of your folder :"
- = "Zadejte nový název Vaší složky :";
+"Enter the new name of your folder"
+ = "Zadejte nový název Vaší složky";
 "Do you really want to move this folder into the trash ?"
  = "Opravdu chcete tuto složku vyhodit do koše ?";
 "Operation failed" = "Operace selhala";

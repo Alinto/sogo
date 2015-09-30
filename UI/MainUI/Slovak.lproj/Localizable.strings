@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Užívateľské meno:";
-"Password:" = "Heslo:";
-"Domain:" = "Doména:";
+"Username" = "Užívateľské meno";
+"Password" = "Heslo";
+"Domain" = "Doména";
 "Remember username" = "Zapamätať uživateľské meno";
 
 "Connect" = "Pripojiť";
@@ -17,7 +17,7 @@
 "alternativeBrowserSafari" = "Alternatívne je možné použiť aj Safari.";
 "Download" = "Stiahnuť";
 
-"Language:" = "Jazyk:";
+"Language" = "Jazyk";
 "choose" = "Výber ...";
 "Arabic" = "العربية";
 "Catalan" = "Katalánsky";
@@ -37,6 +37,7 @@
 "BrazilianPortuguese" = "Portugalská brazílština";
 "Russian" = "Ruština";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Španielčina (Španielsko)";
 "SpanishArgentina" = "Španielčina (Argentína)";
 "Swedish" = "Švédčina";

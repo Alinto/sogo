@@ -150,8 +150,8 @@
 
 "LIST" = "Liste";
 "Print Settings" = "Paramètres d'impression";
-"Title:" = "Titre :";
-"Layout:" = "Vue :";
+"Title" = "Titre ";
+"Layout" = "Vue ";
 "What to Print" = "Contenu";
 "Options" = "Options";
 "Tasks with no due date" = "Tâches sans date d'échéance";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Edition de rendez-vous";
 "Appointment proposal" = "Proposition de rendez-vous";
 "Appointment on" = "Rendez-vous le";
-"Start:" = "Début :";
-"End:" = "Au :";
-"Due Date:" = "Fin prévue :";
-"Title:" = "Titre :";
-"Calendar:" = "Agenda :";
+"Start" = "Début ";
+"End" = "Au ";
+"Due Date" = "Fin prévue ";
+"Title" = "Titre ";
+"Calendar" = "Agenda ";
 "Name" = "Nom";
 "Email" = "Courrier";
-"Status:" = "Statut :";
+"Status" = "Statut ";
 "% complete" = "% d'achèvement";
-"Location:" = "Lieu :";
-"Priority:" = "Priorité";
+"Location" = "Lieu ";
+"Priority" = "Priorité";
 "Privacy" = "Confidentialité";
 "Cycle" = "Récurrence";
 "Cycle End" = "s'arreter";
 "Categories" = "Catégories";
 "Classification" = "Classification";
 "Duration" = "Durée";
-"Attendees:" = "Participants :";
+"Attendees" = "Participants ";
 "Resources" = "Ressources";
-"Organizer:" = "Organisateur :";
-"Description:" = "Description :";
-"Document:" = "Document :";
-"Category:" = "Catégorie :";
-"Repeat:" = "Répétition :";
-"Reminder:" = "Rappel :";
-"General:" = "Général:";
-"Reply:" = "Réponse:";
-"Created by:" = "Créé par:";
+"Organizer" = "Organisateur ";
+"Description" = "Description ";
+"Document" = "Document ";
+"Category" = "Catégorie ";
+"Repeat" = "Répétition ";
+"Reminder" = "Rappel ";
+"General" = "Général";
+"Reply" = "Réponse";
+"Created by" = "Créé par";
 
 
 "Target:" = "Destination :";
@@ -244,7 +244,7 @@
 "view_overdue" = "Tâches en retard";
 "view_incomplete" = "Tâches à compléter";
 
-"View:" = "Voir :";
+"View" = "Voir ";
 "Title, category or location" = "Titre, catégorie ou lieu";
 "Entire content" = "Tout le contenu";
 
@@ -506,8 +506,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "button_allOccurrences" = "Toutes les occurences";
 
 /* Properties dialog */
-"Name:" = "Nom :";
-"Color:" = "Couleur :";
+"Name" = "Nom ";
+"Color" = "Couleur ";
 
 "Include in free-busy" = "Inclure dans la disponibilité";
 
@@ -522,11 +522,11 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Notifications" = "Notifications";
 "Receive a mail when I modify my calendar" = "Émettre un courrier quand je modifie mon agenda";
 "Receive a mail when someone else modifies my calendar" = "Émettre un courrier quand quelqu'un d'autre modifie mon agenda";
-"When I modify my calendar, send a mail to:" = "Quand je modifie mon agenda, émettre un courrier à :";
+"When I modify my calendar, send a mail to" = "Quand je modifie mon agenda, émettre un courrier à ";
 
 "Links to this Calendar" = "Liens vers cet agenda";
 "Authenticated User Access" = "Accès aux utilisateurs authentifiés";
-"CalDAV URL" = "Accès en CalDAV :";
+"CalDAV URL" = "Accès en CalDAV ";
 "WebDAV ICS URL" = "Représentation ICS en WebDAV";
 "WebDAV XML URL" = "Représentation XML en WebDAV";
 

@@ -127,43 +127,43 @@
       <div class="tabs">
         <div id="generalView" class="tab">
           <dl class="dl-horizontal">
-            <dt><var:string label:value="SOGo Version :"/></dt>
+            <dt><var:string label:value="SOGo Version"/></dt>
             <dd><var:string value="sogoVersion"/></dd>
-            <dt><var:string label:value="Language :"/></dt>
+            <dt><var:string label:value="Language"/></dt>
             <dd><var:popup list="languages" item="item"
               const:id="language"
               const:name="language"
               string="languageText"
               selection="language"
               label:noSelectionString="choose" /></dd>
-            <dt><var:string label:value="Current Time Zone :"/></dt>
+            <dt><var:string label:value="Current Time Zone"/></dt>
             <dd><var:popup list="timeZonesList" item="item"
               const:id="timezone"
               const:name="timezone"
               string="item" selection="userTimeZone" /></dd>
-            <dt><var:string label:value="Short Date Format :"/></dt>
+            <dt><var:string label:value="Short Date Format"/></dt>
             <dd><var:popup list="shortDateFormatsList" item="item"
               const:id="shortDateFormat"
               const:name="shortDateFormat"
               string="itemShortDateFormatText" selection="userShortDateFormat"/></dd>
-            <dt><var:string label:value="Long Date Format :"/></dt>
+            <dt><var:string label:value="Long Date Format"/></dt>
             <dd><var:popup list="longDateFormatsList" item="item"
               const:id="longDateFormat"
               const:name="longDateFormat"
               string="itemLongDateFormatText" selection="userLongDateFormat"
               /></dd>
-            <dt><var:string label:value="Time Format :"/></dt>
+            <dt><var:string label:value="Time Format"/></dt>
             <dd><var:popup list="timeFormatsList" item="item"
               const:id="timeFormat"
               const:name="timeFormat"
               string="itemTimeFormatText" selection="userTimeFormat"
               /></dd>
-            <dt><var:string label:value="Default Module :"/></dt>
+            <dt><var:string label:value="Default Module"/></dt>
             <dd><var:popup list="availableModules" item="item"
               const:id="defaultModule"
               const:name="defaultModule"
               string="itemModuleText" selection="userDefaultModule"/></dd>
-            <dt><var:string label:value="Refresh View :"/></dt>
+            <dt><var:string label:value="Refresh View"/></dt>
             <dd><var:popup list="refreshViewList" item="item"
               const:id="refreshView"
               const:name="refreshView"
@@ -173,17 +173,17 @@
         <var:if condition="userHasCalendarAccess">
           <div id="calendarOptionsView" class="tab">
             <dl class="dl-horizontal">
-              <dt><var:string label:value="Week begins on :"/></dt>
+              <dt><var:string label:value="Week begins on"/></dt>
               <dd><var:popup list="daysList" item="item"
                 const:id="weekStartDay"
                 const:name="weekStartDay"
                 string="itemWeekStartDay" selection="userWeekStartDay"/></dd>
-              <dt><var:string label:value="Day start time :"/></dt>
+              <dt><var:string label:value="Day start time"/></dt>
               <dd><var:popup list="hoursList" item="item"
                 const:id="dayStartTime"
                 const:name="dayStartTime"
                 string="item" selection="userDayStartTime"/></dd>
-              <dt><var:string label:value="Day end time :"/></dt>
+              <dt><var:string label:value="Day end time"/></dt>
               <dd><var:popup list="hoursList" item="item"
                 const:id="dayEndTime"
                 const:name="dayEndTime"
@@ -194,27 +194,27 @@
                 const:id="busyOffHours"
                 var:checked="busyOffHours" />
                 <var:string label:value="Show time as busy outside working hours"/></dd>
-              <dt><var:string label:value="First week of year :"/></dt>
+              <dt><var:string label:value="First week of year"/></dt>
               <dd><var:popup list="firstWeekList" item="item"
                 const:id="firstWeek"
                 const:name="firstWeek"
                 string="itemFirstWeekText" selection="userFirstWeek"/></dd>
-              <dt><var:string label:value="Default calendar :"/></dt>
+              <dt><var:string label:value="Default calendar"/></dt>
               <dd><var:popup list="defaultCalendarList" item="item"
                 const:id="defaultCalendar"
                 const:name="defaultCalendar"
                 string="itemCalendarText" selection="userDefaultCalendar"/></dd>
-              <dt><var:string label:value="Default events classification :"/></dt>
+              <dt><var:string label:value="Default events classification"/></dt>
               <dd><var:popup list="calendarClassificationsList" item="item"
                 const:id="eventsClassification"
                 const:name="eventsClassification"
                 string="itemClassificationText" selection="eventsDefaultClassification"/></dd>
-              <dt><var:string label:value="Default tasks classification :"/></dt>
+              <dt><var:string label:value="Default tasks classification"/></dt>
               <dd><var:popup list="calendarClassificationsList" item="item"
                 const:id="tasksClassification"
                 const:name="tasksClassification"
                 string="itemClassificationText" selection="tasksDefaultClassification"/></dd>
-              <dt><var:string label:value="Default reminder :"/></dt>
+              <dt><var:string label:value="Default reminder"/></dt>
               <dd><var:popup list="reminderList" item="item"
                 const:disabledValue="-"
                 label:noSelectionString="reminder_NONE"
@@ -270,7 +270,7 @@
                               var:checked="preventInvitations" />
                   <var:string label:value="Prevent from being invited to appointments"/></div>
                   <hr />
-                  <var:string label:value="White list for appointment invitations:"/>
+                  <var:string label:value="White list for appointment invitations"/>
                   <div id="appointmentsWhiteListWrapper" class="listWrapper">
                     <table id="tableViewWhiteList" cellspacing="0">
                       <thead>
@@ -359,13 +359,13 @@
                 const:name="addressBookList"
                 string="itemAddressBookText" selection="userAddressBook"/></dd>
               <dt></dt>
-              <dt><var:string label:value="Forward messages:"/></dt>
+              <dt><var:string label:value="Forward messages"/></dt>
               <dd><var:popup list="messageForwardingList" item="item"
                 const:id="messageForwarding"
                 const:name="messageForwarding"
                 string="itemMessageForwardingText"
                 selection="userMessageForwarding"/></dd>
-              <dt><var:string label:value="When replying to a message:"/></dt>
+              <dt><var:string label:value="When replying to a message"/></dt>
               <dd><var:popup list="replyPlacementList" item="item"
                 const:id="replyPlacementList"
                 const:name="replyPlacementList"
@@ -496,20 +496,20 @@
             <div id="mailAccountEditor">
               <fieldset const:id="accountInfo">
                 <dl class="dl-horizontal">
-                  <dt><var:string label:value="Server Name:"/></dt>
+                  <dt><var:string label:value="Server Name"/></dt>
                   <dd><input const:name="serverName" const:id="serverName" type="text" const:value=""/>
-                    <var:string label:value="Port:"/>
+                    <var:string label:value="Port"/>
                     <input const:name="port" const:id="port" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Encryption:"/></dt>
+                  <dt><var:string label:value="Encryption"/></dt>
                   <dd><input const:name="encryption" type="radio" const:value="none"/>
                     <var:string label:value="None"/>
                     <input const:name="encryption" type="radio" const:value="ssl"/>
                     <var:string label:value="SSL"/>
                     <input const:name="encryption" type="radio" const:value="tls"/>
                     <var:string label:value="TLS"/></dd>
-                  <dt><var:string label:value="User Name:"/></dt>
+                  <dt><var:string label:value="User Name"/></dt>
                   <dd><input const:name="userName" const:id="userName" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Password:"/></dt>
+                  <dt><var:string label:value="Password"/></dt>
                   <dd><input const:name="password" const:id="password" type="password" const:value=""/></dd>
                 </dl>
                 <input const:name="encryption" type="hidden" const:value="none"/>
@@ -521,20 +521,20 @@
               
               <fieldset const:id="identityInfo">
                 <dl class="dl-horizontal">
-                  <dt><var:string label:value="Full Name:"/></dt>
+                  <dt><var:string label:value="Full Name"/></dt>
                   <dd><input const:name="fullName" const:id="fullName" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Email:"/></dt>
+                  <dt><var:string label:value="Email"/></dt>
                   <dd><input const:name="email" const:id="email" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Reply To Email:"/></dt>
+                  <dt><var:string label:value="Reply To Email"/></dt>
                   <dd><input const:name="replyTo" const:id="replyTo" type="text" autocomplete="off" const:value=""/></dd>
-                  <dt><var:string label:value="Signature:"/></dt>
+                  <dt><var:string label:value="Signature"/></dt>
                   <dd><span id="actSignature"><!--space --></span></dd>
                 </dl>
               </fieldset>
               
               <fieldset const:id="returnReceiptsInfo">
                 <var:string
-                label:value="When I receive a request for a return receipt:"
+                label:value="When I receive a request for a return receipt"
                 /><br/>
                 <label><input const:name="receipt-action" const:id="receipt-action-ignore"
                   type="radio" const:value="ignore"/>
@@ -548,7 +548,7 @@
                 ><br/>
                 <div id="receiptOptions">
                   <var:string
-                  label:value="If I'm not in the To or Cc of the message:"/>
+                  label:value="If I'm not in the To or Cc of the message"/>
                   <select name="receipt-non-recipient-action" id="receipt-non-recipient-action">
                     <option const:value="ignore"><var:string label:value="Never send"/></option>
                     <option const:value="send"><var:string label:value="Always send"/></option>
@@ -556,7 +556,7 @@
                   </select><br/>
                   
                   <var:string
-                  label:value="If the sender is outside my domain:"/>
+                  label:value="If the sender is outside my domain"/>
                   <select name="receipt-outside-domain-action" id="receipt-outside-domain-action">
                     <option const:value="ignore"><var:string label:value="Never send"/></option>
                     <option const:value="send"><var:string label:value="Always send"/></option>
@@ -564,7 +564,7 @@
                   </select><br/>
                   
                   <var:string
-                  label:value="In all other cases:"/>
+                  label:value="In all other cases"/>
                   <select name="receipt-any-action" id="receipt-any-action">
                     <option const:value="ignore"><var:string label:value="Never send"/></option>
                     <option const:value="send"><var:string label:value="Always send"/></option>
@@ -583,13 +583,13 @@
                 var:checked="enableVacation" />
                 <var:string label:value="Enable vacation auto reply"/></label>
               <div id="vacation">
-                <label><var:string label:value="Auto reply message :"/><br/>
+                <label><var:string label:value="Auto reply message"/><br/>
                   <textarea const:name="autoReplyText"
                   const:id="autoReplyText"
                   var:value="autoReplyText"/>
                 </label><br/>
                 
-                <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
+                <label><var:string label:value="Email addresses (separated by commas)"/><br/>
                   <input type="hidden"
                   const:id="defaultEmailAddresses"
                   var:value="defaultEmailAddresses" />
@@ -601,7 +601,7 @@
                   </span>
                 </label><br/>
 
-                <label><var:string label:value="Days between responses :"/>
+                <label><var:string label:value="Days between responses"/>
                   <var:popup list="daysBetweenResponsesList" item="item"
                   const:id="daysBetweenResponsesList"
                   const:name="daysBetweenResponsesList"
@@ -643,7 +643,7 @@
                 <var:string label:value="Forward incoming messages"/></label><br/>
               
               <div id="forward">
-                <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
+                <label><var:string label:value="Email addresses (separated by commas)"/><br/>
                   <textarea const:name="forwardAddress"
                   const:id="forwardAddress"
                   var:value="forwardAddress" />
@@ -663,10 +663,10 @@
         </var:if><!-- userHasMailAccess -->
         <var:if condition="shouldDisplayPasswordChange">
           <div id="passwordView" class="tab">
-            <p id="passwordFields"><label><var:string label:value="New password:"
+            <p id="passwordFields"><label><var:string label:value="New password"
               /><input const:id="newPasswordField" class="textField"
               type="password" const:value=""/></label><br/>
-            <label><var:string label:value="Confirmation:"
+            <label><var:string label:value="Confirmation"
               /><input const:id="newPasswordConfirmationField" class="textField"
               type="password" const:value=""/></label><br/>
             <a href="#" class="button" id="changePasswordBtn"
@@ -684,4 +684,5 @@
       </div>
     </div>
   </form>
+
 </var:component>

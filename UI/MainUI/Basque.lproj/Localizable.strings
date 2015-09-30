@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Erabiltzailea:";
-"Password:" = "Pasahitza:";
-"Domain:" = "Domeinua";
+"Username" = "Erabiltzailea";
+"Password" = "Pasahitza";
+"Domain" = "Domeinua";
 "Remember username" = "Gogoratu erabiltzaile-izena";
 
 "Connect" = "Konektatu";
@@ -17,10 +17,11 @@
 "alternativeBrowserSafari" = "Aukeran, Safari arakatzailea erabili dezakezu ere.";
 "Download" = "Deskargatu";
 
-"Language:" = "Hizkuntza";
+"Language" = "Hizkuntza";
 "choose" = "Aukeratu ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -37,6 +38,7 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

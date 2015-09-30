@@ -184,16 +184,17 @@ NSNumber *iCalDistantFutureNumber = nil;
   NSArray *oldAttendees;
   unsigned int count, max;
   iCalPerson *currentAttendee;
-  NSString *userID;
+  NSString *userID, *domain;
 
   userID = [user login];
+  domain = [user domain];
   oldAttendees = [self attendees];
   max = [oldAttendees count];
   newAttendees = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
       currentAttendee = [oldAttendees objectAtIndex: count];
-      if (![[currentAttendee uid] isEqualToString: userID])
+      if (![[currentAttendee uidInDomain: domain] isEqualToString: userID])
 	[newAttendees addObject: currentAttendee];
     }
 

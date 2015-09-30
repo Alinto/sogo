@@ -43,11 +43,7 @@
 - (BOOL) synchronizeCalendar;
 - (void) setSynchronizeCalendar: (BOOL) new;
 
-- (NSString *) originalCalendarSyncTag;
-- (NSString *) allCalendarSyncTags;
 - (BOOL) mustSynchronize;
-- (NSString *) calendarSyncTag;
-- (void) setCalendarSyncTag: (NSString *) newTag;
 
 /* notifications */
 - (BOOL) notifyOnPersonalModifications;

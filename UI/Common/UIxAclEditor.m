@@ -126,11 +126,21 @@
 
 - (NSString *) currentUserDisplayName
 {
+  NSDictionary *infos;
+  NSString *uid;
   SOGoUserManager *um;
 
   um = [SOGoUserManager sharedUserManager];
-
-  return [um getFullEmailForUID: [self currentUser]];
+  uid = [self currentUser];
+  infos = [um contactInfosForUserWithUIDorEmail: uid inDomain: [[context activeUser] domain]];
+  if (infos)
+    {
+      return [NSString stringWithFormat: @"%@ <%@>",
+                    [infos objectForKey: @"cn"],
+                    [infos objectForKey: @"c_email"]];
+    }
+  else
+    return uid;
 }
 
 - (BOOL) canSubscribeUsers

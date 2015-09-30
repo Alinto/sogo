@@ -235,8 +235,8 @@
 
 /* Folder operations */
 "Name :" = "Nafn :";
-"Enter the new name of your folder :"
- = "Enter the new name of your folder :";
+"Enter the new name of your folder"
+ ="Enter the new name of your folder";
 "Do you really want to move this folder into the trash ?"
  = "Do you really want to move this folder into the trash ?";
 "Operation failed" = "Aðgerðin mistókst";

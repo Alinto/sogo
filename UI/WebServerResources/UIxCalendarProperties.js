@@ -43,43 +43,11 @@ function onOKClick(event) {
   var calendarColor = $("calendarColor");
   var calendarID = $("calendarID");
   var save = true;
-  var tag = $("calendarSyncTag");
-  var originalTag = $("originalCalendarSyncTag");
-  var allTags = $("allCalendarSyncTags");
 
   if (calendarName.value.blank()) {
       alert(_("Please specify a calendar name."));
       save = false;
   }
-
-  if (save
-      && allTags)
-      allTags = allTags.value.split(",");
-  
-  if (save
-      && tag
-      && $("synchronizeCalendar").checked) {
-      if (tag.value.blank()) {
-          alert(_("tagNotDefined"));
-          save = false;
-      }
-      else if (allTags
-               && allTags.indexOf(tag.value) > -1) {
-          alert(_("tagAlreadyExists"));
-          save = false;
-      }
-      else if (originalTag
-               && !originalTag.value.blank()) {
-          if (tag.value != originalTag.value)
-              save = confirm(_("tagHasChanged"));
-      }
-      else
-          save = confirm(_("tagWasAdded"));
-  }
-  else if (save
-           && originalTag
-           && !originalTag.value.blank())
-      save = confirm(_("tagWasRemoved"));
   
   if (save) {
       window.opener.updateCalendarProperties(calendarID.value,

@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username:" = "Felhasználó:";
-"Password:" = "Jelszó:";
-"Domain:" = "Tartomány:";
+"Username" = "Felhasználó";
+"Password" = "Jelszó";
+"Domain" = "Tartomány";
 "Remember username" = "Felhasználónév megjegyzése";
 
 "Connect" = "Kapcsolódás";
@@ -17,11 +17,12 @@
 "alternativeBrowserSafari" = "A Safari böngésző is használható.";
 "Download" = "Letöltés";
 
-"Language:" = "Nyelv:";
+"Language" = "Nyelv";
 "choose" = "Válasszon ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -38,6 +39,7 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

@@ -240,7 +240,7 @@
 "As Not Junk" = "Como Não é Lixo Eletrônico";
 "Run Junk Mail Controls" = "Executar Controle de Lixo Eletrônico";
 
-"Search messages in:" = "Pesquisar mensagens em:";
+"Search messages in" = "Pesquisar mensagens em";
 "Search" = "Pesquisar";
 "Search subfolders" = "Pesquisar sub-pastas";
 "Match any of the following" = "Combinar qualquer uma das seguintes";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Nome :";
-"Enter the new name of your folder :"
- = "Informe o novo nome de sua pasta :";
+"Enter the new name of your folder"
+ = "Informe o novo nome de sua pasta";
 "Do you really want to move this folder into the trash ?"
  = "Você realmente quer mover esta pasta para a Lixeira ?";
 "Operation failed" = "Falha na Operação";

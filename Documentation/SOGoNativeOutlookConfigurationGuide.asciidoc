@@ -233,6 +233,7 @@ Installation
 This section will guide you through the installation of the native
 Microsoft Outlook compatibility layer SOGo offers.
 
+////
 Red Hat Enterprise Linux v6 x86_64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -316,7 +317,7 @@ from this guide.
 On Ubuntu 12.04, the Samba init scripts need to be modified to
 disable the upstart check. For more details, refer to:
 https://wiki.samba.org/index.php/Samba4/InitScript
-
+////
 
 Debian 8 (Jessie) and Ubuntu 14.04 (Trusty Tahr)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -395,7 +396,7 @@ samba-tool user setexpiry administrator --noexpiry
 ----
 
 You might consider changing the realm and domain used, to suit your
-enviroment.
+environment.
 
 You might also have to
 remove `/etc/samba/smb.conf` prior running this command.
@@ -441,7 +442,7 @@ Your Samba 4 configuration file should look like this:
 OpenChange Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenChange 2.2 stores its metadata in MySQL so you need to have it installed.
+Since v2.2, OpenChange stores its metadata in MySQL so you need to have it installed.
 
 First, create the OpenChange MySQL user:
 
@@ -512,9 +513,11 @@ mapistore:indexing_backend = mysql://openchange-user:openchange$123@localhost/op
 mapiproxy:openchangedb = mysql://openchange-user:openchange$123@localhost/openchange
 ----
 
+////
 On RHEL, make sure SELinux is disabled:
 
  setenforce 0
+////
 
 Next, you can start Samba using the usual command:
 
@@ -545,9 +548,11 @@ This service runs as a WSGI application under apache (mod_wsgi).
 While HTTPS is not required to access this service, it is strongly
 recommended.
 
+////
 On RHEL-based distributions, the apache configuration required by these
 services can be found in `/etc/httpd/conf.d/ocsmanager.conf` and
 `/etc/httpd/conf.d/rpcproxy.conf`.
+////
 
 For Debian-based distributions, these files can be found
 in `/etc/apache2/conf.d/` or `/etc/apache2/conf-available`.
@@ -563,8 +568,10 @@ The OCS Manager and RPC Proxy configuration module can be enabled using:
  a2enconf ocsmanager
  a2enconf rpcproxy
 
+////
 On RHEL-based distributions, make sure the `LoadModule` directive is
 uncommented in `/etc/httpd/conf.d/wsgi.conf`.
+////
 
 The _reqtimeout_ apache module is known to cause problems when using the
 default configuration shipped with Debian-based systems. On such
@@ -580,10 +587,12 @@ To avoid this problem, use a much higher timeout or disable the module:
  a2dismod reqtimeout
 
 You should now restart the Apache service and make sure it will start on
-boot. On RHEL-based distributions, do:
+boot.
+////
+On RHEL-based distributions, do:
 
  chkconfig httpd on && /etc/init.d/httpd restart
-
+////
 On Debian-based distributions, do:
 
  update-rc.d apache2 defaults && /etc/init.d/apache2 restart
@@ -813,7 +822,7 @@ the `openchange_user_cleanup` script distributed with SOGo. The script
 can be found in `/usr/share/doc/sogo/` (`/usr/share/sogo-VERSION/` on
 RHEL).
 To reset a user, run the script as root:
-`python openchange_user_cleanup username`. See the usage output for additional options.
+`openchange_user_cleanup username`. See the usage output for additional options.
 * The "Out of Office Assistant" will not currently work. This feature
 has not been implemented.
 * Creating folders below INBOX (when not normally permitted by the IMAP

@@ -452,7 +452,7 @@
             delegatedAttendee = [iCalPerson new];
             [delegatedAttendee autorelease];
             [delegatedAttendee setEmail: delegatedEmail];
-            delegatedUid = [delegatedAttendee uid];
+            delegatedUid = [delegatedAttendee uidInDomain: [user domain]];
             if (delegatedUid)
               {
                 SOGoUser *delegatedUser;

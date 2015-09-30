@@ -239,8 +239,8 @@
 
 /* Folder operations */
 "Name :" = "Nom: ";
-"Enter the new name of your folder :"
- = "Introduïu el nom nou per a la carpeta: ";
+"Enter the new name of your folder"
+ = "Introduïu el nom nou per a la carpeta";
 "Do you really want to move this folder into the trash ?"
  = "Voleu moure aquesta carpeta a la paperera?";
 "Operation failed" = "Operació no vàlida";

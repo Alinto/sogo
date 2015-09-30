@@ -2,9 +2,9 @@
 
 "title" = "سوجو";
 
-"Username:" = "اسم المستخدم:";
-"Password:" = "كلمة السر:";
-"Domain:" = "النطاق:";
+"Username" = "اسم المستخدم";
+"Password" = "كلمة السر";
+"Domain" = "النطاق";
 "Remember username" = "تذكر اسم المستخدم";
 
 "Connect" = "اتصل";
@@ -17,11 +17,12 @@
 "alternativeBrowserSafari" = "بدلا من ذلك، يمكنك أيضا استخدام سفاري.";
 "Download" = "نزِّل";
 
-"Language:" = "اللغة:";
+"Language" = "اللغة";
 "choose" = "إختار ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -38,6 +39,7 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

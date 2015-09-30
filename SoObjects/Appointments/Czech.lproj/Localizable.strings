@@ -12,16 +12,16 @@ vtodo_class2 = "(Skrytý úkol)";
 "The event \"%{Summary}\" was created" = "Událost \"%{Summary}\" byla vytvořena";
 "The event \"%{Summary}\" was deleted" = "Událost \"%{Summary}\" byla smazána";
 "The event \"%{Summary}\" was updated" = "Událost \"%{Summary}\" byla upravena";
-"The following attendees(s) were notified:" = "Následující účastníci byli upozorněni:";
-"The following attendees(s) were added:" = "Následující účastníci byli přidáni:";
-"The following attendees(s) were removed:" = "Následující účastníci byli odebráni:";
+"The following attendees(s) were notified" = "Následující účastníci byli upozorněni";
+"The following attendees(s) were added" = "Následující účastníci byli přidáni";
+"The following attendees(s) were removed" = "Následující účastníci byli odebráni";
 
 /* IMIP messages */
-"calendar_label" = "Kalendář:";
-"startDate_label" = "Začátek:";
-"endDate_label" = "Konec:";
+"calendar_label" = "Kalendář";
+"startDate_label" = "Začátek";
+"endDate_label" = "Konec";
 "due_label" = "Termín:";
-"location_label" = "Místo:";
+"location_label" = "Místo";
 "summary_label" = "Název:";
 "comment_label" = "Komentář:";
 

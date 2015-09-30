@@ -133,6 +133,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"MoreAvailable"];
   [[o properties] removeObjectForKey: @"BodyPreferenceType"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+  [[o properties] removeObjectForKey: @"InitialLoadSequence"];
 
   [[o properties] addEntriesFromDictionary: values];
   [o save];
@@ -159,7 +160,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString  *nameInCache;
   
   if (theFolderType == ActiveSyncMailFolder)
-    nameInCache= [[[theCollection mailAccountFolder] imapFolderGUIDs] objectForKey: [theCollection nameInContainer]];
+    nameInCache = [imapFolderGUIDS objectForKey: [theCollection nameInContainer]];
   else
     {
       NSString  *component_name;
@@ -170,7 +171,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         component_name = @"vtodo";
       
-      nameInCache= [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]];
+      nameInCache = [NSString stringWithFormat: @"%@/%@", component_name, [theCollection nameInContainer]];
     }
   
   return nameInCache;
@@ -283,7 +284,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoTaskObject alloc] initWithName: serverId
                                                       inContainer: theCollection];
-                o = [sogoObject component: YES secure: NO];     
+                o = [sogoObject component: YES secure: NO];
               }
               break;
             case ActiveSyncMailFolder:
@@ -311,10 +312,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           syncCache = [folderMetadata objectForKey: @"SyncCache"];
           dateCache = [folderMetadata objectForKey: @"DateCache"];
-          
-          [syncCache setObject: [folderMetadata objectForKey: @"SyncKey"]  forKey: serverId];
+
+          [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
           [dateCache setObject: [NSCalendarDate date]  forKey: serverId];
-          
+
           [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
         }
     }
@@ -365,6 +366,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString *serverId;
   NSArray *changes;
   id aChange, o, sogoObject;
+  NSMutableDictionary *folderMetadata, *syncCache;
 
   int i;
 
@@ -372,6 +374,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ([changes count])
     {
+      folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
+      syncCache = [folderMetadata objectForKey: @"SyncCache"];
+
       for (i = 0; i < [changes count]; i++)
         {
           aChange = [changes objectAtIndex: i];
@@ -398,6 +403,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 o = [sogoObject vCard];
                 [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
+
+                [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+
               }
               break;
             case ActiveSyncEventFolder:
@@ -406,14 +414,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 o = [sogoObject component: NO  secure: NO];
                 [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
+
+                [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+
               }
               break;
             case ActiveSyncMailFolder:
             default:
               {
+                NSDictionary *result;
+                NSString *modseq;
+
                 [sogoObject takeActiveSyncValues: allChanges  inContext: context];
+
+                result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
+                modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
+
+                if (modseq)
+                  [syncCache setObject: modseq forKey: serverId];
               }
             }
+
+          [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
 
           [theBuffer appendString: @"<Change>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
@@ -487,7 +510,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           if (![sogoObject isKindOfClass: [NSException class]])
             {
               // FIXME: handle errors here
-              if (deletesAsMoves)
+              if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
                 [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
               else
                 [sogoObject delete];
@@ -651,7 +674,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         NSDictionary *component;
         NSArray *allComponents;
 
-        BOOL updated;
+        BOOL updated, initialLoadInProgress;
         int deleted, return_count;
           
         if (theFolderType == ActiveSyncContactFolder)
@@ -661,8 +684,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         else
           component_name = @"vtodo";
 
-        allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
-        allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObjects: [[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending:YES], nil]];
+        initialLoadInProgress = NO;
+
+        if ([theSyncKey isEqualToString: @"-1"])
+            [folderMetadata setObject: davCollectionTagToStore forKey: @"InitialLoadSequence"];
+
+        if ([folderMetadata objectForKey: @"InitialLoadSequence"])
+          {
+            if ([theSyncKey intValue] < [[folderMetadata objectForKey: @"InitialLoadSequence"] intValue])
+              initialLoadInProgress = YES;
+            else
+              [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+          }
+
+        allComponents = [theCollection syncTokenFieldsWithProperties: nil
+                                                   matchingSyncToken: theSyncKey
+                                                            fromDate: theFilterType
+                                                         initialLoad: initialLoadInProgress];
+        allComponents = [allComponents sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: @"c_lastmodified" ascending: YES] autorelease]]];
 
         
         // Check for the WindowSize
@@ -825,12 +864,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         NSMutableArray *allCacheObjects, *sortedBySequence;
 
         SOGoMailObject *mailObject;
-        NSArray *allMessages;
+        NSArray *allMessages, *a;
 
-        int j, k, return_count;
-        BOOL found_in_cache;
+        int j, k, return_count, highestmodseq;
+        BOOL found_in_cache, initialLoadInProgress;
 
-        allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
+        initialLoadInProgress = NO; 
+
+        if ([theSyncKey isEqualToString: @"-1"])
+          {
+            highestmodseq = 0;
+
+            a = [[theCollection davCollectionTag] componentsSeparatedByString: @"-"];
+            [folderMetadata setObject: [a objectAtIndex: 1] forKey: @"InitialLoadSequence"];
+          }
+        else
+         {
+           a = [theSyncKey componentsSeparatedByString: @"-"];
+           highestmodseq = [[a objectAtIndex: 1] intValue];
+         }
+
+        if ([folderMetadata objectForKey: @"InitialLoadSequence"])
+          {
+            if (highestmodseq < [[folderMetadata objectForKey: @"InitialLoadSequence"] intValue])
+              initialLoadInProgress = YES;
+            else
+              [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+          }
+
+        allMessages = [theCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: theSyncKey  fromDate: theFilterType  initialLoad: initialLoadInProgress];
         max = [allMessages count];
         
         allCacheObjects = [NSMutableArray array];
@@ -889,7 +951,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 NSString *lastSequence;
                 more_available = YES;
                 
-                lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? @"1" : [aCacheObject sequence]);
+                lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? [NSString stringWithFormat:@"%d", highestmodseq] : [aCacheObject sequence]);
                 *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
                 //NSLog(@"Reached windowSize - lastUID will be: %@", *theLastServerKey);
                 DESTROY(pool);
@@ -910,6 +972,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     
                     [syncCache removeObjectForKey: [aCacheObject uid]];
                     [dateCache removeObjectForKey: [aCacheObject uid]];
+
+                    return_count++;
                   }
                 else
                   {
@@ -919,17 +983,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                  inContext: context
                                                    acquire: 0];
                     
-                    [s appendString: @"<Change xmlns=\"AirSync:\">"];
-                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
-                    [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                    [s appendString: [mailObject activeSyncRepresentationInContext: context]];
-                    [s appendString: @"</ApplicationData>"];
-                    [s appendString: @"</Change>"];
-                    
+                    if (![[aCacheObject sequence] isEqual: [syncCache objectForKey: [aCacheObject uid]]])
+                      {
+                        [s appendString: @"<Change xmlns=\"AirSync:\">"];
+                        [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
+                        [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+                        [s appendString: [mailObject activeSyncRepresentationInContext: context]];
+                        [s appendString: @"</ApplicationData>"];
+                        [s appendString: @"</Change>"];
+
+                        return_count++;
+                      }
+
                     [syncCache setObject: [aCacheObject sequence]  forKey: [aCacheObject uid]];
                   }
-                
-                return_count++;
               }
             else
               {
@@ -1204,22 +1271,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
 
-  // We generate the commands, if any, for the response. We might also have
-  // generated some in processSyncCommand:inResponse: as we could have
-  // received a Fetch command
-  if (getChanges && !first_sync)
-    {
-      [self processSyncGetChanges: theDocumentElement
-                     inCollection: collection
-                   withWindowSize: windowSize
-          withMaxSyncResponseSize: theMaxSyncResponseSize
-                      withSyncKey: syncKey
-                   withFolderType: folderType
-                   withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
-                         inBuffer: changeBuffer
-                    lastServerKey: &lastServerKey];
-    }
-
   //
   // We process the commands from the request
   //
@@ -1237,12 +1288,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                        inBuffer: s
                       processed: &processed];
 
-      // Windows phons don't empty Responses tags - such as: <Responses></Responses>.
-      // We onnly generate this tag when the command has generated a response.
+      // Windows phones don't like empty Responses tags - such as: <Responses></Responses>.
+      // We only generate this tag when there is a response
       if (processed && [s length])
         [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
     }
- 
+
+
+  // We generate the commands, if any, for the response. We might also have
+  // generated some in processSyncCommand:inResponse: as we could have
+  // received a Fetch command
+  if (getChanges && !first_sync)
+    {
+      [self processSyncGetChanges: theDocumentElement
+                     inCollection: collection
+                   withWindowSize: windowSize
+          withMaxSyncResponseSize: theMaxSyncResponseSize
+                      withSyncKey: syncKey
+                   withFolderType: folderType
+                   withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
+                         inBuffer: changeBuffer
+                    lastServerKey: &lastServerKey];
+    }
+
   folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]];
 
   // If we got any changes or if we have applied any commands
@@ -1267,7 +1335,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Make sure that client is updated with the right syncKey. - This keeps vtodo's and vevent's syncKey in sync.
       syncKeyInCache = [folderMetadata  objectForKey: @"SyncKey"];
-      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]) && ![davCollectionTag isEqualToString: @"-1"])
+      if (syncKeyInCache && !([davCollectionTag isEqualToString:syncKeyInCache]) && !first_sync)
         {
           davCollectionTag = syncKeyInCache;
           *changeDetected = YES;

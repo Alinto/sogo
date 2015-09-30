@@ -240,7 +240,7 @@
 "As Not Junk" = "Som ikke søppel";
 "Run Junk Mail Controls" = "Kjør søppelpostkontroll";
 
-"Search messages in:" = "Søk etter beskjeder i:";
+"Search messages in" = "Søk etter beskjeder i";
 "Search" = "Søk";
 "Search subfolders" = "Søk i undermapper";
 "Match any of the following" = "Passer noen av";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Navn : ";
-"Enter the new name of your folder :"
- = "Skriv navnet på mappen :";
+"Enter the new name of your folder"
+ = "Skriv navnet på mappen";
 "Do you really want to move this folder into the trash ?"
  = "Vil du virkelig flytte mappen til papirkurven ?";
 "Operation failed" = "Operasjonen mislyktes";

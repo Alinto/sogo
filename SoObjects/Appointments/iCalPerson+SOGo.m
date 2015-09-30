@@ -1,9 +1,6 @@
 /* iCalPerson+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +62,31 @@ static SOGoUserManager *um = nil;
     um = [SOGoUserManager sharedUserManager];
 
   return [um getUIDForEmail: [self rfc822Email]];
+}
+
+- (NSString *) uidInContext: (WOContext *) context
+{
+  NSString *domain;
+
+  domain = [[context activeUser] domain];
+
+  return [self uidInDomain: domain];
+}
+
+- (NSString *) uidInDomain: (NSString *) domain
+{
+  NSDictionary *contact;
+  NSString *uid;
+
+  if (!um)
+    um = [SOGoUserManager sharedUserManager];
+
+  uid = nil;
+  contact = [um contactInfosForUserWithUIDorEmail: [self rfc822Email] inDomain: domain];
+  if (contact)
+    uid = [contact valueForKey: @"c_uid"];
+
+  return uid;
 }
 
 - (NSString *) contactIDInContext: (WOContext *) context

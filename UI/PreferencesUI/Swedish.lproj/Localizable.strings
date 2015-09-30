@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktivera frånvaro auto-svar";
-"Auto reply message :" = "Auto-svar meddelande:";
-"Email addresses (separated by commas) :" = "E-post adresser (kommaseparerade):";
+"Auto reply message" ="Auto-svar meddelande";
+"Email addresses (separated by commas)" ="E-post adresser (kommaseparerade)";
 "Add default email addresses" = "Lägg till standard e-postadress";
-"Days between responses :" = "Dagar mellan svar:";
+"Days between responses" ="Dagar mellan svar";
 "Do not send responses to mailing lists" = "Skicka inte svar till utskickslistor";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv meddelandet och ange din e-postadress som du vill aktivera auto-svar.";
@@ -37,10 +37,10 @@
 = "Ange adressen du vill vidarebefordra dina meddelanden till.";
 
 /* d & t */
-"Current Time Zone :" = "Gällande tidszon:";
-"Short Date Format :" = "Kort datumformat:";
-"Long Date Format :" = "Långt datumformat:";
-"Time Format :" = "Tidsformat:";
+"Current Time Zone" ="Gällande tidszon";
+"Short Date Format" ="Kort datumformat";
+"Long Date Format" ="Långt datumformat";
+"Time Format" ="Tidsformat";
 
 "default" = "Standard";
 
@@ -78,22 +78,22 @@
 "timeFmt_2" = "";
 
 /* calendar */
-"Week begins on :" = "Veckan börjar med:";
-"Day start time :" = "Dagen börjar kl:";
-"Day end time :" = "Dagen slutar kl:";
+"Week begins on" ="Veckan börjar med";
+"Day start time" ="Dagen börjar kl";
+"Day end time" ="Dagen slutar kl";
 "Day start time must be prior to day end time." = "Dagens starttid måste vara före dagens sluttid.";
-"First week of year :" = "Första veckan på året:";
+"First week of year" ="Första veckan på året";
 "Enable reminders for Calendar items" = "Aktivera påminnelser för kalenderposter";
 "Play a sound when a reminder comes due"
 = "Spela upp ett ljud vid en påminnelse";
-"Default reminder :" = "Standardpåminnelse:";
+"Default reminder" ="Standardpåminnelse";
 
 "firstWeekOfYear_January1" = "Börjar den 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Första 4-dagarsveckan på året";
 "firstWeekOfYear_FirstFullWeek" = "Första hela veckan på året";
 
 /* Default Calendar */
-"Default calendar :" = "Default calendar";
+"Default calendar" ="Default calendar";
 "selectedCalendar" = "Selected calendar";
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
@@ -123,7 +123,7 @@
 "refreshview_every_30_minutes" = "Varje 30 minuter";
 "refreshview_once_per_hour" = "Varje timme";
 
-"Forward messages:" = "Vidarebefordra meddelanden:";
+"Forward messages" = "Vidarebefordra meddelanden";
 "messageforward_inline" = "Infogade";
 "messageforward_attached" = "Bifogade";
 
@@ -139,16 +139,16 @@
 /* IMAP Accounts */
 "New Mail Account" = "Nytt e-postkonto";
 
-"Server Name:" = "
+"Server Name" = "
 
 Servernamn:";
-"Port:" = "Port:";
-"User Name:" = "Användarnamn:";
-"Password:" = "Lösenord:";
+"Port" = "Port";
+"User Name" = "Användarnamn";
+"Password" = "Lösenord";
 
-"Full Name:" = "Fullständigt namn:";
-"Email:" = "E-postadress:";
-"Signature:" = "Signatur:";
+"Full Name" = "Fullständigt namn";
+"Email" = "E-postadress";
+"Signature" = "Signatur";
 "(Click to create)" = "(Klicka för att skapa)";
 
 "Signature" = "Signatur";
@@ -158,13 +158,13 @@ Servernamn:";
 "Additional Parameters" = "Övriga parametrar";
 
 /* password */
-"New password:" = "Nytt lösenord:";
-"Confirmation:" = "Bekräfta:";
+"New password" = "Nytt lösenord";
+"Confirmation" = "Bekräfta";
 "Change" = "Ändra";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
+"Default events classification" ="Default events classification";
+"Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -178,13 +178,14 @@ Servernamn:";
 "Contacts" = "Adressbok";
 "Mail" = "E-post";
 "Last" = "Senast använd";
-"Default Module :" = "Standardmodul:";
+"Default Module " = "Standardmodul";
 
-"Language :" = "Språk:";
+"Language" ="Språk";
 "choose" = "Välj ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -201,6 +202,7 @@ Servernamn:";
 "Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -208,24 +210,24 @@ Servernamn:";
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "När jag får en begäran om mottagningskvitto:";
+"When I receive a request for a return receipt" = "När jag får en begäran om mottagningskvitto";
 "Never send a return receipt" = "Skicka aldrig mottagningskvitto";
 "Allow return receipts for some messages" = "Tillåt mottagningskvitto för vissa meddelanden";
-"If I'm not in the To or Cc of the message:" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält:";
-"If the sender is outside my domain:" = "Om avsändaren finns utanför min domän:";
-"In all other cases:" = "I alla andra fall:";
+"If I'm not in the To or Cc of the message" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält";
+"If the sender is outside my domain" = "Om avsändaren finns utanför min domän";
+"In all other cases" = "I alla andra fall";
 
 "Never send" = "Skicka aldrig";
 "Always send" = "Skicka alltid";
 "Ask me" = "Fråga mig";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "När jag får en begäran om mottagningskvitto:";
+"When I receive a request for a return receipt" = "När jag får en begäran om mottagningskvitto";
 "Never send a return receipt" = "Skicka aldrig mottagningskvitto";
 "Allow return receipts for some messages" = "Tillåt mottagningskvitto för vissa meddelanden";
-"If I'm not in the To or Cc of the message:" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält:";
-"If the sender is outside my domain:" = "Om avsändaren finns utanför min domän:";
-"In all other cases:" = "I alla andra fall:";
+"If I'm not in the To or Cc of the message" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält";
+"If the sender is outside my domain" = "Om avsändaren finns utanför min domän";
+"In all other cases" = "I alla andra fall";
 
 "Never send" = "Skicka aldrig";
 "Always send" = "Skicka alltid";
@@ -296,5 +298,5 @@ Servernamn:";
 "Unhandled error response" = "Erreur inconnue";
 "Password change is not supported." = "Changement de mot de passe non-supporté.";
 "Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
-"New password:" = "Nytt lösenord:";
-"Confirmation:" = "Bekräfta:";
+"New password" = "Nytt lösenord";
+"Confirmation" = "Bekräfta";

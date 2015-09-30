@@ -1,0 +1,329 @@
+/* toolbar */
+"Save and Close" = "儲存並關閉";
+"Close" = "關閉";
+
+/* tabs */
+"General" = "一般";
+"Calendar Options" = "行事曆選項";
+"Contacts Options" = "通訊錄選項";
+"Mail Options" = "郵件選項";
+"IMAP Accounts" = "IMAP 帳號";
+"Vacation" = "休假自動回覆設定";
+"Forward" = "轉寄";
+"Password" = "密碼";
+"Categories" = "分類";
+"Appointments invitations" = "邀請";
+"Name" = "名稱";
+"Color" = "顏色";
+"Add" = "新增";
+"Delete" = "删除";
+
+/* contacts categories */
+"contacts_category_labels" = "同事, 競爭對手, 客戶, 朋友, 家庭, 工作伙伴, 供應商, 媒體, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "開啟休假自動回覆";
+"Auto reply message" ="自動回覆內容";
+"Email addresses (separated by commas)" ="電子郵件地址 (用逗號分隔)";
+"Add default email addresses" = "增加預設的電子郵件地址";
+"Days between responses" ="回覆間隔天數";
+"Do not send responses to mailing lists" = "不要寄送回覆給列表的帳號";
+"Disable auto reply on" = "關閉自動回覆功能";
+"Always send vacation message response" = "開啟休假自動回覆功能";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "請輸入自動回覆的訊息內容及電子郵件帳號。";
+"Your vacation message must not end with a single dot on a line." = "休假自動回覆訊息每一行最後一個字元不能是半型的句號(.)。";
+"End date of your auto reply must be in the future."
+= "結束日期必須是未來的日期。";
+
+/* forward messages */
+"Forward incoming messages" = "信件轉寄";
+"Keep a copy" = "保留備份";
+"Please specify an address to which you want to forward your messages."
+= "請設定信件轉寄的電子郵件帳號。";
+"You are not allowed to forward your messages to an external email address." = "您不能轉寄信件至外部電子郵件;帳號。";
+"You are not allowed to forward your messages to an internal email address." = "您不能轉寄信件至內部電子郵件;帳號。";
+
+
+/* d & t */
+"Current Time Zone" ="時區";
+"Short Date Format" ="簡易日期格式";
+"Long Date Format" ="完整日期格式";
+"Time Format" ="時間格式";
+
+"default" = "預設";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* calendar */
+"Week begins on" ="一週起始日為";
+"Day start time" ="每日開始時間是";
+"Day end time" ="每日結束時間是";
+"Day start time must be prior to day end time." = "每日開始時間必須早於結束時間。";
+"Show time as busy outside working hours" = "顯示工作時間以下時段顯示為忙碌";
+"First week of year" ="一年的第一週";
+"Enable reminders for Calendar items" = "開啟行事曆的提醒功能";
+"Play a sound when a reminder comes due" = "提醒時撥放音效";
+"Default reminder" ="預設提醒";
+
+"firstWeekOfYear_January1" = "開始於一月一日";
+"firstWeekOfYear_First4DayWeek" = "第一個只有四天的週";
+"firstWeekOfYear_FirstFullWeek" = "第一個完整的週";
+
+"Prevent from being invited to appointments" = "拒絶邀請";
+"White list for appointment invitations" = "接受邀請的名單列表";
+"Contacts Names" = "連絡人姓名";
+
+/* Default Calendar */
+"Default calendar" ="預設行事曆";
+"selectedCalendar" = "選擇的行事曆";
+"personalCalendar" = "個人行事曆";
+"firstCalendar" = "第一個有效的行事曆";
+
+"reminder_NONE" = "無提醒";
+"reminder_5_MINUTES_BEFORE" = "5分鐘前";
+"reminder_10_MINUTES_BEFORE" = "10分鐘前";
+"reminder_15_MINUTES_BEFORE" = "15分鐘前";
+"reminder_30_MINUTES_BEFORE" = "30分鐘前";
+"reminder_45_MINUTES_BEFORE" = "45分鐘前";
+"reminder_1_HOUR_BEFORE" = " 1小時前";
+"reminder_2_HOURS_BEFORE" = "2小時前";
+"reminder_5_HOURS_BEFORE" = "5小時前";
+"reminder_15_HOURS_BEFORE" = "15小時前";
+"reminder_1_DAY_BEFORE" = "1天前";
+"reminder_2_DAYS_BEFORE" = "2天前";
+"reminder_1_WEEK_BEFORE" = "1週前";
+
+/* Mailer */
+"Labels" = "標籤";
+"Label" = "標籤";
+"Show subscribed mailboxes only" = "只顯示訂閱的信箱";
+"Sort messages by threads" = "依指定的方式進行排序";
+"When sending mail, add unknown recipients to my" = "寄送信件時，將未知的收件者帳號加入我的通訊錄";
+
+"Forward messages" = "轉寄信件";
+"messageforward_inline" = "加入原始信件內容";
+"messageforward_attached" = "將原始信件做為附件";
+
+"When replying to a message" = "當回覆信件時";
+"replyplacement_above" = "回覆內容在原始信件上面";
+"replyplacement_below" = "回覆內容在原始信件下面";
+"And place my signature" = "增加簽名檔";
+"signatureplacement_above" = "在回覆之下";
+"signatureplacement_below" = "在引用之下";
+"Compose messages in" = "信件撰寫格式";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "純文字";
+"Display remote inline images" = "顯示圖片";
+"displayremoteinlineimages_never" = "從不";
+"displayremoteinlineimages_always" = "永遠";
+
+"Auto save every" = "自動存檔間隔";
+"minutes" = "分鐘";
+
+/* Contact */
+"Personal Address Book" = "個人通訊錄";
+"Collected Address Book" = "公用通訊錄";
+
+/* IMAP Accounts */
+"New Mail Account" = "新的電子郵件帳號";
+
+"Server Name" = "伺服器名稱";
+"Port" = "埠號";
+"Encryption" = "加密";
+"None" = "無";
+"User Name" = "使用者名稱";
+"Password" = "密碼";
+
+"Full Name" = "全名";
+"Email" = "電子郵件郵件";
+"Reply To Email" = "回覆電子郵件帳號";
+"Signature" = "簽名檔";
+"(Click to create)" = "(點擊後建立)";
+
+"Signature" = "簽名";
+"Please enter your signature below:" = "請在下面輸入簽名:";
+
+"Please specify a valid sender address." = "請指定一個有效的寄件者帳號。";
+"Please specify a valid reply-to address." = "請指定一個有效的回覆郵件帳號。";
+
+/* Additional Parameters */
+"Additional Parameters" = "其他參數";
+
+/* password */
+"New password" = "新密碼";
+"Confirmation" = "確認";
+"Change" = "修改";
+
+/* Event+task classifications */
+"Default events classification" ="預設的事件類別";
+"Default tasks classification" ="預設的任務類別";
+"PUBLIC_item" = "公開";
+"CONFIDENTIAL_item" = "機密";
+"PRIVATE_item" = "私人";
+
+/* Event+task categories */
+"category_none" = "無";
+"calendar_category_labels" = "結婚紀念日,生日,工作,電話,顧客,競爭對手,客戶,收藏, 追踪 ,禮物,假日,想法,會議,事件,雜項,個人,專案,公眾假日,狀態,供應商,旅遊,休假";
+
+/* Default module */
+"Calendar" = "行事曆";
+"Contacts" = "通訊錄";
+"Mail" = "郵件";
+"Last" = "上次使用";
+"Default Module " = "預設模式";
+"SOGo Version" ="SOGo版本";
+
+"Language" ="語言";
+"choose" = "選擇...";
+"Arabic" = "العربية";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"BrazilianPortuguese" = "Português brasileiro";
+"Polish" = "Polski";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" ="重新整理";
+"refreshview_manually" = "手動";
+"refreshview_every_minute" = "每分鐘";
+"refreshview_every_2_minutes" = "每2分鐘";
+"refreshview_every_5_minutes" = "每5分鐘";
+"refreshview_every_10_minutes" = "每10分鐘";
+"refreshview_every_20_minutes" = "每20分鐘";
+"refreshview_every_30_minutes" = "每30分鐘";
+"refreshview_once_per_hour" = "一小時一次";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "當我收到要求讀取回條時";
+"Never send a return receipt" = "不傳送回條";
+"Allow return receipts for some messages" = "部份郵件允許傳送回條";
+"If I'm not in the To or Cc of the message" = "當我的帳號不在郵件的收件者或或副本收件者名單中";
+"If the sender is outside my domain" = "當寄件者帳號與我不同網域名稱";
+"In all other cases" = "任何其他的情形";
+
+"Never send" = "不要傳送回條";
+"Always send" = "傳送回條";
+"Ask me" = "傳送回條前先詢問我";
+
+/* Filters - UIxPreferences */
+"Filters" = "過濾規則";
+"Active" = "啟動";
+"Move Up" = "上移";
+"Move Down" = "下移";
+"Connection error" = "連接錯誤";
+"Service temporarily unavailable" = "伺服器暫時沒有回應";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "過濾規則名稱:";
+"For incoming messages that" = "當收到的電子郵件";
+"match all of the following rules:" = "符合下面所有規則:";
+"match any of the following rules:" = "符合下面任何規則:";
+"match all messages" = "符合所有郵件";
+"Perform these actions:" = "執行這些指令:";
+"Untitled Filter" = "沒有名稱的過濾規則";
+
+"Subject" = "主旨";
+"From" = "寄件者";
+"To" = "收件者";
+"Cc" = "副本";
+"To or Cc" = "收件者或副本收件者";
+"Size (Kb)" = "大小 (Kb)";
+"Header" = "信件表頭";
+"Body" = "信件本文";
+"Flag the message with:" = "標示郵件為:";
+"Discard the message" = "刪除信件";
+"File the message in:" = "信件歸檔至:";
+"Keep the message" = "保留信件";
+"Forward the message to:" = "轉寄信件至:";
+"Send a reject message:" = "寄送拒絶信件:";
+"Send a vacation message" = "寄送休假訊息";
+"Stop processing filter rules" = "終止郵件過濾";
+
+"is under" = "在下面";
+"is over" = "已結束";
+"is" = "是";
+"is not" = "不是";
+"contains" = "包含";
+"does not contain" = "不包含";
+"matches" = "符合";
+"does not match" = "不符合";
+"matches regex" = "符合正規表示法";
+"does not match regex" = "不符合正規表示法";
+
+"Seen" = " 已讀";
+"Deleted" = "已刪除";
+"Answered" = "已回覆";
+"Flagged" = "已註記";
+"Junk" = "垃圾信件";
+"Not Junk" = "這不是垃圾郵件";
+
+/* Password policy */
+"The password was changed successfully." = "密碼修改完成。";
+"Password must not be empty." = "密碼不可為空白。";
+"The passwords do not match. Please try again." = "密碼不一致，請再試一次。";
+"Password change failed" = "密碼更改失敗";
+"Password change failed - Permission denied" = "密碼更改失敗-權限被拒";
+"Password change failed - Insufficient password quality" = "密碼修改失敗 - 密碼複雜度不符規則";
+"Password change failed - Password is too short" = "密碼修改失敗 - 密碼太短";
+"Password change failed - Password is too young" = "密碼修改失敗 - 密碼太簡單";
+"Password change failed - Password is in history" = "密碼修改失敗 - 曾使用過此密碼,不符歷使用記錄原則";
+"Unhandled policy error: %{0}" = "未知的錯誤: %{0}";
+"Unhandled error response" = "未知的錯誤回覆";
+"Password change is not supported." = "不可更改密碼";
+"Unhandled HTTP error code: %{0}" = "未知的HTTP錯誤碼: %{0}";

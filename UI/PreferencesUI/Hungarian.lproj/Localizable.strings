@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatikus távollét üzenet engedélyezése";
-"Auto reply message :" = "Automatikus válasz minden feladónak csak egy alkalommal :";
-"Email addresses (separated by commas) :" = "Email címek (vesszővel elválasztva)";
+"Auto reply message" ="Automatikus válasz minden feladónak csak egy alkalommal";
+"Email addresses (separated by commas)" ="Email címek (vesszővel elválasztva)";
 "Add default email addresses" = "Saját email címek hozzáadása";
-"Days between responses :" = "Válaszok közötti napok száma:";
+"Days between responses" ="Válaszok közötti napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone :" = "Időzóna :";
-"Short Date Format :" = "Rövid dátumformátum :";
-"Long Date Format :" = "Hosszú dátumformátum :";
-"Time Format :" = "Időformátum :";
+"Current Time Zone" ="Időzóna";
+"Short Date Format" ="Rövid dátumformátum";
+"Long Date Format" ="Hosszú dátumformátum";
+"Time Format" ="Időformátum";
 
 "default" = "Alapértelmezett";
 
@@ -95,26 +95,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Hét kezdőnapja:";
-"Day start time :" = "Nap kezdete:";
-"Day end time :" = "Nap vége:";
+"Week begins on" ="Hét kezdőnapja";
+"Day start time" ="Nap kezdete";
+"Day end time" ="Nap vége";
 "Day start time must be prior to day end time." = "A kezdőnap nem lehet későbbi, mint a befejező nap.";
 "Show time as busy outside working hours" = "A munkaidőn túli időszakokra foglaltság jelzése";
-"First week of year :" = "Év első hete:";
+"First week of year" ="Év első hete";
 "Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
 "Play a sound when a reminder comes due" = "Hang lejátszása az emlékeztetőhöz";
-"Default reminder :" = "Alapértelmezett emlékeztető:";
+"Default reminder" ="Alapértelmezett emlékeztető";
 
 "firstWeekOfYear_January1" = "Január 1-jétől";
 "firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
 "firstWeekOfYear_FirstFullWeek" = "Első teljes héttől";
 
 "Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
-"White list for appointment invitations:" = "Engedélyezési lista a találkozók meghívásaihoz:";
+"White list for appointment invitations" = "Engedélyezési lista a találkozók meghívásaihoz";
 "Contacts Names" = "Kapcsolatok nevei";
 
 /* Default Calendar */
-"Default calendar :" = "Alapértelmezett naptár";
+"Default calendar" ="Alapértelmezett naptár";
 "selectedCalendar" = "Kiválasztott naptár";
 "personalCalendar" = "Személyes naptár";
 "firstCalendar" = "Első engedélyezett naptár";
@@ -140,11 +140,11 @@
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 
-"Forward messages:" = "Üzenetek továbbítása:";
+"Forward messages" = "Üzenetek továbbítása";
 "messageforward_inline" = "Levélként";
 "messageforward_attached" = "Mellékletként";
 
-"When replying to a message:" = "Amikor válaszol egy üzenetre:";
+"When replying to a message" = "Amikor válaszol egy üzenetre";
 "replyplacement_above" = "Válasz elhelyezése az idézet fölött";
 "replyplacement_below" = "Válasz elhelyezése az idézet alatt";
 "And place my signature" = "Aláírás beszúrása";
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Új email fiók";
 
-"Server Name:" = "Kiszolgáló neve:";
-"Port:" = "Port:";
-"Encryption:" = "Titkosítás:";
+"Server Name" = "Kiszolgáló neve";
+"Port" = "Port";
+"Encryption" = "Titkosítás";
 "None" = "Nincs";
-"User Name:" = "Felhasználónév:";
-"Password:" = "Jelszó:";
+"User Name" = "Felhasználónév";
+"Password" = "Jelszó";
 
-"Full Name:" = "Teljes név:";
-"Email:" = "Email cím:";
-"Reply To Email:" = "Válaszlevél";
-"Signature:" = "Aláírás:";
+"Full Name" = "Teljes név";
+"Email" = "Email cím";
+"Reply To Email" = "Válaszlevél";
+"Signature" = "Aláírás";
 "(Click to create)" = "(A létrehozáshoz kattintson ide)";
 
 "Signature" = "Aláírás";
@@ -190,13 +190,13 @@
 "Additional Parameters" = "További beállítások";
 
 /* password */
-"New password:" = "Új jelszó:";
-"Confirmation:" = "Megerősítés:";
+"New password" = "Új jelszó";
+"Confirmation" = "Megerősítés";
 "Change" = "Megváltoztat";
 
 /* Event+task classifications */
-"Default events classification :" = "Az események alapértelmezett besorolása:";
-"Default tasks classification :" = "Alapértelmezett feladat besorolás";
+"Default events classification" ="Az események alapértelmezett besorolása";
+"Default tasks classification" ="Alapértelmezett feladat besorolás";
 "PUBLIC_item" = "Nyilvános";
 "CONFIDENTIAL_item" = "Bizalmas";
 "PRIVATE_item" = "Magán";
@@ -210,14 +210,15 @@
 "Contacts" = "Címjegyzék";
 "Mail" = "Levél";
 "Last" = "Utoljára használt";
-"Default Module :" = "Alapértelmezett modul";
-"SOGo Version :" = "SOGo verzió:";
+"Default Module " = "Alapértelmezett modul";
+"SOGo Version" ="SOGo verzió";
 
-"Language :" = "Nyelv :";
+"Language" ="Nyelv";
 "choose" = "Válasszon ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -240,7 +241,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View :" = "Nézet frissítés:";
+"Refresh View" ="Nézet frissítés";
 "refreshview_manually" = "Kézi";
 "refreshview_every_minute" = "Percenként";
 "refreshview_every_2_minutes" = "Kétpercenként";
@@ -251,12 +252,12 @@
 "refreshview_once_per_hour" = "Óránként";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Visszaigazolási kérelem esetén:";
+"When I receive a request for a return receipt" = "Visszaigazolási kérelem esetén";
 "Never send a return receipt" = "Soha ne küldjön visszaigazolást";
 "Allow return receipts for some messages" = "Egyes üzenetek esetén visszaigazolás küldésének engedélyezése";
-"If I'm not in the To or Cc of the message:" = "Amennyiben nem szereplek a címzett vagy másolat mezőben:";
-"If the sender is outside my domain:" = "Amennyiben a feladó külső (más domain):";
-"In all other cases:" = "Minden egyéb esetben:";
+"If I'm not in the To or Cc of the message" = "Amennyiben nem szereplek a címzett vagy másolat mezőben";
+"If the sender is outside my domain" = "Amennyiben a feladó külső (más domain)";
+"In all other cases" = "Minden egyéb esetben";
 
 "Never send" = "Küldés mellőzése mindig";
 "Always send" = "Küldés minden esetben";

@@ -76,19 +76,19 @@
 "No possible subscription" = "Žiadne možnosti odberu";
 
 "Preferred" = "Preferovaný";
-"Display:" = "Zobraz:";
-"Display Name:" = "Zobrazované meno:";
+"Display" = "Zobraz";
+"Display Name" = "Zobrazované meno";
 "Email:" = "Email:";
 "Additional Email:" = "Další email:";
 
-"Phone Number:" = "Telefónne číslo:";
+"Phone Number" = "Telefónne číslo";
 "Prefers to receive messages formatted as:" = "Preferuje prijímať správy formátované ako:";
 "Screen Name:" = "Zobrazované meno:";
 "Categories:" = "Kategórie:";
 
 "First:" = "Meno:";
 "Last:" = "Priezvisko:";
-"Nickname:" = "Prezývka:";
+"Nickname" = "Prezývka";
 
 "Telephone" = "Telefón";
 "Work:" = "Do práce:";
@@ -103,25 +103,25 @@
 "New category" = "Nová kategória";
 
 /* adresses */
-"Title:" = "Názov:";
+"Title" = "Názov";
 "Service:" = "Služba:";
 "Company:" = "Spoločnosť:";
 "Department:" = "Oddelenie:";
 "Organization:" = "Organizácia:";
 "Address:" = "Adresa:";
-"City:" = "Mesto:";
+"City" = "Mesto";
 "State_Province:" = "Štát:";
 "ZIP_Postal Code:" = "Poštové smerové číslo:";
-"Country:" = "Krajina:";
+"Country" = "Krajina";
 "Web Page:" = "WWW stránka:";
 
 "Work" = "Práca";
 "Other Infos" = "Ostatné informácie";
 
-"Note:" = "Poznámky:";
+"Note" = "Poznámky";
 "Timezone:" = "Časová zóna:";
-"Birthday:" = "Narodeniny:";
-"Birthday (yyyy-mm-dd):" = "Narodeniny (dd-mm-yyyy):";
+"Birthday" = "Narodeniny";
+"Birthday (yyyy-mm-dd)" = "Narodeniny (dd-mm-yyyy)";
 "Freebusy URL:" = "URL voľný alebo obsadený:";
 
 "Add as..." = "Pridaj ako...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Detaily zoznamu";
-"List name:" = "Meno zoznamu:";
-"List nickname:" = "Prezývka zoznamu:";
-"List description:" = "Popis zoznamu:";
+"List name" = "Meno zoznamu";
+"List nickname" = "Prezývka zoznamu";
+"List description" = "Popis zoznamu";
 "Members" = "Členovia";
 "Contacts" = "Kontakty";
 "Add" = "Pridaj";

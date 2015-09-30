@@ -240,7 +240,7 @@
 "As Not Junk" = "As Not Junk";
 "Run Junk Mail Controls" = "Run Junk Mail Controls";
 
-"Search messages in:" = "Search messages in:";
+"Search messages in" = "Search messages in";
 "Search" = "Search";
 "Search subfolders" = "Search subfolders";
 "Match any of the following" = "Match any of the following";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Name :";
-"Enter the new name of your folder :"
- = "Enter the new name of your folder :";
+"Enter the new name of your folder"
+ ="Enter the new name of your folder";
 "Do you really want to move this folder into the trash ?"
  = "Do you really want to move this folder into the trash ?";
 "Operation failed" = "Operation failed";

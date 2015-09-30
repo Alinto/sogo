@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "تمكين الرد التلقائي أثناء العطلة";
-"Auto reply message :" = "رسالة الرد التلقائي:";
-"Email addresses (separated by commas) :" = "عناوين البريد الإلكتروني (مفصولة بفواصل):";
+"Auto reply message" ="رسالة الرد التلقائي";
+"Email addresses (separated by commas)" ="عناوين البريد الإلكتروني (مفصولة بفواصل)";
 "Add default email addresses" = "إضافة عناوين البريد الإلكتروني الافتراضية";
-"Days between responses :" = "عدد الأيام بين الردود:";
+"Days between responses" ="عدد الأيام بين الردود";
 "Do not send responses to mailing lists" = "لا ترسل ردود الى القوائم البريدية";
 "Disable auto reply on" = "تعطيل الرد التلقائي في";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "يرجى تحديد العنوان الذي تريد إعادة توجيه رسائلك له.";
 
 /* d & t */
-"Current Time Zone :" = "التوقيت الزمني الحالى:";
-"Short Date Format :" = "التاريخ بالصيغة المختصرة:";
-"Long Date Format :" = "التاريخ بالصيغة الكاملة:";
-"Time Format :" = "تنسيق الوقت:";
+"Current Time Zone" ="التوقيت الزمني الحالى";
+"Short Date Format" ="التاريخ بالصيغة المختصرة";
+"Long Date Format" ="التاريخ بالصيغة الكاملة";
+"Time Format" ="تنسيق الوقت";
 
 "default" = "الافتراضي";
 
@@ -90,23 +90,23 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "بداية الاسبوع:";
-"Day start time :" = "بداية يوم العمل:";
-"Day end time :" = "نهاية يوم العمل:";
+"Week begins on" ="بداية الاسبوع";
+"Day start time" ="بداية يوم العمل";
+"Day end time" ="نهاية يوم العمل";
 "Day start time must be prior to day end time." = "يجب أن يكون وقت بداية يوم العمل قبل وقت نهاية يوم العمل.";
 "Show time as busy outside working hours" = "إظهار الوقت  خارج ساعات العمل على أنه مشغول";
-"First week of year :" = "الأسبوع الأول من السنة:";
+"First week of year" ="الأسبوع الأول من السنة";
 "Enable reminders for Calendar items" = "تمكين التذكيرات لعناصر التقويم";
 "Play a sound when a reminder comes due"
 = "تشغيل صوت للتذكير بموعد اقترب وقته";
-"Default reminder :" = "التذكير الإفتراضي:";
+"Default reminder" ="التذكير الإفتراضي";
 
 "firstWeekOfYear_January1" = "يبدأ في 1 يناير";
 "firstWeekOfYear_First4DayWeek" = "أول 4 ايام في الاسبوع";
 "firstWeekOfYear_FirstFullWeek" = "أول اسبوع كامل";
 
 /* Default Calendar */
-"Default calendar :" = "التقويم الإفتراضي:";
+"Default calendar" ="التقويم الإفتراضي";
 "selectedCalendar" = "التقويم المحدد";
 "personalCalendar" = "التقويم الشخصي";
 "firstCalendar" = "أول تقويم ممكن";
@@ -136,11 +136,11 @@
 "refreshview_every_30_minutes" = "كل 30 دقيقة";
 "refreshview_once_per_hour" = "مرة كل ساعة";
 
-"Forward messages:" = "أعد توجيه الرسائل:";
+"Forward messages" = "أعد توجيه الرسائل";
 "messageforward_inline" = "مضمنة";
 "messageforward_attached" = "كمرفق";
 
-"When replying to a message:" = "متى يُرَدُّ على الرِّسالة:";
+"When replying to a message" = "متى يُرَدُّ على الرِّسالة";
 "replyplacement_above" = "بدء الرد فوق الاقتباس";
 "replyplacement_below" = "بدء الرد تحت الاقتباس";
 "And place my signature" = "ووضع توقيعي";
@@ -156,17 +156,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "حساب بريد إلكتروني جديد";
 
-"Server Name:" = "أسم الخادم:";
-"Port:" = "مدخل:";
-"Encryption:" = "التشفير:";
+"Server Name" = "أسم الخادم";
+"Port" = "مدخل";
+"Encryption" = "التشفير";
 "None" = "بلا";
-"User Name:" = "اسم المستخدم:";
-"Password:" = "كلمة المرور:";
+"User Name" = "اسم المستخدم";
+"Password" = "كلمة المرور";
 
-"Full Name:" = "الإسم الكامل:";
-"Email:" = "البريد الإلكتروني:";
-"Reply To Email:" = "الرد على البريد الإلكتروني:";
-"Signature:" = "التوقيع:";
+"Full Name" = "الإسم الكامل";
+"Email" = "البريد الإلكتروني";
+"Reply To Email" = "الرد على البريد الإلكتروني";
+"Signature" = "التوقيع";
 "(Click to create)" = "(انقر للصنع)";
 
 "Signature" = "التوقيع";
@@ -179,13 +179,13 @@
 "Additional Parameters" = "معلمات إضافية";
 
 /* password */
-"New password:" = "كلمة مرور جديدة:";
-"Confirmation:" = "تأكيد:";
+"New password" = "كلمة مرور جديدة";
+"Confirmation" = "تأكيد";
 "Change" = "لا شيء";
 
 /* Event+task classifications */
-"Default events classification :" = "تصنيف الأحداث الافتراضية:";
-"Default tasks classification :" = "تصنيف المهام الافتراضية  :";
+"Default events classification" ="تصنيف الأحداث الافتراضية";
+"Default tasks classification" ="تصنيف المهام الافتراضية ";
 "PUBLIC_item" = "علني";
 "CONFIDENTIAL_item" = "سري";
 "PRIVATE_item" = "خاص";
@@ -199,13 +199,14 @@
 "Contacts" = "دفتر العناوين";
 "Mail" = "بريد";
 "Last" = "أخر إستخدام";
-"Default Module :" = "وحدة نمطية افتراضية :";
+"Default Module " = "وحدة نمطية افتراضية ";
 
-"Language :" = "اللغة:";
+"Language" ="اللغة";
 "choose" = "اختيار ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -222,6 +223,7 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -229,12 +231,12 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "عندما اتلقى طلبا لإرسال ايصال استلام:";
+"When I receive a request for a return receipt" = "عندما اتلقى طلبا لإرسال ايصال استلام";
 "Never send a return receipt" = "لا ترسل إيصال استلام";
 "Allow return receipts for some messages" = "السماح بإرسال إيصالات استلام مقابل بعض الرسائل الواردة";
-"If I'm not in the To or Cc of the message:" = "إذا لم أكن من ضمن المرسل لهم او المرسل لهم نسخة:";
-"If the sender is outside my domain:" = "إذا كان المرسل من خارج النطاق:";
-"In all other cases:" = "في جميع الحالات الأخرى:";
+"If I'm not in the To or Cc of the message" = "إذا لم أكن من ضمن المرسل لهم او المرسل لهم نسخة";
+"If the sender is outside my domain" = "إذا كان المرسل من خارج النطاق";
+"In all other cases" = "في جميع الحالات الأخرى";
 
 "Never send" = "لم يرسل";
 "Always send" = "إرسال دائما";

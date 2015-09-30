@@ -150,8 +150,8 @@
 
 "LIST" = "List";
 "Print Settings" = "Print Settings";
-"Title:" = "Title:";
-"Layout:" = "Layout:";
+"Title" = "Title";
+"Layout" = "Layout";
 "What to Print" = "What to Print";
 "Options" = "Options";
 "Tasks with no due date" = "Tasks with no due date";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Appointment Editor";
 "Appointment proposal" = "Appointment Proposal";
 "Appointment on" = "Appointment on";
-"Start:" = "Start:";
-"End:" = "End:";
-"Due Date:" = "Due Date:";
-"Title:" = "Title:";
-"Calendar:" = "Calendar:";
+"Start" = "Start";
+"End" = "End";
+"Due Date" = "Due Date";
+"Title" = "Title";
+"Calendar" = "Calendar";
 "Name" = "Name";
 "Email" = "Email";
-"Status:" = "Status:";
+"Status" = "Status";
 "% complete" = "% complete";
-"Location:" = "Location:";
-"Priority:" = "Priority:";
+"Location" = "Location";
+"Priority" = "Priority";
 "Privacy" = "Privacy";
 "Cycle" = "Cycle";
 "Cycle End" = "Cycle End";
 "Categories" = "Categories";
 "Classification" = "Classification";
 "Duration" = "Duration";
-"Attendees:" = "Attendees:";
+"Attendees" = "Attendees";
 "Resources" = "Resources";
-"Organizer:" = "Organizer:";
-"Description:" = "Description:";
-"Document:" = "Document:";
-"Category:" = "Category:";
-"Repeat:" = "Repeat:";
-"Reminder:" = "Reminder:";
-"General:" = "General:";
-"Reply:" = "Reply:";
-"Created by:" = "Created by:";
+"Organizer" = "Organizer";
+"Description" = "Description";
+"Document" = "Document";
+"Category" = "Category";
+"Repeat" = "Repeat";
+"Reminder" = "Reminder";
+"General" = "General";
+"Reply" = "Reply";
+"Created by" = "Created by";
 
 
 "Target:" = "Target:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Overdue tasks";
 "view_incomplete" = "Incomplete tasks";
 
-"View:" = "View:";
+"View" = "View";
 "Title, category or location" = "Title, category or location";
 "Entire content" = "Entire content";
 
@@ -508,8 +508,8 @@ vtodo_class2 = "(Confidential task)";
 "button_allOccurrences" = "All occurences";
 
 /* Properties dialog */
-"Name:" = "Name:";
-"Color:" = "Color:";
+"Name" = "Name";
+"Color" = "Color";
 
 "Include in free-busy" = "Include in free-busy";
 
@@ -524,11 +524,11 @@ vtodo_class2 = "(Confidential task)";
 "Notifications" = "Notifications";
 "Receive a mail when I modify my calendar" = "Receive a mail when I modify my calendar";
 "Receive a mail when someone else modifies my calendar" = "Receive a mail when someone else modifies my calendar";
-"When I modify my calendar, send a mail to:" = "When I modify my calendar, send a mail to:";
+"When I modify my calendar, send a mail to" = "When I modify my calendar, send a mail to";
 
 "Links to this Calendar" = "Links to this Calendar";
 "Authenticated User Access" = "Authenticated User Access";
-"CalDAV URL" = "CalDAV URL: ";
+"CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

@@ -417,10 +417,13 @@ function moveTo(uri) {
 function onContactRowDblClick(event) {
     var t = getTarget(event);
     var cname = t.parentNode.getAttribute('id').fromCSSIdentifier();
+    var selectedFolder = $("contactFolders").getSelectedNodes().first();
 
-    cname = encodeURIComponent(cname);
-    openContactWindow(URLForFolderID(Contact.currentAddressBook)
-                      + "/" + cname + "/edit", cname);
+    if (selectedFolder.getAttribute("card-editing") == "available") {
+        cname = encodeURIComponent(cname);
+        openContactWindow(URLForFolderID(Contact.currentAddressBook)
+                          + "/" + cname + "/edit", cname);
+    }
 
     return false;
 }
@@ -1176,6 +1179,14 @@ function onContactMenuPrepareVisibility() {
 
     var elements = $(this).down("ul").childElements();
 
+    var editOption = elements[0];
+    if (selectedFolder.getAttribute("card-editing") == "available") {
+        editOption.removeClassName("disabled");
+    }
+    else {
+        editOption.addClassName("disabled");
+    }
+
     var categoriesOption = elements[1];
     if (selectedFolder.getAttribute("owner") == UserLogin) {
         categoriesOption.removeClassName("disabled");
@@ -1206,14 +1217,13 @@ function onContactMenuPrepareVisibility() {
 
     var deleteOption = elements[6];
     var moveOption = elements[8];
-    if ($(selectedFolder).hasClassName("remote")) {
-        // Remote address books are always read-only
-        deleteOption.addClassName("disabled");
-        moveOption.addClassName("disabled");
-    }
-    else {
+    if (selectedFolder.getAttribute("card-deleting") == "available") {
         deleteOption.removeClassName("disabled");
         moveOption.removeClassName("disabled");
+    }
+    else {
+        deleteOption.addClassName("disabled");
+        moveOption.addClassName("disabled");
     }
 
     var exportOption = elements[10];

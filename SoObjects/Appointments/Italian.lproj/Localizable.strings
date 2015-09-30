@@ -25,10 +25,10 @@ vtodo_class2 = "(Attività confidenziale)";
 "... from the following event:" = "... dal seguente evento:";
 
 /* IMIP messages */
-"startDate_label" = "Inizio:";
-"endDate_label" = "Fine:";
+"startDate_label" = "Inizio";
+"endDate_label" = "Fine";
 "due_label" = "Scadenza:";
-"location_label" = "Luogo:";
+"location_label" = "Luogo";
 "summary_label" = "Summario:";
 "comment_label" = "Commento:";
 

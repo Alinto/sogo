@@ -12,16 +12,16 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "The event \"%{Summary}\" was created" = "De gebeurtenis \"%{Summary}\" is aangemaakt";
 "The event \"%{Summary}\" was deleted" = "De gebeurtenis \"%{Summary}\" is verwijderd";
 "The event \"%{Summary}\" was updated" = "De gebeurtenis \"%{Summary}\" is gewijzigd";
-"The following attendees(s) were notified:" = "De volgende deelnemers zijn in kennis gesteld:";
-"The following attendees(s) were added:" = "De volgende deelnemers zijn toegevoegd:";
-"The following attendees(s) were removed:" = "De volgende deelnemers zijn verwijderd:";
+"The following attendees(s) were notified" = "De volgende deelnemers zijn in kennis gesteld";
+"The following attendees(s) were added" = "De volgende deelnemers zijn toegevoegd";
+"The following attendees(s) were removed" = "De volgende deelnemers zijn verwijderd";
 
 /* IMIP messages */
-"calendar_label" = "Agenda:";
-"startDate_label" = "Start:";
-"endDate_label" = "Einde:";
+"calendar_label" = "Agenda";
+"startDate_label" = "Start";
+"endDate_label" = "Einde";
 "due_label" = "Vervaldag:";
-"location_label" = "Locatie:";
+"location_label" = "Locatie";
 "summary_label" = "Samenvatting:";
 "comment_label" = "Commentaar:";
 

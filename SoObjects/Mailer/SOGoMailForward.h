@@ -49,6 +49,9 @@
 @interface SOGoMailCatalanForward : SOGoMailForward
 @end
 
+@interface SOGoMailChineseTaiwanForward : SOGoMailForward
+@end
+
 @interface SOGoMailCzechForward : SOGoMailForward
 @end
 
@@ -101,6 +104,9 @@
 @end
 
 @interface SOGoMailSlovakForward : SOGoMailForward
+@end
+
+@interface SOGoMailSlovenianForward : SOGoMailForward
 @end
 
 @interface SOGoMailUkrainianForward : SOGoMailForward

@@ -301,6 +301,29 @@ static NSArray *childRecordFields = nil;
   return name;
 }
 
+- (BOOL) synchronize
+{
+  NSNumber *synchronize;
+
+  synchronize = [self folderPropertyValueInCategory: @"FolderSynchronize"];
+
+  return [synchronize boolValue];
+}
+
+- (void) setSynchronize: (BOOL) new
+{
+  NSNumber *synchronize;
+
+  if (new)
+    synchronize = [NSNumber numberWithBool: YES];
+  else
+    synchronize = nil;
+
+  [self setFolderPropertyValue: synchronize
+                    inCategory: @"FolderSynchronize"];
+}
+
+
 /* This method fetches the display name defined by the owner, but is also the
    fallback when a subscriber has not redefined the display name yet in their
    environment. */
@@ -1151,6 +1174,7 @@ static NSArray *childRecordFields = nil;
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
                           matchingSyncToken: (NSString *) syncToken
                                    fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress
 {
   /* TODO:
      - validation:
@@ -1200,13 +1224,17 @@ static NSArray *childRecordFields = nil;
       mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
                                                       withQualifier: qualifier
                                                       ignoreDeleted: YES]];
-      qualifier = [EOQualifier qualifierWithQualifierFormat:
-                                 @"c_lastmodified > %d and c_deleted == 1",
-                               syncTokenInt];
-      fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_lastmodified", @"c_deleted", nil];
-      [mRecords addObjectsFromArray: [self _fetchFields: fields
-                                          withQualifier: qualifier
-                                          ignoreDeleted: NO]];
+      if (!initialLoadInProgress)
+        {
+          qualifier = [EOQualifier qualifierWithQualifierFormat:
+                                   @"c_lastmodified > %d and c_deleted == 1",
+                                   syncTokenInt];
+          fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_lastmodified", @"c_deleted", nil];
+          [mRecords addObjectsFromArray: [self _fetchFields: fields
+                                              withQualifier: qualifier
+                                              ignoreDeleted: NO]];
+        }
+
       records = mRecords;
     }
   else
@@ -1499,7 +1527,9 @@ static NSArray *childRecordFields = nil;
       properties = [self parseDAVRequestedProperties: propElement];
       records = [self syncTokenFieldsWithProperties: properties
                                   matchingSyncToken: syncToken
-                                           fromDate: nil];
+                                           fromDate: nil
+                                        initialLoad: NO];
+
       [self _appendComponentProperties: [properties allKeys]
                            fromRecords: records
                      matchingSyncToken: [syncToken intValue]

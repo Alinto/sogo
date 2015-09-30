@@ -25,10 +25,10 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "... from the following event:" = "... af eftirfarandi viðburði:";
 
 /* IMIP messages */
-"startDate_label" = "Byrjun:";
-"endDate_label" = "Endir:";
+"startDate_label" = "Byrjun";
+"endDate_label" = "Endir";
 "due_label" = "Lokadagur:";
-"location_label" = "Staðsetning:";
+"location_label" = "Staðsetning";
 "summary_label" = "Samantekt:";
 "comment_label" = "Athugasemd:";
 

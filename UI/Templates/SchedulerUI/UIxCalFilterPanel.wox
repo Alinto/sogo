@@ -21,7 +21,7 @@
                menuid="eventSearchMenu" />
       </span>
 
-      <var:string label:value="View:" />
+      <var:string label:value="View" />
       <var:popup list="filters"
         const:id="filterpopup"
         item="filter" string="filterLabel" value="filter"

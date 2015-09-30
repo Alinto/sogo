@@ -235,8 +235,8 @@
 
 /* Folder operations */
 "Name :" = "Enw :";
-"Enter the new name of your folder :"
- = "Rhowch yr enw newydd ar eich ffolder :";
+"Enter the new name of your folder"
+ = "Rhowch yr enw newydd ar eich ffolder";
 "Do you really want to move this folder into the trash ?"
  = "A ydych yn sicr eich bod eisiau symudy ffolder yma i'r sbwriel ?";
 "Operation failed" = "Gweithrediad wedi methu";

@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar resposta automàtica";
-"Auto reply message :" = "Respondre automàticament una sola vegada a cada remitent amb aquest text: ";
-"Email addresses (separated by commas) :" = "Adreces de correu (separades per comes) :";
+"Auto reply message" ="Respondre automàticament una sola vegada a cada remitent amb aquest text";
+"Email addresses (separated by commas)" ="Adreces de correu (separades per comes)";
 "Add default email addresses" = "Afegir adreces de correu per defecte";
-"Days between responses :" = "Dies entre respostes :";
+"Days between responses" ="Dies entre respostes";
 "Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
 "Disable auto reply on" = "Desactivar la resposta automàtica en";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";
 
 /* d & t */
-"Current Time Zone :" = "Zona horària actual: ";
-"Short Date Format :" = "Format de data curt: ";
-"Long Date Format :" = "Format de data llarg: ";
-"Time Format :" = "Format d'hora: ";
+"Current Time Zone" ="Zona horària actual";
+"Short Date Format" ="Format de data curt";
+"Long Date Format" ="Format de data llarg";
+"Time Format" ="Format d'hora";
 
 "default" = "Per defecte";
 
@@ -90,26 +90,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Setmana comença en: ";
-"Day start time :" = "Hora inici dia: ";
-"Day end time :" = "Hora final dia: ";
+"Week begins on" ="Setmana comença en";
+"Day start time" ="Hora inici dia";
+"Day end time" ="Hora final dia";
 "Day start time must be prior to day end time." = "L'hora de començament del dia ha de ser anterior a l'hora d'acabament.";
 "Show time as busy outside working hours" = "Mostra el temps com ocupat fora de les hores de treball";
-"First week of year :" = "Primera setmana de l'any: ";
+"First week of year" ="Primera setmana de l'any";
 "Enable reminders for Calendar items" = "Habilitar recordatoris per a ítems del calendari";
 "Play a sound when a reminder comes due" = "Usar senyal acústic per als recordatoris";
-"Default reminder :" = "Recordatori per omissió: ";
+"Default reminder" ="Recordatori per omissió";
 
 "firstWeekOfYear_January1" = "Comença l'1 de gener";
 "firstWeekOfYear_First4DayWeek" = "Primera setmana de 4 dies";
 "firstWeekOfYear_FirstFullWeek" = "Primera setmana completa";
 
 "Prevent from being invited to appointments" = "Impedeix ser convidat a cites";
-"White list for appointment invitations:" = "Llista blanca per a invitacions a cites:";
+"White list for appointment invitations" = "Llista blanca per a invitacions a cites";
 "Contacts Names" = "Nom dels Contactes";
 
 /* Default Calendar */
-"Default calendar :" = "Calendari per defecte";
+"Default calendar" ="Calendari per defecte";
 "selectedCalendar" = "Calendari seleccionat";
 "personalCalendar" = "Calendari personal";
 "firstCalendar" = "Primer calendari habilitat";
@@ -144,11 +144,11 @@
 "refreshview_every_30_minutes" = "Cada 30 minuts";
 "refreshview_once_per_hour" = "Cada hora";
 
-"Forward messages:" = "Reenviar missatges:";
+"Forward messages" = "Reenviar missatges";
 "messageforward_inline" = "Incorporats";
 "messageforward_attached" = "Com a adjunts";
 
-"When replying to a message:" = "En contestar a un missatge";
+"When replying to a message" = "En contestar a un missatge";
 "replyplacement_above" = "amb la resposta abans";
 "replyplacement_below" = "amb la resposta després";
 "And place my signature" = "Col·locant la signatura";
@@ -168,17 +168,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Compte de correu nou";
 
-"Server Name:" = "Servidor:";
-"Port:" = "Port:";
-"Encryption:" = "Encriptació:";
+"Server Name" = "Servidor";
+"Port" = "Port";
+"Encryption" = "Encriptació";
 "None" = "Cap";
-"User Name:" = "Usuari:";
-"Password:" = "Contrasenya:";
+"User Name" = "Usuari";
+"Password" = "Contrasenya";
 
-"Full Name:" = "Nom complet:";
-"Email:" = "Correu electrònic:";
-"Reply To Email:" = "Respondre a aquesta adreça de correu: ";
-"Signature:" = "Signatura:";
+"Full Name" = "Nom complet";
+"Email" = "Correu electrònic";
+"Reply To Email" = "Respondre a aquesta adreça de correu ";
+"Signature" = "Signatura";
 "(Click to create)" = "(Clic per a crear-la)";
 
 "Signature" = "Signatura";
@@ -191,13 +191,13 @@
 "Additional Parameters" = "Paràmetres addicionals";
 
 /* password */
-"New password:" = "Contrasenya nova:";
-"Confirmation:" = "Confirmar contrasenya nova:";
+"New password" = "Contrasenya nova";
+"Confirmation" = "Confirmar contrasenya nova";
 "Change" = "Canviar";
 
 /* Event+task classifications */
-"Default events classification :" = "Classificació per defecte dels esdeveniments ";
-"Default tasks classification :" = "Classificació per defecte de les tasques ";
+"Default events classification" ="Classificació per defecte dels esdeveniments";
+"Default tasks classification" ="Classificació per defecte de les tasques";
 "PUBLIC_item" = "Públic ";
 "CONFIDENTIAL_item" = "Confidencial ";
 "PRIVATE_item" = "Privat ";
@@ -211,14 +211,15 @@
 "Contacts" = "Llibreta d'adreces";
 "Mail" = "Correu";
 "Last" = "Últim usat";
-"Default Module :" = "Pàgina per defecte :";
-"SOGo Version :" = "Versió del SOGo:";
+"Default Module " = "Pàgina per defecte ";
+"SOGo Version" ="Versió del SOGo";
 
-"Language :" = "Language :";
+"Language" ="Language";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -235,6 +236,7 @@
 "Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -242,12 +244,12 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Quan reba una sol·licitud de justificant de recepció:";
+"When I receive a request for a return receipt" = "Quan reba una sol·licitud de justificant de recepció";
 "Never send a return receipt" = "No enviar mai un justificant de recepció";
 "Allow return receipts for some messages" = "Permetre els justificants de recepció per alguns dels missatges";
-"If I'm not in the To or Cc of the message:" = "Si no estic en el camp Per o CC del missatge:";
-"If the sender is outside my domain:" = "Si el remitent està fora del meu domini:";
-"In all other cases:" = "En tots els altres casos:";
+"If I'm not in the To or Cc of the message" = "Si no estic en el camp Per o CC del missatge";
+"If the sender is outside my domain" = "Si el remitent està fora del meu domini";
+"In all other cases" = "En tots els altres casos";
 
 "Never send" = "No enviar mai";
 "Always send" = "Enviar sempre";

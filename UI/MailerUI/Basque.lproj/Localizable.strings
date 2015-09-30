@@ -240,7 +240,7 @@
 "As Not Junk" = "ez zaborra gisa";
 "Run Junk Mail Controls" = "Exekutatu zabor-posta kontrolak";
 
-"Search messages in:" = "Bilatu mezuak hemen:";
+"Search messages in" = "Bilatu mezuak hemen";
 "Search" = "Bilatu";
 "Search subfolders" = "Bilatu azpikarpetak";
 "Match any of the following" = "Irizpide hauetako edozein betetzen dituztenak";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Izena:";
-"Enter the new name of your folder :"
- = "Idatzi zure karpetaren izen berria:";
+"Enter the new name of your folder"
+ = "Idatzi zure karpetaren izen berria";
 "Do you really want to move this folder into the trash ?"
  = "Ziur zaude karpeta hau zakarrontzira mugitu nahi duzula?";
 "Operation failed" = "Eragiketak huts egin du";

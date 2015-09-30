@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Virkja sjálfvirkt svar í fríi";
-"Auto reply message :" = "Skilaboð fyrir sjálfvirkt svar :";
-"Email addresses (separated by commas) :" = "Netföng (aðgreind með kommu) :";
+"Auto reply message" ="Skilaboð fyrir sjálfvirkt svar";
+"Email addresses (separated by commas)" ="Netföng (aðgreind með kommu)";
 "Add default email addresses" = "Bæta við sjálfgefnu netfangi";
-"Days between responses :" = "Dagar milli svara :";
+"Days between responses" ="Dagar milli svara";
 "Do not send responses to mailing lists" = "Ekki senda svör til póstlista";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Hér þarf að skrá skilaboðin og netfangið til að virkja sjálfvirkt svar.";
@@ -37,10 +37,10 @@
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";
 
 /* d & t */
-"Current Time Zone :" = "Núverandi tímabelti :";
-"Short Date Format :" = "Stutt dagsetningarform :";
-"Long Date Format :" = "Löng dagsetning :";
-"Time Format :" = "Tímasnið :";
+"Current Time Zone" ="Núverandi tímabelti";
+"Short Date Format" ="Stutt dagsetningarform";
+"Long Date Format" ="Löng dagsetning";
+"Time Format" ="Tímasnið";
 
 "default" = "Sjálfgefið";
 
@@ -78,15 +78,15 @@
 "timeFmt_2" = "";
 
 /* calendar */
-"Week begins on :" = "Vikan byrjar á :";
-"Day start time :" = "Degi lýkur kl. :";
-"Day end time :" = "Dagur hefst kl. :";
-"Day start time must be prior to day end time." = "Tími þegar dagur hefst, þarf að vera fyrir þann tíma sem degi lýkur. ";
-"First week of year :" = "Fyrsta vika árs :";
+"Week begins on" ="Vikan byrjar á";
+"Day start time" ="Degi lýkur kl.";
+"Day end time" ="Dagur hefst kl.";
+"Day start time must be prior to day end time." = "Tími þegar dagur hefst, þarf að vera fyrir þann tíma sem degi lýkur.";
+"First week of year" ="Fyrsta vika árs";
 "Enable reminders for Calendar items" = "Virkja áminningar fyrir hluti í dagatali";
 "Play a sound when a reminder comes due"
 = "Spila hljóð við áminningu";
-"Default reminder :" = "Sjálfgefin áminning :";
+"Default reminder" ="Sjálfgefin áminning";
 
 "firstWeekOfYear_January1" = "Byrjar 1. janúar";
 "firstWeekOfYear_First4DayWeek" = "Fyrstu 4 dagar viku";
@@ -116,7 +116,7 @@
 "refreshview_every_30_minutes" = "Hverjar 30 mínútur";
 "refreshview_once_per_hour" = "Á klukkustundar fresti";
 
-"Forward messages:" = "Áframsenda póst:";
+"Forward messages" = "Áframsenda póst";
 "messageforward_inline" = "Innfellt";
 "messageforward_attached" = "Sem viðhengi";
 
@@ -132,14 +132,14 @@
 /* IMAP Accounts */
 "New Mail Account" = "Ný uppsetning á pósti";
 
-"Server Name:" = "Nafn netþjóns:";
-"Port:" = "Gátt:";
-"User Name:" = "Notandanafn:";
-"Password:" = "Lykilorð:";
+"Server Name" = "Nafn netþjóns";
+"Port" = "Gátt";
+"User Name" = "Notandanafn";
+"Password" = "Lykilorð";
 
-"Full Name:" = "Fullt nafn :";
-"Email:" = "Tölvupóstfang:";
-"Signature:" = "Undirritun:";
+"Full Name" = "Fullt nafn ";
+"Email" = "Tölvupóstfang";
+"Signature" = "Undirritun";
 "(Click to create)" = "(Smella til að búa til)";
 
 "Signature" = "Undirritun";
@@ -149,13 +149,13 @@
 "Additional Parameters" = "Fleiri færibreytur";
 
 /* password */
-"New password:" = "Nýtt lykilorð:";
-"Confirmation:" = "Staðfesting:";
+"New password" = "Nýtt lykilorð";
+"Confirmation" = "Staðfesting";
 "Change" = "Breyta";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
+"Default events classification" ="Default events classification";
+"Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -169,13 +169,14 @@
 "Contacts" = "Nafnaskrá";
 "Mail" = "Póstur";
 "Last" = "Síðast notað";
-"Default Module :" = "Sjálfgefið viðmót :";
+"Default Module " = "Sjálfgefið viðmót ";
 
-"Language :" = "Tungumál :";
+"Language" ="Tungumál";
 "choose" = "Velja...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -192,6 +193,7 @@
 "Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -199,24 +201,24 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Þegar ég móttek beiðni um staðfestingu á lestri:";
+"When I receive a request for a return receipt" = "Þegar ég móttek beiðni um staðfestingu á lestri";
 "Never send a return receipt" = "Aldrei senda staðfestingu á lestri";
 "Allow return receipts for some messages" = "Leyfa staðfestinu á lestri fyrir suman póst";
-"If I'm not in the To or Cc of the message:" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins:";
-"If the sender is outside my domain:" = "Ef sendandi er fyrir utan mitt lén:";
-"In all other cases:" = "Í öllum öðrum tilfellum:";
+"If I'm not in the To or Cc of the message" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins";
+"If the sender is outside my domain" = "Ef sendandi er fyrir utan mitt lén";
+"In all other cases" = "Í öllum öðrum tilfellum";
 
 "Never send" = "Aldrei senda";
 "Always send" = "Senda alltaf";
 "Ask me" = "Spyrja mig";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Þegar ég móttek beiðni um staðfestingu á lestri:";
+"When I receive a request for a return receipt" = "Þegar ég móttek beiðni um staðfestingu á lestri";
 "Never send a return receipt" = "Aldrei senda staðfestingu á lestri";
 "Allow return receipts for some messages" = "Leyfa staðfestinu á lestri fyrir suman póst";
-"If I'm not in the To or Cc of the message:" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins:";
-"If the sender is outside my domain:" = "Ef sendandi er fyrir utan mitt lén:";
-"In all other cases:" = "Í öllum öðrum tilfellum:";
+"If I'm not in the To or Cc of the message" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins";
+"If the sender is outside my domain" = "Ef sendandi er fyrir utan mitt lén";
+"In all other cases" = "Í öllum öðrum tilfellum";
 
 "Never send" = "Aldrei senda";
 "Always send" = "Senda alltaf";

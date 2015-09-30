@@ -235,8 +235,8 @@
 
 /* Folder operations */
 "Name :" = "Namn: ";
-"Enter the new name of your folder :"
- = "Skriv namnet på mappen: ";
+"Enter the new name of your folder"
+ = "Skriv namnet på mappen";
 "Do you really want to move this folder into the trash ?"
  = "Vill du verkligen flytta mappen till papperskorgen?";
 "Operation failed" = "Operationen misslyckades";

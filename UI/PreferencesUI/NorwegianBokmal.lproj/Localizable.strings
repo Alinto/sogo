@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktiver auto-svar ved fravær";
-"Auto reply message :" = "Auto-svar melding:";
-"Email addresses (separated by commas) :" = "E-postadresser (separert med komma):";
+"Auto reply message" ="Auto-svar melding";
+"Email addresses (separated by commas)" ="E-postadresser (separert med komma)";
 "Add default email addresses" = "Legg til standard e-postadresser";
-"Days between responses :" = "Dager mellom svar:";
+"Days between responses" ="Dager mellom svar";
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
 "Disable auto reply on" = "Skru av auto-svar";
 "Always send vacation message response" = "Alltid send ferie melding";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone :" = "Gjeldende tidssone:";
-"Short Date Format :" = "Kort datoformat:";
-"Long Date Format :" = "Langt datoformat:";
-"Time Format :" = "Tidsformat:";
+"Current Time Zone" ="Gjeldende tidssone";
+"Short Date Format" ="Kort datoformat";
+"Long Date Format" ="Langt datoformat";
+"Time Format" ="Tidsformat";
 
 "default" = "Standard";
 
@@ -95,26 +95,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Uken begynner med:";
-"Day start time :" = "Dagen begynner kl.:";
-"Day end time :" = "Dagen slutter kl.:";
+"Week begins on" ="Uken begynner med";
+"Day start time" ="Dagen begynner kl.";
+"Day end time" ="Dagen slutter kl.";
 "Day start time must be prior to day end time." = "Dagens starttid må være før dagens sluttid.";
 "Show time as busy outside working hours" = "Vis tid som opptatt utenfor arbeidstid";
-"First week of year :" = "Første uken i året:";
+"First week of year" ="Første uken i året";
 "Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
 "Play a sound when a reminder comes due" = "Avspill lyd ved en påminnelse";
-"Default reminder :" = "Standardpåminnelse:";
+"Default reminder" ="Standardpåminnelse";
 
 "firstWeekOfYear_January1" = "Begynner den 1. januar";
 "firstWeekOfYear_First4DayWeek" = "Første firedagersuken i året";
 "firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
 
 "Prevent from being invited to appointments" = "Hindre fra å bli invitert til avtaler";
-"White list for appointment invitations:" = "Hviteliste for avtale invitasjoner:";
+"White list for appointment invitations" = "Hviteliste for avtale invitasjoner";
 "Contacts Names" = "Kontakters navn";
 
 /* Default Calendar */
-"Default calendar :" = "Standard kalender:";
+"Default calendar" ="Standard kalender";
 "selectedCalendar" = "Valgte kalender";
 "personalCalendar" = "Personlig kalender";
 "firstCalendar" = "Første aktiverte kalender";
@@ -140,11 +140,11 @@
 "Sort messages by threads" = "Sorter meldinger etter tråder";
 "When sending mail, add unknown recipients to my" = "Ved sending av mail, legg til ukjente mottakere til min";
 
-"Forward messages:" = "Videresend meldinger:";
+"Forward messages" = "Videresend meldinger";
 "messageforward_inline" = "Innsatt";
 "messageforward_attached" = "Som Vedlegg";
 
-"When replying to a message:" = "Ved svar på melding: ";
+"When replying to a message" = "Ved svar på melding ";
 "replyplacement_above" = "Start svaret ovenfor";
 "replyplacement_below" = "Start svaret under";
 "And place my signature" = "Legg til min signatur";
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Ny e-postkonto";
 
-"Server Name:" = "Servernavn:";
-"Port:" = "Port:";
-"Encryption:" = "Kryptering:";
+"Server Name" = "Servernavn";
+"Port" = "Port";
+"Encryption" = "Kryptering";
 "None" = "Ingen";
-"User Name:" = "Brukernavn:";
-"Password:" = "Passord:";
+"User Name" = "Brukernavn";
+"Password" = "Passord";
 
-"Full Name:" = "Fullt navn:";
-"Email:" = "E-post:";
-"Reply To Email:" = "Svar til e-post:";
-"Signature:" = "Signatur:";
+"Full Name" = "Fullt navn";
+"Email" = "E-post";
+"Reply To Email" = "Svar til e-post";
+"Signature" = "Signatur";
 "(Click to create)" = "(Klikk for å opprette)";
 
 "Signature" = "Signatur";
@@ -190,13 +190,13 @@
 "Additional Parameters" = "Øvrige parametre";
 
 /* password */
-"New password:" = "Nytt passord:";
-"Confirmation:" = "Bekreft:";
+"New password" = "Nytt passord";
+"Confirmation" = "Bekreft";
 "Change" = "Endre";
 
 /* Event+task classifications */
-"Default events classification :" = "Standard hendelsesklassifikasjon:";
-"Default tasks classification :" = "Standard oppgaveklassifisering";
+"Default events classification" ="Standard hendelsesklassifikasjon";
+"Default tasks classification" ="Standard oppgaveklassifisering";
 "PUBLIC_item" = "Offentlig";
 "CONFIDENTIAL_item" = "Konfidensiell";
 "PRIVATE_item" = "Privat";
@@ -210,14 +210,15 @@
 "Contacts" = "Adressebok";
 "Mail" = "E-post";
 "Last" = "Sist besøkt";
-"Default Module :" = "Standardmodul:";
-"SOGo Version :" = "SOGo versjon:";
+"Default Module " = "Standardmodul";
+"SOGo Version" ="SOGo versjon";
 
-"Language :" = "Språk:";
+"Language" ="Språk";
 "choose" = "Velg ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -240,7 +241,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View :" = "Oppdater Visning:";
+"Refresh View" ="Oppdater Visning";
 "refreshview_manually" = "Manuelt";
 "refreshview_every_minute" = "Hvert minutt";
 "refreshview_every_2_minutes" = "Hvert 2. minutt";
@@ -251,12 +252,12 @@
 "refreshview_once_per_hour" = "Hver time";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
+"When I receive a request for a return receipt" = "Når jeg mottar anmodning om en returkvittering";
 "Never send a return receipt" = "Send aldri en returkvittering";
 "Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
-"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til- eller Cc-feltet i meldingen:";
-"If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
-"In all other cases:" = "I alle andre tilfeller:";
+"If I'm not in the To or Cc of the message" = "Hvis jeg ikke er i Til- eller Cc-feltet i meldingen";
+"If the sender is outside my domain" = "Hvis senderen er utenfor mitt domene";
+"In all other cases" = "I alle andre tilfeller";
 
 "Never send" = "Aldri send";
 "Always send" = "Alltid send";

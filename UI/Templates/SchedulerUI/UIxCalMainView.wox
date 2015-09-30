@@ -100,9 +100,9 @@
     <div>
       <h1><!-- space --></h1>
       <p><span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Calendar:" /></span> <span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
-      <p><span class="label"><var:string label:value="Created by:" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Calendar" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Location" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Created by" /></span> <span><!-- space --></span></p>
       <p class="description"><!-- space --></p>
     </div>
   </div>

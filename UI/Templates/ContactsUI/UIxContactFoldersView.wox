@@ -110,6 +110,8 @@
           var:class="currentContactFolderClass"
           var:acl-editing="currentContactFolderAclEditing"
           var:list-editing="currentContactFolderListEditing"
+          var:card-editing="currentContactFolderCardRights.editing"
+          var:card-deleting="currentContactFolderCardRights.deleting"
           ><span><var:string value="currentContactFolderName"/></span></li
           ></var:foreach
         >

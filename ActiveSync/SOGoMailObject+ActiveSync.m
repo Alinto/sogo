@@ -77,6 +77,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Appointments/SOGoAptMailNotification.h>
 
+unsigned char strToChar(char a, char b) {
+    char encoder[3] = {'\0','\0','\0'};
+    encoder[0] = a;
+    encoder[1] = b;
+    return (char) strtol(encoder,NULL,16);
+}
+
+@interface NSString (NSStringExtensions)
+- (NSData *) decodeFromHexidecimal;
+@end
+
+@implementation NSString (NSStringExtensions)
+
+- (NSData *) decodeFromHexidecimal;
+{
+    const char * bytes = [self cStringUsingEncoding: NSUTF8StringEncoding];
+    NSUInteger length = strlen(bytes);
+    unsigned char * r = (unsigned char *) malloc(length / 2 + 1);
+    unsigned char * index = r;
+
+    while ((*bytes) && (*(bytes +1))) {
+        *index = strToChar(*bytes, *(bytes +1));
+        index++;
+        bytes+=2;
+    }
+    *index = '\0';
+
+    NSData * result = [NSData dataWithBytes: r length: length / 2];
+    free(r);
+
+    return result;
+}
+
+@end
+
 typedef struct {
   uint32_t dwLowDateTime;
   uint32_t dwHighDateTime;
@@ -91,7 +126,7 @@ struct GlobalObjectId {
   FILETIME                  CreationTime;
   uint8_t                   X[8];
   uint32_t                  Size;
-  uint8_t*                  Data;
+  uint8_t Data[0];
 };
 
 @implementation SOGoMailObject (ActiveSync)
@@ -118,38 +153,39 @@ struct GlobalObjectId {
 //
 // The GlobalObjId is documented here: http://msdn.microsoft.com/en-us/library/ee160198(v=EXCHG.80).aspx
 //
+
 - (NSData *) _computeGlobalObjectIdFromEvent: (iCalEvent *) event
 {
   NSData *binPrefix, *globalObjectId, *uidAsASCII;
   NSString *prefix, *uid;
-
-  struct GlobalObjectId newGlobalId;
+  struct GlobalObjectId *newGlobalId;
   const char *bytes;
-  
+
+  uid = [event uid];
+  uidAsASCII = [uid decodeFromHexidecimal];
+  newGlobalId = (struct GlobalObjectId*)calloc(sizeof(uint8_t), sizeof(struct GlobalObjectId) + 0x0c + [uidAsASCII length]);
+
   prefix = @"040000008200e00074c5b7101a82e008";
 
   // dataPrefix is "vCal-Uid %x01 %x00 %x00 %x00"
   uint8_t dataPrefix[] = { 0x76, 0x43, 0x61, 0x6c, 0x2d, 0x55, 0x69, 0x64, 0x01, 0x00, 0x00, 0x00 };
-  uid = [event uid];
 
   binPrefix = [prefix convertHexStringToBytes];
-  [binPrefix getBytes: &newGlobalId.ByteArrayID];
-  [self _setInstanceDate: &newGlobalId
+  [binPrefix getBytes: &newGlobalId->ByteArrayID];
+  [self _setInstanceDate: newGlobalId
                 fromDate: [event recurrenceId]];
-  uidAsASCII = [uid dataUsingEncoding: NSASCIIStringEncoding];
   bytes = [uidAsASCII bytes];
 
   // 0x0c is the size of our dataPrefix
-  newGlobalId.Size = 0x0c + [uidAsASCII length];
-  newGlobalId.Data = malloc(newGlobalId.Size * sizeof(uint8_t));
-  memcpy(newGlobalId.Data, dataPrefix, 0x0c);
-  memcpy(newGlobalId.Data + 0x0c, bytes, newGlobalId.Size - 0x0c);
+  newGlobalId->Size = 0x0c + [uidAsASCII length];
+  memcpy(newGlobalId->Data, dataPrefix, 0x0c);
+  memcpy(newGlobalId->Data + 0x0c, bytes, newGlobalId->Size - 0x0c);
 
-  globalObjectId = [[NSData alloc] initWithBytes: &newGlobalId  length: 40 + newGlobalId.Size*sizeof(uint8_t)];
-  free(newGlobalId.Data);
-  
+  globalObjectId = [[NSData alloc] initWithBytes: newGlobalId  length: 40 + newGlobalId->Size*sizeof(uint8_t)];
+  free(newGlobalId);
   return [globalObjectId autorelease];
 }
+
 
 //
 // For debugging purposes...
@@ -514,6 +550,28 @@ struct GlobalObjectId {
   return d;
 }
 
+
+- (NSString *) _getNormalizedSubject
+{
+  NSString *subject;
+  NSUInteger colIdx;
+  NSString *stringValue;
+
+  subject = [[self subject] decodedHeader];
+
+  colIdx = [subject rangeOfString: @":" options:NSBackwardsSearch].location;
+  if (colIdx != NSNotFound && colIdx + 1 < [subject length])
+    stringValue = [[subject substringFromIndex: colIdx + 1] stringByTrimmingLeadSpaces];
+  else
+    stringValue = subject;
+
+  if (!stringValue)
+    stringValue = @"";
+
+  return stringValue;
+}
+
+
 //
 //
 //
@@ -627,7 +685,7 @@ struct GlobalObjectId {
   if (value)
     {
       [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentationInContext: context]];
-      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [[self _getNormalizedSubject] activeSyncRepresentationInContext: context]];
     }
 
   // DateReceived
@@ -1013,7 +1071,13 @@ struct GlobalObjectId {
   if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
       [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
     {
-      if ([self inReplyTo])
+      NSString *reference;
+
+      reference = [[[[self mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] objectAtIndex: 0];
+
+      if ([reference length] > 0)
+        [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+      else if ([self inReplyTo])
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
       else if ([self messageId])
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];

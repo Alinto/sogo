@@ -91,67 +91,17 @@
 
 - (BOOL) synchronizeCalendar
 {
-  return [self mustSynchronize] || [calendar synchronizeCalendar];
+  return [self mustSynchronize] || [calendar synchronize];
 }
 
 - (void) setSynchronizeCalendar: (BOOL) new
 {
-  [calendar setSynchronizeCalendar: new];
-}
-
-- (NSString *) originalCalendarSyncTag
-{
-  return [calendar syncTag];
-}
-
-- (NSString *) allCalendarSyncTags
-{
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *syncTags;
-  NSEnumerator *keysList;
-  NSMutableArray *tags;
-  NSString *key, *result;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  tags = nil;
-
-  if (calendarSettings)
-    {
-      syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
-      if (syncTags)
-	{
-	  tags = [NSMutableArray arrayWithCapacity: [syncTags count]];
-	  keysList = [syncTags keyEnumerator];
-	  while ((key = (NSString*)[keysList nextObject])) {
-	    if (![key isEqualToString: [calendar folderReference]])
-	      [tags addObject: [syncTags objectForKey: key]];
-	  }
-	}
-    }
-  
-  if (!tags)
-    result = @"";
-  else
-    result = [tags componentsJoinedByString: @","];
-
-  return result;
+  [calendar setSynchronize: new];
 }
 
 - (BOOL) mustSynchronize
 {
   return [[calendar nameInContainer] isEqualToString: @"personal"];
-}
-
-- (NSString *) calendarSyncTag
-{
-  return [calendar syncTag];
-}
-
-- (void) setCalendarSyncTag: (NSString *) newTag
-{
-  [calendar setSyncTag: newTag];
 }
 
 - (BOOL) showCalendarAlarms

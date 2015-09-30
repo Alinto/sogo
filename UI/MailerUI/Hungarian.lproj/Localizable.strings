@@ -240,7 +240,7 @@
 "As Not Junk" = "Nem szemétként";
 "Run Junk Mail Controls" = "Levélszemétgyűjtő futtatása";
 
-"Search messages in:" = "Üzenetek keresése ebben:";
+"Search messages in" = "Üzenetek keresése ebben";
 "Search" = "Keresés";
 "Search subfolders" = "Keresés almappákban";
 "Match any of the following" = "A következők egyikének feleljen meg";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Név:";
-"Enter the new name of your folder :"
- = "Adja meg az új mappa nevét:";
+"Enter the new name of your folder"
+ = "Adja meg az új mappa nevét";
 "Do you really want to move this folder into the trash ?"
  = "Biztosan lomtárba kívánja helyezni ezt a mappát ?";
 "Operation failed" = "A művelet megszakadt";

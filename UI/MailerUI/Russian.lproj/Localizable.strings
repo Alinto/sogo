@@ -240,7 +240,7 @@
 "As Not Junk" = "Не спам";
 "Run Junk Mail Controls" = "Запустить фильтр спама";
 
-"Search messages in:" = "Искать сообщения в:.";
+"Search messages in" = "Искать сообщения в.";
 "Search" = "Поиск";
 "Search subfolders" = "Искать во вложенных папках";
 "Match any of the following" = "Отвечают любому из следующих";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Имя :";
-"Enter the new name of your folder :"
- = "Введите новое имя папки :";
+"Enter the new name of your folder"
+ = "Введите новое имя папки";
 "Do you really want to move this folder into the trash ?"
  = "Вы действительно хотите перенести эту папку в корзину?";
 "Operation failed" = "Операция завершилась неудачно";

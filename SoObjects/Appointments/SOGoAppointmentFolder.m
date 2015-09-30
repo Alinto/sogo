@@ -432,61 +432,6 @@ static Class iCalEventK = nil;
                     inCategory: @"FolderShowTasks"];    
 }
 
-- (NSString *) syncTag
-{
-  NSString *syncTag;
-
-  syncTag = [self folderPropertyValueInCategory: @"FolderSyncTags"];
-  if (!syncTag)
-    syncTag = @"";
-
-  return syncTag;
-}
-
-- (void) setSyncTag: (NSString *) newSyncTag
-{
-  // Check for duplicated tags
-  SOGoUserSettings *settings;
-  NSDictionary *syncTags;
-  NSArray *values;
-
-  if ([newSyncTag length])
-    {
-      settings = [[context activeUser] userSettings];
-      syncTags = [[settings objectForKey: @"Calendar"]
-                           objectForKey: @"FolderSyncTags"];
-      values = [syncTags allValues];
-      if (![values containsObject: newSyncTag])
-        [self setFolderPropertyValue: newSyncTag
-                          inCategory: @"FolderSyncTags"];
-    }
-  else
-    [self setFolderPropertyValue: nil
-                      inCategory: @"FolderSyncTags"];
-}
-
-- (BOOL) synchronizeCalendar
-{
-  NSNumber *synchronize;
-
-  synchronize = [self folderPropertyValueInCategory: @"FolderSynchronize"];
-
-  return [synchronize boolValue];
-}
-
-- (void) setSynchronizeCalendar: (BOOL) new
-{
-  NSNumber *synchronize;
-
-  if (new)
-    synchronize = [NSNumber numberWithBool: YES];
-  else
-    synchronize = nil;
-
-  [self setFolderPropertyValue: synchronize
-                    inCategory: @"FolderSynchronize"];
-}
-
 //
 // If the user is the owner of the calendar, by default we include the freebusy information.
 //

@@ -240,7 +240,7 @@
 "As Not Junk" = "Kein Junk";
 "Run Junk Mail Controls" = "Junk-Filter anwenden";
 
-"Search messages in:" = "Nachrichten suchen in:";
+"Search messages in" = "Nachrichten suchen in";
 "Search" = "Suchen";
 "Search subfolders" = "Durchsuche Unterordner";
 "Match any of the following" = "Die auf mindestens eines der folgenden Muster passen";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Name:";
-"Enter the new name of your folder :"
- = "Geben Sie den Namen des neuen Ordners ein:";
+"Enter the new name of your folder"
+ = "Geben Sie den Namen des neuen Ordners ein";
 "Do you really want to move this folder into the trash ?"
  = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
 "Operation failed" = "Operation fehlgeschlagen.";

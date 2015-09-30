@@ -237,8 +237,8 @@
 
 /* Folder operations */
 "Name :" = "Назва :";
-"Enter the new name of your folder :"
- = "Введіть нову назву теки :";
+"Enter the new name of your folder"
+ = "Введіть нову назву теки";
 "Do you really want to move this folder into the trash ?"
  = "Ви справді бажаєте перенести цю теку до кошика?";
 "Operation failed" = "Операція завершилась невдало";

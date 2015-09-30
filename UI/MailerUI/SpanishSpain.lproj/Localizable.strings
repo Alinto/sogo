@@ -240,7 +240,7 @@
 "As Not Junk" = "Como correo normal";
 "Run Junk Mail Controls" = "Ejecutar controles de correo basura";
 
-"Search messages in:" = "Buscar mensajes en:";
+"Search messages in" = "Buscar mensajes en";
 "Search" = "Buscar";
 "Search subfolders" = "Buscar sub carpetas";
 "Match any of the following" = "Cumplen cualquiera de las reglas siguientes";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Nombre: ";
-"Enter the new name of your folder :"
- = "Introduzca el nuevo nombre de la carpeta: ";
+"Enter the new name of your folder"
+ = "Introduzca el nuevo nombre de la carpeta";
 "Do you really want to move this folder into the trash ?"
  = "¿Seguro que desea mover la carpeta a la papelera?";
 "Operation failed" = "Operación fallida";

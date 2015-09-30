@@ -76,19 +76,19 @@
 "No possible subscription" = "La subscripció no és possible";
 
 "Preferred" = "Preferit";
-"Display:" = "Nom mostrat:";
-"Display Name:" = "Nom:";
+"Display" = "Nom mostrat";
+"Display Name" = "Nom";
 "Email:" = "Correu electrònic:";
 "Additional Email:" = "Un altre correu electrònic:";
 
-"Phone Number:" = "Número de telèfon:";
+"Phone Number" = "Número de telèfon";
 "Prefers to receive messages formatted as:" = "Prefereix rebre missatges amb format:";
 "Screen Name:" = "Nom d'usuari:";
 "Categories:" = "Categories:";
 
 "First:" = "Nom:";
 "Last:" = "Cognoms:";
-"Nickname:" = "Àlies:";
+"Nickname" = "Àlies";
 
 "Telephone" = "Telèfon";
 "Work:" = "Feina:";
@@ -103,25 +103,25 @@
 "New category" = "New category";
 
 /* adresses */
-"Title:" = "Títol:";
+"Title" = "Títol";
 "Service:" = "Servei:";
 "Company:" = "Companyia:";
 "Department:" = "Departament:";
 "Organization:" = "Organització:";
 "Address:" = "Domicili:";
-"City:" = "Ciutat:";
+"City" = "Ciutat";
 "State_Province:" = "Estat/província/comarca:";
 "ZIP_Postal Code:" = "Codi postal:";
-"Country:" = "País:";
+"Country" = "País";
 "Web Page:" = "Web:";
 
 "Work" = "Treball";
 "Other Infos" = "Altres dades";
 
-"Note:" = "Nota:";
+"Note" = "Nota";
 "Timezone:" = "Zona hor.:";
-"Birthday:" = "Data de naixement:";
-"Birthday (yyyy-mm-dd):" = "Data naixement (yyyy-mm-dd):";
+"Birthday" = "Data de naixement";
+"Birthday (yyyy-mm-dd)" = "Data naixement (yyyy-mm-dd)";
 "Freebusy URL:" = "URL disponibilitat:";
 
 "Add as..." = "Afegir com a...";
@@ -186,9 +186,9 @@
 
 /* Lists */
 "List details" = "Detalls de la llista";
-"List name:" = "Nom de la llista:";
-"List nickname:" = "Àlies de la llista:";
-"List description:" = "Descripcció de la llista:";
+"List name" = "Nom de la llista";
+"List nickname" = "Àlies de la llista";
+"List description" = "Descripcció de la llista";
 "Members" = "Membres";
 "Contacts" = "Contactes";
 "Add" = "Afegir";

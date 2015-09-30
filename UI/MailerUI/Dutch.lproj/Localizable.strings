@@ -240,7 +240,7 @@
 "As Not Junk" = "Als gewenst";
 "Run Junk Mail Controls" = "Ongewenste berichtenfilter starten";
 
-"Search messages in:" = "Zoek berichten in:";
+"Search messages in" = "Zoek berichten in";
 "Search" = "Zoeken";
 "Search subfolders" = "Zoek in submappen";
 "Match any of the following" = "Gelijk aan een van de volgende";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Naam:";
-"Enter the new name of your folder :"
- = "Geef de nieuw naam van de map op:";
+"Enter the new name of your folder"
+ = "Geef de nieuw naam van de map op";
 "Do you really want to move this folder into the trash ?"
  = "Weet u zeker dat u deze map naar de prullenbak wilt verplaatsen?";
 "Operation failed" = "Bewerking mislukt.";

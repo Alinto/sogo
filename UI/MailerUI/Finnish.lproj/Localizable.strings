@@ -240,7 +240,7 @@
 "As Not Junk" = "Ei roskaksi";
 "Run Junk Mail Controls" = "Käynnistä roskapostien hallinta";
 
-"Search messages in:" = "Etsi viestejä:";
+"Search messages in" = "Etsi viestejä";
 "Search" = "Etsi";
 "Search subfolders" = "Etsi alihakemistoista";
 "Match any of the following" = "Täsmää mihin tahansa seuraavista";
@@ -254,8 +254,8 @@
 
 /* Folder operations */
 "Name :" = "Nimi:";
-"Enter the new name of your folder :"
- = "Syötä kansiosi uusi nimi:";
+"Enter the new name of your folder"
+ = "Syötä kansiosi uusi nimi";
 "Do you really want to move this folder into the trash ?"
  = "Oletko varma että haluat siirtää tämän kansion roskakoriin?  ";
 "Operation failed" = "Toiminto epäonnistui";

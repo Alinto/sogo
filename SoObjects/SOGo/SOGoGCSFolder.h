@@ -77,6 +77,9 @@
 - (id) folderPropertyValueInCategory: (NSString *) theKey
 			     forUser: (SOGoUser *) theUser;
 
+- (BOOL) synchronize;
+- (void) setSynchronize: (BOOL) new;
+
 /* lower level fetches */
 - (void) deleteEntriesWithIds: (NSArray *) ids;
 
@@ -128,8 +131,8 @@
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
                           matchingSyncToken: (NSString *) syncToken
-                                   fromDate: (NSCalendarDate *) theStartDate;
-
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress;
 
 /* multiget helper */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext

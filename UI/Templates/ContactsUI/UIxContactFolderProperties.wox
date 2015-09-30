@@ -11,6 +11,8 @@
                const:popup="YES"
                title="title">
 
+  <form const:href="saveProperties" name="propertiesform"
+        id="propertiesform">
   <div class="tabsContainer" id="propertiesTabs">
     <ul>
       <li target="properties">
@@ -29,6 +31,20 @@
             <input type="text" name="addressBookName" id="addressBookName" class="textField" var:value="addressBookName" />
           </div>
         </fieldset>
+
+        <fieldset>
+            <legend><var:string label:value="Synchronization"/></legend>
+            
+            <div><label
+              ><input type="checkbox" const:class="checkBox"
+              name="synchronizeAddressBook"
+              id="synchronizeAddressBook"
+              var:checked="synchronizeAddressBook"
+              var:disabled="mustSynchronize"
+              /><var:string label:value="Synchronize"
+              /></label></div>
+
+          </fieldset>
       </div>
 
       <!-- Second Tab -->
@@ -60,4 +76,5 @@
       </div>
     </div>
   </div>
+  </form>
 </var:component>

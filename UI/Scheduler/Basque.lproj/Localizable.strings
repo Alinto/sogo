@@ -150,8 +150,8 @@
 
 "LIST" = "Zerrenda";
 "Print Settings" = "Ezarpenak inprimatu";
-"Title:" = "Izena:";
-"Layout:" = "Plana";
+"Title" = "Izena";
+"Layout" = "Plana";
 "What to Print" = "Inprimatzeko elementuak";
 "Options" = "Aukerak";
 "Tasks with no due date" = "Amaiera-datarik gabeko eginkizunak";
@@ -167,34 +167,34 @@
 "Appointment editor" = "Kontaktuen editorea";
 "Appointment proposal" = "Hitzordu proposamenak";
 "Appointment on" = "Hitzordua";
-"Start:" = "Hasi:";
-"End:" = "Amaitu:";
-"Due Date:" = "Epemuga:";
-"Title:" = "Izena:";
-"Calendar:" = "Egutegia";
+"Start" = "Hasi";
+"End" = "Amaitu";
+"Due Date" = "Epemuga";
+"Title" = "Izena";
+"Calendar" = "Egutegia";
 "Name" = "Izena";
 "Email" = "Emaila";
-"Status:" = "Egoera";
+"Status" = "Egoera";
 "% complete" = "% amaituta";
-"Location:" = "Kokapena";
-"Priority:" = "Lehentasuna";
+"Location" = "Kokapena";
+"Priority" = "Lehentasuna";
 "Privacy" = "Pribatasuna";
 "Cycle" = "Zikloa";
 "Cycle End" = "Zikloaren amaiera";
 "Categories" = "Kategoriak";
 "Classification" = "Sailkapena";
 "Duration" = "Epea";
-"Attendees:" = "Partaideak:";
+"Attendees" = "Partaideak";
 "Resources" = "Baliabideak";
-"Organizer:" = "Antolatzailea:";
-"Description:" = "Deskribapena:";
-"Document:" = "Dokumentua:";
-"Category:" = "Kategoria:";
-"Repeat:" = "Errepikatu:";
-"Reminder:" = "Oroigarria:";
-"General:" = "Orokorra:";
-"Reply:" = "Errepikatu:";
-"Created by:" = "Honek sortua:";
+"Organizer" = "Antolatzailea";
+"Description" = "Deskribapena";
+"Document" = "Dokumentua";
+"Category" = "Kategoria";
+"Repeat" = "Errepikatu";
+"Reminder" = "Oroigarria";
+"General" = "Orokorra";
+"Reply" = "Errepikatu";
+"Created by" = "Honek sortua";
 
 
 "Target:" = "Helburua:";
@@ -244,7 +244,7 @@
 "view_overdue" = "Epemuga gainditutako zeregina";
 "view_incomplete" = "Amaitu gabeko zeregina";
 
-"View:" = "Ikuskatu:";
+"View" = "Ikuskatu";
 "Title, category or location" = "Izenburua, sailkapena edo kokapena";
 "Entire content" = "Eduki osoa";
 
@@ -480,9 +480,9 @@ validate_endbeforestart    = "Ipini duzun amaiera-data hasiera-dataren aurretik 
 
 /* apt list */
 "Title" = "Izenburua";
-"Start" = "Hasi:";
-"End" = "Amaitu:";
-"Due Date" = "Epemuga:";
+"Start" = "Hasi";
+"End" = "Amaitu";
+"Due Date" = "Epemuga";
 "Location" = "Kokapena";
 
 "(Private Event)" = "(Ekitaldi pribatua)";
@@ -508,8 +508,8 @@ vtodo_class2 = "(Isilpeko zeregina)";
 "button_allOccurrences" = "Agerraldi guztiak";
 
 /* Properties dialog */
-"Name:" = "Izena:";
-"Color:" = "Kolorea:";
+"Name" = "Izena";
+"Color" = "Kolorea";
 
 "Include in free-busy" = "libre-lanpetua-n gehitu";
 
@@ -524,11 +524,11 @@ vtodo_class2 = "(Isilpeko zeregina)";
 "Notifications" = "Jakinarazpenak";
 "Receive a mail when I modify my calendar" = "Jaso mezua nere egutegia aldatzen dudanean";
 "Receive a mail when someone else modifies my calendar" = "Jaso mezua edonorkl nere egutegia aldatzen duenean";
-"When I modify my calendar, send a mail to:" = "Nere egutegia aldatzen dudanean, bidali mezua honi:";
+"When I modify my calendar, send a mail to" = "Nere egutegia aldatzen dudanean, bidali mezua honi";
 
 "Links to this Calendar" = "Egutegi honetarako estekak";
 "Authenticated User Access" = "Autentifikatutako erabiltzaileentzako atzipena";
-"CalDAV URL" = "CalDAV URL-a:";
+"CalDAV URL" = "CalDAV URL-a";
 "WebDAV ICS URL" = "WebDAV ICS URL-a";
 "WebDAV XML URL" = "WebDAV XML URL-a";
 

@@ -48,6 +48,9 @@
 @interface SOGoMailCatalanReply : SOGoMailReply
 @end
 
+@interface SOGoMailChineseTaiwanReply : SOGoMailReply
+@end
+
 @interface SOGoMailCzechReply : SOGoMailReply
 @end
 
@@ -100,6 +103,9 @@
 @end
 
 @interface SOGoMailSlovakReply : SOGoMailReply
+@end
+
+@interface SOGoMailSlovenianReply : SOGoMailReply
 @end
 
 @interface SOGoMailUkrainianReply : SOGoMailReply

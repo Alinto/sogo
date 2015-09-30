@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> 資料匣建立
+</var:if>
+
+<var:if condition="isBody">
+己建立 <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> 資料匣. 
+<!--
+您可以利用下面的網址由遠端進行操作 : 
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

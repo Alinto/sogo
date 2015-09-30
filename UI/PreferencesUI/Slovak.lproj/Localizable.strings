@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Zapnúť automatickú odpoveď";
-"Auto reply message :" = "Automatická odpoveď:";
-"Email addresses (separated by commas) :" = "Emailové adresy (oddelené čiarkami):";
+"Auto reply message" ="Automatická odpoveď";
+"Email addresses (separated by commas)" ="Emailové adresy (oddelené čiarkami)";
 "Add default email addresses" = "Pridať východziu emailovú adresu";
-"Days between responses :" = "Dni medzi odpoveďami:";
+"Days between responses" ="Dni medzi odpoveďami";
 "Do not send responses to mailing lists" = "Neposielať odpoveď emailovým skupinám";
 "Disable auto reply on" = "Vypnúť automatickú odpoveď";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "Prosím zvoľte adresu na ktorú checete preposielať Vaše správy";
 
 /* d & t */
-"Current Time Zone :" = "Aktuálna Časová Zóna:";
-"Short Date Format :" = "Krátky formát dátumu:";
-"Long Date Format :" = "Dlhý formát dátumu:";
-"Time Format :" = "Formát času:";
+"Current Time Zone" ="Aktuálna Časová Zóna";
+"Short Date Format" ="Krátky formát dátumu";
+"Long Date Format" ="Dlhý formát dátumu";
+"Time Format" ="Formát času";
 
 "default" = "Predvolený";
 
@@ -90,22 +90,22 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Týždeň začína v:";
-"Day start time :" = "Začiatok dňa:";
-"Day end time :" = "Koniec dňa:";
+"Week begins on" ="Týždeň začína v";
+"Day start time" ="Začiatok dňa";
+"Day end time" ="Koniec dňa";
 "Day start time must be prior to day end time." = "Začiatok dňa musí byť skôr ako koniec dňa.";
 "Show time as busy outside working hours" = "Mimo pracovných hodín ukáž čas ako obsadený";
-"First week of year :" = "Prvý týždeň roka:";
+"First week of year" ="Prvý týždeň roka";
 "Enable reminders for Calendar items" = "Zapni pripomienky pre položky Kalendára";
 "Play a sound when a reminder comes due" = "Prehraj zvuk keď začne pripomienka";
-"Default reminder :" = "Predvolená pripomienka:";
+"Default reminder" ="Predvolená pripomienka";
 
 "firstWeekOfYear_January1" = "Začína 1. Januárom";
 "firstWeekOfYear_First4DayWeek" = "Prvý 4-dňový týždeň";
 "firstWeekOfYear_FirstFullWeek" = "Prvý celý týžden";
 
 /* Default Calendar */
-"Default calendar :" = "Predvolený kalendár:";
+"Default calendar" ="Predvolený kalendár";
 "selectedCalendar" = "Zvolený kalendár";
 "personalCalendar" = "Osobný kalendár";
 "firstCalendar" = "Prvý zapnutý kalendár";
@@ -140,11 +140,11 @@
 "refreshview_every_30_minutes" = "Každých 30 minút";
 "refreshview_once_per_hour" = "Raz za hodinu";
 
-"Forward messages:" = "Preposielaj správy:";
+"Forward messages" = "Preposielaj správy";
 "messageforward_inline" = "Vrade";
 "messageforward_attached" = "Ako prílohu";
 
-"When replying to a message:" = "Pri odpovedaní na správu:";
+"When replying to a message" = "Pri odpovedaní na správu";
 "replyplacement_above" = "Odpoveď začína nad citáciou";
 "replyplacement_below" = "Odpoveď začína pod citáciou";
 "And place my signature" = "A vlož môj podpis";
@@ -164,17 +164,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Nový mailový účet";
 
-"Server Name:" = "Meno servera:";
-"Port:" = "Port:";
-"Encryption:" = "Šifrovanie:";
+"Server Name" = "Meno servera";
+"Port" = "Port";
+"Encryption" = "Šifrovanie";
 "None" = "Žiadne";
-"User Name:" = "Užívateľské meno:";
-"Password:" = "Heslo:";
+"User Name" = "Užívateľské meno";
+"Password" = "Heslo";
 
-"Full Name:" = "Celé meno:";
-"Email:" = "Email:";
-"Reply To Email:" = "Email pre odpoveď:";
-"Signature:" = "Podpis:";
+"Full Name" = "Celé meno";
+"Email" = "Email";
+"Reply To Email" = "Email pre odpoveď";
+"Signature" = "Podpis";
 "(Click to create)" = "(klikni pre vytvorenie)";
 
 "Signature" = "Podpis";
@@ -187,13 +187,13 @@
 "Additional Parameters" = "Dalšie parametre";
 
 /* password */
-"New password:" = "Nové heslo:";
-"Confirmation:" = "Potvrdenie:";
+"New password" = "Nové heslo";
+"Confirmation" = "Potvrdenie";
 "Change" = "Zmena";
 
 /* Event+task classifications */
-"Default events classification :" = "Predvolená klasifikácia udalostí";
-"Default tasks classification :" = "Predvolená klasifikácia úloh";
+"Default events classification" ="Predvolená klasifikácia udalostí";
+"Default tasks classification" ="Predvolená klasifikácia úloh";
 "PUBLIC_item" = "Verejný";
 "CONFIDENTIAL_item" = "Dôverný";
 "PRIVATE_item" = "Súkromný";
@@ -207,14 +207,15 @@
 "Contacts" = "Adresár";
 "Mail" = "Pošta";
 "Last" = "Naposledy použité";
-"Default Module :" = "Predvolený modul:";
-"SOGo Version :" = "Verzia SOGo:";
+"Default Module " = "Predvolený modul";
+"SOGo Version" ="Verzia SOGo";
 
-"Language :" = "Jazyk:";
+"Language" ="Jazyk";
 "choose" = "Vyber...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Netherlands";
@@ -231,6 +232,7 @@
 "Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -238,12 +240,12 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Keď dostanem požiadavku na potvrdenie o doručení";
+"When I receive a request for a return receipt" = "Keď dostanem požiadavku na potvrdenie o doručení";
 "Never send a return receipt" = "Nikdy neposielať potvrdenie o doručení";
 "Allow return receipts for some messages" = "Povoliť potvrdenie o doručení pre niektoré správy";
-"If I'm not in the To or Cc of the message:" = "Pokial nie som v Pre alebo Kópia políčku správy:";
-"If the sender is outside my domain:" = "Pokiaľ je odosielateľ mimo mojej domény:";
-"In all other cases:" = "Vo všetkých ostatných prípadoch:";
+"If I'm not in the To or Cc of the message" = "Pokial nie som v Pre alebo Kópia políčku správy";
+"If the sender is outside my domain" = "Pokiaľ je odosielateľ mimo mojej domény";
+"In all other cases" = "Vo všetkých ostatných prípadoch";
 
 "Never send" = "Nikdy neposielaj";
 "Always send" = "Vždy posielaj";
