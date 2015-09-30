@@ -108,7 +108,15 @@
 
         // Set expanded folders from user's settings
         Account.$Preferences.ready().then(function() {
-          var expandedFolders;
+          var expandedFolders,
+              _visit = function(mailboxes) {
+                _.forEach(mailboxes, function(o) {
+                  o.$expanded = (expandedFolders.indexOf('/' + o.id) >= 0);
+                  if (o.children && o.children.length > 0) {
+                    _visit(o.children);
+                  }
+                });
+              };
           if (Account.$Preferences.settings.Mail.ExpandedFolders) {
             if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
               // Backward compatibility support
@@ -116,9 +124,7 @@
             else
               expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
             if (expandedFolders.length > 0) {
-              _.forEach(_this.$mailboxes, function(mailbox) {
-                mailbox.$expanded = (expandedFolders.indexOf('/' + mailbox.id) >= 0);
-              });
+              _visit(_this.$mailboxes);
             }
           }
           _this.$flattenMailboxes({reload: true});
