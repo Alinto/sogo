@@ -42,12 +42,11 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, $sce, Settings, Gravatar, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Gravatar, Resource, Preferences) {
     angular.extend(Message, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $sce: $sce,
       $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser())
     });
@@ -279,10 +278,10 @@
                   });
                   _this.$hasUnsafeContent = false;
                 }
-                part.content = Message.$sce.trustAs('html', part.unsafeContent.innerHTML);
+                part.content = part.unsafeContent.innerHTML;
               }
               else {
-                part.content = Message.$sce.trustAs('html', part.safeContent);
+                part.content = part.safeContent;
               }
               parts.push(part);
             }
@@ -306,7 +305,7 @@
             }
             else {
               part.html = true;
-              part.content = Message.$sce.trustAs('html', part.safeContent);
+              part.content = part.safeContent;
               parts.push(part);
             }
           }

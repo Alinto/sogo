@@ -1,19 +1,22 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
-/**
- * @type {angular.Module}
- */
 (function () {
   'use strict';
 
   /**
+   * ensureTarget - A filter to set a blank target to all links.
+   * @memberof SOGo.Common
    * @ngInject
-   */
-  function ensureTarget() {
+   * @example:
+
+   <div ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
+  */
+  ensureTarget.$inject = ['$sce'];
+  function ensureTarget($sce) {
     return function(element) {
       var tree = angular.element('<div>' + element + '</div>');
       tree.find('a').attr('target', '_blank');
-      return angular.element('<div>').append(tree).html(); 
+      return $sce.trustAs('html', tree.html());
     };
   }
 
