@@ -45,6 +45,36 @@
 //  margin-bottom: ($mg/2);
 }
 
+md-sidenav md-checkbox {
+  &.sg-folder {
+    // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
+    .md-container:after {
+      color: rgba(0,0,0,0.54);
+      font-family: 'Material Icons';
+      font-size: 24px;
+      content: "\e2c7";
+      top: -4px;
+      left: -2px;
+      width: 1em;
+      height: 1em;
+    }
+    .md-icon {
+      border-width: 0;
+    }
+    &.md-checked {
+      .md-container:after {
+        content: "\e2c8";
+      }
+      .md-icon {
+        background-color: initial;
+        &:after {
+          border-style: none;
+        }
+      }
+    }
+  }
+}
+
 .msg-attachment-image {
   @media (min-width: $layout-breakpoint-sm) {
     flex: 0 0 100%;

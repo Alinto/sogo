@@ -301,7 +301,7 @@
       //if ($rootScope.currentFolder == folder)
       //  return 'folder_open';
 
-      return {name: folder.name, icon: 'folder'};
+      return {name: folder.name, icon: 'folder_open'};
     }
 
     function setFolderAs(folder, type) {

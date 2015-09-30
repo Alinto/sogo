@@ -253,7 +253,14 @@
                           ng-dblclick="app.editFolder(folder)"
                           ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
-              <md-icon ng-class="'sg-child-level-' + folder.level">{{app.metadataForFolder(folder).icon}}</md-icon>
+              <div ng-class="'sg-child-level-' + folder.level">
+                <md-icon ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
+                <md-checkbox class="sg-folder"
+                             label:aria-label="Expanded"
+                             ng-show="folder.children.length"
+                             ng-model="folder.$expanded"
+                             ng-change="account.$flattenMailboxes({ reload: true, saveState: true })"><!-- expanded --></md-checkbox>
+              </div>
               <p class="sg-item-name"
                  ng-show="app.editMode != folder.path">
                 {{app.metadataForFolder(folder).name}}

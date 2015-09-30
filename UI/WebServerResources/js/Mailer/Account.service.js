@@ -31,12 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Account constructor
    */
-  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Mailbox', 'Message', function($q, $timeout, $log, Settings, Resource, Mailbox, Message) {
+  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Preferences', 'Mailbox', 'Message', function($q, $timeout, $log, Settings, Resource, Preferences, Mailbox, Message) {
     angular.extend(Account, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
+      $Preferences: Preferences,
       $Mailbox: Mailbox,
       $Message: Message
     });
@@ -104,7 +105,25 @@
     else {
       return Account.$Mailbox.$find(this).then(function(data) {
         _this.$mailboxes = data;
-        _this.$flattenMailboxes({reload: true});
+
+        // Set expanded folders from user's settings
+        Account.$Preferences.ready().then(function() {
+          var expandedFolders;
+          if (Account.$Preferences.settings.Mail.ExpandedFolders) {
+            if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
+              // Backward compatibility support
+              expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
+            else
+              expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
+            if (expandedFolders.length > 0) {
+              _.forEach(_this.$mailboxes, function(mailbox) {
+                mailbox.$expanded = (expandedFolders.indexOf('/' + mailbox.id) >= 0);
+              });
+            }
+          }
+          _this.$flattenMailboxes({reload: true});
+        });
+
         return _this.$mailboxes;
       });
     }
@@ -120,10 +139,11 @@
   Account.prototype.$flattenMailboxes = function(options) {
     var _this = this,
         allMailboxes = [],
+        expandedMailboxes = [],
         _visit = function(mailboxes) {
           _.each(mailboxes, function(o) {
             allMailboxes.push(o);
-            if (o.children && o.children.length > 0) {
+            if (o.$expanded && o.children && o.children.length > 0) {
               _visit(o.children);
             }
           });
@@ -135,6 +155,15 @@
     else {
       _visit(this.$mailboxes);
       _this.$$flattenMailboxes = allMailboxes;
+      if (options && options.saveState) {
+        _.reduce(allMailboxes, function(expandedFolders, mailbox) {
+          if (mailbox.$expanded) {
+            expandedFolders.push('/' + mailbox.id);
+          }
+          return expandedFolders;
+        }, expandedMailboxes);
+        Account.$$resource.post(null, 'saveFoldersState', expandedMailboxes);
+      }
     }
 
     return allMailboxes;

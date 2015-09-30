@@ -23,6 +23,13 @@ $i: 1;
   $i: $i + 1;
 }
 
+[class^=sg-child-level] {
+  md-icon, md-checkbox {
+    margin-right: $bl * 2;
+    max-width: 24px;
+  }
+}
+
 // This hack is so BAD I am ashame putting it in the shame file
 // -----------------------------------------------------------
 // Folder tree's controler function are very intricate, the way
