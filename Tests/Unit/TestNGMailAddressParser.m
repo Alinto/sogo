@@ -35,31 +35,31 @@
 - (void) test_singleEmailParsing_value_
 {
   NSArray *rawAddresses = [NSArray arrayWithObjects: 
-        @"wolfgang@test.com",    // email alone
-        @"<wolfgang@test.com>",  // email between brackets
-        @"\"<wolfgang@test.com>\" <wolfgang@test.com>", // doubled
-//        @"\"wolfgang@inverse.ca\" <wolfgang@test.com>", // with and without br.
-        @"Àñinéoblabla <wolfgang@test.com>", // accented full name
-        @"Àñinéoblabla Bla Blé <wolfgang@test.com>", // accented and multiword
-        @"Wolfgang Sourdeau \"Bla Bla\" <wolfgang@test.com>", // partly quoted
-        @"Wolfgang Sourdeau <wolfgang@test.com>", // full name + email
-        @"Wolfgang, Sourdeau <wolfgang@test.com>", // full name with comma + email
-        @"wolf", // name only, no domain
+        @"johndown@test.com",    // email alone
+        @"<johndown@test.com>",  // email between brackets
+        @"\"<johndown@test.com>\" <johndown@test.com>", // doubled
+//        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
+        @"Àñinéoblabla <johndown@test.com>", // accented full name
+        @"Àñinéoblabla Bla Blé <johndown@test.com>", // accented and multiword
+        @"John Down \"Bla Bla\" <johndown@test.com>", // partly quoted
+        @"John Down <johndown@test.com>", // full name + email
+        @"John, Down <johndown@test.com>", // full name with comma + email
+        @"john", // name only, no domain
         nil ];
   NSArray *expectedAddresses = [NSArray arrayWithObjects:
-        @"wolfgang@test.com",    // email alone
-        @"wolfgang@test.com",    // email between brackets
-        @"wolfgang@test.com", // doubled
-//        @"\"wolfgang@inverse.ca\" <wolfgang@test.com>", // with and without br.
-        @"wolfgang@test.com", // accented full name
-        @"wolfgang@test.com", // accented
+        @"johndown@test.com",    // email alone
+        @"johndown@test.com",    // email between brackets
+        @"johndown@test.com", // doubled
+//        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
+        @"johndown@test.com", // accented full name
+        @"johndown@test.com", // accented
         // and multiword
 
         /* NOTE: the following are wrong but tolerated for now */
-        @"wolfgang@test.com", // partly quoted
-        @"wolfgang@test.com", // full name + email
-        @"wolfgang@test.com", // full name with comma + email
-        @"wolf", // name only, no domain
+        @"johndown@test.com", // partly quoted
+        @"johndown@test.com", // full name + email
+        @"johndown@test.com", // full name with comma + email
+        @"john", // name only, no domain
         nil ];
   NSString *rawAddress, *currentExp, *result, *error;
   NGMailAddressParser *parser;
@@ -72,12 +72,7 @@
       currentExp = [expectedAddresses objectAtIndex:count];
       parser = [NGMailAddressParser mailAddressParserWithString: rawAddress];
       parsedRecipient = [parser parse];
-      //NSLog(@"COUNT: %d", count);
-      //NSLog(@"\trawAddress: %@", rawAddress);
-      //NSLog(@"\tparsedRecipient: %@", parsedRecipient);
       result = [parsedRecipient address];
-      //NSLog(@"\tresult:     %@", result);
-      //NSLog(@"\tcurrentExp: %@", currentExp);
       error = [NSString
                 stringWithFormat: @"received '%@' instead of '%@' for '%@'",
                 result, currentExp, rawAddress];
@@ -88,21 +83,21 @@
 - (void) test_multipleEmailParsing_value_
 {
   NSArray *rawAddresses = [NSArray arrayWithObjects:
-        @"wolfgang@test.com",    // email alone
+        @"johndown@test.com",    // email alone
         @"test1a@test.com, test1b@here.now",
-        @"\"wolfgang@inverse.ca\" <wolfgang@test.com>", // with and without br.
-        @"Wolf One <test2a@test.com>, Wolf Two <test2b@here.now>", // TWO full names + email
-        @"Three, Wolf <test3a@test.com>, Four, Wolf <test3b@here.now>", // TWO full names with comma + email
-        @"luc, francis", // Two partial names
+        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
+        @"John One <test2a@test.com>, John Two <test2b@here.now>", // TWO full names + email
+        @"Three, John <test3a@test.com>, Four, John <test3b@here.now>", // TWO full names with comma + email
+        @"john, down", // Two partial names
         @"Three A <threea@test.com>, Three B <threeb@test.com>, Three C <threec@test.com>", // Three mails
         nil ];
   NSArray *expectedAddresses = [NSArray arrayWithObjects:
-        [NSArray arrayWithObjects: @"wolfgang@test.com", nil],    // email alone
+        [NSArray arrayWithObjects: @"johndown@test.com", nil],    // email alone
         [NSArray arrayWithObjects: @"test1a@test.com", @"test1b@here.now", nil],   // test1 a/b
-        [NSArray arrayWithObjects: @"wolfgang@test.com", nil], // with and without br.
+        [NSArray arrayWithObjects: @"johndown@test.com", nil], // with and without br.
         [NSArray arrayWithObjects: @"test2a@test.com",  @"test2b@here.now", nil],  // test2 a/b 
         [NSArray arrayWithObjects: @"test3a@test.com",  @"test3b@here.now", nil],  // test3 a/b 
-        [NSArray arrayWithObjects: @"luc",  @"francis", nil],  
+        [NSArray arrayWithObjects: @"john",  @"down", nil],  
         [NSArray arrayWithObjects: @"threea@test.com",  @"threeb@test.com", @"threec@test.com", nil],  // test a/b/c 
         nil ];
   NSString *currentRaw, *currentExp, *result, *error;
@@ -116,22 +111,14 @@
     {
       currentRaw = [rawAddresses objectAtIndex: count];
       expectedRecipients = [expectedAddresses objectAtIndex: count];
-      //NSLog(@"COUNT: %d", count);
-      //NSLog(@"\tcurrentRaw: %@", currentRaw);
-      //NSLog(@"\texpectedRecipients: %@", expectedRecipients);
       parser = [NGMailAddressParser mailAddressParserWithString: currentRaw];
       parsedRecipients = [parser parseAddressList];
-      //NSLog(@"\tparsedRecipients: %@ (count %d)", parsedRecipients, [parsedRecipients count]);
       int innercount;
       for (innercount = 0; innercount < [parsedRecipients count]; innercount++)
         {
-          //NSLog(@"\t\tcount: %d innercount:%d", count, innercount);
           parsedRecipient = [parsedRecipients objectAtIndex:innercount];
-          //NSLog(@"\t\tparsedRecipient: %@", parsedRecipient);
           result = [parsedRecipient address];
-          //NSLog(@"\t\tresult:     %@", result);
           currentExp = [expectedRecipients objectAtIndex:innercount];
-          //NSLog(@"\t\tcurrentExp: %@", result, currentExp);
           error = [NSString
                 stringWithFormat: @"received '%@' instead of '%@' for '%@'",
                 result, currentExp, currentRaw];

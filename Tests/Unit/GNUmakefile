@@ -28,8 +28,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m \
-    \
-    TestNGMailAddressParser.m
+	\
+	TestNGMailAddressParser.m
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
