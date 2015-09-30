@@ -391,14 +391,14 @@
 - (WOResponse *) saveFoldersStateAction
 {
   WORequest *request;
-  NSString *expandedFolders;
+  NSArray *expandedFolders;
   
   [self _setupContext];
   request = [context request];
-  expandedFolders = [request formValueForKey: @"expandedFolders"];
+  expandedFolders = [[request contentAsString] objectFromJSONString];
 
   [moduleSettings setObject: expandedFolders
-		  forKey: @"ExpandedFolders"];
+                     forKey: @"ExpandedFolders"];
 
   [us synchronize];
 
