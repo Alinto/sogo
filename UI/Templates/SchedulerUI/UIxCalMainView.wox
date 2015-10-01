@@ -369,7 +369,8 @@
       <div layout="row" class="md-flex">
       <div class="view-list" layout="column">
 
-        <md-toolbar ng-show="list.component.$selectedCount() == 0">
+        <md-toolbar class="md-whiteframe-z1"
+                    ng-show="list.component.$selectedCount() == 0">
           <!-- sort/filter mode (default) -->
           <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
@@ -567,7 +568,7 @@
         </md-toolbar>
 
         <!-- multiple-selection mode -->
-        <md-toolbar class="md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
+        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
           <div class="md-toolbar-tools">
             <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
               <md-icon>arrow_back</md-icon>

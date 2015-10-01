@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
 
   <div layout="column" class="layout-fill">
-    <md-toolbar>
+    <md-toolbar class="md-whiteframe-z1">
       <div class="md-toolbar-tools">
         <md-button class="sg-icon-button"
                    label:aria-label="Cancel"

@@ -185,7 +185,8 @@
       <div class="view-list" layout="column">
 
         <!-- single-selection toolbar -->
-        <md-toolbar ng-show="addressbook.selectedFolder.$selectedCount() == 0">
+        <md-toolbar class="md-whiteframe-z1"
+                    ng-show="addressbook.selectedFolder.$selectedCount() == 0">
           <!-- sort mode (default) -->
           <div class="md-toolbar-tools" ng-hide="addressbook.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
@@ -283,7 +284,7 @@
         </md-toolbar>
 
         <!-- multiple selection mode -->
-        <md-toolbar class="md-hue-1 sg-toolbar-secondary"
+        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary"
                     ng-show="addressbook.selectedFolder.$selectedCount() > 0">
           <div class="md-toolbar-tools">
             <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
@@ -413,7 +414,7 @@
       <div id="detailView" class="view-detail" layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            ui-view="card">
-        <md-toolbar class="hide-sm"><!-- empty toolbar --></md-toolbar>
+        <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
         <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
           <md-input-container layout-align="center center">
             <label class="sg-md-title"><var:string label:value="No contact selected"/></label>

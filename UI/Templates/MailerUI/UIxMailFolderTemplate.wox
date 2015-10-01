@@ -6,7 +6,8 @@
   <div class="view-list" layout="column">
 
     <!-- in virtual mailbox mode -->
-    <md-toolbar ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+    <md-toolbar class="md-whiteframe-z1"
+                ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
       <div class="md-toolbar-tools">
         <md-input-container>
           <label><var:string label:value="Search messages in"/></label>
@@ -59,7 +60,8 @@
       </div>
     </md-toolbar>
     <!-- single-selection toolbars -->
-    <md-toolbar ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+    <md-toolbar class="md-whiteframe-z1"
+                ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
@@ -262,7 +264,7 @@
   <div id="detailView" class="view-detail" layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
-    <md-toolbar class="hide-sm"><!-- empty toolbar --></md-toolbar>
+    <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
     <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
       <md-input-container layout-align="center center">
         <label class="sg-md-title"><var:string label:value="No message selected"/></label>
