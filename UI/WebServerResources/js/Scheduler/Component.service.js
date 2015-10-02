@@ -339,7 +339,6 @@
           Component.$views.push(viewData);
         });
 
-        Component.$log.debug(JSON.stringify(Component.$views, undefined, 2));
         deferred.resolve(Component.$views);
       });
     }, deferred.reject);
