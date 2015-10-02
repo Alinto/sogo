@@ -64,17 +64,19 @@
                 var:id="currentDayId"
                 >
               <div layout="column" layout-fill="true">
+                <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2">
                 <var:if condition="currentTableDay.isToday">
-                  <div class="sg-calendar-tile-header md-default-theme md-bg md-accent md-hue-2"><var:string value="dayHeaderNumber"/></div>
+                  <span class="md-default-theme md-bg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
                 </var:if>
                 <var:if condition="currentTableDay.isToday" const:negate="YES">
-                  <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2"><var:string value="dayHeaderNumber"/></div>
+                  <span class=""><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
                 </var:if>
+                </div>
                 <md-content>
-                <sg-calendar-month-day
-                    sg-blocks="calendar.views[0].blocks"
-                    sg-click="list.openEvent(event, component)"
-                    var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
+                  <sg-calendar-month-day
+                      sg-blocks="calendar.views[0].blocks"
+                      sg-click="list.openEvent(event, component)"
+                      var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
                 </md-content>
               </div>
             </md-grid-tile>

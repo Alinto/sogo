@@ -1,8 +1,6 @@
 /* UIxCalMonthView.m - this file is part of SOGo
  *
- * Copyright (C) 2006, 2007 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,27 +233,6 @@
   return currentWeek;
 }
 
-- (NSString *) labelForCurrentDayCell
-{
-  NSCalendarDate *lastDayOfMonth;
-  NSString *label, *monthOfYear;
-  int dayOfMonth;
-
-  dayOfMonth = [currentTableDay dayOfMonth];
-  lastDayOfMonth = [currentTableDay lastDayOfMonth];
-  if (dayOfMonth == 1
-      || [currentTableDay isDateOnSameDay: lastDayOfMonth])
-    {
-      monthOfYear
-        = [monthNames objectAtIndex: [currentTableDay monthOfYear]];
-      label = [NSString stringWithFormat: @"%d %@", dayOfMonth, monthOfYear];
-    }
-  else
-    label = [NSString stringWithFormat: @"%d", dayOfMonth];
-
-  return label;
-}
-
 - (NSString *) headerDayCellClasses
 {
   unsigned int dayOfWeek;
@@ -265,24 +242,19 @@
   return [NSString stringWithFormat: @"headerDay day%d", dayOfWeek];
 }
 
-- (NSString *) dayHeaderNumber
+- (NSString *) dayHeaderMonth
 {
-  NSString *nameOfMonth, *dayHeaderNumber;
+  NSString *nameOfMonth = nil;
   unsigned int dayOfMonth;
 
   dayOfMonth = [currentTableDay dayOfMonth];
   if (dayOfMonth == 1
       || [currentTableDay isDateOnSameDay: [currentTableDay lastDayOfMonth]])
     {
-      nameOfMonth
-        = [self localizedNameForMonthOfYear: [currentTableDay monthOfYear]];
-      dayHeaderNumber = [NSString stringWithFormat: @"%d %@", dayOfMonth,
-                                  nameOfMonth];
+      nameOfMonth = [self localizedNameForMonthOfYear: [currentTableDay monthOfYear]];
     }
-  else
-    dayHeaderNumber = [NSString stringWithFormat: @"%d", dayOfMonth];
 
-  return dayHeaderNumber;
+  return nameOfMonth;
 }
 
 - (NSString *) dayCellClasses

@@ -212,17 +212,25 @@ $scrollbar_width: 16px;
       &.dayOfAnotherMonth {
         background-color: rgb(250, 250, 250);
         //border-color: #ddd;
-        .sg-calendar-tile-header {
+        .sg-calendar-tile-header,
+        .sg-calendar-tile-header > span {
           color: rgb(221, 221, 221) !important; // Overwrite dynamic CSS theme
         }
       }
       &.dayOfToday {
         .sg-calendar-tile-header {
-          border-radius: 50%;
-          color: #fff;
-          display: inline;
-          font-weight: 600;
-          margin-right: auto;
+          > span {
+            border-radius: 50%;
+            color: #fff;
+            display: inline-block;
+            font-weight: 600;
+            margin-right: auto;
+            margin-left: 1px;
+            min-width: $sg-font-size-2 + 4px;
+            min-height: $sg-font-size-2 + 4px;
+            line-height: $sg-font-size-2 + 4px;
+            text-align: center;
+          }
         }
       }
     }
