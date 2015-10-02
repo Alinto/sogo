@@ -19,6 +19,7 @@
     vm.replyAllOccurrences = replyAllOccurrences;
     vm.deleteOccurrence = deleteOccurrence;
     vm.deleteAllOccurrences = deleteAllOccurrences;
+    vm.viewRawSource = viewRawSource;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
@@ -104,7 +105,41 @@
         $mdDialog.hide();
       });
     }
-}
+
+    function viewRawSource($event) {
+      Calendar.$$resource.post(vm.component.pid + '/' + vm.component.id, "raw").then(function(data) {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          template: [
+            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Raw Source') + '">',
+            '  <md-dialog-content>',
+            '    <pre>',
+            data,
+            '    </pre>',
+            '  </md-dialog-content>',
+            '  <div class="md-actions">',
+            '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
+            '  </div>',
+            '</md-dialog>'
+          ].join(''),
+          controller: ComponentRawSourceDialogController
+        });
+
+        /**
+         * @ngInject
+         */
+        ComponentRawSourceDialogController.$inject = ['scope', '$mdDialog'];
+        function ComponentRawSourceDialogController(scope, $mdDialog) {
+          scope.close = function() {
+            $mdDialog.hide();
+          };
+        }
+      });
+    }
+  }
 
   /**
    * @ngInject
@@ -120,6 +155,7 @@
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
     vm.showAttendeesEditor = angular.isDefined(vm.component.attendees);
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
+    //vm.searchText = null;
     vm.cardFilter = cardFilter;
     vm.addAttendee = addAttendee;
     vm.addAttachUrl = addAttachUrl;

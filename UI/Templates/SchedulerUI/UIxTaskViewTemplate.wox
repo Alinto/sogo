@@ -43,6 +43,19 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
+        <md-menu>
+          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button label:aria-label="View Raw Source"
+                         ng-click="editor.viewRawSource($event)">
+                <var:string label:value="View Raw Source"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
         <md-button class="md-icon-button" ng-click="editor.close()">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
