@@ -52,6 +52,13 @@
       params: []
     };
 
+    if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
+      // Redirect to first mailbox of first account if no mailbox is selected
+      account = vm.accounts[0];
+      mailbox = account.$mailboxes[0];
+      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
+    }
+
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;
       vm.search.mailbox = path;
@@ -68,9 +75,11 @@
 
     function toggleAdvancedSearch() {
       if (Mailbox.selectedFolder.$isLoading) {
+        // Stop search
         vm.virtualMailbox.stopSearch();
       }
       else {
+        // Start search
         var root, mailboxes = [],
             _visit = function(folders) {
               _.each(folders, function(o) {
@@ -111,25 +120,19 @@
     function addSearchParam(v) {
       vm.currentSearchParam = v;
       focus('advancedSearch');
+      return false;
     }
 
-    function newSearchParam(v) {
-      if (v.length && vm.currentSearchParam.length) {
-        var n = 0;
-        if (v.startsWith("!")) {
+    function newSearchParam(pattern) {
+      if (pattern.length && vm.currentSearchParam.length) {
+        var n = 0, searchParam = vm.currentSearchParam;
+        if (pattern.startsWith("!")) {
           n = 1;
-          v = v.substring(1).trim();
+          pattern = pattern.substring(1).trim();
         }
-        vm.search.params.push({searchBy:vm.currentSearchParam, searchInput: v, negative: n});
         vm.currentSearchParam = '';
+        return { searchBy: searchParam, searchInput: pattern, negative: n };
       }
-    }
-
-    if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
-      // Redirect to first mailbox of first account if no mailbox is selected
-      account = vm.accounts[0];
-      mailbox = account.$mailboxes[0];
-      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
     }
 
     function newFolder(parentFolder) {
@@ -297,9 +300,6 @@
         return {name: l('TrashFolderName'), icon: 'delete'};
       else if (folder.type == 'additional')
         return {name: folder.name, icon: 'folder_shared'};
-
-      //if ($rootScope.currentFolder == folder)
-      //  return 'folder_open';
 
       return {name: folder.name, icon: 'folder_open'};
     }
