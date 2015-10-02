@@ -740,6 +740,19 @@
   };
 
   /**
+   * @function deleteAttendee
+   * @memberof Component.prototype
+   * @desc Remove an attendee from the component
+   * @param {Object} attendee - an object literal defining an attendee
+   */
+  Component.prototype.deleteAttendee = function(attendee) {
+    var index = _.findIndex(this.attendees, function(currentAttendee) {
+      return currentAttendee.email == attendee.email;
+    });
+    this.attendees.splice(index, 1);
+  };
+
+  /**
    * @function canRemindAttendeesByEmail
    * @memberof Component.prototype
    * @desc Verify if the component's reminder must be send by email and if it has at least one attendee.

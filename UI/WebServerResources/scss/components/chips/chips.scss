@@ -12,6 +12,15 @@ md-chips {
       .md-chip-content {
         max-width: initial; // fix bug in ng-material
       }
+      // Custom 'chip remove' button used with chips in readonly mode
+      .sg-chip-remove {
+        &:hover {
+          cursor: pointer;
+        }
+        height: $chip-delete-icon-size;
+        width: $chip-delete-icon-size;
+        line-height: $chip-delete-icon-size;
+      }
     }
   }
 }

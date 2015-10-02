@@ -24,6 +24,11 @@
           <div class="sg-md-subhead"><div>{{currentAttendee.name}}</div></div>
           <div class="sg-md-body"><div>{{currentAttendee.email}}</div></div>
         </div>
+        <md-button class="md-icon-button"
+                   label:aria-label="Delete"
+                   ng-click="editor.component.deleteAttendee(currentAttendee)">
+          <md-icon>close</md-icon>
+        </md-button>
       </md-list-item>
     </md-list>
     <!-- freebusy -->
