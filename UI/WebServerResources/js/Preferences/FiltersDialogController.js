@@ -9,11 +9,19 @@
    */
   FiltersDialogController.$inject = ['$scope', '$mdDialog', 'filter', 'mailboxes', 'labels', 'sieveCapabilities'];
   function FiltersDialogController($scope, $mdDialog, filter, mailboxes, labels, sieveCapabilities) {
-    $scope.filter = filter;
-    $scope.mailboxes = mailboxes;
-    $scope.labels = labels;
+    var vm = this;
 
-    $scope.fieldLabels = {
+    vm.filter = filter;
+    vm.mailboxes = mailboxes;
+    vm.labels = labels;
+    vm.cancel = cancel;
+    vm.save = save;
+    vm.addMailFilterRule = addMailFilterRule;
+    vm.removeMailFilterRule = removeMailFilterRule;
+    vm.addMailFilterAction = addMailFilterAction;
+    vm.removeMailFilterAction = removeMailFilterAction;
+
+    vm.fieldLabels = {
       "subject": l("Subject"),
       "from": l("From"),
       "to": l("To"),
@@ -24,9 +32,9 @@
     };
 
     if (sieveCapabilities.indexOf("body") > -1)
-      $scope.fieldLabels.body = l("Body");
+      vm.fieldLabels.body = l("Body");
 
-    $scope.methodLabels = {
+    vm.methodLabels = {
       "discard": l("Discard the message"),
       "keep": l("Keep the message"),
       "redirect": l("Forward the message to:"),
@@ -35,20 +43,20 @@
     };
 
     if (sieveCapabilities.indexOf("reject") > -1)
-      $scope.methodLabels.reject = l("Send a reject message:");
+      vm.methodLabels.reject = l("Send a reject message:");
 
     if (sieveCapabilities.indexOf("fileinto") > -1)
-      $scope.methodLabels.fileinto = l("File the message in:");
+      vm.methodLabels.fileinto = l("File the message in:");
 
     if (sieveCapabilities.indexOf("imapflags") > -1 || sieveCapabilities.indexOf("imap4flags") > -1)
-      $scope.methodLabels.addflag = l("Flag the message with:");
+      vm.methodLabels.addflag = l("Flag the message with:");
 
-    $scope.numberOperatorLabels = {
+    vm.numberOperatorLabels = {
       "under": l("is under"),
       "over": l("is over")
     };
 
-    $scope.textOperatorLabels = {
+    vm.textOperatorLabels = {
       "is": l("is"),
       "is_not": l("is not"),
       "contains": l("contains"),
@@ -58,11 +66,11 @@
     };
 
     if (sieveCapabilities.indexOf("regex") > -1) {
-      $scope.textOperatorLabels.regex = l("matches regex");
-      $scope.textOperatorLabels.regex_not = l("does not match regex");
+      vm.textOperatorLabels.regex = l("matches regex");
+      vm.textOperatorLabels.regex_not = l("does not match regex");
     }
 
-    $scope.flagLabels = {
+    vm.flagLabels = {
       "seen": l("Seen"),
       "deleted": l("Deleted"),
       "answered": l("Answered"),
@@ -71,35 +79,35 @@
       "not_junk": l("Not Junk")
     };
     
-    $scope.cancel = function() {
+    function cancel() {
       $mdDialog.cancel();
-    };
+    }
     
-    $scope.save = function() {
+    function save(form) {
       $mdDialog.hide();
-    };
+    }
     
-    $scope.addMailFilterRule = function(event) {
-      if (!$scope.filter.rules)
-        $scope.filter.rules = [];
+    function addMailFilterRule(event) {
+      if (!vm.filter.rules)
+        vm.filter.rules = [];
 
-      $scope.filter.rules.push({});
-    };
+      vm.filter.rules.push({ field: 'subject', operator: 'contains' });
+    }
     
-    $scope.removeMailFilterRule = function(index) {
-      $scope.filter.rules.splice(index, 1);
-    };
+    function removeMailFilterRule(index) {
+      vm.filter.rules.splice(index, 1);
+    }
     
-    $scope.addMailFilterAction = function(event) {
-      if (!$scope.filter.actions)
-        $scope.filter.actions = [];
+    function addMailFilterAction(event) {
+      if (!vm.filter.actions)
+        vm.filter.actions = [];
 
-      $scope.filter.actions.push({});
-    };
+      vm.filter.actions.push({ method: 'discard' });
+    }
     
-    $scope.removeMailFilterAction = function(index) {
-      $scope.filter.actions.splice(index, 1);
-    };
+    function removeMailFilterAction(index) {
+      vm.filter.actions.splice(index, 1);
+    }
   }
 
   angular

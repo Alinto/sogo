@@ -318,6 +318,9 @@
 "matches regex" = "matches regex";
 "does not match regex" = "does not match regex";
 
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
+
 "Seen" = "Seen";
 "Deleted" = "Deleted";
 "Answered" = "Answered";

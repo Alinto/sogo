@@ -8,15 +8,15 @@
     xmlns:rsrc="OGo:url"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="100">
-  <form id="mainForm" var:href="ownPath">
+  <form name="mainForm" ng-submit="filterEditor.save(mainForm)">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
         <md-input-container>
           <label><var:string label:value="Filter name:"/></label>
-          <input class="md-title" type="text" ng-model="filter.name" required="required"/>
+          <input class="md-title" type="text" ng-model="filterEditor.filter.name" required="required"/>
         </md-input-container>
-        <md-button type="button" class="sg-icon-button " ng-click="cancel()">
+        <md-button type="button" class="sg-icon-button " ng-click="filterEditor.cancel()">
           <md-icon>close</md-icon>
         </md-button>
       </div>
@@ -29,9 +29,9 @@
       </script>
 
       <div layout="row" layout-align="start center">
-        <div><var:string label:value="For incoming messages that"/></div>
+        <var:string label:value="For incoming messages that"/>
         <md-input-container class="md-flex">
-          <md-select ng-model="filter.match" required="required">
+          <md-select ng-model="filterEditor.filter.match" required="required">
             <md-option const:value="all">
               <var:string label:value="match all of the following rules:"/>
             </md-option>
@@ -49,10 +49,10 @@
       <div layout="column">
         <div id="filterRules"><!-- empty -->
           <md-list>
-            <md-list-item ng-repeat="rule in filter.rules">
+            <md-list-item ng-repeat="rule in filterEditor.filter.rules">
               <md-input-container flex="25">
                 <md-select ng-model="rule.field">
-                  <md-option ng-value="key" ng-repeat="(key, value) in fieldLabels">{{ value }}</md-option>
+                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.fieldLabels">{{ value }}</md-option>
                 </md-select>
               </md-input-container>
 
@@ -62,7 +62,7 @@
 
               <md-input-container flex="25" ng-show="rule.field == 'size'">
                 <md-select ng-model="rule.operator">
-                  <md-option ng-value="key" ng-repeat="(key, value) in numberOperatorLabels">
+                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.numberOperatorLabels">
                     {{ value }}
                   </md-option>
                 </md-select>
@@ -70,18 +70,18 @@
 
               <md-input-container flex="25" ng-show="rule.field != 'size'">
                 <md-select ng-model="rule.operator">
-                  <md-option ng-value="key" ng-repeat="(key, value) in textOperatorLabels">
+                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.textOperatorLabels">
                     {{ value }}
                   </md-option>
                 </md-select>
               </md-input-container>
 
-              <md-input-container class="md-flex">
-                <input type="text" ng-model="rule.value"/>
+              <md-input-container class="md-flex" md-no-float="md-no-float">
+                <input type="text" label:placeholder="Value" ng-model="rule.value"/>
               </md-input-container>
 
               <md-button class="sg-icon-button" type="button"
-                         ng-click="removeMailFilterRule($index)">
+                         ng-click="filterEditor.removeMailFilterRule($index)">
                 <md-icon>remove_circle</md-icon>
               </md-button>
 
@@ -91,7 +91,7 @@
 
         <div layout="row" layout-align="end center">
           <md-button class="sg-icon-button" type="button"
-                     ng-click="addMailFilterRule($event)">
+                     ng-click="filterEditor.addMailFilterRule($event)">
             <md-icon>add_circle</md-icon>
           </md-button>
         </div>
@@ -104,10 +104,10 @@
 
         <md-list>
           <md-list-item layout="row" layout-align="space-between center"
-                        ng-repeat="action in filter.actions">
+                        ng-repeat="action in filterEditor.filter.actions">
             <md-input-container>
               <md-select ng-model="action.method">
-                <md-option ng-value="key" ng-repeat="(key, value) in methodLabels">{{ value }}</md-option>
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
               </md-select>
             </md-input-container>
 
@@ -130,7 +130,7 @@
             <!-- FILE INTO -->
             <md-input-container ng-show="action.method == 'fileinto'" >
               <md-select ng-model="action.argument">
-                <md-option ng-value="item.path" ng-repeat="item in mailboxes">
+                <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
                   {{ item.name }}
                 </md-option>
               </md-select>
@@ -153,7 +153,7 @@
             <!-- nada -->
 
             <md-button class="sg-icon-button" type="button"
-                       ng-click="removeMailFilterAction($index)">
+                       ng-click="filterEditor.removeMailFilterAction($index)">
               <md-icon>remove_circle</md-icon>
             </md-button>
 
@@ -162,14 +162,14 @@
 
         <div layout="row" layout-align="end center">
           <md-button class="sg-icon-button" type="button"
-                     ng-click="addMailFilterAction($event)">
+                     ng-click="filterEditor.addMailFilterAction($event)">
             <md-icon>add_circle</md-icon>
           </md-button>
         </div>
       </div>
     </md-dialog-content>
     <div class="md-actions">
-      <md-button type="button" ng-click="save()"><var:string label:value="Save"/></md-button>
+      <md-button type="submit"><var:string label:value="Save"/></md-button>
     </div>
   </form>
 </md-dialog>

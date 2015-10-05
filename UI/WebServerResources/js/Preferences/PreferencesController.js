@@ -125,14 +125,11 @@
     }
 
     function addMailFilter(ev) {
-      if (!vm.preferences.defaults.SOGoSieveFilters)
-        vm.preferences.defaults.SOGoSieveFilters = [];
-
-      vm.preferences.defaults.SOGoSieveFilters.push({});
-      var filter = _.last(vm.preferences.defaults.SOGoSieveFilters);
+      var filter = { match: 'all' };
       $mdDialog.show({
-        controller: 'FiltersDialogController',
         templateUrl: 'editFilter?filter=new',
+        controller: 'FiltersDialogController',
+        controllerAs: 'filterEditor',
         targetEvent: ev,
         locals: {
           filter: filter,
@@ -140,15 +137,20 @@
           labels: vm.preferences.defaults.SOGoMailLabelsColors,
           sieveCapabilities: window.sieveCapabilities
         }
+      }).then(function() {
+        if (!vm.preferences.defaults.SOGoSieveFilters)
+          vm.preferences.defaults.SOGoSieveFilters = [];
+        vm.preferences.defaults.SOGoSieveFilters.push(filter);
       });
     }
     
-    function editMailFilter(index) {
+    function editMailFilter(ev, index) {
       var filter = angular.copy(vm.preferences.defaults.SOGoSieveFilters[index]);
       
       $mdDialog.show({
-        controller: 'FiltersDialogController',
         templateUrl: 'editFilter?filter=' + index,
+        controller: 'FiltersDialogController',
+        controllerAs: 'filterEditor',
         targetEvent: null,
         locals: {
           filter: filter,

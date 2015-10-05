@@ -604,7 +604,7 @@
 	            <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
-                             ng-click="app.editMailFilter($index)"
+                             ng-click="app.editMailFilter($event, $index)"
                              layout="row" layout-align="end center"
                              label:aria-label="Edit Filter">
                     <md-icon>edit</md-icon>
