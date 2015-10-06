@@ -636,7 +636,7 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/foldersSearch?type=contact
  *
- * @apiParam {String} type Either 'calendar' or 'contact'
+ * @apiParam {String} type Either 'calendar' or 'contact'. If nothing is specifed, its both.
  *
  * @apiSuccess (Success 200) {Object[]} folders           List of matching folders
  * @apiSuccess (Success 200) {String} folders.name        Path of folder
@@ -648,27 +648,31 @@
 - (id <WOActionResults>) foldersSearchAction
 {
   NSString *folderType;
-  NSArray *folders;
+  NSMutableArray *folders;
   NSDictionary *message;
   id <WOActionResults> result;
   SOGoUserFolder *userFolder;
 
 
   folderType = [self queryParameterForKey: @"type"];
+  folders = [NSMutableArray array];
+  userFolder = [self clientObject];
+
   if ([folderType length])
     {
-      userFolder = [self clientObject];
-      folders = [userFolder foldersOfType: folderType
-                                   forUID: [userFolder ownerInContext: context]];
-      result = [self _foldersResponseForResults: folders];
+      [folders addObjectsFromArray: [userFolder foldersOfType: folderType
+                                                       forUID: [userFolder ownerInContext: context]]];
     }
   else
     {
-      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing type parameter"]
-                                          forKey: @"error"];
-      result = [self responseWithStatus: 400 andJSONRepresentation: message];
+      [folders addObjectsFromArray: [userFolder foldersOfType: @"calendar"
+                                                        forUID: [userFolder ownerInContext: context]]];
+      [folders addObjectsFromArray: [userFolder foldersOfType: @"contact"
+                                                       forUID: [userFolder ownerInContext: context]]];
     }
   
+  result = [self _foldersResponseForResults: folders];
+
   return result;
 }
 

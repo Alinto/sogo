@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.AdministrationUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.ContactsUI', 'SOGo.Authentication'])
+  angular.module('SOGo.AdministrationUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.Authentication', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.SchedulerUI'])
     .config(configure)
     .run(runBlock);
 
@@ -22,9 +22,6 @@
             controller: 'AdministrationController',
             controllerAs: 'app'
           }
-        },
-        resolve: {
-          stateAdministration: stateAdministration
         }
       })
       .state('administration.rights', {
@@ -34,18 +31,48 @@
             templateUrl: 'rights.html'
           }
         }
+      })
+      .state('administration.rights.edit', {
+        url: '/:userId/:folderId/edit',
+        views: {
+          acl: {
+            templateUrl: 'UIxAdministrationAclEditor', // UI/Templates/Administration/UIxAdministrationAclEditor.wox
+            controller: 'AdministrationAclController',
+            controllerAs: 'acl'
+          }
+        },
+        resolve: {
+          stateFolder: stateFolder
+        }
       });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/rights');
   }
+  
+  stateFolder.$inject = ['$stateParams', 'User', 'AddressBook', 'Calendar'];
+  function stateFolder($stateParams, User, AddressBook, Calendar) {
+    var user = _.find(User.$users, function(user) {
+      return user.uid == $stateParams.userId;
+    });
 
-  /**
-   * @ngInject
-   */
-  stateAdministration.$inject = ['Administration'];
-  function stateAdministration(Administration) {
-    return Administration;
+    var folder = _.find(user.$$folders, function(folder) {
+      return folder.name == $stateParams.folderId;
+    });
+
+    var o;
+    
+    if (folder.type == "Appointment") {
+      o = new Calendar({id: folder.name.split('/').pop(),
+                        owner: folder.owner,
+                        name: folder.displayName});
+    } else {
+      o = new AddressBook({id: folder.name.split('/').pop(),
+                           owner: folder.owner,
+                           name: folder.displayName});
+    }
+    
+    return o;
   }
 
   /**

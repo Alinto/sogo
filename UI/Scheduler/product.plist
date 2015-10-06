@@ -182,6 +182,10 @@
           actionClass = "UIxCalFolderActions";
           actionName  = "import";
         };
+        UIxCalUserRightsEditor = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxCalUserRightsEditor";
+        };
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxCalUserRightsEditor";

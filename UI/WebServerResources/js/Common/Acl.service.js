@@ -35,10 +35,11 @@
   /**
    * @function $users
    * @memberof Acl.prototype
+   * @param {Object} owner - the owner to use when fetching the ACL as it might not be the Settings.activeUser
    * @desc Fetch the list of users that have specific rights for the current folder.
    * @return a promise of an array of User objects
    */
-  Acl.prototype.$users = function() {
+  Acl.prototype.$users = function(owner) {
     var _this = this,
         deferred = Acl.$q.defer(),
         user;
@@ -46,14 +47,20 @@
       deferred.resolve(this.users);
     }
     else {
-      return Acl.$$resource.fetch(this.folderId, 'acls').then(function(response) {
+      var acls;
+      if (angular.isDefined(owner))
+        acls = Acl.$$resource.userResource(owner).fetch(this.folderId, 'acls');
+      else
+        acls = Acl.$$resource.fetch(this.folderId, 'acls');
+
+      return acls.then(function(response) {
         _this.users = [];
         //console.debug(JSON.stringify(users, undefined, 2));
         angular.forEach(response.users, function(data) {
           user = new Acl.$User(data);
           user.canSubscribeUser = user.isSubscribed;
           user.wasSubscribed = user.isSubscribed;
-          user.$rights = angular.bind(user, user.$acl, _this.folderId);
+          user.$rights = angular.bind(user, user.$acl, _this.folderId, owner);
           _this.users.push(user);
         });
         deferred.resolve(_this.users);
@@ -67,9 +74,10 @@
    * @function $addUser
    * @memberof Acl.prototype
    * @param {Object} user - a User object with minimal set of attributes (uid, isGroup, cn, c_email)
+   * @param {Object} owner - the owner to use when fetching the ACL as it might not be the Settings.activeUser
    * @see {@link User.$filter}
    */
-  Acl.prototype.$addUser = function(user) {
+  Acl.prototype.$addUser = function(user, owner) {
     var _this = this,
         deferred = Acl.$q.defer(),
         param = {uid: user.uid};
@@ -78,7 +86,14 @@
       deferred.resolve();
     }
     else {
-      Acl.$$resource.fetch(this.folderId, 'addUserInAcls', param).then(function() {
+      var acls;
+
+      if (angular.isDefined(owner))
+        acls = Acl.$$resource.userResource(owner).fetch(this.folderId, 'addUserInAcls', param);
+      else
+        acls = Acl.$$resource.fetch(this.folderId, 'addUserInAcls', param);
+
+      acls.then(function() {
         user.wasSubscribed = false;
         user.userClass = user.isGroup ? 'group-user' : 'normal-user';
         user.$rights = angular.bind(user, user.$acl, _this.folderId);
@@ -123,9 +138,10 @@
    * @function $saveUsersRights
    * @memberof Acl.prototype
    * @desc Save user rights that have changed and subscribe users that have been selected.
+   * @param {Object} owner - the owner to use when fetching the ACL as it might not be the Settings.activeUser
    * @return a promise that resolved only if the modifications and subscriptions were successful
    */
-  Acl.prototype.$saveUsersRights = function() {
+  Acl.prototype.$saveUsersRights = function(owner) {
     var _this = this,
         deferredSave = Acl.$q.defer(),
         deferredSubscribe = Acl.$q.defer(),
@@ -140,8 +156,14 @@
       }
     });
     if (users.length) {
-      Acl.$$resource.save(this.folderId, users, param)
-        .then(function() {
+      var acls;
+
+      if (angular.isDefined(owner))
+        acls = Acl.$$resource.userResource(owner).save(this.folderId, users, param);
+      else
+        acls = Acl.$$resource.save(this.folderId, users, param);
+
+      acls.then(function() {
           // Save was successful; copy rights to shadow rights
           angular.forEach(_this.users, function(user) {
             if (user.$rightsAreDirty()) {

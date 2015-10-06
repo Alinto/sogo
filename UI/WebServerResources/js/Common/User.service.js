@@ -128,9 +128,10 @@
    * @memberof User.prototype
    * @desc Fetch the user rights associated to a specific folder and populate the 'rights' attribute.
    * @param {string} the folder ID
+   * @param {Object} owner - the owner to use when fetching the ACL as it might not be the Settings.activeUser
    * @return a promise
    */
-  User.prototype.$acl = function(folderId) {
+  User.prototype.$acl = function(folderId, owner) {
     var _this = this,
         deferred = User.$q.defer(),
         param = {uid: this.uid};
@@ -138,7 +139,14 @@
       deferred.resolve(this.rights);
     }
     else {
-      User.$$resource.fetch(folderId, 'userRights', param).then(function(data) {
+      var rights;
+
+      if (angular.isDefined(owner))
+        rights = User.$$resource.userResource(owner).fetch(folderId, 'userRights', param);
+      else
+        rights = User.$$resource.fetch(folderId, 'userRights', param);
+
+      rights.then(function(data) {
         _this.rights = data;
         // Convert numbers (0|1) to boolean values
         //angular.forEach(_.keys(_this.rights), function(key) {
