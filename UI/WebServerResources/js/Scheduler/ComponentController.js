@@ -168,23 +168,23 @@
       hours: getHours()
     };
 
-    $scope.$watch('editor.component.startDate', function(newStartDate, oldStartDate) {
-      if (newStartDate) {
-        $timeout(function() {
-          vm.component.start = new Date(newStartDate.substring(0,10) + ' ' + newStartDate.substring(11,16));
-          vm.component.freebusy = vm.component.updateFreeBusyCoverage();
-          vm.attendeesEditor.days = getDays();
-        });
+    $scope.$watch('editor.component.start', function(newStartDate, oldStartDate) {
+      if (vm.component.type == 'appointment') {
+        vm.component.end = new Date(vm.component.start);
+        vm.component.end.addMinutes(vm.component.delta);
+        vm.component.freebusy = vm.component.updateFreeBusyCoverage();
+        vm.attendeesEditor.days = getDays();
       }
     });
 
-    $scope.$watch('editor.component.endDate', function(newEndDate, oldEndDate) {
-      if (newEndDate) {
-        $timeout(function() {
-          vm.component.end = new Date(newEndDate.substring(0,10) + ' ' + newEndDate.substring(11,16));
-          vm.component.freebusy = vm.component.updateFreeBusyCoverage();
-          vm.attendeesEditor.days = getDays();
-        });
+    $scope.$watch('editor.component.end', function(newEndDate, oldEndDate) {
+      if (newEndDate <= vm.component.start) {
+        vm.component.end = oldEndDate;
+      }
+      else {
+        vm.component.delta = Math.floor((Math.abs(vm.component.end-vm.component.start)/1000)/60);
+        vm.component.freebusy = vm.component.updateFreeBusyCoverage();
+        vm.attendeesEditor.days = getDays();
       }
     });
 

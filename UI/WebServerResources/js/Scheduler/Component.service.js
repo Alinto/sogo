@@ -401,6 +401,8 @@
         Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
     });
 
+    this.delta = 60;
+
     if (this.startDate)
       this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
     else if (this.type == 'appointment') {
@@ -413,7 +415,7 @@
     else if (this.type == 'appointment') {
       this.end = new Date();
       this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
-      this.end.addHours(1);
+      this.end.addMinutes(this.delta);
     }
 
     if (this.dueDate)
