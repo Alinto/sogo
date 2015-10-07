@@ -405,12 +405,14 @@
       this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
     else if (this.type == 'appointment') {
       this.start = new Date();
+      this.start.setMinutes(Math.round(this.start.getMinutes()/15)*15);
     }
 
     if (this.endDate)
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
     else if (this.type == 'appointment') {
       this.end = new Date();
+      this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
       this.end.addHours(1);
     }
 
@@ -806,6 +808,7 @@
    */
   Component.prototype.$addDueDate = function() {
     this.due = new Date();
+    this.due.setMinutes(Math.round(this.due.getMinutes()/15)*15);
     this.dueDate = this.due.toISOString();
   };
 
@@ -826,6 +829,7 @@
    */
   Component.prototype.$addStartDate = function() {
     this.start = new Date();
+    this.start.setMinutes(Math.round(this.start.getMinutes()/15)*15);
   };
 
   /**
