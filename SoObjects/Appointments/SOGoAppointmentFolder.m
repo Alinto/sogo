@@ -1008,7 +1008,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	{
           if ([dateRange containsDate: [component startDate]])
             {
-              // We must pass nill to :container here in order to avoid re-entrancy issues.
+              // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
             }
@@ -1025,15 +1025,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       // The recurrence id of the exception is outside the date range;
       // simply add the exception to the records array.
-      // We must pass nill to :container here in order to avoid re-entrancy issues.
+      // We must pass nil to :container here in order to avoid re-entrancy issues.
       newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
-      newRecordRange = [NGCalendarDateRange 
-			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
-			 endDate: [newRecord objectForKey: @"endDate"]];
-      if ([dateRange doesIntersectWithDateRange: newRecordRange])
+      if ([newRecord objectForKey: @"startDate"] && [newRecord objectForKey: @"endDate"]) {
+        newRecordRange = [NGCalendarDateRange
+                           calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
+                                                  endDate: [newRecord objectForKey: @"endDate"]];
+        if ([dateRange doesIntersectWithDateRange: newRecordRange])
           [ma addObject: newRecord];
-      else
+        else
+          newRecord = nil;
+      } else {
+        [self warnWithFormat: @"Recurrence %@ without dtstart or dtend. Ignoring", recurrenceId];
         newRecord = nil;
+      }
     }
 
   if (newRecord)
