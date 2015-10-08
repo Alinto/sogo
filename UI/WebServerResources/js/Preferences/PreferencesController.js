@@ -7,9 +7,9 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
-  function PreferencesController($state, $mdDialog, $mdToast, Dialog, User, Mailbox, statePreferences, Authentication) {
-    var vm = this;
+  PreferencesController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($state, $mdDialog, $mdToast, Dialog, User, Account, statePreferences, Authentication) {
+    var vm = this, account, mailboxes = [];
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
@@ -35,7 +35,18 @@
     vm.timeZonesList = window.timeZonesList;
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
-    vm.mailboxes = Mailbox.$find({ id: 0 });
+
+    // Fetch a flatten version of the mailboxes list of the main account (0)
+    // This list will be forwarded to the Sieve filter controller
+    account = new Account({ id: 0 });
+    account.$getMailboxes().then(function() {
+      var allMailboxes = account.$flattenMailboxes({all: true}),
+          index = -1,
+          length = allMailboxes.length;
+      while (++index < length) {
+        mailboxes.push(allMailboxes[index]);
+      }
+    });
 
     function go(module) {
       $state.go('preferences.' + module);
@@ -126,6 +137,7 @@
 
     function addMailFilter(ev) {
       var filter = { match: 'all' };
+
       $mdDialog.show({
         templateUrl: 'editFilter?filter=new',
         controller: 'FiltersDialogController',
@@ -133,9 +145,8 @@
         targetEvent: ev,
         locals: {
           filter: filter,
-          mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors,
-          sieveCapabilities: window.sieveCapabilities
+          mailboxes: mailboxes,
+          labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
         if (!vm.preferences.defaults.SOGoSieveFilters)
@@ -154,9 +165,8 @@
         targetEvent: null,
         locals: {
           filter: filter,
-          mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors,
-          sieveCapabilities: window.sieveCapabilities
+          mailboxes: mailboxes,
+          labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;

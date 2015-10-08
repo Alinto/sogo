@@ -131,7 +131,9 @@
             <md-input-container ng-show="action.method == 'fileinto'" >
               <md-select ng-model="action.argument">
                 <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
-                  {{ item.name }}
+                  <div ng-class="'sg-child-level-' + item.level">
+                    {{ item.name }}
+                  </div>
                 </md-option>
               </md-select>
             </md-input-container>

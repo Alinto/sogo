@@ -149,13 +149,13 @@
         _visit = function(mailboxes) {
           _.each(mailboxes, function(o) {
             allMailboxes.push(o);
-            if (o.$expanded && o.children && o.children.length > 0) {
+            if ((options && options.all || o.$expanded) && o.children && o.children.length > 0) {
               _visit(o.children);
             }
           });
         };
 
-    if (this.$$flattenMailboxes && !(options && options.reload)) {
+    if (this.$$flattenMailboxes && !(options && (options.reload || options.all))) {
       allMailboxes = this.$$flattenMailboxes;
     }
     else {

@@ -7,9 +7,9 @@
   /**
    * @ngInject
    */
-  FiltersDialogController.$inject = ['$scope', '$mdDialog', 'filter', 'mailboxes', 'labels', 'sieveCapabilities'];
-  function FiltersDialogController($scope, $mdDialog, filter, mailboxes, labels, sieveCapabilities) {
-    var vm = this;
+  FiltersDialogController.$inject = ['$scope', '$window', '$mdDialog', 'filter', 'mailboxes', 'labels'];
+  function FiltersDialogController($scope, $window, $mdDialog, filter, mailboxes, labels) {
+    var vm = this, sieveCapabilities = $window.sieveCapabilities;
 
     vm.filter = filter;
     vm.mailboxes = mailboxes;
