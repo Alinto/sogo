@@ -44,12 +44,11 @@
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search, excludedUsers) {
-    var param = {search: search};
-    var _this = this;
+    var _this = this, param = {search: search};
 
     if (!search) {
       // No query specified
-      User.$users = [];
+      User.$users.splice(0, User.$users.length);
       return User.$q.when(User.$users);
     }
     if (User.$query == search) {
@@ -61,17 +60,18 @@
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user,
           compareUids = function(data) {
-            return _this.uid == data.uid;
+            return this.uid == data.uid;
           };
       if (excludedUsers) {
         // Remove excluded users from response
-        results = _.filter(response.users, function(data) {
+        results = _.filter(response.users, function(user) {
           return !_.find(excludedUsers, compareUids, user);
         });
       }
       else {
         results = response.users;
       }
+
       // Remove users that no longer match the search query
       for (index = User.$users.length - 1; index >= 0; index--) {
         user = User.$users[index];
