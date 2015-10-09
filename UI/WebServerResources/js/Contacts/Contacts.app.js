@@ -130,10 +130,14 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
+  runBlock.$inject = ['$rootScope', '$log', '$state'];
+  function runBlock($rootScope, $log, $state) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $state.go('app');
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
   }
 
