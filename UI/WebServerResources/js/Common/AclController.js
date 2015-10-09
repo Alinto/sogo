@@ -13,6 +13,7 @@
     vm.users = usersWithACL; // ACL users
     vm.folder = folder;
     vm.selectedUser = null;
+    vm.selectedUid = null;
     vm.userToAdd = '';
     vm.searchText = '';
     vm.userFilter = userFilter;
@@ -68,10 +69,11 @@
     }
 
     function selectUser(user) {
-      if (vm.selectedUser == user) {
-        vm.selectedUser = null;
+      if (vm.selectedUid == user.uid) {
+        vm.selectedUid = null;
       }
       else {
+        vm.selectedUid = user.uid;
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }
