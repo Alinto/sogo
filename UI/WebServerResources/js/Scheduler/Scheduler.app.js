@@ -103,8 +103,8 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope', '$log', '$location', 'Preferences'];
-  function runBlock($rootScope, $log, $location, Preferences) {
+  runBlock.$inject = ['$rootScope', '$log', '$location', '$state', 'Preferences'];
+  function runBlock($rootScope, $log, $location, $state, Preferences) {
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       $log.error(error);
       $state.go('calendar');
