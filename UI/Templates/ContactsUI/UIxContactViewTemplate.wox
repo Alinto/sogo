@@ -29,7 +29,7 @@
           <md-icon>delete</md-icon>
         </md-button>
         <md-menu>
-          <md-button label:aria-label="More contact options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
@@ -62,8 +62,8 @@
             <!--list avatar-->
           </div>
           <div class="msg-header-content">
-            <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
-            <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
+            <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+            <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
             <md-chips ng-model="editor.card.categories"
                       class="sg-readonly" readonly="true">
               <md-chip-template>
