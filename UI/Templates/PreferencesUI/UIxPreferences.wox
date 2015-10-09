@@ -769,7 +769,7 @@
                   <var:string label:value="Do not send responses to mailing lists" />
                 </md-checkbox>
 
-                <div layout="row" layout-align="end center">
+                <div layout="row" layout-align="start center">
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                       ng-true-value="1"
