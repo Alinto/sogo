@@ -43,25 +43,33 @@
    * @param {object[]} excludedUsers - a list of User objects that must be excluded from the results
    * @return a promise of an array of matching User objects
    */
-  User.$filter = function(search, excludedUsers) {
+  User.$filter = function(search, excludedUsers, options) {
     var _this = this, param = {search: search};
 
-    if (!search) {
-      // No query specified
-      User.$users.splice(0, User.$users.length);
-      return User.$q.when(User.$users);
+    if (!options || !options.dry) {
+      if (!search) {
+        // No query specified
+        User.$users.splice(0, User.$users.length);
+        return User.$q.when(User.$users);
+      }
+      if (User.$query == search) {
+        // Query hasn't changed
+        return User.$q.when(User.$users);
+      }
+      User.$query = search;
     }
-    if (User.$query == search) {
-      // Query hasn't changed
-      return User.$q.when(User.$users);
-    }
-    User.$query = search;
 
     return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
-      var results, index, user,
+      var results, index, user, users,
           compareUids = function(data) {
             return this.uid == data.uid;
           };
+
+      if (options && options.dry)
+        users = [];
+      else
+        users = User.$users;
+
       if (excludedUsers) {
         // Remove excluded users from response
         results = _.filter(response.users, function(user) {
@@ -73,21 +81,21 @@
       }
 
       // Remove users that no longer match the search query
-      for (index = User.$users.length - 1; index >= 0; index--) {
-        user = User.$users[index];
+      for (index = users.length - 1; index >= 0; index--) {
+        user = users[index];
         if (!_.find(results, compareUids, user)) {
-          User.$users.splice(index, 1);
+          users.splice(index, 1);
         }
       }
       // Add new users matching the search query
       _.each(results, function(data, index) {
-        if (_.isUndefined(_.find(User.$users, compareUids, data))) {
+        if (_.isUndefined(_.find(users, compareUids, data))) {
           var user = new User(data);
-          User.$users.splice(index, 0, user);
+          users.splice(index, 0, user);
         }
       });
-      User.$log.debug(User.$users);
-      return User.$users;
+      User.$log.debug(users);
+      return users;
     });
   };
 

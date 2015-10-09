@@ -1,0 +1,20 @@
+/// AdministrationUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+[id="usersList"] > md-list {
+  // Since the users list doesn't use the virtual repeater, force the vertical scroll
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  overflow-y: auto;
+
+  .sg-folder .md-button {
+    // Buttons in list-item to view the ACLs of a user's folder
+    @extend .sg-no-wrap;
+    flex: 1 1 auto;
+    text-align: left;
+    text-transform: none;
+  }
+}

@@ -6,9 +6,30 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout="column" class="layout-fill">
-    <md-toolbar class="md-whiteframe-z1">
-      <div class="md-toolbar-tools">
+  <md-toolbar>
+    <div layout="row">
+      <sg-avatar-image class="md-tile-left"
+                       ng-show="acl.user.isGroup === 0"
+                       sg-email="::acl.user.c_email"
+                       size="40"><!-- avatar --></sg-avatar-image>
+      <div class="sg-list-avatar" ng-show="acl.user.isGroup"><!--list avatar--></div>
+      <div class="msg-header-content">
+        <h1 class="sg-md-display-2--thin">{{::acl.user.cn}}</h1>
+        <h6 class="sg-md-display-2-subheader">
+          <md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
+                               'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
+          {{::acl.folder.name}}
+        </h6>
+      </div>
+    </div>
+    <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
+               ng-click="acl.save()">
+      <md-icon>save</md-icon>
+    </md-button>
+  </md-toolbar>
+  <md-content class="layout-fill layout-padding">
+    <div layout="row">
+      <md-icon>search</md-icon>
       <md-autocomplete
           class="md-flex"
           md-input-name="addUser"
@@ -32,61 +53,55 @@
           </span>
         </md-item-template>
       </md-autocomplete>
-      <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
-                   ng-click="acl.save()">
-        <md-icon>save</md-icon>
-      </md-button>
-      </div>
-    </md-toolbar>
-    <md-content>
-      <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
-               ng-class="{ 'sg-collapsed': user.uid != acl.selectedUser.uid, 'sg-expanded': user.uid == acl.selectedUser.uid }">
-        <md-button ng-click="acl.selectUser(user)">
-          <div layout="row" layout-align="start center" class="md-flex">
-            <span class="card-picture" ng-switch="user.userClass">
-              <div ng-switch-when="normal-user">
-                <sg-avatar-image class="md-avatar"
-                                 sg-email="user.c_email"
-                                 size="40"><!-- avatar --></sg-avatar-image>
-              </div>
-              <div ng-switch-when="normal-group" class="md-avatar sg-avatar-list"><!-- normal-group --></div>
-              <div ng-switch-when="public-user" class="md-avatar sg-avatar-list"><!-- public-user --></div>
-            </span>
-            <div class="sg-tile-content">
-              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
-              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
+    </div>
+    <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
+             class="sg-collapsed"
+             ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
+      <md-button ng-click="acl.selectUser(user)">
+        <div layout="row" layout-align="start center" class="md-flex">
+          <span class="card-picture" ng-switch="user.userClass">
+            <div ng-switch-when="normal-user">
+              <sg-avatar-image class="md-avatar"
+                               sg-email="user.c_email"
+                               size="40"><!-- avatar --></sg-avatar-image>
             </div>
-            <md-button class="sg-icon-button" type="button"
-                       ng-click="acl.removeUser(user)"
-                       ng-hide="user.uid != acl.selectedUser.uid || user.$isSpecial()">
-              <md-icon>delete</md-icon>
-            </md-button>
+            <div ng-switch-when="normal-group" class="md-avatar sg-avatar-list"><!-- normal-group --></div>
+            <div ng-switch-when="public-user" class="md-avatar sg-avatar-list"><!-- public-user --></div>
+          </span>
+          <div class="sg-tile-content">
+            <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+            <div class="sg-md-body"><div>{{user.c_email}}</div></div>
           </div>
-        </md-button>
-        <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUser.uid">
-          <var:if condition="canSubscribeUsers">
-            <md-checkbox ng-model="user.isSubscribed"
-                         label:arial-label="Subscribe User"
-                         ng-disabled="user.wasSubscribed"
-                         ng-true-value="1"
-                         ng-false-value="0"
-                         ng-hide="user.$isSpecial()">
-              <var:string label:value="Subscribe User"/>
-            </md-checkbox>
-          </var:if>
-          <div ng-include="acl.getTemplate()"></div>
+          <md-button class="md-icon-button md-secondary" type="button"
+                     ng-click="acl.removeUser(user)"
+                     ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
+            <md-icon>delete</md-icon>
+          </md-button>
+        </div>
+      </md-button>
+      <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUid">
+        <var:if condition="canSubscribeUsers">
+          <md-checkbox ng-model="user.isSubscribed"
+                       label:arial-label="Subscribe User"
+                       ng-disabled="user.wasSubscribed"
+                       ng-true-value="1"
+                       ng-false-value="0"
+                       ng-hide="user.$isSpecial()">
+            <var:string label:value="Subscribe User"/>
+          </md-checkbox>
+        </var:if>
+        <div ng-include="acl.getTemplate()"></div>
 
-          <!-- <script type="text/ng-template" id="UIxContactsUserRightsEditor">
-            <var:component className="UIxContactsUserRightsEditor" />
-          </script>
+        <!-- <script type="text/ng-template" id="UIxContactsUserRightsEditor">
+             <var:component className="UIxContactsUserRightsEditor" />
+             </script>
 
-          <script type="text/ng-template" id="UIxCalUserRightsEditor">
-            <var:component className="UIxCalUserRightsEditor" />
-          </script> -->
- 
-        </md-card-content>
-      </md-card>
-    </md-content>
-  </div>
+<script type="text/ng-template" id="UIxCalUserRightsEditor">
+<var:component className="UIxCalUserRightsEditor" />
+</script> -->
+
+      </md-card-content>
+    </md-card>
+  </md-content>
 
 </container>

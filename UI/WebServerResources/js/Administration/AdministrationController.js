@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Administration'];
-  function AdministrationController($state, $mdDialog, $mdToast, Dialog, User, Administration) {
+  AdministrationController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'encodeUriFilter', 'User', 'Administration'];
+  function AdministrationController($state, $mdDialog, $mdToast, Dialog, encodeUriFilter, User, Administration) {
     var vm = this;
 
     vm.administration = Administration;
@@ -26,8 +26,7 @@
     }
 
     function filter(searchText) {
-      User.$filter(searchText).then(function() {
-      });
+      User.$filter(searchText);
     }
 
     function selectUser(i) {
@@ -43,7 +42,7 @@
     }
 
     function selectFolder(folder) {
-      $state.go('administration.rights.edit', {userId: vm.selectedUser.uid, folderId: folder.name});
+      $state.go('administration.rights.edit', {userId: vm.selectedUser.uid, folderId: encodeUriFilter(folder.name)});
     }
 
   }

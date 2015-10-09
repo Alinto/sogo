@@ -342,12 +342,24 @@ html p {
   font-weight: $sg-font-regular;
   white-space: nowrap;
 }
-.#{$md}-display-2--light {
+.#{$md}-display-2--thin {
   $lineHeight: $sg-line-height-7;
   font-size: $sg-font-size-7;
   line-height: $lineHeight;
-  font-weight: $sg-font-light;
+  font-weight: $sg-font-thin;
  }
+.#{$md}-display-2-subheader {
+  @extend .#{$md}-title;
+  margin-bottom: $mg;
+  font-weight: $sg-font-regular;
+  white-space: normal;
+}
+.#{$md}-display-2-subheader--thin {
+  @extend .#{$md}-title;
+  margin-bottom: $mg;
+  font-weight: $sg-font-thin;
+  white-space: normal;
+}
 .#{$md}-display-3 {
   $lineHeight : $sg-line-height-8;
   font-size: $sg-font-size-8;
@@ -361,12 +373,6 @@ html p {
   line-height: $lineHeight;
   font-weight: $sg-font-light;
   white-space: nowrap;
-}
-.#{$md}-display-2-subheader {
-  @extend .#{$md}-title;
-  margin-bottom: $mg;
-  font-weight: $sg-font-thin;
-  white-space: normal;
 }
 
 .sg-no-wrap {

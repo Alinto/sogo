@@ -1,15 +1,15 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
 <var:component xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="title"
-  const:jsFiles="Common.js, Administration.js,
-                 Administration.services.js, Preferences.services.js,
-                 Contacts.services.js, Scheduler.services.js">
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPageFrame"
+               title="title"
+               const:jsFiles="Common.js, Administration.js,
+                              Administration.services.js, Preferences.services.js,
+                              Contacts.services.js, Scheduler.services.js">
 
   <main class="view layout-fill" ui-view="administration" layout="row" ng-controller="navController">
     <!-- administration -->
@@ -39,77 +39,82 @@
   -->
   <script type="text/ng-template" id="rights.html">
     <!-- TOP RIGHT TOOLBAR -->
-      <md-toolbar layout="row" layout-align="space-between start" class="toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
-          <var:component className="UIxTopnavToolbarTemplate" />
-        </div>
-      </md-toolbar>
+    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
+      <var:component className="UIxTopnavToolbarTemplate" />
+    </md-toolbar>
 
-      <div layout="row" class="md-flex">
+    <div layout="row" class="md-flex">
 
-        <div class="view-list" layout="column">
-          <md-toolbar class="md-whiteframe-z1">
-            <!-- sort mode (default) -->
-            <div class="md-toolbar-tools sg-toolbar-secondary"
-                 sg-search="app.filter(searchText)">
-              <md-button class="sg-icon-button" label:aria-label="Search">
-                <md-icon>search</md-icon>
-              </md-button>
-              <md-input-container>
-                <input name="folderSearch" type="search" ng-minlength="3"/>
-              </md-input-container>
-            </div>
-          </md-toolbar>
+      <div class="view-list" layout="column">
+        <md-toolbar>
+          <!-- search toolbar -->
+          <div class="md-toolbar-tools sg-toolbar-secondary"
+               sg-search="app.filter(searchText)">
+            <md-icon>search</md-icon>
+            <md-input-container md-no-float="md-no-float">
+              <input name="folderSearch" type="search" ng-minlength="3"
+                     label:placeholder="Search Users"/>
+            </md-input-container>
+          </div>
+        </md-toolbar>
 
-          <md-content id="userslist" layout="column" class="md-flex">
-            <md-card ng-repeat="user in app.users"
-                     ng-class="{ 'sg-collapsed': user.uid !=
-                               app.selectedUser.uid,
-                               'sg-expanded': user.uid ==
-                               app.selectedUser.uid }">
-
-              <md-button ng-click="app.selectUser($index)">
-                <div layout="row" layout-align="start center" class="md-flex">
-                  <span class="card-picture" ng-switch="user.isGroup">
-                    <div ng-switch-when="0">
-                      <sg-avatar-image class="md-avatar"
-                                       sg-email="user.c_email"
-                                       size="40"><!-- avatar --></sg-avatar-image>
-                    </div>
-                    <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>
-                  </span>
-                  <div class="sg-tile-content">
-                    <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
-                    <div class="sg-md-body"><div>{{user.c_email}}</div></div>
-                  </div>
-                  <md-icon ng-class="{'md-rotate-180': user.uid == app.selectedUser.uid}">expand_more</md-icon>
+        <md-content id="usersList" layout="column" class="md-flex">
+          <md-list class="sg-section-list">
+            <div ng-repeat="user in app.users">
+              <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
+                                      'sg-expanded': user.uid == app.selectedUser.uid }"
+                            ng-click="app.selectUser($index)">
+                <sg-avatar-image class="md-avatar"
+                                 ng-if="::user.isGroup === 0"
+                                 sg-email="::user.c_email"
+                                 size="40">
+                  <!-- contact avatar -->
+                </sg-avatar-image>
+                <div class="sg-list-avatar"
+                     ng-show="::user.isGroup">
+                  <!-- list avatar -->
                 </div>
-              </md-button>
-              <md-card-content ng-show="user == app.selectedUser">
-                <div ng-show="user.$$folders.length == 0">
+                <div class="sg-tile-content">
+                  <div class="sg-md-subhead">
+                    <div>{{::user.cn}}</div>
+                  </div>
+                  <div class="sg-md-body">
+                    <div>{{::user.c_email}}</div>
+                  </div>
+                </div>
+                <md-button class="md-icon-button"><md-icon ng-class="{'md-rotate-180': user.uid == app.selectedUser.uid}">expand_more</md-icon></md-button>
+              </md-list-item>
+              <div ng-show="user == app.selectedUser">
+                <!-- folders list -->
+                <md-list-item ng-show="user.$$folders.length == 0">
                   <md-icon>warning</md-icon>
                   <var:string label:value="No resource"/>
-                </div>
-                <div layout="row" layout-align="start center" layout-fill="true"
-                     ng-repeat="folder in user.$$folders">
-                  <md-icon ng-class="{'icon-contacts': folder.type == 'Contact',
-                                     'icon-event': folder.type == 'Appointment'}"><!--icon--></md-icon>
-                  <md-button ng-click="app.selectFolder(folder)">{{folder.displayName}}</md-button>
-                </div>
-              </md-card-content>
-            </md-card>
-          </md-content>
-        </div>
-        
-        <div id="detailView" class="view-detail" layout="column" layout-align="start center" ui-view="acl">
-          <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-          <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
-            <md-input-container layout-align="center center">
-              <label class="sg-md-title"><var:string label:value="No resource selected"/></label>
-            </md-input-container>
-          </md-content>
-        </div>
+                </md-list-item>
+                <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders">
+                  <md-button class=""
+                             aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
+                             ng-click="app.selectFolder(folder)">
+                    <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
+                                         'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
+                    {{::folder.displayName}}
+                  </md-button>
+                </md-list-item>
+                <md-divider><!-- divider --></md-divider>
+              </div>
+            </div>
+          </md-list>
+        </md-content>
       </div>
+
+      <div id="detailView" class="view-detail" layout="column" layout-align="start center" ui-view="acl">
+        <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
+        <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
+          <md-input-container layout-align="center center">
+            <label class="sg-md-title"><var:string label:value="No resource selected"/></label>
+          </md-input-container>
+        </md-content>
+      </div>
+    </div>
   </script>
 
 </var:component>

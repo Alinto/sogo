@@ -7,13 +7,18 @@
   /**
    * @ngInject
    */
-  AdministrationAclController.$inject = ['$state', '$mdToast', 'stateFolder', 'User'];
-  function AdministrationAclController($state, $mdToast, stateFolder, User) {
+  AdministrationAclController.$inject = ['$animate', '$state', '$mdToast', 'stateUser', 'stateFolder', 'User'];
+  function AdministrationAclController($animate, $state, $mdToast, stateUser, stateFolder, User) {
     var vm = this;
 
+    vm.user = stateUser;
+    vm.folder = stateFolder;
+    vm.folderType = angular.isDefined(stateFolder.$cards)? 'AddressBook' : 'Calendar';
     vm.selectedUser = null;
-    vm.getTemplate = getTemplate;
+    vm.selectedUid = null;
     vm.selectUser = selectUser;
+    vm.removeUser = removeUser;
+    vm.getTemplate = getTemplate;
     vm.save = save;
 
     vm.userToAdd = '';
@@ -33,19 +38,26 @@
     }
 
     function selectUser(user) {
-      if (vm.selectedUser == user) {
-        vm.selectedUser = null;
+      if (vm.selectedUid == user.uid) {
+        vm.selectedUid = null;
       }
       else {
+        vm.selectedUid = user.uid;
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }
     }
 
     function userFilter($query) {
-      return User.$filter($query, stateFolder.$acl.users);
+      return User.$filter($query, stateFolder.$acl.users, { dry: true });
     }
-    
+
+    function removeUser(user) {
+      stateFolder.$acl.$removeUser(user.uid).catch(function(data, status) {
+        Dialog.alert(l('Warning'), l('An error occured please try again.'));
+      });
+    }
+
     function addUser(data) {
       if (data) {
         stateFolder.$acl.$addUser(data, stateFolder.owner).then(function() {
@@ -69,7 +81,6 @@
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
     }
-    
   }
 
   angular

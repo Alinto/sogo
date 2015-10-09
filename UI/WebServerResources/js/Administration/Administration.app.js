@@ -42,6 +42,7 @@
           }
         },
         resolve: {
+          stateUser: stateUser,
           stateFolder: stateFolder
         }
       });
@@ -49,39 +50,75 @@
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/rights');
   }
-  
-  stateFolder.$inject = ['$stateParams', 'User', 'AddressBook', 'Calendar'];
-  function stateFolder($stateParams, User, AddressBook, Calendar) {
-    var user = _.find(User.$users, function(user) {
+
+  /**
+   * @ngInject
+   */
+  stateUser.$inject = ['$q', '$stateParams', 'User'];
+  function stateUser($q, $stateParams, User) {
+    var user;
+
+    user = _.find(User.$users, function(user) {
       return user.uid == $stateParams.userId;
     });
 
-    var folder = _.find(user.$$folders, function(folder) {
-      return folder.name == $stateParams.folderId;
-    });
+    if (angular.isUndefined(user)) {
+      return User.$filter($stateParams.userId).then(function(users) {
+        user = _.find(User.$users, function(user) {
+          return user.uid == $stateParams.userId;
+        });
+        if (angular.isUndefined(user)) {
+          return $q.reject('User with ID ' + $stateParams.userId + ' not found');
+        }
+        else {
+          // Resolve folders
+          return user.$folders().then(function() {
+            return user;
+          });
+        }
+        return user;
+      });
+    }
 
-    var o;
+    return user;
+  }
+
+  /**
+   * @ngInject
+   */
+  stateFolder.$inject = ['$state', '$stateParams', 'decodeUriFilter', 'stateUser', 'AddressBook', 'Calendar'];
+  function stateFolder($state, $stateParams, decodeUriFilter, stateUser, AddressBook, Calendar) {
+    var folder, o,
+        folderId = decodeUriFilter($stateParams.folderId);
+
+    folder = _.find(stateUser.$$folders, function(folder) {
+      return folder.name == folderId;
+    });
     
     if (folder.type == "Appointment") {
-      o = new Calendar({id: folder.name.split('/').pop(),
-                        owner: folder.owner,
-                        name: folder.displayName});
+      o = new Calendar({ id: folder.name.split('/').pop(),
+                         owner: folder.owner,
+                         name: folder.displayName });
     } else {
-      o = new AddressBook({id: folder.name.split('/').pop(),
-                           owner: folder.owner,
-                           name: folder.displayName});
+      o = new AddressBook({ id: folder.name.split('/').pop(),
+                            owner: folder.owner,
+                            name: folder.displayName });
     }
-    
+
     return o;
   }
 
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
+  runBlock.$inject = ['$log', '$rootScope', '$state'];
+  function runBlock($log, $rootScope, $state) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $state.go('administration.rights');
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
   }
 
