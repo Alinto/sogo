@@ -64,7 +64,7 @@
     angular.module('SOGo.ContactsUI');
   }
   catch(e) {
-    angular.module('SOGo.ContactsUI', ['SOGo.Common']);
+    angular.module('SOGo.ContactsUI', ['SOGo.Common', 'SOGo.PreferencesUI']);
   }
   angular.module('SOGo.ContactsUI')
     .factory('AddressBook', AddressBook.$factory);
