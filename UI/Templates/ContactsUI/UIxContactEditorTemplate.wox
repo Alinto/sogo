@@ -29,8 +29,8 @@
     <md-content class="md-flex md-static">
       <div layout="column" class="viewer md-padding">
         <hgroup class="header">
-          <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
+          <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+          <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
         </hgroup>
         
         <!-- contact editor -->
