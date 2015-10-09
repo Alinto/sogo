@@ -595,12 +595,12 @@
  * @apiSuccess (Success 200) {Boolean} alarm.attendees        Alert attendees by email if true and action is email
  * @apiSuccess (Success 200) {Boolean} alarm.organizer        Alert organizer by email if true and action is email
  *
- * @apiSuccess {_} ... _From [iCalEvent+SOGo attributes]_
+ * @apiSuccess {_} ... _From [iCalEvent+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
  *
- * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributes]_
+ * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  * @apiSuccess (Success 200) {String} component               "vevent"
@@ -626,7 +626,7 @@
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
  *
- * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributes]_
+ * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
