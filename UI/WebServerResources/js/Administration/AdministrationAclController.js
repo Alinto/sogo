@@ -19,6 +19,7 @@
     vm.selectUser = selectUser;
     vm.removeUser = removeUser;
     vm.getTemplate = getTemplate;
+    vm.close = close;
     vm.save = save;
 
     vm.userToAdd = '';
@@ -67,6 +68,13 @@
           Dialog.alert(l('Warning'), error);
         });
       }
+    }
+
+    function close() {
+      $state.go('administration.rights').then(function() {
+        delete vm.user.selectedFolder;
+        vm.user = null;
+      });
     }
 
     function save() {

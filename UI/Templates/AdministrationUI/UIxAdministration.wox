@@ -62,7 +62,7 @@
           <md-list class="sg-section-list">
             <div ng-repeat="user in app.users">
               <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
-                                      'sg-expanded': user.uid == app.selectedUser.uid }"
+                                        'sg-expanded': user.uid == app.selectedUser.uid }"
                             ng-click="app.selectUser($index)">
                 <sg-avatar-image class="md-avatar"
                                  ng-if="::user.isGroup === 0"
@@ -106,7 +106,9 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail" layout="column" layout-align="start center" ui-view="acl">
+      <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+           ng-class="{ 'sg-close': !app.selectedUser.selectedFolder }"
+           ui-view="acl">
         <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
         <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
           <md-input-container layout-align="center center">

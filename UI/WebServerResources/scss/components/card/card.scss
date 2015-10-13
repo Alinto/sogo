@@ -18,6 +18,7 @@ md-card {
     }
     .md-icon-button {
       transition: $swift-linear;
+      transition-duration: 0.2s;
       transition-delay: 0.2s;
       opacity: 1;
       &.ng-hide {
@@ -49,7 +50,7 @@ md-card {
   &.sg-expanded {
     @extend .md-whiteframe-z2;
     margin: 0 0 1px 0;
-    &-remove {
+    &-remove { // ngAnimate with ngClass
       transition-delay: 0.5s;
     }
   }

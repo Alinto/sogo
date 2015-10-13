@@ -105,6 +105,8 @@
                             name: folder.displayName });
     }
 
+    stateUser.selectedFolder = o.id;
+
     return o;
   }
 
