@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
@@ -2947,7 +2948,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           NSString *value;
           
-          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                                        locale: [[[NSLocale alloc] initWithLocaleIdentifier: @"en_US"] autorelease]];
           s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
         } 
       else
