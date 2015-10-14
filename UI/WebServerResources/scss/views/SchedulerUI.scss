@@ -163,7 +163,7 @@ $scrollbar_width: 16px;
   .sg-event {
     font-size: $sg-font-size-2;
     &, md-icon {
-      color: #fff !important; // Overwrite dynamic CSS theme
+      //color: #fff !important; // Overwrite dynamic CSS theme
     }
     .material-icons {
       font-size: $sg-font-size-2;
