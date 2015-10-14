@@ -85,7 +85,8 @@
           <label class="pseudo-input-label"><var:string label:value="From"/></label>
         </div>
         <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-          <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
+          <md-datepicker ng-model="editor.component.start"
+                         label:md-placeholder="From"> <!-- date picker--></md-datepicker>
           <sg-timepicker ng-model="editor.component.start"><!-- time picker --></sg-timepicker>
           <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
             <md-icon>remove_circle</md-icon>
@@ -104,7 +105,8 @@
           <label class="pseudo-input-label"><var:string label:value="Due"/></label>
         </div>
         <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-          <md-datepicker ng-model="editor.component.due"> <!-- date picker--></md-datepicker>
+          <md-datepicker ng-model="editor.component.due"
+                         label:md-placeholder="Due"> <!-- date picker--></md-datepicker>
           <sg-timepicker ng-model="editor.component.due"><!-- time picker --></sg-timepicker>
           <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
             <md-icon>remove_circle</md-icon>

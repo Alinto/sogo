@@ -102,7 +102,8 @@
             <label class="pseudo-input-label"><var:string label:value="From"/></label>
           </div>
           <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-            <md-datepicker ng-model="editor.component.start"> <!-- date picker--></md-datepicker>
+            <md-datepicker ng-model="editor.component.start"
+                           label:md-placeholder="From"> <!-- date picker--></md-datepicker>
             <sg-timepicker ng-model="editor.component.start"
                            ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
           </div>
@@ -112,7 +113,8 @@
             <label class="pseudo-input-label"><var:string label:value="To"/></label>
           </div>
           <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-            <md-datepicker ng-model="editor.component.end"> <!-- date picker--></md-datepicker>
+            <md-datepicker ng-model="editor.component.end"
+                           label:md-placeholder="To"> <!-- date picker--></md-datepicker>
             <sg-timepicker ng-model="editor.component.end"
                            ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
           </div>
