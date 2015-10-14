@@ -2106,7 +2106,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 // * 5 FETCH (UID 559 MODSEQ (17))
 // * 6 FETCH (UID 560 MODSEQ (18))
 // * 7 FETCH (UID 561 MODSEQ (19))
-
+//
 //
 // fetchUIDsOfVanishedItems ..
 //

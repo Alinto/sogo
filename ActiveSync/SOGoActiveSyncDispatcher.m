@@ -143,8 +143,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SOGoActiveSyncDispatcher
 
-static BOOL debugOn = NO;
-
 - (id) init
 {
   [super init];
@@ -171,16 +169,16 @@ static BOOL debugOn = NO;
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
   
-  [[o properties] removeAllObjects];
-  [[o properties] addEntriesFromDictionary: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"FolderSyncKey"]];
+  [[o properties] setObject: theSyncKey
+                     forKey: @"FolderSyncKey"];
   [o save];
 }
 
-- (NSMutableDictionary *) _globalMetadataForDevice
+- (NSMutableDictionary *) globalMetadataForDevice
 {
   SOGoCacheGCSObject *o;
 
-  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil  useCache: NO];
   [o setObjectType: ActiveSyncGlobalCacheObject];
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
@@ -204,7 +202,7 @@ static BOOL debugOn = NO;
   if (theFilter)
     {
       o = [SOGoCacheGCSObject objectWithName: [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theCollectionId] inContainer: nil];
-      [o setObjectType: ActiveSyncGlobalCacheObject];
+      [o setObjectType: ActiveSyncFolderCacheObject];
       [o setTableUrl: [self folderTableURL]];
       [o reloadIfNeeded];
 
@@ -716,7 +714,7 @@ static BOOL debugOn = NO;
   BOOL first_sync;
 
   sm = [SoSecurityManager sharedSecurityManager];
-  metadata = [self _globalMetadataForDevice];
+  metadata = [self globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
 
@@ -2033,13 +2031,13 @@ static BOOL debugOn = NO;
       
       if ([foldersWithChanges count])
         {
-          [self logWithFormat: @"Change detected, we push the content."];
+          [self logWithFormat: @"Change detected using Ping, we let the EAS client know to send a Sync."];
           status = 2;
           break;
         }
       else
         {
-          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval];
           sleep(internalInterval);
         }
     }

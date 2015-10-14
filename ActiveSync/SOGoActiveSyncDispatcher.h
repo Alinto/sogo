@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2014, Inverse inc.
+Copyright (c) 2014-2015, Inverse inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 
 @class NSException;
+@class NSMutableDictionary;
 @class NSURL;
 
 @interface SOGoActiveSyncDispatcher : NSObject
@@ -39,7 +40,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSURL *folderTableURL;
   NSDictionary *imapFolderGUIDS;
   id context;
+  BOOL debugOn;
 }
+
+- (NSMutableDictionary *) globalMetadataForDevice;
 
 - (id) collectionFromId: (NSString *) theCollectionId
                    type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
