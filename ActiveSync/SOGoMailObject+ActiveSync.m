@@ -1071,9 +1071,15 @@ struct GlobalObjectId {
   if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
       [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
     {
+      id value;
       NSString *reference;
 
-      reference = [[[[self mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] objectAtIndex: 0];
+      value = [[self mailHeaders] objectForKey: @"references"];
+
+      if ([value isKindOfClass: [NSArray class]])
+         reference = [[[value objectAtIndex: 0] componentsSeparatedByString: @" "] objectAtIndex: 0];
+      else
+         reference = [[value componentsSeparatedByString: @" "] objectAtIndex: 0];
 
       if ([reference length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
