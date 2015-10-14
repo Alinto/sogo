@@ -128,27 +128,6 @@ String.prototype.formatTime = function(hours, minutes) {
     return newString;
 };
 
-Date.prototype.daysUpTo = function(otherDate) {
-    var days = [];
-
-    var day1 = this.getTime();
-    var day2 = otherDate.getTime();
-    if (day1 > day2) {
-        var tmp = day1;
-        day1 = day2;
-        day2 = tmp;
-    }
-
-    var nbrDays = Math.round((day2 - day1) / 86400000) + 1;
-    for (var i = 0; i < nbrDays; i++) {
-        var newDate = new Date();
-        newDate.setTime(day1 + (i * 86400000));
-        days.push(newDate);
-    }
-
-    return days;
-};
-
 String.prototype.isValidEmail = function() {
   var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
   return emailRE.test(this);
@@ -182,6 +161,27 @@ String.prototype.timeInterval = function () {
   }
 
   return interval;
+};
+
+Date.prototype.daysUpTo = function(otherDate) {
+    var days = [];
+
+    var day1 = this.getTime();
+    var day2 = otherDate.getTime();
+    if (day1 > day2) {
+        var tmp = day1;
+        day1 = day2;
+        day2 = tmp;
+    }
+
+    var nbrDays = Math.round((day2 - day1) / 86400000) + 1;
+    for (var i = 0; i < nbrDays; i++) {
+        var newDate = new Date();
+        newDate.setTime(day1 + (i * 86400000));
+        days.push(newDate);
+    }
+
+    return days;
 };
 
 Date.prototype.stringWithSeparator = function(separator) {
