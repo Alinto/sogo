@@ -19,7 +19,7 @@
               <div class="sg-md-display-2 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
             </var:if>
             <var:if condition="currentTableDay.isToday" const:negate="YES">
-              <div class="sg-md-display-2 md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+              <div class="sg-md-display-2--thin md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
             </var:if>
             <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
           </var:if>
