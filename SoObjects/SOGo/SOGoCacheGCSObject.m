@@ -104,10 +104,21 @@ static EOAttribute *textColumn = nil;
 
 + (id) objectWithName: (NSString *) key  inContainer: (id) theContainer
 {
+  return [self objectWithName: key
+                  inContainer: theContainer
+                     useCache: YES];
+}
+
++ (id) objectWithName: (NSString *) key  inContainer: (id) theContainer  useCache: (BOOL) useCache
+{
   SOGoCache *cache;
   id o;
 
   cache = [SOGoCache sharedCache];
+
+  if (!useCache)
+    [cache unregisterObjectWithName: key inContainer: theContainer];
+
   o = [cache objectNamed: key  inContainer: theContainer];
 
   if (!o)

@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @interface SOGoSyncCacheObject : NSObject
 {
+  @public
   id _uid;
   id _sequence;
 }

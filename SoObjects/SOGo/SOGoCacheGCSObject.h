@@ -56,6 +56,8 @@ typedef enum {
 - (void) reloadIfNeeded;
 - (void) save;
 
++ (id) objectWithName: (NSString *) key  inContainer: (id) theContainer  useCache: (BOOL) useCache;
+
 /* accessors */
 - (NSMutableString *) path; /* full filename */
 

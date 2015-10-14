@@ -112,6 +112,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SOGoActiveSyncDispatcher (Sync)
 
+- (void) _setOrUnsetSyncInProgress: (BOOL) set
+                        invalidate: (BOOL) invalidate
+{
+  SOGoCacheGCSObject *o;
+
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil  useCache: NO];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+
+  if (set)
+    if (invalidate)
+      [[o properties] setObject: [NSCalendarDate date] forKey: @"InvalidateSyncInProgress"];
+    else
+      [[o properties] setObject: [NSCalendarDate date] forKey: @"SyncInProgress"];
+  else
+    {
+      [[o properties] removeObjectForKey: @"SyncInProgress"];
+      [[o properties] removeObjectForKey: @"InvalidateSyncInProgress"];
+    }
+
+  [o save];
+}
+
 - (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata
                      forKey: (NSString *) theFolderKey
 {
@@ -405,7 +429,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [sogoObject saveComponent: o];
 
                 [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
-
               }
               break;
             case ActiveSyncEventFolder:
@@ -416,14 +439,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [sogoObject saveComponent: o];
 
                 [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
-
               }
               break;
             case ActiveSyncMailFolder:
             default:
               {
                 NSDictionary *result;
-                NSString *modseq;
+                NSNumber *modseq;
 
                 [sogoObject takeActiveSyncValues: allChanges  inContext: context];
 
@@ -431,11 +453,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
 
                 if (modseq)
-                  [syncCache setObject: modseq forKey: serverId];
+                  [syncCache setObject: [modseq stringValue] forKey: serverId];
               }
             }
 
-          [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+          [self _setFolderMetadata: folderMetadata  forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
 
           [theBuffer appendString: @"<Change>"];
@@ -578,36 +600,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 withFilterType: (NSCalendarDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
                  lastServerKey: (NSString **) theLastServerKey
-
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
   NSString *davCollectionTagToStore;
   NSAutoreleasePool *pool;
   NSMutableString *s;
   
-  BOOL more_available;
+  BOOL cleanup_needed, more_available;
   int i, max;
 
   s = [NSMutableString string];
-
-  more_available = NO;
+  cleanup_needed = more_available = NO;
 
   folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
-  // If this is a new sync operation, DateCache and SyncCache needs to be deleted
+  // If this is a new sync operation, DateCache and SyncCache need to be deleted
   if ([theSyncKey isEqualToString: @"-1"])
     {
       [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
       [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
+    }
+  else if ([folderMetadata objectForKey: @"SyncKey"] && !([theSyncKey isEqualToString: [folderMetadata objectForKey: @"SyncKey"]]))
+    {
+      // The syncKey received from the client doesn't match the syncKey we have in cache - client might have missed a response.
+      // We need to cleanup this mess.
+      [self logWithFormat: @"Cache cleanup needed for device %@ - user: %@", [context objectForKey: @"DeviceId"], [[context activeUser] login]];
+      cleanup_needed = YES;
     }
 
   syncCache = [folderMetadata objectForKey: @"SyncCache"];
   dateCache = [folderMetadata objectForKey: @"DateCache"];
 
   if ((theFolderType == ActiveSyncMailFolder || theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder) && 
-      !([folderMetadata objectForKey: @"MoreAvailable"]) && // previous sync operation reached the windowSize or maximumSyncReponseSize
-      !([theSyncKey isEqualToString: @"-1"]) &&  // new sync operation
-      theFilterType)
+      (cleanup_needed ||
+       ( !([folderMetadata objectForKey: @"MoreAvailable"]) && // previous sync operation reached the windowSize or maximumSyncReponseSize
+         !([folderMetadata objectForKey: @"InitialLoadSequence"]))) &&
+         theFilterType
+     )
     {
       NSArray *allKeys;
       NSString *key;
@@ -623,14 +652,36 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               
           if ([[dateCache objectForKey:key] compare: theFilterType] == NSOrderedAscending)
             {
-              [s appendString: @"<SoftDelete xmlns=\"AirSync:\">"];
-              [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", key];
-              [s appendString: @"</SoftDelete>"];
+              if ([syncCache objectForKey:key])
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - SoftDelete %@", key];
 
-              [syncCache removeObjectForKey: key];
-              [dateCache removeObjectForKey: key];
+                  [s appendString: @"<SoftDelete xmlns=\"AirSync:\">"];
+                  [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", key];
+                  [s appendString: @"</SoftDelete>"];
+
+                  [syncCache removeObjectForKey: key];
+                  //[dateCache removeObjectForKey: key];
               
-              softdelete_count++;
+                  softdelete_count++;
+                }
+              else if (cleanup_needed)
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - SoftDelete cleanup %@", key];
+
+                  // With this we make sure that a SoftDelete is set again on next sync.
+                  [syncCache setObject: @"0" forKey: key];
+                }
+              else
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - SoftDelete final delete %@", key];
+
+                  // Now we are save to remove the dateCache entry.
+                  [dateCache removeObjectForKey: key];
+                }
             }
           
           if (softdelete_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
@@ -657,8 +708,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   if ([theSyncKey isEqualToString: [theCollection davCollectionTag]] && !([s length]))
     return;
-  
-  more_available = NO;
 
   davCollectionTagToStore = [theCollection davCollectionTag];
 
@@ -687,7 +736,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         initialLoadInProgress = NO;
 
         if ([theSyncKey isEqualToString: @"-1"])
-            [folderMetadata setObject: davCollectionTagToStore forKey: @"InitialLoadSequence"];
+          [folderMetadata setObject: davCollectionTagToStore forKey: @"InitialLoadSequence"];
 
         if ([folderMetadata objectForKey: @"InitialLoadSequence"])
           {
@@ -865,11 +914,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         SOGoMailObject *mailObject;
         NSArray *allMessages, *a;
+        NSString *lastSequence, *firstUidAdded;
 
         int j, k, return_count, highestmodseq;
         BOOL found_in_cache, initialLoadInProgress;
 
-        initialLoadInProgress = NO; 
+        initialLoadInProgress = NO;
+        found_in_cache = NO;
+        lastSequence = nil;
+        firstUidAdded = nil;
 
         if ([theSyncKey isEqualToString: @"-1"])
           {
@@ -900,7 +953,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         for (i = 0; i < max; i++)
           {
             [allCacheObjects addObject: [SOGoSyncCacheObject syncCacheObjectWithUID: [[[allMessages objectAtIndex: i] allKeys] lastObject]
-                                                                            sequence: [[[allMessages objectAtIndex: i] allValues] lastObject]]];
+                                                                           sequence: [[[allMessages objectAtIndex: i] allValues] lastObject]]];
           }
         
         sortedBySequence = [[NSMutableArray alloc] initWithDictionary: syncCache];
@@ -909,15 +962,82 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         [allCacheObjects sortUsingSelector: @selector(compareSequence:)];
 
-        //NSLog(@"sortedBySequence (%d) - lastObject: %@", [sortedBySequence count], [sortedBySequence lastObject]);
-        //NSLog(@"allCacheObjects (%d) - lastObject: %@", [allCacheObjects count], [allCacheObjects lastObject]);
+        if (debugOn)
+          {
+              [self logWithFormat: @"EAS - sortedBySequence (%d) - lastObject: %@", [sortedBySequence count], [sortedBySequence lastObject]];
+              [self logWithFormat: @"EAS - allCacheObjects (%d) - lastObject: %@", [allCacheObjects count], [allCacheObjects lastObject]];
+          }
               
         lastCacheObject = [sortedBySequence lastObject];
+
+        //
+        // Cleanup the mess
+        //
+        if (cleanup_needed)
+          {
+            NSMutableArray *sortedByUID;
+            int uidnextFromCache;
+
+            sortedByUID = [[NSMutableArray alloc] initWithDictionary: syncCache];
+            [sortedByUID sortUsingSelector: @selector(compareUID:)];
+
+            // Get the uid from SyncKey in cache. The uid is the first uid added to cache by the last sync request.
+            a = [[folderMetadata objectForKey: @"SyncKey"] componentsSeparatedByString: @"-"];
+            uidnextFromCache = [[a objectAtIndex: 0] intValue];
+
+            if (debugOn)
+              [self logWithFormat: @"EAS - Cache cleanup: from uid: %d to uid: %d", uidnextFromCache, [[[sortedByUID lastObject] uid] intValue]];
+
+            // Remove all entries from cache beginning with the first uid added by the last sync request.
+            for (j = uidnextFromCache; j <= [[[sortedByUID lastObject] uid] intValue]; j++)
+              {
+                if (debugOn)
+                  [self logWithFormat: @"EAS - Cache cleanup: ADD %d", j];
+
+                [syncCache removeObjectForKey: [NSString stringWithFormat:@"%d", j]];
+                [dateCache removeObjectForKey: [NSString stringWithFormat:@"%d", j]];
+              }
+
+            RELEASE(sortedByUID);
+
+            for (j = 0; j < [allCacheObjects count]; j++)
+              {
+                // Update the modseq in cache, sence othersie, it would be identical to the modseq from server
+                //and we would skip the cache when generating the response.
+                if ([syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]] && ![[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]])
+                  {
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - Cache cleanup: CHANGE %@", [[allCacheObjects objectAtIndex: j] uid]];
+
+                    [syncCache setObject: @"0"  forKey:[[allCacheObjects objectAtIndex: j] uid]];
+                  }
+                else if ([[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]])
+                  {
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - Cache cleanup: DELETE %@", [[allCacheObjects objectAtIndex: j] uid]];
+
+                    // For deletes we have to recreate a cache entry to have the <Delete> included in the response.
+                    [syncCache setObject: @"0"  forKey:[[allCacheObjects objectAtIndex: j] uid]];
+                  }
+              }
+          }
         
-        if ([folderMetadata objectForKey: @"MoreAvailable"] && lastCacheObject)
+        if (!cleanup_needed &&
+            [folderMetadata objectForKey: @"MoreAvailable"] &&
+            lastCacheObject && 
+            !([[lastCacheObject sequence] isEqual: @"0"])) // Sequence 0 is set during cache cleanup.
           {
             for (j = 0; j < [allCacheObjects count]; j++)
               {
+                if (([[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]] && [syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]]) ||
+                    ([[allCacheObjects objectAtIndex: j] sequence] && ![syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]]))
+                   {
+                    // We need to continue with adds or deletes from here.
+                    found_in_cache = YES;
+                    j--;
+                    break;
+                  }
+
                 if ([[lastCacheObject uid] isEqual: [[allCacheObjects objectAtIndex: j] uid]])
                   {
                     // Found out where we're at, let's continue from there...
@@ -932,12 +1052,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         if (found_in_cache)
           k = j+1;
         else
-          {
-            k = 0;
-            j = 0;
-          }
-        
-        //NSLog(@"found in cache: %d  k = %d", found_in_cache, k);
+          j = k = 0;
+
+        if (debugOn)
+          [self logWithFormat: @"EAS - found in cache: %d  k = %d", found_in_cache, k];
         
         return_count = 0;
         
@@ -948,23 +1066,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             // Check for the WindowSize and slice accordingly
             if (return_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
               {
-                NSString *lastSequence;
                 more_available = YES;
                 
+                if (!firstUidAdded)
+                  {
+                    a = [davCollectionTagToStore componentsSeparatedByString: @"-"];
+                    firstUidAdded = [a objectAtIndex: 0];
+                    RETAIN(firstUidAdded);
+                  }
                 lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? [NSString stringWithFormat:@"%d", highestmodseq] : [aCacheObject sequence]);
-                *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", [aCacheObject uid], lastSequence];
-                //NSLog(@"Reached windowSize - lastUID will be: %@", *theLastServerKey);
+                //RETAIN(lastSequence);
+                *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", firstUidAdded, lastSequence];
+
+                if (debugOn)
+                  [self logWithFormat: @"EAS - Reached windowSize - lastUID will be: %@", *theLastServerKey];
+
                 DESTROY(pool);
                 break;
               }
             
             aCacheObject = [allCacheObjects objectAtIndex: k];
 
-            // If found in cache, it's either a Change or a Delete
+            if (debugOn)
+              [self logWithFormat: @"EAS - Dealing with cacheObject: %@", aCacheObject];
+
+            // If found in cache, it's either a Change or a Delete operation.
             if ([syncCache objectForKey: [aCacheObject uid]])
               {
                 if ([[aCacheObject sequence] isEqual: [NSNull null]])
                   {
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - DELETE!"];
+
                     // Deleted
                     [s appendString: @"<Delete xmlns=\"AirSync:\">"];
                     [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
@@ -982,9 +1115,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     mailObject = [theCollection lookupName: [aCacheObject uid]
                                                  inContext: context
                                                    acquire: 0];
-                    
+
                     if (![[aCacheObject sequence] isEqual: [syncCache objectForKey: [aCacheObject uid]]])
                       {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - CHANGE!"];
+
                         [s appendString: @"<Change xmlns=\"AirSync:\">"];
                         [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [aCacheObject uid]];
                         [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
@@ -1000,6 +1136,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
             else
               {
+                if (debugOn)
+                  [self logWithFormat: @"EAS - ADD!"];
+
                 // Added
                 if (![[aCacheObject sequence] isEqual: [NSNull null]])
                   {
@@ -1032,11 +1171,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     
                     [syncCache setObject: [aCacheObject sequence]  forKey: [aCacheObject uid]];
                     [dateCache setObject: [NSCalendarDate date]  forKey: [aCacheObject uid]];
+
+                    // Save the frist UID we add. We will use it for the synckey late.
+                    if (!firstUidAdded)
+                      {
+                      firstUidAdded = [aCacheObject uid];
+                      RETAIN(firstUidAdded);
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - first uid added %@", firstUidAdded];
+                      }
+
                     return_count++;
                   }
                 else
                   {
-                    //NSLog(@"skipping old deleted UID: %@",  [aCacheObject uid]);
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - skipping old deleted UID: %@",  [aCacheObject uid]];
                   }
               }
 
@@ -1045,16 +1195,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         if (more_available)
           {
-            [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+            //[folderMetadata setObject: lastSequence  forKey: @"MoreAvailable"];
+            [folderMetadata setObject: [NSNumber numberWithInt: YES]  forKey: @"MoreAvailable"];
             [folderMetadata setObject: *theLastServerKey  forKey: @"SyncKey"];
+            //RELEASE(lastSequence);
           }
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
-            [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
+
+            if (firstUidAdded)
+              {
+                a = [davCollectionTagToStore componentsSeparatedByString: @"-"];
+                [folderMetadata setObject: [[NSString alloc] initWithFormat: @"%@-%@", firstUidAdded, [a objectAtIndex: 1]] forKey: @"SyncKey"];
+              }
+            else
+              [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
           }
         
         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+        RELEASE(firstUidAdded);
         RELEASE(*theLastServerKey);
         
       } // default:
@@ -1153,15 +1314,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 changeDetected: (BOOL *) changeDetected
            maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *lastServerKey, *syncKeyInCache;
-  SOGoMicrosoftActiveSyncFolderType folderType;
-  id collection, value;
-  
-  NSMutableString *changeBuffer, *commandsBuffer;
-  BOOL getChanges, first_sync;
-  unsigned int windowSize, v, status;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *lastServerKey, *syncKeyInCache, *folderKey;
   NSMutableDictionary *folderMetadata, *folderOptions;
-  
+  NSMutableString *changeBuffer, *commandsBuffer;
+  id collection, value;
+
+  SOGoMicrosoftActiveSyncFolderType folderType;
+  unsigned int windowSize, v, status;
+  BOOL getChanges, first_sync;
+
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
   
@@ -1184,7 +1345,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //[theBuffer appendString: @"</Collection>"];
       return;
     }
-  
+
+  //
+  // First check if we have any concurrent Sync requests going on for this device.
+  // If we do and we are still within our maximumSyncInterval, we let our EAS
+  // device know to retry.
+  //
+  folderKey = [self _getNameInCache: collection withType: folderType];
+  folderMetadata = [self _folderMetadataForKey: folderKey];
+
   // We check for a window size, default to 100 if not specfied or out of bounds
   windowSize = [[[(id)[theDocumentElement getElementsByTagName: @"WindowSize"] lastObject] textValue] intValue];
   
@@ -1208,8 +1377,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     getChanges = [[[value lastObject] textValue] boolValue];
                   
   first_sync = NO;
-
-  folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]];
 
   if ([syncKey isEqualToString: @"0"])
     {
@@ -1265,7 +1432,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        {
          folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", bodyPreferenceType, @"BodyPreferenceType", nil];
          [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
-         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: collection withType: folderType]];
+         [self _setFolderMetadata: folderMetadata forKey: folderKey];
        }
    }
   
@@ -1311,7 +1478,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     lastServerKey: &lastServerKey];
     }
 
-  folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: collection withType: folderType]];
+  folderMetadata = [self _folderMetadataForKey: folderKey];
 
   // If we got any changes or if we have applied any commands
   // let's regenerate our SyncKey based on the collection tag.
@@ -1473,15 +1640,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSArray *allCollections;
   NSData *d;
 
-  int i, j, defaultInterval, heartbeatInterval, internalInterval, maxSyncResponseSize;
+  int i, j, defaultInterval, heartbeatInterval, internalInterval, maxSyncResponseSize, total_sleep;
   BOOL changeDetected;
   
-  changeDetected = NO;
-
-  maxSyncResponseSize = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncResponseSize];
-
   // We initialize our output buffer
   output = [[NSMutableString alloc] init];
+
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  defaultInterval = [defaults maximumSyncInterval];
 
   [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -1497,12 +1663,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [output appendString: @"</Sync>"];
       d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
       [theResponse setContent: d];
+      RELEASE(output);
       return;
     }
+
+  if ([[self globalMetadataForDevice] objectForKey: @"SyncInProgress"])
+    {
+      NSCalendarDate *syncStartDate;
+
+      // An other sync is going on right now. Lets break it and wait
+      // until the other process clears it up.
+      [self _setOrUnsetSyncInProgress: YES  invalidate: YES];
+      total_sleep = 0;
+
+      syncStartDate = [[self globalMetadataForDevice] objectForKey: @"SyncInProgress"];
+
+      while ([[self globalMetadataForDevice] objectForKey: @"SyncInProgress"])
+        {
+          // Don't go into a heartbeat loop.
+          heartbeatInterval = 0;
+
+          // We waited too long. Return a fatal error to the client.
+          if (abs([syncStartDate timeIntervalSinceNow]) > defaultInterval)
+           {
+              if (debugOn)
+                [self logWithFormat: @"EAS - We waited too long. syncStartDate: %@ %@", syncStartDate, [self globalMetadataForDevice]];
+
+              [theResponse setStatus: 503];
+              [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
+              RELEASE(output);
+              return;
+            }
+
+          if (debugOn)
+            [self logWithFormat: @"EAS - globalMetadataForDevice %@", [self globalMetadataForDevice]];
+ 
+          [self logWithFormat: @"Sync in progress for device %@ (login: %@). Lock will expire in %d seconds", [context objectForKey: @"DeviceId"], [[context activeUser] login], defaultInterval-total_sleep];
+          sleep(5);
+          total_sleep += 5;
+        }
+    }
+
+  // No lock or broke the existing one, lets grab it and proceed
+  [self _setOrUnsetSyncInProgress: YES  invalidate: NO];
   
-  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  changeDetected = NO;
+  maxSyncResponseSize = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncResponseSize];
   heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
-  defaultInterval = [defaults maximumSyncInterval];
   internalInterval = [defaults internalSyncInterval];
 
   // If the request doesn't contain "HeartbeatInterval" there is no reason to delay the response.
@@ -1512,11 +1719,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // We check to see if our heartbeat interval falls into the supported ranges.
   if (heartbeatInterval > defaultInterval || heartbeatInterval < 1)
     {
+      int limit;
       // Interval is too long, inform the client.
       heartbeatInterval = defaultInterval;
 
-      // Outlook doesn't like this...
-      //[output appendFormat: @"<Limit>%d</Limit>", defaultInterval];
+      // When Status = 14, the Wait interval is specified in minutes while
+      // defaultInterval is specifed in seconds. Adjust accordinlgy.
+      limit = defaultInterval/60;
+      if (limit < 1)  limit = 1;
+      if (limit > 59)  limit = 59;
+      //[output appendFormat: @"<Limit>%d</Limit>", limit];
       //[output appendFormat: @"<Status>%d</Status>", 14];
     }
 
@@ -1532,7 +1744,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       for (j = 0; j < [allCollections count]; j++)
         {
           aCollection = [allCollections objectAtIndex: j];
-          
+
           [self processSyncCollection: aCollection
                              inBuffer: s
                        changeDetected: &changeDetected
@@ -1544,13 +1756,46 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (changeDetected)
         {
-          [self logWithFormat: @"Change detected, we push the content."];
+          // Don't return a response if an other Sync is waiting and this is a heartbeat request.
+          if ([[self globalMetadataForDevice] objectForKey: @"InvalidateSyncInProgress"] && heartbeatInterval > 1)
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Heartbeat stopped - discard response %@", [self globalMetadataForDevice]];
+
+              [theResponse setStatus: 503];
+              [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
+              RELEASE(output);
+              return;
+            }
+
+          [self logWithFormat: @"Change detected during Sync, we push the content."];
           break;
         }
       else if (heartbeatInterval > 1)
         {
-          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
-          sleep(internalInterval);
+          total_sleep = 0;
+
+          while (total_sleep < internalInterval)
+            {
+              // We check if we must break the current synchronization since an other Sync
+              // has just arrived.
+              if ([[self globalMetadataForDevice] objectForKey: @"InvalidateSyncInProgress"])
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Heartbeat stopped %@", [self globalMetadataForDevice]];
+
+                  // Make sure we end the heardbeat-loop.
+                  heartbeatInterval = internalInterval = 1;
+
+                  break;
+                }
+              else
+                {
+                  [self logWithFormat: @"Sleeping %d seconds while detecting changes in Sync...", internalInterval-total_sleep];
+                  sleep(5);
+                  total_sleep += 5;
+                }
+            }
         }
       else
         {
@@ -1558,8 +1803,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-
-  // Only send a response if there are changes or MS-ASProtocolVersion is either 2.5 or 12.0 oterwise send an empty response.
+  //
+  // Only send a response if there are changes or MS-ASProtocolVersion is either 2.5 or 12.0,
+  // otherwise send an empty response.
+  //
   if (changeDetected || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"12.0"])
     {
       // We always return the last generated response.
@@ -1577,6 +1824,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Avoid overloading the autorelease pool here, as Sync command can
   // generate fairly large responses.
   RELEASE(output);
+
+  [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
 }
 
 @end

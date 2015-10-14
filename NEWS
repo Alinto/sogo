@@ -6,6 +6,7 @@ New features
 Enhancements
 
 Bug fixes
+ - numerous EAS fixes when connections are dropped before the EAS client receives the response (#3058, #2849)
 
 2.3.2 (2015-09-16)
 ------------------
