@@ -51,7 +51,7 @@
           <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" label:aria-label="Delete"
+        <md-button class="sg-icon-button hide-sm" label:aria-label="Open in New Mail Window"
                    ng-hide="isPopup"
                    ng-click="viewer.openPopup()">
           <md-tooltip md-direction="bottom"><var:string label:value="Open in New Mail Window"/></md-tooltip>
@@ -162,7 +162,8 @@
               <div class="md-tile-left">
                 <md-icon>collections</md-icon>
               </div>
-              <p class="sg-padded--right md-flex"><var:string label:value="This message contains external images."/></p>
+              <p class="hide show-gt-md"><var:string label:value="This message contains external images."/></p>
+              <div class="md-flex"><!-- spacer --></div>
               <md-button label:aria-label="Load Images"
                          ng-click="viewer.message.loadUnsafeContent()">
                 <var:string label:value="Load Images"/>
