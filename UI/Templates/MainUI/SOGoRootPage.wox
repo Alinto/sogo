@@ -101,7 +101,7 @@
 
   <script type="text/ng-template" id="aboutBox.html">
     <md-dialog flex="50" sm-flex="100">
-      <md-dialog-content>
+      <md-dialog-content class="md-dialog-content">
         <p><a href="http://sogo.nu/" target="_new">sogo.nu</a></p>
         <p>Version <var:string value="version"/> (<var:string value="buildDate" />)</p>
         <br/>

@@ -24,7 +24,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content>
+    <md-dialog-content class="md-dialog-content">
 
       <form id="mainForm" name="accountForm" var:href="ownPath">
 

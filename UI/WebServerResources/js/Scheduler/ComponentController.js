@@ -115,7 +115,7 @@
           escapeToClose: true,
           template: [
             '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Raw Source') + '">',
-            '  <md-dialog-content>',
+            '  <md-dialog-content class="md-dialog-content">',
             '    <pre>',
             data,
             '    </pre>',

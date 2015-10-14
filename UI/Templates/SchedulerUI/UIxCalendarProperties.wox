@@ -25,7 +25,7 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content class="md-dialog-content">
       <md-checkbox
           ng-model="properties.calendar.includeInFreeBusy"
           ng-true-value="1"

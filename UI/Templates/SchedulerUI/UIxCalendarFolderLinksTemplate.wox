@@ -21,8 +21,8 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
-      <div  layout="column" layout-padding="layout-padding">
+    <md-dialog-content class="md-padding">
+      <div layout="column">
 
         <div layout="column" layout-padding="layout-padding">
           <md-input-container ng-show="links.calendar.isWebCalendar">

@@ -20,7 +20,29 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content class="md-padding">
+      <div>
+        <md-autocomplete
+            class="md-flex"
+            md-input-name="addUser"
+            md-search-text="delegate.searchText"
+            md-selected-item="delegate.userToAdd"
+            md-selected-item-change="delegate.addUser(user)"
+            md-items="user in delegate.userFilter(delegate.searchText)"
+            md-item-text="user.empty"
+            md-min-length="3"
+            md-no-cache="true"
+            label:md-floating-label="Add User">
+          <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
+            <span class="md-contact-name"
+                  md-highlight-text="delegate.searchText"
+                  md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
+                  md-highlight-text="delegate.searchText"
+                  md-highlight-flags="^i">{{user.c_email}}</span>
+          </span>
+        </md-autocomplete>
+      </div>
+
       <md-list>
         <md-list-item ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']">
           <div layout="row" layout-align="start center" class="md-flex card-picture">
@@ -38,27 +60,5 @@
         </md-list-item>
       </md-list>
     </md-dialog-content>
-
-    <div class="md-actions">
-      <md-autocomplete
-          class="md-flex"
-          md-input-name="addUser"
-          md-search-text="delegate.searchText"
-          md-selected-item="delegate.userToAdd"
-          md-selected-item-change="delegate.addUser(user)"
-          md-items="user in delegate.userFilter(delegate.searchText)"
-          md-item-text="user.empty"
-          md-min-length="3"
-          md-no-cache="true"
-          label:md-floating-label="Add User">
-        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-          <span class="md-contact-name"
-                md-highlight-text="delegate.searchText"
-                md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                md-highlight-text="delegate.searchText"
-                md-highlight-flags="^i">{{user.c_email}}</span>
-        </span>
-      </md-autocomplete>
-    </div>
   </md-dialog>
 </container>

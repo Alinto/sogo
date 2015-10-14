@@ -19,7 +19,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content class="layout-padding">
+    <md-dialog-content class="md-padding">
       <div layout="row">
         <md-icon>search</md-icon>
         <md-autocomplete
@@ -94,7 +94,7 @@
       </md-card>
     </md-dialog-content>
 
-    <div ng-hide="acl.confirmation.showing" class="md-actions">
+    <div class="md-actions" ng-hide="acl.confirmation.showing">
       <md-button class="md-primary" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
     </div>
     <div class="md-actions" ng-show="acl.confirmation.showing">

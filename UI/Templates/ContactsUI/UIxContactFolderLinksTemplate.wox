@@ -20,8 +20,8 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
-      <div layout="column" layout-padding="layout-padding">
+    <md-dialog-content class="md-padding">
+      <div layout="column">
         <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
         <md-input-container>
           <label><var:string label:value="CardDAV URL"/></label>

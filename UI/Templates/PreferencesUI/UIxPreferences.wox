@@ -672,7 +672,7 @@
         <!-- MAIL > ACCOUNTS -->
         <md-tab id="mailAccountsTab"
                 aria-controls="mailAccountsTab-content"
-                label:label="Accounts">
+                label:label="IMAP Accounts">
 
           <md-list class="sg-padded">
             <md-list-item ng-repeat="item in

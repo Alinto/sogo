@@ -58,7 +58,7 @@
       escapeToClose: true,
       template: [
         '<md-dialog flex="50" flex-sm="100">',
-        '  <md-dialog-content layout="column">',
+        '  <md-dialog-content class="md-dialog-content" layout="column">',
         '    <h2 class="md-title" ng-bind="title"></h2>',
         '    <md-input-container>',
         '      <label>' + label + '</label>',

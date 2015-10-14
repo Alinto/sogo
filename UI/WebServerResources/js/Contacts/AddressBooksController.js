@@ -128,7 +128,7 @@
           '      </md-button>',
           '    </div>',
           '  </md-toolbar>',
-          '  <md-dialog-content>',
+          '  <md-dialog-content class="md-dialog-content">',
           '    <div layout="column">',
           '      <div layout="row" layout-align="start center">',
           '        <span>' + l('Select a vCard or LDIF file.') + '</span>',

@@ -21,7 +21,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content>
+    <md-dialog-content class="md-dialog-content">
       <script type="text/javascript">
         var filterId = '<var:string value="filterId"/>';
         var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
