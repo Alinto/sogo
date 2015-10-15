@@ -126,6 +126,7 @@
     }
 
     function showProperties(calendar) {
+      var color = calendar.color;
       $mdDialog.show({
         templateUrl: calendar.id + '/properties',
         controller: PropertiesDialogController,
@@ -133,30 +134,39 @@
         clickOutsideToClose: true,
         escapeToClose: true,
         locals: {
-          calendar: calendar
+          srcCalendar: calendar
         }
+      }).catch(function() {
+        // Restore original color when cancelling or closing the dialog
+        calendar.color = color;
       });
       
       /**
        * @ngInject
        */
-      PropertiesDialogController.$inject = ['$mdDialog', 'calendar'];
-      function PropertiesDialogController($mdDialog, calendar) {
+      PropertiesDialogController.$inject = ['$timeout', '$mdDialog', 'srcCalendar'];
+      function PropertiesDialogController($timeout, $mdDialog, srcCalendar) {
         var vm = this;
 
-        vm.calendar = new Calendar(calendar.$omit());
+        vm.calendar = new Calendar(srcCalendar.$omit());
+        vm.setColor = setColor;
         vm.saveProperties = saveProperties;
         vm.close = close;
+
+        function setColor(color) {
+          vm.calendar.color = color;
+          srcCalendar.color = color;
+        }
 
         function saveProperties() {
           vm.calendar.$save();
           // Refresh list instance
-          calendar.init(vm.calendar.$omit());
+          srcCalendar.init(vm.calendar.$omit());
           $mdDialog.hide();
         }
 
         function close() {
-          $mdDialog.hide();
+          $mdDialog.cancel();
         }
       }
     }

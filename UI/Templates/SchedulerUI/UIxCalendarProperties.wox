@@ -8,10 +8,10 @@
     >
   <md-dialog flex-sm="100">
 
-    <md-toolbar ng-style="{ 'background-color': properties.calendar.color }">
+    <md-toolbar ng-class="properties.calendar.getClassName('bg')">
       <div class="md-toolbar-tools">
         <!-- color -->
-        <sg-color-picker sg-on-select="properties.calendar.color = color"><!-- color picker --></sg-color-picker>
+        <sg-color-picker sg-on-select="properties.setColor(color)"><!-- color picker --></sg-color-picker>
         <!-- name -->
         <md-input-container>
           <label><var:string label:value="Name"/></label>
