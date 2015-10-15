@@ -349,11 +349,10 @@
                               ng-repeat="item in
                                          app.preferences.defaults.SOGoCalendarCategories
                                          track by $index">
-                  <i class="md-avatar" ng-style="{'background-color': app.preferences.defaults.SOGoCalendarCategoriesColors[item]}">
-                    <sg-color-picker sg-on-select="app.preferences.defaults.SOGoCalendarCategoriesColors[item] = color"><!-- color picker--></sg-color-picker>
-                  </i>
+                  <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColors[item]"><!-- color picker--></sg-color-picker>
                   <md-input-container>
-	            <input type="text" label:aria-label="Calendar Category" ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
+	            <input type="text" label:aria-label="Calendar Category"
+                           ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              layout="row" layout-align="end center"
@@ -641,9 +640,7 @@
               <md-list-item flex="50"
                             ng-repeat="(key, value) in
                                        app.preferences.defaults.SOGoMailLabelsColors">
-                <i class="md-avatar" ng-style="{'background-color': value[1]}">
-                  <sg-color-picker sg-on-select="value[1] = color"><!-- color picker--></sg-color-picker>
-                </i>
+                <sg-color-picker ng-model="value[1]"><!-- color picker--></sg-color-picker>
                 <md-input-container>
 	          <input type="text"
                          label:aria-label="Label"

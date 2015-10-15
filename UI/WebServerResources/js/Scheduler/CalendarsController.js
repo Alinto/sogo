@@ -144,19 +144,17 @@
       /**
        * @ngInject
        */
-      PropertiesDialogController.$inject = ['$timeout', '$mdDialog', 'srcCalendar'];
-      function PropertiesDialogController($timeout, $mdDialog, srcCalendar) {
+      PropertiesDialogController.$inject = ['$scope', '$mdDialog', 'srcCalendar'];
+      function PropertiesDialogController($scope, $mdDialog, srcCalendar) {
         var vm = this;
 
         vm.calendar = new Calendar(srcCalendar.$omit());
-        vm.setColor = setColor;
         vm.saveProperties = saveProperties;
         vm.close = close;
 
-        function setColor(color) {
-          vm.calendar.color = color;
-          srcCalendar.color = color;
-        }
+        $scope.$watch('properties.calendar.color', function() {
+          srcCalendar.color = vm.calendar.color;
+        });
 
         function saveProperties() {
           vm.calendar.$save();

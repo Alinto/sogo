@@ -11,7 +11,7 @@
     <md-toolbar ng-class="properties.calendar.getClassName('bg')">
       <div class="md-toolbar-tools">
         <!-- color -->
-        <sg-color-picker sg-on-select="properties.setColor(color)"><!-- color picker --></sg-color-picker>
+        <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
         <!-- name -->
         <md-input-container>
           <label><var:string label:value="Name"/></label>
