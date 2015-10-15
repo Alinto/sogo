@@ -10,6 +10,7 @@ Bug fixes
  - numerous EAS fixes when connections are dropped before the EAS client receives the response (#3058, #2849)
  - correctly handle the References header over EAS (#3365)
  - make sure English is always used when generating Date headers using EAS (#3356)
+ - don't escape quoted strings during versit generation
 
 2.3.2 (2015-09-16)
 ------------------
