@@ -389,6 +389,10 @@ static BOOL debugSoParts       = NO;
       [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
     return info;
 
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"] &&
+      [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"pkcs7-mime"])
+    return info;
+
   /* 
      For each path component, eg 1,1,3 
      
@@ -809,7 +813,7 @@ static BOOL debugSoParts       = NO;
   NSMutableDictionary *currentPart;
   NSString *newPath;
   NSArray *subparts;
-  NSString *type;
+  NSString *type, *subtype;
   NSUInteger i;
 
   type = [[part objectForKey: @"type"] lowercaseString];
@@ -832,7 +836,15 @@ static BOOL debugSoParts       = NO;
   else
     {
       if (!path)
-        path = @"1";
+        {
+          path = @"1";
+
+          // We set the path to 0 in case of a smime mail if not provided.
+          subtype = [[part objectForKey: @"subtype"] lowercaseString];
+          if ([subtype isEqualToString: @"pkcs7-mime"])
+             path = @"0";
+        }
+
       [self _fetchFileAttachmentKey: part
                           intoArray: keys
                            withPath: path

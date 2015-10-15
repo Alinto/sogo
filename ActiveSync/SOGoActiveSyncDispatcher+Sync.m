@@ -1407,6 +1407,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      // By default, send MIME mails. See #3146 for details.
      if (!bodyPreferenceType)
        bodyPreferenceType = @"4";
+
+     mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
+
+     if (!mimeSupport)
+       mimeSupport = @"1";
    }
   else
    {
@@ -1437,6 +1442,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    }
   
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
+  [context setObject: mimeSupport  forKey: @"MIMESupport"];
 
   //
   // We process the commands from the request

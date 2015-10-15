@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncDispatcher.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSLocale.h>
@@ -134,6 +135,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <GDLContentStore/GCSChannelManager.h>
 
 #include <unistd.h>
+
+#ifdef HAVE_OPENSSL
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/x509.h>
+#endif
 
 @interface SOGoActiveSyncDispatcher (Sync)
 
@@ -1262,7 +1269,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processItemOperations: (id <DOMElement>) theDocumentElement
                     inResponse: (WOResponse *) theResponse
 {
-  NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *collectionId;
+  NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *mimeSupport, *collectionId;
   NSMutableString *s;
   NSArray *fetchRequests;
   id aFetch;
@@ -1375,6 +1382,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
                   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
                   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
+                  mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+                  [context setObject: mimeSupport  forKey: @"MIMESupport"];
 
                   currentCollection = [self collectionFromId: realCollectionId  type: folderType];
 
@@ -2103,6 +2112,123 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
+//
+//
+#ifdef HAVE_OPENSSL
+- (unsigned int) validateCert: (NSString *) theCert
+{
+  NSData *d;
+
+  const unsigned char *data;
+  X509_STORE_CTX *ctx;
+  X509_LOOKUP *lookup;
+  X509_STORE *store;
+  X509 *cert;
+
+  BOOL success;
+  size_t len;
+  int rc;
+
+  success = NO;
+
+  d = [theCert dataByDecodingBase64];
+  data = (unsigned char *)[d bytes];
+  len = [d length];
+
+  cert = d2i_X509(NULL, &data, len);
+  if (!cert)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: d2i_X509 failed", [context objectForKey: @"DeviceId"]];
+      return 17;
+    }
+
+  store = X509_STORE_new();
+  OpenSSL_add_all_algorithms();
+
+  if (store)
+    {
+      lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
+      if (lookup)
+        {
+          X509_LOOKUP_load_file(lookup, NULL, X509_FILETYPE_DEFAULT);
+          lookup = X509_STORE_add_lookup(store, X509_LOOKUP_hash_dir());
+          if (lookup)
+            {
+              X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT);
+              ERR_clear_error();
+              success = YES;
+            }
+        }
+    }
+
+  if (!success)
+    {
+      if (store)
+        {
+          X509_STORE_free(store);
+          store = NULL;
+        }
+    }
+
+  ctx = X509_STORE_CTX_new();
+  if (!ctx)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: X509_STORE_CTX_new failed", [context objectForKey: @"DeviceId"]];
+      return 17;
+    }
+
+  if (X509_STORE_CTX_init(ctx, store, cert, NULL) != 1)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: X509_STORE_CTX_init failed", [context objectForKey: @"DeviceId"]];
+      X509_STORE_CTX_free(ctx);
+      return 17;
+    }
+
+  rc = X509_verify_cert(ctx);
+  X509_STORE_CTX_free(ctx);
+  X509_free(cert);
+
+  if (rc)
+    {
+      return 1;
+    }
+  else
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: err=%d", [context objectForKey: @"DeviceId"], X509_STORE_CTX_get_error(ctx)];
+      return 17;
+    }
+}
+#else
+- (unsigned int) validateCert: (NSString *) theCert
+{
+  return 17;
+}
+#endif
+
+- (void) processValidateCert: (id <DOMElement>) theDocumentElement
+                  inResponse: (WOResponse *) theResponse
+{
+  NSMutableString *s;
+  NSString *cert;
+  NSData *d;
+
+  cert =  [[(id)[theDocumentElement getElementsByTagName: @"Certificate"] lastObject] textValue];
+
+  s = [NSMutableString string];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<ValidateCert xmlns=\"ValidateCert:\">"];
+  [s appendString: @"<Status>1</Status><Certificate>"];
+  [s appendFormat: @"<Status>%d</Status>", [self validateCert: cert]];
+  [s appendString: @"</Certificate></ValidateCert>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  [theResponse setContent: d];
+}
+
+
+//
 // <?xml version="1.0"?>
 // <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
 // <ResolveRecipients xmlns="ResolveRecipients:">
@@ -2418,39 +2544,85 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NGMimeMessageParser *parser;
   NGMimeMessage *message;
   NSException *error;
-  NSData *data;
-  NGMutableHashMap *map;
-  NGMimeMessage *messageToSend;
-  NGMimeMessageGenerator *generator;
+  NSMutableData *data;
+  NSData *new_from_header;
   NSDictionary *identity;
   NSString *fullName, *email;
+
+  const char *bytes;
+  int i, len;
+  BOOL found_header;
   
   // We get the mail's data
-  data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
+  data = [NSMutableData dataWithData: [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding]];
   
   // We extract the recipients
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: data];
   RELEASE(parser);
 
-  map = [NGHashMap hashMapWithDictionary: [message headers]];
-
   identity = [[context activeUser] primaryIdentity];
 
   fullName = [identity objectForKey: @"fullName"];
   email = [identity objectForKey: @"email"];
+
   if ([fullName length])
-    [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
+    new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", fullName, email] dataUsingEncoding:NSUTF8StringEncoding];
   else
-    [map setObject: email forKey: @"from"];
+    new_from_header = [[NSString stringWithFormat: @"From: %@\r\n", email] dataUsingEncoding:NSUTF8StringEncoding];
 
-  messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+  bytes = [data bytes];
+  len = [data length];
+  i = 0;
+  found_header = NO;
 
-  [messageToSend setBody: [message body]];
+  // Search for the from-header
+  while (i < len)
+    {
+      if (i == 0 &&
+          (*bytes == 'f' || *bytes == 'F') &&
+          (*(bytes+1) == 'r' || *(bytes+1) == 'R') &&
+          (*(bytes+2) == 'o' || *(bytes+2) == 'O') &&
+          (*(bytes+3) == 'm' || *(bytes+3) == 'M') &&
+          (*(bytes+4) == ':'))
+        {
+          found_header = YES;
+          break;
+        }
 
-  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-  data = [generator generateMimeFromPart: messageToSend];
-  
+      if (((*bytes == '\r') && (*(bytes+1) == '\n')) &&
+          (*(bytes+2) == 'f' || *(bytes+2) == 'F') &&
+          (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
+          (*(bytes+4) == 'o' || *(bytes+4) == 'O') &&
+          (*(bytes+5) == 'm' || *(bytes+5) == 'M') &&
+          (*(bytes+6) == ':'))
+        {
+          found_header = YES;
+          i = i + 2; // \r\n
+          break;
+        }
+
+      bytes++;
+      i++;
+    }
+
+  // Update/Add the From header in the MIMEBody of the SendMail request.
+  // Any other way to modify the mail body would break s/mime emails.
+  if (found_header)
+    {
+      // Change the From header
+      [data replaceBytesInRange: NSMakeRange(i, [[message headerForKey: @"from"] length]+8) // start of the From header found - length of the parsed from-header-value + 8 (From:+\r\n+1)
+                      withBytes: [new_from_header bytes]
+                         length: [new_from_header length]];
+    }
+  else
+    {
+      // Add a From header
+      [data replaceBytesInRange: NSMakeRange(0, 0)
+                      withBytes: [new_from_header bytes]
+                         length: [new_from_header length]];
+    }
+
   error = [self _sendMail: data
                recipients: [message allRecipients]
                 saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
