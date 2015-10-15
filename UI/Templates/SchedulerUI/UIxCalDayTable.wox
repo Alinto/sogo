@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-  <md-toolbar class="daysView md-hue-1" md-scroll-shrink="true" var:sg-view="currentView">
+  <md-toolbar class="daysView md-hue-1" var:sg-view="currentView">
 
     <!-- Display today abreviation and date -->
     <div class="days dayLabels">
@@ -14,7 +14,7 @@
         <div var:class="dayClasses">
           <!-- Week view day header -->
           <var:if condition="isWeekView">
-            <div class="sg-md-caption"><var:string value="labelForDay"/></div>
+            <div class="sg-md-caption md-default-theme md-fg md-primary md-hue-1"><var:string value="labelForDay"/></div>
             <var:if condition="currentTableDay.isToday">
               <div class="sg-md-display-2 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
             </var:if>

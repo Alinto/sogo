@@ -59,6 +59,7 @@ $scrollbar_width: 16px;
   // The days labels appear in the toolbar
   md-toolbar {
     &.daysView, &.monthView {
+      background-color: #fff;
       overflow: hidden;
       z-index: $z-index-toolbar - 1;
       .days {
@@ -124,8 +125,9 @@ $scrollbar_width: 16px;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: $sg-font-size-2;
-    padding: 2px;
-    min-height: $sg-font-size-2 + 4px;
+    padding: 4px;
+    min-height: $sg-font-size-2 + 8px;
+    text-align: right;
     //font-weight: $sg-font-light;
     overflow: hidden;
   }
@@ -195,6 +197,7 @@ $scrollbar_width: 16px;
 
   // Multicolumn day cell that contains the calendar name
   .multicolumnDay {
+    color: $colorGrey900;
     font-size: $subhead-font-size-base;
     font-weight: $sg-font-light;
     overflow: hidden;
@@ -204,22 +207,28 @@ $scrollbar_width: 16px;
   }
 
   .monthView {
+    .dayLabels {
+      // Cells of week days of all the same width
+      flex: 1 1 0;
+      text-align: center;
+    }
     md-grid-tile {
-      //border: 1px solid sg-color($sogoPaper, 300);
-      border-right: 1px solid rgb(242, 242, 242);
-      border-bottom: 1px solid rgb(242, 242, 242);
+      // Border of month day cell
+      border-right: 1px solid $colorGrey100;
+      border-bottom: 1px solid $colorGrey100;
       overflow: auto;
+      // Cells of another month
       &.dayOfAnotherMonth {
-        background-color: rgb(250, 250, 250);
-        //border-color: #ddd;
+        background-color: $colorGrey50;
         .sg-calendar-tile-header,
         .sg-calendar-tile-header > span {
-          color: rgb(221, 221, 221) !important; // Overwrite dynamic CSS theme
+          color: $colorGrey300 !important;
         }
       }
       &.dayOfToday {
         .sg-calendar-tile-header {
           > span {
+            // Circle today's date
             border-radius: 50%;
             color: #fff;
             display: inline-block;

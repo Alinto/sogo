@@ -42,7 +42,7 @@
     <div layout="row" layout-align="center center"
          class="md-flex md-default-theme md-fg md-hue-2">
       <var:foreach list="headerDaysToDisplay" item="currentTableDay">
-        <div class="md-flex-fix dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
+        <div class="dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
       </var:foreach>
     </div>
   </md-toolbar>
