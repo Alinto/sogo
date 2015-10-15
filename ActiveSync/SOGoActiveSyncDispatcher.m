@@ -33,7 +33,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSData.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
+#if GNUSTEP_BASE_MINOR_VERSION >= 21
 #import <Foundation/NSLocale.h>
+#endif
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
@@ -3119,10 +3121,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                               options: NSCaseInsensitiveSearch].location == NSNotFound)
         {
           NSString *value;
-          
+#if GNUSTEP_BASE_MINOR_VERSION < 21
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                                        locale: nil];
+#else
           value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
                                                       timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
                                                         locale: [[[NSLocale alloc] initWithLocaleIdentifier: @"en_US"] autorelease]];
+#endif
           s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
         } 
       else
