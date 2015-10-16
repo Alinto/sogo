@@ -57,7 +57,7 @@
        @" c_lastmodified INT4 NOT NULL,"
        @" c_version INT4 NOT NULL DEFAULT 0,"
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
-       @" c_content BYTEA)");
+       @" c_content TEXT)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
 }
@@ -77,7 +77,7 @@
        @" c_lastmodified INT NOT NULL,"
        @" c_version INT NOT NULL DEFAULT 0,"
        @" c_deleted TINYINT NOT NULL DEFAULT 0,"
-       @" c_content BLOB)");
+       @" c_content LONGTEXT)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
 }
@@ -97,7 +97,7 @@
        @" c_lastmodified INT4 NOT NULL,"
        @" c_version INT4 NOT NULL DEFAULT 0,"
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
-       @" c_content BLOB)");
+       @" c_content CLOB)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
 }

@@ -152,7 +152,7 @@ static EOAttribute *textColumn = nil;
 - (void) setupFromRecord: (NSDictionary *) record
 {
   NSInteger intValue;
-  NSData *content;
+  NSString *propsValue;
   NSDictionary *newValues;
 
   objectType = [[record objectForKey: @"c_type"] intValue];
@@ -166,10 +166,10 @@ static EOAttribute *textColumn = nil;
                dateWithTimeIntervalSince1970: (NSTimeInterval) intValue]);
   deleted = ([[record objectForKey: @"c_deleted"] intValue] > 0);
   version = [[record objectForKey: @"c_version"] intValue];
-  content = [record objectForKey: @"c_content"];
-  if ([content isNotNull])
+  propsValue = [record objectForKey: @"c_content"];
+  if ([propsValue isNotNull])
     {
-      newValues = [[content dataByDecodingBase64] BSONValue];
+      newValues = [[propsValue dataByDecodingBase64] BSONValue];
       [properties addEntriesFromDictionary: newValues];
     }
   else
