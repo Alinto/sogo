@@ -3,6 +3,7 @@
 
 New features
  - initial S/MIME support for EAS (#3327)
+ - now possible to choose which folders to sync over EAS
 
 Enhancements
  - we no longer always entirely rewrite messages for Outlook 2013 when using EAS
