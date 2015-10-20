@@ -707,22 +707,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processFolderSync: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
-  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType;
+  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation;
+  NSMutableDictionary *cachedGUIDs, *metadata;
+  NSMutableArray *folders, *processedFolders;
   NSDictionary *folderMetadata, *imapGUIDs;
   NSArray *allFoldersMetadata, *allKeys;
-  NSMutableDictionary *cachedGUIDs, *metadata;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
   SOGoUserFolder *userFolder;
-  NSMutableArray *folders, *processedFolders;
   SoSecurityManager *sm;
   SOGoCacheGCSObject *o;
   id currentFolder;
   NSData *d;
 
   int status, command_count, i, type, fi, count;
-
   BOOL first_sync;
 
   sm = [SoSecurityManager sharedSecurityManager];
@@ -840,32 +839,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
            }
          else
            {
-              if ([cKey rangeOfString: @"vevent" options: NSCaseInsensitiveSearch].location != NSNotFound ||
-                  [cKey rangeOfString: @"vtodo" options: NSCaseInsensitiveSearch].location != NSNotFound)
-                folderType = @"Calendar";
-              else
-                folderType = @"Contacts";
+             if ([cKey rangeOfString: @"vevent" options: NSCaseInsensitiveSearch].location != NSNotFound ||
+                 [cKey rangeOfString: @"vtodo" options: NSCaseInsensitiveSearch].location != NSNotFound)
+               folderType = @"Calendar";
+             else
+               folderType = @"Contacts";
 
-              if ([ cKey rangeOfString: @"/"].location != NSNotFound) 
-                currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
+             if ([ cKey rangeOfString: @"/"].location != NSNotFound) 
+               currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
 
-              // remove the folder from device if it doesn't exists or it has not the proper permissions
-              if (!currentFolder ||
-                  [sm validatePermission: SoPerm_DeleteObjects
-                                onObject: currentFolder
-                               inContext: context] ||
-                  [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                onObject: currentFolder
-                               inContext: context])
-                {
-                  [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
-                  command_count++;
-                  [o destroy];
-                }
-            }
-         }
-      }
+             // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
+             if (!currentFolder ||
+                 ![currentFolder synchronize] ||
+                 [sm validatePermission: SoPerm_DeleteObjects
+                               onObject: currentFolder
+                              inContext: context] ||
+                 [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                               onObject: currentFolder
+                              inContext: context])
+               {
+                 [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+                 command_count++;
+                 [o destroy];
+               }
+           }
+       }
+   }
 
   // Handle addition and changes
   for (i = 0; i < [allFoldersMetadata count]; i++)
@@ -965,11 +965,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
     [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
 
-    // Inside this loop we remove all the folder without write/delete permissions
+    // We remove all the folders that aren't GCS-ones, that we don't want to synchronize and
+    // the ones without write/delete permissions
     count = [folders count]-1;
     for (; count >= 0; count--)
      {
-       if ([sm validatePermission: SoPerm_DeleteObjects
+       if (![[folders objectAtIndex: count] isKindOfClass: [SOGoGCSFolder class]] ||
+           ![[folders objectAtIndex: count] synchronize] ||
+           [sm validatePermission: SoPerm_DeleteObjects
                          onObject: [folders objectAtIndex: count]
                         inContext: context] ||
            [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
@@ -981,7 +984,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      }
 
     count = [folders count]-1;
-    NSString *operation;
 
     for (fi = 0; fi <= count ; fi++)
      {
