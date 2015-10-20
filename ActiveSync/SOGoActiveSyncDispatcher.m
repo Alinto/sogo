@@ -160,6 +160,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   debugOn = [[SOGoSystemDefaults sharedSystemDefaults] easDebugEnabled];
   folderTableURL = nil;
   imapFolderGUIDS = nil;
+  syncRequest = nil;
   return self;
 }
 
@@ -167,6 +168,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   RELEASE(folderTableURL);
   RELEASE(imapFolderGUIDS);
+  RELEASE(syncRequest);
   [super dealloc];
 }
 

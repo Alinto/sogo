@@ -112,10 +112,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SOGoActiveSyncDispatcher (Sync)
 
-- (void) _setOrUnsetSyncInProgress: (BOOL) set
-                        invalidate: (BOOL) invalidate
+- (void) _setOrUnsetSyncRequest: (BOOL) set
+                       collections: (NSArray *) collections
 {
   SOGoCacheGCSObject *o;
+  NSNumber *processIdentifier;
+  NSString *key;
+  int i;
+
+  processIdentifier = [NSNumber numberWithInt: [[NSProcessInfo processInfo] processIdentifier]];
 
   o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil  useCache: NO];
   [o setObjectType: ActiveSyncGlobalCacheObject];
@@ -123,14 +128,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o reloadIfNeeded];
 
   if (set)
-    if (invalidate)
-      [[o properties] setObject: [NSCalendarDate date] forKey: @"InvalidateSyncInProgress"];
-    else
-      [[o properties] setObject: [NSCalendarDate date] forKey: @"SyncInProgress"];
+    {
+      RELEASE(syncRequest);
+      syncRequest = [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]];
+      RETAIN(syncRequest);
+
+      [[o properties] setObject: syncRequest forKey: @"SyncRequest"];
+
+      for (i = 0; i < [collections count]; i++)
+        {
+          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+          [[o properties] setObject: processIdentifier forKey: key];
+        }
+    }
   else
     {
-      [[o properties] removeObjectForKey: @"SyncInProgress"];
-      [[o properties] removeObjectForKey: @"InvalidateSyncInProgress"];
+      [[o properties] removeObjectForKey: @"SyncRequest"];
+      for (i = 0; i < [collections count]; i++)
+        {
+          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+          [[o properties] removeObjectForKey: key];
+        }
     }
 
   [o save];
@@ -139,9 +157,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata
                      forKey: (NSString *) theFolderKey
 {
+  NSNumber *processIdentifier, *processIdentifierInCache;
   SOGoCacheGCSObject *o;
   NSDictionary *values;
   NSString *key;
+
+  if ([theFolderKey hasPrefix: @"folder"])
+    key = [NSString stringWithFormat: @"SyncRequest+mail/%@", [theFolderKey substringFromIndex: 6]];
+  else
+    key = [NSString stringWithFormat: @"SyncRequest+%@", theFolderKey];
+
+  processIdentifier = [NSNumber numberWithInt: [[NSProcessInfo processInfo] processIdentifier]];
+  processIdentifierInCache = [[self globalMetadataForDevice] objectForKey: key];
+
+  // Don't update the cache if another request is processing the same collection.
+  if (!([processIdentifierInCache isEqual: processIdentifier]))
+    {
+      if (debugOn)
+        [self logWithFormat: @"EAS - We lost our lock - discard folder cache update %@ %@ <> %@", key, processIdentifierInCache, processIdentifier];
+
+     return;
+    }
 
   key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theFolderKey];
   values = [theFolderMetadata copy];
@@ -428,7 +464,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
 
-                [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+                if ([syncCache objectForKey: serverId])
+                  [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
               }
               break;
             case ActiveSyncEventFolder:
@@ -438,7 +475,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
 
-                [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+                if ([syncCache objectForKey: serverId])
+                  [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
               }
               break;
             case ActiveSyncMailFolder:
@@ -452,7 +490,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
                 modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
 
-                if (modseq)
+                if (modseq && [syncCache objectForKey: serverId])
                   [syncCache setObject: [modseq stringValue] forKey: serverId];
               }
             }
@@ -600,6 +638,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 withFilterType: (NSCalendarDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
                  lastServerKey: (NSString **) theLastServerKey
+               defaultInterval: (unsigned int) theDefaultInterval
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
   NSString *davCollectionTagToStore;
@@ -624,7 +663,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // The syncKey received from the client doesn't match the syncKey we have in cache - client might have missed a response.
       // We need to cleanup this mess.
-      [self logWithFormat: @"Cache cleanup needed for device %@ - user: %@", [context objectForKey: @"DeviceId"], [[context activeUser] login]];
+      [self logWithFormat: @"Cache cleanup needed for device %@ - user: %@ syncKey: %@ cache: %@", [context objectForKey: @"DeviceId"], [[context activeUser] login], theSyncKey, [folderMetadata objectForKey: @"SyncKey"]];
       cleanup_needed = YES;
     }
 
@@ -755,6 +794,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         // Check for the WindowSize
         max = [allComponents count];
+
+        //
+        // Cleanup the mess
+        //
+        if (cleanup_needed)
+          {
+
+            for (i = 0; i < max; i++)
+              {
+                component = [allComponents objectAtIndex: i];
+                deleted = [[component objectForKey: @"c_deleted"] intValue];
+
+                if (!deleted && ![[component objectForKey: @"c_component"] isEqualToString: component_name])
+                    continue;
+
+                uid = [[component objectForKey: @"c_name"] sanitizedServerIdWithType: theFolderType];
+
+                if (deleted)
+                  {
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - Cache cleanup: DELETE %@", uid];
+ 
+                    // For deletes we have to recreate a cache entry to make sure the delete is sent again.
+                    [syncCache setObject: @"0"  forKey: uid];
+                  }
+                else
+                  {
+                    if ([syncCache objectForKey: uid] && [[component objectForKey: @"c_creationdate"] intValue] > [theSyncKey intValue])
+                      {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Cache cleanup: ADD %@", uid];
+
+                        // Cleanup the cache to make sure the add is sent again.
+                        [syncCache removeObjectForKey: uid];
+                        [dateCache removeObjectForKey: uid];
+                      }
+                    else 
+                      {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Cache cleanup: CHANGE %@", uid];
+
+                        // Update cache entry to make sure the change is sent again.
+                        [syncCache setObject: @"0"  forKey: uid];
+                      }
+                  }
+              }
+          }
 
         return_count = 0;
 
@@ -914,15 +1000,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         SOGoMailObject *mailObject;
         NSArray *allMessages, *a;
-        NSString *lastSequence, *firstUidAdded;
+        NSString *firstUIDAdded;
 
         int j, k, return_count, highestmodseq;
         BOOL found_in_cache, initialLoadInProgress;
 
         initialLoadInProgress = NO;
         found_in_cache = NO;
-        lastSequence = nil;
-        firstUidAdded = nil;
+        firstUIDAdded = nil;
 
         if ([theSyncKey isEqualToString: @"-1"])
           {
@@ -1030,7 +1115,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             for (j = 0; j < [allCacheObjects count]; j++)
               {
                 if (([[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]] && [syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]]) ||
-                    ([[allCacheObjects objectAtIndex: j] sequence] && ![syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]]))
+                    (![[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]] && ![syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]]))
                    {
                     // We need to continue with adds or deletes from here.
                     found_in_cache = YES;
@@ -1066,17 +1151,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             // Check for the WindowSize and slice accordingly
             if (return_count >= theWindowSize || (theMaxSyncResponseSize > 0 && [s length] >= theMaxSyncResponseSize))
               {
+                NSString *lastSequence;
                 more_available = YES;
                 
-                if (!firstUidAdded)
+                if (!firstUIDAdded)
                   {
                     a = [davCollectionTagToStore componentsSeparatedByString: @"-"];
-                    firstUidAdded = [a objectAtIndex: 0];
-                    RETAIN(firstUidAdded);
+                    firstUIDAdded = [a objectAtIndex: 0];
+                    RETAIN(firstUIDAdded);
                   }
                 lastSequence = ([[aCacheObject sequence] isEqual: [NSNull null]] ? [NSString stringWithFormat:@"%d", highestmodseq] : [aCacheObject sequence]);
-                //RETAIN(lastSequence);
-                *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", firstUidAdded, lastSequence];
+                *theLastServerKey = [[NSString alloc] initWithFormat: @"%@-%@", firstUIDAdded, lastSequence];
 
                 if (debugOn)
                   [self logWithFormat: @"EAS - Reached windowSize - lastUID will be: %@", *theLastServerKey];
@@ -1173,12 +1258,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     [dateCache setObject: [NSCalendarDate date]  forKey: [aCacheObject uid]];
 
                     // Save the frist UID we add. We will use it for the synckey late.
-                    if (!firstUidAdded)
+                    if (!firstUIDAdded)
                       {
-                      firstUidAdded = [aCacheObject uid];
-                      RETAIN(firstUidAdded);
-                      if (debugOn)
-                        [self logWithFormat: @"EAS - first uid added %@", firstUidAdded];
+                        firstUIDAdded = [aCacheObject uid];
+                        RETAIN(firstUIDAdded);
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - first uid added %@", firstUIDAdded];
                       }
 
                     return_count++;
@@ -1195,19 +1280,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         if (more_available)
           {
-            //[folderMetadata setObject: lastSequence  forKey: @"MoreAvailable"];
             [folderMetadata setObject: [NSNumber numberWithInt: YES]  forKey: @"MoreAvailable"];
             [folderMetadata setObject: *theLastServerKey  forKey: @"SyncKey"];
-            //RELEASE(lastSequence);
           }
         else
           {
             [folderMetadata removeObjectForKey: @"MoreAvailable"];
 
-            if (firstUidAdded)
+            if (firstUIDAdded)
               {
                 a = [davCollectionTagToStore componentsSeparatedByString: @"-"];
-                [folderMetadata setObject: [[NSString alloc] initWithFormat: @"%@-%@", firstUidAdded, [a objectAtIndex: 1]] forKey: @"SyncKey"];
+                [folderMetadata setObject: [[NSString alloc] initWithFormat: @"%@-%@", firstUIDAdded, [a objectAtIndex: 1]] forKey: @"SyncKey"];
+                RELEASE(firstUIDAdded);
               }
             else
               [folderMetadata setObject: davCollectionTagToStore forKey: @"SyncKey"];
@@ -1215,7 +1299,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
-        RELEASE(firstUidAdded);
         RELEASE(*theLastServerKey);
         
       } // default:
@@ -1481,7 +1564,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    withFolderType: folderType
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
                          inBuffer: changeBuffer
-                    lastServerKey: &lastServerKey];
+                    lastServerKey: &lastServerKey
+                  defaultInterval: [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncInterval]];
     }
 
   folderMetadata = [self _folderMetadataForKey: folderKey];
@@ -1643,6 +1727,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   SOGoSystemDefaults *defaults;
   id <DOMElement> aCollection;
   NSMutableString *output, *s;
+  NSMutableDictionary *globalMetadata;
+  NSNumber *syncRequestInCache, *processIdentifier;
+  NSString *key;
   NSArray *allCollections;
   NSData *d;
 
@@ -1654,6 +1741,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumSyncInterval];
+  processIdentifier = [NSNumber numberWithInt: [[NSProcessInfo processInfo] processIdentifier]];
+
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
 
   [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -1673,45 +1763,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       return;
     }
 
-  if ([[self globalMetadataForDevice] objectForKey: @"SyncInProgress"])
-    {
-      NSCalendarDate *syncStartDate;
-
-      // An other sync is going on right now. Lets break it and wait
-      // until the other process clears it up.
-      [self _setOrUnsetSyncInProgress: YES  invalidate: YES];
-      total_sleep = 0;
-
-      syncStartDate = [[self globalMetadataForDevice] objectForKey: @"SyncInProgress"];
-
-      while ([[self globalMetadataForDevice] objectForKey: @"SyncInProgress"])
-        {
-          // Don't go into a heartbeat loop.
-          heartbeatInterval = 0;
-
-          // We waited too long. Return a fatal error to the client.
-          if (abs([syncStartDate timeIntervalSinceNow]) > defaultInterval)
-           {
-              if (debugOn)
-                [self logWithFormat: @"EAS - We waited too long. syncStartDate: %@ %@", syncStartDate, [self globalMetadataForDevice]];
-
-              [theResponse setStatus: 503];
-              [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
-              RELEASE(output);
-              return;
-            }
-
-          if (debugOn)
-            [self logWithFormat: @"EAS - globalMetadataForDevice %@", [self globalMetadataForDevice]];
- 
-          [self logWithFormat: @"Sync in progress for device %@ (login: %@). Lock will expire in %d seconds", [context objectForKey: @"DeviceId"], [[context activeUser] login], defaultInterval-total_sleep];
-          sleep(5);
-          total_sleep += 5;
-        }
-    }
-
-  // No lock or broke the existing one, lets grab it and proceed
-  [self _setOrUnsetSyncInProgress: YES  invalidate: NO];
+  // Let other requests know about the collections we are dealing with.
+  [self _setOrUnsetSyncRequest: YES  collections: allCollections];
   
   changeDetected = NO;
   maxSyncResponseSize = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncResponseSize];
@@ -1739,8 +1792,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   [output appendString: @"<Collections>"];
-  
-  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
 
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
@@ -1756,24 +1807,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                        changeDetected: &changeDetected
                   maxSyncResponseSize: maxSyncResponseSize];
 
-          if (maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize)
+          // Don't return a response if another Sync is waiting.
+          globalMetadata = [self globalMetadataForDevice];
+          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+
+          if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
+
+              [theResponse setStatus: 503];
+
+              RELEASE(output);
+              return;
+            }
+
+          if ((maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize))
             break;
         }
 
       if (changeDetected)
         {
-          // Don't return a response if an other Sync is waiting and this is a heartbeat request.
-          if ([[self globalMetadataForDevice] objectForKey: @"InvalidateSyncInProgress"] && heartbeatInterval > 1)
-            {
-              if (debugOn)
-                [self logWithFormat: @"EAS - Heartbeat stopped - discard response %@", [self globalMetadataForDevice]];
-
-              [theResponse setStatus: 503];
-              [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
-              RELEASE(output);
-              return;
-            }
-
           [self logWithFormat: @"Change detected during Sync, we push the content."];
           break;
         }
@@ -1785,7 +1839,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             {
               // We check if we must break the current synchronization since an other Sync
               // has just arrived.
-              if ([[self globalMetadataForDevice] objectForKey: @"InvalidateSyncInProgress"])
+              syncRequestInCache = [[self globalMetadataForDevice] objectForKey: @"SyncRequest"];
+              if (!([syncRequest isEqualToNumber: syncRequestInCache]))
                 {
                   if (debugOn)
                     [self logWithFormat: @"EAS - Heartbeat stopped %@", [self globalMetadataForDevice]];
@@ -1830,8 +1885,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Avoid overloading the autorelease pool here, as Sync command can
   // generate fairly large responses.
   RELEASE(output);
-
-  [self _setOrUnsetSyncInProgress: NO  invalidate: NO];
 }
 
 @end
