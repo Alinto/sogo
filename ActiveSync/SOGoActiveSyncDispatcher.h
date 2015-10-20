@@ -31,15 +31,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "SOGoActiveSyncConstants.h"
 
+@class NSCalendarDate;
 @class NSException;
 @class NSMutableDictionary;
 @class NSURL;
+@class NSNumber;
 
 @interface SOGoActiveSyncDispatcher : NSObject
 {
   NSURL *folderTableURL;
   NSDictionary *imapFolderGUIDS;
   id context;
+
+  NSNumber *syncRequest;
+
   BOOL debugOn;
 }
 
