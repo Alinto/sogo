@@ -1,8 +1,6 @@
 /* NSObject+CardDAV.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Ludovic Marcotte <ludovic@inverse.ca>
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,6 +184,10 @@
       if (filter)
         [filters addObject: filter];
     }
+
+  // If no filters are provided, we return everything.
+  if (![filters count])
+      [filters addObject: [NSDictionary dictionaryWithObject: @"."  forKey: @"mail"]];
 
   return filters;
 }
