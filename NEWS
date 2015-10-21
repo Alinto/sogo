@@ -13,6 +13,7 @@ Bug fixes
  - correctly handle the References header over EAS (#3365)
  - make sure English is always used when generating Date headers using EAS (#3356)
  - don't escape quoted strings during versit generation
+ - we now return all cards when we receive an empty addressbook-query REPORT
 
 2.3.2 (2015-09-16)
 ------------------
