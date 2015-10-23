@@ -181,6 +181,7 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 
 static NGMimeType  *MultiMixedType = nil;
 static NGMimeType  *MultiAlternativeType = nil;
+static NGMimeType  *MultiRelatedType = nil;
 static NSString    *userAgent      = nil;
 
 + (void) initialize
@@ -190,6 +191,9 @@ static NSString    *userAgent      = nil;
 
   MultiAlternativeType = [NGMimeType mimeType: @"multipart" subType: @"alternative"];
   [MultiAlternativeType retain];
+
+  MultiRelatedType = [NGMimeType mimeType: @"multipart" subType: @"related"];
+  [MultiRelatedType retain];
 
   userAgent      = [NSString stringWithFormat: @"SOGoMail %@",
 			     SOGoVersion];
@@ -1677,16 +1681,20 @@ static NSString    *userAgent      = nil;
   NGMimeMessage *message;
   NGMutableHashMap *map;
   NSString *newText;
+  BOOL has_inline_images;
 
   message = nil;
-
+  has_inline_images = NO;
   bodyParts = [NSMutableArray array];
 
   if (_extractImages)
     {
       newText = [text htmlByExtractingImages: bodyParts];
       if ([bodyParts count])
-        [self setText: newText];
+        {
+          [self setText: newText];
+          has_inline_images = YES;
+        }
     }
 
   map = [self mimeHeaderMapWithHeaders: _headers
@@ -1703,10 +1711,20 @@ static NSString    *userAgent      = nil;
         /* no attachments */
         message = [self mimeMessageForContentWithHeaderMap: map];
       else
-        /* attachments, create multipart/mixed */
-        message = [self mimeMultiPartMessageWithHeaderMap: map 
-                                             andBodyParts: bodyParts];
-      //[self debugWithFormat: @"message: %@", message];
+        {
+          // attachments, create multipart/mixed or multipart/related if
+          // we have inline image to avoid Thunderbird bug #61815 (https://bugzilla.mozilla.org/show_bug.cgi?id=61815)
+          if (has_inline_images)
+            {
+              [map removeAllObjectsForKey: @"content-type"];
+              [map addObject: MultiRelatedType forKey: @"content-type"];
+            }
+
+          message = [self mimeMultiPartMessageWithHeaderMap: map 
+                                               andBodyParts: bodyParts];
+
+          //[self debugWithFormat: @"message: %@", message];
+        }
     }
   
   return message;
