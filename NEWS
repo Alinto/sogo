@@ -14,6 +14,7 @@ Bug fixes
  - make sure English is always used when generating Date headers using EAS (#3356)
  - don't escape quoted strings during versit generation
  - we now return all cards when we receive an empty addressbook-query REPORT
+ - avoid crash when replying to a mail with no recipients (#3359)
 
 2.3.2 (2015-09-16)
 ------------------

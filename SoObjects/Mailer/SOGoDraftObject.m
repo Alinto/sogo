@@ -699,7 +699,8 @@ static NSString    *userAgent      = nil;
     for (count = max - 1; count >= 0; count--)
       {
 	currentAddress = [addresses objectAtIndex: count];
-	if ([currentRecipient
+	if (![currentAddress baseEMail] ||
+            [currentRecipient
               caseInsensitiveCompare: [currentAddress baseEMail]]
             == NSOrderedSame)
 	  {
