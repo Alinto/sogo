@@ -15,6 +15,7 @@ Bug fixes
  - don't escape quoted strings during versit generation
  - we now return all cards when we receive an empty addressbook-query REPORT
  - avoid crash when replying to a mail with no recipients (#3359)
+ - inline images sent from SOGo webmail are not displayed in Mozilla Thunderbird (#3271)
 
 2.3.2 (2015-09-16)
 ------------------
