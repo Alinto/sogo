@@ -1645,27 +1645,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
-  BOOL modified = NO;
-  BOOL alreadyRead = NO;
-  NSString *imapFlag = @"\\Seen";
-
-  alreadyRead = [[[sogoObject fetchCoreInfos] objectForKey: @"flags"]
-                  containsObject: @"seen"];
-
   /* TODO: notifications should probably be emitted from here */
   if (flag & CLEAR_READ_FLAG)
-    {
-      [sogoObject removeFlags: imapFlag];
-      modified = alreadyRead;
-    }
+    [properties setObject: [NSNumber numberWithBool: NO] forKey: @"read_flag_set"];
   else
-    {
-      [sogoObject addFlags: imapFlag];
-      modified = !alreadyRead;
-    }
-
-  if (modified)
-    [(MAPIStoreMailFolder *)[self container] synchroniseCache];
+    [properties setObject: [NSNumber numberWithBool: YES] forKey: @"read_flag_set"];
 
   return MAPISTORE_SUCCESS;
 }
@@ -1708,7 +1692,10 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (void) save: (TALLOC_CTX *) memCtx
 {
+  BOOL modified = NO;
+  BOOL seen, storedSeenFlag;
   NSNumber *value;
+  NSString *imapFlag = @"\\Seen";
 
   value = [properties objectForKey: MAPIPropertyKey (PR_FLAG_STATUS)];
   if (value)
@@ -1718,7 +1705,34 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
         [sogoObject addFlags: @"\\Flagged"];
       else /* 0: unflagged, 1: follow up complete */
         [sogoObject removeFlags: @"\\Flagged"];
+
+      modified = YES;
     }
+
+  /* Manage seen flag on save */
+  value = [properties objectForKey: @"read_flag_set"];
+  if (value)
+    {
+      seen = [value boolValue];
+      storedSeenFlag = [[[sogoObject fetchCoreInfos] objectForKey: @"flags"] containsObject: @"seen"];
+      /* We modify the flags anyway to generate a new change number */
+      if (seen)
+        {
+          if (storedSeenFlag)
+            [sogoObject removeFlags: imapFlag];
+          [sogoObject addFlags: imapFlag];
+        }
+      else
+        {
+          if (!storedSeenFlag)
+            [sogoObject addFlags: imapFlag];
+          [sogoObject removeFlags: imapFlag];
+        }
+      modified = YES;
+    }
+
+  if (modified)
+    [(MAPIStoreMailFolder *)[self container] synchroniseCache];
 
   if (mailIsSharingObject)
     [[self _sharingObject] saveWithMessage: self
