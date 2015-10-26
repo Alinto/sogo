@@ -16,6 +16,7 @@ Bug fixes
  - we now return all cards when we receive an empty addressbook-query REPORT
  - avoid crash when replying to a mail with no recipients (#3359)
  - inline images sent from SOGo webmail are not displayed in Mozilla Thunderbird (#3271)
+ - prevent postal address showing on single line over EAS (#2614)
 
 2.3.2 (2015-09-16)
 ------------------

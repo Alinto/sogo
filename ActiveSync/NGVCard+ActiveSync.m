@@ -52,7 +52,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSArray *emails, *addresses, *categories, *elements;
   CardElement *n, *homeAdr, *workAdr;
-  NSMutableString *s;
+  NSMutableString *s, *a;
   NSString *url;
   id o;
 
@@ -63,7 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if ((o = [n flattenedValueAtIndex: 0 forKey: @""]))
     [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
-  
+
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
     [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
   
@@ -146,16 +146,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([addresses count])
     {
       homeAdr = [addresses objectAtIndex: 0];
+      a = [NSMutableString string];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentationInContext: context]];
+        [a appendString: o];
+
+      if ((o = [homeAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
+        [a appendFormat: @"\n%@", o];
       
+      [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [a activeSyncRepresentationInContext: context]];
+
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
         [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentationInContext: context]];
-      
+
       if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
         [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentationInContext: context]];
       
@@ -171,9 +177,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([addresses count])
     {
       workAdr = [addresses objectAtIndex: 0];
+      a = [NSMutableString string];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentationInContext: context]];
+        [a appendString: o];
+
+      if ((o = [workAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
+        [a appendFormat: @"\n%@", o];
+
+      [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [a activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentationInContext: context]];
@@ -217,6 +229,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     inContext: (WOContext *) context
 {
   CardElement *element;
+  NSMutableArray *addressLines;
   id o;
   
   // Contact's note
@@ -244,10 +257,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // BusinessCountry
   //
   element = [self elementWithTag: @"adr" ofType: @"work"];
-  [element setSingleValue: @""
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessStreet"]
-                  atIndex: 2 forKey: @""];
+
+  if ((o = [theValues objectForKey: @"BusinessStreet"]))
+    {
+      addressLines = [NSMutableArray arrayWithArray: [o componentsSeparatedByString: @"\n"]];
+
+      [element setSingleValue: @""
+                      atIndex: 1 forKey: @""];
+      [element setSingleValue: [addressLines objectAtIndex: 0]
+                      atIndex: 2 forKey: @""];
+
+      // Extended address line. If there are more than 2 address lines we add them to the extended address line.
+      if ([addressLines count] > 1)
+        {
+          [addressLines removeObjectAtIndex: 0];
+          [element setSingleValue: [addressLines componentsJoinedByString: @" "]
+                          atIndex: 1 forKey: @""];
+        }
+     }
+  else
+    {
+      [element setSingleValue: @""
+                       atIndex: 1 forKey: @""];
+      [element setSingleValue: @""
+                       atIndex: 2 forKey: @""];
+    }
+
+
   [element setSingleValue: [theValues objectForKey: @"BusinessCity"]
                   atIndex: 3 forKey: @""];
   [element setSingleValue: [theValues objectForKey: @"BusinessState"]
@@ -267,10 +303,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // HomeCountry
   //
   element = [self elementWithTag: @"adr" ofType: @"home"];
-  [element setSingleValue: @""
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomeStreet"]
-                  atIndex: 2 forKey: @""];
+
+  if ((o = [theValues objectForKey: @"HomeStreet"]))
+    {
+      addressLines = [NSMutableArray arrayWithArray: [o componentsSeparatedByString: @"\n"]];
+
+      [element setSingleValue: @""
+                      atIndex: 1 forKey: @""];
+      [element setSingleValue: [addressLines objectAtIndex: 0]
+                      atIndex: 2 forKey: @""];
+
+      // Extended address line. If there are more then 2 address lines we add them to the extended address line.
+      if ([addressLines count] > 1)
+        {
+          [addressLines removeObjectAtIndex: 0];
+          [element setSingleValue: [addressLines componentsJoinedByString: @" "]
+                          atIndex: 1 forKey: @""];
+        }
+    }
+  else
+    {
+      [element setSingleValue: @""
+                       atIndex: 1 forKey: @""];
+      [element setSingleValue: @""
+                       atIndex: 2 forKey: @""];
+    }
+
   [element setSingleValue: [theValues objectForKey: @"HomeCity"]
                   atIndex: 3 forKey: @""];
   [element setSingleValue: [theValues objectForKey: @"HomeState"]
