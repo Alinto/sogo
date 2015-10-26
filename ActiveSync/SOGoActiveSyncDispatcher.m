@@ -953,6 +953,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [[o properties] removeObjectForKey: @"DateCache"];
          [[o properties] removeObjectForKey: @"MoreAvailable"];
          [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+         [[o properties] removeObjectForKey: @"SupportedElements"];
          [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
          [[o properties] removeObjectForKey: @"InitialLoadSequence"];
          [o save];
@@ -1041,6 +1042,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    [[o properties] removeObjectForKey: @"DateCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+                   [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }
@@ -1065,6 +1067,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    [[o properties] removeObjectForKey: @"DateCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+                   [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }

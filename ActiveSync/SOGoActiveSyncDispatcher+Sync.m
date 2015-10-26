@@ -192,6 +192,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"DateCache"];
   [[o properties] removeObjectForKey: @"MoreAvailable"];
   [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+  [[o properties] removeObjectForKey: @"SupportedElements"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
 
@@ -1399,11 +1400,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *lastServerKey, *syncKeyInCache, *folderKey;
   NSMutableDictionary *folderMetadata, *folderOptions;
+  NSMutableArray *supportedElements, *supportedElementNames;
   NSMutableString *changeBuffer, *commandsBuffer;
   id collection, value;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  unsigned int windowSize, v, status;
+  unsigned int windowSize, v, status, i;
   BOOL getChanges, first_sync;
 
   changeBuffer = [NSMutableString string];
@@ -1466,6 +1468,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       davCollectionTag = @"-1";
       first_sync = YES;
       *changeDetected = YES;
+
+      supportedElementNames = [[[NSMutableArray alloc] init] autorelease];
+      value = [theDocumentElement getElementsByTagName: @"Supported"];
+
+      if ([value count])
+        {
+          supportedElements = (id)[[value lastObject] childNodes];
+
+          if ([supportedElements count])
+            {
+              for (i = 0; i < [supportedElements count]; i++)
+                {
+                if ([[supportedElements objectAtIndex: i] nodeType] == DOM_ELEMENT_NODE)
+                  [supportedElementNames addObject: [[supportedElements objectAtIndex: i] tagName]];
+                }
+            }
+
+          [folderMetadata setObject: supportedElementNames forKey: @"SupportedElements"];
+
+          [self _setFolderMetadata: folderMetadata forKey: folderKey];
+
+          if (debugOn)
+            [self logWithFormat: @"EAS - %d %@: supportedElements saved: %@", [supportedElements count], [collection nameInContainer], supportedElementNames];
+        }
     }
   else if ((![syncKey isEqualToString: @"-1"]) && !([folderMetadata objectForKey: @"SyncCache"]))
     {
@@ -1526,6 +1552,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
   [context setObject: mimeSupport  forKey: @"MIMESupport"];
+  [context setObject: [folderMetadata objectForKey: @"SupportedElements"]  forKey: @"SupportedElements"];
 
   //
   // We process the commands from the request
