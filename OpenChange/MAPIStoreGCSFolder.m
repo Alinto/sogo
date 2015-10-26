@@ -548,6 +548,115 @@ static Class NSNumberK;
   return rc;
 }
 
+- (BOOL) synchroniseCacheFor: (NSString *) nameInContainer
+{
+  /* Try to synchronise old messages in versions.plist cache using an
+     specific c_name. It returns a boolean indicating if the
+     synchronisation was carried out succesfully.
+
+     It should be used as last resort, keeping synchroniseCache as the
+     main sync entry point. */
+
+  uint64_t changeNumber;
+  NSString *changeNumberStr;
+  NSData *changeKey;
+  NSNumber *cLastModified, *cDeleted, *cVersion;
+  EOFetchSpecification *fs;
+  EOQualifier *searchQualifier, *fetchQualifier;
+  NSArray *fetchResults;
+  NSDictionary *result;
+  NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
+  GCSFolder *ocsFolder;
+  static NSArray *fields;
+
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
+
+  messages = [currentProperties objectForKey: @"Messages"];
+  if (!messages)
+    {
+        messages = [NSMutableDictionary new];
+        [currentProperties setObject: messages forKey: @"Messages"];
+        [messages release];
+    }
+
+  messageEntry = [messages objectForKey: nameInContainer];
+  if (!messageEntry)
+    {
+      /* Fetch the message by its name */
+      if (!fields)
+        fields = [[NSArray alloc]
+                  initWithObjects: @"c_name", @"c_version", @"c_lastmodified",
+                  @"c_deleted", nil];
+
+      searchQualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_name"
+                                     operatorSelector: EOQualifierOperatorEqual
+                                                value: nameInContainer];
+      fetchQualifier = [[EOAndQualifier alloc]
+                        initWithQualifiers: searchQualifier,
+                        [self contentComponentQualifier],
+                        nil];
+      [fetchQualifier autorelease];
+      [searchQualifier release];
+
+      ocsFolder = [sogoObject ocsFolder];
+      fs = [EOFetchSpecification
+            fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                   qualifier: fetchQualifier
+                               sortOrderings: nil];
+      fetchResults = [ocsFolder fetchFields: fields
+                         fetchSpecification: fs
+                              ignoreDeleted: NO];
+
+      if ([fetchResults count] == 1)
+        {
+          result = [fetchResults objectAtIndex: 0];
+          cLastModified = [result objectForKey: @"c_lastmodified"];
+          cDeleted = [result objectForKey: @"c_deleted"];
+          if ([cDeleted isKindOfClass: NSNumberK] && [cDeleted intValue])
+            cVersion = [NSNumber numberWithInt: -1];
+          else
+            cVersion = [result objectForKey: @"c_version"];
+
+          changeNumber = [[self context] getNewChangeNumber];
+          changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
+
+          /* Create new message entry in Messages dict */
+          messageEntry = [NSMutableDictionary new];
+          [messages setObject: messageEntry forKey: nameInContainer];
+          [messageEntry release];
+
+          /* Store cLastModified, cVersion and the change number */
+          [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
+          [messageEntry setObject: cVersion forKey: @"c_version"];
+          [messageEntry setObject: changeNumberStr forKey: @"version"];
+
+          /* Store the change key */
+          changeKey = [self getReplicaKeyFromGlobCnt: changeNumber >> 16];
+          [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
+          /* Store the changeNumber -> cLastModified mapping */
+          mapping = [currentProperties objectForKey: @"VersionMapping"];
+          if (!mapping)
+            {
+              mapping = [NSMutableDictionary new];
+              [currentProperties setObject: mapping forKey: @"VersionMapping"];
+              [mapping release];
+            }
+          [mapping setObject: cLastModified forKey: changeNumberStr];
+
+          /* Save the message */
+          [versionsMessage save];
+          return YES;
+        }
+      else
+          return NO;
+    }
+
+  /* If message entry exists, then synchroniseCache did its job */
+  return YES;
+}
+
 - (void) updateVersionsForMessageWithKey: (NSString *) messageKey
                            withChangeKey: (NSData *) oldChangeKey
                 andPredecessorChangeList: (NSData *) pcl
