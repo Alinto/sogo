@@ -98,7 +98,7 @@
         user.userClass = user.isGroup ? 'normal-group' : 'normal-user';
         user.$rights = angular.bind(user, user.$acl, _this.folderId);
         _this.users.push(user);
-        deferred.resolve(_this.users);
+        deferred.resolve(user);
       }, function(data, status) {
         deferred.reject(l('An error occured please try again.'));
       });
