@@ -121,13 +121,15 @@
       'gt-lg': '(min-width: 1280px)'
     })
 
-    .config(configure);
+    .config(configure)
+
+    .factory('AuthInterceptor', AuthInterceptor);
 
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider'];
-  function configure($logProvider, $compileProvider, $mdThemingProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider', '$httpProvider'];
+  function configure($logProvider, $compileProvider, $mdThemingProvider, $httpProvider) {
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
       '100': 'cbe5c8',
@@ -211,6 +213,23 @@
       $logProvider.debugEnabled(false);
       $compileProvider.debugInfoEnabled(false);
     }
+
+    $httpProvider.interceptors.push('AuthInterceptor');
+  }
+
+  AuthInterceptor.$inject = ['$window', '$q'];
+  function AuthInterceptor($window, $q) {
+    return {
+      response: function(response) {
+        // When expecting JSON but receiving HTML, assume session has expired and reload page
+        if (/^application\/json/.test(response.config.headers.Accept) &&
+            /^<!DOCTYPE html>/.test(response.data)) {
+          $window.location.reload(true);
+          return $q.reject();
+        }
+        return response;
+      }
+    };
   }
 
 })();

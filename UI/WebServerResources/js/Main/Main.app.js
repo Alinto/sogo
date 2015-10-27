@@ -23,7 +23,10 @@
     function login() {
       Authentication.login(vm.creds)
         .then(function(url) {
-          window.location.href = url;
+          if (window.location.href === url)
+            window.location.reload(true);
+          else
+            window.location.href = url;
         }, function(msg) {
           Dialog.alert(l('Authentication Failed'), msg.error);
         });
