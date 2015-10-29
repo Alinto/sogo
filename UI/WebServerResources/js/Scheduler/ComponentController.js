@@ -178,11 +178,16 @@
     });
 
     $scope.$watch('editor.component.end', function(newEndDate, oldEndDate) {
+        if (newEndDate.getDate() !== oldEndDate.getDate() ||
+            newEndDate.getMonth() !== oldEndDate.getMonth() ||
+            newEndDate.getFullYear() !== oldEndDate.getFullYear())
+          vm.component.end.addMinutes(oldEndDate.getHours() * 60 + oldEndDate.getMinutes());
+
       if (newEndDate <= vm.component.start) {
         vm.component.end = oldEndDate;
       }
       else {
-        vm.component.delta = Math.floor((Math.abs(vm.component.end-vm.component.start)/1000)/60);
+        vm.component.delta = Math.floor((Math.abs(vm.component.end - vm.component.start)/1000)/60);
         vm.component.freebusy = vm.component.updateFreeBusyCoverage();
         vm.attendeesEditor.days = getDays();
       }
