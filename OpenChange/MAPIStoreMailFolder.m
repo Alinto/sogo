@@ -599,7 +599,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   uint64_t lastModseqNbr;
   EOQualifier *searchQualifier;
   NSArray *uids, *changeNumbers;
-  NSUInteger count, max;
+  NSUInteger count, max, nFetched;
   NSArray *fetchResults;
   NSDictionary *result;
   NSData *changeKey;
@@ -677,6 +677,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults
         = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                          context: NULL];
+
+      nFetched = [fetchResults count];
+      if (nFetched != max) {
+        [self errorWithFormat: @"Error fetching UIDs. Asked: %d Received: %d."
+              @"Check the IMAP conversation for details", max, nFetched];
+        return NO;
+      }
 
       for (count = 0; count < max; count++)
         {
