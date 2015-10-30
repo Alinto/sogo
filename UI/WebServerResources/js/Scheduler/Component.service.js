@@ -391,6 +391,7 @@
     this.repeat = {};
     this.alarm = { action: 'display', quantity: 5, unit: 'MINUTES', reference: 'BEFORE', relation: 'START' };
     this.status = 'not-specified';
+    this.delta = 60;
     angular.extend(this, data);
 
     Component.$Preferences.ready().then(function() {
@@ -401,21 +402,33 @@
         Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
     });
 
-    this.delta = 60;
+    if (this.component == 'vevent')
+      this.type = 'appointment';
+    else if (this.component == 'vtoto')
+      this.type = 'task';
 
-    if (this.startDate)
-      this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+    if (this.startDate) {
+      if (angular.isString(this.startDate))
+        // Ex: 2015-10-25T22:34:51+00:00
+        this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+      else
+        // Date object
+        this.start = this.startDate;
+    }
     else if (this.type == 'appointment') {
       this.start = new Date();
       this.start.setMinutes(Math.round(this.start.getMinutes()/15)*15);
     }
 
-    if (this.endDate)
+    if (this.endDate) {
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
+      this.delta = Math.floor((Math.abs(this.end - this.start)/1000)/60);
+    }
     else if (this.type == 'appointment') {
-      this.end = new Date();
+      this.end = new Date(this.start.getTime());
       this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
       this.end.addMinutes(this.delta);
+      //this.end.addMinutes(this.delta);
     }
 
     if (this.dueDate)

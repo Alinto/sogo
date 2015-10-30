@@ -103,8 +103,10 @@
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
               <md-datepicker ng-model="editor.component.start"
-                             label:md-placeholder="From"> <!-- date picker--></md-datepicker>
+                             ng-change="editor.updateStartTime()"
+                             label:md-placeholder="From"><!-- date picker --></md-datepicker>
               <sg-timepicker ng-model="editor.component.start"
+                             ng-change="editor.adjustStartTime()"
                              ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
             </div>
           </div>
@@ -114,8 +116,10 @@
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
               <md-datepicker ng-model="editor.component.end"
-                             label:md-placeholder="To"> <!-- date picker--></md-datepicker>
+                             ng-change="editor.updateEndTime()"
+                             label:md-placeholder="To"><!-- date picker --></md-datepicker>
               <sg-timepicker ng-model="editor.component.end"
+                             ng-change="editor.adjustEndTime()"
                              ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
             </div>
           </div>

@@ -146,7 +146,7 @@
    */
   ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
   function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
-    var vm = this, component;
+    var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
     vm.calendars = Calendar.$calendars;
     vm.component = stateComponent;
@@ -162,36 +162,28 @@
     vm.cancel = cancel;
     vm.save = save;
     vm.attendeesEditor = {
-      startDate: vm.component.startDate,
-      endDate: vm.component.endDate,
-      days: getDays(),
+      // startDate: vm.component.startDate,
+      // endDate: vm.component.endDate,
+      // days: getDays(),
       hours: getHours()
     };
+    vm.addStartDate = addStartDate;
+    vm.addDueDate = addDueDate;
 
-    $scope.$watch('editor.component.start', function(newStartDate, oldStartDate) {
-      if (vm.component.type == 'appointment') {
-        vm.component.end = new Date(vm.component.start);
-        vm.component.end.addMinutes(vm.component.delta);
-        vm.component.freebusy = vm.component.updateFreeBusyCoverage();
-        vm.attendeesEditor.days = getDays();
-      }
-    });
+    // Synchronize start and end dates
+    vm.updateStartTime = updateStartTime;
+    vm.adjustStartTime = adjustStartTime;
+    vm.updateEndTime = updateEndTime;
+    vm.adjustEndTime = adjustEndTime;
+    vm.updateDueTime = updateDueTime;
+    vm.adjustDueTime = adjustDueTime;
 
-    $scope.$watch('editor.component.end', function(newEndDate, oldEndDate) {
-        if (newEndDate.getDate() !== oldEndDate.getDate() ||
-            newEndDate.getMonth() !== oldEndDate.getMonth() ||
-            newEndDate.getFullYear() !== oldEndDate.getFullYear())
-          vm.component.end.addMinutes(oldEndDate.getHours() * 60 + oldEndDate.getMinutes());
-
-      if (newEndDate <= vm.component.start) {
-        vm.component.end = oldEndDate;
-      }
-      else {
-        vm.component.delta = Math.floor((Math.abs(vm.component.end - vm.component.start)/1000)/60);
-        vm.component.freebusy = vm.component.updateFreeBusyCoverage();
-        vm.attendeesEditor.days = getDays();
-      }
-    });
+    if (vm.component.start)
+      oldStartDate = new Date(vm.component.start.getTime());
+    if (vm.component.end)
+      oldEndDate = new Date(vm.component.end.getTime());
+    if (vm.component.due)
+      oldDueDate = new Date(vm.component.due.getTime());
 
     function addAttachUrl() {
       var i = vm.component.addAttachUrl('');
@@ -267,6 +259,63 @@
         hours.push(i.toString());
       }
       return hours;
+    }
+
+    function addStartDate() {
+      vm.component.$addStartDate();
+      oldStartDate = new Date(vm.component.start.getTime());
+    }
+
+    function addDueDate() {
+      vm.component.$addDueDate();
+      oldDueDate = new Date(vm.component.due.getTime());
+    }
+
+    function updateStartTime() {
+      // When using the datepicker, the time is reset to 00:00; restore it
+      vm.component.start.addMinutes(oldStartDate.getHours() * 60 + oldStartDate.getMinutes());
+      adjustStartTime();
+    }
+
+    function adjustStartTime() {
+      // Preserve the delta between the start and end dates
+      var delta;
+      delta = oldStartDate.valueOf() - vm.component.start.valueOf();
+      if (delta !== 0) {
+        oldStartDate = new Date(vm.component.start.getTime());
+        if (vm.component.type === 'appointment') {
+          vm.component.end = new Date(vm.component.start.getTime());
+          vm.component.end.addMinutes(vm.component.delta);
+          oldEndDate = new Date(vm.component.end.getTime());
+        }
+      }
+    }
+
+    function updateEndTime() {
+      // When using the datepicker, the time is reset to 00:00; restore it
+      vm.component.end.addMinutes(oldEndDate.getHours() * 60 + oldEndDate.getMinutes());
+      adjustEndTime();
+    }
+
+    function adjustEndTime() {
+      // The end date must be after the start date
+      var delta = vm.component.end.valueOf() - vm.component.start.valueOf();
+      if (delta < 0)
+        vm.component.end = new Date(oldEndDate.getTime());
+      else {
+        vm.component.delta = Math.floor((Math.abs(vm.component.end - vm.component.start)/1000)/60);
+        oldEndDate = new Date(vm.component.end.getTime());
+      }
+    }
+
+    function updateDueTime() {
+      // When using the datepicker, the time is reset to 00:00; restore it
+      vm.component.due.addMinutes(oldDueDate.getHours() * 60 + oldDueDate.getMinutes());
+      adjustDueTime();
+    }
+
+    function adjustDueTime() {
+      oldDueDate = new Date(vm.component.due.getTime());
     }
   }
 
