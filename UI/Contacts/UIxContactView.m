@@ -384,7 +384,7 @@
   data = [NSMutableString string];
   [data appendString: postalCode];
   if ([postalCode length] > 0 && [country length] > 0)
-    [data appendFormat: @", ", country];
+    [data appendFormat: @", "];
   [data appendString: country];
 
   return [self _cardStringWithLabel: nil value: data];

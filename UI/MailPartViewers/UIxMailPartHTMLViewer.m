@@ -551,9 +551,9 @@ static NSData* _sanitizeContent(NSData *theData)
                   else
                     skipAttribute = YES;
                 }
-              else if ([name isEqualToString: @"background"] ||
+              else if (([name isEqualToString: @"background"] ||
                        ([name isEqualToString: @"data"]
-                        || [name isEqualToString: @"classid"])
+                        || [name isEqualToString: @"classid"]))
                        && [lowerName isEqualToString: @"object"])
                 {
                   value = [_attributes valueAtIndex: count];
@@ -741,7 +741,7 @@ static NSData* _sanitizeContent(NSData *theData)
 
 /* SaxLexicalHandler */
 - (void) comment: (unichar *) _chars
-          length: (NSUInteger) _len
+          length: (int) _len
 {
   showWhoWeAre();
   if (inStyle)
@@ -807,7 +807,7 @@ static NSData* _sanitizeContent(NSData *theData)
     }
   [dump appendFormat: @"--- end ---\n"];
 
-  NSLog(dump);
+  NSLog(@"%@", dump);
   [dump release];
 }
 

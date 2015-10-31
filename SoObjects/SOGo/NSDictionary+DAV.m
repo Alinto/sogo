@@ -46,7 +46,7 @@
 {
   NSString *newTag;
 
-  newTag = [NSString stringWithFormat: @"n%d", [namespaces count]];
+  newTag = [NSString stringWithFormat: @"n%d", (int)[namespaces count]];
   [namespaces setObject: newTag forKey: newNS];
 
   return newTag;

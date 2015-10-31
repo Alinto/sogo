@@ -140,7 +140,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
           [s appendFormat: @"<Type>%d</Type>", 1];
-          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
+          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", (int)[o length]];
           [s appendFormat: @"<Data>%@</Data>", o];
           [s appendString: @"</Body>"];
         }

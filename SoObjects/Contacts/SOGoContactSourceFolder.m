@@ -94,7 +94,7 @@
     {
       if (![newDisplayName length])
         newDisplayName = newName;
-      ASSIGN (displayName, newDisplayName);
+      ASSIGN (displayName, [newDisplayName mutableCopy]);
     }
 
   return self;

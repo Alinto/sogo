@@ -193,7 +193,7 @@
                                                     timeZone: [currentStartDate timeZone]];
 
                   // Increment counters for quarters of first hour
-                  hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                  hourKey = [NSString stringWithFormat: @"%u", (unsigned int)[currentDate hourOfDay]];
                   hourData = [dayData objectForKey: hourKey];
                   if (!hourData)
                     {
@@ -224,7 +224,7 @@
                   while ([currentDate compare: currentEndDate] == NSOrderedAscending &&
                          [currentEndDate timeIntervalSinceDate: currentDate] >= 3600) // 1 hour
                     {
-                      hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                      hourKey = [NSString stringWithFormat: @"%u", (unsigned int)[currentDate hourOfDay]];
                       hourData = [dayData objectForKey: hourKey];
                       if (!hourData)
                         {
@@ -251,7 +251,7 @@
                   // Increment counters for quarters of last hour
                   if ([currentEndDate timeIntervalSinceDate: currentDate] > 0)
                     {
-                      hourKey = [NSString stringWithFormat: @"%u", [currentDate hourOfDay]];
+                      hourKey = [NSString stringWithFormat: @"%u", (unsigned int)[currentDate hourOfDay]];
                       hourData = [dayData objectForKey: hourKey];
                       if (!hourData)
                         {

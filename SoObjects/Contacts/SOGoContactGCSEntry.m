@@ -50,7 +50,7 @@
 
 - (Class *) parsingClass
 {
-  return [NGVCard class];
+  return (Class *)[NGVCard class];
 }
 
 /* content */

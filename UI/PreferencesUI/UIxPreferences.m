@@ -1471,15 +1471,15 @@ static NSArray *reminderValues = nil;
 //           if ([account updateFilters])
 //             // If Sieve is not enabled, the SOGoSieveManager will immediatly return a positive answer
 //             // See [SOGoSieveManager updateFiltersForAccount:withUsername:andPassword:]
-//             results = [self responseWithStatus: 200
+//             results = (id <WOActionResults>)[self responseWithStatus: 200
 //                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
 
 //           else
-//             results = [self responseWithStatus: 502
+//             results = (id <WOActionResults>)[self responseWithStatus: 502
 //                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
 //         }
 //       else
-//         results = [self responseWithStatus: 503
+//         results = (id <WOActionResults>)[self responseWithStatus: 503
 //                      andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
 //     }
 //   else
@@ -2167,12 +2167,12 @@ static NSArray *reminderValues = nil;
               
               if (![account updateFilters])
                 {
-                  results = [self responseWithStatus: 502
+                  results = (id <WOActionResults>) [self responseWithStatus: 502
                            andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]]; 
                 }
             }
           else
-            results = [self responseWithStatus: 503
+            results = (id <WOActionResults>) [self responseWithStatus: 503
                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
         }
     }
@@ -2184,7 +2184,7 @@ static NSArray *reminderValues = nil;
     }
 
   if (!results)
-    results = [self responseWithStatus: 200];
+    results = (id <WOActionResults>) [self responseWithStatus: 200];
 
   return results;
 }

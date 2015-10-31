@@ -1674,7 +1674,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   sortOrderings = [NSMutableArray array];
 
-  if ([self _sortElementIsAscending: sortElement])
+  if ([self _sortElementIsAscending: (NGDOMNodeWithChildren <DOMElement> *)sortElement])
     sortOrderingOrder = EOCompareAscending;
   else
     sortOrderingOrder = EOCompareDescending;

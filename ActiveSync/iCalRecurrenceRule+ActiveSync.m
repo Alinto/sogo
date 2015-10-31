@@ -140,7 +140,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           // Simple reccurrence rule of type "Monthly"
           type = 2;
           [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>",
-             [[[self parent] startDate] dayOfMonth]];
+             (int)[[[self parent] startDate] dayOfMonth]];
         }
     }
   else if ([self frequency] == iCalRecurrenceFrequenceYearly)

@@ -57,6 +57,7 @@
 #import <Mailer/SOGoMailFolder.h>
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
 #import <MailPartViewers/UIxMailSizeFormatter.h>
+#import <MailPartViewers/UIxMailPartViewer.h>
 
 #import "WOContext+UIxMailer.h"
 #import "UIxMailFormatter.h"
@@ -229,7 +230,7 @@ static NSString *mailETag = nil;
 
 - (id <WOActionResults>) defaultAction
 {
-  id <WOActionResults> response;
+  WOResponse *response;
   NSString *s;
   NSMutableDictionary *data;
   NSArray *addresses;

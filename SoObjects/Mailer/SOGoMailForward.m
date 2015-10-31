@@ -73,10 +73,10 @@
 
 - (NSString *) newLine
 {
-  NSString *rc = [NSString stringWithString: @" "];
+  NSString *rc = @" ";
   
   if (htmlComposition)
-    rc = [NSString stringWithString: @"<br/>"];
+    rc = @"<br/>";
 
   return rc;
 }

@@ -779,9 +779,14 @@ static BOOL debugSoParts       = NO;
 	  [mimeType hasPrefix: @"audio/"] ||
 	  [mimeType hasPrefix: @"image/"] ||
 	  [mimeType hasPrefix: @"video/"])
+      {
           filename = [NSString stringWithFormat: @"unknown_%@", path];
-      else if ([mimeType isEqualToString: @"message/rfc822"])
-        filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      }
+      else
+      {
+        if ([mimeType isEqualToString: @"message/rfc822"])
+          filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      }
     }
 
   if (filename)
@@ -825,13 +830,13 @@ static BOOL debugSoParts       = NO;
 	{
 	  currentPart = [subparts objectAtIndex: i-1];
 	  if (path)
-	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
+	    newPath = [NSString stringWithFormat: @"%@.%d", path, (int)i];
 	  else
-	    newPath = [NSString stringWithFormat: @"%d", i];
+	    newPath = [NSString stringWithFormat: @"%d", (int)i];
 	  [self _fetchFileAttachmentKeysInPart: currentPart
                                      intoArray: keys
                                       withPath: newPath
-                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, i]];
+                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, (int)i]];
 	}
     }
   else

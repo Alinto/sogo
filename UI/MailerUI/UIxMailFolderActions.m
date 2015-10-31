@@ -451,7 +451,7 @@
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSMutableArray *mailboxThreadsCollapsed;
   NSString *destinationFolder;
-  SOGoUserSettings *us;
+  SOGoUserSettings *us=nil;
   WOResponse *response;
   NSDictionary *data;
   SOGoMailFolder *co;

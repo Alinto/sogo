@@ -80,8 +80,8 @@
       testWithMessage ((NSInteger) [testDate timeIntervalSince1970]
                        == occurrenceSeconds[count],
                        ([NSString stringWithFormat:
-                                    @"test %d: seconds do not match:"
-                                  @" delta = %d", count, delta]));
+                                    @"test %ld: seconds do not match:"
+                                  @" delta = %ld", count, delta]));
     }
 }
 

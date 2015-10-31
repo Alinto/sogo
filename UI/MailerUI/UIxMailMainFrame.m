@@ -620,7 +620,7 @@
 
 - (NSString *) columnsDisplayCount
 {
-  return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
+  return [NSString stringWithFormat: @"%d", (int)[[self columnsDisplayOrder] count]];
 }
 
 - (void) setCurrentColumn: (NSDictionary *) newCurrentColumn

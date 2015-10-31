@@ -61,7 +61,7 @@
   return [NSString stringWithFormat: @"%u",
                    (unsigned int) ([self childIndex] + 1)];
   char buf[8];
-  sprintf(buf, "%d", [self childIndex] + 1);
+  sprintf(buf, "%d", (int)[self childIndex] + 1);
   return [NSString stringWithCString:buf];
 }
 

@@ -107,7 +107,7 @@
 
 - (void) setDisplayName: (NSString *) newDisplayName
 {
-  ASSIGN (displayName, newDisplayName);
+  ASSIGN (displayName, [newDisplayName mutableCopy]);
 }
 
 - (NSString *) displayName
