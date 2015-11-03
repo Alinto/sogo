@@ -574,6 +574,7 @@
           NSLog (@"  %@ (%@)",
                  folderKey, [currentFolder objectForKey: @"displayname"]);
         }
+      rc = YES;
     }
   else
     {
