@@ -74,7 +74,7 @@
   int i;
 
   allLabels = [NSMutableArray array];
-  allKeys = [[[theDefaults allKeys] sortedArrayUsingSelector: @selector (caseInsensitiveCompare:)] mutableCopy];
+  allKeys = (NSMutableArray *)[[theDefaults allKeys] sortedArrayUsingSelector: @selector (caseInsensitiveCompare:)];
   
   for (i = 0; i < [allKeys count]; i++)
     {
