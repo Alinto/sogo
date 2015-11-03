@@ -94,7 +94,7 @@
     {
       if (![newDisplayName length])
         newDisplayName = newName;
-      ASSIGN (displayName, [newDisplayName mutableCopy]);
+      ASSIGN (displayName, (NSMutableString *)newDisplayName);
     }
 
   return self;
