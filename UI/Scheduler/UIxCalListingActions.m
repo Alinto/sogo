@@ -400,11 +400,11 @@ static NSArray *tasksFields = nil;
           else if ([criteria isEqualToString:@"entireContent"])
             {
               // First search : Through the quick table inside the location, category and title columns
-              quickInfos = [[currentFolder fetchCoreInfosFrom: startDate
+              quickInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                           to: endDate
                                                        title: value
                                                    component: component
-                                           additionalFilters: criteria] mutableCopy];
+                                           additionalFilters: criteria];
         
               // Save the c_name in another array to compare with
               if ([quickInfos count] > 0)
@@ -416,10 +416,10 @@ static NSArray *tasksFields = nil;
                 }
         
               // Second research : Every objects except for those already in the quickInfos array
-              allInfos = [[currentFolder fetchCoreInfosFrom: startDate
+              allInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                         to: endDate
                                                      title: nil
-                                                 component: component] mutableCopy];
+                                                 component: component];
               if (quickInfosFlag == YES)
                 {
                   for (i = ([allInfos count] - 1); i >= 0 ; i--) {
