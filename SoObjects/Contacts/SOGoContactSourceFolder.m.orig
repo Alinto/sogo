@@ -697,7 +697,7 @@
   BOOL otherIsPersonal;
 
   otherIsPersonal = ([otherFolder isKindOfClass: [SOGoContactGCSFolder class]]
-                     || ([otherFolder isKindOfClass: object_getClass(self)] && [otherFolder isPersonalSource]));
+                     || ([otherFolder isKindOfClass: isa] && [otherFolder isPersonalSource]));
 
   if (isPersonalSource)
     {
