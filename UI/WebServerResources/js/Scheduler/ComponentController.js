@@ -299,11 +299,11 @@
 
     function adjustEndTime() {
       // The end date must be after the start date
-      var delta = vm.component.end.valueOf() - vm.component.start.valueOf();
+      var delta = vm.component.start.minutesTo(vm.component.end);
       if (delta < 0)
         vm.component.end = new Date(oldEndDate.getTime());
       else {
-        vm.component.delta = Math.floor((Math.abs(vm.component.end - vm.component.start)/1000)/60);
+        vm.component.delta = delta;
         oldEndDate = new Date(vm.component.end.getTime());
       }
     }

@@ -422,13 +422,10 @@
 
     if (this.endDate) {
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
-      this.delta = Math.floor((Math.abs(this.end - this.start)/1000)/60);
+      this.delta = this.start.minutesTo(this.end);
     }
     else if (this.type == 'appointment') {
-      this.end = new Date(this.start.getTime());
-      this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
-      this.end.addMinutes(this.delta);
-      //this.end.addMinutes(this.delta);
+      this.setDelta(this.delta);
     }
 
     if (this.dueDate)
@@ -648,6 +645,19 @@
       });
       return freebusy;
     }
+  };
+
+  /**
+   * @function setDelta
+   * @memberof Component.prototype
+   * @desc Set the end time to the specified number of minutes after the start time.
+   * @param {number} delta - the number of minutes
+   */
+  Component.prototype.setDelta = function(delta) {
+    this.delta = delta;
+    this.end = new Date(this.start.getTime());
+    this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
+    this.end.addMinutes(this.delta);
   };
 
   /**

@@ -184,6 +184,15 @@ Date.prototype.daysUpTo = function(otherDate) {
     return days;
 };
 
+Date.prototype.minutesTo = function(otherDate) {
+  var delta, dstOffset;
+
+  delta = Math.floor(otherDate.valueOf() - this.valueOf())/1000/60;
+  dstOffset = otherDate.getTimezoneOffset() - this.getTimezoneOffset();
+
+  return delta - dstOffset;
+};
+
 Date.prototype.stringWithSeparator = function(separator) {
     var month = '' + (this.getMonth() + 1);
     var day = '' + this.getDate();

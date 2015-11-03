@@ -652,7 +652,8 @@
   iCalEvent *event;
 
   BOOL resetAlarm;
-  unsigned int snoozeAlarm;
+  NSInteger offset;
+  NSUInteger snoozeAlarm;
 
   event = [self event];
   co = [self clientObject];
@@ -662,11 +663,22 @@
   timeZone = [ud timeZone];
   eventStartDate = [event startDate];
   eventEndDate = [event endDate];
-  if (!isAllDay)
+
+  if (isAllDay)
     {
-      [eventStartDate setTimeZone: timeZone];
-      [eventEndDate setTimeZone: timeZone];
+      eventEndDate = [eventEndDate dateByAddingYears: 0 months: 0 days: -1];
+
+      // Convert the dates to the user's timezone
+      offset = [timeZone secondsFromGMTForDate: eventStartDate];
+      eventStartDate = [eventStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                 seconds:-offset];
+      offset = [timeZone secondsFromGMTForDate: eventEndDate];
+      eventEndDate = [eventEndDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                             seconds:-offset];
     }
+
+  [eventStartDate setTimeZone: timeZone];
+  [eventEndDate setTimeZone: timeZone];
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
@@ -704,8 +716,11 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
+                       [NSNumber numberWithBool: isAllDay], @"isAllDay",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [NSNumber numberWithBool: [self userHasRSVP]], @"userHasRSVP",
+                       [eventStartDate iso8601DateString], @"startDate",
+                       [eventEndDate iso8601DateString], @"endDate",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [self alarm], @"alarm",

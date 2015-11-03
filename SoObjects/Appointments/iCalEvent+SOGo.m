@@ -328,30 +328,10 @@
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
-  BOOL isAllDay;
-  NSCalendarDate *eventStartDate, *eventEndDate;
   NSMutableDictionary *data;
-  NSTimeZone *timeZone;
-  SOGoUserDefaults *ud;
-
-  isAllDay = [self isAllDay];
-  ud = [[context activeUser] userDefaults];
-  timeZone = [ud timeZone];
-  eventStartDate = [self startDate];
-  eventEndDate = [self endDate];
-
-  if (!isAllDay)
-    {
-      [eventStartDate setTimeZone: timeZone];
-      [eventEndDate setTimeZone: timeZone];
-    }
 
   data = [NSMutableDictionary dictionaryWithDictionary: [super attributesInContext: context]];
 
-  [data setObject: [eventStartDate iso8601DateString] forKey: @"startDate"];
-  [data setObject: [eventEndDate iso8601DateString] forKey: @"endDate"];
-
-  [data setObject: [NSNumber numberWithBool: isAllDay] forKey: @"isAllDay"];
   [data setObject: [NSNumber numberWithBool: ![self isOpaque]] forKey: @"isTransparent"];
 
   return data;
@@ -383,17 +363,9 @@
   if ([o isKindOfClass: [NSString class]] && [o length])
     aptStartDate = [self dateFromString: o inContext: context];
 
-  o = [data objectForKey: @"startTime"];
-  if ([o isKindOfClass: [NSString class]] && [o length])
-    [self adjustDate: &aptStartDate withTimeString: o inContext: context];
-
   o = [data objectForKey: @"endDate"];
   if ([o isKindOfClass: [NSString class]] && [o length])
     aptEndDate = [self dateFromString: o inContext: context];
-
-  o = [data objectForKey: @"endTime"];
-  if ([o isKindOfClass: [NSString class]] && [o length])
-    [self adjustDate: &aptEndDate withTimeString: o inContext: context];
 
   o = [data objectForKey: @"isTransparent"];
   if ([o isKindOfClass: [NSNumber class]])
@@ -418,6 +390,14 @@
         }
       else
         {
+          o = [data objectForKey: @"startTime"];
+          if ([o isKindOfClass: [NSString class]] && [o length])
+            [self adjustDate: &aptStartDate withTimeString: o inContext: context];
+
+          o = [data objectForKey: @"endTime"];
+          if ([o isKindOfClass: [NSString class]] && [o length])
+            [self adjustDate: &aptEndDate withTimeString: o inContext: context];
+
           [self setStartDate: aptStartDate];
           [self setEndDate: aptEndDate];
         }
