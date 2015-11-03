@@ -22,6 +22,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSKeyValueCoding.h>
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -32,6 +33,8 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
+
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "WODirectAction+SOGo.h"
 

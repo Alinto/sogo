@@ -28,10 +28,14 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#define COMPILING_NGOBJWEB 1 /* we want httpRequest for parsing multi-part
+                                form data */
 #import <NGObjWeb/WORequest.h>
+#undef COMPILING_NGOBJWEB
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGMime/NGMimeMultipartBody.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
