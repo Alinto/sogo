@@ -21,6 +21,7 @@
 #ifndef SOGOCACHE_H
 #define SOGOCACHE_H
 
+#import <Foundation/Foundation.h>
 #import <Foundation/NSObject.h>
 
 #include <libmemcached/memcached.h>

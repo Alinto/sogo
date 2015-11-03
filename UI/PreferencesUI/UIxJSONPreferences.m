@@ -32,6 +32,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserProfile.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailLabel.h>
 
 #import <SOGoUI/UIxComponent.h>

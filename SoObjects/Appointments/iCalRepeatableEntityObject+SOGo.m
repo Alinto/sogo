@@ -44,6 +44,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
+#import "iCalCalendar+SOGo.h"
 
 @implementation iCalRepeatableEntityObject (SOGoExtensions)
 

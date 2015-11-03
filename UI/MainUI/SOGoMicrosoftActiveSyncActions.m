@@ -30,6 +30,9 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <Common/WODirectAction+SOGo.h>
+#import <ActiveSync/SOGoActiveSyncDispatcher.h>
+
 @interface SOGoMicrosoftActiveSyncActions : WODirectAction
 @end
 

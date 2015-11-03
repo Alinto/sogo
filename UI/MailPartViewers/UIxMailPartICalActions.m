@@ -46,6 +46,7 @@
 #import <Mailer/SOGoMailObject.h>
 #import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/NSString+Utilities.h>
 #import <Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartICalActions.h"
