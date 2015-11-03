@@ -1314,7 +1314,7 @@ _computeBlocksPosition (NSArray *blocks)
   
   if ([currentView isEqualToString: @"multicolumndayview"])
   {
-    calendars = [[self _selectedCalendars] mutableCopy];
+    calendars = (NSMutableArray *)[self _selectedCalendars];
     eventsByCalendars = [NSMutableArray arrayWithCapacity:[calendars count]];
     for (i = 0; i < [calendars count]; i++) // For each calendar
     {
