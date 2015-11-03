@@ -376,12 +376,12 @@ static NSArray *childRecordFields = nil;
   if (!displayName)
     {
       if (activeUserIsOwner)
-        displayName = [[self _displayNameFromOwner] mutableCopy];
+        displayName = (NSMutableString *)[self _displayNameFromOwner];
       else
         {
-          displayName = [[self _displayNameFromSubscriber] mutableCopy];
+          displayName = (NSMutableString *)[self _displayNameFromSubscriber];
           if (!displayName)
-            displayName = [[self _displayNameFromOwner] mutableCopy];
+            displayName = (NSMutableString *)[self _displayNameFromOwner];
         }
       [displayName retain];
     }
