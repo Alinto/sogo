@@ -23,7 +23,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __OpenBSD__
+#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 #include <crypt.h>
 #endif
 
