@@ -228,7 +228,7 @@
           info = [parts objectAtIndex: i];
           viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
           [viewer setBodyInfo: info];
-          [viewer setPartPath: [[self contentPartPath] arrayByAddingObject: [NSString stringWithFormat: @"%d", i+1]]];
+          [viewer setPartPath: [[self contentPartPath] arrayByAddingObject: [NSString stringWithFormat: @"%d", (int)i+1]]];
           [renderedParts addObject: [viewer renderedPart]];
         }
     }

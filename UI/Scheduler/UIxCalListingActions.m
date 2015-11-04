@@ -367,7 +367,7 @@ static NSArray *tasksFields = nil;
   NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime;
   NSRange match;
   iCalCalendar *calendar;
-  iCalObject *master;
+  iCalEntityObject *master;
   SOGoAppointmentFolder *currentFolder;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
@@ -400,7 +400,7 @@ static NSArray *tasksFields = nil;
           else if ([criteria isEqualToString:@"entireContent"])
             {
               // First search : Through the quick table inside the location, category and title columns
-              quickInfos = [currentFolder fetchCoreInfosFrom: startDate
+              quickInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                           to: endDate
                                                        title: value
                                                    component: component
@@ -416,7 +416,7 @@ static NSArray *tasksFields = nil;
                 }
         
               // Second research : Every objects except for those already in the quickInfos array
-              allInfos = [currentFolder fetchCoreInfosFrom: startDate
+              allInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                         to: endDate
                                                      title: nil
                                                  component: component];
@@ -433,7 +433,7 @@ static NSArray *tasksFields = nil;
                 {
                   iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
                   calendar = [iCalCalendar parseSingleFromSource: iCalString];
-                  master = [calendar firstChildWithTag:component];
+                  master = (iCalEntityObject *)[calendar firstChildWithTag:component];
                   if (master) {
                     if ([[master comment] length] > 0)
                       {
@@ -1314,7 +1314,7 @@ _computeBlocksPosition (NSArray *blocks)
   
   if ([currentView isEqualToString: @"multicolumndayview"])
   {
-    calendars = [self _selectedCalendars];
+    calendars = (NSMutableArray *)[self _selectedCalendars];
     eventsByCalendars = [NSMutableArray arrayWithCapacity:[calendars count]];
     for (i = 0; i < [calendars count]; i++) // For each calendar
     {

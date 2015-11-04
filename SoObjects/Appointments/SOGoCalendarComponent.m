@@ -171,7 +171,7 @@
 
 - (Class *) parsingClass
 {
-  return [iCalCalendar class];
+  return (Class *)[iCalCalendar class];
 }
 
 - (NSString *) davContentType

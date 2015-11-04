@@ -1996,7 +1996,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if ([container resourceNameForEventUID: eventUID])
         {
           return [NSException exceptionWithHTTPStatus: 403
-                                               reason: [NSString stringWithFormat: @"Event UID already in use. (%s)", eventUID]];
+                                               reason: [NSString stringWithFormat: @"Event UID already in use. (%@)", eventUID]];
         }
      
       //

@@ -163,7 +163,7 @@
       rule = [iCalRecurrenceRule new];
       [rule setInterval: @"1"];
 
-      frequency = NSNotFound;
+      frequency = (int)NSNotFound;
       o = [repeat objectForKey: @"frequency"];
       if ([o isKindOfClass: [NSString class]])
         {
