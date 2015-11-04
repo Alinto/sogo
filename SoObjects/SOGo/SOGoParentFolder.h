@@ -45,7 +45,6 @@
 
 - (NSException *) appendPersonalSources;
 - (void) removeSubFolder: (NSString *) subfolderName;
-- (NSException *) appendCollectedSources;
 
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
