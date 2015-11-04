@@ -94,6 +94,12 @@
                       <var:string label:value="Sharing..."/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.showProperties(folder)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
                 </md-menu-content>
               </md-menu>
             </md-list-item>
@@ -146,6 +152,12 @@
                   <md-menu-item>
                     <md-button type="button" ng-click="app.confirmDelete(folder)">
                       <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.showProperties(folder)">
+                      <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>

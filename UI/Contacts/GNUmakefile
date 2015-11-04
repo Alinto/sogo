@@ -23,7 +23,8 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactsListActions.m	\
 	UIxContactFoldersView.m		\
 	UIxContactFolderActions.m       \
-	UIxContactFolderLinksTemplate.m
+	UIxContactFolderLinksTemplate.m \
+	UIxContactFolderProperties.m
 
 ContactsUI_RESOURCE_FILES +=		\
 	product.plist			\

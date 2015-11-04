@@ -136,6 +136,15 @@
           protectedBy = "View";
           pageName = "UIxContactFolderLinksTemplate";
         };
+        properties = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactFolderProperties";
+        };
+        save = {
+          protectedBy = "Access Contents Information";
+          pageName = "UIxContactFolderProperties";
+          actionName = "saveProperties";
+        };
       };
     };
 
@@ -156,11 +165,6 @@
           protectedBy = "<public>";
           pageName    = "UIxContactEditor";
           actionName  = "new";
-        };
-        save = {
-          protectedBy = "Change Permissions";
-          actionClass = "UIxFolderActions";
-          actionName  = "renameFolder";
         };
         mailer-contacts = {
           protectedBy = "<public>";

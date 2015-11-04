@@ -21,6 +21,7 @@
     vm.importCards = importCards;
     vm.exportCards = exportCards;
     vm.showLinks = showLinks;
+    vm.showProperties = showProperties;
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
 
@@ -218,6 +219,44 @@
 
         function close() {
           $mdDialog.hide();
+        }
+      }
+    }
+
+    function showProperties(addressbook) {
+      $mdDialog.show({
+        templateUrl: addressbook.id + '/properties',
+        controller: PropertiesDialogController,
+        controllerAs: 'properties',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          srcAddressBook: addressbook
+        }
+      }).catch(function() {
+        // Do nothing
+      });
+
+      /**
+       * @ngInject
+       */
+      PropertiesDialogController.$inject = ['$scope', '$mdDialog', 'srcAddressBook'];
+      function PropertiesDialogController($scope, $mdDialog, srcAddressBook) {
+        var vm = this;
+
+        vm.addressbook = new AddressBook(srcAddressBook.$omit());
+        vm.saveProperties = saveProperties;
+        vm.close = close;
+
+        function saveProperties() {
+          vm.addressbook.$save();
+          // Refresh list instance
+          srcAddressBook.init(vm.addressbook.$omit());
+          $mdDialog.hide();
+        }
+
+        function close() {
+          $mdDialog.cancel();
         }
       }
     }
