@@ -142,8 +142,9 @@
 
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
                                withDelegate: (iCalPerson *) delegate
-                                      alarm: (iCalAlarm *) alarm;
+                                      alarm: (iCalAlarm *) alarm
 {
+  // Required for protocol <SOGoComponentOccurence>
   return nil;
 }
 
