@@ -391,7 +391,7 @@
                                    size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>
-                  <div class="sg-list-avatar"
+                  <div class="md-avatar sg-avatar-list"
                        ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
                        ng-click="currentCard.selected = !currentCard.selected">
                     <!-- list avatar -->
