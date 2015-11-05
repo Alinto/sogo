@@ -231,7 +231,7 @@
 
 /* Searching */
 
-"view_all" = "Todos los eventos";
+"view_all" = "Todos";
 "view_today" = "Hoy";
 "view_next7" = "Próximos 7 días";
 "view_next14" = "Próximos 14 días";

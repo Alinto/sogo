@@ -594,8 +594,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   BOOL rc = YES;
   uint64_t newChangeNum;
-  NSNumber *ti, *modseq, *initialLastModseq, *lastModseq,
-    *nextModseq;
+  NSNumber *ti, *modseq, *lastModseq, *nextModseq;
   NSString *changeNumber, *uid, *messageKey;
   uint64_t lastModseqNbr;
   EOQualifier *searchQualifier;
@@ -634,7 +633,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     }
 
   lastModseq = [currentProperties objectForKey: @"SyncLastModseq"];
-  initialLastModseq = lastModseq;
   if (lastModseq)
     {
       lastModseqNbr = [lastModseq unsignedLongLongValue];
@@ -718,39 +716,36 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     }
 
   /* 2. we synchronise expunged UIDs */
-  if (initialLastModseq)
+  fetchResults = [(SOGoMailFolder *) sogoObject
+                     fetchUIDsOfVanishedItems: lastModseqNbr];
+
+  max = [fetchResults count];
+
+  changeNumber = nil;
+  for (count = 0; count < max; count++)
     {
-      fetchResults = [(SOGoMailFolder *) sogoObject
-                         fetchUIDsOfVanishedItems: lastModseqNbr];
-
-      max = [fetchResults count];
-
-      changeNumber = nil;
-      for (count = 0; count < max; count++)
+      uid = [[fetchResults objectAtIndex: count] stringValue];
+      if ([messages objectForKey: uid])
         {
-          uid = [[fetchResults objectAtIndex: count] stringValue];
-          if ([messages objectForKey: uid])
+          if (!changeNumber)
             {
-              if (!changeNumber)
-                {
-                  newChangeNum = [[self context] getNewChangeNumber];
-                  changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
-                }
-              [messages removeObjectForKey: uid];
-              [self logWithFormat: @"Removed message entry for UID %@", uid];
+              newChangeNum = [[self context] getNewChangeNumber];
+              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
             }
-          else
-            {
-              [self logWithFormat:@"Message entry not found for UID %@", uid];
-            }
+          [messages removeObjectForKey: uid];
+          [self logWithFormat: @"Removed message entry for UID %@", uid];
         }
-      if (changeNumber)
+      else
         {
-          [currentProperties setObject: changeNumber
-                                forKey: @"SyncLastDeleteChangeNumber"];
-          [mapping setObject: lastModseq forKey: changeNumber];
-          foundChange = YES;
+          [self logWithFormat:@"Message entry not found for UID %@", uid];
         }
+    }
+  if (changeNumber)
+    {
+      [currentProperties setObject: changeNumber
+                            forKey: @"SyncLastDeleteChangeNumber"];
+      [mapping setObject: lastModseq forKey: changeNumber];
+      foundChange = YES;
     }
 
   if (foundChange)
