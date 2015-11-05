@@ -55,6 +55,7 @@ typedef enum {
 
 - (void) reloadIfNeeded;
 - (void) save;
+- (NSException *) destroy;
 
 + (id) objectWithName: (NSString *) key  inContainer: (id) theContainer  useCache: (BOOL) useCache;
 

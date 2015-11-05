@@ -850,6 +850,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
 
              // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
+             // No need to check for personal folders here since they can't be deleted
              if (!currentFolder ||
                  ![currentFolder synchronize] ||
                  [sm validatePermission: SoPerm_DeleteObjects
@@ -964,20 +965,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
     folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
+    [folders autorelease];
+
     [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
 
     // We remove all the folders that aren't GCS-ones, that we don't want to synchronize and
-    // the ones without write/delete permissions
+    // the ones without write/delete permissions.
     count = [folders count]-1;
     for (; count >= 0; count--)
      {
-       if (![[folders objectAtIndex: count] isKindOfClass: [SOGoGCSFolder class]] ||
-           ![[folders objectAtIndex: count] synchronize] ||
+       currentFolder = [folders objectAtIndex: count];
+
+       // We skip personal GCS folders - we always want to synchronize these
+       if ([currentFolder isKindOfClass: [SOGoGCSFolder class]] &&
+           [[currentFolder nameInContainer] isEqualToString: @"personal"])
+         continue;
+
+       if (![currentFolder isKindOfClass: [SOGoGCSFolder class]] ||
+           ![currentFolder synchronize] ||
            [sm validatePermission: SoPerm_DeleteObjects
-                         onObject: [folders objectAtIndex: count]
+                         onObject: currentFolder
                         inContext: context] ||
            [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                         onObject: [folders objectAtIndex: count]
+                         onObject: currentFolder
                         inContext: context])
          {
            [folders removeObjectAtIndex: count];
@@ -3227,8 +3237,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         return nil;
 
       urlString = [[user domainDefaults] folderInfoURL];
-      parts = [[urlString componentsSeparatedByString: @"/"]
-                mutableCopy];
+      parts = [[urlString componentsSeparatedByString: @"/"] mutableCopy];
       [parts autorelease];
       if ([parts count] == 5)
         {
