@@ -175,24 +175,28 @@
 - (BOOL) isMacOSXAddressBookApp
 {
   WEClientCapabilities *cc;
-  BOOL isMacOSX_AB, hasAddressBook, hasCFNetwork, isMacOSX10_6_le, isMacOSX10_7, isMacOSX10_8_ge;
+  BOOL b;
 
   cc = [self clientCapabilities];
 
-  hasAddressBook = ( [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound \
-                       || [[cc userAgent] rangeOfString: @"Address%20Book"].location != NSNotFound );
-  hasCFNetwork = [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound;
+  b = (
+        (
+          [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
+        )
+        ||
+        (
+          [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
+        )
+        ||
+        (
+          [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
+        )
+      );
 
-  // note that 'le' signifies less than or equal, 'ge' signifies greater than or equal
-  // these are only assumed from the user agent strings we currently know.
-
-  isMacOSX10_6_le = ( hasAddressBook && hasCFNetwork && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound );
-  isMacOSX10_7    = ( hasAddressBook && hasCFNetwork && [[cc userAgent] rangeOfString: @"Mac_OS_X"].location != NSNotFound );
-  isMacOSX10_8_ge = ( hasAddressBook && [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound );
-
-  isMacOSX_AB = ( isMacOSX10_6_le || isMacOSX10_7 || isMacOSX10_8_ge);
-
-  return isMacOSX_AB;
+  return b;
 }
 
 - (BOOL) isIPhoneAddressBookApp
