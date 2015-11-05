@@ -45,16 +45,28 @@
 
 @implementation MAPIStoreDBMessage
 
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SPropTagArray *properties;
   NSUInteger count;
-  enum MAPITAGS faiProperties[] = { 0x68350102, 0x683c0102, 0x683e0102,
-                                    0x683f0102, 0x68410003, 0x68420102,
-                                    0x68450102, 0x68460003,
-                                    // PR_VD_NAME_W, PR_VD_FLAGS, PR_VD_VERSION, PR_VIEW_CLSID
-                                    0x7006001F, 0x70030003, 0x70070003, 0x68330048 };
+
+  enum MAPITAGS faiProperties[] = {
+    0x68330048, /* PR_VIEW_CLSID */
+    0x68350102, /* PR_VIEW_STATE */
+    0x683c0102,
+    0x683d0040,
+    0x683e0102,
+    0x683f0102, /* PR_VIEW_VIEWTYPE_KEY */
+    0x68410003,
+    0x68420102,
+    0x68450102,
+    0x68460003,
+    0x7006001F, /* PR_VD_NAME_W */
+    0x70030003, /* PR_VD_FLAGS */
+    0x70070003  /* PR_VD_VERSION */
+  };
+
   size_t faiSize = sizeof(faiProperties) / sizeof(enum MAPITAGS);
 
   properties = talloc_zero (memCtx, struct SPropTagArray);
@@ -74,6 +86,13 @@
   *propertiesP = properties;
 
   return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self class] getAvailableProperties: propertiesP
+                                     inMemCtx: memCtx];
 }
 
 - (id) initWithSOGoObject: (id) newSOGoObject

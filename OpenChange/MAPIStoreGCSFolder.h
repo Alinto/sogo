@@ -41,6 +41,7 @@
 
 /* synchronisation */
 - (BOOL) synchroniseCache;
+- (BOOL) synchroniseCacheFor: (NSString *) nameInContainer;
 - (void) updateVersionsForMessageWithKey: (NSString *) messageKey
                            withChangeKey: (NSData *) oldChangeKey
                 andPredecessorChangeList: (NSData *) pcl;

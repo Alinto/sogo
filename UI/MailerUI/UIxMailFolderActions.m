@@ -156,7 +156,7 @@
     }
   else
     {
-      newKeyForMsgUIDs = [[NSString stringWithFormat:@"/%@/folder%@", currentAccount, newFolderName] asCSSIdentifier];
+      newKeyForMsgUIDs = [NSString stringWithFormat:@"/%@/folder%@", [currentAccount asCSSIdentifier], [newFolderName asCSSIdentifier]];
       error = [co renameTo: newFolderName];
       if (error)
         {

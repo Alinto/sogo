@@ -48,6 +48,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 
@@ -247,6 +248,13 @@
   else
     data = @"";
   [newRecord setObject: data forKey: @"c_cn"];
+
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableDomainBasedUID])
+    {
+      data = [oldRecord objectForKey: @"c_domain"];
+      if (data)
+        [newRecord setObject: data forKey: @"c_domain"];
+    }
 
   // mail => emails[]
   data = [oldRecord objectForKey: @"c_emails"];

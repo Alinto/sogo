@@ -167,9 +167,9 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 - (BOOL) hasContentId
 {
-  return ([properties
-            objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)]
-          != nil);
+  NSString *contentId = [properties
+                          objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)];
+  return contentId && [contentId length] > 0;
 }
 
 - (NGMimeBodyPart *) asMIMEBodyPart
@@ -233,7 +233,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
       [map addObject: contentDisposition forKey: @"content-disposition"];
       contentId = [properties
                      objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)];
-      if (contentId)
+      if (contentId && [contentId length] > 0)
         [map setObject: [NSString stringWithFormat: @"<%@>", contentId]
                 forKey: @"content-id"];
       bodyPart = [NGMimeBodyPart bodyPartWithHeader: map];
