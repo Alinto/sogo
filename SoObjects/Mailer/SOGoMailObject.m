@@ -389,8 +389,11 @@ static BOOL debugSoParts       = NO;
       [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
     return info;
 
-  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"] &&
-      [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"pkcs7-mime"])
+  // deal with mails that contain only an attachment, for example:
+  // application/pkcs7-mime
+  // application/pdf
+  // etc.
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"])
     return info;
 
   /* 
@@ -1044,6 +1047,14 @@ static BOOL debugSoParts       = NO;
       return obj;
     }
   }
+  // Handles cases where the email is itself an attachment, so its Content-Type
+  // is application/*, image/* etc.
+  else if ([_key isEqualToString: @"asAttachment"] &&
+           (obj = [self lookupImap4BodyPartKey: @"0" inContext:_ctx]) != nil)
+    {
+      [obj setAsAttachment];
+      return obj;
+    }
   
   /* return 404 to stop acquisition */
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */
