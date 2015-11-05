@@ -140,6 +140,14 @@
   return aclManager;
 }
 
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+                               withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
+{
+  // Required for protocol <SOGoComponentOccurence>
+  return nil;
+}
+
 - (id) init
 {
   if ((self = [super init]))
