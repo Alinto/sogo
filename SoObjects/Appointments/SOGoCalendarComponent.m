@@ -144,6 +144,14 @@
                                withDelegate: (iCalPerson *) delegate
                                       alarm: (iCalAlarm *) alarm
 {
+  // required for protocol <SOGoComponentOccurence>
+  return nil;
+}
+
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+                               withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
+{
   // Required for protocol <SOGoComponentOccurence>
   return nil;
 }
@@ -179,7 +187,7 @@
 
 - (Class *) parsingClass
 {
-  return [iCalCalendar class];
+  return (Class *)[iCalCalendar class];
 }
 
 - (NSString *) davContentType

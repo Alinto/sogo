@@ -299,7 +299,7 @@
 
   [classes appendFormat: @"day weekOf%d week%dof%d day%d",
            numberOfWeeks,
-           [weeksToDisplay indexOfObject: currentWeek],
+           (int)[weeksToDisplay indexOfObject: currentWeek],
            numberOfWeeks, dayOfWeek];
   if (realDayOfWeek == 0 || realDayOfWeek == 6)
     [classes appendString: @" weekEndDay"];

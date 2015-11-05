@@ -43,7 +43,6 @@
 }
 
 - (NSString *) defaultSortKey;
-- (NSString *) imap4SortKey;
 - (NSString *) imap4SortOrdering;
 - (EOQualifier *) searchQualifier;
 - (NSString *) msgLabels;

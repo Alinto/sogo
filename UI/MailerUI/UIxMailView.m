@@ -53,6 +53,7 @@
 #import <Mailer/SOGoMailFolder.h>
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
 #import <MailPartViewers/UIxMailSizeFormatter.h>
+#import <MailPartViewers/UIxMailPartViewer.h>
 
 #import "WOContext+UIxMailer.h"
 
