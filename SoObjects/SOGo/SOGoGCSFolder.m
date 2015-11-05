@@ -399,12 +399,12 @@ static NSArray *childRecordFields = nil;
   if (!displayName)
     {
       if (activeUserIsOwner)
-        displayName = [self _displayNameFromOwner];
+        displayName = (NSMutableString *)[self _displayNameFromOwner];
       else
         {
-          displayName = [self _displayNameFromSubscriber];
+          displayName = (NSMutableString *)[self _displayNameFromSubscriber];
           if (!displayName)
-            displayName = [self _displayNameFromOwner];
+            displayName = (NSMutableString *)[self _displayNameFromOwner];
         }
       [displayName retain];
     }
@@ -852,7 +852,7 @@ static NSArray *childRecordFields = nil;
     {
       currentID = [ids objectAtIndex: count];
       names = [[currentID componentsSeparatedByString: @"/"] objectEnumerator];
-      deleteObject = self;
+      deleteObject = (SOGoContentObject *)self;
       while ((currentName = [names nextObject]))
         {
           deleteObject = [deleteObject lookupName: currentName

@@ -50,7 +50,7 @@
   id dispatcher;
   Class clazz;
 
-  request = [context request];
+  request = (WORequest *)[context request];
   response = [self responseWithStatus: 200];
 
   bundle = [NSBundle bundleForClass: NSClassFromString(@"ActiveSyncProduct")];

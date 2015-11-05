@@ -95,7 +95,7 @@
     {
       if (![newDisplayName length])
         newDisplayName = newName;
-      ASSIGN (displayName, newDisplayName);
+      ASSIGN (displayName, (NSMutableString *)newDisplayName);
     }
 
   return self;

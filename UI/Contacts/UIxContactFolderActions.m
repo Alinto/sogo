@@ -82,9 +82,9 @@
                                     inContext: [self context]
                                       acquire: NO];
       if ([currentChild respondsToSelector: @selector (vCard)])
-        [content appendFormat: [[currentChild ldifRecord] ldifRecordAsString]];
+        [content appendFormat: @"%@", [[currentChild ldifRecord] ldifRecordAsString]];
       else if ([currentChild respondsToSelector: @selector (vList)])
-        [content appendFormat: [[currentChild vList] ldifString]];
+        [content appendFormat: @"%@", [[currentChild vList] ldifString]];
       [content appendString: @"\n"];
     }
 

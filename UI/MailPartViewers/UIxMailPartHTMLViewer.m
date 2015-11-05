@@ -741,7 +741,7 @@ static NSData* _sanitizeContent(NSData *theData)
 
 /* SaxLexicalHandler */
 - (void) comment: (unichar *) _chars
-          length: (NSUInteger) _len
+          length: (int) _len
 {
   showWhoWeAre();
   if (inStyle)
@@ -807,7 +807,7 @@ static NSData* _sanitizeContent(NSData *theData)
     }
   [dump appendFormat: @"--- end ---\n"];
 
-  NSLog(dump);
+  NSLog(@"%@",dump);
   [dump release];
 }
 
