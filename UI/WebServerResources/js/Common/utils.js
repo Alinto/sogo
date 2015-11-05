@@ -213,9 +213,18 @@ Date.prototype.stringWithSeparator = function(separator) {
 };
 
 Date.prototype.addDays = function(nbrDays) {
-    var milliSeconds = this.getTime();
-    milliSeconds += 86400000 * nbrDays;
+  var initialDate, milliSeconds, dstOffset;
+
+  milliSeconds = this.getTime();
+  initialDate = new Date(milliSeconds);
+  milliSeconds += 86400000 * nbrDays;
+  this.setTime(milliSeconds);
+
+  dstOffset = this.getTimezoneOffset() - initialDate.getTimezoneOffset();
+  if (dstOffset !== 0) {
+    milliSeconds = this.getTime() + dstOffset*60*1000;
     this.setTime(milliSeconds);
+  }
 };
 
 Date.prototype.addHours = function(nbrHours) {
