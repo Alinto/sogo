@@ -348,7 +348,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
                   if ([byDayMask occursOnDay: currentWeekDay])
                     {
                       if ([bySetPos containsObject:
-                                      [NSString stringWithFormat: @"%d", currentPos]])
+                                      [NSString stringWithFormat: @"%d", (int)currentPos]])
                         monthDays[monthDay+1] = YES;
                       currentPos++;
                     }
@@ -362,7 +362,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
                   if ([byDayMask occursOnDay: currentWeekDay])
                     {
                       if ([bySetPos containsObject:
-                                      [NSString stringWithFormat: @"%d", currentPos]])
+                                      [NSString stringWithFormat: @"%d", (int)currentPos]])
                         monthDays[monthDay] = YES;
                       currentPos--;
                     }

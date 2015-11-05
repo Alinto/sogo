@@ -1703,7 +1703,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                             hostname: hostname
                                 port: [NSString stringWithFormat: @"%d", port]
                           encryption: encryption
-                   bindAsCurrentUser: NO];
+                   bindAsCurrentUser: [NSString stringWithFormat: @"%d", NO]];
               [ab                     setBaseDN: [entry dn]
                                         IDField: @"cn"
                                         CNField: @"displayName"

@@ -259,7 +259,7 @@
 
 - (NSTimeInterval) occurenceInterval
 {
-  return [[self endDate] timeIntervalSinceDate: [self startDate]];
+  return (NSTimeInterval)[[self endDate] timeIntervalSinceDate: [self startDate]];
 }
 
 /**

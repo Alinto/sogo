@@ -19,6 +19,8 @@
  */
 
 #import <SOGo/SOGoSystemDefaults.h>
+#import <Contacts/SOGoContactGCSFolder.h>
+#import <NGExtensions/NSURL+misc.h>
 
 #import "UIxContactFolderProperties.h"
 
@@ -48,7 +50,7 @@
   return [addressBook displayName];
 }
 
-- (NSString *) setAddressBookName: (NSString *) newName
+- (void) setAddressBookName: (NSString *) newName
 {
   [addressBook renameTo: newName];
 }

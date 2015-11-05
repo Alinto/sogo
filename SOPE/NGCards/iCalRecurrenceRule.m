@@ -309,10 +309,10 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
       else if ([frequency isEqualToString:@"SECONDLY"])
 	freq = iCalRecurrenceFrequenceSecondly;
       else
-	freq = NSNotFound;
+	freq = (iCalRecurrenceFrequency)NSNotFound;
     }
   else
-    freq = NSNotFound;
+    freq = (iCalRecurrenceFrequency)NSNotFound;
 
   return freq;
 }

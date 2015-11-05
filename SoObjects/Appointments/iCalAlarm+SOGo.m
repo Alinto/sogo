@@ -102,9 +102,9 @@
         }
       
       if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
-        aValue = [NSString stringWithString: @"-P"];
+        aValue = (NSString *) @"-P";
       else
-        aValue = [NSString stringWithString: @"P"];
+        aValue = (NSString *) @"P";
       
       if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
           [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
