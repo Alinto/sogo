@@ -170,7 +170,7 @@ supported by SOGo:
 * Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
 * Community ENTerprise Operating System (CentOS) 5, 6 and 7
 * Debian GNU/Linux 6.0 (Squeeze) to 8.0 (Jessie)
-* Ubuntu 10.04 (Lucid) to 14.04 (Trusty)
+* Ubuntu 12.04 (Precise) to 14.04 (Trusty)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
