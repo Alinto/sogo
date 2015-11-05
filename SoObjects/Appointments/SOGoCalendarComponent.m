@@ -140,6 +140,14 @@
   return aclManager;
 }
 
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+                               withDelegate: (iCalPerson *) delegate
+                                      alarm: (iCalAlarm *) alarm
+{
+  // required for protocol <SOGoComponentOccurence>
+  return nil;
+}
+
 - (id) init
 {
   if ((self = [super init]))
@@ -171,7 +179,7 @@
 
 - (Class *) parsingClass
 {
-  return [iCalCalendar class];
+  return (Class *)[iCalCalendar class];
 }
 
 - (NSString *) davContentType

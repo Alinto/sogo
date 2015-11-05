@@ -383,7 +383,7 @@
 - (WOResponse *) moveMessagesAction
 {
   SOGoMailFolder *co;
-  SOGoUserSettings *us;
+  SOGoUserSettings *us=nil;
   WOResponse *response;
   NSArray *uids;
   NSString *value, *destinationFolder;

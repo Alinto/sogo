@@ -500,7 +500,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   ms = [NSMutableString stringWithCapacity: 256];
   [ms appendFormat: @"<0x%p[%@]: ", self, NSStringFromClass ([self class])];
 
-  [ms appendFormat: @" #adaptors=%d", [urlToAdaptor count]];
+  [ms appendFormat: @" #adaptors=%d", (int)[urlToAdaptor count]];
 
   [ms appendString: @">"];
   return ms;

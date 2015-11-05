@@ -143,7 +143,7 @@
   else
   {
     if (verbose)
-      NSLog(@"No session to remove", sessionsToDelete);
+      NSLog(@"No session to remove");
   }
 
   [cm releaseChannel: channel];
