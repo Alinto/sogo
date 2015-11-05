@@ -19,6 +19,15 @@ Bug fixes
  - inline images sent from SOGo webmail are not displayed in Mozilla Thunderbird (#3271)
  - prevent postal address showing on single line over EAS (#2614)
  - display missing events when printing working hours only
+ - fix corner case making server crash when syncing hard deleted messages when clear offline items was set up (Zentyal)
+ - avoid infinite Outlook client loops trying to set read flag when it is already set (Zentyal)
+ - avoid crashing when calendar metadata is missing in the cache (Zentyal)
+ - fix recurrence pattern event corner case created by Mozilla Thunderbird which made server crash (Zentyal)
+ - fix corner case that removes attachments on sending messages from Outlook (Zentyal)
+ - freebusy on web interface works again in multidomain environments (Zentyal)
+ - fix double creation of folders in Outlook when the folder name starts with a digit (Zentyal)
+ - avoid crashing Outlook after setting a custom view in a calendar folder (Zentyal)
+
 
 2.3.2 (2015-09-16)
 ------------------
