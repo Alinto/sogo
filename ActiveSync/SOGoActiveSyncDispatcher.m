@@ -849,8 +849,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
 
+             // We skip personal GCS folders - we always want to synchronize these
+             if ([currentFolder isKindOfClass: [SOGoGCSFolder class]] &&
+                 [[currentFolder nameInContainer] isEqualToString: @"personal"])
+               continue;
+
              // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
-             // No need to check for personal folders here since they can't be deleted
              if (!currentFolder ||
                  ![currentFolder synchronize] ||
                  [sm validatePermission: SoPerm_DeleteObjects
