@@ -15,6 +15,9 @@ $(TEST_TOOL)_OBJC_FILES += \
 	SOGoTestRunner.m \
 	SaxXMLReaderFactory+SOGoTests.m \
 	\
+	TestRTFHandler.m\
+	../../OpenChange/RTFHandler.m \
+	\
 	TestVersit.m \
 	TestiCalTimeZonePeriod.m \
 	TestiCalRecurrenceCalculator.m \
@@ -32,7 +35,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 TEST_TOOL_NAME = $(TEST_TOOL)
 
 $(TEST_TOOL)_CPPFLAGS += \
-	-Wall -D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/ -I../../UI/
+	-Wall -D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/ -I../../UI/ -I../../OpenChange
 
 ADDITIONAL_LIB_DIRS += \
 	-L../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -L../../SOPE/NGCards/obj -L../../SOPE/GDLContentStore/obj -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc \
