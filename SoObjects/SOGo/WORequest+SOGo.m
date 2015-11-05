@@ -172,7 +172,6 @@
 // Mac OS X/10.8.1 (12B19) AddressBook/1143
 // Mac OS X/10.8.2 (12C60) AddressBook/1167
 //
-
 - (BOOL) isMacOSXAddressBookApp
 {
   WEClientCapabilities *cc;
