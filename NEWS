@@ -30,6 +30,8 @@ Bug fixes
  - handle emails having an attachment as their content
  - fixed JavaScript syntax error in attendees editor
  - fixed wrong comparison of meta vs. META tag in HTML mails
+ - fixed popup menu position when moved to the left (#3381)
+ - fixed dialog position when at the bottom of the window (#2646, #3378)
 
 2.3.2 (2015-09-16)
 ------------------

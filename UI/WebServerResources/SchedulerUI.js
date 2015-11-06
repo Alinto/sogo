@@ -856,6 +856,11 @@ function onViewEventCallback(http) {
             } else
                 para.hide();
 
+            var windowHeight = window.height();
+            var bottomOffset = windowHeight - div.getDimensions().height - top;
+            if (bottomOffset < 0)
+              top += bottomOffset;
+
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
             configureLinks(div);
@@ -3493,6 +3498,12 @@ function onCalendarImport(event) {
 
     var div = $("uploadDialog");
     var res = $("uploadResults");
+
+    var windowHeight = window.height();
+    var bottomOffset = windowHeight - div.getDimensions().height - top;
+    if (bottomOffset < 0)
+      top += bottomOffset;
+
     res.setStyle({ top: top + "px", left: left + "px" });
     div.setStyle({ top: top + "px", left: left + "px" });
     div.show();
