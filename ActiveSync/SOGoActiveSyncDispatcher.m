@@ -2590,7 +2590,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   email = [identity objectForKey: @"email"];
 
   if ([fullName length])
-    new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", fullName, email] dataUsingEncoding:NSUTF8StringEncoding];
+    new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", [fullName asQPSubjectString: @"utf-8"], email] dataUsingEncoding:NSUTF8StringEncoding];
   else
     new_from_header = [[NSString stringWithFormat: @"From: %@\r\n", email] dataUsingEncoding:NSUTF8StringEncoding];
 
