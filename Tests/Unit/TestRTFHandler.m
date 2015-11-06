@@ -52,27 +52,47 @@
   return html;
 }
 
-- (NSData *) get_zentyal_crash_contents_of: (unsigned int) number
+- (NSData *) dataWithContentsOfFixture: (NSString*) name
 {
-    NSString *file_path = [NSString stringWithFormat: @"Fixtures/zentyal_crash_%u.rtf", number];
+    NSString *file_path = [NSString stringWithFormat: @"Fixtures/%@", name];
 
     if(![[NSFileManager defaultManager] fileExistsAtPath: file_path]) {
         NSString *error = [NSString stringWithFormat: @"File %@ doesn't exist", file_path];
         testWithMessage(false, error);
     }
-
-    return [NSData dataWithContentsOfFile: file_path];
+    return [NSData dataWithContentsOfFile: file_path];    
 }
 
-- (void) test_does_not_crash: (unsigned int) number
+- (NSData *) dataWithContentsOfZentyalCrash: (unsigned int) number
+{
+  NSString *fixture = [NSString stringWithFormat: @"zentyal_crash_%u.rtf", number];
+  return [self dataWithContentsOfFixture: fixture];
+
+}
+
+- (void) checkDoesNotCrash: (unsigned int) number
 {
   // FIXME fork
-  [self rtf2html: [self get_zentyal_crash_contents_of: number]];
+  [self rtf2html: [self dataWithContentsOfZentyalCrash: number]];
 }
+
+- (void) checkHTMLConversionOfRTFFile: (NSString*) file
+                  againstExpectedHTML: (NSString*) expected
+{
+  NSData *in = nil;
+  NSString *out = nil, *error = nil;
+
+  in = [self dataWithContentsOfFixture: file];
+  out = [self rtf2html: in];
+  error = [NSString stringWithFormat:
+                      @"Html from rtf result is not what we expected.\nActual:\n%@\n Expected:\n%@\n", out, expected];
+  testWithMessage([out isEqualToString: expected], error);
+}
+
 
 - (void) test_zentyal_crash_2058
 {
-  [self test_does_not_crash: 2058];
+  [self checkDoesNotCrash: 2058];
   // Output is not correct... but the original issue was segfault
 }
 
@@ -81,7 +101,7 @@
   NSData *in = nil;
   NSString *out = nil, *error = nil, *expected = nil;
 
-  in = [self get_zentyal_crash_contents_of: 2089];
+  in = [self dataWithContentsOfZentyalCrash: 2089];
   expected = @"<html><meta charset='utf-8'><body><font color=\"#000000\">Lorem Ipsum</font></body></html>";
   out = [self rtf2html: in];
   error = [NSString stringWithFormat:
@@ -91,22 +111,30 @@
 
 - (void) test_zentyal_crash_6330
 {
-  [self test_does_not_crash: 6330];
+  [self checkDoesNotCrash: 6330];
 }
 
 - (void) test_zentyal_crash_8346
 {
-  [self test_does_not_crash: 8346];
+  [self checkDoesNotCrash: 8346];
 }
 
 - (void) test_zentyal_crash_6977
 {
-  [self test_does_not_crash: 6977];
+  [self checkDoesNotCrash: 6977];
 }
 
 - (void) test_zentyal_crash_7067
 {
-  [self test_does_not_crash: 7067];
+  [self checkDoesNotCrash: 7067];
+}
+
+- (void) test_mini_russian
+{
+  NSString *file =@"mini_russian.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">XXзык польски, польщизнаXX</font></font></font></body></html>";
+  [self checkHTMLConversionOfRTFFile: file
+                      againstExpectedHTML: expected];  
 }
 
 @end
