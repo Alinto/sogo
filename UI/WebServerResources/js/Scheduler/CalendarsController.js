@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$scope', '$window', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
-  function CalendarsController($scope, $window, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
+  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
+  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -42,7 +42,7 @@
           _.each(ids, function(id) {
             var calendar = Calendar.$get(id);
             calendar.$setActivation().then(function() {
-              $scope.$broadcast('calendars:list');
+              $rootScope.$emit('calendars:list');
             });
           });
         }
@@ -77,7 +77,7 @@
         // Unsubscribe without confirmation
         folder.$delete()
           .then(function() {
-            $scope.$broadcast('calendars:list');
+            $rootScope.$emit('calendars:list');
           }, function(data, status) {
             Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                          l(data.error));
@@ -88,7 +88,7 @@
           .then(function() {
             folder.$delete()
               .then(function() {
-                $scope.$broadcast('calendars:list');
+                $rootScope.$emit('calendars:list');
               }, function(data, status) {
                 Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                              l(data.error));

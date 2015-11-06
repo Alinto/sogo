@@ -34,7 +34,8 @@
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       $Component: Component,
       $$Acl: Acl,
-      activeUser: Settings.activeUser()
+      activeUser: Settings.activeUser(),
+      $view: null
     });
 
     return Calendar; // return constructor
@@ -51,6 +52,10 @@
     angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.SchedulerUI')
+    .value('CalendarSettings', {
+      EventDragDayLength: 24 * 4,
+      EventDragHorizontalOffset: 3
+    })
     .factory('Calendar', Calendar.$factory);
 
   /**

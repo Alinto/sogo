@@ -5,7 +5,7 @@
 
   /*
    * sgCalendarDayBlock - An event block to be displayed in a week
-   * @memberof SOGo.Common
+   * @memberof SOGo.SchedulerUI
    * @restrict element
    * @param {object} sgBlock - the event block definition
    * @param {function} sgClick - the function to call when clicking on a block.
@@ -19,7 +19,8 @@
       sg-block="block"
       sg-click="open(clickEvent, clickComponent)" />
   */
-  function sgCalendarDayBlock() {
+  sgCalendarDayBlock.$inject = ['CalendarSettings'];
+  function sgCalendarDayBlock(CalendarSettings) {
     return {
       restrict: 'E',
       scope: {
@@ -28,33 +29,33 @@
       },
       replace: true,
       template: [
-        '<div class="sg-event sg-draggable">',
+        '<div class="sg-event sg-draggable-calendar-block"',
+        //    Add a class while dragging
+        '     ng-class="{\'sg-event--dragging\': block.dragging}">',
         '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '      <div class="gradient">',
-        '      </div>',
-        '      <div class="text">{{ block.component.c_title }}',
-        '        <span class="icons">',
-        //         Component has an alarm
-        '          <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
-        //         Component is confidential
-        '          <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
-        //         Component is private
-        '          <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
-        '       </span></div>',
+        '    <div class="text">{{ block.component.summary }}',
+        '      <span class="icons">',
+        //       Component has an alarm
+        '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        //       Component is confidential
+        '        <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        //       Component is private
+        '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
+        '      </span>',
         '    </div>',
-        '    <div class="topDragGrip"></div>',
-        '    <div class="bottomDragGrip"></div>',
+        '  </div>',
         '</div>'
       ].join(''),
       link: link
     };
 
     function link(scope, iElement, attrs) {
-      // Compute overlapping (2%)
-      var pc = 100 / scope.block.siblings,
-          left = scope.block.position * pc,
-          right = 100 - (scope.block.position + 1) * pc;
+      var pc, left, right;
 
+      // Compute overlapping (2%)
+      pc = 100 / scope.block.siblings;
+      left = scope.block.position * pc;
+      right = 100 - (scope.block.position + 1) * pc;
       if (pc < 100) {
         if (left > 0)
           left -= 2;
@@ -73,7 +74,9 @@
       iElement.css('right', right + '%');
       iElement.addClass('starts' + scope.block.start);
       iElement.addClass('lasts' + scope.block.length);
-      iElement.addClass('bg-folder' + scope.block.component.c_folder);
+
+      // Set background color
+      iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

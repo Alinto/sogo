@@ -284,9 +284,9 @@
   return [daysToDisplay indexOfObject: currentTableDay];
 }
 
-- (NSString *) currentAppointmentHour
+- (NSNumber *) currentAppointmentHour
 {
-  return [NSString stringWithFormat: @"%.2d00", [currentTableHour intValue]];
+  return [NSNumber numberWithInt: [currentTableHour intValue]];
 }
 
 - (NSString *) labelForDay

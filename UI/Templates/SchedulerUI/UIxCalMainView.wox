@@ -551,7 +551,7 @@
                 </md-menu-item>
               </md-menu-content>
             </md-menu>
-            <md-button class="sg-icon-button" ng-click="list.component.$filter(list.componentType)">
+            <md-button class="sg-icon-button" ng-click="list.reload()">
               <md-icon>refresh</md-icon>
             </md-button>
           </div>

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$scope', '$timeout', '$state', '$mdDialog', 'Dialog', 'Preferences', 'Calendar', 'Component'];
-  function CalendarListController($scope, $timeout, $state, $mdDialog, Dialog, Preferences, Calendar, Component) {
+  CalendarListController.$inject = ['$rootScope', '$timeout', '$state', '$mdDialog', 'Dialog', 'Preferences', 'Calendar', 'Component'];
+  function CalendarListController($rootScope, $timeout, $state, $mdDialog, Dialog, Preferences, Calendar, Component) {
     var vm = this;
 
     vm.component = Component;
@@ -25,6 +25,7 @@
     vm.filteredBy = filteredBy;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
+    vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false };
 
@@ -39,9 +40,11 @@
     });
 
     // Refresh current list when the list of calendars is modified
-    $scope.$on('calendars:list', function() {
+    $rootScope.$on('calendars:list', function() {
       Component.$filter(vm.componentType, { reload: true });
     });
+
+    $rootScope.$on('calendar:dragend', updateComponentFromGhost);
 
     // Switch between components tabs
     function selectComponentType(type, options) {
@@ -111,17 +114,21 @@
       });
     }
 
-    function newComponent($event) {
+    function newComponent($event, baseComponent) {
       var type = 'appointment', component;
 
       if (vm.componentType == 'tasks')
         type = 'task';
-      component = new Component({ pid: 'personal', type: type });
+      if (baseComponent)
+        component = baseComponent;
+      else
+        // TODO respect SOGoDefaultCalendar
+        component = new Component({ pid: 'personal', type: type });
 
       // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
       // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
       var templateUrl = 'UIx' + type.capitalize() + 'EditorTemplate';
-      $mdDialog.show({
+      return $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose: true,
@@ -133,6 +140,84 @@
           stateComponent: component
         }
       });
+    }
+
+    // Adjust component or create new component through drag'n'drop
+    function updateComponentFromGhost($event) {
+      var component, pointerHandler, coordinates, delta, params;
+
+      component = Component.$ghost.component;
+      pointerHandler = Component.$ghost.pointerHandler;
+
+      if (component.isNew) {
+        coordinates = pointerHandler.currentEventCoordinates;
+        component.setDelta(coordinates.duration * 15);
+        newComponent(null, component).finally(function() {
+          $timeout(function() {
+            Component.$ghost.pointerHandler = null;
+            Component.$ghost.component = null;
+          });
+        });
+      }
+      else {
+        delta = pointerHandler.currentEventCoordinates.getDelta(pointerHandler.originalEventCoordinates);
+        params = {
+          days: delta.dayNumber,
+          start: delta.start * 15,
+          duration: delta.duration * 15
+        };
+        if (component.isException || !component.occurrenceId)
+          // Component is an exception to a recurrence or is not recurrent;
+          // Immediately perform the adjustments
+          component.$adjust(params).then(function() {
+            $rootScope.$emit('calendars:list');
+            $timeout(function() {
+              Component.$ghost = {};
+            });
+          });
+        else if (component.occurrenceId) {
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            escapeToClose: true,
+            locals: {
+              component: component,
+              params: params
+            },
+            template: [
+              '<md-dialog>',
+              '  <md-dialog-content class="md-dialog-content">',
+              '    <p>' + l('editRepeatingItem') + '</p>',
+              '  </md-dialog-content>',
+              '  <div class="md-actions">',
+              '    <md-button ng-click="updateThisOccurrence()">' + l('button_thisOccurrenceOnly') + '</md-button>',
+              '    <md-button ng-click="updateAllOccurrences()">' + l('button_allOccurrences') + '</md-button>',
+              '  </div>',
+              '</md-dialog>'
+            ].join(''),
+            controller: RecurrentComponentDialogController
+          }).then(function() {
+            $rootScope.$emit('calendars:list');
+          }).finally(function() {
+            $timeout(function() {
+              Component.$ghost = {};
+            });
+          });
+        }
+      }
+
+      /**
+       * @ngInject
+       */
+      RecurrentComponentDialogController.$inject = ['$scope', '$mdDialog', 'component', 'params'];
+      function RecurrentComponentDialogController($scope, $mdDialog, component, params) {
+        $scope.updateThisOccurrence = function() {
+          component.$adjust(params).then($mdDialog.hide, $mdDialog.cancel);
+        };
+        $scope.updateAllOccurrences = function() {
+          delete component.occurrenceId;
+          component.$adjust(params).then($mdDialog.hide, $mdDialog.cancel);
+        };
+      }
     }
 
     function filter(filterpopup) {
@@ -149,6 +234,10 @@
 
     function sortedBy(field) {
       return Component['$query' + vm.componentType.capitalize()].sort == field;
+    }
+
+    function reload() {
+      $rootScope.$emit('calendars:list');
     }
 
     function cancelSearch() {

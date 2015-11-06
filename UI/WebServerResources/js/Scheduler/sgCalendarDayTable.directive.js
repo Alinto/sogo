@@ -5,7 +5,7 @@
 
   /*
    * sgCalendarDayTable - Build list of blocks for a specific day
-   * @memberof SOGo.Common
+   * @memberof SOGo.SchedulerUI
    * @restrict element
    * @param {object} sgBlocks - the events blocks definitions for the current view
    * @param {string} sgDay - the day of the events to display
@@ -29,7 +29,7 @@
         clickBlock: '&sgClick'
       },
       template: [
-        '<sg-calendar-day-block class="sg-event draggable"',
+        '<sg-calendar-day-block',
         '  ng-repeat="block in blocks[day]"',
         '  sg-block="block"',
         '  sg-click="clickBlock({event: clickEvent, component: clickComponent})"/>'

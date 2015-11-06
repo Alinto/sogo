@@ -29,8 +29,8 @@
       })
       .state('calendars.view', {
         url: '/{view:(?:day|week|month|multicolumnday)}/:day',
-        sticky: true,
-        deepStateRedirect: true,
+        //sticky: true,
+        //deepStateRedirect: true,
         views: {
           calendarView: {
             templateUrl: function($stateParams) {
@@ -93,6 +93,8 @@
       .then(function(views) {
         _.forEach(views, function(view) {
           if (view.id) {
+            // Note: this can't be done in Component service since it would make Component dependent on
+            // the Calendar service and create a circular dependency
             view.calendar = new Calendar({ id: view.id, name: view.calendarName });
           }
         });

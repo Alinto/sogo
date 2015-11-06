@@ -46,7 +46,8 @@
       $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
       // Filter parameters specific to tasks
       $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' },
-      $refreshTimeout: null
+      $refreshTimeout: null,
+      $ghost: {}
     });
     Preferences.ready().then(function() {
       // Initialize filter parameters from user's settings
@@ -274,7 +275,7 @@
    * @returns a promise of a collection of objects describing the events blocks
    */
   Component.$eventsBlocks = function(view, startDate, endDate) {
-    var params, futureComponentData, i, dates = [],
+    var params, futureComponentData, i, j, dates = [],
         deferred = Component.$q.defer();
 
     params = { view: view.toLowerCase(), sd: startDate.getDayString(), ed: endDate.getDayString() };
@@ -287,18 +288,26 @@
         var componentData = _.object(this.eventsFields, eventData),
             start = new Date(componentData.c_startdate * 1000);
         componentData.hour = start.getHourString();
+        componentData.blocks = [];
         objects.push(new Component(componentData));
         return objects;
       };
 
       associateComponent = function(block) {
-        block.component = this[block.nbr];
+        this[block.nbr].blocks.push(block); // Associate block to component
+        block.component = this[block.nbr];  // Associate component to block
       };
 
       Component.$views = [];
       Component.$timeout(function() {
         _.forEach(views, function(data) {
           var components = [], blocks = {}, allDayBlocks = {}, viewData;
+
+          // Change some attributes names
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_folder'),        1, 'pid');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_name'),          1, 'id');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_recurrence_id'), 1, 'occurrenceId');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_title'),         1, 'summary');
 
           // Instantiate Component objects
           _.reduce(data.events, reduceComponent, components, data);
@@ -318,13 +327,31 @@
 
           // Convert array of blocks to object with days as keys
           for (i = 0; i < data.blocks.length; i++) {
+            for (j = 0; j < data.blocks[i].length; j++)
+              data.blocks[i][j].dayNumber = i;
             blocks[dates[i]] = data.blocks[i];
           }
 
           // Convert array of all-day blocks to object with days as keys
           for (i = 0; i < data.allDayBlocks.length; i++) {
+            for (j = 0; j < data.allDayBlocks[i].length; j++)
+              data.allDayBlocks[i][j].dayNumber = i;
             allDayBlocks[dates[i]] = data.allDayBlocks[i];
           }
+
+          // "blocks" is now an object literal with the following structure:
+          // { day: [
+          //    { start: number,
+          //      length: number,
+          //      siblings: number,
+          //      realSiblings: number,
+          //      position: number,
+          //      nbr: number,
+          //      component: Component },
+          //    .. ],
+          //  .. }
+          //
+          // Where day is a string with format YYYYMMDD
 
           Component.$log.debug('blocks ready (' + _.flatten(data.blocks).length + ')');
           Component.$log.debug('all day blocks ready (' + _.flatten(data.allDayBlocks).length + ')');
@@ -360,6 +387,9 @@
     return futureComponentData.then(function(data) {
       return Component.$timeout(function() {
         var fields = _.invoke(data.fields, 'toLowerCase');
+          fields.splice(_.indexOf(fields, 'c_folder'), 1, 'pid');
+          fields.splice(_.indexOf(fields, 'c_name'), 1, 'id');
+          fields.splice(_.indexOf(fields, 'c_recurrence_id'), 1, 'occurrenceId');
 
         // Instanciate Component objects
         _.reduce(data[type], function(components, componentData, i) {
@@ -582,7 +612,7 @@
    * @returns true if the percent completion should be displayed
    */
   Component.prototype.enablePercentComplete = function() {
-    return (this.component = 'vtodo' &&
+    return (this.type == 'task' &&
             this.status != 'not-specified' &&
             this.status != 'cancelled');
   };
@@ -718,7 +748,7 @@
   Component.prototype.getClassName = function(base) {
     if (angular.isUndefined(base))
       base = 'fg';
-    return base + '-folder' + (this.destinationCalendar || this.c_folder);
+    return base + '-folder' + (this.destinationCalendar || this.c_folder || this.pid);
   };
 
   /**
@@ -884,7 +914,7 @@
   };
 
   /**
-   * @function reply
+   * @function $reply
    * @memberof Component.prototype
    * @desc Reply to an invitation.
    * @returns a promise of the HTTP operation
@@ -907,6 +937,27 @@
         _this.$shadowData = _this.$omit(true);
         return data;
       });
+  };
+
+  /**
+   * @function $adjust
+   * @memberof Component.prototype
+   * @desc Adjust the start, day, and/or duration of the component
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.$adjust = function(params) {
+    var path = [this.pid, this.id];
+
+    if (_.every(_.values(params), function(v) { return v === 0; }))
+      // No changes
+      return Component.$q.when();
+
+    if (this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    Component.$log.debug('adjust ' + path.join('/') + ' ' + JSON.stringify(params));
+
+    return Component.$$resource.save(path.join('/'), params, { action: 'adjust' });
   };
 
   /**
@@ -979,7 +1030,9 @@
   Component.prototype.$omit = function() {
     var component = {}, date;
     angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key[0] != '$') {
+      if (key != 'constructor' &&
+          key[0] != '$' &&
+          key != 'blocks') {
         component[key] = angular.copy(value);
       }
     });

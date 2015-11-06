@@ -26,7 +26,7 @@
       template: [
         '<div class="sg-event sg-draggable" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         '  <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
-        '  {{ block.component.c_title }}',
+        '  {{ block.component.summary }}',
         '  <span class="icons">',
         '    <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
         '    <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
@@ -40,7 +40,7 @@
     };
 
     function link(scope, iElement, attrs) {
-      iElement.addClass('bg-folder' + scope.block.component.c_folder);
+      iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

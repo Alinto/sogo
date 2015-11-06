@@ -51,24 +51,28 @@
 
     <!-- All day cells -->
     <div class="allDaysView md-default-theme md-background md-bg">
-      <div class="days">
+      <div class="days" sg-calendar-scroll-view="multiday-allday">
         <var:foreach list="daysToDisplay" item="currentTableDay">
-          <div var:class="dayClasses"
+          <sg-calendar-day var:class="dayClasses"
                var:day="currentTableDay.shortDateString"
                var:id="currentAllDayId"
                hour="allday"
+               var:sg-day-number="currentDayNumber"
+               var:sg-day="currentTableDay.shortDateString"
+               var:sg-day-string="currentTableDay.iso8601DateString"
                ng-repeat="view in calendar.views">
             <sg-calendar-day-table
                 sg-blocks="view.allDayBlocks"
                 sg-click="list.openEvent(event, component)"
-                var:sg-day="currentTableDay.shortDateString" />
-          </div>
+                var:sg-day="currentTableDay.shortDateString"><!-- blocks for current day --></sg-calendar-day-table>
+            <sg-calendar-day-block-ghost><!-- drag ghost --></sg-calendar-day-block-ghost>
+          </sg-calendar-day>
         </var:foreach>
       </div>
     </div>
   </md-toolbar>
 
-  <md-content class="md-flex" md-scroll-y="md-scroll-y">
+  <md-content class="md-flex" sg-calendar-scroll-view="multiday">
     <div class="calendarView">
 
       <!-- The hours -->
@@ -80,18 +84,21 @@
         </var:foreach>
       </div>
 
-      <!-- The hours cells -->
+      <!-- The quarters grid -->
       <div class="daysView">
         <div class="days">
           <var:foreach list="daysToDisplay" item="currentTableDay">
-            <div var:class="dayClasses"
+            <sg-calendar-day var:class="dayClasses"
                  var:id="currentDayId"
-                 var:day-number="currentDayNumber"
-                 var:day="currentTableDay.shortDateString"
+                 var:sg-day-number="currentDayNumber"
+                 var:sg-day="currentTableDay.shortDateString"
+                 var:sg-day-string="currentTableDay.iso8601DateString"
                  ng-repeat="view in calendar.views">
               <div class="hourCells">
                 <var:foreach list="hoursToDisplay" item="currentTableHour">
-                  <div var:class="clickableHourCellClass" var:day="currentTableDay.shortDateString" var:hour="currentAppointmentHour">
+                  <div var:class="clickableHourCellClass"
+                       sg-draggable-calendar-block="sg-draggable-calendar-block"
+                       var:sg-hour="currentAppointmentHour">
                     <span class="minutes15"><!-- space --></span>
                     <span class="minutes30"><!-- space --></span>
                     <span class="minutes45"><!-- space --></span>
@@ -100,10 +107,12 @@
                 <sg-calendar-day-table
                     sg-click="list.openEvent(event, component)"
                     sg-blocks="view.blocks"
-                    var:sg-day="currentTableDay.shortDateString" />
+                    var:sg-day-number="currentDayNumber"
+                    var:sg-day="currentTableDay.shortDateString"><!-- blocks for current day --></sg-calendar-day-table>
+                <sg-calendar-day-block-ghost><!-- drag ghost --></sg-calendar-day-block-ghost>
               </div>
               <div class="events"><!-- space --></div>
-            </div>
+            </sg-calendar-day>
           </var:foreach>
         </div>
       </div>

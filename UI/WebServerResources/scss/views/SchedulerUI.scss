@@ -1,6 +1,6 @@
 /// SchedulerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
-$scrollbar_width: 16px;
+$block_margin: 2%; // See sgCalendarDayBlock.directive.js
 
 /**
  * Affected templates:
@@ -64,10 +64,13 @@ $scrollbar_width: 16px;
       z-index: $z-index-toolbar - 1;
       .days {
         margin-left: $hours_margin;
-        margin-right: $scrollbar_width; // scrollbar
+        overflow-y: scroll;
         &.dayLabels {
           .day {
             padding-left: 1%;
+            div {
+              overflow: hidden;
+            }
           }
         }
       }
@@ -80,11 +83,11 @@ $scrollbar_width: 16px;
         }
       }
     }
-//    &.monthView {
-//      > div {
-//        margin-right: $scrollbar_width;
-//      }
-//    }
+   &.monthView {
+     > div {
+       overflow-y: scroll;
+     }
+   }
   }
 
   // The all-day events appear in the shrinkable toolbar, bellow the days labels
@@ -92,15 +95,48 @@ $scrollbar_width: 16px;
     border-bottom: 1px solid sg-color($sogoPaper, 300);
     max-height: $sg-font-size-4 * 6;
 
-    .sg-event {
-      margin: 2%; // See sgCalendarDayBlock.directive.js
-      line-height: initial;
+    .day {
       position: relative;
     }
 
-    .gradient, .text {
+    .sg-event {
+      margin: $block_margin;
+      line-height: initial;
+      position: relative;
+
+      &--ghost {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 0;
+        padding-left: $block_margin;
+        padding-right: $block_margin;
+        &--first {
+          margin-left: $block_margin;
+          padding-left: 0;
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+        &--last {
+          margin-right: $block_margin;
+          padding-right: 0;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+        }
+      }
+    }
+
+    .text {
       position: relative;
     }
+  }
+
+  md-content {
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   // Days row
@@ -115,21 +151,24 @@ $scrollbar_width: 16px;
       .clickableHourCell {
         height: 40px;
         border-bottom: 1px solid sg-color($sogoPaper, 300);
+        user-select: none;
+        &.outOfDay {
+          background-color: $colorGrey50;
+        }
       }
     }
   }
 
   // Header of month tiles
   .sg-calendar-tile-header {
+    font-size: $sg-font-size-2;
+    min-height: $sg-font-size-2 + 8px;
     overflow: hidden;
+    padding: 4px;
+    text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: $sg-font-size-2;
-    padding: 4px;
-    min-height: $sg-font-size-2 + 8px;
-    text-align: right;
     //font-weight: $sg-font-light;
-    overflow: hidden;
   }
 
   // The left column of hours
@@ -173,7 +212,8 @@ $scrollbar_width: 16px;
   }
 
   // Events from editable calendars are draggable
-  .sg-draggable {
+  .sg-draggable-calendar-block,
+  .sg-event--ghost {
     cursor: move;
   }
 
@@ -183,15 +223,134 @@ $scrollbar_width: 16px;
     left: 0;
     right: 0;
     opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
-    overflow: hidden;
+    user-select: none;
+    transition: $swift-linear;
     $i: 0;
     @while $i < 96 { // number of 15-minutes blocks in a day
       &.starts#{$i} { top: 10px * $i; }
       &.lasts#{$i} { height: 10px * $i; }
       $i: $i + 1;
     }
+
+    &--notransition {
+      transition: none;
+    }
+
+    &--ghost {
+      opacity: 1;
+      left: $block_margin;
+      right: $block_margin;
+    }
+
+    &--dragging {
+      background-image: repeating-linear-gradient(-45deg,
+                                                  rgba(255,255,255,0.2),
+                                                  rgba(255,255,255,0.2) 2px,
+                                                  transparent 2px,
+                                                  transparent 4px );
+      opacity: 0.5;
+    }
+
     .eventInside {
       overflow: hidden;
+    }
+
+    // Event DnD drag grips
+
+    &:hover {
+      .dragGrip {
+        &-top, &-bottom {
+          display: block;
+          cursor: ns-resize;
+        }
+        &-left, &-right {
+          display: block;
+          cursor: ew-resize;
+        }
+      }
+    }
+
+    .dragGrip {
+      &-top, &-bottom, &-left, &-right {
+        display: none;
+        position: absolute;
+      }
+
+      &-top, &-bottom {
+        left: 1px;
+        right: 1px;
+        height: 10px;
+        line-height: 8px;
+      }
+
+      &-top {
+        top: 0;
+        .dragGrip {
+          right: 0;
+          top: -3px;
+        }
+      }
+
+      &-bottom {
+        bottom: 0;
+        .dragGrip {
+          bottom: -3px;
+        }
+      }
+
+      &-left, &-right {
+        top: 1px;
+        bottom: 1px;
+        width: 10px;
+        line-height: 8px;
+      }
+
+      &-left {
+        left: -$block_margin;
+        .dragGrip {
+          bottom: 0;
+          left: -1px;
+        }
+      }
+
+      &-right {
+        right: -$block_margin;
+        .dragGrip {
+          right: -1px;
+        }
+      }
+    }
+
+    .dragGrip {
+      background-color: white;
+      border-radius: 50%;
+      border-style: solid;
+      border-width: 1px;
+      display: inline-block;
+      height: 8px;
+      position: absolute;
+      width: 8px;
+    }
+
+    // Event DnD ghost start/end hours
+
+    .ghostStartHour,
+    .ghostEndHour {
+      position: absolute;
+      width: 100%;
+      vertical-align: baseline;
+      height: 14px;
+      left: 0px;
+      color: #222;
+      text-align: center;
+    }
+
+    .ghostStartHour {
+      top: -14px;
+    }
+
+    .ghostEndHour {
+      bottom: -14px;
     }
   }
 
@@ -250,8 +409,8 @@ $scrollbar_width: 16px;
       position: relative;
       border-radius: 1px;
       overflow: hidden;
-      padding: 2%;
-      margin: 2%;
+      padding: $block_margin;
+      margin: $block_margin;
       text-overflow: ellipsis;
       white-space: nowrap;
       span { // hours
@@ -269,13 +428,15 @@ $scrollbar_width: 16px;
     border-bottom: 1px dotted sg-color($sogoPaper, 300);
   }
 
-  .gradient, .text {
+  .text {
     position: absolute;
-    top: 1px;
-    left: 4px;
-    right: 2px;
-    bottom: 1px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 2px;
     overflow: hidden;
+    line-height: $sg-font-size-2;
   }
 
   .gradient > IMG {
@@ -311,6 +472,7 @@ $scrollbar_width: 16px;
   }
   md-list-item {
     padding-left: 0;
+    padding-right: 0;
     &:hover {
       background-color: initial;
     }

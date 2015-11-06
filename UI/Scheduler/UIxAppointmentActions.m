@@ -38,6 +38,7 @@
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/iCalEvent+SOGo.h>
@@ -59,23 +60,25 @@
   SoSecurityManager *sm;
   iCalEvent *event;
   NSCalendarDate *start, *newStart, *end, *newEnd;
+  NSDictionary *params;
   NSTimeInterval newDuration;
   SOGoUserDefaults *ud;
-  NSString *daysDelta, *startDelta, *durationDelta, *destionationCalendar;
+  NSNumber *daysDelta, *startDelta, *durationDelta;
+  NSString *destionationCalendar;
   NSTimeZone *tz;
   NSException *ex;
   SOGoAppointmentFolder *targetCalendar, *sourceCalendar;
   SOGoAppointmentFolders *folders;
 
   rq = [context request];
+  params = [[rq contentAsString] objectFromJSONString];
 
-  daysDelta = [rq formValueForKey: @"days"];
-  startDelta = [rq formValueForKey: @"start"];
-  durationDelta = [rq formValueForKey: @"duration"];
-  destionationCalendar = [rq formValueForKey: @"destination"];
+  daysDelta = [params objectForKey: @"days"];
+  startDelta = [params objectForKey: @"start"];
+  durationDelta = [params objectForKey: @"duration"];
+  destionationCalendar = [params objectForKey: @"destination"];
 
-  if ([daysDelta length] > 0
-      || [startDelta length] > 0 || [durationDelta length] > 0)
+  if (daysDelta || startDelta || durationDelta)
     {
       co = [self clientObject];
       event = (iCalEvent *) [[self clientObject] occurence];
@@ -119,7 +122,7 @@
       [event setLastModified: [NSCalendarDate calendarDate]];
       ex = [co saveComponent: event];
       // This condition will be executed only if the event is moved from a calendar to another. If destionationCalendar == 0; there is no calendar change
-      if (![destionationCalendar isEqualToString:@"0"])
+      if ([destionationCalendar length] > 0)
         {
           folders = [[self->context activeUser] calendarsFolderInContext: self->context];
           sourceCalendar = [co container];
@@ -151,9 +154,8 @@
         response = [self responseWith204];
     }
   else
-    response
-      = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
-                                                     reason: @"missing 'days', 'start' and/or 'duration' parameters"];
+    response = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
+                                                            reason: @"missing 'days', 'start' and/or 'duration' parameters"];
 
   return response;
 }
