@@ -29,6 +29,7 @@ Bug fixes
  - avoid crashing Outlook after setting a custom view in a calendar folder (Zentyal)
  - handle emails having an attachment as their content
  - fixed JavaScript syntax error in attendees editor
+ - fixed wrong comparison of meta vs. META tag in HTML mails
 
 2.3.2 (2015-09-16)
 ------------------
