@@ -431,7 +431,7 @@ static EOAttribute *textColumn = nil;
     [sql appendFormat: @" AND c_version > %d", (int)startVersion];
 
   if (deviceId) {
-    pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@", deviceId]
+    pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@%", deviceId]
                       forAttribute: textColumn];
     [sql appendFormat: @" AND c_path like %@", pathValue];
   }
