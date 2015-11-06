@@ -53,16 +53,22 @@
   return html;
 }
 
-- (NSData *) get_zentyal_crash_contents_of: (unsigned int) number
+- (NSData *) open_fixture: (NSString*) name
 {
-    NSString *file_path = [NSString stringWithFormat: @"Fixtures/zentyal_crash_%u.rtf", number];
+    NSString *file_path = [NSString stringWithFormat: @"Fixtures/%@", name];
 
     if(![[NSFileManager defaultManager] fileExistsAtPath: file_path]) {
         NSString *error = [NSString stringWithFormat: @"File %@ doesn't exist", file_path];
         testWithMessage(false, error);
     }
+    return [NSData dataWithContentsOfFile: file_path];    
+}
 
-    return [NSData dataWithContentsOfFile: file_path];
+- (NSData *) get_zentyal_crash_contents_of: (unsigned int) number
+{
+  NSString *fixture = [NSString stringWithFormat: @"zentyal_crash_%u.rtf", number];
+  return [self open_fixture: fixture];
+
 }
 
 - (void) test_does_not_crash: (unsigned int) number
@@ -70,6 +76,20 @@
   // FIXME fork
   [self rtf2html: [self get_zentyal_crash_contents_of: number]];
 }
+
+- (void) test_html_conversion_of_rtf_file: (NSString*) file
+                       with_expected_html: (NSString*) expected
+{
+  NSData *in = nil;
+  NSString *out = nil, *error = nil;
+
+  in = [self open_fixture: file];
+  out = [self rtf2html: in];
+  error = [NSString stringWithFormat:
+                      @"Html from rtf result is not what we expected.\nActual:\n%@\n Expected:\n%@\n", out, expected];
+  testWithMessage([out isEqualToString: expected], error);
+}
+
 
 - (void) test_zentyal_crash_2058
 {
@@ -108,6 +128,14 @@
 - (void) test_zentyal_crash_7067
 {
   [self test_does_not_crash: 7067];
+}
+
+- (void) test_mini_russian
+{
+  NSString *file =@"mini_russian.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"\"><font face=\"\"><font face=\"\"><font face=\"\"><font face=\"\"><font face=\"\"></font><font face=\"\"><font face=\"\"><font color=\"#000000\">XXзык польски, польщизнаXX</font></font></font></body></html>";
+  [self test_html_conversion_of_rtf_file: file
+                      with_expected_html: expected];  
 }
 
 @end
