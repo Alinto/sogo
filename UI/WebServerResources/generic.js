@@ -764,7 +764,7 @@ function popupMenu(event, menuId, target) {
     var leftDiff = ((window.width() + deltaX)
                     - (menuLeft + popup.offsetWidth));
     if (leftDiff < 0)
-        menuLeft -= (popup.offsetWidth + 1);
+      menuLeft += leftDiff - 1;
 
     var isVisible = true;
     if (popup.prepareVisibility) {
