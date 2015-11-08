@@ -21,6 +21,7 @@
 
 #include "RTFHandler.h"
 #include <Foundation/NSValue.h>
+#include <Foundation/NSException.h>
 
 //
 // Useful macros
@@ -352,6 +353,7 @@ const unsigned short ansicpg874[256] = {
   RTFFontInfo *fontInfo;
 
   description = [NSMutableString stringWithFormat: @"Number of fonts: %u\n", [fontInfos count]];
+
   enumerator = [fontInfos objectEnumerator];
   while ((fontInfo = [enumerator nextObject]))
     {
@@ -563,6 +565,9 @@ static void _init_fontCws_table()
   [super dealloc];
 }
 
+/*
+  Returns pointer to the control word and in len pointer its length including numeric argument
+*/
 - (const char *) parseControlWord: (unsigned int *) len
 {
   const char *start, *end;
@@ -1455,6 +1460,14 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
   
   [stack release];
   return [_html autorelease];
+}
+
+/* This method is for ease of testing and should not be used in normal operations */
+- (void) mangleInternalStateWithBytesPtr: (const char*) newBytes
+                           andCurrentPos: (int) newCurrentPos
+{
+  _bytes = newBytes;
+  _current_pos = newCurrentPos;
 }
 
 @end
