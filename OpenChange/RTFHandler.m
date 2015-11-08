@@ -21,6 +21,7 @@
 
 #include "RTFHandler.h"
 #include <Foundation/NSValue.h>
+#include <Foundation/NSException.h>
 
 //
 // Useful macros
@@ -293,6 +294,16 @@ const unsigned short ansicpg874[256] = {
   [super dealloc];
 }
 
+- (NSString *) description
+{
+  NSString *description;
+  description = [NSString stringWithFormat:
+                          @"%u name=%@ family=%@family charset=%@ pitch=%u\n",                
+                          index, name, family, charset, pitch
+                 ];
+  return description;
+}
+
 @end
 
 //
@@ -330,6 +341,23 @@ const unsigned short ansicpg874[256] = {
 
   key = [NSNumber numberWithInt: theIndex];
   return NSMapGet(fontInfos, key);
+}
+
+- (NSString *) description
+{
+  NSMutableString *description;
+  NSEnumerator *enumerator;
+  RTFFontInfo *fontInfo;
+
+  description = [NSMutableString stringWithFormat: @"Number of fonts:%u\n", [fontInfos count]];
+  enumerator = [fontInfos objectEnumerator];
+  while ((fontInfo = [enumerator nextObject]))
+    {
+      [description appendString: [fontInfo description]];
+      [description appendString: @"\n"];
+    }
+
+  return description;
 }
 
 @end
@@ -410,6 +438,9 @@ const unsigned short ansicpg874[256] = {
   [super dealloc];
 }
 
+/*
+  Returns pointer to the control word and in len pointer its length including numeric argument
+*/
 - (const char *) parseControlWord: (unsigned int *) len
 {
   const char *start, *end;
@@ -455,6 +486,31 @@ const unsigned short ansicpg874[256] = {
 
   return start+1;
 }
+
+// temporal this functionality should be merged with parseControlWord
+- (int) getNumericArgumentFrom: (const char*) p_cw
+                   controlWord: (const char*) cw_name
+                      totalLen: (unsigned int) len
+{
+  int res;
+  NSString *s;
+  unsigned int name_len, arg_len;
+
+  name_len = strnlen(cw_name, len);
+  arg_len = len - name_len;
+  if (arg_len == 0)
+      [NSException raise: @"NSInvalidArgumentException"
+                  format: @"No number argument in control word"];
+
+  s = [[NSString alloc] initWithBytesNoCopy: (void *)p_cw + name_len
+                                     length: arg_len
+                                   encoding: NSASCIIStringEncoding
+                               freeWhenDone: NO];
+  res = [s intValue]; // Warning: it does not detect conversion errors
+  [s release];
+  return res;
+}
+                    
 
 //
 // {\colortbl\red0\green0\blue0;\red128\green0\blue0;\red255\green0\blue0;}
@@ -571,6 +627,179 @@ const unsigned short ansicpg874[256] = {
           NSString *s;
           
           cw = [self parseControlWord: &len];
+          
+          // Skip our control word
+          if (strncmp((const char*)cw, "fonttbl", len) == 0)
+            continue;
+
+          // We must at least parse <fontnum><fontfamily><fcharset>
+          s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
+                                             length: len-1
+                                           encoding: NSASCIIStringEncoding
+                                       freeWhenDone: NO];
+          [s autorelease];
+
+          // If we got a fontnum, let's parse all three fields at once)
+          if (isdigit(*(cw+1)))
+            {
+              fontInfo->index = [s intValue];
+              
+              // We now parse <fontfamily><fcharset>
+              cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
+              fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
+                                                                length: len-1
+                                                              encoding: NSASCIIStringEncoding
+                                                          freeWhenDone: NO];
+
+              cw = [self parseControlWord: &len];
+              if (len == 0)  // Possibly parsing a space
+                cw = [self parseControlWord: &len];
+
+              fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
+                                                                 length: len-1
+                                                               encoding: NSASCIIStringEncoding
+                                                           freeWhenDone: NO];
+
+              // We now skip everything until we find our final group closer ('}')
+              int cc = 1;
+              
+              do
+                {
+                  if (*_bytes == '{')
+                    cc++;
+                  if (*_bytes == '}')
+                    cc--;
+                  
+                  ADVANCE;
+                }
+              while (cc != 0);
+
+              // move back our buffer;
+              REWIND;
+            }
+        }
+      else
+        {
+          if (isalnum(*_bytes))
+            [fontName appendFormat: @"%c", *_bytes]; 
+          ADVANCE;
+       }
+    } while (count != 0);
+
+  return fontTable;
+}
+
+
+- (RTFFontTable *) WIPparseFontTable
+{
+  NSMutableString *fontName;
+  RTFFontTable *fontTable;
+  RTFFontInfo *fontInfo;
+
+  unsigned int count;
+
+  fontTable = [[[RTFFontTable alloc] init] autorelease];
+  fontName = nil;
+  fontInfo = nil;
+  count = 0;
+ 
+  do
+    {
+      if (*_bytes == '{')
+        {
+          if (fontTable && count == 1)
+            {
+              fontInfo = [[[RTFFontInfo alloc] init] autorelease];
+              fontName = [[[NSMutableString alloc] init] autorelease];
+            }
+          ADVANCE;
+          count++;
+        }
+      else if (*_bytes == '}')
+        {
+          if (fontTable && count == 1) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
+            {
+              // XXX? check ofintInfo
+              ASSIGN(fontInfo->name, fontName);
+              [fontTable addFontInfo: fontInfo  atIndex: fontInfo->index];
+            }
+          ADVANCE;
+          count--;
+        }
+      else if (*_bytes == '\\')
+        {
+          const char *cw;
+          unsigned int len;
+          int arg;
+          NSString *s;
+          
+          cw = [self parseControlWord: &len];
+          if (len == 1) 
+            {
+              if (strncmp((const char*) cw, "f", len) == 0)
+                {
+                  arg = [self getNumericArgumentFrom: cw
+                                         controlWord: "f"
+                                            totalLen: len];
+                  fontInfo->index = arg;
+                }
+              
+            }
+          else if (len == 4)
+            {
+              if (strncmp((const char*) cw, "fnil", len) == 0)
+                  {
+                    fontInfo->family = @"nil";
+                  }
+            }
+          else if (len == 5)
+            {
+              if (strncmp((const char*) cw, "fbidi", len) == 0)
+                {
+                  fontInfo->family = @"bidi";
+                }
+              else if (strncmp((const char*) cw, "ftech", len) == 0)
+                {
+                  fontInfo->family = @"tech";
+                }
+            }
+          else if (len == 6)
+            {
+              if (strncmp((const char*) cw, "froman", len) == 0)
+                  {
+                    fontInfo->family = @"roman";
+                  }
+              else if (strncmp((const char*) cw, "fswiss", len) == 0)
+                  {
+                    fontInfo->family = @"swiss";
+                  }
+              else if (strncmp((const char*) cw, "fdecor", len) == 0)
+                  {
+                    fontInfo->family = @"decor";
+                  }
+
+
+            }
+          else if (len == 7)
+            {
+              if (strncmp((const char*)cw, "fmodern", len) == 0)
+                {
+                  fontInfo->family = @"modern";
+                }
+            }
+          else if (len == 8)
+            {   
+              if (strncmp((const char*)cw, "fscript", len) == 0)
+                {
+                  fontInfo->family = @"fscript";
+                }
+            }
+               
+
+
           
           // Skip our control word
           if (strncmp((const char*)cw, "fonttbl", len) == 0)
@@ -1035,6 +1264,14 @@ const unsigned short ansicpg874[256] = {
   
   RELEASE(stack);
   return AUTORELEASE(_html);
+}
+
+/* This method is for ease of testing and should not be used in normal operations */
+- (void) mangleInternalStateWithBytesPtr: (const char*) newBytes
+                           andCurrentPos: (int) newCurrentPos
+{
+  _bytes = newBytes;
+  _current_pos = newCurrentPos;
 }
 
 @end

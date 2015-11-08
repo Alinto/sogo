@@ -26,6 +26,10 @@
 #import <Foundation/NSFileManager.h>
 #import "SOGoTest.h"
 #import "RTFHandler.h"
+#import <Foundation/NSException.h>
+
+#include <string.h>
+
 
 @interface TestRTFHandler : SOGoTest
 @end
@@ -36,20 +40,32 @@
 - (NSString *) rtf2html: (NSData *) rtf
 {
   NSString *html;
-  if (!rtf) return @"nil";
+  if (!rtf) 
+    return nil;
+
   RTFHandler *handler = [[RTFHandler alloc] initWithData: rtf];
   NSMutableData *data2 = [handler parse];
+  if (data2 == nil)
+    {
+      NSString *error = [NSString stringWithFormat: @"Couldn't parse RTF data:\n %s",
+                         (char *)[rtf bytes]];           
+      testWithMessage(NO, error);
+    }
+
   html = [[NSString alloc] initWithData: data2 encoding: NSUTF8StringEncoding];
-  if (html == nil) {
-    html = [[NSString alloc] initWithData: data2 encoding: NSASCIIStringEncoding];
-  }
-  if (html == nil) {
-    html = [[NSString alloc] initWithData: data2 encoding: NSISOLatin1StringEncoding];
-  }
-  if (html == nil) {
-    NSString *error = [NSString stringWithFormat: @"Couldn't convert parsed data"];
-    testWithMessage(false, error);
-  }
+  if (html == nil) 
+    {
+      html = [[NSString alloc] initWithData: data2 encoding: NSASCIIStringEncoding];
+    }
+  if (html == nil) 
+    {
+      html = [[NSString alloc] initWithData: data2 encoding: NSISOLatin1StringEncoding];
+    }
+  if (html == nil) 
+    {
+      NSString *error = [NSString stringWithFormat: @"Couldn't convert parsed data"];
+      testWithMessage(NO, error);
+    }
   return html;
 }
 
@@ -86,8 +102,47 @@
   in = [self open_fixture: file];
   out = [self rtf2html: in];
   error = [NSString stringWithFormat:
-                      @"Html from rtf result is not what we expected.\nActual:\n%@\n Expected:\n%@\n", out, expected];
+                      @"Html from rtf result is not what we expected.\n>> Actual:\n%@\n>> Expected:\n%@\n", out, expected];
   testWithMessage([out isEqualToString: expected], error);
+}
+
+- (void) test_font_table_parsing_of_rtf_file: (NSString*) file
+                         with_expected_table: (NSString*) expected
+{
+  NSData *in = nil;   
+  char *in_bytes;
+  char *table_pointer;
+  int newCurrentPos;
+  RTFHandler *handler;
+  RTFFontTable *out_table;
+  NSString *out_description, *error = nil;
+
+  in = [self open_fixture: file];
+  in_bytes = (char *) [in bytes];
+  table_pointer = strstr(in_bytes, "{\\fonttbl");
+  if (table_pointer == NULL)
+    {
+      [NSException raise: @"NSInvalidArgumentException"
+                  format: @"No font table in RTF file"];
+    }
+  newCurrentPos = table_pointer - in_bytes;
+
+  handler = [[RTFHandler alloc] initWithData: in];
+
+  [handler mangleInternalStateWithBytesPtr: table_pointer
+                             andCurrentPos: newCurrentPos];
+  out_table = [handler parseFontTable];
+  out_description = [out_table description];
+  if ([out_description isEqualToString: expected]) 
+    {
+      testWithMessage(YES, @"no error");      
+    }
+  else
+    {
+      error = [NSString stringWithFormat:
+                      @"Font table is not what we expected.\n>> Actual:\n%@\n>> Expected:\n%@\n", out_description, expected];
+      testWithMessage(NO, error);
+    }
 }
 
 
@@ -130,6 +185,15 @@
   [self test_does_not_crash: 7067];
 }
 
+
+- (void) test_mini_russian_font_table
+{
+  NSString *file =@"mini_russian.rtf";
+  NSString *expected=@"correct font table"; 
+  [self test_font_table_parsing_of_rtf_file: file
+                        with_expected_table: expected];
+}
+
 - (void) test_mini_russian
 {
   NSString *file =@"mini_russian.rtf";
@@ -137,5 +201,6 @@
   [self test_html_conversion_of_rtf_file: file
                       with_expected_html: expected];  
 }
+
 
 @end

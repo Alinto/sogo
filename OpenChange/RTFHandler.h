@@ -28,6 +28,8 @@
 //
 //
 //
+@class RTFFontTable;
+
 @interface RTFHandler : NSObject
 {
   NSMapTable *_charsets;
@@ -41,6 +43,11 @@
 
 - (id) initWithData: (NSData *) theData;
 - (NSMutableData *) parse;
+
+- (RTFFontTable *) parseFontTable;
+- (void) mangleInternalStateWithBytesPtr: (const char*) newBytes
+                          andCurrentPos: (int) newCurrentPos;
+
 @end
 
 //
@@ -83,6 +90,7 @@
   unsigned int index;
 }
 
+- (NSString *) description;
 @end
 
 //
@@ -96,8 +104,8 @@
 
 - (void) addFontInfo: (RTFFontInfo *) theFontInfo
              atIndex: (unsigned int ) theIndex;
-  
 - (RTFFontInfo *) fontInfoAtIndex: (unsigned int ) theIndex;
+- (NSString *) description;
 
 @end
 
