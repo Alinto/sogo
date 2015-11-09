@@ -522,6 +522,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSUInteger colIdx;
   NSString *stringValue;
 
+  /* As specified in [MS-OXCMAIL] 2.2.3.2.6.1, if there are three
+     or less characters followed by a colon at the beginning of
+     the subject, we can assume that's the subject prefix */
   subject = [self subject];
   colIdx = [subject rangeOfString: @":"].location;
   if (colIdx != NSNotFound && colIdx < 4)
@@ -537,17 +540,45 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagNormalizedSubject: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *subject;
-  NSUInteger colIdx;
-  NSString *stringValue;
+  NSString *stringValue, *subject;
+  NSUInteger quoteStartIdx, quoteEndIdx, colIdx;
+  NSRange quoteRange;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
 
   subject = [self subject];
-  colIdx = [subject rangeOfString: @":"].location;
-  if (colIdx != NSNotFound && colIdx < 4)
-    stringValue = [[subject substringFromIndex: colIdx + 1]
-                    stringByTrimmingLeadSpaces];
+  if (mailIsMeetingRequest)
+    {
+
+      /* SOGo "spices up" the invitation/update mail's subject, but
+         the client uses it to name the attendee's event, so we keep
+         only what's inside the quotes */
+      quoteStartIdx = [subject rangeOfString: @"\""].location;
+      quoteEndIdx = [subject rangeOfString: @"\""
+                                   options: NSBackwardsSearch].location;
+      if (quoteStartIdx != NSNotFound
+          && quoteEndIdx != NSNotFound
+          && quoteStartIdx != quoteEndIdx)
+        {
+            quoteRange = NSMakeRange(quoteStartIdx + 1, quoteEndIdx - quoteStartIdx - 1);
+            stringValue = [subject substringWithRange: quoteRange];
+        }
+      else stringValue = subject;
+    }
   else
-    stringValue = subject;
+    {
+
+      /* As specified in [MS-OXCMAIL] 2.2.3.2.6.1, if there are three
+         or less characters followed by a colon at the beginning of
+         the subject, we can assume that's the subject prefix */
+      colIdx = [subject rangeOfString: @":"].location;
+      if (colIdx != NSNotFound && colIdx < 4)
+        stringValue = [[subject substringFromIndex: colIdx + 1]
+                       stringByTrimmingLeadSpaces];
+      else
+        stringValue = subject;
+    }
   if (!stringValue)
     stringValue = @"";
   *data = [stringValue asUnicodeInMemCtx: memCtx];
