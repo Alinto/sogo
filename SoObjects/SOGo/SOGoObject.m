@@ -180,6 +180,9 @@
         [NSException raise: NSInvalidArgumentException
                      format: @"'_name' must not be an empty string"];
       context = [[WOApplication application] context];
+      if (!context)
+        [self errorWithFormat: @"Error: initializing a SOGoObject (named %@) "
+                               @"without wocontext", _name];
       nameInContainer = [_name copy];
       container = _container;
       if ([self doesRetainContainer])
