@@ -663,9 +663,16 @@
             </md-tab>
           </md-tabs>
           <md-button class="md-fab md-fab-bottom-right"
-                     label:aria-label="New Appointment"
-                     ng-click="list.newComponent($event)">
-            <md-icon>add</md-icon>
+                     label:aria-label="Create a new event"
+                     ng-click="list.newComponent($event)"
+                     ng-if="list.componentType == 'events'">
+            <md-icon >event</md-icon>
+          </md-button>
+          <md-button class="md-fab md-fab-bottom-right"
+                     label:aria-label="Create a new task"
+                     ng-click="list.newComponent($event)"
+                     ng-if="list.componentType == 'tasks'">
+            <md-icon>assignment_turned_in</md-icon>
           </md-button>
         </md-content>
         </div>
