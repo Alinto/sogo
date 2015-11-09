@@ -3149,7 +3149,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #else
           value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
                                                       timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
-                                                        locale: [[[NSLocale alloc] initWithLocaleIdentifier: @"en_US"] autorelease]];
+                                                        locale: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                     [NSArray arrayWithObjects: @"Jan", @"Feb", @"Mar", @"Apr",
+                                                                                                @"May", @"Jun", @"Jul", @"Aug", 
+                                                                                                @"Sep", @"Oct", @"Nov", @"Dec", nil],
+                                                                     @"NSShortMonthNameArray",
+                                                                     [NSArray arrayWithObjects: @"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
+                                                                                                @"Fri", @"Sat", nil],
+                                                                     @"NSShortWeekDayNameArray",
+                                                                     nil]];
+
 #endif
           s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
         } 
