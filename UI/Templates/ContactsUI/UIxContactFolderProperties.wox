@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-dialog flex-sm="100">
+  <md-dialog flex="40" flex-md="60" flex-sm="90">
 
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -33,10 +33,10 @@
       </md-checkbox>
     </md-dialog-content>
 
-    <div class="md-actions">
+    <md-dialog-actions>
       <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
       <md-button ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
-    </div>
+    </md-dialog-actions>
 
   </md-dialog>
 </container>

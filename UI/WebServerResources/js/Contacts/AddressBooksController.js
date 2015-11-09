@@ -249,10 +249,13 @@
         vm.close = close;
 
         function saveProperties() {
-          vm.addressbook.$save();
-          // Refresh list instance
-          srcAddressBook.init(vm.addressbook.$omit());
-          $mdDialog.hide();
+          vm.addressbook.$save().then(function() {
+            // Refresh list instance
+            srcAddressBook.init(vm.addressbook.$omit());
+            $mdDialog.hide();
+          }, function() {
+            // TODO handle error
+          });
         }
 
         function close() {

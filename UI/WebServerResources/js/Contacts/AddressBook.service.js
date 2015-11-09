@@ -215,10 +215,12 @@
    * @desc Extend instance with new data and compute additional attributes.
    * @param {object} data - attributes of addressbook
    */
-  AddressBook.prototype.init = function(data) {
-    this.$isLoading = true;
-    this.$cards = [];
-    this.cards = [];
+  AddressBook.prototype.init = function(data, options) {
+    if (!this.$cards) {
+      this.$isLoading = true;
+      this.$cards = [];
+      this.cards = [];
+    }
     angular.extend(this, data);
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;

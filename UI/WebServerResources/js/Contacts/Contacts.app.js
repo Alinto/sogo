@@ -102,9 +102,13 @@
   /**
    * @ngInject
    */
-  stateAddressbook.$inject = ['$stateParams', 'AddressBook'];
-  function stateAddressbook($stateParams, AddressBook) {
-    return AddressBook.$find($stateParams.addressbookId).$futureAddressBookData;
+  stateAddressbook.$inject = ['$stateParams', 'stateAddressbooks', 'AddressBook'];
+  function stateAddressbook($stateParams, stateAddressbooks, AddressBook) {
+    var addressbook = _.find(stateAddressbooks, function(addressbook) {
+      return addressbook.id == $stateParams.addressbookId;
+    });
+    addressbook.$reload();
+    return addressbook;
   }
 
   /**
