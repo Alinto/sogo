@@ -135,7 +135,7 @@
   out_description = [out_table description];
   if ([out_description isEqualToString: expected]) 
     {
-      testWithMessage(YES, @"no error");      
+      testWithMessage(YES, @"no error");
     }
   else
     {
@@ -143,6 +143,7 @@
                       @"Font table is not what we expected.\n>> Actual:\n%@\n>> Expected:\n%@\n", out_description, expected];
       testWithMessage(NO, error);
     }
+
 }
 
 
@@ -189,9 +190,94 @@
 - (void) test_mini_russian_font_table
 {
   NSString *file =@"mini_russian.rtf";
-  NSString *expected=@"correct font table"; 
-  [self test_font_table_parsing_of_rtf_file: file
-                        with_expected_table: expected];
+  NSMutableString *expected = [NSMutableString stringWithFormat: @"Number of fonts: 84\n"];
+  [expected appendString: @"0 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"31500 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"31501 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"31502 name=Cambria family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"37 name=Calibri family=swiss charset=0 pitch=2\n"];
+  [expected appendString: @"31503 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"39 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31504 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"40 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31505 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"31506 name=Calibri family=swiss charset=0 pitch=2\n"];
+  [expected appendString: @"42 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31507 name=Times New Roman family=roman charset=0 pitch=2\n"];
+  [expected appendString: @"31508 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"43 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31509 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"44 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"45 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31511 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"46 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31512 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"47 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31513 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31514 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31515 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31516 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31518 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31519 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31521 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31522 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31523 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31524 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31525 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31526 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31528 name=Cambria CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31529 name=Cambria Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31531 name=Cambria Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31532 name=Cambria Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31535 name=Cambria Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31536 name=Cambria (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31538 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31539 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31541 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31542 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31543 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31544 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31545 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31546 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31548 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31549 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31551 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31552 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31553 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31554 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31555 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31556 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31558 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31559 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31561 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31562 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31563 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31564 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"31565 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"31566 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"31568 name=Calibri CE family=swiss charset=238 pitch=2\n"];
+  [expected appendString: @"31569 name=Calibri Cyr family=swiss charset=204 pitch=2\n"];
+  [expected appendString: @"31571 name=Calibri Greek family=swiss charset=161 pitch=2\n"];
+  [expected appendString: @"31572 name=Calibri Tur family=swiss charset=162 pitch=2\n"];
+  [expected appendString: @"31575 name=Calibri Baltic family=swiss charset=186 pitch=2\n"];
+  [expected appendString: @"31576 name=Calibri (Vietnamese) family=swiss charset=163 pitch=2\n"];
+  [expected appendString: @"31578 name=Times New Roman CE family=roman charset=238 pitch=2\n"];
+  [expected appendString: @"31579 name=Times New Roman Cyr family=roman charset=204 pitch=2\n"];
+  [expected appendString: @"31581 name=Times New Roman Greek family=roman charset=161 pitch=2\n"];
+  [expected appendString: @"31582 name=Times New Roman Tur family=roman charset=162 pitch=2\n"];
+  [expected appendString: @"31583 name=Times New Roman (Hebrew) family=roman charset=177 pitch=2\n"];
+  [expected appendString: @"31584 name=Times New Roman (Arabic) family=roman charset=178 pitch=2\n"];
+  [expected appendString: @"409 name=Calibri CE family=swiss charset=238 pitch=2\n"];
+  [expected appendString: @"31585 name=Times New Roman Baltic family=roman charset=186 pitch=2\n"];
+  [expected appendString: @"410 name=Calibri Cyr family=swiss charset=204 pitch=2\n"];
+  [expected appendString: @"31586 name=Times New Roman (Vietnamese) family=roman charset=163 pitch=2\n"];
+  [expected appendString: @"412 name=Calibri Greek family=swiss charset=161 pitch=2\n"];
+  [expected appendString: @"413 name=Calibri Tur family=swiss charset=162 pitch=2\n"];
+  [expected appendString: @"416 name=Calibri Baltic family=swiss charset=186 pitch=2\n"];
+  [expected appendString: @"417 name=Calibri (Vietnamese) family=swiss charset=163 pitch=2\n"];
+
+[self test_font_table_parsing_of_rtf_file: file
+                      with_expected_table: expected];
 }
 
 - (void) test_mini_russian

@@ -30,7 +30,6 @@
 #define ADVANCE_N(N) _bytes += (N); _current_pos += (N);
 #define REWIND _bytes--; _current_pos--;
 
-
 //
 // Charset definitions. See http://msdn.microsoft.com/en-us/goglobal/bb964654 for all details.
 //
@@ -283,6 +282,7 @@ const unsigned short ansicpg874[256] = {
     {
       
     }
+
   return self;
 }
 
@@ -298,7 +298,7 @@ const unsigned short ansicpg874[256] = {
 {
   NSString *description;
   description = [NSString stringWithFormat:
-                          @"%u name=%@ family=%@family charset=%@ pitch=%u\n",                
+                          @"%u name=%@ family=%@ charset=%@ pitch=%u\n",                
                           index, name, family, charset, pitch
                  ];
   return description;
@@ -349,12 +349,11 @@ const unsigned short ansicpg874[256] = {
   NSEnumerator *enumerator;
   RTFFontInfo *fontInfo;
 
-  description = [NSMutableString stringWithFormat: @"Number of fonts:%u\n", [fontInfos count]];
+  description = [NSMutableString stringWithFormat: @"Number of fonts: %u\n", [fontInfos count]];
   enumerator = [fontInfos objectEnumerator];
   while ((fontInfo = [enumerator nextObject]))
     {
       [description appendString: [fontInfo description]];
-      [description appendString: @"\n"];
     }
 
   return description;
@@ -486,31 +485,87 @@ const unsigned short ansicpg874[256] = {
 
   return start+1;
 }
-
-// temporal this functionality should be merged with parseControlWord
-- (int) getNumericArgumentFrom: (const char*) p_cw
-                   controlWord: (const char*) cw_name
-                      totalLen: (unsigned int) len
-{
-  int res;
-  NSString *s;
-  unsigned int name_len, arg_len;
-
-  name_len = strnlen(cw_name, len);
-  arg_len = len - name_len;
-  if (arg_len == 0)
-      [NSException raise: @"NSInvalidArgumentException"
-                  format: @"No number argument in control word"];
-
-  s = [[NSString alloc] initWithBytesNoCopy: (void *)p_cw + name_len
-                                     length: arg_len
-                                   encoding: NSASCIIStringEncoding
-                               freeWhenDone: NO];
-  res = [s intValue]; // Warning: it does not detect conversion errors
-  [s release];
-  return res;
-}
                     
+- (const char *) parseControlWordAndSetLenIn: (unsigned int *) len
+                         setHasIntArgumentIn: (BOOL *) hasArg
+                            setIntArgumentIn: (int *) arg
+{
+  const char *start;
+  const char *end = NULL;
+  const char *startArg = NULL;
+  const char *endArg = NULL;
+
+  ADVANCE;
+  start = _bytes;
+
+  /*
+    A control word is defined by:
+
+    \<ASCII Letter Sequence><Delimiter>
+  */
+  while (isalpha(*_bytes))
+    {
+      end = _bytes;
+      ADVANCE;
+    }
+
+  if (end == NULL)
+    {
+      return NULL;
+    }
+
+  /*
+    The <Delimiter> can be one of the following:
+
+     - A space. This serves only to delimit a control word and is
+       ignored in subsequent processing.
+
+     - A numeric digit or an ASCII minus sign (-), which indicates
+       that a numeric parameter is associated with the control word.
+       Only this case requires to include it in the control word.
+
+     - Any character other than a letter or a digit
+  */
+
+  if (*_bytes == '-' || isdigit(*_bytes))
+    {
+      startArg = _bytes;
+      endArg = _bytes;
+      ADVANCE;
+      while (isdigit(*_bytes))
+        {
+          endArg = _bytes;
+          ADVANCE;
+        }
+    }
+
+  *hasArg = NO;
+  *arg = 0;
+  if (startArg) 
+    {
+      NSString *s;
+      unsigned int argLength = endArg - startArg + 1;
+      // the next guard is to protect against a single '-'
+      if (argLength > 1 || (*startArg != '-'))
+        {
+          s = [[NSString alloc] initWithBytesNoCopy: (void *) startArg
+                                             length: argLength
+                                           encoding: NSASCIIStringEncoding
+                                       freeWhenDone: NO];
+          [s autorelease];
+          *hasArg = YES;
+          *arg = [s intValue]; // Warning: it does not detect conversion errors
+        }
+    }
+
+
+  /* In other cases, the delimiting character terminates the control
+     word and is not part of the control word. */
+
+
+  *len = end - start + 1;
+  return start;
+}
 
 //
 // {\colortbl\red0\green0\blue0;\red128\green0\blue0;\red255\green0\blue0;}
@@ -585,166 +640,60 @@ const unsigned short ansicpg874[256] = {
 //
 // We receive the full string.
 //
+
+
 - (RTFFontTable *) parseFontTable
 {
-  NSMutableString *fontName;
   RTFFontTable *fontTable;
   RTFFontInfo *fontInfo;
 
-  unsigned int count;
+  unsigned int level;
 
   fontTable = [[[RTFFontTable alloc] init] autorelease];
-  fontName = nil;
   fontInfo = nil;
-  count = 0;
+  level = 0;
  
   do
     {
       if (*_bytes == '{')
         {
-          if (fontTable)
+          if (fontTable && level == 1)
             {
               fontInfo = [[[RTFFontInfo alloc] init] autorelease];
-              fontName = [[[NSMutableString alloc] init] autorelease];
             }
           ADVANCE;
-          count++;
+          level++;
         }
       else if (*_bytes == '}')
         {
-          if (fontTable) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
+          if (fontTable && level == 2) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
             {
-              ASSIGN(fontInfo->name, fontName);
               [fontTable addFontInfo: fontInfo  atIndex: fontInfo->index];
             }
           ADVANCE;
-          count--;
+          level--;
         }
       else if (*_bytes == '\\')
         {
           const char *cw;
           unsigned int len;
-          NSString *s;
+          BOOL hasArg;
+          int arg;
           
-          cw = [self parseControlWord: &len];
-          
-          // Skip our control word
-          if (strncmp((const char*)cw, "fonttbl", len) == 0)
+          cw = [self parseControlWordAndSetLenIn: &len
+                             setHasIntArgumentIn: &hasArg
+                                setIntArgumentIn: &arg];
+          if (level != 2)
+            continue;
+          else if (cw == NULL)
             continue;
 
-          // We must at least parse <fontnum><fontfamily><fcharset>
-          s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                             length: len-1
-                                           encoding: NSASCIIStringEncoding
-                                       freeWhenDone: NO];
-          [s autorelease];
-
-          // If we got a fontnum, let's parse all three fields at once)
-          if (isdigit(*(cw+1)))
-            {
-              fontInfo->index = [s intValue];
-              
-              // We now parse <fontfamily><fcharset>
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                length: len-1
-                                                              encoding: NSASCIIStringEncoding
-                                                          freeWhenDone: NO];
-
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                 length: len-1
-                                                               encoding: NSASCIIStringEncoding
-                                                           freeWhenDone: NO];
-
-              // We now skip everything until we find our final group closer ('}')
-              int cc = 1;
-              
-              do
-                {
-                  if (*_bytes == '{')
-                    cc++;
-                  if (*_bytes == '}')
-                    cc--;
-                  
-                  ADVANCE;
-                }
-              while (cc != 0);
-
-              // move back our buffer;
-              REWIND;
-            }
-        }
-      else
-        {
-          if (isalnum(*_bytes))
-            [fontName appendFormat: @"%c", *_bytes]; 
-          ADVANCE;
-       }
-    } while (count != 0);
-
-  return fontTable;
-}
-
-
-- (RTFFontTable *) WIPparseFontTable
-{
-  NSMutableString *fontName;
-  RTFFontTable *fontTable;
-  RTFFontInfo *fontInfo;
-
-  unsigned int count;
-
-  fontTable = [[[RTFFontTable alloc] init] autorelease];
-  fontName = nil;
-  fontInfo = nil;
-  count = 0;
- 
-  do
-    {
-      if (*_bytes == '{')
-        {
-          if (fontTable && count == 1)
-            {
-              fontInfo = [[[RTFFontInfo alloc] init] autorelease];
-              fontName = [[[NSMutableString alloc] init] autorelease];
-            }
-          ADVANCE;
-          count++;
-        }
-      else if (*_bytes == '}')
-        {
-          if (fontTable && count == 1) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
-            {
-              // XXX? check ofintInfo
-              ASSIGN(fontInfo->name, fontName);
-              [fontTable addFontInfo: fontInfo  atIndex: fontInfo->index];
-            }
-          ADVANCE;
-          count--;
-        }
-      else if (*_bytes == '\\')
-        {
-          const char *cw;
-          unsigned int len;
-          int arg;
-          NSString *s;
-          
-          cw = [self parseControlWord: &len];
           if (len == 1) 
             {
               if (strncmp((const char*) cw, "f", len) == 0)
                 {
-                  arg = [self getNumericArgumentFrom: cw
-                                         controlWord: "f"
-                                            totalLen: len];
-                  fontInfo->index = arg;
+                  if (hasArg)
+                    fontInfo->index = arg;
                 }
               
             }
@@ -754,6 +703,11 @@ const unsigned short ansicpg874[256] = {
                   {
                     fontInfo->family = @"nil";
                   }
+              else if (strncmp((const char*) cw, "fprq", len) == 0)
+                {
+                  if (hasArg)
+                    fontInfo->pitch = arg;
+                }
             }
           else if (len == 5)
             {
@@ -780,87 +734,57 @@ const unsigned short ansicpg874[256] = {
                   {
                     fontInfo->family = @"decor";
                   }
-
-
             }
           else if (len == 7)
             {
-              if (strncmp((const char*)cw, "fmodern", len) == 0)
+              if (strncmp((const char*) cw, "fmodern", len) == 0)
                 {
                   fontInfo->family = @"modern";
                 }
             }
           else if (len == 8)
             {   
-              if (strncmp((const char*)cw, "fscript", len) == 0)
+             if (strncmp((const char* ) cw, "fcharset", len) == 0)
+                {
+                  if (hasArg)
+                    fontInfo->charset = [[NSString alloc] initWithFormat: @"%i", arg];                  
+                }              
+             else if (strncmp((const char*) cw, "fscript", len) == 0)
                 {
                   fontInfo->family = @"fscript";
                 }
             }
-               
-
-
-          
-          // Skip our control word
-          if (strncmp((const char*)cw, "fonttbl", len) == 0)
-            continue;
-
-          // We must at least parse <fontnum><fontfamily><fcharset>
-          s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                             length: len-1
-                                           encoding: NSASCIIStringEncoding
-                                       freeWhenDone: NO];
-          [s autorelease];
-
-          // If we got a fontnum, let's parse all three fields at once)
-          if (isdigit(*(cw+1)))
-            {
-              fontInfo->index = [s intValue];
-              
-              // We now parse <fontfamily><fcharset>
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                length: len-1
-                                                              encoding: NSASCIIStringEncoding
-                                                          freeWhenDone: NO];
-
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                 length: len-1
-                                                               encoding: NSASCIIStringEncoding
-                                                           freeWhenDone: NO];
-
-              // We now skip everything until we find our final group closer ('}')
-              int cc = 1;
-              
-              do
-                {
-                  if (*_bytes == '{')
-                    cc++;
-                  if (*_bytes == '}')
-                    cc--;
-                  
-                  ADVANCE;
-                }
-              while (cc != 0);
-
-              // move back our buffer;
-              REWIND;
-            }
-        }
-      else
+           }    
+      else // no char
         {
-          if (isalnum(*_bytes))
-            [fontName appendFormat: @"%c", *_bytes]; 
+          if (level == 2 && isalnum(*_bytes))
+            {
+              // we assume this is the fontname
+              // there is no limit length but we took 100
+              // as protection
+              const char *delim = strpbrk(_bytes, ";{}\\");
+              unsigned int fontnameLen = delim - _bytes;
+              // only valid if the delimator is a correct ';'
+              if (delim && *delim == ';')
+                {
+                  if (delim && fontnameLen < 100)
+                    {
+                      fontInfo->name = [[NSString alloc] initWithBytesNoCopy: (char *) _bytes
+                                                                      length: fontnameLen
+                                                                    encoding: NSASCIIStringEncoding
+                                                                freeWhenDone: NO];
+                      ADVANCE_N(fontnameLen);
+                    }
+                }
+              else {
+                // advance just before the special character
+                ADVANCE_N(fontnameLen - 1);
+              }
+            }
           ADVANCE;
-       }
-    } while (count != 0);
+        }
+
+    } while (level > 0);
 
   return fontTable;
 }
@@ -1020,7 +944,7 @@ const unsigned short ansicpg874[256] = {
               REWIND;
             }
           else if (strncmp(cw, "stylesheet", 10) == 0)
-  	     {
+             {
                _bytes = cw-2;
                _current_pos -= 12;  // Length: {\stylesheet
                [self parseStyleSheet];
