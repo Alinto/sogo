@@ -26,11 +26,12 @@
         initGrips();
 
       // Start dragging on mousedown
-      element.on('mousedown', onDragStart);
+      element.on('mousedown', onDragDetect);
 
-      // Deregister mousedown when removing the element from the DOM
+      // Deregister listeners when removing the element from the DOM
       scope.$on('$destroy', function() {
-        element.off('mousedown', onDragStart);
+        element.off('mousedown', onDragDetect);
+        element.off('mousemove', onDrag);
       });
 
       function initGrips() {
@@ -68,18 +69,14 @@
         }
       }
 
-      function onDragStart(ev) {
+      function onDragDetect(ev) {
         var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
 
         dragMode = 'move-event';
         eventType = 'multiday';
 
-        // Stop dragging on the next "mouseup"
-        angular.element(document).one('mouseup', onDragEnd);
-
         if (scope.block && scope.block.component) {
           // Move or resize existing component
-          block = scope.block;
           if (ev.target.className == 'dragGrip-top' ||
               ev.target.className == 'dragGrip-left')
             dragMode = 'change-start';
@@ -90,10 +87,36 @@
         else {
           // Create new component from dragging
           dragMode = 'change-end';
+        }
+
+        // Initialize pointer handler
+        pointerHandler = new SOGoEventDragPointerHandler(dragMode);
+        pointerHandler.initFromEvent(ev);
+
+        // Update Component.$ghost
+        Component.$ghost.pointerHandler = pointerHandler;
+
+        // Stop dragging on the next "mouseup"
+        angular.element(document).one('mouseup', onDragEnd);
+
+        // Listen to mousemove and start dragging when mouse has moved from at least 3 pixels
+        angular.element(document).on('mousemove', onDrag);
+      }
+
+      function dragStart(ev) {
+        var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
+
+        eventType = 'multiday';
+
+        if (scope.block && scope.block.component) {
+          // Move or resize existing component
+          block = scope.block;
+        }
+        else {
+          // Create new component from dragging
           startDate = new Date(calendarDayCtrl.dayString.substring(0,10) +
                                ' ' +
                                calendarDayCtrl.dayString.substring(11,16));
-          startDate.setHours(parseInt(element.attr('sg-hour')));
           newData = {
             type: 'appointment',
             pid: 'personal',  // TODO respect SOGoDefaultCalendar
@@ -103,8 +126,6 @@
           newComponent = new Component(newData);
           block = {
             component: newComponent,
-            start: parseInt(element.attr('sg-hour')) * 4,
-            dayNumber: calendarDayCtrl.dayNumber,
             length: 0
           };
           block.component.blocks = [block];
@@ -118,17 +139,16 @@
         if (block.component.c_isallday)
           eventType = 'multiday-allday';
 
-        // Initialize pointer handler
-        pointerHandler = new SOGoEventDragPointerHandler(dragMode);
+        // Update pointer handler
+        pointerHandler = Component.$ghost.pointerHandler;
         pointerHandler.prepareWithEventType(eventType);
-        pointerHandler.initFromEvent(ev);
         pointerHandler.initFromBlock(block);
 
         // Update Component.$ghost
         Component.$ghost.component = block.component;
-        Component.$ghost.pointerHandler = pointerHandler;
 
-        angular.element(document).on('mousemove', onDrag);
+        $log.debug('emit calendar:dragstart');
+        $rootScope.$emit('calendar:dragstart');
       }
 
       function onDrag(ev) {
@@ -151,7 +171,6 @@
 
         // Deregister mouse events
         angular.element(document).off('mousemove', onDrag);
-        angular.element(document).off('mouseup', onDragEnd);
 
         if (pointer.dragHasStarted) {
           $rootScope.$emit('calendar:dragend');
@@ -294,16 +313,16 @@
         // within the day view
         getEventViewCoordinates: null,
 
-        initFromEvent: function SEDPH_initFromEvent(event) {
-          this.currentCoordinates = new SOGoCoordinates();
-          this.updateFromEvent(event);
-          this.originalCoordinates = this.currentCoordinates.clone();
-        },
-
         initFromBlock: function SEDPH_initFromBlock(block) {
           this.currentEventCoordinates = new SOGoEventDragEventCoordinates();
           this.originalEventCoordinates = new SOGoEventDragEventCoordinates();
           this.originalEventCoordinates.initFromBlock(block);
+        },
+
+        initFromEvent: function SEDPH_initFromEvent(event) {
+          this.currentCoordinates = new SOGoCoordinates();
+          this.updateFromEvent(event);
+          this.originalCoordinates = this.currentCoordinates.clone();
         },
 
         // Method continuously called while dragging
@@ -317,6 +336,10 @@
             var newEventCoordinates = this.getEventViewCoordinates(Calendar.$view);
             if (!this.originalViewCoordinates) {
               this.originalViewCoordinates = this.getEventViewCoordinates(Calendar.$view, this.originalCoordinates);
+              if (Component.$ghost.component.isNew) {
+                this.setTimeFromQuarters(Component.$ghost.component.start, this.originalViewCoordinates.y);
+                $log.debug('new event start date ' + Component.$ghost.component.start);
+              }
             }
             if (!this.currentViewCoordinates ||
                 !newEventCoordinates ||
@@ -336,9 +359,8 @@
                    !this.dragHasStarted) {
             var distance = this.getDistance();
             if (distance > 3) {
-              // Emit 'dragstart' event only if pointer has moved from at least 3 pixels
               this.dragHasStarted = true;
-              $rootScope.$emit('calendar:dragstart');
+              dragStart(event);
             }
           }
         },
@@ -353,6 +375,10 @@
           var deltaQuarters = delta.x * CalendarSettings.EventDragDayLength + delta.y;
           $log.debug('quarters delta ' + deltaQuarters);
 
+          if (!this.originalEventCoordinates.start) {
+            this.originalEventCoordinates.dayNumber = this.originalViewCoordinates.x;
+            this.originalEventCoordinates.start = this.originalViewCoordinates.y;
+          }
           // if (currentView == "multicolumndayview")
           //   this._updateMulticolumnViewDayNumber_SEDGC();
           // else
@@ -504,6 +530,13 @@
 
         getDistance: function SEDPH_getDistance() {
           return this.currentCoordinates.getDistance(this.originalCoordinates);
+        },
+
+        setTimeFromQuarters: function SEDPH_setTimeFromQuarters(date, quarters) {
+          var hours, minutes;
+          hours = Math.floor(quarters / 4);
+          minutes = (quarters % 4) * 15;
+          date.setHours(hours, minutes);
         }
       };
     }

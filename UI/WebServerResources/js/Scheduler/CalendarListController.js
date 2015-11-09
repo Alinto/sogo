@@ -44,12 +44,12 @@
       Component.$filter(vm.componentType, { reload: true });
     });
 
+    // Update the component being dragged
     $rootScope.$on('calendar:dragend', updateComponentFromGhost);
 
     // Switch between components tabs
     function selectComponentType(type, options) {
       if (options && options.reload || vm.componentType != type) {
-        // TODO: save user settings (Calendar.SelectedList)
         if (angular.isUndefined(Component['$' + type]))
           Component.$filter(type);
         vm.unselectComponents();
@@ -117,13 +117,16 @@
     function newComponent($event, baseComponent) {
       var type = 'appointment', component;
 
-      if (vm.componentType == 'tasks')
-        type = 'task';
-      if (baseComponent)
+      if (baseComponent) {
         component = baseComponent;
-      else
+        type = baseComponent.type;
+      }
+      else {
         // TODO respect SOGoDefaultCalendar
         component = new Component({ pid: 'personal', type: type });
+        if (vm.componentType == 'tasks')
+          type = 'task';
+      }
 
       // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
       // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
