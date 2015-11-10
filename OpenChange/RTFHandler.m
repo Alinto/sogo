@@ -231,7 +231,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(a);
+  [a release];
   [super dealloc];
 }
 
@@ -246,7 +246,7 @@ const unsigned short ansicpg874[256] = {
   
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
       [a removeLastObject];
     }
   
@@ -259,7 +259,7 @@ const unsigned short ansicpg874[256] = {
 
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
     }
 
   return o;
@@ -285,15 +285,25 @@ const unsigned short ansicpg874[256] = {
       
     }
 
+  charset = DEFAULT_CHARSET;
   return self;
 }
 
 - (void) dealloc
 {
-  RELEASE(family);
-  RELEASE(charset);
-  RELEASE(name);
+  [family release];
+  [name release];
   [super dealloc];
+}
+
+- (NSString *) description
+{
+  NSString *description;
+  description = [NSString stringWithFormat:
+                          @"%u name=%@ family=%@ charset=%u pitch=%u",                
+                          index, name, family, charset, pitch
+                 ];
+  return description;
 }
 
 @end
@@ -377,7 +387,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(colorDefs);
+  [colorDefs release];
   [super dealloc];
 }
 
@@ -408,16 +418,55 @@ const unsigned short ansicpg874[256] = {
       _current_pos = 0;
       
       _charsets = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 10);
+      // 238 — Eastern European - cpg1250
       NSMapInsert(_charsets, @"ansicpg1250", ansicpg1250);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 238], ansicpg1250);
+      // 204 — Russian - cpg1251
       NSMapInsert(_charsets, @"ansicpg1251", ansicpg1251);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 204], ansicpg1251);
+      //  0 - Latin 1 - cpg1252 - also know as ANSI
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 0], ansicpg1252);
       NSMapInsert(_charsets, @"ansicpg1252", ansicpg1252);
+      // 161 - Greek  cpg1253
       NSMapInsert(_charsets, @"ansicpg1253", ansicpg1253);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 161], ansicpg1253);
+      // 162 — Turkish - cpg1254
       NSMapInsert(_charsets, @"ansicpg1254", ansicpg1254);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 162], ansicpg1254);
+      // 177 — Hebrew Traditional - cpg1255
+      // also 181 - Hebrew user
       NSMapInsert(_charsets, @"ansicpg1255", ansicpg1255);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 177], ansicpg1255);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 181], ansicpg1255);
+      // 178 — Arabic  - cpg1256
+      // also 179 - Arabic traditional
+      // also 180 - Arabic User
       NSMapInsert(_charsets, @"ansicpg1256", ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 178], ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 179], ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 180], ansicpg1256);
+      // 186 — Baltic - pg 1257
       NSMapInsert(_charsets, @"ansicpg1257", ansicpg1257);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 186], ansicpg1257);
+      // 163 — Vietnamese - pg1259
       NSMapInsert(_charsets, @"ansicpg1258", ansicpg1258);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 163], ansicpg1258);
+      // 222 — Thai - cpg874
       NSMapInsert(_charsets, @"ansicpg874", ansicpg874);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 222], ansicpg874);
+
+      // TODO: check differences between traditional/user/no-qualified for Arabic and Hebrew
+      // TODO: missing codepage for the following codes:
+      // 2 — Symbol
+      // 3 — Invalid
+      // 77 — Mac
+      // 128 — Shift Jis
+      // 129 — Hangul
+      // 130 — Johab
+      // 134 — GB2312
+      // 136 — Big5
+      // 254 — PC 437
+      // 255 — OEM 
     }
 
   return self;
@@ -426,7 +475,7 @@ const unsigned short ansicpg874[256] = {
 - (void) dealloc
 {
   NSFreeMapTable(_charsets);
-  RELEASE(_data);
+  [_data release];
   [super dealloc];
 }
 
@@ -734,8 +783,11 @@ const unsigned short ansicpg874[256] = {
             {   
              if (strncmp((const char* ) cw, "fcharset", len) == 0)
                 {
-                  if (hasArg)
-                    fontInfo->charset = [[NSString alloc] initWithFormat: @"%i", arg];                  
+                  if (hasArg) 
+                    {
+                      fontInfo->charset = arg;
+                    }
+
                 }              
              else if (strncmp((const char*) cw, "fscript", len) == 0)
                 {
@@ -858,13 +910,13 @@ const unsigned short ansicpg874[256] = {
   RTFFontTable *fontTable;
   RTFStack *stack;
   
-  unsigned short *charset;
+  const unsigned short *default_charset;
   char c;
   
   stack = [[RTFStack alloc] init];
   fontTable = nil;
   colorTable = nil;
-  charset = NULL;
+  default_charset = ansicpg1252;
   formattingOptions = nil;
 
   _html = [[NSMutableData alloc] init];
@@ -873,8 +925,9 @@ const unsigned short ansicpg874[256] = {
   
 
   // Check if we got RTF data
+  // this does not allow \s\n before '}' neither newline before control command
   if (_len > 4 && strncmp((const char*)_bytes, "{\\rtf", 4) != 0)
-    return NO;
+    return nil;
 
   while (_current_pos < _len)
     {
@@ -887,7 +940,7 @@ const unsigned short ansicpg874[256] = {
           const char *cw;
           NSString *s;
 
-          if (*(_bytes+1) == '\'' && charset)
+          if (*(_bytes+1) == '\'')
             {
               // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
               NSString *s;
@@ -895,6 +948,14 @@ const unsigned short ansicpg874[256] = {
               
               const char *b1, *b2;
               unsigned short index;
+
+              const unsigned short * active_charset;
+
+              if (formattingOptions && formattingOptions->charset)
+                active_charset = formattingOptions->charset;
+              else
+                active_charset = default_charset;
+
               
               ADVANCE;
               ADVANCE;
@@ -905,7 +966,7 @@ const unsigned short ansicpg874[256] = {
               index = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55) * 16;
               index += (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
               
-              s = [NSString stringWithCharacters: &(charset[index])  length: 1];
+              s = [NSString stringWithCharacters: &(active_charset[index])  length: 1];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
               [_html appendData: d];
               continue;
@@ -924,9 +985,10 @@ const unsigned short ansicpg874[256] = {
                                        freeWhenDone: NO];
           [s autorelease];
 
+          // todo:  This keyword should be emitted in the RTF header section right after the \ansi, \mac, \pc or \pca keyword.
           if (strncmp(cw, "ansicpg", 7) == 0)
             {
-              charset = NSMapGet(_charsets, s);
+              default_charset = NSMapGet(_charsets, s);
             }
           else if (strncmp(cw, "fonttbl", 7) == 0)
             {
@@ -1055,6 +1117,18 @@ const unsigned short ansicpg874[256] = {
                   v = calloc(7, sizeof(char));
                   sprintf(v, "<font>");
                 }
+
+              if (fontInfo && fontInfo->charset)
+                {
+                  if (fontInfo->charset == 1)
+                    /* charset 1 is default charset */
+                    formattingOptions->charset = NULL;
+                  else {
+                    NSNumber *key = [NSNumber numberWithUnsignedChar: fontInfo->charset];
+                    formattingOptions->charset =  NSMapGet(_charsets, key);
+                  }
+                }
+
               [_html appendBytes: v  length: strlen(v)];
               free(v);
             }
@@ -1088,6 +1162,7 @@ const unsigned short ansicpg874[256] = {
             }
           else if ([s hasPrefix: @"u"] && [s length] > 1 && isdigit([s characterAtIndex: 1]))
             {
+              // XXX TPFOX u argumrnt can be negative
               NSData *d;
               unichar ch;
 
@@ -1109,7 +1184,7 @@ const unsigned short ansicpg874[256] = {
             }
 
           // If a space delimits the control word, the space does not appear in the document.
-          // Any characters following the delimiter, including spaces, will appear in the document.
+          // Any characters following the delimiter, including spaces, will appear in the document. (except newline!)
           if (*_bytes == ' ')
             {
               ADVANCE;
@@ -1126,6 +1201,7 @@ const unsigned short ansicpg874[256] = {
           formattingOptions->font_index = -1;
           formattingOptions->color_index = -1;
           formattingOptions->start_pos = [_html length];
+          formattingOptions->charset = default_charset;
           [stack push: formattingOptions];
           ADVANCE;
         }
@@ -1172,17 +1248,21 @@ const unsigned short ansicpg874[256] = {
         }
       else
         {
-          // We avoid appending NULL bytes
-          if (*_bytes)
-            [_html appendBytes: _bytes  length: 1];
+          /* XXXX TODO add special stick together chars? */
+          // We avoid appending NULL bytes or endlines
+          if (*_bytes && (*_bytes != '\n')) 
+            {
+              /* end lines are not part of rtf */
+              [_html appendBytes: _bytes  length: 1];
+            }
           ADVANCE;
         }
     }
   
   [_html appendBytes: "</body></html>"  length: 14];
   
-  RELEASE(stack);
-  return AUTORELEASE(_html);
+  [stack release];
+  return [_html autorelease];
 }
 
 @end
