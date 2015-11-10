@@ -229,7 +229,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(a);
+  [a release];
   [super dealloc];
 }
 
@@ -244,7 +244,7 @@ const unsigned short ansicpg874[256] = {
   
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
       [a removeLastObject];
     }
   
@@ -257,7 +257,7 @@ const unsigned short ansicpg874[256] = {
 
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
     }
 
   return o;
@@ -288,9 +288,9 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(family);
-  RELEASE(charset);
-  RELEASE(name);
+  [family release];
+  [charset release];
+  [name release];
   [super dealloc];
 }
 
@@ -384,7 +384,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(colorDefs);
+  [colorDefs release];
   [super dealloc];
 }
 
@@ -433,7 +433,7 @@ const unsigned short ansicpg874[256] = {
 - (void) dealloc
 {
   NSFreeMapTable(_charsets);
-  RELEASE(_data);
+  [_data release];
   [super dealloc];
 }
 
@@ -1186,8 +1186,8 @@ const unsigned short ansicpg874[256] = {
   
   [_html appendBytes: "</body></html>"  length: 14];
   
-  RELEASE(stack);
-  return AUTORELEASE(_html);
+  [stack release];
+  return [_html autorelease];
 }
 
 /* This method is for ease of testing and should not be used in normal operations */
