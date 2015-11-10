@@ -74,6 +74,7 @@
   int font_index;
   int color_index;
   int start_pos;
+  const unsigned short *charset;
 }
 @end
 
@@ -84,7 +85,7 @@
 {
 @public
   NSString *family;
-  NSString *charset;
+  unsigned char charset;
   NSString *name;
   unsigned int pitch;
   unsigned int index;
