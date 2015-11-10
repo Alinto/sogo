@@ -311,6 +311,9 @@
 @implementation SOGoMailPolishForward
 @end
 
+@implementation SOGoMailPortugueseForward
+@end
+
 @implementation SOGoMailRussianForward
 @end
 

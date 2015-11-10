@@ -99,6 +99,9 @@
 @interface SOGoMailPolishReply : SOGoMailReply
 @end
 
+@interface SOGoMailPortugueseReply : SOGoMailReply
+@end
+
 @interface SOGoMailRussianReply : SOGoMailReply
 @end
 

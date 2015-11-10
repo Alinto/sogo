@@ -149,6 +149,9 @@
 @implementation SOGoMailPolishReply
 @end
 
+@implementation SOGoMailPortugueseReply
+@end
+
 @implementation SOGoMailRussianReply
 @end
 

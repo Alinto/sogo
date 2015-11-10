@@ -1,0 +1,118 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Gravar";
+"Close" = "Fechar";
+"Edit User Rights" = "Editar direitos do utilizador";
+
+"Home" = "Início";
+"Calendar" = "Calendário";
+"Address Book"	= "Contactos";
+"Mail" = "Correio";
+"Preferences" = "Preferências";
+"Administration" = "Administração";
+"Disconnect" = "Sair";
+"Right Administration" = "Administração de permissões";
+"Log Console (dev.)" = "Log Console (dev.)";
+
+"User" = "Utilizador";
+"Vacation message is enabled" = "Mensagem de ausência está ativa";
+
+"Help" = "Ajuda";
+
+"noJavascriptError" = "SOGo requer Javascript para correr. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
+"noJavascriptRetry" = "Repetir";
+
+"Owner:" = "Proprietário:";
+"Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
+
+"Add..." = "Adicionar...";
+"Remove" = "Remover";
+
+"Subscribe User" = "Utilizador Inscrito";
+
+"Any Authenticated User" = "Qualquer Utilizador Autenticado";
+"Public Access" = "Acesso Público";
+"Any user not listed above" = "Qualquer utilizador não listado abaixo";
+"Anybody accessing this resource from the public area" = "Ninguém acedendo a este recurso de uma área pública";
+
+"Sorry, the user rights can not be configured for that object." = "Desculpe, os accessos do utilizador não podem ser modificados para este objeto.";
+
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder à sua caixa postal \"% {0}\". Tem a certeza que confia em todos?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Qualquer utilizador com uma conta neste sistema poderá aceder seu calendário \"%{0}\". Você tem certeza que confia em todos?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Qualquer um na Internet poderá aceder ao seu calendário \"%{0}\". Estas informações podem ser publicadas na Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder seu catálogo de endereços \"% {0}\". Tem a certeza que confia em todos?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Qualquer pessoa na Internet será capaz de aceder ao seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
+"Give Access" = "Conceder Acesso";
+"Keep Private" = "Manter Privado";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Não foi possível inscrever-se nesta pasta!";
+"You cannot subscribe to a folder that you own!"
+      	= "Você não se pode inscrever numa pasta que é proprietário!";
+"Unable to unsubscribe from that folder!"
+	= "Não foi possível anular a subscrição desta pasta!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Você não pode anular subscrição de uma pasta que você é proprietário!";
+"Unable to rename that folder!" = "Não foi possível renomear esta pasta!";
+"You have already subscribed to that folder!"
+     	= "Você já se inscreveu nesta pasta!";
+"The user rights cannot be edited for this object!"
+        = "Os direitos do utilizador não podem ser editados para este objeto!";
+"A folder by that name already exists." = "Este nome já existe.";
+"You cannot create a list in a shared address book." 
+        = "Você não pode criar uma lista num catálogo de endereços público";
+"Warning" = "Aviso";
+"Can't contact server" = "Um erro ocorreu na ligação ao servidor. Por favor, tente mais tarde.";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Você não está autrizado para aceder a este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
+"You don't have the required privileges to perform the operation."
+= "Você não tem os privilégios necessários para realizar esta operação.";
+
+"noEmailForDelegation" = "Você deve informar o endereço ao qual deseja delegar seu convite.";
+"delegate is organizer" = "O delegado é o organizador. Por favor, especifique um delegado diferente.";
+"delegate is a participant" = "O delegado já é um participante.";
+"delegate is a group" = "O endereço especificado corresponde a um grupo. Você só pode delegar a uma pessoa única.";
+
+"Snooze for " = "Uma pausa de";
+"5 minutes" = "5 minutos";
+"10 minutes" = "10 minutos";
+"15 minutes" = "15 minutos";
+"30 minutes" = "30 minutos";
+"45 minutes" = "45 minutos";
+"1 hour" = "1 hora";
+"1 day" = "1 dia";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancelar";
+"Yes" = "Sim";
+"No" = "No";
+
+/* alarms */
+"Reminder:" = "Lembrete:";
+"Start:" = "Inicio:";
+"Due Date:" = "Data de vencimento:";
+"Location:" = "Localização:";
+
+/* mail labels */
+"Important" = "Importante";
+"Work" = "Trabalho";
+"Personal" = "Pessoal";
+"To Do" = "A fazer";
+"Later" = "Adiar";
+
+"a2_Sunday" = "Do";
+"a2_Monday" = "Se";
+"a2_Tuesday" = "Te";
+"a2_Wednesday" = "Qu";
+"a2_Thursday" = "Qu";
+"a2_Friday" = "Se";
+"a2_Saturday" = "Sa";

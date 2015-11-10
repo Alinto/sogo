@@ -78,6 +78,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailNorwegianNynorskReply.wo \
 	SOGoMailPolishForward.wo \
 	SOGoMailPolishReply.wo \
+	SOGoMailPortugueseForward.wo \
+	SOGoMailPortugueseReply.wo \
 	SOGoMailRussianForward.wo \
 	SOGoMailRussianReply.wo \
 	SOGoMailSlovakForward.wo \
@@ -95,7 +97,7 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailWelshForward.wo \
 	SOGoMailWelshReply.wo
 
-Mailer_LANGUAGES = Arabic Basque BrazilianPortuguese ChineseTaiwan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovenian Slovenian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+Mailer_LANGUAGES = Arabic Basque BrazilianPortuguese ChineseTaiwan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Portuguese Russian Slovenian Slovenian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 Mailer_LOCALIZED_RESOURCE_FILES = Localizable.strings
 
