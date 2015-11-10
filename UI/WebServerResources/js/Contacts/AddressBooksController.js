@@ -116,38 +116,9 @@
         targetEvent: $event,
         clickOutsideToClose: true,
         escapeToClose: true,
-        template: [
-          '<md-dialog flex="40" flex-sm="100" aria-label="' + l('Import Cards') + '">',
-          '  <md-toolbar class="sg-padded">',
-          '    <div class="md-toolbar-tools">',
-          '      <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>',
-          '      <div class="md-flex">',
-          '        <div class="sg-md-title">' + l('Import Cards') + '</div>',
-          '      </div>',
-          '      <md-button class="md-icon-button" ng-click="close()">',
-          '        <md-icon aria-label="Close dialog">close</md-icon>',
-          '      </md-button>',
-          '    </div>',
-          '  </md-toolbar>',
-          '  <md-dialog-content class="md-dialog-content">',
-          '    <div layout="column">',
-          '      <div layout="row" layout-align="start center">',
-          '        <span>' + l('Select a vCard or LDIF file.') + '</span>',
-          '        <label class="md-button" for="file-input">',
-          '          <span>' + l('Choose File') + '</span>',
-          '        </label>',
-          '        <input id="file-input" type="file" nv-file-select="nv-file-select" uploader="uploader" ng-show="false"/>',
-          '      </div>',
-          '      <span ng-show="uploader.queue.length == 0">' + l('No file chosen') + '</span>',
-          '      <span ng-show="uploader.queue.length > 0">{{ uploader.queue[0].file.name }}</span>',
-          '    </div>',
-          '  </md-dialog-content>',
-          '  <div class="md-actions">',
-          '    <md-button ng-disabled="uploader.queue.length == 0" ng-click="upload()">' + l('Upload') + '</md-button>',
-          '  </div>',
-          '</md-dialog>'
-        ].join(''),
+        templateUrl: 'UIxContactsImportDialog',
         controller: CardsImportDialogController,
+        controllerAs: '$CardsImportDialogController',
         locals: {
           folder: folder
         }
@@ -158,36 +129,67 @@
        */
       CardsImportDialogController.$inject = ['scope', '$mdDialog', 'folder'];
       function CardsImportDialogController(scope, $mdDialog, folder) {
+        var vm = this;
 
-        scope.uploader = new FileUploader({
-          url: ApplicationBaseURL + '/' + folder.id + '/import',
-          onProgressItem: function(item, progress) {
-            console.debug(item); console.debug(progress);
-          },
+        vm.uploader = new FileUploader({
+          url: ApplicationBaseURL + [folder.id, 'import'].join('/'),
+          autoUpload: true,
+          queueLimit: 1,
+          filters: [{ name: filterByExtension, fn: filterByExtension }],
           onSuccessItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+            var msg;
+
             $mdDialog.hide();
+
+            if (response.imported === 0)
+              msg = l('No card was imported.');
+            else {
+              msg = l('A total of %{0} cards were imported in the addressbook.', response.imported);
+              AddressBook.selectedFolder.$reload();
+            }
+
             $mdToast.show(
               $mdToast.simple()
-                .content(l('A total of %{0} cards were imported in the addressbook.', response.imported))
+                .content(msg)
                 .position('top right')
                 .hideDelay(3000));
-            AddressBook.selectedFolder.$reload();
-          },
-          onCancelItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
           },
           onErrorItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('An error occured while importing contacts.') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
           }
         });
 
-        scope.close = function() {
+        vm.close = function() {
           $mdDialog.hide();
         };
-        scope.upload = function() {
-          scope.uploader.uploadAll();
-        };
+
+        function filterByExtension(item) {
+          var isTextFile = item.type.indexOf('text') === 0 ||
+              /\.(ldif|vcf|vcard)$/.test(item.name);
+
+          if (!isTextFile)
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('Select a vCard or LDIF file.') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
+
+          return isTextFile;
+        }
       }
     }
 
