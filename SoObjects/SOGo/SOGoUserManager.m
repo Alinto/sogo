@@ -67,10 +67,12 @@ static Class NSNullK;
 
   if (type)
     {
-      if ([type isEqualToString: @"ldap"])
+      if ([type caseInsensitiveCompare: @"ldap"] == NSOrderedSame)
         sourceClass = @"LDAPSource";
-      else if ([type isEqualToString: @"sql"])
+      else if ([type caseInsensitiveCompare: @"sql"] == NSOrderedSame)
         sourceClass = @"SQLSource";
+      else if (NSClassFromString(type))
+        sourceClass = type;
       else
         {
           [NSException raise: @"SOGoUserManagerRegistryException"
@@ -121,7 +123,7 @@ static Class NSNullK;
       return NO;
     }
 
-  type = [[udSource objectForKey: @"type"] lowercaseString];
+  type = [udSource objectForKey: @"type"];
   c = NSClassFromString([_registry sourceClassForType: type]);
   sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
   [_sources setObject: sogoSource forKey: sourceID];
