@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
-  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, focus, Dialog, Settings, Calendar, User, stateCalendars) {
+  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', '$mdToast', 'FileUploader', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
+  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, $mdToast, FileUploader, focus, Dialog, Settings, Calendar, User, stateCalendars) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -19,6 +19,8 @@
     vm.revertEditing = revertEditing;
     vm.renameFolder = renameFolder;
     vm.share = share;
+    vm.importCalendar = importCalendar;
+    vm.exportCalendar = exportCalendar;
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
@@ -95,6 +97,93 @@
               });
           });
       }
+    }
+
+    function importCalendar($event, folder) {
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: 'UIxCalendarImportDialog',
+        controller: CalendarImportDialogController,
+        controllerAs: '$CalendarImportDialogController',
+        locals: {
+          folder: folder
+        }
+      });
+
+      /**
+       * @ngInject
+       */
+      CalendarImportDialogController.$inject = ['scope', '$mdDialog', 'folder'];
+      function CalendarImportDialogController(scope, $mdDialog, folder) {
+        var vm = this;
+
+        vm.uploader = new FileUploader({
+          url: ApplicationBaseURL + [folder.id, 'import'].join('/'),
+          autoUpload: true,
+          queueLimit: 1,
+          filters: [{ name: filterByExtension, fn: filterByExtension }],
+          onSuccessItem: function(item, response, status, headers) {
+            var msg;
+
+            $mdDialog.hide();
+
+            if (response.imported === 0)
+              msg = l('No event was imported.');
+            else {
+              msg = l('A total of %{0} events were imported in the calendar.', response.imported);
+              $rootScope.$emit('calendars:list');
+            }
+
+            $mdToast.show(
+              $mdToast.simple()
+                .content(msg)
+                .position('top right')
+                .hideDelay(3000));
+          },
+          onErrorItem: function(item, response, status, headers) {
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('An error occurred while importing calendar.') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
+          }
+        });
+
+        vm.close = function() {
+          $mdDialog.hide();
+        };
+
+        function filterByExtension(item) {
+          var isTextFile = item.type.indexOf('text') === 0 ||
+              /\.(ics)$/.test(item.name);
+
+          if (!isTextFile)
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('Select an iCalendar file (.ics).') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
+
+          return isTextFile;
+        }
+      }
+    }
+
+    function exportCalendar(calendar) {
+      window.location.href = ApplicationBaseURL + '/' + calendar.id + '.ics' + '/export';
     }
 
     function showLinks(calendar) {

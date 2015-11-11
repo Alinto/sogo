@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, Scheduler.js, Scheduler.services.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -201,7 +201,12 @@
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button ng-click="app.exportCalendar()">
+                    <md-button ng-click="app.importCalendar($event, calendar)">
+                      <var:string label:value="Import"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.exportCalendar(calendar)">
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
@@ -686,4 +691,38 @@
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxCalUserRightsEditor" />
   </script>
+
+  <!-- modal for calendar import -->
+  <script type="text/ng-template" id="UIxCalendarImportDialog">
+    <md-dialog flex="40" flex-sm="100" label:aria-label="Import Calendar">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>
+          <div class="md-flex">
+            <div class="sg-md-title"><var:string label:value="Import Calendar"/></div>
+          </div>
+          <md-button class="md-icon-button" ng-click="$CalendarImportDialogController.close()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content class="md-dialog-content">
+        <p><var:string label:value="Select an ICS file."/></p>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-progress-circular class="md-accent"
+                              md-mode="determinate"
+                              md-diameter="20px"
+                              ng-show="$CalendarImportDialogController.uploader.isUploading"
+                              ng-value="$CalendarImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
+        <label class="md-button" for="file-input" ng-hide="$CalendarImportDialogController.uploader.isUploading">
+          <span><var:string label:value="Upload"/></span>
+        </label>
+        <input id="file-input" type="file" class="ng-hide"
+               nv-file-select="nv-file-select"
+               uploader="$CalendarImportDialogController.uploader"/>
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
+
 </var:component>
