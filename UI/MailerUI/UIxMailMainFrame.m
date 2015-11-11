@@ -335,12 +335,17 @@
 
 - (WOResponse *) getFoldersStateAction
 {
-  NSString *expandedFolders;
+  id o;
+  NSArray *expandedFolders;
 
   [self _setupContext];
-  expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
+  o = [moduleSettings objectForKey: @"ExpandedFolders"];
+  if ([o isKindOfClass: [NSString class]])
+    expandedFolders = [o componentsSeparatedByString: @","];
+  else
+    expandedFolders = o;
 
-  return [self responseWithStatus: 200 andString: expandedFolders];
+  return [self responseWithStatus: 200 andJSONRepresentation: expandedFolders];
 }
 
 - (NSString *) verticalDragHandleStyle
@@ -404,7 +409,7 @@
   request = [context request];
   expandedFolders = [request formValueForKey: @"expandedFolders"];
 
-  [moduleSettings setObject: expandedFolders
+  [moduleSettings setObject: [expandedFolders componentsSeparatedByString: @","]
 		  forKey: @"ExpandedFolders"];
 
   [us synchronize];
