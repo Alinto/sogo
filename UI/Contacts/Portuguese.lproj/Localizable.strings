@@ -76,7 +76,7 @@
 "No possible subscription" = "Sem possibilidades de inscrição";
 
 "Preferred" = "Preferido";
-"Display:" = "Exibir:";
+"Display" = "Exibir";
 "Display Name:" = "Exibir Nome:";
 "Email:" = "Endereço de Email:";
 "Additional Email:" = "Email adicional:";
@@ -88,7 +88,7 @@
 
 "First:" = "Primeiro Nome:";
 "Last:" = "Último Nome:";
-"Nickname:" = "Apelido:";
+"Nickname" = "Apelido";
 
 "Telephone" = "Telefone";
 "Work:" = "Trabalho:";
@@ -109,10 +109,10 @@
 "Department:" = "Departmento:";
 "Organization:" = "Organização:";
 "Address:" = "Endereço:";
-"City:" = "Cidade:";
+"City" = "Cidade";
 "State_Province:" = "Região:";
 "ZIP_Postal Code:" = "Código postal:";
-"Country:" = "País:";
+"Country" = "País";
 "Web Page:" = "Página web:";
 
 "Work" = "Trabalho";
@@ -120,8 +120,8 @@
 
 "Note:" = "Notas:";
 "Timezone:" = "Fuso Horário:";
-"Birthday:" = "Aniversário:";
-"Birthday (yyyy-mm-dd):" = "Aniversário (yyyy-mm-dd):";
+"Birthday" = "Aniversário";
+"Birthday (yyyy-mm-dd)" = "Aniversário (yyyy-mm-dd)";
 "Freebusy URL:" = "URL Livre/Ocupado:";
 
 "Add as..." = "Adicionar como...";
