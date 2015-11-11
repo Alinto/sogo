@@ -199,7 +199,7 @@
 
 /* Event+task categories */
 "category_none" = "Nenhum";
-"calendar_category_labels" = "Aniversário,Negócios,Ligações,Concorrência,Cliente,Favoritos,Acompanhamento,Presentes,Feriados,Idéias,Meeting,Problemas,Miscelânea,Pessoal,Projetos,Feriado público,Posição,Fornecedores,Viagem,Férias";
+"calendar_category_labels" = "Celebração Anual,Aniversário,Negócios,Ligações,Clientes,Concorrência,Comprador,Favoritos,Acompanhamento,Presentes,Feriados,Idéias,Meeting,Problemas,Miscelânea,Pessoal,Projetos,Feriado público,Posição,Fornecedores,Viagem,Férias";
 
 /* Default module */
 "Calendar" = "Calendário";
@@ -228,7 +228,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
-"Russian" = "Русский";
+"Portuguese" = "Português";
 "Slovak" = "Eslovaco";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
