@@ -137,7 +137,7 @@
 "Labels" = "Címkék";
 "Label" = "Címke";
 "Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
-"Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
+"Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 
 "Forward messages" = "Üzenetek továbbítása";
@@ -236,7 +236,8 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "Russian" = "Русский";
-"Slovak" = "Szlovén";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

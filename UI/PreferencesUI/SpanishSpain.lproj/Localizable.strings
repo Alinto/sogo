@@ -210,7 +210,7 @@
 "Contacts" = "Libreta de direcciones";
 "Mail" = "Correo";
 "Last" = "Ultimo usado";
-"Default Module " = "Módulo por defecto ";
+"Default Module " = "Módulo por defecto";
 "SOGo Version" ="Versión de SOGo";
 
 "Language" ="Idioma";
@@ -236,7 +236,8 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "Russian" = "Русский";
-"Slovak" = "Eslovaquia";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

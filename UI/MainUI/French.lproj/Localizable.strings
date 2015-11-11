@@ -2,9 +2,9 @@
 
 "title" = "SOGo";
 
-"Username" = "Nom d'utilisateur ";
-"Password" = "Mot de passe ";
-"Domain" = "Domaine ";
+"Username" = "Nom d'utilisateur";
+"Password" = "Mot de passe";
+"Domain" = "Domaine";
 "Remember username" = "Se souvenir de moi";
 
 "Connect" = "Connexion";
@@ -37,7 +37,7 @@
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
-"Portuguese" = "Portuguese";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";

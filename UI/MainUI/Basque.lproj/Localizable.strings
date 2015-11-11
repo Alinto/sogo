@@ -20,6 +20,7 @@
 "Language" = "Hizkuntza";
 "choose" = "Aukeratu ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
@@ -36,7 +37,7 @@
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
-"Portuguese" = "Portuguese";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";

@@ -212,7 +212,9 @@
 "Language" = "Idioma";
 "choose" = "Escolha ...";
 "Arabic" = "العربية";
+"Basque" = "Euskara";
 "Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -229,7 +231,9 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
-"Slovak" = "Eslovaco";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

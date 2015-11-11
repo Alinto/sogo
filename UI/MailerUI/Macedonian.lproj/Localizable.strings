@@ -240,7 +240,7 @@
 "As Not Junk" = "Не е ѓубре";
 "Run Junk Mail Controls" = "Изврши ги контролите за ѓубре";
 
-"Search messages in:" = "Пребарај ги пораките во:";
+"Search messages in" = "Пребарај ги пораките во";
 "Search" = "Барај";
 "Search subfolders" = "Пребарај под папки";
 "Match any of the following" = "Одговара на било што од следното";
@@ -254,8 +254,7 @@
 
 /* Folder operations */
 "Name :" = "Име :";
-"Enter the new name of your folder :"
- = "Внеси ново име за вашата папка :";
+"Enter the new name of your folder" = "Внеси ново име за вашата папка";
 "Do you really want to move this folder into the trash ?"
  = "Навистина сакате папката да ја фрлите во кантата за ѓубре ?";
 "Operation failed" = "Неуспешна операција";
