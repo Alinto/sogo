@@ -57,7 +57,7 @@
           <table class="frame">
             <tr>
               <td>
-                <label><var:string label:value="First:" />
+                <label><var:string label:value="Firstname" />
                   <input type="text" class="textField" name="givenname"
                     id="givenname"
                     var:value="ldifRecord.givenname"
@@ -66,7 +66,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Last:" />
+                <label><var:string label:value="Lastname" />
                   <input type="text" class="textField" name="sn" id="sn"
                     var:value="ldifRecord.sn"
                     /></label>
@@ -74,7 +74,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Display:" />
+                <label><var:string label:value="Display" />
                   <input type="text" class="textField" name="displayname" id="displayname"
                     var:value="ldifRecord.displayname"
                     /></label>
@@ -82,7 +82,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Nickname:" />
+                <label><var:string label:value="Nickname" />
                   <input type="text" class="textField" name="mozillanickname" id="mozillanickname"
                     var:value="ldifRecord.mozillanickname"
                     /></label>
@@ -93,7 +93,7 @@
           <table class="frame" id="emailInfos">
             <tr>
               <td>
-                <label><var:string label:value="Email:" />
+                <label><var:string label:value="Email" />
                   <input type="text" class="textField" name="mail" id="mail"
                     var:value="ldifRecord.mail"
                     /></label>
@@ -202,7 +202,7 @@
           <table class="frame">
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Address:" />
+                <label><var:string label:value="Address" />
                   <input type="text" class="textField" name="mozillahomestreet"
                     id="mozillahomestreet"
                     var:value="ldifRecord.mozillahomestreet"
@@ -220,7 +220,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="City:" />
+                <label><var:string label:value="City" />
                   <input type="text" class="textField" name="mozillahomelocalityname"
                     id="mozillahomelocalityname"
                     var:value="ldifRecord.mozillahomelocalityname"
@@ -247,7 +247,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Country:" />
+                <label><var:string label:value="Country" />
                   <input type="text" class="textField" name="mozillahomecountryname"
                     id="mozillahomecountryname"
                     var:value="ldifRecord.mozillahomecountryname"
@@ -269,7 +269,7 @@
             <tr>
               <td colspan="2">
                 <label>
-                  <var:string label:value="Title:" />
+                  <var:string label:value="Title" />
                   <input type="text" class="textField" name="title"
                     id="title"
                     var:value="ldifRecord.title"
@@ -313,7 +313,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="City:" />
+                <label><var:string label:value="City" />
                   <input type="text" class="textField" name="l"
                     id="l" var:value="ldifRecord.l"
                     /></label>
@@ -337,7 +337,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Country:" />
+                <label><var:string label:value="Country" />
                   <input type="text" class="textField" name="c"
                     id="c" var:value="ldifRecord.c"
                     /></label>
@@ -367,19 +367,19 @@
             <tr>
               <td>
                 <div>
-                  <label id="birthdayLabel"><var:string label:value="Birthday (yyyy-mm-dd):"/></label>
+                  <label id="birthdayLabel"><var:string label:value="Birthday (yyyy-mm-dd)"/></label>
                   <var:component className="UIxDatePicker"
                     const:dateID="birthdayDate"
                     day="ldifRecord.birthday"
                     month="ldifRecord.birthmonth"
                     year="ldifRecord.birthyear"
-                    label:label="browse birthday"/>
+                    label:label="Birthday"/>
                 </div>
               </td>
             </tr>
            <tr>
               <td>
-                <label><var:string label:value="Note:" /></label>
+                <label><var:string label:value="Note" /></label>
                 <textarea rows="23" var:value="ldifRecord.description" name="note" id="note"></textarea>
               </td>
             </tr>
