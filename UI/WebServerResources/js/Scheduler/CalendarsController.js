@@ -63,7 +63,9 @@
               owner: UserLogin
             }
           );
-          Calendar.$add(calendar);
+          calendar.$id().then(function() {
+            Calendar.$add(calendar);
+          });
         });
     }
 
