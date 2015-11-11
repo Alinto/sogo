@@ -8,6 +8,8 @@ New features
 Enhancements
  - we no longer always entirely rewrite messages for Outlook 2013 when using EAS
  - support for ghosted elements on contacts over EAS
+ - added Macedonian translation - thanks to Miroslav Jovanovic
+ - added Portuguese translation - thanks to Eduardo Crispim
 
 Bug fixes
  - numerous EAS fixes when connections are dropped before the EAS client receives the response (#3058, #2849)
