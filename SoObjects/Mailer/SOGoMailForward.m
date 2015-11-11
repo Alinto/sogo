@@ -293,6 +293,9 @@
 @implementation SOGoMailItalianForward
 @end
 
+@implementation SOGoMailMacedonianForward
+@end
+
 @implementation SOGoMailNorwegianBokmalForward
 @end
 

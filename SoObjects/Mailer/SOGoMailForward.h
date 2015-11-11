@@ -82,6 +82,9 @@
 @interface SOGoMailItalianForward : SOGoMailForward
 @end
 
+@interface SOGoMailMacedonianForward : SOGoMailForward
+@end
+
 @interface SOGoMailNorwegianBokmalForward : SOGoMailForward
 @end
 
