@@ -76,7 +76,7 @@
 "No possible subscription" = "Претплатата не е можна";
 
 "Preferred" = "Преферирана";
-"Display:" = "Прикажи:";
+"Display" = "Прикажи";
 "Display Name:" = "Прикажи име:";
 "Email:" = "Електронска адреса:";
 "Additional Email:" = "Дополнителна електронска адреса:";
@@ -88,7 +88,7 @@
 
 "First:" = "Прв:";
 "Last:" = "Последен:";
-"Nickname:" = "Прекар:";
+"Nickname" = "Прекар";
 
 "Telephone" = "Телефон:";
 "Work:" = "Работа:";
@@ -109,19 +109,19 @@
 "Department:" = "Сектор:";
 "Organization:" = "Организација:";
 "Address:" = "Адреса:";
-"City:" = "Град:";
+"City" = "Град";
 "State_Province:" = "Држава/провинција:";
 "ZIP_Postal Code:" = "Поштенски број:";
-"Country:" = "Земја:";
+"Country" = "Земја";
 "Web Page:" = "Веб страница:";
 
 "Work" = "Работа";
 "Other Infos" = "Други информации";
 
-"Note:" = "Забелешка:";
+"Note" = "Забелешка";
 "Timezone:" = "Временска зона:";
-"Birthday:" = "Роденден:";
-"Birthday (yyyy-mm-dd):" = "Роденден (гггг-мм-дд):";
+"Birthday" = "Роденден";
+"Birthday (yyyy-mm-dd)" = "Роденден (гггг-мм-дд)";
 "Freebusy URL:" = "Слободно-зафатено URL:";
 
 "Add as..." = "Додади како:";

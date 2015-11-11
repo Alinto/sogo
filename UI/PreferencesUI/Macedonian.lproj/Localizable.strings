@@ -23,10 +23,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Овозможи автоматски одговор поради одмор";
-"Auto reply message :" = "Порака за автоматски одговор:";
-"Email addresses (separated by commas) :" = "Електронски адреси (раздвоени со запирки):";
+"Auto reply message" = "Порака за автоматски одговор";
+"Email addresses (separated by commas)" = "Електронски адреси (раздвоени со запирки)";
 "Add default email addresses" = "Додади ја основната адреса за електронска пошта";
-"Days between responses :" = "Денови помеѓу одговорите:";
+"Days between responses" = "Денови помеѓу одговорите";
 "Do not send responses to mailing lists" = "Не испраќај одговори кон мејлинг листи";
 "Disable auto reply on" = "Исклучи го автоматскиот одговор ";
 "Always send vacation message response" = "Секогаш испрати порака кога си на одмор";
@@ -46,10 +46,10 @@
 
 
 /* d & t */
-"Current Time Zone :" = "Тековна временска зона:";
-"Short Date Format :" = "Краток формат за датум:";
-"Long Date Format :" = "Долг формат за даум:";
-"Time Format :" = "Формат за време:";
+"Current Time Zone" = "Тековна временска зона";
+"Short Date Format" = "Краток формат за датум";
+"Long Date Format" = "Долг формат за даум";
+"Time Format" = "Формат за време";
 
 "default" = "Стандардно";
 
@@ -95,26 +95,26 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Неделата запонува на:";
-"Day start time :" = "Почетен датум:";
-"Day end time :" = "Краен датум:";
+"Week begins on" = "Неделата запонува на";
+"Day start time" = "Почетен датум";
+"Day end time" = "Краен датум";
 "Day start time must be prior to day end time." = "Почетокот мора да биде пред завршетокот (денови).";
 "Show time as busy outside working hours" = "Прикажи го надвор од работното време како зафатено";
-"First week of year :" = "Прва недела од годината:";
+"First week of year" = "Прва недела од годината";
 "Enable reminders for Calendar items" = "Овозможи ги потсетниците за календарот";
 "Play a sound when a reminder comes due" = "Звучно потсети кога ќе дојде потсетникот";
-"Default reminder :" = "Стандарден потсетник:";
+"Default reminder" = "Стандарден потсетник";
 
 "firstWeekOfYear_January1" = "Започнува на 1ви Јануари";
 "firstWeekOfYear_First4DayWeek" = "Првата 4-дневна недела";
 "firstWeekOfYear_FirstFullWeek" = "Првата цела недела";
 
 "Prevent from being invited to appointments" = "Избегни да бидеш повикан на состаноци";
-"White list for appointment invitations:" = "Бела листа на покани за состанок:";
+"White list for appointment invitations" = "Бела листа на покани за состанок";
 "Contacts Names" = "Имиња на контактите";
 
 /* Default Calendar */
-"Default calendar :" = "Стандарден календар:";
+"Default calendar" = "Стандарден календар";
 "selectedCalendar" = "Одбери го календарот";
 "personalCalendar" = "Личен календар";
 "firstCalendar" = "Првиот активен календар";
@@ -140,11 +140,11 @@
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
 "When sending mail, add unknown recipients to my" = "Кога испраќаш порака, додади ги непознатите приматели во мојата";
 
-"Forward messages:" = "Препрати ги пораките:";
+"Forward messages" = "Препрати ги пораките";
 "messageforward_inline" = "Во текстот";
 "messageforward_attached" = "Како прилог";
 
-"When replying to a message:" = "Кога одговарам на порака:";
+"When replying to a message" = "Кога одговарам на порака";
 "replyplacement_above" = "Започни гоодговорот над цитатот";
 "replyplacement_below" = "Започни го одговорот под цитатот";
 "And place my signature" = "И стави го мојот потпис";
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Нова сметка за електронска пошта";
 
-"Server Name:" = "Име на серверот:";
-"Port:" = "Порт:";
-"Encryption:" = "Шифрирање:";
+"Server Name" = "Име на серверот";
+"Port" = "Порт";
+"Encryption" = "Шифрирање";
 "None" = "Ниедна";
-"User Name:" = "Корисничко име:";
-"Password:" = "Лозинка:";
+"User Name" = "Корисничко име";
+"Password" = "Лозинка";
 
-"Full Name:" = "Целосно име:";
-"Email:" = "Електронска пошта:";
-"Reply To Email:" = "Одговори на поракта:";
-"Signature:" = "Потпис:";
+"Full Name" = "Целосно име";
+"Email" = "Електронска пошта";
+"Reply To Email" = "Одговори на поракта";
+"Signature" = "Потпис";
 "(Click to create)" = "(Кликни да се креира)";
 
 "Signature" = "Потпис";
@@ -190,13 +190,13 @@
 "Additional Parameters" = "Дополнителни параметри";
 
 /* password */
-"New password:" = "Нова лозинка:";
-"Confirmation:" = "Потврда:";
+"New password" = "Нова лозинка";
+"Confirmation" = "Потврда";
 "Change" = "Промена";
 
 /* Event+task classifications */
-"Default events classification :" = "Стандардна класификација на настани:";
-"Default tasks classification :" = "Стандардна класификација на задачи:";
+"Default events classification" = "Стандардна класификација на настани";
+"Default tasks classification" = "Стандардна класификација на задачи";
 "PUBLIC_item" = "Јавно";
 "CONFIDENTIAL_item" = "Доверливо";
 "PRIVATE_item" = "Приватно";
@@ -210,10 +210,10 @@
 "Contacts" = "Адресна книга";
 "Mail" = "Електронска пошта";
 "Last" = "Последно користено";
-"Default Module :" = "Стандарден модул:";
-"SOGo Version :" = "Верзија на SOGo:";
+"Default Module" = "Стандарден модул";
+"SOGo Version" = "Верзија на SOGo";
 
-"Language :" = "Јазик:";
+"Language" = "Јазик";
 "choose" = "Одбери ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -244,7 +244,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View :" = "Освежи го погледот:";
+"Refresh View" = "Освежи го погледот";
 "refreshview_manually" = "Рачно";
 "refreshview_every_minute" = "Секоја минута";
 "refreshview_every_2_minutes" = "Секои 2 минути";
@@ -255,12 +255,12 @@
 "refreshview_once_per_hour" = "На секој час";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "Кога ќе добијам потврда за прием:";
+"When I receive a request for a return receipt" = "Кога ќе добијам потврда за прием";
 "Never send a return receipt" = "Никогаш не испраќај потврда за прием";
 "Allow return receipts for some messages" = "Дозволи потврда за прием за некои пораки";
-"If I'm not in the To or Cc of the message:" = "Ако не сум во До или Копија на пораката:";
-"If the sender is outside my domain:" = "Ако испраќачот е надвор од мојот домејн:";
-"In all other cases:" = "Во сите други случаи:";
+"If I'm not in the To or Cc of the message" = "Ако не сум во До или Копија на пораката";
+"If the sender is outside my domain" = "Ако испраќачот е надвор од мојот домејн";
+"In all other cases" = "Во сите други случаи";
 
 "Never send" = "Никогаш не испраќај";
 "Always send" = "Секогаш испрати";
