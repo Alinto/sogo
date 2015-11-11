@@ -134,7 +134,7 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
     }
   }
 
-  md-content {
+  md-content[sg-calendar-scroll-view] {
     overflow-y: scroll;
     overflow-x: hidden;
   }
