@@ -1180,13 +1180,19 @@ const unsigned short ansicpg874[256] = {
               [_html appendBytes: "</strike>"  length: 9];
               formattingOptions->strikethrough = NO;
             }
-          else if ([s hasPrefix: @"u"] && [s length] > 1 && isdigit([s characterAtIndex: 1]))
+          else if ([s hasPrefix: @"u"] && [s length] > 1 && 
+                   (isdigit([s characterAtIndex: 1]) || '-' == [s characterAtIndex: 1]))
             {
-              // XXX TPFOX u argumrnt can be negative
               NSData *d;
               unichar ch;
+              int arg;
+              
+              arg = [[s substringFromIndex: 1] intValue];
+              if (arg < 0) 
+                // a negative value means a value greater than 32767
+                arg = 32767 - arg;
 
-              ch = (unichar)[[s substringFromIndex: 1] intValue];
+              ch = (unichar) arg;
               s = [NSString stringWithCharacters: &ch length: 1];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
               [_html appendData: d];
