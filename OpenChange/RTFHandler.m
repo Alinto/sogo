@@ -1093,7 +1093,7 @@ const unsigned short ansicpg874[256] = {
             {
               // ignore
             }
-          else if ([s hasPrefix: @"f"] && [s length] > 1)
+         else if ([s hasPrefix: @"f"] && [s length] > 1 && isdigit([s characterAtIndex: 1]))
             {
               RTFFontInfo *fontInfo;
               int font_index;
