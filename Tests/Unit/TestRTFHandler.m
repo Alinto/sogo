@@ -296,4 +296,13 @@
                  againstExpectedHTML: expected];  
 }
 
+- (void) test_spanish_accents
+{
+  NSString *file =@"spanish_accents.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
+
+  [self checkHTMLConversionOfRTFFile: file
+                 againstExpectedHTML: expected];  
+}
+
 @end
