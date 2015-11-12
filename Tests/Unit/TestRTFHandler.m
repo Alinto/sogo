@@ -296,5 +296,13 @@
                       with_expected_html: expected];  
 }
 
+- (void) test_acentos
+{
+  NSString *file =@"acentos.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
+
+  [self test_html_conversion_of_rtf_file: file
+                      with_expected_html: expected];  
+}
 
 @end
