@@ -159,10 +159,10 @@
   NSString *out = nil, *error = nil, *expected = nil;
 
   in = [self get_zentyal_crash_contents_of: 2089];
-  expected = @"<html><meta charset='utf-8'><body><font color=\"#000000\">Lorem Ipsum</font></body></html>";
+  expected =@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">Lorem Ipsum</font><font color=\"#000000\"><br></font></body></html>";
   out = [self rtf2html: in];
   error = [NSString stringWithFormat:
-                    @"Html from rtf result `%@` is not what we expected", out];
+                      @"Html from rtf result:\n%@\n is not what we expected:\n%@", out, expected];
   testWithMessage([out isEqualToString: expected], error);
 }
 
@@ -283,7 +283,7 @@
 - (void) test_mini_russian
 {
   NSString *file =@"mini_russian.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">XXзык польски, польщизнаXX</font></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">XXзык польски, польщизнаXX</font></font></font></body></html>";
   [self test_html_conversion_of_rtf_file: file
                       with_expected_html: expected];  
 }
@@ -291,7 +291,7 @@
 - (void) test_escapes
 {
   NSString *file =@"escapes.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font color=\"#000000\">x341x351x372x355x363x361x</font><font color=\"#000000\">S SS-S\\S</font><font color=\"#000000\">U老UřU</font><font color=\"#000000\"><br></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">x341x351x372x355x363x361x</font><font color=\"#000000\">S SS-S\\S</font><font color=\"#000000\">U老UřU</font><font color=\"#000000\"><br></font></font></body></html>";
   [self test_html_conversion_of_rtf_file: file
                       with_expected_html: expected];  
 }
@@ -299,7 +299,7 @@
 - (void) test_acentos
 {
   NSString *file =@"acentos.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
 
   [self test_html_conversion_of_rtf_file: file
                       with_expected_html: expected];  
