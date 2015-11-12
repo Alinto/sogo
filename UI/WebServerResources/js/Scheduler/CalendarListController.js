@@ -123,9 +123,9 @@
       }
       else {
         // TODO respect SOGoDefaultCalendar
-        component = new Component({ pid: 'personal', type: type });
         if (vm.componentType == 'tasks')
           type = 'task';
+        component = new Component({ pid: 'personal', type: type });
       }
 
       // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
