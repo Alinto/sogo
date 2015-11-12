@@ -1114,4 +1114,44 @@
     return component;
   };
 
+  /**
+   * @function repeatDescription
+   * @memberof Component.prototype
+   * @desc Return a localized description of the recurrence definition
+   * @return a localized string
+   */
+  Component.prototype.repeatDescription = function() {
+    var localizedString = null;
+    if (this.repeat)
+      localizedString = l('repeat_' + this.repeat.frequency.toUpperCase());
+
+    return localizedString;
+  };
+
+  /**
+   * @function alarmDescription
+   * @memberof Component.prototype
+   * @desc Return a localized description of the reminder definition
+   * @return a localized string
+   */
+  Component.prototype.alarmDescription = function() {
+    var key, localizedString = null;
+    if (this.alarm) {
+      key = ['reminder' + this.alarm.quantity, this.alarm.unit, this.alarm.reference].join('_');
+      localizedString = l(key);
+      if (key === localizedString)
+        // No localized string for this reminder definition
+        localizedString = [this.alarm.quantity,
+                           l('reminder_' + this.alarm.unit),
+                           l('reminder_' + this.alarm.reference)].join(' ');
+    }
+
+    return localizedString;
+  };
+
+  Component.prototype.toString = function() {
+    return '[Component ' + this.id + ']';
+  };
+
+
 })();

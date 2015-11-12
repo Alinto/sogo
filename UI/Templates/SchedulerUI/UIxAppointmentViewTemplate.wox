@@ -120,12 +120,12 @@
         <!-- repeat -->
         <md-list-item ng-show="editor.component.$isRecurrent">
           <md-icon>repeat</md-icon>
-          <p><!-- editor.component.repeat.toString() --></p>
+          <p>{{editor.component.repeatDescription()}}</p>
         </md-list-item>
         <!-- reminder -->
-        <md-list-item ng-show="editor.component.$hasAlarm" ng-hide="editor.component.userHasRSVP">
+        <md-list-item ng-hide="!editor.component.$hasAlarm || editor.component.userHasRSVP">
           <md-icon>alarm_on</md-icon>
-          <p><!-- editor.component.alarm.toString() --></p>
+          <p>{{editor.component.alarmDescription()}}</p>
         </md-list-item>
         <md-list-item layout-align="start start" ng-show="editor.component.organizer">
           <md-icon>people</md-icon>

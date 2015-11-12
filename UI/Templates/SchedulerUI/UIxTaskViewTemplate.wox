@@ -111,24 +111,24 @@
           <p>{{editor.component.percentComplete}} %</p>
         </md-list-item>
         <!-- attach urls -->
-        <md-list-item  ng-repeat="url in editor.component.attachUrls">
+        <md-list-item  ng-repeat="url in ::editor.component.attachUrls">
           <md-icon>link</md-icon>
           <p><a ng-href="url.value">{{url.value}}</a></p>
         </md-list-item>
         <!-- comment -->
         <md-list-item ng-show="editor.component.comment">
           <md-icon>mode_comment</md-icon>
-          <p>{{editor.component.comment}}</p>
+          <p>{{::editor.component.comment}}</p>
         </md-list-item>
         <!-- repeat -->
         <md-list-item ng-show="editor.component.repeat">
           <md-icon>repeat</md-icon>
-          <p><!-- editor.component.repeat.toString() --></p>
+          <p>{{editor.component.repeatDescription()}}</p>
         </md-list-item>
         <!-- reminder -->
         <md-list-item ng-show="editor.component.$hasAlarm">
-          <md-icon>alarm</md-icon>
-          <p><!-- editor.component.alarm.toString() --></p>
+          <md-icon>alarm_on</md-icon>
+          <p>{{editor.component.alarmDescription()}}</p>
         </md-list-item>
       </md-list>
     </md-dialog-content>
