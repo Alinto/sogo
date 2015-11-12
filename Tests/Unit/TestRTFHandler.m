@@ -291,7 +291,7 @@
 - (void) test_escapes
 {
   NSString *file =@"escapes.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font color=\"#000000\">x341x351x372x355x363x361x</font><font color=\"#000000\">S SS-S\\S</font><font color=\"#000000\"><br></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"><font face=\"Times New Roman\"></font><font face=\"Calibri\"><font color=\"#000000\">x341x351x372x355x363x361x</font><font color=\"#000000\">S SS-S\\S</font><font color=\"#000000\">U老UřU</font><font color=\"#000000\"><br></font></font></body></html>";
   [self test_html_conversion_of_rtf_file: file
                       with_expected_html: expected];  
 }
