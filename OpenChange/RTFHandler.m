@@ -939,11 +939,11 @@ const unsigned short ansicpg874[256] = {
           unsigned int len;
           const char *cw;
           NSString *s;
+          char nextByte = *(_bytes+1);
 
-          if (*(_bytes+1) == '\'')
+          if (nextByte == '\'')
             {
               // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
-              NSString *s;
               NSData *d;
               
               const char *b1, *b2;
@@ -971,11 +971,31 @@ const unsigned short ansicpg874[256] = {
               [_html appendData: d];
               continue;
             }
-          else if (*(_bytes+1) == '*')
+          else if (nextByte == '*')
             {
               [self parseIgnoringEverything];
               continue;
             }
+          else if (!isalpha(nextByte)) 
+            {
+              // escape + character
+              ADVANCE_N(2);
+              // check for special escapes for the no-implemented features
+              // for control of word breaking
+              if (nextByte == '~')
+                // no breaking space
+                nextByte = ' ';
+              else if (nextByte == '-')
+                // optional hyphen; we skip it
+                continue;
+              else if  (nextByte == '_')
+                // no breaking hyphen, treat it as a normal hyphen
+                nextByte = '-';
+
+              [_html appendBytes: &nextByte length: 1];
+              continue;
+            }
+
 
           cw = [self parseControlWord: &len];
 
@@ -1248,7 +1268,6 @@ const unsigned short ansicpg874[256] = {
         }
       else
         {
-          /* XXXX TODO add special stick together chars? */
           // We avoid appending NULL bytes or endlines
           if (*_bytes && (*_bytes != '\n')) 
             {
