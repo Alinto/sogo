@@ -364,7 +364,7 @@ static NSArray *tasksFields = nil;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime;
+  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime, *categories;
   NSRange match;
   iCalCalendar *calendar;
   iCalEntityObject *master;
@@ -423,7 +423,7 @@ static NSArray *tasksFields = nil;
               if (quickInfosFlag == YES)
                 {
                   for (i = ([allInfos count] - 1); i >= 0 ; i--) {
-                    if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
+                    if ([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
                       [allInfos removeObjectAtIndex:i];
                   }
                 }
@@ -521,6 +521,11 @@ static NSArray *tasksFields = nil;
                 calendarName = @"";
               [newInfo setObject: calendarName
                           forKey: @"calendarName"];
+
+              // Split comma-delimited categories
+              categories = [newInfo objectForKey: @"c_category"];
+              if ([categories length])
+                [newInfo setObject: [categories componentsSeparatedByString: @","] forKey: @"c_category"];
 
               // Fix empty title
               if (![[newInfo objectForKey: @"c_title"] length])
@@ -941,7 +946,7 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
         eventStart = eventEnd;
         eventEnd = swap;
         [self warnWithFormat: @"event '%@' has end < start: %d < %d",
-         [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
+              [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
       }
       
       startSecs = (unsigned int) [startDate timeIntervalSince1970];
@@ -994,21 +999,21 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
           currentDay = [blocks objectAtIndex: offset];
         }
         
-	      computedEventEnd = eventEnd;
+        computedEventEnd = eventEnd;
         
-	      // We add 5 mins to the end date of an event if the end date
-	      // is equal or smaller than the event's start date.
-	      if (eventEnd <= currentStart)
+        // We add 5 mins to the end date of an event if the end date
+        // is equal or smaller than the event's start date.
+        if (eventEnd <= currentStart)
           computedEventEnd = currentStart + (5*60);
 	      
-	      eventBlock = [self _eventBlockWithStart: currentStart
+        eventBlock = [self _eventBlockWithStart: currentStart
                                             end: computedEventEnd
                                          number: number
                                           onDay: currentDayStart
                                  recurrenceTime: recurrenceTime
                                       userState: userState];
-	      [currentDay addObject: eventBlock];
-	    }
+        [currentDay addObject: eventBlock];
+      }
     }
   }
 }
@@ -1319,7 +1324,7 @@ _computeBlocksPosition (NSArray *blocks)
     for (i = 0; i < [calendars count]; i++) // For each calendar
     {
       calendar = [calendars objectAtIndex:i];
-      calendarName =[calendar objectForKey: @"name"];
+      calendarName = [calendar objectForKey: @"name"];
       calendarId = [calendar objectForKey: @"id"];
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
