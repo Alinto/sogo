@@ -31,7 +31,8 @@
         '    <md-grid-list class="sg-color-picker" md-cols="7" md-row-height="1:1" md-gutter="0.5em">',
         '      <md-grid-tile ng-repeat="color in ::sgColors track by $index"',
         '                    ng-style="{ \'background-color\': color }"',
-        '                    ng-click="setColor(color)"></md-grid-tile>',
+        '                    ng-class="{ selected: color == sgColor }"',
+        '                    ng-click="setColor(color)"><md-icon ng-style="{ color: color }">check_box</md-icon></md-grid-tile>',
         '    </md-grid-list>',
         '  </md-menu-content>',
         '</md-menu>'
