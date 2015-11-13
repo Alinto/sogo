@@ -200,24 +200,15 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
     position: relative;
   }
 
-  // The outer event container
-  .sg-event {
-    font-size: $sg-font-size-2;
-    &, md-icon {
-      //color: #fff !important; // Overwrite dynamic CSS theme
-    }
-    .material-icons {
-      font-size: $sg-font-size-2;
-    }
-  }
-
   // Events from editable calendars are draggable
   .sg-draggable-calendar-block,
   .sg-event--ghost {
     cursor: move;
   }
 
+  // The outer event container
   .sg-event {
+    font-size: $sg-font-size-2;
     border-radius: 3px;
     position: absolute;
     left: 0;
@@ -253,6 +244,14 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
 
     .eventInside {
       overflow: hidden;
+    }
+
+    .material-icons {
+     font-size: $sg-font-size-2;
+    }
+
+    .secondary { // location in days view, hours in month view
+      font-weight: $sg-font-light;
     }
 
     // Event DnD drag grips
@@ -413,9 +412,6 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
       margin: $block_margin;
       text-overflow: ellipsis;
       white-space: nowrap;
-      span { // hours
-        font-weight: $sg-font-light;
-      }
     }
   }
 

@@ -44,6 +44,7 @@
         //       Component is private
         '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '      </span>',
+        '      <div class="secondary" ng-if="block.component.c_location"><md-icon>place</md-icon> {{block.component.c_location}}</div>',
         '    </div>',
         '  </div>',
         '</div>'

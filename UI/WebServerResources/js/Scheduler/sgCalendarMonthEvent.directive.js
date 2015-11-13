@@ -25,7 +25,7 @@
       replace: true,
       template: [
         '<div class="sg-event sg-draggable" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '  <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
+        '  <span class="secondary" ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
         '  {{ block.component.summary }}',
         '  <span class="icons">',
         //   Component is reccurent
