@@ -906,8 +906,13 @@ const unsigned short ansicpg874[256] = {
   RTFStack *stack;
   
   const unsigned short *default_charset;
-  char c;
-  
+
+  // convenience variables for parsing
+  unsigned char c;
+  NSData *d;
+  NSString *s;
+  unichar uch;
+
   stack = [[RTFStack alloc] init];
   fontTable = nil;
   colorTable = nil;
@@ -916,7 +921,6 @@ const unsigned short ansicpg874[256] = {
 
   _html = [[NSMutableData alloc] init];
   [_html appendBytes: "<html><meta charset='utf-8'><body>"  length: 34];
-
   
 
   // Check if we got RTF data
@@ -933,14 +937,11 @@ const unsigned short ansicpg874[256] = {
         {
           unsigned int len;
           const char *cw;
-          NSString *s;
           char nextByte = *(_bytes+1);
 
           if (nextByte == '\'')
             {
               // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
-              NSData *d;
-              
               const char *b1, *b2;
               unsigned short index;
 
@@ -1068,26 +1069,26 @@ const unsigned short ansicpg874[256] = {
               [_html appendBytes: v  length: strlen(v)];
               free(v);
             }
-          else if ([s hasPrefix: @"fcs"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fs"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fbidis"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fromhtml"])
-            {
-              // ignore
-            }
-         else if ([s hasPrefix: @"fromtext"])
-            {
-              // ignore
-            }
+         //  else if ([s hasPrefix: @"fcs"])
+         //    {
+         //      // ignore
+         //    }
+         //  else if ([s hasPrefix: @"fs"])
+         //    {
+         //      // ignore
+         //    }
+         //  else if ([s hasPrefix: @"fbidis"])
+         //    {
+         //      // ignore
+         //    }
+         //  else if ([s hasPrefix: @"fromhtml"])
+         //    {
+         //      // ignore
+         //    }
+         // else if ([s hasPrefix: @"fromtext"])
+         //    {
+         //      // ignore
+         //    }
          else if ([s hasPrefix: @"f"] && [s length] > 1 && isdigit([s characterAtIndex: 1]))
             {
               RTFFontInfo *fontInfo;
@@ -1178,17 +1179,14 @@ const unsigned short ansicpg874[256] = {
           else if ([s hasPrefix: @"u"] && [s length] > 1 && 
                    (isdigit([s characterAtIndex: 1]) || '-' == [s characterAtIndex: 1]))
             {
-              NSData *d;
-              unichar ch;
               int arg;
-              
               arg = [[s substringFromIndex: 1] intValue];
               if (arg < 0) 
                 // a negative value means a value greater than 32767
                 arg = 32767 - arg;
 
-              ch = (unichar) arg;
-              s = [NSString stringWithCharacters: &ch length: 1];
+              uch = (unichar) arg;
+              s = [NSString stringWithCharacters: &uch length: 1];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
               [_html appendData: d];
             }
@@ -1269,11 +1267,22 @@ const unsigned short ansicpg874[256] = {
         }
       else
         {
+          c = *_bytes;
           // We avoid appending NULL bytes or endlines
-          if (*_bytes && (*_bytes != '\n')) 
+          if (c && (c != '\n')) 
             {
-              /* end lines are not part of rtf */
-              [_html appendBytes: _bytes  length: 1];
+              if (c < 0x7f) 
+                {
+                  // in this case utf8 and ascii encoding are the same
+                  [_html appendBytes: &c  length: 1];
+                }
+              else 
+                {
+                  uch = c;
+                  s = [NSString stringWithCharacters: &uch length: 1];
+                  d = [s dataUsingEncoding: NSUTF8StringEncoding];
+                  [_html appendData: d];
+                }
             }
           ADVANCE;
         }
