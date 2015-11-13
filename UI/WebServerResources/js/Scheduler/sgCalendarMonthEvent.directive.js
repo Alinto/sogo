@@ -28,8 +28,13 @@
         '  <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
         '  {{ block.component.summary }}',
         '  <span class="icons">',
+        //   Component is reccurent
+        '    <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        //   Component has an alarm
         '    <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        //   Component is confidential
         '    <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        //   Component is private
         '    <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '  </span>',
         '  <div class="leftDragGrip"></div>',

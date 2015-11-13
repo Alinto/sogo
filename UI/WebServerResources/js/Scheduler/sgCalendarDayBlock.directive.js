@@ -35,6 +35,8 @@
         '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         '    <div class="text">{{ block.component.summary }}',
         '      <span class="icons">',
+        //       Component is reccurent
+        '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
         //       Component has an alarm
         '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
         //       Component is confidential
