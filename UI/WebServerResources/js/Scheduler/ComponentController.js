@@ -162,9 +162,7 @@
     vm.cancel = cancel;
     vm.save = save;
     vm.attendeesEditor = {
-      // startDate: vm.component.startDate,
-      // endDate: vm.component.endDate,
-      // days: getDays(),
+      days: getDays(),
       hours: getHours()
     };
     vm.addStartDate = addStartDate;
@@ -289,6 +287,7 @@
           oldEndDate = new Date(vm.component.end.getTime());
         }
       }
+      updateFreeBusy();
     }
 
     function updateEndTime() {
@@ -306,6 +305,7 @@
         vm.component.delta = delta;
         oldEndDate = new Date(vm.component.end.getTime());
       }
+      updateFreeBusy();
     }
 
     function updateDueTime() {
@@ -316,6 +316,11 @@
 
     function adjustDueTime() {
       oldDueDate = new Date(vm.component.due.getTime());
+    }
+
+    function updateFreeBusy() {
+      vm.attendeesEditor.days = getDays();
+      vm.component.updateFreeBusy();
     }
   }
 

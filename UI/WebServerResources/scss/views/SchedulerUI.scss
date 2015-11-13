@@ -479,8 +479,14 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
     //      img {
     //        margin-right: $mg/4;
     //      }
+    > .md-avatar {
+      // Overwrite default margin to gain some space and match 48px
+      margin-top: $baseline-grid/2;
+      margin-bottom: $baseline-grid/2;
+    }
   }
   .md-tile-left {
+    // Use in the top-left empty cell, which is in the first item of the attendees list
     height: initial;
     min-height: 48px;
     width: initial;

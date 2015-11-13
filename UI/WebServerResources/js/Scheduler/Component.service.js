@@ -522,19 +522,12 @@
     // Allow the component to be moved to a different calendar
     this.destinationCalendar = this.pid;
 
-    if (this.organizer && this.organizer.email) {
-      this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
-    }
+    // if (this.organizer && this.organizer.email) {
+    //   this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
+    // }
 
     // Load freebusy of attendees
-    this.freebusy = this.updateFreeBusyCoverage();
-
-    if (this.attendees) {
-      _.each(this.attendees, function(attendee) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
-        _this.updateFreeBusy(attendee);
-      });
-    }
+    this.updateFreeBusy();
 
     this.selected = false;
   };
@@ -678,6 +671,24 @@
   };
 
   /**
+   * @function updateFreeBusy
+   * @memberof Component.prototype
+   * @desc Update the freebusy coverage representation and the attendees freebusy information
+   */
+  Component.prototype.updateFreeBusy = function() {
+    var _this = this;
+
+    this.freebusy = this.updateFreeBusyCoverage();
+
+    if (this.attendees) {
+      _.each(this.attendees, function(attendee) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
+        _this.updateFreeBusyAttendee(attendee);
+      });
+    }
+  };
+
+  /**
    * @function setDelta
    * @memberof Component.prototype
    * @desc Set the end time to the specified number of minutes after the start time.
@@ -691,12 +702,12 @@
   };
 
   /**
-   * @function updateFreeBusy
+   * @function updateFreeBusyAttendee
    * @memberof Component.prototype
    * @desc Update the freebusy information for the component's period for a specific attendee.
    * @param {Object} card - an Card object instance of the attendee
    */
-  Component.prototype.updateFreeBusy = function(attendee) {
+  Component.prototype.updateFreeBusyAttendee = function(attendee) {
     var params, url, days;
     if (attendee.uid) {
       params =
@@ -775,7 +786,7 @@
           this.attendees.push(attendee);
         else
           this.attendees = [attendee];
-        this.updateFreeBusy(attendee);
+        this.updateFreeBusyAttendee(attendee);
       }
     }
   };

@@ -259,18 +259,18 @@
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
-      <div class="md-actions">
+      <md-dialog-actions>
         <md-button type="button" ng-click="editor.cancel()">
           <var:string label:value="Cancel"/>
         </md-button>
         <md-button type="button" ng-click="editor.component.$reset()">
           <var:string label:value="Reset"/>
         </md-button>
-        <md-button class="md-primary md-hue-3" type="submit"
+        <md-button class="md-primary" type="submit"
                    ng-disabled="editor.eventForm.$invalid">
           <var:string label:value="Save"/>
         </md-button>
-      </div>
+      </md-dialog-actions>
     </form>
   </md-dialog>
 </container>
