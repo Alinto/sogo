@@ -288,6 +288,7 @@
         var componentData = _.object(this.eventsFields, eventData),
             start = new Date(componentData.c_startdate * 1000);
         componentData.hour = start.getHourString();
+        componentData.categories = _.invoke(componentData.c_category, 'asCSSIdentifier');
         componentData.blocks = [];
         objects.push(new Component(componentData));
         return objects;

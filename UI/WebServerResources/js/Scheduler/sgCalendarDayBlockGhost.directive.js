@@ -22,8 +22,14 @@
       template: [
         '<div class="sg-event sg-event--ghost ng-hide">',
         '  <div class="eventInside">',
-        '    <div class="text">{{ block.component.summary }}</span>',
+        //   Categories color stripes
+        '    <div class="category" ng-repeat="category in block.component.categories"',
+        '         ng-class="\'bg-category\' + category"',
+        '         ng-style="{ right: ($index * 10) + \'%\' }"></div>',
+        '    <div class="text">{{ block.component.summary }}',
         '      <span class="icons">',
+        //       Component is reccurent
+        '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
         //       Component has an alarm
         '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
         //       Component is confidential
@@ -31,6 +37,10 @@
         //       Component is private
         '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '      </span>',
+        //     Location
+        '      <div class="secondary" ng-if="block.component.c_location">',
+        '        <md-icon>place</md-icon> {{block.component.c_location}}',
+        '      </div>',
         '    </div>',
         '  </div>',
         '  <div class="ghostStartHour" ng-if="startHour">{{ startHour }}</div>',

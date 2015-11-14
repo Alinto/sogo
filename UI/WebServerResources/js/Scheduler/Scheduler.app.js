@@ -18,7 +18,7 @@
         url: '/calendar',
         views: {
           calendars: {
-            templateUrl: 'UIxCalMainFrame', // UI/Templates/SchedulerUI/UIxCalMainFrame.wox
+            templateUrl: 'UIxCalMainView', // UI/Templates/SchedulerUI/UIxCalMainView.wox
             controller: 'CalendarsController',
             controllerAs: 'app'
           }

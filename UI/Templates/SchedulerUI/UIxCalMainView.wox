@@ -106,45 +106,20 @@
       <p><span class="label"><var:string label:value="Created by" /></span> <span>!- space -</span></p>
       <p class="description">!- space -</p>
     </div>
-  </div>
-
-  <div id="uploadDialog" style="display: none" class="dialog left">
-    <div>
-      <h3><var:string label:value="Import Events"/></h3>
-      <p class="prompt"><var:string label:value="Select an iCalendar file (.ics)."/></p>
-      <form const:href="" name="uploadForm" id="uploadForm" method="post"
-        enctype="multipart/form-data"
-        onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
-        'onComplete' : uploadCompleted})">
-        <p class="prompt"><input type="file" name="calendarFile" class="textField" id="calendarFile" />
-        <a href="#" class="button actionButton" id="uploadSubmit"
-            onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
-            <span><var:string label:value="Upload" /></span></a>
-        <a href="#" class="button" const:id="uploadCancel">
-            <span><var:string label:value="Cancel" /></span></a>
-      </p></form>
-      <hr/>
     </div>
-  </div>
-
-  <div id="uploadResults" style="display: none" class="dialog left">
-    <div>
-      <h3><var:string label:value="Import Events"/></h3>
-      <p><span id="uploadResultsContent">!- empty -</span>
-      <a href="#" class="button" const:id="uploadOK">
-          <span><var:string label:value="Done" /></span></a></p>
-      <hr/>
-    </div>
-    </div>
-    -->
+  -->
 
   <main class="view layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
 
-  <script type = "text/ng-template" id="UIxCalMainFrame">
+  <script type="text/ng-template" id="UIxCalMainView">
     <!-- calendars colors -->
-    <div sg-folder-stylesheet="true"
+    <sg-folder-stylesheet
          ng-repeat="calendar in app.service.$findAll()"
-         ng-model="calendar"><!-- stylesheet --></div>
+         ng-model="calendar"><!-- stylesheet --></sg-folder-stylesheet>
+    <!-- calendars colors -->
+    <sg-category-stylesheet
+         ng-repeat="category in app.categories"
+         ng-model="category"><!-- stylesheet --></sg-category-stylesheet>
     <!-- Sidenav -->
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />

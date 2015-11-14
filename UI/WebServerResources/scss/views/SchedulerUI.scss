@@ -209,6 +209,7 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
   // The outer event container
   .sg-event {
     font-size: $sg-font-size-2;
+    font-weight: $sg-font-medium;
     border-radius: 3px;
     position: absolute;
     left: 0;
@@ -250,8 +251,19 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
      font-size: $sg-font-size-2;
     }
 
+    .icons md-icon {
+      float: right;
+    }
+
     .secondary { // location in days view, hours in month view
       font-weight: $sg-font-light;
+    }
+
+    .category {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 10%;
     }
 
     // Event DnD drag grips

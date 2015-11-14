@@ -33,6 +33,10 @@
         //    Add a class while dragging
         '     ng-class="{\'sg-event--dragging\': block.dragging}">',
         '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        //   Categories color stripes
+        '    <div class="category" ng-repeat="category in block.component.categories"',
+        '         ng-class="\'bg-category\' + category"',
+        '         ng-style="{ right: ($index * 10) + \'%\' }"></div>',
         '    <div class="text">{{ block.component.summary }}',
         '      <span class="icons">',
         //       Component is reccurent
@@ -44,7 +48,10 @@
         //       Component is private
         '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '      </span>',
-        '      <div class="secondary" ng-if="block.component.c_location"><md-icon>place</md-icon> {{block.component.c_location}}</div>',
+        //     Location
+        '      <div class="secondary" ng-if="block.component.c_location">',
+        '        <md-icon>place</md-icon> {{block.component.c_location}}',
+        '      </div>',
         '    </div>',
         '  </div>',
         '</div>'

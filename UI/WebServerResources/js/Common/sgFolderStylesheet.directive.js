@@ -5,24 +5,24 @@
   'use strict';
 
   /*
-   * sgFolderStylesheet - Add CSS stylesheet for folder (addressbook or calendar)
+   * sgFolderStylesheet - Add CSS stylesheet for a folder's color (addressbook or calendar)
    * @memberof SOGo.Common
    * @restrict attribute
    * @param {object} ngModel - the object literal describing the folder (an Addressbook or Calendar instance)
    * @example:
 
-    <div sg-folder-stylesheet="true"
+    <sg-folder-stylesheet
          ng-repeat="calendar in calendars.list"
          ng-model="calendar" />
-   </div>
   */
   function sgFolderStylesheet() {
     return {
-      restrict: 'A',
+      restrict: 'E',
       require: 'ngModel',
       scope: {
         ngModel: '='
       },
+      replace: true,
       bindToController: true,
       controller: sgFolderStylesheetController,
       controllerAs: 'cssCtrl',
@@ -31,9 +31,11 @@
         /* Background color */
         '  .bg-folder{{ cssCtrl.ngModel.id }},',
         '  .bg-folder{{ cssCtrl.ngModel.id }} label,',
-        '  .bg-folder{{ cssCtrl.ngModel.id }} .md-input,',
-        '  .sg-event.bg-folder{{ cssCtrl.ngModel.id }} md-icon {',
+        '  .bg-folder{{ cssCtrl.ngModel.id }} .md-input {',
         '    background-color: {{ cssCtrl.ngModel.color }} !important;',
+        '    color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
+        '  }',
+        '  .sg-event.bg-folder{{ cssCtrl.ngModel.id }} md-icon {',
         '    color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
         '  }',
         // Set the contrast color of toolbar icons except the one of the background
@@ -81,21 +83,23 @@
       // Respect contrast ratio recommendation from W3C:
       // http://www.w3.org/TR/WCAG20/#contrast-ratiodef
       function contrast(hex) {
-        var color, c, l;
+        var color, c, l = 1;
 
         color = hexToRgb(hex);
-	c = [color.r / 255, color.g / 255, color.b / 255];
+        if (color) {
+	  c = [color.r / 255, color.g / 255, color.b / 255];
 
-	for (var i = 0; i < c.length; ++i) {
-	  if (c[i] <= 0.03928) {
-	    c[i] = c[i] / 12.92;
+	  for (var i = 0; i < c.length; ++i) {
+	    if (c[i] <= 0.03928) {
+	      c[i] = c[i] / 12.92;
+	    }
+            else {
+	      c[i] = Math.pow((c[i] + 0.055) / 1.055, 2.4);
+	    }
 	  }
-          else {
-	    c[i] = Math.pow((c[i] + 0.055) / 1.055, 2.4);
-	  }
-	}
 
-	l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+	  l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+        }
 
 	if (l > 0.179) {
           return 'black';
