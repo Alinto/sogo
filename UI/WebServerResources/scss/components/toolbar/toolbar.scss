@@ -19,13 +19,15 @@ md-toolbar {
 }
 
 // Colors transition when changing folder in dialogs
-md-toolbar,
-md-toolbar .md-input,
-md-toolbar md-input-container.md-input-has-value label,
-md-toolbar md-input-container label:not(.md-no-float),
-md-toolbar md-icon {
-  transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
-              color $swift-ease-out-duration $swift-ease-out-timing-function;
+md-dialog {
+  md-toolbar,
+  md-toolbar .md-input,
+  md-toolbar md-input-container.md-input-has-value label,
+  md-toolbar md-input-container label:not(.md-no-float),
+  md-toolbar md-icon {
+    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
+    color $swift-ease-out-duration $swift-ease-out-timing-function;
+  }
 }
 
 .md-toolbar-tools {
