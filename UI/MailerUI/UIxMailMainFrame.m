@@ -403,16 +403,18 @@
 - (WOResponse *) saveFoldersStateAction
 {
   WORequest *request;
-  NSString *expandedFolders;
+  NSArray *expandedFolders;
+  NSString *json;
   
   [self _setupContext];
   request = [context request];
-  expandedFolders = [request formValueForKey: @"expandedFolders"];
-
-  [moduleSettings setObject: [expandedFolders componentsSeparatedByString: @","]
-		  forKey: @"ExpandedFolders"];
-
-  [us synchronize];
+  json = [request formValueForKey: @"expandedFolders"];
+  if ([json length])
+    {
+      expandedFolders = [json objectFromJSONString];
+      [moduleSettings setObject: expandedFolders forKey: @"ExpandedFolders"];
+      [us synchronize];
+    }
 
   return [self responseWithStatus: 204];
 }
