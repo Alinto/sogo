@@ -590,6 +590,10 @@
                   <div class="sg-color-chip" ng-class="event.getClassName('bg')"
                      ng-show="!event.selected"
                      ng-click="list.toggleComponentSelection($event, event)"><!-- calendar color --></div>
+                  <div class="sg-category"
+                       ng-repeat="category in event.categories | limitTo:5"
+                       ng-class="'bg-category' + category"
+                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
                       <div>{{event.c_title}}</div>
@@ -603,6 +607,7 @@
                     <md-icon ng-show="event.c_iscycle">repeat</md-icon>
                     <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                   </div>
+                  <md-divider><!-- divider --></md-divider>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$events.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No events for selected criteria"/></p>
@@ -622,6 +627,10 @@
                   <div class="sg-color-chip" ng-class="task.getClassName('bg')"
                        ng-show="!task.selected"
                        ng-click="list.toggleComponentSelection($event, task)"><!-- calendar color --></div>
+                  <div class="sg-category"
+                       ng-repeat="category in task.categories | limitTo:5"
+                       ng-class="'bg-category' + category"
+                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
                       <div>{{task.c_title}}</div>
@@ -635,6 +644,7 @@
                     <md-icon ng-show="task.c_iscycle">repeat</md-icon>
                     <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
                   </div>
+                  <md-divider><!-- divider --></md-divider>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$tasks.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No tasks for selected criteria"/></p>

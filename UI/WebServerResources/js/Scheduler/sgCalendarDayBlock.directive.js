@@ -34,9 +34,9 @@
         '     ng-class="{\'sg-event--dragging\': block.dragging}">',
         '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         //   Categories color stripes
-        '    <div class="category" ng-repeat="category in block.component.categories"',
+        '    <div class="sg-category" ng-repeat="category in block.component.categories"',
         '         ng-class="\'bg-category\' + category"',
-        '         ng-style="{ right: ($index * 10) + \'%\' }"></div>',
+        '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
         '    <div class="text">{{ block.component.summary }}',
         '      <span class="icons">',
         //       Component is reccurent

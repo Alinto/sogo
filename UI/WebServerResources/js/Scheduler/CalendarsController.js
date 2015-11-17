@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', '$mdToast', 'FileUploader', 'sgFocus', 'Dialog', 'sgSettings', 'Calendar', 'User', 'stateCalendars'];
-  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, $mdToast, FileUploader, focus, Dialog, Settings, Calendar, User, stateCalendars) {
+  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', '$mdToast', 'FileUploader', 'sgFocus', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'User', 'stateCalendars'];
+  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, $mdToast, FileUploader, focus, Dialog, Settings, Preferences, Calendar, User, stateCalendars) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -25,6 +25,15 @@
     vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
     vm.today = today;
+
+    Preferences.ready().then(function() {
+      vm.categories = _.map(Preferences.defaults.SOGoCalendarCategories, function(name) {
+        return { id: name.asCSSIdentifier(),
+                 name: name,
+                 color: Preferences.defaults.SOGoCalendarCategoriesColors[name]
+               };
+      });
+    });
 
     // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
     // when the color of a calendar is changed

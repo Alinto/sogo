@@ -1,6 +1,7 @@
 /// SchedulerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 $hours_margin: 50px;
 $block_margin: 2%; // See sgCalendarDayBlock.directive.js
+$block_radius: 3px;
 
 /**
  * Affected templates:
@@ -117,14 +118,14 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
         &--first {
           margin-left: $block_margin;
           padding-left: 0;
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
+          border-top-left-radius: $block_radius;
+          border-bottom-left-radius: $block_radius;
         }
         &--last {
           margin-right: $block_margin;
           padding-right: 0;
-          border-top-right-radius: 3px;
-          border-bottom-right-radius: 3px;
+          border-top-right-radius: $block_radius;
+          border-bottom-right-radius: $block_radius;
         }
       }
     }
@@ -210,7 +211,7 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
   .sg-event {
     font-size: $sg-font-size-2;
     font-weight: $sg-font-medium;
-    border-radius: 3px;
+    border-radius: $block_radius;
     position: absolute;
     left: 0;
     right: 0;
@@ -259,14 +260,10 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
       font-weight: $sg-font-light;
     }
 
-    .category {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 10%;
+    .sg-category {
       &:first-child {
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
+        border-top-right-radius: $block_radius;
+        border-bottom-right-radius: $block_radius;
       }
     }
 

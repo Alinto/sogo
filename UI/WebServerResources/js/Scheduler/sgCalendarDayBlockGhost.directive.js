@@ -23,9 +23,9 @@
         '<div class="sg-event sg-event--ghost md-whiteframe-3dp ng-hide">',
         '  <div class="eventInside">',
         //   Categories color stripes
-        '    <div class="category" ng-repeat="category in block.component.categories"',
+        '    <div class="sg-category" ng-repeat="category in block.component.categories"',
         '         ng-class="\'bg-category\' + category"',
-        '         ng-style="{ right: ($index * 10) + \'%\' }"></div>',
+        '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
         '    <div class="text">{{ block.component.summary }}',
         '      <span class="icons">',
         //       Component is reccurent

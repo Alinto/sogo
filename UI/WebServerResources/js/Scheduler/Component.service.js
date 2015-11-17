@@ -288,7 +288,6 @@
         var componentData = _.object(this.eventsFields, eventData),
             start = new Date(componentData.c_startdate * 1000);
         componentData.hour = start.getHourString();
-        componentData.categories = _.invoke(componentData.c_category, 'asCSSIdentifier');
         componentData.blocks = [];
         objects.push(new Component(componentData));
         return objects;
@@ -461,6 +460,9 @@
 
     if (this.dueDate)
       this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
+
+    if (this.c_category)
+      this.categories = _.invoke(this.c_category, 'asCSSIdentifier');
 
     // Parse recurrence rule definition and initialize default values
     this.$isRecurrent = angular.isDefined(data.repeat);
