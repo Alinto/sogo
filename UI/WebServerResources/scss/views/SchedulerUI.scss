@@ -264,6 +264,10 @@ $block_margin: 2%; // See sgCalendarDayBlock.directive.js
       top: 0;
       bottom: 0;
       width: 10%;
+      &:first-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
     }
 
     // Event DnD drag grips
