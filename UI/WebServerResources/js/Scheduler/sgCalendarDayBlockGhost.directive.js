@@ -20,7 +20,7 @@
       require: ['^sgCalendarDay', '^sgCalendarScrollView'],
       replace: true,
       template: [
-        '<div class="sg-event sg-event--ghost ng-hide">',
+        '<div class="sg-event sg-event--ghost md-whiteframe-3dp ng-hide">',
         '  <div class="eventInside">',
         //   Categories color stripes
         '    <div class="category" ng-repeat="category in block.component.categories"',
