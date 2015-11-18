@@ -228,7 +228,7 @@
   mvResult = [NSMutableArray arrayWithCapacity: mvString->cValues];
   for (count = 0; count < mvString->cValues; count++)
     {
-      subObject = [NSString stringWithUTF8String: mvString->lppszA[count]];
+      subObject = [NSString stringWithUTF8String: (const char *) mvString->lppszA[count]];
       [mvResult addObject: subObject];
     }
 

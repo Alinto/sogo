@@ -181,7 +181,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME_UNICODE)
         folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszW];
       else if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME)
-        folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszA];
+        folderName = [NSString stringWithUTF8String: (const char *) aRow->lpProps[i].value.lpszA];
     }
 
   if (folderName)
