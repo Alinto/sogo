@@ -1,3 +1,10 @@
+2.3.3a (2015-11-18)
+-------------------
+
+Bug fixes
+ - expanded mail folders list is not saved (#3386)
+ - cleanup translations
+
 2.3.3 (2015-11-11)
 ------------------
 
