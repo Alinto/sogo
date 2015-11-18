@@ -15,9 +15,6 @@ $(TEST_TOOL)_OBJC_FILES += \
 	SOGoTestRunner.m \
 	SaxXMLReaderFactory+SOGoTests.m \
 	\
-	TestRTFHandler.m\
-	../../OpenChange/RTFHandler.m \
-	\
 	TestVersit.m \
 	TestiCalTimeZonePeriod.m \
 	TestiCalRecurrenceCalculator.m \
@@ -30,7 +27,12 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSData+Crypto.m \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
-	TestNSString+Utilities.m
+	TestNSString+Utilities.m \
+	\
+	TestRTFHandler.m \
+	../../OpenChange/RTFHandler.m
+    # I don't know how to link against -l:SOGoBackend \
+	     undefined reference to `__objc_class_name_SOGoMailFolder'
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
@@ -49,3 +51,4 @@ include $(GNUSTEP_MAKEFILES)/test-tool.make
 
 check :: $(TEST_TOOL)
 	./obj/sogo-tests
+

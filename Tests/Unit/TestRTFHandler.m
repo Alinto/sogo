@@ -22,7 +22,6 @@
 
 /* This file is encoded in utf-8. */
 
-//#import "../../OpenChange/RTFHandler.h"
 #import <Foundation/NSFileManager.h>
 #import "SOGoTest.h"
 #import "RTFHandler.h"
