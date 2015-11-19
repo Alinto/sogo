@@ -1,3 +1,16 @@
+2.3.4 (YYYY-MM-DD)
+------------------
+
+New features
+ - 
+
+Enhancements
+ - 
+ 
+
+Bug fixes
+ - JavaScript exception when printing events from calendars with no assigned color (#3203)
+
 2.3.3a (2015-11-18)
 -------------------
 
