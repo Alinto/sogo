@@ -1123,6 +1123,11 @@ A.toolbarButton:hover SPAN {
   line-height: 13px;
   padding: 5px 2px 5px 5px;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 50px;
+  max-width: 100px;
 }
 
 A.smallToolbarButton SPAN,
