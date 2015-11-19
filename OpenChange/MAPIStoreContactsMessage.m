@@ -1024,10 +1024,12 @@ fromProperties: (NSDictionary *) attachmentProps
           || (!isNew && [roles containsObject: SOGoRole_ObjectEditor]));
 }
 
-//
-//
-//
-- (void) save:(TALLOC_CTX *) memCtx
+- (void) saveDistList:(TALLOC_CTX *) memCtx
+{
+  [self warnWithFormat: @"IPM.DistList messages are ignored"];
+}
+
+- (void) saveContact:(TALLOC_CTX *) memCtx
 {
   NSArray *elements, *units;
   CardElement *element;
@@ -1372,5 +1374,15 @@ fromProperties: (NSDictionary *) attachmentProps
 
   [self updateVersions];
 }
+
+- (void) save:(TALLOC_CTX *) memCtx
+{
+  NSString *messageClass = [properties objectForKey: MAPIPropertyKey(PR_MESSAGE_CLASS_UNICODE)];
+  if ([messageClass isEqualToString: @"IPM.DistList"])
+    [self saveDistList: memCtx];
+  else
+    [self saveContact: memCtx]; 
+}
+
 
 @end
