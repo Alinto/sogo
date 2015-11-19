@@ -1202,12 +1202,6 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
   
   const unsigned short *defaultCharset;
 
-  // convenience variables for parsing
-  unsigned char c;
-  NSData *d;
-  NSString *s;
-  unichar uch;
-
   stack = [[RTFStack alloc] init];
   fontTable = nil;
   colorTable = nil;
@@ -1225,10 +1219,17 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
 
   while (_current_pos < _len)
     {
+      unsigned char c;
+      NSData *d;
+      NSString *s;
+      unichar uch;
+      unsigned int remainLen;
+
       c = *_bytes;
+      remainLen = _len - _current_pos - 1;
 
       // RTF control code
-      if (c == '\\')
+      if (c == '\\' && remainLen >= 1)
         {
           unsigned int len;
           const char *cw;
@@ -1238,32 +1239,41 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
           CW_ID cwId;
           char nextByte = *(_bytes+1);
 
-          if (nextByte == '\'')
+          if ((nextByte == '\'') && (remainLen >= 3))
             {
-              // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
-              const char *b1, *b2;
-              unsigned short index;
+              BOOL xdigit2 = isxdigit(*(_bytes+2)) != 0;
+              BOOL xdigit3 = isxdigit(*(_bytes+3)) != 0;
+              if (xdigit2 && xdigit3) 
+                {
+                  // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
+                  const char *b1, *b2;
+                  unsigned short index;
 
-              const unsigned short * active_charset;
+                  const unsigned short * active_charset;
 
-              if (formattingOptions && formattingOptions->charset)
-                active_charset = formattingOptions->charset;
+                  if (formattingOptions && formattingOptions->charset)
+                    active_charset = formattingOptions->charset;
+                  else
+                    active_charset = defaultCharset;
+
+                  ADVANCE; // '\' character
+                  ADVANCE; // "'" character
+                  b1 = ADVANCE; // first digit
+                  b2 = ADVANCE; // second digit
+              
+                  index = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55) * 16;
+                  index += (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
+              
+                  s = [NSString stringWithCharacters: &(active_charset[index])  length: 1];
+                  d = [s dataUsingEncoding: NSUTF8StringEncoding];
+                  [_html appendData: d];
+                }
               else
-                active_charset = defaultCharset;
-
-              
-              ADVANCE;
-              ADVANCE;
-
-              b1 = ADVANCE;
-              b2 = ADVANCE;
-              
-              index = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55) * 16;
-              index += (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
-              
-              s = [NSString stringWithCharacters: &(active_charset[index])  length: 1];
-              d = [s dataUsingEncoding: NSUTF8StringEncoding];
-              [_html appendData: d];
+                {
+                  // a quoted ' , in UTF8 is encoded in one byte
+                  [_html appendBytes: &nextByte  length: 1];
+                  ADVANCE_N(2); // "\'"
+                }
               continue;
             }
           else if (nextByte == '*')

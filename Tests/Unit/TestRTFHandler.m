@@ -185,6 +185,16 @@
   [self test_does_not_crash: 7067];
 }
 
+/* 11511 has the \' without hexadecimal sequence */
+- (void) test_zentyal_crash_11511
+{
+  [self test_does_not_crash: 11511];
+  NSString *file =@"zentyal_crash_11511.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Arial\">Messaggio dal Form Contatti<br>Messaggio inviato da: Tisci Laura <br><br>Azienda: docente<br><br>Contatto email: l.mirtillo@libero.it<br> Telefono: 320018375<br>Richieste particolari: Sono interessata al corso per formatori in materia di sicurezza. E' previsto in modalità? online? Ed il costo?Grazie<br><br></body></html>";
+  [self test_html_conversion_of_rtf_file: file
+                      with_expected_html: expected];  
+}
+
 
 - (void) test_mini_russian_font_table
 {
