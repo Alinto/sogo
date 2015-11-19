@@ -46,6 +46,9 @@
                               forURL: (NSURL *) server
                           forceRenew: (BOOL) renew;
 
+- (NSString *) passwordInContext: (WOContext *) context;
+
+
 @end
 
 #endif /* MAPISTOREAUTHENTICATOR_H */
