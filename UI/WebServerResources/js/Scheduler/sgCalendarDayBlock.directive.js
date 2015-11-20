@@ -29,10 +29,11 @@
       },
       replace: true,
       template: [
-        '<div class="sg-event sg-draggable-calendar-block"',
+        '<div class="sg-event"',
         //    Add a class while dragging
         '     ng-class="{\'sg-event--dragging\': block.dragging}">',
-        '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        '  <div class="eventInside"',
+        '       ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         //   Categories color stripes
         '    <div class="sg-category" ng-repeat="category in block.component.categories"',
         '         ng-class="\'bg-category\' + category"',
@@ -86,7 +87,8 @@
       iElement.addClass('lasts' + scope.block.length);
 
       // Set background color
-      iElement.addClass('bg-folder' + scope.block.component.pid);
+      if (scope.block.component)
+        iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

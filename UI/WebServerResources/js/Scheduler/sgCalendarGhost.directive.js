@@ -4,49 +4,22 @@
   'use strict';
 
   /*
-   * sgCalendarDayBlockGhost - An event ghost block to be displayed while dragging an event block. Each day of the
-   *   calendar's view is associated to a ghost block.
+   * sgCalendarBlock - Applied to an event ghost block to be displayed while dragging an event block. Each day of the
+   *   calendar's view must have a ghost block.
    * @memberof SOGo.SchedulerUI
-   * @restrict element
+   * @restrict attribute
    *
    * @example:
 
-   <sg-calendar-day-block-ghost/>
+   <sg-calendar-day-block
+     sg-calendar-ghost
+     sg-block="list.component.$ghost">/
   */
-  sgCalendarDayBlockGhost.$inject = ['$rootScope', '$timeout', 'CalendarSettings', 'Calendar', 'Component'];
-  function sgCalendarDayBlockGhost($rootScope, $timeout, CalendarSettings, Calendar, Component) {
+  sgCalendarGhost.$inject = ['$rootScope', '$timeout', 'CalendarSettings', 'Calendar', 'Component'];
+  function sgCalendarGhost($rootScope, $timeout, CalendarSettings, Calendar, Component) {
     return {
-      restrict: 'E',
+      restrict: 'A',
       require: ['^sgCalendarDay', '^sgCalendarScrollView'],
-      replace: true,
-      template: [
-        '<div class="sg-event sg-event--ghost md-whiteframe-3dp ng-hide">',
-        '  <div class="eventInside">',
-        //   Categories color stripes
-        '    <div class="sg-category" ng-repeat="category in block.component.categories"',
-        '         ng-class="\'bg-category\' + category"',
-        '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
-        '    <div class="text">{{ block.component.summary }}',
-        '      <span class="icons">',
-        //       Component is reccurent
-        '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
-        //       Component has an alarm
-        '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
-        //       Component is confidential
-        '        <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
-        //       Component is private
-        '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
-        '      </span>',
-        //     Location
-        '      <div class="secondary" ng-if="block.component.c_location">',
-        '        <md-icon>place</md-icon> {{block.component.c_location}}',
-        '      </div>',
-        '    </div>',
-        '  </div>',
-        '  <div class="ghostStartHour" ng-if="startHour">{{ startHour }}</div>',
-        '  <div class="ghostEndHour" ng-if="endHour">{{ endHour }}</div>',
-        '</div>'
-      ].join(''),
       link: link
     };
 
@@ -56,6 +29,8 @@
       domElement = iElement[0];
       calendarDayCtrl = ctrls[0];
       scrollViewCtrl = ctrls[1];
+
+      iElement.addClass('sg-event--ghost md-whiteframe-3dp ng-hide');
 
       // Listen on drag gestures
       var deregisterDragStart = $rootScope.$on('calendar:dragstart', initGhost);
@@ -88,7 +63,7 @@
 
       function updateGhost() {
         // From SOGoEventDragGhostController._updateGhosts
-        var showGhost, isAllDay, originalDay, currentDay, wasOtherBlock,
+        var showGhost, isRelative, originalDay, currentDay, wasOtherBlock,
             start, duration, durationLeft, maxDuration, enableTransition;
 
         showGhost = false;
@@ -99,7 +74,7 @@
         if (Calendar.$view && Calendar.$view.type == scrollViewCtrl.type) {
           // The view of the dragging block is the scrolling view of this ghost block
 
-          isAllDay     = scope.block.component.c_isallday;
+          isRelative   = scrollViewCtrl.type === 'multiday-allday' || scrollViewCtrl.type === 'monthly';
           originalDay  = scope.block.pointerHandler.originalEventCoordinates.dayNumber;
           currentDay   = scope.block.pointerHandler.currentEventCoordinates.dayNumber;
           start        = scope.block.pointerHandler.currentEventCoordinates.start;
@@ -119,14 +94,19 @@
           if (currentDay > -1 && currentDay == calendarDayCtrl.dayNumber) {
             // This ghost block (day) is the first of the dragging event
             showGhost = true;
-            if (!isAllDay)  {
+            if (!isRelative)  {
               // Show start hour and set the vertical position
               scope.startHour = getStartTime(start);
               wasOtherBlock = parseInt(iElement.css('top')) === 0;
               if (wasOtherBlock)
                 iElement.addClass('sg-event--notransition');
-              iElement.css('top', (start * Calendar.$view.quarterHeight) + 'px');
-              iElement.css('height', (duration * Calendar.$view.quarterHeight) + 'px');
+              // Set the height
+              if (Calendar.$view.quarterHeight) {
+                iElement.css('top', (start * Calendar.$view.quarterHeight) + 'px');
+                iElement.css('height', (duration * Calendar.$view.quarterHeight) + 'px');
+              }
+              else
+                iElement.css('top', Calendar.$view.topOffset + 'px');
               if (wasOtherBlock)
                 $timeout(enableTransition);
             }
@@ -146,13 +126,14 @@
             if (currentDay > -1 && currentDay == calendarDayCtrl.dayNumber) {
               // The dragging event overlaps this current ghost's day
               showGhost = true;
-              if (!isAllDay) {
+              if (!isRelative) {
                 wasOtherBlock = parseInt(iElement.css('top')) !== 0;
                 if (wasOtherBlock)
                   iElement.addClass('sg-event--notransition');
+                iElement.css('top', Calendar.$view.topOffset + 'px');
                 // Set the height
-                iElement.css('top', '0px');
-                iElement.css('height', (duration * Calendar.$view.quarterHeight) + 'px');
+                if (Calendar.$view.quarterHeight)
+                  iElement.css('height', (duration * Calendar.$view.quarterHeight) + 'px');
                 if (wasOtherBlock)
                   $timeout(enableTransition);
               }
@@ -168,7 +149,7 @@
           }
           if (!durationLeft) {
             // Reached last ghost block
-            if (isAllDay) {
+            if (isRelative) {
               iElement.addClass('sg-event--ghost--last');
             }
             else {
@@ -211,5 +192,5 @@
 
   angular
     .module('SOGo.SchedulerUI')
-    .directive('sgCalendarDayBlockGhost', sgCalendarDayBlockGhost);
+    .directive('sgCalendarGhost', sgCalendarGhost);
 })();

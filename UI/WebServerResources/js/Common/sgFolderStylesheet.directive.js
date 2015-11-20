@@ -48,7 +48,8 @@
         '    opacity: 0.8;',
         '  }',
         /* Foreground color */
-        '  .fg-folder{{ cssCtrl.ngModel.id }} {',
+        '  .fg-folder{{ cssCtrl.ngModel.id }},',
+        '  .sg-event.fg-folder{{ cssCtrl.ngModel.id }} md-icon {',
         '    color: {{ cssCtrl.ngModel.color }} !important;',
         '  }',
         /* Border color */

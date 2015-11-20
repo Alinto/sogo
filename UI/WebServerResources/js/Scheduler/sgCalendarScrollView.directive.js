@@ -68,29 +68,33 @@
         }
 
         function getQuarterHeight() {
-          var hour0, hour23, height;
+          var hour0, hour23, height = null;
 
           hour0 = document.getElementById('hour0');
           hour23 = document.getElementById('hour23');
-          height = ((hour23.offsetTop - hour0.offsetTop) / (23 * 4));
+          if (hour0 && hour23)
+            height = ((hour23.offsetTop - hour0.offsetTop) / (23 * 4));
 
           return height;
         }
 
-        function getDayWidth(viewLeft) {
-          var width, offset, nodes, domRect;
+        function getDayDimensions(viewLeft) {
+          var width, height, leftOffset, topOffset, nodes, domRect, tileHeader;
 
-          width = 0;
-          offset = 0;
+          height = width = leftOffset = topOffset = 0;
           nodes = scrollView.getElementsByClassName('day0');
 
           if (nodes.length > 0) {
             domRect = nodes[0].getBoundingClientRect();
+            height = domRect.height;
             width = domRect.width;
-            offset = domRect.left - viewLeft;
+            leftOffset = domRect.left - viewLeft;
+            tileHeader = nodes[0].getElementsByClassName('sg-calendar-tile-header');
+            if (tileHeader.length > 0)
+              topOffset = tileHeader[0].clientHeight;
           }
 
-          return [width, offset];
+          return { height: height, width: width, offset: { left: leftOffset, top: topOffset } };
         }
 
         function getMaxColumns() {
@@ -104,20 +108,22 @@
         }
 
         // View has been resized;
-        // Compute the view's origins (x, y), a day's width (dayWidth) and the left margin (daysOffset).
+        // Compute the view's origins (x, y), a day's dimensions and left margin.
         function updateCoordinates() {
-          var domRect, dayWidth;
+          var domRect, dayDimensions;
 
           domRect = scrollView.getBoundingClientRect();
-          dayWidth = getDayWidth(domRect.left);
+          dayDimensions = getDayDimensions(domRect.left);
 
           angular.extend(view, {
             coordinates: {
               x: domRect.left,
               y: domRect.top
             },
-            dayWidth: dayWidth[0],
-            daysOffset: dayWidth[1]
+            dayHeight: dayDimensions.height,
+            dayWidth: dayDimensions.width,
+            daysOffset: dayDimensions.offset.left,
+            topOffset: dayDimensions.offset.top
           });
         }
 
@@ -138,30 +144,30 @@
           scrollStep = view.scrollStep;
           pointerHandler = Component.$ghost.pointerHandler;
           if (pointerHandler) {
-          pointerCoordinates = pointerHandler.getContainerBasedCoordinates(view);
+            pointerCoordinates = pointerHandler.getContainerBasedCoordinates(view);
 
-          if (pointerCoordinates) {
-            // Pointer is inside view; Adjust scrollbar if necessary
-            Calendar.$view = view;
-            now = new Date().getTime();
-            if (!lastScroll || now > lastScroll + 100) {
-              lastScroll = now;
-              scrollY = pointerCoordinates.y - scrollStep;
-              if (scrollY < 0) {
-                minY = -scrollView.scrollTop;
-                if (scrollY < minY)
-                  scrollY = minY;
-                scrollView.scrollTop += scrollY;
-              }
-              else {
-                scrollY = pointerCoordinates.y + scrollStep;
-                delta = scrollY - scrollView.clientHeight;
-                if (delta > 0) {
-                  scrollView.scrollTop += delta;
+            if (pointerCoordinates) {
+              // Pointer is inside view; Adjust scrollbar if necessary
+              Calendar.$view = view;
+              now = new Date().getTime();
+              if (!lastScroll || now > lastScroll + 100) {
+                lastScroll = now;
+                scrollY = pointerCoordinates.y - scrollStep;
+                if (scrollY < 0) {
+                  minY = -scrollView.scrollTop;
+                  if (scrollY < minY)
+                    scrollY = minY;
+                  scrollView.scrollTop += scrollY;
+                }
+                else {
+                  scrollY = pointerCoordinates.y + scrollStep;
+                  delta = scrollY - scrollView.clientHeight;
+                  if (delta > 0) {
+                    scrollView.scrollTop += delta;
+                  }
                 }
               }
             }
-          }
           }
         }
       }

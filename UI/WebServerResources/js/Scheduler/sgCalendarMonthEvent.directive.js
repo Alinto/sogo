@@ -24,8 +24,11 @@
       },
       replace: true,
       template: [
-        '<div class="sg-event sg-draggable" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '  <span class="secondary" ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
+        '<div class="sg-event"',
+        //    Add a class while dragging
+        '     ng-class="{\'sg-event--dragging\': block.dragging}"',
+        '     ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        '  <span class="secondary" ng-if="!block.component.c_isallday">{{ block.starthour }}</span>',
         '  {{ block.component.summary }}',
         '  <span class="icons">',
         //   Component is reccurent
@@ -37,15 +40,14 @@
         //   Component is private
         '    <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '  </span>',
-        '  <div class="leftDragGrip"></div>',
-        '  <div class="rightDragGrip"></div>',
         '</div>'
       ].join(''),
       link: link
     };
 
     function link(scope, iElement, attrs) {
-      iElement.addClass('bg-folder' + scope.block.component.pid);
+      if (scope.block.component)
+        iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

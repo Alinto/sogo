@@ -131,7 +131,8 @@ $block_radius: 3px;
     }
 
     .text {
-      position: relative;
+      position: static;
+      padding: 3px 1%;
     }
   }
 
@@ -377,6 +378,7 @@ $block_radius: 3px;
     margin-right: 2px;
   }
 
+  // Styles specific to the month view
   .monthView {
     .dayLabels {
       // Cells of week days of all the same width
@@ -388,6 +390,7 @@ $block_radius: 3px;
       border-right: 1px solid $colorGrey100;
       border-bottom: 1px solid $colorGrey100;
       overflow: auto;
+      user-select: none;
       // Cells of another month
       &.dayOfAnotherMonth {
         background-color: $colorGrey50;
@@ -416,15 +419,38 @@ $block_radius: 3px;
     }
     md-content {
       background-color: transparent; // See the grid tile background color
+      height: 100%; // Fix a scrolling issue when dragging blocks
+      overflow: hidden;
+      overflow-y: auto;
     }
     .sg-event {
-      position: relative;
-      border-radius: 1px;
-      overflow: hidden;
-      padding: $block_margin;
+      position: static;
+      padding: 3px 1%;
       margin: $block_margin;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: hidden;
+      &--ghost {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 0;
+        padding-left: $block_margin;
+        padding-right: $block_margin;
+        &--first {
+          margin-left: $block_margin;
+          padding-left: 0;
+          border-top-left-radius: $block_radius;
+          border-bottom-left-radius: $block_radius;
+        }
+        &--last {
+          margin-right: $block_margin;
+          padding-right: 0;
+          border-top-right-radius: $block_radius;
+          border-bottom-right-radius: $block_radius;
+        }
+      }
     }
   }
 
@@ -439,10 +465,10 @@ $block_radius: 3px;
 
   .text {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 3px;
+    left: 1%;
+    right: 1%;
+    bottom: 3px;
     margin: 0 2px;
     overflow: hidden;
     line-height: $sg-font-size-2;

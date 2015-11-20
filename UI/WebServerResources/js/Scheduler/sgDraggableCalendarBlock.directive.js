@@ -47,7 +47,8 @@
         dragGrip = angular.element('<div class="dragGrip"></div>');
         dragGrip.addClass('bdr-folder' + component.pid);
 
-        if (component.c_isallday) {
+        if (component.c_isallday ||
+            element[0].parentNode.tagName === 'SG-CALENDAR-MONTH-DAY') {
           if (isFirstBlock) {
             leftGrip = angular.element('<div class="dragGrip-left"></div>').append(dragGrip);
             element.append(leftGrip);
@@ -73,8 +74,7 @@
         var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
 
         dragMode = 'move-event';
-        eventType = 'multiday';
-
+        
         if (scope.block && scope.block.component) {
           // Move or resize existing component
           if (ev.target.className == 'dragGrip-top' ||
@@ -136,7 +136,9 @@
           b.dragging = true;
         });
 
-        if (block.component.c_isallday)
+        if (element[0].parentNode.tagName === 'SG-CALENDAR-MONTH-DAY')
+          eventType = 'monthly';
+        else if (block.component.c_isallday)
           eventType = 'multiday-allday';
 
         // Update pointer handler
@@ -145,6 +147,7 @@
         pointerHandler.initFromBlock(block);
 
         // Update Component.$ghost
+        Component.$ghost.starthour = block.starthour;
         Component.$ghost.component = block.component;
 
         $log.debug('emit calendar:dragstart');
@@ -220,7 +223,8 @@
       /**
        * SOGoEventDragEventCoordinates
        */
-      function SOGoEventDragEventCoordinates() {
+      function SOGoEventDragEventCoordinates(eventType) {
+        this.setEventType(eventType);
       }
 
       SOGoEventDragEventCoordinates.prototype = {
@@ -235,13 +239,19 @@
         },
 
         initFromBlock: function(block) {
-          // Get the start (first quarter) from the event's first block
-          this.start = block.component.blocks[0].start;
+          if (this.eventType === 'monthly')
+            this.start = 0;
+          else
+            // Get the start (first quarter) from the event's first block
+            this.start = block.component.blocks[0].start;
 
           // Compute overall length
-          this.duration = _.sum(block.component.blocks, function(b) {
-            return b.length;
-          });
+          if (this.eventType === 'monthly')
+            this.duration = block.component.blocks.length * 96;
+          else
+            this.duration = _.sum(block.component.blocks, function(b) {
+              return b.length;
+            });
 
           // Get the dayNumber from the event's first block
           this.dayNumber = block.component.blocks[0].dayNumber;
@@ -299,7 +309,7 @@
         originalCoordinates: null,
         currentCoordinates: null,
 
-        // Pointer relative xy coordinates within view
+        // Pointer relative xy coordinates within view (row-column)
         originalViewCoordinates: null,
         currentViewCoordinates: null,
 
@@ -314,8 +324,8 @@
         getEventViewCoordinates: null,
 
         initFromBlock: function SEDPH_initFromBlock(block) {
-          this.currentEventCoordinates = new SOGoEventDragEventCoordinates();
-          this.originalEventCoordinates = new SOGoEventDragEventCoordinates();
+          this.currentEventCoordinates = new SOGoEventDragEventCoordinates(this.eventType);
+          this.originalEventCoordinates = new SOGoEventDragEventCoordinates(this.eventType);
           this.originalEventCoordinates.initFromBlock(block);
         },
 
@@ -375,7 +385,7 @@
           var deltaQuarters = delta.x * CalendarSettings.EventDragDayLength + delta.y;
           $log.debug('quarters delta ' + deltaQuarters);
 
-          if (!this.originalEventCoordinates.start) {
+          if (angular.isUndefined(this.originalEventCoordinates.start)) {
             this.originalEventCoordinates.dayNumber = this.originalViewCoordinates.x;
             this.originalEventCoordinates.start = this.originalViewCoordinates.y;
           }
@@ -498,35 +508,36 @@
 
           return coordinates;
         },
-        // getEventMonthlyViewCoordinates: function SEDPH_gEMonthlyViewC() {
-        //   /* x = day; y = quarter */
-        //   var coordinates;
+        getEventMonthlyViewCoordinates: function SEDPH_gEMonthlyViewC(view, pointerCoordinates) {
+          /* x = day; y = quarter */
+          var coordinates;
 
-        //   var pxCoordinates = this.getContainerBasedCoordinates();
-        //   if (pxCoordinates) {
-        //     coordinates = new SOGoCoordinates();
-        //     var utilities = SOGoEventDragUtilities();
-        //     var daysOffset = utilities.getDaysOffset();
-        //     var daysTopOffset = daysOffset; /* change later */
-        //     var dayHeight = utilities.getDayHeight();
-        //     var daysY = Math.floor((pxCoordinates.y - daysTopOffset) / dayHeight);
-        //     if (daysY < 0)
-        //       daysY = 0;
-        //     var dayWidth = utilities.getDayWidth();
+          var pxCoordinates = this.getContainerBasedCoordinates(view, pointerCoordinates);
+          if (pxCoordinates) {
+            coordinates = new SOGoCoordinates();
 
-        //     coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
-        //     if (coordinates.x < 0)
-        //       coordinates.x = 0;
-        //     else if (coordinates.x > 6)
-        //       coordinates.x = 6;
-        //     coordinates.x += 7 * daysY;
-        //     coordinates.y = 0;
-        //   } else {
-        //     coordinates = null;
-        //   }
+            var daysTopOffset = 0;
+            var dayWidth = view.dayWidth;
+            var daysOffset = view.daysOffset;
+            var dayHeight = view.dayHeight;
+            var daysY = Math.floor((pxCoordinates.y - daysTopOffset) / dayHeight);
+            if (daysY < 0)
+              daysY = 0;
 
-        //   return coordinates;
-        // },
+            coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
+            if (coordinates.x < 0)
+              coordinates.x = 0;
+            else if (coordinates.x > 6)
+              coordinates.x = 6;
+            coordinates.x += 7 * daysY;
+            coordinates.y = 0;
+          }
+          else {
+            coordinates = null;
+          }
+
+          return coordinates;
+        },
 
         getDistance: function SEDPH_getDistance() {
           return this.currentCoordinates.getDistance(this.originalCoordinates);
