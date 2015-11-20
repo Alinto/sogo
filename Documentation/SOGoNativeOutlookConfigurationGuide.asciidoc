@@ -388,7 +388,7 @@ Run the following commands as root: 
 
 ----
 samba-tool domain provision --realm=example.com \
-          --domain=OPENCHANGE \
+          --domain=EXAMPLE \
           --adminpass='%1OpenChange' \
           --server-role='domain controller'
 
