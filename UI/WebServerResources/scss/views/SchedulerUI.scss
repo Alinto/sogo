@@ -424,7 +424,7 @@ $block_radius: 3px;
       overflow-y: auto;
     }
     .sg-event {
-      position: static;
+      position: relative;
       padding: 3px 1%;
       margin: $block_margin;
       overflow: hidden;

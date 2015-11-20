@@ -30,6 +30,7 @@
       },
       template: [
         '<sg-calendar-day-block',
+        '  class="sg-draggable-calendar-block"',
         '  ng-repeat="block in blocks[day]"',
         '  sg-block="block"',
         '  sg-click="clickBlock({event: clickEvent, component: clickComponent})"/>'

@@ -82,7 +82,9 @@
                   <span class=""><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
                 </var:if>
                 </div>
-                <md-content sg-draggable-calendar-block="sg-draggable-calendar-block">
+                <md-content
+                    sg-draggable-calendar-block="sg-draggable-calendar-block"
+                    class="clickableDayCell">
                   <sg-calendar-month-day
                       sg-blocks="calendar.views[0].blocks"
                       sg-click="list.openEvent(event, component)"

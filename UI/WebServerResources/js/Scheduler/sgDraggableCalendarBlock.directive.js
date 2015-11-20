@@ -73,6 +73,8 @@
       function onDragDetect(ev) {
         var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
 
+        ev.stopPropagation();
+
         dragMode = 'move-event';
         
         if (scope.block && scope.block.component) {
@@ -104,9 +106,11 @@
       }
 
       function dragStart(ev) {
-        var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
+        var block, dragMode, eventType, isHourCell, isMonthly, startDate, newData, newComponent, pointerHandler;
 
-        eventType = 'multiday';
+        isHourCell = element.hasClass('clickableHourCell');
+        isMonthly = (element[0].parentNode.tagName == 'SG-CALENDAR-MONTH-DAY') ||
+          element.hasClass('clickableDayCell');
 
         if (scope.block && scope.block.component) {
           // Move or resize existing component
@@ -121,25 +125,29 @@
             type: 'appointment',
             pid: 'personal',  // TODO respect SOGoDefaultCalendar
             summary: l('New Event'),
-            startDate: startDate
+            startDate: startDate,
+            isAllDay: isHourCell? 0 : 1
           };
           newComponent = new Component(newData);
           block = {
             component: newComponent,
+            dayNumber: calendarDayCtrl.dayNumber,
             length: 0
           };
           block.component.blocks = [block];
         }
 
+        // Determine event type
+        eventType = 'multiday';
+        if (isMonthly)
+          eventType = 'monthly';
+        else if (block.component.c_isallday)
+          eventType = 'multiday-allday';
+
         // Mark all blocks as being dragged
         _.forEach(block.component.blocks, function(b) {
           b.dragging = true;
         });
-
-        if (element[0].parentNode.tagName === 'SG-CALENDAR-MONTH-DAY')
-          eventType = 'monthly';
-        else if (block.component.c_isallday)
-          eventType = 'multiday-allday';
 
         // Update pointer handler
         pointerHandler = Component.$ghost.pointerHandler;
@@ -239,19 +247,18 @@
         },
 
         initFromBlock: function(block) {
-          if (this.eventType === 'monthly')
+          if (this.eventType === 'monthly') {
             this.start = 0;
-          else
-            // Get the start (first quarter) from the event's first block
-            this.start = block.component.blocks[0].start;
-
-          // Compute overall length
-          if (this.eventType === 'monthly')
             this.duration = block.component.blocks.length * 96;
-          else
+          }
+          else {
+            // Get the start (first quarter) from the event's first block
+            // Compute overall length
+            this.start = block.component.blocks[0].start;
             this.duration = _.sum(block.component.blocks, function(b) {
               return b.length;
             });
+          }
 
           // Get the dayNumber from the event's first block
           this.dayNumber = block.component.blocks[0].dayNumber;

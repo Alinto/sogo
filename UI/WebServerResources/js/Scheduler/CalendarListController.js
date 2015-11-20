@@ -154,6 +154,8 @@
 
       if (component.isNew) {
         coordinates = pointerHandler.currentEventCoordinates;
+        if (component.isAllDay)
+          coordinates.duration -= 96;
         component.setDelta(coordinates.duration * 15);
         newComponent(null, component).finally(function() {
           $timeout(function() {
