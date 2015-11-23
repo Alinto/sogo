@@ -308,7 +308,7 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                         
                         if (printHoursCheckBox.checked) {
                             var offset = _computeOffset(parentDiv);
-                            if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
+                            if ((eventRep.start - offset[0]) >= 0 && (eventRep.start - offset[0]) <= offset[1]) {
                                 var eventCell = newEventDIV(eventRep, calendarEventsData[nbr], offset[0]);
                                 var eventInside = eventCell.down(".eventInside");
                                 addColorsOnEvents(eventInside, eventCell);
@@ -338,7 +338,7 @@ function _drawCalendarEvents(events, eventsData, columnsData) {
                         var nbr = eventRep.nbr;
                         if (printHoursCheckBox.checked) {
                             var offset = _computeOffset(parentDiv);
-                            if ((eventRep.start - offset[0]) > 0 && (eventRep.start - offset[0]) < offset[1]) {
+                            if ((eventRep.start - offset[0]) >= 0 && (eventRep.start - offset[0]) <= offset[1]) {
                                 var eventCell = newEventDIV(eventRep, eventsData[nbr], offset[0]);
                                 var eventInside = eventCell.down(".eventInside");
                                 addColorsOnEvents(eventInside, eventCell);

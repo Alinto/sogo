@@ -210,7 +210,7 @@
 "Contacts" = "Adresář";
 "Mail" = "Pošta";
 "Last" = "Naposledy použitý";
-"Default Module " = "Výchozí modul ";
+"Default Module " = "Výchozí modul";
 "SOGo Version" ="SOGo verze";
 
 "Language" ="Jazyk";
@@ -229,10 +229,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Portugues brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

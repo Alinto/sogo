@@ -30,7 +30,7 @@
 "Disable auto reply on" = "Desactivar la resposta automàtica en";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Especifiqueu el missatge i les adreces de correu per a les quals voleu activar la resposta automàtica.";
-"Your vacation message must not end with a single dot on a line." = "El seu missatge d'autoresposta per vacances no ha d'acabar amb un punt en una línia a part. ";
+"Your vacation message must not end with a single dot on a line." = "El seu missatge d'autoresposta per vacances no ha d'acabar amb un punt en una línia a part.";
 "End date of your auto reply must be in the future."
 = "La data de finalització de la seva resposta automàtica ha d'estar en el futur.";
 
@@ -134,7 +134,7 @@
 "Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
 "Sort messages by threads" = "Ordenar els missatges per temes";
 "When sending mail, add unknown recipients to my" = "En enviar un missatge, afegeix els destinataris desconeguts al meu";
-"Check for new mail:" = "Comprovar nou correu: ";
+"Check for new mail:" = "Comprovar nou correu:";
 "refreshview_manually" = "Manualment";
 "refreshview_every_minute" = "Cada minut";
 "refreshview_every_2_minutes" = "Cada 2 minuts";
@@ -177,15 +177,15 @@
 
 "Full Name" = "Nom complet";
 "Email" = "Correu electrònic";
-"Reply To Email" = "Respondre a aquesta adreça de correu ";
+"Reply To Email" = "Respondre a aquesta adreça de correu";
 "Signature" = "Signatura";
 "(Click to create)" = "(Clic per a crear-la)";
 
 "Signature" = "Signatura";
 "Please enter your signature below:" = "Si us plau, poseu la signatura a sota:";
 
-"Please specify a valid sender address." = "Per favor, especifique una adreça vàlida per al remitent. ";
-"Please specify a valid reply-to address." = "Per favor, especifique una adreça de resposta vàlida. ";
+"Please specify a valid sender address." = "Per favor, especifique una adreça vàlida per al remitent.";
+"Please specify a valid reply-to address." = "Per favor, especifique una adreça de resposta vàlida.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paràmetres addicionals";
@@ -198,9 +198,9 @@
 /* Event+task classifications */
 "Default events classification" ="Classificació per defecte dels esdeveniments";
 "Default tasks classification" ="Classificació per defecte de les tasques";
-"PUBLIC_item" = "Públic ";
-"CONFIDENTIAL_item" = "Confidencial ";
-"PRIVATE_item" = "Privat ";
+"PUBLIC_item" = "Públic";
+"CONFIDENTIAL_item" = "Confidencial";
+"PRIVATE_item" = "Privat";
 
 /* Event+task categories */
 "category_none" = "Cap";
@@ -211,7 +211,7 @@
 "Contacts" = "Llibreta d'adreces";
 "Mail" = "Correu";
 "Last" = "Últim usat";
-"Default Module " = "Pàgina per defecte ";
+"Default Module " = "Pàgina per defecte";
 "SOGo Version" ="Versió del SOGo";
 
 "Language" ="Language";
@@ -230,10 +230,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

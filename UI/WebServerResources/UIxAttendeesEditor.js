@@ -225,7 +225,8 @@ function performSearchCallback(http) {
                         if (contact["c_domain"])
                             login += "@" + contact["c_domain"];
                         node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + login;
-                    } else
+                    }
+                    else {
                         node.uid = null;
                         node.appendChild(new Element('div').addClassName('colorBox').addClassName('noFreeBusy'));
                     }

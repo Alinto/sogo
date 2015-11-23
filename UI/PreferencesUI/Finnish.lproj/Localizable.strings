@@ -229,10 +229,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -250,13 +252,13 @@
 "refreshview_every_10_minutes" = "10 minuutin välein";
 "refreshview_every_20_minutes" = "20 minuutin välein";
 "refreshview_every_30_minutes" = "Puolen tunnin välein";
-"refreshview_once_per_hour" = "Kerran tunnissa ";
+"refreshview_once_per_hour" = "Kerran tunnissa";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kun saan kuittauspyynnön";
 "Never send a return receipt" = "Alä koskaan lähetä kuittausta";
 "Allow return receipts for some messages" = "Salli kuittaukset joillekin viesteille";
-"If I'm not in the To or Cc of the message" = "Jos en ole viestin To tai Cc -kentissä ";
+"If I'm not in the To or Cc of the message" = "Jos en ole viestin To tai Cc -kentissä";
 "If the sender is outside my domain" = "Jos lähettäjä on oman toimialueeni ulkopuolelta";
 "In all other cases" = "Kaikissa muissa tapauksissa";
 
@@ -326,7 +328,7 @@
 "Password change failed - Password is too short" = "Salasanan vaihto epäonnistui - Liian lyhyt salasana";
 "Password change failed - Password is too young" = "Salasanan vaihto epäonnistui - Salasana on liian nuori";
 "Password change failed - Password is in history" = "Salasanan vaihto epäonnistui - Salasanaa on käytetty aiemmin";
-"Unhandled policy error: %{0}" = "Käsittelemätön sääntövirhe: %{0} ";
+"Unhandled policy error: %{0}" = "Käsittelemätön sääntövirhe: %{0}";
 "Unhandled error response" = "Käsittelemätön virhevastaus";
 "Password change is not supported." = "Salasanan vaihto ei ole tuettu.";
 "Unhandled HTTP error code: %{0}" = "Käsittelämätön HTTP virhekoodi: %{0}";

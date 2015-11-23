@@ -30,7 +30,7 @@
 "Disable auto reply on" = "Disabilita il risponditore automatico";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prego specificare il tuo messaggio e l'indirizzo email per il quale vuoi abilitare il risponditore automatico.";
-"Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto per linea ";
+"Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto per linea";
 "End date of your auto reply must be in the future."
 = "La data di fine del risponditore automatico deve essere nel futuro";
 
@@ -190,7 +190,7 @@
 "Contacts" = "Rubrica";
 "Mail" = "Posta";
 "Last" = "Ultimo usato";
-"Default Module " = "Modulo di default ";
+"Default Module " = "Modulo di default";
 
 "Language" ="Lingua";
 "choose" = "Scegli...";
@@ -208,10 +208,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

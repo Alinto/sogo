@@ -433,7 +433,7 @@ static SoSecurityManager *sm = nil;
       error = [self appendPersonalSources];
       if (!error)
         if ([self respondsToSelector:@selector(appendCollectedSources)])
-          error = [self appendCollectedSources];
+          error = [self performSelector:@selector(appendCollectedSources)];
       if (!error)
         error = [self appendSystemSources]; // TODO : Not really a testcase, see function
       if (error)

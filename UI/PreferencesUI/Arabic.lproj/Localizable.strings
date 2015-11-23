@@ -12,7 +12,7 @@
 "Forward" = "ارسال الى";
 "Password" = "كلمة السر";
 "Categories" = "الفئات";
-"Name" = "اسم ";
+"Name" = "اسم";
 "Color" = "اللون";
 "Add" = "إضافة";
 "Delete" = "مسح";
@@ -185,7 +185,7 @@
 
 /* Event+task classifications */
 "Default events classification" ="تصنيف الأحداث الافتراضية";
-"Default tasks classification" ="تصنيف المهام الافتراضية ";
+"Default tasks classification" ="تصنيف المهام الافتراضية";
 "PUBLIC_item" = "علني";
 "CONFIDENTIAL_item" = "سري";
 "PRIVATE_item" = "خاص";
@@ -199,7 +199,7 @@
 "Contacts" = "دفتر العناوين";
 "Mail" = "بريد";
 "Last" = "أخر إستخدام";
-"Default Module " = "وحدة نمطية افتراضية ";
+"Default Module " = "وحدة نمطية افتراضية";
 
 "Language" ="اللغة";
 "choose" = "اختيار ...";
@@ -217,9 +217,11 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
@@ -260,7 +262,7 @@
 "Subject" = "موضوع";
 "From" = "من";
 "To" = "إلى";
-"Cc" = "نسخة ";
+"Cc" = "نسخة";
 "To or Cc" = "إلى أو نسخة";
 "Size (Kb)" = "الحجم (كيلو بايت)";
 "Header" = "قمة";
@@ -275,7 +277,7 @@
 
 "is under" = "هو تحت";
 "is over" = "هو فوق";
-"is" = "هو ";
+"is" = "هو";
 "is not" = "هو لا";
 "contains" = "يحتوي";
 "does not contain" = "لا يحتوي";

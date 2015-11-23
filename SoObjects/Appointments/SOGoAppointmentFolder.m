@@ -84,6 +84,7 @@
 #import "SOGoAppointmentFolders.h"
 #import "SOGoFreeBusyObject.h"
 #import "SOGoTaskObject.h"
+#import "SOGoWebAppointmentFolder.h"
 
 #import "SOGoAppointmentFolder.h"
 
@@ -2345,7 +2346,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   request = [context request];
   if (!([request isIPhone] || [request isICal4]))
     {
-      gdRT = [self groupDavResourceType];
+      gdRT = (NSArray *)[self groupDavResourceType];
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
                   XMLNS_GROUPDAV, nil];
       [colType addObject: gdVEventCol];

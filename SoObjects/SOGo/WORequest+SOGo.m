@@ -180,14 +180,21 @@
   cc = [self clientCapabilities];
 
   b = (
-       [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
-       && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
-       || (
-           [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
-            || [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound
-           )
-       && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
-       );
+        (
+          [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
+        )
+        ||
+        (
+          [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
+        )
+        ||
+        (
+          [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
+        )
+      );
 
   return b;
 }

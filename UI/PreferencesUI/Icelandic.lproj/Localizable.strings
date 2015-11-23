@@ -137,7 +137,7 @@
 "User Name" = "Notandanafn";
 "Password" = "Lykilorð";
 
-"Full Name" = "Fullt nafn ";
+"Full Name" = "Fullt nafn";
 "Email" = "Tölvupóstfang";
 "Signature" = "Undirritun";
 "(Click to create)" = "(Smella til að búa til)";
@@ -169,7 +169,7 @@
 "Contacts" = "Nafnaskrá";
 "Mail" = "Póstur";
 "Last" = "Síðast notað";
-"Default Module " = "Sjálfgefið viðmót ";
+"Default Module " = "Sjálfgefið viðmót";
 
 "Language" ="Tungumál";
 "choose" = "Velja...";
@@ -187,10 +187,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

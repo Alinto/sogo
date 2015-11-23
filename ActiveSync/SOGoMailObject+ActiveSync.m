@@ -476,14 +476,16 @@ struct GlobalObjectId {
 //
 //
 - (NSData *) _preferredBodyDataUsingType: (int) theType
+                              mimeSupport: (int) theMimeSupport
                               nativeType: (int *) theNativeType
 {
   NSString *type, *subtype, *encoding;
   NSData *d;
+  BOOL isSMIME;
   
   type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
   subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
-
+  isSMIME = NO;
   d = nil;
   
   // We determine the native type
@@ -494,8 +496,14 @@ struct GlobalObjectId {
   else if ([type isEqualToString: @"multipart"])
     *theNativeType = 4;
 
+  if (([subtype isEqualToString: @"signed"] || [subtype isEqualToString: @"pkcs7-mime"] ) && theMimeSupport > 0)
+    {
+      *theNativeType = 4;
+      isSMIME = YES;
+    }
+
   // We get the right part based on the preference
-  if (theType == 1 || theType == 2)
+  if ((theType == 1 || theType == 2) && !isSMIME)
     {
       if ([type isEqualToString: @"text"] && ![subtype isEqualToString: @"calendar"])
         {
@@ -536,12 +544,12 @@ struct GlobalObjectId {
           d = [self _preferredBodyDataInMultipartUsingType: theType nativeTypeFound: theNativeType];
         }
     }
-  else if (theType == 4)
+  else if (theType == 4 || isSMIME)
     {
       // We sanitize the content *ONLY* for Outlook clients and if the content-transfer-encoding is 8bit. Outlook has strange issues
       // with quoted-printable/base64 encoded text parts. It just doesn't decode them.
       encoding = [[self lookupInfoForBodyPart: @""] objectForKey: @"encoding"];
-      if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"] || ([encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame))
+      if ((encoding && ([encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame)) && !isSMIME)
         d = [self _sanitizedMIMEMessage];
       else
         d = [self content];
@@ -656,16 +664,18 @@ struct GlobalObjectId {
 {
   NSData *d, *globalObjId;
   NSArray *attachmentKeys;
-  NSMutableString *s;
-
-  uint32_t v;
-  NSString *p;
-  
-  id value;
-
   iCalCalendar *calendar;
+  NSString *p, *subtype;
+  NSMutableString *s;
+  id value;
       
-  int preferredBodyType, nativeBodyType;
+  int preferredBodyType, mimeSupport, nativeBodyType;
+  uint32_t v;
+
+  subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
+
+  preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
+  mimeSupport = [[context objectForKey: @"MIMESupport"] intValue];
 
   s = [NSMutableString string];
 
@@ -862,7 +872,12 @@ struct GlobalObjectId {
   else
     {
       // MesssageClass and ContentClass
-      [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
+      if ([subtype isEqualToString: @"signed"])
+        [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note.SMIME.MultipartSigned"];
+      else if ([subtype isEqualToString: @"pkcs7-mime"])
+        [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note.SMIME"];
+      else
+        [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
     }
 
@@ -876,10 +891,8 @@ struct GlobalObjectId {
   [s appendFormat: @"<InternetCPID xmlns=\"Email:\">%@</InternetCPID>", @"65001"];
           
   // Body - namespace 17
-  preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
-
   nativeBodyType = 1;
-  d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
+  d = [self _preferredBodyDataUsingType: preferredBodyType  mimeSupport: mimeSupport  nativeType: &nativeBodyType];
 
   if (calendar && !d)
     {
@@ -981,9 +994,12 @@ struct GlobalObjectId {
        {
           [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
 
-          // Set the correct type if client requested text/html but we got text/plain
+          // Set the correct type if client requested text/html but we got text/plain.
+          // For s/mime mails type is always 4 if mimeSupport is 1 or 2.
           if (preferredBodyType == 2 && nativeBodyType == 1)
              [s appendString: @"<Type>1</Type>"];
+          else if (([subtype isEqualToString: @"signed"] || [subtype isEqualToString: @"pkcs7-mime"] ) && mimeSupport > 0)
+             [s appendString: @"<Type>4</Type>"];
           else
              [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
 
@@ -1001,7 +1017,8 @@ struct GlobalObjectId {
   
   // Attachments -namespace 16
   attachmentKeys = [self fetchFileAttachmentKeys];
-  if ([attachmentKeys count])
+
+  if ([attachmentKeys count] && !([subtype isEqualToString: @"signed"]))
     {
       int i;
 
@@ -1071,9 +1088,15 @@ struct GlobalObjectId {
   if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.0"] ||
       [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"14.1"])
     {
+      id value;
       NSString *reference;
 
-      reference = [[[[self mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] objectAtIndex: 0];
+      value = [[self mailHeaders] objectForKey: @"references"];
+
+      if ([value isKindOfClass: [NSArray class]])
+         reference = [[[value objectAtIndex: 0] componentsSeparatedByString: @" "] objectAtIndex: 0];
+      else
+         reference = [[value componentsSeparatedByString: @" "] objectAtIndex: 0];
 
       if ([reference length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];

@@ -1,0 +1,83 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Корисничко име:";
+"Password:" = "Лозинка:";
+"Domain:" = "Домејн:";
+"Remember username" = "Запомни го корисничкото име";
+
+"Connect" = "Поврзи се";
+
+"Wrong username or password." = "Погрешно корисничко име или лозинка.";
+"cookiesNotEnabled" = "Не можете да се најавите поради тоа што колачињата на вашиот прелистувач не се активирани. Ве молиме да ги овозможите колачињата во опциите на вашиот прелистувач и да се обидете повторно.";
+
+"browserNotCompatible" = "Забележивме дека вашиот прелистувач во моментов не е поддржан од овој сајт. Наша препорака е да користите Firefox. Клинете врз овој линк да ја преземете последната верзија на овој прелистувач.";
+"alternativeBrowsers" = "Како алтернатива исто така можете да користите еден оф компатибилните прелистувачи";
+"alternativeBrowserSafari" = "Како крајна можност, можете исто така да го користите Safari.";
+"Download" = "Преземи";
+
+"Language:" = "Јазик:";
+"choose" = "Одбери ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "За";
+"AboutBox" = "Развиено од Inverse, SOGo е комплетен групвер сервер со фокус на скалабилност и едноставност.<br/><br/>\nSOGo овозможува богат AJAX-базиран Web интерфејс и поддржува повеќе нативни клиенти користејќи стандардни протоколи како на пример CalDAV и CardDAV.<br/><br/>\nSOGo е дистрибуиран под <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> верзија 2 или подоцнежна и делови се дистрибуиирани под GNU LGPL version 2. Ова е бесплатен софтвер: вие сте слободни да го менувате и редистрибуирате. Нема гаранција, до ниво дозволено со закон.<br/><br/>\nПогледни <a href=\"http://www.sogo.nu/en/support/community.html\">ја страницава</a> за разни можности на поддршка.";
+
+"Your account was locked due to too many failed attempts." = "Вашиот налог е блокиран поради премногу погрешни обиди.";
+"Your account was locked due to an expired password." = "Вашата сметка е блокирана поради истечена лозинка.";
+"Login failed due to unhandled error case: " = "Најавувањето е неуспешно поради непозната грешка:";
+"Change your Password" = "Сменете ја вашата лозинка";
+"The password was changed successfully." = "Лозинката е успешно сменета.";
+"Your password has expired, please enter a new one below:" = "Вашата лозинка е истечена. Ве молам да внесете нова:";
+"Password must not be empty." = "Лозинката не може да биде празна.";
+"The passwords do not match. Please try again." = "Лозинките не се исти. Обидете се повторно.";
+"Password Grace Period" = "Грејс период на лозинката";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Ви преостанаа %{0} обиди за најавување пред да се блокира сметката. Ве молиме сменете ја лозинката во дадениот дијалог.";
+"Password about to expire" = "Лозинката сао што не истекла";
+"Your password is going to expire in %{0} %{1}." = "Вашата лозинка ќе истеча за %{0} %{1}.";
+"days" = "денови";
+"hours" = "часови";
+"minutes" = "минути";
+"seconds" = "секунди";
+"Password change failed" = "Промената на лозинката е неуспешна";
+"Password change failed - Permission denied" = "Промената на лозинката е неуспешна - недозволен пристап";
+"Password change failed - Insufficient password quality" = "Промената на лозинката е неуспешна - недоволен квалитет на лозинката";
+"Password change failed - Password is too short" = "Промената на лозинката е неуспешна - Лозинката е премногу кратка";
+"Password change failed - Password is too young" = "Промената на лозинката е неуспешна - Лозинката е премногу млада";
+"Password change failed - Password is in history" = "Промената на лозинката е неуспешна - Лозинката веќе сте ја користеле";
+"Unhandled policy error: %{0}" = "Непозната грешка на полиса: %{0}";
+"Unhandled error response" = "Непозната грешка";
+"Password change is not supported." = "Промената на лозинката не е подржана.";
+"Unhandled HTTP error code: %{0}" = "Непозната HTTP грешка: %{0}";
+"New password:" = "Нова лозинка:";
+"Confirmation:" = "Потврда:";
+"Cancel" = "Откажи";
+"Please wait..." = "Ве молиме почекајте...";

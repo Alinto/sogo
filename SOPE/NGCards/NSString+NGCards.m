@@ -158,16 +158,31 @@
   NSMutableString *string;
   unsigned int len, i;
   unichar c;
+  BOOL isQuoted;
 
   len = [self length];
   string = [NSMutableString stringWithCapacity: len * 1.5];
+  isQuoted = NO;
 
   for (i = 0; i < len; i++)
     {
       c = [self characterAtIndex: i];
 
+      if (isQuoted)
+        {
+          if (c == '"')
+            isQuoted = NO;
+
+          [string appendFormat: @"%C", c];
+          continue;
+        }
+
       switch (c)
         {
+        case '"':
+          isQuoted = YES;
+          [string appendFormat: @"%C", c];
+          break;
         case '\\':
           [string appendString: @"\\\\"];
           break;

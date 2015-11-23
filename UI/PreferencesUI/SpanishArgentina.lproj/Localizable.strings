@@ -203,7 +203,7 @@
 "Contacts" = "Libreta de direcciones";
 "Mail" = "Correo";
 "Last" = "Ultimo usado";
-"Default Module " = "Módulo por defecto ";
+"Default Module " = "Módulo por defecto";
 "SOGo Version" ="Versión de SOGo";
 
 "Language" ="Idioma";
@@ -222,10 +222,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

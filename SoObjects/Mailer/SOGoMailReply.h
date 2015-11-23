@@ -81,6 +81,9 @@
 @interface SOGoMailItalianReply : SOGoMailReply
 @end
 
+@interface SOGoMailMacedonianReply : SOGoMailReply
+@end
+
 @interface SOGoMailNorwegianBokmalReply : SOGoMailReply
 @end
 
@@ -97,6 +100,9 @@
 @end
 
 @interface SOGoMailPolishReply : SOGoMailReply
+@end
+
+@interface SOGoMailPortugueseReply : SOGoMailReply
 @end
 
 @interface SOGoMailRussianReply : SOGoMailReply

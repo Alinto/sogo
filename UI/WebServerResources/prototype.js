@@ -1,4 +1,4 @@
-/*  Prototype JavaScript framework, version 1.7.2
+/*  Prototype JavaScript framework, version 1.7.3
  *  (c) 2005-2010 Sam Stephenson
  *
  *  Prototype is freely distributable under the terms of an MIT-style license.
@@ -8,7 +8,7 @@
 
 var Prototype = {
 
-  Version: '1.7.2',
+  Version: '1.7.3',
 
   Browser: (function(){
     var ua = navigator.userAgent;
@@ -621,7 +621,7 @@ Object.extend(String.prototype, (function() {
   }
 
   function stripTags() {
-    return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
+    return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?(\/)?>|<\/\w+>/gi, '');
   }
 
   function stripScripts() {
@@ -734,7 +734,7 @@ Object.extend(String.prototype, (function() {
 
   function evalJSON(sanitize) {
     var json = this.unfilterJSON(),
-        cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+        cx = /[\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff\u0000]/g;
     if (cx.test(json)) {
       json = json.replace(cx, function (a) {
         return '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
@@ -1332,9 +1332,8 @@ Array.from = $A;
   }
 
   if (arrayProto.some) {
-    var some = wrapNative(Array.prototype.some);
+    some = wrapNative(Array.prototype.some);
   }
-
 
   function every(iterator) {
     if (this == null) throw new TypeError();
@@ -1352,21 +1351,15 @@ Array.from = $A;
   }
 
   if (arrayProto.every) {
-    var every = wrapNative(Array.prototype.every);
+    every = wrapNative(Array.prototype.every);
   }
 
-  var _reduce = arrayProto.reduce;
-  function inject(memo, iterator) {
-    iterator = iterator || Prototype.K;
-    var context = arguments[2];
-    return _reduce.call(this, iterator.bind(context), memo);
-  }
-
-  if (!arrayProto.reduce) {
-    var inject = Enumerable.inject;
-  }
 
   Object.extend(arrayProto, Enumerable);
+
+  if (arrayProto.entries === Enumerable.entries) {
+    delete arrayProto.entries;
+  }
 
   if (!arrayProto._reverse)
     arrayProto._reverse = arrayProto.reverse;
@@ -1383,7 +1376,6 @@ Array.from = $A;
     any:       some,
     every:     every,
     all:       every,
-    inject:    inject,
 
     clear:     clear,
     first:     first,
@@ -2146,12 +2138,12 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
 
   function visible(element) {
-    return $(element).style.display !== 'none';
+    return $(element).getStyle('display') !== 'none';
   }
 
   function toggle(element, bool) {
     element = $(element);
-    if (Object.isUndefined(bool))
+    if (typeof bool !== 'boolean')
       bool = !Element.visible(element);
     Element[bool ? 'show' : 'hide'](element);
 
@@ -2683,6 +2675,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
   function descendantOf_DOM(element, ancestor) {
     element = $(element), ancestor = $(ancestor);
+    if (!element || !ancestor) return false;
     while (element = element.parentNode)
       if (element === ancestor) return true;
     return false;
@@ -2690,12 +2683,14 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
   function descendantOf_contains(element, ancestor) {
     element = $(element), ancestor = $(ancestor);
+    if (!element || !ancestor) return false;
     if (!ancestor.contains) return descendantOf_DOM(element, ancestor);
     return ancestor.contains(element) && ancestor !== element;
   }
 
   function descendantOf_compareDocumentPosition(element, ancestor) {
     element = $(element), ancestor = $(ancestor);
+    if (!element || !ancestor) return false;
     return (element.compareDocumentPosition(ancestor) & 8) === 8;
   }
 
@@ -2800,8 +2795,10 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
     for (var attr in attributes) {
       name = table.names[attr] || attr;
       value = attributes[attr];
-      if (table.values[attr])
-        name = table.values[attr](element, value) || name;
+      if (table.values[attr]) {
+        value = table.values[attr](element, value);
+        if (Object.isUndefined(value)) continue;
+      }
       if (value === false || value === null)
         element.removeAttribute(name);
       else if (value === true)
@@ -2979,7 +2976,9 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
     values: {
       checked: function(element, value) {
-        element.checked = !!value;
+        value = !!value;
+        element.checked = value;
+        return value ? 'checked' : null;
       },
 
       style: function(element, value) {
@@ -3124,8 +3123,11 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
       value = element.currentStyle[style];
     }
 
-    if (style === 'opacity' && !STANDARD_CSS_OPACITY_SUPPORTED)
-      return getOpacity_IE(element);
+    if (style === 'opacity') {
+      if (!STANDARD_CSS_OPACITY_SUPPORTED)
+        return getOpacity_IE(element);
+      else return value ? parseFloat(value) : 1.0;
+    }
 
     if (value === 'auto') {
       if ((style === 'width' || style === 'height') && Element.visible(element))
@@ -3177,7 +3179,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
     if (value < 0.00001) value = 0;
 
     style.filter = stripAlphaFromFilter_IE(filter) +
-     'alpha(opacity=' + (value * 100) + ')';
+     ' alpha(opacity=' + (value * 100) + ')';
 
     return element;
   }
@@ -3193,7 +3195,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
     var filter = Element.getStyle(element, 'filter');
     if (filter.length === 0) return 1.0;
-    var match = (filter || '').match(/alpha\(opacity=(.*)\)/);
+    var match = (filter || '').match(/alpha\(opacity=(.*)\)/i);
     if (match && match[1]) return parseFloat(match[1]) / 100;
     return 1.0;
   }
@@ -3519,7 +3521,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
     return boxWidth - bl - br - pl - pr;
   }
 
-  if ('currentStyle' in document.documentElement) {
+  if (!Object.isUndefined(document.documentElement.currentStyle) && !Prototype.Browser.Opera) {
     getRawStyle = getRawStyle_IE;
   }
 
@@ -4047,15 +4049,19 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
   function getOffsetParent(element) {
     element = $(element);
 
+    function selfOrBody(element) {
+      return isHtml(element) ? $(document.body) : $(element);
+    }
+
     if (isDocument(element) || isDetached(element) || isBody(element) || isHtml(element))
       return $(document.body);
 
     var isInline = (Element.getStyle(element, 'display') === 'inline');
-    if (!isInline && element.offsetParent) return $(element.offsetParent);
+    if (!isInline && element.offsetParent) return selfOrBody(element.offsetParent);
 
     while ((element = element.parentNode) && element !== document.body) {
       if (Element.getStyle(element, 'position') !== 'static') {
-        return isHtml(element) ? $(document.body) : $(element);
+        return selfOrBody(element);
       }
     }
 
@@ -4093,8 +4099,8 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
       }
     } while (element);
 
-    valueL -= layout.get('margin-top');
-    valueT -= layout.get('margin-left');
+    valueL -= layout.get('margin-left');
+    valueT -= layout.get('margin-top');
 
     return new Element.Offset(valueL, valueT);
   }
@@ -4265,6 +4271,8 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
       offsetLeft: 0
     }, options || {});
 
+    var docEl = document.documentElement;
+
     source  = $(source);
     element = $(element);
     var p, delta, layout, styles = {};
@@ -4278,19 +4286,41 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
       }
     }
 
+    function pageScrollXY() {
+      var x = 0, y = 0;
+      if (Object.isNumber(window.pageXOffset)) {
+        x = window.pageXOffset;
+        y = window.pageYOffset;
+      } else if (document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+        x = document.body.scrollLeft;
+        y = document.body.scrollTop;
+      } else if (docEl && (docEl.scrollLeft || docEl.scrollTop)) {
+        x = docEl.scrollLeft;
+        y = docEl.scrollTop;
+      }
+      return { x: x, y: y };
+    }
+
+    var pageXY = pageScrollXY();
+
+
     if (options.setWidth || options.setHeight) {
       layout = Element.getLayout(source);
     }
 
     if (options.setLeft)
-      styles.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
+      styles.left = (p[0] + pageXY.x - delta[0] + options.offsetLeft) + 'px';
     if (options.setTop)
-      styles.top  = (p[1] - delta[1] + options.offsetTop)  + 'px';
+      styles.top  = (p[1] + pageXY.y - delta[1] + options.offsetTop)  + 'px';
 
-    if (options.setWidth)
-      styles.width  = layout.get('border-box-width')  + 'px';
-    if (options.setHeight)
-      styles.height = layout.get('border-box-height') + 'px';
+    var currentLayout = element.getLayout();
+
+    if (options.setWidth) {
+      styles.width = layout.get('width')  + 'px';
+    }
+    if (options.setHeight) {
+      styles.height = layout.get('height') + 'px';
+    }
 
     return Element.setStyle(element, styles);
   }
@@ -4488,15 +4518,29 @@ Prototype.Selector = (function() {
   };
 })();
 Prototype._original_property = window.Sizzle;
+
+;(function () {
+  function fakeDefine(fn) {
+    Prototype._actual_sizzle = fn();
+  }
+  fakeDefine.amd = true;
+
+  if (typeof define !== 'undefined' && define.amd) {
+    Prototype._original_define = define;
+    Prototype._actual_sizzle = null;
+    window.define = fakeDefine;
+  }
+})();
+
 /*!
- * Sizzle CSS Selector Engine v@VERSION
+ * Sizzle CSS Selector Engine v1.10.18
  * http://sizzlejs.com/
  *
  * Copyright 2013 jQuery Foundation, Inc. and other contributors
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: @DATE
+ * Date: 2014-02-05
  */
 (function( window ) {
 
@@ -6229,6 +6273,22 @@ if ( typeof define === "function" && define.amd ) {
 
 })( window );
 
+;(function() {
+  if (typeof Sizzle !== 'undefined') {
+    return;
+  }
+
+  if (typeof define !== 'undefined' && define.amd) {
+    window.Sizzle = Prototype._actual_sizzle;
+    window.define = Prototype._original_define;
+    delete Prototype._actual_sizzle;
+    delete Prototype._original_define;
+  } else if (typeof module !== 'undefined' && module.exports) {
+    window.Sizzle = module.exports;
+    module.exports = {};
+  }
+})();
+
 ;(function(engine) {
   var extendElements = Prototype.Selector.extendElements;
 
@@ -6870,7 +6930,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
   Event._isCustomEvent = isCustomEvent;
 
-  function getRegistryForElement(element, uid) {
+  function getOrCreateRegistryFor(element, uid) {
     var CACHE = GLOBAL.Event.cache;
     if (Object.isUndefined(uid))
       uid = getUniqueElementID(element);
@@ -6886,7 +6946,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
 
   function register(element, eventName, handler) {
-    var registry = getRegistryForElement(element);
+    var registry = getOrCreateRegistryFor(element);
     if (!registry[eventName]) registry[eventName] = [];
     var entries = registry[eventName];
 
@@ -6906,9 +6966,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
   }
 
   function unregister(element, eventName, handler) {
-    var registry = getRegistryForElement(element);
-    var entries = registry[eventName];
-    if (!entries) return;
+    var registry = getOrCreateRegistryFor(element);
+    var entries = registry[eventName] || [];
 
     var i = entries.length, entry;
     while (i--) {
@@ -6918,10 +6977,16 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
       }
     }
 
-    if (!entry) return;
+    if (entry) {
+      var index = entries.indexOf(entry);
+      entries.splice(index, 1);
+    }
 
-    var index = entries.indexOf(entry);
-    entries.splice(index, 1);
+    if (entries.length === 0) {
+      delete registry[eventName];
+      if (Object.keys(registry).length === 1 && ('element' in registry))
+        destroyRegistryForElement(element);
+    }
 
     return entry;
   }
@@ -7020,14 +7085,24 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
   }
 
   function stopObservingEventName(element, eventName) {
-    var registry = getRegistryForElement(element);
+    var registry = getOrCreateRegistryFor(element);
     var entries = registry[eventName];
-    if (!entries) return;
-    delete registry[eventName];
+    if (entries) {
+      delete registry[eventName];
+    }
+
+    entries = entries || [];
 
     var i = entries.length;
     while (i--)
       removeEvent(element, eventName, entries[i].responder);
+
+    for (var name in registry) {
+      if (name === 'element') continue;
+      return; // There is another registered event
+    }
+
+    destroyRegistryForElement(element);
   }
 
 
@@ -7194,7 +7269,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
   function createResponderForCustomEvent(uid, eventName, handler) {
     return function(event) {
-      var element = Event.cache[uid].element;
+      var cache = Event.cache[uid];
+      var element =  cache && cache.element;
 
       if (Object.isUndefined(event.eventName))
         return false;
@@ -7283,7 +7359,9 @@ Hash.toQueryString = Object.toQueryString;
 
 var Toggle = { display: Element.toggle };
 
-Element.Methods.childOf = Element.Methods.descendantOf;
+Element.addMethods({
+  childOf: Element.Methods.descendantOf
+});
 
 var Insertion = {
   Before: function(element, content) {

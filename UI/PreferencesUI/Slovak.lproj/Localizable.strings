@@ -150,7 +150,7 @@
 "And place my signature" = "A vlož môj podpis";
 "signatureplacement_above" = "pod odpoveďou";
 "signatureplacement_below" = "pod citáciou";
-"Compose messages in" = "Vytvor správu v ";
+"Compose messages in" = "Vytvor správu v";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Čistý text";
 "Display remote inline images" = "Zobraziť externe pripojené obrázky";
@@ -226,10 +226,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -288,7 +290,7 @@
 "is under" = "je pod";
 "is over" = "je nad";
 "is" = "je";
-"is not" = "nie je ";
+"is not" = "nie je";
 "contains" = "obsahuje";
 "does not contain" = "neobsahuje";
 "matches" = "zodpovedá";

@@ -1,0 +1,215 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Contacto";
+"Address" = "Endereço";
+"Photos" = "Fotos";
+"Other" = "Outros";
+
+"Address Books" = "Catálogo de endereços";
+"Addressbook" = "Catálogo de endereço";
+"Addresses" = "Contacto";
+"Update" = "Atualizar";
+"Cancel" = "Cancelar";
+"Common" = "Comum";
+"Contact editor" = "Editor de Contatos";
+"Contact viewer" = "Visualizador de Contatos";
+"Email" = "Email";
+"Screen Name" = "Nome de Apresentação";
+"Extended" = "Extendido";
+"Fax" = "Fax";
+"Firstname" = "Primeiro Nome";
+"Home" = "Residencia";
+"HomePhone" = "Telefone Residencia";
+"Lastname" = "Último Nome";
+"Location" = "Localização";
+"MobilePhone" = "Telefone móvel";
+"Name" = "Nome";
+"OfficePhone" = "Telefone de escritório";
+"Organization" = "Organização";
+"Work Phone" = "Telefone de trabalho";
+"Phone" = "Telefone";
+"Phones" = "Telefones";
+"Postal" = "Código postal";
+"Save" = "Gravar";
+"Internet" = "Internet";
+"Unit" = "Sector";
+"delete" = "apagar";
+"edit" = "editar";
+"invalidemailwarn" = "O email é inválido";
+"new" = "novo";
+"Preferred Phone" = "Telefone Preferencial";
+
+"Move To" = "Mover para";
+"Copy To" = "Copiar para";
+"Add to:" = "Adicionar a:";
+
+/* Tooltips */
+
+"Create a new address book card" = "Cria um novo contato";
+"Create a new list" = "Cria uma nova lista";
+"Edit the selected card" = "Edita o contacto selecionado";
+"Send a mail message" = "Envia uma mensagem de email";
+"Delete selected card or address book" = "Apaga o contacto ou catálogo selecionado";
+"Reload all contacts" = "Actualizar todos os contactos";
+
+"htmlMailFormat_UNKNOWN" = "Desconhecido";
+"htmlMailFormat_FALSE" = "Apenas texto";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Nome ou Email";
+"Category" = "Categoria";
+"Personal Addressbook" = "Catálogo Pessoal";
+"Search in Addressbook" = "Localizar no Catálogo";
+
+"New Card" = "Novo Contato";
+"New List" = "Nova Lista";
+"Edit" = "Editar";
+"Properties" = "Propriedades";
+"Sharing..." = "Partilhando...";
+"Write" = "Escrever";
+"Delete" = "Apagar";
+"Instant Message" = "Mensagem Instantânea";
+"Add..." = "Adicionar...";
+"Remove" = "Remover";
+
+"Please wait..." = "Por favor, aguarde...";
+"No possible subscription" = "Sem possibilidades de inscrição";
+
+"Preferred" = "Preferido";
+"Display" = "Exibir";
+"Display Name:" = "Exibir Nome:";
+"Email:" = "Endereço de Email:";
+"Additional Email:" = "Email adicional:";
+
+"Phone Number:" = "Numero de telegone:";
+"Prefers to receive messages formatted as:" = "Preferências na recepção de mensagens no formato:";
+"Screen Name:" = "Nome de apresentado:";
+"Categories:" = "Categorias:";
+
+"First:" = "Primeiro Nome:";
+"Last:" = "Último Nome:";
+"Nickname" = "Apelido";
+
+"Telephone" = "Telefone";
+"Work:" = "Trabalho:";
+"Home:" = "Residencia:";
+"Fax:" = "Fax:";
+"Mobile:" = "Móvel:";
+"Pager:" = "Pager:";
+
+/* categories */
+"contacts_category_labels" = "Colega, Concorrência, Cliente, Amigo, Familia, Parceiro económico, Fornecedor, Impressa, VIP";
+"Categories" = "Categorias";
+"New category" = "New categoria";
+
+/* adresses */
+"Title:" = "Título:";
+"Service:" = "Serviço:";
+"Company:" = "Empresa:";
+"Department:" = "Departmento:";
+"Organization:" = "Organização:";
+"Address:" = "Endereço:";
+"City" = "Cidade";
+"State_Province:" = "Região:";
+"ZIP_Postal Code:" = "Código postal:";
+"Country" = "País";
+"Web Page:" = "Página web:";
+
+"Work" = "Trabalho";
+"Other Infos" = "Outras Informações";
+
+"Note:" = "Notas:";
+"Timezone:" = "Fuso Horário:";
+"Birthday" = "Aniversário";
+"Birthday (yyyy-mm-dd)" = "Aniversário (yyyy-mm-dd)";
+"Freebusy URL:" = "URL Livre/Ocupado:";
+
+"Add as..." = "Adicionar como...";
+"Recipient" = "Beneficiário";
+"Carbon Copy" = "Cópia em bloco";
+"Blind Carbon Copy" = "Cópia em bloco Oculta";
+
+"New Addressbook..." = "Novo Catálogo...";
+"Subscribe to an Addressbook..." = "Inscrever-se num Catálogo...";
+"Remove the selected Addressbook" = "Remover o Catálogo selecionado";
+
+"Name of the Address Book" = "Nome do Catálogo";
+"Are you sure you want to delete the selected address book?"
+= "Você tem certeza que quer apagar o catálogo selecionado?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Você não pode apagar nem retirar-se de uma catálogo público.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Você não pode apagar nem retirar-se de uma catálogo pessoal.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Você tem certeza que quer apagar os contatos selecionados?";
+
+"You cannot delete the card of \"%{0}\"."
+= "Você não pode apagar o contato de \"%{0}\".";
+
+
+
+"You cannot subscribe to a folder that you own!"
+= "Você não pode inscrever-se numa pasta que você é dono.";
+"Unable to subscribe to that folder!"
+= "Não foi possível inscrever-se nesta pasta.";
+
+/* acls */
+"Access rights to" = "Direitos de acesso para";
+"For user" = "Para usuário";
+
+"Any Authenticated User" = "Qualquer utilizador autenticado";
+"Public Access" = "Acesso Publico";
+
+"This person can add cards to this addressbook."
+= "Essa pessoa pode adicionar contatos ao meu catálogo.";
+"This person can edit the cards of this addressbook."
+= "Essa pessoa pode editar contatos deste catálogo.";
+"This person can list the content of this addressbook."
+= "Essa pessoa pode listar o conteudo deste catálogo.";
+"This person can read the cards of this addressbook."
+= "Essa pessoa pode ler os contatos deste catálogo.";
+"This person can erase cards from this addressbook."
+= "Essa pessoa pode apagar contatos deste catálogo.";
+
+"The selected contact has no email address."
+= "O contato selecionado não tem endereço de email.";
+
+"Please select a contact." = "Por favor, selecione um contato.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Você não pode gravar neste catálogo.";
+"Forbidden" = "Você não pode gravar neste catálogo.";
+"Invalid Contact" = "O contato selecionado não existe.";
+"Unknown Destination Folder" = "O catálogo de destino selecionado não existe.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";
+"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"Export" = "Export";
+"Export Address Book..." = "Export Address Book...";
+"View Raw Source" = "Visualizar Fonte";
+"Import Cards" = "Import Cards";
+"Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
+"Upload" = "Upload";
+"Uploading" = "Carregando";
+"Done" = "Done";
+"An error occured while importing contacts." = "An error occured while importing contacts.";
+"No card was imported." = "No card was imported.";
+"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+
+"Reload" = "Atualizar";
+
+/* Properties window */
+"Address Book Name:" = "Nome do Catálogo:";
+"Links to this Address Book" = "Link para este Catálogo";
+"Authenticated User Access" = "Acesso de Usuário Autenticado";
+"CardDAV URL: " = "CardDAV URL:";
+

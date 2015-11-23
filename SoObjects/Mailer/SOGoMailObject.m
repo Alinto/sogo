@@ -389,6 +389,13 @@ static BOOL debugSoParts       = NO;
       [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
     return info;
 
+  // deal with mails that contain only an attachment, for example:
+  // application/pkcs7-mime
+  // application/pdf
+  // etc.
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"])
+    return info;
+
   /* 
      For each path component, eg 1,1,3 
      
@@ -766,6 +773,7 @@ static BOOL debugSoParts       = NO;
 		       [part objectForKey: @"subtype"]];
 
   if (!filename)
+    {
       // We might end up here because of MUA that actually strips the
       // Content-Disposition (and thus, the filename) when mails containing
       // attachments have been forwarded. Thunderbird (2.x) does just that
@@ -774,9 +782,15 @@ static BOOL debugSoParts       = NO;
 	  [mimeType hasPrefix: @"audio/"] ||
 	  [mimeType hasPrefix: @"image/"] ||
 	  [mimeType hasPrefix: @"video/"])
+      {
           filename = [NSString stringWithFormat: @"unknown_%@", path];
-      else if ([mimeType isEqualToString: @"message/rfc822"])
-        filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      }
+      else
+      {
+        if ([mimeType isEqualToString: @"message/rfc822"])
+          filename = [NSString stringWithFormat: @"email_%@.eml", path];
+      }
+    }
   
 
   if (filename)
@@ -809,7 +823,7 @@ static BOOL debugSoParts       = NO;
   NSMutableDictionary *currentPart;
   NSString *newPath;
   NSArray *subparts;
-  NSString *type;
+  NSString *type, *subtype;
   NSUInteger i;
 
   type = [[part objectForKey: @"type"] lowercaseString];
@@ -820,19 +834,27 @@ static BOOL debugSoParts       = NO;
 	{
 	  currentPart = [subparts objectAtIndex: i-1];
 	  if (path)
-	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
+	    newPath = [NSString stringWithFormat: @"%@.%d", path, (int)i];
 	  else
-	    newPath = [NSString stringWithFormat: @"%d", i];
+	    newPath = [NSString stringWithFormat: @"%d", (int)i];
 	  [self _fetchFileAttachmentKeysInPart: currentPart
                                      intoArray: keys
                                       withPath: newPath
-                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, i]];
+                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, (int)i]];
 	}
     }
   else
     {
       if (!path)
-        path = @"1";
+        {
+          path = @"1";
+
+          // We set the path to 0 in case of a smime mail if not provided.
+          subtype = [[part objectForKey: @"subtype"] lowercaseString];
+          if ([subtype isEqualToString: @"pkcs7-mime"])
+             path = @"0";
+        }
+
       [self _fetchFileAttachmentKey: part
                           intoArray: keys
                            withPath: path
@@ -1026,6 +1048,14 @@ static BOOL debugSoParts       = NO;
       return obj;
     }
   }
+  // Handles cases where the email is itself an attachment, so its Content-Type
+  // is application/*, image/* etc.
+  else if ([_key isEqualToString: @"asAttachment"] &&
+           (obj = [self lookupImap4BodyPartKey: @"0" inContext:_ctx]) != nil)
+    {
+      [obj setAsAttachment];
+      return obj;
+    }
   
   /* return 404 to stop acquisition */
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */

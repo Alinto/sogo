@@ -440,17 +440,23 @@ function onAjaxRequestStateChange(http) {
 
 /* taken from Lightning */
 function getContrastingTextColor(bgColor) {
-    var calcColor = bgColor.substring(1);
-    var red = parseInt(calcColor.substring(0, 2), 16);
-    var green = parseInt(calcColor.substring(2, 4), 16);
-    var blue = parseInt(calcColor.substring(4, 6), 16);
+    var textColor = "black";
+    if (bgColor) {
+        var calcColor = bgColor.substring(1);
+        var red = parseInt(calcColor.substring(0, 2), 16);
+        var green = parseInt(calcColor.substring(2, 4), 16);
+        var blue = parseInt(calcColor.substring(4, 6), 16);
 
-    // Calculate the brightness (Y) value using the YUV color system.
-    var brightness = (0.299 * red) + (0.587 * green) + (0.114 * blue);
+        // Calculate the brightness (Y) value using the YUV color system.
+        var brightness = (0.299 * red) + (0.587 * green) + (0.114 * blue);
 
-    // Consider all colors with less than 56% brightness as dark colors and
-    // use white as the foreground color, otherwise use black.
-    return ((brightness < 144) ? "white" : "black");
+        // Consider all colors with less than 56% brightness as dark colors and
+        // use white as the foreground color, otherwise use black.
+        if (brightness < 144)
+            textColor = "white";
+    }
+
+    return textColor;
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) {
@@ -764,7 +770,7 @@ function popupMenu(event, menuId, target) {
     var leftDiff = ((window.width() + deltaX)
                     - (menuLeft + popup.offsetWidth));
     if (leftDiff < 0)
-        menuLeft -= (popup.offsetWidth + 1);
+      menuLeft += leftDiff - 1;
 
     var isVisible = true;
     if (popup.prepareVisibility) {

@@ -30,8 +30,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncDispatcher.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
+#if GNUSTEP_BASE_MINOR_VERSION >= 21
+#import <Foundation/NSLocale.h>
+#endif
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
@@ -134,6 +138,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 
+#ifdef HAVE_OPENSSL
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/x509.h>
+#endif
+
 @interface SOGoActiveSyncDispatcher (Sync)
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
@@ -143,8 +153,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SOGoActiveSyncDispatcher
 
-static BOOL debugOn = NO;
-
 - (id) init
 {
   [super init];
@@ -152,6 +160,7 @@ static BOOL debugOn = NO;
   debugOn = [[SOGoSystemDefaults sharedSystemDefaults] easDebugEnabled];
   folderTableURL = nil;
   imapFolderGUIDS = nil;
+  syncRequest = nil;
   return self;
 }
 
@@ -159,6 +168,7 @@ static BOOL debugOn = NO;
 {
   RELEASE(folderTableURL);
   RELEASE(imapFolderGUIDS);
+  RELEASE(syncRequest);
   [super dealloc];
 }
 
@@ -171,16 +181,16 @@ static BOOL debugOn = NO;
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
   
-  [[o properties] removeAllObjects];
-  [[o properties] addEntriesFromDictionary: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"FolderSyncKey"]];
+  [[o properties] setObject: theSyncKey
+                     forKey: @"FolderSyncKey"];
   [o save];
 }
 
-- (NSMutableDictionary *) _globalMetadataForDevice
+- (NSMutableDictionary *) globalMetadataForDevice
 {
   SOGoCacheGCSObject *o;
 
-  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil  useCache: NO];
   [o setObjectType: ActiveSyncGlobalCacheObject];
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
@@ -204,7 +214,7 @@ static BOOL debugOn = NO;
   if (theFilter)
     {
       o = [SOGoCacheGCSObject objectWithName: [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], theCollectionId] inContainer: nil];
-      [o setObjectType: ActiveSyncGlobalCacheObject];
+      [o setObjectType: ActiveSyncFolderCacheObject];
       [o setTableUrl: [self folderTableURL]];
       [o reloadIfNeeded];
 
@@ -697,26 +707,25 @@ static BOOL debugOn = NO;
 - (void) processFolderSync: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
-  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType;
+  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation;
+  NSMutableDictionary *cachedGUIDs, *metadata;
+  NSMutableArray *folders, *processedFolders;
   NSDictionary *folderMetadata, *imapGUIDs;
   NSArray *allFoldersMetadata, *allKeys;
-  NSMutableDictionary *cachedGUIDs, *metadata;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
   SOGoUserFolder *userFolder;
-  NSMutableArray *folders, *processedFolders;
   SoSecurityManager *sm;
   SOGoCacheGCSObject *o;
   id currentFolder;
   NSData *d;
 
   int status, command_count, i, type, fi, count;
-
   BOOL first_sync;
 
   sm = [SoSecurityManager sharedSecurityManager];
-  metadata = [self _globalMetadataForDevice];
+  metadata = [self globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
 
@@ -830,32 +839,38 @@ static BOOL debugOn = NO;
            }
          else
            {
-              if ([cKey rangeOfString: @"vevent" options: NSCaseInsensitiveSearch].location != NSNotFound ||
-                  [cKey rangeOfString: @"vtodo" options: NSCaseInsensitiveSearch].location != NSNotFound)
-                folderType = @"Calendar";
-              else
-                folderType = @"Contacts";
+             if ([cKey rangeOfString: @"vevent" options: NSCaseInsensitiveSearch].location != NSNotFound ||
+                 [cKey rangeOfString: @"vtodo" options: NSCaseInsensitiveSearch].location != NSNotFound)
+               folderType = @"Calendar";
+             else
+               folderType = @"Contacts";
 
-              if ([ cKey rangeOfString: @"/"].location != NSNotFound) 
-                currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
+             if ([ cKey rangeOfString: @"/"].location != NSNotFound) 
+               currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
 
-              // remove the folder from device if it doesn't exists or it has not the proper permissions
-              if (!currentFolder ||
-                  [sm validatePermission: SoPerm_DeleteObjects
-                                onObject: currentFolder
-                               inContext: context] ||
-                  [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                onObject: currentFolder
-                               inContext: context])
-                {
-                  [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
-                  command_count++;
-                  [o destroy];
-                }
-            }
-         }
-      }
+             // We skip personal GCS folders - we always want to synchronize these
+             if ([currentFolder isKindOfClass: [SOGoGCSFolder class]] &&
+                 [[currentFolder nameInContainer] isEqualToString: @"personal"])
+               continue;
+
+             // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
+             if (!currentFolder ||
+                 ![currentFolder synchronize] ||
+                 [sm validatePermission: SoPerm_DeleteObjects
+                               onObject: currentFolder
+                              inContext: context] ||
+                 [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                               onObject: currentFolder
+                              inContext: context])
+               {
+                 [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+                 command_count++;
+                 [o destroy];
+               }
+           }
+       }
+   }
 
   // Handle addition and changes
   for (i = 0; i < [allFoldersMetadata count]; i++)
@@ -943,6 +958,7 @@ static BOOL debugOn = NO;
          [[o properties] removeObjectForKey: @"DateCache"];
          [[o properties] removeObjectForKey: @"MoreAvailable"];
          [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+         [[o properties] removeObjectForKey: @"SupportedElements"];
          [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
          [[o properties] removeObjectForKey: @"InitialLoadSequence"];
          [o save];
@@ -953,17 +969,29 @@ static BOOL debugOn = NO;
 
     personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
     folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
+    [folders autorelease];
+
     [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
 
-    // Inside this loop we remove all the folder without write/delete permissions
+    // We remove all the folders that aren't GCS-ones, that we don't want to synchronize and
+    // the ones without write/delete permissions.
     count = [folders count]-1;
     for (; count >= 0; count--)
      {
-       if ([sm validatePermission: SoPerm_DeleteObjects
-                         onObject: [folders objectAtIndex: count]
+       currentFolder = [folders objectAtIndex: count];
+
+       // We skip personal GCS folders - we always want to synchronize these
+       if ([currentFolder isKindOfClass: [SOGoGCSFolder class]] &&
+           [[currentFolder nameInContainer] isEqualToString: @"personal"])
+         continue;
+
+       if (![currentFolder isKindOfClass: [SOGoGCSFolder class]] ||
+           ![currentFolder synchronize] ||
+           [sm validatePermission: SoPerm_DeleteObjects
+                         onObject: currentFolder
                         inContext: context] ||
            [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                         onObject: [folders objectAtIndex: count]
+                         onObject: currentFolder
                         inContext: context])
          {
            [folders removeObjectAtIndex: count];
@@ -971,7 +999,6 @@ static BOOL debugOn = NO;
      }
 
     count = [folders count]-1;
-    NSString *operation;
 
     for (fi = 0; fi <= count ; fi++)
      {
@@ -1029,6 +1056,7 @@ static BOOL debugOn = NO;
                    [[o properties] removeObjectForKey: @"DateCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+                   [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }
@@ -1053,6 +1081,7 @@ static BOOL debugOn = NO;
                    [[o properties] removeObjectForKey: @"DateCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+                   [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                  }
@@ -1263,7 +1292,7 @@ static BOOL debugOn = NO;
 - (void) processItemOperations: (id <DOMElement>) theDocumentElement
                     inResponse: (WOResponse *) theResponse
 {
-  NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *collectionId;
+  NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *mimeSupport, *collectionId;
   NSMutableString *s;
   NSArray *fetchRequests;
   id aFetch;
@@ -1376,6 +1405,8 @@ static BOOL debugOn = NO;
                   serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
                   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
                   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
+                  mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+                  [context setObject: mimeSupport  forKey: @"MIMESupport"];
 
                   currentCollection = [self collectionFromId: realCollectionId  type: folderType];
 
@@ -2033,13 +2064,13 @@ static BOOL debugOn = NO;
       
       if ([foldersWithChanges count])
         {
-          [self logWithFormat: @"Change detected, we push the content."];
+          [self logWithFormat: @"Change detected using Ping, we let the EAS client know to send a Sync."];
           status = 2;
           break;
         }
       else
         {
-          [self logWithFormat: @"Sleeping %d seconds while detecting changes...", internalInterval];
+          [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval];
           sleep(internalInterval);
         }
     }
@@ -2102,6 +2133,123 @@ static BOOL debugOn = NO;
   
   [theResponse setContent: d];
 }
+
+//
+//
+//
+#ifdef HAVE_OPENSSL
+- (unsigned int) validateCert: (NSString *) theCert
+{
+  NSData *d;
+
+  const unsigned char *data;
+  X509_STORE_CTX *ctx;
+  X509_LOOKUP *lookup;
+  X509_STORE *store;
+  X509 *cert;
+
+  BOOL success;
+  size_t len;
+  int rc;
+
+  success = NO;
+
+  d = [theCert dataByDecodingBase64];
+  data = (unsigned char *)[d bytes];
+  len = [d length];
+
+  cert = d2i_X509(NULL, &data, len);
+  if (!cert)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: d2i_X509 failed", [context objectForKey: @"DeviceId"]];
+      return 17;
+    }
+
+  store = X509_STORE_new();
+  OpenSSL_add_all_algorithms();
+
+  if (store)
+    {
+      lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
+      if (lookup)
+        {
+          X509_LOOKUP_load_file(lookup, NULL, X509_FILETYPE_DEFAULT);
+          lookup = X509_STORE_add_lookup(store, X509_LOOKUP_hash_dir());
+          if (lookup)
+            {
+              X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT);
+              ERR_clear_error();
+              success = YES;
+            }
+        }
+    }
+
+  if (!success)
+    {
+      if (store)
+        {
+          X509_STORE_free(store);
+          store = NULL;
+        }
+    }
+
+  ctx = X509_STORE_CTX_new();
+  if (!ctx)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: X509_STORE_CTX_new failed", [context objectForKey: @"DeviceId"]];
+      return 17;
+    }
+
+  if (X509_STORE_CTX_init(ctx, store, cert, NULL) != 1)
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: X509_STORE_CTX_init failed", [context objectForKey: @"DeviceId"]];
+      X509_STORE_CTX_free(ctx);
+      return 17;
+    }
+
+  rc = X509_verify_cert(ctx);
+  X509_STORE_CTX_free(ctx);
+  X509_free(cert);
+
+  if (rc)
+    {
+      return 1;
+    }
+  else
+    {
+      [self logWithFormat: @"EAS - validateCert failed for device %@: err=%d", [context objectForKey: @"DeviceId"], X509_STORE_CTX_get_error(ctx)];
+      return 17;
+    }
+}
+#else
+- (unsigned int) validateCert: (NSString *) theCert
+{
+  return 17;
+}
+#endif
+
+- (void) processValidateCert: (id <DOMElement>) theDocumentElement
+                  inResponse: (WOResponse *) theResponse
+{
+  NSMutableString *s;
+  NSString *cert;
+  NSData *d;
+
+  cert =  [[(id)[theDocumentElement getElementsByTagName: @"Certificate"] lastObject] textValue];
+
+  s = [NSMutableString string];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<ValidateCert xmlns=\"ValidateCert:\">"];
+  [s appendString: @"<Status>1</Status><Certificate>"];
+  [s appendFormat: @"<Status>%d</Status>", [self validateCert: cert]];
+  [s appendString: @"</Certificate></ValidateCert>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  [theResponse setContent: d];
+}
+
 
 //
 // <?xml version="1.0"?>
@@ -2419,39 +2567,85 @@ static BOOL debugOn = NO;
   NGMimeMessageParser *parser;
   NGMimeMessage *message;
   NSException *error;
-  NSData *data;
-  NGMutableHashMap *map;
-  NGMimeMessage *messageToSend;
-  NGMimeMessageGenerator *generator;
+  NSMutableData *data;
+  NSData *new_from_header;
   NSDictionary *identity;
   NSString *fullName, *email;
+
+  const char *bytes;
+  int i, len;
+  BOOL found_header;
   
   // We get the mail's data
-  data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
+  data = [NSMutableData dataWithData: [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding]];
   
   // We extract the recipients
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: data];
   RELEASE(parser);
 
-  map = [NGHashMap hashMapWithDictionary: [message headers]];
-
   identity = [[context activeUser] primaryIdentity];
 
   fullName = [identity objectForKey: @"fullName"];
   email = [identity objectForKey: @"email"];
+
   if ([fullName length])
-    [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
+    new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", [fullName asQPSubjectString: @"utf-8"], email] dataUsingEncoding:NSUTF8StringEncoding];
   else
-    [map setObject: email forKey: @"from"];
+    new_from_header = [[NSString stringWithFormat: @"From: %@\r\n", email] dataUsingEncoding:NSUTF8StringEncoding];
 
-  messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+  bytes = [data bytes];
+  len = [data length];
+  i = 0;
+  found_header = NO;
 
-  [messageToSend setBody: [message body]];
+  // Search for the from-header
+  while (i < len)
+    {
+      if (i == 0 &&
+          (*bytes == 'f' || *bytes == 'F') &&
+          (*(bytes+1) == 'r' || *(bytes+1) == 'R') &&
+          (*(bytes+2) == 'o' || *(bytes+2) == 'O') &&
+          (*(bytes+3) == 'm' || *(bytes+3) == 'M') &&
+          (*(bytes+4) == ':'))
+        {
+          found_header = YES;
+          break;
+        }
 
-  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-  data = [generator generateMimeFromPart: messageToSend];
-  
+      if (((*bytes == '\r') && (*(bytes+1) == '\n')) &&
+          (*(bytes+2) == 'f' || *(bytes+2) == 'F') &&
+          (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
+          (*(bytes+4) == 'o' || *(bytes+4) == 'O') &&
+          (*(bytes+5) == 'm' || *(bytes+5) == 'M') &&
+          (*(bytes+6) == ':'))
+        {
+          found_header = YES;
+          i = i + 2; // \r\n
+          break;
+        }
+
+      bytes++;
+      i++;
+    }
+
+  // Update/Add the From header in the MIMEBody of the SendMail request.
+  // Any other way to modify the mail body would break s/mime emails.
+  if (found_header)
+    {
+      // Change the From header
+      [data replaceBytesInRange: NSMakeRange(i, [[message headerForKey: @"from"] length]+8) // start of the From header found - length of the parsed from-header-value + 8 (From:+\r\n+1)
+                      withBytes: [new_from_header bytes]
+                         length: [new_from_header length]];
+    }
+  else
+    {
+      // Add a From header
+      [data replaceBytesInRange: NSMakeRange(0, 0)
+                      withBytes: [new_from_header bytes]
+                         length: [new_from_header length]];
+    }
+
   error = [self _sendMail: data
                recipients: [message allRecipients]
                 saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
@@ -2948,8 +3142,24 @@ static BOOL debugOn = NO;
                                               options: NSCaseInsensitiveSearch].location == NSNotFound)
         {
           NSString *value;
-          
-          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
+#if GNUSTEP_BASE_MINOR_VERSION < 21
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                                        locale: nil];
+#else
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                                        locale: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                     [NSArray arrayWithObjects: @"Jan", @"Feb", @"Mar", @"Apr",
+                                                                                                @"May", @"Jun", @"Jul", @"Aug", 
+                                                                                                @"Sep", @"Oct", @"Nov", @"Dec", nil],
+                                                                     @"NSShortMonthNameArray",
+                                                                     [NSArray arrayWithObjects: @"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
+                                                                                                @"Fri", @"Sat", nil],
+                                                                     @"NSShortWeekDayNameArray",
+                                                                     nil]];
+
+#endif
           s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
         } 
       else
@@ -3040,8 +3250,7 @@ static BOOL debugOn = NO;
         return nil;
 
       urlString = [[user domainDefaults] folderInfoURL];
-      parts = [[urlString componentsSeparatedByString: @"/"]
-                mutableCopy];
+      parts = [[urlString componentsSeparatedByString: @"/"] mutableCopy];
       [parts autorelease];
       if ([parts count] == 5)
         {

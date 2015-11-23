@@ -161,10 +161,10 @@ static NSData* _sanitizeContent(NSData *theData)
       if (i < len-5)
 	{
 	  if ((*bytes == '<') &&
-	      (*(bytes+1) == 'm' || *(bytes+2) == 'M') &&
-	      (*(bytes+2) == 'e' || *(bytes+3) == 'E') &&
-	      (*(bytes+3) == 't' || *(bytes+4) == 'T') &&
-	      (*(bytes+4) == 'a' || *(bytes+5) == 'A') &&
+	      (*(bytes+1) == 'm' || *(bytes+1) == 'M') &&
+	      (*(bytes+2) == 'e' || *(bytes+2) == 'E') &&
+	      (*(bytes+3) == 't' || *(bytes+3) == 'T') &&
+	      (*(bytes+4) == 'a' || *(bytes+4) == 'A') &&
 	      (*(bytes+5) == ' '))
             in_meta = YES;
 	}
@@ -741,7 +741,7 @@ static NSData* _sanitizeContent(NSData *theData)
 
 /* SaxLexicalHandler */
 - (void) comment: (unichar *) _chars
-          length: (NSUInteger) _len
+          length: (int) _len
 {
   showWhoWeAre();
   if (inStyle)
@@ -807,7 +807,7 @@ static NSData* _sanitizeContent(NSData *theData)
     }
   [dump appendFormat: @"--- end ---\n"];
 
-  NSLog(dump);
+  NSLog(@"%@",dump);
   [dump release];
 }
 

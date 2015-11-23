@@ -176,7 +176,7 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default Module " = "Default module ";
+"Default Module " = "Default module";
 
 "Language" ="Iaith";
 "choose" = "Dewis ...";
@@ -194,10 +194,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

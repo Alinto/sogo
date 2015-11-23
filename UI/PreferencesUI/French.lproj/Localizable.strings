@@ -140,7 +140,7 @@
 "Sort messages by threads" = "Grouper les discussions";
 "When sending mail, add unknown recipients to my" = "Lors de l'envoi d'un message, ajouter les destinataires inconnus au carnet";
 
-"Forward messages" = "Transférer les messages ";
+"Forward messages" = "Transférer les messages";
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
@@ -167,17 +167,17 @@
 /* IMAP Accounts */
 "New Mail Account" = "Nouveau compte";
 
-"Server Name" = "Serveur ";
-"Port" = "Port ";
-"Encryption" = "Chiffrement ";
+"Server Name" = "Serveur";
+"Port" = "Port";
+"Encryption" = "Chiffrement";
 "None" = "Aucun";
-"User Name" = "Utilisateur ";
-"Password" = "Mot de passe ";
+"User Name" = "Utilisateur";
+"Password" = "Mot de passe";
 
-"Full Name" = "Nom complet ";
-"Email" = "Email ";
-"Reply To Email" = "Adresse de retour ";
-"Signature" = "Signature ";
+"Full Name" = "Nom complet";
+"Email" = "Email";
+"Reply To Email" = "Adresse de retour";
+"Signature" = "Signature";
 "(Click to create)" = "(Signature vide)";
 
 "Signature" = "Signature";
@@ -210,7 +210,7 @@
 "Contacts" = "Carnet d'adresses";
 "Mail" = "Courrier";
 "Last" = "Dernier utilisé";
-"Default Module " = "Module par défaut ";
+"Default Module " = "Module par défaut";
 "SOGo Version" ="Version";
 
 "Language" ="Langue";
@@ -229,10 +229,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

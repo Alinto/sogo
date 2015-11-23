@@ -32,7 +32,7 @@
 "Always send vacation message response" = "Alltid send ferie melding";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv melding og angi din e-postadresse som du vil aktivere auto-svar for.";
-"Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje. ";
+"Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje.";
 "End date of your auto reply must be in the future."
 = "Slutt-dato for auto-svar må være i framtiden.";
 
@@ -144,7 +144,7 @@
 "messageforward_inline" = "Innsatt";
 "messageforward_attached" = "Som Vedlegg";
 
-"When replying to a message" = "Ved svar på melding ";
+"When replying to a message" = "Ved svar på melding";
 "replyplacement_above" = "Start svaret ovenfor";
 "replyplacement_below" = "Start svaret under";
 "And place my signature" = "Legg til min signatur";
@@ -229,12 +229,15 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
-"Polish" = "Polsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
-"Slovak" = "Slovensk";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

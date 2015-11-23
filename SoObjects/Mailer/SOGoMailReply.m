@@ -131,6 +131,9 @@
 @implementation SOGoMailItalianReply
 @end
 
+@implementation SOGoMailMacedonianReply
+@end
+
 @implementation SOGoMailNorwegianBokmalReply
 @end
 
@@ -147,6 +150,9 @@
 @end
 
 @implementation SOGoMailPolishReply
+@end
+
+@implementation SOGoMailPortugueseReply
 @end
 
 @implementation SOGoMailRussianReply

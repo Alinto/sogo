@@ -1,0 +1,48 @@
+ACCEPTED = "прифатено";
+COMPLETED = "комплетирано";
+DECLINED = "одбиено";
+DELEGATED = "делегирано";
+"IN-PROCESS" = "во тек";
+"NEEDS-ACTION" = "потребна е активност";
+TENTATIVE = "не е сигурно";
+organized_by_you = "организирано од вас";
+you_are_an_attendee = "вие сте учесник";
+add_info_text = "iMIP 'ADD' барања сеуште не се подржани од SOGo.";
+publish_info_text = "Испраќачот ве информира за прикачениот настан.";
+cancel_info_text = "Вашата покана или целиот настан е откажан.";
+request_info_no_attendee = "предлага состанок на учесниците. Вие ја примивте оваа порака како известување, не сте предвидени како учесник.";
+Appointment = "Закажување";
+"Status Update" = "Освежи го статусот";
+was = "беше";
+
+Organizer = "Организатор";
+Time = "Време";
+Attendees = "Учесници";
+request_info = "ве поканува да учествувате на состанокот.";
+"Add to calendar" = "Додади во календарот";
+"Delete from calendar" = "Избриши од календарот";
+"Update status" = "Освежи го статусот";
+Accept = "Прифати";
+Decline = "Одбиј";
+Tentative = "Условно";
+"Delegate ..." = "Делегирај ...";
+"Delegated to" = "Делегирано на";
+"Update status in calendar" = "Освежи го статусот во календарот";
+"delegated from" = "делегирано од";
+
+reply_info_no_attendee = "Вие добивте одговор на закажан настан но испраќачот на одговорот не е учесник.";
+reply_info = "Ова е одговор на покана за настан креиран од вас.";
+
+"to" = "до";
+
+"Untitled" = "Без наслов";
+
+"Size" = "Големина";
+
+"Digital signature is not valid" = "Електронскиот потпис е невалиден";
+"Message is signed" = "Пораката е потпишана";
+"Subject" = "Тема";
+"From" = "Од";
+"Date" = "Датум";
+"To" = "До";
+"Issuer" = "Издавач";

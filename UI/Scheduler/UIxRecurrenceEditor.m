@@ -148,7 +148,7 @@
       [shortWeekDaysList retain];
     }
 
-  id = [NSString stringWithFormat: @"weekDay%i", [shortWeekDaysList indexOfObject: item]];
+  id = [NSString stringWithFormat: @"weekDay%i", (int)[shortWeekDaysList indexOfObject: item]];
 
   return id;
 }

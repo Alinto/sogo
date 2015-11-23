@@ -364,7 +364,7 @@ Class SOGoCacheGCSObjectK = Nil;
   if (record)
     {
       if ([[record objectForKey: @"c_type"] intValue] == MAPIFolderCacheObject)
-        objectClass = isa;
+        objectClass = object_getClass(self);
       else
         objectClass = SOGoCacheGCSObjectK;
 

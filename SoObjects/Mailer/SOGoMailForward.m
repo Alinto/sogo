@@ -73,10 +73,10 @@
 
 - (NSString *) newLine
 {
-  NSString *rc = [NSString stringWithString: @" "];
+  NSString *rc = @" ";
   
   if (htmlComposition)
-    rc = [NSString stringWithString: @"<br/>"];
+    rc = @"<br/>";
 
   return rc;
 }
@@ -293,6 +293,9 @@
 @implementation SOGoMailItalianForward
 @end
 
+@implementation SOGoMailMacedonianForward
+@end
+
 @implementation SOGoMailNorwegianBokmalForward
 @end
 
@@ -309,6 +312,9 @@
 @end
 
 @implementation SOGoMailPolishForward
+@end
+
+@implementation SOGoMailPortugueseForward
 @end
 
 @implementation SOGoMailRussianForward

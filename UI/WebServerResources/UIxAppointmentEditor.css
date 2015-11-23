@@ -10,7 +10,7 @@ DIV#eventView
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0; }
 
-DIV#eventView > DIV
+DIV#eventView > DIV[id$=Div]
 { padding: 1em; }
 
 DIV.appointmentRightLabel

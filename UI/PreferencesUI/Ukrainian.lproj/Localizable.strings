@@ -188,7 +188,7 @@
 "Contacts" = "Адресна книга";
 "Mail" = "Електронна пошта";
 "Last" = "Останнє";
-"Default Module " = "Модуль за замовчанням ";
+"Default Module " = "Модуль за замовчанням";
 
 "Language" ="Мова";
 "choose" = "Choose ...";
@@ -206,10 +206,12 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

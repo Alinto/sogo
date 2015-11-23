@@ -91,6 +91,9 @@
 
 - (BOOL) synchronizeCalendar
 {
+  if ([self isWebCalendar])
+    return NO;
+
   return [self mustSynchronize] || [calendar synchronize];
 }
 
@@ -101,7 +104,7 @@
 
 - (BOOL) mustSynchronize
 {
-  return [[calendar nameInContainer] isEqualToString: @"personal"];
+  return ([[calendar nameInContainer] isEqualToString: @"personal"] || [self isWebCalendar]);
 }
 
 - (BOOL) showCalendarAlarms

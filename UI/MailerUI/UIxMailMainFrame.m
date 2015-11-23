@@ -335,12 +335,17 @@
 
 - (WOResponse *) getFoldersStateAction
 {
-  NSString *expandedFolders;
+  id o;
+  NSArray *expandedFolders;
 
   [self _setupContext];
-  expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
+  o = [moduleSettings objectForKey: @"ExpandedFolders"];
+  if ([o isKindOfClass: [NSString class]])
+    expandedFolders = [o componentsSeparatedByString: @","];
+  else
+    expandedFolders = o;
 
-  return [self responseWithStatus: 200 andString: expandedFolders];
+  return [self responseWithStatus: 200 andJSONRepresentation: expandedFolders];
 }
 
 - (NSString *) verticalDragHandleStyle
@@ -398,16 +403,18 @@
 - (WOResponse *) saveFoldersStateAction
 {
   WORequest *request;
-  NSString *expandedFolders;
+  NSArray *expandedFolders;
+  NSString *json;
   
   [self _setupContext];
   request = [context request];
-  expandedFolders = [request formValueForKey: @"expandedFolders"];
-
-  [moduleSettings setObject: expandedFolders
-		  forKey: @"ExpandedFolders"];
-
-  [us synchronize];
+  json = [request formValueForKey: @"expandedFolders"];
+  if ([json length])
+    {
+      expandedFolders = [json objectFromJSONString];
+      [moduleSettings setObject: expandedFolders forKey: @"ExpandedFolders"];
+      [us synchronize];
+    }
 
   return [self responseWithStatus: 204];
 }
@@ -627,7 +634,7 @@
 
 - (NSString *) columnsDisplayCount
 {
-  return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
+  return [NSString stringWithFormat: @"%d", (int)[[self columnsDisplayOrder] count]];
 }
 
 - (void) setCurrentColumn: (NSDictionary *) newCurrentColumn
