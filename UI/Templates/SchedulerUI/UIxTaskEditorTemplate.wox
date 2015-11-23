@@ -72,14 +72,6 @@
                      max="9"
                      label:aria-label="Priority"><!-- slider --></md-slider>
         </div>
-        <!-- is all day -->
-        <md-checkbox
-            ng-model="editor.component.isAllDay"
-            ng-true-value="1"
-            ng-false-value="0"
-            label:aria-label="All day Event">
-          <var:string label:value="All day Event"/>
-        </md-checkbox>
         <!-- start -->
         <div ng-show="editor.component.start">
           <div class="pseudo-input-container">
