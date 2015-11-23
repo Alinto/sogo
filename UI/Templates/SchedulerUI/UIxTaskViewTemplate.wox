@@ -65,7 +65,7 @@
       <md-list>
         <!-- categories -->
         <md-list-item ng-show="editor.component.categories.length > 0">
-          <md-chips class="sg-readonly" ng-model="editor.component.categories" readonly="true">
+          <md-chips class="sg-readonly" ng-model="::editor.component.categories" readonly="true">
             <md-chip-template>
               <span>{{$chip}}</span>
             </md-chip-template>
@@ -74,7 +74,7 @@
         <!-- location -->
         <md-list-item ng-show="editor.component.location">
           <md-icon>place</md-icon>
-          <p>{{editor.component.location}}</p>
+          <p>{{::editor.component.location}}</p>
         </md-list-item>
         <!-- calendar -->
         <md-list-item>
@@ -82,22 +82,19 @@
           <p>{{editor.component.calendar}}</p>
         </md-list-item>
         <!-- start/due dates -->
-        <md-list-item class="md-2-line">
+        <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }"
+                      ng-show="editor.component.startDate || editor.component.dueDate">
           <md-icon>access_time</md-icon>
           <div layout="row" class="md-flex">
             <div class="md-list-item-text" ng-show="editor.component.startDate">
               <p><var:string label:value="Start"/></p>
-              <h3>
-                {{editor.component.localizedStartDate}}
-                <span ng-hide="editor.component.isAllDay"> {{editor.component.localizedStartTime}}</span>
-              </h3>
+              <h3>{{::editor.component.localizedStartDate}}</h3>
+              <h3 ng-hide="editor.component.isAllDay"> {{::editor.component.localizedStartTime}}</h3>
             </div>
             <div class="md-list-item-text" ng-show="editor.component.dueDate">
               <p><var:string label:value="Due Date"/></p>
-              <h3>
-                {{editor.component.localizedDueDate}}
-                <span ng-hide="editor.component.isAllDay">{{editor.component.localizedDueTime}}</span>
-              </h3>
+              <h3>{{::editor.component.localizedDueDate}}</h3>
+              <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedDueTime}}</h3>
             </div>
           </div>
         </md-list-item>
@@ -121,7 +118,7 @@
           <p>{{::editor.component.comment}}</p>
         </md-list-item>
         <!-- repeat -->
-        <md-list-item ng-show="editor.component.repeat">
+        <md-list-item ng-show="editor.component.$isRecurrent">
           <md-icon>repeat</md-icon>
           <p>{{editor.component.repeatDescription()}}</p>
         </md-list-item>
