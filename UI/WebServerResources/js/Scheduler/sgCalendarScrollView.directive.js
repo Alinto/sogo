@@ -16,8 +16,8 @@
      ..
    </md-content>
   */
-  sgCalendarScrollView.$inject = ['$rootScope', '$window', '$document', '$q', '$timeout', '$mdGesture', 'Calendar', 'Component'];
-  function sgCalendarScrollView($rootScope, $window, $document, $q, $timeout, $mdGesture, Calendar, Component) {
+  sgCalendarScrollView.$inject = ['$rootScope', '$window', '$document', '$q', '$timeout', '$mdGesture', 'Calendar', 'Component', 'Preferences'];
+  function sgCalendarScrollView($rootScope, $window, $document, $q, $timeout, $mdGesture, Calendar, Component, Preferences) {
     return {
       restrict: 'A',
       scope: {
@@ -65,6 +65,18 @@
           // Compute coordinates of view element; recompute it on window resize
           angular.element($window).on('resize', updateCoordinates);
           updateCoordinates();
+
+          if (type != 'monthly')
+            // Scroll to the day start hour defined in the user's defaults
+            Preferences.ready().then(function() {
+              var time, hourCell, quartersOffset;
+              if (Preferences.defaults.SOGoDayStartTime) {
+                time = Preferences.defaults.SOGoDayStartTime.split(':');
+                hourCell = document.getElementById('hour' + parseInt(time[0]));
+                quartersOffset = parseInt(time[1]) * quarterHeight;
+                scrollView.scrollTop = hourCell.offsetTop + quartersOffset;
+              }
+            });
         }
 
         function getQuarterHeight() {

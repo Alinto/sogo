@@ -56,7 +56,7 @@
     </div>
   </md-toolbar>
 
-  <md-content class="md-flex" sg-calendar-scroll-view="monthview">
+  <md-content class="md-flex" sg-calendar-scroll-view="monthly">
     <div class="calendarView monthView">
       <md-grid-list
           md-cols="7"

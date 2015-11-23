@@ -74,7 +74,7 @@
         if (Calendar.$view && Calendar.$view.type == scrollViewCtrl.type) {
           // The view of the dragging block is the scrolling view of this ghost block
 
-          isRelative   = scrollViewCtrl.type === 'multiday-allday' || scrollViewCtrl.type === 'monthly';
+          isRelative   = scrollViewCtrl.type === 'multiday-allday';
           originalDay  = scope.block.pointerHandler.originalEventCoordinates.dayNumber;
           currentDay   = scope.block.pointerHandler.currentEventCoordinates.dayNumber;
           start        = scope.block.pointerHandler.currentEventCoordinates.start;
