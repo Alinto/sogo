@@ -13,36 +13,10 @@
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
           <!-- summary -->
-          {{editor.component.summary}}
+          {{::editor.component.summary}}
           <!-- priority -->
-          <md-icon ng-repeat="i in editor.component.priority | range">star</md-icon>
+          <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
         </div>
-        <md-button class="md-icon-button"
-                   label:aria-label="Delete Task"
-                   ng-show="editor.component.isEditable() || editor.component.isInvitation()"
-                   ng-click="editor.deleteAllOccurrences()">
-          <md-icon>delete</md-icon>
-        </md-button>
-        <md-menu ng-show="editor.component.isEditableOccurrence() || editor.component.isInvitationOccurrence()">
-          <md-button type="button" class="md-icon-button"
-                     label:aria-label="Delete Task"
-                     ng-click="$mdOpenMenu()"
-                     md-menu-origin="md-menu-origin"><md-icon>delete</md-icon></md-button>
-          <md-menu-content>
-            <md-menu-item>
-              <md-button type="button" class="md-warn"
-                         ng-click="editor.deleteOccurrence()">
-                <var:string label:value="Delete This Occurrence"/>
-              </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button type="button" class="md-warn"
-                         ng-click="editor.deleteAllOccurrences()">
-                <var:string label:value="Delete All Occurrences"/>
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
         <md-menu>
           <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon>more_vert</md-icon>
@@ -56,7 +30,7 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-        <md-button class="md-icon-button" ng-click="editor.close()">
+        <md-button class="sg-icon-button" ng-click="editor.close()">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
       </div>
@@ -130,10 +104,37 @@
       </md-list>
     </md-dialog-content>
     <!-- edit -->
-    <div class="md-actions" ng-show="editor.component.isEditable()">
+    <md-dialog-actions ng-show="editor.component.isEditable()">
+      <md-button class="md-warn" label:aria-label="Delete Task"
+                 ng-show="editor.component.isEditable() || editor.component.isInvitation()"
+                 ng-click="editor.deleteAllOccurrences()">
+        <var:string label:value="Delete"/>
+      </md-button>
+      <md-menu ng-show="editor.component.isEditableOccurrence() || editor.component.isInvitationOccurrence()">
+        <md-button class="md-warn" label:aria-label="Delete Task"
+                   ng-click="$mdOpenMenu()"
+                   md-menu-origin="md-menu-origin">
+          <var:string label:value="Delete"/><md-icon>arrow_drop_down</md-icon>
+        </md-button>
+        <md-menu-content>
+          <md-menu-item>
+            <md-button class="md-warn"
+                       ng-click="editor.deleteOccurrence()">
+              <var:string label:value="Delete This Occurrence"/>
+            </md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button class="md-warn"
+                       ng-click="editor.deleteAllOccurrences()">
+              <var:string label:value="Delete All Occurrences"/>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <div class="md-flex"><!-- spacer --></div>
       <md-button ng-click="editor.edit()">
         <var:string label:value="Edit"/>
       </md-button>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 </container>
