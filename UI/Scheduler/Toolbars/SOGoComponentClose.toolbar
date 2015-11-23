@@ -2,6 +2,7 @@
   ( { link = "#";
       isSafe = NO;
       label = "Close";
+      tooltip = "Close";
       onclick = "window.close(); return false;";
       image = "tb-mail-stop-flat-24x24.png"; } )
 )
