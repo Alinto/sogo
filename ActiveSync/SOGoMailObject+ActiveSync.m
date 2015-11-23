@@ -475,13 +475,39 @@ struct GlobalObjectId {
 //
 //
 //
+- (BOOL) _sanitinizeNeeded: (NSArray *) theParts
+{
+  NSString *encoding, *charset;
+  int i;
+
+  for (i = 0; i < [theParts count]; i++)
+    {
+      encoding = [[theParts objectAtIndex: i ] objectForKey: @"encoding"];
+      charset = [[[theParts objectAtIndex: i ] objectForKey: @"parameterList"] objectForKey: @"charset"];
+      if (encoding && [encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame &&
+          charset  && ![charset caseInsensitiveCompare: @"utf-8"] == NSOrderedSame
+                   && ![charset caseInsensitiveCompare: @"us-ascii"] == NSOrderedSame)
+        {
+          return YES;
+        }
+
+      if ([self _sanitinizeNeeded: [[theParts objectAtIndex: i ] objectForKey: @"parts"]])
+          return YES;
+   }
+
+   return NO;
+}
+
+//
+//
+//
 - (NSData *) _preferredBodyDataUsingType: (int) theType
                               mimeSupport: (int) theMimeSupport
                               nativeType: (int *) theNativeType
 {
   NSString *type, *subtype, *encoding;
   NSData *d;
-  BOOL isSMIME;
+  BOOL isSMIME, sanitinizeNeeded;
   
   type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
   subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
@@ -546,10 +572,10 @@ struct GlobalObjectId {
     }
   else if (theType == 4 || isSMIME)
     {
-      // We sanitize the content *ONLY* for Outlook clients and if the content-transfer-encoding is 8bit. Outlook has strange issues
-      // with quoted-printable/base64 encoded text parts. It just doesn't decode them.
-      encoding = [[self lookupInfoForBodyPart: @""] objectForKey: @"encoding"];
-      if ((encoding && ([encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame)) && !isSMIME)
+      // We sanitize the content if the content-transfer-encoding is 8bit and charset is not utf-8 or us-ascii.
+      sanitinizeNeeded = [self _sanitinizeNeeded: [NSArray arrayWithObject: [self bodyStructure]]];
+
+      if (sanitinizeNeeded && !isSMIME)
         d = [self _sanitizedMIMEMessage];
       else
         d = [self content];
