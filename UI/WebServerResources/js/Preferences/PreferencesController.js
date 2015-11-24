@@ -7,14 +7,15 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($state, $mdDialog, $mdToast, Dialog, User, Account, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdDialog, $mdToast, Dialog, User, Account, statePreferences, Authentication) {
     var vm = this, account, mailboxes = [];
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
 
     vm.go = go;
+    vm.onLanguageChange = onLanguageChange;
     vm.addCalendarCategory = addCalendarCategory;
     vm.removeCalendarCategory = removeCalendarCategory;
     vm.addContactCategory = addContactCategory;
@@ -50,6 +51,17 @@
 
     function go(module) {
       $state.go('preferences.' + module);
+    }
+
+    function onLanguageChange() {
+      Dialog.confirm(l('Warning'),
+                     l('Save preferences and reload page now?'),
+                     {ok: l('Yes'), cancel: l('No')})
+        .then(function() {
+          save().then(function() {
+            $window.location.reload(true);
+          });
+        });
     }
 
     function addCalendarCategory() {
