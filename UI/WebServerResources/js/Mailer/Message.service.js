@@ -213,6 +213,24 @@
   };
 
   /**
+   * @function allowReplyAll
+   * @memberof Message.prototype
+   * @desc Check if 'Reply to All' is an appropriate action on the message.
+   * @returns true if the message is not a draft and has more than one recipient
+   */
+  Message.prototype.allowReplyAll = function() {
+    var recipientsCount = 0;
+    recipientsCount = _.reduce(['to', 'cc'], function(count, type) {
+      if (this[type])
+        return count + this[type].length;
+      else
+        return count;
+    }, recipientsCount, this);
+
+    return !this.isDraft && recipientsCount > 1;
+  };
+
+  /**
    * @function loadUnsafeContent
    * @memberof Message.prototype
    * @desc Mark the message to load unsafe resources when calling $content().

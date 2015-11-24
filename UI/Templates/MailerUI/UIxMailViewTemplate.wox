@@ -31,9 +31,16 @@
         <md-button class="sg-icon-button"
                    ng-hide="viewer.message.isDraft"
                    ng-click="viewer.reply($event)"
-                   label:aria-label="reply">
+                   label:aria-label="Reply">
           <md-tooltip md-direction="bottom"><var:string label:value="Reply to Sender Only"/></md-tooltip>
           <md-icon>reply</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button"
+                   ng-show="viewer.message.allowReplyAll()"
+                   ng-click="viewer.replyAll($event)"
+                   label:aria-label="Reply All">
+          <md-tooltip md-direction="bottom"><var:string label:value="Reply to sender and all recipients"/></md-tooltip>
+          <md-icon>reply_all</md-icon>
         </md-button>
         <md-button class="sg-icon-button" label:aria-label="Forward"
                    ng-hide="viewer.message.isDraft"
@@ -62,12 +69,6 @@
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content width="4">
-            <md-menu-item ng-hide="viewer.message.isDraft">
-              <md-button label:aria-label="Reply All"
-                         ng-click="viewer.replyAll($event)">
-                <var:string label:value="Reply All"/>
-              </md-button>
-            </md-menu-item>
             <md-menu-item>
               <md-button label:aria-label="Save As..."
                          ng-click="viewer.saveMessage()">
