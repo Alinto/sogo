@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$state', '$timeout', '$mdDialog', 'sgFocus', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $state, $timeout, $mdDialog, focus, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$state', '$timeout', '$mdDialog', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $state, $timeout, $mdDialog, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;

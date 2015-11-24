@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
     Mailbox.selectedFolder = stateMailbox;
@@ -93,9 +93,9 @@
     }
 
     function selectAll() {
-      _.each(vm.selectedFolder.$messages, function(message) {
-        message.selected = true;
-      });
+      var i = 0, length = vm.selectedFolder.$messages.length;
+      for (; i < length; i++)
+        vm.selectedFolder.$messages[i].selected = true;
     }
 
     function markSelectedMessagesAsFlagged() {

@@ -506,7 +506,7 @@
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
     var _this = this;
 
-    // Expose and sesolve the promise
+    // Expose and resolve the promise
     this.$futureAddressBookData = futureAddressBookData.then(function(data) {
       return AddressBook.$timeout(function() {
         // Extend AddressBook instance from data of addressbooks list.

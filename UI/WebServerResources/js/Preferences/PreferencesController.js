@@ -200,7 +200,10 @@
     }
     
     function save() {
-      var sendForm = true;
+      var i, sendForm, addresses, defaultAddresses, domains, domain;
+
+      sendForm = true;
+      domains = [];
 
       // We do some sanity checks
       if (window.forwardConstraints > 0 &&
@@ -208,11 +211,10 @@
           vm.preferences.defaults.Forward.enabled &&
           angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
 
-        var addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
+        addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
-        var defaultAddresses = window.defaultEmailAddresses.split(/, */);
-        var domains = [];
+        defaultAddresses = window.defaultEmailAddresses.split(/, */);
 
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
@@ -222,8 +224,8 @@
         });
 
         // We check if we're allowed or not to forward based on the domain defaults
-        for (var i = 0; i < addresses.length && sendForm; i++) {
-          var domain = addresses[i].split("@")[1].toLowerCase();
+        for (i = 0; i < addresses.length && sendForm; i++) {
+          domain = addresses[i].split("@")[1].toLowerCase();
           if (domains.indexOf(domain) < 0 && window.forwardConstraints == 1) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
             sendForm = false;
@@ -236,14 +238,23 @@
       }
 
       if (sendForm)
-        vm.preferences.$save().then(function(data) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .content(l('Preferences saved'))
-                  .position('top right')
-                  .hideDelay(3000)
-              );
+        return vm.preferences.$save().then(function(data) {
+          $mdToast.show({
+            controller: 'savePreferencesToastCtrl',
+            template: [
+              '<md-toast>',
+              '   <span flex>' + l('Preferences saved') + '</span>',
+              '   <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
+              '      <md-icon>close</md-icon>',
+              '   </md-button>',
+              '</md-toast>'
+            ].join(''),
+            hideDelay: 2000,
+            position: 'top right'
+          });
         });
+
+      return $q.reject();
     }
 
     function canChangePassword() {
@@ -260,7 +271,7 @@
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: l('The password was changed successfully.'),
-          ok: 'OK'
+          ok: l('OK')
         });
         $mdDialog.show( alert )
           .finally(function() {
@@ -270,7 +281,7 @@
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: msg,
-          ok: 'OK'
+          ok: l('OK')
         });
         $mdDialog.show( alert )
           .finally(function() {
@@ -286,8 +297,16 @@
     }
   }
 
+  savePreferencesToastCtrl.$inject = ['$scope', '$mdToast'];
+  function savePreferencesToastCtrl($scope, $mdToast) {
+    $scope.closeToast = function() {
+      $mdToast.hide();
+    };
+  }
+
   angular
     .module('SOGo.PreferencesUI')
+    .controller('savePreferencesToastCtrl', savePreferencesToastCtrl)
     .controller('PreferencesController', PreferencesController);
 
 })();

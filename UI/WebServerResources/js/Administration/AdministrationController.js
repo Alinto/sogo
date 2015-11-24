@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'encodeUriFilter', 'User', 'Administration'];
-  function AdministrationController($state, $mdDialog, $mdToast, Dialog, encodeUriFilter, User, Administration) {
+  AdministrationController.$inject = ['$state', '$mdToast', 'Dialog', 'encodeUriFilter', 'User', 'Administration'];
+  function AdministrationController($state, $mdToast, Dialog, encodeUriFilter, User, Administration) {
     var vm = this;
 
     vm.administration = Administration;

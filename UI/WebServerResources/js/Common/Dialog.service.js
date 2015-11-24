@@ -19,7 +19,7 @@
   Dialog.alert = function(title, content) {
     var alert = this.$modal.alert()
         .title(title)
-        .content(content)
+        .textContent(content)
         .ok(l('OK'));
     this.$modal.show(alert);
   };
@@ -34,7 +34,7 @@
   Dialog.confirm = function(title, content, options) {
     var confirm = this.$modal.confirm()
         .title(title)
-        .content(content)
+        .textContent(content)
         .ok((options && options.ok)? options.ok : l('OK'))
         .cancel((options && options.cancel)? options.cancel : l('Cancel'));
     return this.$modal.show(confirm);
@@ -67,14 +67,14 @@
         '             ng-model="name" required="required"/>',
         '    </md-input-container>',
         '  </md-dialog-content>',
-        '    <div class="md-actions">',
+        '    <md-dialog-actions>',
         '      <md-button ng-click="cancel()">',
         '        ' + l('Cancel'),
         '      </md-button>',
         '      <md-button class="md-primary" ng-click="ok()" ng-disabled="!name.length">',
         '        ' + l('OK'),
         '      </md-button>',
-        '    </div>',
+        '    </md-dialog-actions>',
         '</md-dialog>'
       ].join(''),
       controller: PromptDialogController
