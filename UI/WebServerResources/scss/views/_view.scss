@@ -52,6 +52,11 @@ $detailView-width: grid-step(8) !global;
 .view-list {
   z-index: ($z-index-view - 1);
   min-width: ($listView-width - ($pitch * 2));
+  md-list-item {
+    .md-button {
+      margin: 0;
+    }
+  }
   @include at(md){
     @include flex-col(md, 6, 1, 1);
     min-width: ($pitch * 3);
