@@ -59,6 +59,15 @@
         </md-toolbar>
 
         <md-content id="usersList" layout="column" class="md-flex">
+          <md-subheader ng-show="app.service.$query">
+            <span ng-switch="app.users.length">
+              <span ng-switch-when="0"><var:string label:value="No matching user"/></span>
+              <span ng-switch-default="true">{{app.users.length}} <var:string label:value="users found"/></span>
+            </span>
+          </md-subheader>
+          <md-subheader ng-hide="app.service.$query">
+            <var:string label:value="Start a search to edit the rights"/>
+          </md-subheader>
           <md-list class="sg-section-list">
             <div ng-repeat="user in app.users">
               <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
@@ -110,10 +119,11 @@
            ng-class="{ 'sg-close': !app.selectedUser.selectedFolder }"
            ui-view="acl">
         <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-        <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
-          <md-input-container layout-align="center center">
-            <label class="sg-md-title"><var:string label:value="No resource selected"/></label>
-          </md-input-container>
+        <md-content class="hide-sm md-flex layout-fill md-hue-1"
+                    layout="column" layout-align="center center">
+          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title">
+            <var:string label:value="No resource selected"/>
+          </div>
         </md-content>
       </div>
     </div>

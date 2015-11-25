@@ -4,7 +4,7 @@
   [id="usersList"] > md-list {
     // Since the users list doesn't use the virtual repeater, force the vertical scroll
     position: absolute;
-    top: 0;
+    top: $touch-zone-width;
     bottom: 0;
     left: 0;
     right: 0;
