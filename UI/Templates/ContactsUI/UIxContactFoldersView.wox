@@ -281,8 +281,8 @@
                        label:aria-label="Back">
               <md-icon>arrow_back</md-icon>
             </md-button>
-            <md-input-container>
-              <input name="folderSearch" type="search" ng-minlength="3"/>
+            <md-input-container md-no-float="md-no-float">
+              <input name="folderSearch" type="search" label:placeholder="Search" ng-minlength="3"/>
             </md-input-container>
             <md-input-container flex="25">
               <md-select>
@@ -319,7 +319,7 @@
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Address Books"/></md-button>
+                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Copy To"/></md-button>
                 </md-menu-item>
                 <md-menu-divider><!-- divider --></md-menu-divider>
                 <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
