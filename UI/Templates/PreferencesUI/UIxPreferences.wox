@@ -100,7 +100,8 @@
               <div flex="50">
                 <md-input-container>
                   <label><var:string label:value="Language"/></label>
-                  <md-select ng-model="app.preferences.defaults.SOGoLanguage">
+                  <md-select ng-model="app.preferences.defaults.SOGoLanguage"
+                             ng-change="app.onLanguageChange()">
                     <var:foreach list="languages" item="item">
                       <md-option var:value="item">
                         <var:string value="languageText"/>
