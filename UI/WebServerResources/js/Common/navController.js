@@ -45,10 +45,10 @@
     //     templateUrl: 'bottomSheetTemplate.html'
     //   });
     // };
-    $scope.toggleDetailView = function() {
-      var detail = angular.element(document.getElementById('detailView'));
-      detail.toggleClass('sg-close');
-    };
+    // $scope.toggleDetailView = function() {
+    //   var detail = angular.element(document.getElementById('detailView'));
+    //   detail.toggleClass('sg-close');
+    // };
     $scope.$watch(function() {
       return $mdMedia(sgConstant['gt-md']);
     }, function(newVal) {

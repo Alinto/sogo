@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', '$mdToast', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, $mdToast, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -30,6 +30,9 @@
           vm.editMode != folder.id) {
         vm.editMode = false;
         AddressBook.$query.value = '';
+        // Close sidenav on small devices
+        if ($mdMedia('sm'))
+          $mdSidenav('left').close();
         $state.go('app.addressbook', {addressbookId: folder.id});
       }
       else {
