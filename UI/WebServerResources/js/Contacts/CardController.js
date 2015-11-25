@@ -117,13 +117,11 @@
           // User confirmed the deletion
           card.$delete()
             .then(function() {
-              // Remove card from list of addressbook
+              // Remove card from addressbook
               AddressBook.selectedFolder.cards = _.reject(AddressBook.selectedFolder.cards, function(o) {
                 return o.id == card.id;
               });
-              // Remove card object from scope
-              vm.card = null;
-              $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
+              close();
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                            card.$fullname()));
