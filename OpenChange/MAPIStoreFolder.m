@@ -1549,7 +1549,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   struct Binary_r bin32;
   struct AddressBookEntryId *entryId;
   NSString *username;
-  struct ldb_context *samCtx;
 
   if (bin && bin->cb)
     {
@@ -1559,8 +1558,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       entryId = get_AddressBookEntryId (NULL, &bin32);
       if (entryId)
         {
-          samCtx = [[self context] connectionInfo]->sam_ctx;
-          username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
+          username = MAPIStoreSamDBUserAttribute ([[self context] connectionInfo],
+                                                  @"legacyExchangeDN",
                                                   [NSString stringWithUTF8String: entryId->X500DN],
                                                   @"sAMAccountName");
         }

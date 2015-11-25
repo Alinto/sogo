@@ -266,7 +266,7 @@ static NSCharacterSet *hexCharacterSet = nil;
             {
               username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+              entryId = MAPIStoreInternalEntryId (connInfo, username);
             }
           else
             {
@@ -367,7 +367,7 @@ static NSCharacterSet *hexCharacterSet = nil;
           {
             username = [contactInfos objectForKey: @"sAMAccountName"];
             recipient->username = [username asUnicodeInMemCtx: msgData];
-            entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+            entryId = MAPIStoreInternalEntryId (connInfo, username);
           }
         else
           {
@@ -932,7 +932,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   if (contactInfos)
     {
       username = [contactInfos objectForKey: @"sAMAccountName"];
-      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+      entryId = MAPIStoreInternalEntryId (connInfo, username);
     }
   else
     entryId = MAPIStoreExternalEntryId (cn, email);

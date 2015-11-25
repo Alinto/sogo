@@ -338,12 +338,9 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSData *entryId;
   NSDictionary *allRecipients, *dict, *contactInfos;
   SOGoUserManager *mgr;
-  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
   enum ulRecipClass type;
-
-  samCtx = [[self context] connectionInfo]->sam_ctx;
 
   // [super getMessageData: &msgData inMemCtx: memCtx];
 
@@ -389,7 +386,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
             {
               username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (samCtx, username);
+              entryId = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
             }
           else
             {
@@ -700,7 +697,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                                    hasSuffix: @"08002b2fe182"])
             {
               /* TODO: better way to distinguish local and other ones */
-              username = MAPIStoreSamDBUserAttribute (connInfo->sam_ctx, @"legacyExchangeDN",
+              username = MAPIStoreSamDBUserAttribute (connInfo, @"legacyExchangeDN",
                                                       [NSString stringWithUTF8String: addrBookEntryId->X500DN], @"sAMAccountName");
               if (username)
                 {
@@ -1008,7 +1005,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
 - (NGMimeMessage *) _generateMessageWithBcc: (BOOL) withBcc
 {
   NSString *contentType;
-  NGMimeMessage *message;  
+  NGMimeMessage *message;
   NGMutableHashMap *headers;
   id messageBody;
 

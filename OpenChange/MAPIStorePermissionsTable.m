@@ -103,7 +103,7 @@
   else
     {
       connInfo = [(MAPIStoreContext *) [container context] connectionInfo];
-      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, userId);
+      entryId = MAPIStoreInternalEntryId (connInfo, userId);
     }
   *data = [entryId asBinaryInMemCtx: memCtx];
 

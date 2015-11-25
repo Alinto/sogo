@@ -811,7 +811,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *contactInfos;
   NGMailAddress *ngAddress;
   NSData *entryId;
-  struct ldb_context *samCtx;
   int rc;
 
   if (fullMail)
@@ -834,8 +833,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if (contactInfos)
         {
           username = [contactInfos objectForKey: @"sAMAccountName"];
-          samCtx = [[self context] connectionInfo]->sam_ctx;
-          entryId = MAPIStoreInternalEntryId (samCtx, username);
+          entryId = MAPIStoreInternalEntryId([[self context] connectionInfo], username);
         }
       else
         entryId = MAPIStoreExternalEntryId (cn, email);
@@ -1478,11 +1476,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSData *entryId;
   NSDictionary *contactInfos;
   SOGoUserManager *mgr;
-  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
 
-  samCtx = [[self context] connectionInfo]->sam_ctx;
   [super getMessageData: &msgData inMemCtx: memCtx];
 
   if (!headerSetup)
@@ -1536,7 +1532,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                     {
                       username = [contactInfos objectForKey: @"sAMAccountName"];
                       recipient->username = [username asUnicodeInMemCtx: msgData];
-                      entryId = MAPIStoreInternalEntryId (samCtx, username);
+                      entryId = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
                     }
                   else
                     {
