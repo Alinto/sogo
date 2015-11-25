@@ -261,14 +261,14 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+  <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+       layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
     <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-    <md-content class="hide-sm md-flex layout-fill md-hue-1" layout="column">
-      <md-input-container layout-align="center center">
-        <label class="sg-md-title"><var:string label:value="No message selected"/></label>
-      </md-input-container>
+    <md-content class="hide-sm md-flex layout-fill md-hue-1"
+                layout="column" layout-align="center center">
+      <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
     </md-content>
   </div>
 
