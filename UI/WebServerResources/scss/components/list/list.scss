@@ -53,6 +53,7 @@ md-list-item {
 
   md-list-item {
     .md-button {
+      margin: 0;
       transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
     }
     // Gain some space on the right side of the folder icon

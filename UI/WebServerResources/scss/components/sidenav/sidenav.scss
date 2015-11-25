@@ -24,7 +24,8 @@ $i: 1;
 }
 
 [class^=sg-child-level] {
-  md-icon, md-checkbox {
+  md-icon,
+  md-checkbox {
     margin-right: $bl * 2;
     max-width: 24px;
   }
