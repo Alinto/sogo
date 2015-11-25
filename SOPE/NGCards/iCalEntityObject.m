@@ -27,6 +27,7 @@
 #import "NSCalendarDate+NGCards.h"
 
 #import "iCalAlarm.h"
+#import "iCalCalendar.h"
 #import "iCalDateTime.h"
 #import "iCalEntityObject.h"
 #import "iCalEvent.h"
@@ -268,9 +269,12 @@
 - (void) setRecurrenceId: (NSCalendarDate *) newRecId
 {
   iCalDateTime* recurrenceId;
+  BOOL isMasterAllDay;
+
+  isMasterAllDay = [[[[self parent] events] objectAtIndex: 0] isAllDay];
 
   recurrenceId = (iCalDateTime *) [self uniqueChildWithTag: @"recurrence-id"];
-  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *)self isAllDay])
+  if ([self isKindOfClass: [iCalEvent class]] && isMasterAllDay)
     [recurrenceId setDate: newRecId];
   else
     [recurrenceId setDateTime: newRecId];

@@ -12,6 +12,7 @@ Bug fixes
  - JavaScript exception when printing events from calendars with no assigned color (#3203)
  - EAS fix for wrong charset being used (#3392)
  - EAS fix on qp-encoded subjects (#3390)
+ - correctly handle all-day event exceptions when the master event changes
 
 2.3.3a (2015-11-18)
 -------------------
