@@ -87,31 +87,31 @@
     }
 
     function openEvent($event, event) {
-      if (event.viewable)
-        openComponent($event, event, 'appointment');
+      openComponent($event, event, 'appointment');
     }
 
     function openTask($event, task) {
-      if (task.viewable)
-        openComponent($event, task, 'task');
+      openComponent($event, task, 'task');
     }
 
     function openComponent($event, component, type) {
-      // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
-      // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
-      var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose: true,
-        escapeToClose: true,
-        templateUrl: templateUrl,
-        controller: 'ComponentController',
-        controllerAs: 'editor',
-        locals: {
-          stateComponent: component
-        }
-      });
+      if (component.viewable) {
+        // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
+        // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
+        var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          templateUrl: templateUrl,
+          controller: 'ComponentController',
+          controllerAs: 'editor',
+          locals: {
+            stateComponent: component
+          }
+        });
+      }
     }
 
     function newComponent($event, baseComponent) {
