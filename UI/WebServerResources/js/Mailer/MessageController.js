@@ -16,6 +16,7 @@
     vm.message = stateMessage;
     vm.service = Message;
     vm.tags = { searchText: '', selected: '' };
+    vm.showFlags = stateMessage.flags.length > 0;
     vm.doDelete = doDelete;
     vm.close = close;
     vm.reply = reply;

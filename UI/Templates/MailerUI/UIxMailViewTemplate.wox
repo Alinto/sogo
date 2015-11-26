@@ -69,6 +69,12 @@
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content width="4">
+            <md-menu-item ng-hide="viewer.showFlags">
+              <md-button label:aria-label="Add a tag"
+                         ng-click="viewer.showFlags = true">
+                <var:string label:value="Add a tag"/>
+              </md-button>
+            </md-menu-item>
             <md-menu-item>
               <md-button label:aria-label="Save As..."
                          ng-click="viewer.saveMessage()">
@@ -136,16 +142,18 @@
               </span>
             </div>
           </div>
-          <md-chips class="sg-readonly"
-                    ng-model="viewer.message.flags"
-                    md-on-append="$chip.name"
-                    md-on-remove="viewer.message.removeTag($chip)">
+          <md-chips class="sg-readonly hide-sm"
+                      ng-show="viewer.showFlags"
+                      ng-model="viewer.message.flags"
+                      md-on-append="$chip.name"
+                      md-on-remove="viewer.message.removeTag($chip)">
             <md-chip-template>{{viewer.service.$tags[$chip][0]}}</md-chip-template>
             <md-autocomplete
                 md-selected-item="viewer.tags.selected"
                 md-selected-item-change="viewer.message.addTag(viewer.tags.selected.name)"
                 md-search-text="viewer.tags.searchText"
                 md-items="tag in viewer.service.filterTags(viewer.tags.searchText)"
+                md-autoselect="true"
                 label:placeholder="Add a tag">
               <md-item-template>
                 <span md-highlight-text="viewer.tags.searchText"
