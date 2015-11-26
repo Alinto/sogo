@@ -93,6 +93,8 @@ $slicer-breakpoint-names: 'sm' 'md' 'lg' 'xl';
 
 $media-pointer: (pointer fine);
 
+// Icon
+$icon-size: rem(2.400) !default;
 
 // App bar variables
 $app-bar-height: $sg-md-grid-pitch;
