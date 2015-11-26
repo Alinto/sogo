@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$mdDialog', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $mdDialog, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, focus, Dialog, AddressBook, Preferences) {
+  MessageEditorController.$inject = ['$stateParams', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, focus, Dialog, AddressBook, Preferences) {
     var vm = this;
 
     vm.addRecipient = addRecipient;
@@ -86,7 +86,19 @@
       vm.message.$send().then(function(data) {
         $mdDialog.hide();
       }, function(data) {
-        Dialog.alert(l(data.status), l(data.message));
+        $mdToast.show({
+            controller: 'SendMessageToastController',
+            template: [
+              '<md-toast>',
+              '   <span flex>' + l(data.message) + '</span>',
+              '   <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
+              '      <md-icon>close</md-icon>',
+              '   </md-button>',
+              '</md-toast>'
+            ].join(''),
+            hideDelay: 2000,
+            position: 'top right'
+          });
       });
     }
 
@@ -122,7 +134,15 @@
     });
   }
 
+  SendMessageToastController.$inject = ['$scope', '$mdToast'];
+  function SendMessageToastController($scope, $mdToast) {
+    $scope.closeToast = function() {
+      $mdToast.hide();
+    };
+  }
+
   angular
-    .module('SOGo.MailerUI')  
+    .module('SOGo.MailerUI')
+    .controller('SendMessageToastController', SendMessageToastController)
     .controller('MessageEditorController', MessageEditorController);                                    
 })();
