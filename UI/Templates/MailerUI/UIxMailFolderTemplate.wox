@@ -229,8 +229,10 @@
                 <div>
                   <span class="sg-label-outline"
                            ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
+                  <md-icon ng-show="currentMessage.priority.level == 1 ||
+                                    currentMessage.priority.level == 2"
+                           ng-class="{'md-warn': currentMessage.priority.level == 1}">error</md-icon>
                   {{currentMessage.$shortAddress('from')}}
-                  <md-icon ng-show="currentMessage.priority.level == 1 || currentMessage.priority.level == 2">warning</md-icon>
                 </div>
                 <div class="sg-tile-date" ng-bind="currentMessage.relativedate"><!-- date --></div>
               </div>
