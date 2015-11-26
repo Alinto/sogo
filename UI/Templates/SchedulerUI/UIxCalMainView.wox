@@ -620,7 +620,7 @@
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <div class="md-avatar sg-selected-avatar" ng-show="task.selected"
+                  <div class="md-avatar sg-avatar-selected" ng-show="task.selected"
                        ng-click="list.toggleComponentSelection($event, task)">
                     <!-- selected avatar -->
                   </div>
