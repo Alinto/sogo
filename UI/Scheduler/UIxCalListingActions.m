@@ -471,10 +471,10 @@ static NSArray *tasksFields = nil;
                       role = [currentFolder roleForComponentsWithAccessClass: [[newInfo objectForKey: @"c_classification"] intValue]
                                                                     forUser : userLogin];
 
-                      if ([role isEqualToString: @"ComponentViewer"])
-                        [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
-                      else
+                      if ([role isEqualToString: @"ComponentDAndTViewer"])
                         [newInfo setObject: [NSNumber numberWithInt: 0]  forKey: @"viewable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
                     }
                 }
 
