@@ -21,9 +21,13 @@
     };
 
     function link(scope, element, attrs, calendarDayCtrl) {
-      if (scope.block)
-        // Add dragging grips to existing event block
-        initGrips();
+      if (scope.block) {
+        if (scope.block.component.editable)
+          // Add dragging grips to existing event block
+          initGrips();
+        else
+          return;
+      }
 
       // Start dragging on mousedown
       element.on('mousedown', onDragDetect);
