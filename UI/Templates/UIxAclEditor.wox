@@ -94,10 +94,10 @@
       </md-card>
     </md-dialog-content>
 
-    <div class="md-actions" ng-hide="acl.confirmation.showing">
+    <md-dialog-actions ng-hide="acl.confirmation.showing">
       <md-button class="md-primary" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
-    </div>
-    <div class="md-actions" ng-show="acl.confirmation.showing">
+    </md-dialog-actions>
+    <md-dialog-actions ng-show="acl.confirmation.showing">
       <span>{{acl.confirmation.message}}</span>
       <md-button ng-click="acl.selectedUser.$resetRights(true); acl.confirmation.showing = false">
         <var:string label:value="Cancel"/>
@@ -105,7 +105,7 @@
       <md-button class="md-warn" ng-click="acl.confirmation.showing = false">
         <var:string label:value="Ok"/>
       </md-button>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 
 </container>

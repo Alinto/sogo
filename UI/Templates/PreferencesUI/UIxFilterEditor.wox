@@ -170,9 +170,9 @@
         </div>
       </div>
     </md-dialog-content>
-    <div class="md-actions">
+    <md-dialog-actions>
       <md-button type="submit"><var:string label:value="Save"/></md-button>
-    </div>
+    </md-dialog-actions>
   </form>
 </md-dialog>
 </container>

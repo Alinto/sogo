@@ -136,8 +136,8 @@
 
       </form>
     </md-dialog-content>
-    <div class="md-actions">
+    <md-dialog-actions>
       <md-button ng-disabled="$AccountDialogController.accountForm.$invalid" ng-click="$AccountDialogController.save()"><var:string label:value="Save"/></md-button>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 </var:component>

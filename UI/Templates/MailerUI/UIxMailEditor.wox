@@ -205,7 +205,7 @@
     </md-dialog-content>
 
     <!-- TOOLBAR BUTTONS -->
-    <div class="md-actions">
+    <md-dialog-actions>
       <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
         <div>
           <!-- md-icon does not play well with Firefox - makes the
@@ -246,6 +246,6 @@
           </md-chips>
         </div>
       </div>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 </container>

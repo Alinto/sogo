@@ -224,7 +224,7 @@
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
-      <div class="md-actions">
+      <md-dialog-actions>
         <md-button type="button" ng-click="editor.cancel()">
           <var:string label:value="Cancel"/>
         </md-button>
@@ -235,7 +235,7 @@
                    ng-disabled="editor.eventForm.$invalid">
           <var:string label:value="Save"/>
         </md-button>
-      </div>
+      </md-dialog-actions>
     </form>
   </md-dialog>
 </container>

@@ -108,9 +108,9 @@
         <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
         <!--<img class="full-image" const:alt="Inverse" rsrc:src="img/inverse.png"/>-->
       </md-dialog-content>
-      <div class="md-actions">
+      <md-dialog-actions>
         <md-button ng-click="about.closeDialog()"><var:string label:value="Close"/></md-button>
-      </div>
+      </md-dialog-actions>
     </md-dialog>
   </script>
 

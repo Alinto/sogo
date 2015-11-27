@@ -79,7 +79,7 @@
                       <var:string label:value="Delegate ..." />
                     </md-button>
                     
-		    <div class="md-actions" layout="row"
+		    <md-dialog-actions layout="row"
                          layout-align="start center"
                          ng-show="delegateInvitation == true">
                       
@@ -104,7 +104,7 @@
                       <md-button class="md-primitive"
                                  ng-click="iCalendarAction('delegate')"
                                  ng-disabled="!delegatedTo || delegatedTo.length == 0"><var:string label:value="OK"/></md-button>
-                    </div>
+                    </md-dialog-actions>
 	          </var:if>
                   <!-- TODO - should we re-enable this? It never
                        worked in v2!

@@ -16,11 +16,11 @@
         <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
       </p>
     </md-card-content>
-    <div class="md-actions" layout="row" layout-align="end center">
+    <md-dialog-actions layout="row" layout-align="end center">
       <md-button class="sg-icon-button" var:href="pathForDownload">
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
         <md-icon>save</md-icon>
       </md-button>
-    </div>
+    </md-dialog-actions>
   </md-card>
 </container>
