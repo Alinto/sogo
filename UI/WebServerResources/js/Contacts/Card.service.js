@@ -337,6 +337,10 @@
     return this.emails.length - 1;
   };
 
+  Card.prototype.$addScreenName = function(screenName) {
+    this.c_screenname = screenName;
+  }
+
   Card.prototype.$addPhone = function(type) {
     if (angular.isUndefined(this.phones)) {
       this.phones = [{type: type, value: ''}];

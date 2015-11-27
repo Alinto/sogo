@@ -149,6 +149,28 @@
             </div>
           </div>
 
+          <div class="section">
+            <div layout="row" layout-align="space-between end" ng-show="editor.card.c_screenname != null">
+              <md-input-container>
+                <label class="pseudo-input-label">
+                  <var:string label:value="Screen Name"/>
+                </label>
+                <input type="text" ng-model="editor.card.c_screenname"/>
+              </md-input-container>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('c_screenname', -1)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
+            </div>
+            <div class="md-layout-margin" layout="row" layout-align="start center" ng-show="editor.card.c_screenname == null">
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addScreenName($event)">
+                <md-icon>add_circle</md-icon>
+              </md-button>
+              <label class="button-label">
+                <var:string label:value="Add Screen Name"/>
+              </label>
+            </div>
+          </div>
+
           <!-- birthday -->
           <div class="section">
             <div layout="row" layout-align="space-between end" ng-show="editor.card.birthday">

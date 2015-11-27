@@ -349,7 +349,7 @@ static Class SOGoContactGCSEntryK = Nil;
   NSMutableArray *units, *categories;
   NSCalendarDate *date;
   id o;
-  unsigned int i, year, month, day;
+  unsigned int i, year, month, day, seconds;
 
   [card setNWithFamily: [attributes objectForKey: @"c_sn"]
                  given: [attributes objectForKey: @"c_givenname"]
@@ -358,7 +358,12 @@ static Class SOGoContactGCSEntryK = Nil;
   [card setFn: [attributes objectForKey: @"c_cn"]];
   [card setTitle: [attributes objectForKey: @"title"]];
 
-  unsigned int seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
+  if ([attributes objectForKey: @"c_screenname"])
+    [[card uniqueChildWithTag: @"x-aim"]
+      setSingleValue: [attributes objectForKey: @"c_screenname"]
+              forKey: @""];
+
+  seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
   if (seconds > 0)
     {
       date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
@@ -519,6 +524,7 @@ static Class SOGoContactGCSEntryK = Nil;
  * @apiParam {String} nickname             Nickname
  * @apiParam {String} c_sn                 Lastname
  * @apiParam {String} c_cn                 Fullname
+ * @apiParam {String} c_screenname         Screen Name (X-AIM for now)
  * @apiParam {String} tz                   Timezone
  * @apiParam {String} note                 Note
  * @apiParam {String[]} allCategories      All available categories

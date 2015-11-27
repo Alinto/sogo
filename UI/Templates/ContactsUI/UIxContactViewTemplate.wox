@@ -127,6 +127,16 @@
             </div>
           </div>
 
+          <div class="section" ng-show="editor.card.c_screenname">
+            <div class="pseudo-input-container">
+              <div class="key">
+                <label class="pseudo-input-label"><var:string label:value="Screen Name"/></label>
+              </div>
+
+              <div class="pseudo-input-field">{{editor.card.c_screenname}}</div>
+            </div>
+          </div>
+
           <div class="section" ng-show="editor.card.phones.length > 0">
             <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
               <div class="key">

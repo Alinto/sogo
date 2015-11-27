@@ -22,6 +22,7 @@
     vm.userFilterResults = [];
     vm.addOrgUnit = addOrgUnit;
     vm.addBirthday = addBirthday;
+    vm.addScreenName = addScreenName;
     vm.addEmail = addEmail;
     vm.addPhone = addPhone;
     vm.addUrl = addUrl;
@@ -42,6 +43,9 @@
     }
     function addBirthday() {
       vm.card.birthday = new Date();
+    }
+    function addScreenName() {
+      vm.card.$addScreenName('');
     }
     function addEmail() {
       var i = vm.card.$addEmail('');
