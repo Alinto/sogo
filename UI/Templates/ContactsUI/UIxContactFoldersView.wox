@@ -430,7 +430,8 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+           layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            ui-view="card">
         <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
