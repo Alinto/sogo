@@ -120,9 +120,9 @@
             data,
             '    </pre>',
             '  </md-dialog-content>',
-            '  <div class="md-actions">',
+            '  <md-dialog-actions>',
             '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
-            '  </div>',
+            '  </md-dialog-actions>',
             '</md-dialog>'
           ].join(''),
           controller: ComponentRawSourceDialogController
