@@ -96,6 +96,9 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoRefreshViewCheck"])
     [[defaults source] setObject: [defaults refreshViewCheck]  forKey: @"SOGoRefreshViewCheck"];
 
+  if (![[defaults source] objectForKey: @"SOGoAlternateAvatar"])
+      [[defaults source] setObject: [defaults alternateAvatar]  forKey: @"SOGoAlternateAvatar"];
+
   //
   // Default Calendar preferences
   //

@@ -58,6 +58,7 @@
     SOGoMailDomain = "localhost";
     SOGoSelectedAddressBook = "collected";
     SOGoRefreshViewCheck = "manually";
+    SOGoAlternateAvatar = "none";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
     SOGoMailSignaturePlacement = "below";

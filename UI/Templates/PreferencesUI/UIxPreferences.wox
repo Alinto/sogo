@@ -185,6 +185,17 @@
                 </var:foreach>
               </md-select>
             </md-input-container>
+
+            <md-input-container>
+              <label><var:string label:value="Alternate Avatar"/></label>
+              <md-select ng-model="app.preferences.defaults.SOGoAlternateAvatar">
+                <var:foreach list="alternateAvatar" item="item">
+                  <md-option var:value="item">
+                    <var:string value="itemAlternateAvatarText"/>
+                  </md-option>
+                </var:foreach>
+              </md-select>
+            </md-input-container>
           </div>
         </md-content>
       </md-tab>

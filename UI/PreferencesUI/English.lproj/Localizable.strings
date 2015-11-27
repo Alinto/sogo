@@ -344,3 +344,10 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Password change is not supported.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+
+/* Avatars */
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

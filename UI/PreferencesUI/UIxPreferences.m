@@ -1380,6 +1380,18 @@ static NSArray *reminderValues = nil;
   return [self labelForKey: item];
 }
 
+- (NSArray *) alternateAvatar
+{
+  // See: https://en.gravatar.com/site/implement/images/
+  return [NSArray arrayWithObjects: @"none", @"identicon", @"monsterid", @"wavatar", @"retro", nil];
+}
+
+- (NSString *) itemAlternateAvatarText
+{
+  return [self labelForKey: item];
+}
+
+
 // - (NSString *) userDefaultModule
 // {
 //   NSString *userDefaultModule;

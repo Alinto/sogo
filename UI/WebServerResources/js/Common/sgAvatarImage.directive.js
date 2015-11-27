@@ -48,25 +48,28 @@
   /**
    * @ngInject
    */
-  sgAvatarImageController.$inject = ['$scope', '$element', 'Gravatar'];
-  function sgAvatarImageController($scope, $element, Gravatar) {
+  sgAvatarImageController.$inject = ['$scope', '$element', 'Preferences', 'Gravatar'];
+  function sgAvatarImageController($scope, $element, Preferences, Gravatar) {
     var vm = this;
 
     $scope.$watch('vm.email', function(email) {
-      var img = $element.find('img')[0];
-      if (!email && !vm.genericAvatar) {
-        // If no email is specified, insert a generic avatar
-        vm.insertGenericAvatar(img);
-      }
-      else if (email && !vm.url) {
-        if (vm.genericAvatar) {
-          // Remove generic avatar and restore visibility of image
-          vm.genericAvatar.parentNode.removeChild(vm.genericAvatar);
-          delete vm.genericAvatar;
-          img.classList.remove('ng-hide');
+
+      Preferences.ready().then(function() {
+        var img = $element.find('img')[0];
+        if (!email && !vm.genericAvatar) {
+          // If no email is specified, insert a generic avatar
+          vm.insertGenericAvatar(img);
         }
-        vm.url = Gravatar(email, vm.size);
-      }
+        else if (email && !vm.url) {
+          if (vm.genericAvatar) {
+            // Remove generic avatar and restore visibility of image
+            vm.genericAvatar.parentNode.removeChild(vm.genericAvatar);
+            delete vm.genericAvatar;
+            img.classList.remove('ng-hide');
+          }
+          vm.url = Gravatar(email, vm.size, Preferences.defaults.SOGoAlternateAvatar);
+        }
+      });
     });
 
     // If sg-src is defined, watch the expression for the URL of a local image
