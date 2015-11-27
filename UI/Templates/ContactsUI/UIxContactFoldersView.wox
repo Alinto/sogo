@@ -380,7 +380,7 @@
           </md-subheader>
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
-              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="72">
+              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56">
                 <md-list-item
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
                     ng-click="addressbook.selectCard(currentCard)"
