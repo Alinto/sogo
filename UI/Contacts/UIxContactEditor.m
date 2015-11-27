@@ -357,6 +357,7 @@ static Class SOGoContactGCSEntryK = Nil;
   [card setNickname: [attributes objectForKey: @"nickname"]];
   [card setFn: [attributes objectForKey: @"c_cn"]];
   [card setTitle: [attributes objectForKey: @"title"]];
+  [card setRole: [attributes objectForKey: @"role"]];
 
   if ([attributes objectForKey: @"c_screenname"])
     [[card uniqueChildWithTag: @"x-aim"]

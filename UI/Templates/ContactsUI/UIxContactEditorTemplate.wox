@@ -64,18 +64,24 @@
             </md-input-container>
           </div>
 
-          <div class="sg-fieldset" layout="row" layout-sm="column">
-            <md-input-container>
+          <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
+            <md-input-container flex="40">
               <label>
                 <var:string label:value="Organization"/>
               </label>
               <input type="text" ng-model="editor.card.c_org"/>
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex="40">
               <label>
                 <var:string label:value="Title"/>
               </label>
               <input type="text" ng-model="editor.card.title"/>
+            </md-input-container>
+            <md-input-container flex="20">
+              <label>
+                <var:string label:value="Role"/>
+              </label>
+              <input type="text" ng-model="editor.card.role"/>
             </md-input-container>
           </div>
 
