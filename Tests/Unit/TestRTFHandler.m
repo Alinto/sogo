@@ -285,8 +285,15 @@
   NSString *file =@"mini_russian.rtf";
   NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">XXзык польски, польщизнаXX</font></font></font></body></html>";
   [self checkHTMLConversionOfRTFFile: file
-                      againstExpectedHTML: expected];  
+                 againstExpectedHTML: expected];  
 }
 
+- (void) test_escapes
+{
+  NSString *file =@"escapes.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">x341x351x372x355x363x361x</font><font color=\"#000000\">S SS-S\\S</font><font color=\"#000000\">U老UřU</font><font color=\"#000000\"><br></font></font></body></html>";
+  [self checkHTMLConversionOfRTFFile: file
+                 againstExpectedHTML: expected];  
+}
 
 @end
