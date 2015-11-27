@@ -339,7 +339,7 @@
 
   Card.prototype.$addScreenName = function(screenName) {
     this.c_screenname = screenName;
-  }
+  };
 
   Card.prototype.$addPhone = function(type) {
     if (angular.isUndefined(this.phones)) {
