@@ -189,14 +189,14 @@
               params: params
             },
             template: [
-              '<md-dialog>',
+              '<md-dialog flex="50" md-flex="80" sm-flex="90">',
               '  <md-dialog-content class="md-dialog-content">',
               '    <p>' + l('editRepeatingItem') + '</p>',
               '  </md-dialog-content>',
-              '  <div class="md-actions">',
+              '  <md-dialog-actions>',
               '    <md-button ng-click="updateThisOccurrence()">' + l('button_thisOccurrenceOnly') + '</md-button>',
               '    <md-button ng-click="updateAllOccurrences()">' + l('button_allOccurrences') + '</md-button>',
-              '  </div>',
+              '  </md-dialog-actions>',
               '</md-dialog>'
             ].join(''),
             controller: RecurrentComponentDialogController
