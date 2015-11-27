@@ -202,6 +202,9 @@
 
     <md-content id="messagesList" layout="column" class="md-flex">
       <md-subheader>
+        <md-button class="md-icon-button md-primary hide show-gt-md" ng-click="toggleLeft()">
+          <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+        </md-button>
         <span ng-switch="mailbox.service.selectedFolder.getLength()">
           <span ng-switch-when="0"><var:string label:value="No message"/></span>
           <span ng-switch-default="true">{{mailbox.service.selectedFolder.getLength()}} <var:string label:value="messages"/></span>

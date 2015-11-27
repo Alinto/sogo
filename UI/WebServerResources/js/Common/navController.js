@@ -15,6 +15,7 @@
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
+    $scope.leftIsClose = false;
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
@@ -27,16 +28,17 @@
       }, 24 * 3600 * 1000);
     }, window.currentDay.secondsBeforeTomorrow * 1000);
 
-    $scope.toggleLeft = function () {
+    $scope.toggleLeft = function() {
+      $scope.leftIsClose = leftIsClose();
       $mdSidenav('left').toggle()
         .then(function () {
           $log.debug("toggle left is done");
         });
     };
-    $scope.toggleRight = function () {
+    $scope.toggleRight = function() {
       $mdSidenav('right').toggle()
         .then(function () {
-          $log.debug("toggle RIGHT is done");
+          $log.debug("toggle right is done");
         });
     };
     // $scope.openBottomSheet = function() {
@@ -53,7 +55,14 @@
       return $mdMedia(sgConstant['gt-md']);
     }, function(newVal) {
       $scope.isGtMedium = newVal;
+      if (newVal) {
+        $scope.leftIsClose = false;
+      }
     });
+
+    function leftIsClose() {
+      return !$mdSidenav('left').isOpen();
+    }
 
     Alarm.getAlarms();
   }

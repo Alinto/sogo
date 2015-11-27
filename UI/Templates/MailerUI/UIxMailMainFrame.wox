@@ -226,7 +226,9 @@
   <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1 layout-fill" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1 layout-fill" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <section ng-repeat="account in app.accounts track by account.id">

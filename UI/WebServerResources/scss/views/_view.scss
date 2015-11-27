@@ -79,7 +79,7 @@ $detailView-width: grid-step(8) !global;
     margin: 0;
   }
   @include from(lg) {
-    @include flex-col(lg, 10, 2, 1);
+    flex: 1 1 auto;
     margin: 0;
   }
 
