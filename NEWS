@@ -2,7 +2,7 @@
 ------------------
 
 New features
- - 
+ - Initial support for EAS calendar exceptions 
 
 Enhancements
  - limit the maximum width of toolbar buttons
