@@ -2,7 +2,7 @@
 
 [ui-view="login"] {
   md-content {
-    @include to(sm) {
+    @include to(xs) {
       [id=logo] {
         text-align: center;
         img {
@@ -10,7 +10,7 @@
         }
       }
     }
-    @include from(md) {
+    @include from(sm) {
       &.ng-hide {
         [id=logo] {
           opacity: 0;

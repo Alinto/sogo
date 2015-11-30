@@ -62,9 +62,10 @@ $touch-zone: $touch-zone-width;
 // angular-material share breakpoint values between sass and js files (/core/constant.js)
 // we might consider using a sass library to import values as json single source for both
 
-$layout-breakpoint-sm:     600px !default;
-$layout-breakpoint-md:     960px !default;
-$layout-breakpoint-lg:     1200px !default;
+$layout-breakpoint-xs:     600px !default;
+$layout-breakpoint-sm:     960px !default;
+$layout-breakpoint-md:     1280px !default;
+$layout-breakpoint-lg:     1920px !default;
 $layout-gutter-width:      ($baseline-grid * 2) !default;
 
 // Margins
@@ -81,15 +82,16 @@ $layout-breakpoint-lg:     1280px;
 // ----------------------------------------------------------------------------
 
 $base-grid-total-columns: (
-  'sm': 1,
-  'md': 16,
+  'xs': 1,
+  'sm': 16,
+  'md': 20,
   'lg': 20,
 );
 
 // Passing to breakpoint-slicer
-$slicer-breakpoints: 0 $layout-breakpoint-sm $layout-breakpoint-md $layout-breakpoint-lg;
+$slicer-breakpoints: 0 $layout-breakpoint-xs $layout-breakpoint-sm $layout-breakpoint-md $layout-breakpoint-lg;
 // todo: ? 'md' name is error prone because of possible confusion with the 'md-' prefix
-$slicer-breakpoint-names: 'sm' 'md' 'lg' 'xl';
+$slicer-breakpoint-names: 'xs' 'sm' 'md' 'lg' 'xl';
 
 $media-pointer: (pointer fine);
 

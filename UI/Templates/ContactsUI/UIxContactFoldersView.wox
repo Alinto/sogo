@@ -354,7 +354,7 @@
 
         <md-content id="contactsList" layout="column" class="md-flex">
           <md-subheader ng-show="addressbook.service.$query.value">
-            <md-button class="md-icon-button md-primary hide show-gt-md" ng-click="toggleLeft()">
+            <md-button class="md-icon-button md-primary hide show-gt-sm" ng-click="toggleLeft()">
               <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
             </md-button>
             <span ng-switch="addressbook.selectedFolder.cards.length">
@@ -363,7 +363,7 @@
             </span>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
-            <md-button class="md-icon-button md-primary hide show-gt-md" ng-click="toggleLeft()">
+            <md-button class="md-icon-button md-primary hide show-gt-sm" ng-click="toggleLeft()">
               <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
             </md-button>
             <span ng-switch="addressbook.selectedFolder.isRemote">
@@ -435,7 +435,7 @@
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            ui-view="card">
         <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-        <md-content class="hide-sm md-flex layout-fill md-hue-1"
+        <md-content class="hide-xs md-flex layout-fill md-hue-1"
                     layout="column" layout-align="center center">
           <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No contact selected"/></div>
         </md-content>

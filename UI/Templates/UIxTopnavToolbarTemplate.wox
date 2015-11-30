@@ -7,7 +7,7 @@
 
   <div class="sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
-               class="hide-gt-md sg-button-navicon sg-icon-button"
+               class="hide-gt-sm sg-button-navicon sg-icon-button"
                label:aria-label="Toggle Menu">
       <md-icon>menu</md-icon>
     </md-button>

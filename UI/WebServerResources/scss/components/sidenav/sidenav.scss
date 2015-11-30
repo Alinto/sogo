@@ -6,8 +6,8 @@ $sidenav-min-space: $pitch;
 
 md-sidenav {
   &.md-locked-open {
-    @include from(lg) {
-      @include flex-col(lg, 4, 1, 0);
+    @include from(md) {
+      @include flex-col(md, 4, 1, 0);
       // Custom representation of a closed sidenav where the sidenav is pushed to the left;
       // Used in in "locked open" mode.
       &.sg-closed.md-sidenav-left {

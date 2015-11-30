@@ -121,7 +121,9 @@
          ng-repeat="category in app.categories"
          ng-model="category"><!-- stylesheet --></sg-category-stylesheet>
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's calendars -->
@@ -666,7 +668,7 @@
           </md-button>
         </md-content>
         </div>
-        <div id="detailView" class="view-detail" hide-sm="hide-sm" layout="column" ui-view="calendarView">
+        <div id="detailView" class="view-detail" hide-xs="hide-xs" layout="column" ui-view="calendarView">
           <!-- calendar view -->
         </div>
       </div>

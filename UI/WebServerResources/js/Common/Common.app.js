@@ -110,15 +110,16 @@
 
   // md break-points values are hard-coded in angular-material/src/core/util/constant.js
   // $mdMedia has a built-in support for those values but can also evaluate others
-  // For some reasons, angular-material's break-points don't match the specs
-  // Here we define values according to specs
     .constant('sgConstant', {
-      'sm': '(max-width: 600px)',
-      'gt-sm': '(min-width: 600px)',
-      'md': '(min-width: 600px) and (max-width: 1024px)',
-      'gt-md': '(min-width: 1025px)',
-      'lg': '(min-width: 1024px) and (max-width: 1280px)',
-      'gt-lg': '(min-width: 1280px)'
+      'xs'    : '(max-width: 599px)'                         ,
+      'gt-xs' : '(min-width: 600px)'                         ,
+      'sm'    : '(min-width: 600px) and (max-width: 959px)'  ,
+      'gt-sm' : '(min-width: 960px)'                         ,
+      'md'    : '(min-width: 960px) and (max-width: 1279px)' ,
+      'gt-md' : '(min-width: 1280px)'                        ,
+      'lg'    : '(min-width: 1280px) and (max-width: 1919px)',
+      'gt-lg' : '(min-width: 1920px)'                        ,
+      'xl'    : '(min-width: 1920px)'
     })
 
     .config(configure)

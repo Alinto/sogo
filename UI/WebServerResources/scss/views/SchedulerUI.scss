@@ -20,12 +20,12 @@ $block_radius: 3px;
 
   .view-list {
     min-width: ($listView-width - ($pitch * 2));
-    @include at(md){
-      @include flex-col(md, 6, 1, 1);
+    @include at(sm){
+      @include flex-col(sm, 6, 1, 1);
       min-width: ($pitch * 3);
     }
-    @include from(lg) {
-      @include flex-col(lg, 5, 1, 0);
+    @include from(md) {
+      @include flex-col(md, 5, 1, 0);
     }
 
     // The color chip is smaller; adjust the "selected" icon accordingly
@@ -40,11 +40,11 @@ $block_radius: 3px;
   }
 
   .view-detail {
-    @include at(md) {
-      @include flex-col(md, 10);
+    @include at(sm) {
+      @include flex-col(sm, 10);
     }
-    @include from(lg) {
-      @include flex-col(lg, 11, 1, 1);
+    @include from(md) {
+      @include flex-col(md, 11, 1, 1);
     }
   }
 

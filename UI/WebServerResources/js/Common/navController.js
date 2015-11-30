@@ -52,7 +52,7 @@
     //   detail.toggleClass('sg-close');
     // };
     $scope.$watch(function() {
-      return $mdMedia(sgConstant['gt-md']);
+      return $mdMedia(sgConstant['gt-sm']);
     }, function(newVal) {
       $scope.isGtMedium = newVal;
       if (newVal) {

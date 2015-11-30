@@ -19,7 +19,7 @@ body.popup {
   .view-detail {
     max-width: 100%;
   }
-  @include from(md) {
+  @include from(sm) {
     [class|="view"] {
       position: static;
     }
@@ -57,14 +57,14 @@ $detailView-width: grid-step(8) !global;
       margin: 0;
     }
   }
-  @include at(md){
-    @include flex-col(md, 6, 1, 1);
+  @include at(sm){
+    @include flex-col(sm, 6, 1, 1);
     min-width: ($pitch * 3);
   }
-  @include from(lg) {
-    @include flex-col(lg, 6, 1, 0);
+  @include from(md) {
+    @include flex-col(md, 6, 1, 0);
   }
-  @include to(sm) {
+  @include to(xs) {
     width: 100%;
     min-width: 100%;
   }
@@ -74,17 +74,21 @@ $detailView-width: grid-step(8) !global;
   z-index: $z-index-view;
   //overflow-x: hidden;
   overflow: hidden;
-  @include at(md) {
-    @include flex-col(md, 10);
+  md-card {
+    overflow: hidden;
+  }
+
+  @include at(sm) {
+    @include flex-col(sm, 10);
     margin: 0;
   }
-  @include from(lg) {
+  @include from(md) {
     flex: 1 1 auto;
     margin: 0;
   }
 
   // No animation on medium to large screens
-  @include from(md) {
+  @include from(sm) {
     .md-static {
       position: static;
     }
@@ -129,7 +133,7 @@ $detailView-width: grid-step(8) !global;
   //   a. viewer slides out of view-detail and is removed from the DOM
   //   b. view-detail (transparent) slides outside view-list
   //   c. sg-close is added to view-detail
-  @include to(sm) {
+  @include to(xs) {
     display: block;
     background-color: transparent !important;
     position: absolute;
