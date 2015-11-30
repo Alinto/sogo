@@ -38,6 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -45,11 +47,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/NSCalendarDate+NGCards.h>
+#import <NGCards/NSString+NGCards.h>
+#import <NGCards/iCalCalendar.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
+#import <Appointments/iCalRepeatableEntityObject+SOGo.h>
 
 #include "iCalAlarm+ActiveSync.h"
 #include "iCalRecurrenceRule+ActiveSync.h"
@@ -98,10 +105,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   else if ([self created])
     [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
+  // Timezone
+  tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
+
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
     {
-      if ([self isAllDay])
+      if ([self isAllDay] && !tz)
         [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>",
            [[[self startDate] dateByAddingYears: 0 months: 0 days: 0
                                           hours: 0 minutes: 0
@@ -114,7 +124,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
     {
-      if ([self isAllDay])
+      if ([self isAllDay] && !tz)
         [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>",
            [[[self endDate] dateByAddingYears: 0 months: 0 days: 0
                                         hours: 0 minutes: 0
@@ -123,9 +133,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
     }
-
-  // Timezone
-  tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
 
   if (!tz)
     tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
@@ -226,9 +233,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //[s appendFormat: @"<Importance xmlns=\"Calendar:\">%d</Importance>", v];
 
   // UID -- http://msdn.microsoft.com/en-us/library/ee159919(v=exchg.80).aspx
-  if ([[self uid] length])
+  if (![self recurrenceId] && [[self uid] length])
     [s appendFormat: @"<UID xmlns=\"Calendar:\">%@</UID>", [self uid]];
-  
+
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
     v = 2;
@@ -251,7 +258,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendFormat: @"</Categories>"];
     }
 
-  
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO: improve this to handle more alarm types
   if ([self hasAlarms]) 
@@ -265,7 +271,74 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Recurrence rules
   if ([self isRecurrent])
     {
+      NSMutableArray *components, *exdates;
+      iCalEvent *current_component;
+      NSString *recurrence_id;
+
+      unsigned int count, max, i;
+
       [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
+
+      components = [NSMutableArray arrayWithArray: [[self parent] events]];
+      max = [components count];
+
+      if (max > 1 || [self hasExceptionDates])
+        {
+          exdates = [NSMutableArray arrayWithArray: [self exceptionDates]];
+
+          [s appendString: @"<Exceptions xmlns=\"Calendar:\">"];
+
+          for (count = 1; count < max; count++)
+            {
+              current_component = [components objectAtIndex: count] ;
+
+              if ([self isAllDay])
+                {
+                  recurrence_id = [NSString stringWithFormat: @"%@",
+                                            [[[current_component recurrenceId] dateByAddingYears: 0 months: 0 days: 0
+                                                                                           hours: 0 minutes: 0
+                                                                                         seconds: -[userTimeZone secondsFromGMTForDate:
+                                                                                                                   [current_component recurrenceId]]]
+                                              activeSyncRepresentationWithoutSeparatorsInContext: context]];
+                }
+              else
+                {
+                  recurrence_id = [NSString stringWithFormat: @"%@", [[current_component recurrenceId]
+                                                                       activeSyncRepresentationWithoutSeparatorsInContext: context]];
+                }
+
+              [s appendString: @"<Exception>"];
+              [s appendFormat: @"<Exception_StartTime xmlns=\"Calendar:\">%@</Exception_StartTime>", recurrence_id];
+              [s appendFormat: @"%@", [current_component activeSyncRepresentationInContext: context]];
+              [s appendString: @"</Exception>"];
+            }
+
+          for (i = 0; i < [exdates count]; i++)
+            {
+              [s appendString: @"<Exception>"];
+              [s appendString: @"<Exception_Deleted>1</Exception_Deleted>"];
+
+              if ([self isAllDay])
+                {
+                  recurrence_id = [NSString stringWithFormat: @"%@",
+                                   [[[[exdates objectAtIndex: i] asCalendarDate] dateByAddingYears: 0 months: 0 days: 0
+                                                                                             hours: 0 minutes: 0
+                                                                                           seconds: -[userTimeZone secondsFromGMTForDate:
+                                                                                                                 [[exdates objectAtIndex: i] asCalendarDate]]]
+                                     activeSyncRepresentationWithoutSeparatorsInContext: context]];
+                }
+              else
+                {
+                  recurrence_id = [NSString stringWithFormat: @"%@", [[[exdates objectAtIndex: i] asCalendarDate]
+                                                                       activeSyncRepresentationWithoutSeparatorsInContext: context]];
+                }
+
+              [s appendFormat: @"<Exception_StartTime xmlns=\"Calendar:\">%@</Exception_StartTime>", recurrence_id];
+              [s appendString: @"</Exception>"];
+            }
+
+            [s appendString: @"</Exceptions>"];
+        }
     }
 
   // Comment
@@ -291,7 +364,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        }
     }
 
-  [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", 1];
+  if (![self recurrenceId])
+    [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", 1];
 
   return s;
 }
@@ -337,13 +411,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) context
 {
-  iCalDateTime *start, *end;
+  iCalDateTime *start, *end; //, *oldstart;
+  NSCalendarDate *oldstart;
   NSTimeZone *userTimeZone;
   iCalTimeZone *tz;
   id o;
+  int deltasecs;
 
   BOOL isAllDay;
-  
+
+  NSMutableArray *occurences;
+
+  occurences = [NSMutableArray arrayWithArray: [[self parent] events]];
+
   if ((o = [theValues objectForKey: @"UID"]))
     [self setUid: o];
     
@@ -355,6 +435,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([[theValues objectForKey: @"AllDayEvent"] intValue])
     {
       isAllDay = YES;
+    }
+  else if ([occurences count] && !([theValues objectForKey: @"AllDayEvent"]))
+    {
+      // If the occurence has no AllDay tag use it from master.
+      isAllDay = [[occurences objectAtIndex: 0] isAllDay];
     }
 
   //
@@ -422,6 +507,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       o = [o calendarDate];
       start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+      oldstart = [start dateTime];
       [start setTimeZone: tz];
 
        if (isAllDay)
@@ -433,6 +519,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           [start setDateTime: o];
         }
+
+      // Calculate delta if start date has been changed.
+      if (oldstart)
+         deltasecs = [[start dateTime ] timeIntervalSinceDate: oldstart] * -1;
+      else
+         deltasecs = 0;
     }
 
   if ((o = [theValues objectForKey: @"EndTime"]))
@@ -491,6 +583,177 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       RELEASE(rule);
       
       [rule takeActiveSyncValues: o  inContext: context];
+
+      // Exceptions
+      if ((o = [theValues objectForKey: @"Exceptions"]) && [o isKindOfClass: [NSArray class]])
+        {
+          NSCalendarDate *recurrenceId, *adjustedRecurrenceId, *currentId;
+          NSMutableArray *exdates, *exceptionstouched;
+          iCalEvent *currentOccurence;
+          NSDictionary *exception;
+
+          unsigned int i, count, max;
+
+          [self removeAllExceptionDates];
+
+          exdates = [NSMutableArray array];
+          exceptionstouched = [NSMutableArray array];
+
+          for (i = 0; i < [o count]; i++)
+            {
+              exception = [o objectAtIndex: i];
+
+              if (![[exception objectForKey: @"Exception_Deleted"] intValue])
+                {
+                  recurrenceId = [[exception objectForKey: @"Exception_StartTime"] asCalendarDate];
+
+                  if (isAllDay)
+                    recurrenceId = [recurrenceId dateByAddingYears: 0 months: 0 days: 0
+                                                             hours: 0 minutes: 0
+                                                           seconds: [userTimeZone secondsFromGMTForDate:recurrenceId]];
+
+                  // When moving the calendar entry (i.e. changing the startDate) iOS and Android sometimes send a value for
+                  // Exception_StartTime which is not what we expect.
+                  // With this we make sure the recurrenceId is always correct.
+                  //
+                  // iOS problem - If the master is a no-allday-event but the exception is, an invalid Exception_StartTime is in the request.
+                  // e.g. it sends 20150409T040000Z instead of 20150409T060000Z;
+                  // This might be a special case since iPhone doesn't allow an allday-exception on a non-allday-event.
+                  if (!([[start dateTime] compare: [[start dateTime] hour:[recurrenceId hourOfDay] minute:[recurrenceId minuteOfHour]]] == NSOrderedSame))
+                    recurrenceId = [recurrenceId hour:[[start dateTime] hourOfDay] minute:[[start dateTime] minuteOfHour]];
+
+                  // We need to store the recurrenceIds and exception dates adjusted by deltasecs.
+                  // This ensures that the adjustment in SOGoCalendarComponent->updateComponent->_updateRecurrenceIDsWithEvent gives the correct dates.
+                  adjustedRecurrenceId = [recurrenceId dateByAddingYears: 0 months: 0 days: 0
+                                                                   hours: 0 minutes: 0 seconds: deltasecs];
+
+                  // search for an existing occurence and update it
+                  max = [occurences count];
+                  currentOccurence = nil;
+                  count = 1;
+                  while (count < max)
+                    {
+                      currentOccurence = [occurences objectAtIndex: count] ;
+                      currentId = [currentOccurence recurrenceId];
+
+                      if ([currentId compare: adjustedRecurrenceId] == NSOrderedSame)
+                        {
+                          [exceptionstouched addObject: adjustedRecurrenceId];
+                          [currentOccurence takeActiveSyncValues: exception  inContext: context];
+
+                          break;
+                        }
+
+                      count++;
+                      currentOccurence = nil;
+                    }
+
+                  // Create a new occurence if we found none to update.
+                  if (!currentOccurence)
+                    {
+                      iCalDateTime *recid;
+
+                      currentOccurence = [self mutableCopy];
+                      [currentOccurence removeAllRecurrenceRules];
+                      [currentOccurence removeAllExceptionRules];
+                      [currentOccurence removeAllExceptionDates];
+
+                      [[self parent] addToEvents: currentOccurence];
+                      [currentOccurence takeActiveSyncValues: exception  inContext: context];
+
+                      recid = (iCalDateTime *)[currentOccurence uniqueChildWithTag: @"recurrence-id"];
+                      if (isAllDay)
+                        [recid setDate: adjustedRecurrenceId];
+                      else
+                        [recid setDateTime: adjustedRecurrenceId];
+
+                      [exceptionstouched addObject: [recid dateTime]];
+                    }
+                }
+              else if ([[exception objectForKey: @"Exception_Deleted"] intValue])
+                {
+                  recurrenceId = [[exception objectForKey: @"Exception_StartTime"] asCalendarDate];
+
+                  if (isAllDay)
+                    recurrenceId = [recurrenceId dateByAddingYears: 0 months: 0
+                                                              days: 0 hours: 0 minutes: 0
+                                                           seconds: [userTimeZone secondsFromGMTForDate:recurrenceId]];
+
+                  // We add only valid exception dates.
+                  if ([self doesOccurOnDate: recurrenceId] &&
+                      ([[start dateTime] compare: [[start dateTime] hour:[recurrenceId hourOfDay]
+                                                                  minute:[recurrenceId minuteOfHour]]] == NSOrderedSame))
+                    {
+                      // We need to store the recurrenceIds and exception dates adjusted by deltasecs.
+                      // This ensures that the adjustment in SOGoCalendarComponent->updateComponent->_updateRecurrenceIDsWithEvent gives the correct dates.
+                      [exdates addObject: [recurrenceId dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: deltasecs]];
+                    }
+                }
+            }
+
+          // Update exception dates in master event.
+          max = [exdates count];
+          if (max > 0)
+            {
+              for (count = 0; count < max; count++)
+                {
+                  if (([exceptionstouched indexOfObject: [exdates objectAtIndex: count]] == NSNotFound))
+                    [self addToExceptionDates: [exdates objectAtIndex: count]];
+                }
+            }
+
+          // Remove all exceptions included in the request.
+          max = [occurences count];
+          count = 1; // skip the master event
+          while (count < max)
+            {
+              currentOccurence = [occurences objectAtIndex: count] ;
+              currentId = [currentOccurence recurrenceId];
+
+              // Delete all occurences which are not touched (modified/added).
+              if (([exceptionstouched indexOfObject: currentId] == NSNotFound))
+                [[[self parent] children] removeObject: currentOccurence];
+
+              count++;
+            }
+        }
+      else if ([self isRecurrent])
+        {
+          // We have no exceptions in request but there is a recurrence rule.
+          // Remove all excpetions and exception dates.
+          iCalEvent *currentOccurence;
+          unsigned int count, max;
+
+          [self removeAllExceptionDates];
+          max = [occurences count];
+          count = 1; // skip the master event
+          while (count < max)
+            {
+              currentOccurence = [occurences objectAtIndex: count];
+              [[[self parent] children] removeObject: currentOccurence];
+              count++;
+            }
+        }
+    }
+  else if ([self isRecurrent])
+    {
+      // We have no recurrence rule in request.
+      // Remove all exceptions, exception dates and recurrence rules.
+      iCalEvent *currentOccurence;
+      unsigned int count, max;
+
+      [self removeAllRecurrenceRules];
+      [self removeAllExceptionRules];
+      [self removeAllExceptionDates];
+
+      max = [occurences count];
+      count = 1; // skip the master event
+      while (count < max)
+        {
+          currentOccurence = [occurences objectAtIndex: count];
+          [[[self parent] children] removeObject: currentOccurence];
+          count++;
+        }
     }
 
   // Organizer - we don't touch the value unless we're the organizer
@@ -498,7 +761,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ([self userIsOrganizer: [context activeUser]] || [[context activeUser] hasEmail: o]))
     {
       iCalPerson *person;
-      
+
       person = [iCalPerson elementWithTag: @"organizer"];
       [person setEmail: o];
       [person setCn: [theValues objectForKey: @"Organizer_Name"]];
