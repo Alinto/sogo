@@ -130,13 +130,16 @@
    * @param {number} uid - the new message UID
    */
   Message.prototype.$setUID = function(uid) {
-    var oldUID = this.uid || -1;
+    var oldUID = (this.uid || -1);
 
-    if (oldUID != uid) {
+    if (oldUID != parseInt(uid)) {
       this.uid = uid;
-      if (oldUID > -1 && this.$mailbox.uidsMap[oldUID]) {
-        this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
-        this.$mailbox.uidsMap[oldUID] = null;
+      if (oldUID > -1) {
+        oldUID = oldUID.toString();
+        if (angular.isDefined(this.$mailbox.uidsMap[oldUID])) {
+          this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
+          delete this.$mailbox.uidsMap[oldUID];
+        }
       }
     }
   };
