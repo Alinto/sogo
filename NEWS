@@ -58,7 +58,6 @@ Bug fixes
  - fixed wrong comparison of meta vs. META tag in HTML mails
  - fixed popup menu position when moved to the left (#3381)
  - fixed dialog position when at the bottom of the window (#2646, #3378)
- - fixed addressbrook-only source entires having a c_uid set
 
 2.3.2 (2015-09-16)
 ------------------

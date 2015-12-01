@@ -47,7 +47,6 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSource.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -226,16 +225,8 @@
   NSObject <SOGoSource> *recordSource;
 
   newRecord = [NSMutableDictionary dictionaryWithCapacity: 8];
-
-  // We set the c_uid only for authentication sources. SOGoUserSources set
-  // with canAuthenticate = NO and isAddressBook = YES have absolutely *NO REASON*
-  // to have entries with a c_uid. These can collide with real uids.
-  if ([[[[SOGoUserManager sharedUserManager] metadataForSourceID: [source sourceID]] objectForKey: @"canAuthenticate"] boolValue])
-    {
-      [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
-                    forKey: @"c_uid"];
-    }
-
+  [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
+                forKey: @"c_uid"];
   [newRecord setObject: [oldRecord objectForKey: @"c_name"]
                 forKey: @"c_name"];
 
