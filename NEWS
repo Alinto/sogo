@@ -13,6 +13,7 @@ Bug fixes
  - EAS fix for wrong charset being used (#3392)
  - EAS fix on qp-encoded subjects (#3390)
  - correctly handle all-day event exceptions when the master event changes
+ - prevent characters in calendar component UID causing issues during import process
 
 2.3.3a (2015-11-18)
 -------------------

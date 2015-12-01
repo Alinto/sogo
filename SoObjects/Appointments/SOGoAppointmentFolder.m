@@ -3093,18 +3093,28 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableString *content;
   NSString *uid;
 
-  // We first look if there's an event with the same UID in our calendar. If not,
-  // let's reuse what is in the event, otherwise generate a new GUID and use it.
+  // We first look if the event has any / or + in its UID. If that's the case
+  // we generate a new UID based on a GUID
   uid = [event uid];
 
-  object = [self lookupName: uid
-                  inContext: context
-                    acquire: NO];
- 
-  if (object && ![object isKindOfClass: [NSException class]])
+  if ([uid rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"+/"]].location != NSNotFound)
     {
       uid = [self globallyUniqueObjectId];
       [event setUid: uid];
+    }
+  else
+    {
+      // We also look if there's an event with the same UID in our calendar. If not,
+      // let's reuse what is in the event, otherwise generate a new GUID and use it.
+      object = [self lookupName: uid
+                      inContext: context
+                        acquire: NO];
+
+      if (object && ![object isKindOfClass: [NSException class]])
+        {
+          uid = [self globallyUniqueObjectId];
+          [event setUid: uid];
+        }
     }
 
   object = [SOGoAppointmentObject objectWithName: uid
