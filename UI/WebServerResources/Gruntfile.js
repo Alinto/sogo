@@ -75,12 +75,16 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       dist: {
+        options: {
+          compress: true,
+          sourceMapIncludeSources: true
+        },
         files: js_files
       },
       dev: {
         options: {
+          compress: false,
           mangle: false,
-          sourceMapIncludeSources: true
         },
         files: js_files
       }
