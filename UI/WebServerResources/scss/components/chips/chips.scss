@@ -23,6 +23,28 @@ md-chips {
       }
     }
   }
+  .sg-chip-progress {
+    border-radius: $chip-height / 2;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: $swift-ease-in-out;
+    &.ng-hide {
+      background-color: #fff;
+    }
+    span {
+      bottom: 0;
+      left: 0;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      transition: $swift-ease-in-out;
+      width: 0;
+    }
+  }
 }
 
 // Enlarge the default autocompletion menu

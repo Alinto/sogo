@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, focus, Dialog, AddressBook, Preferences) {
+  MessageEditorController.$inject = ['$stateParams', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'Dialog', 'AddressBook', 'Preferences'];
+  function MessageEditorController($stateParams, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, Dialog, AddressBook, Preferences) {
     var vm = this;
 
     vm.addRecipient = addRecipient;
@@ -18,29 +18,30 @@
     vm.hideBcc = true;
     vm.cancel = cancel;
     vm.send = send;
+    vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
     vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
       alias: 'attachments',
-      onProgressItem: function(item, progress) {
-        console.debug(item); console.debug(progress);
-      },
+      removeAfterUpload: false,
+      // onProgressItem: function(item, progress) {
+      //   console.debug(item); console.debug(progress);
+      // },
       onSuccessItem: function(item, response, status, headers) {
         stateMessage.$setUID(response.uid);
-        stateMessage.$reload();
-        console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+        stateMessage.$reload({asDraft: false});
+        //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
       },
       onCancelItem: function(item, response, status, headers) {
-        console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
-
+        //console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
         // We remove the attachment
         stateMessage.$deleteAttachment(item.file.name);
         this.removeFromQueue(item);
       },
       onErrorItem: function(item, response, status, headers) {
-        console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
+        //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
       }
     });
 
@@ -61,14 +62,43 @@
     else if ($stateParams.actionName == 'forward') {
       stateMessage.$forward().then(function(msgObject) {
         vm.message = msgObject;
+        addAttachments();
       });
     }
     else if (angular.isDefined(stateMessage)) {
       vm.message = stateMessage;
+      addAttachments();
     }
 
     if (angular.isDefined(stateRecipients)) {
       vm.message.editable.to = _.union(vm.message.editable.to, _.pluck(stateRecipients, 'full'));
+    }
+
+    function addAttachments() {
+      // Add existing attached files to uploader
+      var i, data, fileItem;
+      if (vm.message.attachmentAttrs)
+        for (i = 0; i < vm.message.attachmentAttrs.length; i++) {
+          data = {
+            name: vm.message.attachmentAttrs[i].filename,
+            type: vm.message.attachmentAttrs[i].mimetype,
+            size: parseInt(vm.message.attachmentAttrs[i].size)
+          };
+          fileItem = new FileUploader.FileItem(vm.uploader, data);
+          fileItem.progress = 100;
+          fileItem.isUploaded = true;
+          fileItem.isSuccess = true;
+          vm.uploader.queue.push(fileItem);
+        }
+    }
+
+    function removeAttachment(item) {
+      if (item.isUploading)
+        vm.uploader.cancelItem(item);
+      else {
+        vm.message.$deleteAttachment(item.file.name);
+        item.remove();
+      }
     }
 
     function cancel() {
@@ -126,10 +156,12 @@
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
     }
 
-    // Select list based on user's settings
+    // Read user's defaults
     Preferences.ready().then(function() {
       if (Preferences.defaults.SOGoMailAutoSave)
+        // Enable auto-save of draft
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+      // Set the locale of CKEditor
       vm.localeCode = Preferences.defaults.LocaleCode;
     });
   }

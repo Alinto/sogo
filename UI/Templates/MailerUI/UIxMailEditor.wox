@@ -44,7 +44,7 @@
               <var:string label:value="To"/>
             </label>
             <md-chips ng-model="editor.message.editable.to"
-                      md-on-append="editor.addRecipient($chip)">
+                      md-transform-chip="editor.addRecipient($chip)">
               <md-autocomplete
                   class="sg-chips-autocomplete"
                   md-autofocus="true"
@@ -76,7 +76,7 @@
               <var:string label:value="Cc"/>
             </label>
             <md-chips ng-model="editor.message.editable.cc"
-                      md-on-append="editor.addRecipient($chip)">
+                      md-transform-chip="editor.addRecipient($chip)">
               <md-autocomplete
                   class="sg-chips-autocomplete"
                   md-search-text="editor.autocomplete.cc.searchText"
@@ -107,7 +107,7 @@
               <var:string label:value="Bcc"/>
             </label>
             <md-chips ng-model="editor.message.editable.bcc"
-                      md-on-append="editor.addRecipient($chip)">
+                      md-transform-chip="editor.addRecipient($chip)">
               <md-autocomplete
                   class="sg-chips-autocomplete"
                   md-selected-item="editor.autocomplete.bcc.selected"
@@ -207,7 +207,7 @@
     <!-- TOOLBAR BUTTONS -->
     <md-dialog-actions>
       <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
-        <div>
+        <div class="md-flex">
           <!-- md-icon does not play well with Firefox - makes the
                file input never appear. This should eventually be
                fixed in Angular Material -->
@@ -220,31 +220,29 @@
                  uploader="editor.uploader"
                  ng-show="false"/>
         </div>
-        <div>
-          <!-- FILES ALREADY UPLOADED, FOR EXAMPLE WHEN WE FORWARD A
-               MAIL WITH ATTACHMENTS -->
+          <!-- Files already uploaded, for example when we forward a
+               mail with attachments or open a draft -->
           <md-chips ng-model="editor.message.editable.attachmentAttrs"
-                    class="sg-readonly" readonly="true">
+                    readonly="true" class="ng-hide">
             <md-chip-template>
               <span>{{$chip.filename}}</span>
-              <md-icon ng-click="editor.message.$deleteAttachment($chip.filename);">close</md-icon>
+              <md-icon class="sg-chip-remove"
+                       ng-click="editor.message.$deleteAttachment($chip.filename)">close</md-icon>
             </md-chip-template>
           </md-chips>
-          <!-- FILE BEING ATTACHED TO A MAIL -->
+          <!-- File being attached to a mail -->
           <md-chips ng-model="editor.uploader.queue"
                     class="sg-readonly" readonly="true">
             <md-chip-template>
+              <span class="sg-chip-progress" ng-show="$chip.isUploading">
+                <span class="md-default-theme md-warn md-bg"
+                      ng-style="{ width: $chip.progress + '%'}"><!-- progress --></span>
+              </span>
               <span>{{$chip.file.name}}</span>
-              <md-icon ng-show="!$chip.isUploading"
-                       ng-click="editor.message.$deleteAttachment($chip.file.name);
-                                 $chip.remove();">close</md-icon>
-              <md-icon ng-show="$chip.isUploading"
-                       ng-click="editor.uploader.cancelItem($chip)"
-                       ng-style="{ 'color': '#F00' }">cancel</md-icon>
-              <span ng-show="$chip.isUploading">{{$chip.progress}} %</span>
+              <md-icon ng-class="{ 'md-warn': $chip.isUploading }"
+                       ng-click="editor.removeAttachment($chip)">close</md-icon>
             </md-chip-template>
           </md-chips>
-        </div>
       </div>
     </md-dialog-actions>
   </md-dialog>
