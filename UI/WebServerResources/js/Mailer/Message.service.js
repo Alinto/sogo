@@ -141,6 +141,12 @@
           delete this.$mailbox.uidsMap[oldUID];
         }
       }
+      else {
+        // Refresh selected folder if it's the drafts mailbox
+        if (this.$mailbox.constructor.selectedFolder.type == 'draft') {
+          this.$mailbox.constructor.selectedFolder.$filter();
+        }
+      }
     }
   };
 
