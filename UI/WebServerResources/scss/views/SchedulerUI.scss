@@ -245,6 +245,13 @@ $block_radius: 3px;
       opacity: 0.5;
     }
 
+    &.lasts1 {
+      .text {
+        top: 0px;
+        bottom: 0px;
+      }
+    }
+
     .eventInside {
       overflow: hidden;
     }
@@ -292,7 +299,7 @@ $block_radius: 3px;
       &-top, &-bottom {
         left: 1px;
         right: 1px;
-        height: 10px;
+        height: 8px;
         line-height: 8px;
       }
 
@@ -314,7 +321,7 @@ $block_radius: 3px;
       &-left, &-right {
         top: 1px;
         bottom: 1px;
-        width: 10px;
+        width: 8px;
         line-height: 8px;
       }
 
