@@ -32,6 +32,7 @@
       onSuccessItem: function(item, response, status, headers) {
         stateMessage.$setUID(response.uid);
         stateMessage.$reload({asDraft: false});
+        item.inlineUrl = response.lastAttachmentAttrs[0].url;
         //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
       },
       onCancelItem: function(item, response, status, headers) {
@@ -88,6 +89,7 @@
           fileItem.progress = 100;
           fileItem.isUploaded = true;
           fileItem.isSuccess = true;
+          fileItem.inlineUrl = vm.message.attachmentAttrs[i].url;
           vm.uploader.queue.push(fileItem);
         }
     }

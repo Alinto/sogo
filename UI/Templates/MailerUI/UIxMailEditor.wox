@@ -215,7 +215,7 @@
                 <span class="md-default-theme md-warn md-bg"
                       ng-style="{ width: $chip.progress + '%'}"><!-- progress --></span>
               </span>
-              <span>{{$chip.file.name}}</span>
+              <a ng-href="{{$chip.inlineUrl}}" target="_new">{{$chip.file.name}}</a>
               <md-icon ng-class="{ 'md-warn': $chip.isUploading }"
                        ng-click="editor.removeAttachment($chip)">close</md-icon>
             </md-chip-template>
