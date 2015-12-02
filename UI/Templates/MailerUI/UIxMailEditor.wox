@@ -5,10 +5,10 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-dialog flex="80" flex-sm="100">
+  <md-dialog class="sg-mail-editor" flex="80" flex-sm="100">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <md-icon class="material-icons sg-icon-toolbar-bg">edit</md-icon>
+        <md-icon class="sg-icon-toolbar-bg">edit</md-icon>
         <!-- from -->
         <sg-avatar-image hide-sm="hide-sm"
                          sg-email="editor.message.editable.from"
@@ -207,32 +207,9 @@
     <!-- TOOLBAR BUTTONS -->
     <md-dialog-actions>
       <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
-        <div class="md-flex">
-          <!-- md-icon does not play well with Firefox - makes the
-               file input never appear. This should eventually be
-               fixed in Angular Material -->
-          <label class="md-button" for="file-input">
-            <span><var:string label:value="Attach"/></span>
-          </label>
-          <input id="file-input" type="file"
-                 nv-file-select="nv-file-select"
-                 multiple="multiple"
-                 uploader="editor.uploader"
-                 ng-show="false"/>
-        </div>
-          <!-- Files already uploaded, for example when we forward a
-               mail with attachments or open a draft -->
-          <md-chips ng-model="editor.message.editable.attachmentAttrs"
-                    readonly="true" class="ng-hide">
-            <md-chip-template>
-              <span>{{$chip.filename}}</span>
-              <md-icon class="sg-chip-remove"
-                       ng-click="editor.message.$deleteAttachment($chip.filename)">close</md-icon>
-            </md-chip-template>
-          </md-chips>
-          <!-- File being attached to a mail -->
+          <!-- Attachments -->
           <md-chips ng-model="editor.uploader.queue"
-                    class="sg-readonly" readonly="true">
+                    class="md-flex sg-readonly" readonly="true">
             <md-chip-template>
               <span class="sg-chip-progress" ng-show="$chip.isUploading">
                 <span class="md-default-theme md-warn md-bg"
@@ -243,6 +220,18 @@
                        ng-click="editor.removeAttachment($chip)">close</md-icon>
             </md-chip-template>
           </md-chips>
+          <label class="md-button md-icon-button" for="file-input">
+            <md-icon>attach_file</md-icon>
+            <!-- <span><var:string label:value="Attach"/></span> -->
+          </label>
+          <input id="file-input" name="file-input" type="file" class="ng-hide"
+                 nv-file-select="nv-file-select"
+                 uploader="editor.uploader"/>
+          <!--
+              Disable multiple until this issue is resolved:
+              https://github.com/nervgh/angular-file-upload/issues/525
+          -->
+                 <!-- multiple="multiple" -->
       </div>
     </md-dialog-actions>
   </md-dialog>
