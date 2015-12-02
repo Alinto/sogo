@@ -284,7 +284,7 @@
               <md-icon>arrow_back</md-icon>
             </md-button>
             <md-input-container md-no-float="md-no-float">
-              <input name="folderSearch" type="search" label:placeholder="Search" ng-minlength="3"/>
+              <input name="folderSearch" type="search" label:placeholder="Search"/>
             </md-input-container>
             <md-input-container flex="25">
               <md-select>

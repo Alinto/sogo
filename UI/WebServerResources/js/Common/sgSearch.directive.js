@@ -112,7 +112,7 @@
     vm.onChange = function() {
       if (typeof vm.searchText !== 'undefined' && vm.searchText !== null) {
         if (vm.searchText != vm.previous.searchText || vm.searchField != vm.previous.searchField) {
-          if (vm.searchText.length > 2 || vm.searchText.length === 0) {
+          if (vm.searchText.length > 2 || vm.searchText.length === 0 || vm.searchText == '.') {
             // doSearch is the compiled expression of the sg-search attribute
             vm.doSearch($scope, { searchText: vm.searchText, searchField: vm.searchField });
           }
