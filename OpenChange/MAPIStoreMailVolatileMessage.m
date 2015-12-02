@@ -679,6 +679,14 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
   if (!fromResolved)
     {
+      TALLOC_CTX *local_mem_ctx;
+      local_mem_ctx = talloc_new(NULL);
+      if (!local_mem_ctx)
+        {
+          NSLog (@"%s: Out of memory", __PRETTY_FUNCTION__);
+          return;
+        }
+
       NSLog (@"Message without an orig from, try to guess it from PidTagSenderEntryId");
       senderEntryId = [mailProperties objectForKey: MAPIPropertyKey (PR_SENDER_ENTRYID)];
       if (senderEntryId)
@@ -692,7 +700,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
           bin32.cb = [senderEntryId length];
           bin32.lpb = (uint8_t *) [senderEntryId bytes];
-          addrBookEntryId = get_AddressBookEntryId (connInfo->sam_ctx, &bin32);
+          addrBookEntryId = get_AddressBookEntryId (local_mem_ctx, &bin32);
           if (addrBookEntryId && [[NSString stringWithGUID: &addrBookEntryId->ProviderUID]
                                    hasSuffix: @"08002b2fe182"])
             {
@@ -718,7 +726,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
               /* Try with One-Off EntryId */
               struct OneOffEntryId *oneOffEntryId;
 
-              oneOffEntryId = get_OneOffEntryId (connInfo->sam_ctx, &bin32);
+              oneOffEntryId = get_OneOffEntryId (local_mem_ctx, &bin32);
               if (oneOffEntryId && [[NSString stringWithGUID: &oneOffEntryId->ProviderUID]
                                      hasSuffix: @"00dd010f5402"])
                 {
@@ -727,9 +735,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                   [fromRecipient setObject: [NSString stringWithUTF8String: oneOffEntryId->EmailAddress.lpszW]
                                     forKey: @"email"];
                 }
-              talloc_free (oneOffEntryId);
             }
-          talloc_free (addrBookEntryId);
 
           if ([[fromRecipient allKeys] count] > 0)
             {
@@ -739,6 +745,8 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
             }
 
         }
+      /* Free entryId */
+      talloc_free(local_mem_ctx);
     }
 
   if (!recipients)
