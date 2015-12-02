@@ -14,13 +14,13 @@ $block_radius: 3px;
 
 [ui-view=calendars] {
 
-  // Decrease with of middle column (list of events and tasks)
-  $listView-width: grid-step(5) !global;
-  $detailView-width: grid-step(11) !global;
+  // Decrease width of middle column (list of events and tasks)
+  $listView-width: grid-step(4) !global;
+  $detailView-width: grid-step(10) !global;
 
   .view-list {
     min-width: ($listView-width - ($pitch * 2));
-    @include at(sm){
+    @include at(sm) {
       @include flex-col(sm, 6, 1, 1);
       min-width: ($pitch * 3);
     }
@@ -44,7 +44,8 @@ $block_radius: 3px;
       @include flex-col(sm, 10);
     }
     @include from(md) {
-      @include flex-col(md, 11, 1, 1);
+      flex: 1 1 auto;
+      margin: 0;
     }
   }
 
