@@ -582,6 +582,12 @@
             <!-- Events list -->
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
+              <md-subheader>
+                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+                </md-button>
+                <span>{{list.component.$queryEvents.filterpopup | loc}}</span>
+              </md-subheader>
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
@@ -619,6 +625,12 @@
             <!-- Tasks list -->
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
+              <md-subheader>
+                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+                </md-button>
+                <span>{{list.component.$queryTasks.filterpopup | loc}}</span>
+              </md-subheader>
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">

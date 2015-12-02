@@ -354,7 +354,7 @@
 
         <md-content id="contactsList" layout="column" class="md-flex">
           <md-subheader ng-show="addressbook.service.$query.value">
-            <md-button class="md-icon-button md-primary hide show-gt-sm" ng-click="toggleLeft()">
+            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
               <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
             </md-button>
             <span ng-switch="addressbook.selectedFolder.cards.length">
@@ -363,7 +363,7 @@
             </span>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
-            <md-button class="md-icon-button md-primary hide show-gt-sm" ng-click="toggleLeft()">
+            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
               <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
             </md-button>
             <span ng-switch="addressbook.selectedFolder.isRemote">

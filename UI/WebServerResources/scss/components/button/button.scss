@@ -68,6 +68,21 @@ md-list md-list-item button.md-button.sg-icon-button {
   }
 }
 
+.md-subheader-content {
+  .md-icon-button:first-child {
+    padding-left: 0;
+    margin-left: $icon-button-margin/2;
+    margin-right: $icon-button-margin*1.5;
+  }
+}
+md-tab-content {
+  .md-subheader-content {
+    .md-icon-button:first-child {
+      margin-right: $icon-button-margin/2;
+    }
+  }
+}
+
 // md-toolbar .md-toolbar-tools:first-of-type .iconButton,
 // md-toolbar .md-toolbar-tools:first-child .iconButton,
 // md-toolbar .md-toolbar-tools.md-toolbar-tools-top .iconButton,

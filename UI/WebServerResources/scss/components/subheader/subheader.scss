@@ -11,6 +11,13 @@
     padding: 0 0 0 $layout-gutter-width;
   }
 }
+md-tab-content {
+  .md-subheader {
+    .md-subheader-inner {
+      padding-left: $layout-gutter-width/2;
+    }
+  }
+}
 
 .sg-md-subheader {
   &--fixed {
