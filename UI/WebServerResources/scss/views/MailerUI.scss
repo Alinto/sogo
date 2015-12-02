@@ -45,48 +45,69 @@
 //  margin-bottom: ($mg/2);
 }
 
-md-sidenav md-checkbox {
-  &.sg-folder {
-    // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
-    .md-container:after {
-      color: rgba(0,0,0,0.54);
-      font-family: 'Material Icons';
-      font-size: 24px;
-      content: "\e2c7";
-      top: -4px;
-      left: -2px;
-      width: 1em;
-      height: 1em;
-    }
-    .md-icon {
-      border-width: 0;
-    }
-    &.md-checked {
+md-sidenav {
+  md-checkbox {
+    &.sg-folder {
+      // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
       .md-container:after {
-        content: "\e2c8";
+        color: rgba(0,0,0,0.54);
+        font-family: 'Material Icons';
+        font-size: 24px;
+        content: "\e2c7";
+        top: -4px;
+        left: -2px;
+        width: 1em;
+        height: 1em;
       }
       .md-icon {
-        background-color: initial;
-        &:after {
-          border-style: none;
+        border-width: 0;
+      }
+      &.md-checked {
+        .md-container:after {
+          content: "\e2c8";
+        }
+        .md-icon {
+          background-color: initial;
+          &:after {
+            border-style: none;
+          }
         }
       }
     }
   }
+  .sg-item-name {
+    line-height: 6 * $baseline-grid; // $list-item-height, 48px
+  }
 }
-
-.msg-attachment-image {
-  @media (min-width: $layout-breakpoint-sm) {
+.msg-attachment-image,
+.msg-attachment-link {
+  @media (min-width: $layout-breakpoint-xs) {
     flex: 0 0 100%;
-    max-width: 100%;
+  }
+  @media (min-width: $layout-breakpoint-sm) {
+    flex: 0 0 50%;
   }
   @media (min-width: $layout-breakpoint-md) {
-    flex: 0 0 66.66%;
-    max-width: 66%;
-  }
-  @media (min-width: $layout-breakpoint-lg) {
     flex: 0 0 33.33%;
-    max-width: 33%;
+  }
+  > div {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+// sgZoomableImage directive
+.msg-attachment-image {
+  transition: flex-basis $swift-ease-out-duration $swift-ease-out-timing-function;
+  &.sg-zoom {
+    flex-basis: 100%;
+    order: -1;
+  }
+  &:not(.sg-zoom):hover md-card {
+    @extend .md-whiteframe-3dp;
+  }
+  [sg-zoomable-image] img {
+    cursor: pointer;
   }
 }
 
@@ -95,7 +116,13 @@ md-sidenav md-checkbox {
   max-width: 100%;
 }
 
-// sg-md title don't fit in message headers
+.sg-attachment-size {
+  @extend .md-caption;
+  padding-left: $baseline-grid;
+  color: $colorGrey800;
+}
+
+// sg-md title doesn't fit in message headers
 .sg-md-title-msg {
   @extend .sg-md-title;
   margin: 0;
@@ -106,7 +133,17 @@ md-sidenav md-checkbox {
 
 .mailer_mailcontent {
   @extend .sg-md-body-multi;
+  md-card {
+    md-card-content {
+      padding: $baseline-grid;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }
+
 //$total-columns: 13;
 //$column-gutter: 0;
 

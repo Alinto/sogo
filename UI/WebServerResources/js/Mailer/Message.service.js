@@ -325,6 +325,8 @@
 
               if (part.type == 'UIxMailPartImageViewer')
                 part.msgclass = 'msg-attachment-image';
+              else if (part.type == 'UIxMailPartLinkViewer')
+                part.msgclass = 'msg-attachment-link';
 
               // Trusted content that can be compiled (Angularly-speaking)
               part.compile = true;

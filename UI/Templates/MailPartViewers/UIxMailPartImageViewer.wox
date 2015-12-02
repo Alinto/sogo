@@ -11,12 +11,14 @@
          var:title="filenameForDisplay"
          class="md-card-image"></img>
     <md-card-content>
-      <p class="md-caption">
-        <var:string value="filenameForDisplay" /><br/>
-        <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
+      <p class="md-caption" var:title="filenameForDisplay">
+        <var:string value="filenameForDisplay" />
       </p>
     </md-card-content>
-    <md-dialog-actions layout="row" layout-align="end center">
+    <md-dialog-actions layout="row" layout-align="start center">
+      <div class="md-flex sg-attachment-size">
+        <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
+      </div>
       <md-button class="sg-icon-button" var:href="pathForDownload">
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
         <md-icon>save</md-icon>
