@@ -31,12 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Account constructor
    */
-  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Mailbox', 'Message', function($q, $timeout, $log, Settings, Resource, Mailbox, Message) {
+  Account.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Preferences', 'Mailbox', 'Message', function($q, $timeout, $log, Settings, Resource, Preferences, Mailbox, Message) {
     angular.extend(Account, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $$resource: new Resource(Settings.baseURL(), Settings.activeUser()),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
+      $Preferences: Preferences,
       $Mailbox: Mailbox,
       $Message: Message
     });
@@ -64,14 +65,27 @@
    * @returns the list of accounts
    */
   Account.$findAll = function(data) {
-    var collection = [];
-    if (data) {
-      // Each entry is spun up as an Account instance
-      angular.forEach(data, function(o, i) {
-        o.id = i;
-        collection[i] = new Account(o);
+    if (!data) {
+      return Account.$$resource.fetch('', 'mailAccounts').then(function(o) {
+        return Account.$unwrapCollection(o);
       });
     }
+    return Account.$unwrapCollection(data);
+  };
+
+  /**
+   * @memberof Account
+   * @desc Unwrap to a collection of Account instances.
+   * @param {object} data - the accounts information
+   * @returns a collection of Account objects
+   */
+  Account.$unwrapCollection = function(data) {
+    var collection = [];
+
+    angular.forEach(data, function(o, i) {
+      o.id = i;
+      collection[i] = new Account(o);
+    });
     return collection;
   };
 
@@ -83,21 +97,42 @@
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function(options) {
-    var _this = this,
-        deferred = Account.$q.defer();
+    var _this = this;
 
     if (this.$mailboxes && !(options && options.reload)) {
-      deferred.resolve(this.$mailboxes);
+      return Account.$q.when(this.$mailboxes);
     }
     else {
-      Account.$Mailbox.$find(this).then(function(data) {
+      return Account.$Mailbox.$find(this).then(function(data) {
         _this.$mailboxes = data;
-        _this.$flattenMailboxes({reload: true});
-        deferred.resolve(_this.$mailboxes);
+
+        // Set expanded folders from user's settings
+        Account.$Preferences.ready().then(function() {
+          var expandedFolders,
+              _visit = function(mailboxes) {
+                _.forEach(mailboxes, function(o) {
+                  o.$expanded = (expandedFolders.indexOf('/' + o.id) >= 0);
+                  if (o.children && o.children.length > 0) {
+                    _visit(o.children);
+                  }
+                });
+              };
+          if (Account.$Preferences.settings.Mail.ExpandedFolders) {
+            if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
+              // Backward compatibility support
+              expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
+            else
+              expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
+            if (expandedFolders.length > 0) {
+              _visit(_this.$mailboxes);
+            }
+          }
+          _this.$flattenMailboxes({reload: true});
+        });
+
+        return _this.$mailboxes;
       });
     }
-
-    return deferred.promise;
   };
 
   /**
@@ -110,21 +145,31 @@
   Account.prototype.$flattenMailboxes = function(options) {
     var _this = this,
         allMailboxes = [],
+        expandedMailboxes = [],
         _visit = function(mailboxes) {
           _.each(mailboxes, function(o) {
             allMailboxes.push(o);
-            if (o.children && o.children.length > 0) {
+            if ((options && options.all || o.$expanded) && o.children && o.children.length > 0) {
               _visit(o.children);
             }
           });
         };
 
-    if (this.$$flattenMailboxes && !(options && options.reload)) {
+    if (this.$$flattenMailboxes && !(options && (options.reload || options.all))) {
       allMailboxes = this.$$flattenMailboxes;
     }
     else {
       _visit(this.$mailboxes);
       _this.$$flattenMailboxes = allMailboxes;
+      if (options && options.saveState) {
+        _.reduce(allMailboxes, function(expandedFolders, mailbox) {
+          if (mailbox.$expanded) {
+            expandedFolders.push('/' + mailbox.id);
+          }
+          return expandedFolders;
+        }, expandedMailboxes);
+        Account.$$resource.post(null, 'saveFoldersState', expandedMailboxes);
+      }
     }
 
     return allMailboxes;

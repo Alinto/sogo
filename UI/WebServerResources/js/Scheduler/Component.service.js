@@ -45,7 +45,9 @@
       // Filter paramaters specific to events
       $queryEvents: { sort: 'start', asc: 1, filterpopup: 'view_next7' },
       // Filter parameters specific to tasks
-      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' }
+      $queryTasks: { sort: 'status', asc: 1, filterpopup: 'view_incomplete' },
+      $refreshTimeout: null,
+      $ghost: {}
     });
     Preferences.ready().then(function() {
       // Initialize filter parameters from user's settings
@@ -97,12 +99,33 @@
 
     count = 0;
     if (Component.$events) {
-      count = (_.filter(Component.$events, function(event) { return event.selected; })).length;
+      count += (_.filter(Component.$events, function(event) { return event.selected; })).length;
     }
     if (Component.$tasks) {
-      count = (_.filter(Component.$tasks, function(event) { return event.selected; })).length;
+      count += (_.filter(Component.$tasks, function(task) { return task.selected; })).length;
     }
     return count;
+  };
+
+  /**
+   * @function $startRefreshTimeout
+   * @memberof Component
+   * @desc Starts the refresh timeout for the current selected component type, for all calendars
+   */
+  Component.$startRefreshTimeout = function(type) {
+    var _this = this;
+
+    if (Component.$refreshTimeout)
+      Component.$timeout.cancel(Component.$refreshTimeout);
+
+    Component.$Preferences.ready().then(function() {
+      // Restart the refresh timer, if needed
+      var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var f = angular.bind(_this, Component.$filter, type);
+        Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      }
+    });
   };
 
   /**
@@ -123,6 +146,8 @@
         params = {
           day: '' + year + (month < 10?'0':'') + month + (day < 10?'0':'') + day,
         };
+
+    Component.$startRefreshTimeout(type);
 
     return this.$Preferences.ready().then(function() {
       var futureComponentData,
@@ -216,6 +241,10 @@
       viewAction = 'dayView';
       startDate = endDate = date;
     }
+    else if (view == 'multicolumnday') {
+      viewAction = 'multicolumndayView';
+      startDate = endDate = date;
+    }
     else if (view == 'week') {
       viewAction = 'weekView';
       startDate = date.beginOfWeek();
@@ -240,48 +269,104 @@
   /**
    * @function $eventsBlocks
    * @desc Events blocks for a specific view and period
-   * @param {string} view - Either 'day' or 'week'
+   * @param {string} view - Either 'day', 'multicolumnday', 'week' or 'month'
    * @param {Date} startDate - period's start date
    * @param {Date} endDate - period's end date
    * @returns a promise of a collection of objects describing the events blocks
    */
   Component.$eventsBlocks = function(view, startDate, endDate) {
-    var params, futureComponentData, i,
+    var params, futureComponentData, i, j, dates = [],
         deferred = Component.$q.defer();
 
     params = { view: view.toLowerCase(), sd: startDate.getDayString(), ed: endDate.getDayString() };
     Component.$log.debug('eventsblocks ' + JSON.stringify(params, undefined, 2));
     futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
-    futureComponentData.then(function(data) {
+    futureComponentData.then(function(views) {
+      var reduceComponent, associateComponent;
+
+      reduceComponent = function(objects, eventData, i) {
+        var componentData = _.object(this.eventsFields, eventData),
+            start = new Date(componentData.c_startdate * 1000);
+        componentData.hour = start.getHourString();
+        componentData.blocks = [];
+        objects.push(new Component(componentData));
+        return objects;
+      };
+
+      associateComponent = function(block) {
+        this[block.nbr].blocks.push(block); // Associate block to component
+        block.component = this[block.nbr];  // Associate component to block
+      };
+
+      Component.$views = [];
       Component.$timeout(function() {
-        var components = [], blocks = {};
+        _.forEach(views, function(data) {
+          var components = [], blocks = {}, allDayBlocks = {}, viewData;
 
-        // Instantiate Component objects
-        _.reduce(data.events, function(objects, eventData, i) {
-          var componentData = _.object(data.eventsFields, eventData),
-              start = new Date(componentData.c_startdate * 1000);
-          componentData.hour = start.getHourString();
-          objects.push(new Component(componentData));
-          return objects;
-        }, components);
+          // Change some attributes names
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_folder'),        1, 'pid');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_name'),          1, 'id');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_recurrence_id'), 1, 'occurrenceId');
+          data.eventsFields.splice(_.indexOf(data.eventsFields, 'c_title'),         1, 'summary');
 
-        // Associate Component objects to blocks positions
-        _.each(_.flatten(data.blocks), function(block) {
-          block.component = components[block.nbr];
+          // Instantiate Component objects
+          _.reduce(data.events, reduceComponent, components, data);
+
+          // Associate Component objects to blocks positions
+          _.forEach(_.flatten(data.blocks), associateComponent, components);
+
+          // Associate Component objects to all-day blocks positions
+          _.each(_.flatten(data.allDayBlocks), associateComponent, components);
+
+          // Build array of dates
+          if (dates.length === 0)
+            for (i = 0; i < data.blocks.length; i++) {
+              dates.push(startDate.getDayString());
+              startDate.addDays(1);
+            }
+
+          // Convert array of blocks to object with days as keys
+          for (i = 0; i < data.blocks.length; i++) {
+            for (j = 0; j < data.blocks[i].length; j++)
+              data.blocks[i][j].dayNumber = i;
+            blocks[dates[i]] = data.blocks[i];
+          }
+
+          // Convert array of all-day blocks to object with days as keys
+          for (i = 0; i < data.allDayBlocks.length; i++) {
+            for (j = 0; j < data.allDayBlocks[i].length; j++)
+              data.allDayBlocks[i][j].dayNumber = i;
+            allDayBlocks[dates[i]] = data.allDayBlocks[i];
+          }
+
+          // "blocks" is now an object literal with the following structure:
+          // { day: [
+          //    { start: number,
+          //      length: number,
+          //      siblings: number,
+          //      realSiblings: number,
+          //      position: number,
+          //      nbr: number,
+          //      component: Component },
+          //    .. ],
+          //  .. }
+          //
+          // Where day is a string with format YYYYMMDD
+
+          Component.$log.debug('blocks ready (' + _.flatten(data.blocks).length + ')');
+          Component.$log.debug('all day blocks ready (' + _.flatten(data.allDayBlocks).length + ')');
+
+          // Save the blocks to the object model
+          viewData = { blocks: blocks, allDayBlocks: allDayBlocks };
+          if (data.id && data.calendarName) {
+            // The multicolumnday view also includes calendar information
+            viewData.id = data.id;
+            viewData.calendarName = data.calendarName;
+          }
+          Component.$views.push(viewData);
         });
 
-        // Convert array of blocks to object with days as keys
-        for (i = 0; i < data.blocks.length; i++) {
-          blocks[startDate.getDayString()] = data.blocks[i];
-          startDate.addDays(1);
-        }
-
-        Component.$log.debug('blocks ready (' + _.keys(blocks).length + ')');
-
-        // Save the blocks to the object model
-        Component.$blocks = blocks;
-
-        deferred.resolve(blocks);
+        deferred.resolve(Component.$views);
       });
     }, deferred.reject);
 
@@ -302,6 +387,9 @@
     return futureComponentData.then(function(data) {
       return Component.$timeout(function() {
         var fields = _.invoke(data.fields, 'toLowerCase');
+          fields.splice(_.indexOf(fields, 'c_folder'), 1, 'pid');
+          fields.splice(_.indexOf(fields, 'c_name'), 1, 'id');
+          fields.splice(_.indexOf(fields, 'c_recurrence_id'), 1, 'occurrenceId');
 
         // Instanciate Component objects
         _.reduce(data[type], function(components, componentData, i) {
@@ -333,6 +421,7 @@
     this.repeat = {};
     this.alarm = { action: 'display', quantity: 5, unit: 'MINUTES', reference: 'BEFORE', relation: 'START' };
     this.status = 'not-specified';
+    this.delta = 60;
     angular.extend(this, data);
 
     Component.$Preferences.ready().then(function() {
@@ -343,12 +432,37 @@
         Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
     });
 
-    if (this.startDate)
-      this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
-    if (this.endDate)
+    if (this.component == 'vevent')
+      this.type = 'appointment';
+    else if (this.component == 'vtoto')
+      this.type = 'task';
+
+    if (this.startDate) {
+      if (angular.isString(this.startDate))
+        // Ex: 2015-10-25T22:34:51+00:00
+        this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+      else
+        // Date object
+        this.start = this.startDate;
+    }
+    else if (this.type == 'appointment') {
+      this.start = new Date();
+      this.start.setMinutes(Math.round(this.start.getMinutes()/15)*15);
+    }
+
+    if (this.endDate) {
       this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
+      this.delta = this.start.minutesTo(this.end);
+    }
+    else if (this.type == 'appointment') {
+      this.setDelta(this.delta);
+    }
+
     if (this.dueDate)
       this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
+
+    if (this.c_category)
+      this.categories = _.invoke(this.c_category, 'asCSSIdentifier');
 
     // Parse recurrence rule definition and initialize default values
     this.$isRecurrent = angular.isDefined(data.repeat);
@@ -411,19 +525,12 @@
     // Allow the component to be moved to a different calendar
     this.destinationCalendar = this.pid;
 
-    if (this.organizer && this.organizer.email) {
-      this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
-    }
+    // if (this.organizer && this.organizer.email) {
+    //   this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
+    // }
 
     // Load freebusy of attendees
-    this.freebusy = this.updateFreeBusyCoverage();
-
-    if (this.attendees) {
-      _.each(this.attendees, function(attendee) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
-        _this.updateFreeBusy(attendee);
-      });
-    }
+    this.updateFreeBusy();
 
     this.selected = false;
   };
@@ -501,7 +608,7 @@
    * @returns true if the percent completion should be displayed
    */
   Component.prototype.enablePercentComplete = function() {
-    return (this.component = 'vtodo' &&
+    return (this.type == 'task' &&
             this.status != 'not-specified' &&
             this.status != 'cancelled');
   };
@@ -569,10 +676,41 @@
   /**
    * @function updateFreeBusy
    * @memberof Component.prototype
+   * @desc Update the freebusy coverage representation and the attendees freebusy information
+   */
+  Component.prototype.updateFreeBusy = function() {
+    var _this = this;
+
+    this.freebusy = this.updateFreeBusyCoverage();
+
+    if (this.attendees) {
+      _.each(this.attendees, function(attendee) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
+        _this.updateFreeBusyAttendee(attendee);
+      });
+    }
+  };
+
+  /**
+   * @function setDelta
+   * @memberof Component.prototype
+   * @desc Set the end time to the specified number of minutes after the start time.
+   * @param {number} delta - the number of minutes
+   */
+  Component.prototype.setDelta = function(delta) {
+    this.delta = delta;
+    this.end = new Date(this.start.getTime());
+    this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
+    this.end.addMinutes(this.delta);
+  };
+
+  /**
+   * @function updateFreeBusyAttendee
+   * @memberof Component.prototype
    * @desc Update the freebusy information for the component's period for a specific attendee.
    * @param {Object} card - an Card object instance of the attendee
    */
-  Component.prototype.updateFreeBusy = function(attendee) {
+  Component.prototype.updateFreeBusyAttendee = function(attendee) {
     var params, url, days;
     if (attendee.uid) {
       params =
@@ -624,7 +762,7 @@
   Component.prototype.getClassName = function(base) {
     if (angular.isUndefined(base))
       base = 'fg';
-    return base + '-folder' + (this.destinationCalendar || this.c_folder);
+    return base + '-folder' + (this.destinationCalendar || this.c_folder || this.pid);
   };
 
   /**
@@ -651,7 +789,7 @@
           this.attendees.push(attendee);
         else
           this.attendees = [attendee];
-        this.updateFreeBusy(attendee);
+        this.updateFreeBusyAttendee(attendee);
       }
     }
   };
@@ -670,6 +808,19 @@
       });
     });
     return angular.isDefined(attendee);
+  };
+
+  /**
+   * @function deleteAttendee
+   * @memberof Component.prototype
+   * @desc Remove an attendee from the component
+   * @param {Object} attendee - an object literal defining an attendee
+   */
+  Component.prototype.deleteAttendee = function(attendee) {
+    var index = _.findIndex(this.attendees, function(currentAttendee) {
+      return currentAttendee.email == attendee.email;
+    });
+    this.attendees.splice(index, 1);
   };
 
   /**
@@ -720,6 +871,47 @@
   };
 
   /**
+   * @function $addDueDate
+   * @memberof Component.prototype
+   * @desc Add a due date
+   */
+  Component.prototype.$addDueDate = function() {
+    this.due = new Date();
+    this.due.setMinutes(Math.round(this.due.getMinutes()/15)*15);
+    this.dueDate = this.due.toISOString();
+  };
+
+  /**
+   * @function $deleteDueDate
+   * @memberof Component.prototype
+   * @desc Delete a due date
+   */
+  Component.prototype.$deleteDueDate = function() {
+    delete this.due;
+    delete this.dueDate;
+  };
+
+  /**
+   * @function $addStartDate
+   * @memberof Component.prototype
+   * @desc Add a start date
+   */
+  Component.prototype.$addStartDate = function() {
+    this.start = new Date();
+    this.start.setMinutes(Math.round(this.start.getMinutes()/15)*15);
+  };
+
+  /**
+   * @function $deleteStartDate
+   * @memberof Component.prototype
+   * @desc Delete a start date
+   */
+  Component.prototype.$deleteStartDate = function() {
+    delete this.start;
+    delete this.startDate;
+  };
+
+  /**
    * @function $reset
    * @memberof Component.prototype
    * @desc Reset the original state the component's data.
@@ -736,7 +928,7 @@
   };
 
   /**
-   * @function reply
+   * @function $reply
    * @memberof Component.prototype
    * @desc Reply to an invitation.
    * @returns a promise of the HTTP operation
@@ -762,6 +954,27 @@
   };
 
   /**
+   * @function $adjust
+   * @memberof Component.prototype
+   * @desc Adjust the start, day, and/or duration of the component
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.$adjust = function(params) {
+    var path = [this.pid, this.id];
+
+    if (_.every(_.values(params), function(v) { return v === 0; }))
+      // No changes
+      return Component.$q.when();
+
+    if (this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    Component.$log.debug('adjust ' + path.join('/') + ' ' + JSON.stringify(params));
+
+    return Component.$$resource.save(path.join('/'), params, { action: 'adjust' });
+  };
+
+  /**
    * @function $save
    * @memberof Component.prototype
    * @desc Save the component to the server.
@@ -781,6 +994,21 @@
         _this.$shadowData = _this.$omit(true);
         return data;
       });
+  };
+
+  /**
+   * @function $delete
+   * @memberof Component.prototype
+   * @desc Delete the component from the server.
+   * @param {boolean} occurrenceOnly - delete this occurrence only
+   */
+  Component.prototype.remove = function(occurrenceOnly) {
+    var _this = this, path = [this.pid, this.id];
+
+    if (occurrenceOnly && this.occurrenceId)
+      path.push(this.occurrenceId);
+
+    return Component.$$resource.remove(path.join('/'));
   };
 
   /**
@@ -816,14 +1044,20 @@
   Component.prototype.$omit = function() {
     var component = {}, date;
     angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key[0] != '$') {
+      if (key != 'constructor' &&
+          key[0] != '$' &&
+          key != 'blocks') {
         component[key] = angular.copy(value);
       }
     });
 
-    // Format times
-    component.startTime = component.startDate ? formatTime(component.startDate) : '';
-    component.endTime   = component.endDate   ? formatTime(component.endDate)   : '';
+    // Format dates and times
+    component.startDate = component.start ? formatDate(component.start) : '';
+    component.startTime = component.start ? formatTime(component.start) : '';
+    component.endDate = component.end ? formatDate(component.end) : '';
+    component.endTime = component.end ? formatTime(component.end) : '';
+    component.dueDate = component.due ? formatDate(component.due) : '';
+    component.dueTime = component.due ? formatTime(component.due) : '';
 
     // Update recurrence definition depending on selections
     if (this.$hasCustomRepeat) {
@@ -867,19 +1101,71 @@
       component.alarm = {};
     }
 
-    function formatTime(dateString) {
-      // YYYY-MM-DDTHH:MM-ZZ:00 => YYYY-MM-DD HH:MM
-      var date = new Date(dateString.substring(0,10) + ' ' + dateString.substring(11,16)),
-          hours = date.getHours(),
-          minutes = date.getMinutes();
-
+    function formatTime(date) {
+      var hours = date.getHours();
       if (hours < 10) hours = '0' + hours;
-      if (minutes < 10) minutes = '0' + minutes;
 
+      var minutes = date.getMinutes();
+      if (minutes < 10) minutes = '0' + minutes;
       return hours + ':' + minutes;
+    }
+
+    function formatDate(date) {
+      var year = date.getYear();
+      if (year < 1000) year += 1900;
+
+      var month = '' + (date.getMonth() + 1);
+      if (month.length == 1)
+        month = '0' + month;
+
+      var day = '' + date.getDate();
+      if (day.length == 1)
+        day = '0' + day;
+
+      return year + '-' + month + '-' + day;
     }
 
     return component;
   };
+
+  /**
+   * @function repeatDescription
+   * @memberof Component.prototype
+   * @desc Return a localized description of the recurrence definition
+   * @return a localized string
+   */
+  Component.prototype.repeatDescription = function() {
+    var localizedString = null;
+    if (this.repeat)
+      localizedString = l('repeat_' + this.repeat.frequency.toUpperCase());
+
+    return localizedString;
+  };
+
+  /**
+   * @function alarmDescription
+   * @memberof Component.prototype
+   * @desc Return a localized description of the reminder definition
+   * @return a localized string
+   */
+  Component.prototype.alarmDescription = function() {
+    var key, localizedString = null;
+    if (this.alarm) {
+      key = ['reminder' + this.alarm.quantity, this.alarm.unit, this.alarm.reference].join('_');
+      localizedString = l(key);
+      if (key === localizedString)
+        // No localized string for this reminder definition
+        localizedString = [this.alarm.quantity,
+                           l('reminder_' + this.alarm.unit),
+                           l('reminder_' + this.alarm.reference)].join(' ');
+    }
+
+    return localizedString;
+  };
+
+  Component.prototype.toString = function() {
+    return '[Component ' + this.id + ']';
+  };
+
 
 })();

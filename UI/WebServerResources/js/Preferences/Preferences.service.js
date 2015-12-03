@@ -128,7 +128,11 @@
    * @return an object literal copy of the Preferences instance
    */
   Preferences.prototype.$omit = function(deep) {
-    var preferences = {};
+    var preferences, labels, whitelist;
+
+    preferences = {};
+    whitelist = {};
+
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key[0] != '$') {
         if (deep)
@@ -139,7 +143,7 @@
     });
 
     // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-    var labels = _.object(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
+    labels = _.object(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
       if (key.charAt(0) == '_' && key.charAt(1) == '$')
         return [key.substring(1), value];
       return [key, value];
@@ -155,17 +159,18 @@
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
         preferences.defaults.Vacation.autoReplyEmailAddresses = preferences.defaults.Vacation.autoReplyEmailAddresses.split(",");
+      else
+        preferences.defaults.Vacation.autoReplyEmailAddresses = [];
     }
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
       preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
 
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
-      var h = {};
       _.each(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
-        h[user.uid] = user.$shortFormat();
+        whitelist[user.uid] = user.$shortFormat();
       });
-      preferences.settings.Calendar.PreventInvitationsWhitelist = h;
+      preferences.settings.Calendar.PreventInvitationsWhitelist = whitelist;
     }
 
     return preferences;

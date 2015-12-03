@@ -1,8 +1,8 @@
 /// chips.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-// Remove the line under the tags of the message viewer
 md-chips {
+  // Remove the line under the tags of the message viewer
   &.sg-readonly {
     .md-chips {
       box-shadow: none;
@@ -12,6 +12,67 @@ md-chips {
       .md-chip-content {
         max-width: initial; // fix bug in ng-material
       }
+      // Custom 'chip remove' button used with chips in readonly mode
+      .sg-chip-remove {
+        &:hover {
+          cursor: pointer;
+        }
+        height: $chip-delete-icon-size;
+        width: $chip-delete-icon-size;
+        line-height: $chip-delete-icon-size;
+      }
     }
+  }
+  .sg-chip-progress {
+    border-radius: $chip-height / 2;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: $swift-ease-in-out;
+    &.ng-hide {
+      background-color: #fff;
+    }
+    span {
+      bottom: 0;
+      left: 0;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      transition: $swift-ease-in-out;
+      width: 0;
+    }
+  }
+}
+
+// Enlarge the default autocompletion menu
+.sg-chips-autocomplete {
+  width: (3 * $contact-chip-name-width);
+}
+
+// Adjust avatar size according to chips dimensions
+.md-contact-chips {
+  .md-chips {
+    .md-chip {
+      .md-contact-avatar {
+        md-icon {
+          height: ($chip-height * .75);
+          margin: ($chip-height * .25/2);
+        }
+      }
+    }
+  }
+}
+
+// In the autocompletion menu, don't limit the contact name to a fixed width
+// and show the email address right after it
+.md-contact-suggestion {
+  .md-contact-name {
+    width: auto;
+  }
+  .md-contact-email {
+    margin-left: $contact-chip-suggestion-margin;
   }
 }

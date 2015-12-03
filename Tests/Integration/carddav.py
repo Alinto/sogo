@@ -70,7 +70,11 @@ class Carddav:
         if not self.cards:
             url = "/SOGo/so/%s/Contacts/personal/view" % (self.login)
             content = self._get(url)
-            self.cards = content['cards']
+            #print "\nCONTENT:", content
+            if 'cards' in content:
+                self.cards = content['cards']
+            else:
+                self.cards = []
         return self.cards
 
     def get_cards(self, pattern):

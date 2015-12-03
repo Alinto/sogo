@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'angularFileUpload', 'SOGo.Common', 'SOGo.PreferencesUI'])
+  angular.module('SOGo.ContactsUI', ['ngSanitize', 'ui.router', 'angularFileUpload', 'ck', 'SOGo.Common', 'SOGo.PreferencesUI', 'SOGo.MailerUI'])
     .config(configure)
     .run(runBlock);
 
@@ -102,9 +102,13 @@
   /**
    * @ngInject
    */
-  stateAddressbook.$inject = ['$stateParams', 'AddressBook'];
-  function stateAddressbook($stateParams, AddressBook) {
-    return AddressBook.$find($stateParams.addressbookId).$futureAddressBookData;
+  stateAddressbook.$inject = ['$stateParams', 'stateAddressbooks', 'AddressBook'];
+  function stateAddressbook($stateParams, stateAddressbooks, AddressBook) {
+    var addressbook = _.find(stateAddressbooks, function(addressbook) {
+      return addressbook.id == $stateParams.addressbookId;
+    });
+    addressbook.$reload();
+    return addressbook;
   }
 
   /**
@@ -130,10 +134,14 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
+  runBlock.$inject = ['$rootScope', '$log', '$state'];
+  function runBlock($rootScope, $log, $state) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $state.go('app');
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
   }
 

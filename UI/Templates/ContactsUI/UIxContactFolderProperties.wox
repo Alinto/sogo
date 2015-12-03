@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <md-dialog flex="40" flex-md="60" flex-sm="90">
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <!-- name -->
+        <md-input-container>
+          <label><var:string label:value="Name"/></label>
+          <input type="text"
+                 class="md-title"
+                 ng-model="properties.addressbook.name"/>
+        </md-input-container>
+        <md-button class="md-icon-button" ng-click="properties.close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content class="md-dialog-content" layout="column">
+      <md-checkbox
+          ng-model="properties.addressbook.synchronize"
+          ng-disabled="properties.addressbook.id == 'personal'"
+          ng-true-value="1"
+          ng-false-value="0">
+        <var:string label:value="Synchronize"/>
+      </md-checkbox>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+      <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
+      <md-button ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
+    </md-dialog-actions>
+
+  </md-dialog>
+</container>

@@ -32,6 +32,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserProfile.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailLabel.h>
 
 #import <SOGoUI/UIxComponent.h>
@@ -94,6 +95,9 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoRefreshViewCheck"])
     [[defaults source] setObject: [defaults refreshViewCheck]  forKey: @"SOGoRefreshViewCheck"];
+
+  if (![[defaults source] objectForKey: @"SOGoAlternateAvatar"])
+      [[defaults source] setObject: [defaults alternateAvatar]  forKey: @"SOGoAlternateAvatar"];
 
   //
   // Default Calendar preferences

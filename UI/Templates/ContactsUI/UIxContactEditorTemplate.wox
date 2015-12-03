@@ -5,11 +5,32 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-    <md-content md-scroll-y="md-scroll-y" class="viewer md-padding md-whiteframe-z1 bg-sogoPaper-50">
-      <!-- <div class="editor md-padding">-->
+  <div layout="column" class="layout-fill">
+    <md-toolbar class="md-whiteframe-z1">
+      <div class="md-toolbar-tools">
+        <md-button class="sg-icon-button"
+                   label:aria-label="Cancel"
+                   ng-click="editor.cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+        <div class="md-flex"><!-- spacer --></div>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Reset"
+                   ng-click="editor.reset()">
+          <md-icon>undo</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button"
+                   label:aria-label="Save"
+                   ng-click="editor.save(editor.card.$isCard()?cardForm:listForm)">
+          <md-icon>save</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content class="md-flex md-static">
+      <div layout="column" class="viewer md-padding">
         <hgroup class="header">
-          <h1 class="sg-md-display-2--light" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader">{{editor.card.$description()}}</h6>
+          <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+          <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
         </hgroup>
         
         <!-- contact editor -->
@@ -21,7 +42,7 @@
             </label>
             <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
           </md-input-container>
-          <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles-->
+          <!-- todo: look for better reset/normalization. Semanticaly this should be a fieldset, but content doesn't flex properly du to browser styles -->
           <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
             <md-input-container flex="40">
               <label>
@@ -43,18 +64,24 @@
             </md-input-container>
           </div>
 
-          <div class="sg-fieldset" layout="row" layout-sm="column">
-            <md-input-container>
+          <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
+            <md-input-container flex="40">
               <label>
                 <var:string label:value="Organization"/>
               </label>
               <input type="text" ng-model="editor.card.c_org"/>
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex="40">
               <label>
                 <var:string label:value="Title"/>
               </label>
               <input type="text" ng-model="editor.card.title"/>
+            </md-input-container>
+            <md-input-container flex="20">
+              <label>
+                <var:string label:value="Role"/>
+              </label>
+              <input type="text" ng-model="editor.card.role"/>
             </md-input-container>
           </div>
 
@@ -101,9 +128,11 @@
           <div class="section">
             <div class="attr" ng-repeat="email in editor.card.emails">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="email.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="email.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="Email Address"/>
@@ -126,13 +155,38 @@
             </div>
           </div>
 
+          <div class="section">
+            <div layout="row" layout-align="space-between end" ng-show="editor.card.c_screenname != null">
+              <md-input-container>
+                <label class="pseudo-input-label">
+                  <var:string label:value="Screen Name"/>
+                </label>
+                <input type="text" ng-model="editor.card.c_screenname"/>
+              </md-input-container>
+              <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('c_screenname', -1)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
+            </div>
+            <div class="md-layout-margin" layout="row" layout-align="start center" ng-show="editor.card.c_screenname == null">
+              <md-button class="sg-icon-button" type="button" ng-click="editor.addScreenName($event)">
+                <md-icon>add_circle</md-icon>
+              </md-button>
+              <label class="button-label">
+                <var:string label:value="Add Screen Name"/>
+              </label>
+            </div>
+          </div>
+
           <!-- birthday -->
           <div class="section">
             <div layout="row" layout-align="space-between end" ng-show="editor.card.birthday">
-              <label>
-                <var:string label:value="Birthday"/>
-              </label>
-              <md-datepicker ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label">
+                  <var:string label:value="Birthday"/>
+                </label>
+                <md-datepicker class="pseudo-input-field"
+                               ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+              </div>
               <md-button class="sg-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
                 <md-icon>remove_circle</md-icon>
               </md-button>
@@ -151,9 +205,11 @@
           <div class="section">
             <div class="attr" ng-repeat="phone in editor.card.phones">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="phone.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="phone.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="Phone Number"/>
@@ -181,9 +237,11 @@
           <div class="section">
             <div class="attr" ng-repeat="url in editor.card.urls">
               <div class="md-layout-margin" layout="row" layout-align="space-between end">
-                <md-select ng-model="url.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="url.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="URL"/>
@@ -209,9 +267,11 @@
           <div class="section">
             <div class="attr" ng-repeat="address in editor.card.addresses">
               <div layout="row" layout-align="center end">
-                <md-select ng-model="address.type" label:placeholder="Type">
-                  <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
-                </md-select>
+                <md-input-container flex="20">
+                  <md-select ng-model="address.type" label:placeholder="Type">
+                    <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
+                  </md-select>
+                </md-input-container>
                 <md-input-container>
                   <label>
                     <var:string label:value="street"/>
@@ -287,22 +347,10 @@
             </label>
             <textarea ng-model="editor.card.note"><!-- note --></textarea>
           </md-input-container>
-
-          <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button type="button" ng-click="editor.cancel()">
-              <var:string label:value="Cancel"/>
-            </md-button>
-            <md-button type="button" ng-click="editor.reset()">
-              <var:string label:value="Reset"/>
-            </md-button>
-            <md-button class="md-primary md-hue-3" type="submit">
-              <var:string label:value="Save"/>
-            </md-button>
-          </div>
         </form>
 
         <!-- list editor -->
-        <form name="listForm" ng-if="editor.card.$isList()" ng-submit="editor.save(listForm)">
+        <form name="listForm" ng-show="editor.card.$isList()" ng-submit="editor.save(listForm)">
           <md-input-container>
             <label>
               <var:string label:value="Display"/>
@@ -339,22 +387,8 @@
                 filter-selected="false"
                 label:placeholder="Add Member"><!-- members --></md-contact-chips>
           </div>
-          
-          <div class="fieldset md-layout-margin" layout="row" layout-align="end center">
-            <md-button type="button" ng-click="editor.cancel()">
-              <var:string label:value="Cancel"/>
-            </md-button>
-            <md-button type="button" ng-click="editor.reset()">
-              <var:string label:value="Reset"/>
-            </md-button>
-            <var:if condition="canCreateOrModify">
-              <md-button class="md-primary md-hue-3" type="submit">
-                <var:string label:value="Save"/>
-              </md-button>
-            </var:if>
-          </div>
         </form>
-      <!-- </div> -->
+      </div>
     </md-content>
-
+  </div>
 </container>

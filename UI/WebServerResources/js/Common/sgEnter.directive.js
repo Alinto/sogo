@@ -17,9 +17,7 @@
     return function(scope, element, attrs) {
       element.bind("keydown keypress", function(event) {
         if (event.which === ENTER_KEY) {
-          scope.$apply(function() {
-            scope.$eval(attrs.sgEnter);
-          });
+          scope.$apply(attrs.sgEnter);
           event.preventDefault();
         }
       });

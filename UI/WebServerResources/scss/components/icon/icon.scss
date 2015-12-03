@@ -108,6 +108,21 @@ md-icon {
   &.icon-remove-circle:before {
     content: "\e15c";
   }
+  &.icon-repeat:before {
+    content: "\e040";
+  }
+  &.icon-search:before {
+    content: "\e8b6";
+  }
+  &.icon-star:before {
+    content: "\e838";
+  }
+  &.icon-star-border:before {
+    content: "\e83a";
+  }
+  &.icon-stop:before {
+    content: "\e047";
+  }
   &.icon-visibility-off:before {
     content: "\e8f5";
   }
@@ -117,11 +132,11 @@ md-icon {
 }
 
 // Message flag
-.sg-msg-flag {
-  md-icon {
-    color: sg-color($sogoGreen, 50) !important;
-    &.flagged {
-      color: sg-color($sogoBlue, 600) !important;
-    }
-  }
-}
+//.sg-msg-flag {
+//  md-icon {
+//    color: sg-color($sogoGreen, 50) !important;
+//    &.flagged {
+//      color: sg-color($sogoBlue, 600) !important;
+//    }
+//  }
+//}

@@ -498,6 +498,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoRefreshViewCheck"];
 }
 
+- (void) setAlternateAvatar: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoAlternateAvatar"];
+}
+
+- (NSString *) alternateAvatar
+{
+  return [self stringForKey: @"SOGoAlternateAvatar"];
+}
+
 - (void) setMailComposeMessageType: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailComposeMessageType"];

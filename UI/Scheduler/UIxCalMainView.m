@@ -46,6 +46,11 @@
 
 @implementation UIxCalMainView
 
+- (NSString *) modulePath
+{
+  return @"Calendar";
+}
+
 - (void) checkDefaultModulePreference
 {
   SOGoUserDefaults *ud;

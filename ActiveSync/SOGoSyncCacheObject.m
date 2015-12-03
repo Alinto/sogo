@@ -32,8 +32,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
+static Class NSNullK;
 
 @implementation SOGoSyncCacheObject
+
++ (void) initialize
+{
+  NSNullK = [NSNull class];
+}
 
 - (id) init
 {
@@ -46,14 +54,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   return self;
 }
 
-+ (id) syncCacheObjectWithUID: (id) theUID  sequence:  (id) theSequence;
++ (id) syncCacheObjectWithUID: (id) theUID  sequence:  (id) theSequence
 {
   id o;
 
   o = [[self alloc] init];
- 
-  [o setUID: theUID];
-  [o setSequence: theSequence];
+
+  [o setUID: [NSNumber numberWithInt: [theUID intValue]]];
+  [o setSequence: ([theSequence isKindOfClass: NSNullK] ? theSequence : [NSNumber numberWithInt: [theSequence intValue]])];
   
   return [o autorelease];
 }
@@ -67,7 +75,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (id) uid
 {
-  return _uid;
+  return [_uid description];
 }
 
 - (void) setUID: (id) theUID
@@ -77,7 +85,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (id) sequence
 {
-  return _sequence;
+  return ([_sequence isKindOfClass: NSNullK] ? _sequence : [_sequence description]);
 }
 
 - (void) setSequence: (id) theSequence
@@ -88,7 +96,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSComparisonResult) compareUID: (SOGoSyncCacheObject *) theSyncCacheObject
 {
-  return [[self uid] compare: [theSyncCacheObject uid]];
+  return [self->_uid compare: theSyncCacheObject->_uid];
 }
 
 //
@@ -97,21 +105,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 - (NSComparisonResult) compareSequence: (SOGoSyncCacheObject *) theSyncCacheObject
 {
-  if ([[self sequence] isEqual: [NSNull null]] &&
-      [[theSyncCacheObject sequence] isEqual: [NSNull null]])
+  if ([self->_sequence isEqual: [NSNull null]] &&
+      [theSyncCacheObject->_sequence isEqual: [NSNull null]])
     return [self compareUID: theSyncCacheObject];
   
-  if (![[self sequence] isEqual: [NSNull null]] && [[theSyncCacheObject sequence] isEqual: [NSNull null]])
+  if (![self->_sequence isEqual: [NSNull null]] && [theSyncCacheObject->_sequence isEqual: [NSNull null]])
     return NSOrderedDescending;
   
-  if ([[self sequence] isEqual: [NSNull null]] && ![[theSyncCacheObject sequence] isEqual: [NSNull null]])
+  if ([self->_sequence isEqual: [NSNull null]] && ![theSyncCacheObject->_sequence isEqual: [NSNull null]])
     return NSOrderedAscending;
   
   // Must check this here, to avoid comparing NSNull objects
-  if ([[self sequence] compare: [theSyncCacheObject sequence]] == NSOrderedSame)
+  if ([self->_sequence compare: theSyncCacheObject->_sequence] == NSOrderedSame)
     return [self compareUID: theSyncCacheObject];
   
-  return [[self sequence] compare: [theSyncCacheObject sequence]];
+  return [self->_sequence compare: theSyncCacheObject->_sequence];
 }
 
 - (NSString *) description
@@ -120,3 +128,4 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 @end
+

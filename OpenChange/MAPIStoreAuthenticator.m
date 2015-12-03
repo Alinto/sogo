@@ -72,4 +72,8 @@
         return imapPassword;
 }
 
+- (NSString *) passwordInContext: (WOContext *) context
+{
+	return password;
+}
 @end

@@ -180,7 +180,8 @@
 {
   uint64_t version = ULLONG_MAX;
   NSString *changeNumber;
- 
+  BOOL synced;
+
   if (!isNew)
     {
       changeNumber = [(MAPIStoreGCSFolder *) container
@@ -189,16 +190,28 @@
         {
           [self warnWithFormat: @"attempting to get change number"
                 @" by synchronising folder..."];
-          [(MAPIStoreGCSFolder *) container synchroniseCache];
-          changeNumber = [(MAPIStoreGCSFolder *) container
-                            changeNumberForMessageWithKey: [self nameInContainer]];
-          
-          if (changeNumber)
-            [self logWithFormat: @"got one"];
-          else
+          synced = [(MAPIStoreGCSFolder *) container synchroniseCache];
+          if (synced)
             {
-              [self errorWithFormat: @"still nothing. We crash!"];
-              abort();
+              changeNumber = [(MAPIStoreGCSFolder *) container
+                                changeNumberForMessageWithKey: [self nameInContainer]];
+            }
+          if (!changeNumber)
+            {
+              [self warnWithFormat: @"attempting to get change number"
+                    @" by synchronising this specific message..."];
+              synced = [(MAPIStoreGCSFolder *) container
+                        synchroniseCacheFor: [self nameInContainer]];
+              if (synced)
+                {
+                  changeNumber = [(MAPIStoreGCSFolder *) container
+                                  changeNumberForMessageWithKey: [self nameInContainer]];
+                }
+              if (!changeNumber)
+                {
+                  [self errorWithFormat: @"still nothing. We crash!"];
+                  abort();
+                }
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;
@@ -209,13 +222,16 @@
 
 - (void) updateVersions
 {
-  NSData *newChangeKey;
+  /* Update ChangeKey and PredecessorChangeList on message's save */
+  NSData *newChangeKey, *predecessorChangeList;
 
   newChangeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  predecessorChangeList = [properties objectForKey: MAPIPropertyKey (PR_PREDECESSOR_CHANGE_LIST)];
 
   [(MAPIStoreGCSFolder *) container
-    updateVersionsForMessageWithKey: [self nameInContainer]
-                      withChangeKey: newChangeKey];
+      updateVersionsForMessageWithKey: [self nameInContainer]
+                        withChangeKey: newChangeKey
+             andPredecessorChangeList: predecessorChangeList];
 }
 
 @end

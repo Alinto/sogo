@@ -13,6 +13,7 @@
     vm.users = usersWithACL; // ACL users
     vm.folder = folder;
     vm.selectedUser = null;
+    vm.selectedUid = null;
     vm.userToAdd = '';
     vm.searchText = '';
     vm.userFilter = userFilter;
@@ -58,9 +59,12 @@
 
     function addUser(data) {
       if (data) {
-        folder.$acl.$addUser(data).then(function() {
+        folder.$acl.$addUser(data).then(function(user) {
           vm.userToAdd = '';
           vm.searchText = '';
+          vm.selectedUid = null;
+          if (user)
+            selectUser(user);
         }, function(error) {
           Dialog.alert(l('Warning'), error);
         });
@@ -68,10 +72,11 @@
     }
 
     function selectUser(user) {
-      if (vm.selectedUser == user) {
-        vm.selectedUser = null;
+      if (vm.selectedUid == user.uid) {
+        vm.selectedUid = null;
       }
       else {
+        vm.selectedUid = user.uid;
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }

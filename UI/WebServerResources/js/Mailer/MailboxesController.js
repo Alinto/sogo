@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdMedia', '$mdSidenav', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, $mdMedia, $mdSidenav, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -30,11 +30,109 @@
     vm.setFolderAs = setFolderAs;
     vm.refreshUnseenCount = refreshUnseenCount;
 
+    // Advanced search options
+    vm.showingAdvancedSearch = false;
+    vm.currentSearchParam = '';
+    vm.addSearchParam = addSearchParam;
+    vm.newSearchParam = newSearchParam;
+    vm.showAdvancedSearch = showAdvancedSearch;
+    vm.hideAdvancedSearch = hideAdvancedSearch;
+    vm.toggleAdvancedSearch = toggleAdvancedSearch;
+    vm.search = {
+      options: {'': l('Select a criteria'),
+                subject: l('Enter Subject'),
+                from: l('Enter From'),
+                to: l('Enter To'),
+                cc: l('Enter Cc'),
+                body: l('Enter Body')
+               },
+      mailbox: 'INBOX',
+      subfolders: 1,
+      match: 'AND',
+      params: []
+    };
+
     if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
       // Redirect to first mailbox of first account if no mailbox is selected
       account = vm.accounts[0];
       mailbox = account.$mailboxes[0];
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
+    }
+
+    function showAdvancedSearch(path) {
+      vm.showingAdvancedSearch = true;
+      vm.search.mailbox = path;
+    }
+
+    function hideAdvancedSearch() {
+      vm.showingAdvancedSearch = false;
+      vm.service.$virtualMode = false;
+
+      account = vm.accounts[0];
+      mailbox = vm.searchPreviousMailbox;
+      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
+    }
+
+    function toggleAdvancedSearch() {
+      if (Mailbox.selectedFolder.$isLoading) {
+        // Stop search
+        vm.virtualMailbox.stopSearch();
+      }
+      else {
+        // Start search
+        var root, mailboxes = [],
+            _visit = function(folders) {
+              _.each(folders, function(o) {
+                mailboxes.push(o);
+                if (o.children && o.children.length > 0) {
+                  _visit(o.children);
+                }
+              });
+            };
+
+        vm.virtualMailbox = new VirtualMailbox(vm.accounts[0]);
+
+        // Don't set the previous selected mailbox if we're in virtual mode
+        // That allows users to do multiple advanced search but return
+        // correctly to the previously selected mailbox once done.
+        if (!Mailbox.$virtualMode)
+          vm.searchPreviousMailbox = Mailbox.selectedFolder;
+
+        Mailbox.selectedFolder = vm.virtualMailbox;
+        Mailbox.$virtualMode = true;
+
+        if (angular.isDefined(vm.search.mailbox)) {
+          root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
+          mailboxes.push(root);
+          if (vm.search.subfolders && root.children.length)
+            _visit(root.children);
+        }
+        else {
+          mailboxes = vm.accounts[0].$flattenMailboxes();
+        }
+
+        vm.virtualMailbox.setMailboxes(mailboxes);
+        vm.virtualMailbox.startSearch(vm.search.match, vm.search.params);
+        $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
+      }
+    }
+
+    function addSearchParam(v) {
+      vm.currentSearchParam = v;
+      focus('advancedSearch');
+      return false;
+    }
+
+    function newSearchParam(pattern) {
+      if (pattern.length && vm.currentSearchParam.length) {
+        var n = 0, searchParam = vm.currentSearchParam;
+        if (pattern.startsWith("!")) {
+          n = 1;
+          pattern = pattern.substring(1).trim();
+        }
+        vm.currentSearchParam = '';
+        return { searchBy: searchParam, searchInput: pattern, negative: n };
+      }
     }
 
     function newFolder(parentFolder) {
@@ -121,11 +219,21 @@
       if (vm.editMode == folder.path)
         return;
       vm.editMode = false;
+      vm.showingAdvancedSearch = false;
+      vm.service.$virtualMode = false;
+        // Close sidenav on small devices
+      if ($mdMedia('sm'))
+        $mdSidenav('left').close();
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
     }
 
     function saveFolder(folder) {
-      folder.$rename();
+      folder.$rename()
+        .then(function(data) {
+          vm.editMode = false;
+        }, function(data, status) {
+          Dialog.alert(l('Warning'), data);
+        });
     }
 
     function compactFolder(folder) {
@@ -196,10 +304,7 @@
       else if (folder.type == 'additional')
         return {name: folder.name, icon: 'folder_shared'};
 
-      //if ($rootScope.currentFolder == folder)
-      //  return 'folder_open';
-
-      return {name: folder.name, icon: 'folder'};
+      return {name: folder.name, icon: 'folder_open'};
     }
 
     function setFolderAs(folder, type) {

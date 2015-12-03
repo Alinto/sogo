@@ -14,15 +14,21 @@
     <!-- attendees -->
     <md-list>
       <md-list-item>
-        <div><!-- empty --></div>
+        <div class="md-tile-left"><!-- empty --></div>
       </md-list-item>
       <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
-        <sg-avatar-image sg-email="currentAttendee.email"
-                         size="32"><!-- avatar --></sg-avatar-image>
+        <sg-avatar-image class="md-avatar"
+                         sg-email="currentAttendee.email"
+                         size="40"><!-- avatar --></sg-avatar-image>
         <div class="sg-tile-content">
-          <div class="sg-md-subhead-multi">{{currentAttendee.name}}</div>
-          <div class="sg-md-body-multi">{{currentAttendee.email}}</div>
+          <div class="sg-md-subhead"><div>{{currentAttendee.name}}</div></div>
+          <div class="sg-md-body"><div>{{currentAttendee.email}}</div></div>
         </div>
+        <md-button class="md-icon-button"
+                   label:aria-label="Delete"
+                   ng-click="editor.component.deleteAttendee(currentAttendee)">
+          <md-icon>close</md-icon>
+        </md-button>
       </md-list-item>
     </md-list>
     <!-- freebusy -->

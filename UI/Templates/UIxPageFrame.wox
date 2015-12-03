@@ -30,10 +30,6 @@
         <var:foreach list="additionalCSSFiles" item="item">
           <link type="text/css" rel="stylesheet" var:href="item"/>
         </var:foreach>
-        <var:if-ie const:lte="9">
-          <link type="text/css" rel="stylesheet" rsrc:href="iefixes.css" />
-          <script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
-        </var:if-ie>
       </head>
 
       <body var:ng-app="angularModule" var:class="bodyClasses">
@@ -43,33 +39,31 @@
               <iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe>
             </div>
           </var:if>
-          <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
-            <var:if condition="hasUserSettingsKeys">
-              <script type="text/javascript">
+          <script type="text/javascript">
+            <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
+              <var:if condition="hasUserSettingsKeys">
                 var UserSettings =<var:string value="userSettings" const:escapeHTML="NO" />;
-              </script>
+              </var:if>
+              <var:if condition="hasUserDefaultsKeys">
+                var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO" />;
+              </var:if>
             </var:if>
-            <var:if condition="hasUserDefaultsKeys">
-              <script type="text/javascript">
-                var UserDefaults =<var:string value="userDefaults" const:escapeHTML="NO" />;
-              </script>
-            </var:if>
-          </var:if>
-          <var:if condition="isPopup" const:negate="YES">
-            <var:if condition="isUIxDebugEnabled"><!-- space --></var:if>
-          </var:if>
+          </script>
 
           <!-- MAIN CONTENT ROW -->
           <var:component-content />
-
-          <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
-          </var:if>
           
           <!-- JAVASCRIPT IMPORTS -->
           <script type="text/javascript">
             var ApplicationBaseURL = '<var:string value="modulePath" />';
             var ResourcesURL = '<var:string value="applicationPath" />.woa/WebServerResources';
             var minimumSearchLength = <var:string value="minimumSearchLength" />;
+            <var:if condition="isUIxDebugEnabled">
+              var DebugEnabled = true;
+            </var:if>
+            <var:if condition="isUIxDebugEnabled" const:negate="YES">
+              var DebugEnabled = false;
+            </var:if>
             <var:if condition="isSuperUser">
               var IsSuperUser = true;
             </var:if>

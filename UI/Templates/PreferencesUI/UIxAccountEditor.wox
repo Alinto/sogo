@@ -10,7 +10,7 @@
     className="UIxPageFrame"
     >
   <md-dialog flex="50" flex-sm="100">
-    <md-toolbar class="md-padding">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">account_box</md-icon>
         <md-input-container>
@@ -24,7 +24,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content>
+    <md-dialog-content class="md-dialog-content">
 
       <form id="mainForm" name="accountForm" var:href="ownPath">
 
@@ -136,8 +136,8 @@
 
       </form>
     </md-dialog-content>
-    <div class="md-actions">
+    <md-dialog-actions>
       <md-button ng-disabled="$AccountDialogController.accountForm.$invalid" ng-click="$AccountDialogController.save()"><var:string label:value="Save"/></md-button>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 </var:component>

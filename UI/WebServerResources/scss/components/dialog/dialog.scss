@@ -1,12 +1,33 @@
 /// dialog.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-@media (max-width: $layout-breakpoint-sm) {
-  [flex-sm="100"] {
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
+@mixin fullscreen {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  flex-basis: 100%;
+  md-dialog-content {
+    padding: $layout-gutter-width;
   }
 }
+
+body.popup {
+  md-dialog {
+    &[flex-sm="100"],
+    &.flex-sm-100 {
+      @include fullscreen;
+    }
+  }
+}
+
+@media (max-width: $layout-breakpoint-sm) {
+  md-dialog {
+    &[flex-sm="100"],
+    &.flex-sm-100 {
+      @include fullscreen;
+    }
+  }
+}
+

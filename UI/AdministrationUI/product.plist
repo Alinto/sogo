@@ -15,6 +15,10 @@
           protectedBy = "View";
           pageName = "UIxAdministration";
         };
+        UIxAdministrationAclEditor = {
+          protectedBy = "View";
+          pageName = "UIxAdministrationAclEditor";
+        };
       };
     };
   };

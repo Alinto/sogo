@@ -360,40 +360,19 @@ static SoProduct      *commonProduct      = nil;
 
 - (NSString *) modulePath
 {
-  SOGoObject *currentClient, *parent;
-  BOOL found;
-  NSString *hostLessURL;
-  Class objectClass, userFolderClass;
-// , groupFolderClass
-
-  currentClient = [self clientObject];
-  if (currentClient
-      && [currentClient isKindOfClass: [SOGoObject class]])
+  if ([[self parent] respondsToSelector: @selector(modulePath)])
     {
-//       groupFolderClass = [SOGoCustomGroupFolder class];
-      userFolderClass = [SOGoUserFolder class];
+      NSString *baseURL;
 
-      objectClass = [currentClient class];
-//       found = (objectClass == groupFolderClass || objectClass == userFolderClass);
-      found = (objectClass == userFolderClass);
-      while (!found && currentClient)
-	{
-	  parent = [currentClient container];
-	  objectClass = [parent class];
-	  if (// objectClass == groupFolderClass
-// 	      || 
-	      objectClass == userFolderClass)
-	    found = YES;
-	  else
-	    currentClient = parent;
-	}
+      baseURL = [[self clientObject] baseURLInContext: context];
+
+      if ([baseURL hasSuffix: [NSString stringWithFormat: @"%@/", [[self parent] modulePath]]])
+        return baseURL;
+
+      return [NSString stringWithFormat: @"%@%@", baseURL, [[self parent] modulePath]];
     }
-  else
-    currentClient = [WOApplication application];
-  
-  hostLessURL = [[currentClient baseURLInContext: context] hostlessURL];
 
-  return [hostLessURL substringToIndex: [hostLessURL length] - 1];
+  return @"SOGo";
 }
 
 - (NSString *) ownPath

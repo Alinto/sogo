@@ -446,6 +446,9 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Month View" = "Month View";
 "Reload" = "Reload";
 
+/* Number of selected components in events or tasks list */
+"selected" = "selected";
+
 "eventPartStatModificationError" = "Your participation status could not be modified.";
 
 /* menu */

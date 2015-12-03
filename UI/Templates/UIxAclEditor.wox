@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="100">
-    <md-toolbar class="sg-padded">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
@@ -19,32 +19,59 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content>
+    <md-dialog-content class="md-padding">
+      <div layout="row">
+        <md-icon>search</md-icon>
+        <md-autocomplete
+            class="md-flex"
+            md-input-name="addUser"
+            md-search-text="acl.searchText"
+            md-selected-item="acl.userToAdd"
+            md-selected-item-change="acl.addUser(user)"
+            md-items="user in acl.userFilter(acl.searchText)"
+            md-item-text="user.empty"
+            md-min-length="3"
+            md-delay="300"
+            md-no-cache="true"
+            label:md-floating-label="Add User">
+          <md-item-template>
+            <span class="md-contact-suggestion">
+              <span class="md-contact-name"
+                    md-highlight-text="acl.searchText"
+                    md-highlight-flags="^i">{{user.cn}}</span>
+              <span class="md-contact-email"
+                    md-highlight-text="acl.searchText"
+                    md-highlight-flags="^i">{{user.c_email}}</span>
+            </span>
+          </md-item-template>
+        </md-autocomplete>
+      </div>
       <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
-               ng-class="{ 'sg-collapsed': user.uid != acl.selectedUser.uid, 'sg-expanded': user.uid == acl.selectedUser.uid }">
+               class="sg-collapsed"
+               ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
         <md-button ng-click="acl.selectUser(user)">
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.userClass">
               <div ng-switch-when="normal-user">
-                <sg-avatar-image class="md-tile-left"
+                <sg-avatar-image class="md-avatar"
                                  sg-email="user.c_email"
-                                 size="48"><!-- avatar --></sg-avatar-image>
+                                 size="40"><!-- avatar --></sg-avatar-image>
               </div>
-              <div ng-switch-when="normal-group" class="sg-list-avatar"><!-- normal-group --></div>
-              <div ng-switch-when="public-user" class="sg-list-avatar"><!-- public-user --></div>
+              <div ng-switch-when="normal-group" class="md-avatar sg-avatar-list"><!-- normal-group --></div>
+              <div ng-switch-when="public-user" class="md-avatar sg-avatar-list"><!-- public-user --></div>
             </span>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi">{{user.cn}}</div>
-              <div class="sg-md-body-multi">{{user.c_email}}</div>
+              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
             </div>
-            <md-button class="sg-icon-button" type="button"
+            <md-button class="md-icon-button" type="button"
                        ng-click="acl.removeUser(user)"
-                       ng-hide="user.uid != acl.selectedUser.uid || user.$isSpecial()">
+                       ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
               <md-icon>delete</md-icon>
             </md-button>
           </div>
         </md-button>
-        <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUser.uid">
+        <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUid">
           <var:if condition="canSubscribeUsers">
             <md-checkbox ng-model="user.isSubscribed"
                          label:arial-label="Subscribe User"
@@ -67,33 +94,10 @@
       </md-card>
     </md-dialog-content>
 
-    <div ng-hide="acl.confirmation.showing" class="md-actions">
-      <md-autocomplete
-          class="md-flex"
-          md-input-name="addUser"
-          md-search-text="acl.searchText"
-          md-selected-item="acl.userToAdd"
-          md-selected-item-change="acl.addUser(user)"
-          md-items="user in acl.userFilter(acl.searchText)"
-          md-item-text="user.empty"
-          md-min-length="3"
-          md-delay="300"
-          md-no-cache="true"
-          label:md-floating-label="Add User">
-        <md-item-template>
-          <span class="md-contact-suggestion">
-            <span class="md-contact-name"
-                  md-highlight-text="acl.searchText"
-                  md-highlight-flags="^i">{{user.cn}}</span>
-            <span class="md-contact-email"
-                  md-highlight-text="acl.searchText"
-                  md-highlight-flags="^i">{{user.c_email}}</span>
-          </span>
-        </md-item-template>
-      </md-autocomplete>
-      <md-button ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
-    </div>
-    <div class="md-actions" ng-show="acl.confirmation.showing">
+    <md-dialog-actions ng-hide="acl.confirmation.showing">
+      <md-button class="md-primary" ng-click="acl.saveModal()"><var:string label:value="Save"/></md-button>
+    </md-dialog-actions>
+    <md-dialog-actions ng-show="acl.confirmation.showing">
       <span>{{acl.confirmation.message}}</span>
       <md-button ng-click="acl.selectedUser.$resetRights(true); acl.confirmation.showing = false">
         <var:string label:value="Cancel"/>
@@ -101,7 +105,7 @@
       <md-button class="md-warn" ng-click="acl.confirmation.showing = false">
         <var:string label:value="OK"/>
       </md-button>
-    </div>
+    </md-dialog-actions>
   </md-dialog>
 
 </container>

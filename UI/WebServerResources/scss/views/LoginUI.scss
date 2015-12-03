@@ -1,31 +1,45 @@
 /// LoginUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-[ui-view="login"] > md-content {
+[ui-view="login"] {
+  md-content {
+    @include to(xs) {
+      [id=logo] {
+        text-align: center;
+        img {
+          max-width: 75%;
+        }
+      }
+    }
+    @include from(sm) {
+      &.ng-hide {
+        [id=logo] {
+          opacity: 0;
+          transform: translateX(50%);
+        }
+        .sg-login {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+      [id=logo], .sg-login {
+        opacity: 1;
+        transform: translateX(0%);
+      }
+      [id=logo] {
+        transition: transform $swift-ease-out-duration $swift-ease-out-timing-function 600ms,
+        opacity 400ms linear;
+      }
+      .sg-login {
+        transition: all $swift-ease-out-duration $swift-ease-out-timing-function 600ms;
+      }
+    }
+  }
+}
+
+[ui-view="login"] > md-content > div {
   width: grid-step(5);
 }
 
 [id=logo] img {
   max-width: 100%;
-}
-
-.sg-login {
-  .md-button.md-raised {
-    width: 100%;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    height: 48px;
-  }
-  md-icon {
-    color: #526261;
-  }
-  md-input-container.md-input-invalid > md-icon {
-    color: red;
-  }
-  md-input-container.md-icon-float {
-    margin-bottom: 10px;
-  }
-  md-select {
-    margin-left: 14px;
-    margin-top: 10px;
-  }
 }

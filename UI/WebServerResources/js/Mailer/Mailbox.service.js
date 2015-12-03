@@ -43,6 +43,7 @@
       $query: { sort: 'date', asc: 0 },
       selectedFolder: null,
       $refreshTimeout: null,
+      $virtualMode: false,
       PRELOAD: PRELOAD
     });
     // Initialize sort parameters from user's settings
@@ -150,7 +151,7 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    this.$isLoading = false;
+    this.$isLoading = true;
     this.$messages = [];
     this.uidsMap = {};
     angular.extend(this, data);
@@ -165,6 +166,35 @@
       // Make a copy of the data for an eventual reset
       this.$shadowData = this.$omit();
     }
+  };
+
+  /**
+   * @function getLength
+   * @memberof Mailbox.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the number of items in the mailbox
+   */
+  Mailbox.prototype.getLength = function() {
+    return this.$messages.length;
+  };
+
+  /**
+   * @function getItemAtIndex
+   * @memberof Mailbox.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the message as the specified index
+   */
+  Mailbox.prototype.getItemAtIndex = function(index) {
+    var message;
+
+    if (index >= 0 && index < this.$messages.length) {
+      message = this.$messages[index];
+
+      if (this.$loadMessage(message.uid))
+        return message;
+    }
+
+    return null;
   };
 
   /**
@@ -194,6 +224,17 @@
   };
 
   /**
+   * @function isSelectedMessage
+   * @memberof Mailbox.prototype
+   * @desc Check if the specified message is selected.
+   * @param {string} messageId
+   * @returns true if the specified message is selected
+   */
+  Mailbox.prototype.isSelectedMessage = function(messageId) {
+    return this.selectedMessage == messageId;
+  };
+
+    /**
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox
@@ -243,10 +284,12 @@
       }
 
       // Restart the refresh timer, if needed
-      var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(_this, Mailbox.prototype.$filter);
-        Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      if (!Mailbox.$virtualMode) {
+        var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
+        if (refreshViewCheck && refreshViewCheck != 'manually') {
+          var f = angular.bind(_this, Mailbox.prototype.$filter);
+          Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+        }
       }
 
       var futureMailboxData = Mailbox.$$resource.post(_this.id, 'view', options);
@@ -319,15 +362,13 @@
   Mailbox.prototype.$rename = function() {
     var _this = this,
         findParent,
-        deferred = Mailbox.$q.defer(),
         parent,
         children,
         i;
 
     if (this.name == this.$shadowData.name) {
       // Name hasn't changed
-      deferred.resolve();
-      return deferred.promise;
+      return Mailbox.$q.when();
     }
 
     // Local recursive function
@@ -359,7 +400,7 @@
     // Find index of mailbox among siblings
     i = _.indexOf(_.pluck(children, 'id'), this.id);
 
-    this.$save().then(function(data) {
+    return this.$save().then(function(data) {
       var sibling;
       angular.extend(_this, data); // update the path attribute
       _this.id = _this.$id();
@@ -377,13 +418,7 @@
         i = children.length;
       }
       children.splice(i, 0, _this);
-
-      deferred.resolve();
-    }, function(data) {
-      deferred.reject(data);
     });
-
-    return deferred.promise;
   };
 
   /**
@@ -458,19 +493,13 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$delete = function() {
-    var _this = this,
-        deferred = Mailbox.$q.defer(),
-        promise;
+    var _this = this;
 
-    promise = Mailbox.$$resource.remove(this.id);
-
-    promise.then(function() {
-      _this.$account.$getMailboxes({reload: true});
-      deferred.resolve(true);
-    }, function(data, status) {
-      deferred.reject(data);
-    });
-    return deferred.promise;
+    return Mailbox.$$resource.remove(this.id)
+      .then(function() {
+        _this.$account.$getMailboxes({reload: true});
+        return true;
+      });
   };
 
   /**
@@ -588,7 +617,7 @@
 
         if (_this.uids) {
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
-          
+
           // First entry of 'headers' are keys
           headers = _.invoke(_this.headers[0], 'toLowerCase');
           _this.headers.splice(0, 1);
@@ -610,7 +639,7 @@
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
 
-            msgs.push(new Mailbox.$Message(_this.$account.id, _this, data));
+            msgs.push(new Mailbox.$Message(_this.$account.id, _this, data, true));
 
             return msgs;
           }, _this.$messages);

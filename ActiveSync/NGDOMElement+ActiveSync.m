@@ -101,7 +101,7 @@ static NSArray *asElementArray = nil;
   int i, count;
   
   if (!asElementArray)
-    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", nil];
+    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", @"Exception", nil];
 
   data = [NSMutableDictionary dictionary];
 

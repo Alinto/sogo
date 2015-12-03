@@ -1,18 +1,20 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE div>
-<div xmlns="http://www.w3.org/1999/xhtml"
+<container xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:label="OGo:label">
   <md-card>
-      <md-card-content>
-        <img var:src="mimeImageURL"/>
-        <p class="md-caption">
-          <var:string value="filenameForDisplay"/><br/>
-          <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
-        </p>
-      </md-card-content>
-    <div class="md-actions" layout="row" layout-align="end center">
+    <md-card-content>
+      <img var:src="mimeImageURL"/>
+      <p class="md-caption">
+        <var:string value="filenameForDisplay"/>
+      </p>
+    </md-card-content>
+    <md-dialog-actions layout="row" layout-align="end center">
+      <div class="md-flex sg-attachment-size">
+        <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
+      </div>
       <md-button class="sg-icon-button" var:href="pathToAttachment" target="_blank">
         <md-tooltip md-direction="left"><var:string label:value="View Attachment"/></md-tooltip>
         <md-icon>open_in_browser</md-icon>
@@ -21,7 +23,7 @@
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
         <md-icon>save</md-icon>
       </md-button>
-    </div>
+    </md-dialog-actions>
     
     <!-- DEBUG
          <pre><var:string value="bodyInfo"/></pre>
@@ -43,4 +45,4 @@
     -->
     
   </md-card>
-</div>
+</container>

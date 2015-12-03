@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     title="title"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Mailer.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js">
   <script type="text/javascript">
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
@@ -20,13 +20,15 @@
   <script type="text/ng-template" id="UIxContactFoldersView">
 
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <!-- <div style="position: relative; display: flex;"> -->
-      <md-content md-scroll-y="md-scroll-y">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Address Books"/></span>
               <md-button class="sg-icon-button"
@@ -38,16 +40,16 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="app.editMode!=folder.id">{{folder.name}}</p>
-              <md-input-container class="md-flex md-tile-content"
+              <md-input-container class="md-flex"
                                   ng-show="app.editMode == folder.id">
-                <input class="folder-name" type="text"
+                <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"
@@ -67,7 +69,7 @@
                       <var:string label:value="Rename"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
+                  <md-menu-item ng-show="folder.id != 'personal'">
                     <md-button type="button" ng-click="app.confirmDelete()">
                       <var:string label:value="Delete"/>
                     </md-button>
@@ -94,6 +96,11 @@
                       <var:string label:value="Sharing..."/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.showProperties(folder)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
                 </md-menu-content>
               </md-menu>
             </md-list-item>
@@ -101,7 +108,7 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -114,16 +121,16 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$subscriptions track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ng-dblclick="app.edit(folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
                  ng-show="editMode!=folder.id">{{folder.name}}</p>
-              <md-input-container class="md-flex md-tile-content"
+              <md-input-container class="md-flex"
                                   ng-show="app.editMode==folder.id">
-                <input class="folder-name" type="text"
+                <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
                        ng-cloak="ng-cloak"
@@ -148,6 +155,12 @@
                       <var:string label:value="Delete"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.showProperties(folder)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
                 </md-menu-content>
               </md-menu>
             </md-list-item>
@@ -155,14 +168,14 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader md-padding">
+          <md-subheader class="sg-md-subheader md-hue-2">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in app.service.$remotes track by folder.id"
-                          ng-click="app.select(folder)"
+                          ng-click="app.select($event, folder)"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>public</md-icon>
               <p class="sg-item-name">{{folder.name}}</p>
             </md-list-item>
@@ -176,22 +189,24 @@
   </script>
 
   <script type="text/ng-template" id="addressbook">
-    <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-      <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
-        <var:component className="UIxTopnavToolbarTemplate" />
-      </div>
-      <div class="md-toolbar-tools" layout="row" layout-align="space-between center"
-           ng-show="addressbook.selectedFolder.$selectedCount() == 0">
+    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
+      <var:component className="UIxTopnavToolbarTemplate" />
+    </md-toolbar>
 
-        <div class="view-list" layout="row" layout-align="space-between center"
-             ng-hide="addressbook.mode.search">
-          <div class="sg-toolbar-group">
+    <div layout="row" class="md-flex">
+
+      <div class="view-list" layout="column">
+
+        <!-- single-selection toolbar -->
+        <md-toolbar class="md-whiteframe-z1"
+                    ng-show="addressbook.selectedFolder.$selectedCount() == 0">
+          <!-- sort mode (default) -->
+          <div class="md-toolbar-tools" ng-hide="addressbook.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
                        ng-click="addressbook.mode.search = true">
               <md-icon>search</md-icon>
             </md-button>
-          </div>
-          <div class="sg-toolbar-group-last">
+            <div class="sg-folder-name">{{addressbook.selectedFolder.name}}</div>
             <md-menu>
               <md-button class="sg-icon-button" label:aria-label="Sort"
                          ng-click="$mdOpenMenu()">
@@ -202,6 +217,18 @@
                   <md-button ng-click="addressbook.sort('c_cn')">
                     <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_cn') }">
                       <!-- selected --></md-icon> <var:string label:value="Name"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_sn')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_sn') }">
+                      <!-- selected --></md-icon> <var:string label:value="Lastname"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.sort('c_givenname')">
+                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_givenname') }">
+                      <!-- selected --></md-icon> <var:string label:value="Firstname"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
@@ -233,8 +260,9 @@
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
                 <md-menu-item >
-                  <md-button ng-click="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)">
+                  <md-button ng-href="#">
                     <md-checkbox
+                        ng-change="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)"
                         ng-model="addressbook.selectedFolder.constructor.$query.asc"
                         ng-true-value="0"
                         ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
@@ -246,122 +274,153 @@
               <md-icon>refresh</md-icon>
             </md-button>
           </div>
-        </div>
-        <!-- search mode -->
-        <div class="view-list sg-padded--right sg-toolbar-search" layout="row" layout-align="space-between center"
-             ng-show="addressbook.mode.search"
-             sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
-          <md-button class="sg-icon-button"
-                     sg-search-cancel="addressbook.cancelSearch()"
-                     label:aria-label="Back">
-            <md-icon>arrow_back</md-icon>
-          </md-button>
-          <md-input-container>
-            <input name="folderSearch" type="search" />
-          </md-input-container>
-          <md-input-container>
-            <md-select>
-              <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
-              <md-option value="category"><var:string label:value="Category"/></md-option>
-              <md-option value="organization"><var:string label:value="Organization"/></md-option>
-            </md-select>
-          </md-input-container>
-        </div>
-      </div>
+          <!-- search mode -->
+          <div class="md-toolbar-tools sg-toolbar-secondary"
+               ng-show="addressbook.mode.search"
+               sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
+            <md-button class="sg-icon-button"
+                       sg-search-cancel="addressbook.cancelSearch()"
+                       label:aria-label="Back">
+              <md-icon>arrow_back</md-icon>
+            </md-button>
+            <md-input-container md-no-float="md-no-float">
+              <input name="folderSearch" type="search" label:placeholder="Search"/>
+            </md-input-container>
+            <md-input-container flex="25">
+              <md-select>
+                <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
+                <md-option value="category"><var:string label:value="Category"/></md-option>
+                <md-option value="organization"><var:string label:value="Organization"/></md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+        </md-toolbar>
 
-      <div layout="row" layout-align="start center" ng-show="addressbook.selectedFolder.$selectedCount() > 0">
-        <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
-          <md-icon>arrow_back</md-icon>
-        </md-button>
-        <label>{{addressbook.selectedFolder.$selectedCount()}} selected</label>
-        <md-button class="sg-icon-button" ng-click="addressbook.selectAll()">
-          <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
-          <md-icon>select_all</md-icon>
-        </md-button>
-        <md-button class="sg-icon-button"
-                   ng-show="addressbook.selectedFolder.acls.objectEraser"
-                   ng-click="addressbook.confirmDeleteSelectedCards()">
-          <md-icon>delete</md-icon>
-        </md-button>
-        <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="Copy contacts" ng-click="$mdOpenMenu()">
-            <md-tooltip md-direction="left"><var:string label:value="Copy To"/></md-tooltip>
-            <md-icon>content_copy</md-icon>
-          </md-button>
-          <md-menu-content width="4">
-            <md-menu-item>
-              <md-button class="md-primary" ng-disabled="true"><var:string label:value="Address Books"/></md-button>
-            </md-menu-item>
-            <md-menu-divider><!-- divider --></md-menu-divider>
-            <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
-                          ng-hide="addressbook.selectedFolder.id == folder.id">
-              <md-button ng-click="addressbook.copySelectedCards(folder.id)">
-                <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+        <!-- multiple selection mode -->
+        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary"
+                    ng-show="addressbook.selectedFolder.$selectedCount() > 0">
+          <div class="md-toolbar-tools">
+            <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
+              <md-icon>arrow_back</md-icon>
+            </md-button>
+            <label>{{addressbook.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
+            <div class="md-flex"><!-- spacer --></div>
+            <md-button class="sg-icon-button" ng-click="addressbook.selectAll()">
+              <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
+              <md-icon>select_all</md-icon>
+            </md-button>
+            <md-button class="sg-icon-button"
+                       ng-show="addressbook.selectedFolder.acls.objectEraser"
+                       ng-click="addressbook.confirmDeleteSelectedCards()">
+              <md-icon>delete</md-icon>
+            </md-button>
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="Copy contacts" ng-click="$mdOpenMenu()">
+                <md-tooltip md-direction="left"><var:string label:value="Copy To"/></md-tooltip>
+                <md-icon>content_copy</md-icon>
               </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-        <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
-            <md-icon>more_vert</md-icon>
-          </md-button>
-          <md-menu-content width="2">
-            <md-menu-item>
-              <md-button>
-                <var:string label:value="Write"/>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Copy To"/></md-button>
+                </md-menu-item>
+                <md-menu-divider><!-- divider --></md-menu-divider>
+                <md-menu-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
+                              ng-hide="addressbook.selectedFolder.id == folder.id">
+                  <md-button ng-click="addressbook.copySelectedCards(folder.id)">
+                    <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
+                <md-icon>more_vert</md-icon>
               </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="addressbook.saveSelectedCards()">
-                <var:string label:value="Export"/>
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-      </div>
-    </md-toolbar>
-    <div layout="row" class="md-flex">
-      <div class="view-list" layout="column">
+              <md-menu-content width="2">
+                <md-menu-item>
+                  <md-button ng-click="addressbook.newMessageWithSelectedCards($event)">
+                    <var:string label:value="Write"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="addressbook.saveSelectedCards()">
+                    <var:string label:value="Export"/>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </md-toolbar>
+
         <md-content id="contactsList" layout="column" class="md-flex">
-          <header class="sg-md-subheader sg-md-subheader--fixed">
-            <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
-              <span ng-show="addressbook.selectedFolder.cards.length > 0">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
-              <span ng-show="addressbook.selectedFolder.cards.length == 0"><var:string label:value="No contact"/></span>
-            </h2>
-          </header>
+          <md-subheader ng-show="addressbook.service.$query.value">
+            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+              <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+            </md-button>
+            <span ng-switch="addressbook.selectedFolder.cards.length">
+              <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
+              <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="matching contacts"/></span>
+            </span>
+          </md-subheader>
+          <md-subheader ng-hide="addressbook.service.$query.value">
+            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+              <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+            </md-button>
+            <span ng-switch="addressbook.selectedFolder.isRemote">
+              <span ng-switch-when="1">
+                <var:string label:value="Start a search to browse this address book"/>
+              </span>
+              <span ng-switch-default="true">
+                <span ng-switch="addressbook.selectedFolder.cards.length">
+                  <span ng-switch-when="0"><var:string label:value="No contact"/></span>
+                  <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
+                </span>
+              </span>
+            </span>
+          </md-subheader>
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
-              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="72">
+              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56">
                 <md-list-item
                     ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
                     ng-click="addressbook.selectCard(currentCard)"
-                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})">
-                  <div>
-                    <div class="sg-selected-avatar" ng-show="currentCard.selected"
-                         ng-click="currentCard.selected = !currentCard.selected">
-                      <!-- selected avatar -->
-                    </div>
-                    <sg-avatar-image class="md-tile-left"
-                                     ng-show="addressbook.notSelectedComponent(currentCard, 'vcard')"
-                                     ng-click="currentCard.selected = !currentCard.selected"
-                                     sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
-                                     size="48">
-                      <!-- contact avatar -->
-                    </sg-avatar-image>
-                    <div class="sg-list-avatar"
-                         ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
-                         ng-click="currentCard.selected = !currentCard.selected">
-                      <!-- list avatar -->
-                    </div>
+                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})"
+                    ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+                  <div class="md-avatar sg-avatar-selected"
+                       ng-if="currentCard.selected"
+                       ng-click="addressbook.toggleCardSelection($event, currentCard)">
+                    <!-- selected avatar -->
+                  </div>
+                  <sg-avatar-image class="md-avatar"
+                                   ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
+                                   ng-click="addressbook.toggleCardSelection($event, currentCard)"
+                                   sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
+                                   size="40">
+                    <!-- contact avatar -->
+                  </sg-avatar-image>
+                  <div class="md-avatar sg-avatar-list"
+                       ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
+                       ng-click="currentCard.selected = !currentCard.selected">
+                    <!-- list avatar -->
                   </div>
                   <div class="sg-tile-content">
-                    <div class="sg-md-subhead-multi" ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                    <div class="sg-md-body-multi">{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                    <div class="sg-md-subhead">
+                      <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                    </div>
                   </div>
                 </md-list-item>
               </div>
             </md-list>
           </md-virtual-repeat-container>
+          <div class="sg-progress-circular-floating"
+               ng-show="addressbook.selectedFolder.$isLoading">
+            <md-progress-circular class="md-accent"
+                                  md-mode="indeterminate"
+                                  md-diameter="32"><!-- progress --></md-progress-circular>
+          </div>
           <md-button class="md-fab md-fab-bottom-right md-accent"
                      label:aria-label="New Contact"
                      ng-show="addressbook.selectedFolder.acls.objectCreator"
@@ -371,16 +430,56 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail ng-cloak" layout="column">
-        <md-card class="viewer" ui-view="card"><!-- card view --></md-card>
+      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+           layout="column" layout-align="start center"
+           ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
+           ui-view="card">
+        <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
+        <md-content class="hide-xs md-flex layout-fill md-hue-1"
+                    layout="column" layout-align="center center">
+          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No contact selected"/></div>
+        </md-content>
       </div>
-
     </div>
   </script>
 
   <!-- modal for addressbook sharing options -->
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxContactsUserRightsEditor" />
+  </script>
+
+  <!-- modal for cards import -->
+  <script type="text/ng-template" id="UIxContactsImportDialog">
+    <md-dialog flex="40" flex-sm="100" label:aria-label="Import Cards">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>
+          <div class="md-flex">
+            <div class="sg-md-title"><var:string label:value="Import Cards"/></div>
+          </div>
+          <md-button class="md-icon-button" ng-click="$CardsImportDialogController.close()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content class="md-dialog-content">
+        <p><var:string label:value="Select a vCard or LDIF file."/></p>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-progress-circular class="md-accent"
+                              md-mode="determinate"
+                              md-diameter="20px"
+                              ng-show="$CardsImportDialogController.uploader.isUploading"
+                              ng-value="$CardsImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
+        <label class="md-button" for="file-input" ng-hide="$CardsImportDialogController.uploader.isUploading">
+          <span><var:string label:value="Upload"/></span>
+        </label>
+        <input id="file-input" type="file" class="ng-hide"
+               nv-file-select="nv-file-select"
+               uploader="$CardsImportDialogController.uploader"/>
+        <!-- <md-button ng-disabled="uploader.queue.length == 0" ng-click="upload()"><var:string label:value="Upload"/></md-button> -->
+      </md-dialog-actions>
+    </md-dialog>
   </script>
 
   <script type="text/ng-template" id="UIxContactViewTemplate">

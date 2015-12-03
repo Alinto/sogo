@@ -47,7 +47,9 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSource.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 
@@ -94,7 +96,7 @@
     {
       if (![newDisplayName length])
         newDisplayName = newName;
-      ASSIGN (displayName, newDisplayName);
+      ASSIGN (displayName, (NSMutableString *)newDisplayName);
     }
 
   return self;
@@ -247,6 +249,13 @@
   else
     data = @"";
   [newRecord setObject: data forKey: @"c_cn"];
+
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableDomainBasedUID])
+    {
+      data = [oldRecord objectForKey: @"c_domain"];
+      if (data)
+        [newRecord setObject: data forKey: @"c_domain"];
+    }
 
   // mail => emails[]
   data = [oldRecord objectForKey: @"c_emails"];
@@ -697,7 +706,7 @@
   BOOL otherIsPersonal;
 
   otherIsPersonal = ([otherFolder isKindOfClass: [SOGoContactGCSFolder class]]
-                     || ([otherFolder isKindOfClass: isa] && [otherFolder isPersonalSource]));
+                     || ([otherFolder isKindOfClass: object_getClass(self)] && [otherFolder isPersonalSource]));
 
   if (isPersonalSource)
     {

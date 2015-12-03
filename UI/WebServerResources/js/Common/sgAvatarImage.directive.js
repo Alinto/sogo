@@ -15,30 +15,61 @@
   function sgAvatarImage() {
     return {
       restrict: 'AE',
-      replace: true,
       scope: {
         size: '@',
         email: '=sgEmail',
         src: '=sgSrc'
       },
       template: '<img ng-src="{{vm.url}}"/>',
+      link: link,
       bindToController: true,
       controller: 'sgAvatarImageController',
       controllerAs: 'vm'
     };
   }
 
+  function link(scope, element, attrs, controller) {
+    var el = element[0],
+        className = el.className,
+        imgElement = element.find('img'),
+        img = imgElement[0];
+
+    if (attrs.size) {
+      imgElement.attr('width', attrs.size);
+      imgElement.attr('height', attrs.size);
+    }
+
+    imgElement.bind('error', function() {
+      // Error while loading external link; insert a generic avatar
+      controller.insertGenericAvatar(img);
+    });
+  }
+
   /**
    * @ngInject
    */
-  sgAvatarImageController.$inject = ['$scope', '$element', 'Gravatar'];
-  function sgAvatarImageController($scope, $element, Gravatar) {
+  sgAvatarImageController.$inject = ['$scope', '$element', 'Preferences', 'Gravatar'];
+  function sgAvatarImageController($scope, $element, Preferences, Gravatar) {
     var vm = this;
 
     $scope.$watch('vm.email', function(email) {
-      if (email && !vm.url) {
-        vm.url = Gravatar(email, vm.size);
-      }
+
+      Preferences.ready().then(function() {
+        var img = $element.find('img')[0];
+        if (!email && !vm.genericAvatar) {
+          // If no email is specified, insert a generic avatar
+          vm.insertGenericAvatar(img);
+        }
+        else if (email && !vm.url) {
+          if (vm.genericAvatar) {
+            // Remove generic avatar and restore visibility of image
+            vm.genericAvatar.parentNode.removeChild(vm.genericAvatar);
+            delete vm.genericAvatar;
+            img.classList.remove('ng-hide');
+          }
+          vm.url = Gravatar(email, vm.size, Preferences.defaults.SOGoAlternateAvatar);
+        }
+      });
     });
 
     // If sg-src is defined, watch the expression for the URL of a local image
@@ -49,6 +80,17 @@
         }
       });
     }
+
+    vm.insertGenericAvatar = function(img) {
+      var avatar;
+
+      if (!vm.genericAvatar) {
+        avatar = document.createElement('md-icon');
+        avatar.className = 'material-icons icon-person';
+        img.classList.add('ng-hide');
+        vm.genericAvatar = img.parentNode.insertBefore(avatar, img);
+      }
+    };
   }
 
   angular

@@ -71,6 +71,11 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return self;
 }
 
+- (NSString *) modulePath
+{
+  return @"Contacts";
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
@@ -291,7 +296,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   NSDictionary *folderAttrs;
   id currentFolder;
 
-  BOOL objectCreator, objectEditor, objectEraser;
+  BOOL objectCreator, objectEditor, objectEraser, synchronize;
   int max, i;
 
   userLogin = [[context activeUser] login];
@@ -328,11 +333,20 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                [NSNumber numberWithBool: objectEditor], @"objectEditor",
                                [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
 
+      if ([currentFolder isKindOfClass: SOGoGCSFolderK])
+        synchronize = [currentFolder synchronize];
+      else
+        synchronize = NO;
+
+      if ([[currentFolder nameInContainer] isEqualToString: @"personal"])
+        synchronize = YES;
+
       // NOTE: keep urls as the last key/value here, to avoid chopping the dictionary
       //       if it is not a GCS folder
       folderAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSString stringWithFormat: @"%@", [currentFolder nameInContainer]], @"id",
                                   [currentFolder displayName], @"name",
+                                  [NSNumber numberWithBool: synchronize], @"synchronize",
                                   owner, @"owner",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]

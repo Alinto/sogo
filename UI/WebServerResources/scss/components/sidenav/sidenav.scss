@@ -2,55 +2,38 @@
 @import "extends";
 $sidenav-default-width: (4 * $pitch);
 $sidenav-min-space: $pitch;
-
-$sidenav-right-width: (8 * $pitch);
+//$sidenav-right-width: (8 * $pitch);
 
 md-sidenav {
-  background-color: sg-color($sogoPaper, 400);
   &.md-locked-open {
-    @include from(lg) {
-      @include flex-col(lg, 4, 1, 1)
+    @include from(md) {
+      @include flex-col(md, 4, 1, 0);
+      // Custom representation of a closed sidenav where the sidenav is pushed to the left;
+      // Used in in "locked open" mode.
+      &.sg-closed.md-sidenav-left {
+        transform: translateX(-100%);
+        margin-right: -20vw; // See views/_views.scss
+      }
     }
-
-  }
-}
-
-.md-sidenav-left {
-  &.md-whiteframe-z2 {
-    box-shadow: $sidenav-shadow-z2;
   }
 }
 
 // MAIN SIDENAV, actually to the left
 // ----------------------------------------------------------------------------
-.md-sidenav-left {
-  & md-content,
-  & md-toolbar {
-    background-color: inherit;
-    background-image: url("../img/cardboard-transp.png");
-    background-blend-mode: multiply;
-  }
-}
-
-.md-sidenav-left md-toolbar {
-  box-shadow: none;
-}
-
-.md-sidenav-right {
-  width: $sidenav-right-width;
-  max-width: $sidenav-right-width;
-  & md-content,
-  & md-toolbar {
-    background-color: inherit;
-    background-image: none;
-  }
-}
 
 // Mailboxes tree
 $i: 1;
 @while $i < 12 {
   .sg-child-level-#{$i} { padding-left: $mg * $i; }
   $i: $i + 1;
+}
+
+[class^=sg-child-level] {
+  md-icon,
+  md-checkbox {
+    margin-right: $bl * 2;
+    max-width: 24px;
+  }
 }
 
 // This hack is so BAD I am ashame putting it in the shame file
@@ -66,30 +49,4 @@ $i: 1;
 
 .sg-active i.md-icon-folder:before {
   @extend .md-icon-folder-open:before;
-}
-
-.md-sidenav-left {
-  &.md-whiteframe-z1 {
-    box-shadow: $sidenav-shadow-z1;
-  }
-  md-list-item {
-    transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
-                color 0.12s linear;
-    &:hover {
-      background-color: sg-color($sogoBlue, 500);
-    }
-    &.sg-active {
-      background-color: sg-color($sogoBlue, 400);
-    }
-    &.sg-loading {
-      color: sg-color($sogoBlue, 200);
-    }
-  }
-}
-.md-sidenav-left {
-  md-bottom-sheet {
-    md-list-item:hover {
-      background-color: transparent;
-    }
-  }
 }

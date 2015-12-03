@@ -9,18 +9,24 @@
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', 'Dialog', '$mdDialog', 'Authentication'];
-  function LoginController($scope, Dialog, $mdDialog, Authentication) {
+  LoginController.$inject = ['$scope', '$timeout', 'Dialog', '$mdDialog', 'Authentication'];
+  function LoginController($scope, $timeout, Dialog, $mdDialog, Authentication) {
     var vm = this;
 
     vm.creds = { username: cookieUsername, password: null };
     vm.login = login;
     vm.showAbout = showAbout;
 
+    vm.showLogin = false;
+    $timeout(function() { vm.showLogin = true; }, 100);
+
     function login() {
       Authentication.login(vm.creds)
         .then(function(url) {
-          window.location.href = url;
+          if (window.location.href === url)
+            window.location.reload(true);
+          else
+            window.location.href = url;
         }, function(msg) {
           Dialog.alert(l('Authentication Failed'), msg.error);
         });

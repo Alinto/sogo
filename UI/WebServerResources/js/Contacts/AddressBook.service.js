@@ -64,7 +64,7 @@
     angular.module('SOGo.ContactsUI');
   }
   catch(e) {
-    angular.module('SOGo.ContactsUI', ['SOGo.Common']);
+    angular.module('SOGo.ContactsUI', ['SOGo.Common', 'SOGo.PreferencesUI']);
   }
   angular.module('SOGo.ContactsUI')
     .factory('AddressBook', AddressBook.$factory);
@@ -89,11 +89,11 @@
       // First session query
       AddressBook.$cards = [];
     }
-    else if (AddressBook.$query == search) {
+    else if (AddressBook.$query.value == search) {
       // Query hasn't changed
       return AddressBook.$q.when(AddressBook.$cards);
     }
-    AddressBook.$query = search;
+    AddressBook.$query.value = search;
 
     angular.extend(params, options);
 
@@ -125,6 +125,7 @@
           AddressBook.$cards.splice(index, 0, card);
         }
       });
+      AddressBook.$log.debug(AddressBook.$cards);
       return AddressBook.$cards;
     });
   };
@@ -181,7 +182,9 @@
    * @returns an AddressBook object instance
    */
   AddressBook.$find = function(addressbookId) {
-    var futureAddressBookData = AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+    var futureAddressBookData = AddressBook.$Preferences.ready().then(function() {
+      return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+    });
     return new AddressBook(futureAddressBookData);
   };
 
@@ -212,9 +215,12 @@
    * @desc Extend instance with new data and compute additional attributes.
    * @param {object} data - attributes of addressbook
    */
-  AddressBook.prototype.init = function(data) {
-    this.$cards = [];
-    this.cards = [];
+  AddressBook.prototype.init = function(data, options) {
+    if (!this.$cards) {
+      this.$isLoading = true;
+      this.$cards = [];
+      this.cards = [];
+    }
     angular.extend(this, data);
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
@@ -287,34 +293,7 @@
     var _this = this;
 
     this.$startRefreshTimeout();
-
-    return AddressBook.$$resource.fetch(this.id, 'view')
-      .then(function(response) {
-        var index, card,
-            results = response.cards,
-            cards = _this.cards,
-            compareIds = function(data) {
-              return this.id == data.id;
-            };
-
-        // Remove cards that no longer exist
-        for (index = cards.length - 1; index >= 0; index--) {
-          card = cards[index];
-          if (_.isUndefined(_.find(results, compareIds, card))) {
-            cards.splice(index, 1);
-          }
-        }
-
-        // Add new cards
-        _.each(results, function(data, index) {
-          if (_.isUndefined(_.find(cards, compareIds, data))) {
-            var card = new AddressBook.$Card(data);
-            cards.splice(index, 0, card);
-          }
-        });
-
-        return cards;
-      });
+    return this.$filter();
   };
 
     /**
@@ -327,6 +306,9 @@
    */
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
     var _this = this;
+
+    if (!options || !options.dry)
+      this.$isLoading = true;
 
     return AddressBook.$Preferences.ready().then(function() {
       if (options) {
@@ -345,7 +327,8 @@
         }
       }
 
-      AddressBook.$query.value = search;
+      if (angular.isDefined(search))
+        AddressBook.$query.value = search;
 
       return _this.$id().then(function(addressbookId) {
         return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
@@ -394,6 +377,7 @@
             cards.splice(index, 0, removedCards[0]);
           }
         });
+        _this.$isLoading = false;
         return cards;
       });
     });
@@ -491,8 +475,25 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$getCard = function(cardId) {
+    var _this = this;
+
     return this.$id().then(function(addressbookId) {
-      return AddressBook.$Card.$find(addressbookId, cardId);
+      var fullCard,
+          cachedCard = _.find(_this.cards, function(data) {
+            return cardId == data.id;
+          });
+
+      if (cachedCard && cachedCard.$futureCardData)
+        // Full card is available
+        return cachedCard;
+
+      fullCard = AddressBook.$Card.$find(addressbookId, cardId);
+      fullCard.$id().then(function(cardId) {
+        // Extend the Card object of the addressbook list with the full card description
+        if (cachedCard)
+          angular.extend(cachedCard, fullCard);
+      });
+      return fullCard;
     });
   };
 
@@ -505,7 +506,7 @@
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
     var _this = this;
 
-    // Expose and sesolve the promise
+    // Expose and resolve the promise
     this.$futureAddressBookData = futureAddressBookData.then(function(data) {
       return AddressBook.$timeout(function() {
         // Extend AddressBook instance from data of addressbooks list.
@@ -525,6 +526,8 @@
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
 
         _this.$startRefreshTimeout();
+
+        _this.$isLoading = false;
 
         return _this;
       });

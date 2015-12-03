@@ -149,7 +149,7 @@
                   command, [currentTool objectAtIndex: 1]];
     }
 
-  NSLog (helpString);
+  NSLog (@"%@", helpString);
 }
 
 - (void) registerTools

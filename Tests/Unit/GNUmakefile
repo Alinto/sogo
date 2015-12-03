@@ -22,10 +22,13 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestSBJsonParser.m \
 	\
 	TestNGMimeAddressHeaderFieldGenerator.m \
+	TestNGMimeMessageGenerator.m \
+	\
 	TestNSData+Crypto.m \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
-	TestNSString+Utilities.m
+	TestNSString+Utilities.m \
+	TestNGMailAddressParser.m
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 

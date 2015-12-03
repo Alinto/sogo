@@ -156,7 +156,7 @@
     }
   else
     {
-      newKeyForMsgUIDs = [[NSString stringWithFormat:@"/%@/folder%@", currentAccount, newFolderName] asCSSIdentifier];
+      newKeyForMsgUIDs = [NSString stringWithFormat:@"/%@/folder%@", [currentAccount asCSSIdentifier], [newFolderName asCSSIdentifier]];
       error = [co renameTo: newFolderName];
       if (error)
         {
@@ -451,7 +451,7 @@
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSMutableArray *mailboxThreadsCollapsed;
   NSString *destinationFolder;
-  SOGoUserSettings *us;
+  SOGoUserSettings *us=nil;
   WOResponse *response;
   NSDictionary *data;
   SOGoMailFolder *co;
@@ -739,6 +739,7 @@
   NSDictionary *content, *result;
   BOOL addOrRemove;
   NGImap4Client *client;
+  id flag;
 
   int i;
 
@@ -751,7 +752,13 @@
 
   // We unescape our flags
   for (i = [flags count]-1; i >= 0; i--)
-    [flags replaceObjectAtIndex: i  withObject: [[flags objectAtIndex: i] fromCSSIdentifier]];
+    {
+      flag = [flags objectAtIndex: i];
+      if ([flag isKindOfClass: [NSString class]])
+        [flags replaceObjectAtIndex: i  withObject: [flag fromCSSIdentifier]];
+      else
+        [flags removeObjectAtIndex: i];
+    }
 
   co = [self clientObject];
   client = [[co imap4Connection] client];

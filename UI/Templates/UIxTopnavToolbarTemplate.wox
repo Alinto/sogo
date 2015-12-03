@@ -7,11 +7,11 @@
 
   <div class="sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
-               class="hide-gt-md sg-button-navicon sg-icon-button"
+               class="hide-gt-sm sg-button-navicon sg-icon-button"
                label:aria-label="Toggle Menu">
       <md-icon>menu</md-icon>
     </md-button>
-    <div class="sg-date-group" layout="column" layout-align="space-between end">
+    <div class="sg-date-group sg-padded" layout="column" layout-align="space-between end">
       <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
       <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
       <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
@@ -20,49 +20,54 @@
   </div>
 
   <div class="sg-toolbar-group-last">
-    <md-menu layout-fill="layout-fill">
+    <md-menu>
       <md-button label:aria-label="Modules"
-                 class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                 class="sg-icon-button" ng-click="$mdOpenMenu($event)">
         <md-icon>apps</md-icon>
       </md-button>
       <md-menu-content width="8">
-        <div class="md-toolbar-tools sg-padded" layout="row"
+        <div class="md-toolbar-tools" layout="row"
              layout-align="space-around start">
           <md-button class="sg-icon-button"
                      ng-show="activeUser.path.calendar.length"
-                     ng-disabled="baseURL.endsWith('/Calendar')"
+                     ng-disabled="baseURL.endsWith('/Calendar/')"
                      ng-href="{{activeUser.path.calendar}}">
             <md-icon>event</md-icon>
             <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith('/Contacts')"
+                     ng-disabled="baseURL.endsWith('/Contacts/')"
                      ng-href="{{activeUser.path.contacts}}">
             <md-icon>contacts</md-icon>
             <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
                      ng-show="activeUser.path.mail.length"
-                     ng-disabled="baseURL.endsWith('/Mail')"
+                     ng-disabled="baseURL.endsWith('/Mail/')"
                      ng-href="{{activeUser.path.mail}}">
             <md-icon>email</md-icon>
             <md-tooltip><var:string label:value="Mail"/></md-tooltip>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-disabled="baseURL.endsWith(activeUser.login)"
+                     ng-disabled="baseURL.endsWith('/Preferences/')"
                      ng-href="{{activeUser.path.preferences}}">
             <md-icon>settings</md-icon>
             <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
           </md-button>
-          <md-button class="sg-icon-button" ng-show="activeUser.isSuperUser" ng-href="{{activeUser.path.administration}}">
+          <md-button class="sg-icon-button"
+                     ng-disabled="baseURL.endsWith('/Administration/')"
+                     ng-show="activeUser.isSuperUser"
+                     ng-href="{{activeUser.path.administration}}">
             <md-icon>settings_applications</md-icon>
             <md-tooltip><var:string label:value="Administration"/></md-tooltip>
           </md-button>
-          <md-button class="sg-icon-button" ng-show="activeUser.path.logoff.length" ng-href="{{activeUser.path.logoff}}">
+          <md-button class="sg-icon-button"
+                     ng-show="activeUser.path.logoff.length"
+                     ng-href="{{activeUser.path.logoff}}">
             <md-icon>settings_power</md-icon>
             <md-tooltip><var:string label:value="Disconnect"/></md-tooltip>
           </md-button>
-           </div>
+        </div>
       </md-menu-content>
     </md-menu>
   </div>

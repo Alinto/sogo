@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
-  function MessageController($scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, focus, Dialog, Account, Mailbox, Message) {
-    var vm = this;
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox, Message) {
+    var vm = this, messageDialog = null, popupWindow = null;
 
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
@@ -16,11 +16,15 @@
     vm.message = stateMessage;
     vm.service = Message;
     vm.tags = { searchText: '', selected: '' };
+    vm.showFlags = stateMessage.flags.length > 0;
     vm.doDelete = doDelete;
+    vm.close = close;
     vm.reply = reply;
     vm.replyAll = replyAll;
     vm.forward = forward;
     vm.edit = edit;
+    vm.openPopup = openPopup;
+    vm.closePopup = closePopup;
     vm.newMessage = newMessage;
     vm.saveMessage = saveMessage;
     vm.viewRawSource = viewRawSource;
@@ -49,23 +53,35 @@
     }
 
     function showMailEditor($event, message, recipients) {
+      if (messageDialog === null) {
+        if (!angular.isDefined(recipients))
+          recipients = [];
 
-      if (!angular.isDefined(recipients))
-        recipients = [];
+        messageDialog = $mdDialog
+          .show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: 'UIxMailEditor',
+            controller: 'MessageEditorController',
+            controllerAs: 'editor',
+            locals: {
+              stateAccounts: vm.accounts,
+              stateMessage: message,
+              stateRecipients: recipients
+            }
+          })
+          .finally(function() {
+            messageDialog = null;
+          });
+      }
+    }
 
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose: false,
-        escapeToClose: false,
-        templateUrl: 'UIxMailEditor',
-        controller: 'MessageEditorController',
-        controllerAs: 'editor',
-        locals: {
-          stateAccounts: vm.accounts,
-          stateMessage: message,
-          stateRecipients: recipients
-        }
+    function close() {
+      $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) }).then(function() {
+        vm.message = null;
+        delete stateMailbox.selectedMessage;
       });
     }
 
@@ -90,6 +106,33 @@
       });
     }
 
+    function openPopup() {
+      var url = [sgSettings.baseURL(),
+                 'UIxMailPopupView#/Mail',
+                 vm.message.accountId,
+                 // The double-encoding is necessary
+                 encodeUriFilter(encodeUriFilter(vm.message.$mailbox.path)),
+                 vm.message.uid]
+          .join('/'),
+          wId = vm.message.$absolutePath();
+      popupWindow = $window.open(url, wId,
+                                 ["width=680",
+                                  "height=520",
+                                  "resizable=1",
+                                  "scrollbars=1",
+                                  "toolbar=0",
+                                  "location=0",
+                                  "directories=0",
+                                  "status=0",
+                                  "menubar=0",
+                                  "copyhistory=0"]
+                                 .join(','));
+    }
+
+    function closePopup() {
+      $window.close();
+    }
+
     function newMessage($event, recipient) {
       var message = vm.account.$newMessage();
       showMailEditor($event, message, [recipient]);
@@ -108,14 +151,14 @@
           escapeToClose: true,
           template: [
             '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Message Source') + '">',
-            '  <md-dialog-content>',
+            '  <md-dialog-content class="md-dialog-content">',
             '    <pre>',
             data,
             '    </pre>',
             '  </md-dialog-content>',
-            '  <div class="md-actions">',
+            '  <md-dialog-actions>',
             '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
-            '  </div>',
+            '  </md-dialog-actions>',
             '</md-dialog>'
           ].join(''),
           controller: MessageRawSourceDialogController

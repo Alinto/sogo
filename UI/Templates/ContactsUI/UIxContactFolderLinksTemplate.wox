@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="60" flex-sm="100">
-    <md-toolbar class="sg-padded">
+    <md-toolbar>
       <md-icon class="material-icons sg-icon-toolbar-bg">link</md-icon>
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
@@ -20,8 +20,8 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
-      <div layout="column" layout-padding="layout-padding">
+    <md-dialog-content class="md-padding">
+      <div layout="column">
         <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
         <md-input-container>
           <label><var:string label:value="CardDAV URL"/></label>

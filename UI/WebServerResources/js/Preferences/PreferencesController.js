@@ -7,14 +7,15 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Mailbox', 'statePreferences', 'Authentication'];
-  function PreferencesController($state, $mdDialog, $mdToast, Dialog, User, Mailbox, statePreferences, Authentication) {
-    var vm = this;
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdDialog, $mdToast, Dialog, User, Account, statePreferences, Authentication) {
+    var vm = this, account, mailboxes = [];
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
 
     vm.go = go;
+    vm.onLanguageChange = onLanguageChange;
     vm.addCalendarCategory = addCalendarCategory;
     vm.removeCalendarCategory = removeCalendarCategory;
     vm.addContactCategory = addContactCategory;
@@ -35,10 +36,32 @@
     vm.timeZonesList = window.timeZonesList;
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
-    vm.mailboxes = Mailbox.$find({ id: 0 });
+
+    // Fetch a flatten version of the mailboxes list of the main account (0)
+    // This list will be forwarded to the Sieve filter controller
+    account = new Account({ id: 0 });
+    account.$getMailboxes().then(function() {
+      var allMailboxes = account.$flattenMailboxes({all: true}),
+          index = -1,
+          length = allMailboxes.length;
+      while (++index < length) {
+        mailboxes.push(allMailboxes[index]);
+      }
+    });
 
     function go(module) {
       $state.go('preferences.' + module);
+    }
+
+    function onLanguageChange() {
+      Dialog.confirm(l('Warning'),
+                     l('Save preferences and reload page now?'),
+                     {ok: l('Yes'), cancel: l('No')})
+        .then(function() {
+          save().then(function() {
+            $window.location.reload(true);
+          });
+        });
     }
 
     function addCalendarCategory() {
@@ -125,36 +148,37 @@
     }
 
     function addMailFilter(ev) {
-      if (!vm.preferences.defaults.SOGoSieveFilters)
-        vm.preferences.defaults.SOGoSieveFilters = [];
+      var filter = { match: 'all' };
 
-      vm.preferences.defaults.SOGoSieveFilters.push({});
-      var filter = _.last(vm.preferences.defaults.SOGoSieveFilters);
       $mdDialog.show({
-        controller: 'FiltersDialogController',
         templateUrl: 'editFilter?filter=new',
+        controller: 'FiltersDialogController',
+        controllerAs: 'filterEditor',
         targetEvent: ev,
         locals: {
           filter: filter,
-          mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors,
-          sieveCapabilities: window.sieveCapabilities
+          mailboxes: mailboxes,
+          labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
+      }).then(function() {
+        if (!vm.preferences.defaults.SOGoSieveFilters)
+          vm.preferences.defaults.SOGoSieveFilters = [];
+        vm.preferences.defaults.SOGoSieveFilters.push(filter);
       });
     }
     
-    function editMailFilter(index) {
+    function editMailFilter(ev, index) {
       var filter = angular.copy(vm.preferences.defaults.SOGoSieveFilters[index]);
       
       $mdDialog.show({
-        controller: 'FiltersDialogController',
         templateUrl: 'editFilter?filter=' + index,
+        controller: 'FiltersDialogController',
+        controllerAs: 'filterEditor',
         targetEvent: null,
         locals: {
           filter: filter,
-          mailboxes: vm.mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors,
-          sieveCapabilities: window.sieveCapabilities
+          mailboxes: mailboxes,
+          labels: vm.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
@@ -176,7 +200,10 @@
     }
     
     function save() {
-      var sendForm = true;
+      var i, sendForm, addresses, defaultAddresses, domains, domain;
+
+      sendForm = true;
+      domains = [];
 
       // We do some sanity checks
       if (window.forwardConstraints > 0 &&
@@ -184,11 +211,10 @@
           vm.preferences.defaults.Forward.enabled &&
           angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
 
-        var addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
+        addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
-        var defaultAddresses = window.defaultEmailAddresses.split(/, */);
-        var domains = [];
+        defaultAddresses = window.defaultEmailAddresses.split(/, */);
 
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
@@ -198,8 +224,8 @@
         });
 
         // We check if we're allowed or not to forward based on the domain defaults
-        for (var i = 0; i < addresses.length && sendForm; i++) {
-          var domain = addresses[i].split("@")[1].toLowerCase();
+        for (i = 0; i < addresses.length && sendForm; i++) {
+          domain = addresses[i].split("@")[1].toLowerCase();
           if (domains.indexOf(domain) < 0 && window.forwardConstraints == 1) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
             sendForm = false;
@@ -212,14 +238,23 @@
       }
 
       if (sendForm)
-        vm.preferences.$save().then(function(data) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .content(l('Preferences saved'))
-                  .position('top right')
-                  .hideDelay(3000)
-              );
+        return vm.preferences.$save().then(function(data) {
+          $mdToast.show({
+            controller: 'savePreferencesToastCtrl',
+            template: [
+              '<md-toast>',
+              '   <span flex>' + l('Preferences saved') + '</span>',
+              '   <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
+              '      <md-icon>close</md-icon>',
+              '   </md-button>',
+              '</md-toast>'
+            ].join(''),
+            hideDelay: 2000,
+            position: 'top right'
+          });
         });
+
+      return $q.reject();
     }
 
     function canChangePassword() {
@@ -236,7 +271,7 @@
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: l('The password was changed successfully.'),
-          ok: 'OK'
+          ok: l('OK')
         });
         $mdDialog.show( alert )
           .finally(function() {
@@ -246,7 +281,7 @@
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: msg,
-          ok: 'OK'
+          ok: l('OK')
         });
         $mdDialog.show( alert )
           .finally(function() {
@@ -262,8 +297,16 @@
     }
   }
 
+  savePreferencesToastCtrl.$inject = ['$scope', '$mdToast'];
+  function savePreferencesToastCtrl($scope, $mdToast) {
+    $scope.closeToast = function() {
+      $mdToast.hide();
+    };
+  }
+
   angular
     .module('SOGo.PreferencesUI')
+    .controller('savePreferencesToastCtrl', savePreferencesToastCtrl)
     .controller('PreferencesController', PreferencesController);
 
 })();

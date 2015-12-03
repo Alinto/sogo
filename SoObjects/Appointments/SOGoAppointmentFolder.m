@@ -84,7 +84,7 @@
 #import "SOGoAppointmentFolders.h"
 #import "SOGoFreeBusyObject.h"
 #import "SOGoTaskObject.h"
-#import "SOGoWebAppointmentFolder.h";
+#import "SOGoWebAppointmentFolder.h"
 
 #import "SOGoAppointmentFolder.h"
 
@@ -1013,7 +1013,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	{
           if ([dateRange containsDate: [component startDate]])
             {
-              // We must pass nill to :container here in order to avoid re-entrancy issues.
+              // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
             }
@@ -1030,15 +1030,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       // The recurrence id of the exception is outside the date range;
       // simply add the exception to the records array.
-      // We must pass nill to :container here in order to avoid re-entrancy issues.
+      // We must pass nil to :container here in order to avoid re-entrancy issues.
       newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
-      newRecordRange = [NGCalendarDateRange 
-			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
-			 endDate: [newRecord objectForKey: @"endDate"]];
-      if ([dateRange doesIntersectWithDateRange: newRecordRange])
+      if ([newRecord objectForKey: @"startDate"] && [newRecord objectForKey: @"endDate"]) {
+        newRecordRange = [NGCalendarDateRange
+                           calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
+                                                  endDate: [newRecord objectForKey: @"endDate"]];
+        if ([dateRange doesIntersectWithDateRange: newRecordRange])
           [ma addObject: newRecord];
-      else
+        else
+          newRecord = nil;
+      } else {
+        [self warnWithFormat: @"Recurrence %@ without dtstart or dtend. Ignoring", recurrenceId];
         newRecord = nil;
+      }
     }
 
   if (newRecord)
@@ -2337,7 +2342,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   request = [context request];
   if (!([request isIPhone] || [request isICal4]))
     {
-      gdRT = [self groupDavResourceType];
+      gdRT = (NSArray *) [self groupDavResourceType];
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
                   XMLNS_GROUPDAV, nil];
       [colType addObject: gdVEventCol];
@@ -2988,7 +2993,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   theUser = [SOGoUser userWithLogin: theUID];
   aParent = [theUser calendarsFolderInContext: context];
-  
+
+  if ([aParent isKindOfClass: [NSException class]])
+    return nil;
+
   aFolders = [aParent subFolders];
   e = [aFolders objectEnumerator];
   while ((aFolder = [e nextObject]))
@@ -3152,18 +3160,28 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableString *content;
   NSString *uid;
 
-  // We first look if there's an event with the same UID in our calendar. If not,
-  // let's reuse what is in the event, otherwise generate a new GUID and use it.
+  // We first look if the event has any / or + in its UID. If that's the case
+  // we generate a new UID based on a GUID
   uid = [event uid];
 
-  object = [self lookupName: uid
-                  inContext: context
-                    acquire: NO];
- 
-  if (object && ![object isKindOfClass: [NSException class]])
+  if ([uid rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"+/"]].location != NSNotFound)
     {
       uid = [self globallyUniqueObjectId];
       [event setUid: uid];
+    }
+  else
+    {
+      // We also look if there's an event with the same UID in our calendar. If not,
+      // let's reuse what is in the event, otherwise generate a new GUID and use it.
+      object = [self lookupName: uid
+                      inContext: context
+                        acquire: NO];
+
+      if (object && ![object isKindOfClass: [NSException class]])
+        {
+          uid = [self globallyUniqueObjectId];
+          [event setUid: uid];
+        }
     }
 
   object = [SOGoAppointmentObject objectWithName: uid

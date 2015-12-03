@@ -116,13 +116,19 @@ static NSURL *tableURL = nil;
 - (void) _removeUserFolders: (NSString *) userId
 {
   NSArray *folderPaths;
+  NSString *path;
   int count, max;
 
   folderPaths = [self _userFolderPaths: userId];
   max = [folderPaths count];
   if (max > 0)
     for (count = 0; count < max; count++)
-      [fm deleteFolderAtPath: [folderPaths objectAtIndex: count]];
+      {
+        path = [folderPaths objectAtIndex: count];
+        [fm deleteFolderAtPath: path];
+        if (verbose)
+          NSLog (@"Deleting %@", path);
+      }
   else
     NSLog (@"No folder returned for user '%@'", userId);
 }
@@ -144,6 +150,8 @@ static NSURL *tableURL = nil;
                     userId];
       if ([fc evaluateExpressionX: sql])
         NSLog (@"Unable to delete the preference record for '%@'", userId);
+      else if (verbose)
+        NSLog (@"Removed preference record for '%@'", userId);
       [cm releaseChannel: fc];
     }
 }

@@ -160,23 +160,25 @@ MakeDisplayFolderName (NSString *folderName)
   for (count = 0; count < max; count++)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
-      // secondaryFolders has the names (1) Imap4Encoded and (2) asCSSIdentifier
-      //     e.g.: Probl&AOg-mes_SP_de_SP_synchronisation
+      // secondaryFolders has the names (1) Imap4Encoded ,(2) asCSSIdentifier and (3) "folder"-prefixed
+      //     e.g.: folderProbl&AOg-mes_SP_de_SP_synchronisation
       currentName = [secondaryFolders objectAtIndex: count];
-      // To get the real name we have to revert that (applying the decode functions)
-      // in reverse order
+      // To get the real name we have to revert that (applying the decode functions
+      // in reverse order)
       //     e.g.: Problèmes de synchronisation
-      realName = [[currentName fromCSSIdentifier]
-                               stringByDecodingImap4FolderName];
+      realName = [[[currentName substringFromIndex: 6]
+                                fromCSSIdentifier]
+                                stringByDecodingImap4FolderName];
       // And finally to represent that as URI we have to (1) asCSSIdentifier,
-      // (2) Imap4Encode and (3) AddPercentEscapes
-      //     e.g.: Probl&AOg-mes_SP_de_SP_synchronisation
+      // (2) Imap4Encode (3) AddPercentEscapes and (4) add the "folder" prefix
+      //     e.g.: folderProbl&AOg-mes_SP_de_SP_synchronisation
       // In the example there are no percent escapes added because is already ok
       stringData = [[[realName asCSSIdentifier]
                                stringByEncodingImap4FolderName]
                                stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      stringData = [NSString stringWithFormat: @"folder%@", stringData];
       context->url = [[NSString stringWithFormat: @"%@%@", urlBase, stringData] asUnicodeInMemCtx: context];
-      context->name = [[realName substringFromIndex: 6] asUnicodeInMemCtx: context];
+      context->name = [realName asUnicodeInMemCtx: context];
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
       context->tag = "tag";
@@ -200,7 +202,7 @@ MakeDisplayFolderName (NSString *folderName)
                                                andTDBIndexing: NULL];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   folderName = [NSString stringWithFormat: @"folder%@",
-                         [newFolderName asCSSIdentifier]];
+                         [[newFolderName stringByEncodingImap4FolderName] asCSSIdentifier]];
   newFolder = [SOGoMailFolder objectWithName: folderName
                                  inContainer: accountFolder];
   if ([newFolder create])
@@ -209,7 +211,7 @@ MakeDisplayFolderName (NSString *folderName)
                                        withString: @"%40"],
                              [userName stringByReplacingOccurrencesOfString: @"@"
                                        withString: @"%40"],
-                             [[folderName stringByEncodingImap4FolderName] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+                             [folderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     mapistoreURI = nil;
 

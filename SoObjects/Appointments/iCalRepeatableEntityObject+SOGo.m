@@ -44,6 +44,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
+#import "iCalCalendar+SOGo.h"
 
 @implementation iCalRepeatableEntityObject (SOGoExtensions)
 
@@ -162,7 +163,7 @@
       rule = [iCalRecurrenceRule new];
       [rule setInterval: @"1"];
 
-      frequency = NSNotFound;
+      frequency = (int)NSNotFound;
       o = [repeat objectForKey: @"frequency"];
       if ([o isKindOfClass: [NSString class]])
         {

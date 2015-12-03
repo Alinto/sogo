@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', '$mdToast', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, $mdToast, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -21,13 +21,24 @@
     vm.importCards = importCards;
     vm.exportCards = exportCards;
     vm.showLinks = showLinks;
+    vm.showProperties = showProperties;
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
 
-    function select(folder) {
-      vm.editMode = false;
-      AddressBook.$query.value = '';
-      $state.go('app.addressbook', {addressbookId: folder.id});
+    function select($event, folder) {
+      if ($state.params.addressbookId != folder.id &&
+          vm.editMode != folder.id) {
+        vm.editMode = false;
+        AddressBook.$query.value = '';
+        // Close sidenav on small devices
+        if ($mdMedia('sm'))
+          $mdSidenav('left').close();
+        $state.go('app.addressbook', {addressbookId: folder.id});
+      }
+      else {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
     }
 
     function newAddressbook() {
@@ -108,38 +119,9 @@
         targetEvent: $event,
         clickOutsideToClose: true,
         escapeToClose: true,
-        template: [
-          '<md-dialog flex="40" flex-sm="100" aria-label="' + l('Import Cards') + '">',
-          '  <md-toolbar class="sg-padded">',
-          '    <div class="md-toolbar-tools">',
-          '      <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>',
-          '      <div class="md-flex">',
-          '        <div class="sg-md-title">' + l('Import Cards') + '</div>',
-          '      </div>',
-          '      <md-button class="md-icon-button" ng-click="close()">',
-          '        <md-icon aria-label="Close dialog">close</md-icon>',
-          '      </md-button>',
-          '    </div>',
-          '  </md-toolbar>',
-          '  <md-dialog-content>',
-          '    <div layout="column">',
-          '      <div layout="row" layout-align="start center">',
-          '        <span>' + l('Select a vCard or LDIF file.') + '</span>',
-          '        <label class="md-button" for="file-input">',
-          '          <span>' + l('Choose File') + '</span>',
-          '        </label>',
-          '        <input id="file-input" type="file" nv-file-select="nv-file-select" uploader="uploader" ng-show="false"/>',
-          '      </div>',
-          '      <span ng-show="uploader.queue.length == 0">' + l('No file chosen') + '</span>',
-          '      <span ng-show="uploader.queue.length > 0">{{ uploader.queue[0].file.name }}</span>',
-          '    </div>',
-          '  </md-dialog-content>',
-          '  <div class="md-actions">',
-          '    <md-button ng-disabled="uploader.queue.length == 0" ng-click="upload()">' + l('Upload') + '</md-button>',
-          '  </div>',
-          '</md-dialog>'
-        ].join(''),
+        templateUrl: 'UIxContactsImportDialog',
         controller: CardsImportDialogController,
+        controllerAs: '$CardsImportDialogController',
         locals: {
           folder: folder
         }
@@ -150,36 +132,67 @@
        */
       CardsImportDialogController.$inject = ['scope', '$mdDialog', 'folder'];
       function CardsImportDialogController(scope, $mdDialog, folder) {
+        var vm = this;
 
-        scope.uploader = new FileUploader({
-          url: ApplicationBaseURL + '/' + folder.id + '/import',
-          onProgressItem: function(item, progress) {
-            console.debug(item); console.debug(progress);
-          },
+        vm.uploader = new FileUploader({
+          url: ApplicationBaseURL + [folder.id, 'import'].join('/'),
+          autoUpload: true,
+          queueLimit: 1,
+          filters: [{ name: filterByExtension, fn: filterByExtension }],
           onSuccessItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+            var msg;
+
             $mdDialog.hide();
+
+            if (response.imported === 0)
+              msg = l('No card was imported.');
+            else {
+              msg = l('A total of %{0} cards were imported in the addressbook.', response.imported);
+              AddressBook.selectedFolder.$reload();
+            }
+
             $mdToast.show(
               $mdToast.simple()
-                .content(l('A total of %{0} cards were imported in the addressbook.', response.imported))
+                .content(msg)
                 .position('top right')
                 .hideDelay(3000));
-            AddressBook.selectedFolder.$reload();
-          },
-          onCancelItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
           },
           onErrorItem: function(item, response, status, headers) {
-            console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('An error occured while importing contacts.') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
           }
         });
 
-        scope.close = function() {
+        vm.close = function() {
           $mdDialog.hide();
         };
-        scope.upload = function() {
-          scope.uploader.uploadAll();
-        };
+
+        function filterByExtension(item) {
+          var isTextFile = item.type.indexOf('text') === 0 ||
+              /\.(ldif|vcf|vcard)$/.test(item.name);
+
+          if (!isTextFile)
+            $mdToast.show({
+              template: [
+                '<md-toast>',
+                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '  <span>' + l('Select a vCard or LDIF file.') + '</span>',
+                '</md-toast>'
+              ].join(''),
+              position: 'top right',
+              hideDelay: 3000
+            });
+
+          return isTextFile;
+        }
       }
     }
 
@@ -211,6 +224,47 @@
 
         function close() {
           $mdDialog.hide();
+        }
+      }
+    }
+
+    function showProperties(addressbook) {
+      $mdDialog.show({
+        templateUrl: addressbook.id + '/properties',
+        controller: PropertiesDialogController,
+        controllerAs: 'properties',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          srcAddressBook: addressbook
+        }
+      }).catch(function() {
+        // Do nothing
+      });
+
+      /**
+       * @ngInject
+       */
+      PropertiesDialogController.$inject = ['$scope', '$mdDialog', 'srcAddressBook'];
+      function PropertiesDialogController($scope, $mdDialog, srcAddressBook) {
+        var vm = this;
+
+        vm.addressbook = new AddressBook(srcAddressBook.$omit());
+        vm.saveProperties = saveProperties;
+        vm.close = close;
+
+        function saveProperties() {
+          vm.addressbook.$save().then(function() {
+            // Refresh list instance
+            srcAddressBook.init(vm.addressbook.$omit());
+            $mdDialog.hide();
+          }, function() {
+            // TODO handle error
+          });
+        }
+
+        function close() {
+          $mdDialog.cancel();
         }
       }
     }

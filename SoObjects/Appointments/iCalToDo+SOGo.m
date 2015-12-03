@@ -214,7 +214,7 @@
     {
       percent = [o intValue];
       if (percent >= 0 && percent <= 100)
-        [self setPercentComplete: [NSString stringWithFormat: @"%i", percent]];
+        [self setPercentComplete: [NSString stringWithFormat: @"%i", (int)percent]];
     }
   else
     [self setPercentComplete: @""];

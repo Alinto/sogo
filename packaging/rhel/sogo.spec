@@ -1,6 +1,7 @@
 # We disable OpenChange builds on el5 since it's prehistoric
 %define enable_openchange 1
 %{?el5:%define enable_openchange 0}
+%{?el6:%define enable_openchange 0}
 %{?el7:%define enable_openchange 0}
 
 %ifarch %ix86
@@ -174,9 +175,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # small tweak to the python script for RHEL5
 # if hex(sys.hexversion) < 0x02060000
-%if %{python_sys_pyver} < 33947648
-  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
-%endif
+#%if %{python_sys_pyver} < 33947648
+#  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
+#%endif
 
 
 # ****************************** build ********************************
@@ -200,7 +201,7 @@ esac
 make CC="$cc" LDFLAGS="$ldflags" messages=yes
 
 # OpenChange
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 (cd OpenChange; \
  LD_LIBRARY_PATH=../SOPE/NGCards/obj:../SOPE/GDLContentStore/obj \
  make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM )
@@ -243,7 +244,7 @@ install -d ${RPM_BUILD_ROOT}/var/run/sogo
 install -d ${RPM_BUILD_ROOT}/var/spool/sogo
 install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
 install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
-install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
+#install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
@@ -265,7 +266,7 @@ cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
 # OpenChange
-%if %{sogo_major_version} >= 2
+%if %enable_openchange
 (cd OpenChange; \
  LD_LIBRARY_PATH=${RPM_BUILD_ROOT}%{_libdir} \
  make DESTDIR=${RPM_BUILD_ROOT} \
@@ -303,7 +304,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/spool/sogo
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
-%{_sbindir}/openchange_user_cleanup
+#%{_sbindir}/openchange_user_cleanup
 %{_libdir}/sogo/libSOGo.so*
 %{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo

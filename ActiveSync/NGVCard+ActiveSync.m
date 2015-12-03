@@ -48,11 +48,42 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NGVCard (ActiveSync)
 
+//
+// This function is called for each elements which can be ghosted according to specs. 
+// https://msdn.microsoft.com/en-us/library/gg650908%28v=exchg.80%29.aspx
+//
+- (BOOL) _isGhosted: (NSString *) element
+           inContext: (WOContext *) context
+{
+  NSArray *supportedElements;
+
+  supportedElements = [context objectForKey: @"SupportedElements"];
+
+  // If the client does not include a Supported element in the initial Sync command request for
+  // a folder, then all of the elements that can be ghosted are considered not ghosted.
+  if (!supportedElements)
+    return NO;
+
+  // If the client includes an empty Supported element in the initial Sync command request for 
+  // a folder, then all elements that can be ghosted are considered ghosted.
+  if (![supportedElements count])
+    return YES;
+
+  // If the client includes a Supported element that contains child elements in the initial 
+  // Sync command request for a folder, then each child element of that Supported element is 
+  // considered not ghosted. All elements that can be ghosted that are not included as child 
+  // elements of the Supported element are considered ghosted. 
+  if (!([supportedElements indexOfObject: element] == NSNotFound))
+    return YES;
+
+  return NO;
+}
+
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSArray *emails, *addresses, *categories, *elements;
   CardElement *n, *homeAdr, *workAdr;
-  NSMutableString *s;
+  NSMutableString *s, *a;
   NSString *url;
   id o;
 
@@ -63,7 +94,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if ((o = [n flattenedValueAtIndex: 0 forKey: @""]))
     [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
-  
+
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
     [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
   
@@ -146,16 +177,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([addresses count])
     {
       homeAdr = [addresses objectAtIndex: 0];
+      a = [NSMutableString string];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentationInContext: context]];
+        [a appendString: o];
+
+      if ((o = [homeAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
+        [a appendFormat: @"\n%@", o];
       
+      [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [a activeSyncRepresentationInContext: context]];
+
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
         [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentationInContext: context]];
-      
+
       if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
         [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentationInContext: context]];
       
@@ -171,9 +208,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([addresses count])
     {
       workAdr = [addresses objectAtIndex: 0];
+      a = [NSMutableString string];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentationInContext: context]];
+        [a appendString: o];
+
+      if ((o = [workAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
+        [a appendFormat: @"\n%@", o];
+
+      [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [a activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentationInContext: context]];
@@ -217,6 +260,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     inContext: (WOContext *) context
 {
   CardElement *element;
+  NSMutableArray *addressLines;
   id o;
   
   // Contact's note
@@ -226,6 +270,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Categories
   if ((o = [theValues objectForKey: @"Categories"]) && [o length])
     [self setCategories: o];
+  else
+    [[self children] removeObjectsInArray: [self childrenWithTag: @"Categories"]];
 
   // Birthday
   if ((o = [theValues objectForKey: @"Birthday"]))
@@ -233,6 +279,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       o = [o calendarDate];
       [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d" timeZone: nil locale: nil]];
     }
+  else if (![self _isGhosted: @"Birthday" inContext: context])
+    {
+      [self setBday: @""];
+    }
+
 
   //
   // Business address information
@@ -244,18 +295,48 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // BusinessCountry
   //
   element = [self elementWithTag: @"adr" ofType: @"work"];
-  [element setSingleValue: @""
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessStreet"]
-                  atIndex: 2 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessCity"]
-                  atIndex: 3 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessState"]
-                  atIndex: 4 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessPostalCode"]
-                  atIndex: 5 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"BusinessCountry"]
-                  atIndex: 6 forKey: @""];
+
+  if ((o = [theValues objectForKey: @"BusinessStreet"]) || ![self _isGhosted: @"BusinessStreet" inContext: context])
+    {
+      addressLines = [NSMutableArray arrayWithArray: [o componentsSeparatedByString: @"\n"]];
+
+      [element setSingleValue: @""
+                      atIndex: 1 forKey: @""];
+      [element setSingleValue: [addressLines count] ? [addressLines objectAtIndex: 0] : @""
+                      atIndex: 2 forKey: @""];
+
+      // Extended address line. If there are more than 2 address lines we add them to the extended address line.
+      if ([addressLines count] > 1)
+        {
+          [addressLines removeObjectAtIndex: 0];
+          [element setSingleValue: [addressLines componentsJoinedByString: @" "]
+                          atIndex: 1 forKey: @""];
+        }
+     }
+
+  if ((o = [theValues objectForKey: @"BusinessCity"]) || ![self _isGhosted: @"BusinessCity" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"BusinessCity"]
+                      atIndex: 3 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"BusinessState"]) || ![self _isGhosted: @"BusinessState" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"BusinessState"]
+                      atIndex: 4 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"BusinessPostalCode"]) || ![self _isGhosted: @"BusinessPostalCode" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"BusinessPostalCode"]
+                      atIndex: 5 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"BusinessCountry"]) || ![self _isGhosted: @"BusinessCountry" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"BusinessCountry"]
+                      atIndex: 6 forKey: @""];
+    }
 
   //
   // Home address information
@@ -267,35 +348,69 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // HomeCountry
   //
   element = [self elementWithTag: @"adr" ofType: @"home"];
-  [element setSingleValue: @""
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomeStreet"]
-                  atIndex: 2 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomeCity"]
-                  atIndex: 3 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomeState"]
-                  atIndex: 4 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomePostalCode"]
-                  atIndex: 5 forKey: @""];
-  [element setSingleValue: [theValues objectForKey: @"HomeCountry"]
-                  atIndex: 6 forKey: @""];
+
+  if ((o = [theValues objectForKey: @"HomeStreet"]) || ![self _isGhosted: @"HomeStreet" inContext: context])
+    {
+      addressLines = [NSMutableArray arrayWithArray: [o componentsSeparatedByString: @"\n"]];
+
+      [element setSingleValue: @""
+                      atIndex: 1 forKey: @""];
+      [element setSingleValue: [addressLines count] ? [addressLines objectAtIndex: 0] : @""
+                      atIndex: 2 forKey: @""];
+
+      // Extended address line. If there are more then 2 address lines we add them to the extended address line.
+      if ([addressLines count] > 1)
+        {
+          [addressLines removeObjectAtIndex: 0];
+          [element setSingleValue: [addressLines componentsJoinedByString: @" "]
+                          atIndex: 1 forKey: @""];
+        }
+    }
+
+  if ((o = [theValues objectForKey: @"HomeCity"]) || ![self _isGhosted: @"HomeCity" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"HomeCity"]
+                      atIndex: 3 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"HomeState"]) || ![self _isGhosted: @"HomeState" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"HomeState"]
+                      atIndex: 4 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"HomePostalCode"]) || ![self _isGhosted: @"HomePostalCode" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"HomePostalCode"]
+                      atIndex: 5 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"HomeCountry"]) || ![self _isGhosted: @"HomeCountry" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"HomeCountry"]
+                      atIndex: 6 forKey: @""];
+    }
 
   // Company's name
   if ((o = [theValues objectForKey: @"CompanyName"]))
     [self setOrg: o  units: nil];
+  else if (![self _isGhosted: @"CompanyName" inContext: context])
+    [self setOrg: @""  units: nil];
   
   // Department
   if ((o = [theValues objectForKey: @"Department"]))
     [self setOrg: nil  units: [NSArray arrayWithObjects:o,nil]];
+  else if (![self _isGhosted: @"Department" inContext: context])
+    [self setOrg: nil  units: [NSArray arrayWithObjects:@"",nil]];
   
   // Email addresses
-  if ((o = [theValues objectForKey: @"Email1Address"]))
+  if ((o = [theValues objectForKey: @"Email1Address"]) || ![self _isGhosted: @"Email1Address" inContext: context])
     {
       element = [self elementWithTag: @"email" ofType: @"work"];
       [element setSingleValue: [o pureEMailAddress] forKey: @""];
     }
   
-  if ((o = [theValues objectForKey: @"Email2Address"]))
+  if ((o = [theValues objectForKey: @"Email2Address"]) || ![self _isGhosted: @"Email2Address" inContext: context])
     {
       element = [self elementWithTag: @"email" ofType: @"home"];
       [element setSingleValue: [o pureEMailAddress] forKey: @""];
@@ -303,7 +418,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // SOGo currently only supports 2 email addresses ... but AS clients might send 3
   // FIXME: revise this when the GUI revamp is done in SOGo
-  if ((o = [theValues objectForKey: @"Email3Address"]))
+  if ((o = [theValues objectForKey: @"Email3Address"]) || ![self _isGhosted: @"Email3Address" inContext: context])
     {
       element = [self elementWithTag: @"email" ofType: @"three"];
       [element setSingleValue: [o pureEMailAddress] forKey: @""];
@@ -313,45 +428,62 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // MiddleName
   // Suffix   (II)
   // Title    (Mr.)
-  [self setFn: [theValues objectForKey: @"FileAs"]];
+  if ((o = [theValues objectForKey: @"FileAs"]) || ![self _isGhosted: @"FileAs" inContext: context])
+    [self setFn: [theValues objectForKey: @"FileAs"]];
 
   [self setNWithFamily: [theValues objectForKey: @"LastName"]
                  given: [theValues objectForKey: @"FirstName"]
             additional: nil prefixes: nil suffixes: nil];
   
   // IM information
-  [[self uniqueChildWithTag: @"x-aim"]
-    setSingleValue: [theValues objectForKey: @"IMAddress"]
-            forKey: @""];
+  if ((o = [theValues objectForKey: @"IMAddress"]) || ![self _isGhosted: @"IMAddress" inContext: context])
+    [[self uniqueChildWithTag: @"x-aim"]
+      setSingleValue: [theValues objectForKey: @"IMAddress"]
+              forKey: @""];
 
   //
   // Phone numbrrs
   //
-  element = [self elementWithTag: @"tel" ofType: @"work"];
-  [element setSingleValue: [theValues objectForKey: @"BusinessPhoneNumber"]  forKey: @""];
+  if ((o = [theValues objectForKey: @"BusinessPhoneNumber"]) || ![self _isGhosted: @"BusinessPhoneNumber" inContext: context])
+    {
+      element = [self elementWithTag: @"tel" ofType: @"work"];
+      [element setSingleValue: [theValues objectForKey: @"BusinessPhoneNumber"]  forKey: @""];
+    }
 
-  element = [self elementWithTag: @"tel" ofType: @"home"];
-  [element setSingleValue: [theValues objectForKey: @"HomePhoneNumber"]  forKey: @""];
+  if ((o = [theValues objectForKey: @"HomePhoneNumber"]) || ![self _isGhosted: @"HomePhoneNumber" inContext: context])
+    {
+      element = [self elementWithTag: @"tel" ofType: @"home"];
+      [element setSingleValue: [theValues objectForKey: @"HomePhoneNumber"]  forKey: @""];
+    }
 
-  element = [self elementWithTag: @"tel" ofType: @"cell"];
-  [element setSingleValue: [theValues objectForKey: @"MobilePhoneNumber"]  forKey: @""];
+  if ((o = [theValues objectForKey: @"MobilePhoneNumber"]) || ![self _isGhosted: @"MobilePhoneNumber" inContext: context])
+    {
+      element = [self elementWithTag: @"tel" ofType: @"cell"];
+      [element setSingleValue: [theValues objectForKey: @"MobilePhoneNumber"]  forKey: @""];
+    }
 
-  element = [self elementWithTag: @"tel" ofType: @"fax"];
-  [element setSingleValue: [theValues objectForKey: @"BusinessFaxNumber"]  forKey: @""];
+  if ((o = [theValues objectForKey: @"BusinessFaxNumber"]) || ![self _isGhosted: @"BusinessFaxNumber" inContext: context])
+    {
+      element = [self elementWithTag: @"tel" ofType: @"fax"];
+      [element setSingleValue: [theValues objectForKey: @"BusinessFaxNumber"]  forKey: @""];
+    }
 
-  element = [self elementWithTag: @"tel" ofType: @"pager"];
-  [element setSingleValue: [theValues objectForKey: @"PagerNumber"]  forKey: @""];
+  if ((o = [theValues objectForKey: @"PagerNumber"]) || ![self _isGhosted: @"PagerNumber" inContext: context])
+    {
+      element = [self elementWithTag: @"tel" ofType: @"pager"];
+      [element setSingleValue: [theValues objectForKey: @"PagerNumber"]  forKey: @""];
+    }
   
   // Job's title
-  if ((o = [theValues objectForKey: @"JobTitle"]))
+  if ((o = [theValues objectForKey: @"JobTitle"]) || ![self _isGhosted: @"JobTitle" inContext: context])
     [self setTitle: o];
   
   // WebPage (work)
-  if ((o = [theValues objectForKey: @"WebPage"]))
+  if ((o = [theValues objectForKey: @"WebPage"]) || ![self _isGhosted: @"WebPage" inContext: context])
     [[self elementWithTag: @"url" ofType: @"work"]
           setSingleValue: o  forKey: @""];
   
-  if ((o = [theValues objectForKey: @"NickName"]))
+  if ((o = [theValues objectForKey: @"NickName"]) || ![self _isGhosted: @"NickName" inContext: context])
     [self setNickname: o];
 
   if ((o = [theValues objectForKey: @"Picture"]))

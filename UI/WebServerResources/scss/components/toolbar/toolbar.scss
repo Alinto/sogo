@@ -1,7 +1,7 @@
 /// toolbar.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
-$toolbar-tools-height: 100%;
+//$toolbar-tools-height: 100%;
 $toolbar-height: $pitch;
-$toolbar-medium-tall-height: 88px !default;
+//$toolbar-medium-tall-height: 88px !default;
 $toolbar-tall-height: ($toolbar-height * 2);
 $toolbar-indent-margin: $pitch;
 $toolbar-padding: $mg;
@@ -16,20 +16,40 @@ md-toolbar {
   z-index: $z-index-toolbar;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
-  background-image: url("../img/felt-transp.png");
-  background-blend-mode: luminosity;
-  box-shadow: $whiteframe-shadow-z1;
+}
+
+// Colors transition when changing folder in dialogs
+md-dialog {
+  md-toolbar,
+  md-toolbar .md-input,
+  md-toolbar md-input-container.md-input-has-value label,
+  md-toolbar md-input-container label:not(.md-no-float),
+  md-toolbar md-icon {
+    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
+    color $swift-ease-out-duration $swift-ease-out-timing-function;
+  }
 }
 
 .md-toolbar-tools {
-  padding: 0;
+  //padding: 0;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
 }
 
-// angular-material is overspecifying so we are
-.md-toolbar-tools[layout-align="start start"] {
-  align-items: flex-start;
+md-toolbar,
+.md-toolbar-tools {
+  // Animate the first icon button of a "secondary" toolbar
+  &.sg-toolbar-secondary {
+    > .md-toolbar-tools > .sg-icon-button:first-child,
+    > .sg-icon-button:first-child {
+      transition: $swift-ease-in;
+      transform: translateX(0px);
+    }
+    &.ng-hide > .md-toolbar-tools > .sg-icon-button:first-child,
+    &.ng-hide > .sg-icon-button:first-child {
+      transform: translateX(-$touch-zone-width);
+    }
+  }
 }
 
 .md-toolbar-tools.md-toolbar-tools-top {
@@ -50,14 +70,9 @@ header {
 }
 hgroup {
   align-items: center;
-  flex: 1 1 auto;
   &h3 {
     margin-bottom: 0;
   }
-}
-.toolbar-main .md-button {
-  color: inherit;
-  font-size: sg-size(headline);
 }
 
 .sg-toolbar-group {
@@ -78,11 +93,13 @@ hgroup {
   }
 }
 
+.sg-folder-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
+
 .sg-toolbar-search {
-  background-color: sg-color($sogoPaper, 100);
-  color: rgba(0,0,0,0.54);
   padding: $toolbar-padding 0;
-  md-icon {
-    color: rgba(0,0,0,0.54);
-  }
 }

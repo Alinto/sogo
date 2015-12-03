@@ -1,16 +1,23 @@
 module.exports = function(grunt) {
   var js_files = {
-    'js/Common.js': ['js/Common/Common.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js', 'js/Common/utils.js'],
+    'js/Common.js': ['js/Common/*.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js', 'js/Common/utils.js'],
     'js/Main.js': ['js/Main/Main.app.js'],
     'js/Scheduler.services.js': ['js/Scheduler/*.service.js'],
     'js/Scheduler.js': ['js/Scheduler/Scheduler.app.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
     'js/Contacts.services.js': ['js/Contacts/*.service.js'],
     'js/Contacts.js': ['js/Contacts/Contacts.app.js', 'js/Contacts/*Controller.js', 'js/Contacts/*.directive.js'],
-    'js/Mailer.services.js': ['js/Mailer/*.service.js'],
-    'js/Mailer.js': ['js/Mailer/Mailer.app.js', 'js/Mailer/*Controller.js', 'js/Mailer/*.directive.js'],
+    'js/Mailer.services.js': ['js/Mailer/*.service.js', 'js/Mailer/*Controller.js', 'js/Mailer/*.directive.js'],
+    'js/Mailer.js': ['js/Mailer/Mailer.app.js'],
+    'js/Mailer.app.popup.js': ['js/Mailer/Mailer.popup.js'],
     'js/Preferences.services.js': ['js/Preferences/*.service.js'],
-    'js/Preferences.js': ['js/Preferences/Preferences.app.js', 'js/Preferences/*Controller.js']
+    'js/Preferences.js': ['js/Preferences/Preferences.app.js', 'js/Preferences/*Controller.js'],
+    'js/Administration.services.js': ['js/Administration/*.service.js'],
+    'js/Administration.js': ['js/Administration/Administration.app.js', 'js/Administration/*Controller.js']
+
   };
+
+  require('time-grunt')(grunt);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     sass: {
@@ -41,7 +48,7 @@ module.exports = function(grunt) {
         options: {
           map: false,
           processors: [
-            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}),
+            require('autoprefixer')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}),
             // minifier
             require('csswring').postcss
           ]
@@ -53,7 +60,7 @@ module.exports = function(grunt) {
         options: {
           map: true,
           processors: [
-            require('autoprefixer-core')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'})
+            require('autoprefixer')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'})
           ]
           // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
         },
@@ -68,12 +75,16 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       dist: {
+        options: {
+          compress: true,
+          sourceMapIncludeSources: true
+        },
         files: js_files
       },
       dev: {
         options: {
+          compress: false,
           mangle: false,
-          sourceMapIncludeSources: true
         },
         files: js_files
       }

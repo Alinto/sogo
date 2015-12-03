@@ -1,13 +1,88 @@
-2.3.x (2015-MM-DD)
+2.3.4 (YYYY-MM-DD)
 ------------------
+
+New features
+ - Initial support for EAS calendar exceptions 
+
+Enhancements
+ - limit the maximum width of toolbar buttons
+ 
+
+Bug fixes
+ - JavaScript exception when printing events from calendars with no assigned color (#3203)
+ - EAS fix for wrong charset being used (#3392)
+ - EAS fix on qp-encoded subjects (#3390)
+ - correctly handle all-day event exceptions when the master event changes
+ - prevent characters in calendar component UID causing issues during import process
+
+2.3.3a (2015-11-18)
+-------------------
+
+Bug fixes
+ - expanded mail folders list is not saved (#3386)
+ - cleanup translations
+
+2.3.3 (2015-11-11)
+------------------
+
+New features
+ - initial S/MIME support for EAS (#3327)
+ - now possible to choose which folders to sync over EAS
+
+Enhancements
+ - we no longer always entirely rewrite messages for Outlook 2013 when using EAS
+ - support for ghosted elements on contacts over EAS
+ - added Macedonian (mk_MK) translation - thanks to Miroslav Jovanovic
+ - added Portuguese (pt) translation - thanks to Eduardo Crispim
+
+Bug fixes
+ - numerous EAS fixes when connections are dropped before the EAS client receives the response (#3058, #2849)
+ - correctly handle the References header over EAS (#3365)
+ - make sure English is always used when generating Date headers using EAS (#3356)
+ - don't escape quoted strings during versit generation
+ - we now return all cards when we receive an empty addressbook-query REPORT
+ - avoid crash when replying to a mail with no recipients (#3359)
+ - inline images sent from SOGo webmail are not displayed in Mozilla Thunderbird (#3271)
+ - prevent postal address showing on single line over EAS (#2614)
+ - display missing events when printing working hours only
+ - fix corner case making server crash when syncing hard deleted messages when clear offline items was set up (Zentyal)
+ - avoid infinite Outlook client loops trying to set read flag when it is already set (Zentyal)
+ - avoid crashing when calendar metadata is missing in the cache (Zentyal)
+ - fix recurrence pattern event corner case created by Mozilla Thunderbird which made server crash (Zentyal)
+ - fix corner case that removes attachments on sending messages from Outlook (Zentyal)
+ - freebusy on web interface works again in multidomain environments (Zentyal)
+ - fix double creation of folders in Outlook when the folder name starts with a digit (Zentyal)
+ - avoid crashing Outlook after setting a custom view in a calendar folder (Zentyal)
+ - handle emails having an attachment as their content
+ - fixed JavaScript syntax error in attendees editor
+ - fixed wrong comparison of meta vs. META tag in HTML mails
+ - fixed popup menu position when moved to the left (#3381)
+ - fixed dialog position when at the bottom of the window (#2646, #3378)
+ - fixed addressbrook-only source entires having a c_uid set
+
+2.3.2 (2015-09-16)
+------------------
+
+Enhancements
+ - improved EAS speed and memory usage, avoiding many IMAP LIST commands (#3294)
+ - improved EAS speed during initial syncing of large mailboxes (#3293)
+ - updated CKEditor to version 4.5.3
 
 Bug fixes
  - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
- - Non-latin subfolder names are displayed correctly on Outlook (Zentyal)
- - Fixed several sync issues on environments with multiple users (Zentyal)
- - Folders from other users will no longer appear on your Outlook (Zentyal)
- - Use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
- - Session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
+ - non-latin subfolder names are displayed correctly on Outlook (Zentyal)
+ - fixed several sync issues on environments with multiple users (Zentyal)
+ - folders from other users will no longer appear on your Outlook (Zentyal)
+ - use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
+ - session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
+ - less sync issues when setting read flag (Zentyal)
+ - attachments with non-latin filenames sent by Outlook are now received (Zentyal)
+ - support attachments from more mail clients (Zentyal)
+ - avoid conflicting message on saving a draft mail (Zentyal)
+ - less conflicting messages in Outlook while moving messages between folders (Zentyal)
+ - start/end shifting by 1 hour due to timezone change on last Sunday of October 2015 (#3344)
+ - fixed localization of calendar categories with empty profile (#3295)
+ - fixed options availability in contextual menu of Contacts module (#3342)
 
 2.3.1 (2015-07-23)
 ------------------
@@ -20,6 +95,7 @@ Enhancements
  - added create-folder subcommand to sogo-tool to create contact and calendar folders
  - group mail addresses can be used as recipient in Outlook
  - added 'ActiveSync' module constraints
+ - updated CKEditor to version 4.5.1
  - added Slovenian translation - thanks to Jens Riecken
  - added Chinese (Taiwan) translation
 

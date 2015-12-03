@@ -169,6 +169,11 @@ static NSArray *reminderValues = nil;
   [super dealloc];
 }
 
+- (NSString *) modulePath
+{
+  return @"Preferences";
+}
+
 // - (void) setHasChanged: (BOOL) newHasChanged
 // {
 //   hasChanged = newHasChanged;
@@ -1375,6 +1380,18 @@ static NSArray *reminderValues = nil;
   return [self labelForKey: item];
 }
 
+- (NSArray *) alternateAvatar
+{
+  // See: https://en.gravatar.com/site/implement/images/
+  return [NSArray arrayWithObjects: @"none", @"identicon", @"monsterid", @"wavatar", @"retro", nil];
+}
+
+- (NSString *) itemAlternateAvatarText
+{
+  return [self labelForKey: item];
+}
+
+
 // - (NSString *) userDefaultModule
 // {
 //   NSString *userDefaultModule;
@@ -1466,15 +1483,15 @@ static NSArray *reminderValues = nil;
 //           if ([account updateFilters])
 //             // If Sieve is not enabled, the SOGoSieveManager will immediatly return a positive answer
 //             // See [SOGoSieveManager updateFiltersForAccount:withUsername:andPassword:]
-//             results = [self responseWithStatus: 200
+//             results = (id <WOActionResults>)[self responseWithStatus: 200
 //                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
 
 //           else
-//             results = [self responseWithStatus: 502
+//             results = (id <WOActionResults>)[self responseWithStatus: 502
 //                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
 //         }
 //       else
-//         results = [self responseWithStatus: 503
+//         results = (id <WOActionResults>)[self responseWithStatus: 503
 //                      andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
 //     }
 //   else
@@ -2086,6 +2103,10 @@ static NSArray *reminderValues = nil;
       // We convert our object into a mutable one
       v = [[v mutableCopy] autorelease];
 
+      if ([[v objectForKey: @"SOGoLoginModule"] isEqualToString: @"Last"])
+        [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+      else
+        [v setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoRememberLastModule"];
 
       // We remove short/long date formats if they are default ones
       if ([[v objectForKey: @"SOGoShortDateFormat"] isEqualToString: @"default"])
@@ -2158,12 +2179,12 @@ static NSArray *reminderValues = nil;
               
               if (![account updateFilters])
                 {
-                  results = [self responseWithStatus: 502
+                  results = (id <WOActionResults>) [self responseWithStatus: 502
                            andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]]; 
                 }
             }
           else
-            results = [self responseWithStatus: 503
+            results = (id <WOActionResults>) [self responseWithStatus: 503
                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
         }
     }
@@ -2175,7 +2196,7 @@ static NSArray *reminderValues = nil;
     }
 
   if (!results)
-    results = [self responseWithStatus: 200];
+    results = (id <WOActionResults>) [self responseWithStatus: 200];
 
   return results;
 }

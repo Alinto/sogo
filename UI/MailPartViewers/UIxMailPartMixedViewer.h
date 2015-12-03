@@ -33,7 +33,7 @@
 
 - (void) setChildInfo: (id) _info;
 - (id) childInfo;
-- (void) setChildIndex: (unsigned int) _index;
+- (void) setChildIndex: (NSUInteger) _index;
 - (id) childPartPath;
 
 

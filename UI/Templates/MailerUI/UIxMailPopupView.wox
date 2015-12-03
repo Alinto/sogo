@@ -1,29 +1,32 @@
 <?xml version="1.0" standalone="yes"?>
-  <var:component xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE var:component>
+<var:component
+    xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="SOGoAutoCompletion.js"
-    const:userDefaultsKeys="SOGoMailDisplayRemoteInlineImages"
-    const:popup="YES">
-    <script type="text/javascript">
-      var messageName = '<var:string value="clientObject.relativeImap4Name"/>';
-      var mailboxName = '/<var:string value="clientObject.container.container.nameInContainer"/>/<var:string value="clientObject.container.nameInContainer"/>';
-    </script>
-    <var:component className="UIxMailView" />
-    <div class="menu" id="addressMenu">
-      <ul>
-        <li id="add_to_addressbook"><var:string label:value="Add to Address Book..."/></li>
-        <li id="compose_mailto"><var:string label:value="Compose Mail To"/></li>
-        <li id="create_filter"><var:string label:value="Create Filter From Message..."/></li>
-      </ul>
+    const:popup="YES"
+    const:jsFiles="Common.js, Contacts.services.js, Preferences.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
+
+  <main class="layout-fill" ng-controller="navController">
+    <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+         ui-view="message">
+      <div class="sg-progress-circular-floating">
+        <md-progress-circular class="md-accent ng-cloak"
+                              md-mode="indeterminate"
+                              md-diameter="32"><!-- progress --></md-progress-circular>
+      </div>
     </div>
-    <div class="menu" id="imageMenu">
-      <ul>
-        <li id="save_image"><var:string label:value="Save Image"/></li>
-      </ul>
-    </div>
-  </var:component>
+  </main>
+
+  <script type="text/ng-template" id="UIxMailViewTemplate">
+    <var:component className="UIxMailViewTemplate" />
+  </script>
+
+  <script type="text/ng-template" id="UIxMailEditor">
+    <var:component className="UIxMailEditor" />
+  </script>
+</var:component>

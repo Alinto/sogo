@@ -85,6 +85,13 @@ class JsonDavPhoneTests(unittest.TestCase):
         self.allphones = list(self.newphone)
         self.allphones.extend(self.newphones_difftype)
         self.allphones.extend(self.newphones_sametype)
+        #- In case there are no cards for this user
+        try:
+            self._get_card()
+        except IndexError:
+            path = 'Contacts/personal'
+            (card, path, gid) = self._create_new_card(path)
+            self._save_card(card)
 
     def tearDown(self):
         self._connect_as_user()
@@ -101,6 +108,23 @@ class JsonDavPhoneTests(unittest.TestCase):
 
     def _connect_as_user(self, newuser=username, newpassword=password):
         self.dv = carddav.Carddav(newuser, newpassword)
+
+    def _create_new_card(self, path):
+        gid = self.dv.newguid(path)
+        card = {'c_categories': None,
+                'c_cn': 'John Doe',
+                'c_component': 'vcard',
+                'c_givenname': 'John Doe',
+                'c_mail': 'johndoe@nothere.com',
+                'c_name': gid,
+                'c_o': '',
+                'c_screenname': '',
+                'c_sn': '',
+                'c_telephonenumber': '123.456.7890',
+                'emails': [{'type': 'pref', 'value': 'johndoe@nothere.com'}],
+                'phones': [{'type': 'home', 'value': '111.222.3333'}],
+                'id': gid}
+        return (card, path, gid)
 
     def _get_card(self, name="John Doe"):
         tmp_card = self.dv.get_cards(name)[0]
@@ -149,8 +173,8 @@ class JsonDavPhoneTests(unittest.TestCase):
     def testMultipleDifferentPhones(self):
         self._testMultiplePhones(self.newphones_difftype)
     
-    #def testMultipleSameTypePhones(self):
-    #    self._testMultiplePhones(self.newphones_sametype)
+    def testMultipleSameTypePhones(self):
+        self._testMultiplePhones(self.newphones_sametype)
     
 if __name__ == "__main__":
     sogotests.runTests()

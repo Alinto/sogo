@@ -45,7 +45,7 @@
 
 - (Class *) parsingClass
 {
-  return [NGVList class];
+  return (Class *)[NGVList class];
 }
 
 

@@ -1,0 +1,15 @@
+.sg-section-list {
+  md-list-item {
+    &:hover:not([disabled]) {
+      background-color: sg-color($sogoPaper, 300);
+      color: sg-color($sogoBlue, 800);
+    }
+    &:active {
+      color: sg-color($sogoBlue, 800);
+    }
+    &:focus,
+    &.sg-active {
+      background-color: sg-color($sogoBlue, 100);
+    }
+  }
+}

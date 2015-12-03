@@ -5,7 +5,7 @@
 
   /*
    * sgCalendarDayBlock - An event block to be displayed in a week
-   * @memberof SOGo.Common
+   * @memberof SOGo.SchedulerUI
    * @restrict element
    * @param {object} sgBlock - the event block definition
    * @param {function} sgClick - the function to call when clicking on a block.
@@ -19,7 +19,8 @@
       sg-block="block"
       sg-click="open(clickEvent, clickComponent)" />
   */
-  function sgCalendarDayBlock() {
+  sgCalendarDayBlock.$inject = ['CalendarSettings'];
+  function sgCalendarDayBlock(CalendarSettings) {
     return {
       restrict: 'E',
       scope: {
@@ -28,46 +29,66 @@
       },
       replace: true,
       template: [
-        '<div class="sg-event sg-draggable">',
-        '  <div class="eventInside" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '      <div class="gradient">',
+        '<div class="sg-event"',
+        //    Add a class while dragging
+        '     ng-class="{\'sg-event--dragging\': block.dragging}">',
+        '  <div class="eventInside"',
+        '       ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        //   Categories color stripes
+        '    <div class="sg-category" ng-repeat="category in block.component.categories"',
+        '         ng-class="\'bg-category\' + category"',
+        '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
+        '    <div class="text">{{ block.component.summary }}',
+        '      <span class="icons">',
+        //       Component is reccurent
+        '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        //       Component has an alarm
+        '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        //       Component is confidential
+        '        <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        //       Component is private
+        '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
+        '      </span>',
+        //     Location
+        '      <div class="secondary" ng-if="block.component.c_location">',
+        '        <md-icon>place</md-icon> {{block.component.c_location}}',
         '      </div>',
-        '      <div class="text">{{ block.component.c_title }}',
-        '        <span class="icons">',
-        // Component has an alarm
-        '          <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
-        // Component is confidential
-        '          <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
-        // Component is private
-        '          <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
-        '       </span></div>',
         '    </div>',
-        '    <div class="topDragGrip"></div>',
-        '    <div class="bottomDragGrip"></div>',
+        '  </div>',
         '</div>'
       ].join(''),
       link: link
     };
 
     function link(scope, iElement, attrs) {
-      // Compute overlapping (5%)
-      var pc = 100 / scope.block.siblings,
-          left = scope.block.position * pc,
-          right = 100 - (scope.block.position + 1) * pc;
+      var pc, left, right;
 
+      // Compute overlapping (2%)
+      pc = 100 / scope.block.siblings;
+      left = scope.block.position * pc;
+      right = 100 - (scope.block.position + 1) * pc;
       if (pc < 100) {
         if (left > 0)
-          left -= 5;
+          left -= 2;
         if (right > 0)
-          right -= 5;
+          right -= 2;
       }
+
+      // Add some padding (2%)
+      if (left === 0)
+        left = 2;
+      if (right === 0)
+        right = 2;
 
       // Set position
       iElement.css('left', left + '%');
       iElement.css('right', right + '%');
       iElement.addClass('starts' + scope.block.start);
       iElement.addClass('lasts' + scope.block.length);
-      iElement.addClass('bg-folder' + scope.block.component.c_folder);
+
+      // Set background color
+      if (scope.block.component)
+        iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

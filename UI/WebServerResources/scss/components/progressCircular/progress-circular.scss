@@ -1,0 +1,18 @@
+/// progressCircular.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+@import 'extends';
+
+.sg-progress-circular-floating {
+  &.ng-hide {
+    transform: translate(-50%, 0) scale(0);
+  }
+  transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  position: absolute;
+  top: (10 * $baseline-grid);
+  left: 50%;
+  transform: translate(-50%, 0) scale(1);
+  bottom: auto;
+  background-color: white;
+  border-radius: 50%;
+  //padding: $baseline-grid/2;
+  box-shadow: $whiteframe-shadow-3dp;
+}

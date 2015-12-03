@@ -75,6 +75,7 @@ static Class NSNumberK;
           [SOGoMAPIDBMessage objectWithName: @"versions.plist"
                                 inContainer: dbFolder]);
   [versionsMessage setObjectType: MAPIInternalCacheObject];
+  [versionsMessage reloadIfNeeded];
 }
 
 - (void) dealloc
@@ -261,7 +262,6 @@ static Class NSNumberK;
  */
 - (void) _setChangeKey: (NSData *) changeKey
        forMessageEntry: (NSMutableDictionary *) messageEntry
-      inChangeListOnly: (BOOL) inChangeListOnly
 {
   struct XID *xid;
   NSString *guid;
@@ -270,19 +270,15 @@ static Class NSNumberK;
   NSMutableDictionary *changeList;
 
   xid = [changeKey asXIDInMemCtx: NULL];
-  guid = [NSString stringWithGUID: &xid->GUID];
-  globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
+  guid = [NSString stringWithGUID: &xid->NameSpaceGuid];
+  globCnt = [NSData dataWithBytes: xid->LocalId.data length: xid->LocalId.length];
   talloc_free (xid);
 
-  if (!inChangeListOnly)
-    {
-      /* 1. set change key association */
-      changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      guid, @"GUID",
-                                    globCnt, @"LocalId",
-                                    nil];
-      [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
-    }
+  /* 1. set change key association */
+  changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys: guid, @"GUID",
+                                globCnt, @"LocalId",
+                                nil];
+  [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
 
   /* 2. append/update predecessor change list */
   changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
@@ -294,6 +290,77 @@ static Class NSNumberK;
       [changeList release];
     }
   [changeList setObject: globCnt forKey: guid];
+}
+
+- (void) _updatePredecessorChangeList: (NSData *) predecessorChangeList
+                      forMessageEntry: (NSMutableDictionary *) messageEntry
+                     withOldChangeKey: (NSData *) oldChangeKey
+{
+  NSData *globCnt, *oldGlobCnt;
+  NSDictionary *changeKeyDict;
+  NSString *guid;
+  NSMutableDictionary *changeList;
+  struct SizedXid *sizedXIDList;
+  struct XID xid, *givenChangeKey;
+  TALLOC_CTX *localMemCtx;
+  uint32_t i, length;
+
+  localMemCtx = talloc_new (NULL);
+  if (!localMemCtx)
+    {
+      [self errorWithFormat: @"No more memory"];
+      return;
+    }
+
+  if (predecessorChangeList)
+    {
+      sizedXIDList = [predecessorChangeList asSizedXidArrayInMemCtx: localMemCtx with: &length];
+
+      changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
+      if (!changeList)
+        {
+          changeList = [NSMutableDictionary new];
+          [messageEntry setObject: changeList
+                           forKey: @"PredecessorChangeList"];
+          [changeList release];
+        }
+
+      if (sizedXIDList) {
+        for (i = 0; i < length; i++)
+          {
+            xid = sizedXIDList[i].XID;
+            guid = [NSString stringWithGUID: &xid.NameSpaceGuid];
+            globCnt = [NSData dataWithBytes: xid.LocalId.data length: xid.LocalId.length];
+            oldGlobCnt = [changeList objectForKey: guid];
+            if (!oldGlobCnt || ([globCnt compare: oldGlobCnt] == NSOrderedDescending))
+              [changeList setObject: globCnt forKey: guid];
+          }
+      }
+    }
+
+  if (oldChangeKey)
+    {
+      givenChangeKey = [oldChangeKey asXIDInMemCtx: localMemCtx];
+      if (givenChangeKey) {
+        guid = [NSString stringWithGUID: &givenChangeKey->NameSpaceGuid];
+        globCnt = [NSData dataWithBytes: givenChangeKey->LocalId.data length: givenChangeKey->LocalId.length];
+
+        changeKeyDict = [messageEntry objectForKey: @"ChangeKey"];
+        if (!changeKeyDict ||
+            ([guid isEqualToString: [changeKeyDict objectForKey: @"GUID"]]
+             && ([globCnt compare: [changeKeyDict objectForKey: @"LocalId"]] == NSOrderedDescending)))
+          {
+            /* The given change key is greater than current one stored in
+               metadata or it does not exist */
+            [messageEntry setObject: [NSDictionary dictionaryWithObjectsAndKeys: guid, @"GUID",
+                                                   globCnt, @"LocalId",
+                                                   nil]
+                             forKey: @"ChangeKey"];
+          }
+      }
+    }
+
+  talloc_free (localMemCtx);
 }
 
 - (EOQualifier *) componentQualifier
@@ -465,8 +532,7 @@ static Class NSNumberK;
 	      // A GLOBCNT structure is a 6-byte global namespace counter,
 	      // we strip the first 2 bytes. The first two bytes is the ReplicaId
               changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
-              [self _setChangeKey: changeKey forMessageEntry: messageEntry
-                 inChangeListOnly: NO];
+              [self _setChangeKey: changeKey forMessageEntry: messageEntry];
             }
 
           now = [NSCalendarDate date];
@@ -482,13 +548,123 @@ static Class NSNumberK;
   return rc;
 }
 
+- (BOOL) synchroniseCacheFor: (NSString *) nameInContainer
+{
+  /* Try to synchronise old messages in versions.plist cache using an
+     specific c_name. It returns a boolean indicating if the
+     synchronisation was carried out succesfully.
+
+     It should be used as last resort, keeping synchroniseCache as the
+     main sync entry point. */
+
+  uint64_t changeNumber;
+  NSString *changeNumberStr;
+  NSData *changeKey;
+  NSNumber *cLastModified, *cDeleted, *cVersion;
+  EOFetchSpecification *fs;
+  EOQualifier *searchQualifier, *fetchQualifier;
+  NSArray *fetchResults;
+  NSDictionary *result;
+  NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
+  GCSFolder *ocsFolder;
+  static NSArray *fields;
+
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
+
+  messages = [currentProperties objectForKey: @"Messages"];
+  if (!messages)
+    {
+        messages = [NSMutableDictionary new];
+        [currentProperties setObject: messages forKey: @"Messages"];
+        [messages release];
+    }
+
+  messageEntry = [messages objectForKey: nameInContainer];
+  if (!messageEntry)
+    {
+      /* Fetch the message by its name */
+      if (!fields)
+        fields = [[NSArray alloc]
+                  initWithObjects: @"c_name", @"c_version", @"c_lastmodified",
+                  @"c_deleted", nil];
+
+      searchQualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_name"
+                                     operatorSelector: EOQualifierOperatorEqual
+                                                value: nameInContainer];
+      fetchQualifier = [[EOAndQualifier alloc]
+                        initWithQualifiers: searchQualifier,
+                        [self contentComponentQualifier],
+                        nil];
+      [fetchQualifier autorelease];
+      [searchQualifier release];
+
+      ocsFolder = [sogoObject ocsFolder];
+      fs = [EOFetchSpecification
+            fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                   qualifier: fetchQualifier
+                               sortOrderings: nil];
+      fetchResults = [ocsFolder fetchFields: fields
+                         fetchSpecification: fs
+                              ignoreDeleted: NO];
+
+      if ([fetchResults count] == 1)
+        {
+          result = [fetchResults objectAtIndex: 0];
+          cLastModified = [result objectForKey: @"c_lastmodified"];
+          cDeleted = [result objectForKey: @"c_deleted"];
+          if ([cDeleted isKindOfClass: NSNumberK] && [cDeleted intValue])
+            cVersion = [NSNumber numberWithInt: -1];
+          else
+            cVersion = [result objectForKey: @"c_version"];
+
+          changeNumber = [[self context] getNewChangeNumber];
+          changeNumberStr = [NSString stringWithUnsignedLongLong: changeNumber];
+
+          /* Create new message entry in Messages dict */
+          messageEntry = [NSMutableDictionary new];
+          [messages setObject: messageEntry forKey: nameInContainer];
+          [messageEntry release];
+
+          /* Store cLastModified, cVersion and the change number */
+          [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
+          [messageEntry setObject: cVersion forKey: @"c_version"];
+          [messageEntry setObject: changeNumberStr forKey: @"version"];
+
+          /* Store the change key */
+          changeKey = [self getReplicaKeyFromGlobCnt: changeNumber >> 16];
+          [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
+          /* Store the changeNumber -> cLastModified mapping */
+          mapping = [currentProperties objectForKey: @"VersionMapping"];
+          if (!mapping)
+            {
+              mapping = [NSMutableDictionary new];
+              [currentProperties setObject: mapping forKey: @"VersionMapping"];
+              [mapping release];
+            }
+          [mapping setObject: cLastModified forKey: changeNumberStr];
+
+          /* Save the message */
+          [versionsMessage save];
+          return YES;
+        }
+      else
+          return NO;
+    }
+
+  /* If message entry exists, then synchroniseCache did its job */
+  return YES;
+}
+
 - (void) updateVersionsForMessageWithKey: (NSString *) messageKey
-                           withChangeKey: (NSData *) newChangeKey
+                           withChangeKey: (NSData *) oldChangeKey
+                andPredecessorChangeList: (NSData *) pcl
 {
   NSMutableDictionary *messages, *messageEntry;
 
   [self synchroniseCache];
-  if (newChangeKey)
+  if (oldChangeKey || pcl)
     {
       messages = [[versionsMessage properties] objectForKey: @"Messages"];
       messageEntry = [messages objectForKey: messageKey];
@@ -496,8 +672,8 @@ static Class NSNumberK;
         [NSException raise: @"MAPIStoreIOException"
                     format: @"no version record found for message '%@'",
                      messageKey];
-      [self _setChangeKey: newChangeKey forMessageEntry: messageEntry
-         inChangeListOnly: YES];
+      [self _updatePredecessorChangeList: pcl forMessageEntry: messageEntry
+                        withOldChangeKey: oldChangeKey];
       [versionsMessage save];
     }
 }

@@ -3,8 +3,9 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', ['ngMaterial'])
+  angular.module('SOGo.Common', ['ngAnimate', 'ngMaterial', 'mdColors'])
     .value('sgSettings', {
+      isPopup: document.body.classList.contains('popup'),
       baseURL: function() {
         return ApplicationBaseURL || null;
       },
@@ -109,21 +110,27 @@
 
   // md break-points values are hard-coded in angular-material/src/core/util/constant.js
   // $mdMedia has a built-in support for those values but can also evaluate others
-  // For some reasons, angular-material's break-points don't match the specs
-  // Here we define values according to specs
     .constant('sgConstant', {
-      'sm': '(max-width: 600px)',
-      'gt-sm': '(min-width: 600px)',
-      'md': '(min-width: 600px) and (max-width: 1024px)',
-      'gt-md': '(min-width: 1025px)',
-      'lg': '(min-width: 1024px) and (max-width: 1280px)',
-      'gt-lg': '(min-width: 1280px)'
+      'xs'    : '(max-width: 599px)'                         ,
+      'gt-xs' : '(min-width: 600px)'                         ,
+      'sm'    : '(min-width: 600px) and (max-width: 959px)'  ,
+      'gt-sm' : '(min-width: 960px)'                         ,
+      'md'    : '(min-width: 960px) and (max-width: 1279px)' ,
+      'gt-md' : '(min-width: 1280px)'                        ,
+      'lg'    : '(min-width: 1280px) and (max-width: 1919px)',
+      'gt-lg' : '(min-width: 1920px)'                        ,
+      'xl'    : '(min-width: 1920px)'
     })
 
-    .config(configure);
+    .config(configure)
 
-  configure.$inject = ['$mdThemingProvider'];
-  function configure($mdThemingProvider) {
+    .factory('AuthInterceptor', AuthInterceptor);
+
+  /**
+   * @ngInject
+   */
+  configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider', '$httpProvider'];
+  function configure($logProvider, $compileProvider, $mdThemingProvider, $httpProvider) {
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
       '100': 'cbe5c8',
@@ -140,8 +147,8 @@
       'A400': '00e676',
       'A700': '00c853',
       'contrastDefaultColor': 'dark',
-      'contrastDarkColors': '50 100 200',
-      'contrastLightColors': '300 400 500 600 700 800 900'
+      'contrastDarkColors': ['50', '100', '200'],
+      'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900']
     });
     $mdThemingProvider.definePalette('sogo-blue', {
       '50': 'f0faf9',
@@ -179,10 +186,9 @@
       'A400': 'bdbdbd',
       'A700': '616161',
       'contrastDefaultColor': 'dark',
-      'contrastLightColors': '800 900'
+      'contrastLightColors': ['800', '900']
     });
     // Default theme definition
-    // .primaryColor will soon be deprecated in favor of primaryPalette (already on dev builds https://groups.google.com/forum/m/#!topic/ngmaterial/-sXR8CYBMPg)
     $mdThemingProvider.theme('default')
       .primaryPalette('sogo-blue', {
         'default': '300',
@@ -196,12 +202,35 @@
         'hue-2': '300',
         'hue-3': 'A700'
       })
-      .backgroundPalette('sogo-paper', {
-        'default': '100',
+      .backgroundPalette('grey', {
+        'default': 'A100',
         'hue-1': '200',
-        'hue-2': '50',
+        'hue-2': '300',
         'hue-3': '500'
       });
+
+    if (!DebugEnabled) {
+      // Disable debug data
+      $logProvider.debugEnabled(false);
+      $compileProvider.debugInfoEnabled(false);
+    }
+
+    $httpProvider.interceptors.push('AuthInterceptor');
+  }
+
+  AuthInterceptor.$inject = ['$window', '$q'];
+  function AuthInterceptor($window, $q) {
+    return {
+      response: function(response) {
+        // When expecting JSON but receiving HTML, assume session has expired and reload page
+        if (/^application\/json/.test(response.config.headers.Accept) &&
+            /^<!DOCTYPE html>/.test(response.data)) {
+          $window.location.reload(true);
+          return $q.reject();
+        }
+        return response;
+      }
+    };
   }
 
 })();

@@ -4,49 +4,262 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
   <div class="view-list" layout="column">
+
+    <!-- in virtual mailbox mode -->
+    <md-toolbar class="md-whiteframe-z1"
+                ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+      <div class="md-toolbar-tools">
+        <md-input-container>
+          <label><var:string label:value="Search messages in"/></label>
+          <md-select ng-model="app.search.mailbox">
+            <md-option ng-value="">
+              <span>{{app.accounts[0].name}}</span>
+            </md-option>
+            <md-option ng-repeat="folder in
+                                  app.accounts[0].$flattenMailboxes()
+                                  track by folder.path"
+                       ng-value="folder.path">
+              <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdOpenMenu()">
+            <md-icon>settings</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-href="#">
+                <md-checkbox ng-model="app.search.subfolders"
+                             ng-true-value="1"
+                             ng-false-value="0">
+                  <var:string label:value="Search subfolders"/>
+                </md-checkbox>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="app.search.match='AND'">
+                <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}">
+                  <!-- all --></md-icon><var:string label:value="Match all of the following"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="app.search.match='OR'">
+                <md-icon ng-class="{ 'icon-check': app.search.match == 'OR'}">
+                  <!-- any --></md-icon><var:string label:value="Match any of the following"/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-button class="sg-icon-button"
+                   ng-click="app.toggleAdvancedSearch()"
+                   ng-disabled="app.search.params.length == 0">
+          <md-icon ng-class="{'icon-stop': app.service.selectedFolder.$isLoading,
+                              'icon-search': !app.service.selectedFolder.$isLoading}"><!-- icon --></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <!-- single-selection toolbars -->
+    <md-toolbar class="md-whiteframe-z1"
+                ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+      <!-- sort mode (default) -->
+      <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
+        <md-button class="sg-icon-button" label:aria-label="Search"
+                   ng-click="mailbox.mode.search = true">
+          <md-icon>search</md-icon>
+        </md-button>
+        <div class="sg-folder-name">{{mailbox.selectedFolder.name}}</div>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="Sort"
+                     ng-click="$mdOpenMenu()">
+            <md-icon>sort</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-click="mailbox.sort('subject')">
+                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('subject') }">
+                  <!-- subject --></md-icon> <var:string label:value="Subject"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.sort('from')">
+                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('from') }">
+                  <!-- from --></md-icon> <var:string label:value="From"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.sort('date')">
+                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('date') }">
+                  <!-- date --></md-icon> <var:string label:value="Date"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.sort('size')">
+                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('size') }">
+                  <!-- size --></md-icon> <var:string label:value="Size"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider> <!-- divider --></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="mailbox.selectedFolder.$filter()">
+                <md-checkbox
+                    ng-model="mailbox.service.$query.asc"
+                    ng-true-value="0"
+                    ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-button class="sg-icon-button" aria-label="Refresh" ng-click="mailbox.selectedFolder.$filter()" >
+          <md-icon>refresh</md-icon>
+        </md-button>
+      </div>
+      <!-- search mode -->
+      <div class="md-toolbar-tools sg-toolbar-secondary"
+           ng-show="mailbox.mode.search"
+           sg-search="mailbox.selectedFolder.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
+        <md-button class="sg-icon-button"
+                   sg-search-cancel="mailbox.cancelSearch()"
+                   label:aria-label="Back">
+          <md-icon>arrow_back</md-icon>
+        </md-button>
+        <md-input-container md-no-float="md-no-float">
+          <input name="folderSearch" type="search" ng-minlength="3" label:placeholder="Search"/>
+        </md-input-container>
+        <md-input-container flex="25">
+          <md-select>
+            <md-option value="subject" selected="selected"><var:string label:value="Subject"/></md-option>
+            <md-option value="from"><var:string label:value="Sender"/></md-option>
+            <md-option value="subject_or_from"><var:string label:value="Subject or Sender"/></md-option>
+            <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>
+            <md-option value="body"><var:string label:value="Entire Message"/></md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-toolbar>
+
+    <!-- multiple-selection mode -->
+    <md-toolbar class="md-hue-1 sg-toolbar-secondary" ng-show="mailbox.selectedFolder.$selectedCount() > 0">
+      <div class="md-toolbar-tools">
+        <md-button class="sg-icon-button" ng-click="mailbox.unselectMessages()">
+          <md-icon>arrow_back</md-icon>
+        </md-button>
+        <label>{{mailbox.service.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
+        <div class="md-flex"><!-- spacer --></div>
+        <md-button class="sg-icon-button" ng-click="mailbox.selectAll()">
+          <md-tooltip md-direction="bottom"><var:string label:value="Select All"/></md-tooltip>
+          <md-icon>select_all</md-icon>
+        </md-button>
+        <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages()">
+          <md-icon>delete</md-icon>
+        </md-button>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="Copy messages" ng-click="$mdOpenMenu()">
+            <md-tooltip md-direction="bottom"><var:string label:value="Copy To"/></md-tooltip>
+            <md-icon>content_copy</md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <div ng-repeat="account in mailbox.accounts track by account.id">
+              <md-menu-item>
+                <md-button class="md-primary" ng-disabled="true">{{account.name}}</md-button>
+              </md-menu-item>
+              <md-menu-divider><!-- divider --></md-menu-divider>
+              <md-menu-item ng-repeat="folder in
+                                       account.$flattenMailboxes()
+                                       track by folder.path"
+                            ng-hide="mailbox.id == folder.id">
+                <md-button ng-click="mailbox.copySelectedMessages(folder.id)">
+                  <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                </md-button>
+              </md-menu-item>
+            </div>
+          </md-menu-content>
+        </md-menu>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="mailbox.markSelectedMessagesAsFlagged()">
+                <var:string label:value="Flag"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.markSelectedMessagesAsUnread()">
+                <var:string label:value="Mark as Unread"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="mailbox.saveSelectedMessages()">
+                <var:string label:value="Save As..."/>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </md-toolbar>
+
     <md-content id="messagesList" layout="column" class="md-flex">
-      <md-progress-linear ng-show="mailbox.selectedFolder.$isLoading" md-mode="indeterminate"><!-- progress --></md-progress-linear>
-      <header class="sg-md-subheader sg-md-subheader--fixed">
-        <h2 class="md-default-theme sg-md-subhead-solo fg-sogoBlue-700">
-          <span ng-show="mailbox.selectedFolder.$messages.length > 0">{{mailbox.selectedFolder.$messages.length}} <var:string label:value="messages"/></span>
-          <span ng-show="mailbox.selectedFolder.$messages.length == 0"><var:string label:value="No message"/></span>
-        </h2>
-      </header>
+      <md-subheader>
+        <!-- toggle sidenav -->
+        <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+          <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+        </md-button>
+        <!-- message count -->
+        <span ng-switch="mailbox.service.selectedFolder.getLength()">
+          <span ng-switch-when="0"><var:string label:value="No message"/></span>
+          <span ng-switch-default="true">{{mailbox.service.selectedFolder.getLength()}} <var:string label:value="messages"/></span>
+        </span>
+      </md-subheader>
       <md-virtual-repeat-container class="md-flex">
         <md-list class="sg-section-list">
-          <div md-virtual-repeat="currentMessage in mailbox.selectedFolder.$messages">
-            <md-list-item
-                ng-class="{'sg-active': currentMessage.uid == mailbox.selectedFolder.selectedMessage, unread: !currentMessage.isread}"
-                ng-click="mailbox.selectMessage(currentMessage)"
-                ui-sref="mail.account.mailbox.message({accountId: mailbox.account.id, mailboxId: (mailbox.selectedFolder.path | encodeUri), messageId: currentMessage.uid})">
-              <!-- ui-sref-active="sg-active"> -->
-              <div class="sg-selected-avatar"
-                   ng-show="currentMessage.selected"
-                   ng-click="currentMessage.selected = !currentMessage.selected"><!-- selected avatar --></div>
-              <sg-avatar-image class="md-tile-left"
-                               ng-show="!currentMessage.selected"
-                               ng-click="currentMessage.selected = !currentMessage.selected"
-                               sg-email="currentMessage['from'][0].email"
-                               size="48"><!-- avatar --></sg-avatar-image>
-              <div class="sg-tile-content">
-                <span class="msg-date"
-                      ng-bind-html="currentMessage.relativedate"><!-- date --></span>
-                <div class="sg-md-subhead-multi">{{currentMessage.$shortAddress('from')}}</div>
-                <div class="sg-md-body-multi">{{currentMessage.subject}}</div>
-                <i class="icon-ion-refresh"
-                   ng-hide="mailbox.selectedFolder.$loadMessage(currentMessage.uid)"><!-- loading --></i>
+          <md-list-item
+              class="md-default-theme md-background md-hue-1"
+              md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
+              md-on-demand="md-on-demand"
+              ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
+                          unread: !currentMessage.isread}"
+              ng-click="mailbox.selectMessage(currentMessage)">
+            <sg-avatar-image class="md-avatar"
+                             ng-if="!currentMessage.selected"
+                             ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
+                             sg-email="::currentMessage.from[0].email"
+                             size="40"><!-- avatar --></sg-avatar-image>
+            <div class="md-avatar sg-avatar-selected"
+                 ng-if="currentMessage.selected"
+                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"><!-- selected avatar --></div>
+            <div class="sg-tile-content">
+              <div class="sg-md-subhead">
+                <div>
+                  <span class="sg-label-outline"
+                           ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
+                  <md-icon ng-show="currentMessage.priority.level == 1 ||
+                                    currentMessage.priority.level == 2"
+                           ng-class="{'md-warn': currentMessage.priority.level == 1}">error</md-icon>
+                  {{currentMessage.$shortAddress('from')}}
+                </div>
+                <div class="sg-tile-date" ng-bind="currentMessage.relativedate"><!-- date --></div>
               </div>
-              <div class="sg-tile-icons">
-                <md-icon ng-show="currentMessage.priority == 'highest' || currentMessage.priority == 'high'">warning</md-icon>
-                <md-icon ng-show="currentMessage.isflagged">star</md-icon>
-                <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
-                <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
-                <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
+              <div class="sg-md-body">
+                <div>{{currentMessage.subject}}</div>
               </div>
-            </md-list-item>
-          </div>
+            </div>
+            <div class="sg-tile-icons">
+              <md-icon ng-show="currentMessage.isflagged">star</md-icon>
+              <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
+              <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
+              <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
+            </div>
+          </md-list-item>
         </md-list>
       </md-virtual-repeat-container>
+      <div class="sg-progress-circular-floating"
+           ng-show="mailbox.service.selectedFolder.$isLoading">
+        <md-progress-circular class="md-accent"
+                              md-mode="indeterminate"
+                              md-diameter="32"><!-- progress --></md-progress-circular>
+      </div>
       <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="Write a new message"
                  ng-click="mailbox.newMessage($event)">
@@ -55,7 +268,15 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail ng-cloak" layout="column" ui-view="message"
-       ng-show="mailbox.selectedFolder.selectedMessage"><!-- message view --></div>
+  <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+       layout="column" layout-align="start center"
+       ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
+       ui-view="message">
+    <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
+    <md-content class="hide-sm md-flex layout-fill md-hue-1"
+                layout="column" layout-align="center center">
+      <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
+    </md-content>
+  </div>
 
 </container>

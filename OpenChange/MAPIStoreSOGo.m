@@ -674,6 +674,7 @@ sogo_folder_move_copy_messages(void *folder_object,
                                uint32_t mid_count,
                                uint64_t *src_mids, uint64_t *t_mids,
                                struct Binary_r **target_change_keys,
+                               struct Binary_r **target_predecessor_change_lists,
                                uint8_t want_copy)
 {
   MAPIStoreFolder *sourceFolder, *targetFolder;
@@ -698,6 +699,7 @@ sogo_folder_move_copy_messages(void *folder_object,
                                        fromFolder: sourceFolder
                                          withMIDs: t_mids
                                     andChangeKeys: target_change_keys
+                        andPredecessorChangeLists: target_predecessor_change_lists
                                          wantCopy: want_copy
                                          inMemCtx: mem_ctx];
       TRYCATCH_END(pool)
@@ -1118,7 +1120,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {

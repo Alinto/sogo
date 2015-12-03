@@ -97,10 +97,10 @@
 
 - (NSString *) davCollectionTag;
 
-- (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
-                          matchingSyncToken: (NSString *) theSyncToken
-                                   fromDate: (NSCalendarDate *) theStartDate;
-
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
+                          matchingSyncToken: (NSString *) syncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress;
 /* flags */
 
 - (NSException *) addFlagsToAllMessages: (id) _f;

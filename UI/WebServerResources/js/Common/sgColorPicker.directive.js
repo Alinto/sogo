@@ -14,50 +14,56 @@
 
      <sg-color-picker sg-on-select="properties.calendar.color = color"></sg-color-picker>
   */
-  sgColorPicker.$inject = ['$parse'];
-  function sgColorPicker($parse) {
+  function sgColorPicker() {
     return {
       restrict: 'E',
+      require: 'ngModel',
       template: [
         '<md-menu>',
-        '  <md-button class="sg-icon-button"',
+        '  <md-button class="md-icon-button"',
         '             label:aria-label="Options"',
+        '             ng-style="{ \'background-color\': sgColor }"',
         '             ng-click="$mdOpenMenu()"',
         '             md-menu-origin="md-menu-origin">',
-        '    <md-icon>color_lens</md-icon>',
+        '    <md-icon style="color: #fff">color_lens</md-icon>',
         '  </md-button>',
-        '  <md-menu-content class="md-padding" width="3">',
-        '    <md-grid-list class="sg-color-picker" md-cols="7" md-row-height="1:1" md-gutter="0.5em">',
-        '      <md-grid-tile ng-repeat="color in $sgColorPickerController.colors"',
-        '                    ng-style="{ \'background-color\': color }"',
-        '                    ng-click="$sgColorPickerController.select(color)"></md-grid-tile>',
-        '    </md-grid-list>',
+        '  <md-menu-content width="3">',
+        '    <md-content class="md-padding">',
+        '      <md-grid-list class="sg-color-picker" md-cols="7" md-row-height="1:1" md-gutter="0.5em">',
+        '        <md-grid-tile ng-repeat="color in ::sgColors track by $index"',
+        '                      ng-style="{ \'background-color\': color }"',
+        '                      ng-class="{ selected: color == sgColor }"',
+        '                      ng-click="setColor(color)"><md-icon ng-style="{ color: color }">check_box</md-icon></md-grid-tile>',
+        '      </md-grid-list>',
+        '    </md-content>',
         '  </md-menu-content>',
         '</md-menu>'
       ].join(''),
       replace: true,
-      bindToController: true,
       controller: sgColorPickerController,
-      controllerAs: '$sgColorPickerController',
       link: link
     };
 
-    function link(scope, iElement, iAttr, controller) {
-      // Associate callback to controller
-      controller.doSelect = $parse(iElement.attr('sg-on-select'));
+    function link(scope, iElement, iAttr, ngModelController) {
+      // Expose ng-model value to scope
+      ngModelController.$render = function() {
+        scope.sgColor = ngModelController.$viewValue;
+      };
     }
   }
   
   /**
    * @ngInject
    */
-  sgColorPickerController.$inject = ['$scope', 'sgColors'];
-  function sgColorPickerController($scope, sgColors) {
-    var vm = this;
+  sgColorPickerController.$inject = ['$scope', '$element', 'sgColors'];
+  function sgColorPickerController($scope, $element, sgColors) {
+    var ngModelController = $element.controller('ngModel');
 
-    vm.colors = sgColors.selection;
-    vm.select = function(color) {
-      vm.doSelect($scope, { color: color });
+    $scope.sgColors = sgColors.selection;
+    $scope.setColor = function(color) {
+      // Update scope value and ng-model
+      $scope.sgColor = color;
+      ngModelController.$setViewValue(color);
     };
   }
 

@@ -10,15 +10,9 @@
 
 // Buttons for the sidenav folder tree
 // ------------------------------------
-md-sidenav md-list .md-button,
-.view-list md-list .md-button {
-  // dirty fix to squash the theme style
-  background-color: transparent !important;
-}
-
 .view-list md-list .md-button {
   // Gain some space in lists
-  padding: 0;
+  padding-right: 0;
 }
 
 // Expandable button for a collapsable list
@@ -61,11 +55,6 @@ md-list md-list-item button.md-button.sg-icon-button {
   border-radius: 50%;
   min-width: $iconButton-size;
   transition: $iconButton-transition;
-  &:hover,
-  &:active {
-    background-color: transparent;
-    transform: scale($iconButton-hover-scale);
-  }
   .md-ripple-container {
     border-radius: 50%;
   }
@@ -76,6 +65,21 @@ md-list md-list-item button.md-button.sg-icon-button {
   .sg-icon-button {
     margin-top: 1px;
     margin-left: 2px;
+  }
+}
+
+.md-subheader-content {
+  .md-icon-button:first-child {
+    padding-left: 0;
+    margin-left: $icon-button-margin/2;
+    margin-right: $icon-button-margin*1.5;
+  }
+}
+md-tab-content {
+  .md-subheader-content {
+    .md-icon-button:first-child {
+      margin-right: $icon-button-margin/2;
+    }
   }
 }
 
@@ -108,7 +112,7 @@ md-list md-list-item button.md-button.sg-icon-button {
 .sg-icon-bar--vertical {
   display: flex;
   flex-direction: column;
-  margin: 0 ($mg * -1) 0 $mg;
+  //margin: 0 ($mg * -1) 0 $mg;
   font-size: $sg-font-size-3;
   align-items: center;
   // Containers have padding, we compensate to align according to specs
@@ -139,4 +143,18 @@ md-list md-list-item button.md-button.sg-icon-button {
 .sg-button-navicon.sg-icon-button {
   padding: 0;
   font-size: $iconButton-menu-size;
+}
+
+.sg-outline-button {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: $button-border-radius;
+  margin: 0 0 0 rem(0.500);
+  padding: 0 rem(0.500);
+  min-width: initial;
+  min-height: initial;
+  font-size: $sg-font-size-1;
+  font-weight: $sg-font-medium;
+  line-height: $sg-font-size-1 * 2;
+  text-transform: uppercase;
 }

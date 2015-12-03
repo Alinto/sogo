@@ -24,23 +24,30 @@
       },
       replace: true,
       template: [
-        '<div class="sg-event sg-draggable" ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '  <span ng-if="!block.component.c_isallday">{{ block.starthour }} - </span>',
-        '  {{ block.component.c_title }}',
+        '<div class="sg-event"',
+        //    Add a class while dragging
+        '     ng-class="{\'sg-event--dragging\': block.dragging}"',
+        '     ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        '  <span class="secondary" ng-if="!block.component.c_isallday">{{ block.starthour }}</span>',
+        '  {{ block.component.summary }}',
         '  <span class="icons">',
-        '    <i ng-if="block.component.c_nextalarm" class="md-icon-alarm"></i>',
-        '    <i ng-if="block.component.c_classification == 1" class="md-icon-visibility-off"></i>',
-        '    <i ng-if="block.component.c_classification == 2" class="md-icon-vpn-key"></i>',
+        //   Component is reccurent
+        '    <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        //   Component has an alarm
+        '    <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        //   Component is confidential
+        '    <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        //   Component is private
+        '    <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '  </span>',
-        '  <div class="leftDragGrip"></div>',
-        '  <div class="rightDragGrip"></div>',
         '</div>'
       ].join(''),
       link: link
     };
 
     function link(scope, iElement, attrs) {
-      iElement.addClass('bg-folder' + scope.block.component.c_folder);
+      if (scope.block.component)
+        iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

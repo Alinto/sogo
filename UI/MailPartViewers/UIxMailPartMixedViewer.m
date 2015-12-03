@@ -61,7 +61,7 @@
   return [NSString stringWithFormat: @"%u",
                    (unsigned int) ([self childIndex] + 1)];
   char buf[8];
-  sprintf(buf, "%d", [self childIndex] + 1);
+  sprintf(buf, "%d", (int)[self childIndex] + 1);
   return [NSString stringWithCString:buf];
 }
 
@@ -87,6 +87,7 @@
   id info, viewer;
   NSArray *parts;
   NSMutableArray *renderedParts;
+  NSString *contentType;
   NSUInteger i, max;
 
   parts = [[self bodyInfo] objectForKey: @"parts"];
@@ -102,9 +103,13 @@
       [viewer setPartPath: [self childPartPath]];
       [renderedParts addObject: [viewer renderedPart]];
     }
+  contentType = [NSString stringWithFormat: @"%@/%@",
+                          [[self bodyInfo] objectForKey: @"type"],
+                          [[self bodyInfo] objectForKey: @"subtype"]];
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",
+                       contentType, @"contentType",
                        renderedParts, @"content",
                        nil];
 }

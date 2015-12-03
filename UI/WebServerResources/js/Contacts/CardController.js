@@ -22,6 +22,7 @@
     vm.userFilterResults = [];
     vm.addOrgUnit = addOrgUnit;
     vm.addBirthday = addBirthday;
+    vm.addScreenName = addScreenName;
     vm.addEmail = addEmail;
     vm.addPhone = addPhone;
     vm.addUrl = addUrl;
@@ -29,6 +30,7 @@
     vm.addMember = addMember;
     vm.userFilter = userFilter;
     vm.save = save;
+    vm.close = close;
     vm.reset = reset;
     vm.cancel = cancel;
     vm.confirmDelete = confirmDelete;
@@ -41,6 +43,9 @@
     }
     function addBirthday() {
       vm.card.birthday = new Date();
+    }
+    function addScreenName() {
+      vm.card.$addScreenName('');
     }
     function addEmail() {
       var i = vm.card.$addEmail('');
@@ -86,6 +91,12 @@
           });
       }
     }
+    function close() {
+      $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id }).then(function() {
+        vm.card = null;
+        delete AddressBook.selectedFolder.selectedCard;
+      });
+    }
     function reset() {
       vm.card.$reset();
     }
@@ -110,13 +121,11 @@
           // User confirmed the deletion
           card.$delete()
             .then(function() {
-              // Remove card from list of addressbook
+              // Remove card from addressbook
               AddressBook.selectedFolder.cards = _.reject(AddressBook.selectedFolder.cards, function(o) {
                 return o.id == card.id;
               });
-              // Remove card object from scope
-              vm.card = null;
-              $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id });
+              close();
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
                                            card.$fullname()));
@@ -137,14 +146,14 @@
           escapeToClose: true,
           template: [
             '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Card Source') + '">',
-            '  <md-dialog-content>',
+            '  <md-dialog-content class="md-dialog-content">',
             '    <pre>',
             data,
             '    </pre>',
             '  </md-dialog-content>',
-            '  <div class="md-actions">',
+            '  <md-dialog-actions>',
             '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
-            '  </div>',
+            '  </md-dialog-actions>',
             '</md-dialog>'
           ].join(''),
           controller: CardRawSourceDialogController

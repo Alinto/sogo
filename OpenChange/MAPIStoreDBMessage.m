@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
@@ -34,6 +35,7 @@
 #import "MAPIStoreDBFolder.h"
 #import "MAPIStoreDBMessage.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
@@ -43,16 +45,28 @@
 
 @implementation MAPIStoreDBMessage
 
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SPropTagArray *properties;
   NSUInteger count;
-  enum MAPITAGS faiProperties[] = { 0x68350102, 0x683c0102, 0x683e0102,
-                                    0x683f0102, 0x68410003, 0x68420102,
-                                    0x68450102, 0x68460003,
-                                    // PR_VD_NAME_W, PR_VD_FLAGS, PR_VD_VERSION, PR_VIEW_CLSID
-                                    0x7006001F, 0x70030003, 0x70070003, 0x68330048 };
+
+  enum MAPITAGS faiProperties[] = {
+    0x68330048, /* PR_VIEW_CLSID */
+    0x68350102, /* PR_VIEW_STATE */
+    0x683c0102,
+    0x683d0040,
+    0x683e0102,
+    0x683f0102, /* PR_VIEW_VIEWTYPE_KEY */
+    0x68410003,
+    0x68420102,
+    0x68450102,
+    0x68460003,
+    0x7006001F, /* PR_VD_NAME_W */
+    0x70030003, /* PR_VD_FLAGS */
+    0x70070003  /* PR_VD_VERSION */
+  };
+
   size_t faiSize = sizeof(faiProperties) / sizeof(enum MAPITAGS);
 
   properties = talloc_zero (memCtx, struct SPropTagArray);
@@ -72,6 +86,13 @@
   *propertiesP = properties;
 
   return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self class] getAvailableProperties: propertiesP
+                                     inMemCtx: memCtx];
 }
 
 - (id) initWithSOGoObject: (id) newSOGoObject
@@ -102,6 +123,105 @@
     objectVersion = ULLONG_MAX;
 
   return objectVersion;
+}
+
+- (void) _updatePredecessorChangeList
+{
+  BOOL updated;
+  enum mapistore_error rc;
+  NSData *currentChangeList, *changeKey;
+  NSMutableArray *changeKeys;
+  NSMutableData *newChangeList;
+  NSUInteger count, len;
+  struct SizedXid *changes;
+  struct SPropValue property;
+  struct SRow aRow;
+  struct XID *currentChangeKey;
+  TALLOC_CTX *localMemCtx;
+  uint32_t nChanges;
+
+  localMemCtx = talloc_new (NULL);
+  if (!localMemCtx)
+    {
+      [self errorWithFormat: @"No more memory"];
+      return;
+    }
+
+  changeKey = [self getReplicaKeyFromGlobCnt: [self objectVersion]];
+
+  currentChangeList = [properties objectForKey: MAPIPropertyKey (PidTagPredecessorChangeList)];
+  if (!currentChangeList)
+    {
+      /* Create a new PredecessorChangeList */
+      len = [changeKey length];
+      newChangeList = [NSMutableData dataWithCapacity: len + 1];
+      [newChangeList appendUInt8: len];
+      [newChangeList appendData: changeKey];
+    }
+  else
+    {
+      /* Update current predecessor change list with new change key */
+      changes = [currentChangeList asSizedXidArrayInMemCtx: localMemCtx
+                                                      with: &nChanges];
+
+      updated = NO;
+      currentChangeKey = [changeKey asXIDInMemCtx: localMemCtx];
+      for (count = 0; count < nChanges && !updated; count++)
+        {
+          if (GUID_equal(&changes[count].XID.NameSpaceGuid, &currentChangeKey->NameSpaceGuid))
+            {
+              NSData *globCnt, *oldGlobCnt;
+              oldGlobCnt = [NSData dataWithBytes: changes[count].XID.LocalId.data length: changes[count].XID.LocalId.length];
+              globCnt = [NSData dataWithBytes: currentChangeKey->LocalId.data length: currentChangeKey->LocalId.length];
+              if ([globCnt compare: oldGlobCnt] == NSOrderedDescending)
+                {
+                  if ([globCnt length] != [oldGlobCnt length])
+                    {
+                      [self errorWithFormat: @"Cannot compare globcnt with different length: %@ and %@", globCnt, oldGlobCnt];
+                      abort();
+                    }
+                  memcpy (changes[count].XID.LocalId.data, currentChangeKey->LocalId.data, currentChangeKey->LocalId.length);
+                  updated = YES;
+                }
+            }
+        }
+
+      /* Serialise it */
+      changeKeys = [NSMutableArray array];
+
+      if (!updated)
+        [changeKeys addObject: changeKey];
+
+      for (count = 0; count < nChanges; count++)
+        {
+          changeKey = [NSData dataWithXID: &changes[count].XID];
+          [changeKeys addObject: changeKey];
+        }
+
+      [changeKeys sortUsingFunction: MAPIChangeKeyGUIDCompare context: localMemCtx];
+
+      newChangeList = [NSMutableData data];
+      len = [changeKeys count];
+      for (count = 0; count < len; count++)
+        {
+          changeKey = [changeKeys objectAtIndex: count];
+          [newChangeList appendUInt8: [changeKey length]];
+          [newChangeList appendData: changeKey];
+        }
+    }
+
+  if ([newChangeList length] > 0)
+    {
+      property.ulPropTag = PidTagPredecessorChangeList;
+      property.value.bin = *[newChangeList asBinaryInMemCtx: localMemCtx];
+      aRow.cValues = 1;
+      aRow.lpProps = &property;
+      rc = [self addPropertiesFromRow: &aRow];
+      if (rc != MAPISTORE_SUCCESS)
+          [self errorWithFormat: @"Impossible to add a new predecessor change list: %d", rc];
+    }
+
+  talloc_free (localMemCtx);
 }
 
 //
@@ -166,6 +286,9 @@
   [properties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
                  forKey: @"version"];
 
+  /* Update PredecessorChangeList accordingly */
+  [self _updatePredecessorChangeList];
+
   [self logWithFormat: @"%d props in dict", [properties count]];
 
   [sogoObject save];
@@ -207,6 +330,38 @@
 - (NSDate *) lastModificationTime
 {
   return [sogoObject lastModified];
+}
+
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
+{
+  /* Modify PidTagMessageFlags from SetMessageReadFlag and
+     SyncImportReadStateChanges ROPs */
+  NSNumber *flags;
+  uint32_t newFlag;
+
+  flags = [properties objectForKey: MAPIPropertyKey (PR_MESSAGE_FLAGS)];
+  if (flags)
+    {
+      newFlag = [flags unsignedLongValue];
+      if (flag & SUPPRESS_RECEIPT)
+        newFlag |= MSGFLAG_READ;
+      if (flag & CLEAR_RN_PENDING)
+        newFlag &= ~MSGFLAG_RN_PENDING;
+      if (flag & CLEAR_READ_FLAG)
+        newFlag &= ~MSGFLAG_READ;
+      if (flag & CLEAR_NRN_PENDING)
+        newFlag &= ~MSGFLAG_NRN_PENDING;
+    }
+  else
+    {
+      newFlag = MSGFLAG_READ;
+      if (flag & CLEAR_READ_FLAG)
+        newFlag = 0x0;
+    }
+  [properties setObject: [NSNumber numberWithUnsignedLong: newFlag]
+                 forKey: MAPIPropertyKey (PR_MESSAGE_FLAGS)];
+
+  return MAPISTORE_SUCCESS;
 }
 
 @end

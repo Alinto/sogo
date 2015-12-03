@@ -28,12 +28,14 @@ class preventInvitationsTest(unittest.TestCase):
       self.caldav = CalDAVSchedulingTest(self)
       cal = self.prefs.get("Calendar")
       if "PreventInvitationsWhitelist" not in cal:
-            #print "LUC (cal):", cal
             cal["PreventInvitationsWhitelist"] = None
       self.prefs.set("PreventInvitationsWhitelist", None)
+      if "PreventInvitations" not in cal:
+            cal["PreventInvitations"] = 0
+      self.prefs.set("PreventInvitations", 0)
 
     def tearDown(self):
-      self.prefs.set("autoReplyText", "")
+      #self.prefs.set("autoReplyText", "")
       self.prefs.set('PreventInvitations', 0)
       self.prefs.set("PreventInvitationsWhitelist", None)
       #- Manual Cleanup, not called because classs is not derived from unittest

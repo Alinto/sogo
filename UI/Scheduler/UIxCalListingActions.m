@@ -328,16 +328,24 @@ static NSArray *tasksFields = nil;
   iCalPersonPartStat stat;
   NSUInteger count, max;
 
-  if ([[theRecord objectForKey: @"c_partmails"] length] > 0 &&
-      [[theRecord objectForKey: @"c_partstates"] length] > 0)
+  states = nil;
+
+  if ([[theRecord objectForKey: @"c_partmails"] length] > 0)
     {
       mails = [[theRecord objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
-      states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+
+      // We add some robustness here, in case the quick table had c_partmails defined but
+      // no corresponding c_partstates entries. This can happen if folks toy around the database
+      // or if Funambol was used in the past, with a broken connector.
+      if ([[theRecord objectForKey: @"c_partstates"] length] > 0)
+        states = [[theRecord objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+
       max = [mails count];
       statesDescription = [NSMutableArray arrayWithCapacity: max];
+
       for (count = 0; count < max; count++)
         {
-          stat = [[states objectAtIndex: count] intValue];
+          stat = (states ? [[states objectAtIndex: count] intValue] : 0);
           [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
         }
 
@@ -356,10 +364,10 @@ static NSArray *tasksFields = nil;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime;
+  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime, *categories;
   NSRange match;
   iCalCalendar *calendar;
-  iCalObject *master;
+  iCalEntityObject *master;
   SOGoAppointmentFolder *currentFolder;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
@@ -392,7 +400,7 @@ static NSArray *tasksFields = nil;
           else if ([criteria isEqualToString:@"entireContent"])
             {
               // First search : Through the quick table inside the location, category and title columns
-              quickInfos = [currentFolder fetchCoreInfosFrom: startDate
+              quickInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                           to: endDate
                                                        title: value
                                                    component: component
@@ -408,14 +416,14 @@ static NSArray *tasksFields = nil;
                 }
         
               // Second research : Every objects except for those already in the quickInfos array
-              allInfos = [currentFolder fetchCoreInfosFrom: startDate
+              allInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                         to: endDate
                                                      title: nil
                                                  component: component];
               if (quickInfosFlag == YES)
                 {
                   for (i = ([allInfos count] - 1); i >= 0 ; i--) {
-                    if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
+                    if ([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
                       [allInfos removeObjectAtIndex:i];
                   }
                 }
@@ -425,7 +433,7 @@ static NSArray *tasksFields = nil;
                 {
                   iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
                   calendar = [iCalCalendar parseSingleFromSource: iCalString];
-                  master = [calendar firstChildWithTag:component];
+                  master = (iCalEntityObject *)[calendar firstChildWithTag:component];
                   if (master) {
                     if ([[master comment] length] > 0)
                       {
@@ -463,10 +471,10 @@ static NSArray *tasksFields = nil;
                       role = [currentFolder roleForComponentsWithAccessClass: [[newInfo objectForKey: @"c_classification"] intValue]
                                                                     forUser : userLogin];
 
-                      if ([role isEqualToString: @"ComponentViewer"])
-                        [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
-                      else
+                      if ([role isEqualToString: @"ComponentDAndTViewer"])
                         [newInfo setObject: [NSNumber numberWithInt: 0]  forKey: @"viewable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
                     }
                 }
 
@@ -513,6 +521,11 @@ static NSArray *tasksFields = nil;
                 calendarName = @"";
               [newInfo setObject: calendarName
                           forKey: @"calendarName"];
+
+              // Split comma-delimited categories
+              categories = [newInfo objectForKey: @"c_category"];
+              if ([categories length])
+                [newInfo setObject: [categories componentsSeparatedByString: @","] forKey: @"c_category"];
 
               // Fix empty title
               if (![[newInfo objectForKey: @"c_title"] length])
@@ -892,10 +905,10 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
   states = [event objectAtIndex: eventPartStatesIndex];
   count = 0;
   max = [participants count];
+  user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
+                           roles: nil];
   while (state == iCalPersonPartStatOther && count < max)
     {
-      user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
-                               roles: nil];
       if ([user hasEmail: [participants objectAtIndex: count]])
         state = [[states objectAtIndex: count] intValue];
       else
@@ -933,7 +946,7 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
         eventStart = eventEnd;
         eventEnd = swap;
         [self warnWithFormat: @"event '%@' has end < start: %d < %d",
-         [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
+              [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
       }
       
       startSecs = (unsigned int) [startDate timeIntervalSince1970];
@@ -986,21 +999,21 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
           currentDay = [blocks objectAtIndex: offset];
         }
         
-	      computedEventEnd = eventEnd;
+        computedEventEnd = eventEnd;
         
-	      // We add 5 mins to the end date of an event if the end date
-	      // is equal or smaller than the event's start date.
-	      if (eventEnd <= currentStart)
+        // We add 5 mins to the end date of an event if the end date
+        // is equal or smaller than the event's start date.
+        if (eventEnd <= currentStart)
           computedEventEnd = currentStart + (5*60);
 	      
-	      eventBlock = [self _eventBlockWithStart: currentStart
+        eventBlock = [self _eventBlockWithStart: currentStart
                                             end: computedEventEnd
                                          number: number
                                           onDay: currentDayStart
                                  recurrenceTime: recurrenceTime
                                       userState: userState];
-	      [currentDay addObject: eventBlock];
-	    }
+        [currentDay addObject: eventBlock];
+      }
     }
   }
 }
@@ -1217,7 +1230,7 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoAppointmentFolder *folder;
   NSMutableArray *selectedCalendars;
   NSArray *folders;
-  NSString *fUID;
+  NSString *fUID, *fName;
   NSNumber *isActive;
   unsigned int count, foldersCount;
   
@@ -1231,7 +1244,11 @@ _computeBlocksPosition (NSArray *blocks)
     isActive = [NSNumber numberWithBool: [folder isActive]];
     if ([isActive intValue] != 0) {
       fUID = [folder nameInContainer];
-      [selectedCalendars addObject: fUID];
+      fName = [folder displayName];
+      [selectedCalendars addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    fUID, @"id",
+                                                  fName, @"name",
+                                                  nil]];
     }
   }
   return selectedCalendars;
@@ -1289,9 +1306,10 @@ _computeBlocksPosition (NSArray *blocks)
 {
   int count, max;
   NSArray *events, *event, *calendars;
-  NSDictionary *eventsBlocks;
-  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsByCalendars, *eventsForCalendar;
+  NSDictionary *eventsBlocks, *calendar;
+  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsForCalendar, *eventsByCalendars;
   NSNumber *eventNbr;
+  NSString *calendarName, *calendarId;
   BOOL isAllDay;
   int i, j;
   
@@ -1301,20 +1319,25 @@ _computeBlocksPosition (NSArray *blocks)
   
   if ([currentView isEqualToString: @"multicolumndayview"])
   {
-    calendars = [self _selectedCalendars];
+    calendars = (NSMutableArray *)[self _selectedCalendars];
     eventsByCalendars = [NSMutableArray arrayWithCapacity:[calendars count]];
     for (i = 0; i < [calendars count]; i++) // For each calendar
     {
+      calendar = [calendars objectAtIndex:i];
+      calendarName = [calendar objectForKey: @"name"];
+      calendarId = [calendar objectForKey: @"id"];
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
       for (j = 0; j < [events count]; j++) {
-        if ([[[events objectAtIndex:j] objectAtIndex:eventFolderIndex] isEqualToString:[calendars objectAtIndex:i]]) {
+        if ([[[events objectAtIndex:j] objectAtIndex:eventFolderIndex] isEqualToString: calendarId]) {
           // Event is in current calendar
           [eventsForCalendar addObject: [events objectAtIndex:j]];
         }
       }
       eventsBlocks = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     eventsFields, @"eventsFields",
+                                     calendarId , @"id",
+                                   calendarName, @"calendarName",
+                                   eventsFields, @"eventsFields",
                                    eventsForCalendar, @"events",
                                    allDayBlocks, @"allDayBlocks",
                                    blocks, @"blocks", nil];
@@ -1336,8 +1359,7 @@ _computeBlocksPosition (NSArray *blocks)
         [currentDay sortUsingSelector: @selector (compareEventByStart:)];
         [self _addBlocksWidth: currentDay];
       }
-      
-      [eventsByCalendars insertObject:eventsBlocks atIndex:i];
+      [eventsByCalendars addObject: eventsBlocks];
     }
     return [self _responseWithData: eventsByCalendars];
   }
@@ -1373,7 +1395,7 @@ _computeBlocksPosition (NSArray *blocks)
       [currentDay sortUsingSelector: @selector (compareEventByStart:)];
       [self _addBlocksWidth: currentDay];
     }
-    return [self _responseWithData: eventsBlocks];
+    return [self _responseWithData: [NSArray arrayWithObject: eventsBlocks]];
   }
 }
 

@@ -595,12 +595,12 @@
  * @apiSuccess (Success 200) {Boolean} alarm.attendees        Alert attendees by email if true and action is email
  * @apiSuccess (Success 200) {Boolean} alarm.organizer        Alert organizer by email if true and action is email
  *
- * @apiSuccess {_} ... _From [iCalEvent+SOGo attributes]_
+ * @apiSuccess {_} ... _From [iCalEvent+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Number} isAllDay                1 if event is all-day
  * @apiSuccess (Success 200) {Number} isTransparent           1 if the event is not opaque
  *
- * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributes]_
+ * @apiSuccess {_} .... _From [iCalEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Number} sendAppointmentNotifications 1 if notifications must be sent
  * @apiSuccess (Success 200) {String} component               "vevent"
@@ -626,7 +626,7 @@
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from
  *
- * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributes]_
+ * @apiSuccess {_} ..... _From [iCalRepeatableEntityObject+SOGo attributesInContext:]_
  *
  * @apiSuccess (Success 200) {Object} [repeat]                Recurrence rule definition
  * @apiSuccess (Success 200) {String} repeat.frequency        Either daily, (every weekday), weekly, (bi-weekly), monthly, or yearly
@@ -652,7 +652,8 @@
   iCalEvent *event;
 
   BOOL resetAlarm;
-  unsigned int snoozeAlarm;
+  NSInteger offset;
+  NSUInteger snoozeAlarm;
 
   event = [self event];
   co = [self clientObject];
@@ -662,11 +663,22 @@
   timeZone = [ud timeZone];
   eventStartDate = [event startDate];
   eventEndDate = [event endDate];
-  if (!isAllDay)
+
+  if (isAllDay)
     {
-      [eventStartDate setTimeZone: timeZone];
-      [eventEndDate setTimeZone: timeZone];
+      eventEndDate = [eventEndDate dateByAddingYears: 0 months: 0 days: -1];
+
+      // Convert the dates to the user's timezone
+      offset = [timeZone secondsFromGMTForDate: eventStartDate];
+      eventStartDate = [eventStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                 seconds:-offset];
+      offset = [timeZone secondsFromGMTForDate: eventEndDate];
+      eventEndDate = [eventEndDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                             seconds:-offset];
     }
+
+  [eventStartDate setTimeZone: timeZone];
+  [eventEndDate setTimeZone: timeZone];
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
   // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
@@ -704,8 +716,11 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
+                       [NSNumber numberWithBool: isAllDay], @"isAllDay",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [NSNumber numberWithBool: [self userHasRSVP]], @"userHasRSVP",
+                       [eventStartDate iso8601DateString], @"startDate",
+                       [eventEndDate iso8601DateString], @"endDate",
                        [dateFormatter formattedDate: eventStartDate], @"localizedStartDate",
                        [dateFormatter formattedDate: eventEndDate], @"localizedEndDate",
                        [self alarm], @"alarm",

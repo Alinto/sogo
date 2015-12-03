@@ -12,6 +12,7 @@ AdministrationUI_OBJC_FILES =		\
 	AdministrationUIProduct.m	\
 	\
 	UIxAdministration.m		\
+	UIxAdministrationAclEditor.m	\
 	UIxAdministrationFilterPanel.m
 
 AdministrationUI_RESOURCE_FILES += \

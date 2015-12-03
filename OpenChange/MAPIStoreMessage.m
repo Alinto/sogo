@@ -549,11 +549,12 @@ rtf2html (NSData *compressedRTF)
         }
   
       [self save: memCtx];
-      /* We make sure that any change-related properties are removes from the
+      /* We make sure that any change-related properties are removed from the
          properties dictionary, to make sure that related methods will be
          invoked the next time they are requested. */
       [properties removeObjectForKey: MAPIPropertyKey (PidTagChangeKey)];
       [properties removeObjectForKey: MAPIPropertyKey (PidTagChangeNumber)];
+      [properties removeObjectForKey: MAPIPropertyKey (PidTagPredecessorChangeList)];
 
       if ([container isKindOfClass: MAPIStoreFolderK])
         {
@@ -918,7 +919,7 @@ rtf2html (NSData *compressedRTF)
   return [self getNo: data inMemCtx: memCtx];;
 }
 
-- (int) setReadFlag: (uint8_t) flag
+- (enum mapistore_error) setReadFlag: (uint8_t) flag
 {
   // [self subclassResponsibility: _cmd];
 

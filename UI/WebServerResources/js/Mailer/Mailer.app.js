@@ -39,6 +39,34 @@
           stateAccount: stateAccount
         }
       })
+      .state('mail.account.virtualMailbox', {
+        url: '/virtual',
+        views: {
+          'mailbox@mail': {
+            templateUrl: 'UIxMailFolderTemplate', // UI/Templates/MailerUI/UIxMailFolderTemplate.wox
+            controller: 'MailboxController',
+            controllerAs: 'mailbox'
+          }
+        },
+        resolve: {
+          stateMailbox: stateVirtualMailbox
+        }
+      })
+      .state('mail.account.virtualMailbox.message', {
+        url: '/:mailboxId/:messageId',
+        views: {
+           message: {
+            templateUrl: 'UIxMailViewTemplate', // UI/Templates/MailerUI/UIxMailViewTemplate.wox
+            controller: 'MessageController',
+            controllerAs: 'viewer'
+          }
+        },
+        resolve: {
+          stateMailbox: stateVirtualMailboxOfMessage,
+          stateMessages: stateMessages,
+          stateMessage: stateMessage
+        }
+      })
       .state('mail.account.mailbox', {
         url: '/:mailboxId',
         views: {
@@ -144,10 +172,11 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
-  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
+  stateMailbox.$inject = ['Mailbox', '$stateParams', 'stateAccount', 'decodeUriFilter'];
+  function stateMailbox(Mailbox, $stateParams, stateAccount, decodeUriFilter) {
     var mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
+
     // Recursive find function
     _find = function(mailboxes) {
       var mailbox = _.find(mailboxes, function(o) {
@@ -162,14 +191,18 @@
       }
       return mailbox;
     };
+
     return _find(stateAccount.$mailboxes);
   }
 
   /**
    * @ngInject
    */
-  stateMessages.$inject = ['stateMailbox'];
-  function stateMessages(stateMailbox) {
+  stateMessages.$inject = ['Mailbox', 'stateMailbox'];
+  function stateMessages(Mailbox, stateMailbox) {
+    if (Mailbox.$virtualMode)
+      return [];
+
     return stateMailbox.$filter();
   }
 
@@ -182,11 +215,43 @@
   // }
 
   /**
+   * Return a VirtualMailbox instance
    * @ngInject
    */
-  stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
-  function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
-    var message = _.find(stateMailbox.$messages, function(messageObject) {
+  stateVirtualMailbox.$inject = ['$q', 'Mailbox'];
+  function stateVirtualMailbox($q, Mailbox) {
+    if (Mailbox.$virtualMode)
+      return Mailbox.selectedFolder;
+    else
+      return $q.reject("No virtual mailbox defined");
+  }
+
+  /**
+   * Return a Mailbox instance from a VirtualMailbox instance
+   * @ngInject
+   */
+  stateVirtualMailboxOfMessage.$inject = ['$q', 'Mailbox', 'decodeUriFilter', '$stateParams'];
+  function stateVirtualMailboxOfMessage($q, Mailbox, decodeUriFilter, $stateParams) {
+    var mailboxId = decodeUriFilter($stateParams.mailboxId);
+
+    if (Mailbox.$virtualMode) {
+      Mailbox.selectedFolder.resetSelectedMessage();
+      return _.find(Mailbox.selectedFolder.$mailboxes, function(mailboxObject) {
+        return mailboxObject.path == mailboxId;
+      });
+    }
+    else
+      return $q.reject("No virtual mailbox defined for message");
+  }
+
+  /**
+   * @ngInject
+   */
+  stateMessage.$inject = ['Mailbox', 'encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'stateMessages'];
+  function stateMessage(Mailbox, encodeUriFilter, $stateParams, $state, stateMailbox, stateMessages) {
+    var message;
+
+    message = _.find(stateMailbox.$messages, function(messageObject) {
       return messageObject.uid == $stateParams.messageId;
     });
 
@@ -211,10 +276,14 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
+  runBlock.$inject = ['$rootScope', '$log', '$state'];
+  function runBlock($rootScope, $log, $state) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $state.go('mail');
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
   }
 

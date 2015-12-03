@@ -9,26 +9,32 @@
    * @param {string} accountId - the account ID
    * @param {string} mailboxPath - an array of the mailbox path components
    * @param {object} futureAddressBookData - either an object literal or a promise
+   * @param {bool} lazy - do "lazy loading" so we are very quick at initializing message instances
    */
-  function Message(accountId, mailbox, futureMessageData) {
+  function Message(accountId, mailbox, futureMessageData, lazy) {
     this.accountId = accountId;
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
     this.$showDetailedRecipients = false;
     this.editable = {to: [], cc: [], bcc: []};
+    this.selected = false;
+
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
-      angular.extend(this, futureMessageData);
-      this.id = this.$absolutePath();
-      this.$formatFullAddresses();
+      if (angular.isDefined(lazy) && lazy) {
+        this.uid = futureMessageData.uid;
+      }
+      else {
+        angular.extend(this, futureMessageData);
+        this.$formatFullAddresses();
+      }
     }
     else {
       // The promise will be unwrapped first
       this.$unwrap(futureMessageData);
     }
-    this.selected = false;
   }
 
   /**
@@ -36,12 +42,11 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', '$sce', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, $sce, Settings, Gravatar, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Gravatar, Resource, Preferences) {
     angular.extend(Message, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $sce: $sce,
       $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser())
     });
@@ -49,6 +54,10 @@
     Preferences.ready().then(function() {
       if (Preferences.defaults.SOGoMailLabelsColors) {
         Message.$tags = Preferences.defaults.SOGoMailLabelsColors;
+      }
+      if (Preferences.defaults.SOGoMailDisplayRemoteInlineImages &&
+          Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {
+        Message.$displayRemoteInlineImages = true;
       }
     });
 
@@ -76,11 +85,16 @@
    * @returns a collection of strings
    */
   Message.filterTags = function(query) {
-    var re = new RegExp(query, 'i');
-    return _.filter(_.keys(Message.$tags), function(tag) {
-      var value = Message.$tags[tag];
-      return value[0].search(re) != -1;
+    var re = new RegExp(query, 'i'),
+        results = [];
+
+    _.forEach(_.keys(Message.$tags), function(tag) {
+      var pair = Message.$tags[tag];
+      if (pair[0].search(re) != -1) {
+        results.push({ name: tag, description: pair[0], color: pair[1] });
+      }
     });
+    return results;
   };
 
   /**
@@ -90,20 +104,23 @@
    * @returns a string representing the path relative to the mail module
    */
   Message.prototype.$absolutePath = function(options) {
-    var path;
+    if (angular.isUndefined(this.id) || options) {
+      var path;
+      path = _.map(this.$mailbox.path.split('/'), function(component) {
+        return 'folder' + component.asCSSIdentifier();
+      });
+      path.splice(0, 0, this.accountId); // insert account ID
+      if (options && options.asDraft && this.draftId) {
+        path.push(this.draftId); // add draft ID
+      }
+      else {
+        path.push(this.uid); // add message UID
+      }
 
-    path = _.map(this.$mailbox.path.split('/'), function(component) {
-      return 'folder' + component.asCSSIdentifier();
-    });
-    path.splice(0, 0, this.accountId); // insert account ID
-    if (options && options.asDraft && this.draftId) {
-      path.push(this.draftId); // add draft ID
-    }
-    else {
-      path.push(this.uid); // add message UID
+      this.id = path.join('/');
     }
 
-    return path.join('/');
+    return this.id;
   };
 
   /**
@@ -113,14 +130,22 @@
    * @param {number} uid - the new message UID
    */
   Message.prototype.$setUID = function(uid) {
-    var oldUID = this.uid || -1;
+    var oldUID = (this.uid || -1);
 
-    if (oldUID != uid) {
+    if (oldUID != parseInt(uid)) {
       this.uid = uid;
-      this.id = this.$absolutePath();
-      if (oldUID > -1 && this.$mailbox.uidsMap[oldUID]) {
-        this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
-        this.$mailbox.uidsMap[oldUID] = null;
+      if (oldUID > -1) {
+        oldUID = oldUID.toString();
+        if (angular.isDefined(this.$mailbox.uidsMap[oldUID])) {
+          this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
+          delete this.$mailbox.uidsMap[oldUID];
+        }
+      }
+      else {
+        // Refresh selected folder if it's the drafts mailbox
+        if (this.$mailbox.constructor.selectedFolder.type == 'draft') {
+          this.$mailbox.constructor.selectedFolder.$filter();
+        }
       }
     }
   };
@@ -197,6 +222,24 @@
   };
 
   /**
+   * @function allowReplyAll
+   * @memberof Message.prototype
+   * @desc Check if 'Reply to All' is an appropriate action on the message.
+   * @returns true if the message is not a draft and has more than one recipient
+   */
+  Message.prototype.allowReplyAll = function() {
+    var recipientsCount = 0;
+    recipientsCount = _.reduce(['to', 'cc'], function(count, type) {
+      if (this[type])
+        return count + this[type].length;
+      else
+        return count;
+    }, recipientsCount, this);
+
+    return !this.isDraft && recipientsCount > 1;
+  };
+
+  /**
    * @function loadUnsafeContent
    * @memberof Message.prototype
    * @desc Mark the message to load unsafe resources when calling $content().
@@ -240,11 +283,11 @@
             if (angular.isUndefined(part.safeContent)) {
               // Keep a copy of the original content
               part.safeContent = part.content;
-              _this.$hasUnsafeContent = (part.safeContent.indexOf(' unsafe-') > -1);
+              _this.$hasUnsafeContent |= (part.safeContent.indexOf(' unsafe-') > -1);
             }
             if (part.type == 'UIxMailPartHTMLViewer') {
               part.html = true;
-              if (_this.$loadUnsafeContent) {
+              if (_this.$loadUnsafeContent || Message.$displayRemoteInlineImages) {
                 if (angular.isUndefined(part.unsafeContent)) {
                   part.unsafeContent = document.createElement('div');
                   part.unsafeContent.innerHTML = part.safeContent;
@@ -260,11 +303,12 @@
                       element.removeAttr('unsafe-' + suffix);
                     }
                   });
+                  _this.$hasUnsafeContent = false;
                 }
-                part.content = Message.$sce.trustAs('html', part.unsafeContent.innerHTML);
+                part.content = part.unsafeContent.innerHTML;
               }
               else {
-                part.content = Message.$sce.trustAs('html', part.safeContent);
+                part.content = part.safeContent;
               }
               parts.push(part);
             }
@@ -281,6 +325,8 @@
 
               if (part.type == 'UIxMailPartImageViewer')
                 part.msgclass = 'msg-attachment-image';
+              else if (part.type == 'UIxMailPartLinkViewer')
+                part.msgclass = 'msg-attachment-link';
 
               // Trusted content that can be compiled (Angularly-speaking)
               part.compile = true;
@@ -288,7 +334,7 @@
             }
             else {
               part.html = true;
-              part.content = Message.$sce.trustAs('html', part.safeContent);
+              part.content = part.safeContent;
               parts.push(part);
             }
           }
@@ -308,7 +354,7 @@
   Message.prototype.$editableContent = function() {
     var _this = this;
 
-    return Message.$$resource.fetch(this.id, 'edit').then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), 'edit').then(function(data) {
       angular.extend(_this, data);
       return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
@@ -369,7 +415,7 @@
    */
   Message.prototype.$imipAction = function(path, action, data) {
     var _this = this;
-    Message.$$resource.post([this.id, path].join('/'), action, data).then(function(data) {
+    Message.$$resource.post([this.$absolutePath(), path].join('/'), action, data).then(function(data) {
       Message.$timeout(function() {
         _this.$reload();
       }, function() {
@@ -385,7 +431,7 @@
    */
   Message.prototype.$sendMDN = function() {
     this.shouldAskReceipt = 0;
-    return Message.$$resource.post(this.id, 'sendMDN');
+    return Message.$$resource.post(this.$absolutePath(), 'sendMDN');
   };
 
   /**
@@ -421,7 +467,7 @@
     if (this.isflagged)
       action = 'markMessageUnflagged';
 
-    return Message.$$resource.post(this.id, action).then(function(data) {
+    return Message.$$resource.post(this.$absolutePath(), action).then(function(data) {
       Message.$timeout(function() {
         _this.isflagged = !_this.isflagged;
       });
@@ -434,10 +480,10 @@
    * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$reload = function() {
+  Message.prototype.$reload = function(options) {
     var futureMessageData;
 
-    futureMessageData = Message.$$resource.fetch(this.id, 'view');
+    futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
 
     return this.$unwrap(futureMessageData);
   };
@@ -489,15 +535,18 @@
     var _this = this;
 
     // Query server for draft folder and draft UID
-    return Message.$$resource.fetch(this.id, action).then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), action).then(function(data) {
       var mailbox, message;
       Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
       mailbox = _this.$mailbox.$account.$getMailboxByPath(data.mailboxPath);
       message = new Message(data.accountId, mailbox, data);
       // Fetch draft initial data
       return Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
-        Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
+        Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2) + ' original UID: ' + _this.uid);
         angular.extend(message.editable, data);
+
+        // We keep a reference to our original message in order to update the flags
+        message.origin = {message: _this, action: action};
         return message;
       });
     });
@@ -518,7 +567,7 @@
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
-      _this.$reload(); // fetch a new viewable version of the message
+      _this.$reload({asDraft: false}); // fetch a new viewable version of the message
     });
   };
 
@@ -529,7 +578,8 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$send = function() {
-    var data = angular.copy(this.editable),
+    var _this = this,
+        data = angular.copy(this.editable),
         deferred = Message.$q.defer();
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
@@ -537,6 +587,12 @@
     Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
       if (data.status == 'success') {
         deferred.resolve(data);
+        if (angular.isDefined(_this.origin)) {
+          if (_this.origin.action.startsWith('reply'))
+            _this.origin.message.isanswered = true;
+          else if (_this.origin.action == 'forward')
+            _this.origin.message.isforwarded = true;
+        }
       }
       else {
         deferred.reject(data);
@@ -553,38 +609,28 @@
    * @param {promise} futureMessageData - a promise of some of the Message's data
    */
   Message.prototype.$unwrap = function(futureMessageData) {
-    var _this = this,
-        deferred = Message.$q.defer();
+    var _this = this;
 
-    // Expose the promise
-    this.$futureMessageData = futureMessageData;
-
-    // Resolve the promise
-    this.$futureMessageData.then(function(data) {
+    // Resolve and expose the promise
+    this.$futureMessageData = futureMessageData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
-      Message.$timeout(function() {
-        angular.extend(_this, data);
-        _this.id = _this.$absolutePath();
-        _this.$formatFullAddresses();
-        _this.$loadUnsafeContent = false;
-        deferred.resolve(_this);
-      });
-      if (!_this.isread) {
-        Message.$$resource.fetch(_this.id, 'markMessageRead').then(function() {
+      if (_this.isread === 0) {
+        Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
           Message.$timeout(function() {
             _this.isread = true;
             _this.$mailbox.unseenCount--;
           });
         });
       }
-    }, function(data) {
-      angular.extend(_this, data);
-      _this.isError = true;
-      Message.$log.error(_this.error);
-      deferred.reject();
+      return Message.$timeout(function() {
+        angular.extend(_this, data);
+        _this.$formatFullAddresses();
+        _this.$loadUnsafeContent = false;
+        return _this;
+      });
     });
 
-    return deferred.promise;
+    return this.$futureMessageData;
   };
 
   /**

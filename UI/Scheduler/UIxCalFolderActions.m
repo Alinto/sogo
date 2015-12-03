@@ -72,18 +72,14 @@
   rc = [NSMutableDictionary dictionary];
   request = [context request];
   folder = [self clientObject];
-  data = [request formValueForKey: @"calendarFile"];
-  if ([data respondsToSelector: @selector(isEqualToString:)])
-    fileContent = (NSString *) data;
-  else
-    {
-      fileContent = [[NSString alloc] initWithData: (NSData *) data 
-                                          encoding: NSUTF8StringEncoding];
-      if (fileContent == nil)
-        fileContent = [[NSString alloc] initWithData: (NSData *) data 
-                                            encoding: NSISOLatin1StringEncoding];
-      [fileContent autorelease];
-    }
+  data = [[[[[request httpRequest] body] parts] lastObject] body];
+
+  fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                      encoding: NSUTF8StringEncoding];
+  if (fileContent == nil)
+    fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                        encoding: NSISOLatin1StringEncoding];
+  [fileContent autorelease];
 
   if (fileContent && [fileContent length] 
       && [fileContent hasPrefix: @"BEGIN:"])

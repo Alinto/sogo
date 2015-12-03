@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, Scheduler.js, Scheduler.services.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -106,101 +106,101 @@
       <p><span class="label"><var:string label:value="Created by" /></span> <span>!- space -</span></p>
       <p class="description">!- space -</p>
     </div>
-  </div>
-
-  <div id="uploadDialog" style="display: none" class="dialog left">
-    <div>
-      <h3><var:string label:value="Import Events"/></h3>
-      <p class="prompt"><var:string label:value="Select an iCalendar file (.ics)."/></p>
-      <form const:href="" name="uploadForm" id="uploadForm" method="post"
-        enctype="multipart/form-data"
-        onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
-        'onComplete' : uploadCompleted})">
-        <p class="prompt"><input type="file" name="calendarFile" class="textField" id="calendarFile" />
-        <a href="#" class="button actionButton" id="uploadSubmit"
-            onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
-            <span><var:string label:value="Upload" /></span></a>
-        <a href="#" class="button" const:id="uploadCancel">
-            <span><var:string label:value="Cancel" /></span></a>
-      </p></form>
-      <hr/>
     </div>
-  </div>
-
-  <div id="uploadResults" style="display: none" class="dialog left">
-    <div>
-      <h3><var:string label:value="Import Events"/></h3>
-      <p><span id="uploadResultsContent">!- empty -</span>
-      <a href="#" class="button" const:id="uploadOK">
-          <span><var:string label:value="Done" /></span></a></p>
-      <hr/>
-    </div>
-    </div>
-    -->
+  -->
 
   <main class="view layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
 
-  <script type = "text/ng-template" id="UIxCalMainFrame">
+  <script type="text/ng-template" id="UIxCalMainView">
     <!-- calendars colors -->
-    <div sg-folder-stylesheet="true"
-         ng-repeat="calendar in calendars.service.$calendars"
-         ng-model="calendar"><!-- stylesheet --></div>
-    <div sg-folder-stylesheet="true"
-         ng-repeat="calendar in calendars.service.$subscriptions"
-         ng-model="calendar"><!-- stylesheet --></div>
+    <sg-folder-stylesheet
+         ng-repeat="calendar in app.service.$findAll()"
+         ng-model="calendar"><!-- stylesheet --></sg-folder-stylesheet>
+    <!-- calendars colors -->
+    <sg-category-stylesheet
+         ng-repeat="category in app.categories"
+         ng-model="category"><!-- stylesheet --></sg-category-stylesheet>
     <!-- Sidenav -->
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="isGtMedium" layout="column">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's calendars -->
-        <section>
-          <md-subheader class="sg-md-subheader">
+        <section class="sg-section-list">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
               <md-button class="sg-icon-button"
                          label:aria-label="New Calendar..."
-                         ng-click="calendars.newCalendar()">
+                         ng-click="app.newCalendar()">
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
-            <md-list-item ng-repeat="calendar in calendars.service.$calendars">
+            <md-list-item ng-repeat="calendar in app.service.$calendars"
+                          ng-dblclick="app.editFolder(calendar)">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name">{{calendar.name}}</p>
+              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+                {{calendar.name}}
+                <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
+              </p>
+              <md-input-container class="md-flex"
+                                  ng-show="app.editMode == calendar.id">
+                <input class="sg-item-name" type="text"
+                       label:aria-label="Name of the Calendar"
+                       ng-model="calendar.name"
+                       ng-blur="app.renameFolder(calendar)"
+                       sg-focus-on="calendarName_{{calendar.id}}"
+                       sg-enter="app.renameFolder(calendar)"
+                       sg-escape="app.revertEditing(calendar)"/>
+              </md-input-container>
               <md-menu class="md-secondary" label:aria-label="Options">
-                <md-icon label:aria-label="Options"
-                         ng-click="$mdOpenMenu()"
-                         md-menu-origin="md-menu-origin">more_vert</md-icon>
+                <md-button class="md-icon-button" label:aria-label="Options"
+                           ng-click="$mdOpenMenu()"
+                           md-menu-origin="md-menu-origin">
+                  <md-icon>more_vert</md-icon>
+                </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
-                    <md-button ng-click="calendars.confirmDelete(calendar)">
+                    <md-button type="button" ng-click="app.editFolder(calendar)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item ng-show="calendar.id != 'personal'">
+                    <md-button ng-click="app.confirmDelete(calendar)">
                       <var:string label:value="Delete"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button ng-click="calendars.exportCalendar()">
+                    <md-button ng-click="app.importCalendar($event, calendar)">
+                      <var:string label:value="Import"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.exportCalendar(calendar)">
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showLinks(calendar)">
+                    <md-button ng-click="app.showLinks(calendar)">
                       <var:string label:value="Links to this Calendar"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button ng-click="calendars.share(calendar)">
+                    <md-button ng-click="app.share(calendar)">
                       <var:string label:value="Sharing..."/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showProperties(calendar)">
+                    <md-button ng-click="app.showProperties(calendar)">
                       <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
@@ -210,45 +210,66 @@
           </md-list>
         </section>
         <!-- Subscriptions -->
-        <section>
-          <md-subheader class="sg-md-subheader">
+        <section class="sg-section-list">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to a Calendar..."
                          sg-subscribe="calendar"
-                         sg-subscribe-on-select="calendars.subscribeToFolder(folderData)">
+                         sg-subscribe-on-select="app.subscribeToFolder(folderData)">
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
-            <md-list-item ng-repeat="calendar in calendars.service.$subscriptions">
+            <md-list-item ng-repeat="calendar in app.service.$subscriptions"
+                          ng-dblclick="app.editFolder(calendar)">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name">{{calendar.name}}</p>
-              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
-                <md-icon label:aria-label="Options"
+              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+                {{calendar.name}}
+                <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
+              </p>
+              <md-input-container class="md-flex"
+                                  ng-show="app.editMode == calendar.id">
+                <input class="sg-item-name" type="text"
+                       label:aria-label="Name of the Calendar"
+                       ng-model="calendar.name"
+                       ng-blur="app.renameFolder(calendar)"
+                       sg-focus-on="calendarName_{{calendar.id}}"
+                       sg-enter="app.renameFolder(calendar)"
+                       sg-escape="app.revertEditing(calendar)"/>
+              </md-input-container>
+              <md-menu class="md-secondary" label:aria-label="Options">
+                <md-button class="md-icon-button" label:aria-label="Options"
                          ng-click="$mdOpenMenu()"
-                         md-menu-origin="md-menu-origin">more_vert</md-icon>
+                         md-menu-origin="md-menu-origin">
+                  <md-icon>more_vert</md-icon>
+                </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
-                    <md-button ng-click="calendars.confirmDelete(calendar)">
+                    <md-button type="button" ng-click="app.editFolder(calendar)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.confirmDelete(calendar)">
                       <var:string label:value="Unsubscribe Calendar"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showLinks(calendar)">
+                    <md-button ng-click="app.showLinks(calendar)">
                       <var:string label:value="Links to this Calendar"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showProperties(calendar)">
+                    <md-button ng-click="app.showProperties(calendar)">
                       <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
@@ -258,44 +279,62 @@
           </md-list>
         </section>
         <!-- Web Calendars -->
-        <section>
-          <md-subheader class="sg-md-subheader">
+        <section class="sg-section-list">
+          <md-subheader class="md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Web Calendars"/></span>
               <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to a web calendar..."
-                         ng-click="calendars.addWebCalendar()">
+                         ng-click="app.addWebCalendar()">
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
           </md-subheader>
           <md-list>
-            <md-list-item ng-repeat="calendar in calendars.service.$webcalendars">
+            <md-list-item ng-repeat="calendar in app.service.$webcalendars"
+                          ng-dblclick="app.editFolder(calendar)">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name">{{calendar.name}}</p>
-              <md-menu class="md-secondary" label:aria-label="Options" ng-click="true">
-                <md-icon label:aria-label="Options"
-                         ng-click="$mdOpenMenu()"
-                         md-menu-origin="md-menu-origin">more_vert</md-icon>
+              <p class="sg-item-name" ng-show="app.editMode != calendar.id">{{calendar.name}}</p>
+              <md-input-container class="md-flex"
+                                  ng-show="app.editMode == calendar.id">
+                <input class="sg-item-name" type="text"
+                       label:aria-label="Name of the Calendar"
+                       ng-model="calendar.name"
+                       ng-blur="app.renameFolder(calendar)"
+                       sg-focus-on="calendarName_{{calendar.id}}"
+                       sg-enter="app.renameFolder(calendar)"
+                       sg-escape="app.revertEditing(calendar)"/>
+              </md-input-container>
+              <md-menu class="md-secondary" label:aria-label="Options">
+                <md-button class="md-icon-button" label:aria-label="Options"
+                           ng-click="$mdOpenMenu()"
+                           md-menu-origin="md-menu-origin">
+                  <md-icon>more_vert</md-icon>
+                </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
-                    <md-button ng-click="calendars.confirmDelete(calendar)">
+                    <md-button type="button" ng-click="app.editFolder(calendar)">
+                      <var:string label:value="Rename"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.confirmDelete(calendar)">
                       <var:string label:value="Delete"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showLinks(calendar)">
+                    <md-button ng-click="app.showLinks(calendar)">
                       <var:string label:value="Links to this Calendar"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="calendars.showProperties(calendar)">
+                    <md-button ng-click="app.showProperties(calendar)">
                       <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
@@ -310,197 +349,196 @@
     <!-- Main section -->
     <section layout="column" class="sg-app-content layout-fill"
              ng-controller="CalendarListController as list">
-      <md-toolbar layout="column" layout-align="space-between start" class="md-tall toolbar-main">
-        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
-          <var:component className="UIxTopnavToolbarTemplate" />
-          <!-- <div class="sg-toolbar-group-2">
-            <md-button class="sg-icon-button" label:aria-label="Search">
+      <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" >
+        <var:component className="UIxTopnavToolbarTemplate" />
+        <!-- <div class="sg-toolbar-group-2">
+             <md-button class="sg-icon-button" label:aria-label="Search">
+             <md-icon>search</md-icon>
+             </md-button>
+             </div> -->
+      </md-toolbar>
+      <div layout="row" class="md-flex">
+      <div class="view-list" layout="column">
+
+        <md-toolbar class="md-whiteframe-z1"
+                    ng-show="list.component.$selectedCount() == 0">
+          <!-- sort/filter mode (default) -->
+          <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
+            <md-button class="sg-icon-button" label:aria-label="Search"
+                       ng-click="list.mode.search = true">
               <md-icon>search</md-icon>
             </md-button>
-          </div> -->
-        </div><!-- .md-toolbar-tools -->
-        <div class="md-toolbar-tools" layout="row"
-             layout-align="space-between center"
-             ng-show="list.component.$selectedCount() == 0">
-          <!-- sort/filter mode -->
-          <div class="view-list" layout="row" layout-align="space-between center"
-               ng-hide="list.mode.search">
-            <div class="sg-toolbar-group">
-              <md-button class="sg-icon-button" label:aria-label="Search"
-                         ng-click="list.mode.search = true">
-                <md-icon>search</md-icon>
+            <div class="md-flex"><!-- spacer --></div>
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="Filter"
+                         ng-click="$mdOpenMenu()">
+                <md-icon>filter_list</md-icon>
               </md-button>
-            </div>
-            <div class="sg-toolbar-group-last">
-              <md-menu>
-                <md-button class="sg-icon-button" label:aria-label="Filter"
-                           ng-click="$mdOpenMenu()">
-                  <md-icon>filter_list</md-icon>
-                </md-button>
-                <md-menu-content>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_all')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_all') }">
-                        <!-- selected --></md-icon> <var:string label:value="view_all"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_today')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_today') }">
-                        <!-- selected --></md-icon> <var:string label:value="view_today"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_next7')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next7') }">
-                        <!-- selected --></md-icon> <var:string label:value="view_next7"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_next14')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next14') }">
-                        <!-- selected --></md-icon> <var:string label:value="view_next14"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_next31')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next31') }">
-                        <!-- selected --></md-icon><var:string label:value="view_next31"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.filter('view_thismonth')">
-                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_thismonth') }">
-                        <!-- selected --></md-icon><var:string label:value="view_thismonth"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.filter('view_future')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_future' }">
-                        <!-- selected --></md-icon> <var:string label:value="view_future"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.filter('view_selectedday')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_selectedday' }">
-                        <!-- selected --></md-icon> <var:string label:value="view_selectedday"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.filter('view_not_started')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_not_started' }">
-                        <!-- selected --></md-icon> <var:string label:value="view_not_started"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.filter('view_overdue')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_overdue' }">
-                        <!-- selected --></md-icon> <var:string label:value="view_overdue"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.filter('view_incomplete')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_incomplete' }">
-                        <!-- selected --></md-icon> <var:string label:value="view_incomplete"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider ng-if="list.componentType == 'tasks'"><!-- divider --></md-menu-divider>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.component.$filter(list.componentType)">
-                      <md-checkbox
-                          ng-model="list.component.$queryTasks.show_completed"
-                          ng-true-value="1"
-                          ng-false-value="0"> <var:string label:value="Show completed tasks"/></md-checkbox>
-                    </md-button>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
-              <md-menu>
-                <md-button class="sg-icon-button" label:aria-label="Sort"
-                           ng-click="$mdOpenMenu()">
-                  <md-icon>sort</md-icon>
-                </md-button>
-                <md-menu-content>
-                  <md-menu-item>
-                    <md-button ng-click="list.sort('title')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('title') }">
-                        <!-- selected --></md-icon> <var:string label:value="Title"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.sort('location')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('location') }">
-                        <!-- selected --></md-icon> <var:string label:value="Location"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="list.sort('calendarName')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('calendarName') }">
-                        <!-- selected --></md-icon> <var:string label:value="Calendar"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.sort('start')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('start') }">
-                        <!-- selected --></md-icon> <var:string label:value="Start"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.sort('end')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('end') }">
-                        <!-- selected --></md-icon> <var:string label:value="End"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.sort('end')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('end') }">
-                        <!-- selected --></md-icon> <var:string label:value="Due Date"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.sort('priority')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('priority') }">
-                        <!-- selected --></md-icon> <var:string label:value="Priority"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.sort('category')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('category') }">
-                        <!-- selected --></md-icon> <var:string label:value="Category"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.sort('status')">
-                      <md-icon ng-class="{ 'icon-check': list.sortedBy('status') }">
-                        <!-- selected --></md-icon> <var:string label:value="Status"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item ng-if="list.componentType == 'events'">
-                    <md-button ng-click="list.component.$filter(list.componentType)">
-                      <md-checkbox
-                          ng-model="list.component.$queryEvents.asc"
-                          ng-true-value="0"
-                          ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'tasks'">
-                    <md-button ng-click="list.component.$filter(list.componentType)">
-                      <md-checkbox
-                          ng-model="list.component.$queryTasks.asc"
-                          ng-true-value="0"
-                          ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                    </md-button>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
-              <md-button class="sg-icon-button" ng-click="list.component.$filter(list.componentType)">
-                <md-icon>refresh</md-icon>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_all')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_all') }">
+                      <!-- selected --></md-icon> <var:string label:value="view_all"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_today')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_today') }">
+                      <!-- selected --></md-icon> <var:string label:value="view_today"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_next7')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next7') }">
+                      <!-- selected --></md-icon> <var:string label:value="view_next7"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_next14')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next14') }">
+                      <!-- selected --></md-icon> <var:string label:value="view_next14"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_next31')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_next31') }">
+                      <!-- selected --></md-icon><var:string label:value="view_next31"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.filter('view_thismonth')">
+                    <md-icon ng-class="{ 'icon-check': list.filteredBy('view_thismonth') }">
+                      <!-- selected --></md-icon><var:string label:value="view_thismonth"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-button ng-click="list.filter('view_future')">
+                    <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_future' }">
+                      <!-- selected --></md-icon> <var:string label:value="view_future"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-button ng-click="list.filter('view_selectedday')">
+                    <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_selectedday' }">
+                      <!-- selected --></md-icon> <var:string label:value="view_selectedday"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.filter('view_not_started')">
+                    <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_not_started' }">
+                      <!-- selected --></md-icon> <var:string label:value="view_not_started"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.filter('view_overdue')">
+                    <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_overdue' }">
+                      <!-- selected --></md-icon> <var:string label:value="view_overdue"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.filter('view_incomplete')">
+                    <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_incomplete' }">
+                      <!-- selected --></md-icon> <var:string label:value="view_incomplete"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-divider ng-if="list.componentType == 'tasks'"><!-- divider --></md-menu-divider>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.component.$filter(list.componentType)">
+                    <md-checkbox
+                        ng-model="list.component.$queryTasks.show_completed"
+                        ng-true-value="1"
+                        ng-false-value="0"> <var:string label:value="Show completed tasks"/></md-checkbox>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+            <md-menu>
+              <md-button class="sg-icon-button" label:aria-label="Sort"
+                         ng-click="$mdOpenMenu()">
+                <md-icon>sort</md-icon>
               </md-button>
-            </div>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="list.sort('title')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('title') }">
+                      <!-- selected --></md-icon> <var:string label:value="Title"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.sort('location')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('location') }">
+                      <!-- selected --></md-icon> <var:string label:value="Location"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="list.sort('calendarName')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('calendarName') }">
+                      <!-- selected --></md-icon> <var:string label:value="Calendar"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-button ng-click="list.sort('start')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('start') }">
+                      <!-- selected --></md-icon> <var:string label:value="Start"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-button ng-click="list.sort('end')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('end') }">
+                      <!-- selected --></md-icon> <var:string label:value="End"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.sort('end')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('end') }">
+                      <!-- selected --></md-icon> <var:string label:value="Due Date"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.sort('priority')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('priority') }">
+                      <!-- selected --></md-icon> <var:string label:value="Priority"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.sort('category')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('category') }">
+                      <!-- selected --></md-icon> <var:string label:value="Category"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-click="list.sort('status')">
+                    <md-icon ng-class="{ 'icon-check': list.sortedBy('status') }">
+                      <!-- selected --></md-icon> <var:string label:value="Status"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-divider><!-- divider --></md-menu-divider>
+                <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-button ng-href="#">
+                    <md-checkbox
+                        ng-change="list.component.$filter(list.componentType)"
+                        ng-model="list.component.$queryEvents.asc"
+                        ng-true-value="0"
+                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="list.componentType == 'tasks'">
+                  <md-button ng-href="#">
+                    <md-checkbox
+                        ng-change="list.component.$filter(list.componentType)"
+                        ng-model="list.component.$queryTasks.asc"
+                        ng-true-value="0"
+                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+            <md-button class="sg-icon-button" ng-click="list.reload()">
+              <md-icon>refresh</md-icon>
+            </md-button>
           </div>
           <!-- search mode -->
-          <div class="view-list sg-padded--right sg-toolbar-search" layout="row" layout-align="space-between center"
+          <div class="md-toolbar-tools sg-toolbar-secondary"
                ng-show="list.mode.search"
                sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
             <md-button class="sg-icon-button"
@@ -511,67 +549,73 @@
             <md-input-container>
               <input name="folderSearch" type="search" />
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex="25">
               <md-select>
                 <md-option value="title_Category_Location" selected="selected"><var:string label:value="Title, category or location"/></md-option>
                 <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
               </md-select>
             </md-input-container>
           </div>
-          <!-- day/week/month views -->
-          <div class="sg-padded">
-            <a class="sg-icon-button md-button"
-               label:aria-label="Day"
-               href="#/calendar/day"><md-icon>view_day</md-icon></a>
-            <a class="sg-icon-button md-button"
-               label:aria-label="Week"
-               href="#/calendar/week"><md-icon>view_week</md-icon></a>
-            <a class="sg-icon-button md-button"
-               label:aria-label="Month"
-               href="#/calendar/month"><md-icon>view_module</md-icon></a>
+        </md-toolbar>
+
+        <!-- multiple-selection mode -->
+        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
+          <div class="md-toolbar-tools">
+            <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
+              <md-icon>arrow_back</md-icon>
+            </md-button>
+            <label>{{list.component.$selectedCount()}} <var:string label:value="selected"/></label>
+            <div class="md-flex"><!-- spacer --></div>
+            <md-button class="sg-icon-button" ng-click="list.selectAll()">
+              <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
+              <md-icon>select_all</md-icon>
+            </md-button>
+            <md-button class="sg-icon-button" ng-click="list.confirmDeleteSelectedComponents()">
+              <md-icon>delete</md-icon>
+            </md-button>
           </div>
-        </div>
-        <div layout="row" layout-align="start center" ng-show="list.component.$selectedCount() > 0">
-          <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
-            <md-icon>arrow_back</md-icon>
-          </md-button>
-          <label>{{list.component.$selectedCount()}} selected</label>
-          <md-button class="sg-icon-button" ng-click="list.selectAll()">
-            <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
-            <md-icon>select_all</md-icon>
-          </md-button>
-          <md-button class="sg-icon-button" ng-click="list.confirmDeleteSelectedComponents()">
-            <md-icon>delete</md-icon>
-          </md-button>
-        </div>
-      </md-toolbar>
-      <md-content layout="row" class="md-flex">
-        <md-content class="view-list md-flex" layout="column">
+        </md-toolbar>
+
+        <md-content layout="column" class="view-list">
           <md-tabs md-dynamic-height="true"
                    md-selected="list.selectedList">
             <!-- Events list -->
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
+              <md-subheader>
+                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+                </md-button>
+                <span>{{list.component.$queryEvents.filterpopup | loc}}</span>
+              </md-subheader>
               <md-list class="sg-section-list">
-                <md-list-item class="md-2-line"
-                              ng-repeat="event in list.component.$events"
+                <md-list-item ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
-                  <div class="sg-selected-avatar" ng-show="event.selected"
-                       ng-click="event.selected = !event.selected">
+                  <div class="md-avatar sg-avatar-selected" ng-show="event.selected"
+                       ng-click="list.toggleComponentSelection($event, event)">
                     <!-- selected avatar -->
                   </div>
-                  <i class="md-tile-left" ng-class="event.getClassName('bg')" ng-show="!event.selected" ng-click="event.selected = !event.selected"><!-- calendar color --></i>
-                  <div class="md-list-item-text">
-                    <h3>{{event.c_title}}</h3>
-                    <p>{{event.c_location}}</p>
-                    <p class="md-secondary" layout="row">
-                      {{event.formatted_startdate}}
-                      <i class="sg-tile-icons">
-                        <md-icon ng-show="event.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
-                      </i>
-                    </p>
+                  <div class="sg-color-chip" ng-class="event.getClassName('bg')"
+                     ng-show="!event.selected"
+                     ng-click="list.toggleComponentSelection($event, event)"><!-- calendar color --></div>
+                  <div class="sg-category"
+                       ng-repeat="category in event.categories | limitTo:5"
+                       ng-class="'bg-category' + category"
+                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead">
+                      <div>{{event.c_title}}</div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div>{{event.c_location}}</div>
+                      <div class="sg-tile-date" ng-bind="event.formatted_startdate"><!-- start --></div>
+                    </div>
                   </div>
+                  <div class="sg-tile-icons">
+                    <md-icon ng-show="event.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                  </div>
+                  <md-divider><!-- divider --></md-divider>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$events.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No events for selected criteria"/></p>
@@ -581,25 +625,40 @@
             <!-- Tasks list -->
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
+              <md-subheader>
+                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
+                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
+                </md-button>
+                <span>{{list.component.$queryTasks.filterpopup | loc}}</span>
+              </md-subheader>
               <md-list class="sg-section-list">
-                <md-list-item class="md-2-line"
-                              ng-repeat="task in list.component.$tasks"
+                <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <div class="sg-selected-avatar" ng-show="task.selected"
-                       ng-click="task.selected = !task.selected">
+                  <div class="md-avatar sg-avatar-selected" ng-show="task.selected"
+                       ng-click="list.toggleComponentSelection($event, task)">
                     <!-- selected avatar -->
                   </div>
-                  <i class="md-tile-left" ng-class="task.getClassName('bg')" ng-show="!task.selected" ng-click="task.selected = !task.selected"><!-- calendar color --></i>
-                  <div class="md-list-item-text">
-                    <h3>{{task.c_title}}</h3>
-                    <p class="md-secondary" layout="row">
-                      {{task.formatted_enddate}}
-                      <span class="sg-tile-icons">
-                        <md-icon ng-show="task.c_iscycle">repeat</md-icon>
-                        <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
-                      </span>
-                    </p>
+                  <div class="sg-color-chip" ng-class="task.getClassName('bg')"
+                       ng-show="!task.selected"
+                       ng-click="list.toggleComponentSelection($event, task)"><!-- calendar color --></div>
+                  <div class="sg-category"
+                       ng-repeat="category in task.categories | limitTo:5"
+                       ng-class="'bg-category' + category"
+                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead">
+                      <div>{{task.c_title}}</div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div><!-- spacer --></div>
+                      <div>{{task.formatted_enddate}}</div>
+                    </div>
                   </div>
+                  <div class="sg-tile-icons">
+                    <md-icon ng-show="task.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                  </div>
+                  <md-divider><!-- divider --></md-divider>
                 </md-list-item>
                 <md-list-item disabled="disabled" ng-if="list.component.$tasks.length == 0">
                   <p class="sg-md-caption"><var:string label:value="No tasks for selected criteria"/></p>
@@ -608,17 +667,61 @@
             </md-tab>
           </md-tabs>
           <md-button class="md-fab md-fab-bottom-right"
-                     label:aria-label="New Appointment"
-                     ng-click="list.newComponent($event)">
-            <md-icon>add</md-icon>
+                     label:aria-label="Create a new event"
+                     ng-click="list.newComponent($event)"
+                     ng-if="list.componentType == 'events'">
+            <md-icon >event</md-icon>
+          </md-button>
+          <md-button class="md-fab md-fab-bottom-right"
+                     label:aria-label="Create a new task"
+                     ng-click="list.newComponent($event)"
+                     ng-if="list.componentType == 'tasks'">
+            <md-icon>assignment_turned_in</md-icon>
           </md-button>
         </md-content>
-        <div id="detailView" hide-sm="hide-sm" class="view-detail" layout="column" ui-view="calendarView"><!-- calendar view --></div>
-      </md-content>
+        </div>
+        <div id="detailView" class="view-detail" hide-xs="hide-xs" layout="column" ui-view="calendarView">
+          <!-- calendar view -->
+        </div>
+      </div>
     </section>
   </script>
 
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxCalUserRightsEditor" />
   </script>
+
+  <!-- modal for calendar import -->
+  <script type="text/ng-template" id="UIxCalendarImportDialog">
+    <md-dialog flex="40" flex-sm="100" label:aria-label="Import Calendar">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>
+          <div class="md-flex">
+            <div class="sg-md-title"><var:string label:value="Import Calendar"/></div>
+          </div>
+          <md-button class="md-icon-button" ng-click="$CalendarImportDialogController.close()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content class="md-dialog-content">
+        <p><var:string label:value="Select an ICS file."/></p>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-progress-circular class="md-accent"
+                              md-mode="determinate"
+                              md-diameter="20px"
+                              ng-show="$CalendarImportDialogController.uploader.isUploading"
+                              ng-value="$CalendarImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
+        <label class="md-button" for="file-input" ng-hide="$CalendarImportDialogController.uploader.isUploading">
+          <span><var:string label:value="Upload"/></span>
+        </label>
+        <input id="file-input" type="file" class="ng-hide"
+               nv-file-select="nv-file-select"
+               uploader="$CalendarImportDialogController.uploader"/>
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
+
 </var:component>

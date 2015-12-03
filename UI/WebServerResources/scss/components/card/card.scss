@@ -8,10 +8,6 @@ md-card {
     transition: $swift-ease-in-out;
   }
 
-  &.md-default-theme {
-    background-color: sg-color($sogoPaper, 50);
-  }
-
   // Collapsed/expanded states for cards in ACL editor
   &.sg-collapsed, &.sg-expanded {
     transition: $swift-ease-in-out;
@@ -19,6 +15,16 @@ md-card {
     > .md-button {
       margin: 0;
       flex-direction: row;
+    }
+    .md-icon-button {
+      transition: $swift-linear;
+      transition-duration: 0.2s;
+      transition-delay: 0.2s;
+      opacity: 1;
+      &.ng-hide {
+        transition: $swift-linear;
+        opacity: 0;
+      }
     }
     md-card-content {
       order: 1;
@@ -44,6 +50,9 @@ md-card {
   &.sg-expanded {
     @extend .md-whiteframe-z2;
     margin: 0 0 1px 0;
+    &-remove { // ngAnimate with ngClass
+      transition-delay: 0.5s;
+    }
   }
 
   .md-button {

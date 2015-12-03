@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
-    var vm = this;
+  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
+    var vm = this, messageDialog = null;
 
     Mailbox.selectedFolder = stateMailbox;
 
@@ -17,6 +17,7 @@
     vm.account = stateAccount;
     vm.selectedFolder = stateMailbox;
     vm.selectMessage = selectMessage;
+    vm.toggleMessageSelection = toggleMessageSelection;
     vm.unselectMessages = unselectMessages;
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
@@ -32,7 +33,16 @@
     vm.mode = { search: false };
 
     function selectMessage(message) {
-      $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path), messageId: message.uid});
+      if (Mailbox.$virtualMode)
+        $state.go('mail.account.virtualMailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
+      else
+        $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
+    }
+
+    function toggleMessageSelection($event, message) {
+      message.selected = !message.selected;
+      $event.preventDefault();
+      $event.stopPropagation();
     }
 
     function unselectMessages() {
@@ -83,9 +93,9 @@
     }
 
     function selectAll() {
-      _.each(vm.selectedFolder.$messages, function(message) {
-        message.selected = true;
-      });
+      var i = 0, length = vm.selectedFolder.$messages.length;
+      for (; i < length; i++)
+        vm.selectedFolder.$messages[i].selected = true;
     }
 
     function markSelectedMessagesAsFlagged() {
@@ -127,27 +137,34 @@
     }
 
     function newMessage($event) {
-      var message = vm.account.$newMessage();
+      var message;
 
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose: false,
-        escapeToClose: false,
-        templateUrl: 'UIxMailEditor',
-        controller: 'MessageEditorController',
-        controllerAs: 'editor',
-        locals: {
-          stateAccounts: vm.accounts,
-          stateMessage: message,
-          stateRecipients: [] 
-        }
-      });
+      if (messageDialog === null) {
+        message = vm.account.$newMessage();
+        messageDialog = $mdDialog
+          .show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: 'UIxMailEditor',
+            controller: 'MessageEditorController',
+            controllerAs: 'editor',
+            locals: {
+              stateAccounts: vm.accounts,
+              stateMessage: message,
+              stateRecipients: []
+            }
+          })
+          .finally(function() {
+            messageDialog = null;
+          });
+      }
     }
   }
 
   angular
-    .module('SOGo.MailerUI')  
-    .controller('MailboxController', MailboxController);                                    
+    .module('SOGo.MailerUI')
+    .controller('MailboxController', MailboxController);
 })();
 

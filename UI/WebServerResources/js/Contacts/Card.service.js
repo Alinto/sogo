@@ -62,7 +62,7 @@
     angular.module('SOGo.ContactsUI');
   }
   catch(e) {
-    angular.module('SOGo.ContactsUI', ['SOGo.Common']);
+    angular.module('SOGo.ContactsUI', ['SOGo.Common', 'SOGo.PreferencesUI']);
   }
   angular.module('SOGo.ContactsUI')
     .factory('Card', Card.$factory);
@@ -220,7 +220,7 @@
         if (unit.value !== '')
           description.push(unit.value);
       });
-    if (this.org) description.push(this.org);
+    if (this.c_org) description.push(this.c_org);
     if (this.description) description.push(this.description);
 
     return description.join(', ');
@@ -337,6 +337,10 @@
     return this.emails.length - 1;
   };
 
+  Card.prototype.$addScreenName = function(screenName) {
+    this.c_screenname = screenName;
+  };
+
   Card.prototype.$addPhone = function(type) {
     if (angular.isUndefined(this.phones)) {
       this.phones = [{type: type, value: ''}];
@@ -447,25 +451,20 @@
     var _this = this;
 
     // Expose the promise
-    this.$futureCardData = futureCardData;
-
-    // Resolve the promise
-    this.$futureCardData.then(function(data) {
-      // Calling $timeout will force Angular to refresh the view
-      Card.$timeout(function() {
-        _this.init(data);
-        // Instanciate Card objects for list members
-        angular.forEach(_this.refs, function(o, i) {
-          if (o.email) o.emails = [{value: o.email}];
-          o.id = o.reference;
-          _this.refs[i] = new Card(o);
-        });
-        if (_this.birthday) {
-          _this.birthday = new Date(_this.birthday * 1000);
-        }
-        // Make a copy of the data for an eventual reset
-        _this.$shadowData = _this.$omit(true);
+    this.$futureCardData = futureCardData.then(function(data) {
+      _this.init(data);
+      // Instanciate Card objects for list members
+      angular.forEach(_this.refs, function(o, i) {
+        if (o.email) o.emails = [{value: o.email}];
+        o.id = o.reference;
+        _this.refs[i] = new Card(o);
       });
+      if (_this.birthday) {
+        _this.birthday = new Date(_this.birthday * 1000);
+      }
+      // Make a copy of the data for an eventual reset
+      _this.$shadowData = _this.$omit(true);
+      return _this;
     });
   };
 

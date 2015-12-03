@@ -40,6 +40,8 @@
 
 - (NSMutableString *) pathForChild: (NSString *) childName;
 
+- (void) addUserInAcls: (NSString *) user;
+
 - (NSArray *) toOneRelationshipKeys;
 - (NSArray *) toManyRelationshipKeys;
 

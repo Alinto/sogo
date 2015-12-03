@@ -57,7 +57,7 @@
 - (NSDictionary *) asDictionary
 {
   NSDictionary *data;
-  NSString *duration, *relation, *reference, *quantity, *unit;
+  NSString *duration, *relation, *reference, *quantity=@"", *unit=@"";
   NSUInteger i;
   unichar c;
 

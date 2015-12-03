@@ -34,6 +34,7 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -166,9 +167,9 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 - (BOOL) hasContentId
 {
-  return ([properties
-            objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)]
-          != nil);
+  NSString *contentId = [properties
+                          objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)];
+  return contentId && [contentId length] > 0;
 }
 
 - (NGMimeBodyPart *) asMIMEBodyPart
@@ -232,7 +233,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
       [map addObject: contentDisposition forKey: @"content-disposition"];
       contentId = [properties
                      objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)];
-      if (contentId)
+      if (contentId && [contentId length] > 0)
         [map setObject: [NSString stringWithFormat: @"<%@>", contentId]
                 forKey: @"content-id"];
       bodyPart = [NGMimeBodyPart bodyPartWithHeader: map];
@@ -285,7 +286,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   version = [properties objectForKey: @"version"];
 
   return (version
-          ? exchange_globcnt ([version unsignedLongLongValue])
+          ? [version unsignedLongLongValue]
           : ULLONG_MAX);
 }
 
@@ -1110,7 +1111,8 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
 
 - (void) save: (TALLOC_CTX *) memCtx
 {
-  NSString *folderName, *flag, *newIdString, *messageKey;
+  BOOL updatedMetadata;
+  NSString *folderName, *flag, *newIdString, *messageKey, *changeNumber;
   NSData *changeKey, *messageData;
   NGImap4Connection *connection;
   NGImap4Client *client;
@@ -1146,21 +1148,33 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       [sogoObject setNameInContainer: messageKey];
       [mapping registerURL: [self url] withID: mid];
 
-      /* synchronise the cache and update the change key with the one provided
-         by the client. Before doing this, lets issue a unselect/select combo 
-         because of timing issues with Dovecot in obtaining the latest modseq.
-         Sometimes, Dovecot doesn't return the newly appended UID if we do
-         a "UID SORT (DATE) UTF-8 (MODSEQ XYZ) (NOT DELETED)" command (where
-         XYZ is the HIGHESTMODSEQ+1) immediately after IMAP APPEND */
+      /* synchronise the cache and update the predecessor change list
+         with the change key provided by the client. Before doing
+         this, lets issue a unselect/select combo because of timing
+         issues with Dovecot in obtaining the latest modseq.
+         Sometimes, Dovecot doesn't return the newly appended UID if
+         we do a "UID SORT (DATE) UTF-8 (MODSEQ XYZ) (NOT DELETED)"
+         command (where XYZ is the HIGHESTMODSEQ+1) immediately after
+         IMAP APPEND */
       [client unselect];
       [client select: folderName];
 
       [(MAPIStoreMailFolder *) container synchroniseCache];
       changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
       if (changeKey)
-        [(MAPIStoreMailFolder *) container
-                setChangeKey: changeKey
-           forMessageWithKey: messageKey];
+        {
+          updatedMetadata = [(MAPIStoreMailFolder *) container updatePredecessorChangeListWith: changeKey
+                                                                             forMessageWithKey: messageKey];
+          if (!updatedMetadata)
+            [self warnWithFormat: @"Predecessor change list not updated with client data"];
+        }
+
+      /* Update version property (PR_CHANGE_KEY indeed) as it is
+         requested once it is saved */
+      changeNumber = [(MAPIStoreMailFolder *) container changeNumberForMessageUID: newIdString];
+      if (changeNumber)
+        [properties setObject: [NSNumber numberWithUnsignedLongLong: [changeNumber unsignedLongLongValue] >> 16]
+                       forKey: @"version"];
     }
 }
 

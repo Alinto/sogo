@@ -87,6 +87,11 @@
   [super dealloc];
 }
 
+- (NSString *) modulePath
+{
+  return @"Mail";
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
@@ -116,6 +121,18 @@
   accounts = [[self clientObject] mailAccounts];
 
   return [accounts jsonRepresentation];
+}
+
+- (WOResponse *) mailAccountsAction
+{
+  WOResponse *response;
+  NSString *s;
+
+  s = [self mailAccounts];
+  response = [self responseWithStatus: 200
+                            andString: s];
+
+  return response;
 }
 
 - (NSString *) userNames
@@ -311,12 +328,17 @@
 
 - (WOResponse *) getFoldersStateAction
 {
-  NSString *expandedFolders;
+  id o;
+  NSArray *expandedFolders;
 
   [self _setupContext];
-  expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
+  o = [moduleSettings objectForKey: @"ExpandedFolders"];
+  if ([o isKindOfClass: [NSString class]])
+    expandedFolders = [o componentsSeparatedByString: @","];
+  else
+    expandedFolders = o;
 
-  return [self responseWithStatus: 200 andString: expandedFolders];
+  return [self responseWithStatus: 200 andJSONRepresentation: expandedFolders];
 }
 
 - (NSString *) verticalDragHandleStyle
@@ -374,14 +396,14 @@
 - (WOResponse *) saveFoldersStateAction
 {
   WORequest *request;
-  NSString *expandedFolders;
+  NSArray *expandedFolders;
   
   [self _setupContext];
   request = [context request];
-  expandedFolders = [request formValueForKey: @"expandedFolders"];
+  expandedFolders = [[request contentAsString] objectFromJSONString];
 
   [moduleSettings setObject: expandedFolders
-		  forKey: @"ExpandedFolders"];
+                     forKey: @"ExpandedFolders"];
 
   [us synchronize];
 
@@ -603,7 +625,7 @@
 
 - (NSString *) columnsDisplayCount
 {
-  return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
+  return [NSString stringWithFormat: @"%d", (int)[[self columnsDisplayOrder] count]];
 }
 
 - (void) setCurrentColumn: (NSDictionary *) newCurrentColumn
@@ -709,8 +731,8 @@
 
 		  for (k = 0; k < [pathComponents count]; k++)
 		    {
-                      component = [NSString stringWithFormat: @"folder%@", [pathComponents objectAtIndex: k]];
-                      [path appendString: [component asCSSIdentifier]];
+                      component = [[pathComponents objectAtIndex: k] asCSSIdentifier];
+                      [path appendString: [NSString stringWithFormat: @"folder%@", component]];
 		      if (k < [pathComponents count] - 1)
 			[path appendString: @"/"];
 		    }

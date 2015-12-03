@@ -1,0 +1,10 @@
+{
+  "source": {
+    "include": [ "UI/WebServerResources/js" ],
+    "includePattern": "(Common|Contacts|Mailer|Preferences|Scheduler)/.+\\.js$"
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "Documentation/JavaScript-API"
+  }
+}

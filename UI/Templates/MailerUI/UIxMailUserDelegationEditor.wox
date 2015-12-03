@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="30" flex-sm="100">
-    <md-toolbar class="sg-padded">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
@@ -20,16 +20,38 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content class="md-padding">
+      <div>
+        <md-autocomplete
+            class="md-flex"
+            md-input-name="addUser"
+            md-search-text="delegate.searchText"
+            md-selected-item="delegate.userToAdd"
+            md-selected-item-change="delegate.addUser(user)"
+            md-items="user in delegate.userFilter(delegate.searchText)"
+            md-item-text="user.empty"
+            md-min-length="3"
+            md-no-cache="true"
+            label:md-floating-label="Add User">
+          <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
+            <span class="md-contact-name"
+                  md-highlight-text="delegate.searchText"
+                  md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
+                  md-highlight-text="delegate.searchText"
+                  md-highlight-flags="^i">{{user.c_email}}</span>
+          </span>
+        </md-autocomplete>
+      </div>
+
       <md-list>
         <md-list-item ng-repeat="user in delegate.users | orderBy:['userClass', 'displayName']">
-          <div layout="row" layout-align="start center" class="md-flex">
-            <sg-avatar-image class="md-tile-left"
+          <div layout="row" layout-align="start center" class="md-flex card-picture">
+            <sg-avatar-image class="md-avatar"
                              sg-email="user.c_email"
-                             size="48"><!-- avatar --></sg-avatar-image>
+                             size="40"><!-- avatar --></sg-avatar-image>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi">{{user.cn}}</div>
-              <div class="sg-md-body-multi">{{user.c_email}}</div>
+              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
             </div>
             <md-button class="sg-icon-button" ng-click="delegate.removeUser(user)">
               <md-icon>delete</md-icon>
@@ -38,27 +60,5 @@
         </md-list-item>
       </md-list>
     </md-dialog-content>
-
-    <div class="md-actions">
-      <md-autocomplete
-          class="md-flex"
-          md-input-name="addUser"
-          md-search-text="delegate.searchText"
-          md-selected-item="delegate.userToAdd"
-          md-selected-item-change="delegate.addUser(user)"
-          md-items="user in delegate.userFilter(delegate.searchText)"
-          md-item-text="user.empty"
-          md-min-length="3"
-          md-no-cache="true"
-          label:md-floating-label="Add User">
-        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-          <span class="md-contact-name"
-                md-highlight-text="delegate.searchText"
-                md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                md-highlight-text="delegate.searchText"
-                md-highlight-flags="^i">{{user.c_email}}</span>
-        </span>
-      </md-autocomplete>
-    </div>
   </md-dialog>
 </container>

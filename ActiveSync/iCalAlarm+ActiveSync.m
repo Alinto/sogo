@@ -58,7 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       // don't send negative reminder - not supported
       if (delta > 0)
-        [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", delta];
+        [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", (int)delta];
     }
   
   return s;

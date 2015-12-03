@@ -7,8 +7,15 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
   <md-dialog flex="50" flex-sm="100">
-    <md-dialog-content>
-      <h2 class="md-title"><var:string label:value="Subscribe to a shared folder"/></h2>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <div class="sg-md-title md-flex"><var:string label:value="Subscribe to a shared folder"/></div>
+        <md-button class="md-icon-button" ng-click="subscribe.close()">
+          <md-icon label:aria-label="Close">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content class="md-dialog-content">
       <md-input-container>
         <label><md-icon>search</md-icon><var:string label:value="Search User"/></label>
         <input type="input"
@@ -23,18 +30,17 @@
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.isGroup">
               <div ng-switch-when="0">
-                <sg-avatar-image class="md-tile-left"
+                <sg-avatar-image class="md-avatar"
                                  sg-email="user.c_email"
-                                 size="48"><!-- avatar --></sg-avatar-image>
+                                 size="40"><!-- avatar --></sg-avatar-image>
               </div>
               <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>
             </span>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead-multi">{{user.cn}} {{user.userClass}}</div>
-              <div class="sg-md-body-multi">{{user.c_email}}</div>
+              <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
             </div>
-            <md-icon ng-class="{ 'icon-expand-more': user.uid != subscribe.selectedUser.uid,
-                               'icon-expand-less': user.uid == subscribe.selectedUser.uid }"><!--icon--></md-icon>
+            <md-icon ng-class="{'md-rotate-180': user.uid == subscribe.selectedUser.uid}">expand_more</md-icon>
           </div>
         </md-button>
         <md-card-content ng-show="user == subscribe.selectedUser">

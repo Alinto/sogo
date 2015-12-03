@@ -409,7 +409,7 @@ static NGCardsSaxHandler *sax = nil;
   max = [children count];
   if (max > 0)
     {
-      [str appendFormat: @"\n  %d children: {\n", [children count]];
+      [str appendFormat: @"\n  %d children: {\n", (int)[children count]];
       for (count = 0; count < max; count++)
         [str appendFormat: @"  %@\n",
              [[children objectAtIndex: count] description]];

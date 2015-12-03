@@ -52,6 +52,8 @@
 - (NSString *) changeNumberForMessageUID: (NSString *) messageUid;
 - (void) setChangeKey: (NSData *) changeKey
     forMessageWithKey: (NSString *) messageKey;
+- (BOOL) updatePredecessorChangeListWith: (NSData *) changeKey
+                       forMessageWithKey: (NSString *) messageKey;
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey;
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey;
 

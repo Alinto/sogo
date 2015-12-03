@@ -24,29 +24,33 @@
   <script type="text/ng-template" id="preferences.html">
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <md-list>
           <md-list-item ng-click="app.go('general')"
                         ui-sref="preferences.general"
-                        ui-sref-active="sg-active">
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>settings</md-icon>
             <p class="sg-item-name"><var:string label:value="General"/></p>
           </md-list-item>
           <var:if condition="userHasCalendarAccess">
             <md-list-item ng-click="app.go('calendars')"
                           ui-sref="preferences.calendars"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-icon>event</md-icon>
               <p class="sg-item-name"><var:string label:value="Calendar"/></p>
             </md-list-item>
           </var:if>
           <md-list-item ng-click="app.go('addressbooks')"
                         ui-sref="preferences.addressbooks"
-                        ui-sref-active="sg-active">
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>contacts</md-icon>
             <p class="sg-item-name"><var:string label:value="Contacts"/></p>
           </md-list-item>
           <var:if condition="userHasMailAccess">
             <md-list-item ng-click="app.go('mailer')"
                           ui-sref="preferences.mailer"
-                          ui-sref-active="sg-active">
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-icon>email</md-icon>
               <p class="sg-item-name"><var:string label:value="Mail"/></p>
             </md-list-item>
           </var:if>
@@ -58,7 +62,7 @@
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <div class="md-toolbar-tools md-toolbar-tools-top sg-padded" layout="row" layout-align="space-between start">
+        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
           <var:component className="UIxTopnavToolbarTemplate" />
         </div>
         <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
@@ -96,7 +100,8 @@
               <div flex="50">
                 <md-input-container>
                   <label><var:string label:value="Language"/></label>
-                  <md-select ng-model="app.preferences.defaults.SOGoLanguage">
+                  <md-select ng-model="app.preferences.defaults.SOGoLanguage"
+                             ng-change="app.onLanguageChange()">
                     <var:foreach list="languages" item="item">
                       <md-option var:value="item">
                         <var:string value="languageText"/>
@@ -176,6 +181,17 @@
                 <var:foreach list="refreshViewList" item="item">
                   <md-option var:value="item">
                     <var:string value="itemRefreshViewCheckText"/>
+                  </md-option>
+                </var:foreach>
+              </md-select>
+            </md-input-container>
+
+            <md-input-container>
+              <label><var:string label:value="Alternate Avatar"/></label>
+              <md-select ng-model="app.preferences.defaults.SOGoAlternateAvatar">
+                <var:foreach list="alternateAvatar" item="item">
+                  <md-option var:value="item">
+                    <var:string value="itemAlternateAvatarText"/>
                   </md-option>
                 </var:foreach>
               </md-select>
@@ -345,11 +361,10 @@
                               ng-repeat="item in
                                          app.preferences.defaults.SOGoCalendarCategories
                                          track by $index">
-                  <i class="md-avatar" ng-style="{'background-color': app.preferences.defaults.SOGoCalendarCategoriesColors[item]}">
-                    <sg-color-picker sg-on-select="app.preferences.defaults.SOGoCalendarCategoriesColors[item] = color"><!-- color picker--></sg-color-picker>
-                  </i>
+                  <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColors[item]"><!-- color picker--></sg-color-picker>
                   <md-input-container>
-	            <input type="text" label:aria-label="Calendar Category" ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
+	            <input type="text" label:aria-label="Calendar Category"
+                           ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              layout="row" layout-align="end center"
@@ -600,7 +615,7 @@
 	            <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
-                             ng-click="app.editMailFilter($index)"
+                             ng-click="app.editMailFilter($event, $index)"
                              layout="row" layout-align="end center"
                              label:aria-label="Edit Filter">
                     <md-icon>edit</md-icon>
@@ -637,9 +652,7 @@
               <md-list-item flex="50"
                             ng-repeat="(key, value) in
                                        app.preferences.defaults.SOGoMailLabelsColors">
-                <i class="md-avatar" ng-style="{'background-color': value[1]}">
-                  <sg-color-picker sg-on-select="value[1] = color"><!-- color picker--></sg-color-picker>
-                </i>
+                <sg-color-picker ng-model="value[1]"><!-- color picker--></sg-color-picker>
                 <md-input-container>
 	          <input type="text"
                          label:aria-label="Label"
@@ -668,7 +681,7 @@
         <!-- MAIL > ACCOUNTS -->
         <md-tab id="mailAccountsTab"
                 aria-controls="mailAccountsTab-content"
-                label:label="Accounts">
+                label:label="IMAP Accounts">
 
           <md-list class="sg-padded">
             <md-list-item ng-repeat="item in
@@ -765,7 +778,7 @@
                   <var:string label:value="Do not send responses to mailing lists" />
                 </md-checkbox>
 
-                <div layout="row" layout-align="end center">
+                <div layout="row" layout-align="start center">
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                       ng-true-value="1"

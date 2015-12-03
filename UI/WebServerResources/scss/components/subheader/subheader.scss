@@ -1,14 +1,21 @@
 /// subheader.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-// Temporary patch until mdsubheaders are faster in Chrome
 .md-subheader {
   margin-right: 0;
+  line-height: $touch-zone-width;
 }
 
 .md-subheader {
   .md-subheader-inner {
     padding: 0 0 0 $layout-gutter-width;
+  }
+}
+md-tab-content {
+  .md-subheader {
+    .md-subheader-inner {
+      padding-left: $layout-gutter-width/2;
+    }
   }
 }
 
@@ -27,14 +34,4 @@
     font-size: $sg-font-size-2;
     font-weight: $sg-font-medium;
   }
-}
-
-md-list .md-subheader.sg-md-subheader {
-  font-weight: $sg-font-medium;
-  font-size: $sg-font-size-2;
-}
-
-.sg-md-subheader > * {
-  font-weight: inherit;
-  font-size: inherit;
 }

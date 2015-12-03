@@ -1,0 +1,12 @@
+md-toolbar {
+  background-image: url("../img/felt-transp.png");
+  background-blend-mode: luminosity;
+}
+
+.sg-toolbar-search {
+  background-color: sg-color($sogoPaper, 100);
+  color: rgba(0,0,0,0.54);
+  md-icon {
+    color: rgba(0,0,0,0.54);
+  }
+}
