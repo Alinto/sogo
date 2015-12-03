@@ -67,15 +67,6 @@
 
 @end
 
-enum {  // [MS-OXOCNTC] 2.2.1.2.11
-    AddressBookProviderEmailValueEmail1 = 0,
-    AddressBookProviderEmailValueEmail2,
-    AddressBookProviderEmailValueEmail3,
-    AddressBookProviderEmailValueBusinessFax,
-    AddressBookProviderEmailValueHomeFax,
-    AddressBookProviderEmailValuePrimaryFax
-};
-
 @implementation MAPIStoreContactsMessage
 
 - (id) init
@@ -148,56 +139,6 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Contact");
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagTitle: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[sogoObject vCard] title];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagProfession: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
-
-  stringValue = [[sogoObject vCard] role];
-  if (stringValue)
-    *data = [stringValue asUnicodeInMemCtx: memCtx];
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
-}
-
-- (int) getPidTagCompanyName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  CardElement *org;
-
-  org = [[sogoObject vCard] org];
-  *data = [[org flattenedValueAtIndex: 0 forKey: @""]
-            asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagDepartmentName: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
-{
-  CardElement *org;
-
-  org = [[sogoObject vCard] org];
-  *data = [[org flattenedValueAtIndex: 1 forKey: @""]
-            asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -316,9 +257,104 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
+- (int) getPidTagSensitivity: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+// ---------------------------------------------------------
+// Contact Name Properties [MS-OXOCNTC 2.2.1.1]
+// ---------------------------------------------------------
+
+- (int) getPidTagNickname: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] nickname];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagGeneration: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
+                  flattenedValueAtIndex: 4
+                                 forKey: @""];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagSurname: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
+                  flattenedValueAtIndex: 0
+                                 forKey: @""];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagMiddleName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
+                  flattenedValueAtIndex: 2
+                                 forKey: @""];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagGivenName: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
+                  flattenedValueAtIndex: 1
+                                 forKey: @""];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagDisplayNamePrefix: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
+                  flattenedValueAtIndex: 3
+                                 forKey: @""];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 // -------------------------------------------------------
 // Electronic Address Properties [MS-OXOCNTC 2.2.1.2]
 // -------------------------------------------------------
+
+enum {  // [MS-OXOCNTC] 2.2.1.2.11
+    AddressBookProviderEmailValueEmail1 = 0,
+    AddressBookProviderEmailValueEmail2,
+    AddressBookProviderEmailValueEmail3,
+    AddressBookProviderEmailValueBusinessFax,
+    AddressBookProviderEmailValueHomeFax,
+    AddressBookProviderEmailValuePrimaryFax
+};
 
 /*
   Fetch Email1, Email2 and Email3 values from the vcard.
@@ -356,172 +392,6 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
     }
 
   return stringValue;
-}
-
-- (NSArray *) _buildAddressBookProviderEmailList
-{
-  // [MS-OXOCNTC] 2.2.1.2.11
-  // https://msdn.microsoft.com/en-us/library/ee158427%28v=exchg.80%29.aspx
-  NSMutableArray *list = [[NSMutableArray alloc] init];
-  NSArray *elements;
-
-  // Is there a fax number?
-  elements = [[[sogoObject vCard] childrenWithTag: @"tel"]
-               cardElementsWithAttribute: @"type"
-                             havingValue: @"fax"];
-  if ([elements count] > 0)
-    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueBusinessFax]];
-
-  // How many different email addresses?
-  if ([self _fetchEmailAddress: 1])
-    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail1]];
-  else
-    return list;
-  if ([self _fetchEmailAddress: 2])
-    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail2]];
-  else
-    return list;
-  if ([self _fetchEmailAddress: 3])
-    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail3]];
-
-  return list;
-}
-
-- (int) getPidLidAddressBookProviderArrayType: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
-{
-  // [MS-OXOCNTC] 2.2.1.2.12
-  // https://msdn.microsoft.com/en-us/library/ee218011%28v=exchg.80%29.aspx
-  uint32_t value = 0;
-  NSArray *emailList = [self _buildAddressBookProviderEmailList];
-
-  for (NSNumber *maskValue in emailList)
-    value |= 1 << [maskValue intValue];
-
-  *data = MAPILongValue (memCtx, value);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidAddressBookProviderEmailList: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSArray *emailList = [self _buildAddressBookProviderEmailList];
-
-  *data = [emailList asMVLongInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-/*
-  Store on *data a string with the display name for the given email (position)
-  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
-*/
-- (int) _getPidLidEmailDisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-                        atPosition: (NSUInteger) position
-{
-  NGVCard *vCard;
-  NSString *fn, *email;
-
-  email = [self _fetchEmailAddress: position];
-  if (!email) return MAPISTORE_ERR_NOT_FOUND;
-
-  vCard = [sogoObject vCard];
-  fn = [vCard fn];
-
-  *data = [[NSString stringWithFormat: @"%@ (%@)", fn, email]
-            asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidEmail1DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 1];
-}
-
-- (int) getPidLidEmail2DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 2];
-}
-
-- (int) getPidLidEmail3DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 3];
-}
-
-/*
-  Return an entry id (either one-off or addressbook entry) for the given email
-  It can return nil if the email doesn't exist
-*/
-- (NSData *) _buildEntryIdForEmail: (NSUInteger) position
-{
-  NSString *email, *username;
-  NSData *data;
-  SOGoUserManager *mgr;
-  NSDictionary *contactInfos;
-
-  email = [self _fetchEmailAddress: position];
-  if (!email) return nil;
-
-  // Try to figure out if this email is from local domain
-  mgr = [SOGoUserManager sharedUserManager];
-  contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
-  if (contactInfos)
-    {
-      username = [contactInfos objectForKey: @"sAMAccountName"];
-      data = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
-    }
-  else
-    data = MAPIStoreExternalEntryId ([[sogoObject vCard] fn], email);
-
-  return data;
-}
-
-/*
-  Store on *data an entryId for the given email (position)
-  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
-*/
-- (int) _getPidLidEmailOriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-                            atPosition: (NSUInteger) position
-{
-  NSData *value;
-
-  value = [self _buildEntryIdForEmail: position];
-  if (!value) return MAPISTORE_ERR_NOT_FOUND;
-
-  *data = [value asBinaryInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidEmail1OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailOriginalEntryId: data
-                                     inMemCtx: memCtx
-                                   atPosition: 1];
-}
-
-- (int) getPidLidEmail2OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailOriginalEntryId: data
-                                     inMemCtx: memCtx
-                                   atPosition: 2];
-}
-
-- (int) getPidLidEmail3OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getPidLidEmailOriginalEntryId: data
-                                     inMemCtx: memCtx
-                                   atPosition: 3];
 }
 
 /*
@@ -602,6 +472,116 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
+/*
+  Store on *data a string with the display name for the given email (position)
+  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
+*/
+- (int) _getPidLidEmailDisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+                        atPosition: (NSUInteger) position
+{
+  NGVCard *vCard;
+  NSString *fn, *email;
+
+  email = [self _fetchEmailAddress: position];
+  if (!email) return MAPISTORE_ERR_NOT_FOUND;
+
+  vCard = [sogoObject vCard];
+  fn = [vCard fn];
+
+  *data = [[NSString stringWithFormat: @"%@ (%@)", fn, email]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 1];
+}
+
+- (int) getPidLidEmail2DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 2];
+}
+
+- (int) getPidLidEmail3DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 3];
+}
+
+/*
+  Return an entry id (either one-off or addressbook entry) for the given email
+  It can return nil if the email doesn't exist
+*/
+- (NSData *) _buildEntryIdForEmail: (NSUInteger) position
+{
+  NSString *email, *username;
+  NSData *data;
+  SOGoUserManager *mgr;
+  NSDictionary *contactInfos;
+
+  email = [self _fetchEmailAddress: position];
+  if (!email) return nil;
+
+  // Try to figure out if this email is from local domain
+  mgr = [SOGoUserManager sharedUserManager];
+  contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+  if (contactInfos)
+    {
+      username = [contactInfos objectForKey: @"sAMAccountName"];
+      data = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
+    }
+  else
+    data = MAPIStoreExternalEntryId ([[sogoObject vCard] fn], email);
+
+  return data;
+}
+/*
+  Store on *data an entryId for the given email (position)
+  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
+*/
+- (int) _getPidLidEmailOriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+                            atPosition: (NSUInteger) position
+{
+  NSData *value;
+
+  value = [self _buildEntryIdForEmail: position];
+  if (!value) return MAPISTORE_ERR_NOT_FOUND;
+
+  *data = [value asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 1];
+}
+
+- (int) getPidLidEmail2OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 2];
+}
+
+- (int) getPidLidEmail3OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 3];
+}
+
 - (int) _getElement: (NSString *) elementTag
              ofType: (NSString *) aType
           excluding: (NSString *) aTypeToExclude
@@ -638,41 +618,6 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagBusinessTelephoneNumber: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"tel" ofType: @"work" excluding: @"fax"
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagHomeTelephoneNumber: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"tel" ofType: @"home" excluding: @"fax"
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagMobileTelephoneNumber: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"tel" ofType: @"cell" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagPagerTelephoneNumber: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"tel" ofType: @"pager" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagPrimaryTelephoneNumber: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"tel" ofType: @"pref" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
 - (int) getPidTagBusinessFaxNumber: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -680,130 +625,68 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagBusinessHomePage: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+/*
+  [MS-OXOCNTC] 2.2.1.2.11
+  https://msdn.microsoft.com/en-us/library/ee158427%28v=exchg.80%29.aspx
+*/
+- (NSArray *) _buildAddressBookProviderEmailList
 {
-  return [self _getElement: @"url" ofType: @"work" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagPersonalHomePage: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"url" ofType: @"home" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidInstantMessagingAddress: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-aim"]
-                  flattenedValuesForKey: @""];
-  if (!stringValue)
-    stringValue = @"";
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidPostalAddressId: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
-{
+  NSMutableArray *list = [[NSMutableArray alloc] init];
   NSArray *elements;
-  CardElement *element;
-  uint32_t longValue = 0;
-  NGVCard *vCard;
 
-  vCard = [sogoObject vCard];
-  elements = [[vCard childrenWithTag: @"adr"]
+  // Is there a fax number?
+  elements = [[[sogoObject vCard] childrenWithTag: @"tel"]
                cardElementsWithAttribute: @"type"
-                             havingValue: @"pref"];
+                             havingValue: @"fax"];
   if ([elements count] > 0)
-    {
-      element = [elements objectAtIndex: 0];
-      if ([element hasAttribute: @"type"
-                    havingValue: @"home"])
-        longValue = 1; // The Home Address is the mailing address.
-      else if ([element hasAttribute: @"type"
-                         havingValue: @"work"])
-        longValue = 2; // The Work Address is the mailing address.
-    }
-  *data = MAPILongValue (memCtx, longValue);
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueBusinessFax]];
+
+  // How many different email addresses?
+  if ([self _fetchEmailAddress: 1])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail1]];
+  else
+    return list;
+  if ([self _fetchEmailAddress: 2])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail2]];
+  else
+    return list;
+  if ([self _fetchEmailAddress: 3])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail3]];
+
+  return list;
+}
+
+- (int) getPidLidAddressBookProviderArrayType: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  // [MS-OXOCNTC] 2.2.1.2.12
+  // https://msdn.microsoft.com/en-us/library/ee218011%28v=exchg.80%29.aspx
+  uint32_t value = 0;
+  NSArray *emailList = [self _buildAddressBookProviderEmailList];
+
+  for (NSNumber *maskValue in emailList)
+    value |= 1 << [maskValue intValue];
+
+  *data = MAPILongValue (memCtx, value);
 
   return MAPISTORE_SUCCESS;
 }
 
-
-//
-// getters when no address is selected as the Mailing Address
-//
-- (int) getPidTagPostalAddress: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidAddressBookProviderEmailList: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self _getElement: @"label" ofType: @"pref" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
+  NSArray *emailList = [self _buildAddressBookProviderEmailList];
+
+  *data = [emailList asMVLongInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagPostOfficeBox: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
+// ---------------------------------------------------------
+// Physical Address Properties [MS-OXOCNTC 2.2.1.3]
+// ---------------------------------------------------------
 
-- (int) getPidTagStreetAddress: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 2 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagLocality: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 3 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagStateOrProvince: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 4 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagPostalCode: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 5 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagCountry: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
-                     atPos: 6 inData: data inMemCtx: memCtx];
-}
-
-//
-// home address getters
-//
-- (int) getPidLidHomeAddress: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"label" ofType: @"home" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagHomeAddressPostOfficeBox: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getElement: @"adr" ofType: @"home" excluding: nil
-                     atPos: 0 inData: data inMemCtx: memCtx];
-}
+// Home Address
 
 - (int) getPidTagHomeAddressStreet: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
@@ -839,22 +722,21 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
-//
-// Work addresss
-//
-- (int) getPidLidWorkAddress: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressPostOfficeBox: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self _getElement: @"label" ofType: @"work" excluding: nil
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressPostOfficeBox: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidHomeAddress: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+  return [self _getElement: @"label" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
+
+// Work Address
 
 - (int) getPidLidWorkAddressStreet: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
@@ -891,19 +773,140 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
-//
-// personal and social getters
-//
-- (int) getPidTagNickname: (void **) data
+- (int) getPidLidWorkAddressPostOfficeBox: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidWorkAddress: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"label" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+// Mailing Address
+
+- (int) getPidTagStreetAddress: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 2 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagLocality: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *stringValue;
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 3 inData: data inMemCtx: memCtx];
+}
 
-  stringValue = [[sogoObject vCard] nickname];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
+- (int) getPidTagStateOrProvince: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 4 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagPostalCode: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 5 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagCountry: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 6 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagPostOfficeBox: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagPostalAddress: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"label" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidPostalAddressId: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSArray *elements;
+  CardElement *element;
+  uint32_t longValue = 0;
+  NGVCard *vCard;
+
+  vCard = [sogoObject vCard];
+  elements = [[vCard childrenWithTag: @"adr"]
+               cardElementsWithAttribute: @"type"
+                             havingValue: @"pref"];
+  if ([elements count] > 0)
+    {
+      element = [elements objectAtIndex: 0];
+      if ([element hasAttribute: @"type"
+                    havingValue: @"home"])
+        longValue = 1; // The Home Address is the mailing address.
+      else if ([element hasAttribute: @"type"
+                         havingValue: @"work"])
+        longValue = 2; // The Work Address is the mailing address.
+    }
+  *data = MAPILongValue (memCtx, longValue);
 
   return MAPISTORE_SUCCESS;
 }
+
+// -------------------------------------------------------
+// Telephone Properties [MS-OXOCNTC 2.2.1.4]
+// -------------------------------------------------------
+
+- (int) getPidTagPagerTelephoneNumber: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"pager" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagBusinessTelephoneNumber: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"work" excluding: @"fax"
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagHomeTelephoneNumber: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"home" excluding: @"fax"
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagPrimaryTelephoneNumber: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagMobileTelephoneNumber: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"cell" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+// ---------------------------------------------------------
+// Event Properties [MS-OXOCNTC 2.2.1.5]
+// ---------------------------------------------------------
 
 - (int) getPidTagBirthday: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
@@ -947,13 +950,52 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagSpouseName: (void **) data
+// ---------------------------------------------------------
+// Professional Properties [MS-OXOCNTC 2.2.1.6]
+// ---------------------------------------------------------
+
+- (int) getPidTagTitle: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] title];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagCompanyName: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  CardElement *org;
+
+  org = [[sogoObject vCard] org];
+  *data = [[org flattenedValueAtIndex: 0 forKey: @""]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagDepartmentName: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  CardElement *org;
+
+  org = [[sogoObject vCard] org];
+  *data = [[org flattenedValueAtIndex: 1 forKey: @""]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagOfficeLocation: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   int rc = MAPISTORE_SUCCESS;
 
-  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
                   flattenedValuesForKey: @""];
   if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
@@ -995,15 +1037,14 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagOfficeLocation: (void **) data
+- (int) getPidTagProfession: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   int rc = MAPISTORE_SUCCESS;
 
-  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
-                  flattenedValuesForKey: @""];
-  if ([stringValue length] != 0)
+  stringValue = [[sogoObject vCard] role];
+  if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -1011,97 +1052,10 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidLidFreeBusyLocation: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+// ---------------------------------------------------------
+// Contact Photo Properties [MS-OXOCNTC 2.2.1.8]
+// ---------------------------------------------------------
 
-  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
-                  flattenedValuesForKey: @""];
-  if ([stringValue length] != 0)
-    *data = [stringValue asUnicodeInMemCtx: memCtx];
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
-}
-
-//
-// Decomposed fullname getters
-//
-- (int) getPidTagSurname: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
-                  flattenedValueAtIndex: 0
-                                 forKey: @""];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagGivenName: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
-                  flattenedValueAtIndex: 1
-                                 forKey: @""];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagMiddleName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
-                  flattenedValueAtIndex: 2
-                                 forKey: @""];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagDisplayNamePrefix: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
-                  flattenedValueAtIndex: 3
-                                 forKey: @""];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagGeneration: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
-                  flattenedValueAtIndex: 4
-                                 forKey: @""];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagSensitivity: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getLongZero: data inMemCtx: memCtx];
-}
-
-/* attachments (photos) */
 - (void) _fetchAttachmentParts
 {
   NGVCardPhoto *photo;
@@ -1195,6 +1149,72 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
         }
     }
 }
+
+// ---------------------------------------------------------
+// Other Properties [MS-OXOCNTC 2.2.1.10]
+// ---------------------------------------------------------
+
+- (int) getPidTagSpouseName: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
+                  flattenedValuesForKey: @""];
+  if ([stringValue length] != 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidInstantMessagingAddress: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-aim"]
+                  flattenedValuesForKey: @""];
+  if (!stringValue)
+    stringValue = @"";
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidFreeBusyLocation: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
+                  flattenedValuesForKey: @""];
+  if ([stringValue length] != 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagPersonalHomePage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"url" ofType: @"home" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagBusinessHomePage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"url" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+// ---------------------------------------------------------
 
 - (BOOL) subscriberCanReadMessage
 {
@@ -1571,6 +1591,5 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   else
     [self saveContact: memCtx];
 }
-
 
 @end
