@@ -34,11 +34,14 @@
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Mailer/NSString+Mail.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
+#import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
@@ -63,6 +66,15 @@
 }
 
 @end
+
+enum {  // [MS-OXOCNTC] 2.2.1.2.11
+    AddressBookProviderEmailValueEmail1 = 0,
+    AddressBookProviderEmailValueEmail2,
+    AddressBookProviderEmailValueEmail3,
+    AddressBookProviderEmailValueBusinessFax,
+    AddressBookProviderEmailValueHomeFax,
+    AddressBookProviderEmailValuePrimaryFax
+};
 
 @implementation MAPIStoreContactsMessage
 
@@ -258,39 +270,6 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidEmail1DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NGVCard *vCard;
-  NSString *fn, *email;
-
-  vCard = [sogoObject vCard];
-  fn = [vCard fn];
-  email = [vCard preferredEMail];
-  *data = [[NSString stringWithFormat: @"%@ (%@)", fn, email]
-            asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidEmail1OriginalDisplayName: (void **) data
-                                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidLidEmail1EmailAddress: data
-                                  inMemCtx: memCtx];
-}
-
-- (int) getPidLidEmail1EmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [[sogoObject vCard] preferredEMail];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPidTagAccount: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -341,46 +320,6 @@
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail2EmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSMutableArray *emails;
-  NSString *email, *stringValue;
-  NGVCard *card;
-  NSUInteger count, max;
-    
-  emails = [NSMutableArray array];
-  stringValue = nil;
-    
-  card = [sogoObject vCard];
-  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
-  [emails removeObjectsInArray: [card childrenWithTag: @"email"
-                                         andAttribute: @"type"
-                                          havingValue: @"pref"]];
-
-  max = [emails count];
-  for (count = 0; !stringValue && count < max; count++)
-    {
-      email = [[emails objectAtIndex: count] flattenedValuesForKey: @""];
-      
-      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
-        stringValue = email;
-    }
-
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidEmail2OriginalDisplayName: (void **) data // Other email
-                                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidLidEmail2EmailAddress: data inMemCtx: memCtx];
-}
-    
 - (int) getPidTagBody: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -394,6 +333,292 @@
     rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
+}
+
+// -------------------------------------------------------
+// Electronic Address Properties [MS-OXOCNTC 2.2.1.2]
+// -------------------------------------------------------
+
+/*
+  Fetch Email1, Email2 and Email3 values from the vcard.
+  Returns nil if not found
+*/
+- (NSString *) _fetchEmailAddress: (NSUInteger) position
+{
+  NSMutableArray *emails;
+  NSString *email, *stringValue = nil;
+  NGVCard *card;
+  NSUInteger count, max;
+
+  card = [sogoObject vCard];
+
+  if (position == 1)
+    // Predefined email
+    return [card preferredEMail];
+
+  emails = [NSMutableArray array];
+  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+  [emails removeObjectsInArray: [card childrenWithTag: @"email"
+                                         andAttribute: @"type"
+                                          havingValue: @"pref"]];
+  max = [emails count];
+  for (count = 0; !stringValue && count < max; count++)
+    {
+      email = [[emails objectAtIndex: count] flattenedValuesForKey: @""];
+
+      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+        {
+          position--;
+          if (position == 1)
+            stringValue = email;
+        }
+    }
+
+  return stringValue;
+}
+
+- (NSArray *) _buildAddressBookProviderEmailList
+{
+  // [MS-OXOCNTC] 2.2.1.2.11
+  // https://msdn.microsoft.com/en-us/library/ee158427%28v=exchg.80%29.aspx
+  NSMutableArray *list = [[NSMutableArray alloc] init];
+  NSArray *elements;
+
+  // Is there a fax number?
+  elements = [[[sogoObject vCard] childrenWithTag: @"tel"]
+               cardElementsWithAttribute: @"type"
+                             havingValue: @"fax"];
+  if ([elements count] > 0)
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueBusinessFax]];
+
+  // How many different email addresses?
+  if ([self _fetchEmailAddress: 1])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail1]];
+  else
+    return list;
+  if ([self _fetchEmailAddress: 2])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail2]];
+  else
+    return list;
+  if ([self _fetchEmailAddress: 3])
+    [list addObject: [NSNumber numberWithInteger: AddressBookProviderEmailValueEmail3]];
+
+  return list;
+}
+
+- (int) getPidLidAddressBookProviderArrayType: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  // [MS-OXOCNTC] 2.2.1.2.12
+  // https://msdn.microsoft.com/en-us/library/ee218011%28v=exchg.80%29.aspx
+  uint32_t value = 0;
+  NSArray *emailList = [self _buildAddressBookProviderEmailList];
+
+  for (NSNumber *maskValue in emailList)
+    value |= 1 << [maskValue intValue];
+
+  *data = MAPILongValue (memCtx, value);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAddressBookProviderEmailList: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSArray *emailList = [self _buildAddressBookProviderEmailList];
+
+  *data = [emailList asMVLongInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+/*
+  Store on *data a string with the display name for the given email (position)
+  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
+*/
+- (int) _getPidLidEmailDisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+                        atPosition: (NSUInteger) position
+{
+  NGVCard *vCard;
+  NSString *fn, *email;
+
+  email = [self _fetchEmailAddress: position];
+  if (!email) return MAPISTORE_ERR_NOT_FOUND;
+
+  vCard = [sogoObject vCard];
+  fn = [vCard fn];
+
+  *data = [[NSString stringWithFormat: @"%@ (%@)", fn, email]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 1];
+}
+
+- (int) getPidLidEmail2DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 2];
+}
+
+- (int) getPidLidEmail3DisplayName: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 3];
+}
+
+/*
+  Return an entry id (either one-off or addressbook entry) for the given email
+  It can return nil if the email doesn't exist
+*/
+- (NSData *) _buildEntryIdForEmail: (NSUInteger) position
+{
+  NSString *email, *username;
+  NSData *data;
+  SOGoUserManager *mgr;
+  NSDictionary *contactInfos;
+
+  email = [self _fetchEmailAddress: position];
+  if (!email) return nil;
+
+  // Try to figure out if this email is from local domain
+  mgr = [SOGoUserManager sharedUserManager];
+  contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+  if (contactInfos)
+    {
+      username = [contactInfos objectForKey: @"sAMAccountName"];
+      data = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
+    }
+  else
+    data = MAPIStoreExternalEntryId ([[sogoObject vCard] fn], email);
+
+  return data;
+}
+
+/*
+  Store on *data an entryId for the given email (position)
+  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
+*/
+- (int) _getPidLidEmailOriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+                            atPosition: (NSUInteger) position
+{
+  NSData *value;
+
+  value = [self _buildEntryIdForEmail: position];
+  if (!value) return MAPISTORE_ERR_NOT_FOUND;
+
+  *data = [value asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 1];
+}
+
+- (int) getPidLidEmail2OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 2];
+}
+
+- (int) getPidLidEmail3OriginalEntryId: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailOriginalEntryId: data
+                                     inMemCtx: memCtx
+                                   atPosition: 3];
+}
+
+/*
+  Store on *data the given email (position)
+  It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
+*/
+- (int) _getPidLidEmailAddress: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+                    atPosition: (NSUInteger) position
+{
+  NSString *email;
+
+  email = [self _fetchEmailAddress: position];
+  if (!email) return MAPISTORE_ERR_NOT_FOUND;
+
+  *data = [email asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1EmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 1];
+}
+
+- (int) getPidLidEmail2EmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 2];
+}
+
+- (int) getPidLidEmail3EmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 3];
+}
+
+- (int) getPidLidEmail1OriginalDisplayName: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidEmail1EmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidEmail2OriginalDisplayName: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidEmail2EmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidEmail3OriginalDisplayName: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidEmail3EmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidEmail1AddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (![self _fetchEmailAddress: 1]) return MAPISTORE_ERR_NOT_FOUND;
+
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidEmail2AddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (![self _fetchEmailAddress: 2]) return MAPISTORE_ERR_NOT_FOUND;
+
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidEmail3AddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (![self _fetchEmailAddress: 3]) return MAPISTORE_ERR_NOT_FOUND;
+
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) _getElement: (NSString *) elementTag
@@ -486,24 +711,6 @@
 {
   return [self _getElement: @"url" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidEmail1AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidEmail2AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidEmail3AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidInstantMessagingAddress: (void **) data
