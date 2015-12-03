@@ -152,25 +152,6 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-// - (int) getPidTagOfflineAddressBookName: (void **) data
-//             inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
-
-//   return MAPISTORE_SUCCESS;
-// }
-
-// - (int) getPidTagOfflineAddressBookLanguageId: (void **) data
-//               inMemCtx: (TALLOC_CTX *) memCtx
-// {
-//   /* see http://msdn.microsoft.com/en-us/goglobal/bb895996.asxp */
-//   /* English US */
-//   *data = MAPILongValue (memCtx, 0x0409);
-
-//   return MAPISTORE_SUCCESS;
-// }
-
-
 - (int) getPidTagTitle: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
