@@ -911,9 +911,9 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   NSCalendarDate *dateValue;
   NSString *stringValue;
   int rc = MAPISTORE_SUCCESS;
-    
+
   stringValue = [[sogoObject vCard] bday];
-  if (stringValue)
+  if ([stringValue length] != 0)
     {
       dateValue = [NSCalendarDate dateWithString: stringValue
                                   calendarFormat: @"%Y-%m-%d"];
@@ -935,7 +935,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-anniversary"]
                   flattenedValuesForKey: @""];
-  if (stringValue && ! [stringValue isEqualToString: @""])
+  if ([stringValue length] != 0)
     {
       dateValue = [NSCalendarDate dateWithString: stringValue
                                   calendarFormat: @"%Y-%m-%d"];
@@ -955,7 +955,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
                   flattenedValuesForKey: @""];
-  if (stringValue)
+  if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -971,7 +971,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-manager"]
                   flattenedValuesForKey: @""];
-  if (stringValue)
+  if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -987,7 +987,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-assistant"]
                   flattenedValuesForKey: @""];
-  if (stringValue)
+  if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -1003,7 +1003,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
                   flattenedValuesForKey: @""];
-  if (stringValue)
+  if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -1019,7 +1019,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
                   flattenedValuesForKey: @""];
-  if (stringValue)
+  if ([stringValue length] != 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
