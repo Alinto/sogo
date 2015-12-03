@@ -120,8 +120,10 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 - (void) setContactMapping: (NSDictionary *) newMapping
           andObjectClasses: (NSArray *) newObjectClasses;
 
-- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
-- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;
+- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
+                               inDomain: (NSString *) domain;
+- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
+                                 inDomain: (NSString *) domain;
 
 @end
 
