@@ -216,6 +216,7 @@
 "Moving a message into its own folder is impossible!"
 = "La cartella di destinazione coincide con la cartella di origine!";
 "Copying a message into its own folder is impossible!"
+= "La cartella di destinazione coincide con la cartella di origine!";
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Il messaggi non psonno essere spostati nel cestino. Vuoi cancellarli immediatamente?";

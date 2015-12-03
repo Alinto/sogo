@@ -232,6 +232,7 @@
 "Moving a message into its own folder is impossible!"
 = "Nachricht befindet sich bereits in diesem Ordner!";
 "Copying a message into its own folder is impossible!"
+= "Nachricht befindet sich bereits in diesem Ordner!";
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Die Nachricht(en) konnten nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
