@@ -51,3 +51,8 @@ reply_info = "This is a reply to an event invitation done by you.";
 
 "View Attachment" = "View Attachment";
 "Save Attachment" = "Save Attachment";
+
+"CC" = "CC";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Comment" = "Comment";

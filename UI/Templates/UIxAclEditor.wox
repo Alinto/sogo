@@ -103,7 +103,7 @@
         <var:string label:value="Cancel"/>
       </md-button>
       <md-button class="md-warn" ng-click="acl.confirmation.showing = false">
-        <var:string label:value="Ok"/>
+        <var:string label:value="OK"/>
       </md-button>
     </md-dialog-actions>
   </md-dialog>
