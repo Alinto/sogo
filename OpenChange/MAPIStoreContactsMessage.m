@@ -182,7 +182,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
-  
+
   org = [[sogoObject vCard] org];
   *data = [[org flattenedValueAtIndex: 0 forKey: @""]
             asUnicodeInMemCtx: memCtx];
@@ -194,7 +194,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
-  
+
   org = [[sogoObject vCard] org];
   *data = [[org flattenedValueAtIndex: 1 forKey: @""]
             asUnicodeInMemCtx: memCtx];
@@ -619,14 +619,14 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   vCard = [sogoObject vCard];
   elements = [[vCard childrenWithTag: elementTag]
-	       cardElementsWithAttribute: @"type"
-			     havingValue: aType];
+               cardElementsWithAttribute: @"type"
+                             havingValue: aType];
   max = [elements count];
   for (count = 0; !stringValue && count < max; count++)
     {
       ce = [elements objectAtIndex: count];
       if (!aTypeToExclude
-	  || ![ce hasAttribute: @"type" havingValue: aTypeToExclude])
+          || ![ce hasAttribute: @"type" havingValue: aTypeToExclude])
         stringValue = [ce flattenedValueAtIndex: pos forKey: @""];
     }
 
@@ -718,8 +718,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
   vCard = [sogoObject vCard];
   elements = [[vCard childrenWithTag: @"adr"]
-	       cardElementsWithAttribute: @"type"
-			     havingValue: @"pref"];
+               cardElementsWithAttribute: @"type"
+                             havingValue: @"pref"];
   if ([elements count] > 0)
     {
       element = [elements objectAtIndex: 0];
@@ -731,7 +731,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
         longValue = 2; // The Work Address is the mailing address.
     }
   *data = MAPILongValue (memCtx, longValue);
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -792,7 +792,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 // home address getters
 //
 - (int) getPidLidHomeAddress: (void **) data
-		    inMemCtx: (TALLOC_CTX *) memCtx
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"label" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -892,7 +892,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 }
 
 //
-//
+// personal and social getters
 //
 - (int) getPidTagNickname: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
@@ -922,7 +922,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
-  
+
   return rc;
 }
 
@@ -954,7 +954,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   int rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
-		  flattenedValuesForKey: @""];
+                  flattenedValuesForKey: @""];
   if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
@@ -970,7 +970,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   int rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-manager"]
-		  flattenedValuesForKey: @""];
+                  flattenedValuesForKey: @""];
   if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
@@ -986,7 +986,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   int rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-assistant"]
-		  flattenedValuesForKey: @""];
+                  flattenedValuesForKey: @""];
   if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
@@ -1002,7 +1002,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   int rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
-		  flattenedValuesForKey: @""];
+                  flattenedValuesForKey: @""];
   if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
@@ -1018,7 +1018,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   int rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
-		  flattenedValuesForKey: @""];
+                  flattenedValuesForKey: @""];
   if (stringValue)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
@@ -1032,9 +1032,9 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 //
 - (int) getPidTagSurname: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
-{  
+{
   NSString *stringValue;
-  
+
   stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
                   flattenedValueAtIndex: 0
                                  forKey: @""];
@@ -1047,7 +1047,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  
+
   stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
                   flattenedValueAtIndex: 1
                                  forKey: @""];
@@ -1060,12 +1060,12 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  
+
   stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
                   flattenedValueAtIndex: 2
                                  forKey: @""];
   *data = [stringValue asUnicodeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -1073,12 +1073,12 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  
+
   stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
                   flattenedValueAtIndex: 3
                                  forKey: @""];
   *data = [stringValue asUnicodeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -1086,12 +1086,12 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  
+
   stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"]
                   flattenedValueAtIndex: 4
                                  forKey: @""];
   *data = [stringValue asUnicodeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -1156,7 +1156,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 }
 
 - (void) _updatePhotoInVCard: (NGVCard *) card
-fromProperties: (NSDictionary *) attachmentProps
+              fromProperties: (NSDictionary *) attachmentProps
 {
   NSString *photoExt, *photoType, *content;
   CardElement *photo;
@@ -1233,7 +1233,7 @@ fromProperties: (NSDictionary *) attachmentProps
   [newCard setVersion: @"3.0"];
   [newCard setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
   [newCard setProfile: @"vCard"];
-  
+
   // Decomposed fullname
   [newCard setNWithFamily: [properties objectForKey: MAPIPropertyKey(PR_SURNAME_UNICODE)]
                     given: [properties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
@@ -1256,26 +1256,26 @@ fromProperties: (NSDictionary *) attachmentProps
   if (value)
     {
       if ([elements count] > 0)
-	[[elements objectAtIndex: 0] setSingleValue: value forKey: @""];
+        [[elements objectAtIndex: 0] setSingleValue: value forKey: @""];
       else
-	[newCard addEmail: value
-		    types: [NSArray arrayWithObject: @"pref"]];
+        [newCard addEmail: value
+                    types: [NSArray arrayWithObject: @"pref"]];
     }
   value = [properties objectForKey: MAPIPropertyKey (PidLidEmail2EmailAddress)];
   if (value)
     {
       if ([elements count] > 1)
-	[[elements objectAtIndex: 1] setSingleValue: value forKey: @""];
+        [[elements objectAtIndex: 1] setSingleValue: value forKey: @""];
       else
-	[newCard addEmail: value types: nil];
+        [newCard addEmail: value types: nil];
     }
   value = [properties objectForKey: MAPIPropertyKey (PidLidEmail3EmailAddress)];
   if (value)
     {
       if ([elements count] > 2)
-	[[elements objectAtIndex: 2] setSingleValue: value forKey: @""];
+        [[elements objectAtIndex: 2] setSingleValue: value forKey: @""];
       else
-	[newCard addEmail: value types: nil];
+        [newCard addEmail: value types: nil];
     }
 
   //
@@ -1286,39 +1286,39 @@ fromProperties: (NSDictionary *) attachmentProps
   // 0x00000000 - No address is selected as the Mailing Address.
   // 0x00000001 - The Home Address is the Mailing Address.
   // 0x00000002 - The Work Address is the Mailing Address
-  // 0x00000003 - The Other Address is the Mailing Address. 
+  // 0x00000003 - The Other Address is the Mailing Address.
   //
   //
   postalAddressId = [[properties objectForKey: MAPIPropertyKey (PidLidPostalAddressId)]
-		      intValue];
-  
+                      intValue];
+
   value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddress)];
   if ([value length])
     {
       elements = [newCard childrenWithTag: @"label"
-			     andAttribute: @"type"
-			      havingValue: @"work"];
+                             andAttribute: @"type"
+                              havingValue: @"work"];
       if ([elements count] > 0)
-	element = [elements objectAtIndex: 0];
+        element = [elements objectAtIndex: 0];
       else
-	{
-	  element = [CardElement elementWithTag: @"label"];
-	  [element addAttribute: @"type" value: @"work"];
-	  [newCard addChild: element];
-	}
+        {
+          element = [CardElement elementWithTag: @"label"];
+          [element addAttribute: @"type" value: @"work"];
+          [newCard addChild: element];
+        }
       if (postalAddressId == 2)
-	{
-	  [element removeValue: @"pref"
-		 fromAttribute: @"type"];
-	  [element addAttribute: @"type"
-			  value: @"pref"];
-	}
+        {
+          [element removeValue: @"pref"
+                 fromAttribute: @"type"];
+          [element addAttribute: @"type"
+                          value: @"pref"];
+        }
       [element setSingleValue: value forKey: @""];
     }
 
   elements = [newCard childrenWithTag: @"adr"
-			 andAttribute: @"type"
-			  havingValue: @"work"];
+                         andAttribute: @"type"
+                          havingValue: @"work"];
   if ([elements count] > 0)
     element = [elements objectAtIndex: 0];
   else
@@ -1347,7 +1347,7 @@ fromProperties: (NSDictionary *) attachmentProps
   value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressCountry)];
   if (value)
     [element setSingleValue: value atIndex: 6 forKey: @""];
-  
+
   //
   // home postal addresses handling
   //
@@ -1355,29 +1355,29 @@ fromProperties: (NSDictionary *) attachmentProps
   if ([value length])
     {
       elements = [newCard childrenWithTag: @"label"
-			     andAttribute: @"type"
-			      havingValue: @"home"];
+                             andAttribute: @"type"
+                              havingValue: @"home"];
       if ([elements count] > 0)
-	element = [elements objectAtIndex: 0];
+        element = [elements objectAtIndex: 0];
       else
-	{
-	  element = [CardElement elementWithTag: @"label"];
-	  [element addAttribute: @"type" value: @"home"];
-	  [newCard addChild: element];
-	}
+        {
+          element = [CardElement elementWithTag: @"label"];
+          [element addAttribute: @"type" value: @"home"];
+          [newCard addChild: element];
+        }
       if (postalAddressId == 1)
-	{
-	  [element removeValue: @"pref"
-		 fromAttribute: @"type"];
-	  [element addAttribute: @"type"
-			  value: @"pref"];
-	}
+        {
+          [element removeValue: @"pref"
+                 fromAttribute: @"type"];
+          [element addAttribute: @"type"
+                          value: @"pref"];
+        }
       [element setSingleValue: value forKey: @""];
     }
-  
+
   elements = [newCard childrenWithTag: @"adr"
-			 andAttribute: @"type"
-			  havingValue: @"home"];
+                         andAttribute: @"type"
+                          havingValue: @"home"];
   if ([elements count] > 0)
     element = [elements objectAtIndex: 0];
   else
@@ -1412,27 +1412,27 @@ fromProperties: (NSDictionary *) attachmentProps
   //
   // telephone numbers: work, home, fax, pager and mobile
   //
-  element = [self _elementWithTag: @"tel"  ofType: @"work"  forCard: newCard];								      
+  element = [self _elementWithTag: @"tel"  ofType: @"work"  forCard: newCard];
   value = [properties objectForKey: MAPIPropertyKey(PR_OFFICE_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setSingleValue: value forKey: @""];
 
-  element = [self _elementWithTag: @"tel"  ofType: @"home"  forCard: newCard];								      
+  element = [self _elementWithTag: @"tel"  ofType: @"home"  forCard: newCard];
   value = [properties objectForKey: MAPIPropertyKey(PR_HOME_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setSingleValue: value forKey: @""];
 
-  element = [self _elementWithTag: @"tel"  ofType: @"fax"  forCard: newCard];								      
+  element = [self _elementWithTag: @"tel"  ofType: @"fax"  forCard: newCard];
   value = [properties objectForKey: MAPIPropertyKey(PR_BUSINESS_FAX_NUMBER_UNICODE)];
   if (value)
     [element setSingleValue: value forKey: @""];
-  
-  element = [self _elementWithTag: @"tel"  ofType: @"pager"  forCard: newCard];								      
+
+  element = [self _elementWithTag: @"tel"  ofType: @"pager"  forCard: newCard];
   value = [properties objectForKey: MAPIPropertyKey(PR_PAGER_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setSingleValue: value forKey: @""];
 
-  element = [self _elementWithTag: @"tel"  ofType: @"cell"  forCard: newCard];								      
+  element = [self _elementWithTag: @"tel"  ofType: @"cell"  forCard: newCard];
   value = [properties objectForKey: MAPIPropertyKey(PR_MOBILE_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setSingleValue: value forKey: @""];
@@ -1454,7 +1454,7 @@ fromProperties: (NSDictionary *) attachmentProps
   value = [properties objectForKey: MAPIPropertyKey(PR_NICKNAME_UNICODE)];
   if (value)
     [newCard setNickname: value];
-  
+
   value = [properties objectForKey: MAPIPropertyKey(PR_DEPARTMENT_NAME_UNICODE)];
   if (value)
     units = [NSArray arrayWithObject: value];
@@ -1464,19 +1464,19 @@ fromProperties: (NSDictionary *) attachmentProps
   value = [properties objectForKey: MAPIPropertyKey(PR_COMPANY_NAME_UNICODE)];
   if (value)
     [newCard setOrg: value  units: units];
-  
+
   value = [properties objectForKey: MAPIPropertyKey(PR_BUSINESS_HOME_PAGE_UNICODE)];
   if (value)
     {
       [[self _elementWithTag: @"url"  ofType: @"work"  forCard: newCard]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PidLidInstantMessagingAddress)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-aim"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PR_BIRTHDAY)];
@@ -1500,35 +1500,35 @@ fromProperties: (NSDictionary *) attachmentProps
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-ms-spouse"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PR_MANAGER_NAME_UNICODE)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-ms-manager"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PR_ASSISTANT_UNICODE)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-ms-assistant"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PR_OFFICE_LOCATION_UNICODE)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-ms-office"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   value = [properties objectForKey: MAPIPropertyKey(PidLidFreeBusyLocation)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"fburl"]
-	setSingleValue: value forKey: @""];
+        setSingleValue: value forKey: @""];
     }
 
   /* photo */
@@ -1569,7 +1569,7 @@ fromProperties: (NSDictionary *) attachmentProps
   if ([messageClass isEqualToString: @"IPM.DistList"])
     [self saveDistList: memCtx];
   else
-    [self saveContact: memCtx]; 
+    [self saveContact: memCtx];
 }
 
 
