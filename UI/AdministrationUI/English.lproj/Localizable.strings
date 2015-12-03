@@ -24,3 +24,13 @@
 
 /* Rights module: no selection */
 "No resource selected" = "No resource selected";
+
+"Add User" = "Add User";
+"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Subscribe User";
+"Rights" = "Rights";
+"Search Users" = "Search Users";
+"users found" = "users found";
+"No resource" = "No resource";
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";

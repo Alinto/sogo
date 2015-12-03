@@ -618,3 +618,14 @@ vtodo_class2 = "(Confidential task)";
 "Month" = "Month";
 "New Appointment" = "New Appointment";
 "filters" = "filters";
+
+"Today" = "Today";
+"More options" = "More options";
+"Delete This Occurrence" = "Delete This Occurrence";
+"Delete All Occurrences" = "Delete All Occurrences";
+"Add From" = "Add From";
+"Add Due" = "Add Due";
+"Import" = "Import";
+"Rename" = "Rename";
+"Import Calendar" = "Import Calendar";
+"Select an ICS file." = "Select an ICS file.";
