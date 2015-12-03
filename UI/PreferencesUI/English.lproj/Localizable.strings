@@ -346,6 +346,7 @@
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
 
 /* Avatars */
+"Alternate Avatar" = "Alternate Avatar";
 "none" =  "None";
 "identicon" = "Ident Icon";
 "monsterid" = "Monster";
