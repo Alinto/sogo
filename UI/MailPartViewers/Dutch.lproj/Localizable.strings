@@ -29,16 +29,11 @@ Tentative = "Onder voorbehoud";
 "Delegated to" = "Gedelegeerd aan";
 "Update status in calendar" = "Afspraak bijwerken in agenda";
 "delegated from" = "gedelegeerd door";
-
 reply_info_no_attendee = "U heeft een antwoord betreffende een afspraak ontvangen van een niet-deelnemer.";
 reply_info = "Dit is een antwoord op een door u verstuurde uitnodiging.";
-
 "to" = "naar";
-
 "Untitled" = "Geen titel";
-
 "Size" = "Grootte";
-
 "Digital signature is not valid" = "Digitale handtekening is niet geldig";
 "Message is signed" = "Bericht is getekend";
 "Subject" = "Onderwerp";

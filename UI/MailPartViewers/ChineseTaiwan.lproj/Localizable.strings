@@ -29,16 +29,11 @@ Tentative = "未定";
 "Delegated to" = "委任給";
 "Update status in calendar" = "在行事曆異動狀態";
 "delegated from" = "委任自";
-
 reply_info_no_attendee = "您收到受邀請者不出席的回覆。";
 reply_info = "這是您的出席回覆。";
-
 "to" = "到";
-
 "Untitled" = "無主旨";
-
 "Size" = "大小";
-
 "Digital signature is not valid" = "無效的簽署";
 "Message is signed" = "己簽署的郵件";
 "Subject" = "主旨";

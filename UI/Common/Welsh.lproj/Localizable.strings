@@ -4,7 +4,6 @@
 "Save" = "Cadw";
 "Close" = "Cau";
 "Edit User Rights" = "Golygu Hawliau Defnyddiwr";
-
 "Home" = "Hafan";
 "Calendar" = "Calendr";
 "Address Book"	= "Llyfr Cyfeiriadau";
@@ -14,29 +13,20 @@
 "Disconnect" = "Datgysylltu";
 "Right Administration" = "Hawl Gweinyddu";
 "Log Console (dev.)" = "Consol Log (dev.)";
-
 "User" = "Defnyddiwr";
-
 "Help" = "Help";
-
 "noJavascriptError" = "Mae angen Javascript ar SOGo i redeg. Sicrhewch fod yr opsiwn ar gael ac yn actifedig yn newisiadau eich porwr.";
 "noJavascriptRetry" = "Ailgynnig";
-
-"Owner:" = "Owner:";
+"Owner" = "Owner";
 "Publish the Free/Busy information" = "Cyhoddwch y wybodaeth Rhydd/Brysur";
-
 "Add..." = "Ychwanegu...";
 "Remove" = "Dileu";
-
 "Subscribe User" = "Subscribe User";
-
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";
 "Any user not listed above" = "Any user not listed above";
 "Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
-
 "Sorry, the user rights can not be configured for that object." = "Sori, ni all hawliau'r defnyddiwr cael ei newid ar gyfer y gwrthrych hwn.";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Methu tanysgrifio i'r ffolder yna!";
@@ -55,37 +45,30 @@
 "You cannot create a list in a shared address book." 
         = "You cannot create a list in a shared address book.";
 "Warning" = "Warning";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nid oes gennych caniatad mynediad i'r modiwl hwn na'r system hwn. Cysylltwch a'r Gweinyddwr Systemau os gwelwch yn dda.";
 "You don't have the required privileges to perform the operation."
 = "Nid oes gennych y breintiau gofynnol i berfformio'r gweithrediad.";
-
 "noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
 "delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancel";
 "Yes" = "Yes";
 "No" = "No";
-
 /* alarms */
-"Reminder:" = "Atgoffa:";
-"Start:" = "Dechrau:";
-"Due Date:" = "Dyddiad dyledus:";
-"Location:" = "Lleoliad:";
-
+"Reminder" = "Atgoffa";
+"Start" = "Dechrau";
+"Due Date" = "Dyddiad dyledus";
+"Location" = "Lleoliad";
 /* Mail labels */
 "Important" = "Pwysig";
-"Work" = "gwaith";
 "Work" = "gwaith";
 "Personal" = "Personol";
 "To Do" = "I'w wneud";
 "Later" = "Hwyrach";
-
 "a2_Sunday" = "Su";
 "a2_Monday" = "Ll";
 "a2_Tuesday" = "Ma";

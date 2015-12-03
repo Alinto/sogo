@@ -27,16 +27,11 @@ Tentative = "Petrus";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Diweddaru statws yn y calendr";
 "delegated from" = "delegated from";
-
 reply_info_no_attendee = "Rydych wedi derbyn ymateb i digwyddiad ond nid yw'r anfonwr yn cyfranogwr.";
 reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
-
 "to" = "at";
-
 "Untitled" = "heb deitl";
-
 "Size" = "maint";
-
 "Digital signature is not valid" = "Digital signature is not valid";
 "Message is signed" = "Message is signed";
 "Subject" = "Subject";

@@ -20,7 +20,7 @@
     <var:if condition="isNew">
       <div id="addressBookSelector">
         <style type="text/css">DIV#editorTabs { top: 30px; };</style>
-        <var:string label:value="Add to:"/>
+        <var:string label:value="Add to"/>
         <var:popup const:id="addressBooksList"
           list="addressBooksList" item="addressBookItem"
           string="addressBookDisplayName"
@@ -101,7 +101,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Additional Email:" />
+                <label><var:string label:value="Additional Email" />
                   <input type="text" class="textField" name="mozillasecondemail"
                     id="mozillasecondemail" var:value="ldifRecord.mozillasecondemail"
                     /></label>
@@ -109,7 +109,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Screen Name:"
+                <label><var:string label:value="Screen Name"
                     />
                   <input type="text" class="textField" name="nsaimid"
                     id="nsaimid" var:value="ldifRecord.nsaimid"
@@ -119,7 +119,7 @@
             <tr>
               <td id="htmlMailFormat">
                 <label><var:string
-                    label:value="Prefers to receive messages formatted as:" />
+                    label:value="Prefers to receive messages formatted as" />
                   <var:popup list="htmlMailFormatList" item="item"
                     label:noSelectionString="htmlMailFormat_UNKNOWN"
                     string="itemHtmlMailFormatText"
@@ -132,7 +132,7 @@
           <table class="frame">
             <tr>
               <td>
-                <label><var:string label:value="Work:" />
+                <label><var:string label:value="Work" />
                   <input type="text" class="textField"
                     name="telephonenumber"
                     id="telephonenumber"
@@ -142,7 +142,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Home:" />
+                <label><var:string label:value="Home" />
                   <input type="text" class="textField"
                     name="homephone" id="homephone"
                     var:value="ldifRecord.homephone"
@@ -151,7 +151,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Fax:" />
+                <label><var:string label:value="Fax" />
                   <input type="text" class="textField"
                     name="facsimiletelephonenumber"
                     id="facsimiletelephonenumber"
@@ -161,7 +161,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Pager:" />
+                <label><var:string label:value="Pager" />
                   <input type="text" class="textField"
                     name="pager"
                     id="pager"
@@ -171,7 +171,7 @@
             </tr>
             <tr>
               <td>
-                <label><var:string label:value="Mobile:" />
+                <label><var:string label:value="Mobile" />
                   <input type="text" class="textField" name="mobile" id="mobile"
                     var:value="ldifRecord.mobile"
                     /></label>
@@ -229,7 +229,7 @@
             </tr>
             <tr>
               <td class="firstColumn">
-                <label><var:string label:value="State_Province:" />
+                <label><var:string label:value="State_Province" />
                   <input type="text" class="textField" name="mozillahomestate"
                     id="mozillahomestate"
                     var:value="ldifRecord.mozillahomestate"
@@ -237,7 +237,7 @@
               </td>
               <td class="secondColumn">
                 <label><var:string
-                    label:value="ZIP_Postal Code:"
+                    label:value="ZIP_Postal Code"
                     />
                   <input type="text" class="textField" name="mozillahomepostalcode"
                     id="mozillahomepostalcode"
@@ -257,7 +257,7 @@
             <tr>
               <td colspan="2">
                 <label>
-                  <var:string label:value="Web Page:" />
+                  <var:string label:value="Web Page" />
                   <input type="text" class="textField" name="mozillahomeurl"
                     var:value="ldifRecord.mozillahomeurl"
                     /></label>
@@ -279,7 +279,7 @@
             <tr>
               <td colspan="2">
                 <label>
-                  <var:string label:value="Department:" />
+                  <var:string label:value="Department" />
                   <input type="text" class="textField" name="ou"
                     id="ou"
                     var:value="ldifRecord.ou"
@@ -288,7 +288,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Organization:" />
+                <label><var:string label:value="Organization" />
                   <input type="text" class="textField" name="o"
                     id="o" var:value="ldifRecord.o"
                     /></label>
@@ -296,7 +296,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Address:" />
+                <label><var:string label:value="Address" />
                   <input type="text" class="textField" name="street"
                     id="street"
                     var:value="ldifRecord.street"
@@ -321,14 +321,14 @@
             </tr>
             <tr>
               <td class="firstColumn">
-                <label><var:string label:value="State_Province:" />
+                <label><var:string label:value="State_Province" />
                   <input type="text" class="textField" name="st"
                     id="st" var:value="ldifRecord.st"
                     /></label>
               </td>
               <td class="secondColumn">
                 <label><var:string
-                    label:value="ZIP_Postal Code:"
+                    label:value="ZIP_Postal Code"
                     />
                   <input type="text" class="textField" name="postalcode"
                     id="postalcode" var:value="ldifRecord.postalcode"
@@ -345,7 +345,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <label><var:string label:value="Web Page:" />
+                <label><var:string label:value="Web Page" />
                   <input type="text" class="textField" name="mozillaworkurl"
                     var:value="ldifRecord.mozillaworkurl"/>
                 </label>

@@ -4,7 +4,6 @@
 "Address" = "عنوان";
 "Photos" = "صور";
 "Other" = "اخرى";
-
 "Address Books" = "دفاتر العناوين";
 "Addressbook" = "دفتر العناوين";
 "Addresses" = "عناوين";
@@ -39,29 +38,23 @@
 "invaliddatewarn" = "التاريخ المحدد غير صالح.";
 "new" = "جديد";
 "Preferred Phone" = "رقم الهاتف المفضل";
-
 "Move To" = "نقل الى";
 "Copy To" = "نسخ الى";
-"Add to:" = "إضافة الى:";
-
+"Add to" = "إضافة الى";
 /* Tooltips */
-
 "Create a new address book card" = "إنشاء بطاقة جديدة بدفتر العناوين ";
 "Create a new list" = "إنشاء قائمة جديدة";
 "Edit the selected card" = "تحرير بطاقة مختارة";
 "Send a mail message" = "إرسال رسالة بريد";
 "Delete selected card or address book" = "حذف بطاقة أو دفتر عناوين محدد";
 "Reload all contacts" = "تحديث كافة جهات الاتصال";
-
 "htmlMailFormat_UNKNOWN" = "غير معروف";
 "htmlMailFormat_FALSE" = "نص عادي";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "الاسم أو البريد الإلكتروني";
 "Category" = "فئة";
 "Personal Addressbook" = "دفتر العناوين الشخصية";
 "Search in Addressbook" = "البحث في دفتر العناوين";
-
 "New Card" = "بطاقة جديدة";
 "New List" = "قائمة جديدة";
 "Properties" = "خصائص";
@@ -71,68 +64,54 @@
 "Instant Message" = "رسالة لحظية";
 "Add..." = "إضافة...";
 "Remove" = "مسح";
-
 "Please wait..." = "يرجى الانتظار...";
 "No possible subscription" = "لا يوجد إشتراك";
-
 "Preferred" = "المفضل";
 "Display" = "عرض";
 "Display Name" = "الاسم المعروض";
-"Email:" = "البريد الالكتروني:";
+"Email" = "البريد الالكتروني";
 "Additional Email:" = "بريد إلكتروني إضافي";
-
 "Phone Number" = "رقم الهاتف";
-"Prefers to receive messages formatted as:" = "يفضل تلقي رسائل منسقة على النحو التالي:";
-"Screen Name:" = "أسم التعريف:";
-"Categories:" = "الفئات:";
-
-"First:" = "الاول:";
-"Last:" = "الاخير:";
+"Prefers to receive messages formatted as" = "يفضل تلقي رسائل منسقة على النحو التالي";
+"Screen Name" = "أسم التعريف";
+"Categories" = "الفئات";
+"First" = "الاول";
+"Last" = "الاخير";
 "Nickname" = "الاسم الرمزي";
-
 "Telephone" = "رقم الهاتف:";
-"Work:" = "العمل:";
-"Home:" = "المنزل:";
-"Fax:" = "الفاكس:";
+"Work" = "العمل";
+"Home" = "المنزل";
+"Fax" = "الفاكس";
 "Mobile:" = "المحمول";
-"Pager:" = "النداء:";
-
+"Pager" = "النداء";
 /* categories */
 "contacts_category_labels" = "الزميل، المنافس، العملاء، الصديق، العائلة، شريك تجاري، مقدم خدمة، الصحافة ، كبار الشخصيات";
-"Categories" = "الفئات";
 "New category" = "فئة جديدة";
-
 /* adresses */
 "Title" = "اللقب";
-"Service:" = "الخدمة:";
-"Company:" = "الشركة:";
-"Department:" = "الادارة:";
+"Service" = "الخدمة";
+"Company" = "الشركة";
+"Department" = "الادارة";
 "Organization:" = "الجهة";
-"Address:" = "العنوان:";
+"Address" = "العنوان";
 "City" = "المدينة";
-"State_Province:" = "الولاية / الاقليم / المحافظة:";
-"ZIP_Postal Code:" = "الرمز البريدي:";
+"State_Province" = "الولاية / الاقليم / المحافظة";
+"ZIP_Postal Code" = "الرمز البريدي";
 "Country" = "الدولة";
-"Web Page:" = "صفحة الانترنت:";
-
-"Work" = "العمل";
+"Web Page" = "صفحة الانترنت";
 "Other Infos" = "معلومات أخرى";
-
 "Note" = "ملاحظة";
-"Timezone:" = "المنطقة الزمنية:";
+"Timezone" = "المنطقة الزمنية";
 "Birthday" = "تاريخ الميلاد";
 "Birthday (yyyy-mm-dd)" = "تاريخ الميلاد (يوم-شهر-سنة)";
-"Freebusy URL:" = "موقع مشغول /حر:";
-
+"Freebusy URL" = "موقع مشغول /حر";
 "Add as..." = "إضافة إلى ...";
 "Recipient" = "مستلم";
 "Carbon Copy" = "نسخة من";
 "Blind Carbon Copy" = "نسخة مخفية من";
-
 "New Addressbook..." = "دفتر عناوين جديدة ...";
 "Subscribe to an Addressbook..." = "الاشتراك في دفتر العناوين ...";
 "Remove the selected Addressbook" = "إزالة دفتر العناوين المحدد";
-
 "Name of the Address Book" = "اسم دفتر العناوين";
 "Are you sure you want to delete the selected address book?"
 = "هل أنت متأكد أنك تريد حذف دفتر العناوين المحدد؟";
@@ -140,27 +119,20 @@
 = "لا يمكنك إزالة أو إلغاء الاشتراك من دفترالعناوين العامة.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "لا يمكنك إزالة أو إلغاء الاشتراك من دفتر العناوين الشخصية.";
-
 "Are you sure you want to delete the selected contacts?"
 = "هل أنت متأكد أنك تريد حذف الأسماء المحدد؟";
-
 "You cannot delete the card of \"%{0}\"."
 = "لا يمكنك حذف البطاقة من \"%{0}\".";
-
 "Address Book Name" = "اسم دفتر الكتاب";
-
 "You cannot subscribe to a folder that you own!"
 = "لا يمكنك الاشتراك في مجلد تمتلكه.";
 "Unable to subscribe to that folder!"
 = "غير قادر على الاشتراك في هذا المجلد.";
-
 /* acls */
 "Access rights to" = "صلاحية الدخول الى";
 "For user" = "للمستخدم";
-
 "Any Authenticated User" = "أي مستخدم مسجل";
 "Public Access" = "وصول الجمهور";
-
 "This person can add cards to this addressbook."
 = "يمكن لهذا الشخص إضافة بطاقات إلى دفتر العناوين المحدد.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +143,14 @@
 = "يمكن لهذا الشخص قراءة بطاقات من دفتر العناوين المحدد.";
 "This person can erase cards from this addressbook."
 = "يمكن لهذا الشخص محو بطاقات من دفتر العناوين المحدد.";
-
 "The selected contact has no email address."
 = "الاسم الذي تم اختياره ليس لديه عنوان البريد الإلكتروني.";
-
 "Please select a contact." = "الرجاء اختيار إحدى جهات الاتصال.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "لا يمكنك الكتابة إلى دفتر العناوين المذكور.";
 "Forbidden" = "لا يمكنك الكتابة إلى دفتر العناوين المذكور.";
 "Invalid Contact" = "الاتصال المحدد لم يعد موجودا.";
 "Unknown Destination Folder" = "دفتر العناوين المحدد المرسل اليه لم يعد موجودا.";
-
 /* Lists */
 "List details" = "تفاصيل القائمة";
 "List name" = "اسم القائمة/";
@@ -204,5 +171,4 @@
 "An error occured while importing contacts." = "حدث خطأ أثناء استيراد جهات الاتصال.";
 "No card was imported." = "لم يتم استيراد أي بطاقة.";
 "A total of %{0} cards were imported in the addressbook." = "قد تم استيراد ما مجموعه%{0} بطاقات في دفتر العناوين.";
-
 "Reload" = "إعادة التحميل";

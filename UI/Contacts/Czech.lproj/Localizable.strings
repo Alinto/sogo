@@ -4,7 +4,6 @@
 "Address" = "Adresa";
 "Photos" = "Fotografie";
 "Other" = "Ostatní";
-
 "Address Books" = "Složky kontaktů";
 "Addressbook" = "Složka kontaktů";
 "Addresses" = "Adresy";
@@ -38,29 +37,23 @@
 "invalidemailwarn" = "Specifikovaný e-mail je neplatný";
 "new" = "nový";
 "Preferred Phone" = "Upřednostňovaný telefon";
-
 "Move To" = "Přesunout do";
 "Copy To" = "Kopírovat do";
-"Add to:" = "Přidat do:";
-
+"Add to" = "Přidat do";
 /* Tooltips */
-
 "Create a new address book card" = "Vytvořit nový kontakt";
 "Create a new list" = "Vytvořit novou skupinu";
 "Edit the selected card" = "Upravit označený kontakt";
 "Send a mail message" = "Poslat zprávu";
 "Delete selected card or address book" = "Smazat označený kontakt nebo složku kontaktů";
 "Reload all contacts" = "Reload all contacts";
-
 "htmlMailFormat_UNKNOWN" = "Neznámý";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Jméno nebo e-mail";
 "Category" = "Category";
 "Personal Addressbook" = "Osobní kontakty";
 "Search in Addressbook" = "Vyhledávat v kontaktech";
-
 "New Card" = "Nový kontakt";
 "New List" = "Nová skupina";
 "Edit" = "Upravit";
@@ -71,68 +64,49 @@
 "Instant Message" = "Instant Message";
 "Add..." = "Přidat...";
 "Remove" = "Odebrat";
-
 "Please wait..." = "Čekejte prosím...";
 "No possible subscription" = "Žádné možné odebírání";
-
 "Preferred" = "Upřednostňovaný";
 "Display" = "Zobrazované jméno";
 "Display Name" = "Zobrazované jméno";
-"Email:" = "E-mail:";
-"Additional Email:" = "Další e-mail:";
-
+"Additional Email" = "Další e-mail";
 "Phone Number" = "Telefonní číslo";
-"Prefers to receive messages formatted as:" = "Upřednostňovaný formát zpráv:";
-"Screen Name:" = "Zobrazované jméno:";
-"Categories:" = "Kategorie:";
-
-"First:" = "Křestní jméno:";
-"Last:" = "Příjmení:";
+"Prefers to receive messages formatted as" = "Upřednostňovaný formát zpráv";
+"Categories" = "Kategorie";
+"First" = "Křestní jméno";
+"Last" = "Příjmení";
 "Nickname" = "Přezdívka";
-
 "Telephone" = "Telefon";
-"Work:" = "Zaměstnání:";
-"Home:" = "Domů:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mobilní telefon:";
-"Pager:" = "Pager:";
-
+"Work" = "Zaměstnání";
+"Home" = "Domů";
+"Mobile" = "Mobilní telefon";
+"Pager" = "Pager";
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurent, Zákazník, Přítel, Rodina, Obchodní partner, Dodavatel, Tisk, VIP";
-"Categories" = "Kategorie";
 "New category" = "Nová kategorie";
-
 /* adresses */
 "Title" = "Pozice";
-"Service:" = "Služba:";
-"Company:" = "Společnost:";
-"Department:" = "Oddělení:";
-"Organization:" = "Organizace:";
-"Address:" = "Adresa:";
+"Service" = "Služba";
+"Company" = "Společnost";
+"Department" = "Oddělení";
 "City" = "Město";
-"State_Province:" = "Stát/Provincie:";
-"ZIP_Postal Code:" = "PSČ:";
+"State_Province" = "Stát/Provincie";
+"ZIP_Postal Code" = "PSČ";
 "Country" = "Země";
-"Web Page:" = "Web:";
-
-"Work" = "Zaměstnání";
+"Web Page" = "Web";
 "Other Infos" = "Ostatní informace";
-
 "Note" = "Poznámka";
-"Timezone:" = "Časové pásmo:";
+"Timezone" = "Časové pásmo";
 "Birthday" = "Datum narození";
 "Birthday (yyyy-mm-dd)" = "Datum narození (yyyy-mm-dd)";
-"Freebusy URL:" = "Freebusy URL:";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Přidat jako...";
 "Recipient" = "Adresát";
 "Carbon Copy" = "Kopie";
 "Blind Carbon Copy" = "Skrytá kopie";
-
 "New Addressbook..." = "Nová složka kontaktů...";
 "Subscribe to an Addressbook..." = "Odebírat složku kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
-
 "Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
 = "Opravdu chcete odstranit označenou složku kontaktů?";
@@ -140,27 +114,19 @@
 = "Nemůžete odebrat nebo se odhlásit od odebírání veřejného adresáře.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Nemůžete odebrat nebo se odhlásit od odebírání svého vlastního adresáře";
-
 "Are you sure you want to delete the selected contacts?"
 = "Opravdu chcete smazat označené kontakty?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Nemůžete smazat kontakt \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Nemůžete se přihlásit k odebírání vlastní složky! ";
 "Unable to subscribe to that folder!"
 = "Nemůžete se přihlásit k odebírání této složky!";
-
 /* acls */
 "Access rights to" = "Přístupová práva k";
 "For user" = "Pro uživatele";
-
 "Any Authenticated User" = "Všichni ověření uživatelé";
 "Public Access" = "Veřejný přístup";
-
 "This person can add cards to this addressbook."
 = "Tato osoba může přidávat kontakty do této složky.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +137,14 @@
 = "Tato osoba si může pročítat kontakty této složky.";
 "This person can erase cards from this addressbook."
 = "Tato osoba může mazat kontakty z této složky.";
-
 "The selected contact has no email address."
 = "Označený kontakt nemá žádné e-mailové adresy.";
-
 "Please select a contact." = "Vyberte prosím kontakt.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Nemůžete zapisovat do tohoto adresáře.";
 "Forbidden" = "Nemůžete zapisovat do tohoto adresáře.";
 "Invalid Contact" = "Označený kontakt již neexistuje.";
 "Unknown Destination Folder" = "Zvolený cílový adresář již neexistuje.";
-
 /* Lists */
 "List details" = "Skupina";
 "List name" = "Název";
@@ -204,12 +165,9 @@
 "An error occured while importing contacts." = "Při importu došlo k chybě.";
 "No card was imported." = "Nebyl importován žádný kontakt.";
 "A total of %{0} cards were imported in the addressbook." = "Do adresáře bylo importováno %{0} kontaktů.";
-
 "Reload" = "Aktualizovat";
-
 /* Properties window */
-"Address Book Name:" = "Název adresáře:";
+"Address Book Name" = "Název adresáře";
 "Links to this Address Book" = "Odkazy na tento adresář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
-"CardDAV URL: " = "CardDAV URL:";
-
+"CardDAV URL" = "CardDAV URL";

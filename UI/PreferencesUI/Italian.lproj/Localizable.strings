@@ -16,10 +16,8 @@
 "Color" = "Colore";
 "Add" = "Aggiungi";
 "Delete" = "Cancella";
-
 /* contacts categories */
 "contacts_category_labels" = "Collega, Concorrente, Cliente, Amico, Famiglia, Socio, Provider, Stampa, VIP";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Abilita il risponditore automatico";
 "Auto reply message" ="Rispondi automaticamente solo una volta ad ogni mittente usando questo testo";
@@ -33,42 +31,32 @@
 "Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto per linea";
 "End date of your auto reply must be in the future."
 = "La data di fine del risponditore automatico deve essere nel futuro";
-
 /* forward messages */
 "Forward incoming messages" = "Inoltra i messaggi in arrivo";
 "Keep a copy" = "Lascia una copia";
 "Please specify an address to which you want to forward your messages."
 = "Prego specificare l'indirizzo verso quale inoltrare i messaggi.";
-
 /* d & t */
 "Current Time Zone" ="Fuso orario";
 "Short Date Format" ="Data breve";
 "Long Date Format" ="Data estesa";
 "Time Format" ="Formato ora";
-
 "default" = "Default";
-
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
@@ -82,13 +70,11 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
-
 /* calendar */
 "Week begins on" ="La settimana inizia il";
 "Day start time" ="La giornata lavorativa inizia alle ore";
@@ -100,17 +86,14 @@
 "Play a sound when a reminder comes due"
 = "Riproduci un suono quando un promemoria è attivo";
 "Default reminder" ="Promemoria predefinito";
-
 "firstWeekOfYear_January1" = "Inizia l'1 gennaio";
 "firstWeekOfYear_First4DayWeek" = "Prima settimana di 4 giorni";
 "firstWeekOfYear_FirstFullWeek" = "Prima settimana completa";
-
 /* Default Calendar */
 "Default calendar" ="Calendario di default";
 "selectedCalendar" = "Calendario selezionato";
 "personalCalendar" = "Calendario personale";
 "firstCalendar" = "Primo calendario abilitato";
-
 "reminder_5_MINUTES_BEFORE" = "5 minuti";
 "reminder_10_MINUTES_BEFORE" = "10 minuti";
 "reminder_15_MINUTES_BEFORE" = "15 minuti";
@@ -121,12 +104,11 @@
 "reminder_15_HOURS_BEFORE"= "15 ore";
 "reminder_1_DAY_BEFORE" = "1 giorno";
 "reminder_2_DAYS_BEFORE" = "2 giorni";
-
 /* Mailer */
 "Label" = "Etichetta";
 "Show subscribed mailboxes only" = "Mostra solo le cartelle sottoscritte";
 "Sort messages by threads" = "Ordina i messaggi per conversazione";
-"Check for new mail:" = "Controlla la posta in arrivo:";
+"Check for new mail" = "Controlla la posta in arrivo";
 "refreshview_manually" = "Manualmente";
 "refreshview_every_minute" = "Ogni minuto";
 "refreshview_every_2_minutes" = "Ogni 2 minuti";
@@ -135,11 +117,9 @@
 "refreshview_every_20_minutes" = "Ogni 20 minuti";
 "refreshview_every_30_minutes" = "Ogni 30 minuti";
 "refreshview_once_per_hour" = "Ogni ora";
-
 "Forward messages" = "Inoltra messaggi come";
 "messageforward_inline" = "Parte del messaggio";
 "messageforward_attached" = "Allegato";
-
 "replyplacement_above" = "Inizia la risposta sopra il testo a cui si risponde";
 "replyplacement_below" = "Inizia la risposta sotto il testo a cui si risponde";
 "And place my signature" = "Metti la firma";
@@ -148,50 +128,38 @@
 "Compose messages in" = "Componi il messaggio in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Testo normale";
-
 /* IMAP Accounts */
 "New Mail Account" = "Nuovo account mail";
-
 "Server Name" = "Nome del server";
 "Port" = "Porta";
 "User Name" = "Nome utente";
-"Password" = "Password";
-
 "Full Name" = "Nome completo";
 "Email" = "Email";
 "Reply To Email" = "Rispondi all'email";
 "Signature" = "Firma";
 "(Click to create)" = "(Clicca per creare)";
-
-"Signature" = "Firma";
-"Please enter your signature below:" = "Prego inserire la firma qui sotto:";
-
+"Please enter your signature below" = "Prego inserire la firma qui sotto";
 /* Additional Parameters */
 "Additional Parameters" = "Parametri addizionali";
-
 /* password */
 "New password" = "Nuova password";
 "Confirmation" = "Ripeti nuova password";
 "Change" = "Cambia Password";
-
 /* Event+task classifications */
 "Default events classification" ="Classificazioni degli eventi di default";
 "Default tasks classification" ="Classificazione di default delle attività";
 "PUBLIC_item" = "Pubblico";
 "CONFIDENTIAL_item" = "Confidenziale";
 "PRIVATE_item" = "Privato";
-
 /* Event+task categories */
 "category_none" = "Nessuna";
 "calendar_category_labels" = "Anniversari,Compleanni,Lavoro,Chiamate,Clienti,Competizioni,Compratori,Preferiti,Incontri,Regali,Vacanze,Idee,Meeting,Problemi,Varie,Personale,Progetti,Giorno festivo,Stato,Fornitori,Viaggio,Chiusura";
-
 /* Default module */
 "Calendar" = "Calendario";
 "Contacts" = "Rubrica";
 "Mail" = "Posta";
 "Last" = "Ultimo usato";
 "Default Module " = "Modulo di default";
-
 "Language" ="Lingua";
 "choose" = "Scegli...";
 "Arabic" = "العربية";
@@ -222,7 +190,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Quando ricevo una richiesta di notifica di lettura";
 "Never send a return receipt" = "Non inviare mail una notifica di lettura";
@@ -230,25 +197,21 @@
 "If I'm not in the To or Cc of the message" = "Se non sono presente nel campo To e Cc del messaggio";
 "If the sender is outside my domain" = "Se il mittente ha un dominio diverso dal mio";
 "In all other cases" = "In tutti gli altri casi";
-
 "Never send" = "Non inviare mai";
 "Always send" = "Invia sempre";
 "Ask me" = "Chiedimelo";
-
 /* Filters - UIxPreferences */
 "Filters" = "Filtri";
 "Active" = "Attiva";
 "Move Up" = "Muovi su";
 "Move Down" = "Muovi giù";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Nome filtro:";
+"Filter name" = "Nome filtro";
 "For incoming messages that" = "Per tutti i messaggi in arrivo che";
-"match all of the following rules:" = "corrispondono a tutte le seguenti regole:";
-"match any of the following rules:" = "corrispondono almeno ad una delle seguenti regole:";
+"match all of the following rules" = "corrispondono a tutte le seguenti regole";
+"match any of the following rules" = "corrispondono almeno ad una delle seguenti regole";
 "match all messages" = "corrispondono tutti i messaggi";
-"Perform these actions:" = "Eseguire quest'azione:";
-
+"Perform these actions" = "Eseguire quest'azione";
 "Subject" = "Soggetto";
 "From" = "Da";
 "To" = "A";
@@ -256,15 +219,14 @@
 "To or Cc" = "A o Cc";
 "Size (Kb)" = "Dimensione (Kb)";
 "Header" = "Header";
-"Flag the message with:" = "Contrassegna il messaggio con:";
+"Flag the message with" = "Contrassegna il messaggio con";
 "Discard the message" = "Scarta il messaggio";
-"File the message in:" = "Sposta il messaggio in:";
+"File the message in" = "Sposta il messaggio in";
 "Keep the message" = "Lascia il messaggio";
-"Forward the message to:" = "Inoltra il messaggio a:";
-"Send a reject message:" = "Invia un messaggio di rifiuto:";
+"Forward the message to" = "Inoltra il messaggio a";
+"Send a reject message" = "Invia un messaggio di rifiuto";
 "Send a vacation message" = "Invia un messaggio automatico";
 "Stop processing filter rules" = "Interrompi il controllo delle regole di filtro";
-
 "is under" = "è maggiore";
 "is over" = "è minore";
 "is" = "è";
@@ -275,7 +237,6 @@
 "does not match" = "non corrisponde";
 "matches regex" = "corrisponde la regex";
 "does not match regex" = "non corrisponde la regex";
-
 "Seen" = "Letto";
 "Deleted" = "Cancellato";
 "Answered" = "Risposto";
@@ -287,7 +248,6 @@
 "Label 3" = "Label 3";
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
-
 "Password must not be empty." = "La password non deve essere vuota.";
 "The passwords do not match. Please try again." = "Le password non sono uguali. Riprova.";
 "Password change failed" = "Cambio password fallito";

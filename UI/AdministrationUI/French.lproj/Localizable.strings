@@ -2,14 +2,10 @@
 
 "Help" = "Aide";
 "Close" = "Fermer";
-
 "Modules" = "Modules";
-
 /* Modules short names */
 "ACLs" = "Droits";
-
 /* Modules titles */
 "ACLs_title" = "Gestion des droits d'accès pour les dossiers utilisateurs";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>Le module de gestion des droits d'accès (ACL) vous permet de changer les ACL des calendriers et carnets d'adresses des utilisateurs.</p><p>Pour modifier les ACL sur un dossier, recherchez un utilisateur et double-clickez sur le dossier souhaité.</p>";

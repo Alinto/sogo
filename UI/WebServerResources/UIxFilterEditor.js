@@ -65,12 +65,12 @@ function setupConstants() {
                     "size": _("Size (Kb)"),
                     "header": _("Header"),
                     "body": _("Body") };
-    methodLabels = { "addflag": _("Flag the message with:"),                         
+    methodLabels = { "addflag": _("Flag the message with"),
                      "discard": _("Discard the message"),
-                     "fileinto": _("File the message in:"),
+                     "fileinto": _("File the message in"),
                      "keep": _("Keep the message"),
-                     "redirect": _("Forward the message to:"),
-                     "reject": _("Send a reject message:"),
+                     "redirect": _("Forward the message to"),
+                     "reject": _("Send a reject message"),
                      "vacation": _("Send a vacation message"),
                      "stop": _("Stop processing filter rules") };
 

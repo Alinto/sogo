@@ -29,16 +29,11 @@ Tentative = "Tentative";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Update status in calendar";
 "delegated from" = "delegated from";
-
 reply_info_no_attendee = "You received a reply to a scheduling event but the sender of the reply is not a participant.";
 reply_info = "This is a reply to an event invitation done by you.";
-
 "to" = "to";
-
 "Untitled" = "Untitled";
-
 "Size" = "Size";
-
 "Digital signature is not valid" = "Digital signature is not valid";
 "Message is signed" = "Message is signed";
 "Subject" = "Subject";
@@ -46,3 +41,10 @@ reply_info = "This is a reply to an event invitation done by you.";
 "Date" = "Date";
 "To" = "To";
 "Issuer" = "Issuer";
+/* Tooltips */
+"View Attachment" = "View Attachment";
+"Save Attachment" = "Save Attachment";
+"CC" = "CC";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Comment" = "Comment";

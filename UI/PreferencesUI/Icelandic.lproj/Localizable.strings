@@ -16,10 +16,8 @@
 "Color" = "Litur";
 "Add" = "Bæta við";
 "Delete" = "Eyða";
-
 /* contacts categories */
 "contacts_category_labels" = "Samstarfsmaður, Keppinautur, Viðskiptavinur, Vinur, Fjölskylda, Viðskiptatengsl, Þjónustuaðili, Fjölmiðlar, VIP";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Virkja sjálfvirkt svar í fríi";
 "Auto reply message" ="Skilaboð fyrir sjálfvirkt svar";
@@ -29,42 +27,32 @@
 "Do not send responses to mailing lists" = "Ekki senda svör til póstlista";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Hér þarf að skrá skilaboðin og netfangið til að virkja sjálfvirkt svar.";
-
 /* forward messages */
 "Forward incoming messages" = "Áframsenda skilaboð sem berast";
 "Keep a copy" = "Halda afriti eftir";
 "Please specify an address to which you want to forward your messages."
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";
-
 /* d & t */
 "Current Time Zone" ="Núverandi tímabelti";
 "Short Date Format" ="Stutt dagsetningarform";
 "Long Date Format" ="Löng dagsetning";
 "Time Format" ="Tímasnið";
-
 "default" = "Sjálfgefið";
-
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y.%m.%d";
 "shortDateFmt_10" = "%y.%m.%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y.%m.%d";
 "shortDateFmt_13" = "%Y.%m.%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
@@ -72,11 +60,9 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
-
 /* calendar */
 "Week begins on" ="Vikan byrjar á";
 "Day start time" ="Degi lýkur kl.";
@@ -87,11 +73,9 @@
 "Play a sound when a reminder comes due"
 = "Spila hljóð við áminningu";
 "Default reminder" ="Sjálfgefin áminning";
-
 "firstWeekOfYear_January1" = "Byrjar 1. janúar";
 "firstWeekOfYear_First4DayWeek" = "Fyrstu 4 dagar viku";
 "firstWeekOfYear_FirstFullWeek" = "Fyrsta heila vika";
-
 "reminder_5_MINUTES_BEFORE" = "5 mínútur";
 "reminder_10_MINUTES_BEFORE" = "10 mínútur";
 "reminder_15_MINUTES_BEFORE" = "15 mínútur";
@@ -102,11 +86,10 @@
 "reminder_15_HOURS_BEFORE"= "15 klst.";
 "reminder_1_DAY_BEFORE" = "1 dagur";
 "reminder_2_DAYS_BEFORE" = "2 dagar";
-
 /* Mailer */
 "Label" = "Merki";
 "Show subscribed mailboxes only" = "Sýna aðeins pósthólf sem eru í áskrift";
-"Check for new mail:" = "Sækja nýjan póst:";
+"Check for new mail" = "Sækja nýjan póst";
 "refreshview_manually" = "Handvirkt";
 "refreshview_every_minute" = "Hverjar mínútu";
 "refreshview_every_2_minutes" = "Hverjar 2 mínútur";
@@ -115,11 +98,9 @@
 "refreshview_every_20_minutes" = "Hverjar 20 mínútur";
 "refreshview_every_30_minutes" = "Hverjar 30 mínútur";
 "refreshview_once_per_hour" = "Á klukkustundar fresti";
-
 "Forward messages" = "Áframsenda póst";
 "messageforward_inline" = "Innfellt";
 "messageforward_attached" = "Sem viðhengi";
-
 "replyplacement_above" = "Byrja mitt svar fyrir ofan tilvitnunina";
 "replyplacement_below" = "Byrja mitt svar fyrir neðan tilvitnunina";
 "And place my signature" = "Og staðsetja undirritunina";
@@ -128,49 +109,37 @@
 "Compose messages in" = "Semja bréf í";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "óbrotinn texti";
-
 /* IMAP Accounts */
 "New Mail Account" = "Ný uppsetning á pósti";
-
 "Server Name" = "Nafn netþjóns";
 "Port" = "Gátt";
 "User Name" = "Notandanafn";
-"Password" = "Lykilorð";
-
 "Full Name" = "Fullt nafn";
 "Email" = "Tölvupóstfang";
 "Signature" = "Undirritun";
 "(Click to create)" = "(Smella til að búa til)";
-
-"Signature" = "Undirritun";
-"Please enter your signature below:" = "Setja má undirritun hér að neðan:";
-
+"Please enter your signature below" = "Setja má undirritun hér að neðan";
 /* Additional Parameters */
 "Additional Parameters" = "Fleiri færibreytur";
-
 /* password */
 "New password" = "Nýtt lykilorð";
 "Confirmation" = "Staðfesting";
 "Change" = "Breyta";
-
 /* Event+task classifications */
 "Default events classification" ="Default events classification";
 "Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
-
 /* Event+task categories */
 "category_none" = "Engin";
 "calendar_category_labels" = "Árdagur,Afmælisdagur,Viðskipti,Símtöl,Skjólstæðingar,Samkeppni,Viðskiptavinur,Uppáhald,Eftirfylgni,Gjafir,Helgidagar,Hugmyndir,Fundur,Úrlausnarefni,Ýmislegt,Persónulegt,Verkefni,Almenn Frí,Staða,Birgjar,Ferðalög,Frí";
-
 /* Default module */
 "Calendar" = "Dagatal";
 "Contacts" = "Nafnaskrá";
 "Mail" = "Póstur";
 "Last" = "Síðast notað";
 "Default Module " = "Sjálfgefið viðmót";
-
 "Language" ="Tungumál";
 "choose" = "Velja...";
 "Arabic" = "العربية";
@@ -201,7 +170,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Þegar ég móttek beiðni um staðfestingu á lestri";
 "Never send a return receipt" = "Aldrei senda staðfestingu á lestri";
@@ -209,37 +177,21 @@
 "If I'm not in the To or Cc of the message" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins";
 "If the sender is outside my domain" = "Ef sendandi er fyrir utan mitt lén";
 "In all other cases" = "Í öllum öðrum tilfellum";
-
 "Never send" = "Aldrei senda";
 "Always send" = "Senda alltaf";
 "Ask me" = "Spyrja mig";
-
-/* Return receipts */
-"When I receive a request for a return receipt" = "Þegar ég móttek beiðni um staðfestingu á lestri";
-"Never send a return receipt" = "Aldrei senda staðfestingu á lestri";
-"Allow return receipts for some messages" = "Leyfa staðfestinu á lestri fyrir suman póst";
-"If I'm not in the To or Cc of the message" = "Ef ég er ekki í 'Til' eða 'Afrit'-reitum póstsins";
-"If the sender is outside my domain" = "Ef sendandi er fyrir utan mitt lén";
-"In all other cases" = "Í öllum öðrum tilfellum";
-
-"Never send" = "Aldrei senda";
-"Always send" = "Senda alltaf";
-"Ask me" = "Spyrja mig";
-
 /* Filters - UIxPreferences */
 "Filters" = "Síur";
 "Active" = "Kveikt";
 "Move Up" = "Færa upp";
 "Move Down" = "Færa niður";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Nafn síu:";
+"Filter name" = "Nafn síu";
 "For incoming messages that" = "Fyrir næstu mótteknu skilaboð skal";
-"match all of the following rules:" = "passa við allar eftirfarandi reglur:";
-"match any of the following rules:" = "passa við einhverja af eftirfarandi reglum:";
+"match all of the following rules" = "passa við allar eftirfarandi reglur";
+"match any of the following rules" = "passa við einhverja af eftirfarandi reglum";
 "match all messages" = "passa við öll skilaboð";
-"Perform these actions:" = "Framkvæma þessar aðgerðir:";
-
+"Perform these actions" = "Framkvæma þessar aðgerðir";
 "Subject" = "Viðfangsefni";
 "From" = "Frá";
 "To" = "Til";
@@ -247,15 +199,14 @@
 "To or Cc" = "Til eða afrit";
 "Size (Kb)" = "Stærð (Kb)";
 "Header" = "Haus";
-"Flag the message with:" = "Merkja skilaboðin með:";
+"Flag the message with" = "Merkja skilaboðin með";
 "Discard the message" = "Henda þessu bréfi";
-"File the message in:" = "Geyma bréfið í:";
+"File the message in" = "Geyma bréfið í";
 "Keep the message" = "Halda þessu tölvubréfi";
-"Forward the message to:" = "Áframsenda bréfið til:";
-"Send a reject message:" = "Senda skilaboð um höfnun:";
+"Forward the message to" = "Áframsenda bréfið til";
+"Send a reject message" = "Senda skilaboð um höfnun";
 "Send a vacation message" = "Senda skilaboð um leyfi";
 "Stop processing filter rules" = "Stöðva frekari síun";
-
 "is under" = "er undir";
 "is over" = "er yfir";
 "is" = "er";
@@ -266,7 +217,6 @@
 "does not match" = "passar ekki við";
 "matches regex" = "passar við regex";
 "does not match regex" = "passar ekki við regex";
-
 "Seen" = "Skoðað";
 "Deleted" = "Eytt";
 "Answered" = "Svarað";

@@ -27,16 +27,11 @@ Tentative = "Foreløpig";
 "Delegated to" = "Delegert til";
 "Update status in calendar" = "Oppdater status i kalenderen";
 "delegated from" = "delegert fra";
-
 reply_info_no_attendee = "Du har fått svar angående en planlagt begivenhet som avsenderen ikke er invitert til.";
 reply_info = "Du har fått et svar angående en begivenhet invitert av deg.";
-
 "to" = "til";
-
 "Untitled" = "Ingen emne";
-
 "Size" = "Størrelse";
-
 "Digital signature is not valid" = "Digital signatur er ikke gyldig";
 "Message is signed" = "Meldingen er signert";
 "Subject" = "Emne";

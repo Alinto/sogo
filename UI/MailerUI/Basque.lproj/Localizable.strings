@@ -14,7 +14,6 @@
 "Stop"        = "Gelditu";
 "Write"       = "Idatzi";
 "Search"      = "Bilatu";
-
 "Send" = "Bidali";
 "Contacts" = "Kontaktuak";
 "Attach" = "Erantsi";
@@ -22,9 +21,7 @@
 "Options" = "Aukerak";
 "Close" = "Itxi";
 "Size" = "Tamaina";
-
 /* Tooltips */
-
 "Send this message now" = "Bidali mezu hau orain";
 "Select a recipient from an Address Book" = "Aukeratu jasotzailea Helbide-liburu batetik";
 "Include an attachment" = "Erantsi eranskin bat";
@@ -43,34 +40,24 @@
 "Unread" = "Irakurri-gabea";
 "Flagged" = "Bandera dauka";
 "Search multiple mailboxes" = "Bilatu postontzi anitzetan";
-
 /* Main Frame  */
-
 "Home"                 = "Hasiera"; 
 "Calendar"             = "Egutegia";
 "Addressbook"          = "Helbide liburua";
 "Mail"                 = "Emaila";
 "Right Administration" = "Eskubideen kudeaketa";
-
 "Help" = "Laguntza";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Ongi etorria SOGo webmail-era. Erabili ezkerreko zuhaitza zure email kontuak arakatzeko ";
-
 "Read messages"       = "Irakurri mezuak";
 "Write a new message" = "Idatzi mezu berria";
-
-"Share: " = "Partekatu:";
-"Account: " = "Kontua:";
-"Shared Account: " = "Partekatutako kontua:";
-
+"Share" = "Partekatu";
+"Account" = "Kontua";
+"Shared Account" = "Partekatutako kontua";
 /* acls */
 "Access rights to" = "Atzipen baimenak honi";
 "For user" = "Erabiltzailearentzat";
-
 "Any Authenticated User" = "Autentifikatutako edozein erabiltzaile";
-
 "List and see this folder" = "Zerrendatu eta ikuskatu karpeta hau";
 "Read mails from this folder" = "Irakurri karpeta honetako mezuak";
 "Mark mails read and unread" = "Markatu mezuak irakurrita eta irakurri gabeko gisa";
@@ -83,14 +70,10 @@
 "Expunge this folder" = "Suntsitu karpeta honetako mezuak";
 "Export This Folder" = "Esportatu karpeta hau";
 "Modify the acl of this folder" = "Karpeta honen ACL-ak aldatu";
-
 "Saved Messages.zip" = "Gorde Messages.zip";
-
 "Update" = "Eguneratu";
 "Cancel" = "Ezeztatu";
-
 /* Mail edition */
-
 "From"          = "Nork";
 "Subject"       = "Gaia";
 "To"            = "Nori";
@@ -99,94 +82,71 @@
 "Reply-To"	    = "Erantzun-honi";
 "Add address"   = "Gehitu helbidea";
 "Body"          = "Gorputza";
-
 "Open" = "Ireki";
 "Select All" = "Denak aukeratu";
 "Attach Web Page..." = "Erantsi Web Orria ...";
 "file" = "fitxategia";
 "files" = "fitxategiak";
 "Save all" = "Dena gorde";
-
 "to"            = "Nori";
 "cc"            = "Kopia";
 "bcc"           = "Izkutuko kopia";
-
 "Edit Draft..." = "Aldatu zirriborroa...";
 "Load Images" = "Kargatu irudiak";
-
 "Return Receipt" = "Jasotze agiria";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Mezu honen bidaltzaileak mezua irakurtzen duzunean jakinarazia izan nahi du. Jakinarazpena bidali nahi diozu?";
 "Return Receipt (displayed) - %@"= "Jasotze agiria (bistaratua) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Honako hau zuk %@-ri bidalitako mezuaren jasotze-agiria da.\n\nOharra: Jasotze agiri honek mezua jasotzailearen ordenagailuan bistaratu dela bakarrik ziurtatzen du. Ezin da ziurtatu jasotzaileak mezuaren edukia irakurri edota ulertu duenik.";
-
 "Priority" = "Lehentasuna";
 "highest" = "Altuena";
 "high" = "Altua";
 "normal" = "Arrunta";
 "low" = "Baxua";
 "lowest" = "Baxuena";
-
 "This mail is being sent from an unsecure network!" = "Mezu hau sare ez-seguru bat erabiliz hari zara bidaltzen!";
-
 "Address Book:" = "Helbide Liburua";
-"Search For:" = "Bilatu hau:";
-
+"Search For" = "Bilatu hau";
 /* Popup "show" */
-
 "all"     = "denak";
 "read"    = "irakurria";
 "unread"  = "irakurri-gabea";
 "deleted" = "ezabatua";
 "flagged" = "bandera dauka";
-
 /* MailListView */
-
 "Sender" = "Bidaltzailea";
 "Subject or Sender" = "Gaia edo Bidaltzailea";
 "To or Cc" = "Nori edo kopia";
 "Entire Message" = "Mezu osoa";
-
 "Date"          = "Data";
 "View"          = "Ikuskatu";
 "All"           = "Denak";
 "No message"    = "Mezurik ez";
 "messages"      = "mezuak";
-
 "first"         = "Lehenengoa";
 "previous"      = "Aurrekoa";
 "next"          = "Hurrengoa";
 "last"          = "Azkena";
-
 "msgnumber_to"  = "nori";
 "msgnumber_of"  = "nork";
-
 "Mark Unread" = "Markatu irakurri-gabeko gisa";
 "Mark Read"   = "Markatu irakurri gisa";
-
 "Untitled" = "Izenburu gabe";
-
 /* Tree */
-
 "SentFolderName"   = "Bidalia";
 "TrashFolderName"  = "Zakarrontzia";
 "InboxFolderName"  = "Sarrera";
 "DraftsFolderName" = "Zirriborroak";
 "SieveFolderName"  = "Iragazkiak";
 "Folders"          = "Karpetak"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Mugitu &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Gehitu helbide liburuan...";
 "Compose Mail To" = "Idatzi mezua honi";
 "Create Filter From Message..." = "Sortu iragazkia mezua erabiliz...";
-
 /* Image Popup menu */
 "Save Image" = "Gorde mezua";
 "Save Attachment" = "Gorde eranskina";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Ireki \"mezu berri\" leihoan";
 "Copy Folder Location" = "Kopiatu karpetaren kokapena";
@@ -203,12 +163,10 @@
 "Get Messages for Account" = "Eskuratu kontu honen mezuak";
 "Properties..." = "Ezaugarriak...";
 "Delegation..." = "Ordezkaritza ...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Bidalitako mezuak";
 "Drafts" = "Zirriborroak";
 "Deleted Messages" = "Ezabatutako mezuak";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Ireki mezua leiho berrian";
 "Reply to Sender Only" = "Erantzun bidaltzaileari soilik";
@@ -224,12 +182,9 @@
 "Print..." = "Inprimatu...";
 "Delete Message" = "Ezabatu mezua";
 "Delete Selected Messages" = "Ezabatu aukeratutako mezuak";
-
 "This Folder" = "Karpeta hau";
-
 /* Label popup menu */
 "None" = "Bat ere ez";
-
 /* Mark popup menu */
 "As Read" = "Irakurri gisa";
 "Thread As Read" = "Haria irakurri gisa";
@@ -239,7 +194,6 @@
 "As Junk" = "Zabor-posta gisa";
 "As Not Junk" = "ez zaborra gisa";
 "Run Junk Mail Controls" = "Exekutatu zabor-posta kontrolak";
-
 "Search messages in" = "Bilatu mezuak hemen";
 "Search" = "Bilatu";
 "Search subfolders" = "Bilatu azpikarpetak";
@@ -251,23 +205,19 @@
 "results found" = "emaitza topatu dira";
 "result found" = "emaitza topatu da";
 "Please specify at least one filter" = "Mesedez, zehaztu gutxienez iragazki bat";
-
 /* Folder operations */
-"Name :" = "Izena:";
+"Name" = "Izena";
 "Enter the new name of your folder"
  = "Idatzi zure karpetaren izen berria";
 "Do you really want to move this folder into the trash ?"
  = "Ziur zaude karpeta hau zakarrontzira mugitu nahi duzula?";
 "Operation failed" = "Eragiketak huts egin du";
-
 "Quota" = "Kuota";
 "quotasFormat" = "%{0}% erabilia %{1}-n MB ";
-
 "Please select a message." = "Mesedez, aukeratu mezu bat.";
 "Please select a message to print." = "Mesedez, aukeratu inprimatzeko mezu bat.";
 "Please select only one message to print." = "Mesdez, aukeratu inprimatzekom mezu bakarra.";
 "The message you have selected doesn't exist anymore." = "Aukertutako mezua jada ez da existitzen";
-
 "The folder with name \"%{0}\" could not be created."
 = "\"%{0}\" izeneko karpeta ezin izan da sortu";
 "This folder could not be renamed to \"%{0}\"."
@@ -278,31 +228,24 @@
 = "Zakarrontzia ezin izan da hustu.";
 "The folder functionality could not be changed."
 = "Karpetaren funtzionalitatea ezin izan da aldatu.";
-
 "You need to choose a non-virtual folder!" = "Karpeta ez-birtual bat aukeratu behar duzu!";
-
 "Moving a message into its own folder is impossible!"
 = "Mezu bat bere karpeta berera ezin da mugitu!";
 "Copying a message into its own folder is impossible!"
 = "Mezu bat ezin da bere karpetara kopiatu!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Mezuak ezin izan dira zakarrontzira mugitu. Berehala ezabatu nahi dituzu?";
-
 /* Message editing */
 "error_missingsubject" = "Mezuak ez dauka gairik. Ziur zaude horrela bidali nahi duzula?";
 "error_missingrecipients" = "Mesedez, zehaztu gutxienez jasotzaile bat.";
 "Send Anyway" = "Bidali hala ere";
-"Error while saving the draft:" = "Errorea zirriborroa gordetzerakoan:";
+"Error while saving the draft" = "Errorea zirriborroa gordetzerakoan";
 "Error while uploading the file \"%{0}\":" = "Errorea \"%{0}\" fitxategia igotzerakoan:";
 "There is an active file upload. Closing the window will interrupt it." = "Fitxategi igoera aktibo bat dago. Leihoa ixteak etengo du.";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Ezin izan da mezua bidali: jasotzaile guztiak baliogabeak dira.";
-"cannot send message (smtp) - recipients discarded:" = "Ezin izan da mezua bidali. Ondorengo jasotzaileak ez dira baliozkoak:";
+"cannot send message (smtp) - recipients discarded" = "Ezin izan da mezua bidali. Ondorengo jasotzaileak ez dira baliozkoak";
 "cannot send message: (smtp) error when connecting" = "Ezin izan da mezua bidali: errorea SMTP zerbitzarira konektatzean.";
-
 /* Contacts list in mail editor */
 "Email" = "Emaila";
-"Name" = "Izena";

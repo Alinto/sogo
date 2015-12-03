@@ -6,24 +6,19 @@ vevent_class2 = "(Конфіденційна подія)";
 vtodo_class0 = "(Спільне завдання)";
 vtodo_class1 = "(Особисте завдання)";
 vtodo_class2 = "(Конфіденційне завдання)";
-
 /* Receipts */
 "Title:" = "Назва:";
 "Start:" = "Початок:";
 "End:" = "Кінець:";
-
 "Receipt: users invited to a meeting" = "Повідомлення: запрошення на зустріч";
 "You have invited the following attendees(s):" = "Ви запросили учасника(ів):";
 "... to attend the following event:" = "... взяти участь у події:";
-
 "Receipt: invitation updated" = "Повідомлення: оновлено статус запрошення";
 "The following attendees(s):" = "Учасника(ів):";
 "... have been notified of the changes to the following event:" = "... було повідомлено про зміни в події:";
-
 "Receipt: attendees removed from an event" = "Повідомлення: учасників вилучено з участі в події";
 "You have removed the following attendees(s):" = "Ви вилучити учасника(ів):";
 "... from the following event:" = "... з участі в події:";
-
 /* IMIP messages */
 "startDate_label" = "Початок";
 "endDate_label" = "Кінець";
@@ -31,20 +26,17 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "location_label" = "Місце";
 "summary_label" = "Резюме:";
 "comment_label" = "Коментар:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Запрошення на подію: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(надіслано %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} запросив Вас до участі у %{Summary}.⏎ ⏎ Початок: %{StartDate}⏎ Кінець: %{EndDate}⏎ Опис: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} запросив вас до %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Подію скасовано: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} скасував цю подію: %{Summary}.⏎ ⏎ Початок: %{StartDate}⏎ Кінець: %{EndDate}⏎ Опис: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} скасував подію: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Запрошення до участі у \"%{Summary}\" %{OldStartDate} було змінено";
@@ -54,7 +46,6 @@ vtodo_class2 = "(Конфіденційне завдання)";
 = "Змінились такі умови \"%{Summary}\" зустрічі:";
 "Please accept or decline those changes."
 = "Будь ласка, прийміть або відхіліть ці зміни.";
-
 /* Reply */
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} прийняв Ваше запрошення на участь у події.";
@@ -64,6 +55,5 @@ vtodo_class2 = "(Конфіденційне завдання)";
 = "%{Attendee} %{SentByText} пененаправив запрошення %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} поки не визначився з участю в події.";
-
 /* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Максимальне число одночасного резервування (%{NumberOfSimultaneousBookings}) для ресурсу досягло \"%{Cn} %{SystemEmail}\".";

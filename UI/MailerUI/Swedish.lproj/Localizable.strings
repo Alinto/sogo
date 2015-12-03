@@ -13,16 +13,13 @@
 "Print"       = "Skriv ut";
 "Stop"        = "Stopp";
 "Write"       = "Skriv";
-
 "Send" = "Skicka";
 "Contacts" = "Kontakter";
 "Attach" = "Bifoga";
 "Save" = "Spara";
 "Options" = "Alternativ";
 "Size" = "Storlek";
-
 /* Tooltips */
-
 "Send this message now" = "Skicka meddelandet nu";
 "Select a recipient from an Address Book" = "Välj en mottagare ur en adressbok";
 "Include an attachment" = "Lägg till en bilaga";
@@ -40,32 +37,23 @@
 "Attachment" = "Bilagor";
 "Unread" = "Oläst";
 "Flagged" = "Märkt";
-
 /* Main Frame  */
-
 "Home"                 = "Hem"; 
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbok";
 "Mail"                 = "E-post";
 "Right Administration" = "Rättighetsadministration";
-
 "Help" = "Hjälp";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Välkommen till SOGo Mailer. Använd mappvisaren på vänster sida för att bläddra i dina e-post konton!";
-
 "Read messages"       = "Läs meddelanden";
 "Write a new message" = "Skriv ett nytt meddelande";
-
-"Share: " = "Dela ut: ";
-"Account: " = "Konto: ";
-"Shared Account: " = "Delat konto: ";
-
+"Share" = "Dela ut";
+"Account" = "Konto";
+"Shared Account" = "Delat konto";
 /* acls */
 "Default Roles" = "Standardroller";
-"User rights for:" = "Användarrättigheter till:";
-
+"User rights for" = "Användarrättigheter till";
 "List and see this folder" = "Lista och titta i mappen";
 "Read mails from this folder" = "Läsa meddelanden i mappen";
 "Mark mails read and unread" = "Markera meddelanden som lästa och olästa";
@@ -77,14 +65,10 @@
 "Erase mails from this folder" = "Radera meddelanden från mappen";
 "Expunge this folder" = "Radera mappen";
 "Modify the acl of this folder" = "Ändra åtkomsträttigheter på mappen";
-
 "Saved Messages.zip" = "Sparat Messages.zip";
-
 "Update" = "Uppdatera";
 "Cancel" = "Avbryt";
-
 /* Mail edition */
-
 "From"          = "Från";
 "Subject"       = "Ämne";
 "To"            = "Till";
@@ -92,93 +76,70 @@
 "Bcc"           = "Dold kopia";
 "Reply-To"	= "Svar-till";
 "Add address"   = "Lägg till adress";
-
-"Attachments:" = "Bilagor:";
+"Attachments" = "Bilagor";
 "Open" = "Öppna";
 "Select All" = "Välj alla";
 "Attach Web Page..." = "Bifoga webbsida...";
 "Attach File(s)..." = "Bifoga fil(er)...";
-
 "to"            = "Till";
 "cc"            = "Kopia";
 "bcc"           = "Dold kopia";
-
 "Addressbook"   = "Adressbok";
-
 "Edit Draft..." = "Redigera utkast...";
 "Load Images" = "Ladda bilder";
-
 "Return Receipt" = "Mottagningskvitto";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Avsändaren av detta meddelande har begärt att få bli underrättad när du läser detta meddelande. Vill du underrätta avsändaren?";
 "Return Receipt (displayed) - %@"= "Mottagningskvitto (visad) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Detta är ett mottagningskvitto för meddelandet du skickade till %@.\n\nNotera: Detta mottagningskvitto bekräftar bara att meddelandet visades på mottagarens dator. Det finns ingen garanti att mottagaren har läst eller förstått innehållet i meddelandet.";
-
 "Priority" = "Prioritet";
 "highest" = "Högst";
 "high" = "Hög";
 "normal" = "Normal";
 "low" = "Låg";
 "lowest" = "Lägst";
-
 "This mail is being sent from an unsecure network!" = "Meddelandet skickas över en osäker nätverksförbindelse!";
-
 /* Popup "show" */
-
 "all"     = "alla";
 "read"    = "läst";
 "unread"  = "oläst";
 "deleted" = "borttaget";
 "flagged" = "märkt";
-
 /* MailListView */
-
 "Sender" = "Avsändare";
 "Subject or Sender" = "Ämne eller avsändare";
 "To or Cc" = "Till eller kopia";
 "Entire Message" = "Hela meddelandet";
-
 "Date"          = "Datum";
 "View"          = "Visa";
 "All"           = "Alla";
 "Unread"        = "Oläst";
 "No message"    = "Inga meddelanden";
 "messages"      = "meddelanden";
-
 "first"         = "Första";
 "previous"      = "Föregående";
 "next"          = "Nästa";
 "last"          = "Sista";
-
 "msgnumber_to"  = "till";
 "msgnumber_of"  = "av";
-
 "Mark Unread" = "Märk som oläst";
 "Mark Read"   = "Märk som läst";
-
 "Untitled" = "Ämne saknas";
-
 /* Tree */
-
 "SentFolderName"   = "Skickat";
 "TrashFolderName"  = "Papperskorgen";
 "InboxFolderName"  = "Inkorgen";
 "DraftsFolderName" = "Utkast";
 "SieveFolderName"  = "Filter";
 "Folders"          = "Mappar"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Flytta &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Lägg till i adressbok...";
 "Compose Mail To" = "Skriv meddelande till";
 "Create Filter From Message..." = "Skapa filter från ett meddelande...";
-
 /* Image Popup menu */
 "Save Image" = "Spara bild";
 "Save Attachment" = "Spara bilaga";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Öppna i nytt fönster";
 "Copy Folder Location" = "Kopiera mappens sökväg";
@@ -195,12 +156,10 @@
 "Get Messages for Account" = "Hämta nya meddelanden för konto";
 "Properties..." = "Egenskaper...";
 "Delegation..." = "Delegera meddelanden...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Skickade meddelanden";
 "Drafts" = "Utkast";
 "Deleted Messages" = "Borttagna meddelanden";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Öppna meddelande i nytt fönster";
 "Reply to Sender Only" = "Svara endast avsändaren";
@@ -217,12 +176,9 @@
 "Print..." = "Skriv ut...";
 "Delete Message" = "Ta bort meddelande";
 "Delete Selected Messages" = "Ta bort markerade meddelanden";
-
 "This Folder" = "Den här mappen";
-
 /* Label popup menu */
 "None" = "Inget";
-
 /* Mark popup menu */
 "As Read" = "Som läst";
 "Thread As Read" = "Hela tråden som läst";
@@ -232,24 +188,19 @@
 "As Junk" = "Som skräp";
 "As Not Junk" = "Som icke skräp";
 "Run Junk Mail Controls" = "Kör skräppostkontroll";
-
 /* Folder operations */
-"Name :" = "Namn: ";
+"Name" = "Namn";
 "Enter the new name of your folder"
  = "Skriv namnet på mappen";
 "Do you really want to move this folder into the trash ?"
  = "Vill du verkligen flytta mappen till papperskorgen?";
 "Operation failed" = "Operationen misslyckades";
-
 "Quota" = "Disktilldelning";
 "quotasFormat" = "%{0}% använt av %{1} MB";
-
 "Please select a message." = "Markera ett meddelande.";
 "Please select a message to print." = "Markera meddelandet som ska skrivas ut.";
 "Please select only one message to print." = "Markera bara ett meddelande som ska skrivas ut.";
 "The message you have selected doesn't exist anymore." = "Meddelandet du markerat finns inte längre.";
-
-
 "The folder with name \"%{0}\" could not be created."
 = "Mappen \"%{0}\" kunde inte skapas.";
 "This folder could not be renamed to \"%{0}\"."
@@ -260,27 +211,20 @@
 = "Papperskorgen kunde inte tömmas.";
 "The folder functionality could not be changed."
 = "Mappens funktion kunde inte ändras.";
-
 "You need to choose a non-virtual folder!" = "Du måste välja en icke virtuell mapp!";
-
 "Moving a message into its own folder is impossible!"
 = "Det är inte möjligt att flytta ett meddelande till samma mapp!";
 "Copying a message into its own folder is impossible!"
 = "Det är inte möjligt att kopiera ett meddelande till samma mapp!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Meddelandena kunde inte flyttas till papperskorgen. Vill du ta bort dem direkt?";
-
 /* Message editing */
 "error_validationfailed" = "Validering har misslyckats";
 "error_missingsubject" = "Ämne saknas";
 "error_missingrecipients" = "Ingen mottagare är angiven";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Meddelandet kan inte skickas: alla mottagaradresserna är felaktiga.";
-"cannot send message (smtp) - recipients discarded:" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga:";
+"cannot send message (smtp) - recipients discarded" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga";
 "cannot send message: (smtp) error when connecting" = "Meddelandet kan inte skickas: ett fel uppstod i uppkopplingen mot SMTP servern.";
-
-"Name" = "Namn";
 "Email" = "E-post";

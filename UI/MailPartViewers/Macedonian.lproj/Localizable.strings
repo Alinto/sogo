@@ -29,16 +29,11 @@ Tentative = "Условно";
 "Delegated to" = "Делегирано на";
 "Update status in calendar" = "Освежи го статусот во календарот";
 "delegated from" = "делегирано од";
-
 reply_info_no_attendee = "Вие добивте одговор на закажан настан но испраќачот на одговорот не е учесник.";
 reply_info = "Ова е одговор на покана за настан креиран од вас.";
-
 "to" = "до";
-
 "Untitled" = "Без наслов";
-
 "Size" = "Големина";
-
 "Digital signature is not valid" = "Електронскиот потпис е невалиден";
 "Message is signed" = "Пораката е потпишана";
 "Subject" = "Тема";

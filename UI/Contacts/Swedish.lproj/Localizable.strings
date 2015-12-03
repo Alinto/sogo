@@ -4,7 +4,6 @@
 "Address" = "Adress";
 "Photos" = "Foton";
 "Other" = "Annat";
-
 "Address Books" = "Adressböcker";
 "Addressbook" = "Adressboken";
 "Addresses" = "Adresser";
@@ -39,29 +38,23 @@
 "invaliddatewarn" = "The specified date is invalid.";
 "new" = "ny";
 "Preferred Phone" = "Föredragen telefon";
-
 "Move To" = "Flytta";
 "Copy To" = "Kopiera";
-"Add to:" = "Addera:";
-
+"Add to" = "Addera";
 /* Tooltips */
-
 "Create a new address book card" = "Skapa ett nytt adresskort";
 "Create a new list" = "Skapa en ny utskickslista";
 "Edit the selected card" = "Redigera markerat adresskort";
 "Send a mail message" = "Skicka ett meddelande";
 "Delete selected card or address book" = "Ta bort markerat adresskort eller adressbok";
 "Reload all contacts" = "Ladda om alla kontakter";
-
 "htmlMailFormat_UNKNOWN" = "Okänt";
 "htmlMailFormat_FALSE" = "Oformaterad Text";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Namn eller e-post";
 "Category" = "Kategori";
 "Personal Addressbook" = "Personlig adressbok";
 "Search in Addressbook" = "Sök i adressbok";
-
 "New Card" = "Nytt adresskort";
 "New List" = "Ny utskickslista";
 "Properties" = "Egenskaper";
@@ -71,69 +64,49 @@
 "Instant Message" = "Direktmeddelande";
 "Add..." = "Lägg till...";
 "Remove" = "Ta bort";
-
 "Please wait..." = "Var god vänta...";
 "No possible subscription" = "Prenumeration är ej möjlig";
-
 "Preferred" = "Föredragen";
 "Card for %@" = "Adresskort för %@";
 "Display" = "Visa";
 "Display Name" = "Visningsnamn";
-"Email:" = "E-post:";
-"Additional Email:" = "Ytterligare e-post:";
-
+"Additional Email" = "Ytterligare e-post";
 "Phone Number" = "Telefonnummer";
-"Prefers to receive messages formatted as:" = "Föredrar att få mottagna meddelanden kodade som:";
-"Screen Name:" = "Skärmnamn:";
-"Categories:" = "Kategorier:";
-
-"First:" = "Förnamn:";
-"Last:" = "Efternamn:";
+"Prefers to receive messages formatted as" = "Föredrar att få mottagna meddelanden kodade som";
+"Categories" = "Kategorier";
+"First" = "Förnamn";
+"Last" = "Efternamn";
 "Nickname" = "Kortnamn";
-
 "Telephone" = "Telefonnummer";
-"Work:" = "Arbete:";
-"Home:" = "Hem:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mobiltelefon:";
-"Pager:" = "Personsökare:";
-
+"Work" = "Arbete";
+"Mobile" = "Mobiltelefon";
+"Pager" = "Personsökare";
 /* categories */
 "contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
-"Categories" = "Kategorier";
 "New category" = "Ny kategori";
-
 /* adresses */
 "Title" = "Titel";
-"Service:" = "Befattning:";
-"Company:" = "Företag:";
-"Department:" = "Avdelning:";
-"Organization:" = "Organisation:";
-"Address:" = "Adress:";
+"Service" = "Befattning";
+"Company" = "Företag";
+"Department" = "Avdelning";
 "City" = "Stad ";
-"State_Province:" = "Landsdel/Stat:";
-"ZIP_Postal Code:" = "Postnummer:";
+"State_Province" = "Landsdel/Stat";
+"ZIP_Postal Code" = "Postnummer";
 "Country" = "Land";
-"Web Page:" = "Webbplats:";
-
-"Work" = "Arbete";
+"Web Page" = "Webbplats";
 "Other Infos" = "Övrigt";
-
 "Note" = "Anteckning";
-"Timezone:" = "Tidzon:";
+"Timezone" = "Tidzon";
 "Birthday" = "Födelsedag";
 "Birthday (yyyy-mm-dd)" = "Födelsedag (yyyy-mm-dd)";
-"Freebusy URL:" = "Ledig/upptagen URL:";
-
+"Freebusy URL" = "Ledig/upptagen URL";
 "Add as..." = "Lägg till som...";
 "Recipient" = "Mottagare";
 "Carbon Copy" = "Kopia";
 "Blind Carbon Copy" = "Dold kopia";
-
 "New Addressbook..." = "Ny adressbok...";
 "Subscribe to an Addressbook..." = "Prenumrera på en adressbok...";
 "Remove the selected Addressbook" = "Ta bort markerad adressbok";
-
 "Name of the Address Book" = "Namn på adressbok";
 "Are you sure you want to delete the selected address book?"
 = "Är du säker på att du vill ta bort markerad adressbok?";
@@ -141,25 +114,18 @@
 = "Du kan inte ta bort eller avbryta prenumration på en publik adressbok.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Du kan inte ta bort eller avbryta prenumration på en personlig adressbok.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Är du säker på att du vill ta bort markerade kontakter?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Du kan inte ta bort adresskortet \"%{0}\".";
-
 "Address Book Name" = "Namn på adressbok";
-
 "You cannot subscribe to a folder that you own!"
 = "Du kan inte prenumrera på en mapp som du äger.";
 "Unable to subscribe to that folder!"
 = "Du kan inte prenumrera på mappen.";
-
-"User rights for:" = "Användarrättigheter för:";
-
+"User rights for" = "Användarrättigheter för";
 "Any Authenticated User" = "Alla autentiserade användare";
 "Public Access" = "Allmän åtkomst";
-
 "This person can add cards to this addressbook."
 = "Personen kan lägga till addresskort i adressboken.";
 "This person can edit the cards of this addressbook."
@@ -170,19 +136,14 @@
 = "Personen kan visa addresskort i adressboken.";
 "This person can erase cards from this addressbook."
 = "Personen kan radera addresskort i adressboken.";
-
 "The selected contact has no email address."
 = "Markerad kontakt har ingen e-postadress.";
-
 "Please select a contact." = "Markera en kontakt.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Du kan inte skriva i den här adressboken.";
 "Forbidden" = "Du kan inte skriva i den här adressboken.";
 "Invalid Contact" = "Markerad kontakt finns inte längre.";
 "Unknown Destination Folder" = "Den markerade adressboken finns inte längre.";
-
 /* Lists */
 "List details" = "Information om utskickslistan";
 "List name" = "Namn på utskickslistan";
@@ -201,5 +162,4 @@
 "An error occured while importing contacts." = "Ett fel inträffade under importen av kontaker.";
 "No card was imported." = "Inga adresskort importerades.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adresskorten importerades till adressboken.";
-
 "Reload" = "Ladda om";

@@ -4,7 +4,6 @@
 "Address" = "Helbidea";
 "Photos" = "Argazkiak";
 "Other" = "Bestelakoak";
-
 "Address Books" = "Helbide Liburuak";
 "Addressbook" = "helbideliburua";
 "Addresses" = "Helbideak";
@@ -38,29 +37,23 @@
 "invalidemailwarn" = "Idatzitako posta elektronikoa baliogabea da";
 "new" = "berria";
 "Preferred Phone" = "Hobetsitako telefonoa";
-
 "Move To" = "Mugitu hona";
 "Copy To" = "Kopiatu hona";
-"Add to:" = "Gehitu hona:";
-
+"Add to" = "Gehitu hona";
 /* Tooltips */
-
 "Create a new address book card" = "Sortu helbide liburu txartel berria";
 "Create a new list" = "Sortu zerrenda berria";
 "Edit the selected card" = "Aldatu aukeratutako txartela";
 "Send a mail message" = "Bidali mezua";
 "Delete selected card or address book" = "Ezabatu hautatutako txartela edo helbide liburua";
 "Reload all contacts" = "Kontaktu guztiak birkargatu";
-
 "htmlMailFormat_UNKNOWN" = "Ezezaguna";
 "htmlMailFormat_FALSE" = "Testu hutsa";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Izena edo email helbidea";
 "Category" = "Kategoria";
 "Personal Addressbook" = "Helbide-liburu pertsonala";
 "Search in Addressbook" = "Bilatu Helbide-liburuan";
-
 "New Card" = "Txartel berria";
 "New List" = "Zerrenda berria";
 "Edit" = "Aldatu";
@@ -71,68 +64,53 @@
 "Instant Message" = "Berehalako mezua";
 "Add..." = "Gehitu...";
 "Remove" = "Ezabatu";
-
 "Please wait..." = "Mesedez itxaron...";
 "No possible subscription" = "Ez dago harpidetzarako aukerarik";
-
 "Preferred" = "Hobetsitakoa";
 "Display" = "Bistaratzea";
 "Display Name" = "Erakusteko izena";
-"Email:" = "Emaila:";
-"Additional Email:" = "Beste emaila:";
-
+"Additional Email" = "Beste emaila";
 "Phone Number" = "Telefono zenbakia";
-"Prefers to receive messages formatted as:" = "Nahiago du mezuak honako formatuan jasotzea:";
+"Prefers to receive messages formatted as" = "Nahiago du mezuak honako formatuan jasotzea";
 "Screen Name:" = "Pantailaren izena";
-"Categories:" = "Kategoriak:";
-
-"First:" = "Lehenengoa:";
-"Last:" = "Azkena:";
+"Categories" = "Kategoriak";
+"First" = "Lehenengoa";
+"Last" = "Azkena";
 "Nickname" = "Goitizena";
-
 "Telephone" = "Telefonoa:";
-"Work:" = "Lana:";
-"Home:" = "Etxea:";
-"Fax:" = "Fax-a:";
-"Mobile:" = "Mugikorra:";
-"Pager:" = "Orrikatzailea:";
-
+"Work" = "Lana";
+"Home" = "Etxea";
+"Fax" = "Fax-a";
+"Mobile" = "Mugikorra";
+"Pager" = "Orrikatzailea";
 /* categories */
 "contacts_category_labels" = "Lankide, Lehiakide, Bezero, Lagun, Familia, Negoziokidea, Hornitzailea, Prentsa, VIP";
-"Categories" = "Kategoriak";
 "New category" = "Kategoria berria";
-
 /* adresses */
 "Title" = "Izenburua";
-"Service:" = "Zerbitzua:";
+"Service" = "Zerbitzua";
 "Company:" = "Enpresa";
 "Department:" = "Saila";
-"Organization:" = "Saila:";
+"Organization" = "Saila";
 "Address:" = "Helbidea";
 "City" = "Herria";
 "State_Province:" = "Estatua / Probintzia";
 "ZIP_Postal Code:" = "Posta kodea";
 "Country" = "Herrialdea";
 "Web Page:" = "Web orria";
-
-"Work" = "Lana";
 "Other Infos" = "Bestelako informazioak";
-
 "Note" = "Ohar";
-"Timezone:" = "Ordu-zona:";
+"Timezone" = "Ordu-zona";
 "Birthday" = "Jaiotze data";
 "Birthday (yyyy-mm-dd)" = "Jaiotze data (uuuu-hh-ee)";
-"Freebusy URL:" = "LibreLanpetu URL-a:";
-
+"Freebusy URL" = "LibreLanpetu URL-a";
 "Add as..." = "Gehitu honela...";
 "Recipient" = "Jasotzailea";
 "Carbon Copy" = "Kopia";
 "Blind Carbon Copy" = "Ezkutuko kopia";
-
 "New Addressbook..." = "Helbideliburu berria";
 "Subscribe to an Addressbook..." = "Harpidetu helbide liburu bat...";
 "Remove the selected Addressbook" = "Ezabatu aukeratutako helbide-liburua";
-
 "Name of the Address Book" = "Helbide-liburuaren izena";
 "Are you sure you want to delete the selected address book?"
 = "Ziur zaude aukeratutako helbide-lburua ezabatu nahi duzula?";
@@ -140,27 +118,19 @@
 = "Helbide-liburu publiko bat ezin duzu ezabatu edo harpidetza kendu.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ezin duzu ezabatu edo harpidetza kendu zure helbide-liburu pertsonala.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Ziur zaude aukeratutako kontaktuak ezabatu nahi dituzula?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Ezin duzu \"%{0}\"-en txartela ezabatu.";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Ezin duzu zure karpeta bat harpidetu.";
 "Unable to subscribe to that folder!"
 = "Ezin da karpeta hori harpidetu.";
-
 /* acls */
 "Access rights to" = "Atzipen baimenak honi";
 "For user" = "Erabiltzailearentzat";
-
 "Any Authenticated User" = "Autentifikatutako edozein erabiltzaile";
 "Public Access" = "Atzipen publikoa";
-
 "This person can add cards to this addressbook."
 = "Pertsona honek txartelak gehitu ditzake helbide liburu honetan.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +141,14 @@
 = "Pertsona honek helbide-liburu honetako txartelak irakurri ditzake.";
 "This person can erase cards from this addressbook."
 = "Pertsona honek helbide-liburu honetako txartelak ezabatu ditzake.";
-
 "The selected contact has no email address."
 = "Aukeratutako kontaktuak ez dauka email helbiderik.";
-
 "Please select a contact." = "Mesedez, aukeratu kontaktu bat.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Ezin duzu helbide liburu honetan idatzi.";
 "Forbidden" = "Ezin duzu helbide liburu honetan idatzi.";
 "Invalid Contact" = "Aukeratutako kontaktua jada ez da existitzen.";
 "Unknown Destination Folder" = "Aukeratutako helburu helbide-liburua jada ez da existitzen.";
-
 /* Lists */
 "List details" = "Zerrendaren xehetasunak";
 "List name" = "Zerrendaren izena";
@@ -204,12 +169,9 @@
 "An error occured while importing contacts." = "Errorea gertatu da txartelak inportatzean.";
 "No card was imported." = "Ez da txartelik inportatu.";
 "A total of %{0} cards were imported in the addressbook." = "Guztira %{0} txartel inportatu dira helbide liburuan.";
-
 "Reload" = "Birkargatu";
-
 /* Properties window */
-"Address Book Name:" = "Helbide-Liburuaren izena:";
+"Address Book Name" = "Helbide-Liburuaren izena";
 "Links to this Address Book" = "Helbide liburu honetarako estekak";
 "Authenticated User Access" = "Autentifikatutako erabiltzaileentzako atzipena";
-"CardDAV URL: " = "CardDAV URL-a:";
-
+"CardDAV URL" = "CardDAV URL-a";

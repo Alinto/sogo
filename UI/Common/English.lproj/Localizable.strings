@@ -4,7 +4,6 @@
 "Save" = "Save";
 "Close" = "Close";
 "Edit User Rights" = "Edit User Rights";
-
 "Home" = "Home";
 "Calendar" = "Calendar";
 "Address Book"	= "Address Book";
@@ -12,32 +11,24 @@
 "Preferences" = "Preferences";
 "Administration" = "Administration";
 "Disconnect" = "Disconnect";
+"Toggle Menu" = "Toggle Menu";
 "Right Administration" = "Right Administration";
 "Log Console (dev.)" = "Log Console (dev.)";
-
 "User" = "User";
 "Vacation message is enabled" = "Vacation message is enabled";
-
 "Help" = "Help";
-
 "noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
 "noJavascriptRetry" = "Retry";
-
-"Owner:" = "Owner:";
+"Owner" = "Owner";
 "Publish the Free/Busy information" = "Publish the Free/Busy information";
-
 "Add..." = "Add...";
 "Remove" = "Remove";
-
 "Subscribe User" = "Subscribe User";
-
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";
 "Any user not listed above" = "Any user not listed above";
 "Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
-
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?";
 "Give Access" = "Give Access";
 "Keep Private" = "Keep Private";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Unable to subscribe to that folder!";
@@ -70,17 +60,14 @@
         = "You cannot create a list in a shared address book.";
 "Warning" = "Warning";
 "Can't contact server" = "An error occurred while contacting the server. Please try again later.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "You are not allowed to access this module or this system. Please contact your system administrator.";
 "You don't have the required privileges to perform the operation."
 = "You don't have the required privileges to perform the operation.";
-
 "noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
 "delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
-
 "Snooze for " = "Snooze for ";
 "5 minutes" = "5 minutes";
 "10 minutes" = "10 minutes";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 minutes";
 "1 hour" = "1 hour";
 "1 day" = "1 day";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancel";
 "Yes" = "Yes";
 "No" = "No";
-
 /* alarms */
-"Reminder:" = "Reminder:";
-"Start:" = "Start:";
-"Due Date:" = "Due Date:";
-"Location:" = "Location:";
-
+"Reminder" = "Reminder";
+"Start" = "Start";
+"Due Date" = "Due Date";
+"Location" = "Location";
 /* mail labels */
 "Important" = "Important";
 "Work" = "Work";
 "Personal" = "Personal";
 "To Do" = "To Do";
 "Later" = "Later";
-
 "a2_Sunday" = "Su";
 "a2_Monday" = "Mo";
 "a2_Tuesday" = "Tu";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "Th";
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Sa";
+"Access Rights" = "Access Rights";
+"Add User" = "Add User";
+"Loading" = "Loading";
+"No such user." = "No such user.";
+"You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+"SOGo" = "SOGo";
+"Modules" = "Modules";

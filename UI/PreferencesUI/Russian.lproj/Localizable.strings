@@ -17,10 +17,8 @@
 "Color" = "Цвет";
 "Add" = "Добавить";
 "Delete" = "Удалить";
-
 /* contacts categories */
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер по бизнесу, Поставщик, Пресса, VIP";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
 "Auto reply message" ="Автоматически посылать этот текст каждому отправителю один раз";
@@ -35,7 +33,6 @@
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
 "End date of your auto reply must be in the future."
 = "Дата завершения вашего автоответа должна быть в будущем.";
-
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
 "Keep a copy" = "Оставлять копию";
@@ -43,37 +40,27 @@
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
-
-
 /* d & t */
 "Current Time Zone" ="Текущая временная зона";
 "Short Date Format" ="Короткий формат даты";
 "Long Date Format" ="Длинный формат даты";
 "Time Format" ="Формат времени";
-
 "default" = "Default";
-
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A %e %B %Y";
@@ -87,13 +74,11 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
-
 /* calendar */
 "Week begins on" ="Неделя начинается с";
 "Day start time" ="Рабочий день начинается в";
@@ -104,21 +89,17 @@
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
 "Play a sound when a reminder comes due" = "Проигрывать звук когда срабатывает оповещение";
 "Default reminder" ="Обычное оповещение";
-
 "firstWeekOfYear_January1" = "Начинается 1 января";
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
 "firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
-
 "Prevent from being invited to appointments" = "Не допускать приглашения на встречи";
 "White list for appointment invitations" = "Белый список для приглашений на встречи";
 "Contacts Names" = "Имена контактов";
-
 /* Default Calendar */
 "Default calendar" ="Календарь по-умолчанию";
 "selectedCalendar" = "Выбранный календарь";
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
-
 "reminder_NONE" = "Нет напоминания";
 "reminder_5_MINUTES_BEFORE" = "5 минут";
 "reminder_10_MINUTES_BEFORE" = "10 минут";
@@ -132,18 +113,15 @@
 "reminder_1_DAY_BEFORE" = "1 день назад";
 "reminder_2_DAYS_BEFORE" = "2 дня назад";
 "reminder_1_WEEK_BEFORE" = "За 1 неделю";
-
 /* Mailer */
 "Labels" = "Метки";
 "Label" = "Метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Sort messages by threads" = "Сортировать сообщения по нитям";
 "When sending mail, add unknown recipients to my" = "При отправке писем добавлять неизвестных получателей в мою";
-
 "Forward messages" = "Пересылать сообщения";
 "messageforward_inline" = "В теле письма";
 "messageforward_attached" = "Приложенным файлом";
-
 "When replying to a message" = "При ответе на сообщение";
 "replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
 "replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
@@ -156,55 +134,41 @@
 "Display remote inline images" = "Показать встроенные изображения из сети";
 "displayremoteinlineimages_never" = "Никогда";
 "displayremoteinlineimages_always" = "Всегда";
-
 "Auto save every" = "Автосохранение каждые";
 "minutes" = "минут";
-
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
-
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";
-
 "Server Name" = "Имя сервера";
 "Port" = "Порт";
 "Encryption" = "Шифрование";
 "None" = "Нет";
 "User Name" = "Имя пользователя";
-"Password" = "Пароль";
-
 "Full Name" = "Full Name";
 "Email" = "Email";
 "Reply To Email" = "Ответить на Email";
 "Signature" = "Подпись";
 "(Click to create)" = "(Click to create)";
-
-"Signature" = "Подпись";
-"Please enter your signature below:" = "Введите вашу подпись ниже:";
-
+"Please enter your signature below" = "Введите вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста укажите правильный адрес для ответа.";
-
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
-
 /* password */
 "New password" = "Новый пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
-
 /* Event+task classifications */
 "Default events classification" ="Default events classification";
 "Default tasks classification" ="Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
-
 /* Event+task categories */
 "category_none" = "Нет";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
-
 /* Default module */
 "Calendar" = "Календарь";
 "Contacts" = "Адресная книга";
@@ -212,7 +176,6 @@
 "Last" = "Последнее использование";
 "Default Module " = "Модуль по умолчанию";
 "SOGo Version" ="Версия SOGo";
-
 "Language" ="Язык";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
@@ -243,7 +206,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 "Refresh View" ="Обновить вид";
 "refreshview_manually" = "Вручную";
 "refreshview_every_minute" = "Каждую минуту";
@@ -253,7 +215,6 @@
 "refreshview_every_20_minutes" = "Каждые 20 минут";
 "refreshview_every_30_minutes" = "Каждые 30 минут";
 "refreshview_once_per_hour" = "Раз в час";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Когда я получаю запрос об уведомлении о доставке";
 "Never send a return receipt" = "Никогда не посылать уведомления о доставке";
@@ -261,11 +222,9 @@
 "If I'm not in the To or Cc of the message" = "Если я не в поле Кому или Копия для этого сообщения";
 "If the sender is outside my domain" = "Если отправитель вне моего домена";
 "In all other cases" = "Во всех остальных случаях";
-
 "Never send" = "Никогда не посылать";
 "Always send" = "Всегда посылать";
 "Ask me" = "Спросить меня";
-
 /* Filters - UIxPreferences */
 "Filters" = "Фильтры";
 "Active" = "Активные";
@@ -273,16 +232,14 @@
 "Move Down" = "Передвинуть вниз";
 "Connection error" = "Ошибка соединения";
 "Service temporarily unavailable" = "Сервис временно недоступен";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Имя фильтра:";
+"Filter name" = "Имя фильтра";
 "For incoming messages that" = "Для входящих сообщений которые";
-"match all of the following rules:" = "отвечают всем из следующих правил:";
-"match any of the following rules:" = "отвечают любому из следующих правил:";
+"match all of the following rules" = "отвечают всем из следующих правил";
+"match any of the following rules" = "отвечают любому из следующих правил";
 "match all messages" = "все сообщения";
-"Perform these actions:" = "Произвести следующие действия:";
+"Perform these actions" = "Произвести следующие действия";
 "Untitled Filter" = "Фильтр без названия";
-
 "Subject" = "Subject";
 "From" = "От";
 "To" = "To";
@@ -291,15 +248,14 @@
 "Size (Kb)" = "Размер (кБ)";
 "Header" = "Заголовок";
 "Body" = "Тело письма";
-"Flag the message with:" = "Пометить сообщение с:";
+"Flag the message with" = "Пометить сообщение с";
 "Discard the message" = "Уничтожить сообщение";
-"File the message in:" = "Сохранить сообщение в:";
+"File the message in" = "Сохранить сообщение в";
 "Keep the message" = "Сохранить сообщение";
-"Forward the message to:" = "Переслать сообщение к:";
-"Send a reject message:" = "Послать сообщение об отказе:";
+"Forward the message to" = "Переслать сообщение к";
+"Send a reject message" = "Послать сообщение об отказе";
 "Send a vacation message" = "Послать сообщение об отпуске";
 "Stop processing filter rules" = "Остановить правила фильтрации";
-
 "is under" = "менее";
 "is over" = "более";
 "is" = "равно";
@@ -310,14 +266,12 @@
 "does not match" = "не совпадает";
 "matches regex" = "сопоставимо по регулярному выражению";
 "does not match regex" = "не сопоставимо регулярному выражению";
-
 "Seen" = "Просмотрено";
 "Deleted" = "Удалено";
 "Answered" = "Отвечено";
 "Flagged" = "Помечено флагом";
 "Junk" = "Спам";
 "Not Junk" = "Не спам";
-
 /* Password policy */
 "The password was changed successfully." = "Пароль был успешно изменен.";
 "Password must not be empty." = "Пароль не должен быть пустым";

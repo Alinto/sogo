@@ -2,14 +2,10 @@
 
 "Help" = "Aiuto";
 "Close" = "Chiudi";
-
 "Modules" = "Moduli";
-
 /* Modules short names */
 "ACLs" = "ACLs";
-
 /* Modules titles */
 "ACLs_title" = "Amministrazione ACL risorse utenti";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>Il modulo di amministrazione delle ACL permette di cambiare le ACL di tutti i Calendari e le Rubriche degli utenti.</p><p>Per modificare le ACL relative ad una risorsa di un utente, scrivere il nome del utente nel campo di ricerca e fare doppio click sulla risorsa desiderata.</p>";

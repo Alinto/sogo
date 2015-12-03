@@ -24,7 +24,7 @@
     <form const:href=""
       ><div id="freeBusyViewButtons">
         <span id="freeBusyViewOptions">
-	  <var:string label:value="Suggest time slot:"/>
+	  <var:string label:value="Suggest time slot"/>
 	
 	  <span id="freeBusyTimeRange">
 	    <var:string label:value="Between"/>
@@ -115,14 +115,14 @@
 	</ul>
       </div>
       <div id="freeBusyReplicas">
-        <div><span><var:string label:value="Start:"
+        <div><span><var:string label:value="Start"
               /></span><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
-        <div><span><var:string label:value="End:"
+        <div><span><var:string label:value="End"
               /></span><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"

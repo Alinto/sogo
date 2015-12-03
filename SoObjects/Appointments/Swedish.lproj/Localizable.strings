@@ -6,24 +6,19 @@ vevent_class2 = "(Konfidentiell händelse)";
 vtodo_class0 = "(Publik uppgift)";
 vtodo_class1 = "(Privat uppgift)";
 vtodo_class2 = "(Konfidentiell uppgift)";
-
 /* Receipts */
 "Title:" = "Titel:";
 "Start:" = "Start:";
 "End:" = "Slut:";
-
 "Receipt: users invited to a meeting" = "Kvitto: användare inbjudna till ett möte";
 "You have invited the following attendees(s):" = "Du har bjudit in följande deltagare:";
 "... to attend the following event:" = "... att delta i följande händelse:";
-
 "Receipt: invitation updated" = "Kvitto: inbjudan uppdaterad";
 "The following attendees(s):" = "Följande deltagare:";
 "... have been notified of the changes to the following event:" = "... har blivit informerade om ändringarna i följande händelse:";
-
 "Receipt: attendees removed from an event" = "Kvitto: deltagare bottagna från en händelse";
 "You have removed the following attendees(s):" = "Du har tagit bort följande deltagare:";
 "... from the following event:" = "... från följande händelse:";
-
 /* IMIP messages */
 "startDate_label" = "Startdatum";
 "endDate_label" = "Slutdatum";
@@ -31,17 +26,14 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "location_label" = "Plats";
 "summary_label" = "Sammanfattning:";
 "comment_label" = "Kommentar:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Mötesinbjudan: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(skickad av %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}har bjudit in dig till %{Summary}.\n\nStart: %{StartDate} kl %{StartTime}\nSlut: %{EndDate} kl %{EndTime}\nBeskrivning: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Möte inställt: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}har ställt in detta möte: %{Summary}.\n\nStart: %{StartDate} kl %{StartTime}\nSlut: %{EndDate} kl %{EndTime}\nBeskrivning: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Mötet \"%{Summary}\" den %{OldStartDate} kl %{OldStartTime} har ändrats";
@@ -49,7 +41,6 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "Följande har ändrats i \"%{Summary}\" mötet:";
 "Please accept or decline those changes."
 = "Acceptera eller avböj dessa ändringar.";
-
 /* Reply */
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}har accepterat din mötesinbjudan.";
@@ -59,6 +50,5 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "%{Attendee} %{SentByText}har delegerat din inbjudan till %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}har inte än bestämt sig om din mötesinbjudan.";
-
 /* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

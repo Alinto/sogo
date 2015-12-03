@@ -29,16 +29,11 @@ Tentative = "Nerozhodný";
 "Delegated to" = "Delegované na";
 "Update status in calendar" = "Aktualizovať stav v kalendári";
 "delegated from" = "delegované od";
-
 reply_info_no_attendee = "Dostali ste odpoveď o dohadovaní stretnutia ale odosielateľ tejto správy nie je účastník.";
 reply_info = "Toto je odpoveď na Vašu pozvánku na udalosť.";
-
 "to" = "pre";
-
 "Untitled" = "Bez mena";
-
 "Size" = "Veľkosť";
-
 "Digital signature is not valid" = "Digitálny podpis nie je platný";
 "Message is signed" = "Správa je podpísaná";
 "Subject" = "Predmet";

@@ -4,7 +4,6 @@
 "Save" = "Shrani";
 "Close" = "Zapri";
 "Edit User Rights" = "Uredi pravice uporabnika";
-
 "Home" = "Domov";
 "Calendar" = "Koledar";
 "Address Book"	= "Adresar";
@@ -14,30 +13,21 @@
 "Disconnect" = "Prekini povezavo";
 "Right Administration" = "Pravica administriranja";
 "Log Console (dev.)" = "Log konzole (dev.)";
-
 "User" = "Uporabnik";
 "Vacation message is enabled" = "Obvestilo o odsotnosti je omogočeno";
-
 "Help" = "Pomoč";
-
 "noJavascriptError" = "SOGo zahteva zagnan Javascript. Prosim zagotovi, da je ta možnost omogočena in aktivirana v tvojih nastavitvah brskalnika.";
 "noJavascriptRetry" = "Ponovi";
-
-"Owner:" = "Lastnik:";
+"Owner" = "Lastnik";
 "Publish the Free/Busy information" = "Objavi informacijo Prosto/Zasedeno ";
-
 "Add..." = "Dodaj...";
 "Remove" = "Odstrani";
-
 "Subscribe User" = "Naroči uporabnika";
-
 "Any Authenticated User" = "Katerikoli preverjeni uporabnik";
 "Public Access" = "Javni dostop";
 "Any user not listed above" = "Katerikoli navedeni uporabnik zgoraj";
 "Anybody accessing this resource from the public area" = "Katerikoli, ki dostopa ta vir iz javnega območja";
-
 "Sorry, the user rights can not be configured for that object." = "Oprosti, pravice za uporabnika ni mogoče konfigurirati za ta objekt.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Katerikoli uporabnik z računom na tem sistemu bo lahko dostopal do tvojega poštnega predala \"%{0}\". Si prepričan, da zaupaš vsem?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "Kdorkoli na internetu bo imel možnost dostopa do tvojega adresarja \"%{0}\" tudi, če nima računa na tem sistemu. Je ta informacija primerna za javni internet?";
 "Give Access" = "Daj dostop";
 "Keep Private" = "Obdrži osebno";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Nemogoče se je naročiti na to mapo!";
@@ -70,17 +59,14 @@
         = "Ne moreš ustvariti seznama v skupnem adresarju.";
 "Warning" = "Opozorilo";
 "Can't contact server" = "Prišlo je do napake pri povezovanju s strežniku. Prosim poskusi ponovno pozneje.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nimaš pravice dostopa do tega modula ali tega sistema. Prosim kontaktiraj tvojega sistemskega administratorja.";
 "You don't have the required privileges to perform the operation."
 = "Nimaš zahtevanih pravic za izvedbo te operacije.";
-
 "noEmailForDelegation" = "Moraš določiti naslov, kateremu želiš dodeliti tvoje povabilo.";
 "delegate is organizer" = "Dodeljevalec je organizator. Prosim določi drugega dodeljevalca.";
 "delegate is a participant" = "Dodeljevalec je že udeleženec.";
 "delegate is a group" = "Določen naslov ustreza skupini. Dodeliš lahko le edinstveni osebi.";
-
 "Snooze for " = "Opomni za";
 "5 minutes" = "5 minut";
 "10 minutes" = "10 minut";
@@ -89,26 +75,22 @@
 "45 minutes" = "45 minut";
 "1 hour" = "1 ura";
 "1 day" = "1 dan";
-
 /* common buttons */
 "OK" = "V redu";
 "Cancel" = "Prekliči";
 "Yes" = "Da";
 "No" = "Ne";
-
 /* alarms */
-"Reminder:" = "Opomnik:";
-"Start:" = "Začetek:";
-"Due Date:" = "Datum zapadlosti:";
-"Location:" = "Mesto:";
-
+"Reminder" = "Opomnik";
+"Start" = "Začetek";
+"Due Date" = "Datum zapadlosti";
+"Location" = "Mesto";
 /* mail labels */
 "Important" = "Pomembno";
 "Work" = "Delo";
 "Personal" = "Osebno";
 "To Do" = "Opravilo";
 "Later" = "Pozneje";
-
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "To";

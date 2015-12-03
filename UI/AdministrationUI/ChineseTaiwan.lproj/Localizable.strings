@@ -2,14 +2,10 @@
 
 "Help" = "幫助";
 "Close" = "關閉";
-
 "Modules" = "模組";
-
 /* Modules short names */
 "ACLs" = "存取控制清單";
-
 /* Modules titles */
 "ACLs_title" = "使用者資料匣存取控制清單";
-
 /* Modules descriptions */
 "ACLs_description" = "\"<p>存取控制清單管理模組允許異動每個使用者行事曆及通訊錄的使用權限。</p><p>如要修改使用者資料匣的使用權限，請在視窗上方的搜尋欄位輸入使用者名稱後，將遊標移到要修改的資料匣上連續按兩下滑鼠。</p>";

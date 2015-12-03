@@ -2,14 +2,10 @@
 
 "Help" = "Laguntza";
 "Close" = "Itxi";
-
 "Modules" = "Moduluak";
-
 /* Modules short names */
 "ACLs" = "ACL-ak";
-
 /* Modules titles */
 "ACLs_title" = "Erabiltzaileen karpeten ACL-en kudeaketa";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>\"Access Control List\" administrazio moduluak erabiltzaile bakoitzaren egutegi eta helbide liburuen ACL-ak aldatzea baimentzen du.</p><p>Erabiltzaile baten karpetaren ACL-ak aldatzeko idatzi erabiltzailearen izena leihoaren gainaldeko bilaketa eremuan eta klik bikoitza egin gogoko karpetan.</p>";

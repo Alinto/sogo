@@ -4,7 +4,6 @@
 "Address" = "Address";
 "Photos" = "Photos";
 "Other" = "Other";
-
 "Addressbook" = "Llyfr cyfeiriadau";
 "Addresses" = "Cyfeiriadau";
 "Update" = "Diweddaru";
@@ -37,25 +36,20 @@
 "invalidemailwarn" = "Mae'r ebost a nodwyd yn annilys";
 "new" = "newydd";
 "Preferred Phone"   = "Rhif ffafriedig";
-
 /* Tooltips */
-
 "Create a new address book card" = "Creu cerdyn llyfr cyfeiriadau newydd";
 "Create a new list" = "Creu rhestr newydd";
 "Edit the selected card" = "Golygu'r cerdyn dewisol";
 "Send a mail message" = "Anfon neges ebost";
 "Delete selected card or address book" = "Dileu y cerdyn dewisol neu'r llyfr cyfeiriadau";
 "Reload all contacts" = "Reload all contacts";
-
 "htmlMailFormat_UNKNOWN" = "Anhysbys";
 "htmlMailFormat_FALSE" = "Testun plaen";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Enw neu Ebost";
 "Category" = "Category";
 "Personal Addressbook" = "Llyfr Cyfeiriadau Personol";
 "Search in Addressbook" = "Chwilio yn Llyfr Cyfeiriadau";
-
 "New Card" = "Cerdyn Newydd";
 "New List" = "Rhestr Newydd";
 "Properties" = "Nodweddion";
@@ -65,64 +59,50 @@
 "Instant Message" = "Neges bwysig";
 "Add..." = "Ychwanegu...";
 "Remove" = "Dileu";
-
 "Please wait..." = "Arhoswch...";
 "No possible subscription" = "Dim tanysgrifiad posibl";
-
 "Preferred" = "Fafriedig";
 "Card for %@" = "Cerdyn i %@";
 "Display Name" = "Dangos Enw ";
-"Email:" = "Cyfeiriad ebost: ";
-"Additional Email:" = "Additional Email:";
-
-"Screen Name:" = "Screen Name:";
-"Categories:" = "Categories:";
-
-"First:" = "Enw cyntaf: ";
-"Last:" = "Cyfenw: ";
+"Email" = "Cyfeiriad ebost";
+"Additional Email" = "Additional Email";
+"Screen Name" = "Screen Name";
+"Categories" = "Categories";
+"First" = "Enw cyntaf";
+"Last" = "Cyfenw";
 "Nickname" = "Llysenw ";
-
 "Telephone" = "Teleffon";
-"Work:" = "Gwaith: ";
-"Home:" = "Adref: ";
-"Fax:" = "Ffacs: ";
-"Mobile:" = "Symudol: ";
-"Pager:" = "Peiriant galw: ";
-
+"Work" = "Gwaith";
+"Home" = "Adref";
+"Mobile" = "Symudol";
+"Pager" = "Peiriant galw";
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
 "New category" = "New category";
-
 /* adresses */
 "Title" = "Teitl ";
-"Service:" = "Gwasanaeth: ";
-"Company:" = "Cwmni: ";
-"Street Address:" = "Cyfeiriad Stryd: ";
+"Service" = "Gwasanaeth";
+"Company" = "Cwmni";
+"Street Address" = "Cyfeiriad Stryd";
 "City" = "Dinas ";
-"State_Province:" = "Sir/Talaith:";
-"ZIP_Postal Code:" = "ZIP/Cod Post:";
+"State_Province" = "Sir/Talaith";
+"ZIP_Postal Code" = "ZIP/Cod Post";
 "Country" = "Gwlad";
-"Web:" = "We: ";
-
+"Web" = "We";
 "Work" = "gwaith";
 "Other Infos" = "Gwybodaeth Arall";
-
 "Note" = "Nodyn ";
-"Timezone:" = "Cylchfa Amser: ";
+"Timezone" = "Cylchfa Amser";
 "Birthday" = "Penblwydd";
 "Birthday (yyyy-mm-dd)" = "Penblwydd (yyyy-mm-dd)";
-"Freebusy URL:" = "Freebusy URL: ";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Ychwanegu fel...";
 "Recipient" = "Derbynnydd";
 "Carbon Copy" = "Copi Carbon";
 "Blind Carbon Copy" = "Copi Carbon Dall";
-
 "New Addressbook..." = "Llyfr Cyfeiriadau Newydd...";
 "Subscribe to an Addressbook..." = "Tanysgrifio i Lyfr Cyfeiriadau...";
 "Remove the selected Addressbook" = "Dileu'r Llyfr Cyfeiriadau Dewisol";
-
 "Name of the Address Book" = "Enw'r Llyfr Cyfeiriadau";
 "Are you sure you want to delete the selected address book?"
 = "A ydych yn sicr eich bod eisiau dileu'r llyfr cyfeiriadau dewisol?";
@@ -130,25 +110,18 @@
 = "Ni fedrwch dileu na dad-danysgrifio i lyfr cyfeiriadau cyhoeddus.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ni fedrwch dileu na dad-danysgrifio i'ch llyfr cyfeiriadau personol.";
-
 "Are you sure you want to delete the selected contacts?"
 = "A ydych yn sicr eich bod eisiau dileu'r cyswllt dewisol?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Ni fedrwch dileu cerdyn \"%{0}\".";
-
 "Address Book Name" = "Enw Llyfr Cyfeiriadau";
-
 "You cannot subscribe to a folder that you own!"
 = "Ni fedrwch danysgrifio i ffolder yr ydych yn ei berchen.";
 "Unable to subscribe to that folder!"
 = "Methu tanysgrifio i'r ffolder yna.";
-
-"User rights for:" = "Hawliau defnyddiwr i:";
-
+"User rights for" = "Hawliau defnyddiwr i";
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";
-
 "This person can add cards to this addressbook."
 = "Gall y person hwn ychwanegu cardiau i'r llyfr cyfeiriadau yma.";
 "This person can edit the cards of this addressbook."
@@ -159,19 +132,14 @@
 = "Gall y person hwn darllen y cardiau yn y llyfr cyfeiriadau yma.";
 "This person can erase cards from this addressbook."
 = "Gall y person hwn dileu cardiau o'r llyfr cyfeiriadau yma.";
-
 "The selected contact has no email address."
 = "Nid oes cyfeiriad ebost gan y cyswllt dewisol hwn.";
-
 "Please select a contact." = "Dewiswch cyswllt.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = ".";
 "Forbidden" = "Ni fedrwch ysgrifennu i'r llyfr cyfeiriadau hwn.";
 "Invalid Contact" = "Nid yw'r cyswllt dewisol yn bodoli mwyach.";
 "Unknown Destination Folder" = "Nid yw'r llyfr cyfeiriadau dewisol yn bodoli mwyach.";
-
 /* Lists */
 "List details" = "List details";
 "List name" = "List name";
@@ -181,7 +149,6 @@
 "Contacts" = "Contacts";
 "Add" = "Add";
 "Lists can't be moved or copied." = "Lists can't be moved or copied.";
-
 "Export" = "Export";
 "Export Address Book..." = "Export Address Book...";
 "Import Cards" = "Import Cards";

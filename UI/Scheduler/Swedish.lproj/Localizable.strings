@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "Skapa en händelse";
 "Create a new task" = "Skapa en uppgift";
 "Edit this event or task" = "Ändra händelse eller uppgift";
@@ -11,46 +10,30 @@
 "Switch to week view" = "Ändra till veckovy";
 "Switch to month view" = "Ändra till månadsvy";
 "Reload all calendars" = "Ladda om alla kalendrar";
-
 /* Tabs */
 "Date" = "Datum";
 "Calendars" = "Kalendrar";
-
 /* Day */
-
 "DayOfTheMonth" = "Dag i månaden";
 "dayLabelFormat" = "%Y-%m-%d";
 "today" = "Idag";
-
 "Previous Day" = "Föregående dag";
 "Next Day" = "Nästa dag";
-
 /* Week */
-
 "Week" = "Vecka";
 "this week" = "denna vecka";
-
 "Week %d" = "Vecka %d";
-
 "Previous Week" = "Föregående vecka";
 "Next Week" = "Nästa vecka";
-
 /* Month */
-
 "this month" = "denna månad";
-
 "Previous Month" = "Föregående månad";
 "Next Month" = "Nästa månad";
-
 /* Year */
-
 "this year" = "detta år";
-
 /* Menu */
-
 "Calendar" = "Kalender";
 "Contacts" = "Kontakter";
-
 "New Calendar..." = "Ny kalender...";
 "Delete Calendar" = "Ta bort kalender";
 "Unsubscribe Calendar" = "Avluta prenumeration av kalender";
@@ -67,54 +50,38 @@
 "An error occurred while importing calendar." = "Ett fel har inträffat under kalenderimporten.";
 "No event was imported." = "Inga händeler importerades.";
 "A total of %{0} events were imported in the calendar." = "Totalt %{0} händelser importerades till kalendern.";
-
 "Compose E-Mail to All Attendees" = "Skriv ett meddelande till alla deltagare";
 "Compose E-Mail to Undecided Attendees" = "Skriv ett meddelande till alla deltagare som inte svarat";
-
 /* Folders */
 "Personal calendar" = "Personlig kalender";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Förbjuden";
-
 /* acls */
-
-"User rights for:" = "Användarrättigheter för:";
-
+"User rights for" = "Användarrättigheter för";
 "Any Authenticated User" = "Alla autentiserade användare";
 "Public Access" = "Allmän åtkomst";
-
 "label_Public" = "Publikt";
 "label_Private" = "Privat";
 "label_Confidential" = "Konfidentiellt";
-
 "label_Viewer" = "Visa alla";
 "label_DAndTViewer" = "Visa tid och datum";
 "label_Modifier" = "Ändra";
 "label_Responder" = "Svara";
 "label_None" = "Ingen";
-
 "View All" = "Visa alla";
 "View the Date & Time" = "Visa tid och datum";
 "Modify" = "Ändra";
 "Respond To" = "Svara";
 "None" = "Ingen";
-
 "This person can create objects in my calendar."
 = "Personen kan skapa objekt i min kalender.";
 "This person can erase objects from my calendar."
 = "Personen kan radera objekt i min kalender.";
-
 /* Button Titles */
-
-"New Calendar..." = "Ny kalender...";
 "Subscribe to a Calendar..." = "Prenumrera på en kalender...";
 "Remove the selected Calendar" = "Ta bort markerad kalender";
-
 "Name of the Calendar" = "Namn på kalendern";
-
 "new" = "Ny";
 "printview" = "Skriv ut";
 "edit" = "Ändra";
@@ -128,10 +95,7 @@
 "Cancel" = "Avbryt";
 "show_rejected_apts" = "Visa avböjda möten";
 "hide_rejected_apts" = "Dölj avböjda möten";
-
-
 /* Schedule */
-
 "Schedule" = "Schema";
 "No appointments found" = "Inga möten hittade";
 "Meetings proposed by you" = "Möten föreslagna av dig";
@@ -143,10 +107,7 @@
 "more attendees" = "Fler deltagare";
 "Hide already accepted and rejected appointments" = "Dölj accepterade och avböjda möten";
 "Show already accepted and rejected appointments" = "Visa accepterade och avböjda möten";
-
-
 /* Appointments */
-
 "Appointment viewer" = "Mötesvisare";
 "Appointment editor" = "Mötesredigerare";
 "Appointment proposal" = "Mötesförslag";
@@ -155,7 +116,6 @@
 "End" = "Slutar";
 "Due Date" = "Datum";
 "Title" = "Titel";
-"Calendar" = "Kalender";
 "Name" = "Namn";
 "Email" = "E-post";
 "Status" = "Status";
@@ -178,13 +138,10 @@
 "Reminder" = "Påminnelse";
 "General" = "Allmännt";
 "Reply" = "Svara";
-
-"Target:" = "Mål:";
-
+"Target" = "Mål";
 "attributes" = "attribut";
 "attendees" = "deltagare";
 "delegated from" = "delegerad från";
-
 /* checkbox title */
 "is private" = "är privat";
 /* classification */
@@ -193,26 +150,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "Tom titel";
 "private appointment" = "Privat möte";
-
 "Change..." = "Ändra...";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "Behöver åtgärd";
 "partStat_ACCEPTED" = "Jag kan deltaga";
 "partStat_DECLINED" = "Jag kan inte deltaga";
 "partStat_TENTATIVE" = "Jag återkommer";
 "partStat_DELEGATED" = "Jag delegerar";
 "partStat_OTHER" = "Annat";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "Konflikter hittade!";
 "Invalid iCal data!" = "Ogiltig iCal data!";
 "Could not create iCal data!" = "Kunde inte skapa iCal data!";
-
 /* Searching */
-
 "view_all" = "Alla";
 "view_today" = "Idag";
 "view_next7" = "Nästa 7 dagar";
@@ -221,31 +171,22 @@
 "view_thismonth" = "Denna månad";
 "view_future" = "Alla framtida händelser";
 "view_selectedday" = "Vald dag";
-
 "View" = "Visa";
 "Title or Description" = "Titel eller beskrivning";
-
 "Search" = "Sök";
 "Search attendees" = "Sök deltagare";
 "Search resources" = "Sök resurser";
 "Search appointments" = "Sök möten";
-
 "All day Event" = "Heldagshändelse";
 "check for conflicts" = "Kontrollera konflikter";
-
 "Browse URL" = "URL";
-
 "newAttendee" = "Lägg till deltagare";
-
 /* calendar modes */
-
 "Overview" = "Översikt";
 "Chart" = "Schema";
 "List" = "Lista";
 "Columns" = "Kolumner";
-
 /* Priorities */
-
 "prio_0" = "Inte angiven";
 "prio_1" = "Hög";
 "prio_2" = "Hög";
@@ -256,7 +197,6 @@
 "prio_7" = "Låg";
 "prio_8" = "Låg";
 "prio_9" = "Låg";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Publik händelse";
 "CONFIDENTIAL_vevent" = "Konfidentiell händelse";
@@ -264,7 +204,6 @@
 "PUBLIC_vtodo" = "Publik uppgift";
 "CONFIDENTIAL_vtodo" = "Konfidentiell uppgift";
 "PRIVATE_vtodo" = "Privat uppgift";
-
 /* status type */
 "status_" = "Inte angiven";
 "status_NOT-SPECIFIED" = "Inte angiven";
@@ -274,9 +213,7 @@
 "status_NEEDS-ACTION" = "Behöver åtgärd";
 "status_IN-PROCESS" = "Pågående";
 "status_COMPLETED" = "Utförd";
-
 /* Cycles */
-
 "cycle_once" = "en gång";
 "cycle_daily" = "varje dag";
 "cycle_weekly" = "varje vecka";
@@ -285,13 +222,10 @@
 "cycle_monthly" = "varje månad";
 "cycle_weekday" = "varje vardag";
 "cycle_yearly" = "varje år";
-
 "cycle_end_never" = "intervall slutar aldrig";
 "cycle_end_until" = "intervall slutar";
-
 "Recurrence pattern" = "Upprepningsmönster";
 "Range of recurrence" = "Omfattning av upprepning";
-
 "Repeat" = "Upprepning";
 "Daily" = "Varje dag";
 "Weekly" = "Varje vecka";
@@ -310,19 +244,15 @@
 "Create" = "Skapa";
 "appointment(s)" = "möte(n)";
 "Repeat until" = "Upprepa till";
-
 "First" = "Första";
 "Second" = "Andra";
 "Third" = "Tredje";
 "Fourth" = "Fjärde";
 "Fift" = "Femte";
 "Last" = "Sista";
-
 /* Appointment categories */
-
 "category_none" = "Ingen";
 "category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Möte,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
-
 "repeat_NEVER" = "Upprepar inte";
 "repeat_DAILY" = "Varje dag";
 "repeat_WEEKLY" = "Varje vecka";
@@ -331,7 +261,6 @@
 "repeat_MONTHLY" = "Varje månad";
 "repeat_YEARLY" = "Varje år";
 "repeat_CUSTOM" = "Valfri...";
-
 "reminder_NONE" = "Ingen påminnelse";
 "reminder_5_MINUTES_BEFORE" = "5 minuter före";
 "reminder_10_MINUTES_BEFORE" = "10 minuter före";
@@ -346,7 +275,6 @@
 "reminder_2_DAYS_BEFORE" = "2 dagar före";
 "reminder_1_WEEK_BEFORE" = "1 vecka före";
 "reminder_CUSTOM" = "Valfri...";
-
 "reminder_MINUTES" = "minuter";
 "reminder_HOURS" = "timmar";
 "reminder_DAYS" = "dagar";
@@ -355,38 +283,29 @@
 "reminder_START" = "händelserna startar";
 "reminder_END" = "händelserna slutar";
 "Reminder Details" = "Påminnelsedetaljer";
-
 "Choose a Reminder Action" = "Välj en påminnelsehändelse";
 "Show an Alert" = "Visa larmmeddelande";
 "Send an E-mail" = "Skicka ett meddelande";
 "Email Organizer" = "Skicka meddelande till arrangör";
 "Email Attendees" = "Skicka meddelande till deltagare";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "Visa tid som ledig";
-
 /* validation errors */
-
 validate_notitle           = "Ingen titel är angiven, fortsätta?";
 validate_invalid_startdate = "Oriktigt startdatum!";
 validate_invalid_enddate   = "Oriktigt slutdatum!";
 validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet startdatum.";
-
 "Tasks" = "Uppgifter";
 "Show completed tasks" = "Visa utförda uppgifter";
-
 /* tabs */
 "Task" = "Uppgift";
 "Event" = "Händelse";
 "Recurrence" = "Återkommande";
-
 /* toolbar */
 "New Event" = "Ny händelse";
 "New Task" = "Ny uppgift";
@@ -397,9 +316,7 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "Week View" = "Veckovy";
 "Month View" = "Månadsvy";
 "Reload" = "Ladda om";
-
 "eventPartStatModificationError" = "Din deltagarstatus kunde inte ändras.";
-
 /* menu */
 "New Event..." = "Ny händelse...";
 "New Task..." = "Ny uppgift...";
@@ -408,35 +325,29 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "Select All" = "Markera alla";
 "Workweek days only" = "Bara arbetsdagar";
 "Tasks in View" = "Uppgifter i vy";
-
 "eventDeleteConfirmation" = "Radering av händelsen är permanent.";
 "taskDeleteConfirmation" = "Radering av uppgiften är permanent.";
 "Would you like to continue?" = "Vill du fortsätta?";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Du kan inte ta bort eller avbryta prenumration på en personlig kalender.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Är du säker på att du vill ta bort kalendern \"%{0}\"?";
-
 /* Legend */
 "Participant" = "Deltagande krävs";
 "Optional Participant" = "Deltagande valfritt";
 "Non Participant" = "Icke deltagande";
 "Chair" = "Stol";
-
 "Needs action" = "Behöver åtgärd";
 "Accepted" = "Accepterad";
 "Declined" = "Avböjd";
 "Tentative" = "Preliminär";
-
 "Free" = "Ledig";
 "Busy" = "Upptagen";
 "Maybe busy" = "Kanske upptagen";
 "No free-busy information" = "Ingen ledig/upptagen information";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Föreslå tid:";
-"Zoom:" = "Zoom:";
+"Suggest time slot" = "Föreslå tid";
+"Zoom" = "Zoom";
 "Previous slot" = "Föregående tid";
 "Next slot" = "Nästa tid";
 "Previous hour" = "Föregående timme";
@@ -445,55 +356,38 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "The whole day" = "Hela dagen";
 "Between" = "Mellan";
 "and" = "and";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "En tidskonflikt finns för en eller flera deltagare.\nVill du trots detta behålla nuvarande tid?";
-
 /* apt list */
-"Title" = "Titel";
 "Start" = "Start";
 "End" = "Slut";
-"Due Date" = "Datum";
-"Location" = "Plats";
 "(Private Event)" = "(Privat händelse)";
-
 vevent_class0 = "(Publik händelse)";
 vevent_class1 = "(Privat händelse)";
 vevent_class2 = "(Konfidentiell händelse)";
-
 vtodo_class0 = "(Publik uppgift)";
 vtodo_class1 = "(Privat uppgift)";
 vtodo_class2 = "(Konfidentiell uppgift)";
-
 "closeThisWindowMessage" = "Tack! Du kan stänga fönstret eller din vy";
 "Multicolumn Day View" = "Multikolumn dagsvy";
-
 "Please select an event or a task." = "Markera en händelse eller uppgift.";
-
 "editRepeatingItem" = "Objektet du redigerar har upprepning. Vill du redigera alla förekomster eller bara denna förekomst?";
 "button_thisOccurrenceOnly" = "Denna förekomst bara";
 "button_allOccurrences" = "Alla förekomster";
-
 /* Properties dialog */
-"Name" = "Namn";
 "Color" = "Färg";
-
 "Include in free-busy" = "Inkludera i ledig/upptagen";
-
 "Synchronization" = "Synkronisering";
 "Synchronize" = "Synkronisera";
-"Tag:" = "Etikett:";
-
+"Tag" = "Etikett";
 "Display" = "Visa";
 "Show alarms" = "Visa alarm";
 "Show tasks" = "Visa uppgifter";
-
 "Links to this Calendar" = "Länkar till denna kalender";
 "Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "Ange ett numeriskt värde in dagsfältet större än eller lika med 1.";
 "weekFieldInvalid" = "Ange ett numeriskt värde in veckofältet större än eller lika med 1.";
@@ -510,18 +404,13 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "tagWasRemoved" = "Om du tar bort kalendern från synkronisering, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
 "DestinationCalendarError" = "Destinationskalendern är samma som källkalendern. Kopiera till en annan kalender.";
 "EventCopyError" = "Kopieringen misslyckades. Kopiera till en annan kalender.";
-
 "Open Task..." = "Öppna uppgift...";
 "Mark Completed" = "Märk utförd";
 "Delete Task" = "Ta bort uppgift";
 "Delete Event" = "Ta bort händelse";
 "Copy event to my calendar" = "Copy event to my calendar";
-
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";
 "Web Calendar" = "Webbkalender";
 "Reload on login" = "Ladda om vid login";
 "Invalid number." = "Ogiltigt nummer.";
-
-"Category" = "Kategori";
-"Priority" = "Prioritet";

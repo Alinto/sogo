@@ -29,16 +29,11 @@ Tentative = "Tentativa";
 "Delegated to" = "Delegado para";
 "Update status in calendar" = "Atualizar estado no calendário";
 "delegated from" = "delegado de";
-
 reply_info_no_attendee = "Recebeu uma resposta de um evento agendado, mas o remetente da resposta não é um participante.";
 reply_info = "Esta é uma resposta de um convite feito por si.";
-
 "to" = "para";
-
 "Untitled" = "Sem título";
-
 "Size" = "Tamanho";
-
 "Digital signature is not valid" = "Assinatura digital inválida";
 "Message is signed" = "A Mensagem está assinada";
 "Subject" = "Assunto";

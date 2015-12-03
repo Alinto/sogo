@@ -1,22 +1,17 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-
 "Username" = "Uporabniško ime";
 "Password" = "Geslo";
 "Domain" = "Domena";
 "Remember username" = "Zapomni si up. ime";
-
 "Connect" = "Poveži";
-
 "Wrong username or password." = "Napačno uporabniško ime ali geslo.";
 "cookiesNotEnabled" = "Ne moreš se prijaviti, ker tvoj brskalnik ne dovoli piškotkov. Dovoli piškotke v nastavitvah tvojega brskalnika in poskusi ponovno.";
-
 "browserNotCompatible" = "Tvoja različica brskalnika trenutno ni podrta na tej strani. Priporočamo uporabao FireFox. Klikni na povezavo spodaj za prenos zadnje različice tega brskalnika.";
 "alternativeBrowsers" = "Alternativno lahko uporabiš naslednje združljive brskalnike";
 "alternativeBrowserSafari" = "Alternativno lahko uporabljaš tudi Safari.";
 "Download" = "Prenos";
-
 "Language" = "Jezik";
 "choose" = "Izberi ...";
 "Arabic" = "العربية";
@@ -47,16 +42,14 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 "About" = "O";
 "AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
-
 "Your account was locked due to too many failed attempts." = "Tvoj račun je zaklenjen zaradi preveč neuspelih poskusov.";
 "Your account was locked due to an expired password." = "Tvoj račun je zaklenjen zaradi pretečenega gesla.";
-"Login failed due to unhandled error case: " = "Prijava ni uspela zaradi neobravnavane napake:";
+"Login failed due to unhandled error case" = "Prijava ni uspela zaradi neobravnavane napake";
 "Change your Password" = "Spremeni tvoje geslo";
 "The password was changed successfully." = "Geslo je uspešno spremenjeno.";
-"Your password has expired, please enter a new one below:" = "Tvoje geslo je poteklo, prosim vnesi spodaj novo:";
+"Your password has expired, please enter a new one below" = "Tvoje geslo je poteklo, prosim vnesi spodaj novo";
 "Password must not be empty." = "Geslo ne sem biti prazno.";
 "The passwords do not match. Please try again." = "Gesli se ne ujemata. Prosim poskusi ponovno.";
 "Password Grace Period" = "Geslo z odlogom";
@@ -77,7 +70,7 @@
 "Unhandled error response" = "Neobravnavana napaka odziva";
 "Password change is not supported." = "Sprememba gesla ni podprta.";
 "Unhandled HTTP error code: %{0}" = "Neobravnavana HTTP napaka: %{0}";
-"New password:" = "Novo geslo:";
-"Confirmation:" = "Potrditev:";
+"New password" = "Novo geslo";
+"Confirmation" = "Potrditev";
 "Cancel" = "Prekini";
 "Please wait..." = "Prosim počakaj...";

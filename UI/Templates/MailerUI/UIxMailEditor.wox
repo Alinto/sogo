@@ -44,14 +44,14 @@
   <div id="contacts" style="display: none;">
   <div id="leftPanel">
     <div id="contactsSearch">
-      <label><var:string label:value="Address Book:" /></label>
+      <label><var:string label:value="Address Book" /></label>
       <var:popup const:name="contactFolder" const:id="contactFolder"
 	list="contactFolders"
 	item="currentFolder"
         string="currentContactFolderName"
         value="currentContactFolderId"
 	/>
-      <label><var:string label:value="Search For:"/></label>
+      <label><var:string label:value="Search For"/></label>
       <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
       <div id="contactsListContent">
       <table id="contactsList" cellspacing="0">

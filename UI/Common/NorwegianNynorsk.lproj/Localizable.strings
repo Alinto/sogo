@@ -4,7 +4,6 @@
 "Save" = "Lagre";
 "Close" = "Lukk";
 "Edit User Rights" = "Endre brukerrettigheter";
-
 "Home" = "Hjem";
 "Calendar" = "Kalender";
 "Address Book"	= "Adressebok";
@@ -14,29 +13,20 @@
 "Disconnect" = "Logg ut";
 "Right Administration" = "Rettighetsinnstillinger";
 "Log Console (dev.)" = "Loggkonsoll";
-
 "User" = "Bruker";
-
 "Help" = "Hjelp";
-
 "noJavascriptError" = "SOGo krever at Javascript kan kjøres. Kontroll at Javascript kan kjøres og at det er aktivert i din nettlesers innstillinger.";
 "noJavascriptRetry" = "Forsøk igjen";
-
-"Owner:" = "Eier:";
+"Owner" = "Eier";
 "Publish the Free/Busy information" = "Publiser ledig/opptatt informasjon";
-
 "Add..." = "Legg til...";
 "Remove" = "Fjern";
-
 "Subscribe User" = "Abonner bruker";
-
 "Any Authenticated User" = "Enhver autentisert bruker";
 "Public Access" = "Offentlig tilgang";
 "Any user not listed above" = "Enhver bruker som ikke er listet ovenfor";
 "Anybody accessing this resource from the public area" = "Enhver aksesserer denne ressursen fra det offentlige området";
-
 "Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Du kan ikke abonnere på den mappen!";
@@ -55,37 +45,30 @@
 "You cannot create a list in a shared address book." 
         = "Du kan ikke opprette en liste i en delt adressebok.";
 "Warning" = "Advarsel";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har ikke rettigheter til modulen eller systemet. Kontakt din systemadministrator.";
 "You don't have the required privileges to perform the operation."
 = "Du har ikke rettigheter til å utføre operasjonen.";
-
 "noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon.";
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Avbryt";
 "Yes" = "Ja";
 "No" = "Nei";
-
 /* alarms */
-"Reminder:" = "Påminnelse:";
-"Start:" = "Start:";
-"Due Date:" = "Forfallsdato:";
-"Location:" = "Lokasjon:";
-
+"Reminder" = "Påminnelse";
+"Start" = "Start";
+"Due Date" = "Forfallsdato";
+"Location" = "Lokasjon";
 /* Mail labels */
 "Important" = "Viktig";
-"Work" = "Arbeid";
 "Work" = "Arbeid";
 "Personal" = "Personlig";
 "To Do" = "Gjøremål";
 "Later" = "Senere";
-
 "a2_Sunday" = "Sø";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";

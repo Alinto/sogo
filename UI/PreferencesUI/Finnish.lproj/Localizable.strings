@@ -17,10 +17,8 @@
 "Color" = "Väri";
 "Add" = "Lisää";
 "Delete" = "Poista";
-
 /* contacts categories */
 "contacts_category_labels" = "Kollega, Kilpailija, Asiakas, Ystävä, Perhe, Liiketuttu, Toimittaja, Lehdistö, VIP";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Laita automaattinen lomavastaaja päälle";
 "Auto reply message" ="Automaattivastaus";
@@ -35,7 +33,6 @@
 "Your vacation message must not end with a single dot on a line." = "Lomaviestisi ei saa päättyä yksittäiseen pisteeseen viimeisellä rivillä.";
 "End date of your auto reply must be in the future."
 = "Automaattivastauksen loppupäivä on oltava tulevaisuudessa.";
-
 /* forward messages */
 "Forward incoming messages" = "Edelleenlähetä saapuvat viestit";
 "Keep a copy" = "Pidä kopio";
@@ -43,37 +40,27 @@
 = "Ole hyvä ja määritä sähköpostiosoite johon haluat edelleenlähettää viestisi.";
 "You are not allowed to forward your messages to an external email address." = "Sinulla ei ole lupaa välittää viestejä ulkoiseen sähköpostiosoitteeseen.";
 "You are not allowed to forward your messages to an internal email address." = "Sinulla ei ole lupaa välittää viestejä sisäiseen sähköpostiosoitteeseen.";
-
-
 /* d & t */
 "Current Time Zone" ="Nykyinen aikavyöhyke";
 "Short Date Format" ="Lyhyt ajan esitysmuoto";
 "Long Date Format" ="Pitkä ajan esitysmuoto";
 "Time Format" ="Ajan esitysmuoto";
-
 "default" = "Oletus";
-
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
@@ -87,13 +74,11 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
-
 /* calendar */
 "Week begins on" ="Viikon alkupäivä";
 "Day start time" ="Päivä alkaa klo";
@@ -104,21 +89,17 @@
 "Enable reminders for Calendar items" = "Ota käyttöön kalenterimerkintöjen muistuttajat";
 "Play a sound when a reminder comes due" = "Soita äänimerkki kun muistuttaja aktivoituu";
 "Default reminder" ="Oletusmuistuttaja";
-
 "firstWeekOfYear_January1" = "Alkaa Tammikuun 1.";
 "firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
 "firstWeekOfYear_FirstFullWeek" = "Ensimmäinen täysi viikko";
-
 "Prevent from being invited to appointments" = "Estä tapaamiskutsut";
 "White list for appointment invitations" = "Valkoinen lista kalenterikutsuille";
 "Contacts Names" = "Yhteystietojen Nimet";
-
 /* Default Calendar */
 "Default calendar" ="Oletuskalenteri";
 "selectedCalendar" = "Valittu kalenteri";
 "personalCalendar" = "Henkilökohtainen kalenteri";
 "firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
-
 "reminder_NONE" = "Ei muistutusta";
 "reminder_5_MINUTES_BEFORE" = "5 minuuttia";
 "reminder_10_MINUTES_BEFORE" = "10 minuuttia";
@@ -132,18 +113,15 @@
 "reminder_1_DAY_BEFORE" = "1 päivä";
 "reminder_2_DAYS_BEFORE" = "2 päivää";
 "reminder_1_WEEK_BEFORE" = "Viikkoa ennen";
-
 /* Mailer */
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
 "When sending mail, add unknown recipients to my" = "Postia lähettäessä lisää tuntemattomat vastaanottajat";
-
 "Forward messages" = "Edelleenlähetä viestit";
 "messageforward_inline" = "Tekstisisällössä";
 "messageforward_attached" = "Liitteinä";
-
 "When replying to a message" = "Kun vastaan viestiin";
 "replyplacement_above" = "Aloita vastaukseni lainauksen yläpuolelta";
 "replyplacement_below" = "Aloita vastaukseni lainauksen alapuolelta";
@@ -156,55 +134,41 @@
 "Display remote inline images" = "Näytä etäsisällön kuvat";
 "displayremoteinlineimages_never" = "Ei koskaan";
 "displayremoteinlineimages_always" = "Aina";
-
 "Auto save every" = "Tallenna automaattisesti";
 "minutes" = "minuutin välein";
-
 /* Contact */
 "Personal Address Book" = "Henkilökohtainen osoitekirja";
 "Collected Address Book" = "Keratty osoitekirja";
-
 /* IMAP Accounts */
 "New Mail Account" = "Uusi sähköpostitili";
-
 "Server Name" = "Palvelinnimi";
 "Port" = "Portti";
 "Encryption" = "Salaus";
 "None" = "Ei mitään";
 "User Name" = "Käyttäjätunnus";
-"Password" = "Salasana";
-
 "Full Name" = "Koko nimi";
 "Email" = "Sähköposti";
 "Reply To Email" = "Vastaa sähköpostiin";
 "Signature" = "Allekirjoitus";
 "(Click to create)" = "(Napsauta luodaksesi)";
-
-"Signature" = "Allekirjoitus";
-"Please enter your signature below:" = "Ole hyvä ja syötä allekirjoituksesi alle:";
-
+"Please enter your signature below" = "Ole hyvä ja syötä allekirjoituksesi alle";
 "Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
 "Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
-
 /* Additional Parameters */
 "Additional Parameters" = "Lisäparametrit";
-
 /* password */
 "New password" = "Uusi salasana";
 "Confirmation" = "Vahvistus";
 "Change" = "Vaihda";
-
 /* Event+task classifications */
 "Default events classification" ="Oletus tapahtumaluokittelu";
 "Default tasks classification" ="Oletus tehtäväluokittelu";
 "PUBLIC_item" = "Julkinen";
 "CONFIDENTIAL_item" = "Luottamuksellinen";
 "PRIVATE_item" = "Yksityinen";
-
 /* Event+task categories */
 "category_none" = "Ei mitään";
 "calendar_category_labels" = "Vuosipäivä,Syntymäpäivä,Kaupankäynti,Puhelut,Toimeksiantajat,Kilpailu,Asiakas,Suosikit,Seuranta,Lahjat,Juhlapyhät,Ideat,Kokous,Asiat,Muut,Henkilökohtaiset,Projektit,Yleinen vapaapäivä,Tilanne,Tavarantoimittajat,Matkailu,Loma";
-
 /* Default module */
 "Calendar" = "Kalenteri";
 "Contacts" = "Osoitekirja";
@@ -212,7 +176,6 @@
 "Last" = "Viimeksi käytetty";
 "Default Module " = "Oletusmoduli";
 "SOGo Version" ="SOGo versio";
-
 "Language" ="Kieli";
 "choose" = "Valitse...";
 "Arabic" = "العربية";
@@ -243,7 +206,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 "Refresh View" ="Päivitä näkymä";
 "refreshview_manually" = "Manuaalisesti";
 "refreshview_every_minute" = "Joka minuutti";
@@ -253,7 +215,6 @@
 "refreshview_every_20_minutes" = "20 minuutin välein";
 "refreshview_every_30_minutes" = "Puolen tunnin välein";
 "refreshview_once_per_hour" = "Kerran tunnissa";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kun saan kuittauspyynnön";
 "Never send a return receipt" = "Alä koskaan lähetä kuittausta";
@@ -261,11 +222,9 @@
 "If I'm not in the To or Cc of the message" = "Jos en ole viestin To tai Cc -kentissä";
 "If the sender is outside my domain" = "Jos lähettäjä on oman toimialueeni ulkopuolelta";
 "In all other cases" = "Kaikissa muissa tapauksissa";
-
 "Never send" = "Älä koskaan lähetä";
 "Always send" = "Lähetä aina";
 "Ask me" = "Kysy minulta";
-
 /* Filters - UIxPreferences */
 "Filters" = "Suodattimet";
 "Active" = "Aktiivinen";
@@ -273,16 +232,14 @@
 "Move Down" = "Siirry alas";
 "Connection error" = "Yhteysvirhe";
 "Service temporarily unavailable" = "Palvelu tilapäisesti pois käytöstä";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Suodattimen nimi:";
+"Filter name" = "Suodattimen nimi";
 "For incoming messages that" = "Saapuville viesteille jotka";
-"match all of the following rules:" = "täsmäävät kaikkiin seuraaviin sääntöihin:";
+"match all of the following rules" = "täsmäävät kaikkiin seuraaviin sääntöihin";
 "match any of the following rules:" = "täsmäävät johonkin seuraavista säännöistä";
 "match all messages" = "täsmäävät kaikkiin viesteihin";
-"Perform these actions:" = "Suorita nämä toiminnot:";
+"Perform these actions" = "Suorita nämä toiminnot";
 "Untitled Filter" = "Nimetön suodatin";
-
 "Subject" = "Aihe:";
 "From" = "Keneltä:";
 "To" = "Kenelle:";
@@ -291,15 +248,14 @@
 "Size (Kb)" = "Koko (Kb)";
 "Header" = "Otsikko";
 "Body" = "Runko";
-"Flag the message with:" = "Merkitse viesti:";
+"Flag the message with" = "Merkitse viesti";
 "Discard the message" = "Hylkää viesti";
-"File the message in:" = "Arkistoi viesti:";
+"File the message in" = "Arkistoi viesti";
 "Keep the message" = "Pidä viesti";
-"Forward the message to:" = "Lähetä viesti edelleen:";
-"Send a reject message:" = "Lähetä hylkäysviesti:";
+"Forward the message to" = "Lähetä viesti edelleen";
+"Send a reject message" = "Lähetä hylkäysviesti";
 "Send a vacation message" = "Lähetä lomaviesti";
 "Stop processing filter rules" = "Pysäytä suodatinsääntöjen suoritus";
-
 "is under" = "on alle";
 "is over" = "on yli";
 "is" = "on";
@@ -310,14 +266,12 @@
 "does not match" = "ei täsmää";
 "matches regex" = "täsmää ehtoon";
 "does not match regex" = "ei täsmää ehtoon";
-
 "Seen" = "Nähty";
 "Deleted" = "Poistettu";
 "Answered" = "Vastattu";
 "Flagged" = "Merkitty";
 "Junk" = "Roskaa";
 "Not Junk" = "Ei roskaa";
-
 /* Password policy */
 "The password was changed successfully." = "Salasana vaihdettu onnistuneesti.";
 "Password must not be empty." = "Salasana ei saa olla tyhjä";

@@ -16,10 +16,8 @@
 "Color" = "Колір";
 "Add" = "Додати";
 "Delete" = "Вилучити";
-
 /* contacts categories */
 "contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
 "Auto reply message" ="Текст автоматичної відповіді";
@@ -33,42 +31,32 @@
 "Your vacation message must not end with a single dot on a line." = "Ваше повідомлення про відпустку не має закінчуватись одиничною крапкою на рядку.";
 "End date of your auto reply must be in the future."
 = "Кінцева дата автоматичної відповіді має бути у майбутньому.";
-
 /* forward messages */
 "Forward incoming messages" = "Перенаправляти вхідні повідомлення";
 "Keep a copy" = "Зберігати копію";
 "Please specify an address to which you want to forward your messages."
 = "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";
-
 /* d & t */
 "Current Time Zone" ="Поточна часова зона";
 "Short Date Format" ="Стислий формат дати";
 "Long Date Format" ="Повний формат дати";
 "Time Format" ="Формат часу";
-
 "default" = "Типово";
-
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d.%m.%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%d.%m.%Y";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d %Y р.";
@@ -82,12 +70,10 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
-
 /* calendar */
 "Week begins on" ="Тиждень починаєтья з";
 "Day start time" ="Робочий день починається о";
@@ -99,17 +85,14 @@
 "Play a sound when a reminder comes due"
 = "Програти звук у разі сповіщення";
 "Default reminder" ="Звичайне сповіщення";
-
 "firstWeekOfYear_January1" = "Починається 1 січня";
 "firstWeekOfYear_First4DayWeek" = "Перший чотириденний тиждень";
 "firstWeekOfYear_FirstFullWeek" = "Перший повний тиждень";
-
 /* Default Calendar */
 "Default calendar" ="Типовий календар";
 "selectedCalendar" = "Вибраний календар";
 "personalCalendar" = "Особистий календар";
 "firstCalendar" = "Перший активний календар";
-
 "reminder_5_MINUTES_BEFORE" = "5 хвилин";
 "reminder_10_MINUTES_BEFORE" = "10 хвилин";
 "reminder_15_MINUTES_BEFORE" = "15 хвилин";
@@ -120,12 +103,11 @@
 "reminder_15_HOURS_BEFORE"= "15 годин";
 "reminder_1_DAY_BEFORE" = "1 день";
 "reminder_2_DAYS_BEFORE" = "2 дні";
-
 /* Mailer */
 "Label" = "Позначка";
 "Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
 "Sort messages by threads" = "Сортувати повідомлення за гілками";
-"Check for new mail:" = "Перевіряти нову пошту:";
+"Check for new mail" = "Перевіряти нову пошту";
 "refreshview_manually" = "Вручну";
 "refreshview_every_minute" = "Щохвилини";
 "refreshview_every_2_minutes" = "Кожні 2 хвилини";
@@ -134,11 +116,9 @@
 "refreshview_every_20_minutes" = "Кожні 20 хвилин";
 "refreshview_every_30_minutes" = "Кожні 30 хвилин";
 "refreshview_once_per_hour" = "Раз на годину";
-
 "Forward messages" = "Перенаправляти повідомлення";
 "messageforward_inline" = "В тілі листа";
 "messageforward_attached" = "Вкладеним файлом";
-
 "replyplacement_above" = "Починати мою відповідь над текстом, що цитується";
 "replyplacement_below" = "Починати мою відповідь під текстом, що цитується";
 "And place my signature" = "Та додати мій підпис";
@@ -147,49 +127,37 @@
 "Compose messages in" = "Створювати повідомлення в форматі";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Звичайний текст";
-
 /* IMAP Accounts */
 "New Mail Account" = "Новий обліковий запис";
-
 "Server Name" = "Ім’я сервера";
 "Port" = "Порт";
 "User Name" = "Ім’я користувача";
-"Password" = "Пароль";
-
 "Full Name" = "Повне ім’я";
 "Email" = "E-Mail";
 "Signature" = "Підпис";
 "(Click to create)" = "(Клацніть, щоб додати)";
-
-"Signature" = "Підпис";
-"Please enter your signature below:" = "Введіть ваш підпис нижче:";
-
+"Please enter your signature below" = "Введіть ваш підпис нижче";
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
-
 /* password */
 "New password" = "Новий пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Змінити";
-
 /* Event+task classifications */
 "Default events classification" ="Класифікація типових подій";
 "Default tasks classification" ="Класифікація типових завдань";
 "PUBLIC_item" = "Загальний доступ";
 "CONFIDENTIAL_item" = "Обмежений доступ";
 "PRIVATE_item" = "Приватний доступ";
-
 /* Event+task categories */
 "category_none" = "Без категорії";
 "calendar_category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
-
 /* Default module */
 "Calendar" = "Календар";
 "Contacts" = "Адресна книга";
 "Mail" = "Електронна пошта";
 "Last" = "Останнє";
 "Default Module " = "Модуль за замовчанням";
-
 "Language" ="Мова";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
@@ -220,7 +188,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Коли я отримую запит на сповіщення про прочитання";
 "Never send a return receipt" = "Ніколи не відправляти сповіщення";
@@ -228,25 +195,21 @@
 "If I'm not in the To or Cc of the message" = "Якщо я не серед адресатів та у копії листа";
 "If the sender is outside my domain" = "Якщо відправник не з мого домену";
 "In all other cases" = "У всіх інших випадках";
-
 "Never send" = "Ніколи не відправляти";
 "Always send" = "Завжди відправляти";
 "Ask me" = "Спитати";
-
 /* Filters - UIxPreferences */
 "Filters" = "Фільтри";
 "Active" = "Увімкнено";
 "Move Up" = "Наверх";
 "Move Down" = "Вниз";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Назва фільтру:";
+"Filter name" = "Назва фільтру";
 "For incoming messages that" = "Для вхідних повідомлень, що";
-"match all of the following rules:" = "відповідають таким правилам:";
-"match any of the following rules:" = "відповідають будь-якому з таких правил:";
+"match all of the following rules" = "відповідають таким правилам";
+"match any of the following rules" = "відповідають будь-якому з таких правил";
 "match all messages" = "відповідають всім повідомленням";
-"Perform these actions:" = "Виконати такі дії:";
-
+"Perform these actions" = "Виконати такі дії";
 "Subject" = "Тема";
 "From" = "Від";
 "To" = "Кому";
@@ -254,15 +217,14 @@
 "To or Cc" = "Кому або Копія";
 "Size (Kb)" = "Розмір (Кб)";
 "Header" = "Заголовок";
-"Flag the message with:" = "Позначити зірочкою повідомлення з:";
+"Flag the message with" = "Позначити зірочкою повідомлення з";
 "Discard the message" = "Скасувати повідомлення";
-"File the message in:" = "Зберегти повідомлення як:";
+"File the message in" = "Зберегти повідомлення як";
 "Keep the message" = "Зберегти повідомлення";
-"Forward the message to:" = "Пененаправити повідомлення на:";
-"Send a reject message:" = "Надіслати повідомлення про відмову в отриманні:";
+"Forward the message to" = "Пененаправити повідомлення на";
+"Send a reject message" = "Надіслати повідомлення про відмову в отриманні";
 "Send a vacation message" = "Надіслати повідомлення про відсутність";
 "Stop processing filter rules" = "Припинити обробку правил фільтру";
-
 "is under" = "починається";
 "is over" = "закінчується";
 "is" = "є";
@@ -273,7 +235,6 @@
 "does not match" = "не збігається";
 "matches regex" = "збігається з регулярним виразом";
 "does not match regex" = "не з регулярним виразом";
-
 "Seen" = "Переглянуто";
 "Deleted" = "Вилучено";
 "Answered" = "Відповіли";
@@ -285,7 +246,6 @@
 "Label 3" = "Позначка 3";
 "Label 4" = "Позначка 4";
 "Label 5" = "Позначка 5";
-
 "Password must not be empty." = "Пароль не має бути порожнім";
 "The passwords do not match. Please try again." = "Паролі не співпадають. Спробуйте ще раз.";
 "Password change failed" = "Помилка під час зміни пароля.";

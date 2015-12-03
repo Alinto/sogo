@@ -29,16 +29,11 @@ Tentative = "Pogojno";
 "Delegated to" = "Dodeljeno k";
 "Update status in calendar" = "Posodobi status v koledarju";
 "delegated from" = "Dodeljeno od";
-
 reply_info_no_attendee = "Prejel si odgovor na razporejen dogodek, toda pošiljatelj tega odgovora ni udeleženec.";
 reply_info = "To je odgovor na tvoje povabilo na dogodek.";
-
 "to" = "za";
-
 "Untitled" = "Brez naslova";
-
 "Size" = "Velikost";
-
 "Digital signature is not valid" = "Digitalno potrdilo ni veljavno";
 "Message is signed" = "Sporočilo je podpisano";
 "Subject" = "Zadeva";
