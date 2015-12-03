@@ -180,7 +180,7 @@
 "Signature" = "Sygnatura";
 "(Click to create)" = "(Kliknij by stworzyć)";
 
-"Signature" = "Podpis";
+"Signature" = "Sygnatura";
 "Please enter your signature below:" = "Wprowadź swoją sygnaturę:";
 
 "Please specify a valid sender address." = "Wprowadź poprawny adres nadawcy.";
@@ -237,6 +237,7 @@
 "Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovenská";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

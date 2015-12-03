@@ -255,7 +255,7 @@
 /* Folder operations */
 "Name :" = "Jméno :";
 "Enter the new name of your folder"
- = "Zadejte nový název Vaší složky";
+ ="Zadejte nový název Vaší složky";
 "Do you really want to move this folder into the trash ?"
  = "Opravdu chcete tuto složku vyhodit do koše ?";
 "Operation failed" = "Operace selhala";

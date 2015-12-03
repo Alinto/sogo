@@ -255,7 +255,7 @@
 /* Folder operations */
 "Name :" = "Nimi:";
 "Enter the new name of your folder"
- = "Syötä kansiosi uusi nimi";
+ ="Syötä kansiosi uusi nimi";
 "Do you really want to move this folder into the trash ?"
  = "Oletko varma että haluat siirtää tämän kansion roskakoriin?  ";
 "Operation failed" = "Toiminto epäonnistui";

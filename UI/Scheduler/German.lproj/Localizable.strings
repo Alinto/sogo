@@ -10,6 +10,7 @@
 "Go to today" = "Zu Heute springen";
 "Switch to day view" = "Zur Tagesansicht wechseln";
 "Switch to week view" = "Zur Wochenansicht wechseln";
+"Switch to multi-columns day view" = "In die Mehrspaltige Tagesansicht umschalten";
 "Switch to month view" = "Zur Monatsansicht wechseln";
 "Reload all calendars" = "Alle Kalender neu laden";
 
@@ -294,7 +295,7 @@
 "status_TENTATIVE" = "Vorläufig";
 "status_CONFIRMED" = "Bestätigt";
 "status_CANCELLED" = "Abgebrochen";
-"status_NEEDS-ACTION" = "Benötigt Eingriff";
+"status_NEEDS-ACTION" = "Reaktion erwartet";
 "status_IN-PROCESS" = "In Arbeit";
 "status_COMPLETED" = "Abgeschlossen am";
 
@@ -315,7 +316,7 @@
 "Recurrence pattern" = "Wiederholungsmuster";
 "Range of recurrence" = "Bereich der Wiederholung";
 
-"Repeat" = "Wiederhole";
+"Repeat" = "Wiederholen";
 "Daily" = "Täglich";
 "Weekly" = "Wöchentlich";
 "Monthly" = "Monatlich";
@@ -325,9 +326,11 @@
 "Week(s)" = "Woche(n)";
 "On" = "Am";
 "Month(s)" = "Monat(e)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "Am";
 "Recur on day(s)" = "Wiederholung an Tag(en) ";
 "Year(s)" = "Jahr(e)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "im";
 "No end date" = "Kein Enddatum";
 "Create" = "Erstelle";
@@ -481,7 +484,7 @@ validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 "Start" = "Beginn";
 "End" = "Ende";
 "Due Date" = "Fällig";
-"Location" = "Ort";
+"Location" = "Ort ";
 
 "(Private Event)" = "(Privater Termin)";
 
@@ -489,7 +492,7 @@ vevent_class0 = "(Öffentlicher Termin)";
 vevent_class1 = "(Privater Termin)";
 vevent_class2 = "(Vertraulicher Termin)";
 
-"Priority" = "Priorität";
+"Priority" = "Priorität ";
 "Category" = "Kategorie";
 
 vtodo_class0 = "(Öffentliche Aufgabe)";
@@ -547,7 +550,6 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "DestinationCalendarError" = "Quell- und Zielkalender sind identisch. Bitte kopieren Sie in einen anderen Kalender.";
 "EventCopyError" = "Kopieren fehlgeschlagen. Bitte kopieren Sie in einen anderen Kalender.";
 "Please select at least one calendar" = "Bitte mindestens einen Kalender auswählen";
-
 
 "Open Task..." = "Aufgabe öffnen...";
 "Mark Completed" = "Als abgeschlossen markieren";

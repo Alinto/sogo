@@ -10,6 +10,7 @@
 "Go to today" = "Přejde na dnešní den";
 "Switch to day view" = "Přepnout na denní zobrazení";
 "Switch to week view" = "Přepnout na týdenní zobrazení";
+"Switch to multi-columns day view" = "Přepnout na vícesloupkové denní zobrazení";
 "Switch to month view" = "Přepnout na měsíční zobrazení";
 "Reload all calendars" = "Aktualizovat všechny kalendáře";
 
@@ -325,9 +326,11 @@
 "Week(s)" = "Týdnů";
 "On" = "V";
 "Month(s)" = "Měsíců";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "The";
 "Recur on day(s)" = "Opakovat ve dnech";
 "Year(s)" = "rocích";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "of";
 "No end date" = "Bez data konce";
 "Create" = "Vytvořit";
@@ -506,6 +509,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "button_allOccurrences" = "Všechna opakování";
 
 /* Properties dialog */
+"Name" = "Jméno";
 "Color" = "Barva";
 
 "Include in free-busy" = "Zahrnout do obsazeného času (free-busy)";
@@ -546,7 +550,6 @@ vtodo_class2 = "(Důvěrný úkol)";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
 "EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 "Please select at least one calendar" = "Prosím zvolte alespoň jeden kalendář";
-
 
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";

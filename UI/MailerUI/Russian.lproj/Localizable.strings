@@ -255,7 +255,7 @@
 /* Folder operations */
 "Name :" = "Имя :";
 "Enter the new name of your folder"
- = "Введите новое имя папки";
+ ="Введите новое имя папки";
 "Do you really want to move this folder into the trash ?"
  = "Вы действительно хотите перенести эту папку в корзину?";
 "Operation failed" = "Операция завершилась неудачно";

@@ -10,6 +10,7 @@
 "Go to today" = "Ir para Hoje";
 "Switch to day view" = "Visualizar Dia";
 "Switch to week view" = "Visualizar Semana";
+"Switch to multi-columns day view" = "Mude para Visão Diária Multi Colunas";
 "Switch to month view" = "Visualizar Mês";
 "Reload all calendars" = "Recarregar todos os calendários";
 
@@ -325,9 +326,11 @@
 "Week(s)" = "Semana(s)";
 "On" = "Em";
 "Month(s)" = "Mês(es)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "O/A";
 "Recur on day(s)" = "Retorne em dia(s)";
 "Year(s)" = "Ano(s)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "de";
 "No end date" = "Sem data final";
 "Create" = "Criar";
@@ -478,9 +481,9 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 
 /* apt list */
 "Title" = "Título";
-"Start" = "Início";
+"Start" = "Inicio";
 "End" = "Fim";
-"Due Date" = "Data de Vencimento";
+"Due Date" = "Data";
 "Location" = "Localização";
 
 "(Private Event)" = "(Evento Privado)";
@@ -547,7 +550,6 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "DestinationCalendarError" = "Os calendários de origem e destino são os mesmos. Por favor, tente copiar para outro calendário diferente.";
 "EventCopyError" = "A cópia falhou. Por favor, tente copiar para um calendário diferente.";
 "Please select at least one calendar" = "Por favor, selecione pelo menos um calendário";
-
 
 "Open Task..." = "Abrir Tarefa...";
 "Mark Completed" = "Marcar como Concluída";

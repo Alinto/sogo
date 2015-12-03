@@ -10,6 +10,7 @@
 "Go to today" = "Ir a hoy";
 "Switch to day view" = "Cambiar a vista diaria";
 "Switch to week view" = "Cambiar a vista semanal";
+"Switch to multi-columns day view" = "Cambiar a vista del día multicolumna";
 "Switch to month view" = "Cambiar a vista mensual";
 "Reload all calendars" = "Recargar todos los calendarios";
 
@@ -325,9 +326,11 @@
 "Week(s)" = "semana(s)";
 "On" = "en";
 "Month(s)" = "mes(es)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "El";
 "Recur on day(s)" = "Repetir en día(s)";
 "Year(s)" = "año(s)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "de";
 "No end date" = "Sin fecha fin";
 "Create" = "Crear";
@@ -478,8 +481,8 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 
 /* apt list */
 "Title" = "Título";
-"Start" = "Inicio";
-"End" = "Fin";
+"Start" = "Desde";
+"End" = "Hasta";
 "Due Date" = "Vencimiento";
 "Location" = "Lugar";
 
@@ -490,7 +493,7 @@ vevent_class1 = "(Evento privado)";
 vevent_class2 = "(Evento confidencial)";
 
 "Priority" = "Prioridad";
-"Category" = "Categoria";
+"Category" = "Categoría";
 
 vtodo_class0 = "(Tarea pública)";
 vtodo_class1 = "(Tarea privada)";
@@ -547,7 +550,6 @@ vtodo_class2 = "(Tarea confidencial)";
 "DestinationCalendarError" = "El calendario origen y el destino son iguales. Por favor, intente copiar a otro calendario.";
 "EventCopyError" = "La copia falló. Por favor, intente copiar a un calendario distinto.";
 "Please select at least one calendar" = "Por favor, selecciona al menos un calendario";
-
 
 "Open Task..." = "Abrir tarea...";
 "Mark Completed" = "Marcar como completo";

@@ -21,7 +21,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "startDate_label" = "Início";
 "endDate_label" = "Fim";
 "due_label" = "Data de Vencimento:";
-"location_label" = "Local";
+"location_label" = "Localização";
 "summary_label" = "Resumo:";
 "comment_label" = "Comentário:";
 

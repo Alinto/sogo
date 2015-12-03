@@ -10,6 +10,7 @@
 "Go to today" = "Siirry tähän päivään";
 "Switch to day view" = "Siirry päivänäkymään";
 "Switch to week view" = "Siirry viikkonäkymään";
+"Switch to multi-columns day view" = "Vaihda monisarakepäivänäkymään";
 "Switch to month view" = "Siirry kuukausinäkymään";
 "Reload all calendars" = "Päivitä kaikki kalenterit";
 
@@ -325,9 +326,11 @@
 "Week(s)" = "Viikko/Viikot";
 "On" = " ";
 "Month(s)" = "Kuukausi/kuukaudet";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = " ";
 "Recur on day(s)" = "Toista päiv(in)ä";
 "Year(s)" = "Vuosi(na)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = " ";
 "No end date" = "Ei päättymispäivää";
 "Create" = "Luo";
@@ -479,7 +482,7 @@ validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.
 /* apt list */
 "Title" = "Otsikko";
 "Start" = "Alkaa";
-"End" = "Loppuu";
+"End" = "Päättyy";
 "Due Date" = "Määräpäivä";
 "Location" = "Paikka";
 
@@ -489,7 +492,7 @@ vevent_class0 = "(Julkinen tapahtuma)";
 vevent_class1 = "(Yksityinen tapahtuma)";
 vevent_class2 = "(Luottamuksellinen tapahtuma)";
 
-"Priority" = "Tärkeysaste";
+"Priority" = "Prioriteetti";
 "Category" = "Luokka";
 
 vtodo_class0 = "(Julkinen tehtävä)";
@@ -547,7 +550,6 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "DestinationCalendarError" = "Lähde- ja kohdekalenterit ovat samoja. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
 "EventCopyError" = "Kopiointi epäonnistui. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
 "Please select at least one calendar" = "Ole hyvä ja valitse ainakin yksi kalenteri";
-
 
 "Open Task..." = "Avaa tehtävä...";
 "Mark Completed" = "Merkitse valmistuneeksi";

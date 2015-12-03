@@ -255,7 +255,7 @@
 /* Folder operations */
 "Name :" = "Nazwa :";
 "Enter the new name of your folder"
- = "Wprowadź nową nazwę twojego folderu";
+ ="Wprowadź nową nazwę folderu";
 "Do you really want to move this folder into the trash ?"
  = "Czy na pewno chcesz przenieść ten folder do kosza ?";
 "Operation failed" = "Operacja nie powiodła się";

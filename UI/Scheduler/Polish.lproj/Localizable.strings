@@ -10,6 +10,7 @@
 "Go to today" = "Przejdź do dnia dzisiejszego";
 "Switch to day view" = "Przełącz na widok dnia";
 "Switch to week view" = "Przełącz na widok tygodnia";
+"Switch to multi-columns day view" = "Przełącz na widok dnia wielokolumnowy";
 "Switch to month view" = "Przełącz na widok miesiąca";
 "Reload all calendars" = "Przeładuj wszystkie kalendarze";
 
@@ -325,9 +326,11 @@
 "Week(s)" = "Tygodni(e)";
 "On" = "w";
 "Month(s)" = "Miesiące(cy)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = " ";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = " ";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
@@ -547,7 +550,6 @@ vtodo_class2 = "(Zadanie poufne)";
 "DestinationCalendarError" = "Chcesz kopiować do tego samego kalendarza. Musisz wybrać inny kalendarz.";
 "EventCopyError" = "Kopiowanie nie udało się. Wybierz inny kalendarz.";
 "Please select at least one calendar" = "Wybierz co najmniej jeden kalendarz";
-
 
 "Open Task..." = "Otwórz zadanie";
 "Mark Completed" = "Oznacz jako ukończone";
