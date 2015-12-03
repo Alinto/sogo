@@ -201,9 +201,11 @@
 
           <div class="msg-body">
             <div layout="row" layout-wrap="layout-wrap">
-              <div ng-class="part.msgclass" layout="row" layout-wrap="layout-wrap" class="mailer_mailcontent" ng-repeat="part in viewer.message.$content()">
+              <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
+                   ng-repeat="part in viewer.message.$content()"
+                   ng-class="part.msgclass">
                 <div ng-if="part.html" ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
-                <div ng-if="part.compile" sg-compile="part.content"><!-- msg --></div>
+                <div ng-if="part.compile" sg-compile="part.content" sg-zoomable-image="sg-zoomable-image"><!-- msg --></div>
               </div>
             </div>
           </div>
