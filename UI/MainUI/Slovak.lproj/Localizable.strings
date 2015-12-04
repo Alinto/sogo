@@ -1,58 +1,55 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-
 "Username" = "Užívateľské meno";
 "Password" = "Heslo";
 "Domain" = "Doména";
 "Remember username" = "Zapamätať uživateľské meno";
-
 "Connect" = "Pripojiť";
-
 "Wrong username or password." = "Nesprávne uživateľské meno alebo heslo.";
 "cookiesNotEnabled" = "Nemôžete sa prihlásiť, pretože vo svojom prehliadači máte zakázané cookies. Prosím povoľte cookies vo vašom prehliadači a skúste to znova.";
-
 "browserNotCompatible" = "Zistili sme že Váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohoto prehliadača";
 "alternativeBrowsers" = "Prípadne môžete tiež použiť nasledujúce kompatibilné prehliadače";
 "alternativeBrowserSafari" = "Alternatívne je možné použiť aj Safari.";
 "Download" = "Stiahnuť";
-
 "Language" = "Jazyk";
 "choose" = "Výber ...";
 "Arabic" = "العربية";
-"Catalan" = "Katalánsky";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
-"Dutch" = "Holandsky";
-"English" = "Anglicky";
+"Dutch" = "Nederlands";
+"English" = "English";
 "Finnish" = "Suomi";
-"French" = "Francúzsky";
-"German" = "Nemecky";
-"Hungarian" = "Maďarsky";
-"Icelandic" = "Islandčina";
-"Italian" = "Taliansky";
-"NorwegianBokmal" = "Nórčina bokmål";
-"NorwegianNynorsk" = "Nórčina nynorsk";
-"Polish" = "Poľština";
-"BrazilianPortuguese" = "Portugalská brazílština";
-"Russian" = "Ruština";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
-"SpanishSpain" = "Španielčina (Španielsko)";
-"SpanishArgentina" = "Španielčina (Argentína)";
-"Swedish" = "Švédčina";
-"Ukrainian" = "Ukrajinčina";
-"Welsh" = "Galčina";
-
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
 "About" = "O";
 "AboutBox" = "Vyvinuté Inverse, SOGo je plne vybavený groupware server s dôrazom na škálovateľnosť a jednoduchosť.<br/><br/>\nSOGo ponúka bohaté Web rozhranie na báze AJAX-u a natívne podporuje mnoho klientov použitím štandardov ako sú CalDAV a CardDAV.<br/><br/>\nSOGo je distribuované pod licenciou <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzie 2 alebo novšej a niektoré časti pod licenciou GNU LGPL verzie 2. Toto je voľne šíritelný softvér: môžete ho meniť a šíriť ďalej. Neexistuje ŽIADNA ZÁRUKA, v rozsahu povolenom zákonom.<br/><br/>\nPozrite si <a href=\"http://www.sogo.nu/en/support/community.html\">túto stránku</a> pre rôzne možnosti podpory.";
-
 "Your account was locked due to too many failed attempts." = "Váš účet bol uzamknutý kvôli príliš mnohých neúspešným pokusom.";
 "Your account was locked due to an expired password." = "Váš účet bol uzamknutý kvôli neplatnému heslu.";
-"Login failed due to unhandled error case: " = "Prihlásenie zlyhalo kvôli neošetrenej prípade chyby:";
+"Login failed due to unhandled error case" = "Prihlásenie zlyhalo kvôli neošetrenej prípade chyby";
 "Change your Password" = "Zmeniť heslo";
 "The password was changed successfully." = "Vaše heslo bolo zmené.";
-"Your password has expired, please enter a new one below:" = "Vaše heslo vypršalo, zadajte prosím nové nižšie:";
+"Your password has expired, please enter a new one below" = "Vaše heslo vypršalo, zadajte prosím nové nižšie";
 "Password must not be empty." = "Heslo nesmie byť prázdne.";
 "The passwords do not match. Please try again." = "Heslá sa nezhodujú. Skúste to znova.";
 "Password Grace Period" = "Doba platnosti hesla";
@@ -73,7 +70,7 @@
 "Unhandled error response" = "Nespracované chyby na odpoveď";
 "Password change is not supported." = "Zmena hesla nieje povolená.";
 "Unhandled HTTP error code: %{0}" = "Nespracované HTTP. Kód chyby:% {0}";
-"New password:" = "Nové heslo:";
-"Confirmation:" = "Potvrdiť:";
+"New password" = "Nové heslo";
+"Confirmation" = "Potvrdiť";
 "Cancel" = "Zrušiť";
 "Please wait..." = "Prosím čakajte ...";

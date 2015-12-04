@@ -4,7 +4,6 @@
 "Save" = "Salva";
 "Close" = "Chiudi";
 "Edit User Rights" = "Modifica permessi";
-
 "Home" = "Home";
 "Calendar" = "Calendario";
 "Address Book"	= "Rubrica";
@@ -14,29 +13,20 @@
 "Disconnect" = "Disconnetti";
 "Right Administration" = "Amministrazione permessi";
 "Log Console (dev.)" = "Log Console (dev.)";
-
 "User" = "Utente";
-
 "Help" = "Aiuto";
-
 "noJavascriptError" = "SOGo ha bisogno di Javascript per essere eseguito. Verifica che questo elemento sia presente ed attivato nelle preferenze del browser";
 "noJavascriptRetry" = "Riprova";
-
-"Owner:" = "Proprietario:";
+"Owner" = "Proprietario";
 "Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
-
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
-
 "Subscribe User" = "Sottoscrivi utente";
-
 "Any Authenticated User" = "Utenti autenticati";
 "Public Access" = "Accesso pubblico";
 "Any user not listed above" = "Ogni utente non indicato sopra";
 "Anybody accessing this resource from the public area" = "Chiunque acceda a questa risorsa da un area pubblica";
-
 "Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Ogni utente con un account di sistema potrà accedere alla tua mailbox \"%{0}\". Sei sicuro di fidarti?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -49,7 +39,6 @@
      = "Potenzialmente chiunque su internet può accedere alla tua rubrica \"%{0}\", anche se non ha alcun account di sistema. Questa informazione può essere resa pubblica su internet?";
 "Give Access" = "Dai Accesso";
 "Keep Private" = "Mantieni Privato";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Impossibile sottoscrivere la cartella!";
@@ -68,17 +57,14 @@
 "You cannot create a list in a shared address book." 
         = "Non puoi creare una lista in una rubrica in sola lettura.";
 "Warning" = "Attenzione";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
-
 "noEmailForDelegation" = "E' necessario specificare l'indirizzo a cui vuoi delegare il tuo invito.";
 "delegate is organizer" = "Il delato è l'organizzatore. Prego specificare un altro delegato.";
 "delegate is a participant" = "Il delegato è già un partecipante.";
 "delegate is a group" = "L'indirizzo specifico corrisponde ad un gruppo, puoi delegare solo una persona.";
-
 "Snooze for " = "Posponi per";
 "5 minutes" = "5 minuti";
 "10 minutes" = "10 minuti";
@@ -86,28 +72,22 @@
 "30 minutes" = "30 minuti";
 "45 minutes" = "45 minuti";
 "1 hour" = "1 ora";
-
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annulla";
 "Yes" = "Sì";
 "No" = "No";
-
 /* alarms */
-"Reminder:" = "Promemoria:";
-"Start:" = "Inizio:";
-"Due Date:" = "Scadenza:";
-"Location:" = "Luogo:";
-
+"Reminder" = "Promemoria";
+"Start" = "Inizio";
+"Due Date" = "Scadenza";
+"Location" = "Luogo";
 /* Mail labels */
 "Important" = "Importante";
-"Work" = "Lavoro";
 "Work" = "Lavoro";
 "Personal" = "Personale";
 "To Do" = "Da fare";
 "Later" = "Posponi";
-
 "a2_Sunday" = "Do";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";

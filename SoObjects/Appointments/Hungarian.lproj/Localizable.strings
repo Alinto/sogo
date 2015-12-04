@@ -7,7 +7,6 @@ vevent_class2 = "(Bizalmas esemény)";
 vtodo_class0 = "(Nyilvános feladat)";
 vtodo_class1 = "(Magán feladat)";
 vtodo_class2 = "(Bizalmas feladat)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "A \"%{Summary}\" esemény létre lett hozva";
 "The event \"%{Summary}\" was deleted" = "A \"%{Summary}\" esemény törölve lett";
@@ -15,7 +14,6 @@ vtodo_class2 = "(Bizalmas feladat)";
 "The following attendees(s) were notified" = "Az alábbi résztvevők lettek értesítve";
 "The following attendees(s) were added" = "Az alábbi résztvevők lettek hozzáadva";
 "The following attendees(s) were removed" = "Az alábbi résztvevők lettek eltávolítva";
-
 /* IMIP messages */
 "calendar_label" = "Naptár";
 "startDate_label" = "Kezdete";
@@ -24,20 +22,17 @@ vtodo_class2 = "(Bizalmas feladat)";
 "location_label" = "Hely";
 "summary_label" = "Összegzés:";
 "comment_label" = "Megjegyzés:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Meghívás eseményre: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} által elküldve) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} meghívta Önt a(z) %{Summary} tárgyú eseményre.\n\nKezdete: %{StartDate}: \nVége: %{EndDate}\nLeírása: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} meghívta Önt erre az eseményre: %{Summary}.\n\nKezdete: %{StartDate} at %{StartTime}\nVége: %{EndDate} at %{EndTime}\nLeírás: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Az esemény törölve lett: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} törlte az alábbi eseményt: %{Summary}.\n\nKzdete: %{StartDate}\nVége: %{EndDate}\nLeírás: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} törölte az alábbi eseményt: %{Summary}.\n\nKezdete: %{StartDate} at %{StartTime}\nVége: %{EndDate} at %{EndTime}\nLeírás: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "A(z) \"%{Summary}\" tárgyú, %{OldStartDate} időpontra tervezett esemény módosult.";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Bizalmas feladat)";
 = "A \"%{Summary}\" tárgyú találkozó következő adatai módosultak:";
 "Please accept or decline those changes."
 = "Kérem fogadja el vagy utasítsa vissza a változásokat.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Elfogadott meghivás: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Elutasított meghívás: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Bizalmas feladat)";
 = "%{Attendee} %{SentByText} átruházta a meghívást az alábbi személynek %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}még meggondolja a meghívását.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Az alábbi elem nem elérhető: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "A maximális egyidejű foglalás számát (%{NumberOfSimultaneousBookings}) elérte a(z)  \"%{Cn} %{SystemEmail}\" elem esetében. Az ütköző esemény a(z)  \"%{EventTitle}\", a kezdeti időpontja %{StartDate}.";

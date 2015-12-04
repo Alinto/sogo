@@ -4,7 +4,6 @@
 "Address" = "Indirizzo";
 "Photos" = "Foto";
 "Other" = "Altro";
-
 "Address Books" = "Rubrica";
 "Addressbook" = "Rubrica";
 "Addresses" = "Indirizzi";
@@ -39,29 +38,23 @@
 "invaliddatewarn" = "La data specificata non è valida.";
 "new" = "nuovo";
 "Preferred Phone" = "Telefono lavoro";
-
 "Move To" = "Sposta in ";
 "Copy To" = "Copia in ";
-"Add to:" = "Aggiungi a:";
-
+"Add to" = "Aggiungi a";
 /* Tooltips */
-
 "Create a new address book card" = "Crea un nuovo contatto";
 "Create a new list" = "Crea una nuova lista";
 "Edit the selected card" = "Modifica il contatto selezionato";
 "Send a mail message" = "Invia un'email";
 "Delete selected card or address book" = "Cancella il contatto selezionato";
 "Reload all contacts" = "Ricarica tutti i contatti";
-
 "htmlMailFormat_UNKNOWN" = "Sconosciuto";
 "htmlMailFormat_FALSE" = "Testo normale";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Nome o indirizzo Email";
 "Category" = "Categoria";
 "Personal Addressbook" = "Rubrica personale";
 "Search in Addressbook" = "Cerca nella rubrica";
-
 "New Card" = "Nuovo contatto";
 "New List" = "Nuova lista";
 "Properties" = "Modifica";
@@ -71,68 +64,49 @@
 "Instant Message" = "Messaggio istantaneo";
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
-
 "Please wait..." = "Attendere prego...";
 "No possible subscription" = "Nessuna sottoscrizione possibile";
-
 "Preferred" = "Predefinito";
 "Display" = "Nome visualizzato";
 "Display Name" = "Nome visualizzato";
-"Email:" = "Email:";
-"Additional Email:" = "Email aggiuntiva:";
-
+"Additional Email" = "Email aggiuntiva";
 "Phone Number" = "Numero di telefono";
-"Prefers to receive messages formatted as:" = "Formato preferito per i messaggi di posta:";
-"Screen Name:" = "Nome Instant Messenger:";
-"Categories:" = "Categorie:";
-
-"First:" = "Nome:";
+"Prefers to receive messages formatted as" = "Formato preferito per i messaggi di posta";
+"Screen Name" = "Nome Instant Messenger";
+"Categories" = "Categorie";
+"First" = "Nome";
 "Last:" = "Cognome";
 "Nickname" = "Soprannome";
-
 "Telephone" = "Telefono";
-"Work:" = "Lavoro:";
-"Home:" = "Casa:";
-"Fax:" = "Fax:";
-"Mobile:" = "Cellulare:";
-"Pager:" = "Cerca Persone:";
-
+"Work" = "Lavoro";
+"Mobile" = "Cellulare";
+"Pager" = "Cerca Persone";
 /* categories */
 "contacts_category_labels" = "Collega, Concorrente, Cliente, Amico, Famiglia, Socio, Provider, Stampa, VIP";
-"Categories" = "Categorie";
 "New category" = "Nuova categoria";
-
 /* adresses */
 "Title" = "Titolo";
-"Service:" = "Service:";
-"Company:" = "Società:";
-"Department:" = "Reparto:";
-"Organization:" = "Società:";
-"Address:" = "Indirizzo:";
+"Service" = "Service";
+"Company" = "Società";
+"Department" = "Reparto";
 "City" = "Città";
-"State_Province:" = "Provincia:";
-"ZIP_Postal Code:" = "CAP:";
+"State_Province" = "Provincia";
+"ZIP_Postal Code" = "CAP";
 "Country" = "Nazione";
-"Web Page:" = "Pagina Web:";
-
-"Work" = "Lavoro";
+"Web Page" = "Pagina Web";
 "Other Infos" = "Altre informazioni";
-
 "Note" = "Note";
-"Timezone:" = "Fuso orario:";
+"Timezone" = "Fuso orario";
 "Birthday" = "Data di Nascita";
 "Birthday (yyyy-mm-dd)" = "Data di Nascita (yyyy-mm-dd)";
-"Freebusy URL:" = "Libero-occupato URL:";
-
+"Freebusy URL" = "Libero-occupato URL";
 "Add as..." = "Aggiungi come...";
 "Recipient" = "Destinatario";
 "Carbon Copy" = "Copia Carbone";
 "Blind Carbon Copy" = "Copia Carbone Nascosta";
-
 "New Addressbook..." = "Nuova rubrica...";
 "Subscribe to an Addressbook..." = "Sottoscrivi una rubrica...";
 "Remove the selected Addressbook" = "Rimuovi la rubrica selezionata";
-
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
@@ -140,27 +114,20 @@
 = "Non puoi rimuovere una rubrica pubblica.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Non puoi rimuovere la tua rubrica personale.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Non è possibile eliminare il contatto di \"%{0}\".";
-
 "Address Book Name" = "Nome della Rubrica";
-
 "You cannot subscribe to a folder that you own!"
 = "Non puoi sottoscrivere una cartella di cui sei proprietario!";
 "Unable to subscribe to that folder!"
 = "Non puoi sottoscrivere la cartella!";
-
 /* acls */
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
-
 "Any Authenticated User" = "Utenti autenticati";
 "Public Access" = "Accesso pubblico";
-
 "This person can add cards to this addressbook."
 = "Questa persona può aggiungere contatti a questa rubrica.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +138,14 @@
 = "Questa persona può leggere i contatti di questa rubrica.";
 "This person can erase cards from this addressbook."
 = "Questa persona può eliminare contatti da questa rubrica.";
-
 "The selected contact has no email address."
 = "Il contatto selezionato non dispone di indirizzo email.";
-
 "Please select a contact." = "Per favore seleziona un contatto.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Non è possibile scrivere questa rubrica.";
 "Forbidden" = "Non è possibile scrivere questa rubrica.";
 "Invalid Contact" = "Il contatto selezionato non esiste più.";
 "Unknown Destination Folder" = "La rubrica selezionata come destinazione non esiste più.";
-
 /* Lists */
 "List details" = "Dettagli lista";
 "List name" = "Nome lista";
@@ -204,5 +166,4 @@
 "An error occured while importing contacts." = "Si è verificato un errore durante l'importazione dei contatti.";
 "No card was imported." = "Nessun contatto importato.";
 "A total of %{0} cards were imported in the addressbook." = "Sono stati importati %{0} contatti nella rubrica.";
-
 "Reload" = "Ricarica";

@@ -4,7 +4,6 @@
 "Save" = "Gem";
 "Close" = "Luk";
 "Edit User Rights" = "Redigér brugerrettigheder";
-
 "Home" = "Hjem";
 "Calendar" = "Kalender";
 "Address Book"	= "Adressebog";
@@ -14,30 +13,21 @@
 "Disconnect" = "Afbryd";
 "Right Administration" = "Rettighedsadministration";
 "Log Console (dev.)" = "Log konsol (dev.)";
-
 "User" = "Bruger";
 "Vacation message is enabled" = "Ferie meddelelse er aktiv";
-
 "Help" = "Hjælp";
-
 "noJavascriptError" = "Sogo kræver Javascript for at køre. Sørg for, at denne mulighed er tilgængelig og aktiveret i din browsers indstillinger.";
 "noJavascriptRetry" = "Prøv igen";
-
-"Owner:" = "Ejer:";
+"Owner" = "Ejer";
 "Publish the Free/Busy information" = "Offentliggør  ledig/optaget information";
-
 "Add..." = "Tilføj ...";
 "Remove" = "Fjern";
-
 "Subscribe User" = "Tilmeld bruger";
-
 "Any Authenticated User" = "Enhver godkendt bruger";
 "Public Access" = "Offentlig adgang";
 "Any user not listed above" = "Enhver bruger, som ikke er nævnt ovenfor";
 "Anybody accessing this resource from the public area" = "Enhver adgang til denne ressource fra det offentlige rum";
-
 "Sorry, the user rights can not be configured for that object." = "Beklager, brugerrettighederne kan ikke konfigureres for dette emne";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Alle brugere med en konto på dette system vil få adgang til din mail \"%{0}\". Er du sikker på at du har tillid til dem alle?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "Potentielt alle på internettet vil være i stand til at få adgang til din adressebog \"%{0}\", selv om de ikke har en konto på dette system. Er disse oplysninger egnet til det offentlige internet?";
 "Give Access" = "Giv adgang";
 "Keep Private" = "Forbliv privat";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Det er ikke muligt at abonnere på denne mappe!";
@@ -69,17 +58,14 @@
 "You cannot create a list in a shared address book." 
         = "Du kan ikke oprette en liste i en delt adressebog.";
 "Warning" = "Advarsel";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har ikke adgang til dette modul eller dette system. Kontakt venligst din systemadministrator.";
 "You don't have the required privileges to perform the operation."
 = "Du har ikke de nødvendige privilegier til at udføre handlingen.";
-
 "noEmailForDelegation" = "Du skal angive den adresse, som du ønsker sende din invitation til.";
 "delegate is organizer" = "Den inviterede er arrangør. Angiv en anden.";
 "delegate is a participant" = "Den inviterede er allerede en deltager.";
 "delegate is a group" = "Den angivne adresse svarer til en gruppe. Du kan kun invitere en enkelt person.";
-
 "Snooze for " = "Udsæt i ";
 "5 minutes" = "5 minutter";
 "10 minutes" = "10 minutter";
@@ -87,28 +73,22 @@
 "30 minutes" = "30 minutter";
 "45 minutes" = "45 minutter";
 "1 hour" = "1 time";
-
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annullér";
 "Yes" = "Ja";
 "No" = "Nej";
-
 /* alarms */
-"Reminder:" = "Påmindelse:";
-"Start:" = "Start:";
-"Due Date:" = "Forfaldsdato:";
-"Location:" = "Sted:";
-
+"Reminder" = "Påmindelse";
+"Start" = "Start";
+"Due Date" = "Forfaldsdato";
+"Location" = "Sted";
 /* Mail labels */
 "Important" = "Vigtigt";
-"Work" = "Arbejde";
 "Work" = "Arbejde";
 "Personal" = "Privat";
 "To Do" = "To Do";
 "Later" = "Senere";
-
 "a2_Sunday" = "Sø";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";

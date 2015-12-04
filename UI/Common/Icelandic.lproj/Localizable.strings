@@ -4,7 +4,6 @@
 "Save" = "Vista";
 "Close" = "Loka";
 "Edit User Rights" = "Sýsla með notendaréttindi";
-
 "Home" = "Heima";
 "Calendar" = "Dagatal";
 "Address Book"	= "Nafnaskrá";
@@ -14,29 +13,20 @@
 "Disconnect" = "Aftengjast";
 "Right Administration" = "Umsjón réttinda";
 "Log Console (dev.)" = "Log Console (dev.)";
-
 "User" = "Notandi";
-
 "Help" = "Hjálp";
-
 "noJavascriptError" = "SOGo þarf Javaskrift til að virka. Tryggja þarf að þessi möguleiki sé til og virkur í stillingum vafrans.";
 "noJavascriptRetry" = "Reyna aftur";
-
-"Owner:" = "Eigandi:";
+"Owner" = "Eigandi";
 "Publish the Free/Busy information" = "Gefa út upplýsingar um Laust/Upptekið";
-
 "Add..." = "Bæta við...";
 "Remove" = "Fjarlægja";
-
 "Subscribe User" = "Setja notanda í áskrift";
-
 "Any Authenticated User" = "Sérhvern innskráðan notanda";
 "Public Access" = "Opinber aðgangur";
 "Any user not listed above" = "Sérhvern notanda sem ekki er tilgreindur að ofan";
 "Anybody accessing this resource from the public area" = "Hver sem er sem hefur almennan aðgang að þessu tilfangi";
-
 "Sorry, the user rights can not be configured for that object." = "Því miður, ekki er hægt að breyta notendaréttindum fyrir það viðfang.";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Ekki var hægt að gerast áskrifandi að þeirri möppu.";
@@ -55,37 +45,30 @@
 "You cannot create a list in a shared address book." 
         = "Ekki er hægt að búa til lista í samnýttri nafnaskrá.";
 "Warning" = "Viðvörun";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Þú hefur ekki aðgang að þessari einingu á þessu kerfi. Til þess þarftu að hafa samband við kerfisstjóra Reiknistofnunar HÍ.";
 "You don't have the required privileges to perform the operation."
 = "Þú hefur ekki nauðsynleg réttindi til að framkvæma þessa aðgerð.";
-
 "noEmailForDelegation" = "Skrá þarf netfangið hjá þeim sem á að bjóða að gerast fulltrúi.";
 "delegate is organizer" = "Ekki gengur að fulltrúinn sé sá sami og skipuleggjandinn. Tilgreina þarf annan annan fulltrúa.";
 "delegate is a participant" = "Fulltrúinn er nú þegar þáttakandi.";
 "delegate is a group" = "Uppgefna netfangið er fyrir hóp, en aðeins er hægt að bjóða manneskjum að gerast fulltrúar.";
-
 /* common buttons */
 "OK" = "Í lagi";
 "Cancel" = "Hætta við";
 "Yes" = "Já";
 "No" = "Nei";
-
 /* alarms */
-"Reminder:" = "Áminning:";
-"Start:" = "Byrjun:";
-"Due Date:" = "Lokadagur:";
-"Location:" = "Staðsetning:";
-
+"Reminder" = "Áminning";
+"Start" = "Byrjun";
+"Due Date" = "Lokadagur";
+"Location" = "Staðsetning";
 /* Mail labels */
 "Important" = "Mikilvægt";
-"Work" = "Vinna";
 "Work" = "Vinna";
 "Personal" = "Persónulegt";
 "To Do" = "Verkþáttur";
 "Later" = "Seinna";
-
 "a2_Sunday" = "Su";
 "a2_Monday" = "Má";
 "a2_Tuesday" = "Þr";

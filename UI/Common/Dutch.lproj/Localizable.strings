@@ -4,7 +4,6 @@
 "Save" = "Opslaan";
 "Close" = "Sluiten";
 "Edit User Rights" = "Machtigingen aanpassen";
-
 "Home" = "Start";
 "Calendar" = "Agenda";
 "Address Book"	= "Adresboek";
@@ -14,30 +13,21 @@
 "Disconnect" = "Uitloggen";
 "Right Administration" = "Machtigingen beheren";
 "Log Console (dev.)" = "Log Console (dev.)";
-
 "User" = "Gebruiker";
 "Vacation message is enabled" = "Afwezigheidsbericht is ingeschakeld";
-
 "Help" = "Help";
-
 "noJavascriptError" = "SOGo heeft Javascript nodig om te functioneren. U dient Javascript in uw browser in te schakelen.";
 "noJavascriptRetry" = "Opnieuw proberen";
-
-"Owner:" = "Eigenaar:";
+"Owner" = "Eigenaar";
 "Publish the Free/Busy information" = "Beschikbaarheidsinformatie publiceren";
-
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
-
 "Subscribe User" = "Gebruiker abonneren";
-
 "Any Authenticated User" = "Elke geauthenticeerde gebruiker";
 "Public Access" = "Publieke toegang";
 "Any user not listed above" = "Elke niet hierboven vermelde gebruiker";
 "Anybody accessing this resource from the public area" = "Iedereen die dit hulpmiddel uit het publieke gedeelte benadert";
-
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw mailbox \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "Iedereen op het Internet toegang kunnen krijgen tot uw adresboek \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
 "Give Access" = "Toegang geven";
 "Keep Private" = "Privé houden";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Het is niet mogelijk om te abonneren op deze map.";
@@ -70,17 +59,14 @@
         = "U kunt geen lijst maken in een gedeeld adresboek.";
 "Warning" = "Waarschuwing";
 "Can't contact server" = "Bij het verbinden met de server is een fout opgetreden, probeer het alter opnieuw.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "U heeft geen toegang tot deze module of dit systeem. Neem contact op met uw systeembeheerder.";
 "You don't have the required privileges to perform the operation."
 = "U heeft niet de benodigde rechten voor deze actie.";
-
 "noEmailForDelegation" = "U moet het adres opgeven waarnaar u uw uitnodiging wilt delegeren.";
 "delegate is organizer" = "De gedelegeerde is de organisator. Geef een andere gedelegeerde op.";
 "delegate is a participant" = "De gedelegeerde is al een deelnemer.";
 "delegate is a group" = "U heeft een groepsadres opgegeven. U kunt alleen delegeren aan een uniek persoon.";
-
 "Snooze for " = "Sluimer nog ";
 "5 minutes" = "5 minuten";
 "10 minutes" = "10 minuten";
@@ -89,26 +75,22 @@
 "45 minutes" = "45 minuten";
 "1 hour" = "1 uur";
 "1 day" = "1 dag";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annuleren";
 "Yes" = "Ja";
 "No" = "Nee";
-
 /* alarms */
-"Reminder:" = "Alarm:";
-"Start:" = "Begin:";
-"Due Date:" = "Verloopdatum:";
-"Location:" = "Plaats:";
-
+"Reminder" = "Alarm";
+"Start" = "Begin";
+"Due Date" = "Verloopdatum";
+"Location" = "Plaats";
 /* mail labels */
 "Important" = "Belangrijk";
 "Work" = "Werk";
 "Personal" = "Persoonlijk";
 "To Do" = "Te doen";
 "Later" = "Later";
-
 "a2_Sunday" = "Zo";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Di";

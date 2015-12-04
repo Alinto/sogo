@@ -7,7 +7,6 @@ vevent_class2 = "(Konfidensiell hendelse)";
 vtodo_class0 = "(Offentlig oppgave)";
 vtodo_class1 = "(Privat oppgave)";
 vtodo_class2 = "(Konfidensiell oppgave)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Hendelsen \"%{Summary}\" ble opprettet";
 "The event \"%{Summary}\" was deleted" = "Hendelsen \"%{Summary}\" ble slettet";
@@ -15,7 +14,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "The following attendees(s) were notified" = "Følgende deltaker(e) ble varslet";
 "The following attendees(s) were added" = "Følgende deltaker(e) ble lagt til";
 "The following attendees(s) were removed" = "Følgende deltaker(e) ble fjernet";
-
 /* IMIP messages */
 "calendar_label" = "Kalender";
 "startDate_label" = "Start";
@@ -24,20 +22,17 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "location_label" = "Sted";
 "summary_label" = "Sammendrag:";
 "comment_label" = "Kommentar:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Hendelseinvitasjon: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sendt av %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.\n\nStart: %{StartDate}\nSlutt: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.\n\nStart: %{StartDate} klokken %{StartTime}\nSlutt: %{EndDate} klokken %{EndTime}\nBeskrivelse: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Hendelse avlyst: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} har avlyst hendelsen: %{Summary}.\n\nStart: %{StartDate}\nSlutt: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} har avlyst : %{Summary}.\n\nStart: %{StartDate} klokken %{StartTime}\nEnd: %{EndDate} klokken %{EndTime}\nBeskrivelse: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Avtalen \"%{Summary}\", %{OldStartDate} har endret seg";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 = "Følgende parametre har endret seg for \"%{Summary}\" møtet:";
 "Please accept or decline those changes."
 = "Vennligst godta eller avvis endringene.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Aksepterte invitasjonen: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Avviste invitasjonen: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 = "%{Attendee} %{SentByText} har delegert invitasjonen til %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} har enda ikke svart på invitasjonen din.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Har ikke tilgang til ressurs: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimum antall samtidige reservasjoner (%{NumberOfSimultaneousBookings}) er nådd for ressursen \"%{Cn} %{SystemEmail}\". Den kolliderende hendelsen er \"%{EventTitle}\", og starter %{StartDate}.";

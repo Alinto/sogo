@@ -4,7 +4,6 @@
 "Address" = "Heimilisfang";
 "Photos" = "Myndir";
 "Other" = "Annað";
-
 "Address Books" = "Nafnaskrár";
 "Addressbook" = "Nafnaskrá";
 "Addresses" = "Heimilisföng";
@@ -39,29 +38,23 @@
 "invaliddatewarn" = "Tilgreind dagsetning er ógild.";
 "new" = "nýtt";
 "Preferred Phone" = "Helsti sími";
-
 "Move To" = "Færa í";
 "Copy To" = "Afrita í";
-"Add to:" = "Bæta við:";
-
+"Add to" = "Bæta við";
 /* Tooltips */
-
 "Create a new address book card" = "Búa til nýtt nafnspjald";
 "Create a new list" = "Búa til nýjan lista";
 "Edit the selected card" = "Sýsla með valið nafnspjald";
 "Send a mail message" = "Senda póst";
 "Delete selected card or address book" = "Eyða völdu nafnspjaldi eða nafnaskrá";
 "Reload all contacts" = "Sækja alla tengiliði aftur";
-
 "htmlMailFormat_UNKNOWN" = "Óþekkt";
 "htmlMailFormat_FALSE" = "Ósniðinn texti";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Nafn eða tölvupóstfang";
 "Category" = "Flokkur";
 "Personal Addressbook" = "Einkanafnaskrá";
 "Search in Addressbook" = "Leita í nafnaskrá";
-
 "New Card" = "Nýtt nafnspjald";
 "New List" = "Nýr listi";
 "Properties" = "Eiginleikar";
@@ -71,69 +64,53 @@
 "Instant Message" = "Snarboð";
 "Add..." = "Bæta við...";
 "Remove" = "Fjarlægja";
-
 "Please wait..." = "Augnablik...";
 "No possible subscription" = "Engin áskrift möguleg";
-
 "Preferred" = "Sjálfgefið";
 "Card for %@" = "Nafnspjald fyrir %@";
 "Display" = "Birtingarnafn";
 "Display Name" = "Birt nafn";
-"Email:" = "Tölvupóstfang:";
-"Additional Email:" = "Auka tölvupóstfang:";
-
+"Email" = "Tölvupóstfang";
+"Additional Email" = "Auka tölvupóstfang";
 "Phone Number" = "Símanúmer";
-"Prefers to receive messages formatted as:" = "Kýs að taka á móti pósti með sniði:";
-"Screen Name:" = "Skjánafn:";
-"Categories:" = "Flokkar:";
-
-"First:" = "Fornafn:";
-"Last:" = "Eftirnafn:";
+"Prefers to receive messages formatted as" = "Kýs að taka á móti pósti með sniði";
+"Screen Name" = "Skjánafn";
+"Categories" = "Flokkar";
+"First" = "Fornafn";
+"Last" = "Eftirnafn";
 "Nickname" = "Gælunafn";
-
 "Telephone" = "Sími";
-"Work:" = "Vinnusími:";
-"Home:" = "Heimasími:";
-"Fax:" = "Fax:";
-"Mobile:" = "Farsími:";
-"Pager:" = "Símboði:";
-
+"Work" = "Vinnusími";
+"Home" = "Heimasími";
+"Mobile" = "Farsími";
+"Pager" = "Símboði";
 /* categories */
 "contacts_category_labels" = "Samstarfsmaður, Keppinautur, Viðskiptavinur, Vinur, Fjölskylda, Viðskiptatengsl, Þjónustuaðili, Fjölmiðlar, VIP";
-"Categories" = "Flokkar";
 "New category" = "Nýr flokkur";
-
 /* adresses */
 "Title" = "Titill";
-"Service:" = "Þjónusta:";
-"Company:" = "Fyrirtæki:";
-"Department:" = "Deild:";
-"Organization:" = "Fyrirtæki/Stofnun:";
-"Address:" = "Heimilisfang:";
+"Service" = "Þjónusta";
+"Company" = "Fyrirtæki";
+"Department" = "Deild";
 "City" = "Borg ";
-"State_Province:" = "Hérað/Fylki:";
-"ZIP_Postal Code:" = "Póstnúmer:";
+"State_Province" = "Hérað/Fylki";
+"ZIP_Postal Code" = "Póstnúmer";
 "Country" = "Land";
-"Web Page:" = "Vefsíða:";
-
+"Web Page" = "Vefsíða";
 "Work" = "Vinna";
 "Other Infos" = "Aðrar upplýsingar";
-
 "Note" = "Athugasemd";
-"Timezone:" = "Tímabelti:";
+"Timezone" = "Tímabelti";
 "Birthday" = "Afmælisdagur";
 "Birthday (yyyy-mm-dd)" = "Afmælisdagur (yyyy-mm-dd)";
 "Freebusy URL:" = "LaustUpptekið URL";
-
 "Add as..." = "Bæta við sem...";
 "Recipient" = "Viðtakandi";
 "Carbon Copy" = "Afrit";
 "Blind Carbon Copy" = "Leyniafrit";
-
 "New Addressbook..." = "Ný nafnaskrá...";
 "Subscribe to an Addressbook..." = "Gerast áskrifandi að nafnaskrá...";
 "Remove the selected Addressbook" = "Fjarlægja valda nafnaskrá";
-
 "Name of the Address Book" = "Heiti Nafnaskrár";
 "Are you sure you want to delete the selected address book?"
 = "Ertu viss um að þú viljir eyða út nafnaskrá?";
@@ -141,25 +118,18 @@
 = "Ekki er hægt að segja upp eða fjarlæga almenna nafnaskrá.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ekki er hægt að segja upp eða fjarlæga sína eigin persónulegu nafnaskrá.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Ertu viss um að það eig að eyða völdum tengiliðum?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Ekki er hægt að eyða nafnspjaldi frá \"%{0}\".";
-
 "Address Book Name" = "Heiti Nafnaskrár";
-
 "You cannot subscribe to a folder that you own!"
 = "Ekki er hægt að gerast áskrifandi að sínum eigin möppum.";
 "Unable to subscribe to that folder!"
 = "Ekki var hægt að gerast áskrifandi að þeirri möppu.";
-
-"User rights for:" = "Notandanréttindi fyrir:";
-
+"User rights for" = "Notandanréttindi fyrir";
 "Any Authenticated User" = "Sérhvern innskráðan notanda";
 "Public Access" = "Opinber aðgangur";
-
 "This person can add cards to this addressbook."
 = "Þessi manneskja getur bætt nafnspjöldum við þessa nafnaskrá.";
 "This person can edit the cards of this addressbook."
@@ -170,19 +140,14 @@
 = "Þessi manneskja getur lesið nafnspjöldin í þessari nafnaskrá.";
 "This person can erase cards from this addressbook."
 = "Þessi manneskja getur eytt nafnspjöldum úr þessari nafnaskrá.";
-
 "The selected contact has no email address."
 = "Valinn tengiliður hefur ekkert netfang.";
-
 "Please select a contact." = "Velja þarf tengilið.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Ekki er hægt að skrifa í þesssa nafnaskrá.";
 "Forbidden" = "Ekki er hægt að skrifa í þesssa nafnaskrá.";
 "Invalid Contact" = "Valinn tengiliður er ekki lengur til.";
 "Unknown Destination Folder" = "Nafnaskráin se nota átti er ekki lengur til.";
-
 /* Lists */
 "List details" = "Ítarleg lýsing á lista:";
 "List name" = "Nafn lista";
@@ -201,5 +166,4 @@
 "An error occured while importing contacts." = "Villa kom upp meðan verið var að flytja tengiliði inn.";
 "No card was imported." = "Ekkert nafnspjald var flutt inn.";
 "A total of %{0} cards were imported in the addressbook." = "Alls voru %{0} nafnspjöld flutt inn i nafnaskrána.";
-
 "Reload" = "Endurnýja";

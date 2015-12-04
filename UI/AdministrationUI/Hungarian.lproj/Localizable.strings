@@ -2,14 +2,10 @@
 
 "Help" = "Súgó";
 "Close" = "Bezárás";
-
 "Modules" = "Modulok";
-
 /* Modules short names */
 "ACLs" = "ACL-ek";
-
 /* Modules titles */
 "ACLs_title" = "Felhaszálói mappák ACL kezelése";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>A hozzáférést szabályzó lista (ACL) rendszerfelügyeleti modul lehetővé teszi bármely felhasználó naptár és címjegyzék hozzáférhetőségének módosítását.</p><p>A felhasználói mappa ACL-ek módosításához gépelje be a felhasználó nevét a kereső mezőbe az ablak tetején, majd kattintson duplán a kívánt mappára. </p>";

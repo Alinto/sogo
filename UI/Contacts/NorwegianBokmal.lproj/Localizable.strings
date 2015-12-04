@@ -4,7 +4,6 @@
 "Address" = "Adresse";
 "Photos" = "Bilder";
 "Other" = "Annet";
-
 "Address Books" = "Adressebøker";
 "Addressbook" = "Adressebok";
 "Addresses" = "Adresser";
@@ -38,29 +37,23 @@
 "invalidemailwarn" = "Den spesifiserte e-posten er ikke gyldig";
 "new" = "ny";
 "Preferred Phone" = "Foretrukket telefon";
-
 "Move To" = "Flytt til";
 "Copy To" = "Kopier til";
-"Add to:" = "Legg til i:";
-
+"Add to" = "Legg til i";
 /* Tooltips */
-
 "Create a new address book card" = "Opprett et nytt adressekort";
 "Create a new list" = "Opprett en ny mailingliste";
 "Edit the selected card" = "Rediger markert adressekort";
 "Send a mail message" = "Send en e-post";
 "Delete selected card or address book" = "Slett markert adressekort eller adressebok";
 "Reload all contacts" = "Last inn alle kontakter på nytt";
-
 "htmlMailFormat_UNKNOWN" = "Ukjent";
 "htmlMailFormat_FALSE" = "Ren tekst";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Navn eller e-post";
 "Category" = "Kategori";
 "Personal Addressbook" = "Personlig adressebok";
 "Search in Addressbook" = "Søk i adressebok";
-
 "New Card" = "Nytt adressekort";
 "New List" = "Ny mailingliste";
 "Edit" = "Endre";
@@ -71,68 +64,48 @@
 "Instant Message" = "Direktmelding";
 "Add..." = "Legg til...";
 "Remove" = "Fjern";
-
 "Please wait..." = "Vennlist vent...";
 "No possible subscription" = "Abonnering er ikke mulig";
-
 "Preferred" = "Foretrukket";
 "Display" = "Vise";
 "Display Name" = "Visningsnavn";
-"Email:" = "E-post:";
-"Additional Email:" = "Ytterlige e-post:";
-
+"Additional Email" = "Ytterlige e-post";
 "Phone Number" = "Telefonnummer";
-"Prefers to receive messages formatted as:" = "Foretrekker å motta melding formatert som:";
-"Screen Name:" = "Skjermnavn:";
-"Categories:" = "Kategorier:";
-
-"First:" = "Fornavn:";
-"Last:" = "Etternavn:";
+"Prefers to receive messages formatted as" = "Foretrekker å motta melding formatert som";
+"Categories" = "Kategorier";
+"First" = "Fornavn";
+"Last" = "Etternavn";
 "Nickname" = "Kallenavn";
-
 "Telephone" = "Telefonnummer";
-"Work:" = "Arbeid:";
-"Home:" = "Hjem:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mobiltelefon:";
-"Pager:" = "Personsøker:";
-
+"Work" = "Arbeid";
+"Mobile" = "Mobiltelefon";
+"Pager" = "Personsøker";
 /* categories */
 "contacts_category_labels" = "Kollega, Konkurrent, Kunde, Venn, Familie, Forretningspartner, Leverandør, Presse, VIP";
-"Categories" = "Kategorier";
 "New category" = "Ny kategori";
-
 /* adresses */
 "Title" = "Tittel";
-"Service:" = "Funksjon:";
-"Company:" = "Foretak:";
-"Department:" = "Avdeling:";
-"Organization:" = "Organisasjon:";
-"Address:" = "Adresse:";
+"Service" = "Funksjon";
+"Company" = "Foretak";
+"Department" = "Avdeling";
 "City" = "Poststed ";
-"State_Province:" = "Landsdel:";
-"ZIP_Postal Code:" = "Postnummer:";
+"State_Province" = "Landsdel";
+"ZIP_Postal Code" = "Postnummer";
 "Country" = "Land";
-"Web Page:" = "Nettside:";
-
-"Work" = "Arbeid";
+"Web Page" = "Nettside";
 "Other Infos" = "Øvrig informasjon";
-
 "Note" = "Anmerkning";
-"Timezone:" = "Tidssone:";
+"Timezone" = "Tidssone";
 "Birthday" = "Fødselsdag";
 "Birthday (yyyy-mm-dd)" = "Fødselsdag (åååå-mm-dd)";
-"Freebusy URL:" = "Ledigopptatt URL:";
-
+"Freebusy URL" = "Ledigopptatt URL";
 "Add as..." = "Legg til som...";
 "Recipient" = "Mottaker";
 "Carbon Copy" = "Kopi";
 "Blind Carbon Copy" = "Blindkopi";
-
 "New Addressbook..." = "Ny adressebok...";
 "Subscribe to an Addressbook..." = "Abonnér på en adressebok...";
 "Remove the selected Addressbook" = "Ta bort den markerte adresseboken";
-
 "Name of the Address Book" = "Navn på adressebok";
 "Are you sure you want to delete the selected address book?"
 = "Er du sikker på at du vil ta bort den markerte adresseboken?";
@@ -140,27 +113,19 @@
 = "Du kan ikke fjerne eller avbryte abonnement på en offentlig adressebok.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Du kan ikke fjerne eller avbryte abonnement på en personlig adressebok.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Er du sikker på at du vil slette de markerte kontaktene?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Du kan ikke slette adressekortet \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Du kan ikke abonnere på en mappe som du selv eier.";
 "Unable to subscribe to that folder!"
 = "Du kan ikke abonnere på mappen.";
-
 /* acls */
 "Access rights to" = "Tilgangsrettigheter til";
 "For user" = "For bruker";
-
 "Any Authenticated User" = "Alle autentiserte brukere";
 "Public Access" = "Offentlig tilgang";
-
 "This person can add cards to this addressbook."
 = "Personen kan legge til adressekort i adresseboken.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +136,14 @@
 = "Personen kan vise adressekort i adresseboken.";
 "This person can erase cards from this addressbook."
 = "Personen kan slette adressekort i adresseboken.";
-
 "The selected contact has no email address."
 = "Den markerte kontakten har ingen e-postadresse.";
-
 "Please select a contact." = "Velg en kontakt.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Du kan ikke skrive i denne adresseboken.";
 "Forbidden" = "Du kan ikke skrive i denne adresseboken.";
 "Invalid Contact" = "Markert kontakt eksisterer ikke lengre.";
 "Unknown Destination Folder" = "Den markerte adresseboken eksisterer ikke lengre.";
-
 /* Lists */
 "List details" = "Informasjon om mailinglisten";
 "List name" = "Navn på mailingliste";
@@ -204,12 +164,9 @@
 "An error occured while importing contacts." = "En feil oppstod under importen av kontakter.";
 "No card was imported." = "Ingen adressekort ble importert.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adressekortene ble importert til adresseboken.";
-
 "Reload" = "Last på nytt";
-
 /* Properties window */
-"Address Book Name:" = "Addressebok navn:";
+"Address Book Name" = "Addressebok navn";
 "Links to this Address Book" = "Lenker til denne addresseboken";
 "Authenticated User Access" = "Autentisert brukertilgang";
-"CardDAV URL: " = "CardDAV URL:";
-
+"CardDAV URL" = "CardDAV URL";

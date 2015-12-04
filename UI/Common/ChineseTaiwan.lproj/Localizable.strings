@@ -4,7 +4,6 @@
 "Save" = "儲存";
 "Close" = "關閉";
 "Edit User Rights" = "編輯使用者權限";
-
 "Home" = "首頁";
 "Calendar" = "行事曆";
 "Address Book"	= "通訊錄";
@@ -14,30 +13,21 @@
 "Disconnect" = "離線";
 "Right Administration" = "管理權限";
 "Log Console (dev.)" = "登錄控制台(dev.)";
-
 "User" = "使用者";
 "Vacation message is enabled" = "啟用休假自動回覆訊息功能";
-
 "Help" = "幫助";
-
 "noJavascriptError" = "SOGo 需要執行Javascript指令。請確定您的瀏覽器偏好設定該選項是開啟的。";
 "noJavascriptRetry" = "重試";
-
 "Owner:" = "擁有者";
 "Publish the Free/Busy information" = "公開空閒/忙錄的訊息";
-
 "Add..." = "增加...";
 "Remove" = "移除";
-
 "Subscribe User" = "訂閱者";
-
 "Any Authenticated User" = "任何授權使用者";
 "Public Access" = "公開存取";
 "Any user not listed above" = "列表以外的使用者";
 "Anybody accessing this resource from the public area" = "由公開區域存取資源的任何人";
-
 "Sorry, the user rights can not be configured for that object." = "對不起, 使用者的權限無法操作這個項目。";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "這個系統的所有帳號都能存取您的郵件信箱\"%{0}\"。您確定所有帳號都可以信任嗎?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "任何人都可以存取您的通訊錄 \"%{0}\", 且不限定只有同系統的帳號。確定要在網路上公開通訊錄嗎?";
 "Give Access" = "允許存取";
 "Keep Private" = "保持隱私";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "無法訂閱這個資料匣!";
@@ -70,17 +59,14 @@
         = "您無法在共用的通訊錄新增列表。";
 "Warning" = "警告";
 "Can't contact server" = "連接伺服器失敗。請稍後再試。";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "您沒有權限存取這個模組或系統。請聯絡您的系統管理者。";
 "You don't have the required privileges to perform the operation."
 = "您沒有權限執行這項操作。";
-
 "noEmailForDelegation" = "您必須指定代理人的電子郵件地址。";
 "delegate is organizer" = "您指定的代理人是組織；請另外指定。";
 "delegate is a participant" = "您指定的代理人己經是受邀者。";
 "delegate is a group" = "您指定的電子郵件帳號為群組。您必須指定代理人的電子郵件帳號。";
-
 "Snooze for " = "提醒";
 "5 minutes" = "5分鐘";
 "10 minutes" = "10分鐘";
@@ -89,26 +75,22 @@
 "45 minutes" = "45分鐘";
 "1 hour" = " 1小時";
 "1 day" = "1天";
-
 /* common buttons */
 "OK" = "確定";
 "Cancel" = "取消";
 "Yes" = "是";
 "No" = "不是";
-
 /* alarms */
 "Reminder:" = "提醒";
-"Start:" = "開始:";
-"Due Date:" = "到期日:";
-"Location:" = "地點:";
-
+"Start" = "開始";
+"Due Date" = "到期日";
+"Location" = "地點";
 /* mail labels */
 "Important" = "重要等級";
 "Work" = "工作";
 "Personal" = "私人";
 "To Do" = "待辦";
 "Later" = "稍後";
-
 "a2_Sunday" = "星期日";
 "a2_Monday" = "星期一";
 "a2_Tuesday" = "星期二";

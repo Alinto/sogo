@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "إنشاء حدث جديد";
 "Create a new task" = "إنشاء مهمة جديدة";
 "Edit this event or task" = "تحرير هذا الحدث أو المهمة";
@@ -11,46 +10,30 @@
 "Switch to week view" = "التبديل إلى طريقة عرض الأسبوع";
 "Switch to month view" = "التبديل إلى طريقة عرض الشهر";
 "Reload all calendars" = "تحديث جميع التقاويم";
-
 /* Tabs */
 "Date" = "تاريخ";
 "Calendars" = "تقاويم";
-
 /* Day */
-
 "DayOfTheMonth" = "يوم من الشهر";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "اليوم";
-
 "Previous Day" = "اليوم السابق";
 "Next Day" = "اليوم اللاحق";
-
 /* Week */
-
 "Week" = "اسبوع";
 "this week" = "هذا الاسبوع";
-
 "Week %d" = "أسبوع %d";
-
 "Previous Week" = "الأسبوع السابق";
 "Next Week" = "الأسبوع القادم";
-
 /* Month */
-
 "this month" = "هذا الشهر";
-
 "Previous Month" = "الشهر السابق";
 "Next Month" = "الشهر القادم";
-
 /* Year */
-
 "this year" = "هذه السنة";
-
 /* Menu */
-
 "Calendar" = "تقويم";
 "Contacts" = "جهة اتصال";
-
 "New Calendar..." = "تقويم جديد...";
 "Delete Calendar" = "إلغاء تقويم...";
 "Unsubscribe Calendar" = "إلغاء مشاركة تقويم";
@@ -68,54 +51,39 @@
 "An error occurred while importing calendar." = "حدث خطأ أثناء استيراد تقويم.";
 "No event was imported." = "لم يتم استيراد أي حدث.";
 "A total of %{0} events were imported in the calendar." = "ما مجموعه%{0} من الأحداث تم استيرادها في التقويم.";
-
 "Compose E-Mail to All Attendees" = "إنشاء رسالة بريد إلكتروني لجميع الحاضرين";
 "Compose E-Mail to Undecided Attendees" = "إنشاء رسالة بريد إلكتروني الى الحضور الغير مؤكد حضورهم.";
-
 /* Folders */
 "Personal calendar" = "تقويم شخصي";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "ممنوع";
-
 /* acls */
-
 "Access rights to" = "صلاحية الدخول الى";
 "For user" = "للمستخدم";
-
 "Any Authenticated User" = "أي مستخدم مسجل";
 "Public Access" = "وصول عام";
-
 "label_Public" = "عام";
 "label_Private" = "خاص";
 "label_Confidential" = "سري";
-
 "label_Viewer" = "عرض الكل";
 "label_DAndTViewer" = "عرض التاريخ والوقت";
 "label_Modifier" = "تعديل";
 "label_Responder" = "الاستجابة الى";
 "label_None" = "لا شئ";
-
 "View All" = "عرض الكل";
 "View the Date & Time" = "عرض التاريخ والوقت";
 "Modify" = "تعديل";
 "Respond To" = "الاستجابة الى";
 "None" = "لا شئ";
-
 "This person can create objects in my calendar."
 = "يمكن لهذا الشخص إنشاء الكائنات في تقويمي.";
 "This person can erase objects from my calendar."
 = "يمكن لهذا الشخص مسح الكائنات في تقويمي.";
-
 /* Button Titles */
-
 "Subscribe to a Calendar..." = "اشترك في تقويم";
 "Remove the selected Calendar" = "مسح التقويم المحدد";
-
 "Name of the Calendar" = "اسم التقويم";
-
 "new" = "جديد";
 "printview" = "معاينة قبل الطباعة";
 "edit" = "تعديل";
@@ -129,10 +97,7 @@
 "Cancel" = "إلغاء";
 "show_rejected_apts" = "إظهار المواعيد المرفوضة";
 "hide_rejected_apts" = "إخفاء المواعيد المرفوضة";
-
-
 /* Schedule */
-
 "Schedule" = "جدول";
 "No appointments found" = "لا يوجد مواعيد";
 "Meetings proposed by you" = "الاجتماعات التي اقترحتها";
@@ -144,10 +109,7 @@
 "more attendees" = "مزيد من الحضور";
 "Hide already accepted and rejected appointments" = "إخفاء المواعيد المقبولة والمرفوضة";
 "Show already accepted and rejected appointments" = "إظهار المواعيد المقبولة والمرفوضة";
-
-
 /* Appointments */
-
 "Appointment viewer" = "عارض المواعيد";
 "Appointment editor" = "محرر المواعيد";
 "Appointment proposal" = "اقتراح المواعيد";
@@ -179,13 +141,10 @@
 "Reminder" = "التنبيه";
 "General" = "العام";
 "Reply" = "الرد";
-
-"Target:" = "الهدف:";
-
+"Target" = "الهدف";
 "attributes" = "صفات";
 "attendees" = "حضور";
 "delegated from" = "مفوض من";
-
 /* checkbox title */
 "is private" = "خاص؟";
 /* classification */
@@ -194,26 +153,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "عنوان فارغ";
 "private appointment" = "موعد خاص";
-
 "Change..." = "غيِّر ...";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "سأؤكد الأمر لاحقًا";
 "partStat_ACCEPTED" = "سأحضُر";
 "partStat_DECLINED" = "لن أحضُر";
 "partStat_TENTATIVE" = "قد أحضُر";
 "partStat_DELEGATED" = "أفوِّض";
 "partStat_OTHER" = "أخرى";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "هنالك تعارضات!";
 "Invalid iCal data!" = "بيانات iCal غير صالح!";
 "Could not create iCal data!" = "عاجِز عن إنشاء بيانات iCal!";
-
 /* Searching */
-
 "view_all" = "الكل";
 "view_today" = "اليوم";
 "view_next7" = "السبعة أيام القادمة";
@@ -222,31 +174,22 @@
 "view_thismonth" = "هذا الشهر";
 "view_future" = "جميع الأحداث المستقبلية";
 "view_selectedday" = "اليوم المحدد";
-
 "View" = "العرض";
 "Title or Description" = "العنوان أو الوصف";
-
 "Search" = "ابحث";
 "Search attendees" = "ابحث عن الحضور";
 "Search resources" = "ابحث عن الموارد";
 "Search appointments" = "ابحث عن المواعيد";
-
 "All day Event" = "حدث طوال اليوم";
 "check for conflicts" = "افحص التعارضات";
-
 "Browse URL" = "تصفح عنوان الويب";
-
 "newAttendee" = "أضِف أحد الحضور";
-
 /* calendar modes */
-
 "Overview" = "رؤية عامة";
 "Chart" = "المخطط";
 "List" = "القائمة";
 "Columns" = "الأعمدة";
-
 /* Priorities */
-
 "prio_0" = "غير محدد";
 "prio_1" = "مرتفعة";
 "prio_2" = "مرتفعة";
@@ -257,7 +200,6 @@
 "prio_7" = "منخفضة";
 "prio_8" = "منخفضة";
 "prio_9" = "منخفضة";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "حدث عام";
 "CONFIDENTIAL_vevent" = "حدث سري";
@@ -265,7 +207,6 @@
 "PUBLIC_vtodo" = "مهمة عامة";
 "CONFIDENTIAL_vtodo" = "مهمة سرية";
 "PRIVATE_vtodo" = "مهمة خاصة";
-
 /* status type */
 "status_" = "غير محدد";
 "status_NOT-SPECIFIED" = "غير محدد";
@@ -275,9 +216,7 @@
 "status_NEEDS-ACTION" = "يحتاجُ إجراءًا";
 "status_IN-PROCESS" = "يتم العمل فيه";
 "status_COMPLETED" = "اكتمل في";
-
 /* Cycles */
-
 "cycle_once" = "دورة واحدة";
 "cycle_daily" = "دورة يومية";
 "cycle_weekly" = "دورة أسبوعية";
@@ -286,14 +225,10 @@
 "cycle_monthly" = "دورة شهريّة";
 "cycle_weekday" = "دورة يومًا كل أسبوع";
 "cycle_yearly" = "دورة سنوية";
-
 "cycle_end_never" = "دورة لا تنتهي";
 "cycle_end_until" = "دورة تنتهي في";
-
 "Recurrence pattern" = "نمط التكرار";
 "Range of recurrence" = "نطاق التكرار";
-
-"Repeat" = "التكرار";
 "Daily" = "يوميًا";
 "Weekly" = "أسبوعيًا";
 "Monthly" = "شهريًّا";
@@ -311,19 +246,15 @@
 "Create" = "أنشئ";
 "appointment(s)" = "موعد/مواعيد";
 "Repeat until" = "تكرار حتى";
-
 "First" = "الأول";
 "Second" = "الثاني";
 "Third" = "الثالث";
 "Fourth" = "الرابع";
 "Fift" = "الخامس";
 "Last" = "الأخير";
-
 /* Appointment categories */
-
 "category_none" = "بلا";
 "category_labels" = "السنوية,يوم الميلاد,الأعمال,المكالمات,العملاء,المنافسة,العميل,المفضلات,المتابعة,الهدايا,العطلات،الأفكار,الاجتماع,المشاكل,منوعات,شخصي,المشاريع,العطلة العامة,الحالة,الموردون,السفر,الأجازة";
-
 "repeat_NEVER" = "لا تكرِّر";
 "repeat_DAILY" = "يوميًا";
 "repeat_WEEKLY" = "أسبوعيًّا";
@@ -332,7 +263,6 @@
 "repeat_MONTHLY" = "شهريًّا";
 "repeat_YEARLY" = "سنويًّا";
 "repeat_CUSTOM" = "مخصص...";
-
 "reminder_NONE" = "لا تنبيه";
 "reminder_5_MINUTES_BEFORE" = "5 دقائق قبل";
 "reminder_10_MINUTES_BEFORE" = "10 دقائق قبل";
@@ -347,7 +277,6 @@
 "reminder_2_DAYS_BEFORE" = "2 يومان قبل";
 "reminder_1_WEEK_BEFORE" = "1 أسبوع قبل";
 "reminder_CUSTOM" = "مخصص...";
-
 "reminder_MINUTES" = "دقائق";
 "reminder_HOURS" = "ساعات";
 "reminder_DAYS" = "أيام";
@@ -356,39 +285,30 @@
 "reminder_START" = "يبدأ الحدث";
 "reminder_END" = "ينتهي الحدث";
 "Reminder Details" = "تفاصيل التنبيه";
-
 "Choose a Reminder Action" = "اختر إجراءًا للتنبيه";
 "Show an Alert" = "اعرض تنبيهًا";
 "Send an E-mail" = "أرسِل رسالة إلكترونية";
 "Email Organizer" = "منظم البريد الإلكتروني";
 "Email Attendees" = "البريد الإلكتروني للحضور";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "اعرض الوقت كمتفرغ";
-
 /* validation errors */
-
 validate_notitle           = "لم يضبط العنوان، استمرار؟";
 validate_invalid_startdate = "حقل تاريخ البدء غير صالح";
 validate_invalid_enddate   = "حقل تاريخ الانتهاء غير صالح";
 validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته يحدث قبل تاريخ البدء.";
-
 "Events" = "الأحداث";
 "Tasks" = "المهام";
 "Show completed tasks" = "اعرض المهام المكتملة";
-
 /* tabs */
 "Task" = "المهمة";
 "Event" = "الحدث";
 "Recurrence" = "التكرار";
-
 /* toolbar */
 "New Event" = "حدث جديد";
 "New Task" = "مهمة جديدة";
@@ -399,9 +319,7 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "Week View" = "عرض الاسبوع";
 "Month View" = "عرض الشهر";
 "Reload" = "تحديث";
-
 "eventPartStatModificationError" = "حالة المشاركة الخاصة بك لا يمكن تعديلها.";
-
 /* menu */
 "New Event..." = "حدث جديد...";
 "New Task..." = "مهمة جديدة...";
@@ -410,35 +328,29 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "Select All" = "اختر الكل";
 "Workweek days only" = "ايام العمل الأسبوعية فقط";
 "Tasks in View" = "المهمات في العرض";
-
 "eventDeleteConfirmation" = "الحدث (الأحداث) الآتية ستُمحى:";
 "taskDeleteConfirmation" = "المهمة (المهام) التالية ستمحى:";
 "Would you like to continue?" = " هل تريد المتابعة؟";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "لا يمكنك حذف أو إلغاء اشتراكك من تقويمك الشخصي.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "هل انت متأكد من حذف التقويم \"%{0}\"؟";
-
 /* Legend */
 "Participant" = "المشارك";
 "Optional Participant" = "المشارك الاختياري";
 "Non Participant" = "غير مشارك";
 "Chair" = "مقعد";
-
 "Needs action" = "بحاجة إلى إجراء";
 "Accepted" = "مقبول";
 "Declined" = "مرفوض";
 "Tentative" = "مؤقت";
-
 "Free" = "متاح";
 "Busy" = "مشغول";
 "Maybe busy" = "ربما يكون مشغولًا";
 "No free-busy information" = "لا معلومات عن حالة التوفر-الانشغال";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "اقترح فترة زمنية: ";
-"Zoom:" = "تقريب:";
+"Suggest time slot" = "اقترح فترة زمنية";
+"Zoom" = "تقريب";
 "Previous slot" = "الفترة السابقة";
 "Next slot" = "الفترة التالية";
 "Previous hour" = "الساعة الماضية";
@@ -447,64 +359,42 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "The whole day" = "اليوم المكتمل";
 "Between" = "بين";
 "and" = "و";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "هنالك تعارض في الوقت مع أحد الحضور. \nهل تريد الابقاء على الإعدادات الحالية رغم ذلك؟";
-
 /* apt list */
-"Title" = "العنوان";
 "Start" = "البداية";
-"End" = "النهاية";
-"Due Date" = "تاريخ الاستحقاق";
-"Location" = "المكان";
-
 "(Private Event)" = "(الحدث الخاص)";
-
 vevent_class0 = "(الحدث العام)";
 vevent_class1 = "(حدث خاص)";
 vevent_class2 = "(حدث سري)";
-
-"Priority" = "الأولوية";
 "Category" = "التصنيفات";
-
 vtodo_class0 = "(مهمة عامة)";
 vtodo_class1 = "(مهمة خاصة)";
 vtodo_class2 = "(مهمة سرية)";
-
 "closeThisWindowMessage" = "شكرًا لك! يمكنك إغلاق هذه النافذة أو عرض الخاص بك";
 "Multicolumn Day View" = "عرض اليوم متعدد الأعمدة";
-
 "Please select an event or a task." = "من فضلك اختر حدثًا أو مهمة.";
-
 "editRepeatingItem" = "العنصر الذي تُحرره هو عنصر متكرر. هل تريد تحرير جميع التكرارات أم هذا الحدث الواحد فقط؟";
 "button_thisOccurrenceOnly" = "هذا الحدث فقط";
 "button_allOccurrences" = "كل التكرارات";
-
 /* Properties dialog */
-"Name" = "الاسم";
 "Color" = "اللون";
-
 "Include in free-busy" = "ضمن حالة التوفر-الانشغال";
-
 "Synchronization" = "المزامنة";
 "Synchronize" = "زامن";
-"Tag:" = "علامة:";
-
+"Tag" = "علامة";
 "Display" = "عرض";
 "Show alarms" = "إظهار الانذارات";
 "Show tasks" = "عرض المهام";
-
 "Notifications" = "الإشعارات";
 "Receive a mail when I modify my calendar" = "تلقي البريد عندما أقوم بتعديل التقويم الخاص بي";
 "Receive a mail when someone else modifies my calendar" = "تلقي البريد عندما يقوم شخص آخر بتعديل التقويم الخاص بي";
 "When I modify my calendar, send a mail to" = "عندما أقوم بتعديل التقويم الخاص بي، أرسل رسالة بريد إلكتروني إلى";
-
 "Links to this Calendar" = "روابط لهذا التقويم";
 "Authenticated User Access" = "مصادقة وصول المستخدم";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "يرجى تحديد قيمة رقمية في حقل الأيام أكبر من أو يساوي 1.";
 "weekFieldInvalid" = "يرجى تحديد قيمة رقمية في حقل الأسبوع (الأسابيع) أكبر من أو يساوي 1.";
@@ -521,14 +411,12 @@ vtodo_class2 = "(مهمة سرية)";
 "tagWasRemoved" = "إذا حذفت التقويم من المزامنة، ستحتاج إلى تحديث البيانات على هاتفك المحمول.\nهل تريد المتابعة؟";
 "DestinationCalendarError" = "التقويم المصدر والتقويم الهدف متطابقان. من فضلك حاول النسخ إلى تقويم مختلف.";
 "EventCopyError" = "فشل النسخ. من فضلك حاول النسخ من تقويم مختلف.";
-
 "Open Task..." = "افتح مهمة...";
 "Mark Completed" = "علم كمكتمل";
 "Delete Task" = "احذف المهمة";
 "Delete Event" = "احذف الحدث";
 "Copy event to my calendar" = "انسخ إلى تقويمي";
 "View Raw Source" = "عرض المصدر الخام";
-
 "Subscribe to a web calendar..." = "اشترك في تقويم شابكة...";
 "URL of the Calendar" = "عنوان موقع التقويم";
 "Web Calendar" = "تقويم الشابكة";

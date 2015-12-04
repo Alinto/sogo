@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "Ustvari novi dogodek";
 "Create a new task" = "Ustvari novo opravilo";
 "Edit this event or task" = "Urejaj ta dogodek ali opravilo";
@@ -12,46 +11,30 @@
 "Switch to week view" = "Preklopi na tedenski pogled";
 "Switch to month view" = "Preklopi na mesečni pogled";
 "Reload all calendars" = "Ponovno naloži vse koledarje";
-
 /* Tabs */
 "Date" = "Datum";
 "Calendars" = "Koledarji";
-
 /* Day */
-
 "DayOfTheMonth" = "Dan meseca";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Danes";
-
 "Previous Day" = "Prejšnji dan";
 "Next Day" = "Naslednji dan";
-
 /* Week */
-
 "Week" = "Teden";
 "this week" = "ta teden";
-
 "Week %d" = "Teden %d";
-
 "Previous Week" = "Prejšnji teden";
 "Next Week" = "Naslednji teden";
-
 /* Month */
-
 "this month" = "ta mesec";
-
 "Previous Month" = "Prejšnji mesec";
 "Next Month" = "Naslednji mesec";
-
 /* Year */
-
 "this year" = "to leto";
-
 /* Menu */
-
 "Calendar" = "Koledar";
 "Contacts" = "Stiki";
-
 "New Calendar..." = "Novi koledar...";
 "Delete Calendar" = "Briši koledar...";
 "Unsubscribe Calendar" = "Odjavi koledar";
@@ -69,54 +52,39 @@
 "An error occurred while importing calendar." = "Prišlo je do napake pri uvozu koledarja.";
 "No event was imported." = "Noben dogodek ni uvožen.";
 "A total of %{0} events were imported in the calendar." = "Skupaj %{0} dogodkov je bilo uvoženo v koledar.";
-
 "Compose E-Mail to All Attendees" = "Sestavi pošto za vse udeležence";
 "Compose E-Mail to Undecided Attendees" = "Sestavi e-pošto za neodločene udeležence";
-
 /* Folders */
 "Personal calendar" = "Osebnik koledar";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Prepovedano";
-
 /* acls */
-
 "Access rights to" = "Pravice za dostop za";
 "For user" = "Za uporabnika";
-
 "Any Authenticated User" = "Katerikoli preverjeni uporabnik";
 "Public Access" = "Javni dostop";
-
 "label_Public" = "Javno";
 "label_Private" = "Osebno";
 "label_Confidential" = "Zaupno";
-
 "label_Viewer" = "Preglej vse";
 "label_DAndTViewer" = "Pregled datum in čas";
 "label_Modifier" = "Spremeni";
 "label_Responder" = "Odzovi se na";
 "label_None" = "Noben";
-
 "View All" = "Preglej vse";
 "View the Date & Time" = "Preglej datum in čas";
 "Modify" = "Spremeni";
 "Respond To" = "Odzovi se na";
 "None" = "Noben";
-
 "This person can create objects in my calendar."
 = "Ta oseba lahko ustvari objekte v mojem koledarju.";
 "This person can erase objects from my calendar."
 = "Ta oseba lahko briše objekte v mojem koledarju.";
-
 /* Button Titles */
-
 "Subscribe to a Calendar..." = "Naroči na koledar...";
 "Remove the selected Calendar" = "Odstrani izbrani koledar";
-
 "Name of the Calendar" = "Ime koledarja";
-
 "new" = "Novo";
 "Print view" = "Tiskaj pregled";
 "edit" = "Uredi";
@@ -130,10 +98,7 @@
 "Cancel" = "Prekliči";
 "show_rejected_apts" = "Prikaži zavrnjene sestanke";
 "hide_rejected_apts" = "Skrij zavrnjene sestanke";
-
-
 /* Schedule */
-
 "Schedule" = "Razporedi";
 "No appointments found" = "Noben sestanek ni najden";
 "Meetings proposed by you" = "Srečanje predlagano od tebe";
@@ -145,9 +110,7 @@
 "more attendees" = "Več udeležencev";
 "Hide already accepted and rejected appointments" = "Skrij že sprejete in zavrnjene sestanke.";
 "Show already accepted and rejected appointments" = "Prikaži že sprejete in zavrnjene sestanke";
-
 /* Print view */
-
 "LIST" = "Seznam";
 "Print Settings" = "Tiskaj nastavitve";
 "Title" = "Naslov";
@@ -160,9 +123,7 @@
 "Display events and tasks colors" = "Prikaži barve dogodkov in opravil";
 "Borders" = "Obrobe";
 "Backgrounds" = "Ozadja";
-
 /* Appointments */
-
 "Appointment viewer" = "Pregledovalnik sestankov";
 "Appointment editor" = "Urejevalnik sestankov";
 "Appointment proposal" = "Predlog sestanka";
@@ -170,8 +131,6 @@
 "Start" = "Začetek";
 "End" = "Konec";
 "Due Date" = "Datum zapadlosti";
-"Title" = "Naslov";
-"Calendar" = "Koledar";
 "Name" = "Ime";
 "Email" = "E-pošta";
 "Status" = "Status";
@@ -195,14 +154,10 @@
 "General" = "Splošno";
 "Reply" = "Odgovori";
 "Created by" = "Ustvaril";
-
-
-"Target:" = "Cilj:";
-
+"Target" = "Cilj";
 "attributes" = "atributi";
 "attendees" = "udeleženci";
 "delegated from" = "dodeljeno od";
-
 /* checkbox title */
 "is private" = "je osebno";
 /* classification */
@@ -211,26 +166,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "Prazen naslov";
 "private appointment" = "Osebni sestanek";
-
 "Change..." = "Spremeni...";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "Potrdil bom pozneje";
 "partStat_ACCEPTED" = "Udeležil se bom";
 "partStat_DECLINED" = "Ne bom se udeležil";
 "partStat_TENTATIVE" = "Mogoče se udeležim";
 "partStat_DELEGATED" = "Dodeljujem";
 "partStat_OTHER" = "Ostalo";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "Najdeni konflikti!";
 "Invalid iCal data!" = "Napačni iCal podatki!";
 "Could not create iCal data!" = "Ne morem ustvariti iCal podatkov!";
-
 /* Searching */
-
 "view_all" = "Vse";
 "view_today" = "Danes";
 "view_next7" = "Naslednjih 7 dni";
@@ -239,36 +187,26 @@
 "view_thismonth" = "Ta mesec";
 "view_future" = "Vsi prihodnji dogodki";
 "view_selectedday" = "Izbrani dan";
-
 "view_not_started" = "Nezačeta opravila";
 "view_overdue" = "Zapadla opravila";
 "view_incomplete" = "Nedokončana opravila";
-
 "View" = "Pregled";
 "Title, category or location" = "Naslov, kategorija ali mesto";
 "Entire content" = "Vsa vsebina";
-
 "Search" = "Išči";
 "Search attendees" = "Išči udeležence";
 "Search resources" = "Išči vire";
 "Search appointments" = "Išči sestanke";
-
 "All day Event" = "Celodnevni dogodek";
 "check for conflicts" = "Preveri konflikte";
-
 "Browse URL" = "Prebrskaj URL";
-
 "newAttendee" = "Dodaj udeleženca";
-
 /* calendar modes */
-
 "Overview" = "Pregled";
 "Chart" = "Grafikon";
 "List" = "Seznam";
 "Columns" = "Stolpci";
-
 /* Priorities */
-
 "prio_0" = "Ni določen";
 "prio_1" = "Visoka";
 "prio_2" = "Visoka";
@@ -279,7 +217,6 @@
 "prio_7" = "Nizka";
 "prio_8" = "Nizka";
 "prio_9" = "Nizka";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Javni dogodek";
 "CONFIDENTIAL_vevent" = "Zaupni dogodek";
@@ -287,7 +224,6 @@
 "PUBLIC_vtodo" = "Javno opravilo";
 "CONFIDENTIAL_vtodo" = "Zaupno opravilo";
 "PRIVATE_vtodo" = "Osebno opravilo";
-
 /* status type */
 "status_" = "Ni določeno";
 "status_NOT-SPECIFIED" = "Ni določeno";
@@ -297,9 +233,7 @@
 "status_NEEDS-ACTION" = "Potrebuje ukrepanje";
 "status_IN-PROCESS" = "V teku";
 "status_COMPLETED" = "Dokončano na";
-
 /* Cycles */
-
 "cycle_once" = "cycle_once";
 "cycle_daily" = "cycle_daily";
 "cycle_weekly" = "cycle_weekly";
@@ -308,13 +242,10 @@
 "cycle_monthly" = "cycle_monthly";
 "cycle_weekday" = "cycle_weekday";
 "cycle_yearly" = "cycle_yearly";
-
 "cycle_end_never" = "cycle_end_never";
 "cycle_end_until" = "cycle_end_until";
-
 "Recurrence pattern" = "Ponovitev vzorca";
 "Range of recurrence" = "Obseg ponovitev";
-
 "Repeat" = "Ponovi";
 "Daily" = "Dnevno";
 "Weekly" = "Tedensko";
@@ -335,19 +266,15 @@
 "Create" = "Ustvari";
 "appointment(s)" = "sestanki";
 "Repeat until" = "Ponavljaj do";
-
 "First" = "Prvo";
 "Second" = "Drugo";
 "Third" = "Tretje";
 "Fourth" = "Četrto";
 "Fift" = "Peto";
 "Last" = "Zadnje";
-
 /* Appointment categories */
-
 "category_none" = "Noben";
 "category_labels" = "Obletnica,Rojstni dan,Poslovno,Klici,Stranke,Tekmeci,Kupci,Priljubljeni,Sledenje,Darila,Prazniki,Ideje,Srečanja,Zadeve,Razno,Osebno,Projekti,Javno prazniki,Status,Dobavitelji,Potovanje,Dopust";
-
 "repeat_NEVER" = "Se ne ponavlja";
 "repeat_DAILY" = "Dnevno";
 "repeat_WEEKLY" = "Tedensko";
@@ -356,7 +283,6 @@
 "repeat_MONTHLY" = "Mesečno";
 "repeat_YEARLY" = "Letno";
 "repeat_CUSTOM" = "Po meri...";
-
 "reminder_NONE" = "Brez opomnika";
 "reminder_5_MINUTES_BEFORE" = "5 minut pred";
 "reminder_10_MINUTES_BEFORE" = "10 minut pred";
@@ -371,7 +297,6 @@
 "reminder_2_DAYS_BEFORE" = "2 dneva pred";
 "reminder_1_WEEK_BEFORE" = "1 teden pred";
 "reminder_CUSTOM" = "Po meri...";
-
 "reminder_MINUTES" = "minute";
 "reminder_HOURS" = "ure";
 "reminder_DAYS" = "dnevi";
@@ -380,42 +305,32 @@
 "reminder_START" = "dogodek se začne";
 "reminder_END" = "dogodek se konča";
 "Reminder Details" = "Podrobnosti opomnika";
-
 "Choose a Reminder Action" = "Izberi dejanja opomnika";
 "Show an Alert" = "Prikaži opozorilo";
 "Send an E-mail" = "Pošlji e-pošto";
 "Email Organizer" = "Organizator e-pošte";
 "Email Attendees" = "E-poštni udeleženci";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "Prikaži čas kot prosto";
-
 /* email notifications */
 "Send Appointment Notifications" = "Pošlji obvestilo o sestanku";
-
 /* validation errors */
-
 validate_notitle           = "Naslov ni vpisan, nadaljujem?";
 validate_invalid_startdate = "Napačeno polje začetni datum!";
 validate_invalid_enddate   = "Napačno polje končni datum!";
 validate_endbeforestart    = "Vnešeni končni datum je pred začetnim datumom.";
-
 "Events" = "Dogodki";
 "Tasks" = "Opravila";
 "Show completed tasks" = "Prikaži dokončana opravila";
-
 /* tabs */
 "Task" = "Opravilo";
 "Event" = "Dogodek";
 "Recurrence" = "Ponovitev";
-
 /* toolbar */
 "New Event" = "Nov dogodek";
 "New Task" = "Novo opravilo";
@@ -426,9 +341,7 @@ validate_endbeforestart    = "Vnešeni končni datum je pred začetnim datumom."
 "Week View" = "Tedenski pregled";
 "Month View" = "Mesečni pregled";
 "Reload" = "Ponovno naloži";
-
 "eventPartStatModificationError" = "Tvoj status sodelovanja se ne da spremeniti.";
-
 /* menu */
 "New Event..." = "Novi dogodek...";
 "New Task..." = "Novo opravilo...";
@@ -437,35 +350,29 @@ validate_endbeforestart    = "Vnešeni končni datum je pred začetnim datumom."
 "Select All" = "Označi vse";
 "Workweek days only" = "Samo delovni dnevi tedna";
 "Tasks in View" = "Opravila v pregledu";
-
 "eventDeleteConfirmation" = "Naslednji dogodki bodo brisani:";
 "taskDeleteConfirmation" = "Naslednja opravila so bila brisani:";
 "Would you like to continue?" = "Želiš nadaljevati?";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Ne moreš se odstraniti ali odjaviti iz osebnega koledarja.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Si prepirčan, da želiš brisati izbrani koledar \"%{0}\"?";
-
 /* Legend */
 "Participant" = "Sodelujoči";
 "Optional Participant" = "Neobvezni sodelujoči";
 "Non Participant" = "Ne sodelujoči";
 "Chair" = "Stol";
-
 "Needs action" = "Potrebuje ukrepanje";
 "Accepted" = "Sprejet";
 "Declined" = "Zavrnjen";
 "Tentative" = "Pogojno";
-
 "Free" = "Prosto";
 "Busy" = "Zasedeno";
 "Maybe busy" = "Mogoče zasedeno";
 "No free-busy information" = "Ni informacije o prosto-zasedeno";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Predlagaj časovno režo:";
-"Zoom:" = "Povečaj:";
+"Suggest time slot" = "Predlagaj časovno režo";
+"Zoom" = "Povečaj";
 "Previous slot" = "Prejšnja reža";
 "Next slot" = "Naslednja reža";
 "Previous hour" = "Prejšnja ura";
@@ -474,64 +381,40 @@ validate_endbeforestart    = "Vnešeni končni datum je pred začetnim datumom."
 "The whole day" = "Celi dan";
 "Between" = "Med";
 "and" = "in";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Obstaja časovni konflikt med enim ali več udeleženci.\nŽeliš vseeno obdržati trenutne nastavitve?";
-
 /* apt list */
-"Title" = "Naslov";
-"Start" = "Začetek";
-"End" = "Konec";
-"Due Date" = "Datum zapadlosti";
-"Location" = "Mesto";
-
 "(Private Event)" = "(Osebni dogodek)";
-
 vevent_class0 = "(Javni dogodek)";
 vevent_class1 = "(Osebni dogodek)";
 vevent_class2 = "(Zaupni dogodek)";
-
-"Priority" = "Prioriteta";
-"Category" = "Kategorija";
-
 vtodo_class0 = "(Javno opravilo)";
 vtodo_class1 = "(Osebno opravilo)";
 vtodo_class2 = "(Zaupno opravilo)";
-
 "closeThisWindowMessage" = "Hvala. Smeš zapreti to okno ali pogledati tvoje";
 "Multicolumn Day View" = "Dnevni pogled v več stolpcih";
-
 "Please select an event or a task." = "Prosim izberi dogodek ali opravilo.";
-
 "editRepeatingItem" = "Element, ki ga urejaš, je ponavljajoči element. Želiš urediti vse ponovite ali samo eno instanco?";
 "button_thisOccurrenceOnly" = "Le ta ponovitev";
 "button_allOccurrences" = "Vse ponovitve";
-
 /* Properties dialog */
-"Name" = "Ime";
 "Color" = "Barva";
-
 "Include in free-busy" = "Vključi v prosto-zasedeno";
-
 "Synchronization" = "Sinhronizacija";
 "Synchronize" = "Sinhroniziraj";
-"Tag:" = "Značka:";
-
+"Tag" = "Značka";
 "Display" = "Prikaz";
 "Show alarms" = "Prikaži alarme";
 "Show tasks" = "Prikaži opravila";
-
 "Notifications" = "Obvestila";
 "Receive a mail when I modify my calendar" = "Prejmi pošto, ko spremenim moj koledar";
 "Receive a mail when someone else modifies my calendar" = "Prejmi pošto, ko kdorkoli drugi spremeni moj koledar";
 "When I modify my calendar, send a mail to" = "Ko spremenim moj koledar, pošlji pošto za";
-
 "Links to this Calendar" = "Povezave do tega koledarja";
 "Authenticated User Access" = "Preverjeni uporabniški dostop";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "Prosim določi numerično vrednost v polju Dnevi večje ali enko 1.";
 "weekFieldInvalid" = "Prosim določi numerično vrednost v polje Tedni večje ali enako 1.";
@@ -549,14 +432,12 @@ vtodo_class2 = "(Zaupno opravilo)";
 "DestinationCalendarError" = "Izvorni in ciljni koledarji so enaki. Prosim poskusi kopirati drugi koledar.";
 "EventCopyError" = "Kopiranje ni uspelo. Prosim poskusi kopirati v drugi koledar.";
 "Please select at least one calendar" = "Prosim določi vsaj en koledar.";
-
 "Open Task..." = "Odprto opravilo...";
 "Mark Completed" = "Označitev dokončana";
 "Delete Task" = "Briši opravilo";
 "Delete Event" = "Briši dogodek";
 "Copy event to my calendar" = "Kopiraj dogodek v moj koledar";
 "View Raw Source" = "Preglej surovi vir";
-
 "Subscribe to a web calendar..." = "Naroči na spletni koledar...";
 "URL of the Calendar" = "URL koledarja";
 "Web Calendar" = "Spletni koledar";

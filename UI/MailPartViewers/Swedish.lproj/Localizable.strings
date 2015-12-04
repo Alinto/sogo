@@ -27,16 +27,11 @@ Tentative = "Preliminär";
 "Delegated to" = "Delegerad till";
 "Update status in calendar" = "Uppdatera status i kalendern";
 "delegated from" = "delegerad från";
-
 reply_info_no_attendee = "Du har fått ett svar till en planerad händelse som avsändaren inte är inbjuden till.";
 reply_info = "Du har fått ett svar till en händelse inbjuden av dig.";
-
 "to" = "till";
-
 "Untitled" = "Ingen rubrik";
-
 "Size" = "Storlek";
-
 "Digital signature is not valid" = "Digital signatur är ogiltig";
 "Message is signed" = "Meddelandet är signerat";
 "Subject" = "Ämne";

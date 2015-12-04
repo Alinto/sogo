@@ -13,7 +13,6 @@
 "Print"       = "Друк";
 "Stop"        = "Стоп";
 "Write"       = "Створити";
-
 "Send" = "Відіслати";
 "Contacts" = "Контакти";
 "Attach" = "Вкладення";
@@ -21,9 +20,7 @@
 "Options" = "Налаштування";
 "Close" = "Закрити";
 "Size" = "Розмір";
-
 /* Tooltips */
-
 "Send this message now" = "Відіслати це повідомлення зараз";
 "Select a recipient from an Address Book" = "Вибрати адресата з адресної книги";
 "Include an attachment" = "Вкласти файл в це повідомлення";
@@ -41,34 +38,24 @@
 "Attachment" = "Вкладення";
 "Unread" = "Непрочитані";
 "Flagged" = "Позначені зірочкою";
-
 /* Main Frame  */
-
 "Home"                 = "Початок"; 
 "Calendar"             = "Календар";
 "Addressbook"          = "Адресна книга";
 "Mail"                 = "Пошта";
 "Right Administration" = "Права доступу";
-
 "Help" = "Допомога";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Вітаємо в поштовій програмі SOGo! Для перегляду повідомлень скористайтесь відповідним переліком тек, що розташований ліворуч.";
-
 "Read messages"       = "Читати повідомлення";
 "Write a new message" = "Створити повідомлення";
-
-"Share: " = "Спільне використання: ";
-"Account: " = "Користувач: ";
-"Shared Account: " = "Спільний обліковий запис: ";
-
+"Share" = "Спільне використання";
+"Account" = "Користувач";
+"Shared Account" = "Спільний обліковий запис";
 /* acls */
 "Access rights to" = "Права доступу до";
 "For user" = "Для користувача";
-
 "Any Authenticated User" = "Для будь-якого авторизованого користувача";
-
 "List and see this folder" = "Бачити теку та назву листів в ній";
 "Read mails from this folder" = "Читати листи в теці";
 "Mark mails read and unread" = "Ставити в листах позначку про прочитання";
@@ -80,14 +67,10 @@
 "Erase mails from this folder" = "Вилучати повідомлення з цієї теки";
 "Expunge this folder" = "Позначати листи як вилучені";
 "Modify the acl of this folder" = "Керувати правами доступу до цієї теки";
-
 "Saved Messages.zip" = "Збережено Messages.zip";
-
 "Update" = "Поновити";
 "Cancel" = "Скасувати";
-
 /* Mail edition */
-
 "From"          = "Від";
 "Subject"       = "Тема";
 "To"            = "Кому";
@@ -95,93 +78,70 @@
 "Bcc"           = "Прихована копія";
 "Reply-To"	= "Зворотня адреса";
 "Add address"   = "Додати адресу";
-
-"Attachments:" = "Вкладення:";
+"Attachments" = "Вкладення";
 "Open" = "Відкрити";
 "Select All" = "Вибрати все";
 "Attach Web Page..." = "Вкласти веб-сторінку...";
 "Attach File(s)..." = "Вкласти файл(и)...";
-
 "to"            = "Кому";
 "cc"            = "Копія";
 "bcc"           = "Прихована копія";
-
 "Edit Draft..." = "Редагувати чернетку...";
 "Load Images" = "Завантажити зображення";
-
 "Return Receipt" = "Сповіщення про доставку";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Відправник цього листа попросив сповістити, як ви переглянете лист. Чи ви бажаєте повідомити?";
 "Return Receipt (displayed) - %@"= "Повідомлення про отримання (показано) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Це зворотнє повідомлення підтверджує, що ви надіслали лист%@.\n\nУвага: Це зворотнє повідомлення лише підтверджує, що лист було відкрито на комп’ютері отримувача. Це не означає, що отримувач прочитав або зрозумів його зміст.";
-
 "Priority" = "Важливість";
 "highest" = "Найвища";
 "high" = "Висока";
 "normal" = "Звичайна";
 "low" = "Низька";
 "lowest" = "Найнижча";
-
 "This mail is being sent from an unsecure network!" = "Це повідомлення надсилається з небезпечної мережі!";
-
-"Address Book:" = "Адресна книга:";
-"Search For:" = "Шукати:";
-
+"Address Book" = "Адресна книга";
+"Search For" = "Шукати";
 /* Popup "show" */
-
 "all"     = "всі";
 "read"    = "прочитані";
 "unread"  = "непрочитані";
 "deleted" = "вилучені";
 "flagged" = "позначені";
-
 /* MailListView */
-
 "Sender" = "Відправник";
 "Subject or Sender" = "Тема або Відправник";
 "To or Cc" = "Кому або копія";
 "Entire Message" = "Повідомлення повністю";
-
 "Date"          = "Дата";
 "View"          = "Перегляд";
 "All"           = "Всі";
 "No message"    = "Повідомлення відсутні";
 "messages"      = "повідомлення";
-
 "first"         = "перша";
 "previous"      = "попередня";
 "next"          = "наступна";
 "last"          = "остання";
-
 "msgnumber_to"  = "до";
 "msgnumber_of"  = "з";
-
 "Mark Unread" = "Позначити непрочитаним";
 "Mark Read"   = "Позначити прочитаним";
-
 "Untitled" = "Без теми";
-
 /* Tree */
-
 "SentFolderName"   = "Відіслані";
 "TrashFolderName"  = "Кошик";
 "InboxFolderName"  = "Вхідні";
 "DraftsFolderName" = "Чернетки";
 "SieveFolderName"  = "Теки";
 "Folders"          = "Всі теки"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Перемістити до &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Додати у адресну книгу...";
 "Compose Mail To" = "Створити лист для";
 "Create Filter From Message..." = "Створити фільтр з повідомлення...";
-
 /* Image Popup menu */
 "Save Image" = "Зберегти зображення";
 "Save Attachment" = "Зберегти вкладення";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Відкрити в новому вікні";
 "Copy Folder Location" = "Копіювати адресу теки";
@@ -198,12 +158,10 @@
 "Get Messages for Account" = "Отримати нові повідомлення";
 "Properties..." = "Властивості...";
 "Delegation..." = "Права...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Відіслані";
 "Drafts" = "Чернетки";
 "Deleted Messages" = "Кошик";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Відкрити повідомлення в новому вікні";
 "Reply to Sender Only" = "Відповісти відправнику";
@@ -219,12 +177,9 @@
 "Print..." = "Друк";
 "Delete Message" = "Вилучити повідомлення";
 "Delete Selected Messages" = "Вилучити обрані повідомлення";
-
 "This Folder" = "Ця тека";
-
 /* Label popup menu */
 "None" = "Вилучити всі позначки";
-
 /* Mark popup menu */
 "As Read" = "Прочитаним";
 "Thread As Read" = "Обговорення прочитаним";
@@ -234,24 +189,19 @@
 "As Junk" = "Спамом";
 "As Not Junk" = "Не спамом";
 "Run Junk Mail Controls" = "Відфільтрувати спам";
-
 /* Folder operations */
-"Name :" = "Назва :";
+"Name" = "Назва";
 "Enter the new name of your folder"
  = "Введіть нову назву теки";
 "Do you really want to move this folder into the trash ?"
  = "Ви справді бажаєте перенести цю теку до кошика?";
 "Operation failed" = "Операція завершилась невдало";
-
 "Quota" = "Квота:";
 "quotasFormat" = "Зайнято %{0}% з %{1}МБ";
-
 "Please select a message." = "Будь ласка, виберіть повідомлення.";
 "Please select a message to print." = "Будь ласка, виберіть повідомлення для друку.";
 "Please select only one message to print." = "Будь ласка, виберіть лише одне повідомлення для друку.";
 "The message you have selected doesn't exist anymore." = "Вибране повідомлення більше не існує.";
-
-
 "The folder with name \"%{0}\" could not be created."
 = "Неможливо створити теку з такою назвою \"%{0}\".";
 "This folder could not be renamed to \"%{0}\"."
@@ -262,27 +212,21 @@
 = "Неможливо очистити кошик.";
 "The folder functionality could not be changed."
 = "Призначення теки не може бути змінено.";
-
 "You need to choose a non-virtual folder!" = "Виберіть одну з невіртуальних тек!";
-
 "Moving a message into its own folder is impossible!"
 = "Неможливо пересунути повідомлення, оскільки воно вже там є!";
 "Copying a message into its own folder is impossible!"
 = "Неможливо скопіювати повідомлення, оскільки воно вже там є!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Неможливо перемістити повідомлення до кошику. ";
-
 /* Message editing */
 "error_validationfailed" = "Перевірка зазнала невдачі";
 "error_missingsubject" = "Не зазначено теми повідомлення";
 "error_missingrecipients" = "Не зазначено адреси отримувача";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Помилка під час відправлення повідомлення: некоректні адреси всіх отримувачів.";
-"cannot send message (smtp) - recipients discarded:" = "Помила під час відправлення повідомлення: такі адреси некоректні:";
+"cannot send message (smtp) - recipients discarded" = "Помила під час відправлення повідомлення: такі адреси некоректні";
 "cannot send message: (smtp) error when connecting" = "Помилка під час відправлення повідомлення: SMTP-сервер не відповідає.";
-
 "Name" = "Ім’я";
 "Email" = "Електронна пошта";

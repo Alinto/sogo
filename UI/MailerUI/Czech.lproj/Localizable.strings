@@ -14,7 +14,6 @@
 "Stop"        = "Zastavit";
 "Write"       = "Napsat";
 "Search"      = "Hledat";
-
 "Send" = "Odeslat";
 "Contacts" = "Kontakty";
 "Attach" = "Přiložit";
@@ -22,9 +21,7 @@
 "Options" = "Možnosti";
 "Close" = "Zavřít";
 "Size" = "Velikost";
-
 /* Tooltips */
-
 "Send this message now" = "Odeslat tuto zprávu nyní";
 "Select a recipient from an Address Book" = "Zvolit příjemce z adresáře";
 "Include an attachment" = "Připojit přílohu";
@@ -43,34 +40,24 @@
 "Unread" = "Nepřečtené";
 "Flagged" = "Oštítkované";
 "Search multiple mailboxes" = "Hledat ve zprávách";
-
 /* Main Frame  */
-
 "Home"                 = "Domů"; 
 "Calendar"             = "Kalendář";
 "Addressbook"          = "Adresář";
 "Mail"                 = "E-Mail";
 "Right Administration" = "Administrace";
-
 "Help" = "Nápověda";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vítejte v SOGo Mailer. Využijte stromu složek nalevo pro procházení Vašimi mailovými účty!";
-
 "Read messages"       = "Číst zprávy";
 "Write a new message" = "Napsat zprávu";
-
-"Share: " = "Sdílet: ";
-"Account: " = "Účet: ";
-"Shared Account: " = "Sdílený účet: ";
-
+"Share" = "Sdílet";
+"Account" = "Účet";
+"Shared Account" = "Sdílený účet";
 /* acls */
 "Access rights to" = "Přístupová práva k";
 "For user" = "Pro uživatele";
-
 "Any Authenticated User" = "Všichni ověření uživatelé";
-
 "List and see this folder" = "Prohlížet tuto složku";
 "Read mails from this folder" = "Číst maily v této složce";
 "Mark mails read and unread" = "Označit maily jako přečtené a nepřečtené";
@@ -83,14 +70,10 @@
 "Expunge this folder" = "Vyškrtnout tuto složku";
 "Export This Folder" = "Exportovat složku";
 "Modify the acl of this folder" = "Upravit acl této složky";
-
 "Saved Messages.zip" = "zpravy.zip";
-
 "Update" = "Aktualizace";
 "Cancel" = "Storno";
-
 /* Mail edition */
-
 "From"          = "Odesílatel";
 "Subject"       = "Předmět";
 "To"            = "Komu";
@@ -99,94 +82,71 @@
 "Reply-To"	    = "Odpovědět komu";
 "Add address"   = "Přidat adresu";
 "Body"          = "Tělo";
-
 "Open" = "Otevřít";
 "Select All" = "Vybrat vše";
 "Attach Web Page..." = "Připojit WWW stránku...";
 "file" = "soubor";
 "files" = "soubory";
 "Save all" = "Uložit všechno";
-
 "to"            = "Komu";
 "cc"            = "Kopie";
 "bcc"           = "Skrytá kopie";
-
 "Edit Draft..." = "Upravit koncept...";
 "Load Images" = "Nahrát obrázky";
-
 "Return Receipt" = "Potvrzení o přečtení";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odesílatel této zprávy si přeje být informován o tom, že jste si tuto zprávu přečetli. Chcete odesílateli poslat potvrzení?";
 "Return Receipt (displayed) - %@"= "Potvrzení o přečtení (zobrazeno) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrzení o přečtení ke zprávě, kterou jste poslali pro %@.\n\nPoznámka: Potvrzení o přijetí znamená pouze to, že se zpráva zobrazila na počítači adresáta. Není ale zaručeno, že adresát zprávu četl a porozuměl jejímu obsahu.";
-
 "Priority" = "Priorita";
 "highest" = "Nejvyšší";
 "high" = "Vysoká";
 "normal" = "Normální";
 "low" = "Nízká";
 "lowest" = "Nejnižší";
-
 "This mail is being sent from an unsecure network!" = "Tento mail je odesílán z nezabezpečené sítě!";
-
-"Address Book:" = "Adresář:";
-"Search For:" = "Hledat:";
-
+"Address Book" = "Adresář";
+"Search For" = "Hledat";
 /* Popup "show" */
-
 "all"     = "všechny";
 "read"    = "přečtené";
 "unread"  = "nepřečtené";
 "deleted" = "smazané";
 "flagged" = "oštítkované";
-
 /* MailListView */
-
 "Sender" = "Odesílatel";
 "Subject or Sender" = "Předmět nebo Odesílatel";
 "To or Cc" = "Komu nebo Kopie";
 "Entire Message" = "Celá zpráva";
-
 "Date"          = "Datum";
 "View"          = "Zobrazit";
 "All"           = "Všechny";
 "No message"    = "Žádná zpráva";
 "messages"      = "zprávy";
-
 "first"         = "Nejnovější";
 "previous"      = "Předchozí";
 "next"          = "Následující";
 "last"          = "Nejstarší";
-
 "msgnumber_to"  = "pro";
 "msgnumber_of"  = "o";
-
 "Mark Unread" = "Označit jako nepřečtené";
 "Mark Read"   = "Označit jako přečtené";
-
 "Untitled" = "Bez názvu";
-
 /* Tree */
-
 "SentFolderName"   = "Odeslaná pošta";
 "TrashFolderName"  = "Koš";
 "InboxFolderName"  = "Doručená pošta";
 "DraftsFolderName" = "Koncepty";
 "SieveFolderName"  = "Filtry";
 "Folders"          = "Složky"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Přesunout do &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Přidat do adresáře...";
 "Compose Mail To" = "Napsat mail pro";
 "Create Filter From Message..." = "Vytvořit filtr ze zprávy...";
-
 /* Image Popup menu */
 "Save Image" = "Uložit obrázek";
 "Save Attachment" = "Uložit přílohu";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Otevřít v novém mailovém okně";
 "Copy Folder Location" = "Kopírovat adresu složky";
@@ -203,12 +163,10 @@
 "Get Messages for Account" = "Stáhnout zprávy pro účet";
 "Properties..." = "Vlastnosti...";
 "Delegation..." = "Delegování...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Odeslané zprávy";
 "Drafts" = "Koncepty";
 "Deleted Messages" = "Smazané zprávy";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Otevřít zprávu v novém okně";
 "Reply to Sender Only" = "Odpovědět pouze odesílateli";
@@ -224,12 +182,9 @@
 "Print..." = "Tisk...";
 "Delete Message" = "Smazat zprávu";
 "Delete Selected Messages" = "Smazat označené zprávy";
-
 "This Folder" = "Tato složka";
-
 /* Label popup menu */
 "None" = "Žádný";
-
 /* Mark popup menu */
 "As Read" = "Jako přečtené";
 "Thread As Read" = "Vlákno jako přečtené";
@@ -239,7 +194,6 @@
 "As Junk" = "Jako nevyžádané";
 "As Not Junk" = "Jako vyžádané";
 "Run Junk Mail Controls" = "Spustit kontrolu nevyžádaných";
-
 "Search messages in" = "Hledat zprávy v";
 "Search" = "Hledat";
 "Search subfolders" = "Hledat v podsložkách";
@@ -251,23 +205,19 @@
 "results found" = "výskytů nalezeno";
 "result found" = "výskyt nalezen";
 "Please specify at least one filter" = "Zadejte alespoň jedno pravidlo";
-
 /* Folder operations */
-"Name :" = "Jméno :";
+"Name" = "Jméno";
 "Enter the new name of your folder"
- = "Zadejte nový název Vaší složky";
+ ="Zadejte nový název Vaší složky";
 "Do you really want to move this folder into the trash ?"
  = "Opravdu chcete tuto složku vyhodit do koše ?";
 "Operation failed" = "Operace selhala";
-
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% využito z %{1} MB";
-
 "Please select a message." = "Vyberte zprávu prosím.";
 "Please select a message to print." = "Zvolte prosím zprávu, kterou chcete tisknout.";
 "Please select only one message to print." = "Zvolte pouze jednu zprávu, kterou chcete tisknout.";
 "The message you have selected doesn't exist anymore." = "Zpráva, kterou jste zvolili, již neexistuje.";
-
 "The folder with name \"%{0}\" could not be created."
 = "Složka s názvem \"%{0}\" nemohla být vytvořena.";
 "This folder could not be renamed to \"%{0}\"."
@@ -278,31 +228,24 @@
 = "Koš nemohl být vyprázdněn.";
 "The folder functionality could not be changed."
 = "Funkce složky nemohla být změněna.";
-
 "You need to choose a non-virtual folder!" = "Musíte zvolit ne-virtuální složku!";
-
 "Moving a message into its own folder is impossible!"
 = "Zprávu nelze přesunout do své vlastní složky!";
 "Copying a message into its own folder is impossible!"
 = "Zprávu nelze zkopírovat do své vlastní složky!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Zprávy nemohou být přesunuty do koše. Chcete je smazat trvale?";
-
 /* Message editing */
 "error_missingsubject" = "Chybí předmět";
 "error_missingrecipients" = "Zadejte alespoň jednoho příjemce.";
 "Send Anyway" = "Odeslat";
-"Error while saving the draft:" = "Při uložení konceptu došlo k chybě:";
+"Error while saving the draft" = "Při uložení konceptu došlo k chybě";
 "Error while uploading the file \"%{0}\":" = "Při přenosu souboru \"%{0}\" došlo k chybě:";
 "There is an active file upload. Closing the window will interrupt it." = "Přenáší se soubor. Zavření okna způsobí přerušení přenosu.";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Zprávu nelze odeslat: adresy všech příjemců jsou neplatné.";
-"cannot send message (smtp) - recipients discarded:" = "Zprávu nelze odeslat: následující adresy jsou neplatné:";
+"cannot send message (smtp) - recipients discarded" = "Zprávu nelze odeslat: následující adresy jsou neplatné";
 "cannot send message: (smtp) error when connecting" = "Zprávu nelze odeslat: při spojení se SMTP serverem došlo k chybě.";
-
 /* Contacts list in mail editor */
 "Email" = "E-mail";
-"Name" = "Jméno";

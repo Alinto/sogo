@@ -27,16 +27,11 @@ Tentative = "Til bráðabirgða";
 "Delegated to" = "Skipaður fulltrúi er";
 "Update status in calendar" = "Uppfæra stöðu í dagatali";
 "delegated from" = "Skipaður fulltrúi var";
-
 reply_info_no_attendee = "Þú fékkst svar varðandi skipulagðan viðburð, en sendandinn er ekki þáttakandi.";
 reply_info = "Þetta er svar við boði á viðburð sem þú hefur gert.";
-
 "to" = "til";
-
 "Untitled" = "ónefnt";
-
 "Size" = "Stærð";
-
 "Digital signature is not valid" = "Stafræn undirritun er ógild";
 "Message is signed" = "Póstur er með rafræna undirskrift";
 "Subject" = "Viðfangsefni";

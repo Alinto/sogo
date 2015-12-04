@@ -4,7 +4,6 @@
 "Save" = "Uložiť";
 "Close" = "Zavrieť";
 "Edit User Rights" = "Upraviť uživateľské práva";
-
 "Home" = "Domov";
 "Calendar" = "Kalendár";
 "Address Book"	= "Adresár";
@@ -14,30 +13,21 @@
 "Disconnect" = "Odpojiť";
 "Right Administration" = "Administrácia práv";
 "Log Console (dev.)" = "Log konzola (vývoj)";
-
 "User" = "Užívateľ";
 "Vacation message is enabled" = "Dovolenková správa je zaplnutá";
-
 "Help" = "Pomoc";
-
 "noJavascriptError" = "Sogo vyžaduje pre spustenie JavaScript. Uistite sa, že táto možnosť je k dispozícii a aktivovaná v prehliadači.";
 "noJavascriptRetry" = "Opakovať";
-
-"Owner:" = "Vlastník:";
+"Owner" = "Vlastník";
 "Publish the Free/Busy information" = "Publikovanie Free / Busy informácií";
-
 "Add..." = "Pridať...";
 "Remove" = "Odstrániť";
-
 "Subscribe User" = "Prihlásiť užívateľa k odberu";
-
 "Any Authenticated User" = "Všetkým prihláseným užívateľom";
 "Public Access" = "Verejný prístup";
 "Any user not listed above" = "Každý užívateľ, ktorý nie je uvedený vyššie";
 "Anybody accessing this resource from the public area" = "Každý, kto prístupuje k tomuto zdroju z verejného priestoru";
-
 "Sorry, the user rights can not be configured for that object." = "Je nám ľúto, užívateľské práva nie je možné konfigurovať pre daný objekt.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Vašu emailovú shránku \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "Potencionálne ktokoľvek na internete bude môcť vidieť Váš adresár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
 "Give Access" = "Daj prístup";
 "Keep Private" = "Nechaj súkromné";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Nedá sa prihlásiť k odberu tejto zložky!";
@@ -69,17 +58,14 @@
 "You cannot create a list in a shared address book." 
         = "Nemôžete vytvoriť zoznam v zdieľanom adresári.";
 "Warning" = "Varovanie";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nemate dovolený prístup k tomuto modulu alebo tento systém. Obráťte sa na správcu systému.";
 "You don't have the required privileges to perform the operation."
 = "Nemáte potrebné oprávnenia na vykonanie operácie.";
-
 "noEmailForDelegation" = "Musíte zadať adresu, na ktorú chcete delegovať vaše pozvanie.";
 "delegate is organizer" = "Delegát je organizátorom. Zadajte prosím iného delegáta.";
 "delegate is a participant" = "Delegát je už účastníkom.";
 "delegate is a group" = "Zadaná adresa zodpovedá skupine. Môžete ju delegovať len na jedinečnú osobu.";
-
 "Snooze for " = "Odložiť";
 "5 minutes" = "5 minút";
 "10 minutes" = "10 minút";
@@ -87,28 +73,22 @@
 "30 minutes" = "30 minút";
 "45 minutes" = "45 minút";
 "1 hour" = "1 hodinu";
-
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Zrušiť";
 "Yes" = "Áno";
 "No" = "Nie";
-
 /* alarms */
-"Reminder:" = "Pripomienka:";
-"Start:" = "Štart:";
-"Due Date:" = "Splatnosť:";
-"Location:" = "Umiestnenie:";
-
+"Reminder" = "Pripomienka";
+"Start" = "Štart";
+"Due Date" = "Splatnosť";
+"Location" = "Umiestnenie";
 /* Mail labels */
 "Important" = "Dôležité";
-"Work" = "Pracovné";
 "Work" = "Pracovné";
 "Personal" = "Osobné";
 "To Do" = "Treba urobiť";
 "Later" = "Neskôr";
-
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "Ut";

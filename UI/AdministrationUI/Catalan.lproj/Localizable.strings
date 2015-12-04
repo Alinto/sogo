@@ -2,14 +2,10 @@
 
 "Help" = "Ajuda";
 "Close" = "Tancar";
-
 "Modules" = "Mòduls";
-
 /* Modules short names */
 "ACLs" = "ACL";
-
 /* Modules titles */
 "ACLs_title" = "Gestió de llistes de control d'accés (ACL) d'objectes d'usuari";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>El mòdul administratiu de llistes de control d'accés (ACL) permet canviar les ACL  dels calendaris i llibretes d'adreces de cada usuari.</p><p>Per modificar l'ACL de l'objecte d'un usuari, cal escriure el nom de l'usuari en el camp de cerca a la part superior de la finestra i clicar dues vegades sobre l'objecte desitjat.</p>";

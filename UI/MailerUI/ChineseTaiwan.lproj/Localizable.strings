@@ -14,7 +14,6 @@
 "Stop"        = "停止";
 "Write"       = "寫信";
 "Search"      = "搜尋";
-
 "Send" = "寄信";
 "Contacts" = "聯絡人";
 "Attach" = "附加檔案";
@@ -22,9 +21,7 @@
 "Options" = "選項";
 "Close" = "關閉";
 "Size" = "大小";
-
 /* Tooltips */
-
 "Send this message now" = "立即寄出";
 "Select a recipient from an Address Book" = "從通訊錄選擇收件者帳號";
 "Include an attachment" = "增加附檔";
@@ -43,34 +40,24 @@
 "Unread" = "未讀";
 "Flagged" = "標註";
 "Search multiple mailboxes" = "搜尋多個郵件信箱";
-
 /* Main Frame  */
-
 "Home"                 = "首頁"; 
 "Calendar"             = "行事曆";
 "Addressbook"          = "通訊錄";
 "Mail"                 = "郵件";
 "Right Administration" = "權限管理";
-
 "Help" = "幫助";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "歡迎使用SOGO郵件系統. 請使用左側的列表來檢視郵件帳號!";
-
 "Read messages"       = "讀信";
 "Write a new message" = "寫新信";
-
-"Share: " = "分享:";
-"Account: " = "帳號:";
-"Shared Account: " = "分享的帳號:";
-
+"Share" = "分享";
+"Account" = "帳號";
+"Shared Account" = "分享的帳號";
 /* acls */
 "Access rights to" = "存取權限";
 "For user" = "提供使用者";
-
 "Any Authenticated User" = "任何認證的使用者";
-
 "List and see this folder" = "列出並檢視這個資料匣";
 "Read mails from this folder" = "讀取這個資料匣的信件";
 "Mark mails read and unread" = "標示信件為己讀/未讀\"";
@@ -83,14 +70,10 @@
 "Expunge this folder" = "清除這個目資料匣";
 "Export This Folder" = "匯出資料匣";
 "Modify the acl of this folder" = "修改這個資料匣的存取控制清單";
-
 "Saved Messages.zip" = "儲存信件壓縮檔";
-
 "Update" = "更新";
 "Cancel" = " 取消";
-
 /* Mail edition */
-
 "From"          = "寄件人";
 "Subject"       = "主旨";
 "To"            = "收件者";
@@ -99,94 +82,71 @@
 "Reply-To"	    = "回覆到";
 "Add address"   = "增加郵件帳號";
 "Body"          = "信件內容";
-
 "Open" = "開啟";
 "Select All" = "全部選取";
 "Attach Web Page..." = "附件網頁...";
 "file" = "檔案";
 "files" = "多檔案";
 "Save all" = "全部儲存";
-
 "to"            = "收件者";
 "cc"            = "副本";
 "bcc"           = "密件副本";
-
 "Edit Draft..." = "編輯草稿...";
 "Load Images" = "加入圖檔";
-
 "Return Receipt" = "回覆回條";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "寄件者要求您讀取信件時回覆通知,請問您要回覆嗎?";
 "Return Receipt (displayed) - %@"= "回覆回條 (顯示) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "這是您寄送給 %@ 的回覆回條。\n\n附註: 回覆回條只代表收件者己收到這封郵件。並不保證收件者己經閱讀或是知道郵件內容。";
-
 "Priority" = "優先順序";
 "highest" = "最重要";
 "high" = "重要";
 "normal" = "一般";
 "low" = "低";
 "lowest" = "最低";
-
 "This mail is being sent from an unsecure network!" = "這封郵件是來自非安全的網段!";
-
-"Address Book:" = "通訊錄:";
-"Search For:" = "搜尋:";
-
+"Address Book" = "通訊錄";
+"Search For" = "搜尋";
 /* Popup "show" */
-
 "all"     = "全部";
 "read"    = "已讀";
 "unread"  = "未讀";
 "deleted" = "已刪除";
 "flagged" = "已註記";
-
 /* MailListView */
-
 "Sender" = "寄件者";
 "Subject or Sender" = "主旨或寄件者";
 "To or Cc" = "收件者或副本收件者";
 "Entire Message" = "全部內容";
-
 "Date"          = "日期";
 "View"          = "檢視";
 "All"           = "全部";
 "No message"    = "沒有信件";
 "messages"      = "信件";
-
 "first"         = "最前";
 "previous"      = "前";
 "next"          = "後";
 "last"          = "最後";
-
 "msgnumber_to"  = "收件人";
 "msgnumber_of"  = "的";
-
 "Mark Unread" = "標示為未讀";
 "Mark Read"   = "標示為已讀";
-
 "Untitled" = "無主旨";
-
 /* Tree */
-
 "SentFolderName"   = "寄件備份";
 "TrashFolderName"  = "垃圾桶";
 "InboxFolderName"  = "收件匣";
 "DraftsFolderName" = "草稿匣";
 "SieveFolderName"  = "垃圾信件匣";
 "Folders"          = "目錄\n"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "搬移到";
-
 /* Address Popup menu */
 "Add to Address Book..." = "加到通訊錄...";
 "Compose Mail To" = "寫新信";
 "Create Filter From Message..." = "建立規則...";
-
 /* Image Popup menu */
 "Save Image" = "儲存圖片";
 "Save Attachment" = "儲存附檔";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "在新視窗開啟信件";
 "Copy Folder Location" = "複製資料匣位置";
@@ -203,12 +163,10 @@
 "Get Messages for Account" = "讀取這個帳號的信件";
 "Properties..." = "屬性...";
 "Delegation..." = "授權...\"";
-
 /* Use This Folder menu */
 "Sent Messages" = "寄信備份";
 "Drafts" = "草稿匣";
 "Deleted Messages" = "垃圾桶";
-
 /* Message list popup menu */
 "Open Message In New Window" = "在新視窗開啟信件";
 "Reply to Sender Only" = "只回覆寄件者";
@@ -224,12 +182,9 @@
 "Print..." = "列印...";
 "Delete Message" = "刪除信件";
 "Delete Selected Messages" = "刪除選擇的信件";
-
 "This Folder" = "該資料匣";
-
 /* Label popup menu */
 "None" = "無";
-
 /* Mark popup menu */
 "As Read" = "己讀";
 "Thread As Read" = "標示為己讀";
@@ -239,7 +194,6 @@
 "As Junk" = "這是垃圾圾郵件";
 "As Not Junk" = "這不是垃圾郵件";
 "Run Junk Mail Controls" = "執行垃圾郵件管制";
-
 "Search messages in" = "搜尋信件在";
 "Search" = "搜尋";
 "Search subfolders" = "搜尋子資料匣";
@@ -251,23 +205,19 @@
 "results found" = "搜尋結果";
 "result found" = "搜尋結果";
 "Please specify at least one filter" = "請指定至少一項過濾規則";
-
 /* Folder operations */
-"Name :" = "名稱:";
+"Name" = "名稱";
 "Enter the new name of your folder"
  = "輸入新資料匣名稱";
 "Do you really want to move this folder into the trash ?"
  = "是否確定將這個資料匣移到垃圾桶?";
 "Operation failed" = "操作失敗";
-
 "Quota" = "使用空間";
 "quotasFormat" = "%{0}% 己使用 %{1} MB";
-
 "Please select a message." = "請選擇一封信件。";
 "Please select a message to print." = "請選擇要列印的信件。";
 "Please select only one message to print." = "請選擇單封信件進行列印。";
 "The message you have selected doesn't exist anymore." = "您選擇的信件已不存在。";
-
 "The folder with name \"%{0}\" could not be created."
 = "無法建立名稱為 \"%{0}\" 的資料匣。";
 "This folder could not be renamed to \"%{0}\"."
@@ -278,31 +228,24 @@
 = "垃圾桶不能清空。";
 "The folder functionality could not be changed."
 = "無法修改該資料匣的功能。;";
-
 "You need to choose a non-virtual folder!" = "您必須選擇一個非虛擬的資料匣!";
-
 "Moving a message into its own folder is impossible!"
 = "不能將信件搬移到原來所在的資料匣!";
 "Copying a message into its own folder is impossible!"
 = "不能將信件複製到原來所在的資料匣!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "無法將郵件搬移到垃圾桶。您確定要刪除這封郵件嗎?";
-
 /* Message editing */
 "error_missingsubject" = "這封郵件沒有主旨。是否仍要寄送?";
 "error_missingrecipients" = "請輸入至少一個收件者帳號。";
 "Send Anyway" = "信件寄送";
-"Error while saving the draft:" = "草稿儲存發生錯誤:";
+"Error while saving the draft" = "草稿儲存發生錯誤";
 "Error while uploading the file \"%{0}\":" = "檔案上傳發送錯誤 \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "檔案上傳中。視窗關閉會造成上傳中斷。";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "無法寄送信件: 所有收件者帳號都無法寄出。";
-"cannot send message (smtp) - recipients discarded:" = "無法寄送信件。下面的收件者帳號無法寄出:";
+"cannot send message (smtp) - recipients discarded" = "無法寄送信件。下面的收件者帳號無法寄出";
 "cannot send message: (smtp) error when connecting" = "無法寄送郵件: 連接SMTP伺服器失敗。";
-
 /* Contacts list in mail editor */
 "Email" = "電子郵件帳號";
-"Name" = "名稱";

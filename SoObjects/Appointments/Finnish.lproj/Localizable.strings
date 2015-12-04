@@ -7,7 +7,6 @@ vevent_class2 = "(Luottamuksellinen tapahtuma)";
 vtodo_class0 = "(Julkinen tehtävä)";
 vtodo_class1 = "(Yksityinen tehtävä)";
 vtodo_class2 = "(Luottamuksellinen tehtävä)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Tapahtuma \"%{Summary}\" luotiin";
 "The event \"%{Summary}\" was deleted" = "Tapahtuma \"%{Summary}\" poistettiin";
@@ -15,7 +14,6 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "The following attendees(s) were notified" = "Seuraava(t) osallistuja(t) on informoitu";
 "The following attendees(s) were added" = "Seuraava(t) osalllistuja(t) on lisätty";
 "The following attendees(s) were removed" = "Seuraava(t) osalllistuja(t) poistettiin";
-
 /* IMIP messages */
 "calendar_label" = "Kalenteri";
 "startDate_label" = "Alkaa";
@@ -24,20 +22,17 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "location_label" = "Sijainti";
 "summary_label" = "Yhteenveto:";
 "comment_label" = "Kommentti:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Tapahtumakutsu: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(lähettäjä %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}on kutsunut sinut %{Summary}n.⏎ ⏎ Alkaa: %{StartDate}⏎ Loppuu: %{EndDate}⏎ Kuvaus: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}on kutsunut sinut %{Summary}n.⏎ ⏎ Alkaa: %{StartDate} klo %{StartTime}⏎ Loppuu: %{EndDate} klo %{EndTime}⏎ Kuvaus: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Tapahtuma peruttu: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}on perunut tapahtuman: %{Summary}.⏎ ⏎ Alkaa: %{StartDate}⏎ Loppuu: %{EndDate}⏎ Kuvaus: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}on peruuttanut tapahtuman: %{Summary}.⏎ ⏎ Alkaa: %{StartDate}klot %{StartTime}⏎ Loppuu: %{EndDate} klo %{EndTime}⏎ Kuvaus: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Tapaaminen \"%{Summary}\" %{OldStartDate} on muuttunut";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 = "Seuraavat tiedot ovat muuttuneet tapaamisessa \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Ole hyvä ja hyväksy tai hylkää muutokset.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Hyväksytty kutsu: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Hylätty kutsu: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 = "%{Attendee} %{SentByText} on  lähettänyt kutsusi edelleen osoitteeseen %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} ei vielä ole tehnyt päätöstä tapahtumakutsustasi.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ei pääsyä resurssiin: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimimäärä yhtäaikaisia varauksia\n(%{NumberOfSimultaneousBookings}) saavutettu resurssille \"%{Cn} %{SystemEmail}\". Ristiriitainen tapahtuma: \"%{EventTitle}\" alkaa %{StartDate}.";

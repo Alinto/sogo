@@ -2,14 +2,10 @@
 
 "Help" = "Help";
 "Close" = "Sluiten";
-
 "Modules" = "Modules";
-
 /* Modules short names */
 "ACLs" = "ACLs";
-
 /* Modules titles */
 "ACLs_title" = "ACL-beheer gebruikersmappen ";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>De Access Control Lists-beheer-module maakt het mogelijk om de ACLs van de agenda's en adresboeken van elke gebruiker te wijzigen.</p><p>Als u de ACLs van de map van een gebruiker wilt wijzigen, typt u de naam van de gebruiker in het zoekveld bovenaan het venster en dubbelklikt u op de gewenste map.</p>";

@@ -13,7 +13,6 @@
 "Print"       = "Udskriv";
 "Stop"        = "Stop";
 "Write"       = "Skriv";
-
 "Send" = "Send";
 "Contacts" = "Kontakter";
 "Attach" = "Vedhæft";
@@ -21,9 +20,7 @@
 "Options" = "Indstillinger";
 "Close" = "Luk";
 "Size" = "Størrelse";
-
 /* Tooltips */
-
 "Send this message now" = "Send denne besked nu";
 "Select a recipient from an Address Book" = "Vælg en modtager fra en adressebog";
 "Include an attachment" = "Medtag en vedhæftet fil";
@@ -41,34 +38,24 @@
 "Attachment" = "Vedhæftet";
 "Unread" = "Ulæst";
 "Flagged" = "Markeret";
-
 /* Main Frame  */
-
 "Home"                 = "Hjem"; 
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressebog";
 "Mail"                 = "Mail";
 "Right Administration" = "Højre administration";
-
 "Help" = "Hjælp";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Velkommen til Sogo Mailer. Brug mappernet til venstre for at gennemse dine mail-konti!";
-
 "Read messages"       = "Læs beskeder";
 "Write a new message" = "Skriv en ny besked";
-
-"Share: " = "Del:";
-"Account: " = "Konto:";
-"Shared Account: " = "Delt konto:";
-
+"Share" = "Del";
+"Account" = "Konto";
+"Shared Account" = "Delt konto";
 /* acls */
 "Access rights to" = "Adgangsrettigheder til";
 "For user" = "For bruger";
-
 "Any Authenticated User" = "Alle godkendte brugere";
-
 "List and see this folder" = "Udvid og se denne mappe";
 "Read mails from this folder" = "Læs beskeder fra denne mappe";
 "Mark mails read and unread" = "Markér beskeder som læst og ulæst";
@@ -80,14 +67,10 @@
 "Erase mails from this folder" = "Slet beskeder fra denne mappe";
 "Expunge this folder" = "Slet denne mappe";
 "Modify the acl of this folder" = "Rediger ACL i denne mappe";
-
 "Saved Messages.zip" = "Gemte beskeder.zip";
-
 "Update" = "Opdatér";
 "Cancel" = "Annullér";
-
 /* Mail edition */
-
 "From"          = "Fra";
 "Subject"       = "Emne";
 "To"            = "Til";
@@ -95,93 +78,70 @@
 "Bcc"           = "Bcc";
 "Reply-To"	= "Svar til";
 "Add address"   = "Tilføj adresse";
-
-"Attachments:" = "Vedhæftede filer:";
+"Attachments" = "Vedhæftede filer";
 "Open" = "Åbn";
 "Select All" = "Vælg alle";
 "Attach Web Page..." = "Vedhæft hjemmeside ...";
 "Attach File(s)..." = "Vedhæft fil(er) ...";
-
 "to"            = "Til";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
-
 "Edit Draft..." = "Redigér kladde ...";
 "Load Images" = "Indlæs billeder";
-
 "Return Receipt" = "Kvittering";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Afsenderen af ​​denne besked har bedt om at blive underrettet, når du læser denne besked. Vil du underrette afsenderen?";
 "Return Receipt (displayed) - %@"= "Kvittering (vist) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en kvittering for den besked, du har sendt til %@\n\nBemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtagerens computer. Der er ingen garanti for, at modtageren har læst eller forstået indholdet i beskeden.";
-
 "Priority" = "Prioritet";
 "highest" = "Højeste";
 "high" = "Høj";
 "normal" = "Normal";
 "low" = "Lav";
 "lowest" = "Laveste";
-
 "This mail is being sent from an unsecure network!" = "Denne besked bliver sendt fra et usikkert netværk!";
-
-"Address Book:" = "Adressebog:";
-"Search For:" = "Søg efter:";
-
+"Address Book" = "Adressebog";
+"Search For" = "Søg efter";
 /* Popup "show" */
-
 "all"     = "alle";
 "read"    = "Læs";
 "unread"  = "Ulæst";
 "deleted" = "Slettet";
 "flagged" = "Markerede";
-
 /* MailListView */
-
 "Sender" = "Afsender";
 "Subject or Sender" = "Emne eller afsender";
 "To or Cc" = "Til eller Cc";
 "Entire Message" = "Hele beskeden";
-
 "Date"          = "Dato";
 "View"          = "Vis";
 "All"           = "Alle";
 "No message"    = "Ingen besked";
 "messages"      = "Beskeder";
-
 "first"         = "Første";
 "previous"      = "Forrige";
 "next"          = "Næste";
 "last"          = "Sidste";
-
 "msgnumber_to"  = "Til";
 "msgnumber_of"  = "Af";
-
 "Mark Unread" = "Marker som ulæst";
 "Mark Read"   = "Mark som læst";
-
 "Untitled" = "Ikke navngivet";
-
 /* Tree */
-
 "SentFolderName"   = "Sendte Beskeder";
 "TrashFolderName"  = "Papirkurv";
 "InboxFolderName"  = "Indbakke";
 "DraftsFolderName" = "Kladder";
 "SieveFolderName"  = "Filtre";
 "Folders"          = "Mapper"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Flyt ...";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Tilføj til adressebog ...";
 "Compose Mail To" = "Skriv mail til";
 "Create Filter From Message..." = "Opret filter fra besked ...";
-
 /* Image Popup menu */
 "Save Image" = "Gem billede";
 "Save Attachment" = "Gem vedhæftede";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Åben i nyt vindue";
 "Copy Folder Location" = "Kopier mappens lokation";
@@ -198,12 +158,10 @@
 "Get Messages for Account" = "Hent beskeder til konto";
 "Properties..." = "Egenskaber ...";
 "Delegation..." = "Delegationen ...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Sendte beskeder";
 "Drafts" = "Kladder";
 "Deleted Messages" = "Slettede beskeder";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Åben besked i nyt vindue";
 "Reply to Sender Only" = "Svar kun afsenderen";
@@ -219,12 +177,9 @@
 "Print..." = "Udskriv ...";
 "Delete Message" = "Slet besked";
 "Delete Selected Messages" = "Slet valgte beskeder";
-
 "This Folder" = "Denne mappe";
-
 /* Label popup menu */
 "None" = "Ingen";
-
 /* Mark popup menu */
 "As Read" = "Som læst";
 "Thread As Read" = "Tråd som læst";
@@ -234,23 +189,19 @@
 "As Junk" = "Som uønsket";
 "As Not Junk" = "Som Ikke uønsket";
 "Run Junk Mail Controls" = "Kør uønsket post kontroller";
-
 /* Folder operations */
-"Name :" = "Navn:";
+"Name" = "Navn";
 "Enter the new name of your folder"
  = "Indtast det nye navn på din mappe";
 "Do you really want to move this folder into the trash ?"
  = "Er du sikker på, at du vil flytte denne mappe til papirkurven?";
 "Operation failed" = "Handlingen mislykkedes";
-
 "Quota" = "Kvote:";
 "quotasFormat" = "%{0}% used on %{1} MB";
-
 "Please select a message." = "Vælg venligst en besked.";
 "Please select a message to print." = "Vælg en besked til udskrivning.";
 "Please select only one message to print." = "Vælg kun én besked til at udskrive.";
 "The message you have selected doesn't exist anymore." = "Den besked du har valgt findes ikke længere.";
-
 "The folder with name \"%{0}\" could not be created."
 = "Mappen med navnet \"%{0}\" kunne ikke oprettes.";
 "This folder could not be renamed to \"%{0}\"."
@@ -261,28 +212,21 @@
 = "Papirkurven kunne ikke tømmes.";
 "The folder functionality could not be changed."
 = "Mappens funktionalitet kunne ikke ændres.";
-
 "You need to choose a non-virtual folder!" = "Du skal vælge en ikke-virtuel mappe!";
-
 "Moving a message into its own folder is impossible!"
 = "Det er umuligt at flytte en besked til dens egen mappe!";
 "Copying a message into its own folder is impossible!"
 = "Det er umuligt at kopiere en besked til dens egen mappe! ";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Beskederne kunne ikke flyttes til papirkurven. Vil du slette dem med det samme?";
-
 /* Message editing */
 "error_missingsubject" = "Emne mangler";
 "error_missingrecipients" = "Ingen modtagere angivet";
 "Send Anyway" = "Send alligevel";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende besked: alle modtagere er ugyldige.";
-"cannot send message (smtp) - recipients discarded:" = "Kan ikke sende besked. Følgende adresser er ugyldige:";
+"cannot send message (smtp) - recipients discarded" = "Kan ikke sende besked. Følgende adresser er ugyldige";
 "cannot send message: (smtp) error when connecting" = "Kan ikke sende besked: Fejl ved oprettelse til SMTP-server.";
-
 /* Contacts list in mail editor */
 "Email" = "Mail";
-"Name" = "Navn";

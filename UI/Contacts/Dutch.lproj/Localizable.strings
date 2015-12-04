@@ -4,7 +4,6 @@
 "Address" = "Adres";
 "Photos" = "Foto's";
 "Other" = "Overige";
-
 "Address Books" = "Adresboeken";
 "Addressbook" = "Adresboek";
 "Addresses" = "Adressen";
@@ -38,29 +37,23 @@
 "invalidemailwarn" = "Het ingevoerde e-mailadres is ongeldig.";
 "new" = "Nieuw";
 "Preferred Phone" = "Voorkeurstelefoon";
-
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopieren naar";
-"Add to:" = "Toevoegen aan:";
-
+"Add to" = "Toevoegen aan";
 /* Tooltips */
-
 "Create a new address book card" = "Nieuwe contactpersoon aanmaken";
 "Create a new list" = "Nieuwe lijst aanmaken";
 "Edit the selected card" = "Bewerk de geselecteerde contactpersoon";
 "Send a mail message" = "Stuur een e-mailbericht";
 "Delete selected card or address book" = "Verwijder geselecteerd adresboek of contactpersoon";
 "Reload all contacts" = "Herlaad alle contactpersonen";
-
 "htmlMailFormat_UNKNOWN" = "Onbekend";
 "htmlMailFormat_FALSE" = "Platte tekst";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Naam of e-mail";
 "Category" = "Category";
 "Personal Addressbook" = "Persoonlijk adresboek";
 "Search in Addressbook" = "Adresboek doorzoeken...";
-
 "New Card" = "Nieuw contactpersoon";
 "New List" = "Nieuwe lijst";
 "Edit" = "Bewerken";
@@ -71,68 +64,48 @@
 "Instant Message" = "Stuur IM bericht";
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
-
 "Please wait..." = "Even geduld alstublieft ...";
 "No possible subscription" = "Abonnement niet mogelijk";
-
 "Preferred" = "Voorkeurs-";
 "Display" = "Weergave";
 "Display Name" = "Weergavenaam";
-"Email:" = "E-mail:";
-"Additional Email:" = "Alternatieve e-mail:";
-
+"Additional Email" = "Alternatieve e-mail";
 "Phone Number" = "Telefoon";
-"Prefers to receive messages formatted as:" = "Geeft voorkeur aan berichten geformatteerd als:";
-"Screen Name:" = "Weergavenaam:";
-"Categories:" = "Categorieën:";
-
-"First:" = "Voornaam:";
-"Last:" = "Achternaam:";
+"Prefers to receive messages formatted as" = "Geeft voorkeur aan berichten geformatteerd als";
+"Categories" = "Categorieën";
+"First" = "Voornaam";
+"Last" = "Achternaam";
 "Nickname" = "Nickname";
-
 "Telephone" = "Telefoon:";
-"Work:" = "Werk:";
-"Home:" = "Privé:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mobiel:";
-"Pager:" = "Pieper:";
-
+"Work" = "Werk";
+"Mobile" = "Mobiel";
+"Pager" = "Pieper";
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categorieën";
 "New category" = "Niewe categorie";
-
 /* adresses */
 "Title" = "Titel";
-"Service:" = "Service:";
-"Company:" = "Bedrijf:";
-"Department:" = "Afdeling:";
-"Organization:" = "Organisatie:";
-"Address:" = "Adres:";
+"Service" = "Service";
+"Company" = "Bedrijf";
+"Department" = "Afdeling";
 "City" = "Plaats";
-"State_Province:" = "Provincie:";
-"ZIP_Postal Code:" = "Postcode:";
+"State_Province" = "Provincie";
+"ZIP_Postal Code" = "Postcode";
 "Country" = "Land";
-"Web Page:" = "Website:";
-
-"Work" = "Werk";
+"Web Page" = "Website";
 "Other Infos" = "Overige";
-
 "Note" = "Notitie";
-"Timezone:" = "Tijdzone:";
+"Timezone" = "Tijdzone";
 "Birthday" = "Geboortedatum";
 "Birthday (yyyy-mm-dd)" = "Geboortedatum (yyyy-mm-dd)";
-"Freebusy URL:" = "Beschikbaarheids-URL (Free/Busy):";
-
+"Freebusy URL" = "Beschikbaarheids-URL (Free/Busy)";
 "Add as..." = "Toevoegen als ...";
 "Recipient" = "Ontvanger";
 "Carbon Copy" = "Cc";
 "Blind Carbon Copy" = "Bcc";
-
 "New Addressbook..." = "Nieuw adresboek...";
 "Subscribe to an Addressbook..." = "Abonneren...";
 "Remove the selected Addressbook" = "Verwijderen";
-
 "Name of the Address Book" = "Naam van het adresboek";
 "Are you sure you want to delete the selected address book?"
 = "Weet u zeker dat u het geselecteerde adresboek wilt verwijderen?";
@@ -140,27 +113,19 @@
 = "U kunt een openbaar adresboek niet verwijderen, tevens is het afmelden hiervan niet mogelijk.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "U kunt een persoonlijk adresboek niet verwijderen, tevens is het afmelden hiervan niet mogelijk.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";
-
 "You cannot delete the card of \"%{0}\"."
 = "U kunt da kaart van \"%{0}\" niet verwijderen.";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "U kunt uzelf niet abonneren op uw eigen mappen!";
 "Unable to subscribe to that folder!"
 = "Abonneren op deze map mislukt!";
-
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
-
 "Any Authenticated User" = "Elke geauthenticeerde gebruiker";
 "Public Access" = "Publieke toegang";
-
 "This person can add cards to this addressbook."
 = "Deze persoon mag contactpersonen toevoegen aan dit adresboek.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +136,14 @@
 = "Deze persoon mag contactinformatie lezen in dit adresboek.";
 "This person can erase cards from this addressbook."
 = "Deze persoon mag contactpersonen verwijderen van dit adresboek";
-
 "The selected contact has no email address."
 = "De geselecteerde contactpersoon heeft geen e-mailadres.";
-
 "Please select a contact." = "Selecteer een contactpersoon.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "U kunt niet naar dit adresboek schrijven.";
 "Forbidden" = "U kunt niet naar dit adresboek schrijven.";
 "Invalid Contact" = "De geselecteerde contactpersoon bestaat niet meer.";
 "Unknown Destination Folder" = "Het geselecteerde doeladresboek bestaat niet meer.";
-
 /* Lists */
 "List details" = "Toon details";
 "List name" = "Lijst-naam";
@@ -204,12 +164,9 @@
 "An error occured while importing contacts." = "Tijdens het importeren is een fout opgetreden.";
 "No card was imported." = "Geen contactgegevens geïmporteerd.";
 "A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
-
 "Reload" = "Herlaad";
-
 /* Properties window */
 "Address Book Name:" = "Naam van het adresboek";
 "Links to this Address Book" = "Koppeling naar adresboek";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
-"CardDAV URL: " = "CardDAV-URL:";
-
+"CardDAV URL" = "CardDAV-URL";

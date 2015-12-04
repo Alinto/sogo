@@ -13,7 +13,6 @@
 "Print"       = "Stampa";
 "Stop"        = "Stop";
 "Write"       = "Scrivi";
-
 "Send" = "Invia";
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
@@ -21,9 +20,7 @@
 "Options" = "Opzioni";
 "Close" = "Chiudi";
 "Size" = "Dimensione";
-
 /* Tooltips */
-
 "Send this message now" = "Invia ora il messaggio";
 "Select a recipient from an Address Book" = "Seleziona almeno un destinatario dalla rubrica";
 "Include an attachment" = "Includi un allegato";
@@ -41,34 +38,24 @@
 "Attachment" = "Allegato";
 "Unread" = "Non letti";
 "Flagged" = "Contrassegnato";
-
 /* Main Frame  */
-
 "Home"                 = "Home"; 
 "Calendar"             = "Calendario";
 "Addressbook"          = "Rubrica";
 "Mail"                 = "Posta";
 "Right Administration" = "Gestione permessi";
-
 "Help" = "Aiuto";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvenuto in SOGo Mailer. Usa l'albero di sinistra per navigare tra i tuoi account di posta!";
-
 "Read messages"       = "Leggi messaggi";
 "Write a new message" = "Scrivi un nuovo messaggio";
-
-"Share: " = "Condividi: ";
-"Account: " = "Account:";
-"Shared Account: " = "Account condiviso: ";
-
+"Share" = "Condividi";
+"Account" = "Account";
+"Shared Account" = "Account condiviso";
 /* acls */
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
-
 "Any Authenticated User" = "Utenti Autenticati";
-
 "List and see this folder" = "Elenca e guarda questa cartella";
 "Read mails from this folder" = "Leggi emails da questa cartella";
 "Mark mails read and unread" = "Contrassegna emails lette/non lette";
@@ -80,14 +67,10 @@
 "Erase mails from this folder" = "Elimina emails da questa cartella";
 "Expunge this folder" = "Pulisci questa cartella";
 "Modify the acl of this folder" = "Modifica i permessi per questa cartella";
-
 "Saved Messages.zip" = "Salvato Messages.zip";
-
 "Update" = "Aggiorna";
 "Cancel" = "Annulla";
-
 /* Mail edition */
-
 "From"          = "Da";
 "Subject"       = "Oggetto";
 "To"            = "A";
@@ -95,93 +78,70 @@
 "Bcc"           = "Bcc";
 "Reply-To"	= "Rispondi a";
 "Add address"   = "Aggiungi indirizzi";
-
-"Attachments:" = "Allegati:";
+"Attachments" = "Allegati";
 "Open" = "Apri";
 "Select All" = "Seleziona tutti";
 "Attach Web Page..." = "Allega pagina Web...";
 "Attach File(s)..." = "Allega File(s)...";
-
 "to"            = "A";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
-
 "Edit Draft..." = "Modifica bozza...";
 "Load Images" = "Carica Immagini";
-
 "Return Receipt" = "Ricevuta di ritorno";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Il mittente del messaggio ha chiesto di essere avvisato della lettura di questo messaggio. Vuoi avvisare il mittente?";
 "Return Receipt (displayed) - %@"= "Ricevuta di ritorno (visualizza) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Questa è la Ricevuta di ritorno per la mail che hai inviato a %@.\n\nNota: Questa Ricevuta di ritorno ti assicura che il messaggio sta stato visualizzato sul computer del destinatario. Non c'è alcun conferma sul fatto che il destinatario abbia letto o capito il contenuto del messaggio.";
-
 "Priority" = "Priorità";
 "highest" = "Molto alta";
 "high" = "Alta";
 "normal" = "Normale";
 "low" = "Bassa";
 "lowest" = "Molto bassa";
-
 "This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete contrassegnata come non sicuro!";
-
-"Address Book:" = "Rubrica:";
-"Search For:" = "Cerca:";
-
+"Address Book" = "Rubrica";
+"Search For" = "Cerca";
 /* Popup "show" */
-
 "all"     = "tutti";
 "read"    = "letti";
 "unread"  = "non letti";
 "deleted" = "cancellati";
 "flagged" = "contrassegnati";
-
 /* MailListView */
-
 "Sender" = "Mittente";
 "Subject or Sender" = "Oggetto o Mittente";
 "To or Cc" = "A o Cc";
 "Entire Message" = "Tutto il messaggio";
-
 "Date"          = "Data";
 "View"          = "Vista";
 "All"           = "Tutti";
 "No message"    = "Nessun messaggio";
 "messages"      = "messaggi";
-
 "first"         = "Primo";
 "previous"      = "Precedente";
 "next"          = "Prossimo";
 "last"          = "Ultimo";
-
 "msgnumber_to"  = "a";
 "msgnumber_of"  = "di";
-
 "Mark Unread" = "Contrassegna come da leggere";
 "Mark Read"   = "Contrassegna come letto";
-
 "Untitled" = "Senza nome";
-
 /* Tree */
-
 "SentFolderName"   = "Posta inviata";
 "TrashFolderName"  = "Cestino";
 "InboxFolderName"  = "Posta in arrivo";
 "DraftsFolderName" = "Bozze";
 "SieveFolderName"  = "Filtri";
 "Folders"          = "Cartelle"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Sposta in &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Aggiungi alla rubrica...";
 "Compose Mail To" = "Invia email a ";
 "Create Filter From Message..." = "Crea filtro dal messaggio...";
-
 /* Image Popup menu */
 "Save Image" = "Salva immagine";
 "Save Attachment" = "Salva l'allegato";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Apri in una nuova finestra";
 "Copy Folder Location" = "Copia cartella";
@@ -198,12 +158,10 @@
 "Get Messages for Account" = "Scarica messaggi per l'account";
 "Properties..." = "Proprietà...";
 "Delegation..." = "Delega...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Messaggi inviati";
 "Drafts" = "Bozze";
 "Deleted Messages" = "Messaggi cancellati";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Apri messaggio in una nuova finestra";
 "Reply to Sender Only" = "Rispondi";
@@ -219,12 +177,9 @@
 "Print..." = "Stampa...";
 "Delete Message" = "Cancella messaggio";
 "Delete Selected Messages" = "Cancella i messaggi selezionati";
-
 "This Folder" = "Questa cartella";
-
 /* Label popup menu */
 "None" = "Nessuno";
-
 /* Mark popup menu */
 "As Read" = "Già letto";
 "Thread As Read" = "Thread già letto";
@@ -234,24 +189,19 @@
 "As Junk" = "Come indesiderati";
 "As Not Junk" = "Come non indesiderati";
 "Run Junk Mail Controls" = "Avvia controllo email indesiderate";
-
 /* Folder operations */
-"Name :" = "Nome :";
+"Name" = "Nome";
 "Enter the new name of your folder"
  = "Inserisci il nuovo nome della cartella ";
 "Do you really want to move this folder into the trash ?"
  = "Sei sicuro di voler spostare la cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
-
 "Quota" = "Spazio usato";
 "quotasFormat" = "%{0}% usato su %{1} MB";
-
 "Please select a message." = "Per favore seleziona un messaggio.";
 "Please select a message to print." = "Per favore seleziona un messaggio da stampare.";
 "Please select only one message to print." = "Per favore seleziona un solo messaggio da stampare.";
 "The message you have selected doesn't exist anymore." = "Il messaggio selezionato non esiste più.";
-
-
 "The folder with name \"%{0}\" could not be created."
 = "La cartella con nome \"%{0}\" non può essere creata.";
 "This folder could not be renamed to \"%{0}\"."
@@ -262,27 +212,20 @@
 = "Il cestino non puo essere svuotato.";
 "The folder functionality could not be changed."
 = "La funzionalita della cartella non puo essere cambiata.";
-
 "You need to choose a non-virtual folder!" = "Devi selezionare una cartella fisica, non virtuale!";
-
 "Moving a message into its own folder is impossible!"
 = "La cartella di destinazione coincide con la cartella di origine!";
 "Copying a message into its own folder is impossible!"
 = "La cartella di destinazione coincide con la cartella di origine!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Il messaggi non psonno essere spostati nel cestino. Vuoi cancellarli immediatamente?";
-
 /* Message editing */
 "error_missingsubject" = "Nessun oggetto specificato";
 "error_missingrecipients" = "Nessun destinatario specificato";
 "Send Anyway" = "Invia comunque";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
-"cannot send message (smtp) - recipients discarded:" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido:";
+"cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";
-
-"Name" = "Nome";
 "Email" = "Email";
