@@ -1,6 +1,6 @@
 /* SOGoMailForward.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,10 +82,16 @@
 @interface SOGoMailItalianForward : SOGoMailForward
 @end
 
+@interface SOGoMailMacedonianForward : SOGoMailForward
+@end
+
 @interface SOGoMailNorwegianBokmalForward : SOGoMailForward
 @end
 
 @interface SOGoMailNorwegianNynorskForward : SOGoMailForward
+@end
+
+@interface SOGoMailPortugueseForward : SOGoMailForward
 @end
 
 @interface SOGoMailSpanishSpainForward : SOGoMailForward
