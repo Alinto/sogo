@@ -15,17 +15,17 @@
 
 body.popup {
   md-dialog {
-    &[flex-sm="100"],
-    &.flex-sm-100 {
+    &[flex-xs="100"],
+    &.flex-xs-100 {
       @include fullscreen;
     }
   }
 }
 
-@media (max-width: $layout-breakpoint-sm) {
+@media (max-width: $layout-breakpoint-xs) {
   md-dialog {
-    &[flex-sm="100"],
-    &.flex-sm-100 {
+    &[flex-xs="100"],
+    &.flex-xs-100 {
       @include fullscreen;
     }
   }

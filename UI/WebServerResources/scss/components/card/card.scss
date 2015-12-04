@@ -8,6 +8,18 @@ md-card {
     transition: $swift-ease-in-out;
   }
 
+  md-card-actions:not(.layout-column) {
+    .md-button {
+      // "last-of-type" doesn't work well when we have multiple types so we overwrite md's directive
+      &.md-icon-button,
+      &.md-icon-button:last-of-type,
+      &.sg-icon-button,
+      &.sg-icon-button:last-of-type {
+        margin: 0 $baseline-grid * .5;
+      }
+    }
+  }
+
   // Collapsed/expanded states for cards in ACL editor
   &.sg-collapsed, &.sg-expanded {
     transition: $swift-ease-in-out;

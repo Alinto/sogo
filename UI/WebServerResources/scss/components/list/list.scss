@@ -21,7 +21,7 @@ $sg-color-chip-width: $subhead-font-size-base;
 md-list-item {
   .md-list-item-inner {
     flex-grow: 1; // use all column space
-    overflow: hidden;
+    //overflow: hidden;
 
     // Gain some space since we want small list items
     & > md-checkbox {
@@ -173,7 +173,7 @@ div.md-tile-left {
 
   &-counter-badge {
     border-left-width: 1px;
-    border-left-color: #999;
+    border-left-color: $colorGrey500;
     border-style: solid;
     margin: 0;
     padding: 0 rem(0.500);

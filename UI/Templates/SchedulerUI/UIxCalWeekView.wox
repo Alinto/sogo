@@ -7,8 +7,8 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
 
-  <md-toolbar hide-sm="hide-sm">
-    <div class="md-toolbar-tools">
+  <md-card>
+    <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-icon-button"
                  label:aria-label="Previous Week"
                  var:date="prevWeekQueryParameters.day"
@@ -35,13 +35,12 @@
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
          href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
-    </div>
-  </md-toolbar>
-
+    </md-card-actions>
   <var:component
       className="UIxCalDayTable"
       startDate="startDate"
       const:CSSClass="weekOverview"
       const:numberOfDays="7"
       const:currentView="weekview"/>
+  </md-card>
 </container>

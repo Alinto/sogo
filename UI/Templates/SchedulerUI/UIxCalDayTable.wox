@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-  <md-toolbar class="daysView md-hue-1" var:sg-view="currentView">
+  <md-toolbar class="daysView" var:sg-view="currentView">
 
     <!-- Display today abreviation and date -->
     <div class="days dayLabels">

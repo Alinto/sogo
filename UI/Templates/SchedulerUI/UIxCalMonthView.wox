@@ -7,22 +7,13 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
 
-  <md-toolbar class="md-whiteframe-z1" hide-sm="hide-sm">
-    <div class="md-toolbar-tools">
+  <md-card>
+    <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-icon-button"
                  label:aria-label="Previous Month"
                  var:date="prevMonthQueryParameters.day"
                  ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
-      <md-input-container>
-        <md-select ng-model="calendar.nav.month">
-          <md-option><var:string value="monthNameOfThisMonth" /></md-option>
-        </md-select>
-      </md-input-container>
-      <md-input-container>
-        <md-select ng-model="calendar.nav.year">
-          <md-option><var:string value="selectedDate.yearOfCommonEra" /></md-option>
-        </md-select>
-      </md-input-container>
+          <var:string value="monthNameOfThisMonth" /> <var:string value="selectedDate.yearOfCommonEra" />
       <md-button class="md-icon-button"
                  label:aria-label="Next Month"
                  var:date="nextMonthQueryParameters.day"
@@ -44,60 +35,60 @@
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
          href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
-    </div>
-  </md-toolbar>
+    </md-card-actions>
 
-  <md-toolbar md-scroll-shrink="true" class="monthView md-hue-1">
-    <div layout="row" layout-align="center center"
-         class="md-flex md-default-theme md-fg md-hue-1">
-      <var:foreach list="headerDaysToDisplay" item="currentTableDay">
-        <div class="dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
-      </var:foreach>
-    </div>
-  </md-toolbar>
-
-  <md-content class="md-flex" sg-calendar-scroll-view="monthly">
-    <div class="calendarView monthView">
-      <md-grid-list
-          md-cols="7"
-          md-row-height="1:1"
-          md-gutter="0">
-        <var:foreach list="weeksToDisplay" item="currentWeek">
-          <var:foreach list="currentWeek" item="currentTableDay">
-            <md-grid-tile
-                md-rowspan="1"
-                md-colspan="1"
-                var:class="dayCellClasses"
-                var:id="currentDayId"
-                >
-              <sg-calendar-day layout="column" layout-fill="true"
-                               var:sg-day="currentTableDay.shortDateString"
-                               var:sg-day-number="currentDayNumber"
-                               var:sg-day-string="currentTableDay.iso8601DateString">
-                <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2">
-                <var:if condition="currentTableDay.isToday">
-                  <span class="md-default-theme md-bg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
-                </var:if>
-                <var:if condition="currentTableDay.isToday" const:negate="YES">
-                  <span class=""><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
-                </var:if>
-                </div>
-                <md-content
-                    sg-draggable-calendar-block="sg-draggable-calendar-block"
-                    class="clickableDayCell">
-                  <sg-calendar-month-day
-                      sg-blocks="calendar.views[0].blocks"
-                      sg-click="list.openEvent(event, component)"
-                      var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
-                </md-content>
-                <sg-calendar-month-event
-                    sg-calendar-ghost="sg-calendar-ghost"
-                    sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-month-event>
-              </sg-calendar-day>
-            </md-grid-tile>
-          </var:foreach>
+    <md-toolbar md-scroll-shrink="true" class="monthView md-hue-1">
+      <div layout="row" layout-align="center center"
+           class="md-flex md-default-theme md-fg md-hue-1">
+        <var:foreach list="headerDaysToDisplay" item="currentTableDay">
+          <div class="dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
         </var:foreach>
-      </md-grid-list>
-    </div>
-  </md-content>
+      </div>
+    </md-toolbar>
+
+    <md-content class="md-flex" sg-calendar-scroll-view="monthly">
+      <div class="calendarView monthView">
+        <md-grid-list
+            md-cols="7"
+            md-row-height="1:1"
+            md-gutter="0">
+          <var:foreach list="weeksToDisplay" item="currentWeek">
+            <var:foreach list="currentWeek" item="currentTableDay">
+              <md-grid-tile
+                  md-rowspan="1"
+                  md-colspan="1"
+                  var:class="dayCellClasses"
+                  var:id="currentDayId"
+                  >
+                <sg-calendar-day layout="column" layout-fill="true"
+                                 var:sg-day="currentTableDay.shortDateString"
+                                 var:sg-day-number="currentDayNumber"
+                                 var:sg-day-string="currentTableDay.iso8601DateString">
+                  <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2">
+                    <var:if condition="currentTableDay.isToday">
+                      <span class="md-default-theme md-bg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
+                    </var:if>
+                    <var:if condition="currentTableDay.isToday" const:negate="YES">
+                      <span class=""><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
+                    </var:if>
+                  </div>
+                  <md-content
+                      sg-draggable-calendar-block="sg-draggable-calendar-block"
+                      class="clickableDayCell">
+                    <sg-calendar-month-day
+                        sg-blocks="calendar.views[0].blocks"
+                        sg-click="list.openEvent(event, component)"
+                        var:sg-day="currentTableDay.shortDateString"><!-- day's events --></sg-calendar-month-day>
+                  </md-content>
+                  <sg-calendar-month-event
+                      sg-calendar-ghost="sg-calendar-ghost"
+                      sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-month-event>
+                </sg-calendar-day>
+              </md-grid-tile>
+            </var:foreach>
+          </var:foreach>
+        </md-grid-list>
+      </div>
+    </md-content>
+  </md-card>
 </container>

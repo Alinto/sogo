@@ -137,6 +137,15 @@ $block_radius: 3px;
     }
   }
 
+  md-card {
+    // All views wrap a md-card
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
   md-content[sg-calendar-scroll-view] {
     overflow-y: scroll;
     overflow-x: hidden;

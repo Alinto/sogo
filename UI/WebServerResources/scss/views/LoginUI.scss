@@ -2,6 +2,7 @@
 
 [ui-view="login"] {
   md-content {
+    padding: 0;
     @include to(xs) {
       [id=logo] {
         text-align: center;

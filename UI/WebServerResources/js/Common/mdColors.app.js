@@ -40,7 +40,7 @@
         fgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-fg']) + ' { color:{{value}};}'),
         bgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-bg']) + ' { background-color:{{value}};}'),
         fgColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-fg']) + ' { color:{{value}};}'),
-        bgColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bg']) + ' { background-color:{{value}};}'),
+        bgColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bg']) + ' { background-color:{{value}}; color:{{contrast}}; }'),
         bdrColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bdr']) + ' { border-color:{{value}};}'),
         fgHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-fg']) + ' { color:{{value}};}'),
         bgHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-bg']) + ' { background-color:{{value}};}'),
@@ -79,24 +79,22 @@
     function addRule(fgInterpolate, bgInterpolate, themeName, paletteName, colorArray, hueName){
       // Set up interpolation functions to build css rules.
       if (!colorArray) return;
-      var colorValue = 'rgb(' + colorArray.value[0] + ',' + colorArray.value[1] + ',' + colorArray.value[2] + ')';
+      var colorValue = 'rgb(' + colorArray.value[0] + ',' + colorArray.value[1] + ',' + colorArray.value[2] + ')',
+          colorContrast = 'rgb(' + colorArray.contrast[0] + ',' + colorArray.contrast[1] + ',' + colorArray.contrast[2] + ')',
+          context = {
+            theme: themeName,
+            palette: paletteName,
+            value: colorValue,
+            contrast: colorContrast,
+            hue: hueName
+          };
 
       // Insert foreground color rule
-      customSheet.insertRule(fgInterpolate({
-        theme: themeName,
-        palette: paletteName,
-        value: colorValue,
-        hue: hueName
-      }), index);
+      customSheet.insertRule(fgInterpolate(context), index);
       index += 1;
 
       // Insert background color rule
-      customSheet.insertRule(bgInterpolate({
-        theme: themeName,
-        palette: paletteName,
-        value: colorValue,
-        hue: hueName
-      }), index);
+      customSheet.insertRule(bgInterpolate(context), index);
       index += 1;
     }
 

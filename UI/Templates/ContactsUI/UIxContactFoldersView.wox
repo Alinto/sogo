@@ -24,7 +24,6 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <!-- <div style="position: relative; display: flex;"> -->
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's addressbooks -->
         <section>
@@ -113,8 +112,8 @@
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
                          label:aria-label="Subscribe to an Addressbook..."
-                       sg-subscribe="contact"
-                       sg-subscribe-on-select="app.subscribeToFolder(folderData)">
+                         sg-subscribe="contact"
+                         sg-subscribe-on-select="app.subscribeToFolder(folderData)">
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
@@ -182,7 +181,6 @@
           </md-list>
         </section>
       </md-content>
-    <!-- </div> -->
     </md-sidenav>
 
     <section layout="column" class="sg-app-content layout-fill" ui-view="addressbook"><!-- contacts list --></section>
@@ -198,7 +196,7 @@
       <div class="view-list" layout="column">
 
         <!-- single-selection toolbar -->
-        <md-toolbar class="md-whiteframe-z1"
+        <md-toolbar class="md-accent md-hue-1"
                     ng-show="addressbook.selectedFolder.$selectedCount() == 0">
           <!-- sort mode (default) -->
           <div class="md-toolbar-tools" ng-hide="addressbook.mode.search">
@@ -352,20 +350,16 @@
           </div>
         </md-toolbar>
 
+        <md-divider><!-- divider --></md-divider>
+
         <md-content id="contactsList" layout="column" class="md-flex">
           <md-subheader ng-show="addressbook.service.$query.value">
-            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
-              <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
-            </md-button>
             <span ng-switch="addressbook.selectedFolder.cards.length">
               <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
               <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="matching contacts"/></span>
             </span>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
-            <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
-              <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
-            </md-button>
             <span ng-switch="addressbook.selectedFolder.isRemote">
               <span ng-switch-when="1">
                 <var:string label:value="Start a search to browse this address book"/>
@@ -434,7 +428,6 @@
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            ui-view="card">
-        <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
         <md-content class="hide-xs md-flex layout-fill md-hue-1"
                     layout="column" layout-align="center center">
           <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No contact selected"/></div>
@@ -477,7 +470,6 @@
         <input id="file-input" type="file" class="ng-hide"
                nv-file-select="nv-file-select"
                uploader="$CardsImportDialogController.uploader"/>
-        <!-- <md-button ng-disabled="uploader.queue.length == 0" ng-click="upload()"><var:string label:value="Upload"/></md-button> -->
       </md-dialog-actions>
     </md-dialog>
   </script>

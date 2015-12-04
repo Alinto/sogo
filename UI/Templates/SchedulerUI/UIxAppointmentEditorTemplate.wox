@@ -49,7 +49,7 @@
           </md-autocomplete>
         </md-chips>
         <!-- classification -->
-        <md-radio-group layout="row" layout-align="space-around center"
+        <md-radio-group class="md-padding" layout="row" layout-align="space-around center"
                         ng-model="editor.component.classification">
           <md-radio-button value="public">
             <var:string label:value="label_Public"/>

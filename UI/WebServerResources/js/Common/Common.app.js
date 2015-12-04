@@ -131,6 +131,7 @@
    */
   configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider', '$httpProvider'];
   function configure($logProvider, $compileProvider, $mdThemingProvider, $httpProvider) {
+    // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
       '100': 'cbe5c8',
@@ -142,14 +143,16 @@
       '700': '388e3c',
       '800': '367d2e',
       '900': '225e1b',
-      'A100': 'b9f6ca',
+      // 'A100': 'b9f6ca',
+      'A100': 'ffffff', // assigned to md-hue-1
       'A200': '69f0ae',
       'A400': '00e676',
       'A700': '00c853',
       'contrastDefaultColor': 'dark',
-      'contrastDarkColors': ['50', '100', '200'],
+      // 'contrastDarkColors': ['50', '100', '200', 'A100'],
       'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900']
     });
+    // Primary palette
     $mdThemingProvider.definePalette('sogo-blue', {
       '50': 'f0faf9',
       '100': 'e1f5f3',
@@ -167,8 +170,9 @@
       'A700': '00b0c0',
       'contrastDefaultColor': 'light',
       'contrastDarkColors': ['50', '100', '200'],
-      'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
+      // 'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
     });
+    // Background palette
     $mdThemingProvider.definePalette('sogo-paper', {
       '50': 'fcf7f8',
       '100': 'f7f1dc',
@@ -191,14 +195,15 @@
     // Default theme definition
     $mdThemingProvider.theme('default')
       .primaryPalette('sogo-blue', {
-        'default': '300',
-        'hue-1': '100',
-        'hue-2': '400',
+        'default': '900',
+        'hue-1': '400',
+        'hue-2': '800',
         'hue-3': 'A700'
       })
       .accentPalette('sogo-green', {
         'default': '500',
-        'hue-1': '200',
+        // 'hue-1': '200',
+        'hue-1': 'A100',
         'hue-2': '300',
         'hue-3': 'A700'
       })

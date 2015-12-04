@@ -15,7 +15,7 @@
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
-    $scope.leftIsClose = false;
+    $scope.leftIsClose = $mdMedia(sgConstant.xs);
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;

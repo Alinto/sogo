@@ -4,13 +4,21 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-toolbar class="md-tall sg-padded md-hue-2">
-    <div layout="column" layout-align="center start">
-      <sg-avatar-image class="md-tile-left"
-                       sg-email="activeUser.email"
-                       size="64"><!-- avatar --></sg-avatar-image>
-      <p class="sg-md-title">{{activeUser.identification}}</p>
-      <p class="md-caption">{{activeUser.email}}</p>
+  <md-toolbar class="sg-padded md-hue-2 md-tall">
+    <sg-avatar-image class="md-tile-left"
+                     sg-email="activeUser.email"
+                     size="40"><!-- avatar --></sg-avatar-image>
+    <div layout="row" layout-align="space-between center">
+      <div style="overflow: hidden">
+        <p class="sg-md-title sg-no-wrap">{{activeUser.identification}}</p>
+        <p class="md-caption sg-no-wrap">{{activeUser.email}}</p>
+      </div>
+      <md-button class="md-icon-button"
+                 ng-hide="baseURL.endsWith('/Preferences')"
+                 ng-href="{{activeUser.path.preferences}}">
+        <md-icon>settings</md-icon>
+        <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
+      </md-button>
     </div>
   </md-toolbar>
 </container>

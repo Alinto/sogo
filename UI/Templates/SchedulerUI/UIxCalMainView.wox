@@ -360,7 +360,7 @@
       <div layout="row" class="md-flex">
       <div class="view-list" layout="column">
 
-        <md-toolbar class="md-whiteframe-z1"
+        <md-toolbar class="md-accent md-hue-1"
                     ng-show="list.component.$selectedCount() == 0">
           <!-- sort/filter mode (default) -->
           <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
@@ -576,6 +576,8 @@
           </div>
         </md-toolbar>
 
+        <md-divider><!-- divider --></md-divider>
+
         <md-content layout="column" class="view-list">
           <md-tabs md-dynamic-height="true"
                    md-selected="list.selectedList">
@@ -583,9 +585,6 @@
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
               <md-subheader>
-                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
-                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
-                </md-button>
                 <span>{{list.component.$queryEvents.filterpopup | loc}}</span>
               </md-subheader>
               <md-list class="sg-section-list">
@@ -626,9 +625,6 @@
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
               <md-subheader>
-                <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
-                  <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
-                </md-button>
                 <span>{{list.component.$queryTasks.filterpopup | loc}}</span>
               </md-subheader>
               <md-list class="sg-section-list">
@@ -680,7 +676,7 @@
           </md-button>
         </md-content>
         </div>
-        <div id="detailView" class="view-detail" hide-xs="hide-xs" layout="column" ui-view="calendarView">
+        <div id="detailView" class="view-detail hide-xs" layout="column" ui-view="calendarView">
           <!-- calendar view -->
         </div>
       </div>
@@ -693,7 +689,7 @@
 
   <!-- modal for calendar import -->
   <script type="text/ng-template" id="UIxCalendarImportDialog">
-    <md-dialog flex="40" flex-sm="100" label:aria-label="Import Calendar">
+    <md-dialog flex="40" flex-xs="100" label:aria-label="Import Calendar">
       <md-toolbar>
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>

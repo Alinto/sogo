@@ -35,7 +35,8 @@
     vm.cancel = cancel;
     vm.confirmDelete = confirmDelete;
     vm.exportCard = exportCard;
-    vm.viewRawSource = viewRawSource;
+    vm.toggleRawSource = toggleRawSource;
+    vm.showRawSource = false;
 
     function addOrgUnit() {
       var i = vm.card.$addOrgUnit('');
@@ -137,38 +138,16 @@
       window.location.href = ApplicationBaseURL + '/' + vm.currentFolder.id + '/export?uid=' + vm.card.id;
     }
 
-    function viewRawSource($event) {
-      Card.$$resource.post(vm.currentFolder.id + '/' + vm.card.id, "raw").then(function(data) {
-        $mdDialog.show({
-          parent: angular.element(document.body),
-          targetEvent: $event,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          template: [
-            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Card Source') + '">',
-            '  <md-dialog-content class="md-dialog-content">',
-            '    <pre>',
-            data,
-            '    </pre>',
-            '  </md-dialog-content>',
-            '  <md-dialog-actions>',
-            '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
-            '  </md-dialog-actions>',
-            '</md-dialog>'
-          ].join(''),
-          controller: CardRawSourceDialogController
+    function toggleRawSource($event) {
+      if (!vm.showRawSource && !vm.rawSource) {
+        Card.$$resource.post(vm.currentFolder.id + '/' + vm.card.id, "raw").then(function(data) {
+          vm.rawSource = data;
+          vm.showRawSource = true;
         });
-
-        /**
-         * @ngInject
-         */
-        CardRawSourceDialogController.$inject = ['scope', '$mdDialog'];
-        function CardRawSourceDialogController(scope, $mdDialog) {
-          scope.close = function() {
-            $mdDialog.hide();
-          };
-        }
-      });
+      }
+      else {
+        vm.showRawSource = !vm.showRawSource;
+      }
     }
   }
 

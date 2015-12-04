@@ -251,7 +251,6 @@
           </md-subheader>
           <md-list>
             <md-list-item ng-repeat="folder in account.$flattenMailboxes() track by folder.path"
-                          ng-click="app.selectFolder(account, folder)"
                           ng-dblclick="app.editFolder(folder)"
                           ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
@@ -264,6 +263,7 @@
                              ng-change="account.$flattenMailboxes({ reload: true, saveState: true })"><!-- expanded --></md-checkbox>
               </div>
               <p class="sg-item-name"
+                 ng-click="app.selectFolder(account, folder)"
                  ng-show="app.editMode != folder.path">
                 {{app.metadataForFolder(folder).name}}
                 <span class="sg-counter-badge" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
@@ -278,14 +278,13 @@
                        sg-enter="app.saveFolder(folder)"
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
-              <md-menu class="md-secondary"
-                       ng-show="app.service.selectedFolder.path == folder.path">
+              <md-menu ng-show="app.service.selectedFolder.path == folder.path">
                 <md-icon label:aria-label="Options"
-                         ng-click="$mdOpenMenu()"
+                         ng-click="$mdOpenMenu($event)"
                          md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="3">
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.markFolderRead(folder)">
+                    <md-button type="button" md-menu-align-target="md-menu-align-target" ng-click="app.markFolderRead(folder)">
                       <var:string label:value="Mark Folder Read"/>
                     </md-button>
                   </md-menu-item>
@@ -368,25 +367,7 @@
     <md-toolbar layout="column" class="md-tall toolbar-main"
                 ng-show="app.showingAdvancedSearch">
       <div class="md-toolbar-tools">
-        <md-chips class="md-flex"
-                  ng-model="app.search.params"
-                  md-on-append="app.newSearchParam($chip)">
-          <input sg-focus-on="advancedSearch" type="text"
-                 ng-disabled="app.currentSearchParam.length == 0"
-                 sg-placeholder="app.search.options[app.currentSearchParam]"/>
-          <md-chip-template>
-            <span class="md-caption" ng-show="$chip.negative == 0">(match</span>
-            <span class="md-caption" ng-show="$chip.negative == 1">(does not match</span>
-            <span class="md-caption">{{$chip.searchBy}})</span>
-            <span>{{$chip.searchInput}}</span>
-          </md-chip-template>
-        </md-chips>
-        <md-button type="button" class="sg-icon-button" ng-click="app.hideAdvancedSearch()">
-          <md-icon>close</md-icon>
-        </md-button>
-      </div>
-      <div class="md-toolbar-tools">
-        <div layout="column">
+        <div layout="column" class="md-flex">
           <div class="pseudo-input-container--compact">
             <label class="pseudo-input-label"><var:string label:value="Add a Criteria"/></label>
           </div>
@@ -408,6 +389,24 @@
             </span>
           </div>
         </div>
+        <md-button type="button" class="sg-icon-button" ng-click="app.hideAdvancedSearch()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+      <div class="md-toolbar-tools">
+        <md-chips class="md-flex"
+                  ng-model="app.search.params"
+                  md-transform-chip="app.newSearchParam($chip)">
+          <input sg-focus-on="advancedSearch" type="text"
+                 ng-disabled="app.currentSearchParam.length == 0"
+                 sg-placeholder="app.search.options[app.currentSearchParam]"/>
+          <md-chip-template>
+            <span class="md-caption" ng-show="$chip.negative == 0">(match</span>
+            <span class="md-caption" ng-show="$chip.negative == 1">(does not match</span>
+            <span class="md-caption">{{$chip.searchBy}})</span>
+            <span>{{$chip.searchInput}}</span>
+          </md-chip-template>
+        </md-chips>
       </div>
     </md-toolbar>
 

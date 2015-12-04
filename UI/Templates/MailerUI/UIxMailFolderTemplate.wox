@@ -60,7 +60,7 @@
       </div>
     </md-toolbar>
     <!-- single-selection toolbars -->
-    <md-toolbar class="md-whiteframe-z1"
+    <md-toolbar class="md-accent md-hue-1"
                 ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
@@ -200,12 +200,10 @@
       </div>
     </md-toolbar>
 
+    <md-divider><!-- divider --></md-divider>
+
     <md-content id="messagesList" layout="column" class="md-flex">
       <md-subheader>
-        <!-- toggle sidenav -->
-        <md-button class="md-icon-button hide show-gt-sm" ng-click="toggleLeft()">
-          <md-icon ng-class="{'md-rotate-180': leftIsClose }">keyboard_arrow_left</md-icon>
-        </md-button>
         <!-- message count -->
         <span ng-switch="mailbox.service.selectedFolder.getLength()">
           <span ng-switch-when="0"><var:string label:value="No message"/></span>
@@ -272,8 +270,7 @@
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
-    <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-    <md-content class="hide-sm md-flex layout-fill md-hue-1"
+    <md-content class="hide-xs md-flex layout-fill md-hue-1"
                 layout="column" layout-align="center center">
       <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
     </md-content>

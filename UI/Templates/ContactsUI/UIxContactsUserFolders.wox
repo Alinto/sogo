@@ -25,7 +25,8 @@
                ng-change="subscribe.onChange()"/>
       </md-input-container>
       <md-card ng-repeat="user in subscribe.users"
-               ng-class="{ 'sg-collapsed': user.uid != subscribe.selectedUser.uid, 'sg-expanded': user.uid == subscribe.selectedUser.uid }">
+               ng-class="{ 'sg-collapsed': user.uid != subscribe.selectedUser.uid,
+                           'sg-expanded': user.uid == subscribe.selectedUser.uid }">
         <md-button ng-click="subscribe.selectUser($index)">
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.isGroup">

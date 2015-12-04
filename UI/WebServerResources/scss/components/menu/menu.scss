@@ -1,2 +1,10 @@
 /// menu.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
+
+md-card {
+  md-card-actions:not(.layout-column) {
+    .md-menu {
+      padding: 0; // don't add padding so all icon buttons are of the same height
+    }
+  }
+}

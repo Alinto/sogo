@@ -62,8 +62,8 @@
           </md-radio-button>
         </md-radio-group>
         <!-- priority -->
-        <div layout="row" layout-align="center center">
-          <div flex="20"><var:string label:value="Priority"/></div>
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Priority"/></label>
           <md-slider class="md-flex"
                      md-discrete="true"
                      ng-model="editor.component.priority"

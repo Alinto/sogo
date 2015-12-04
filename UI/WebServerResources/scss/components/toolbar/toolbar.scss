@@ -50,6 +50,12 @@ md-toolbar,
       transform: translateX(-$touch-zone-width);
     }
   }
+  &.md-accent.md-hue-1 {
+    md-icon {
+      // Hack until this bug is fixed: https://github.com/angular/material/issues/5989
+      color: rgba(0,0,0,0.54);
+    }
+  }
 }
 
 .md-toolbar-tools.md-toolbar-tools-top {

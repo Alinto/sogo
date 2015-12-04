@@ -22,7 +22,9 @@
   </script>
 
   <script type="text/ng-template" id="preferences.html">
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-closed': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <md-list>
@@ -62,9 +64,7 @@
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <div class="md-toolbar-tools md-toolbar-tools-top" layout="row" layout-align="space-between start">
-          <var:component className="UIxTopnavToolbarTemplate" />
-        </div>
+        <var:component className="UIxTopnavToolbarTemplate" />
         <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
                    ng-click="app.save()">
           <md-icon>save</md-icon>

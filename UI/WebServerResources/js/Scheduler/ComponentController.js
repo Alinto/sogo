@@ -19,7 +19,7 @@
     vm.replyAllOccurrences = replyAllOccurrences;
     vm.deleteOccurrence = deleteOccurrence;
     vm.deleteAllOccurrences = deleteAllOccurrences;
-    vm.viewRawSource = viewRawSource;
+    vm.toggleRawSource = toggleRawSource;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
@@ -106,15 +106,16 @@
       });
     }
 
-    function viewRawSource($event) {
+    function toggleRawSource($event) {
       Calendar.$$resource.post(vm.component.pid + '/' + vm.component.id, "raw").then(function(data) {
+        $mdDialog.hide();
         $mdDialog.show({
           parent: angular.element(document.body),
           targetEvent: $event,
           clickOutsideToClose: true,
           escapeToClose: true,
           template: [
-            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Raw Source') + '">',
+            '<md-dialog flex="80" flex-xs="100" aria-label="' + l('View Raw Source') + '">',
             '  <md-dialog-content class="md-dialog-content">',
             '    <pre>',
             data,

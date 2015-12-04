@@ -20,6 +20,15 @@
     width: 100%;
 }
 
+// Remove left margin when in first menu button of dialogs
+.md-toolbar-tools {
+  md-menu:first-child {
+    .md-icon-button:first-child {
+      margin-left: 0
+    }
+  }
+}
+
 ///
 /// sg-icon-button
 /// according to Material design specs:
@@ -50,13 +59,12 @@ $button-fab-height: 56px;
 a.md-button.sg-icon-button,
 .md-button.sg-icon-button,
 md-list md-list-item button.md-button.sg-icon-button {
-  z-index: 1;
-  //line-height: inherit;
-  border-radius: 50%;
-  min-width: $iconButton-size;
+  @extend .md-button.md-icon-button;
   transition: $iconButton-transition;
-  .md-ripple-container {
-    border-radius: 50%;
+  &:hover:not([disabled]),
+  &:active {
+    background-color: transparent;
+    transform: scale($iconButton-hover-scale);
   }
 }
 

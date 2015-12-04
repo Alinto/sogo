@@ -16,7 +16,7 @@
     vm.message = stateMessage;
     vm.service = Message;
     vm.tags = { searchText: '', selected: '' };
-    vm.showFlags = stateMessage.flags.length > 0;
+    vm.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
     vm.doDelete = doDelete;
     vm.close = close;
     vm.reply = reply;
@@ -27,7 +27,8 @@
     vm.closePopup = closePopup;
     vm.newMessage = newMessage;
     vm.saveMessage = saveMessage;
-    vm.viewRawSource = viewRawSource;
+    vm.toggleRawSource = toggleRawSource;
+    vm.showRawSource = false;
 
     // Watch the message model "flags" attribute to remove on-the-fly a tag from the IMAP message
     // when removed from the message viewer.
@@ -142,38 +143,16 @@
       window.location.href = ApplicationBaseURL + '/' + vm.mailbox.id + '/saveMessages?uid=' + vm.message.uid;
     }
 
-    function viewRawSource($event) {
-      Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
-        $mdDialog.show({
-          parent: angular.element(document.body),
-          targetEvent: $event,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          template: [
-            '<md-dialog flex="80" flex-sm="100" aria-label="' + l('View Message Source') + '">',
-            '  <md-dialog-content class="md-dialog-content">',
-            '    <pre>',
-            data,
-            '    </pre>',
-            '  </md-dialog-content>',
-            '  <md-dialog-actions>',
-            '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
-            '  </md-dialog-actions>',
-            '</md-dialog>'
-          ].join(''),
-          controller: MessageRawSourceDialogController
+    function toggleRawSource($event) {
+      if (!vm.showRawSource && !vm.rawSource) {
+        Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
+          vm.rawSource = data;
+          vm.showRawSource = true;
         });
-
-        /**
-         * @ngInject
-         */
-        MessageRawSourceDialogController.$inject = ['scope', '$mdDialog'];
-        function MessageRawSourceDialogController(scope, $mdDialog) {
-          scope.close = function() {
-            $mdDialog.hide();
-          };
-        }
-      });
+      }
+      else {
+        vm.showRawSource = !vm.showRawSource;
+      }
     }
   }
   

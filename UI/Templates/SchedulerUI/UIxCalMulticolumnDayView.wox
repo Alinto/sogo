@@ -6,9 +6,9 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-    
-  <md-toolbar hide-sm="hide-sm">
-    <div class="md-toolbar-tools">
+
+  <md-card>
+    <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-icon-button"
                  label:aria-label="Previous Day"
                  var:date="prevDayQueryParameters.day"
@@ -35,12 +35,12 @@
          label:aria-label="Multicolumn Day View"
          ng-disabled="true"
          href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
-    </div>
-  </md-toolbar>
+    </md-card-actions>
 
-  <var:component
-      className="UIxCalDayTable"
-      startDate="startDate"
-      const:numberOfDays="1"
-      const:currentView="multicolumndayview"/>
+    <var:component
+        className="UIxCalDayTable"
+        startDate="startDate"
+        const:numberOfDays="1"
+        const:currentView="multicolumndayview"/>
+  </md-card>
 </container>
