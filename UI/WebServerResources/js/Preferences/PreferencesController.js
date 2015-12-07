@@ -49,6 +49,12 @@
       }
     });
 
+    // Set alternate avatar in User service
+    statePreferences.ready().then(function() {
+      if (statePreferences.defaults.SOGoAlternateAvatar)
+        User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
+    });
+
     function go(module) {
       $state.go('preferences.' + module);
     }

@@ -52,11 +52,15 @@
 
     this.settingsPromise = Preferences.$$resource.fetch("jsonSettings").then(function(data) {
         // We convert our PreventInvitationsWhitelist hash into a array of user
-        if (data.Calendar && data.Calendar.PreventInvitationsWhitelist)
+      if (data.Calendar) {
+        if (data.Calendar.PreventInvitationsWhitelist)
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
             var match = /^(.+)\s<(\S+)>$/.exec(value);
             return new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
           });
+        else
+          data.Calendar.PreventInvitationsWhitelist = [];
+      }
 
       angular.extend(_this.settings, data);
 

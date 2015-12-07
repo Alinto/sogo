@@ -391,34 +391,36 @@
         <md-tab id="calendarInvitationsTab"
                 aria-controls="calendarInvitationsTab-content"
                 label:label="Invitations">
-          <div layout="column" layout-align="space-around start"
-               layout-padding="layout-padding"
-               aria-labelledby="calendarInvitationsTab"
-               id="calendarInvitationsTab-content">
+          <md-content layout="row" layout-align="space-around start"
+                      class="md-padding"
+                      aria-labelledby="calendarInvitationsTab"
+                      id="calendarInvitationsTab-content">
 
-            <md-checkbox
-                ng-model="app.preferences.settings.Calendar.PreventInvitations"
-                ng-true-value="1"
-                ng-false-value="0">
-              <var:string label:value="Prevent from being invited to appointments"/>
-            </md-checkbox>
-
-            <div ng-show="app.preferences.settings.Calendar.PreventInvitations == 1">
-              <label>
-                <var:string label:value="White list for appointment invitations"/>
-              </label>
-              <md-contact-chips
-                  ng-model="app.preferences.settings.Calendar.PreventInvitationsWhitelist"
-                  md-contacts="app.userFilter($query, app.preferences.settings.Calendar.PreventInvitationsWhitelist)"
-                  md-contact-name="cn"
-                  md-contact-image="$$image"
-                  md-contact-email="c_email"
-                  md-require-match="md-require-match"
-                  filter-selected="false"
-                  label:placeholder="Add"><!-- users --></md-contact-chips>
+            <div layout="column" flex="100">
+              <md-checkbox
+                  ng-model="app.preferences.settings.Calendar.PreventInvitations"
+                  ng-true-value="1"
+                  ng-false-value="0">
+                <var:string label:value="Prevent from being invited to appointments"/>
+              </md-checkbox>
+              <div flex-offset="5"
+                   ng-show="app.preferences.settings.Calendar.PreventInvitations == 1">
+                <label>
+                  <var:string label:value="White list for appointment invitations"/>
+                </label>
+                <md-contact-chips
+                    flex="100"
+                    ng-model="app.preferences.settings.Calendar.PreventInvitationsWhitelist"
+                    md-contacts="app.userFilter($query, app.preferences.settings.Calendar.PreventInvitationsWhitelist)"
+                    md-contact-name="cn"
+                    md-contact-image="$$image"
+                    md-contact-email="c_email"
+                    md-require-match="md-require-match"
+                    filter-selected="false"
+                    label:placeholder="Add"><!-- users --></md-contact-chips>
+              </div>
             </div>
-
-          </div>
+          </md-content>
         </md-tab>
 
       </md-tabs>
