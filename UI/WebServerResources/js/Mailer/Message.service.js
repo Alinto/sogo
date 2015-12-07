@@ -16,7 +16,6 @@
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
-    this.$showDetailedRecipients = false;
     this.editable = {to: [], cc: [], bcc: []};
     this.selected = false;
 
@@ -246,15 +245,6 @@
    */
   Message.prototype.loadUnsafeContent = function() {
     this.$loadUnsafeContent = true;
-  };
-
-  /**
-   * @function showDetailedRecipients
-   * @memberof Message.prototype
-   * @desc Mark the message to show all to/cc recipients.
-   */
-  Message.prototype.showDetailedRecipients = function() {
-    this.$showDetailedRecipients = true;
   };
 
   /**

@@ -17,6 +17,8 @@
     vm.service = Message;
     vm.tags = { searchText: '', selected: '' };
     vm.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
+    vm.$showDetailedRecipients = false;
+    vm.showDetailedRecipients = showDetailedRecipients;
     vm.doDelete = doDelete;
     vm.close = close;
     vm.reply = reply;
@@ -38,6 +40,12 @@
         vm.message.removeTag(tag);
       });
     });
+
+    function showDetailedRecipients($event) {
+      vm.$showDetailedRecipients = true;
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
 
     function doDelete() {
       stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
@@ -137,6 +145,8 @@
     function newMessage($event, recipient) {
       var message = vm.account.$newMessage();
       showMailEditor($event, message, [recipient]);
+      $event.stopPropagation();
+      $event.preventDefault();
     }
 
     function saveMessage() {

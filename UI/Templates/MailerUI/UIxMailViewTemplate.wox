@@ -111,7 +111,7 @@
                   </sg-avatar-image>
                   <div class="md-list-item-text">
                     <span>{{ viewer.message.from[0].name }}</span><br/>
-                    <a class="md-caption" href="#"
+                    <a href="#" class="md-caption"
                        ng-bind="viewer.message.from[0].email"
                        ng-click="viewer.newMessage($event, viewer.message.from[0])"><!-- from --></a>
                   </div>
@@ -122,17 +122,17 @@
                   <label class="pseudo-input-label">
                     <var:string label:value="To"/>
                   </label>
-                  <div class="pseudo-input-field" ng-hide="viewer.message.$showDetailedRecipients">
-                    <a href="#" ng-click="viewer.message.showDetailedRecipients()">{{viewer.message.$shortRecipients()}}</a>
+                  <div class="pseudo-input-field" ng-hide="viewer.$showDetailedRecipients">
+                    <a href="#" ng-click="viewer.showDetailedRecipients($event)">{{viewer.message.$shortRecipients()}}</a>
                   </div>
-                  <div class="pseudo-input-field" ng-show="viewer.message.$showDetailedRecipients">
+                  <div class="pseudo-input-field" ng-show="viewer.$showDetailedRecipients">
                     <span ng-repeat="recipient in viewer.message.to">
                       <a href="#" ng-bind="recipient.full"
                          ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
                     </span>
                   </div>
                 </div>
-                <div class="pseudo-input-container--compact" ng-show="viewer.message.$showDetailedRecipients">
+                <div class="pseudo-input-container--compact" ng-show="viewer.$showDetailedRecipients">
                   <label class="pseudo-input-label" ng-show="viewer.message.cc.length > 0">
                     <var:string label:value="Cc"/>
                   </label>
