@@ -89,7 +89,7 @@
       <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
         <md-content layout="row"
                     aria-labelledby="generalOptionsView"
-                    id="generalOptionsView-content" class="sg-padded">
+                    id="generalOptionsView-content" class="md-padding">
           <div layout="column" flex="100">
             <md-input-container>
               <label><var:string label:value="SOGo Version"/></label>
@@ -205,7 +205,7 @@
         <md-tab id="generalPasswordView"
                 aria-controls="generalPasswordView-content"
                 label:label="Password">
-          <md-content id="passwordView" class="sg-padded">
+          <md-content id="passwordView" class="md-padding">
             <div layout="row">
               <md-input-container>
                 <label><var:string label:value="New password"/>
@@ -244,7 +244,7 @@
                 label:label="General">
           <md-content layout="row" layout-align="center center"
                       aria-labelledby="calendarOptionsView"
-                      class="sg-padded"
+                      class="md-padding"
                       id="calendarOptionsView-content">
             <div layout="column" flex="100">
               <div layout="row">
@@ -354,7 +354,7 @@
         <md-tab id="calendarCategories"
                 aria-controls="calendarCategories-content"
                 label:label="Categories">
-          <md-content>
+          <md-content class="md-padding">
             <div layout="column" flex="100">
               <md-list layout="row" layout-wrap="layout-wrap">
                 <md-list-item flex="50" flex-sm="100"
@@ -484,23 +484,27 @@
         <!-- MAIL > GENERAL -->
         <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
           <md-content role="tabpanel" aria-labelledby="mailGeneralView"
-                      id="mailGeneralView-content" class="sg-padded">
+                      id="mailGeneralView-content" class="md-padding">
 
-            <md-checkbox
-                ng-model="app.preferences.defaults.SOGoMailShowSubscribedFoldersOnly"
-                ng-true-value="1"
-                ng-false-value="0"
-                label:aria-label="Show subscribed mailboxes only">
-              <var:string label:value="Show subscribed mailboxes only"/>
-            </md-checkbox>
+            <div>
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailShowSubscribedFoldersOnly"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Show subscribed mailboxes only">
+                <var:string label:value="Show subscribed mailboxes only"/>
+              </md-checkbox>
+            </div>
 
-            <md-checkbox
-                ng-model="app.preferences.defaults.SOGoMailSortByThreads"
-                ng-true-value="1"
-                ng-false-value="0"
-                label:aria-label="Sort messages by threads">
-              <var:string label:value="Sort messages by threads"/>
-            </md-checkbox>
+            <div>
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailSortByThreads"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Sort messages by threads">
+                <var:string label:value="Sort messages by threads"/>
+              </md-checkbox>
+            </div>
 
             <div layout="row" layout-align="space-around end">
               <md-checkbox
@@ -649,7 +653,7 @@
                 aria-controls="mailLabelsTab-content" label:label="Labels">
 
           <md-content role="tabpanel" aria-labelledby="mailLabelsView"
-                      id="mailLabelsView-content" class="sg-padded">
+                      id="mailLabelsView-content" class="md-padding">
             <md-list layout="row" layout-wrap="layout-wrap">
               <md-list-item flex="50"
                             ng-repeat="(key, value) in
@@ -685,7 +689,7 @@
                 aria-controls="mailAccountsTab-content"
                 label:label="IMAP Accounts">
 
-          <md-list class="sg-padded">
+          <md-list class="md-padding">
             <md-list-item ng-repeat="item in
                                      app.preferences.defaults.AuxiliaryMailAccounts
                                      track by $index">
@@ -731,7 +735,7 @@
         <var:if condition="isVacationEnabled">
           <md-tab id="mailVacationTab" aria-controls="mailVacationTab-content" label:label="Vacation">
             <div role="tabpanel" aria-labelledby="mailVacationView"
-                 id="mailVacationView-content" class="sg-padded">
+                 id="mailVacationView-content" class="md-padding">
 
               <md-checkbox
                   ng-model="app.preferences.defaults.Vacation.enabled"
@@ -741,7 +745,7 @@
                 <var:string label:value="Enable vacation auto reply"/>
               </md-checkbox>
 
-              <div ng-show="app.preferences.defaults.Vacation.enabled == 1">
+              <div flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
                 <md-input-container>
                   <label><var:string label:value="Auto reply message"/></label>
                   <textarea const:name="autoReplyText"
@@ -773,12 +777,14 @@
                   </md-select>
                 </md-input-container>
 
-                <md-checkbox
-                    ng-model="app.preferences.defaults.Vacation.ignoreLists"
-                    ng-true-value="1"
-                    ng-false-value="0">
-                  <var:string label:value="Do not send responses to mailing lists" />
-                </md-checkbox>
+                <div>
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Vacation.ignoreLists"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <var:string label:value="Do not send responses to mailing lists" />
+                  </md-checkbox>
+                </div>
 
                 <div layout="row" layout-align="start center">
                   <md-checkbox
@@ -792,12 +798,15 @@
                       ng-model="app.preferences.defaults.Vacation.endDate"><!-- datepicker --></md-datepicker>
                 </div>
 
-                <md-checkbox
-                    ng-model="app.preferences.defaults.Vacation.alwaysSend"
-                    ng-true-value="1"
-                    ng-false-value="0">
-                  <var:string label:value="Always send vacation message response"/>
-                </md-checkbox>
+                <div>
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Vacation.alwaysSend"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <var:string label:value="Always send vacation message response"/>
+                  </md-checkbox>
+                </div>
+
               </div>
             </div>
           </md-tab>
@@ -808,7 +817,8 @@
         <var:if condition="isForwardEnabled">
           <md-tab id="mailForwardTab" aria-controls="mailForwardTab-content" label:label="Forward">
             <div role="tabpanel" aria-labelledby="mailForwardView"
-                 id="mailForwardView-content" class="sg-padded">
+                 id="mailForwardView-content" class="md-padding">
+
               <md-checkbox
                   ng-model="app.preferences.defaults.Forward.enabled"
                   ng-true-value="1"
@@ -816,7 +826,7 @@
                 <var:string label:value="Forward incoming messages"/>
               </md-checkbox>
 
-              <div ng-show="app.preferences.defaults.Forward.enabled == 1">
+              <div flex-offset="5" ng-show="app.preferences.defaults.Forward.enabled == 1">
                 <md-input-container>
                   <label><var:string label:value="Email addresses (separated by commas)"/></label>
                   <textarea const:name="forwardAddress"
@@ -824,12 +834,14 @@
                             ng-model="app.preferences.defaults.Forward.forwardAddress" />
                 </md-input-container>
 
-                <md-checkbox
-                    ng-model="app.preferences.defaults.Forward.keepCopy"
-                    ng-true-value="1"
-                    ng-false-value="0">
-                  <var:string label:value="Keep a copy" />
-                </md-checkbox>
+                <div>
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Forward.keepCopy"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <var:string label:value="Keep a copy" />
+                  </md-checkbox>
+                </div>
 
               </div>
             </div>
