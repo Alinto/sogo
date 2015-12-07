@@ -84,20 +84,30 @@ md-sidenav {
 }
 .msg-attachment-image,
 .msg-attachment-link {
-  @media (min-width: $layout-breakpoint-xs) {
-    flex: 0 0 100%;
-  }
-  @media (min-width: $layout-breakpoint-sm) {
+  flex: 0 0 100%;
+  @include from(md) {
     flex: 0 0 50%;
   }
-  @media (min-width: $layout-breakpoint-md) {
-    flex: 0 0 33.33%;
+  @include from(lg) {
+    flex: 0 0 33%;
   }
   > div {
     max-width: 100%;
     width: 100%;
   }
 }
+.popup {
+  .msg-attachment-image,
+  .msg-attachment-link {
+    @include from(sm) {
+      flex: 0 0 50%;
+    }
+    @include from(md) {
+      flex: 0 0 33%;
+    }
+  }
+}
+
 
 // sgZoomableImage directive
 .msg-attachment-image {

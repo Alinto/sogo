@@ -18,10 +18,18 @@ body.popup {
   }
   .view-detail {
     max-width: 100%;
-  }
-  @include from(sm) {
-    [class|="view"] {
-      position: static;
+    @include from(sm) {
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      .sg-face, .sg-back {
+        > md-card {
+          height: 100%;
+          md-card-content {
+            height: 100%;
+          }
+        }
+      }
     }
   }
 }
@@ -72,8 +80,8 @@ $detailView-width: grid-step(8) !global;
 
 .view-detail {
   z-index: $z-index-view;
-  //overflow-x: hidden;
   overflow: hidden;
+
   md-card {
     overflow: hidden;
   }

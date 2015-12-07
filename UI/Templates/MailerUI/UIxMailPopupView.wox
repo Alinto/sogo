@@ -9,10 +9,11 @@
     className="UIxPageFrame"
     title="title"
     const:popup="YES"
-    const:jsFiles="Common.js, Contacts.services.js, Preferences.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
 
   <main class="layout-fill" ng-controller="navController">
-    <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+    <div id="detailView" class="view-detail"
+         layout="column" layout-align="start center"
          ui-view="message">
       <div class="sg-progress-circular-floating">
         <md-progress-circular class="md-accent ng-cloak"
