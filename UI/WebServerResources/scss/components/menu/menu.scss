@@ -8,3 +8,16 @@ md-card {
     }
   }
 }
+
+md-sidenav {
+  md-list {
+    .md-menu {
+      padding: 0; // don't add padding so all icon buttons are of the same height
+      opacity: 1;
+      transition: $swift-ease-in;
+      &.ng-hide {
+        opacity: 0;
+      }
+    }
+  }
+}
