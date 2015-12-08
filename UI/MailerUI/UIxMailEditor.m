@@ -639,7 +639,6 @@ static NSArray *infoKeys = nil;
 
   co = [self clientObject];
   [co fetchInfo];
-  [co setIsHTML: isHTML];
 
   if ([[mimeType type] isEqualToString: @"multipart"])
     {
@@ -649,6 +648,7 @@ static NSArray *infoKeys = nil;
     {
       info = [self infoFromRequest];
       [co setHeaders: info];
+      [co setIsHTML: isHTML];
       [co setText: (isHTML ? [NSString stringWithFormat: @"<html>%@</html>", text] : text)];;
       error = [co storeInfo];
     }
