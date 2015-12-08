@@ -216,6 +216,32 @@ input[type="search"] {
 html * {
   box-sizing: border-box; }
 
+.sg-padded {
+  padding-left: 16px;
+  padding-right: 16px; }
+  .sg-padded--left {
+    padding-left: 16px; }
+  .sg-padded--right {
+    padding-right: 16px; }
+  .sg-padded--top {
+    padding-top: 16px; }
+
+.sg-logo {
+  background-image: url("../img/sogo-full.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 56px;
+  min-width: 144px;
+  -webkit-transform: translateY(-10%);
+      -ms-transform: translateY(-10%);
+          transform: translateY(-10%); }
+
+.sg-category {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px; }
+
 /*
 *
 *  Responsive attributes
@@ -10187,8 +10213,8 @@ md-list md-list-item button.md-button.sg-icon-button {
 
 .md-subheader-content .md-icon-button:first-child {
   padding-left: 0;
-  margin-left: 3px;
-  margin-right: 9px; }
+  margin-left: 0;
+  margin-right: 0; }
 
 md-tab-content .md-subheader-content .md-icon-button:first-child {
   margin-right: 3px; }
@@ -15224,34 +15250,46 @@ md-sidenav .sg-item-name {
   md-sidenav .sg-item-name:focus {
     outline: none; }
 
-@media (min-width: 600px) {
-  .msg-attachment-image,
-  .msg-attachment-link {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 100%;
-        -ms-flex: 0 0 100%;
-            flex: 0 0 100%; } }
+.msg-attachment-image,
+.msg-attachment-link {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 100%;
+      -ms-flex: 0 0 100%;
+          flex: 0 0 100%; }
+  @media (min-width: 961px) {
+    .msg-attachment-image,
+    .msg-attachment-link {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 50%;
+          -ms-flex: 0 0 50%;
+              flex: 0 0 50%; } }
+  @media (min-width: 1025px) {
+    .msg-attachment-image,
+    .msg-attachment-link {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 33%;
+          -ms-flex: 0 0 33%;
+              flex: 0 0 33%; } }
+  .msg-attachment-image > div,
+  .msg-attachment-link > div {
+    max-width: 100%;
+    width: 100%; }
 
-@media (min-width: 960px) {
-  .msg-attachment-image,
-  .msg-attachment-link {
+@media (min-width: 601px) {
+  .popup .msg-attachment-image,
+  .popup .msg-attachment-link {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 50%;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; } }
 
-@media (min-width: 1024px) {
-  .msg-attachment-image,
-  .msg-attachment-link {
+@media (min-width: 961px) {
+  .popup .msg-attachment-image,
+  .popup .msg-attachment-link {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 33.33%;
-        -ms-flex: 0 0 33.33%;
-            flex: 0 0 33.33%; } }
-
-.msg-attachment-image > div,
-.msg-attachment-link > div {
-  max-width: 100%;
-  width: 100%; }
+    -webkit-flex: 0 0 33%;
+        -ms-flex: 0 0 33%;
+            flex: 0 0 33%; } }
 
 .msg-attachment-image {
   -webkit-transition: -webkit-flex-basis 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -16206,10 +16244,15 @@ body.popup .viewer {
 
 body.popup .view-detail {
   max-width: 100%; }
-
-@media (min-width: 601px) {
-  body.popup [class|="view"] {
-    position: static; } }
+  @media (min-width: 601px) {
+    body.popup .view-detail {
+      height: 100%;
+      position: absolute;
+      width: 100%; }
+      body.popup .view-detail .sg-face > md-card, body.popup .view-detail .sg-back > md-card {
+        height: 100%; }
+        body.popup .view-detail .sg-face > md-card md-card-content, body.popup .view-detail .sg-back > md-card md-card-content {
+          height: 100%; } }
 
 [class|="view"] {
   position: relative; }
@@ -16337,30 +16380,4 @@ body.popup .view-detail {
     .view-detail .sg-reversible .sg-back {
       -webkit-transform: rotateY(180deg);
               transform: rotateY(180deg); }
-
-.sg-padded {
-  padding-left: 16px;
-  padding-right: 16px; }
-  .sg-padded--left {
-    padding-left: 16px; }
-  .sg-padded--right {
-    padding-right: 16px; }
-  .sg-padded--top {
-    padding-top: 16px; }
-
-.sg-logo {
-  background-image: url("../img/sogo-full.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 56px;
-  min-width: 144px;
-  -webkit-transform: translateY(-10%);
-      -ms-transform: translateY(-10%);
-          transform: translateY(-10%); }
-
-.sg-category {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px; }
 /*# sourceMappingURL=styles.css.map */
