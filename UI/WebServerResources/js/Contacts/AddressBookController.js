@@ -167,6 +167,8 @@
     function newMessageWithRecipient($event, recipient, fn) {
       var recipients = [{full: fn + ' <' + recipient + '>'}];
       vm.newMessage($event, recipients);
+      $event.stopPropagation();
+      $event.preventDefault();
     }
 
     function newMessageWithSelectedCards($event) {
