@@ -117,20 +117,6 @@
 
       vm.message.$send().then(function(data) {
         $mdDialog.hide();
-      }, function(data) {
-        $mdToast.show({
-            controller: 'SendMessageToastController',
-            template: [
-              '<md-toast>',
-              '   <span flex>' + l(data.message) + '</span>',
-              '   <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
-              '      <md-icon>close</md-icon>',
-              '   </md-button>',
-              '</md-toast>'
-            ].join(''),
-            hideDelay: 2000,
-            position: 'top right'
-          });
       });
     }
 

@@ -9,8 +9,8 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdBottomSheet', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
-  function navController($scope, $timeout, $interval, $http, $mdSidenav, $mdBottomSheet, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
+  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
+  function navController($rootScope, $scope, $timeout, $interval, $http, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
@@ -63,6 +63,28 @@
     function leftIsClose() {
       return !$mdSidenav('left').isOpen();
     }
+
+    function onHttpError(event, response) {
+      var message;
+      if (response.data.message)
+        message = response.data.message;
+      else
+        message = response.statusText;
+
+      $mdToast.show({
+        template: [
+          '<md-toast>',
+          '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+          '  <span flex>' + l(message) + '</span>',
+          '</md-toast>'
+        ].join(''),
+        hideDelay: 5000,
+        position: 'top right'
+      });
+    }
+
+    // Listen to HTTP errors broadcasted from HTTP interceptor
+    $rootScope.$on('http:Error', onHttpError);
 
     Alarm.getAlarms();
   }

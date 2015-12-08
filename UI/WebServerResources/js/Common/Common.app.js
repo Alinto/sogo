@@ -124,13 +124,14 @@
 
     .config(configure)
 
-    .factory('AuthInterceptor', AuthInterceptor);
+    .factory('AuthInterceptor', AuthInterceptor)
+    .factory('ErrorInterceptor', ErrorInterceptor);
 
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$mdThemingProvider', '$httpProvider'];
-  function configure($logProvider, $compileProvider, $mdThemingProvider, $httpProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider'];
+  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider) {
     // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
@@ -221,6 +222,7 @@
     }
 
     $httpProvider.interceptors.push('AuthInterceptor');
+    $httpProvider.interceptors.push('ErrorInterceptor');
   }
 
   AuthInterceptor.$inject = ['$window', '$q'];
@@ -234,6 +236,20 @@
           return $q.reject();
         }
         return response;
+      }
+    };
+  }
+
+  /**
+   * @ngInject
+   */
+  ErrorInterceptor.$inject = ['$rootScope', '$q'];
+  function ErrorInterceptor($rootScope, $q) {
+    return {
+      responseError: function(rejection) {
+        // Broadcast the response error
+        $rootScope.$broadcast('http:Error', rejection);
+        return $q.reject(rejection);
       }
     };
   }
