@@ -263,8 +263,17 @@
               return part.preferredPart == alternatePart.contentType;
             }));
           }
-          // Can be used for UIxMailPartMixedViewer and UIxMailPartMessageViewer
+          // Can be used for UIxMailPartMixedViewer, UIxMailPartMessageViewer, and UIxMailPartSignedViewer
           else if (angular.isArray(part.content)) {
+            if (part.type == 'UIxMailPartSignedViewer' && part['supports-smime'] === 1) {
+              // First line in a h1, others each in a p
+              var formattedMessage = "<p>" + part.error.replace(/\n/, "</p><p class=\"md-caption\">");
+              formattedMessage = formattedMessage.replace(/\n/g, "</p><p class=\"md-caption\">") + "</p>";
+              _this.$smime = {
+                validSignature: part.valid,
+                message: formattedMessage
+              };
+            }
             _.each(part.content, function(mixedPart) {
               _visit(mixedPart);
             });

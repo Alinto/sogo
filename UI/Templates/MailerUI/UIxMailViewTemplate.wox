@@ -162,8 +162,18 @@
               </md-autocomplete>
             </md-chips>
           </div>
-          <md-divider><!-- end of headers --></md-divider>
-          <div>
+
+            <!-- S/MIME Signature -->
+            <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
+                           ng-show="::viewer.message.$smime.message">
+              <div layout="row" layout-align="start center">
+                <div class="md-tile-left">
+                  <md-icon ng-hide="::viewer.message.$smime.validSignature" class="md-warn">error</md-icon>
+                  <md-icon ng-show="::viewer.message.$smime.validSignature" class="md-accent">check</md-icon>
+                </div>
+                <p ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+              </div>
+            </md-whiteframe>
 
             <!-- Load external images -->
             <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
@@ -200,6 +210,8 @@
               </div>
             </md-whiteframe>
 
+          <md-divider><!-- end of headers --></md-divider>
+          <div>
             <div class="msg-body">
               <div layout="row" layout-wrap="layout-wrap">
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"

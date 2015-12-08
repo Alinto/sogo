@@ -233,9 +233,9 @@
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",
-                       @"supports-smime", [NSNumber numberWithBool: [self supportsSMIME]],
-                       @"valid", [NSNumber numberWithBool: [self validSignature]],
-                       @"error", [self validationMessage],
+                       [NSNumber numberWithBool: [self supportsSMIME]], @"supports-smime",
+                       [NSNumber numberWithBool: [self validSignature]], @"valid",
+                       [self validationMessage], @"error",
                        renderedParts, @"content",
                        nil];
 }
