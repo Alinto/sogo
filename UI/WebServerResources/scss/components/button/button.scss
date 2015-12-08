@@ -78,9 +78,10 @@ md-list md-list-item button.md-button.sg-icon-button {
 
 .md-subheader-content {
   .md-icon-button:first-child {
+    // Delegation button of mail accounts
     padding-left: 0;
-    margin-left: $icon-button-margin/2;
-    margin-right: $icon-button-margin*1.5;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 md-tab-content {
