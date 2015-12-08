@@ -95,10 +95,6 @@
 @import 'components/pseudo-input/pseudo-input';
 @import 'views/view';
 
-// core styles - need to be after components till settings are correctly implemented
-// ------------------------------------------------------------------------------
-@import 'core/base_styles/base_style';
-
 // Make sure this is last to override anything else
 //@import 'shame';
 

@@ -8,3 +8,37 @@
 html * {
   box-sizing: border-box;
 }
+
+// Utility class to add padding on containers
+// Because of the border-box sizing model, padding can affect width specialy
+// in nested containers
+.sg-padded {
+  padding-left: $mg;
+  padding-right: $mg;
+  &--left {
+    padding-left: $mg;
+  }
+  &--right {
+    padding-right: $mg;
+  }
+  &--top {
+    padding-top: $mg;
+  }
+}
+
+.sg-logo {
+  background-image: url("../img/sogo-full.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 7 * $bl;
+  min-width: 18 * $bl;
+  //optical adjustement
+  transform: translateY(-10%);
+}
+
+.sg-category {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
