@@ -3,7 +3,7 @@
 [ui-view="login"] {
   md-content {
     padding: 0;
-    @include to(xs) {
+    @include to(sm) {
       [id=logo] {
         text-align: center;
         img {
@@ -24,7 +24,7 @@
       }
       [id=logo], .sg-login {
         opacity: 1;
-        transform: translateX(0%);
+        //transform: translateX(0%);
       }
       [id=logo] {
         transition: transform $swift-ease-out-duration $swift-ease-out-timing-function 600ms,

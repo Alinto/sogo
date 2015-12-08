@@ -16,12 +16,12 @@
       SHOULD  be a main tag (with role="main")
   -->
   <main class="view layout-fill layout-padding md-default-theme md-background md-hue-1 md-bg"
-        ui-view="login"
         layout="row" layout-align="center start"
+        ui-view="login"
         ng-controller="LoginController as app">
     <md-content class="ng-cloak md-whiteframe-z1"
-                layout="row" layout-align="center center"
-                layout-xs="column" layout-align-xs="space-between center"
+                layout-gt-sm="row" layout-align-gt-sm="start start"
+                layout="column" layout-align="space-between center"
                 md-scroll-y="true"
                 ng-show="app.showLogin">
       <div id="logo" class="md-padding">
@@ -50,7 +50,7 @@
 
             <!-- CONNECT BUTTON -->
             <div layout="row" layout-align="end center">
-              <md-button class="md-primary md-hue-1" type="submit" ng-disabled='app.loginForm.$invalid'>
+              <md-button class="md-raised md-accent md-hue-2" type="submit" ng-disabled='app.loginForm.$invalid'>
                 <var:string label:value="Connect"/>
               </md-button>
             </div>
@@ -58,13 +58,16 @@
             <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
               <md-icon>language</md-icon>
-              <md-select flex="true" ng-model="app.creds.language" label:placeholder="choose">
-                <var:foreach list="languages" item="item">
-                  <md-option var:value="item">
-                    <var:string value="languageText"/>
-                  </md-option>
-                </var:foreach>
+              <md-input-container>
+                <label><var:string label:value="choose"/></label>
+                <md-select flex="true" ng-model="app.creds.language">
+                  <var:foreach list="languages" item="item">
+                    <md-option var:value="item">
+                      <var:string value="languageText"/>
+                    </md-option>
+                  </var:foreach>
                 </md-select>
+              </md-input-container>
             </div>
 
             <!-- DOMAINS SELECT -->
