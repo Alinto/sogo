@@ -142,7 +142,7 @@
         </div>
 
         <!-- toolbar to show cc/bcc/attachment fields -->
-        <div layout="column" layout-align="end end">
+        <div layout="column" layout-align="start end">
           <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
           <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
           <md-menu>
