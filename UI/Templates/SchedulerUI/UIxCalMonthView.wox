@@ -37,7 +37,7 @@
          href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
     </md-card-actions>
 
-    <md-toolbar md-scroll-shrink="true" class="monthView md-hue-1">
+    <md-toolbar class="monthView">
       <div layout="row" layout-align="center center"
            class="md-flex md-default-theme md-fg md-hue-1">
         <var:foreach list="headerDaysToDisplay" item="currentTableDay">
