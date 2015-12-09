@@ -172,7 +172,7 @@
         preferences.defaults.Vacation.endDate = 0;
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
-        preferences.defaults.Vacation.autoReplyEmailAddresses = _.filter(preferences.defaults.Vacation.autoReplyEmailAddresses.split(","), function(v) { return v.length });
+        preferences.defaults.Vacation.autoReplyEmailAddresses = _.filter(preferences.defaults.Vacation.autoReplyEmailAddresses.split(","), function(v) { return v.length; });
       else
         preferences.defaults.Vacation.autoReplyEmailAddresses = [];
     }
