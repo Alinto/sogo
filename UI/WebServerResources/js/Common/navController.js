@@ -74,8 +74,10 @@
       $mdToast.show({
         template: [
           '<md-toast>',
-          '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-          '  <span flex>' + l(message) + '</span>',
+          '  <div class="md-toast-content">',
+          '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+          '    <span flex>' + l(message) + '</span>',
+          '  </div>',
           '</md-toast>'
         ].join(''),
         hideDelay: 5000,

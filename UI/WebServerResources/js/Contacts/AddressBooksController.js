@@ -161,8 +161,10 @@
             $mdToast.show({
               template: [
                 '<md-toast>',
-                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-                '  <span>' + l('An error occured while importing contacts.') + '</span>',
+                '  <div class="md-toast-content">',
+                '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '    <span>' + l('An error occured while importing contacts.') + '</span>',
+                '  </div>',
                 '</md-toast>'
               ].join(''),
               position: 'top right',
@@ -183,8 +185,10 @@
             $mdToast.show({
               template: [
                 '<md-toast>',
-                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-                '  <span>' + l('Select a vCard or LDIF file.') + '</span>',
+                '  <div class="md-toast-content">',
+                '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '    <span>' + l('Select a vCard or LDIF file.') + '</span>',
+                '  </div>',
                 '</md-toast>'
               ].join(''),
               position: 'top right',

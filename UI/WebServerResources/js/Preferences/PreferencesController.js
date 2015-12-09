@@ -249,10 +249,12 @@
             controller: 'savePreferencesToastCtrl',
             template: [
               '<md-toast>',
-              '   <span flex>' + l('Preferences saved') + '</span>',
-              '   <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
+              '  <div class="md-toast-content">',
+              '    <span flex>' + l('Preferences saved') + '</span>',
+              '    <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
               '      <md-icon>close</md-icon>',
-              '   </md-button>',
+              '    </md-button>',
+              '  </div>',
               '</md-toast>'
             ].join(''),
             hideDelay: 2000,

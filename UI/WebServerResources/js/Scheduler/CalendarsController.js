@@ -158,8 +158,10 @@
             $mdToast.show({
               template: [
                 '<md-toast>',
-                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-                '  <span>' + l('An error occurred while importing calendar.') + '</span>',
+                '  <div class="md-toast-content">',
+                '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '    <span>' + l('An error occurred while importing calendar.') + '</span>',
+                '  </div>',
                 '</md-toast>'
               ].join(''),
               position: 'top right',
@@ -180,8 +182,10 @@
             $mdToast.show({
               template: [
                 '<md-toast>',
-                '  <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-                '  <span>' + l('Select an iCalendar file (.ics).') + '</span>',
+                '  <div class="md-toast-content">',
+                '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+                '    <span>' + l('Select an iCalendar file (.ics).') + '</span>',
+                '  </div>',
                 '</md-toast>'
               ].join(''),
               position: 'top right',
