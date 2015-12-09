@@ -357,7 +357,7 @@
           <md-content class="md-padding">
             <div layout="column" flex="100">
               <md-list layout="row" layout-wrap="layout-wrap">
-                <md-list-item flex="50" flex-sm="100"
+                <md-list-item flex="50" flex-xs="100"
                               ng-repeat="item in
                                          app.preferences.defaults.SOGoCalendarCategories
                                          track by $index">

@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
-  <md-dialog flex="50" flex-sm="100">
+  <md-dialog flex="50" flex-sm="80" flex-xs="100">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <div class="sg-md-title md-flex"><var:string label:value="Subscribe to a shared folder"/></div>

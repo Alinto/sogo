@@ -27,7 +27,7 @@
     <div class="pseudo-input-container layout-padding" layout="row" layout-align="center center">
       <label class="pseudo-input-label"><var:string label:value="On"/></label>
       <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
-                    flex="50" flex-md="80" flex-sm="100"
+                    flex="50" flex-sm="80" flex-xs="100"
                     sg-toggle-grid="editor.component.repeat.days"
                     sg-toggle-grid-attr="day">
         <var:foreach list="shortWeekDaysList" item="item">
@@ -52,7 +52,7 @@
       </md-radio-button>
       <div layout="row" layout-align="start center">
         <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
-                      flex="50" flex-md="80" flex-sm="100"
+                      flex="50" flex-sm="80" flex-xs="100"
                       sg-toggle-grid="editor.component.repeat.monthdays">
           <md-grid-tile value="1">1</md-grid-tile>
           <md-grid-tile value="2">2</md-grid-tile>
@@ -120,7 +120,7 @@
     </div>
     <div layout="row" layout-align="start center">
       <md-grid-list md-cols="6" md-row-height="2em" md-gutter="0.5em"
-                    flex="50" flex-md="80" flex-sm="100"
+                    flex="50" flex-sm="80" flex-xs="100"
                     sg-toggle-grid="editor.component.repeat.months">
         <var:foreach list="yearlyMonthList" item="item">
           <md-grid-tile var:value="valueForYearlyMonth"><var:string value="item"/></md-grid-tile>

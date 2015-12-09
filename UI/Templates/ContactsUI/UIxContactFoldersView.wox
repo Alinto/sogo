@@ -443,7 +443,7 @@
 
   <!-- modal for cards import -->
   <script type="text/ng-template" id="UIxContactsImportDialog">
-    <md-dialog flex="40" flex-sm="100" label:aria-label="Import Cards">
+    <md-dialog flex="40" flex-sm="80" flex-xs="100" label:aria-label="Import Cards">
       <md-toolbar>
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>

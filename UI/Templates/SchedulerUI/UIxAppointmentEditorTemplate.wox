@@ -4,7 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="60" flex-md="80" flex-sm="100">
+  <md-dialog flex="60" flex-sm="80" flex-xs="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
@@ -178,7 +178,8 @@
         </div>
         <!-- end repeat -->
         <div layout="row" layout-align="start end">
-          <div ng-show="editor.component.repeat.frequency != 'never'">
+          <div flex="50" flex-xs="100"
+               ng-show="editor.component.repeat.frequency != 'never'">
             <md-input-container>
               <label><var:string label:value="End Repeat"/></label>
               <md-select ng-model="editor.component.repeat.end"

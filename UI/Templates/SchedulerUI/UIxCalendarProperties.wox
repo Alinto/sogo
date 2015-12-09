@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-dialog flex-sm="100">
+  <md-dialog flex-xs="100">
 
     <md-toolbar ng-class="properties.calendar.getClassName('bg')">
       <div class="md-toolbar-tools">
