@@ -117,10 +117,13 @@
     if ($location.url().length === 0) {
       // Restore user's last view
       Preferences.ready().then(function() {
-        var view = /(.+)view/.exec(Preferences.settings.Calendar.View);
-        if (view) {
-          $location.replace().url('/calendar/' + view[1]);
-        }
+        var url = '/calendar/',
+            view = /(.+)view/.exec(Preferences.settings.Calendar.View);
+        if (view)
+          url += view[1];
+        else
+          url += 'week';
+        $location.replace().url(url);
       });
     }
   }
