@@ -21,7 +21,10 @@
       <div class="md-flex"><!-- spacer --></div>
       <md-button class="md-icon-button md-accent"
                  label:aria-label="Today"
-                 ng-click="app.today()"><md-icon>today</md-icon></md-button>
+                 ng-click="app.today()">
+        <md-tooltip><var:string label:value="Today"/></md-tooltip>
+        <md-icon>today</md-icon>
+      </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"
          href="#/calendar/day"><md-icon>view_day</md-icon></a>
