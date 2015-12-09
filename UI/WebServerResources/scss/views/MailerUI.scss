@@ -108,6 +108,32 @@ md-sidenav {
   }
 }
 
+// The drop zone zone is only visibile when the user is dragging a file to the browser window
+.sg-dropzone {
+  display: none;
+}
+.sg-over-dropzone {
+  .sg-dropzone {
+    background-color: white;
+    border: 4px dashed black;
+    bottom: 0px;
+    display: block;
+    flex: 1 1 auto;
+    left: 0px;
+    opacity: 0.6;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: $z-index-toolbar + 1;
+    &:hover {
+      opacity: 0.6;
+    }
+    md-icon {
+      color: black;
+      font-size: $sg-font-size-9;
+    }
+  }
+}
 
 // sgZoomableImage directive
 .msg-attachment-image {

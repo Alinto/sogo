@@ -5,7 +5,11 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-dialog class="sg-mail-editor" flex="80" flex-sm="100">
+  <md-dialog class="sg-mail-editor" flex="80" flex-sm="90" flex-xs="100"
+             nv-file-drop="nv-file-drop"
+             nv-file-over="nv-file-over"
+             over-class="sg-over-dropzone"
+             uploader="editor.uploader">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="sg-icon-toolbar-bg">edit</md-icon>
@@ -33,6 +37,12 @@
         </md-button>
       </div>
     </md-toolbar>
+
+    <div class="sg-dropzone">
+      <div layout="column" layout-align="center center" layout-fill="layout-fill">
+        <md-icon>file_upload</md-icon>
+      </div>
+    </div>
 
     <md-dialog-content class="md-padding">
       <header>
