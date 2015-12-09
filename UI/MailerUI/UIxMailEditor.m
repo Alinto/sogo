@@ -814,6 +814,7 @@ static NSArray *infoKeys = nil;
   NSMutableArray *errorMsg;
   NSDictionary *messageSubmissions;
   SOGoSystemDefaults *dd;
+  id <WOActionResults> response;
 
   int messages_count, recipients_count;
 
@@ -878,6 +879,8 @@ static NSArray *infoKeys = nil;
 			           [errorMsg componentsJoinedByString: @"\n"],
 				   @"message",
 				   nil];
+      response = [self responseWithStatus: 405
+                    andJSONRepresentation: jsonResponse];
     }
   else
     {
@@ -886,6 +889,8 @@ static NSArray *infoKeys = nil;
                                    [co sourceFolder], @"sourceFolder",
                                         [NSNumber numberWithInt: [co sourceIMAP4ID]], @"sourceMessageID",
                                    nil];
+      response = [self responseWithStatus: 200
+                    andJSONRepresentation: jsonResponse];
      
       recipients_count += [[co allRecipients] count];
       messages_count += 1;
@@ -898,8 +903,7 @@ static NSArray *infoKeys = nil;
         }
     }
 
-  return [self responseWithStatus: 200
-                        andString: [jsonResponse jsonRepresentation]];
+  return response;
 }
 
 @end /* UIxMailEditor */

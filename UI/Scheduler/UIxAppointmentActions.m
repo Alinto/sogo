@@ -60,7 +60,7 @@
   SoSecurityManager *sm;
   iCalEvent *event;
   NSCalendarDate *start, *newStart, *end, *newEnd;
-  NSDictionary *params;
+  NSDictionary *params, *jsonResponse;
   NSTimeInterval newDuration;
   SOGoUserDefaults *ud;
   NSNumber *daysDelta, *startDelta, *durationDelta;
@@ -138,24 +138,26 @@
                               inContext: context])
               ex = [co moveToFolder: targetCalendar];
           }
-
-    
         }
       if (ex)
         {
-          NSDictionary *jsonResponse;
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                        [ex reason], @"message",
                                        nil];
           response = [self responseWithStatus: 403
-                                    andString: [jsonResponse jsonRepresentation]];
+                        andJSONRepresentation: jsonResponse];
         }
       else
         response = [self responseWith204];
     }
   else
-    response = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
-                                                            reason: @"missing 'days', 'start' and/or 'duration' parameters"];
+    {
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"missing 'days', 'start' and/or 'duration' parameters", @"message",
+                                   nil];
+      response = [self responseWithStatus: 400
+                    andJSONRepresentation: jsonResponse];
+    }
 
   return response;
 }

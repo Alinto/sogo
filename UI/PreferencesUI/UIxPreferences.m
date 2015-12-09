@@ -2180,12 +2180,12 @@ static NSArray *reminderValues = nil;
               if (![account updateFilters])
                 {
                   results = (id <WOActionResults>) [self responseWithStatus: 502
-                           andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]]; 
+                           andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"message", nil]];
                 }
             }
           else
             results = (id <WOActionResults>) [self responseWithStatus: 503
-                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"message", nil]];
         }
     }
   
