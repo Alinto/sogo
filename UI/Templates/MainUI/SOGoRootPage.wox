@@ -20,14 +20,14 @@
         ui-view="login"
         ng-controller="LoginController as app">
     <md-content class="ng-cloak md-whiteframe-z1"
-                layout-gt-sm="row" layout-align-gt-sm="start start"
+                layout-gt-sm="row" layout-align-gt-sm="start center"
                 layout="column" layout-align="space-between center"
                 md-scroll-y="true"
                 ng-show="app.showLogin">
       <div id="logo" class="md-padding">
         <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
       </div>
-      <div class="sg-login md-padding md-default-theme md-bg md-accent layout-fill">
+      <div class="sg-login md-padding md-default-theme md-bg md-accent">
         <script type="text/javascript">
           var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
         </script>
@@ -39,13 +39,15 @@
             <var:if condition="hasLoginSuffix">
               <input type="hidden" ng-model="app.creds.loginSuffix" var:value="loginSuffix"/>
             </var:if>
-            <md-input-container>
+            <md-input-container class="md-block">
+              <label><var:string label:value="Username"/></label>
               <md-icon>person</md-icon>
-              <input autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" label:placeholder="Username"/>
+              <input autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true"/>
             </md-input-container>
-            <md-input-container md-no-float="md-no-float">
+            <md-input-container class="md-block">
+              <label><var:string label:value="Password"/></label>
               <md-icon>email</md-icon>
-              <input type="password" ng-model="app.creds.password" ng-required="true" label:placeholder="Password"/>
+              <input type="password" ng-model="app.creds.password" ng-required="true"/>
             </md-input-container>
 
             <!-- CONNECT BUTTON -->
@@ -103,7 +105,7 @@
   </main>
 
   <script type="text/ng-template" id="aboutBox.html">
-    <md-dialog flex="50" sm-flex="100">
+    <md-dialog flex="50" flex-xs="100">
       <md-dialog-content class="md-dialog-content">
         <p><a href="http://sogo.nu/" target="_new">sogo.nu</a></p>
         <p>Version <var:string value="version"/> (<var:string value="buildDate" />)</p>
