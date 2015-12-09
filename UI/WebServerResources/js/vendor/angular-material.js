@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc5-master-fd33d41
+ * v1.0.0-rc7-master-2ab3075
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -27,7 +27,25 @@ angular
     'material.core.gestures',
     'material.core.theming'
   ])
-  .config(MdCoreConfigure);
+  .config(MdCoreConfigure)
+  .run(DetectNgTouch);
+
+
+/**
+ * Detect if the ng-Touch module is also being used.
+ * Warn if detected.
+ */
+function DetectNgTouch($log, $injector) {
+  if ( $injector.has('$swipe') ) {
+    var msg = "" +
+      "You are using the ngTouch module. \n" +
+      "Angular Material already has mobile click, tap, and swipe support... \n" +
+      "ngTouch is not supported with Angular Material!";
+    $log.warn(msg);
+  }
+}
+DetectNgTouch.$inject = ["$log", "$injector"];
+
 
 function MdCoreConfigure($provide, $mdThemingProvider) {
 
@@ -36,7 +54,7 @@ function MdCoreConfigure($provide, $mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('indigo')
     .accentPalette('pink')
-    .warnPalette('red')
+    .warnPalette('deep-orange')
     .backgroundPalette('grey');
 }
 MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
@@ -1125,6 +1143,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      *
      * @param el Element to start walking the DOM from
      * @param tagName Tag name to find closest to el, such as 'form'
+     * @param onlyParent Only start checking from the parent element, not `el`.
      */
     getClosest: function getClosest(el, tagName, onlyParent) {
       if (el instanceof angular.element) el = el[0];
@@ -2993,22 +3012,21 @@ function InterimElementProvider() {
 (function() {
   'use strict';
 
-  var $mdUtil, $interpolate;
+  var $mdUtil, $interpolate, $log;
 
   var SUFFIXES = /(-gt)?-(sm|md|lg)/g;
   var WHITESPACE = /\s+/g;
 
-  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none'];
+  var FLEX_OPTIONS = ['grow', 'initial', 'auto', 'none', 'noshrink'];
   var LAYOUT_OPTIONS = ['row', 'column'];
   var ALIGNMENT_MAIN_AXIS= [ "", "start", "center", "end", "stretch", "space-around", "space-between" ];
   var ALIGNMENT_CROSS_AXIS= [ "", "start", "center", "end", "stretch" ];
-
 
   var config = {
     /**
      * Enable directive attribute-to-class conversions
      * Developers can use `<body md-layout-css />` to quickly
-     * disable the Layout directivees and prohibit the injection of Layout classnames
+     * disable the Layout directives and prohibit the injection of Layout classNames
      */
     enabled: true,
 
@@ -3023,7 +3041,11 @@ function InterimElementProvider() {
     breakpoints: []
   };
 
+  registerLayoutAPI( angular.module('material.core.layout', ['ng']) );
+
   /**
+   *   registerLayoutAPI()
+   *
    *   The original ngMaterial Layout solution used attribute selectors and CSS.
    *
    *  ```html
@@ -3032,12 +3054,12 @@ function InterimElementProvider() {
    *
    *  ```css
    *  [layout] {
-     *    box-sizing: border-box;
-     *    display:flex;
-     *  }
+   *    box-sizing: border-box;
+   *    display:flex;
+   *  }
    *  [layout=column] {
-     *    flex-direction : column
-     *  }
+   *    flex-direction : column
+   *  }
    *  ```
    *
    *  Use of attribute selectors creates significant performance impacts in some
@@ -3053,117 +3075,83 @@ function InterimElementProvider() {
    *
    *  ```css
    *  .layout {
-     *    box-sizing: border-box;
-     *    display:flex;
-     *  }
+   *    box-sizing: border-box;
+   *    display:flex;
+   *  }
    *  .layout-column {
-     *    flex-direction : column
-     *  }
+   *    flex-direction : column
+   *  }
    *  ```
    */
-  angular.module('material.core.layout', ['ng'])
+  function registerLayoutAPI(module){
+    var PREFIX_REGEXP = /^((?:x|data)[\:\-_])/i;
+    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
 
-    .directive('mdLayoutCss', disableLayoutDirective )
+    // NOTE: these are also defined in constants::MEDIA_PRIORITY and constants::MEDIA
+    var BREAKPOINTS     = [ "", "xs", "gt-xs", "sm", "gt-sm", "md", "gt-md", "lg", "gt-lg", "xl" ];
+    var API_WITH_VALUES = [ "layout", "flex", "flex-order", "flex-offset", "layout-align" ];
+    var API_NO_VALUES   = [ "show", "hide", "layout-padding", "layout-margin" ];
 
-    .directive('layout', attributeWithObserve('layout'))
-    .directive('layoutSm', attributeWithObserve('layout-sm'))
-    .directive('layoutGtSm', attributeWithObserve('layout-gt-sm'))
-    .directive('layoutMd', attributeWithObserve('layout-md'))
-    .directive('layoutGtMd', attributeWithObserve('layout-gt-md'))
-    .directive('layoutLg', attributeWithObserve('layout-lg'))
-    .directive('layoutGtLg', attributeWithObserve('layout-gt-lg'))
 
-    .directive('flex', attributeWithObserve('flex'))
-    .directive('flexSm', attributeWithObserve('flex-sm'))
-    .directive('flexGtSm', attributeWithObserve('flex-gt-sm'))
-    .directive('flexMd', attributeWithObserve('flex-md'))
-    .directive('flexGtMd', attributeWithObserve('flex-gt-md'))
-    .directive('flexLg', attributeWithObserve('flex-lg'))
-    .directive('flexGtLg', attributeWithObserve('flex-gt-lg'))
+    // Build directive registration functions for the standard Layout API... for all breakpoints.
+    angular.forEach(BREAKPOINTS, function(mqb) {
 
-    .directive('flexOrder', attributeWithObserve('flex-order'))
-    .directive('flexOrderSm', attributeWithObserve('flex-order-sm'))
-    .directive('flexOrderGtSm', attributeWithObserve('flex-order-gt-sm'))
-    .directive('flexOrderMd', attributeWithObserve('flex-order-md'))
-    .directive('flexOrderGtMd', attributeWithObserve('flex-order-gt-md'))
-    .directive('flexOrderLg', attributeWithObserve('flex-order-lg'))
-    .directive('flexOrderGtLg', attributeWithObserve('flex-order-gt-lg'))
+      // Attribute directives with expected, observable value(s)
+      angular.forEach( API_WITH_VALUES, function(name){
+        var fullName = mqb ? name + "-" + mqb : name;
+        module.directive( directiveNormalize(fullName), attributeWithObserve(fullName));
+      });
 
-    .directive('flexOffset', attributeWithObserve('flex-offset'))
-    .directive('flexOffsetSm', attributeWithObserve('flex-offset-sm'))
-    .directive('flexOffsetGtSm', attributeWithObserve('flex-offset-gt-sm'))
-    .directive('flexOffsetMd', attributeWithObserve('flex-offset-md'))
-    .directive('flexOffsetGtMd', attributeWithObserve('flex-offset-gt-md'))
-    .directive('flexOffsetLg', attributeWithObserve('flex-offset-lg'))
-    .directive('flexOffsetGtLg', attributeWithObserve('flex-offset-gt-lg'))
+      // Attribute directives with no expected value(s)
+      angular.forEach( API_NO_VALUES, function(name){
+        var fullName = mqb ? name + "-" + mqb : name;
+        module.directive( directiveNormalize(fullName), attributeWithoutValue(fullName));
+      });
 
-    .directive('layoutAlign', attributeWithObserve('layout-align'))
-    .directive('layoutAlignSm', attributeWithObserve('layout-align-sm'))
-    .directive('layoutAlignGtSm', attributeWithObserve('layout-align-gt-sm'))
-    .directive('layoutAlignMd', attributeWithObserve('layout-align-md'))
-    .directive('layoutAlignGtMd', attributeWithObserve('layout-align-gt-md'))
-    .directive('layoutAlignLg', attributeWithObserve('layout-align-lg'))
-    .directive('layoutAlignGtLg', attributeWithObserve('layout-align-gt-lg'))
+    });
 
-    // Attribute directives with no value(s)
+    // Register other, special directive functions for the Layout features:
+    module
+      .directive('mdLayoutCss'  , disableLayoutDirective )
+      .directive('ngCloak'      ,  buildCloakInterceptor('ng-cloak'))
 
-    .directive('hide', attributeWithoutValue('hide'))
-    .directive('hideSm', attributeWithoutValue('hide-sm'))
-    .directive('hideGtSm', attributeWithoutValue('hide-gt-sm'))
-    .directive('hideMd', attributeWithoutValue('hide-md'))
-    .directive('hideGtMd', attributeWithoutValue('hide-gt-md'))
-    .directive('hideLg', attributeWithoutValue('hide-lg'))
-    .directive('hideGtLg', attributeWithoutValue('hide-gt-lg'))
-    .directive('show', attributeWithoutValue('show'))
-    .directive('showSm', attributeWithoutValue('show-sm'))
-    .directive('showGtSm', attributeWithoutValue('show-gt-sm'))
-    .directive('showMd', attributeWithoutValue('show-md'))
-    .directive('showGtMd', attributeWithoutValue('show-gt-md'))
-    .directive('showLg', attributeWithoutValue('show-lg'))
-    .directive('showGtLg', attributeWithoutValue('show-gt-lg'))
+      .directive('layoutWrap'   , attributeWithoutValue('layout-wrap'))
+      .directive('layoutNoWrap' , attributeWithoutValue('layout-no-wrap'))
+      .directive('layoutFill'   , attributeWithoutValue('layout-fill'))
 
-    // Attribute directives with no value(s) and NO breakpoints
+      // !! Deprecated attributes: use the `-lt` (aka less-than) notations
 
-    .directive('layoutPadding', attributeWithoutValue('layout-padding'))
-    .directive('layoutPaddingSm', attributeWithoutValue('layout-padding-sm'))
-    .directive('layoutPaddingGtSm', attributeWithoutValue('layout-padding-gt-sm'))
-    .directive('layoutPaddingMd', attributeWithoutValue('layout-padding-md'))
-    .directive('layoutPaddingGtMd', attributeWithoutValue('layout-padding-gt-md'))
-    .directive('layoutPaddingLg', attributeWithoutValue('layout-padding-lg'))
-    .directive('layoutPaddingGtLg', attributeWithoutValue('layout-padding-gt-lg'))
-    
-    .directive('layoutMargin', attributeWithoutValue('layout-margin'))
-    .directive('layoutMarginSm', attributeWithoutValue('layout-margin-sm'))
-    .directive('layoutMarginGtSm', attributeWithoutValue('layout-margin-gt-sm'))
-    .directive('layoutMarginMd', attributeWithoutValue('layout-margin-md'))
-    .directive('layoutMarginGtMd', attributeWithoutValue('layout-margin-gt-md'))
-    .directive('layoutMarginLg', attributeWithoutValue('layout-margin-lg'))
-    .directive('layoutMarginGtLg', attributeWithoutValue('layout-margin-gt-lg'))
+      .directive('layoutLtMd'     , warnAttrNotSupported('layout-lt-md', true))
+      .directive('layoutLtLg'     , warnAttrNotSupported('layout-lt-lg', true))
+      .directive('flexLtMd'       , warnAttrNotSupported('flex-lt-md', true))
+      .directive('flexLtLg'       , warnAttrNotSupported('flex-lt-lg', true))
 
-    .directive('layoutWrap', attributeWithoutValue('layout-wrap'))
-    .directive('layoutNoWrap', attributeWithoutValue('layout-no-wrap'))
-    .directive('layoutFill', attributeWithoutValue('layout-fill'))
+      .directive('layoutAlignLtMd', warnAttrNotSupported('layout-align-lt-md'))
+      .directive('layoutAlignLtLg', warnAttrNotSupported('layout-align-lt-lg'))
+      .directive('flexOrderLtMd'  , warnAttrNotSupported('flex-order-lt-md'))
+      .directive('flexOrderLtLg'  , warnAttrNotSupported('flex-order-lt-lg'))
+      .directive('offsetLtMd'     , warnAttrNotSupported('flex-offset-lt-md'))
+      .directive('offsetLtLg'     , warnAttrNotSupported('flex-offset-lt-lg'))
 
-    // !! Deprecated attributes: use the `-lt` (aka less-than) notations
+      .directive('hideLtMd'       , warnAttrNotSupported('hide-lt-md'))
+      .directive('hideLtLg'       , warnAttrNotSupported('hide-lt-lg'))
+      .directive('showLtMd'       , warnAttrNotSupported('show-lt-md'))
+      .directive('showLtLg'       , warnAttrNotSupported('show-lt-lg'));
 
-    .directive('layoutLtMd', warnAttrNotSupported('layout-lt-md', true))
-    .directive('layoutLtLg', warnAttrNotSupported('layout-lt-lg', true))
-    .directive('flexLtMd', warnAttrNotSupported('flex-lt-md', true))
-    .directive('flexLtLg', warnAttrNotSupported('flex-lt-lg', true))
+    /**
+     * Converts snake_case to camelCase.
+     * Also there is special case for Moz prefix starting with upper case letter.
+     * @param name Name to normalize
+     */
+    function directiveNormalize(name) {
+      return name
+        .replace(PREFIX_REGEXP, '')
+        .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+          return offset ? letter.toUpperCase() : letter;
+        });
+    }
 
-    .directive('layoutAlignLtMd', warnAttrNotSupported('layout-align-lt-md'))
-    .directive('layoutAlignLtLg', warnAttrNotSupported('layout-align-lt-lg'))
-    .directive('flexOrderLtMd', warnAttrNotSupported('flex-order-lt-md'))
-    .directive('flexOrderLtLg', warnAttrNotSupported('flex-order-lt-lg'))
-    .directive('offsetLtMd', warnAttrNotSupported('flex-offset-lt-md'))
-    .directive('offsetLtLg', warnAttrNotSupported('flex-offset-lt-lg'))
-
-    .directive('hideLtMd', warnAttrNotSupported('hide-lt-md'))
-    .directive('hideLtLg', warnAttrNotSupported('hide-lt-lg'))
-    .directive('showLtMd', warnAttrNotSupported('show-lt-md'))
-    .directive('showLtLg', warnAttrNotSupported('show-lt-lg'))
-
-    .directive('ngCloak',  buildCloakInterceptor('ng-cloak'));
+  }
 
   /**
    * Special directive that will disable ALL Layout conversions of layout
@@ -3196,15 +3184,6 @@ function InterimElementProvider() {
     };
   }
 
-  // *********************************************************************************
-  //
-  // These functions create registration functions for ngMaterial Layout attribute directives
-  // This provides easy translation to switch ngMaterial attribute selectors to
-  // CLASS selectors and directives; which has huge performance implications
-  // for IE Browsers
-  //
-  // *********************************************************************************
-
   /**
    * Tail-hook ngCloak to delay the uncloaking while Layout transformers
    * finish processing. Eliminates flicker with Material.Layoouts
@@ -3233,6 +3212,16 @@ function InterimElementProvider() {
     }];
   }
 
+
+  // *********************************************************************************
+  //
+  // These functions create registration functions for ngMaterial Layout attribute directives
+  // This provides easy translation to switch ngMaterial attribute selectors to
+  // CLASS selectors and directives; which has huge performance implications
+  // for IE Browsers
+  //
+  // *********************************************************************************
+
   /**
    * Creates a directive registration function where a possible dynamic attribute
    * value will be observed/watched.
@@ -3240,9 +3229,10 @@ function InterimElementProvider() {
    */
   function attributeWithObserve(className) {
 
-    return ['$mdUtil', '$interpolate', function(_$mdUtil_, _$interpolate_) {
+    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
       $mdUtil = _$mdUtil_;
       $interpolate = _$interpolate_;
+      $log = _$log_;
 
       return {
         restrict: 'A',
@@ -3250,6 +3240,8 @@ function InterimElementProvider() {
           var linkFn;
           if (config.enabled) {
             // immediately replace static (non-interpolated) invalid values...
+
+            validateAttributeUsage(className, attr, element, $log);
 
             validateAttributeValue( className,
               getNormalizedAttrValue(className, attr, ""),
@@ -3284,8 +3276,10 @@ function InterimElementProvider() {
    * any attribute value
    */
   function attributeWithoutValue(className) {
-    return ['$interpolate', function(_$interpolate_) {
+    return ['$mdUtil', '$interpolate', "$log", function(_$mdUtil_, _$interpolate_, _$log_) {
+      $mdUtil = _$mdUtil_;
       $interpolate = _$interpolate_;
+      $log = _$log_;
 
       return {
         restrict: 'A',
@@ -3359,6 +3353,30 @@ function InterimElementProvider() {
       return angular.noop;
     }];
   }
+
+  /**
+   * Centralize warnings for known flexbox issues (especially IE-related issues)
+   */
+  function validateAttributeUsage(className, attr, element, $log){
+    var message, usage, url;
+    var nodeName = element[0].nodeName.toLowerCase();
+
+    switch(className.replace(SUFFIXES,"")) {
+      case "flex":
+        if ((nodeName == "md-button") || (nodeName == "fieldset")){
+          // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
+          // Use <div flex> wrapper inside (preferred) or outside
+
+          usage = "<" + nodeName + " " + className + "></" + nodeName + ">";
+          url = "https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers";
+          message = "Markup '{0}' may not work as expected in IE Browsers. Consult '{1}' for details.";
+
+          $log.warn( $mdUtil.supplant(message, [usage, url]) );
+        }
+    }
+
+  }
+
 
   /**
    * For the Layout attribute value, validate or replace with default
@@ -3450,14 +3468,22 @@ function InterimElementProvider() {
     return found;
   }
 
-  function extractAlignAxis(value) {
+  function extractAlignAxis(attrValue) {
     var axis = {
       main : "start",
       cross: "stretch"
-    };
+    }, values;
 
-    var values = (value || "").replace(WHITESPACE, "-").split("-");
-    if ( values.length == 3 ) {
+    attrValue = (attrValue || "");
+
+    if ( attrValue.indexOf("-") == 0 || attrValue.indexOf(" ") == 0) {
+      // For missing main-axis values
+      attrValue = "none" + attrValue;
+    }
+
+    values = attrValue.toLowerCase().trim().replace(WHITESPACE, "-").split("-");
+    if ( values.length && (values[0] === "space") ) {
+      // for main-axis values of "space-around" or "space-between"
       values = [ values[0]+"-"+values[1],values[2] ];
     }
 
@@ -3469,6 +3495,7 @@ function InterimElementProvider() {
 
     return axis;
   }
+
 
 })();
 
@@ -3751,9 +3778,9 @@ var DURATION = 450;
  * @module material.core.ripple
  *
  * @description
- * The `md-ripple-ink` directive allows you to specify the ripple color or id a ripple is allowed.
+ * The `md-ink-ripple` directive allows you to specify the ripple color or id a ripple is allowed.
  *
- * @param {string|boolean} md-ripple-ink A color string `#FF0000` or boolean (`false` or `0`) for preventing ripple
+ * @param {string|boolean} md-ink-ripple A color string `#FF0000` or boolean (`false` or `0`) for preventing ripple
  *
  * @usage
  * ### String values
@@ -3994,7 +4021,17 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
   if (this.options.center) {
     this.createRipple(this.container.prop('clientWidth') / 2, this.container.prop('clientWidth') / 2);
   } else {
-    this.createRipple(event.offsetX, event.offsetY);
+
+    // We need to calculate the relative coordinates if the target is a sublayer of the ripple element
+    if (event.srcElement !== this.$element[0]) {
+      var layerRect = this.$element[0].getBoundingClientRect();
+      var layerX = event.clientX - layerRect.left;
+      var layerY = event.clientY - layerRect.top;
+
+      this.createRipple(layerX, layerY);
+    } else {
+      this.createRipple(event.offsetX, event.offsetY);
+    }
   }
 };
 
@@ -8799,6 +8836,39 @@ angular
   .directive('mdDialog', MdDialogDirective)
   .provider('$mdDialog', MdDialogProvider);
 
+/**
+ * @ngdoc directive
+ * @name mdDialog
+ * @module material.components.dialog
+ *
+ * @restrict E
+ *
+ * @description
+ * `<md-dialog>` - The dialog's template must be inside this element.
+ *
+ * Inside, use an `<md-dialog-content>` element for the dialog's content, and use
+ * an `<md-dialog-actions>` element for the dialog's actions.
+ *
+ * * ## CSS
+ * - `.md-dialog-content` - class that sets the padding on the content as the spec file
+ *
+ * @usage
+ * ### Dialog template
+ * <hljs lang="html">
+ * <md-dialog aria-label="List dialog">
+ *   <md-dialog-content>
+ *     <md-list>
+ *       <md-list-item ng-repeat="item in items">
+ *         <p>Number {{item}}</p>
+ *       </md-list-item>
+ *     </md-list>
+ *   </md-dialog-content>
+ *   <md-dialog-actions>
+ *     <md-button ng-click="closeDialog()" class="md-primary">Close Dialog</md-button>
+ *   </md-dialog-actions>
+ * </md-dialog>
+ * </hljs>
+ */
 function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
   return {
     restrict: 'E',
@@ -8856,7 +8926,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * - Complex dialogs can be sized with `flex="percentage"`, i.e. `flex="66"`.
  * - Default max-width is 80% of the `rootElement` or `parent`.
  *
- * ## Css
+ * ## CSS
  * - `.md-dialog-content` - class that sets the padding on the content as the spec file
  *
  * @usage
@@ -8904,7 +8974,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *     function showAlert() {
  *       alert = $mdDialog.alert({
  *         title: 'Attention',
- *         content: 'This is an example of how easy dialogs can be!',
+ *         textContent: 'This is an example of how easy dialogs can be!',
  *         ok: 'Close'
  *       });
  *
@@ -9162,7 +9232,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  *   - `focusOnOpen` - `{boolean=}`: An option to override focus behavior on open. Only disable if
  *     focusing some other way, as focus management is required for dialogs to be accessible.
  *     Defaults to true.
- *   - `controller` - `{string=}`: The controller to associate with the dialog. The controller
+ *   - `controller` - `{function|string=}`: The controller to associate with the dialog. The controller
  *     will be injected with the local `$mdDialog`, which passes along a scope for the dialog.
  *   - `locals` - `{object=}`: An object containing key/value pairs. The keys will be used as names
  *     of values to inject into the controller. For example, `locals: {three: 3}` would inject
@@ -11420,15 +11490,21 @@ angular.module('material.components.icon', [
  */
 
 angular.module('material.components.input', [
-  'material.core'
-])
+    'material.core'
+  ])
   .directive('mdInputContainer', mdInputContainerDirective)
   .directive('label', labelDirective)
   .directive('input', inputTextareaDirective)
   .directive('textarea', inputTextareaDirective)
   .directive('mdMaxlength', mdMaxlengthDirective)
   .directive('placeholder', placeholderDirective)
-  .directive('ngMessages', ngMessagesDirective);
+  .directive('ngMessages', ngMessagesDirective)
+  .directive('ngMessage', ngMessageDirective)
+  .directive('ngMessageExp', ngMessageDirective)
+
+  .animation('.md-input-invalid', mdInputInvalidMessagesAnimation)
+  .animation('.md-input-messages-animation', ngMessagesAnimation)
+  .animation('.md-input-message-animation', ngMessageAnimation);
 
 /**
  * @ngdoc directive
@@ -11464,7 +11540,7 @@ angular.module('material.components.input', [
  * </hljs>
  */
 function mdInputContainerDirective($mdTheming, $parse) {
-  ContainerCtrl.$inject = ["$scope", "$element", "$attrs"];
+  ContainerCtrl.$inject = ["$scope", "$element", "$attrs", "$animate"];
   return {
     restrict: 'E',
     link: postLink,
@@ -11476,7 +11552,7 @@ function mdInputContainerDirective($mdTheming, $parse) {
     if (element.find('md-icon').length) element.addClass('md-has-icon');
   }
 
-  function ContainerCtrl($scope, $element, $attrs) {
+  function ContainerCtrl($scope, $element, $attrs, $animate) {
     var self = this;
 
     self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
@@ -11491,14 +11567,15 @@ function mdInputContainerDirective($mdTheming, $parse) {
     self.setHasValue = function(hasValue) {
       $element.toggleClass('md-input-has-value', !!hasValue);
     };
-    self.setHasMessages = function(hasMessages) {
-      $element.toggleClass('md-input-has-messages', !!hasMessages);
-    };
     self.setHasPlaceholder = function(hasPlaceholder) {
       $element.toggleClass('md-input-has-placeholder', !!hasPlaceholder);
     };
     self.setInvalid = function(isInvalid) {
-      $element.toggleClass('md-input-invalid', !!isInvalid);
+      if (isInvalid) {
+        $animate.addClass($element, 'md-input-invalid');
+      } else {
+        $animate.removeClass($element, 'md-input-invalid');
+      }
     };
     $scope.$watch(function() {
       return self.label && self.input;
@@ -11533,7 +11610,8 @@ function labelDirective() {
  * @module material.components.input
  *
  * @description
- * Use the `<input>` or the  `<textarea>` as a child of an `<md-input-container>`.
+ * You can use any `<input>` or `<textarea>` element as a child of an `<md-input-container>`. This
+ * allows you to build complex forms for data entry.
  *
  * @param {number=} md-maxlength The maximum number of characters allowed in this input. If this is
  *   specified, a character counter will be shown underneath the input.<br/><br/>
@@ -11545,7 +11623,9 @@ function labelDirective() {
  * @param {string=} placeholder An alternative approach to using aria-label when the label is not
  *   PRESENT. The placeholder text is copied to the aria-label attribute.
  * @param md-no-autogrow {boolean=} When present, textareas will not grow automatically.
- * @param md-detect-hidden {boolean=} When present, textareas will be sized properly when they are revealed after being hidden. This is off by default for performance reasons because it guarantees a reflow every digest cycle.
+ * @param md-detect-hidden {boolean=} When present, textareas will be sized properly when they are
+ *   revealed after being hidden. This is off by default for performance reasons because it
+ *   guarantees a reflow every digest cycle.
  *
  * @usage
  * <hljs lang="html">
@@ -11554,7 +11634,42 @@ function labelDirective() {
  *   <input type="text" ng-model="color" required md-maxlength="10">
  * </md-input-container>
  * </hljs>
+ *
  * <h3>With Errors</h3>
+ *
+ * `md-input-container` also supports errors using the standard `ng-messages` directives and
+ * animates the messages when they become visible using from the `ngEnter`/`ngLeave` events or
+ * the `ngShow`/`ngHide` events.
+ *
+ * By default, the messages will be hidden until the input is in an error state. This is based off
+ * of the `md-is-error` expression of the `md-input-container`. This gives the user a chance to
+ * fill out the form before the errors become visible.
+ *
+ * <hljs lang="html">
+ * <form name="colorForm">
+ *   <md-input-container>
+ *     <label>Favorite Color</label>
+ *     <input name="favoriteColor" ng-model="favoriteColor" required>
+ *     <div ng-messages="userForm.lastName.$error">
+ *       <div ng-message="required">This is required!</div>
+ *     </div>
+ *   </md-input-container>
+ * </form>
+ * </hljs>
+ *
+ * We automatically disable this auto-hiding functionality if you provide any of the following
+ * visibility directives on the `ng-messages` container:
+ *
+ *  - `ng-if`
+ *  - `ng-show`/`ng-hide`
+ *  - `ng-switch-when`/`ng-switch-default`
+ *
+ * You can also disable this functionality manually by adding the `md-auto-hide="false"` expression
+ * to the `ng-messages` container. This may be helpful if you always want to see the error messages
+ * or if you are building your own visibilty directive.
+ *
+ * _<b>Note:</b> The `md-auto-hide` attribute is a static string that is  only checked upon
+ * initialization of the `ng-messages` directive to see if it equals the string `false`._
  *
  * <hljs lang="html">
  * <form name="userForm">
@@ -11584,8 +11699,14 @@ function labelDirective() {
  * </form>
  * </hljs>
  *
- * Requires [ngMessages](https://docs.angularjs.org/api/ngMessages).
- * Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/input).
+ * <h3>Notes</h3>
+ *
+ * - Requires [ngMessages](https://docs.angularjs.org/api/ngMessages).
+ * - Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/input).
+ *
+ * The `md-input` and `md-input-container` directives use very specific positioning to achieve the
+ * error animation effects. Therefore, it is *not* advised to use the Layout system inside of the
+ * `<md-input-container>` tags. Instead, use relative or absolute positioning.
  *
  */
 
@@ -11609,6 +11730,10 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     }
     containerCtrl.input = element;
 
+    // Add an error spacer div after our input to provide space for the char counter and any ng-messages
+    var errorsSpacer = angular.element('<div class="md-errors-spacer">');
+    element.after(errorsSpacer);
+
     if (!containerCtrl.label) {
       $mdAria.expect(element, 'aria-label', element.attr('placeholder'));
     }
@@ -11630,8 +11755,9 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-        return ngModelCtrl.$invalid && ngModelCtrl.$touched;
-      };
+      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || ngModelCtrl.$$parentForm.$submitted);
+    };
+
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
 
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
@@ -11792,7 +11918,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 }
 inputTextareaDirective.$inject = ["$mdUtil", "$window", "$mdAria"];
 
-function mdMaxlengthDirective($animate) {
+function mdMaxlengthDirective($animate, $mdUtil) {
   return {
     restrict: 'A',
     require: ['ngModel', '^mdInputContainer'],
@@ -11803,58 +11929,53 @@ function mdMaxlengthDirective($animate) {
     var maxlength;
     var ngModelCtrl = ctrls[0];
     var containerCtrl = ctrls[1];
-    var charCountEl = angular.element('<div class="md-char-counter">');
-    var input = angular.element(containerCtrl.element[0].querySelector('[md-maxlength]'));
+    var charCountEl, errorsSpacer;
 
-    // Stop model from trimming. This makes it so whitespace
-    // over the maxlength still counts as invalid.
-    attr.$set('ngTrim', 'false');
+    // Wait until the next tick to ensure that the input has setup the errors spacer where we will
+    // append our counter
+    $mdUtil.nextTick(function() {
+      errorsSpacer = angular.element(containerCtrl.element[0].querySelector('.md-errors-spacer'));
+      charCountEl = angular.element('<div class="md-char-counter">');
 
-    var ngMessagesSelectors = [
-      'ng-messages',
-      'data-ng-messages',
-      'x-ng-messages',
-      '[ng-messages]',
-      '[data-ng-messages]',
-      '[x-ng-messages]'
-    ];
+      // Append our character counter inside the errors spacer
+      errorsSpacer.append(charCountEl);
 
-    var ngMessages = containerCtrl.element[0].querySelector(ngMessagesSelectors.join(','));
+      // Stop model from trimming. This makes it so whitespace
+      // over the maxlength still counts as invalid.
+      attr.$set('ngTrim', 'false');
 
-    // If we have an ngMessages container, put the counter at the top; otherwise, put it after the
-    // input so it will be positioned properly in the SCSS
-    if (ngMessages) {
-      angular.element(ngMessages).prepend(charCountEl);
-    } else {
-      input.after(charCountEl);
-    }
+      ngModelCtrl.$formatters.push(renderCharCount);
+      ngModelCtrl.$viewChangeListeners.push(renderCharCount);
+      element.on('input keydown keyup', function() {
+        renderCharCount(); //make sure it's called with no args
+      });
 
-    ngModelCtrl.$formatters.push(renderCharCount);
-    ngModelCtrl.$viewChangeListeners.push(renderCharCount);
-    element.on('input keydown keyup', function() {
-      renderCharCount(); //make sure it's called with no args
-    });
-
-    scope.$watch(attr.mdMaxlength, function(value) {
-      maxlength = value;
-      if (angular.isNumber(value) && value > 0) {
-        if (!charCountEl.parent().length) {
-          $animate.enter(charCountEl, containerCtrl.element, input);
+      scope.$watch(attr.mdMaxlength, function(value) {
+        maxlength = value;
+        if (angular.isNumber(value) && value > 0) {
+          if (!charCountEl.parent().length) {
+            $animate.enter(charCountEl, errorsSpacer);
+          }
+          renderCharCount();
+        } else {
+          $animate.leave(charCountEl);
         }
-        renderCharCount();
-      } else {
-        $animate.leave(charCountEl);
-      }
-    });
+      });
 
-    ngModelCtrl.$validators['md-maxlength'] = function(modelValue, viewValue) {
-      if (!angular.isNumber(maxlength) || maxlength < 0) {
-        return true;
-      }
-      return ( modelValue || element.val() || viewValue || '' ).length <= maxlength;
-    };
+      ngModelCtrl.$validators['md-maxlength'] = function(modelValue, viewValue) {
+        if (!angular.isNumber(maxlength) || maxlength < 0) {
+          return true;
+        }
+        return ( modelValue || element.val() || viewValue || '' ).length <= maxlength;
+      };
+    });
 
     function renderCharCount(value) {
+      // If we have not been appended to the body yet; do not render
+      if (!charCountEl.parent) {
+        return value;
+      }
+
       // Force the value into a string since it may be a number,
       // which does not have a length property.
       charCountEl.text(String(element.val() || value || '').length + '/' + maxlength);
@@ -11862,7 +11983,7 @@ function mdMaxlengthDirective($animate) {
     }
   }
 }
-mdMaxlengthDirective.$inject = ["$animate"];
+mdMaxlengthDirective.$inject = ["$animate", "$mdUtil"];
 
 function placeholderDirective($log) {
   return {
@@ -11901,6 +12022,7 @@ function placeholderDirective($log) {
 }
 placeholderDirective.$inject = ["$log"];
 
+var visibilityDirectives = ['ngIf', 'ngShow', 'ngHide', 'ngSwitchWhen', 'ngSwitchDefault'];
 function ngMessagesDirective() {
   return {
     restrict: 'EA',
@@ -11911,18 +12033,184 @@ function ngMessagesDirective() {
     require: '^^?mdInputContainer'
   };
 
-  function postLink(scope, element, attr, inputContainer) {
+  function postLink(scope, element, attrs, inputContainer) {
     // If we are not a child of an input container, don't do anything
     if (!inputContainer) return;
 
-    // Tell our parent input container we have messages so we can set the proper classes
-    inputContainer.setHasMessages(true);
+    // Add our animation class
+    element.toggleClass('md-input-messages-animation', true);
 
-    // When destroyed, inform our input container
-    scope.$on('$destroy', function() {
-      inputContainer.setHasMessages(false);
+    // Add our md-auto-hide class to automatically hide/show messages when container is invalid
+    element.toggleClass('md-auto-hide', true);
+
+    // If we see some known visibility directives, remove the md-auto-hide class
+    if (attrs.mdAutoHide == 'false' || hasVisibiltyDirective(attrs)) {
+      element.toggleClass('md-auto-hide', false);
+    }
+  }
+
+  function hasVisibiltyDirective(attrs) {
+    return visibilityDirectives.some(function(attr) {
+      return attrs[attr];
     });
   }
+}
+
+function ngMessageDirective($mdUtil) {
+  return {
+    restrict: 'EA',
+    compile: compile,
+    priority: 100
+  };
+
+  function compile(element) {
+    var inputContainer = $mdUtil.getClosest(element, "md-input-container");
+
+    // If we are not a child of an input container, don't do anything
+    if (!inputContainer) return;
+
+    // Add our animation class
+    element.toggleClass('md-input-message-animation', true);
+
+    return {};
+  }
+}
+ngMessageDirective.$inject = ["$mdUtil"];
+
+function mdInputInvalidMessagesAnimation($q, $animateCss) {
+  return {
+    addClass: function(element, className, done) {
+      var messages = getMessagesElement(element);
+
+      if (className == "md-input-invalid" && messages.hasClass('md-auto-hide')) {
+        showInputMessages(element, $animateCss, $q).finally(done);
+      }
+    }
+
+    // NOTE: We do not need the removeClass method, because the message ng-leave animation will fire
+  }
+}
+mdInputInvalidMessagesAnimation.$inject = ["$q", "$animateCss"];
+
+function ngMessagesAnimation($q, $animateCss) {
+  return {
+    enter: function(element, done) {
+      showInputMessages(element, $animateCss, $q).finally(done);
+    },
+
+    leave: function(element, done) {
+      hideInputMessages(element, $animateCss, $q).finally(done);
+    },
+
+    addClass: function(element, className, done) {
+      if (className == "ng-hide") {
+        hideInputMessages(element, $animateCss, $q).finally(done);
+      } else {
+        done();
+      }
+    },
+
+    removeClass: function(element, className, done) {
+      if (className == "ng-hide") {
+        showInputMessages(element, $animateCss, $q).finally(done);
+      } else {
+        done();
+      }
+    }
+  }
+}
+ngMessagesAnimation.$inject = ["$q", "$animateCss"];
+
+function ngMessageAnimation($animateCss) {
+  return {
+    enter: function(element, done) {
+      var messages = getMessagesElement(element);
+
+      // If we have the md-auto-hide class, the md-input-invalid animation will fire, so we can skip
+      if (messages.hasClass('md-auto-hide')) {
+        done();
+        return;
+      }
+
+      return showMessage(element, $animateCss);
+    },
+
+    leave: function(element, done) {
+      return hideMessage(element, $animateCss);
+    }
+  }
+}
+ngMessageAnimation.$inject = ["$animateCss"];
+
+function showInputMessages(element, $animateCss, $q) {
+  var animators = [], animator;
+  var messages = getMessagesElement(element);
+
+  angular.forEach(messages.children(), function(child) {
+    animator = showMessage(angular.element(child), $animateCss);
+
+    animators.push(animator.start());
+  });
+
+  return $q.all(animators);
+}
+
+function hideInputMessages(element, $animateCss, $q) {
+  var animators = [], animator;
+  var messages = getMessagesElement(element);
+
+  angular.forEach(messages.children(), function(child) {
+    animator = hideMessage(angular.element(child), $animateCss);
+
+    animators.push(animator.start());
+  });
+
+  return $q.all(animators);
+}
+
+function showMessage(element, $animateCss) {
+  var height = element[0].offsetHeight;
+
+  return $animateCss(element, {
+    event: 'enter',
+    structural: true,
+    from: {"opacity": 0, "margin-top": -height + "px"},
+    to: {"opacity": 1, "margin-top": "0"},
+    duration: 0.3
+  });
+}
+
+function hideMessage(element, $animateCss) {
+  var height = element[0].offsetHeight;
+  var styles = window.getComputedStyle(element[0]);
+
+  // If we are already hidden, just return an empty animation
+  if (styles.opacity == 0) {
+    return $animateCss(element, {});
+  }
+
+  // Otherwise, animate
+  return $animateCss(element, {
+    event: 'leave',
+    structural: true,
+    from: {"opacity": 1, "margin-top": 0},
+    to: {"opacity": 0, "margin-top": -height + "px"},
+    duration: 0.3
+  });
+}
+
+function getInputElement(element) {
+  var inputContainer = element.controller('mdInputContainer');
+
+  return inputContainer.element;
+}
+
+function getMessagesElement(element) {
+  var input = getInputElement(element);
+  var selector = 'ng-messages,data-ng-messages,x-ng-messages,' +
+    '[ng-messages],[data-ng-messages],[x-ng-messages]';
+
+  return angular.element(input[0].querySelector(selector));
 }
 
 })();
@@ -12042,6 +12330,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           tEl.addClass('md-no-proxy');
         }
       }
+      wrapSecondary();
       setupToggleAria();
 
 
@@ -12074,7 +12363,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
         tEl[0].setAttribute('tabindex', '-1');
         tEl.append(container);
+      }
 
+      function wrapSecondary() {
         if (secondaryItem && !isButton(secondaryItem) && secondaryItem.hasAttribute('ng-click')) {
           $mdAria.expect(secondaryItem, 'aria-label');
           var buttonWrapper = angular.element('<md-button class="md-secondary-container md-icon-button">');
@@ -12087,17 +12378,17 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
         // Check for a secondary item and move it outside
         if ( secondaryItem && (
-          secondaryItem.hasAttribute('ng-click') ||
+            secondaryItem.hasAttribute('ng-click') ||
             ( tAttrs.ngClick &&
-             isProxiedElement(secondaryItem) )
-        )) {
+            isProxiedElement(secondaryItem) )
+          )) {
           tEl.addClass('md-with-secondary');
           tEl.append(secondaryItem);
         }
       }
 
       function copyAttributes(item, wrapper) {
-        var copiedAttrs = ['ng-click', 'aria-label', 'ng-disabled',
+        var copiedAttrs = ['ng-if', 'ng-click', 'aria-label', 'ng-disabled',
           'ui-sref', 'href', 'ng-href', 'ng-attr-ui-sref'];
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {
@@ -13329,6 +13620,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         inputCheckValue();
       };
 
+
       attr.$observe('placeholder', ngModelCtrl.$render);
 
 
@@ -13468,6 +13760,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       if (!element[0].hasAttribute('id')) {
         ariaAttrs.id = 'select_' + $mdUtil.nextUid();
       }
+
+      var containerId = 'select_container_' + $mdUtil.nextUid();
+      selectContainer.attr('id', containerId);
+      ariaAttrs['aria-owns'] = containerId;
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
@@ -13500,6 +13796,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           selectContainer[0].setAttribute('class', value);
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
+        selectMenuCtrl.init(ngModelCtrl, attr.ngModel);
+        element.on('$destroy', function() {
+          selectContainer.remove();
+        });
       }
 
       function handleKeypress(e) {
@@ -13523,7 +13823,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
       }
 
-      function openSelect(e) {
+      function openSelect() {
         selectScope.isOpen = true;
         element.attr('aria-expanded', 'true');
 
@@ -13533,8 +13833,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           skipCompile: true,
           element: selectContainer,
           target: element[0],
+          selectCtrl: mdSelectCtrl,
           preserveElement: true,
-          parent: element,
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).finally(function() {
@@ -13553,7 +13853,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   SelectMenuController.$inject = ["$scope", "$attrs", "$element"];
   return {
     restrict: 'E',
-    require: ['mdSelectMenu', '^ngModel'],
+    require: ['mdSelectMenu'],
     scope: true,
     controller: SelectMenuController,
     link: {pre: preLink}
@@ -13563,12 +13863,10 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   // its child options run postLink.
   function preLink(scope, element, attr, ctrls) {
     var selectCtrl = ctrls[0];
-    var ngModel = ctrls[1];
 
     $mdTheming(element);
     element.on('click', clickListener);
     element.on('keypress', keyListener);
-    if (ngModel) selectCtrl.init(ngModel);
 
     function keyListener(e) {
       if (e.keyCode == 13 || e.keyCode == 32) {
@@ -13636,7 +13934,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 
         // watchCollection on the model because by default ngModel only watches the model's
         // reference. This allowed the developer to also push and pop from their array.
-        $scope.$watchCollection($attrs.ngModel, function(value) {
+        $scope.$watchCollection(self.modelBinding, function(value) {
           if (validateArray(value)) renderMultiple(value);
           self.ngModel.$setPristine();
         });
@@ -13683,8 +13981,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
       }
     };
 
-    self.init = function(ngModel) {
+    self.init = function(ngModel, binding) {
       self.ngModel = ngModel;
+      self.modelBinding = binding;
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
       // that we can properly compare objects set on the model to the available options
@@ -13869,7 +14168,15 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
-    function setOptionValue(newValue, oldValue) {
+    function setOptionValue(newValue, oldValue, prevAttempt) {
+      if (!selectCtrl.hashGetter) {
+        if (!prevAttempt) {
+          scope.$$postDigest(function() {
+            setOptionValue(newValue, oldValue, true);
+          });
+        }
+        return;
+      }
       var oldHashKey = selectCtrl.hashGetter(oldValue, scope);
       var newHashKey = selectCtrl.hashGetter(newValue, scope);
 
@@ -14327,7 +14634,7 @@ function SelectProvider($$interimElementProvider) {
      * trigger the [optional] user-defined expression
      */
     function announceClosed(opts) {
-      var mdSelect = opts.selectEl.controller('mdSelect');
+      var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
         mdSelect.setLabelText(menuController.selectedLabels());
@@ -14342,7 +14649,7 @@ function SelectProvider($$interimElementProvider) {
     function calculateMenuPositions(scope, element, opts) {
       var 
         containerNode = element[0],
-        targetNode = opts.target[0].children[1], // target the label
+        targetNode = opts.target[0].children[0], // target the label
         parentNode = $document[0].body,
         selectNode = opts.selectEl[0],
         contentNode = opts.contentEl[0],
@@ -14450,7 +14757,7 @@ function SelectProvider($$interimElementProvider) {
       } else {
         left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
-            centeredRect.top + contentNode.scrollTop) + 5;
+            centeredRect.top + contentNode.scrollTop) + 4;
 
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
@@ -16142,6 +16449,28 @@ MdToastDirective.$inject = ["$mdToast"];
   * - For a toast action, use element with class `md-action`.
   * - Add the class `md-capsule` for curved corners.
   *
+  * ## Parent container notes
+  *
+  * The toast is positioned using absolute positioning relative to it's first non-static parent
+  * container. Thus, if the requested parent container uses static positioning, we will temporarily
+  * set it's positioning to `relative` while the toast is visible and reset it when the toast is
+  * hidden.
+  *
+  * Because of this, it is usually best to ensure that the parent container has a fixed height and
+  * prevents scrolling by setting the `overflow: hidden;` style. Since the position is based off of
+  * the parent's height, the toast may be mispositioned if you allow the parent to scroll.
+  *
+  * You can, however, have a scrollable element inside of the container; just make sure the
+  * container itself does not scroll.
+  *
+  * <hljs lang="html">
+  * <div layout-fill id="toast-container">
+  *   <md-content>
+  *     I can have lots of content and scroll!
+  *   </md-content>
+  * </div>
+  * </hljs>
+  *
   * @usage
   * <hljs lang="html">
   * <div ng-controller="MyController">
@@ -16313,16 +16642,17 @@ function MdToastProvider($$interimElementProvider) {
       methods: ['textContent', 'content', 'action', 'highlightAction', 'theme', 'parent'],
       options: /* @ngInject */ ["$mdToast", "$mdTheming", function($mdToast, $mdTheming) {
         var opts = {
-          template: [
-            '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">',
-              '<span flex role="alert" aria-relevant="all" aria-atomic="true">' +
-                '{{ toast.content }}' +
-              '</span>',
-              '<md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-highlight\': toast.highlightAction}">',
-                '{{ toast.action }}',
-              '</md-button>',
-            '</md-toast>'
-          ].join(''),
+          template:
+            '<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">' +
+            '  <div class="md-toast-content">' +
+            '    <span flex role="alert" aria-relevant="all" aria-atomic="true">' +
+            '      {{ toast.content }}' +
+            '    </span>' +
+            '    <md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="{\'md-highlight\': toast.highlightAction}">' +
+            '      {{ toast.action }}' +
+            '    </md-button>' +
+            '  </div>' +
+            '</md-toast>',
           controller: /* @ngInject */ ["$scope", function mdToastCtrl($scope) {
             var self = this;
             $scope.$watch(function() { return activeToastContent; }, function() {
@@ -16401,15 +16731,20 @@ function MdToastProvider($$interimElementProvider) {
         return 'md-' + pos;
       }).join(' '));
 
-      return $animate.enter(element, options.parent);
+      if (options.parent) options.parent.addClass('md-toast-animating');
+      return $animate.enter(element, options.parent).then(function() {
+        if (options.parent) options.parent.removeClass('md-toast-animating');
+      });
     }
 
     function onRemove(scope, element, options) {
       element.off(SWIPE_EVENTS, options.onSwipe);
+      if (options.parent) options.parent.addClass('md-toast-animating');
       if (options.openClass) options.parent.removeClass(options.openClass);
 
       return ((options.$destroy == true) ? element.remove() : $animate.leave(element))
         .then(function () {
+          if (options.parent) options.parent.removeClass('md-toast-animating');
           if ($mdUtil.hasComputedStyle(options.parent, 'position', 'static')) {
             options.parent.css('position', '');
           }
@@ -16499,6 +16834,8 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
   var translateY = angular.bind(null, $mdUtil.supplant, 'translate3d(0,{0}px,0)');
 
   return {
+    template: '',
+
     restrict: 'E',
 
     link: function(scope, element, attr) {
@@ -16729,9 +17066,10 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
     var parent        = $mdUtil.getParentWithPointerEvents(element),
         content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
-        current       = $mdUtil.getNearestContentElement(element),
-        tooltipParent = angular.element(current || document.body),
+        tooltipParent = angular.element(document.body),
         debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
+
+    if ($animate.pin) $animate.pin(element, parent);
 
     // Initialize element
 
@@ -16739,8 +17077,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     manipulateElement();
     bindEvents();
 
-    // Default origin transform point is 'left top'
-    // positionTooltip() is always relative to top left
+    // Default origin transform point is 'center top'
+    // positionTooltip() is always relative to center top
     updateContentOrigin();
 
     configureWatchers();
@@ -16752,7 +17090,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function updateContentOrigin() {
-      var origin = 'left top';
+      var origin = 'center top';
       switch (scope.direction) {
         case 'left'  : origin =  'right center';  break;
         case 'right' : origin =  'left center';   break;
@@ -16808,7 +17146,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         });
 
         attributeObserver.observe(parent[0], { attributes: true});
-      };
+      }
 
       // Store whether the element was focused when the window loses focus.
       var windowBlurHandler = function() {
@@ -16816,11 +17154,17 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       };
       var elementFocusedOnWindowBlur = false;
 
+      function windowScrollHandler() {
+        setVisible(false);
+      }
+      
       ngWindow.on('blur', windowBlurHandler);
       ngWindow.on('resize', debouncedOnResize);
+      document.addEventListener('scroll', windowScrollHandler, true);
       scope.$on('$destroy', function() {
         ngWindow.off('blur', windowBlurHandler);
         ngWindow.off('resize', debouncedOnResize);
+        document.removeEventListener('scroll', windowScrollHandler, true);
         attributeObserver && attributeObserver.disconnect();
       });
 
@@ -16910,12 +17254,13 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       var tipRect = $mdUtil.offsetRect(element, tooltipParent);
       var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
       var newPosition = getPosition(scope.direction);
+      var offsetParent = element.prop('offsetParent');
 
       // If the user provided a direction, just nudge the tooltip onto the screen
       // Otherwise, recalculate based on 'top' since default is 'bottom'
       if (scope.direction) {
         newPosition = fitInParent(newPosition);
-      } else if (newPosition.top > element.prop('offsetParent').scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
+      } else if (offsetParent && newPosition.top > offsetParent.scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
         newPosition = fitInParent(getPosition('top'));
       }
 
@@ -16962,7 +17307,8 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * @name material.components.virtualRepeat
  */
 angular.module('material.components.virtualRepeat', [
-  'material.core'
+  'material.core',
+  'material.components.showHide'
 ])
 .directive('mdVirtualRepeatContainer', VirtualRepeatContainerDirective)
 .directive('mdVirtualRepeat', VirtualRepeatDirective);
@@ -17090,11 +17436,18 @@ function VirtualRepeatContainerController(
   // make a best effort at re-measuring as it changes.
   var boundUpdateSize = angular.bind(this, this.updateSize);
 
-  $$rAF(function() {
+  $$rAF(angular.bind(this, function() {
     boundUpdateSize();
 
     var debouncedUpdateSize = $mdUtil.debounce(boundUpdateSize, 10, null, false);
     var jWindow = angular.element($window);
+
+    // Make one more attempt to get the size if it is 0.
+    // This is not by any means a perfect approach, but there's really no
+    // silver bullet here.
+    if (!this.size) {
+      debouncedUpdateSize();
+    }
 
     jWindow.on('resize', debouncedUpdateSize);
     $scope.$on('$destroy', function() {
@@ -17102,7 +17455,7 @@ function VirtualRepeatContainerController(
     });
 
     $scope.$on('$md-resize', boundUpdateSize);
-  });
+  }));
 }
 VirtualRepeatContainerController.$inject = ["$$rAF", "$mdUtil", "$parse", "$window", "$scope", "$element", "$attrs"];
 
@@ -17146,6 +17499,7 @@ VirtualRepeatContainerController.prototype.updateSize = function() {
   this.size = this.isHorizontal()
       ? this.$element[0].clientWidth
       : this.$element[0].clientHeight;
+
   this.repeater && this.repeater.containerUpdated();
 };
 
@@ -17165,14 +17519,15 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
   var dimension =  this.isHorizontal() ? 'width' : 'height';
   var crossDimension = this.isHorizontal() ? 'height' : 'width';
 
+  // Clear any existing dimensions.
+  this.sizer.innerHTML = '';
+
   // If the size falls within the browser's maximum explicit size for a single element, we can
   // set the size and be done. Otherwise, we have to create children that add up the the desired
   // size.
   if (size < MAX_ELEMENT_SIZE) {
     this.sizer.style[dimension] = size + 'px';
   } else {
-    // Clear any existing dimensions.
-    this.sizer.innerHTML = '';
     this.sizer.style[dimension] = 'auto';
     this.sizer.style[crossDimension] = 'auto';
 
@@ -17203,7 +17558,8 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
 VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
   var shrinkSize = Math.max(size, this.autoShrinkMin * this.repeater.getItemSize());
   if (this.autoShrink && shrinkSize !== this.size) {
-    if (shrinkSize < (this.originalSize || this.size)) {
+    var currentSize = this.originalSize || this.size;
+    if (!currentSize || shrinkSize < currentSize) {
       if (!this.originalSize) {
         this.originalSize = this.size;
       }
@@ -18734,9 +19090,7 @@ function MdAutocomplete () {
       // Set our variable for the link function above which runs later
       hasNotFoundTemplate = noItemsTemplate ? true : false;
 
-      if (attr.hasOwnProperty('tabindex')) {
-        element.attr('tabindex', '-1');
-      }
+      if (!attr.hasOwnProperty('tabindex')) element.attr('tabindex', '-1');
 
       return '\
         <md-autocomplete-wrap\
@@ -18867,42 +19221,72 @@ angular
 function MdAutocompleteItemScopeDirective($compile, $mdUtil) {
   return {
     restrict: 'AE',
-    link: postLink,
-    terminal: true
+    compile: compile,
+    terminal: true,
+    transclude: 'element'
   };
 
-  function postLink(scope, element, attr) {
-    var ctrl = scope.$mdAutocompleteCtrl;
-    var newScope = ctrl.parent.$new();
-    var itemName = ctrl.itemName;
+  function compile(tElement, tAttr, transclude) {
+    return function postLink(scope, element, attr) {
+      var ctrl = scope.$mdAutocompleteCtrl;
+      var newScope = ctrl.parent.$new();
+      var itemName = ctrl.itemName;
 
-    // Watch for changes to our scope's variables and copy them to the new scope
-    watchVariable('$index', '$index');
-    watchVariable('item', itemName);
+      // Watch for changes to our scope's variables and copy them to the new scope
+      watchVariable('$index', '$index');
+      watchVariable('item', itemName);
 
-    // Recompile the contents with the new/modified scope
-    $compile(element.contents())(newScope);
+      // Ensure that $digest calls on our scope trigger $digest on newScope.
+      connectScopes();
 
-    // Replace it if required
-    if (attr.hasOwnProperty('mdAutocompleteReplace')) {
-      element.after(element.contents());
-      element.remove();
-    }
-
-    /**
-     * Creates a watcher for variables that are copied from the parent scope
-     * @param variable
-     * @param alias
-     */
-    function watchVariable(variable, alias) {
-      newScope[alias] = scope[variable];
-
-      scope.$watch(variable, function(value) {
-        $mdUtil.nextTick(function() {
-          newScope[alias] = value;
-        });
+      // Link the element against newScope.
+      transclude(newScope, function(clone) {
+        element.after(clone);
       });
-    }
+
+      /**
+       * Creates a watcher for variables that are copied from the parent scope
+       * @param variable
+       * @param alias
+       */
+      function watchVariable(variable, alias) {
+        newScope[alias] = scope[variable];
+
+        scope.$watch(variable, function(value) {
+          $mdUtil.nextTick(function() {
+            newScope[alias] = value;
+          });
+        });
+      }
+
+      /**
+       * Creates watchers on scope and newScope that ensure that for any
+       * $digest of scope, newScope is also $digested.
+       */
+      function connectScopes() {
+        var scopeDigesting = false;
+        var newScopeDigesting = false;
+
+        scope.$watch(function() {
+          if (newScopeDigesting || scopeDigesting) {
+            return;
+          }
+
+          scopeDigesting = true;
+          scope.$$postDigest(function() {
+            if (!newScopeDigesting) {
+              newScope.$digest();
+            }
+
+            scopeDigesting = newScopeDigesting = false;
+          });
+        });
+
+        newScope.$watch(function() {
+          newScopeDigesting = true;
+        });
+      }
+    };
   }
 }
 MdAutocompleteItemScopeDirective.$inject = ["$compile", "$mdUtil"];
@@ -18936,7 +19320,7 @@ function MdHighlightCtrl ($scope, $element, $attrs) {
 
           $element.html(text.replace(regex, '<span class="highlight">$&</span>'));
         }, true);
-    $element.on('$destroy', function () { watcher(); });
+    $element.on('$destroy', watcher);
   }
 
   function sanitize (term) {
@@ -21009,12 +21393,20 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     menuContainer = setMenuContainer;
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
     triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
+    triggerElement.setAttribute('aria-expanded', 'false');
 
     this.isInMenuBar = opts.isInMenuBar;
     this.nestedMenus = $mdUtil.nodesToArray(menuContainer[0].querySelectorAll('.md-nested-menu'));
 
     menuContainer.on('$mdInterimElementRemove', function() {
       self.isOpen = false;
+    });
+
+    var menuContainerId = 'menu_container_' + $mdUtil.nextUid();
+    menuContainer.attr('id', menuContainerId);
+    angular.element(triggerElement).attr({
+      'aria-owns': menuContainerId,
+      'aria-haspopup': 'true'
     });
 
     $scope.$on('$destroy', this.disableHoverListener);
@@ -21088,6 +21480,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     self.enableHoverListener();
     self.isOpen = true;
     triggerElement = triggerElement || (ev ? ev.target : $element[0]);
+    triggerElement.setAttribute('aria-expanded', 'true');
     $scope.$emit('$mdMenuOpen', $element);
     $mdMenu.show({
       scope: $scope,
@@ -21095,9 +21488,10 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       nestLevel: self.nestLevel,
       element: menuContainer,
       target: triggerElement,
-      preserveElement: self.isInMenuBar || self.nestedMenus.length > 0,
-      parent: self.isInMenuBar ? $element : 'body'
+      preserveElement: true,
+      parent: 'body'
     }).finally(function() {
+      triggerElement.setAttribute('aria-expanded', 'false');
       self.disableHoverListener();
     });
   };
@@ -21107,13 +21501,13 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
   $scope.$watch(function() { return self.isOpen; }, function(isOpen) {
     if (isOpen) {
-      triggerElement.setAttribute('aria-expanded', 'true');
+      menuContainer.attr('aria-hidden', 'false');
       $element[0].classList.add('md-open');
       angular.forEach(self.nestedMenus, function(el) {
         el.classList.remove('md-open');
       });
     } else {
-      triggerElement && triggerElement.setAttribute('aria-expanded', 'false');
+      menuContainer.attr('aria-hidden', 'true');
       $element[0].classList.remove('md-open');
     }
     $scope.$mdMenuIsOpen = self.isOpen;
@@ -21387,7 +21781,6 @@ function MenuDirective($mdUtil) {
         }
         menuEl.classList.add('md-nested-menu');
         menuEl.setAttribute('md-nest-level', nestingDepth + 1);
-        menuEl.setAttribute('role', 'menu');
       });
     }
     return link;
@@ -21401,21 +21794,18 @@ function MenuDirective($mdUtil) {
       '<div class="md-open-menu-container md-whiteframe-z2"></div>'
     );
     var menuContents = element.children()[1];
-    menuContainer.append(menuContents);
-    if (isInMenuBar) {
-      element.append(menuContainer);
-      menuContainer[0].style.display = 'none';
+    if (!menuContents.hasAttribute('role')) {
+      menuContents.setAttribute('role', 'menu');
     }
-    mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
+    menuContainer.append(menuContents);
 
-    scope.$on('$destroy', function() {
-      mdMenuCtrl
-        .destroy()
-        .finally(function(){
-          menuContainer.remove();
-        });
+    element.on('$destroy', function() {
+      menuContainer.remove();
     });
 
+    element.append(menuContainer);
+    menuContainer[0].style.display = 'none';
+    mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
   }
 }
 MenuDirective.$inject = ["$mdUtil"];
@@ -21483,7 +21873,7 @@ function MenuProvider($$interimElementProvider) {
       if (options.hasBackdrop) {
         options.backdrop = $mdUtil.createBackdrop(scope, "md-menu-backdrop md-click-catcher");
 
-        $animate.enter(options.backdrop, options.parent);
+        $animate.enter(options.backdrop, $document[0].body);
       }
 
       /**
@@ -21554,11 +21944,8 @@ function MenuProvider($$interimElementProvider) {
        * Place the menu into the DOM and call positioning related functions
        */
       function showMenu() {
-        if (!opts.preserveElement) {
-          opts.parent.append(element);
-        } else {
-          element[0].style.display = '';
-        }
+        opts.parent.append(element);
+        element[0].style.display = '';
 
         return $q(function(resolve) {
           var position = calculateMenuPosition(element, opts);
@@ -21668,13 +22055,13 @@ function MenuProvider($$interimElementProvider) {
               handled = true;
               break;
             case $mdConstant.KEY_CODE.UP_ARROW:
-              if (!focusMenuItem(ev, opts.menuContentEl, opts, -1)) {
+              if (!focusMenuItem(ev, opts.menuContentEl, opts, -1) && !opts.nestLevel) {
                 opts.mdMenuCtrl.triggerContainerProxy(ev);
               }
               handled = true;
               break;
             case $mdConstant.KEY_CODE.DOWN_ARROW:
-              if (!focusMenuItem(ev, opts.menuContentEl, opts, 1)) {
+              if (!focusMenuItem(ev, opts.menuContentEl, opts, 1) && !opts.nestLevel) {
                 opts.mdMenuCtrl.triggerContainerProxy(ev);
               }
               handled = true;
@@ -21999,18 +22386,16 @@ MenuBarController.prototype.init = function() {
       el[0].classList.remove('md-open');
     }
 
-    if (opts.closeAll) {
-      if ($element[0].contains(el[0])) {
-        var parentMenu = el[0];
-        while (parentMenu && rootMenus.indexOf(parentMenu) == -1) {
-          parentMenu = $mdUtil.getClosest(parentMenu, 'MD-MENU', true);
-        }
-        if (parentMenu) {
-          if (!opts.skipFocus) parentMenu.querySelector('button:not([disabled])').focus();
-          self.currentlyOpenMenu = undefined;
-          self.disableOpenOnHover();
-          self.setKeyboardMode(true);
-        }
+    if ($element[0].contains(el[0])) {
+      var parentMenu = el[0];
+      while (parentMenu && rootMenus.indexOf(parentMenu) == -1) {
+        parentMenu = $mdUtil.getClosest(parentMenu, 'MD-MENU', true);
+      }
+      if (parentMenu) {
+        if (!opts.skipFocus) parentMenu.querySelector('button:not([disabled])').focus();
+        self.currentlyOpenMenu = undefined;
+        self.disableOpenOnHover();
+        self.setKeyboardMode(true);
       }
     }
   }));
@@ -22311,8 +22696,8 @@ function MenuBarDirective($mdUtil, $mdTheming) {
         if (menuEl.nodeName == 'MD-MENU') {
           if (!menuEl.hasAttribute('md-position-mode')) {
             menuEl.setAttribute('md-position-mode', 'left bottom');
+            menuEl.querySelector('button,a').setAttribute('role', 'menuitem');
           }
-          menuEl.setAttribute('role', 'menu');
           var contentEls = $mdUtil.nodesToArray(menuEl.querySelectorAll('md-menu-content'));
           angular.forEach(contentEls, function(contentEl) {
             contentEl.classList.add('md-menu-bar-menu');
@@ -22384,11 +22769,27 @@ MenuItemController.prototype.init = function(ngModel) {
     this.mode  = $attrs.type;
     this.iconEl = $element[0].children[0];
     this.buttonEl = $element[0].children[1];
-    if (ngModel) this.initClickListeners();
+    if (ngModel) {
+      // Clear ngAria set attributes
+      this.initClickListeners();
+    }
   }
 };
 
+// ngAria auto sets attributes on a menu-item with a ngModel.
+// We don't want this because our content (buttons) get the focus
+// and set their own aria attributes appropritately. Having both
+// breaks NVDA / JAWS. This undeoes ngAria's attrs.
+MenuItemController.prototype.clearNgAria = function() {
+  var el = this.$element[0];
+  var clearAttrs = ['role', 'tabindex', 'aria-invalid', 'aria-checked'];
+  angular.forEach(clearAttrs, function(attr) {
+    el.removeAttribute(attr);
+  });
+};
+
 MenuItemController.prototype.initClickListeners = function() {
+  var self = this;
   var ngModel = this.ngModel;
   var $scope = this.$scope;
   var $attrs = this.$attrs;
@@ -22397,7 +22798,7 @@ MenuItemController.prototype.initClickListeners = function() {
 
   this.handleClick = angular.bind(this, this.handleClick);
 
-  var icon = this.iconEl
+  var icon = this.iconEl;
   var button = angular.element(this.buttonEl);
   var handleClick = this.handleClick;
 
@@ -22405,12 +22806,13 @@ MenuItemController.prototype.initClickListeners = function() {
   setDisabled($attrs.disabled);
 
   ngModel.$render = function render() {
+    self.clearNgAria();
     if (isSelected()) {
       icon.style.display = '';
-      $element.attr('aria-checked', 'true');
+      button.attr('aria-checked', 'true');
     } else {
       icon.style.display = 'none';
-      $element.attr('aria-checked', 'false');
+      button.attr('aria-checked', 'false');
     }
   };
 
@@ -22464,6 +22866,7 @@ angular
 function MenuItemDirective() {
   return {
     require: ['mdMenuItem', '?ngModel'],
+    priority: 210, // ensure that our post link runs after ngAria
     compile: function(templateEl, templateAttrs) {
       if (templateAttrs.type == 'checkbox' || templateAttrs.type == 'radio') {
         var text = templateEl[0].textContent;
@@ -22476,11 +22879,11 @@ function MenuItemDirective() {
         templateEl.append(buttonEl);
         templateEl[0].classList.add('md-indent');
 
-        setDefault('role', (templateAttrs.type == 'checkbox') ? 'menuitemcheckbox' : 'menuitemradio');
+        setDefault('role', (templateAttrs.type == 'checkbox') ? 'menuitemcheckbox' : 'menuitemradio', buttonEl);
         angular.forEach(['ng-disabled'], moveAttrToButton);
 
       } else {
-        setDefault('role', 'menuitem');
+        setDefault('role', 'menuitem', templateEl[0].querySelector('md-button,button,a'));
       }
 
 
@@ -22490,9 +22893,13 @@ function MenuItemDirective() {
         ctrl.init(ngModel);
       };
 
-      function setDefault(attr, val) {
-        if (!templateEl[0].hasAttribute(attr)) {
-          templateEl[0].setAttribute(attr, val);
+      function setDefault(attr, val, el) {
+        el = el || templateEl;
+        if (el instanceof angular.element) {
+          el = el[0];
+        }
+        if (!el.hasAttribute(attr)) {
+          el.setAttribute(attr, val);
         }
       }
 
@@ -23712,8 +24119,8 @@ MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
-angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme {  background: '{{background-50}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled] {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-50}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]):hover,.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover,.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab md-icon,  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-primary,.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  a.md-button.md-THEME_NAME-theme.md-primary.md-raised, a.md-button.md-THEME_NAME-theme.md-primary.md-fab,  .md-button.md-THEME_NAME-theme.md-primary.md-raised,  .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  a.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-raised,.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-contrast}}';  background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon {    color: '{{background-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }a.md-button.md-THEME_NAME-theme.md-warn,.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  a.md-button.md-THEME_NAME-theme.md-warn.md-raised, a.md-button.md-THEME_NAME-theme.md-warn.md-fab,  .md-button.md-THEME_NAME-theme.md-warn.md-raised,  .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-700}}'; }  a.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }a.md-button.md-THEME_NAME-theme.md-accent,.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-accent.md-raised, a.md-button.md-THEME_NAME-theme.md-accent.md-fab,  .md-button.md-THEME_NAME-theme.md-accent.md-raised,  .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-700}}'; }  a.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }a.md-button.md-THEME_NAME-theme[disabled], a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled], a.md-button.md-THEME_NAME-theme.md-accent[disabled], a.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}' !important;  cursor: not-allowed; }  a.md-button.md-THEME_NAME-theme[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,  .md-button.md-THEME_NAME-theme[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }a.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }md-card.md-THEME_NAME-theme {  background-color: '{{background-color}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{background-300}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }md-chips.md-THEME_NAME-theme .md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme .md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme .md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  color: '{{foreground-1}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-hue-1}}';  color: '{{foreground-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */md-datepicker.md-THEME_NAME-theme {  background: '{{background-color}}'; }.md-THEME_NAME-theme .md-datepicker-input {  color: '{{background-contrast}}';  background: '{{background-color}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder, .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-500}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-300}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-calendar,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-color}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-color}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [ng-messages] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme data-ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme x-ng-message :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message-exp] :not(.md-char-counter) {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message],md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message-exp],md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],md-input-container.md-THEME_NAME-theme .md-input [disabled] {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item > .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{foreground-4}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu.md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{foreground-2}}'; }md-menu-content.md-THEME_NAME-theme .md-menu.md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-color}}';  color: '{{foreground-1}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{primary-contrast}}'; }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme .md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-value {  color: '{{warn-500}}' !important;  border-bottom-color: '{{warn-500}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-option[disabled] {  color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  color: '{{primary-500}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    color: '{{primary-600}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    color: '{{accent-500}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      color: '{{accent-600}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([disabled]):not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused .md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused .md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused .md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button:not(.md-raised) {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-content {    background-color: '{{foreground-2}}'; }"); 
+angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme {  background: '{{background-50}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled] {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-50}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]):hover,.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover,.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab md-icon,  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-primary,.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  a.md-button.md-THEME_NAME-theme.md-primary.md-raised, a.md-button.md-THEME_NAME-theme.md-primary.md-fab,  .md-button.md-THEME_NAME-theme.md-primary.md-raised,  .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  a.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-raised,.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon {    color: '{{background-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }a.md-button.md-THEME_NAME-theme.md-warn,.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  a.md-button.md-THEME_NAME-theme.md-warn.md-raised, a.md-button.md-THEME_NAME-theme.md-warn.md-fab,  .md-button.md-THEME_NAME-theme.md-warn.md-raised,  .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-700}}'; }  a.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }a.md-button.md-THEME_NAME-theme.md-accent,.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-accent.md-raised, a.md-button.md-THEME_NAME-theme.md-accent.md-fab,  .md-button.md-THEME_NAME-theme.md-accent.md-raised,  .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-700}}'; }  a.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }a.md-button.md-THEME_NAME-theme[disabled], a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled], a.md-button.md-THEME_NAME-theme.md-accent[disabled], a.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}' !important;  cursor: default; }  a.md-button.md-THEME_NAME-theme[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,  .md-button.md-THEME_NAME-theme[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }a.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }md-card.md-THEME_NAME-theme {  background-color: '{{background-color}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{background-300}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }md-chips.md-THEME_NAME-theme .md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme .md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme .md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  color: '{{foreground-1}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-hue-1}}';  color: '{{foreground-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */md-datepicker.md-THEME_NAME-theme {  background: '{{background-color}}'; }.md-THEME_NAME-theme .md-datepicker-input {  color: '{{background-contrast}}';  background: '{{background-color}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder, .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-300}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-calendar,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-color}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-color}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [ng-messages] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme data-ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme x-ng-message :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message-exp] :not(.md-char-counter) {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message],md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message-exp],md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],md-input-container.md-THEME_NAME-theme .md-input [disabled] {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item > .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{foreground-4}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu.md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{foreground-2}}'; }md-menu-content.md-THEME_NAME-theme .md-menu.md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-color}}';  color: '{{foreground-1}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{primary-contrast}}'; }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme .md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-option[disabled] {  color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  color: '{{primary-500}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    color: '{{primary-600}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    color: '{{accent-500}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      color: '{{accent-600}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([disabled]):not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused .md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused .md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused .md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button:not(.md-raised) {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-content {    background-color: '{{foreground-2}}'; }"); 
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc5-master-fd33d41"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0-rc7-master-2ab3075"}};
