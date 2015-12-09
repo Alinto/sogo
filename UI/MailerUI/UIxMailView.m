@@ -251,9 +251,15 @@ static NSString *mailETag = nil;
     those are the IMAP4 flags (and annotations, which we do not use).
     Since we don't render the flags, it should be OK, if this changes
     we must embed the flagging into the etag.
+
+    2015-12-09: We disable caching for now. Let's do this right soon
+    by taking into account IMAP flags and the Accepted/Declined/etc.
+    state of an even with an IMIP invitation. We should perhaps even
+    store the state as an IMAP flag.
   */
   s = [[context request] headerForKey: @"if-none-match"];
-  if (s)
+  //if (s)
+  if (0)
     {
       if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
         { 
