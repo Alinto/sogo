@@ -33,11 +33,21 @@
           data.Vacation.endDateEnabled = 0;
           data.Vacation.endDate = new Date();
         }
-
-        if (data.Vacation.autoReplyEmailAddresses)
+        if (data.Vacation.autoReplyEmailAddresses && data.Vacation.autoReplyEmailAddresses.length)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
-      } else {
+        else
+          delete data.Vacation.autoReplyEmailAddresses;
+      } else
         data.Vacation = {};
+
+      if (!angular.isDefined(data.Vacation.autoReplyEmailAddresses) &&
+          angular.isDefined(window.defaultEmailAddresses))
+        data.Vacation.autoReplyEmailAddresses = window.defaultEmailAddresses;
+
+      if (!angular.isDefined(data.Vacation.daysBetweenResponse))
+        data.Vacation.daysBetweenResponse = 7;
+
+      if (!angular.isDefined(data.Vacation.endDate)) {
         data.Vacation.endDateEnabled = 0;
         data.Vacation.endDate = new Date();
       }

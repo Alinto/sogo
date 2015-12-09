@@ -756,6 +756,7 @@
                 <md-input-container>
                   <label><var:string label:value="Email addresses (separated by commas)"/></label>
                   <textarea const:name="autoReplyEmailAddresses"
+                            required="required"
                             const:id="autoReplyEmailAddresses"
                             ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"/>
                 </md-input-container>
