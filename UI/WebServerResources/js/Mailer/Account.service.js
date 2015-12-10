@@ -160,15 +160,17 @@
     }
     else {
       _visit(this.$mailboxes);
-      _this.$$flattenMailboxes = allMailboxes;
-      if (options && options.saveState) {
-        _.reduce(allMailboxes, function(expandedFolders, mailbox) {
-          if (mailbox.$expanded) {
-            expandedFolders.push('/' + mailbox.id);
-          }
-          return expandedFolders;
-        }, expandedMailboxes);
-        Account.$$resource.post(null, 'saveFoldersState', expandedMailboxes);
+      if (!options || !options.all) {
+        _this.$$flattenMailboxes = allMailboxes;
+        if (options && options.saveState) {
+          _.reduce(allMailboxes, function(expandedFolders, mailbox) {
+            if (mailbox.$expanded) {
+              expandedFolders.push('/' + mailbox.id);
+            }
+            return expandedFolders;
+          }, expandedMailboxes);
+          Account.$$resource.post(null, 'saveFoldersState', expandedMailboxes);
+        }
       }
     }
 

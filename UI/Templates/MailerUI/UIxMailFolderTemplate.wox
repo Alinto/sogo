@@ -166,7 +166,7 @@
               </md-menu-item>
               <md-menu-divider><!-- divider --></md-menu-divider>
               <md-menu-item ng-repeat="folder in
-                                       account.$flattenMailboxes()
+                                       account.$flattenMailboxes({ all: true })
                                        track by folder.path"
                             ng-hide="mailbox.id == folder.id">
                 <md-button ng-click="mailbox.copySelectedMessages(folder.id)">
