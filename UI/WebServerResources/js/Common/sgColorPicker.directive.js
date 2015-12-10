@@ -25,7 +25,7 @@
         '             ng-style="{ \'background-color\': sgColor }"',
         '             ng-click="$mdOpenMenu()"',
         '             md-menu-origin="md-menu-origin">',
-        '    <md-icon style="color: #fff">color_lens</md-icon>',
+        '    <md-icon ng-style="{ color: sgIconColor }">color_lens</md-icon>',
         '  </md-button>',
         '  <md-menu-content width="3">',
         '    <md-content class="md-padding">',
@@ -48,6 +48,7 @@
       // Expose ng-model value to scope
       ngModelController.$render = function() {
         scope.sgColor = ngModelController.$viewValue;
+        scope.sgIconColor = contrast(ngModelController.$viewValue);
       };
     }
   }
@@ -63,6 +64,7 @@
     $scope.setColor = function(color) {
       // Update scope value and ng-model
       $scope.sgColor = color;
+      $scope.sgIconColor = contrast(color);
       ngModelController.$setViewValue(color);
     };
   }

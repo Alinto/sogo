@@ -298,6 +298,8 @@ Date.prototype.getHourString = function() {
     return newString;
 };
 
+/* Functions */
+
 function l() {
   var key = arguments[0];
   var value = key;
@@ -312,4 +314,42 @@ function l() {
   }
 
   return value;
+}
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+// Respect contrast ratio recommendation from W3C:
+// http://www.w3.org/TR/WCAG20/#contrast-ratiodef
+function contrast(hex) {
+  var color, c, l = 1;
+
+  color = hexToRgb(hex);
+  if (color) {
+    c = [color.r / 255, color.g / 255, color.b / 255];
+
+    for (var i = 0; i < c.length; ++i) {
+      if (c[i] <= 0.03928) {
+	c[i] = c[i] / 12.92;
+      }
+      else {
+	c[i] = Math.pow((c[i] + 0.055) / 1.055, 2.4);
+      }
+    }
+
+    l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  if (l > 0.179) {
+    return 'black';
+  }
+  else {
+    return 'white';
+  }
 }
