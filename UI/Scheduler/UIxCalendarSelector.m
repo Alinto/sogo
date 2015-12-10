@@ -25,6 +25,7 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -92,102 +93,114 @@ _intValueFromHex (NSString *hexString)
 
 - (NSArray *) calendars
 {
-  NSArray *folders;
-  NSMutableDictionary *calendar, *notifications, *urls;
-  NSUInteger count, max;
-  NSString *userLogin, *folderName, *fDisplayName;
+  NSMutableDictionary *calendar, *notifications, *urls, *acls;
+  NSString *userLogin, *folderName, *fDisplayName, *owner;
   NSNumber *isActive, *fActiveTasks;
-  SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
-  BOOL reloadOnLogin, synchronize;
+  SOGoAppointmentFolders *co;
+  NSArray *folders, *allACLs;
+
+  BOOL objectCreator, objectEraser, reloadOnLogin, synchronize;
+  NSUInteger count, max;
   
   if (!calendars)
-  {
-    co = [self clientObject];
-    userLogin = [[context activeUser] login];
-    folders = [co subFolders];
-    max = [folders count];
-    calendars = [[NSMutableArray alloc] initWithCapacity: max];
-    for (count = 0; count < max; count++)
     {
-      folder = [folders objectAtIndex: count];
-      calendar = [NSMutableDictionary dictionary];
-      folderName = [folder nameInContainer];
-      fDisplayName = [folder displayName];
-      if (fDisplayName == nil)
-        fDisplayName = @"";
-      if ([fDisplayName isEqualToString: [co defaultFolderName]])
-        fDisplayName = [self labelForKey: fDisplayName];
-      fActiveTasks = [folder activeTasks];
-
-      [calendar setObject: folderName forKey: @"id"];
-      [calendar setObject: fDisplayName forKey: @"name"];
-      [calendar setObject: [folder calendarColor] forKey: @"color"];
-      isActive = [NSNumber numberWithBool: [folder isActive]];
-      [calendar setObject: isActive forKey: @"active"];
-      [calendar setObject: [folder ownerInContext: context] forKey: @"owner"];
-      [calendar setObject: [NSNumber numberWithBool: [folder isWebCalendar]] forKey: @"isWebCalendar"];
-      if (fActiveTasks > 0)
-        [calendar setObject: fActiveTasks forKey:@"activeTasks" ];
-      [calendar setObject: [NSNumber numberWithBool: [folder includeInFreeBusy]] forKey: @"includeInFreeBusy"];
-      [calendar setObject: [NSNumber numberWithBool: [folder showCalendarAlarms]] forKey: @"showCalendarAlarms"];
-      [calendar setObject: [NSNumber numberWithBool: [folder showCalendarTasks]] forKey: @"showCalendarTasks"];
-
-      if ([folder isKindOfClass: [SOGoWebAppointmentFolder class]])
-        synchronize = NO;
-      else
-        synchronize = [folder synchronize];
-
-      if ([[folder nameInContainer] isEqualToString: @"personal"])
-        synchronize = YES;
-
-      [calendar setObject: [NSNumber numberWithBool: synchronize] forKey: @"synchronize"];
-
-      if ([folder isWebCalendar])
+      co = [self clientObject];
+      userLogin = [[context activeUser] login];
+      folders = [co subFolders];
+      max = [folders count];
+      calendars = [[NSMutableArray alloc] initWithCapacity: max];
+      for (count = 0; count < max; count++)
         {
-          urls = [NSMutableDictionary dictionaryWithObject: [folder folderPropertyValueInCategory: @"WebCalendars"]
-                                                    forKey: @"webCalendarURL"];
-          if ([folder respondsToSelector: @selector (reloadOnLogin)])
-            reloadOnLogin = [(SOGoWebAppointmentFolder *) folder reloadOnLogin];
+          folder = [folders objectAtIndex: count];
+          owner = [folder ownerInContext: context];
+          calendar = [NSMutableDictionary dictionary];
+          folderName = [folder nameInContainer];
+          fDisplayName = [folder displayName];
+          if (fDisplayName == nil)
+            fDisplayName = @"";
+          if ([fDisplayName isEqualToString: [co defaultFolderName]])
+            fDisplayName = [self labelForKey: fDisplayName];
+          fActiveTasks = [folder activeTasks];
+
+          [calendar setObject: folderName forKey: @"id"];
+          [calendar setObject: fDisplayName forKey: @"name"];
+          [calendar setObject: [folder calendarColor] forKey: @"color"];
+          isActive = [NSNumber numberWithBool: [folder isActive]];
+          [calendar setObject: isActive forKey: @"active"];
+          [calendar setObject: owner forKey: @"owner"];
+          [calendar setObject: [NSNumber numberWithBool: [folder isWebCalendar]] forKey: @"isWebCalendar"];
+          if (fActiveTasks > 0)
+            [calendar setObject: fActiveTasks forKey:@"activeTasks" ];
+          [calendar setObject: [NSNumber numberWithBool: [folder includeInFreeBusy]] forKey: @"includeInFreeBusy"];
+          [calendar setObject: [NSNumber numberWithBool: [folder showCalendarAlarms]] forKey: @"showCalendarAlarms"];
+          [calendar setObject: [NSNumber numberWithBool: [folder showCalendarTasks]] forKey: @"showCalendarTasks"];
+
+          // We extract ACLs for this address book
+          allACLs = ([owner isEqualToString: userLogin] ? nil : [folder aclsForUser: userLogin]);
+          objectCreator = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectCreator]);
+          objectEraser = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectEraser]);
+          acls = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: objectCreator], @"objectCreator",
+                                   [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
+
+
+          if ([folder isKindOfClass: [SOGoWebAppointmentFolder class]])
+            objectCreator = objectEraser = synchronize = NO;
           else
-            reloadOnLogin = NO;
-          [calendar setObject: [NSNumber numberWithBool: reloadOnLogin] forKey: @"reloadOnLogin"];
-        }
-      else
-        {
-          urls = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [folder calDavURL], @"calDavURL",
-                               [folder webDavICSURL], @"webDavICSURL",
-                               [folder webDavXMLURL], @"webDavXMLURL",
-                               nil];
-          if ([self isPublicAccessEnabled])
+            synchronize = [folder synchronize];
+
+          [calendar setObject: acls  forKey: @"acls"];
+
+          if ([[folder nameInContainer] isEqualToString: @"personal"])
+            synchronize = YES;
+
+          [calendar setObject: [NSNumber numberWithBool: synchronize] forKey: @"synchronize"];
+
+          if ([folder isWebCalendar])
             {
-              [urls setObject: [folder publicCalDavURL] forKey: @"publicCalDavURL"];
-              [urls setObject: [folder publicWebDavICSURL] forKey: @"publicWebDavICSURL"];
-              [urls setObject: [folder publicWebDavXMLURL] forKey: @"publicWebDavXMLURL"];
+              urls = [NSMutableDictionary dictionaryWithObject: [folder folderPropertyValueInCategory: @"WebCalendars"]
+                                                        forKey: @"webCalendarURL"];
+              if ([folder respondsToSelector: @selector (reloadOnLogin)])
+                reloadOnLogin = [(SOGoWebAppointmentFolder *) folder reloadOnLogin];
+              else
+                reloadOnLogin = NO;
+              [calendar setObject: [NSNumber numberWithBool: reloadOnLogin] forKey: @"reloadOnLogin"];
             }
-        }
-      [calendar setObject: urls forKey: @"urls"];
+          else
+            {
+              urls = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                            [folder calDavURL], @"calDavURL",
+                                          [folder webDavICSURL], @"webDavICSURL",
+                                          [folder webDavXMLURL], @"webDavXMLURL",
+                                          nil];
+              if ([self isPublicAccessEnabled])
+                {
+                  [urls setObject: [folder publicCalDavURL] forKey: @"publicCalDavURL"];
+                  [urls setObject: [folder publicWebDavICSURL] forKey: @"publicWebDavICSURL"];
+                  [urls setObject: [folder publicWebDavXMLURL] forKey: @"publicWebDavXMLURL"];
+                }
+            }
+          [calendar setObject: urls forKey: @"urls"];
 
-      if ([userLogin isEqualToString: [folder ownerInContext: context]])
-        {
-          notifications = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                  [NSNumber numberWithBool: [folder notifyOnPersonalModifications]],
-                                               @"notifyOnPersonalModifications",
-                                                  [NSNumber numberWithBool: [folder notifyOnExternalModifications]],
-                                               @"notifyOnExternalModifications",
-                                                  [NSNumber numberWithBool: [folder notifyUserOnPersonalModifications]],
-                                               @"notifyUserOnPersonalModifications",
-                                               nil];
-          if ([folder notifiedUserOnPersonalModifications])
-            [calendar setObject: [folder notifiedUserOnPersonalModifications] forKey: @"notifiedUserOnPersonalModifications"];
-          [calendar setObject: notifications forKey: @"notifications"];
-        }
+          if ([userLogin isEqualToString: [folder ownerInContext: context]])
+            {
+              notifications = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                       [NSNumber numberWithBool: [folder notifyOnPersonalModifications]],
+                                                   @"notifyOnPersonalModifications",
+                                                       [NSNumber numberWithBool: [folder notifyOnExternalModifications]],
+                                                   @"notifyOnExternalModifications",
+                                                       [NSNumber numberWithBool: [folder notifyUserOnPersonalModifications]],
+                                                   @"notifyUserOnPersonalModifications",
+                                                   nil];
+              if ([folder notifiedUserOnPersonalModifications])
+                [calendar setObject: [folder notifiedUserOnPersonalModifications] forKey: @"notifiedUserOnPersonalModifications"];
+              [calendar setObject: notifications forKey: @"notifications"];
+            }
 
-      [calendars addObject: calendar];
-    }
+          [calendars addObject: calendar];
+        }
   }
-  
+
   return calendars;
 }
 

@@ -86,9 +86,10 @@
    * @memberof Calendar
    * @desc Set or get the list of calendars. Will instanciate a new Calendar object for each item.
    * @param {object[]} [data] - the metadata of the calendars
+   * @param {bool} [writable] - if true, returns only the list of writable calendars
    * @returns the list of calendars
    */
-  Calendar.$findAll = function(data) {
+  Calendar.$findAll = function(data, writable) {
     var _this = this;
     if (data) {
       this.$calendars = [];
@@ -105,6 +106,11 @@
           _this.$calendars.push(calendar);
       });
     }
+
+    if (writable) {
+      return _.union(this.$calendars, _.filter(this.$subscriptions, function(calendar) { return calendar.acls.objectCreator; }));
+    }
+
     return _.union(this.$calendars, this.$subscriptions, this.$webcalendars);
   };
 

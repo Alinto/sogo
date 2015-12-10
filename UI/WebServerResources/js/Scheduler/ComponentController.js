@@ -149,7 +149,7 @@
   function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
-    vm.calendars = Calendar.$calendars;
+    vm.service = Calendar;
     vm.component = stateComponent;
     vm.categories = {};
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
