@@ -193,7 +193,6 @@
       if (this.$loadMessage(message.uid))
         return message;
     }
-
     return null;
   };
 
@@ -254,7 +253,9 @@
     if (!angular.isDefined(this.unseenCount))
       this.unseenCount = 0;
 
-    this.$isLoading = true;
+    Mailbox.$timeout(function() {
+      _this.$isLoading = true;
+    });
 
     return Mailbox.$Preferences.ready().then(function() {
 
@@ -508,8 +509,33 @@
    * @desc Delete multiple messages from mailbox.
    * @return a promise of the HTTP operation
    */
-  Mailbox.prototype.$deleteMessages = function(uids) {
-    return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
+  Mailbox.prototype.$deleteMessages = function(messages) {
+    var _this = this, uids;
+
+    uids = _.pluck(messages, 'uid');
+    return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
+      .then(function() {
+        var selectedMessages, selectedUIDs, unseen;
+        // Decrement the unseenCount accordingly
+        unseen = _.filter(messages, function(message, i) { return !message.isread; });
+        _this.unseenCount -= unseen.length;
+        // Remove messages from $messages and uidsMap
+        _.forEachRight(_this.$messages, function(message, index) {
+          var selectedIndex = _.findIndex(uids, function(uid) {
+            return message.uid == uid;
+          });
+          if (selectedIndex > -1) {
+            uids.splice(selectedIndex, 1);
+            delete _this.uidsMap[message.uid];
+            if (message.uid == _this.selectedMessage)
+              delete _this.selectedMessage;
+            _this.$messages.splice(index, 1);
+          }
+          else {
+            _this.uidsMap[message.uid] -= uids.length;
+          }
+        });
+      });
   };
 
   /**

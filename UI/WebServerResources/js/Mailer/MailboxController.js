@@ -54,15 +54,27 @@
                      l('Are you sure you want to delete the selected messages?'))
         .then(function() {
           // User confirmed the deletion
-          var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-          var selectedUIDs = _.pluck(selectedMessages, 'uid');
-          vm.selectedFolder.$deleteMessages(selectedUIDs).then(function() {
-            // Decrement the unseenCount accordingly
-            var unseenCount = _.filter(selectedMessages, function(message) { return !message.isread; });
-            vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
-            vm.selectedFolder.unseenCount =- unseenCount;
-          },  function(error) {
-            Dialog.alert(l('Error'), error);
+          var unselectMessage = false;
+          var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {
+            if (message.uid == vm.selectedFolder.selectedMessage)
+              unselectMessage = true;
+            return message.selected;
+          });
+          vm.selectedFolder.$deleteMessages(selectedMessages).then(function() {
+            if (unselectMessage) {
+              if (Mailbox.$virtualMode)
+                $state.go('mail.account.virtualMailbox',
+                          {
+                            accountId: stateAccount.id,
+                            mailboxId: encodeUriFilter(vm.selectedFolder.path)
+                          });
+              else
+                $state.go('mail.account.mailbox',
+                          {
+                            accountId: stateAccount.id,
+                            mailboxId: encodeUriFilter(vm.selectedFolder.path)
+                          });
+            }
           });
         });
     }
@@ -70,11 +82,7 @@
     function copySelectedMessages(folder) {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
       var selectedUIDs = _.pluck(selectedMessages, 'uid');
-      vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder).then(function() {
-        // TODO: refresh target mailbox?
-      }, function(error) {
-        Dialog.alert(l('Error'), error);
-      });
+      vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder);
     }
 
     // function moveSelectedMessages(folder) {

@@ -172,8 +172,8 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['Mailbox', '$stateParams', 'stateAccount', 'decodeUriFilter'];
-  function stateMailbox(Mailbox, $stateParams, stateAccount, decodeUriFilter) {
+  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
+  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
     var mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
 

@@ -48,7 +48,7 @@
     }
 
     function doDelete() {
-      stateMailbox.$deleteMessages([stateMessage.uid]).then(function() {
+      stateMailbox.$deleteMessages([stateMessage]).then(function() {
         // Remove message from list of messages
         var index = _.findIndex(stateMailbox.$messages, function(o) {
           return o.uid == stateMessage.uid;
