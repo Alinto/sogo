@@ -499,7 +499,7 @@
   else
     response = [self responseWithStatus: 400
                   andJSONRepresentation: [NSDictionary dictionaryWithObject: @"missing 'uids' parameter"
-                                                                     forKey: @"error"]];
+                                                                     forKey: @"message"]];
   
   return response;
 }
