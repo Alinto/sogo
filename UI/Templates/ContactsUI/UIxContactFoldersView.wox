@@ -341,7 +341,7 @@
                     <var:string label:value="Write"/>
                   </md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-hide="addressbook.selectedFolder.isRemote">
                   <md-button ng-click="addressbook.saveSelectedCards()">
                     <var:string label:value="Export"/>
                   </md-button>
