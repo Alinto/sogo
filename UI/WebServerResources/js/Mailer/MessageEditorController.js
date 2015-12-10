@@ -17,6 +17,7 @@
     vm.hideCc = true;
     vm.hideBcc = true;
     vm.cancel = cancel;
+    vm.save = save;
     vm.send = send;
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
@@ -111,11 +112,26 @@
       $mdDialog.cancel();
     }
 
+    function save() {
+      vm.message.$save().then(function(data) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l('Your email has been saved'))
+            .position('top right')
+            .hideDelay(3000));
+      });
+    }
+
     function send() {
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
 
       vm.message.$send().then(function(data) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l('Your email has been sent'))
+            .position('top right')
+            .hideDelay(3000));
         $mdDialog.hide();
       });
     }
