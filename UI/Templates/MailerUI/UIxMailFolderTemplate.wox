@@ -68,7 +68,8 @@
                    ng-click="mailbox.mode.search = true">
           <md-icon>search</md-icon>
         </md-button>
-        <div class="sg-folder-name">{{mailbox.selectedFolder.name}}</div>
+        <a href="javascript:void(0)" class="sg-folder-name"
+           ng-click="mailbox.mode.search = true">{{mailbox.selectedFolder.name}}</a>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdOpenMenu()">
