@@ -313,8 +313,12 @@
     // Callback of sgSubscribe directive
     function subscribeToFolder(calendarData) {
       $log.debug('subscribeToFolder ' + calendarData.owner + calendarData.name);
-      Calendar.$subscribe(calendarData.owner, calendarData.name).catch(function(data) {
-        Dialog.alert(l('Warning'), l('An error occured please try again.'));
+      Calendar.$subscribe(calendarData.owner, calendarData.name).then(function(data) {
+         $mdToast.show(
+           $mdToast.simple()
+             .content(l('Sucessfully subscribed to calendar'))
+             .position('top right')
+             .hideDelay(3000));
       });
     }
 

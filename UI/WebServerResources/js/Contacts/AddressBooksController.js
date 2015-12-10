@@ -297,8 +297,12 @@
      */
     function subscribeToFolder(addressbookData) {
       console.debug('subscribeToFolder ' + addressbookData.owner + addressbookData.name);
-      AddressBook.$subscribe(addressbookData.owner, addressbookData.name).catch(function(data) {
-        Dialog.alert(l('Warning'), l('An error occured please try again.'));
+      AddressBook.$subscribe(addressbookData.owner, addressbookData.name).then(function(data) {
+         $mdToast.show(
+           $mdToast.simple()
+             .content(l('Sucessfully subscribed to address book'))
+             .position('top right')
+             .hideDelay(3000));
       });
     }
   }
