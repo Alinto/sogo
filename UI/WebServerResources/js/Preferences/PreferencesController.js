@@ -71,10 +71,6 @@
     }
 
     function addCalendarCategory() {
-      if (!angular.isDefined(vm.preferences.defaults.SOGoCalendarCategoriesColors)) {
-        vm.preferences.defaults.SOGoCalendarCategoriesColors = {};
-        vm.preferences.defaults.SOGoCalendarCategories = [];
-      }
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
       vm.preferences.defaults.SOGoCalendarCategories.push("New category");
     }

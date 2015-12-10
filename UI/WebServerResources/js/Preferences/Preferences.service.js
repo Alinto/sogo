@@ -40,20 +40,28 @@
       } else
         data.Vacation = {};
 
-      if (!angular.isDefined(data.Vacation.autoReplyEmailAddresses) &&
+      if (angular.isUndefined(data.Vacation.autoReplyEmailAddresses) &&
           angular.isDefined(window.defaultEmailAddresses))
         data.Vacation.autoReplyEmailAddresses = window.defaultEmailAddresses;
 
-      if (!angular.isDefined(data.Vacation.daysBetweenResponse))
+      if (angular.isUndefined(data.Vacation.daysBetweenResponse))
         data.Vacation.daysBetweenResponse = 7;
 
-      if (!angular.isDefined(data.Vacation.endDate)) {
+      if (angular.isUndefined(data.Vacation.endDate)) {
         data.Vacation.endDateEnabled = 0;
         data.Vacation.endDate = new Date();
       }
 
       if (data.Forward && data.Forward.forwardAddress)
         data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
+
+      if (angular.isUndefined(data.SOGoCalendarCategoriesColors)) {
+        data.SOGoCalendarCategoriesColors = {};
+        data.SOGoCalendarCategories = [];
+      }
+
+      if (angular.isUndefined(data.SOGoContactsCategories))
+        data.SOGoContactsCategories = [];
 
       angular.extend(_this.defaults, data);
 
