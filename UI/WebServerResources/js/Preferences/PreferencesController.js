@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdDialog', '$mdToast', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdDialog, $mdToast, Dialog, User, Account, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
     var vm = this, account, mailboxes = [];
 
     vm.preferences = statePreferences;
@@ -73,6 +73,7 @@
     function addCalendarCategory() {
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
       vm.preferences.defaults.SOGoCalendarCategories.push("New category");
+      focus('calendarCategory_' + (vm.preferences.defaults.SOGoCalendarCategories.length - 1));
     }
 
     function removeCalendarCategory(index) {
@@ -83,6 +84,7 @@
 
     function addContactCategory() {
       vm.preferences.defaults.SOGoContactsCategories.push("");
+      focus('contactCategory_' + (vm.preferences.defaults.SOGoContactsCategories.length - 1));
     }
 
     function removeContactCategory(index) {

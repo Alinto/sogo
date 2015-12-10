@@ -364,7 +364,8 @@
                   <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColors[item]"><!-- color picker--></sg-color-picker>
                   <md-input-container>
 	            <input type="text" label:aria-label="Calendar Category"
-                           ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"/>
+                           ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"
+                           sg-focus-on="calendarCategory_{{$index}}"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              layout="row" layout-align="end center"
@@ -447,7 +448,8 @@
                   <md-input-container>
 	            <input type="text"
                            label:aria-label="Contact Category"
-                           ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"/>
+                           ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"
+                           sg-focus-on="contactCategory_{{$index}}"/>
                   </md-input-container>
                   <md-button type="button" class="sg-icon-button"
                              label:aria-label="Remove Contact Category"
