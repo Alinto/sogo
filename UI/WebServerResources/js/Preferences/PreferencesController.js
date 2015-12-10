@@ -148,7 +148,9 @@
     }
     
     function addMailLabel() {
-      vm.preferences.defaults.SOGoMailLabelsColors.new_label =  ["New label", "#aaa"];
+      // See $omit() in the Preferences services for real key generation
+      var key = '_$$' + guid();
+      vm.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
     }
 
     function removeMailLabel(key) {

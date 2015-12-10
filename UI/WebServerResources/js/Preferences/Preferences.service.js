@@ -166,8 +166,13 @@
 
     // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
     labels = _.object(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
-      if (key.charAt(0) == '_' && key.charAt(1) == '$')
+      if (key.charAt(0) == '_' && key.charAt(1) == '$') {
+        // New key, let's take the value and flatten it
+        if (key.length > 2 && key.charAt(2) == '$') {
+          return [value[0].toLowerCase().replace(/[ \(\)\/\{%\*<>\\\"]/g, "_"), value];
+        }
         return [key.substring(1), value];
+      }
       return [key, value];
     }));
 
