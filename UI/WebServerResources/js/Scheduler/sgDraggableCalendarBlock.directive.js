@@ -22,11 +22,14 @@
 
     function link(scope, element, attrs, calendarDayCtrl) {
       if (scope.block) {
-        if (scope.block.component.editable)
+        if (scope.block.component.editable) {
           // Add dragging grips to existing event block
           initGrips();
-        else
+        }
+        else {
+          element.removeClass('sg-draggable-calendar-block');
           return;
+        }
       }
 
       // Start dragging on mousedown
