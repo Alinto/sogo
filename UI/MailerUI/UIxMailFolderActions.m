@@ -627,8 +627,8 @@
   error = [co expunge];
   if (error)
     {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Unable to expunge folder."];
+      response = [self responseWithStatus: 500
+                    andJSONRepresentation: [NSDictionary dictionaryWithObject: @"Unable to expunge folder."  forKey: @"message"]];
     }
   else
     {

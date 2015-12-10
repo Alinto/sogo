@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdMedia', '$mdSidenav', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, $mdMedia, $mdSidenav, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -238,9 +238,11 @@
 
     function compactFolder(folder) {
       folder.$compact().then(function() {
-        // Success
-      }, function(error) {
-        Dialog.alert(l('Warning'), error);
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l('Folder compacted'))
+            .position('top right')
+            .hideDelay(3000));
       });
     }
 
