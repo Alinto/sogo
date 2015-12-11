@@ -27,6 +27,7 @@
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 
 #import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
@@ -38,7 +39,6 @@
 
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreGCSFolder.h"
-
 #import "MAPIStoreGCSMessageTable.h"
 
 #undef DEBUG
@@ -89,9 +89,12 @@
 
   if (res->ulPropTag == PidTagChangeNumber)
     {
+      NSString *changeNumber;
+
       value = NSObjectFromMAPISPropValue (&res->lpProp);
+      changeNumber = [NSString stringWithUnsignedLongLong: [(NSNumber *)value unsignedLongLongValue]];
       lastModified = [(MAPIStoreGCSFolder *)
-                       container lastModifiedFromMessageChangeNumber: value];
+                       container lastModifiedFromMessageChangeNumber: changeNumber];
       //[self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
       //[self logWithFormat: @"  c_lastmodified: %@", lastModified];
       if (lastModified)
