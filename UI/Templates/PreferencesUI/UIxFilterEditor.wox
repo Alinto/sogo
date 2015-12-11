@@ -12,7 +12,7 @@
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Filter name"/></label>
           <input class="md-title" type="text" ng-model="filterEditor.filter.name" required="required"/>
         </md-input-container>
@@ -29,7 +29,7 @@
       </script>
 
       <div layout="row" layout-align="start center">
-        <var:string label:value="For incoming messages that"/>
+        <p><var:string label:value="For incoming messages that"/></p>
         <md-input-container class="md-flex">
           <md-select ng-model="filterEditor.filter.match" required="required">
             <md-option const:value="all">
@@ -47,51 +47,50 @@
 
       <!-- CONDITIONS -->
       <div layout="column">
-        <div id="filterRules"><!-- empty -->
-          <md-list>
-            <md-list-item ng-repeat="rule in filterEditor.filter.rules">
-              <md-input-container flex="25">
-                <md-select ng-model="rule.field">
-                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.fieldLabels">{{ value }}</md-option>
-                </md-select>
-              </md-input-container>
+        <div id="filterRules"><!-- empty --></div>
+          <div layout="row"
+               ng-repeat="rule in filterEditor.filter.rules">
 
-              <md-input-container flex="25" ng-show="rule.field == 'header'">
-                <input type="text" ng-model="rule.custom_header"/>
-              </md-input-container>
+            <md-input-container class="md-block" flex="25">
+              <md-select ng-model="rule.field">
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.fieldLabels">{{ value }}</md-option>
+              </md-select>
+            </md-input-container>
 
-              <md-input-container flex="25" ng-show="rule.field == 'size'">
-                <md-select ng-model="rule.operator">
-                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.numberOperatorLabels">
-                    {{ value }}
-                  </md-option>
-                </md-select>
-              </md-input-container>
+            <md-input-container class="md-block" flex="25" ng-show="rule.field == 'header'">
+              <input type="text" ng-model="rule.custom_header"/>
+            </md-input-container>
 
-              <md-input-container flex="25" ng-show="rule.field != 'size'">
-                <md-select ng-model="rule.operator">
-                  <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.textOperatorLabels">
-                    {{ value }}
-                  </md-option>
-                </md-select>
-              </md-input-container>
+            <md-input-container class="md-block" flex="25" ng-show="rule.field == 'size'">
+              <md-select ng-model="rule.operator">
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.numberOperatorLabels">
+                  {{ value }}
+                </md-option>
+              </md-select>
+            </md-input-container>
 
-              <md-input-container class="md-flex" md-no-float="md-no-float">
-                <input type="text" label:placeholder="Value" ng-model="rule.value"/>
-              </md-input-container>
+            <md-input-container class="md-block" flex="25" ng-show="rule.field != 'size'">
+              <md-select ng-model="rule.operator">
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.textOperatorLabels">
+                  {{ value }}
+                </md-option>
+              </md-select>
+            </md-input-container>
 
-              <md-button class="sg-icon-button" type="button"
-                         ng-click="filterEditor.removeMailFilterRule($index)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
+            <md-input-container class="md-block md-flex" md-no-float="md-no-float">
+              <label><var:string label:value="Value"/></label>
+              <input type="text" ng-model="rule.value"/>
+            </md-input-container>
 
-            </md-list-item>
-          </md-list>
-        </div>
+            <md-button class="md-icon-button" type="button"
+                       ng-click="filterEditor.removeMailFilterRule($index)">
+              <md-icon>remove_circle</md-icon>
+            </md-button>
+          </div>
 
         <div layout="row" layout-align="end center">
           <label class="button-label"><var:string label:value="Add a condition"/></label>
-          <md-button class="sg-icon-button" type="button"
+          <md-button class="md-icon-button" type="button"
                      ng-click="filterEditor.addMailFilterRule($event)">
             <md-icon>add_circle</md-icon>
           </md-button>
@@ -100,72 +99,74 @@
 
       <!-- ACTIONS -->
       <div layout="column">
-        <var:string label:value="Perform these actions"/>
+        <p><var:string label:value="Perform these actions"/></p>
         <div id="filterActions"><!-- empty --></div>
+        <div layout="row"
+             ng-repeat="action in filterEditor.filter.actions">
 
-        <md-list>
-          <md-list-item layout="row" layout-align="space-between center"
-                        ng-repeat="action in filterEditor.filter.actions">
-            <md-input-container>
-              <md-select ng-model="action.method">
-                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
-              </md-select>
-            </md-input-container>
+          <md-input-container class="md-block md-flex">
+            <md-select ng-model="action.method">
+              <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
+            </md-select>
+          </md-input-container>
 
-            <!-- FORWARD MESSAGE TO -->
-            <md-input-container ng-show="action.method == 'redirect'" >
-              <input type="text" ng-model="action.argument"/>
-            </md-input-container>
+          <!-- FORWARD MESSAGE TO -->
+          <md-input-container class="md-block" flex="50" ng-show="action.method == 'redirect'" >
+            <label><var:string label:value="Email"/></label>
+            <input type="text" ng-model="action.argument"/>
+          </md-input-container>
 
-            <!-- DISCARD -->
-            <!-- nada -->
+          <!-- DISCARD -->
+          <!-- nada -->
 
-            <!-- KEEP -->
-            <!-- nada -->
+          <!-- KEEP -->
+          <!-- nada -->
 
-            <!-- SEND REJECT MESSAGE -->
-            <md-input-container ng-show="action.method == 'reject'">
-              <input type="text" ng-model="action.argument"/>
-            </md-input-container>
+          <!-- SEND REJECT MESSAGE -->
+          <md-input-container class="md-block" flex="50" ng-show="action.method == 'reject'">
+            <label><var:string label:value="Message"/></label>
+            <input type="text" ng-model="action.argument"/>
+          </md-input-container>
 
-            <!-- FILE INTO -->
-            <md-input-container ng-show="action.method == 'fileinto'" >
-              <md-select ng-model="action.argument">
-                <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
-                  <div ng-class="'sg-child-level-' + item.level">
-                    {{ item.name }}
-                  </div>
-                </md-option>
-              </md-select>
-            </md-input-container>
+          <!-- FILE INTO -->
+          <md-input-container class="md-block" flex="50" ng-show="action.method == 'fileinto'" >
+            <label><var:string label:value="Mailbox"/></label>
+            <md-select ng-model="action.argument">
+              <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
+                <div ng-class="'sg-child-level-' + item.level">
+                  {{ item.name }}
+                </div>
+              </md-option>
+            </md-select>
+          </md-input-container>
 
-            <!-- FLAG WITH -->
-            <md-input-container ng-show="action.method == 'addflag'" >
-              <md-select ng-model="action.argument" >
-                <md-option value="seen"><var:string label:value="Seen"/></md-option>
-                <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
-                <md-option value="answered"><var:string label:value="Answered"/></md-option>
-                <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
-                <md-option value="junk"><var:string label:value="Junk"/></md-option>
-                <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
-                <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
-              </md-select>
-            </md-input-container>
+          <!-- FLAG WITH -->
+          <md-input-container class="md-block" flex="50" ng-show="action.method == 'addflag'" >
+            <label><var:string label:value="Flag"/></label>
+            <md-select ng-model="action.argument" >
+              <md-option value="seen"><var:string label:value="Seen"/></md-option>
+              <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
+              <md-option value="answered"><var:string label:value="Answered"/></md-option>
+              <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
+              <md-option value="junk"><var:string label:value="Junk"/></md-option>
+              <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
+              <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
+            </md-select>
+          </md-input-container>
 
-            <!-- STOP -->
-            <!-- nada -->
+          <!-- STOP -->
+          <!-- nada -->
 
-            <md-button class="sg-icon-button" type="button"
-                       ng-click="filterEditor.removeMailFilterAction($index)">
-              <md-icon>remove_circle</md-icon>
-            </md-button>
+          <md-button class="md-icon-button" type="button"
+                     ng-click="filterEditor.removeMailFilterAction($index)">
+            <md-icon>remove_circle</md-icon>
+          </md-button>
 
-          </md-list-item>
-        </md-list>
+        </div>
 
         <div layout="row" layout-align="end center">
           <label class="button-label"><var:string label:value="Add an action"/></label>
-          <md-button class="sg-icon-button" type="button"
+          <md-button class="md-icon-button" type="button"
                      ng-click="filterEditor.addMailFilterAction($event)">
             <md-icon>add_circle</md-icon>
           </md-button>

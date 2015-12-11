@@ -11,7 +11,7 @@
     <md-toolbar>
       <div class="md-toolbar-tools">
         <!-- name -->
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Name"/></label>
           <input type="text"
                  class="md-title"

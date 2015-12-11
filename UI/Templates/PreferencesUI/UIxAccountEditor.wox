@@ -11,7 +11,7 @@
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">account_box</md-icon>
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Account Name"/></label>
           <input type="text" required="required"
                  ng-readonly="$AccountDialogController.accountId == 0"
@@ -26,69 +26,79 @@
 
       <form id="mainForm" name="accountForm" var:href="ownPath">
 
-        <md-input-container>
-          <label><var:string label:value="Server Name"/></label>
-          <input type="text" required="required"
-                 ng-readonly="$AccountDialogController.accountId == 0"
-                 ng-model="$AccountDialogController.account.serverName"/>
+        <div layout="row">
+          <md-input-container class="md-block md-flex">
+            <label><var:string label:value="Server Name"/></label>
+            <input type="text" required="required"
+                   ng-disabled="$AccountDialogController.accountId == 0"
+                   ng-model="$AccountDialogController.account.serverName"/>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex="30">
+            <label><var:string label:value="Port"/></label>
+            <input type="number" required="required" min="1" max="65535"
+                   ng-disabled="$AccountDialogController.accountId == 0"
+                   ng-model="$AccountDialogController.account.port"/>
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block md-input-has-value">
+          <label><var:string label:value="Encryption"/></label>
+          <md-radio-group ng-model="$AccountDialogController.account.encryption">
+            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
+            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
+            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
+          </md-radio-group>
         </md-input-container>
 
-        <md-input-container>
-          <label><var:string label:value="Port"/></label>
-          <input type="number" required="required" min="1" max="65535"
-                 ng-readonly="$AccountDialogController.accountId == 0"
-                 ng-model="$AccountDialogController.account.port"/>
-        </md-input-container>
+        <div layout="row">
+          <md-input-container class="md-block" flex="50">
+            <label><var:string label:value="User Name"/></label>
+            <input type="text" required="required"
+                   ng-disabled="$AccountDialogController.accountId == 0"
+                   ng-model="$AccountDialogController.account.userName"/>
+          </md-input-container>
 
-        <label><var:string label:value="Encryption"/></label>
-        <md-radio-group ng-model="$AccountDialogController.account.encryption">
-          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
-          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
-          <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
-        </md-radio-group>
+          <md-input-container class="md-block" flex="50"
+                              ng-hide="$AccountDialogController.accountId == 0">
+            <label><var:string label:value="Password"/></label>
+            <input type="password"
+                   ng-model="$AccountDialogController.account.password"/>
+          </md-input-container>
+        </div>
 
-        <md-input-container>
-          <label><var:string label:value="User Name"/></label>
-          <input type="text" required="required"
-                 ng-readonly="$AccountDialogController.accountId == 0"
-                 ng-model="$AccountDialogController.account.userName"/>
-        </md-input-container>
-
-        <md-input-container>
-          <label><var:string label:value="Password"/></label>
-          <input type="password"
-                 ng-readonly="$AccountDialogController.accountId == 0"
-                 ng-model="$AccountDialogController.account.password"/>
-        </md-input-container>
-
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Full Name"/></label>
           <input type="text" required="required"
-                 ng-readonly="$AccountDialogController.customFromIsReadonly()"
+                 ng-disabled="$AccountDialogController.customFromIsReadonly()"
                  ng-model="$AccountDialogController.account.identities[0].fullName"/>
         </md-input-container>
 
-        <md-input-container>
-          <label><var:string label:value="Email"/></label>
-          <input type="email" required="required"
-                 ng-readonly="$AccountDialogController.customFromIsReadonly()"
-                 ng-model="$AccountDialogController.account.identities[0].email"/>
-        </md-input-container>
-
-        <md-input-container>
-          <label><var:string label:value="Reply To Email"/></label>
-          <input type="email" ng-model="$AccountDialogController.account.identities[0].replyTo"/>
-        </md-input-container>
+        <div layout="row">
+          <md-input-container class="md-block" flex="50">
+            <label><var:string label:value="Email"/></label>
+            <input type="email" required="required"
+                   ng-disabled="$AccountDialogController.customFromIsReadonly()"
+                   ng-model="$AccountDialogController.account.identities[0].email"/>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50"
+                              ng-hide="$AccountDialogController.customFromIsReadonly()">
+            <label><var:string label:value="Reply To Email"/></label>
+            <input type="email"
+                   ng-model="$AccountDialogController.account.identities[0].replyTo"/>
+          </md-input-container>
+        </div>
 
         <!-- To switch between a simple text editor and the CK/HTML editor, we use a ng-if and not
              a ng-class as it doesn't get initialized by the ckEditor class directive -->
-        <md-input-container ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
-          <label><var:string label:value="Signature"/> {{$AccountDialogController.defaults.SOGoMailComposeMessageType}}</label>
+        <md-input-container class="md-block md-flex"
+            ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
+          <label><var:string label:value="Signature"/></label>
           <textarea ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
         </md-input-container>
         <div class="pseudo-input-container"
              ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'html'">
-          <label class="pseudo-input-label"><var:string label:value="Signature"/> {{$AccountDialogController.defaults.LocaleCode}}</label>
+          <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
           <textarea class="ck-editor"
                     ck-locale="$AccountDialogController.defaults.LocaleCode"
                     ck-options="{ 'height': '70px',
@@ -98,39 +108,43 @@
                     ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
         </div>
 
-        <md-radio-group ng-model="$AccountDialogController.account.receipts.receiptAction">
+        <md-input-container class="md-block md-input-has-value">
           <label><var:string label:value="When I receive a request for a return receipt"/></label>
-          <md-radio-button value="ignore"><var:string label:value="Never send a return receipt"/></md-radio-button>
-          <md-radio-button value="allow"><var:string label:value="Allow return receipts for some messages"/></md-radio-button>
-        </md-radio-group>
+          <md-radio-group ng-model="$AccountDialogController.account.receipts.receiptAction">
+            <md-radio-button value="ignore"><var:string label:value="Never send a return receipt"/></md-radio-button>
+            <md-radio-button value="allow"><var:string label:value="Allow return receipts for some messages"/></md-radio-button>
+          </md-radio-group>
+        </md-input-container>
 
-        <label>
-          <var:string label:value="If I'm not in the To or Cc of the message"/>
-          <md-select ng-model="$AccountDialogController.account.receipts.receiptNonRecipientAction">
-            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
-            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
-            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
-          </md-select>
-        </label>
+        <div layout="column" flex-offset="5"
+             ng-show="$AccountDialogController.account.receipts.receiptAction == 'allow'">
+          <md-input-container class="md-block md-flex">
+            <label><var:string label:value="If I'm not in the To or Cc of the message"/></label>
+            <md-select ng-model="$AccountDialogController.account.receipts.receiptNonRecipientAction">
+              <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+              <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+              <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+            </md-select>
+          </md-input-container>
 
-        <label>
-          <var:string  label:value="If the sender is outside my domain"/>
-          <md-select ng-model="$AccountDialogController.account.receipts.receiptOutsideDomainAction">
-            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
-            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
-            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
-          </md-select>
-        </label>
+          <md-input-container class="md-block md-flex">
+            <label><var:string  label:value="If the sender is outside my domain"/></label>
+            <md-select ng-model="$AccountDialogController.account.receipts.receiptOutsideDomainAction">
+              <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+              <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+              <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+            </md-select>
+          </md-input-container>
 
-        <label>
-          <var:string label:value="In all other cases"/>
-          <md-select ng-model="$AccountDialogController.account.receipts.receiptAnyAction">
-            <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
-            <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
-            <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
-          </md-select>
-        </label>
-
+          <md-input-container class="md-block md-flex">
+            <label><var:string label:value="In all other cases"/></label>
+            <md-select ng-model="$AccountDialogController.account.receipts.receiptAnyAction">
+              <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
+              <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
+              <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
+            </md-select>        
+          </md-input-container>
+        </div>
 
       </form>
     </md-dialog-content>

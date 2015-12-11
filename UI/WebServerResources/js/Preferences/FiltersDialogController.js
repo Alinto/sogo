@@ -37,19 +37,19 @@
     vm.methodLabels = {
       "discard": l("Discard the message"),
       "keep": l("Keep the message"),
-      "redirect": l("Forward the message to:"),
+      "redirect": l("Forward the message to"),
       "vacation": l("Send a vacation message"),
       "stop": l("Stop processing filter rules")
     };
 
     if (sieveCapabilities.indexOf("reject") > -1)
-      vm.methodLabels.reject = l("Send a reject message:");
+      vm.methodLabels.reject = l("Send a reject message");
 
     if (sieveCapabilities.indexOf("fileinto") > -1)
-      vm.methodLabels.fileinto = l("File the message in:");
+      vm.methodLabels.fileinto = l("File the message in");
 
     if (sieveCapabilities.indexOf("imapflags") > -1 || sieveCapabilities.indexOf("imap4flags") > -1)
-      vm.methodLabels.addflag = l("Flag the message with:");
+      vm.methodLabels.addflag = l("Flag the message with");
 
     vm.numberOperatorLabels = {
       "under": l("is under"),

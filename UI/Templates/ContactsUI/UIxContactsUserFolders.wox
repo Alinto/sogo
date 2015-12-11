@@ -16,8 +16,9 @@
       </div>
     </md-toolbar>
     <md-dialog-content class="md-dialog-content">
-      <md-input-container>
-        <label><md-icon>search</md-icon><var:string label:value="Search User"/></label>
+      <md-input-container class="md-block md-flex">
+        <md-icon>search</md-icon>
+        <label><var:string label:value="Search User"/></label>
         <input type="input"
                autocomplete="off"
                ng-model="subscribe.searchText"

@@ -275,14 +275,15 @@
           </div>
           <!-- search mode -->
           <div class="md-toolbar-tools sg-toolbar-secondary"
+               layout="row"
                ng-show="addressbook.mode.search"
                sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
-            <md-button class="sg-icon-button"
+            <md-button class="md-icon-button"
                        sg-search-cancel="addressbook.cancelSearch()"
                        label:aria-label="Back">
               <md-icon>arrow_back</md-icon>
             </md-button>
-            <md-input-container md-no-float="md-no-float">
+            <md-input-container class="md-flex" md-no-float="md-no-float">
               <input name="folderSearch" type="search" label:placeholder="Search"/>
             </md-input-container>
             <md-input-container flex="25">

@@ -539,15 +539,16 @@
           </div>
           <!-- search mode -->
           <div class="md-toolbar-tools sg-toolbar-secondary"
+               layout="row"
                ng-show="list.mode.search"
                sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
-            <md-button class="sg-icon-button"
+            <md-button class="md-icon-button"
                        sg-search-cancel="list.cancelSearch()"
                        label:aria-label="Back">
               <md-icon>arrow_back</md-icon>
             </md-button>
-            <md-input-container>
-              <input name="folderSearch" type="search" />
+            <md-input-container class="md-flex" md-no-float="md-no-float">
+              <input name="folderSearch" type="search" label:placeholder="Search"/>
             </md-input-container>
             <md-input-container flex="25">
               <md-select>

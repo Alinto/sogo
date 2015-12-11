@@ -1,6 +1,6 @@
 @import "extends";
 
-@media (max-width: $layout-breakpoint-sm) {
+@media (max-width: $layout-breakpoint-xs) {
   // Enlarge the autocompletion menu on small devices to fit the entire screen
   .md-autocomplete-suggestions-container {
     right: $baseline-grid*2;

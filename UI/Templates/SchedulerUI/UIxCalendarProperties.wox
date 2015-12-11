@@ -13,7 +13,7 @@
         <!-- color -->
         <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
         <!-- name -->
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Name"/></label>
           <input type="text"
                  class="md-title"
@@ -60,7 +60,7 @@
         <var:string label:value="Reload on login"/>
       </md-checkbox>
       <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
-        <md-divider><!-- divider --></md-divider>
+        <md-divider class="md-padding"><!-- divider --></md-divider>
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
             ng-true-value="1"
@@ -79,7 +79,7 @@
             ng-false-value="0">
           <var:string label:value="When I modify my calendar, send a mail to"/>
         </md-checkbox>
-        <md-input-container md-no-float="md-no-float">
+        <md-input-container flex-offset="5" md-no-float="md-no-float">
           <input type="text"
                  label:placeholder="Email Address"
                  ng-value="properties.calendar.notifications.notifiedUserOnPersonalModifications"

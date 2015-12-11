@@ -1,1 +1,9 @@
 @import "extends";
+
+md-input-container {
+  md-radio-group {
+    md-radio-button:first-child {
+      margin-top: $radio-top-left;
+    }
+  }
+}

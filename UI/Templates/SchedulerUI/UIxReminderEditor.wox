@@ -4,7 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+  <div layout="row" layout-wrap="layout-wrap">
     <md-input-container class="md-input-number">
       <input type="number" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>
     </md-input-container>
@@ -32,18 +32,16 @@
   </div>
 
   <var:if condition="emailAlarmsEnabled">
-    <div layout="row" layout-align="space-around center">
-      <md-radio-group layout="row" layout-align="space-around center"
-                      ng-model="editor.component.alarm.action">
-        <md-radio-button value="display">
-          <var:string label:value="Show an Alert"/>
-        </md-radio-button>
-        <md-radio-button value="email">
-          <var:string label:value="Send an E-mail"/>
-        </md-radio-button>
-      </md-radio-group>
-    </div>
-    <div layout="row" layout-align="space-around center"
+    <md-radio-group layout="column"
+                    ng-model="editor.component.alarm.action">
+      <md-radio-button value="display">
+        <var:string label:value="Show an Alert"/>
+      </md-radio-button>
+      <md-radio-button value="email">
+        <var:string label:value="Send an E-mail"/>
+      </md-radio-button>
+    </md-radio-group>
+    <div layout="row" flex-offset="5"
          ng-show="editor.component.canRemindAttendeesByEmail()">
       <md-checkbox ng-model="editor.component.alarm.organizer"
                    ng-true-value="1"

@@ -188,6 +188,7 @@ md-sidenav {
     max-height: 400px;
     overflow: hidden;
     overflow-y: auto;
+    padding-bottom: 2px; // leave some space for the border
     transition: $swift-ease-in;
     &.ng-hide {
       max-height: 0;

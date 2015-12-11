@@ -23,15 +23,15 @@
     <md-dialog-content class="md-padding">
       <div layout="column">
         <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
-        <md-input-container>
+        <md-input-container class="md-block">
           <label><var:string label:value="CardDAV URL"/></label>
           <input type="text" ng-model="links.addressbook.urls.cardDavURL" ng-readonly="true"/>
         </md-input-container>
       </div>
       <var:if condition="isPublicAccessEnabled">
-        <div layout="column" layout-padding="layout-padding">
+        <div layout="column">
           <div class="sg-md-title"><var:string label:value="Public Access"/></div>
-          <md-input-container>
+          <md-input-container class="md-block">
             <label><var:string label:value="CardDAV URL"/></label>
             <input type="text" ng-model="links.addressbook.urls.publicCardDavURL" ng-readonly="true"/>
           </md-input-container>

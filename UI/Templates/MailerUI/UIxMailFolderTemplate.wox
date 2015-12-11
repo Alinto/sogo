@@ -117,6 +117,7 @@
       </div>
       <!-- search mode -->
       <div class="md-toolbar-tools sg-toolbar-secondary"
+           layout="row"
            ng-show="mailbox.mode.search"
            sg-search="mailbox.selectedFolder.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
         <md-button class="sg-icon-button"
@@ -124,7 +125,7 @@
                    label:aria-label="Back">
           <md-icon>arrow_back</md-icon>
         </md-button>
-        <md-input-container md-no-float="md-no-float">
+        <md-input-container class="md-flex" md-no-float="md-no-float">
           <input name="folderSearch" type="search" ng-minlength="3" label:placeholder="Search"/>
         </md-input-container>
         <md-input-container flex="25">

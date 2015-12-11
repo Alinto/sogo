@@ -41,12 +41,16 @@ md-toolbar,
   // Animate the first icon button of a "secondary" toolbar
   &.sg-toolbar-secondary {
     > .md-toolbar-tools > .sg-icon-button:first-child,
-    > .sg-icon-button:first-child {
+    > .md-toolbar-tools > .md-icon-button:first-child,
+    > .sg-icon-button:first-child,
+    > .md-icon-button:first-child {
       transition: $swift-ease-in;
       transform: translateX(0px);
     }
     &.ng-hide > .md-toolbar-tools > .sg-icon-button:first-child,
-    &.ng-hide > .sg-icon-button:first-child {
+    &.ng-hide > .md-toolbar-tools > .md-icon-button:first-child,
+    &.ng-hide > .sg-icon-button:first-child,
+    &.ng-hide > .md-icon-button:first-child {
       transform: translateX(-$touch-zone-width);
     }
   }

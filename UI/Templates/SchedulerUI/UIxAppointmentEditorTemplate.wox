@@ -24,19 +24,21 @@
         </div>
       </md-toolbar>
       <md-dialog-content class="md-dialog-content">
-        <!-- location -->
-        <md-input-container>
-          <label><var:string label:value="Location"/></label>
-          <input type="text" ng-model="editor.component.location"/>
-        </md-input-container>
-        <!-- calendar -->
-        <md-input-container>
-          <label><var:string label:value="Calendar"/></label>
-          <md-select ng-model="editor.component.destinationCalendar">
-            <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
-                       ng-value="calendar.id">{{calendar.name}}</md-option>
-          </md-select>
-        </md-input-container>
+        <div layout="row" layout-wrap="layout-wrap">
+          <!-- location -->
+          <md-input-container flex="50" flex-xs="100">
+            <label><var:string label:value="Location"/></label>
+            <input type="text" ng-model="editor.component.location"/>
+          </md-input-container>
+          <!-- calendar -->
+          <md-input-container flex="50" flex-xs="100">
+            <label><var:string label:value="Calendar"/></label>
+            <md-select ng-model="editor.component.destinationCalendar">
+              <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
+                         ng-value="calendar.id">{{calendar.name}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
         <!-- categories -->
         <md-chips ng-model="editor.component.categories">
           <md-autocomplete
@@ -73,6 +75,7 @@
                      label:aria-label="Priority"><!-- slider --></md-slider>
         </div>
         <!-- is all day -->
+        <div layout="row">
         <md-checkbox
             ng-model="editor.component.isAllDay"
             ng-true-value="1"
@@ -80,7 +83,9 @@
             label:aria-label="All day Event">
           <var:string label:value="All day Event"/>
         </md-checkbox>
+        </div>
         <!-- is transparent -->
+        <div layout="row">
         <md-checkbox
             ng-model="editor.component.isTransparent"
             ng-true-value="1"
@@ -88,7 +93,9 @@
             label:aria-label="Show Time as Free">
           <var:string label:value="Show Time as Free"/>
         </md-checkbox>
+        </div>
         <!-- send appointment notifications -->
+        <div layout="row">
         <md-checkbox
             ng-model="editor.component.sendAppointmentNotifications"
             ng-true-value="1"
@@ -96,6 +103,7 @@
             label:aria-label="Send Appointment Notifications">
           <var:string label:value="Send Appointment Notifications"/>
         </md-checkbox>
+        </div>
         <!-- start + end -->
         <div layout="row">
           <div flex="50">
@@ -127,8 +135,8 @@
         </div>
         <!-- attach urls -->
         <div class="attr" ng-repeat="attach in editor.component.attachUrls">
-          <div layout="row" layout-align="center end">
-            <md-input-container>
+          <div layout="row">
+            <md-input-container class="md-block md-flex">
               <label>
                 <var:string label:value="URL"/>
               </label>
@@ -149,14 +157,14 @@
           </label>
         </div>
         <!-- comment -->
-        <md-input-container>
+        <md-input-container class="md-block md-flex">
           <label><var:string label:value="Description"/></label>
           <textarea ng-model="editor.component.comment"><!-- comment --></textarea>
         </md-input-container>
         <!-- repeat -->
         <div layout="row" layout-align="start end">
           <div class="md-flex">
-            <md-input-container>
+            <md-input-container class="md-block md-flex">
               <label><var:string label:value="Repeat"/></label>
               <md-select ng-model="editor.component.repeat.frequency" ng-disabled="editor.component.occurrenceId">
                 <var:foreach list="repeatList" item="item">
@@ -177,28 +185,25 @@
           <var:component className="UIxRecurrenceEditor" />
         </div>
         <!-- end repeat -->
-        <div layout="row" layout-align="start end">
-          <div flex="50" flex-xs="100"
-               ng-show="editor.component.repeat.frequency != 'never'">
-            <md-input-container>
-              <label><var:string label:value="End Repeat"/></label>
-              <md-select ng-model="editor.component.repeat.end"
-                         ng-disabled="editor.component.occurrenceId">
-                <md-option value="never"><var:string label:value="Never"/></md-option>
-                <md-option value="count"><var:string label:value="After"/></md-option>
-                <md-option value="until"><var:string label:value="On Date"/></md-option>
-              </md-select>
-            </md-input-container>
-          </div>
-          <div layout="row" layout-align="start center" ng-show="editor.component.repeat.end == 'count'">
-            <md-input-container class="md-input-number">
-              <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
-            </md-input-container>
-            <var:string label:value="times"/>
-          </div>
-          <md-input-container ng-show="editor.component.repeat.end == 'until'">
-            <input type="date" label:aria-label="Repeat until" ng-model="editor.component.repeat.until"/>
+        <div layout="row">
+          <md-input-container class="md-block" flex="50" flex-xs="100"
+                              ng-show="editor.component.repeat.frequency != 'never'">
+            <label><var:string label:value="End Repeat"/></label>
+            <md-select ng-model="editor.component.repeat.end"
+                       ng-disabled="editor.component.occurrenceId">
+              <md-option value="never"><var:string label:value="Never"/></md-option>
+              <md-option value="count"><var:string label:value="After"/></md-option>
+              <md-option value="until"><var:string label:value="On Date"/></md-option>
+            </md-select>
           </md-input-container>
+          <md-input-container class="md-block md-input-number"
+                              ng-show="editor.component.repeat.end == 'count'">
+            <label><var:string label:value="times"/></label>
+            <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
+          </md-input-container>
+          <md-datepicker ng-show="editor.component.repeat.end == 'until'"
+                         ng-model="editor.component.repeat.until"
+                         label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
         </div>
         <!-- attendees -->
         <div layout="row" layout-align="start start">
@@ -255,7 +260,7 @@
                      label:aria-label="Reminder">
           <var:string label:value="Reminder"/>
         </md-checkbox>
-        <div class="sg-subcontent"
+        <div flex-offset="5"
              ng-show="editor.component.$hasAlarm">
           <var:component className="UIxReminderEditor" />
         </div>

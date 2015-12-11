@@ -9,9 +9,9 @@
    xmlns:uix="OGo:uix">
   <div layout="column">
 
-    <md-input-container>
+    <md-input-container class="md-block md-flex">
       <label><var:string label:value="label_Public"/></label>
-      <md-select flex="50" label:aria-label="Public"
+      <md-select label:aria-label="Public"
                  ng-model="acl.selectedUser.rights.Public"
                  ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
@@ -22,9 +22,9 @@
       </md-select>
     </md-input-container>
 
-    <md-input-container>
+    <md-input-container class="md-block md-flex">
       <label><var:string label:value="label_Confidential"/></label>
-      <md-select flex="50" label:aria-label="Confidential"
+      <md-select label:aria-label="Confidential"
                  ng-model="acl.selectedUser.rights.Confidential"
                  ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
@@ -35,9 +35,9 @@
       </md-select>
     </md-input-container>
 
-    <md-input-container>
+    <md-input-container class="md-block md-flex">
       <label><var:string label:value="label_Private"/></label>
-      <md-select flex="50" label:aria-label="Private"
+      <md-select label:aria-label="Private"
                  ng-model="acl.selectedUser.rights.Private"
                  ng-change="acl.confirmChange(acl.selectedUser)">
         <var:foreach list="objectRights" item="currentRight">
