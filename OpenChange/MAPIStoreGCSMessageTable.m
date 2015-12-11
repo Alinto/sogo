@@ -99,14 +99,21 @@
       //[self logWithFormat: @"  c_lastmodified: %@", lastModified];
       if (lastModified)
         {
+          SEL operator;
+
+          operator = [self operatorFromRestrictionOperator: res->relop];
           *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_lastmodified"
-                                               operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                               operatorSelector: operator
                                                           value: lastModified];
           [*qualifier autorelease];
           rc = MAPIRestrictionStateNeedsEval;
         }
       else
-        rc = MAPIRestrictionStateAlwaysTrue;
+        {
+          [self logWithFormat: @"No last modified found for: 0x%.16"PRIx64". Then no restriction applied",
+                [value unsignedLongLongValue]];
+          rc = MAPIRestrictionStateAlwaysTrue;
+        }
     }
   else
     {
