@@ -109,6 +109,49 @@
   return self;
 }
 
+- (NSString *) description
+{
+  id key, value;
+  NSEnumerator *propEnumerator;
+  NSMutableString *description;
+
+  description = [NSMutableString stringWithFormat: @"%@ %@. Properties: {", NSStringFromClass ([self class]),
+                                 [self url]];
+
+  propEnumerator = [properties keyEnumerator];
+  while ((key = [propEnumerator nextObject]))
+    {
+      uint32_t proptag = 0;
+      if ([key isKindOfClass: [NSString class]] && [(NSString *)key intValue] > 0)
+        proptag = [(NSString *)key intValue];
+      else if ([key isKindOfClass: [NSNumber class]])
+        proptag = [key unsignedLongValue];
+
+      if (proptag > 0)
+        {
+          const char *propTagName = get_proptag_name ([key unsignedLongValue]);
+          NSString *propName;
+
+          if (propTagName)
+            propName = [NSString stringWithCString: propTagName
+                                          encoding: NSUTF8StringEncoding];
+          else
+            propName = [NSString stringWithFormat: @"0x%.4x", [key unsignedLongValue]];
+
+          [description appendFormat: @"'%@': ", propName];
+        }
+      else
+        [description appendFormat: @"'%@': ", key];
+
+      value = [properties objectForKey: key];
+      [description appendFormat: @"%@ (%@), ", value, NSStringFromClass ([value class])];
+    }
+
+  [description appendString: @"}\n"];
+
+  return description;
+}
+
 - (uint64_t) objectVersion
 {
   NSNumber *versionNbr;
