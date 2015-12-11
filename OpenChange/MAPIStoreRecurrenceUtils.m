@@ -35,6 +35,7 @@
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 
 #import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
@@ -51,7 +52,7 @@
                    fromRecurrencePattern: (struct RecurrencePattern *) rp
                           withExceptions: (struct ExceptionInfo *) exInfos
                        andExceptionCount: (uint16_t) exInfoCount
-                              inTimeZone: (NSTimeZone *) tz
+                              inTimeZone: (iCalTimeZone *) tz
 
 {
   NSCalendarDate *startDate, *olEndDate, *untilDate, *exDate;
@@ -63,7 +64,7 @@
   iCalWeekOccurrence weekOccurrence;
   iCalWeekOccurrences dayMaskDays;
   NSUInteger count, max;
-  NSInteger bySetPos;
+  NSInteger bySetPos, tzOffset;
   unsigned char maskValue;
 
   [entity removeAllRecurrenceRules];
@@ -242,9 +243,10 @@
           {
             /* The OriginalStartDate is in local time */
             exDate = [NSDate dateFromMinutesSince1601: exInfos[count].OriginalStartDate];
+            tzOffset = -[[tz periodForDate: exDate] secondsOffsetFromGMT];
             exDate = [exDate dateByAddingYears: 0 months: 0 days: 0
                                          hours: 0 minutes: 0
-                                       seconds: - [tz secondsFromGMT]];
+                                       seconds: tzOffset];
             [exceptionDates removeObject: exDate];
           }
       }

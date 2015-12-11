@@ -29,6 +29,7 @@
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalTimeZone.h>
 
 @class NSTimeZone;
 
@@ -46,7 +47,7 @@
                    fromRecurrencePattern: (struct RecurrencePattern *) rp
                           withExceptions: (struct ExceptionInfo *) exInfos
                        andExceptionCount: (uint16_t) exInfoCount
-                              inTimeZone: (NSTimeZone *) tz;
+                              inTimeZone: (iCalTimeZone *) tz;
 
 @end
 

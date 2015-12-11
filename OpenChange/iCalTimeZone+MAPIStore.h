@@ -30,6 +30,9 @@
 - (struct Binary_r *) asTimeZoneStructInMemCtx: (TALLOC_CTX *) memCtx;
 - (struct Binary_r *) asZoneTimeDefinitionWithFlags: (enum TZRuleFlag) flags
                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (iCalTimeZone *) iCalTimeZoneFromDefinition: (NSData *) value
+                              withDescription: (NSString *) description
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 
