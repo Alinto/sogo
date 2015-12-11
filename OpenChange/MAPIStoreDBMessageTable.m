@@ -61,14 +61,15 @@ static Class MAPIStoreDBMessageK = Nil;
 
   if ((uint32_t) res->ulPropTag == PidTagChangeNumber)
     {
+      SEL operator;
+
       value = NSObjectFromMAPISPropValue (&res->lpProp);
       cVersion = exchange_globcnt (([value unsignedLongLongValue] >> 16)
                                    & 0x0000ffffffffffffLL);
       version = [NSNumber numberWithUnsignedLongLong: cVersion];
-      //[self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
-      [self logWithFormat: @"  version: %.16lx", cVersion];
-      *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"version"
-                                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+      operator = [self operatorFromRestrictionOperator: res->relop];
+      *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"version_number"
+                                           operatorSelector: operator
                                                       value: version];
       [*qualifier autorelease];
       rc = MAPIRestrictionStateNeedsEval;
