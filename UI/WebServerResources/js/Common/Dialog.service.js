@@ -64,7 +64,7 @@
         '      <label>' + label + '</label>',
         '      <input type="' + (o.inputType || 'text') + '"',
         '             aria-label="' + title + '"',
-        '             ng-model="name" required="required"/>',
+        '             ng-model="name" md-autofocus="true" required="required"/>',
         '    </md-input-container>',
         '  </md-dialog-content>',
         '    <md-dialog-actions>',
