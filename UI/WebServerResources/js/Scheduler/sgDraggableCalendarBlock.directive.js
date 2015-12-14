@@ -130,7 +130,7 @@
                                calendarDayCtrl.dayString.substring(11,16));
           newData = {
             type: 'appointment',
-            pid: 'personal',  // TODO respect SOGoDefaultCalendar
+            pid: Calendar.$defaultCalendar(),
             summary: l('New Event'),
             startDate: startDate,
             isAllDay: isHourCell? 0 : 1

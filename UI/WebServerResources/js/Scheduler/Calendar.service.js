@@ -26,12 +26,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Calendar constructor
    */
-  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Component', 'Acl', function($q, $timeout, $log, Settings, Resource, Component, Acl) {
+  Calendar.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Preferences', 'Component', 'Acl', function($q, $timeout, $log, Settings, Resource, Preferences, Component, Acl) {
     angular.extend(Calendar, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
+      $Preferences: Preferences,
       $Component: Component,
       $$Acl: Acl,
       activeUser: Settings.activeUser(),
@@ -57,6 +58,26 @@
       EventDragHorizontalOffset: 3
     })
     .factory('Calendar', Calendar.$factory);
+
+  /**
+   * @memberof Calendar
+   * @desc Return the default calendar id according to the user's defaults.
+   * @returns a calendar id
+   */
+  Calendar.$defaultCalendar = function() {
+    var defaultCalendar = Calendar.$Preferences.defaults.SOGoDefaultCalendar,
+        calendar;
+
+    if (defaultCalendar == 'first') {
+      calendar = _.find(Calendar.$findAll(null, true), function(calendar) {
+        return calendar.active;
+      });
+      if (calendar)
+        return calendar.id;
+    }
+
+    return 'personal';
+  };
 
   /**
    * @memberof Calendar
