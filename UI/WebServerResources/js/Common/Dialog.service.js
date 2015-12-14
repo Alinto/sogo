@@ -19,7 +19,7 @@
   Dialog.alert = function(title, content) {
     var alert = this.$modal.alert()
         .title(title)
-        .textContent(content)
+        .htmlContent(content)
         .ok(l('OK'));
     this.$modal.show(alert);
   };
@@ -34,7 +34,7 @@
   Dialog.confirm = function(title, content, options) {
     var confirm = this.$modal.confirm()
         .title(title)
-        .textContent(content)
+        .htmlContent(content)
         .ok((options && options.ok)? options.ok : l('OK'))
         .cancel((options && options.cancel)? options.cancel : l('Cancel'));
     return this.$modal.show(confirm);
