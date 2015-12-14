@@ -75,11 +75,11 @@
       url: path,
       params: params
     })
-      .success(deferred.resolve)
-      .error(function(data, status) {
-        if (status == 404)
-          return deferred.reject();
-      });
+      .then(deferred.resolve,
+            function(data, status) {
+              if (status == 404)
+                return deferred.reject();
+            });
 
     return deferred.promise;
   };
@@ -96,8 +96,7 @@
 
     this._http
       .get(path)
-      .success(deferred.resolve)
-      .error(deferred.reject);
+      .then(deferred.resolve, deferred.reject);
 
     return deferred.promise;
   };
@@ -116,8 +115,7 @@
 
     this._http
       .post(path, { name: name })
-      .success(deferred.resolve)
-      .error(deferred.reject);
+      .then(deferred.resolve, deferred.reject);
 
     return deferred.promise;
   };
@@ -137,8 +135,7 @@
 
     this._http
       .post(path, data)
-      .success(deferred.resolve)
-      .error(deferred.reject);
+      .then(deferred.resolve, deferred.reject);
 
     return deferred.promise;
   };
@@ -168,8 +165,7 @@
 
     this._http
       .get(path)
-      .success(deferred.resolve)
-      .error(deferred.reject);
+      .then(deferred.resolve, deferred.reject);
 
     return deferred.promise;
   };
