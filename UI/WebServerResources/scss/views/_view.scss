@@ -60,11 +60,21 @@ $detailView-width: grid-step(8) !global;
 .view-list {
   z-index: ($z-index-view - 1);
   min-width: ($listView-width - ($pitch * 2));
-  md-list-item {
-    .md-button {
-      margin: 0;
+
+  // With Material, when a button inside a md-list uses the class md-secondary, it has an absolute position on the
+  // right side of the list item. Since we define the avatar as the secondary button, we must move it to the left
+  // side of the list item and add some padding to the main button (.md-no-style).
+  .md-with-secondary {
+    .md-no-style {
+      padding-left: 40 + $baseline-grid * 3;
+    }
+    .md-secondary-container {
+      left: $baseline-grid * 2;
+      right: initial;
+      padding: 0;
     }
   }
+
   @include at(sm){
     @include flex-col(sm, 6, 1, 1);
     min-width: ($pitch * 3);

@@ -216,19 +216,21 @@
         <md-list class="sg-section-list">
           <md-list-item
               class="md-default-theme md-background md-hue-1"
-              md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
-              md-on-demand="md-on-demand"
               ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
                           unread: !currentMessage.isread}"
+              md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
+              md-on-demand="md-on-demand" md-item-size="56"
               ng-click="mailbox.selectMessage(currentMessage)">
-            <sg-avatar-image class="md-avatar"
-                             ng-if="!currentMessage.selected"
-                             ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
-                             sg-email="::currentMessage.from[0].email"
-                             size="40"><!-- avatar --></sg-avatar-image>
-            <div class="md-avatar sg-avatar-selected"
-                 ng-if="currentMessage.selected"
-                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"><!-- selected avatar --></div>
+            <div class="md-secondary"
+                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
+                 ng-switch="currentMessage.selected">
+              <sg-avatar-image class="md-avatar"
+                               ng-switch-when="false"
+                               sg-email="::currentMessage.from[0].email"
+                               size="40"><!-- avatar --></sg-avatar-image>
+              <div class="md-avatar sg-avatar-selected"
+                   ng-switch-when="true"><!-- selected avatar --></div>
+            </div>
             <div class="sg-tile-content">
               <div class="sg-md-subhead">
                 <div>
