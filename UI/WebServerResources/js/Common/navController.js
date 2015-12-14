@@ -22,7 +22,7 @@
     $timeout(function() {
       // Update date when day ends
       $interval(function() {
-        $http.get('../date').success(function(data) {
+        $http.get('../date').then(function(data) {
           $scope.currentDay = data;
         });
       }, 24 * 3600 * 1000);
