@@ -15,7 +15,7 @@ $list-item-height: 6 * $baseline-grid; // 48px
 $sg-avatar-width: 40px;
 
 // Circle diamter of color chips
-$sg-color-chip-width: $subhead-font-size-base;
+$sg-color-chip-width: 16px;
 
 // List item label
 md-list-item {
@@ -123,19 +123,16 @@ div.md-tile-left {
   &-color-chip {
     display: block;
     border-radius: 50%;
-    margin-right: $bl;
-    margin-left: -($bl);
-    border-width: ($sg-avatar-width - $sg-color-chip-width) / 2;
+    margin-left: $bl;
     border-color: white;
     border-style: solid;
     width: $sg-color-chip-width;
     height: $sg-color-chip-width;
-    width: $sg-avatar-width;
-    height: $sg-avatar-width;
   }
 
   &-tile-content {
     flex: 1;
+    overflow: hidden; // required in Firefox
     .sg-tile-date {
       font-size: sg-size(body);
       font-weight: $sg-font-light;
