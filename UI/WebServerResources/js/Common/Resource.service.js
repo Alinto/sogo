@@ -75,11 +75,12 @@
       url: path,
       params: params
     })
-      .then(deferred.resolve,
-            function(data, status) {
-              if (status == 404)
-                return deferred.reject();
-            });
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, function(response) {
+        if (response.status == 404)
+          return deferred.reject();
+      });
 
     return deferred.promise;
   };
@@ -96,7 +97,9 @@
 
     this._http
       .get(path)
-      .then(deferred.resolve, deferred.reject);
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, deferred.reject);
 
     return deferred.promise;
   };
@@ -115,7 +118,9 @@
 
     this._http
       .post(path, { name: name })
-      .then(deferred.resolve, deferred.reject);
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, deferred.reject);
 
     return deferred.promise;
   };
@@ -135,7 +140,9 @@
 
     this._http
       .post(path, data)
-      .then(deferred.resolve, deferred.reject);
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, deferred.reject);
 
     return deferred.promise;
   };
@@ -165,7 +172,9 @@
 
     this._http
       .get(path)
-      .then(deferred.resolve, deferred.reject);
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, deferred.reject);
 
     return deferred.promise;
   };

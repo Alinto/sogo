@@ -122,7 +122,8 @@
               language: language,
               rememberLogin: rememberLogin
             }
-          }).then(function(data, status) {
+          }).then(function(response) {
+            var data = response.data;
             // Make sure browser's cookies are enabled
             var loginCookie = readLoginCookie();
             if (!loginCookie) {
@@ -146,8 +147,8 @@
                 d.resolve(redirectUrl(username, domain));
               }
             }
-          }, function(data, status) {
-            var msg, perr;
+          }, function(response) {
+            var msg, perr, data = response.data;
             if (data && data.LDAPPasswordPolicyError) {
               perr = data.LDAPPasswordPolicyError;
               if (perr == passwordPolicyConfig.PolicyNoError) {
@@ -179,8 +180,9 @@
               userName: loginCookie[0],
               password: loginCookie[1],
               newPassword: newPassword }
-          }).then(d.resolve, function(data, status) {
+          }).then(d.resolve, function(response) {
             var error,
+                data = response.data,
                 perr = data.LDAPPasswordPolicyError;
 
             if (!perr) {
