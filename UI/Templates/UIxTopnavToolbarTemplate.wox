@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <div class="sg-toolbar-group-1 sg-toolbar-secondary" layout="row">
+  <div class="md-toolbar-tools sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="md-icon-button"
                label:aria-label="Toggle Menu"
@@ -51,7 +51,8 @@
         <md-icon>settings_applications</md-icon>
         <md-tooltip><var:string label:value="Administration"/></md-tooltip>
       </md-button>
-      <div class="hide-xs" style="width: 40px"><!-- divider --></div>
+      <div class="hide-xs" style="width: 40px"
+           ng-show="activeUser.path.logoff.length"><!-- divider --></div>
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.logoff.length"
                  ng-href="{{activeUser.path.logoff}}">
