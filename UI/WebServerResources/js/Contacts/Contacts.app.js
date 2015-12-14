@@ -102,13 +102,16 @@
   /**
    * @ngInject
    */
-  stateAddressbook.$inject = ['$stateParams', 'stateAddressbooks', 'AddressBook'];
-  function stateAddressbook($stateParams, stateAddressbooks, AddressBook) {
-    var addressbook = _.find(stateAddressbooks, function(addressbook) {
+  stateAddressbook.$inject = ['$q', '$state', '$stateParams', 'AddressBook'];
+  function stateAddressbook($q, $state, $stateParams, AddressBook) {
+    var addressbook = _.find(AddressBook.$findAll(), function(addressbook) {
       return addressbook.id == $stateParams.addressbookId;
     });
-    addressbook.$reload();
-    return addressbook;
+    if (addressbook) {
+      addressbook.$reload();
+      return addressbook;
+    }
+    return $q.reject('Addressbook ' + $stateParams.addressbookId + ' not found');
   }
 
   /**
@@ -138,7 +141,7 @@
   function runBlock($rootScope, $log, $state) {
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       $log.error(error);
-      $state.go('app');
+      $state.go('app.addressbook', { addressbookId: 'personal' });
     });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
       $log.error(event, current, previous, rejection);

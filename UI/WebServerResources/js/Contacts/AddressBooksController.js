@@ -105,10 +105,11 @@
             vm.service.selectedFolder = null;
             return true;
           })
-          .catch(function(data, status) {
+          .catch(function(response) {
+            var message = response.data.message || response.statusText;
             Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
                            vm.service.selectedFolder.name),
-                         l(data.error));
+                        message);
           });
       }
     }

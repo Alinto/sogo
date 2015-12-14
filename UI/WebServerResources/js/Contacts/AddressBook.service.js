@@ -423,9 +423,7 @@
       var i = _.indexOf(_.pluck(list, 'id'), _this.id);
       list.splice(i, 1);
       d.resolve();
-    }, function(data, status) {
-      d.reject(data);
-    });
+    }, d.reject);
     return d.promise;
   };
 
