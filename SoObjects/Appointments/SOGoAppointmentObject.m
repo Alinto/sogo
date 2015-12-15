@@ -2171,13 +2171,37 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
               iCalPerson *attendee, *delegate;
               NSString *delegateEmail;
-              
-              attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+
+              attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+
+              if (!attendee)
+                [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+              else
+                {
+                  // We must do an extra check here since Bob could have invited Alice
+                  // using alice@example.com but she would have accepted with ATTENDEE set
+                  // to sexy@example.com. That would duplicate the ATTENDEE and set the
+                  // participation status to ACCEPTED for sexy@example.com but leave it
+                  // to NEEDS-ACTION to alice@example. This can happen in Mozilla Thunderbird/Lightning
+                  // when a user with multiple identities accepts an event invitation to one
+                  // of its identity (which is different than the email address associated with
+                  // the mail account) prior doing a calendar refresh.
+                  NSMutableArray *attendees;
+                  NSString *partStat;
+
+                  attendees = [NSMutableArray arrayWithArray: [newEvent attendeesWithoutUser: [SOGoUser userWithLogin: owner]]];
+
+                  partStat = [newEvent participationStatusForUser: [SOGoUser userWithLogin: owner]
+                                                         attendee: attendee];
+                  [attendee setPartStat: partStat];
+                  [attendees addObject: attendee];
+                  [newEvent setAttendees: attendees];
+                }
               
               // We first check of the sequences are alright. We don't accept attendees
               // accepting "old" invitations. If that's the case, we return a 403
               if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
-                return [NSException exceptionWithHTTPStatus:403
+                return [NSException exceptionWithHTTPStatus: 403
                                                      reason: @"sequences don't match"];
               
               // Remove the RSVP attribute, as an action from the attendee

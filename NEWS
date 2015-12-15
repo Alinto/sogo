@@ -14,6 +14,7 @@ Bug fixes
  - EAS fix on qp-encoded subjects (#3390)
  - correctly handle all-day event exceptions when the master event changes
  - prevent characters in calendar component UID causing issues during import process
+ - avoid duplicating attendees when accepting event using a different identity over CalDAV
 
 2.3.3a (2015-11-18)
 -------------------
