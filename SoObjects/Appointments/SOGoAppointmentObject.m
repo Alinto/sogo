@@ -2189,13 +2189,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                   // of its identity (which is different than the email address associated with
                   // the mail account) prior doing a calendar refresh.
                   NSMutableArray *attendees;
-                  NSString *partStat;
+                  iCalPerson *participant;
 
                   attendees = [NSMutableArray arrayWithArray: [newEvent attendeesWithoutUser: [SOGoUser userWithLogin: owner]]];
 
-                  partStat = [newEvent participationStatusForUser: [SOGoUser userWithLogin: owner]
-                                                         attendee: attendee];
-                  [attendee setPartStat: partStat];
+                  participant = [newEvent participantForUser: [SOGoUser userWithLogin: owner]
+                                                    attendee: attendee];
+                  [attendee setPartStat: [participant partStat]];
+                  [attendee setDelegatedTo: [participant delegatedTo]];
                   [attendees addObject: attendee];
                   [newEvent setAttendees: attendees];
                 }

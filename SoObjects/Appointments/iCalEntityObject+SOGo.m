@@ -436,8 +436,8 @@ NSNumber *iCalDistantFutureNumber = nil;
   return userAttendee;
 }
 
-- (NSString *) participationStatusForUser:  (SOGoUser *) theUser
-                                 attendee: (iCalPerson *) theAttendee
+- (iCalPerson *) participantForUser:  (SOGoUser *) theUser
+                           attendee: (iCalPerson *) theAttendee
 {
   iCalPerson *currentAttendee;
   NSEnumerator *attendees;
@@ -459,9 +459,9 @@ NSNumber *iCalDistantFutureNumber = nil;
       }
 
   if ([a count] > 0)
-    return [[a objectAtIndex: 0] partStat];
+    return [a objectAtIndex: 0];
 
-  return [theAttendee partStat];
+  return theAttendee;
 }
 
 - (BOOL) userIsOrganizer: (SOGoUser *) user
