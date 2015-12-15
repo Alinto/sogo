@@ -2196,6 +2196,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                   participant = [newEvent participantForUser: [SOGoUser userWithLogin: owner]
                                                     attendee: attendee];
                   [attendee setPartStat: [participant partStat]];
+                  [attendee setDelegatedFrom: [participant delegatedFrom]];
                   [attendee setDelegatedTo: [participant delegatedTo]];
                   [attendees addObject: attendee];
                   [newEvent setAttendees: attendees];
