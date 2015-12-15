@@ -2175,7 +2175,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
 
               if (!attendee)
-                [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+                attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
               else
                 {
                   // We must do an extra check here since Bob could have invited Alice
