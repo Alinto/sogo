@@ -73,7 +73,7 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailItalianForward.wo \
 	SOGoMailItalianReply.wo \
 	SOGoMailMacedonianForward.wo \
-        SOGoMailMacedonianReply.wo \
+	SOGoMailMacedonianReply.wo \
 	SOGoMailNorwegianBokmalForward.wo \
 	SOGoMailNorwegianBokmalReply.wo \
 	SOGoMailNorwegianNynorskForward.wo \
@@ -81,7 +81,7 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailPolishForward.wo \
 	SOGoMailPolishReply.wo \
 	SOGoMailPortugueseForward.wo \
-        SOGoMailPortugueseReply.wo \
+	SOGoMailPortugueseReply.wo \
 	SOGoMailRussianForward.wo \
 	SOGoMailRussianReply.wo \
 	SOGoMailSlovakForward.wo \
