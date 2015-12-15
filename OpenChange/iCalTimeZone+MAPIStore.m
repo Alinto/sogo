@@ -103,18 +103,18 @@
 {
   iCalTimeZonePeriod *period;
   struct TimeZoneStruct tz;
-  int lBias, dlBias;
+  int32_t lBias, dlBias;
 
   memset (&tz, 0, sizeof (struct TimeZoneStruct));
   period = [self _mostRecentPeriodWithName: @"STANDARD"];
   lBias = -[period secondsOffsetFromGMT] / 60;
-  tz.lBias = (uint32_t) lBias;
+  tz.lBias = lBias;
   [period _fillTZDate: &tz.stStandardDate];
   period = [self _mostRecentPeriodWithName: @"DAYLIGHT"];
   if (!period)
     tz.stStandardDate.wMonth = 0;
   dlBias = -([period secondsOffsetFromGMT] / 60) - lBias;
-  tz.lDaylightBias = (uint32_t) (dlBias);
+  tz.lDaylightBias = dlBias;
   [period _fillTZDate: &tz.stDaylightDate];
   tz.wStandardYear = tz.stStandardDate.wYear;
   tz.wDaylightYear = tz.stDaylightDate.wYear;
@@ -153,13 +153,13 @@
   period = [self _mostRecentPeriodWithName: @"STANDARD"];
   rule.wYear = [[period startDate] yearOfCommonEra];
   lBias = -[period secondsOffsetFromGMT] / 60;
-  rule.lBias = (uint32_t) lBias;
+  rule.lBias = lBias;
   [period _fillTZDate: &rule.stStandardDate];
   period = [self _mostRecentPeriodWithName: @"DAYLIGHT"];
   if (!period)
     rule.stStandardDate.wMonth = 0;
   dlBias = -([period secondsOffsetFromGMT] / 60) - lBias;
-  rule.lDaylightBias = (uint32_t) (dlBias);
+  rule.lDaylightBias = dlBias;
   [period _fillTZDate: &rule.stDaylightDate];
 
 
