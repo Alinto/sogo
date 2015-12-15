@@ -1,12 +1,11 @@
-2.3.4 (YYYY-MM-DD)
+2.3.4 (2015-12-15)
 ------------------
 
 New features
- - Initial support for EAS calendar exceptions 
+ - initial support for EAS calendar exceptions
 
 Enhancements
- - limit the maximum width of toolbar buttons
- 
+ - limit the maximum width of toolbar buttons (#3381)
 
 Bug fixes
  - JavaScript exception when printing events from calendars with no assigned color (#3203)
