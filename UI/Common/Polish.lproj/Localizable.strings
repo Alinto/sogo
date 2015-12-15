@@ -11,6 +11,7 @@
 "Preferences" = "Ustawienia";
 "Administration" = "Administracja";
 "Disconnect" = "Wyloguj";
+"Toggle Menu" = "Przełącz menu";
 "Right Administration" = "Administracja uprawnień";
 "Log Console (dev.)" = "Konsola błędów (dev.)";
 "User" = "Użytkownik";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Cz";
 "a2_Friday" = "Pi";
 "a2_Saturday" = "So";
+"Access Rights" = "Uprawnienia";
+"Add User" = "Dodaj użytkownika";
+"Loading" = "Ładowanie";
+"No such user." = "Nie ma takiego użytkownika.";
+"You cannot (un)subscribe to a folder that you own!" = "Nie możesz (od)subskrybować folderu, który jest twoją własnością!";
+"SOGo" = "SOGo";
+"Modules" = "Moduły";

@@ -11,6 +11,7 @@
 "Preferences" = "Asetukset";
 "Administration" = "Hallinto";
 "Disconnect" = "Kirjaudu ulos";
+"Toggle Menu" = "Vaihda valikkoa";
 "Right Administration" = "Oikeuksien hallinta";
 "Log Console (dev.)" = "Lokikonsoli (laite)";
 "User" = "Käyttäjä";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "To";
 "a2_Friday" = "Pe";
 "a2_Saturday" = "La";
+"Access Rights" = "Pääsyoikeudet";
+"Add User" = "Lisää käyttäjä";
+"Loading" = "Lataa";
+"No such user." = "Käyttäjää ei löydy.";
+"You cannot (un)subscribe to a folder that you own!" = "Et voi (ulos)kirjautua itse omistamaasi hakemistoon!";
+"SOGo" = "SOGo";
+"Modules" = "Modulit";

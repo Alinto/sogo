@@ -11,6 +11,7 @@
 "Preferences" = "Preferências";
 "Administration" = "Administração";
 "Disconnect" = "Desconectar";
+"Toggle Menu" = "Alternar Menu";
 "Right Administration" = "Administração de Direitos";
 "Log Console (dev.)" = "Log Console (dev.)";
 "User" = "Usuário";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Qui";
 "a2_Friday" = "Sex";
 "a2_Saturday" = "Sab";
+"Access Rights" = "Permissões de Acesso";
+"Add User" = "Adicionar Usuário";
+"Loading" = "Carregando";
+"No such user." = "Usuário não existe.";
+"You cannot (un)subscribe to a folder that you own!" = "Você não pode (des)inscrever uma pasta que você é dono!";
+"SOGo" = "SOGo";
+"Modules" = "Módulos";

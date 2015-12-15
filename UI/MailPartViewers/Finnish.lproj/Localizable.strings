@@ -41,3 +41,10 @@ reply_info = "Tämä on vastaus tapahtumakutsuusi.";
 "Date" = "Päiväys";
 "To" = "Vastaanottaja";
 "Issuer" = "Julkaisija";
+/* Tooltips */
+"View Attachment" = "Näytä liitetiedosto";
+"Save Attachment" = "Tallenna liitetiedosto";
+"CC" = "CC";
+"Cancel" = "Peruuta";
+"OK" = "OK";
+"Comment" = "Kommentti:";

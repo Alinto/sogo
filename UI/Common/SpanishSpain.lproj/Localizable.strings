@@ -11,6 +11,7 @@
 "Preferences" = "Preferencias";
 "Administration" = "Administración";
 "Disconnect" = "Cerrar sesión";
+"Toggle Menu" = "Menú palanca";
 "Right Administration" = "Administración de permisos";
 "Log Console (dev.)" = "Consola de registro de actividad (dev.)";
 "User" = "Usuario";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Ju";
 "a2_Friday" = "Vi";
 "a2_Saturday" = "Sá";
+"Access Rights" = "Derechos de accesos";
+"Add User" = "Añadir usuario";
+"Loading" = "Cargando";
+"No such user." = "Este usuario no existe";
+"You cannot (un)subscribe to a folder that you own!" = "No es posible suscribirse a una carpeta que le pertenece.";
+"SOGo" = "SOGo";
+"Modules" = "Módulos";

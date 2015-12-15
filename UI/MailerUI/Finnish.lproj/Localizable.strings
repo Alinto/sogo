@@ -54,6 +54,8 @@
 "Share" = "Jaa";
 "Account" = "Tili";
 "Shared Account" = "Jaettu tili";
+/* Empty right pane */
+"No message selected" = "Ei valittua viestiä";
 /* acls */
 "Access rights to" = "Käyttöoikeudet";
 "For user" = "Käyttäjälle";
@@ -91,6 +93,7 @@
 "to"            = "Vastaanottaja";
 "cc"            = "Kopio";
 "bcc"           = "Piilokopio";
+"Add a recipient" = "Lisää vastaanottaja";
 "Edit Draft..." = "Muokkaa luonnosta...";
 "Load Images" = "Lataa kuvat";
 "Return Receipt" = "Vastaanottokuittaus";
@@ -122,6 +125,7 @@
 "All"           = "Kaikki";
 "No message"    = "Ei viestiä";
 "messages"      = "viestit";
+"Yesterday"     = "Eilen";
 "first"         = "Ensimmäinen";
 "previous"      = "Edellinen";
 "next"          = "Seuraava";
@@ -182,6 +186,8 @@
 "Print..." = "Tulosta...";
 "Delete Message" = "Poista viesti";
 "Delete Selected Messages" = "Poista valitut viestit";
+/* Number of selected messages in list */
+"selected" = "valittu";
 "This Folder" = "Tämä kansio";
 /* Label popup menu */
 "None" = "Ei mitään";
@@ -249,3 +255,31 @@
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
 /* Contacts list in mail editor */
 "Email" = "Sähköposti";
+"More mail options" = "Lisää sähköpostiasetuksia";
+"Delegation" = "Valtuutus";
+"Add User" = "Lisää käyttäjä";
+"Add a tag" = "Lisää merkintä";
+"reply" = "vastaus";
+"Edit" = "Muokkaa";
+"Yes" = "Kyllä";
+"No" = "Ei";
+"Location" = "Sijainti";
+"Rename" = "Nimeä uudelleen";
+"Compact" = "Tiivistä";
+"Export" = "Vie";
+"Set as Drafts" = "Merkitse luonnoksiksi";
+"Set as Sent" = "Merkitse lähetetyksi";
+"Set as Trash" = "Merkitse roskaksi";
+"Sort" = "Järjestä";
+"Descending Order" = "Laskeva järjestys";
+"Back" = "Takaisin";
+"Copy messages" = "Kopioi viestit";
+"More messages options" = "Lisää viestiasetuksia";
+"Mark as Unread" = "Merkitse lukemattomaksi";
+"Closing Window ..." = "Ikkuna sulkeutuu...";
+"Tried to send too many mails. Please wait." = "Yritetty lähettää liian monta viestiä. Ole hyvä ja odota.";
+"View Mail" = "Näytä viesti";
+"This message contains external images." = "Tämä viesti sisältää ulkoisia kuvia.";
+"Expanded" = "Laajennettu";
+"Add a Criteria" = "Lisää kriteeri";
+"More search options" = "Lisää hakuvaihtoehtoja";

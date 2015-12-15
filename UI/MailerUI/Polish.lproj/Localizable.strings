@@ -54,6 +54,8 @@
 "Share" = "Udostępnianie";
 "Account" = "Konto";
 "Shared Account" = "Udostępnione konto";
+/* Empty right pane */
+"No message selected" = "Nie wybrano wiadomości";
 /* acls */
 "Access rights to" = "Uprawnienia dla";
 "For user" = "Dla użytkownika";
@@ -91,6 +93,7 @@
 "to"            = "Do";
 "cc"            = "DW";
 "bcc"           = "UDW";
+"Add a recipient" = "Dodaj odbiorcę";
 "Edit Draft..." = "Edytuj szkic";
 "Load Images" = "Załaduj obrazki";
 "Return Receipt" = "Potwierdzenie";
@@ -122,6 +125,7 @@
 "All"           = "Wszystkie";
 "No message"    = "Brak wiadomości";
 "messages"      = "wiadomości";
+"Yesterday"     = "Wczoraj";
 "first"         = "Pierwsza";
 "previous"      = "Poprzednia";
 "next"          = "Następna";
@@ -182,6 +186,8 @@
 "Print..." = "Drukuj...";
 "Delete Message" = "Usuń wiadomość";
 "Delete Selected Messages" = "Usuń zaznaczone wiadomości";
+/* Number of selected messages in list */
+"selected" = "wybranych";
 "This Folder" = "Ten folder";
 /* Label popup menu */
 "None" = "Brak";
@@ -240,12 +246,40 @@
 "error_missingsubject" = "Brak tematu";
 "error_missingrecipients" = "Brak odbiorców";
 "Send Anyway" = "Wyślij mimo wszystko";
-"Error while saving the draft:" = "Błąd zapisu kopii roboczej";
+"Error while saving the draft" = "Błąd podczas zapisywania kopii roboczej";
 "Error while uploading the file \"%{0}\":" = "Błąd w trakcie wysyłania pliku \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Trwa przesyłanie pliku. Zamknięcie okna przerwie tą transmisję.";
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Nie można wysłać wiadomości - wszyscy odbiorcy zostali odrzuceni.";
-"cannot send message (smtp) - recipients discarded" = "Nie można wysłać wiadomości - poniźsi odbiorcy zostali odrzuceni";
+"cannot send message (smtp) - recipients discarded" = "Nie można wysłać wiadomości - poniżsi odbiorcy zostali odrzuceni";
 "cannot send message: (smtp) error when connecting" = "Nie można wysłać wiadomości - błąd połączenia z serwerem SMTP";
 /* Contacts list in mail editor */
 "Email" = "E-mail";
+"More mail options" = "Więcej opcji e-mail";
+"Delegation" = "Przekazanie";
+"Add User" = "Dodaj użytkownika";
+"Add a tag" = "Dodaj etykietę";
+"reply" = "odpowiedź";
+"Edit" = "Edytuj";
+"Yes" = "Tak";
+"No" = "Nie";
+"Location" = "Miejsce";
+"Rename" = "Zmień nazwę";
+"Compact" = "Kompaktuj";
+"Export" = "Eksportuj";
+"Set as Drafts" = "Oznacz jako kopia robocza";
+"Set as Sent" = "Oznacz jako wysłany";
+"Set as Trash" = "Oznacz jako śmieć";
+"Sort" = "Sortuj";
+"Descending Order" = "Kolejność malejąca";
+"Back" = "Wstecz";
+"Copy messages" = "Kopiuj wiadomości";
+"More messages options" = "Więcej opcji wiadomości";
+"Mark as Unread" = "Oznacz jako nie przeczytany";
+"Closing Window ..." = "Zamykanie okna";
+"Tried to send too many mails. Please wait." = "Próbowano wysłać zbyt wiele e-maili. Proszę czekać.";
+"View Mail" = "Pokaż e-mail";
+"This message contains external images." = "Ta wiadomość zawiera zewnętrzne obrazki.";
+"Expanded" = "Rozszerzony";
+"Add a Criteria" = "Dodaj kryterium";
+"More search options" = "Więcej opcji wyszukiwania";

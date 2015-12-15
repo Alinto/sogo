@@ -54,6 +54,8 @@
 "Share" = "Дели";
 "Account" = "Сметка";
 "Shared Account" = "Делени сметки";
+/* Empty right pane */
+"No message selected" = "Нема одбрана порака";
 /* acls */
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисник";
@@ -91,6 +93,7 @@
 "to"            = "До";
 "cc"            = "Цц";
 "bcc"           = "Бцц";
+"Add a recipient" = "Додади примач";
 "Edit Draft..." = "Уреди го драфтот";
 "Load Images" = "Вчитај слики";
 "Return Receipt" = "Препорачано";
@@ -122,6 +125,7 @@
 "All"           = "Сите";
 "No message"    = "Нема порака";
 "messages"      = "пораки";
+"Yesterday"     = "Вчера";
 "first"         = "Прва";
 "previous"      = "Претходна";
 "next"          = "Следна";
@@ -182,6 +186,8 @@
 "Print..." = "Отпечати...";
 "Delete Message" = "Избриши порака";
 "Delete Selected Messages" = "Избриши ги означените пораки";
+/* Number of selected messages in list */
+"selected" = "одбрани";
 "This Folder" = "Оваа папка";
 /* Label popup menu */
 "None" = "Ниту една";
@@ -207,7 +213,8 @@
 "Please specify at least one filter" = "Одберете барем еден филтер";
 /* Folder operations */
 "Name" = "Име";
-"Enter the new name of your folder" = "Внеси ново име за вашата папка";
+"Enter the new name of your folder"
+ ="Внеси ново име за вашата папка";
 "Do you really want to move this folder into the trash ?"
  = "Навистина сакате папката да ја фрлите во кантата за ѓубре ?";
 "Operation failed" = "Неуспешна операција";
@@ -248,3 +255,31 @@
 "cannot send message: (smtp) error when connecting" = "Не можам да ја испртам пораката: грешка при поврзувањето со SMPT серверот.";
 /* Contacts list in mail editor */
 "Email" = "Електронска порака";
+"More mail options" = "Повеќе опции за електронска пошта";
+"Delegation" = "Делегација";
+"Add User" = "Додади корисник";
+"Add a tag" = "Додади таг";
+"reply" = "одговори";
+"Edit" = "Уреди";
+"Yes" = "Да";
+"No" = "Не";
+"Location" = "Локација";
+"Rename" = "Преименувај";
+"Compact" = "Збиено";
+"Export" = "Извези";
+"Set as Drafts" = "Постави како драфт";
+"Set as Sent" = "Постави како испратена";
+"Set as Trash" = "Постави како ѓубре";
+"Sort" = "Сортирај";
+"Descending Order" = "Опаѓачки редослед";
+"Back" = "Назад";
+"Copy messages" = "Копирај ја пораката";
+"More messages options" = "Повеќе опции за пораките";
+"Mark as Unread" = "Означи како непрочитана";
+"Closing Window ..." = "Затварање на прозорците ...";
+"Tried to send too many mails. Please wait." = "Се обидов да пратам премногу пораки. Ве молам почекајте.";
+"View Mail" = "Види пошта";
+"This message contains external images." = "Оваа порака содржи надворешни слики.";
+"Expanded" = "Проширено";
+"Add a Criteria" = "Додади критериум";
+"More search options" = "Повеќе опции за пребарување";

@@ -54,6 +54,8 @@
 "Share" = "Compartilhamento";
 "Account" = "Conta";
 "Shared Account" = "Conta Compartilhada";
+/* Empty right pane */
+"No message selected" = "Nenhuma mensagem selecionada";
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
@@ -91,6 +93,7 @@
 "to"            = "Para";
 "cc"            = "Cc";
 "bcc"           = "Cco";
+"Add a recipient" = "Adicionar um endereço";
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
 "Return Receipt" = "Endereço de Resposta";
@@ -122,6 +125,7 @@
 "All"           = "Tudo";
 "No message"    = "Sem mensagem";
 "messages"      = "mensagens";
+"Yesterday"     = "Ontem";
 "first"         = "Primeiro";
 "previous"      = "Anterior";
 "next"          = "Próximo";
@@ -182,6 +186,8 @@
 "Print..." = "Imprimir...";
 "Delete Message" = "Apagar Mensagem";
 "Delete Selected Messages" = "Apagar Mensagens Selecionadas";
+/* Number of selected messages in list */
+"selected" = "selecionado";
 "This Folder" = "Esta Pasta";
 /* Label popup menu */
 "None" = "Nenhum";
@@ -249,3 +255,31 @@
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
 /* Contacts list in mail editor */
 "Email" = "Email";
+"More mail options" = "Mais opções da mensagem";
+"Delegation" = "Delegação";
+"Add User" = "Adicionar Usuário";
+"Add a tag" = "Adicionar uma tag";
+"reply" = "responder";
+"Edit" = "Editar";
+"Yes" = "Sim";
+"No" = "No";
+"Location" = "Localização";
+"Rename" = "Renomear";
+"Compact" = "Compacto";
+"Export" = "Exportar";
+"Set as Drafts" = "Definir como Rascunho";
+"Set as Sent" = "Definir como Enviado";
+"Set as Trash" = "Definir como Lixo";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordem Descendente";
+"Back" = "Voltar";
+"Copy messages" = "Copiar mensagens";
+"More messages options" = "Mais opções de mensagens";
+"Mark as Unread" = "Marcar como Não Lido";
+"Closing Window ..." = "Fechando Janela ...";
+"Tried to send too many mails. Please wait." = "Tentando enviar muitos emails. Aguarde.";
+"View Mail" = "Visualizar Mensagem";
+"This message contains external images." = "Esta mensagem contêm imagens externas.";
+"Expanded" = "Expandido";
+"Add a Criteria" = "Adicionar um Critério";
+"More search options" = "Mais opções de pesquisa";

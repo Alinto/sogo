@@ -54,6 +54,8 @@
 "Share" = "Megosztás";
 "Account" = "Fiók";
 "Shared Account" = "Megosztott fiók";
+/* Empty right pane */
+"No message selected" = "Nincs kijelölt üzenet";
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
@@ -91,6 +93,7 @@
 "to"            = "Címzett";
 "cc"            = "Másolat";
 "bcc"           = "Titkos másolat";
+"Add a recipient" = "Címzett hozzáadása";
 "Edit Draft..." = "Piszkozat szerkesztése...";
 "Load Images" = "Képek betöltése";
 "Return Receipt" = "Visszaigazolás";
@@ -122,6 +125,7 @@
 "All"           = "Összes";
 "No message"    = "Nincs üzenete";
 "messages"      = "üzenetek";
+"Yesterday"     = "Tegnap";
 "first"         = "Első";
 "previous"      = "Előző";
 "next"          = "Következő";
@@ -182,6 +186,8 @@
 "Print..." = "Nyomtatás...";
 "Delete Message" = "Üzenet törlése";
 "Delete Selected Messages" = "Kiválasztott üzenetek törlése";
+/* Number of selected messages in list */
+"selected" = "kijelölt";
 "This Folder" = "Aktulis mappa";
 /* Label popup menu */
 "None" = "Nincs cimke";
@@ -208,7 +214,7 @@
 /* Folder operations */
 "Name" = "Név";
 "Enter the new name of your folder"
- = "Adja meg az új mappa nevét";
+ ="Adja meg az új mappa nevét";
 "Do you really want to move this folder into the trash ?"
  = "Biztosan lomtárba kívánja helyezni ezt a mappát ?";
 "Operation failed" = "A művelet megszakadt";
@@ -249,3 +255,31 @@
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
 /* Contacts list in mail editor */
 "Email" = "Email";
+"More mail options" = "További levelezési tulajdonságok";
+"Delegation" = "Jogok átadása";
+"Add User" = "Felhasználó hozzáadása";
+"Add a tag" = "Címke hozzáadása";
+"reply" = "válasz";
+"Edit" = "Szerkesztés";
+"Yes" = "Igen";
+"No" = "Nem";
+"Location" = "Hely";
+"Rename" = "Átnevezés";
+"Compact" = "Tömörített";
+"Export" = "Exportálás";
+"Set as Drafts" = "Beállítás piszkozatként";
+"Set as Sent" = "Beállítás elküldöttként";
+"Set as Trash" = "Beállítás töröltként";
+"Sort" = "Rendezés";
+"Descending Order" = "Csökkenő sorrend";
+"Back" = "Vissza";
+"Copy messages" = "Üzenetek másolása";
+"More messages options" = "További üzenet tulajdonságok";
+"Mark as Unread" = "Megelölés olvasatlanként";
+"Closing Window ..." = "Ablak bezárása ...";
+"Tried to send too many mails. Please wait." = "Túl sok üzenetet próbál elküldeni. Kérem várjon.";
+"View Mail" = "Üzenet megtekintése";
+"This message contains external images." = "Az üzenet külső képeket tartalmaz.";
+"Expanded" = "Kiterjesztett";
+"Add a Criteria" = "Feltétel hozzáadása";
+"More search options" = "További keresési tulajdonságok";

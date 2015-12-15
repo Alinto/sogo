@@ -9,12 +9,13 @@
 "Go to today" = "Перейти на сегодня";
 "Switch to day view" = "Перейти к обзору дня";
 "Switch to week view" = "Перейти к обзору недели";
-"Switch to multi-columns day view" = "Перейти к показу дня в несколько колонок";
 "Switch to month view" = "Перейти к обзору месяца";
 "Reload all calendars" = "Перезагрузить все календари";
 /* Tabs */
 "Date" = "Дата";
 "Calendars" = "Календари";
+"No events for selected criteria" = "Нет событий для выбранного критерия";
+"No tasks for selected criteria" = "Нет заданий для выбранного критерия";
 /* Day */
 "DayOfTheMonth" = "DayOfTheMonth";
 "dayLabelFormat" = "%d/%m/%Y";
@@ -85,6 +86,7 @@
 /* Button Titles */
 "Subscribe to a Calendar..." = "Подписаться на календарь...";
 "Remove the selected Calendar" = "Удалить выделенный календарь";
+"New calendar" = "Новый календарь...";
 "Name of the Calendar" = "Название календаря";
 "new" = "Новый";
 "Print view" = "Печать видимой области";
@@ -97,6 +99,8 @@
 "Attach" = "Прикрепить вложение";
 "Update" = "Обновить";
 "Cancel" = "Отменить";
+"Reset" = "Сбросить";
+"Save" = "Сохранить";
 "show_rejected_apts" = "Показать отклоненные встречи";
 "hide_rejected_apts" = "Спрятать отклоненные встречи";
 /* Schedule */
@@ -118,7 +122,7 @@
 "Layout" = "Разметка";
 "What to Print" = "Что печатать";
 "Options" = "Опции";
-"Tasks with no due date" = "Задачи без указания времени окончания";
+"Tasks with no due date" = "Задачи без указания срока выполнения";
 "Display working hours only" = "Показывать только рабочие часы";
 "Completed tasks" = "Выполненные задачи";
 "Display events and tasks colors" = "Показывать цвета событий и задач";
@@ -131,12 +135,13 @@
 "Appointment on" = "Встреча";
 "Start" = "Начало";
 "End" = "Конец";
-"Due Date" = "К дате";
+"Due Date" = "К сроку";
 "Name" = "Имя";
 "Email" = "Email";
 "Status" = "Статус";
 "% complete" = "% выполнено";
 "Location" = "Место";
+"Add a category" = "Добавить категорию";
 "Priority" = "Приоритет";
 "Privacy" = "Приватность";
 "Cycle" = "Цикл";
@@ -155,6 +160,7 @@
 "General" = "Общее";
 "Reply" = "Ответ";
 "Created by" = "Создано";
+"You are invited to participate" = "Вы приглашаетесь участвовать";
 "Target" = "Цель";
 "attributes" = "атрибуты";
 "attendees" = "участники";
@@ -200,7 +206,7 @@
 "Search appointments" = "Поиск встреч";
 "All day Event" = "Мероприятие на целый день";
 "check for conflicts" = "Проверить на конфликты";
-"Browse URL" = "Просмотреть URL";
+"URL" = "URL";
 "newAttendee" = "Добавить участника";
 /* calendar modes */
 "Overview" = "Обзор";
@@ -248,6 +254,7 @@
 "Recurrence pattern" = "Шаблон повторений";
 "Range of recurrence" = "Диапазон повторений";
 "Daily" = "Ежедневно";
+"Multi-Columns" = "В несколько колонок";
 "Weekly" = "Еженедельно";
 "Monthly" = "Ежемесячно";
 "Yearly" = "Ежегодно";
@@ -257,15 +264,20 @@
 "On" = "На";
 "Month(s)" = "месяца(цев)";
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "  ";
 "Recur on day(s)" = "Повторяется в дни";
 "Year(s)" = "год(года)";
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = " ";
+"cycle_of" = "из";
 "No end date" = "Нет даты завершения";
 "Create" = "Создать";
 "appointment(s)" = "встреча(встречи)";
 "Repeat until" = "Повторять до";
+"End Repeat" = "Прекратить повторение";
+"Never" = "Никогда";
+"After" = "После";
+"On Date" = "В дату ";
+"times" = "раз";
 "First" = "Первый";
 "Second" = "Второй";
 "Third" = "Третий";
@@ -300,6 +312,7 @@
 "reminder_MINUTES" = "минут";
 "reminder_HOURS" = "часов";
 "reminder_DAYS" = "дней";
+"reminder_WEEKS" = "недель";
 "reminder_BEFORE" = "до";
 "reminder_AFTER" = "после";
 "reminder_START" = "начала события";
@@ -319,6 +332,8 @@
 "Show Time as Free" = "Отображать время как свободное";
 /* email notifications */
 "Send Appointment Notifications" = "Отправлять напоминания о встречах";
+"From" = "От";
+"To" = "Кому";
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
 validate_invalid_startdate = "Неверное дата начала!";
@@ -341,6 +356,8 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Week View" = "По неделям";
 "Month View" = "Месяц";
 "Reload" = "Перезагрузить";
+/* Number of selected components in events or tasks list */
+"selected" = "выбран";
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
 /* menu */
 "New Event..." = "Новое событие...";
@@ -383,11 +400,14 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "У одного или нескольких приглашенных есть конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
-/* apt list */
+/* events list */
+"Due" = "Срок";
 "(Private Event)" = "(Приватное событие)";
 vevent_class0 = "(Публичное событие)";
 vevent_class1 = "(Приватное событие)";
 vevent_class2 = "(Конфиденциальное событие)";
+/* tasks list */
+"Descending Order" = "В убывающем порядке";
 vtodo_class0 = "(Публичное задание)";
 vtodo_class1 = "(Приватное задание)";
 vtodo_class2 = "(Конфиденциальное задание)";
@@ -395,8 +415,12 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Multicolumn Day View" = "Отображать день в несклько колонок";
 "Please select an event or a task." = "Пожалуйста выберите событие или задачу.";
 "editRepeatingItem" = "Вы выбрали для изменения повторяющееся событие. Изменяя свойства этого события, вы можете изменить их для всех повторов или только для выбранного события. Что вы хотите изменить?";
-"button_thisOccurrenceOnly" = "Только это событие";
-"button_allOccurrences" = "Все повторы";
+"button_thisOccurrenceOnly" = "Только это появление";
+"button_allOccurrences" = "Все появления";
+"Edit This Occurrence" = "Редактировать это появление";
+"Edit All Occurrences" = "Редактировать все появления";
+"Update This Occurrence" = "Обновить это появление";
+"Update All Occurrences" = "Обновить все появления";
 /* Properties dialog */
 "Color" = "Цвет";
 "Include in free-busy" = "Включить в free-busy";
@@ -410,6 +434,8 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Receive a mail when I modify my calendar" = "Получать письмо в случае если я изменю свой календарь";
 "Receive a mail when someone else modifies my calendar" = "Получать письмо если кто-то изменит мой календарь";
 "When I modify my calendar, send a mail to" = "Если я изменю свой календарь, отправить письмо на адрес ";
+"Email Address" = "Адрес электронной почты";
+"Export" = "Экспорт";
 "Links to this Calendar" = "Ссылки на этот календарь";
 "Authenticated User Access" = "Доступ авторизированных пользователей";
 "CalDAV URL" = "CalDAV URL ";
@@ -438,9 +464,40 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Delete Event" = "Удалить событие";
 "Copy event to my calendar" = "Копировать событие в мой календарь";
 "View Raw Source" = "Показать исходный код сообщения";
+"Subscriptions" = "Подписки";
+"Subscribe to a shared folder" = "Подписаться на разделяемую папку.";
 "Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
 "URL of the Calendar" = "URL календаря";
 "Web Calendar" = "Web Calendar";
+"Web Calendars" = "Календарь в интернет";
 "Reload on login" = "Перезагружать при входе";
 "Invalid number." = "Число неверно.";
 "Please identify yourself to %{0}" = "Пожалуйста, представьте себя %{0}";
+"quantity" = "количество";
+"Current view" = "Текущий вид";
+"Selected events and tasks" = "Выбранные события и задания";
+"Custom date range" = "Специальный диапазон дат";
+"Select starting date" = "Выберите начальную дату";
+"Select ending date" = "Выберите конечную дату";
+"Delegated to" = "Делегировано ";
+"Keep sending me updates" = "Продолжать посылать мне обновления";
+"OK" = "ОК";
+"Confidential" = "Конфиденциально";
+"Enable" = "Доступен";
+"Filter" = "Фильтр";
+"Sort" = "Сортировка";
+"Back" = "Назад";
+"Day" = "День";
+"Month" = "Месяц";
+"New Appointment" = "Новое посещение";
+"filters" = "фильтры";
+"Today" = "Сегодня";
+"More options" = "Больше опций";
+"Delete This Occurrence" = "Удалить это появление";
+"Delete All Occurrences" = "Удалить все появления";
+"Add From" = "Добавить От";
+"Add Due" = "Добавить Сделать к сроку";
+"Import" = "Импорт";
+"Rename" = "Переименовать";
+"Import Calendar" = "Импортировать календарь";
+"Select an ICS file." = "Выберите iCalendar файл (.ics).";

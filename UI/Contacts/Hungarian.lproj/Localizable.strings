@@ -21,6 +21,7 @@
 "HomePhone" = "Otthoni telefon";
 "Lastname" = "Vezetéknév";
 "Location" = "Hely";
+"Add a category" = "Kategória hozzáadása";
 "MobilePhone" = "Mobil telefon";
 "Name" = "Név";
 "OfficePhone" = "Hivatali telefon";
@@ -40,6 +41,20 @@
 "Move To" = "Move To";
 "Copy To" = "Copy To";
 "Add to" = "Add to";
+/* Subheader of empty addressbook */
+"No contact" = "Nincs kapcsolat";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Indítson egy keresést a címjegyzék tallózásához.";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kapcsolatok";
+/* No contact matching search criteria */
+"No matching contact" = "Nincs megfelelő kapcsolat";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "megfelelő kapcsolat";
+/* Number of selected contacts in list */
+"selected" = "kijelölt";
+/* Empty right pane */
+"No contact selected" = "Nincs kijelölt kapcsolat";
 /* Tooltips */
 "Create a new address book card" = "Új névjegykártya készítése";
 "Create a new list" = "Új csoportlista készítése";
@@ -69,7 +84,6 @@
 "Preferred" = "Preferált";
 "Display" = "Megjelenítendő név";
 "Display Name" = "Megjelenítendő név";
-"Email" = "Email cím";
 "Additional Email" = "További email";
 "Phone Number" = "Telefon";
 "Prefers to receive messages formatted as" = "Előnyben részesített üzenet formátum";
@@ -79,7 +93,6 @@
 "Nickname" = "Becenév";
 "Telephone" = "Telefon";
 "Work" = "Munkahely";
-"Home" = "Otthon";
 "Mobile" = "Mobil";
 "Pager" = "Személyhívó";
 /* categories */
@@ -90,7 +103,6 @@
 "Service" = "Szolgáltatás";
 "Company" = "Vállalat";
 "Department" = "Részleg";
-"Address" = "Cím";
 "City" = "Város";
 "State_Province" = "Állam/tartomány";
 "ZIP_Postal Code" = "Irányítószám";
@@ -109,6 +121,8 @@
 "New Addressbook..." = "Új címjegyzék...";
 "Subscribe to an Addressbook..." = "Feliratkozás címjegyzékre...";
 "Remove the selected Addressbook" = "Kijelölt címjegyzék törlése";
+"Subscribe to a shared folder" = "Feliratkozás megosztott maoppára";
+"Search User" = "Felhasználó keresése";
 "Name of the Address Book" = "A címjegyzék neve";
 "Are you sure you want to delete the selected address book?"
 = "Biztosan törli a kijelölt címjegyzéket?";
@@ -173,3 +187,40 @@
 "Links to this Address Book" = "Hivatkozások erre a címjegyzékre";
 "Authenticated User Access" = "Bejelentkezett felhasználó hozzáférése";
 "CardDAV URL" = "CardDAV URL";
+"Options" = "Beállítások";
+"Rename" = "Átnevezés";
+"Subscriptions" = "Előfizetések";
+"Global Addressbooks" = "Általános címjegyzékek";
+"Search" = "Keresés";
+"Sort" = "Rendezés";
+"Descending Order" = "Csökkenő sorrend";
+"Back" = "Vissza";
+"Select All" = "Összes kijelölése";
+"Copy contacts" = "Kapcsolatok másolása";
+"More messages options" = "További üzenet tulajdonságok";
+"New Contact" = "Új kapcsolat";
+"Close" = "Bezárás";
+"More contact options" = "További kapcsolat tulajdonságok";
+"Organization Unit" = "Szervezeti egység";
+"Add Organizational Unit" = "Szervezeti egység hozzáadása";
+"Type" = "Típus";
+"Email Address" = "Email cím";
+"New Email Address" = "Új email cím";
+"New Phone Number" = "Új telefonszám";
+"URL" = "URL";
+"New URL" = "Új URL";
+"street" = "utca";
+"Postoffice" = "Postahivatal";
+"Region" = "Megye";
+"Postal Code" = "Irányítószám";
+"New Address" = "Új cím";
+"Reset" = "Alaphelyzet";
+"Description" = "Leírás";
+"Add Member" = "Résztvevő hozzáadása";
+"Subscribe" = "Feliratkozás";
+"Add Birthday" = "Születésnap hozzáadása";
+"Import" = "Importálás";
+"More options" = "További tulajdonságok";
+"Role" = "Szerepkör";
+"Add Screen Name" = "Fedőnév hozzáadása";
+"Synchronize" = "Szinkronizálás";

@@ -12,13 +12,13 @@ vtodo_class2 = "(Tasca confidencial)";
 "The event \"%{Summary}\" was deleted" = "Es va esborrar l'esdeveniment \"%{Summary}\" ";
 "The event \"%{Summary}\" was updated" = "Es va modificar l'esdeveniment \"%{Summary}\" ";
 "The following attendees(s) were notified" = "I va notificar als següents participants ";
-"The following attendees(s) were added" = "Es van agregar els següents participants ";
+"The following attendees(s) were added" = "S'han afegit els següents participants";
 "The following attendees(s) were removed" = "Heu suprimit els assistents següents";
 /* IMIP messages */
 "calendar_label" = "Calendari";
 "startDate_label" = "Inici";
 "endDate_label" = "Final";
-"due_label" = "Data límit:";
+"due_label" = "Data de venciment";
 "location_label" = "Lloc";
 "summary_label" = "Resum:";
 "comment_label" = "Comentari:";

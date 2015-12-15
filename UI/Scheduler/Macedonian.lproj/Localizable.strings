@@ -14,6 +14,8 @@
 /* Tabs */
 "Date" = "Датум";
 "Calendars" = "Календари";
+"No events for selected criteria" = "Нема настани за избраните критериуми";
+"No tasks for selected criteria" = "Нема задачи за избраните критериуми";
 /* Day */
 "DayOfTheMonth" = "Ден од месецот";
 "dayLabelFormat" = "%m/%d/%Y";
@@ -84,6 +86,7 @@
 /* Button Titles */
 "Subscribe to a Calendar..." = "Претплати се на календарот...";
 "Remove the selected Calendar" = "Отстрани го одбраниот календар";
+"New calendar" = "Нов календар";
 "Name of the Calendar" = "Име на календарот";
 "new" = "Нов";
 "Print view" = "Преглед пред печатење";
@@ -96,6 +99,8 @@
 "Attach" = "Приложи";
 "Update" = "Освежи";
 "Cancel" = "Откажи";
+"Reset" = "Поништи";
+"Save" = "Зачувај";
 "show_rejected_apts" = "Прикажи ги одбиените состаноци";
 "hide_rejected_apts" = "Сокриј ги одбиените состаноци";
 /* Schedule */
@@ -136,6 +141,7 @@
 "Status" = "Статус";
 "% complete" = "% complete";
 "Location" = "Локација";
+"Add a category" = "Додади категорија";
 "Priority" = "Приоритет";
 "Privacy" = "Приватност";
 "Cycle" = "Циклус";
@@ -154,6 +160,7 @@
 "General" = "Општо";
 "Reply" = "Одговори";
 "Created by" = "Креирано од";
+"You are invited to participate" = "Поканети сте да учествувате";
 "Target" = "Цел";
 "attributes" = "атрибути";
 "attendees" = "учесници";
@@ -199,7 +206,7 @@
 "Search appointments" = "Барај состаноци";
 "All day Event" = "Целодневен настан";
 "check for conflicts" = "Провери дали има конфликти";
-"Browse URL" = "Види го URL";
+"URL" = "URL";
 "newAttendee" = "Додади учесник";
 /* calendar modes */
 "Overview" = "Преглед";
@@ -246,8 +253,8 @@
 "cycle_end_until" = "cycle_end_until";
 "Recurrence pattern" = "Шема која се повторува";
 "Range of recurrence" = "Опсег на повторување";
-"Repeat" = "Повтори";
 "Daily" = "Дневно";
+"Multi-Columns" = "Повеќе колони";
 "Weekly" = "Неделно";
 "Monthly" = "Месечно";
 "Yearly" = "Годишно";
@@ -266,6 +273,11 @@
 "Create" = "Креирај";
 "appointment(s)" = "закажување(а)";
 "Repeat until" = "Повтори до";
+"End Repeat" = "Крај на повторување";
+"Never" = "Никогаш";
+"After" = "По";
+"On Date" = "На датум";
+"times" = "времиња";
 "First" = "Прв";
 "Second" = "Втор";
 "Third" = "Трет";
@@ -274,7 +286,7 @@
 "Last" = "Последен";
 /* Appointment categories */
 "category_none" = "Ниту еден";
-"category_labels" = "Годишница,Роденден,Деловно,Повици,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
+"category_labels" = "Годишница,Роденден,Деловно,Повици,Клиенти,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
 "repeat_NEVER" = "Не повторувај";
 "repeat_DAILY" = "Дневно";
 "repeat_WEEKLY" = "Неделно";
@@ -300,6 +312,7 @@
 "reminder_MINUTES" = "минути";
 "reminder_HOURS" = "часови";
 "reminder_DAYS" = "денови";
+"reminder_WEEKS" = "недели";
 "reminder_BEFORE" = "пред";
 "reminder_AFTER" = "по";
 "reminder_START" = "настанот понува";
@@ -319,6 +332,8 @@
 "Show Time as Free" = "Прикажи го времето како слободно";
 /* email notifications */
 "Send Appointment Notifications" = "Испрати известување за состанок";
+"From" = "Од";
+"To" = "До";
 /* validation errors */
 validate_notitle           = "Нема наслов, да продолжам?";
 validate_invalid_startdate = "Некоректно поле за почетен датум!";
@@ -341,6 +356,8 @@ validate_endbeforestart    = "Внесениот краен датум е пре
 "Week View" = "Неделен поглед";
 "Month View" = "Месечен поглед";
 "Reload" = "Обнови";
+/* Number of selected components in events or tasks list */
+"selected" = "одбран";
 "eventPartStatModificationError" = "Вашиот статус за учество не може да се измени.";
 /* menu */
 "New Event..." = "Нов настан...";
@@ -383,12 +400,14 @@ validate_endbeforestart    = "Внесениот краен датум е пре
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Постои конфликт со временските слотови со еден или повеќе учесници.\nДали сакате и покрај тоа да ги сочувате тековните поставки?";
-/* apt list */
-"Due Date" = "Краен датум";
+/* events list */
+"Due" = "Не подоцна од";
 "(Private Event)" = "(Приватен настан)";
 vevent_class0 = "(Јавен настан)";
 vevent_class1 = "(Приватен настан)";
 vevent_class2 = "(Доверлив настан)";
+/* tasks list */
+"Descending Order" = "Опаѓачки редослед";
 vtodo_class0 = "(Јавна задача)";
 vtodo_class1 = "(Приватна задача)";
 vtodo_class2 = "(Доверлива задача)";
@@ -398,6 +417,10 @@ vtodo_class2 = "(Доверлива задача)";
 "editRepeatingItem" = "Предметот кој го уредувате е повторлив настан. дали сакате да ги уредите сите појавувања или оваа една единствена инстанца?";
 "button_thisOccurrenceOnly" = "Само ова појавување";
 "button_allOccurrences" = "Сите појавувања";
+"Edit This Occurrence" = "Уреди го само ова појавување";
+"Edit All Occurrences" = "Уреди ги сите појавувања";
+"Update This Occurrence" = "Освежи го само ова појавување";
+"Update All Occurrences" = "Освежи ги сите појавувања";
 /* Properties dialog */
 "Color" = "Боја";
 "Include in free-busy" = "Вклучи во слободно-зафатено";
@@ -411,6 +434,8 @@ vtodo_class2 = "(Доверлива задача)";
 "Receive a mail when I modify my calendar" = "Прими порака кога јас го модификувам мојот календар";
 "Receive a mail when someone else modifies my calendar" = "Прими порака кога некој друг ќе го мидификува мојот календар";
 "When I modify my calendar, send a mail to" = "Кога ќе го модификувам мојот календар, испрати порака на";
+"Email Address" = "Електронска адреса/пошта";
+"Export" = "Извези";
 "Links to this Calendar" = "Линкво кон овој календар";
 "Authenticated User Access" = "Авторизиран кориснички пристап";
 "CalDAV URL" = "CalDAV URL:";
@@ -439,9 +464,40 @@ vtodo_class2 = "(Доверлива задача)";
 "Delete Event" = "Избриши настан";
 "Copy event to my calendar" = "Копирај го настанот во мојот календар";
 "View Raw Source" = "Види го сировиот извор";
+"Subscriptions" = "Претплати";
+"Subscribe to a shared folder" = "Претплати се на споделената папка";
 "Subscribe to a web calendar..." = "Претплатете се на веб календар...";
 "URL of the Calendar" = "URL на календарот";
 "Web Calendar" = "Веб календар";
+"Web Calendars" = "Веб календари";
 "Reload on login" = "Наново вчитај при најавување";
 "Invalid number." = "Погрешен број.";
 "Please identify yourself to %{0}" = "Ве молам идентификувајте се до %{0}";
+"quantity" = "количина";
+"Current view" = "Тековен преглед";
+"Selected events and tasks" = "Одбрани настани и задачи";
+"Custom date range" = "Свој опсег на датуми";
+"Select starting date" = "Одбери го почетниот датум";
+"Select ending date" = "Одбери краен датум";
+"Delegated to" = "Делегирано на";
+"Keep sending me updates" = "Продолжи да ми испраѓаш апдејти";
+"OK" = "Во ред";
+"Confidential" = "Доверливо";
+"Enable" = "Овозможи";
+"Filter" = "Филтер";
+"Sort" = "Сортирај";
+"Back" = "Назад";
+"Day" = "Ден";
+"Month" = "Месец";
+"New Appointment" = "Ново закажување";
+"filters" = "филтри";
+"Today" = "Денес";
+"More options" = "Повеќе опции";
+"Delete This Occurrence" = "Избриши го ова појавување";
+"Delete All Occurrences" = "Избриши ги сите појавувања";
+"Add From" = "Додади Од";
+"Add Due" = "Додади до кога";
+"Import" = "Увези";
+"Rename" = "Преименувај";
+"Import Calendar" = "Увези календарот";
+"Select an ICS file." = "Одбери ICS датотека.";

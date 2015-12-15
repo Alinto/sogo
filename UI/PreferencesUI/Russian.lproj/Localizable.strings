@@ -1,13 +1,14 @@
 /* toolbar */
 "Save and Close" = "Сохранить и закрыть";
 "Close" = "Закрыть не сохраняя";
+"Preferences saved" = "Настройки сохранены";
 
 /* tabs */
 "General" = "Общее";
 "Calendar Options" = "Календарь";
 "Contacts Options" = "Contacts Options";
 "Mail Options" = "Почта";
-"IMAP Accounts" = "IMAP Accounts";
+"IMAP Accounts" = "Учетные записи IMAP ";
 "Vacation" = "Отпуск";
 "Forward" = "Переслать";
 "Password" = "Пароль";
@@ -21,10 +22,10 @@
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер по бизнесу, Поставщик, Пресса, VIP";
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
-"Auto reply message" ="Автоматически посылать этот текст каждому отправителю один раз";
-"Email addresses (separated by commas)" ="Email адреса (разделенные запятыми)";
+"Auto reply message" = "Автоматически посылать этот текст каждому отправителю один раз";
+"Email addresses (separated by commas)" = "Email адреса (разделенные запятыми)";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
-"Days between responses" ="Дни между ответами";
+"Days between responses" = "Дни между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Disable auto reply on" = "Запрет автоответа включен";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
@@ -41,11 +42,13 @@
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
 /* d & t */
-"Current Time Zone" ="Текущая временная зона";
-"Short Date Format" ="Короткий формат даты";
-"Long Date Format" ="Длинный формат даты";
-"Time Format" ="Формат времени";
+"Current Time Zone" = "Текущая временная зона";
+"Short Date Format" = "Короткий формат даты";
+"Long Date Format" = "Длинный формат даты";
+"Time Format" = "Формат времени";
 "default" = "Default";
+"Default Module" = "Модуль по умолчанию";
+"Save" = "Сохранить";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -80,15 +83,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 /* calendar */
-"Week begins on" ="Неделя начинается с";
-"Day start time" ="Рабочий день начинается в";
-"Day end time" ="Рабочий день заканчивается в";
+"Week begins on" = "Неделя начинается с";
+"Day start time" = "Рабочий день начинается в";
+"Day end time" = "Рабочий день заканчивается в";
 "Day start time must be prior to day end time." = "Время начала дня должно быть перед временем его окончания.";
 "Show time as busy outside working hours" = "Показывать время, как занятое, если оно за границами рабочего времени.";
-"First week of year" ="Первая неделя года";
+"First week of year" = "Первая неделя года";
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
 "Play a sound when a reminder comes due" = "Проигрывать звук когда срабатывает оповещение";
-"Default reminder" ="Обычное оповещение";
+"Default reminder" = "Обычное оповещение";
 "firstWeekOfYear_January1" = "Начинается 1 января";
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
 "firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
@@ -96,7 +99,7 @@
 "White list for appointment invitations" = "Белый список для приглашений на встречи";
 "Contacts Names" = "Имена контактов";
 /* Default Calendar */
-"Default calendar" ="Календарь по-умолчанию";
+"Default calendar" = "Календарь по-умолчанию";
 "selectedCalendar" = "Выбранный календарь";
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
@@ -119,6 +122,7 @@
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Sort messages by threads" = "Сортировать сообщения по нитям";
 "When sending mail, add unknown recipients to my" = "При отправке писем добавлять неизвестных получателей в мою";
+"Address Book" = "Адресная книга";
 "Forward messages" = "Пересылать сообщения";
 "messageforward_inline" = "В теле письма";
 "messageforward_attached" = "Приложенным файлом";
@@ -140,13 +144,14 @@
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
+"Mail Account" = "Учетная запись почты";
+"New Mail Account" = "Новая учетная запись почты";
 "Server Name" = "Имя сервера";
 "Port" = "Порт";
 "Encryption" = "Шифрование";
 "None" = "Нет";
 "User Name" = "Имя пользователя";
-"Full Name" = "Full Name";
+"Full Name" = "ПолноеИмя";
 "Email" = "Email";
 "Reply To Email" = "Ответить на Email";
 "Signature" = "Подпись";
@@ -161,12 +166,18 @@
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
 /* Event+task classifications */
-"Default events classification" ="Default events classification";
-"Default tasks classification" ="Default tasks classification";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification" = "Классификация событий по умолчанию";
+"Default tasks classification" = "Классификация заданий по умолчанию";
+"PUBLIC_item" = "Публичное";
+"CONFIDENTIAL_item" = "Конфиденциальное";
+"PRIVATE_item" = "Личное";
 /* Event+task categories */
+"Calendar Category" = "Категория календаря";
+"Add Calendar Category" = "Добавить категорию календаря";
+"Remove Calendar Category" = "Удалить категорию календаря";
+"Contact Category" = "Категория контактов";
+"Add Contact Category" = "Добавить категорию контактов";
+"Remove Contact Category" = "Удалить категорию контактов";
 "category_none" = "Нет";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
 /* Default module */
@@ -175,8 +186,10 @@
 "Mail" = "Почта";
 "Last" = "Последнее использование";
 "Default Module " = "Модуль по умолчанию";
-"SOGo Version" ="Версия SOGo";
-"Language" ="Язык";
+"SOGo Version" = "Версия SOGo";
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Сейчас сохранить настройки и перезагрузить страницу?";
+"Language" = "Язык";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -192,12 +205,10 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
-"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -206,7 +217,7 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" ="Обновить вид";
+"Refresh View" = "Обновить вид";
 "refreshview_manually" = "Вручную";
 "refreshview_every_minute" = "Каждую минуту";
 "refreshview_every_2_minutes" = "Каждые 2 минуты";
@@ -266,6 +277,8 @@
 "does not match" = "не совпадает";
 "matches regex" = "сопоставимо по регулярному выражению";
 "does not match regex" = "не сопоставимо регулярному выражению";
+/* Placeholder for the value field of a condition */
+"Value" = "Значение";
 "Seen" = "Просмотрено";
 "Deleted" = "Удалено";
 "Answered" = "Отвечено";
@@ -286,3 +299,24 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Изменение пароля не поддерживается";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Отмена";
+"Invitations" = "Приглашения";
+"Edit Filter" = "Редактировать фильтр";
+"Delete Filter" = "Удалить фильтр";
+"Create Filter" = "Создать фильтр";
+"Delete Label" = "Удалить метку";
+"Create Label" = "Создать метку";
+"Accounts" = "Учетные записи";
+"Edit Account" = "Редактировать учетную запись";
+"Delete Account" = "Удалить учетную запись";
+"Create Account" = "Создать учетную запись";
+"Account Name" = "Имя учетной записи";
+"SSL" = "SSL";
+"TLS" = "TLS";
+/* Avatars */
+"Alternate Avatar" = "Альтернативный аватар";
+"none" =  "Ничего";
+"identicon" = "Иконка идентификатора";
+"monsterid" = "Монстр";
+"wavatar" = "Ваватар";
+"retro" = "Ретро";

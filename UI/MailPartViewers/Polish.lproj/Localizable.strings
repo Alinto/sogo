@@ -41,3 +41,10 @@ reply_info = "To jest odpowiedź do utworzonego przez ciebie wydarzenia";
 "Date" = "Data";
 "To" = "Do";
 "Issuer" = "Wystawca";
+/* Tooltips */
+"View Attachment" = "Pokaż załącznik";
+"Save Attachment" = "Zapisz załącznik";
+"CC" = "Kopia";
+"Cancel" = "Anuluj";
+"OK" = "OK";
+"Comment" = "Komentarz";

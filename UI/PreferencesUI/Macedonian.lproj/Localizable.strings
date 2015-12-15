@@ -1,6 +1,7 @@
 /* toolbar */
 "Save and Close" = "Сними и затвори";
 "Close" = "Затвори";
+"Preferences saved" = "Поставките се снимени";
 
 /* tabs */
 "General" = "Општо";
@@ -46,6 +47,8 @@
 "Long Date Format" = "Долг формат за даум";
 "Time Format" = "Формат за време";
 "default" = "Стандардно";
+"Default Module" = "Стандарден модул";
+"Save" = "Сними";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%b-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -119,6 +122,7 @@
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
 "When sending mail, add unknown recipients to my" = "Кога испраќаш порака, додади ги непознатите приматели во мојата";
+"Address Book" = "Адресар";
 "Forward messages" = "Препрати ги пораките";
 "messageforward_inline" = "Во текстот";
 "messageforward_attached" = "Како прилог";
@@ -140,6 +144,7 @@
 "Personal Address Book" = "Лична адресна книга";
 "Collected Address Book" = "Собрана адресна книга";
 /* IMAP Accounts */
+"Mail Account" = "Сметка за електронска пошта";
 "New Mail Account" = "Нова сметка за електронска пошта";
 "Server Name" = "Име на серверот";
 "Port" = "Порт";
@@ -167,6 +172,12 @@
 "CONFIDENTIAL_item" = "Доверливо";
 "PRIVATE_item" = "Приватно";
 /* Event+task categories */
+"Calendar Category" = "Категорија на календарот";
+"Add Calendar Category" = "Додади категорија во календарот";
+"Remove Calendar Category" = "Отстрани категорија од календарот";
+"Contact Category" = "Категорија на контакти";
+"Add Contact Category" = "Додади категорија на контакти";
+"Remove Contact Category" = "Отстрани категорија на контакти";
 "category_none" = "Ниту еден";
 "calendar_category_labels" = "Годишница,Роденден,Деловно,Повици,Clients,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
 /* Default module */
@@ -174,8 +185,10 @@
 "Contacts" = "Адресна книга";
 "Mail" = "Електронска пошта";
 "Last" = "Последно користено";
-"Default Module" = "Стандарден модул";
+"Default Module " = "Стандарден модул";
 "SOGo Version" = "Верзија на SOGo";
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Сними ги поставките и повторно вчитај ја страницата?";
 "Language" = "Јазик";
 "choose" = "Одбери ...";
 "Arabic" = "العربية";
@@ -192,12 +205,10 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
-"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -266,6 +277,8 @@
 "does not match" = "не се совпаѓа";
 "matches regex" = "Се совпаѓа со регуларни изрази";
 "does not match regex" = "не се совпаѓа со регуларните изрази";
+/* Placeholder for the value field of a condition */
+"Value" = "Вредност";
 "Seen" = "Видена";
 "Deleted" = "Избришана";
 "Answered" = "Одговорена";
@@ -286,3 +299,24 @@
 "Unhandled error response" = "Непозната грешка";
 "Password change is not supported." = "Промената на лозинката не е подржана.";
 "Unhandled HTTP error code: %{0}" = "Непозната HTTP грешка: %{0}";
+"Cancel" = "Откажи";
+"Invitations" = "Покани";
+"Edit Filter" = "Уреди филтер";
+"Delete Filter" = "Избриши филтер";
+"Create Filter" = "Креирај филтер";
+"Delete Label" = "Избриши лабела";
+"Create Label" = "Креирај лабела";
+"Accounts" = "Сметки";
+"Edit Account" = "Уреди сметка";
+"Delete Account" = "Избриши сметка";
+"Create Account" = "Креирај сметка";
+"Account Name" = "Име на сметката";
+"SSL" = "SSL";
+"TLS" = "TLS";
+/* Avatars */
+"Alternate Avatar" = "Алтернативен аватар";
+"none" =  "Ниту еден";
+"identicon" = "Икона за идентификација";
+"monsterid" = "Чудовиште";
+"wavatar" = "Wavatar";
+"retro" = "Ретро";
