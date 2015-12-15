@@ -1,6 +1,6 @@
 /* SOGoMailReply.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2015 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,12 @@
 @interface SOGoMailNorwegianNynorskReply : SOGoMailReply
 @end
 
+@interface SOGoMailPolishReply : SOGoMailReply
+@end
+
+@interface SOGoMailPortugueseReply : SOGoMailReply
+@end
+
 @interface SOGoMailSpanishSpainReply : SOGoMailReply
 @end
 
@@ -97,12 +103,6 @@
 @end
 
 @interface SOGoMailSwedishReply : SOGoMailReply
-@end
-
-@interface SOGoMailPolishReply : SOGoMailReply
-@end
-
-@interface SOGoMailPortugueseReply : SOGoMailReply
 @end
 
 @interface SOGoMailRussianReply : SOGoMailReply
