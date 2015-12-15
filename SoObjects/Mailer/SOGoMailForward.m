@@ -302,6 +302,9 @@
 @implementation SOGoMailNorwegianNynorskForward
 @end
 
+@implementation SOGoMailPolishForward
+@end
+
 @implementation SOGoMailPortugueseForward
 @end
 
@@ -312,9 +315,6 @@
 @end
 
 @implementation SOGoMailSwedishForward
-@end
-
-@implementation SOGoMailPolishForward
 @end
 
 @implementation SOGoMailRussianForward

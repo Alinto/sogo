@@ -90,6 +90,9 @@
 @interface SOGoMailNorwegianNynorskReply : SOGoMailReply
 @end
 
+@interface SOGoMailPolishReply : SOGoMailReply
+@end
+
 @interface SOGoMailPortugueseReply : SOGoMailReply
 @end
 
@@ -100,9 +103,6 @@
 @end
 
 @interface SOGoMailSwedishReply : SOGoMailReply
-@end
-
-@interface SOGoMailPolishReply : SOGoMailReply
 @end
 
 @interface SOGoMailRussianReply : SOGoMailReply
