@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSException.h>
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
@@ -71,6 +72,8 @@
 {
   SBJsonParser *parser;
   id result;
+  NSDecimalNumber *obtained, *expected;
+  NSDictionary *locale;
 
   parser = [SBJsonParser new];
   [parser autorelease];
@@ -80,17 +83,20 @@
 
   result = [parser objectWithString: @"[ 0 ]"];
   testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: 0]]);
-                              
+
   result = [parser objectWithString: @"[ -1 ]"];
   testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: -1]]);
-  
+
+  locale = [NSDictionary dictionaryWithObject: @"." forKey: NSLocaleDecimalSeparator];
   result = [parser objectWithString: @"[ 12.3456 ]"];
-  testEquals ([result objectAtIndex: 0],
-              [NSDecimalNumber decimalNumberWithString: @"12.3456"]);
+  obtained = [result objectAtIndex: 0];
+  expected = [NSDecimalNumber decimalNumberWithString: @"12.3456" locale: locale];
+  test ([obtained compare: expected] == NSOrderedSame);
 
   result = [parser objectWithString: @"[ -312.3456 ]"];
-  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithDouble: -312.3456]]);
+  obtained = [result objectAtIndex: 0];
+  expected = [NSDecimalNumber decimalNumberWithString: @"-312.3456" locale: locale];
+  test ([obtained compare: expected] == NSOrderedSame);
 }
 
 @end
-
