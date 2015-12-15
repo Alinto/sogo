@@ -2172,7 +2172,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               iCalPerson *attendee, *delegate;
               NSString *delegateEmail;
 
-#if 0
+#if 1
               attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
 #else
               attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
