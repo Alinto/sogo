@@ -591,13 +591,14 @@
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="event in list.component.$events"
                               ng-click="list.openEvent($event, event)">
-                  <div class="md-avatar sg-avatar-selected" ng-show="event.selected"
-                       ng-click="list.toggleComponentSelection($event, event)">
-                    <!-- selected avatar -->
+                  <div class="md-secondary"
+                       ng-click="list.toggleComponentSelection($event, event)"
+                       ng-switch="event.selected">
+                    <div class="md-avatar sg-avatar-selected"
+                         ng-switch-when="true"><!-- selected avatar --></div>
+                    <div class="sg-color-chip" ng-class="event.getClassName('bg')"
+                         ng-switch-when="false"><!-- calendar color --></div>
                   </div>
-                  <div class="sg-color-chip" ng-class="event.getClassName('bg')"
-                     ng-show="!event.selected"
-                     ng-click="list.toggleComponentSelection($event, event)"><!-- calendar color --></div>
                   <div class="sg-category"
                        ng-repeat="category in event.categories | limitTo:5"
                        ng-class="'bg-category' + category"
@@ -631,13 +632,14 @@
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
-                  <div class="md-avatar sg-avatar-selected" ng-show="task.selected"
-                       ng-click="list.toggleComponentSelection($event, task)">
-                    <!-- selected avatar -->
+                  <div class="md-secondary"
+                       ng-click="list.toggleComponentSelection($event, task)"
+                       ng-switch="task.selected">
+                    <div class="md-avatar sg-avatar-selected"
+                         ng-switch-when="true"><!-- selected avatar --></div>
+                    <div class="sg-color-chip" ng-class="task.getClassName('bg')"
+                         ng-switch-when="false"><!-- calendar color --></div>
                   </div>
-                  <div class="sg-color-chip" ng-class="task.getClassName('bg')"
-                       ng-show="!task.selected"
-                       ng-click="list.toggleComponentSelection($event, task)"><!-- calendar color --></div>
                   <div class="sg-category"
                        ng-repeat="category in task.categories | limitTo:5"
                        ng-class="'bg-category' + category"
