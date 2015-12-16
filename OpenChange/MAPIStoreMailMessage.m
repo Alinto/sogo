@@ -340,7 +340,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                                  wrapperWithICalEvent: event
                                               andUser: [context activeUser]
                                        andSenderEmail: senderEmail
-                                           inTimeZone: [[self userContext] timeZone]
                                    withConnectionInfo: [context connectionInfo]];
           [appointmentWrapper retain];
         }

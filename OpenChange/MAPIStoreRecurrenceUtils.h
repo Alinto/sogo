@@ -25,13 +25,9 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSTimeZone.h>
-
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
-
-@class NSTimeZone;
 
 @class iCalEvent;
 @class iCalRepeatableEntityObject;
@@ -55,7 +51,6 @@
 
 - (void) fillRecurrencePattern: (struct RecurrencePattern *) rp
                      withEvent: (iCalEvent *) event
-                    inTimeZone: (NSTimeZone *) timeZone
                       inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end

@@ -33,6 +33,8 @@
 - (iCalTimeZone *) iCalTimeZoneFromDefinition: (NSData *) value
                               withDescription: (NSString *) description
                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (NSCalendarDate *) shiftedCalendarDateForDate: (NSCalendarDate *) date;
+
 
 @end
 

@@ -24,6 +24,7 @@
 #define MAPISTORECALENDARWRAPPER_H
 
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTimeZone.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 
 #import "MAPIStoreObjectProxy.h"
@@ -42,7 +43,7 @@
   iCalCalendar *calendar;
   iCalEvent *firstEvent;
   iCalEvent *event;
-  NSTimeZone *timeZone;
+  iCalTimeZone *timeZone;
   SOGoUser *user;
   NSString *senderEmail;
   NSData *globalObjectId;
@@ -57,12 +58,10 @@
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
-                 inTimeZone: (NSTimeZone *) newTimeZone
          withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
-              inTimeZone: (NSTimeZone *) newTimeZone
       withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 
 /* getters */

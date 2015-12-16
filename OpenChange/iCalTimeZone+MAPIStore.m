@@ -40,6 +40,7 @@
 #include <libmapi/libmapi.h>
 
 #import "iCalTimeZone+MAPIStore.h"
+#import "MAPIStoreTypes.h"
 
 @interface iCalTimeZonePeriod (MAPIStorePropertiesPrivate)
 
@@ -350,6 +351,27 @@ end:
 
   talloc_free (definition);
   return tz;
+}
+
+/**
+ * Adjust a date in this vTimeZone to its representation in UTC
+ * Example: Timezone is +0001, the date is 2015-12-15 00:00:00 +0000
+ *                              it returns 2015-12-14 23:00:00 +0000
+ * @param date the date to adjust to the timezone.
+ * @return a new GMT date adjusted with the offset of the timezone.
+ */
+- (NSCalendarDate *) shiftedCalendarDateForDate: (NSCalendarDate *) date
+{
+  NSCalendarDate *tmpDate;
+
+  tmpDate = [date copy];
+  [tmpDate autorelease];
+
+  [tmpDate setTimeZone: utcTZ];
+
+  return [tmpDate addYear: 0 month: 0 day: 0
+                     hour: 0 minute: 0
+                   second: -[[self periodForDate: tmpDate] secondsOffsetFromGMT]];
 }
 
 @end

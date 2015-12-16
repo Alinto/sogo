@@ -24,7 +24,6 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -265,7 +264,6 @@
 
 - (void) fillRecurrencePattern: (struct RecurrencePattern *) rp
                      withEvent: (iCalEvent *) event
-                    inTimeZone: (NSTimeZone *) timeZone
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalRecurrenceFrequency freq;
@@ -281,10 +279,8 @@
   NSMutableArray *deletedDates, *modifiedDates;
 
   startDate = [event firstRecurrenceStartDate];
-  [startDate setTimeZone: timeZone];
   endDate = [event lastPossibleRecurrenceStartDate];
-  [endDate setTimeZone: timeZone];
-  
+
   rp->ReaderVersion = 0x3004;
   rp->WriterVersion = 0x3004;
 
