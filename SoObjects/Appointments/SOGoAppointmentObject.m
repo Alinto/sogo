@@ -2172,9 +2172,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               iCalPerson *attendee, *delegate;
               NSString *delegateEmail;
 
-#if 1
-              attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
-#else
               attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
 
               if (!attendee)
@@ -2202,7 +2199,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                   [attendees addObject: attendee];
                   [newEvent setAttendees: attendees];
                 }
-#endif
               
               // We first check of the sequences are alright. We don't accept attendees
               // accepting "old" invitations. If that's the case, we return a 403
