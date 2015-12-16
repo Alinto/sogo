@@ -95,6 +95,7 @@
                  var:sg-day-number="currentDayNumber"
                  var:sg-day="currentTableDay.shortDateString"
                  var:sg-day-string="currentTableDay.iso8601DateString"
+                 sg-calendar="{{view.id}}"
                  ng-repeat="view in calendar.views">
               <div class="hourCells">
                 <var:foreach list="hoursToDisplay" item="currentTableHour">

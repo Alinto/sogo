@@ -27,7 +27,8 @@
       scope: {
         day: '@sgDay',
         dayNumber: '@sgDayNumber',
-        dayString: '@sgDayString'
+        dayString: '@sgDayString',
+        calendar: '@sgCalendar'
       },
       controller: sgCalendarDayController
     };
@@ -36,13 +37,27 @@
   /**
    * @ngInject
    */
-  sgCalendarDayController.$inject = ['$scope'];
-  function sgCalendarDayController($scope) {
+  sgCalendarDayController.$inject = ['$scope', 'Calendar'];
+  function sgCalendarDayController($scope, Calendar) {
     // Expose some scope variables to the controller
     // See the sgCalendarDayTable directive
     this.day = $scope.day;
     this.dayNumber = $scope.dayNumber;
     this.dayString = $scope.dayString;
+    this.calendarData = function() {
+      var pid, index, activeCalendars;
+      if ($scope.calendar) {
+        // A calendar is associated to the day; identify its index among active calendars
+        pid = $scope.calendar;
+        activeCalendars = _.filter(Calendar.$findAll(), { active: 1 });
+        index = _.findIndex(activeCalendars, function(calendar) {
+          return calendar.id == pid;
+        });
+        return { pid: pid, index: index };
+      }
+
+      return null;
+    };
   }
 
   angular

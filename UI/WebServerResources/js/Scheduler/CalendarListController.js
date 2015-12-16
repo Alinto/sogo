@@ -146,7 +146,7 @@
 
     // Adjust component or create new component through drag'n'drop
     function updateComponentFromGhost($event) {
-      var component, pointerHandler, coordinates, delta, params;
+      var component, pointerHandler, coordinates, delta, params, calendarNumber, activeCalendars;
 
       component = Component.$ghost.component;
       pointerHandler = Component.$ghost.pointerHandler;
@@ -170,6 +170,13 @@
           start: delta.start * 15,
           duration: delta.duration * 15
         };
+        if (pointerHandler.originalCalendar && delta.dayNumber !== 0) {
+          // The day number actually represents the destination calendar among the active calendars
+          calendarNumber = pointerHandler.currentEventCoordinates.dayNumber;
+          activeCalendars = _.filter(Calendar.$findAll(), { active: 1 });
+          params.destination = activeCalendars[calendarNumber].id;
+          params.days = 0;
+        }
         if (component.isException || !component.occurrenceId)
           // Component is an exception to a recurrence or is not recurrent;
           // Immediately perform the adjustments

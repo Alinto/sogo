@@ -24,11 +24,12 @@
     };
 
     function link(scope, iElement, attrs, ctrls) {
-      var domElement, calendarDayCtrl, scrollViewCtrl;
+      var domElement, calendarDayCtrl, scrollViewCtrl, calendarNumber, originalCalendarNumber;
 
       domElement = iElement[0];
       calendarDayCtrl = ctrls[0];
       scrollViewCtrl = ctrls[1];
+      calendarNumber = -1;
 
       iElement.addClass('sg-event--ghost md-whiteframe-3dp ng-hide');
 
@@ -45,10 +46,24 @@
       });
 
       function initGhost() {
+        var pid, calendarData;
+
         // Expose ghost block to the scope
         scope.block = Component.$ghost;
+
+        calendarData = calendarDayCtrl.calendarData();
+        if (calendarData) {
+          // A calendar is associated to the day; this is a special multicolumn day view
+          calendarNumber = calendarData.index;
+          pid = calendarData.pid;
+          originalCalendarNumber = scope.block.pointerHandler.originalCalendar.index;
+        }
+
+        if (!pid)
+          pid = scope.block.component.pid;
+
         // Set background color
-        iElement.addClass('bg-folder' + scope.block.component.pid);
+        iElement.addClass('bg-folder' + pid);
       }
 
       function hideGhost() {
@@ -91,7 +106,14 @@
           delete scope.startHour;
           delete scope.endHour;
 
-          if (currentDay > -1 && currentDay == calendarDayCtrl.dayNumber) {
+          if (currentDay > -1 &&                                 // pointer is inside viewport
+              ((calendarNumber < 0 &&                            // day is not associated to a calendar
+                currentDay == calendarDayCtrl.dayNumber) ||      // pointer is inside ghost's day
+               currentDay == calendarNumber &&                   // pointer is inside ghost's calendar
+               (originalCalendarNumber == calendarNumber ||      // still inside original calendar
+                !scope.block.component.isException)              // not an exception, event can be moved to a
+                                                                 // different calendar
+              )) {
             // This ghost block (day) is the first of the dragging event
             showGhost = true;
             if (!isRelative)  {

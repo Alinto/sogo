@@ -113,11 +113,13 @@
       }
 
       function dragStart(ev) {
-        var block, dragMode, eventType, isHourCell, isMonthly, startDate, newData, newComponent, pointerHandler;
+        var block, dragMode, eventType, isHourCell, isMonthly, startDate, newData, newComponent, pointerHandler, calendarData;
 
         isHourCell = element.hasClass('clickableHourCell');
         isMonthly = (element[0].parentNode.tagName == 'SG-CALENDAR-MONTH-DAY') ||
           element.hasClass('clickableDayCell');
+
+        calendarData = calendarDayCtrl.calendarData();
 
         if (scope.block && scope.block.component) {
           // Move or resize existing component
@@ -130,7 +132,7 @@
                                calendarDayCtrl.dayString.substring(11,16));
           newData = {
             type: 'appointment',
-            pid: Calendar.$defaultCalendar(),
+            pid: calendarData? calendarData.pid : Calendar.$defaultCalendar(),
             summary: l('New Event'),
             startDate: startDate,
             isAllDay: isHourCell? 0 : 1
@@ -160,12 +162,16 @@
         pointerHandler = Component.$ghost.pointerHandler;
         pointerHandler.prepareWithEventType(eventType);
         pointerHandler.initFromBlock(block);
+        if (calendarData)
+          // When the day is associated to a calendar, the day number becomes the calendar index
+          // among the active calendars
+          pointerHandler.initFromCalendar(calendarData);
 
         // Update Component.$ghost
         Component.$ghost.starthour = block.starthour;
         Component.$ghost.component = block.component;
 
-        $log.debug('emit calendar:dragstart');
+        $log.debug('emit calendar:dragstart ' + eventType + ' ' + dragMode);
         $rootScope.$emit('calendar:dragstart');
       }
 
@@ -196,7 +202,7 @@
         }
 
         // Unmark all blocks as being dragged
-        if (block)
+        if (block && block.component)
           _.forEach(block.component.blocks, function(b) {
             b.dragging = false;
           });
@@ -271,6 +277,10 @@
           this.dayNumber = block.component.blocks[0].dayNumber;
         },
 
+        initFromCalendar: function(calendarNumber) {
+          this.dayNumber = calendarNumber;
+        },
+
         getDelta: function(otherCoordinates) {
           var delta = new SOGoEventDragEventCoordinates();
           delta.dayNumber = (this.dayNumber - otherCoordinates.dayNumber);
@@ -331,6 +341,8 @@
         originalEventCoordinates: null,
         currentEventCoordinates: null,
 
+        originalCalendar: null,
+
         dragHasStarted: false,
 
         // Function to return the day and quarter coordinates of the pointer cursor
@@ -347,6 +359,12 @@
           this.currentCoordinates = new SOGoCoordinates();
           this.updateFromEvent(event);
           this.originalCoordinates = this.currentCoordinates.clone();
+        },
+
+        initFromCalendar: function SEDPH_initFromCalendar(calendarData) {
+          this.originalCalendar = calendarData;
+          this.currentEventCoordinates.initFromCalendar(calendarData.index);
+          this.originalEventCoordinates.initFromCalendar(calendarData.index);
         },
 
         // Method continuously called while dragging
@@ -509,9 +527,16 @@
             var daysOffset = view.daysOffset;
 
             coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
+            var minX = 0;
             var maxX = Calendar.$view.maxX;
-            if (coordinates.x < 0)
-              coordinates.x = 0;
+            if (this.dragMode != 'move-event') {
+              var calendarData = calendarDayCtrl.calendarData();
+              if (calendarData)
+                // Resizing an event can't span a different day when in multicolumn view
+                minX = maxX = calendarData.index;
+            }
+            if (coordinates.x < minX)
+              coordinates.x = minX;
             else if (coordinates.x > maxX)
               coordinates.x = maxX;
             coordinates.y = 0;
