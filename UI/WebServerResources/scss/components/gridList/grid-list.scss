@@ -26,15 +26,16 @@
 // sgToggleGrid directive
 [sg-toggle-grid] {
   md-grid-tile {
-    border-radius: 5%;
-    &.iconButton {
-      &:hover {
-        background-color: sg-color($sogoBlue, 600);
-        color: #fff;
-        cursor: pointer;
-      }
+    &.sg-icon-button {
+      @extend .md-button;
+      // Overwrite some styles of .md-button
+      border: 1px solid sg-color($sogoBlue, 300);
+      border-radius: 5%;
+      color: sg-color($sogoBlue, 600);
+      min-height: auto;
+      position: absolute;
     }
-    &.sg-active, &.sg-active:hover {
+    &.sg-active {
       background-color: sg-color($sogoBlue, 300);
       color: #fff;
     }

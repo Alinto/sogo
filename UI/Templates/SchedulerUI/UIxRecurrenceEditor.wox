@@ -91,7 +91,7 @@
         <md-radio-button value="byday">
           <var:string label:value="The"/>
         </md-radio-button>
-        <md-input-container class="md-no-flex">
+        <md-input-container>
           <md-select ng-model="editor.component.repeat.month.occurrence">
             <var:foreach list="monthlyRepeatList" item="item">
               <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>

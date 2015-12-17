@@ -63,7 +63,7 @@
 
       for (i = 0; i < tiles.length; i++) {
         tile = angular.element(tiles[i]);
-        tile.addClass('iconButton');
+        tile.addClass('sg-icon-button');
         tile.find('figure').addClass('md-icon');
         tile.on('click', toggleClass);
       }

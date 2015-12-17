@@ -63,8 +63,8 @@ md-list md-list-item button.md-button.sg-icon-button {
   transition: $iconButton-transition;
   &:hover:not([disabled]),
   &:active {
-    background-color: transparent;
-    transform: scale($iconButton-hover-scale);
+    //background-color: transparent;
+    //transform: scale($iconButton-hover-scale);
   }
 }
 
