@@ -48,6 +48,7 @@ md-icon {
   &.sg-icon-toolbar-bg {
     font-size: 84px;
     opacity: 0.2;
+    overflow: hidden;
     position: absolute;
     right: $mg * 3;
     transform: rotate(-15deg);
