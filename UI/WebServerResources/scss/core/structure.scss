@@ -24,6 +24,9 @@ html * {
   &--top {
     padding-top: $mg;
   }
+  &--bottom {
+    padding-bottom: $mg;
+  }
 }
 
 .sg-logo {
@@ -41,4 +44,16 @@ html * {
   top: 0;
   bottom: 0;
   width: 3px;
+}
+
+// Group fields of a form
+// See https://www.google.com/design/spec/patterns/settings.html#settings-grouping-settings
+.sg-has-form-sections {
+  background-color: $colorGrey300;
+}
+.sg-form-section {
+  @extend .md-whiteframe-2dp;
+  @extend .md-padding;
+  background-color: white;
+  margin-bottom: $mg/2;
 }

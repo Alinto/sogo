@@ -11,7 +11,7 @@
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
-          <md-input-container>
+          <md-input-container class="md-flex">
             <label><var:string label:value="Title"/></label>
             <input type="text"
                    class="md-title"
@@ -23,147 +23,152 @@
           </md-button>
         </div>
       </md-toolbar>
-      <md-dialog-content class="md-dialog-content">
-        <div layout="row" layout-wrap="layout-wrap">
-          <!-- location -->
-          <md-input-container flex="50" flex-xs="100">
-            <label><var:string label:value="Location"/></label>
-            <input type="text" ng-model="editor.component.location"/>
-          </md-input-container>
-          <!-- calendar -->
-          <md-input-container flex="50" flex-xs="100">
-            <label><var:string label:value="Calendar"/></label>
-            <md-select ng-model="editor.component.destinationCalendar">
-              <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
-                         ng-value="calendar.id">{{calendar.name}}</md-option>
-            </md-select>
-          </md-input-container>
-        </div>
-        <!-- categories -->
-        <md-chips ng-model="editor.component.categories">
-          <md-autocomplete
-              md-selected-item="editor.categories.selected"
-              md-search-text="editor.categories.searchText"
-              md-items="category in editor.component.constructor.filterCategories(editor.categories.searchText)"
-              md-min-length="0"
-              label:placeholder="Add a category">
-            <span md-highlight-text="editor.categories.searchText">{{category}}</span>
-          </md-autocomplete>
-        </md-chips>
-        <!-- classification -->
-        <md-radio-group class="md-padding" layout="row" layout-align="space-around center"
-                        ng-model="editor.component.classification">
-          <md-radio-button value="public">
-            <var:string label:value="label_Public"/>
-          </md-radio-button>
-          <md-radio-button value="confidential">
-            <var:string label:value="label_Confidential"/>
-          </md-radio-button>
-          <md-radio-button value="private">
-            <var:string label:value="label_Private"/>
-          </md-radio-button>
-        </md-radio-group>
-        <!-- priority -->
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Priority"/></label>
-          <md-slider class="md-flex"
-                     md-discrete="true"
-                     ng-model="editor.component.priority"
-                     step="1"
-                     min="0"
-                     max="9"
-                     label:aria-label="Priority"><!-- slider --></md-slider>
-        </div>
-        <!-- is all day -->
-        <div layout="row">
-        <md-checkbox
-            ng-model="editor.component.isAllDay"
-            ng-true-value="1"
-            ng-false-value="0"
-            label:aria-label="All day Event">
-          <var:string label:value="All day Event"/>
-        </md-checkbox>
-        </div>
-        <!-- is transparent -->
-        <div layout="row">
-        <md-checkbox
-            ng-model="editor.component.isTransparent"
-            ng-true-value="1"
-            ng-false-value="0"
-            label:aria-label="Show Time as Free">
-          <var:string label:value="Show Time as Free"/>
-        </md-checkbox>
-        </div>
-        <!-- send appointment notifications -->
-        <div layout="row">
-        <md-checkbox
-            ng-model="editor.component.sendAppointmentNotifications"
-            ng-true-value="1"
-            ng-false-value="0"
-            label:aria-label="Send Appointment Notifications">
-          <var:string label:value="Send Appointment Notifications"/>
-        </md-checkbox>
-        </div>
-        <!-- start + end -->
-        <div layout="row">
-          <div flex="50">
-            <div class="pseudo-input-container">
-              <label class="pseudo-input-label"><var:string label:value="From"/></label>
-            </div>
-            <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-              <md-datepicker ng-model="editor.component.start"
-                             ng-change="editor.updateStartTime()"
-                             label:md-placeholder="From"><!-- date picker --></md-datepicker>
-              <sg-timepicker ng-model="editor.component.start"
-                             ng-change="editor.adjustStartTime()"
-                             ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
-            </div>
-          </div>
-          <div flex="50">
-            <div class="pseudo-input-container">
-              <label class="pseudo-input-label"><var:string label:value="To"/></label>
-            </div>
-            <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-              <md-datepicker ng-model="editor.component.end"
-                             ng-change="editor.updateEndTime()"
-                             label:md-placeholder="To"><!-- date picker --></md-datepicker>
-              <sg-timepicker ng-model="editor.component.end"
-                             ng-change="editor.adjustEndTime()"
-                             ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
-            </div>
-          </div>
-        </div>
-        <!-- attach urls -->
-        <div class="attr" ng-repeat="attach in editor.component.attachUrls">
-          <div layout="row">
-            <md-input-container class="md-block md-flex">
-              <label>
-                <var:string label:value="URL"/>
-              </label>
-              <input type="text" ng-model="attach.value"
-                     sg-focus-on="attachUrl_{{$index}}"/>
+      <md-dialog-content class="sg-has-form-sections">
+        <div class="sg-form-section">
+          <div layout="row" layout-wrap="layout-wrap">
+            <!-- location -->
+            <md-input-container flex="50" flex-xs="100">
+              <label><var:string label:value="Location"/></label>
+              <input type="text" ng-model="editor.component.location"/>
             </md-input-container>
-            <md-button class="sg-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
-              <md-icon>remove_circle</md-icon>
+            <!-- calendar -->
+            <md-input-container flex="50" flex-xs="100">
+              <label><var:string label:value="Calendar"/></label>
+              <md-select ng-model="editor.component.destinationCalendar">
+                <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
+                           ng-value="calendar.id">{{calendar.name}}</md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+          <!-- comment -->
+          <md-input-container class="md-block md-flex">
+            <label><var:string label:value="Description"/></label>
+            <textarea ng-model="editor.component.comment"><!-- comment --></textarea>
+          </md-input-container>
+          <!-- categories -->
+          <md-chips ng-model="editor.component.categories">
+            <md-autocomplete
+                md-selected-item="editor.categories.selected"
+                md-search-text="editor.categories.searchText"
+                md-items="category in editor.component.constructor.filterCategories(editor.categories.searchText)"
+                md-min-length="0"
+                label:placeholder="Add a category">
+              <span md-highlight-text="editor.categories.searchText">{{category}}</span>
+            </md-autocomplete>
+          </md-chips>
+          <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
+            <!-- classification -->
+            <md-radio-group class="md-padding" layout="row"
+                            ng-model="editor.component.classification">
+              <md-radio-button value="public">
+                <var:string label:value="label_Public"/>
+              </md-radio-button>
+              <md-radio-button value="confidential">
+                <var:string label:value="label_Confidential"/>
+              </md-radio-button>
+              <md-radio-button value="private">
+                <var:string label:value="label_Private"/>
+              </md-radio-button>
+            </md-radio-group>
+            <!-- priority -->
+            <div class="pseudo-input-container" flex="50" flex-xs="100">
+              <label class="pseudo-input-label"><var:string label:value="Priority"/></label>
+              <md-slider class="md-flex"
+                         md-discrete="true"
+                         ng-model="editor.component.priority"
+                         step="1"
+                         min="0"
+                         max="9"
+                         label:aria-label="Priority"><!-- slider --></md-slider>
+            </div>
+          </div>
+          <!-- send appointment notifications -->
+          <md-input-container>
+          <md-checkbox
+              ng-model="editor.component.sendAppointmentNotifications"
+              ng-true-value="1"
+              ng-false-value="0"
+              label:aria-label="Send Appointment Notifications">
+            <var:string label:value="Send Appointment Notifications"/>
+          </md-checkbox>
+          </md-input-container>
+          <!-- attach urls -->
+          <div class="attr" ng-repeat="attach in editor.component.attachUrls">
+            <div layout="row" layout-align="start center">
+              <md-input-container class="md-block md-flex">
+                <label>
+                  <var:string label:value="URL"/>
+                </label>
+                <input type="url" ng-model="attach.value"
+                       sg-focus-on="attachUrl_{{$index}}"/>
+              </md-input-container>
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
+            </div>
+          </div>
+          <div layout="row" layout-align="start center">
+            <md-button class="md-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
+              <md-icon>add_circle</md-icon>
             </md-button>
+            <label class="button-label">
+              <var:string label:value="Attach"/>
+            </label>
           </div>
         </div>
-        <div class="md-layout-margin" layout="row" layout-align="start center">
-          <md-button class="sg-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
-            <md-icon>add_circle</md-icon>
-          </md-button>
-          <label class="button-label">
-            <var:string label:value="Attach"/>
-          </label>
+
+        <div class="sg-form-section">
+          <!-- is all day -->
+          <div layout="row">
+            <md-checkbox flex="50"
+                         ng-model="editor.component.isAllDay"
+                         ng-true-value="1"
+                         ng-false-value="0"
+                         label:aria-label="All day Event">
+              <var:string label:value="All day Event"/>
+            </md-checkbox>
+            <!-- is transparent -->
+            <md-checkbox flex="50"
+                         ng-model="editor.component.isTransparent"
+                         ng-true-value="1"
+                         ng-false-value="0"
+                         label:aria-label="Show Time as Free">
+              <var:string label:value="Show Time as Free"/>
+            </md-checkbox>
+          </div>
+          <!-- start + end -->
+          <div layout="row">
+            <div flex="50">
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label"><var:string label:value="From"/></label>
+              </div>
+              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+                <md-datepicker ng-model="editor.component.start"
+                               ng-change="editor.updateStartTime()"
+                               label:md-placeholder="From"><!-- date picker --></md-datepicker>
+                <sg-timepicker ng-model="editor.component.start"
+                               ng-change="editor.adjustStartTime()"
+                               ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
+              </div>
+            </div>
+            <div flex="50">
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label"><var:string label:value="To"/></label>
+              </div>
+              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+                <md-datepicker ng-model="editor.component.end"
+                               ng-change="editor.updateEndTime()"
+                               label:md-placeholder="To"><!-- date picker --></md-datepicker>
+                <sg-timepicker ng-model="editor.component.end"
+                               ng-change="editor.adjustEndTime()"
+                               ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- comment -->
-        <md-input-container class="md-block md-flex">
-          <label><var:string label:value="Description"/></label>
-          <textarea ng-model="editor.component.comment"><!-- comment --></textarea>
-        </md-input-container>
         <!-- repeat -->
-        <div layout="row" layout-align="start end">
-          <div class="md-flex">
+        <div class="sg-form-section">
+          <div layout="row" layout-align="start center">
             <md-input-container class="md-block md-flex">
               <label><var:string label:value="Repeat"/></label>
               <md-select ng-model="editor.component.repeat.frequency" ng-disabled="editor.component.occurrenceId">
@@ -172,97 +177,102 @@
                 </var:foreach>
               </md-select>
             </md-input-container>
+            <md-button type="button" class="sg-icon-button"
+                       label:aria-label="repeat_CUSTOM"
+                       ng-disabled="editor.component.occurrenceId"
+                       ng-show="editor.component.repeat.frequency != 'never'"
+                       ng-click="editor.toggleRecurrenceEditor()">
+              <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
+            </md-button>
           </div>
-          <md-button type="button" class="sg-icon-button"
-                     label:aria-label="repeat_CUSTOM"
-                     ng-disabled="editor.component.occurrenceId"
-                     ng-show="editor.component.repeat.frequency != 'never'"
-                     ng-click="editor.toggleRecurrenceEditor()">
-            <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
-          </md-button>
-        </div>
-        <div ng-show="editor.showRecurrenceEditor" class="sg-subcontent">
-          <var:component className="UIxRecurrenceEditor" />
-        </div>
-        <!-- end repeat -->
-        <div layout="row">
-          <md-input-container class="md-block" flex="50" flex-xs="100"
-                              ng-show="editor.component.repeat.frequency != 'never'">
-            <label><var:string label:value="End Repeat"/></label>
-            <md-select ng-model="editor.component.repeat.end"
-                       ng-disabled="editor.component.occurrenceId">
-              <md-option value="never"><var:string label:value="Never"/></md-option>
-              <md-option value="count"><var:string label:value="After"/></md-option>
-              <md-option value="until"><var:string label:value="On Date"/></md-option>
-            </md-select>
-          </md-input-container>
-          <md-input-container class="md-block md-input-number"
-                              ng-show="editor.component.repeat.end == 'count'">
-            <label><var:string label:value="times"/></label>
-            <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
-          </md-input-container>
-          <md-datepicker ng-show="editor.component.repeat.end == 'until'"
-                         ng-model="editor.component.repeat.until"
-                         label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+          <div ng-show="editor.showRecurrenceEditor" flex-offset="5">
+            <var:component className="UIxRecurrenceEditor" />
+          </div>
+          <!-- end repeat -->
+          <div layout="row">
+            <md-input-container class="md-block" flex="50" flex-xs="100"
+                                ng-show="editor.component.repeat.frequency != 'never'">
+              <label><var:string label:value="End Repeat"/></label>
+              <md-select ng-model="editor.component.repeat.end"
+                         ng-disabled="editor.component.occurrenceId">
+                <md-option value="never"><var:string label:value="Never"/></md-option>
+                <md-option value="count"><var:string label:value="After"/></md-option>
+                <md-option value="until"><var:string label:value="On Date"/></md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container class="md-block md-input-number"
+                                ng-show="editor.component.repeat.end == 'count'">
+              <label><var:string label:value="times"/></label>
+              <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
+            </md-input-container>
+            <md-datepicker ng-show="editor.component.repeat.end == 'until'"
+                           ng-model="editor.component.repeat.until"
+                           label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+          </div>
         </div>
         <!-- attendees -->
-        <div layout="row" layout-align="start start">
-          <md-autocomplete class="md-flex"
-                           label:md-floating-label="Invite Attendees"
-                           md-selected-item="attendeeToAdd"
-                           md-search-text="editor.searchText"
-                           md-selected-item-change="editor.addAttendee(card)"
-                           md-items="card in editor.cardFilter(editor.searchText)"
-                           md-item-text="card.empty"
-                           md-min-length="3"
-                           md-delay="300"
-                           md-no-cache="true"
-                           sg-enter="editor.addAttendee(editor.searchText)">
-            <md-item-template>
-              <div class="md-contact-suggestion">
-                <span class="md-contact-name"
-                      md-highlight-text="editor.searchText"
-                      md-highlight-flags="^i">{{card.$$fullname}}</span>
-                <span class="md-contact-email"
-                      md-highlight-text="editor.searchText"
-                      md-highlight-flags="^i">{{card.$$email}}</span>
+        <div class="sg-form-section">
+          <div layout="row" layout-align="start start">
+            <md-icon>search</md-icon>
+            <md-autocomplete class="md-flex"
+                             label:md-floating-label="Invite Attendees"
+                             md-selected-item="attendeeToAdd"
+                             md-search-text="editor.searchText"
+                             md-selected-item-change="editor.addAttendee(card)"
+                             md-items="card in editor.cardFilter(editor.searchText)"
+                             md-item-text="card.empty"
+                             md-min-length="3"
+                             md-delay="300"
+                             md-no-cache="true"
+                             sg-enter="editor.addAttendee(editor.searchText)">
+              <md-item-template>
+                <div class="md-contact-suggestion">
+                  <span class="md-contact-name"
+                        md-highlight-text="editor.searchText"
+                        md-highlight-flags="^i">{{card.$$fullname}}</span>
+                  <span class="md-contact-email"
+                        md-highlight-text="editor.searchText"
+                        md-highlight-flags="^i">{{card.$$email}}</span>
+                </div>
+              </md-item-template>
+            </md-autocomplete>
+            <md-button type="button" class="sg-icon-button"
+                       label:aria-label="repeat_CUSTOM"
+                       ng-click="editor.toggleAttendeesEditor()">
+              <md-icon ng-class="{'md-rotate-180': editor.showAttendeesEditor}">expand_more</md-icon>
+            </md-button>
+          </div>
+          <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+               in readonly mode and a template similar to the one of md-contact-chips -->
+          <md-chips class="md-contact-chips sg-readonly"
+                    ng-model="editor.component.attendees"
+                    ng-hide="editor.showAttendeesEditor"
+                    readonly="true">
+            <md-chip-template>
+              <div class="md-contact-avatar">
+                <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
               </div>
-            </md-item-template>
-          </md-autocomplete>
-          <md-button type="button" class="sg-icon-button"
-                     label:aria-label="repeat_CUSTOM"
-                     ng-click="editor.toggleAttendeesEditor()">
-            <md-icon ng-class="{'md-rotate-180': editor.showAttendeesEditor}">expand_more</md-icon>
-          </md-button>
+              <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
+              <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+              <md-icon class="sg-chip-remove"
+                       label:aria-label="Delete"
+                       ng-click="editor.component.deleteAttendee($chip)">close</md-icon>
+            </md-chip-template>
+          </md-chips>
+          <div ng-show="editor.showAttendeesEditor" class="attendees">
+            <var:component className="UIxAttendeesEditor" />
+          </div>
         </div>
-        <!-- md-contact-chips don't support "readonly", so we build them using md-chips
-             in readonly mode and a template similar to the one of md-contact-chips -->
-        <md-chips class="md-contact-chips sg-readonly"
-                  ng-model="editor.component.attendees"
-                  ng-hide="editor.showAttendeesEditor"
-                  readonly="true">
-          <md-chip-template>
-            <div class="md-contact-avatar">
-              <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
-            </div>
-            <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
-            <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
-            <md-icon class="sg-chip-remove"
-                     label:aria-label="Delete"
-                     ng-click="editor.component.deleteAttendee($chip)">close</md-icon>
-          </md-chip-template>
-        </md-chips>
-        <div ng-show="editor.showAttendeesEditor" class="attendees">
-          <var:component className="UIxAttendeesEditor" />
-        </div>
-        <!-- reminder -->
-        <md-checkbox ng-model="editor.component.$hasAlarm"
-                     label:aria-label="Reminder">
-          <var:string label:value="Reminder"/>
-        </md-checkbox>
-        <div flex-offset="5"
-             ng-show="editor.component.$hasAlarm">
-          <var:component className="UIxReminderEditor" />
+        <div class="sg-form-section">
+          <!-- reminder -->
+          <md-checkbox ng-model="editor.component.$hasAlarm"
+                       label:aria-label="Reminder">
+            <var:string label:value="Reminder"/>
+          </md-checkbox>
+          <div flex-offset="5"
+               ng-show="editor.component.$hasAlarm">
+            <var:component className="UIxReminderEditor" />
+          </div>
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->

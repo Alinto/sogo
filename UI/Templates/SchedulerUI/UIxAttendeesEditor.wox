@@ -55,6 +55,7 @@
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
           </div>
         </div>
+        <md-divider><!-- divider --></md-divider>
       </md-list-item>
     </md-list>
   </md-content>
