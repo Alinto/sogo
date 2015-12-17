@@ -946,7 +946,7 @@
       }
     });
     this.init(this.$shadowData);
-    this.$shadowData = this.$omit(true);
+    this.$shadowData = this.$omit();
   };
 
   /**
@@ -970,7 +970,7 @@
     return Component.$$resource.save(path.join('/'), data, { action: 'rsvpAppointment' })
       .then(function(data) {
         // Make a copy of the data for an eventual reset
-        _this.$shadowData = _this.$omit(true);
+        _this.$shadowData = _this.$omit();
         return data;
       });
   };
@@ -1004,6 +1004,57 @@
   Component.prototype.$save = function() {
     var _this = this, options, path = [this.pid, this.id];
 
+    // Format dates and times
+    component.startDate = component.start ? formatDate(component.start) : '';
+    component.startTime = component.start ? formatTime(component.start) : '';
+    component.endDate = component.end ? formatDate(component.end) : '';
+    component.endTime = component.end ? formatTime(component.end) : '';
+    component.dueDate = component.due ? formatDate(component.due) : '';
+    component.dueTime = component.due ? formatTime(component.due) : '';
+
+    // Update recurrence definition depending on selections
+    if (this.$hasCustomRepeat) {
+      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
+          this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
+        // BYDAY mask for a monthly or yearly recurrence
+        delete component.repeat.monthdays;
+        component.repeat.days = [{ day: this.repeat.month.day, occurrence: this.repeat.month.occurrence.toString() }];
+      }
+      else if (this.repeat.month.type) {
+        // montly recurrence by month days or yearly by month
+        delete component.repeat.days;
+      }
+    }
+    else if (this.repeat.frequency) {
+      component.repeat = { frequency: this.repeat.frequency };
+    }
+    if (this.repeat.frequency) {
+      if (this.repeat.end == 'until' && this.repeat.until)
+        component.repeat.until = this.repeat.until.stringWithSeparator('-');
+      else if (this.repeat.end == 'count' && this.repeat.count)
+        component.repeat.count = this.repeat.count;
+      else {
+        delete component.repeat.until;
+        delete component.repeat.count;
+      }
+    }
+    else {
+      delete component.repeat;
+    }
+
+    if (this.$hasAlarm) {
+      if (this.alarm.action && this.alarm.action == 'email' &&
+          !(this.attendees && this.attendees.length > 0)) {
+        // No attendees; email reminder must be sent to organizer only
+        this.alarm.attendees = 0;
+        this.alarm.organizer = 1;
+      }
+    }
+    else {
+      component.alarm = {};
+    }
+
+    // Build URL
     if (this.isNew)
       options = { action: 'saveAs' + this.type.capitalize() };
 
@@ -1013,9 +1064,33 @@
     return Component.$$resource.save(path.join('/'), this.$omit(), options)
       .then(function(data) {
         // Make a copy of the data for an eventual reset
-        _this.$shadowData = _this.$omit(true);
+        _this.$shadowData = _this.$omit();
         return data;
       });
+
+    function formatTime(date) {
+      var hours = date.getHours();
+      if (hours < 10) hours = '0' + hours;
+
+      var minutes = date.getMinutes();
+      if (minutes < 10) minutes = '0' + minutes;
+      return hours + ':' + minutes;
+    }
+
+    function formatDate(date) {
+      var year = date.getYear();
+      if (year < 1000) year += 1900;
+
+      var month = '' + (date.getMonth() + 1);
+      if (month.length == 1)
+        month = '0' + month;
+
+      var day = '' + date.getDate();
+      if (day.length == 1)
+        day = '0' + day;
+
+      return year + '-' + month + '-' + day;
+    }
   };
 
   /**
@@ -1072,80 +1147,6 @@
         component[key] = angular.copy(value);
       }
     });
-
-    // Format dates and times
-    component.startDate = component.start ? formatDate(component.start) : '';
-    component.startTime = component.start ? formatTime(component.start) : '';
-    component.endDate = component.end ? formatDate(component.end) : '';
-    component.endTime = component.end ? formatTime(component.end) : '';
-    component.dueDate = component.due ? formatDate(component.due) : '';
-    component.dueTime = component.due ? formatTime(component.due) : '';
-
-    // Update recurrence definition depending on selections
-    if (this.$hasCustomRepeat) {
-      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
-          this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
-        // BYDAY mask for a monthly or yearly recurrence
-        delete component.repeat.monthdays;
-        component.repeat.days = [{ day: this.repeat.month.day, occurrence: this.repeat.month.occurrence.toString() }];
-      }
-      else if (this.repeat.month.type) {
-        // montly recurrence by month days or yearly by month
-        delete component.repeat.days;
-      }
-    }
-    else if (this.repeat.frequency) {
-      component.repeat = { frequency: this.repeat.frequency };
-    }
-    if (this.repeat.frequency) {
-      if (this.repeat.end == 'until' && this.repeat.until)
-        component.repeat.until = this.repeat.until.stringWithSeparator('-');
-      else if (this.repeat.end == 'count' && this.repeat.count)
-        component.repeat.count = this.repeat.count;
-      else {
-        delete component.repeat.until;
-        delete component.repeat.count;
-      }
-    }
-    else {
-      delete component.repeat;
-    }
-
-    if (this.$hasAlarm) {
-      if (this.alarm.action && this.alarm.action == 'email' &&
-          !(this.attendees && this.attendees.length > 0)) {
-        // No attendees; email reminder must be sent to organizer only
-        this.alarm.attendees = 0;
-        this.alarm.organizer = 1;
-      }
-    }
-    else {
-      component.alarm = {};
-    }
-
-    function formatTime(date) {
-      var hours = date.getHours();
-      if (hours < 10) hours = '0' + hours;
-
-      var minutes = date.getMinutes();
-      if (minutes < 10) minutes = '0' + minutes;
-      return hours + ':' + minutes;
-    }
-
-    function formatDate(date) {
-      var year = date.getYear();
-      if (year < 1000) year += 1900;
-
-      var month = '' + (date.getMonth() + 1);
-      if (month.length == 1)
-        month = '0' + month;
-
-      var day = '' + date.getDate();
-      if (day.length == 1)
-        day = '0' + day;
-
-      return year + '-' + month + '-' + day;
-    }
 
     return component;
   };
