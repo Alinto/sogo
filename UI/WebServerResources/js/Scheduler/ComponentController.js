@@ -287,8 +287,8 @@
           vm.component.end.addMinutes(vm.component.delta);
           oldEndDate = new Date(vm.component.end.getTime());
         }
+        updateFreeBusy();
       }
-      updateFreeBusy();
     }
 
     function updateEndTime() {
@@ -299,14 +299,17 @@
 
     function adjustEndTime() {
       // The end date must be after the start date
-      var delta = vm.component.start.minutesTo(vm.component.end);
-      if (delta < 0)
-        vm.component.end = new Date(oldEndDate.getTime());
-      else {
-        vm.component.delta = delta;
-        oldEndDate = new Date(vm.component.end.getTime());
+      var delta = oldEndDate.valueOf() - vm.component.end.valueOf();
+      if (delta !== 0) {
+          delta = vm.component.start.minutesTo(vm.component.end);
+        if (delta < 0)
+          vm.component.end = new Date(oldEndDate.getTime());
+        else {
+          vm.component.delta = delta;
+          oldEndDate = new Date(vm.component.end.getTime());
+        }
+        updateFreeBusy();
       }
-      updateFreeBusy();
     }
 
     function updateDueTime() {
