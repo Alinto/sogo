@@ -491,7 +491,7 @@
       var byDayMask = _.find(this.repeat.days, function(o) {
         return angular.isDefined(o.occurrence);
       });
-      if (byDayMask)
+      if (byDayMask) {
         if (this.repeat.frequency == 'yearly')
           this.repeat.year = { byday: true };
         this.repeat.month = {
@@ -499,6 +499,7 @@
           occurrence: byDayMask.occurrence.toString(),
           day: byDayMask.day
         };
+      }
     }
     else {
       this.repeat.days = [];
