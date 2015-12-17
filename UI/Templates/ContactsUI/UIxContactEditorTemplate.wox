@@ -40,20 +40,20 @@
             </label>
             <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
           </md-input-container>
-          <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
-            <md-input-container flex="40">
+          <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
+            <md-input-container flex="40" flex-xs="100">
               <label>
                 <var:string label:value="Firstname"/>
               </label>
               <input type="text" ng-model="editor.card.c_givenname"/>
             </md-input-container>
-            <md-input-container flex="40">
+            <md-input-container flex="40" flex-xs="100">
               <label>
                 <var:string label:value="Lastname"/>
               </label>
               <input type="text" ng-model="editor.card.c_sn"/>
             </md-input-container>
-            <md-input-container flex="20">
+            <md-input-container flex="20" flex-xs="100">
               <label>
                 <var:string label:value="Nickname"/>
               </label>
@@ -61,20 +61,20 @@
             </md-input-container>
           </div>
 
-          <div id="contact-identification" class="sg-fieldset" layout="row" layout-sm="column">
-            <md-input-container flex="40">
+          <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
+            <md-input-container flex="40" flex-xs="100">
               <label>
                 <var:string label:value="Organization"/>
               </label>
               <input type="text" ng-model="editor.card.c_org"/>
             </md-input-container>
-            <md-input-container flex="40">
+            <md-input-container flex="40" flex-xs="100">
               <label>
                 <var:string label:value="Title"/>
               </label>
               <input type="text" ng-model="editor.card.title"/>
             </md-input-container>
-            <md-input-container flex="20">
+            <md-input-container flex="20" flex-xs="100">
               <label>
                 <var:string label:value="Role"/>
               </label>
