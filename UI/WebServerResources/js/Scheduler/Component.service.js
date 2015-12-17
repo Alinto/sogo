@@ -409,6 +409,27 @@
   };
 
   /**
+   * @function $parseDate
+   * @desc Parse a date string with format YYYY-MM-DDTHH:MM
+   * @param {string} dateString - the string representing the date
+   * @param {object} [options] - additional options (use {no_time: true} to ignore the time)
+   * @returns a date object
+   */
+  Component.$parseDate = function(dateString, options) {
+    var date, time;
+
+    date = dateString.substring(0,10).split('-');
+
+    if (options && options.no_time)
+      return new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]));
+
+    time = dateString.substring(11,16).split(':');
+
+    return new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]),
+                    parseInt(time[0]), parseInt(time[1]), 0, 0);
+    };
+
+  /**
    * @function init
    * @memberof Component.prototype
    * @desc Extend instance with required attributes and new data.
@@ -440,7 +461,7 @@
     if (this.startDate) {
       if (angular.isString(this.startDate))
         // Ex: 2015-10-25T22:34:51+00:00
-        this.start = new Date(this.startDate.substring(0,10) + ' ' + this.startDate.substring(11,16));
+        this.start = Component.$parseDate(this.startDate);
       else
         // Date object
         this.start = this.startDate;
@@ -451,7 +472,7 @@
     }
 
     if (this.endDate) {
-      this.end = new Date(this.endDate.substring(0,10) + ' ' + this.endDate.substring(11,16));
+      this.end = Component.$parseDate(this.endDate);
       this.delta = this.start.minutesTo(this.end);
     }
     else if (this.type == 'appointment') {
@@ -459,7 +480,7 @@
     }
 
     if (this.dueDate)
-      this.due = new Date(this.dueDate.substring(0,10) + ' ' + this.dueDate.substring(11,16));
+      this.due = Component.$parseDate(this.dueDate);
 
     if (this.c_category)
       this.categories = _.invoke(this.c_category, 'asCSSIdentifier');
@@ -500,7 +521,7 @@
       this.repeat.end = 'count';
     else if (this.repeat.until) {
       this.repeat.end = 'until';
-      this.repeat.until = this.repeat.until.substring(0,10).asDate();
+      this.repeat.until = Component.$parseDate(this.repeat.until, { no_time: true });
     }
     else
       this.repeat.end = 'never';
