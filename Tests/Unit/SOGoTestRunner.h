@@ -35,20 +35,31 @@ typedef enum {
   SOGoTestFailureError = 2,
 } SOGoTestFailureCode;
 
+typedef enum {
+  SOGoTestTextOutputFormat = 0,
+  SOGoTestJUnitOutputFormat
+} SOGoTestOutputFormat;
+
 @interface SOGoTestRunner : NSObject
 {
-  NSMutableArray *messages;
+  /* An array of arrays whose components are the method name and the
+     failure message if any */
+  NSMutableArray *performedTests;
   int testCount;
   int failuresCount;
   int errorsCount;
   BOOL hasFailed;
+  SOGoTestOutputFormat reportFormat;
 }
 
-+ (SOGoTestRunner *) testRunner;
++ (SOGoTestRunner *) testRunnerWithFormat: (SOGoTestOutputFormat) reportFormat;
+
+- (void) setReportFormat: (SOGoTestOutputFormat) format;
 
 - (int) run;
 
-- (void) incrementTestCounter: (SOGoTestFailureCode) failureCode;
+- (void) incrementTestCounter: (SOGoTestFailureCode) failureCode
+                  afterMethod: (NSString *) methodName;
 - (void) reportException: (NSException *) exception
                   method: (NSString *) methodName
                 withCode: (SOGoTestFailureCode) failureCode;

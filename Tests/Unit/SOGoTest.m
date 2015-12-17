@@ -154,7 +154,8 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
     }
   NS_ENDHANDLER;
 
-  [testRunner incrementTestCounter: failureCode];
+  [testRunner incrementTestCounter: failureCode
+                       afterMethod: NSStringFromSelector (testMethod)];
 }
 
 - (BOOL) run
