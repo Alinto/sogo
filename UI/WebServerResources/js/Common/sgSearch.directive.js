@@ -91,9 +91,12 @@
   /**
    * @ngInject
    */
-  sgSearchController.$inject = ['$scope', '$element'];
-  function sgSearchController($scope, $element) {
-    var vm = this;
+  sgSearchController.$inject = ['$window', '$scope', '$element'];
+  function sgSearchController($window, $scope, $element) {
+    var vm = this, minLength;
+
+    // Domain's defaults
+    minLength = angular.isNumber($window.minimumSearchLength)? $window.minimumSearchLength : 2;
 
     // Controller variables
     vm.previous = { searchText: '', searchField: '' };
@@ -112,7 +115,7 @@
     vm.onChange = function() {
       if (typeof vm.searchText !== 'undefined' && vm.searchText !== null) {
         if (vm.searchText != vm.previous.searchText || vm.searchField != vm.previous.searchField) {
-          if (vm.searchText.length > 2 || vm.searchText.length === 0 || vm.searchText == '.') {
+          if (vm.searchText.length > minLength || vm.searchText.length === 0 || vm.searchText == '.') {
             // doSearch is the compiled expression of the sg-search attribute
             vm.doSearch($scope, { searchText: vm.searchText, searchField: vm.searchField });
           }
