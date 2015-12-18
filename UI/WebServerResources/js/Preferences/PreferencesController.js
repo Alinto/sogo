@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
     var vm = this, account, mailboxes = [];
 
     vm.preferences = statePreferences;
@@ -56,6 +56,9 @@
     });
 
     function go(module) {
+      // Close sidenav on small devices
+      if ($mdMedia('xs'))
+        $mdSidenav('left').close();
       $state.go('preferences.' + module);
     }
 

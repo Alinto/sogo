@@ -31,7 +31,7 @@
         vm.editMode = false;
         AddressBook.$query.value = '';
         // Close sidenav on small devices
-        if ($mdMedia('sm'))
+        if ($mdMedia('xs'))
           $mdSidenav('left').close();
         $state.go('app.addressbook', {addressbookId: folder.id});
       }
