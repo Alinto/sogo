@@ -29,8 +29,10 @@ textarea.ck-editor {
   margin-top: $mg;
 }
 // Plain text editor
-textarea.plain-text {
-  width: 100%;
-  min-height: grid-step(3);
-  margin-top: $mg;
+div.plain-text {
+  @extend .md-padding;
+  textarea {
+    width: 100%;
+    min-height: grid-step(3);
+  }
 }

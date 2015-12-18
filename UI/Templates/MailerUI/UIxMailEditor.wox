@@ -44,8 +44,8 @@
       </div>
     </div>
 
-    <md-dialog-content class="md-padding">
-      <header>
+    <md-dialog-content>
+      <header class="md-padding">
         <div class="msg-header-content">
 
           <!-- to -->
@@ -209,9 +209,11 @@
       </header>
 
       <!-- MESSAGE CONTENT -->
-      <textarea name="content" var:class="editorClass"
-                ck-locale="editor.localeCode"
-                ng-model="editor.message.editable.text"/>
+      <div var:class="editorClass">
+        <textarea name="content" var:class="editorClass"
+                  ck-locale="editor.localeCode"
+                  ng-model="editor.message.editable.text"/>
+      </div>
     </md-dialog-content>
 
     <!-- TOOLBAR BUTTONS -->
