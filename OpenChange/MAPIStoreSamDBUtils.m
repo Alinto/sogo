@@ -25,6 +25,7 @@
 #include <talloc.h>
 #include <ldb.h>
 #include <libmapiproxy.h>
+#include <samba/version.h>
 
 #import "NSData+MAPIStore.h"
 
@@ -52,11 +53,20 @@ MAPIStoreSamDBUserAttribute (struct mapistore_connection_info *connInfo,
   attrs[0] = [attributeName UTF8String];
   searchFormat
     = [NSString stringWithFormat: @"(&(objectClass=user)(%@=%%s))", userKey];
-  ret = safe_ldb_search(&connInfo->sam_ctx, memCtx, &res,
-                        ldb_get_default_basedn(connInfo->sam_ctx),
-                        LDB_SCOPE_SUBTREE, attrs,
-                        [searchFormat UTF8String],
-                        [value UTF8String]);
+#if SAMBA_VERSION_MAJOR <= 4 && SAMBA_VERSION_MINOR < 3
+  ret = ldb_search (connInfo->sam_ctx, memCtx, &res,
+                    ldb_get_default_basedn(connInfo->sam_ctx),
+                    LDB_SCOPE_SUBTREE, attrs,
+                    [searchFormat UTF8String],
+                    [value UTF8String]);
+#else
+  ret = safe_ldb_search (&connInfo->sam_ctx, memCtx, &res,
+                         ldb_get_default_basedn(connInfo->sam_ctx),
+                         LDB_SCOPE_SUBTREE, attrs,
+                         [searchFormat UTF8String],
+                         [value UTF8String]);
+#endif
+
   if (ret == LDB_SUCCESS && res->count == 1)
     {
       result = ldb_msg_find_attr_as_string (res->msgs[0], attrs[0], NULL);
