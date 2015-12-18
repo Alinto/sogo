@@ -316,6 +316,7 @@ html p {
 }
 
 .#{$md}-title {
+  @extend .sg-no-wrap;
   $lineHeight : $sg-line-height-4;
   font-size: $sg-font-size-4;
   line-height: $lineHeight;
