@@ -9,7 +9,7 @@
     <md-toolbar class="md-whiteframe-z1"
                 ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
       <div class="md-toolbar-tools">
-        <md-input-container>
+        <md-input-container class="md-flex">
           <label><var:string label:value="Search messages in"/></label>
           <md-select ng-model="app.search.mailbox">
             <md-option ng-value="">
