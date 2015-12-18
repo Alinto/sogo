@@ -49,6 +49,8 @@
       if (Preferences.defaults.SOGoContactsCategories) {
         Card.$categories = Preferences.defaults.SOGoContactsCategories;
       }
+      if (Preferences.defaults.SOGoAlternateAvatar)
+        Card.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
     });
 
     return Card; // return constructor
@@ -131,7 +133,7 @@
     if (!this.$$email)
       this.$$email = this.$preferredEmail(partial);
     if (!this.$$image)
-      this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32);
+      this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32, Card.$alternateAvatar, {no_404: true});
     this.selected = false;
 
     // An empty attribute to trick md-autocomplete when adding attendees from the appointment editor

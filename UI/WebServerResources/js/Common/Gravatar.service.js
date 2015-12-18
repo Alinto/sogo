@@ -8,12 +8,12 @@
    * @memberof SOGo.Common
    * @param {string} email
    * @param {number} [size] - the size of the image
-   * @param {string} alternate avatar to use
+   * @param {string} alternate avatar to use (none, identicon, monsterid, wavatar, retro)
    * @ngInject
    */
   function Gravatar() {
-    return function(email, size, alternate_avatar) {
-      var x, y, hash, s = size;
+    return function(email, size, alternate_avatar, options) {
+      var x, y, hash, s = size, a = alternate_avatar;
       if (!email) {
         return '';
       }
@@ -28,8 +28,12 @@
       }
       hash = email.md5();
 
-      if (alternate_avatar == "none")
-        alternate_avatar = "404";
+      if (!a || a == "none") {
+        if (options && options.no_404)
+          alternate_avatar = "mm"; // mystery man alternative
+        else
+          alternate_avatar = "404";
+      }
 
       return 'https://www.gravatar.com/avatar/' + hash + '?s=' + s + '&d=' + alternate_avatar;
     };
