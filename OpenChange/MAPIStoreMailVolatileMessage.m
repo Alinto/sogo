@@ -1053,6 +1053,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
 
 - (int) submitWithFlags: (enum SubmitFlags) flags
 {
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSDictionary *recipients;
   NSData *messageData;
   NSMutableArray *recipientEmails;
@@ -1099,7 +1100,10 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
                   withAuthenticator: authenticator
                           inContext: woContext];
       if (error)
-        [self logWithFormat: @"an error occurred: '%@'", error];
+        {
+          [self errorWithFormat: @"an error occurred: '%@'", error];
+          rc = MAPISTORE_ERR_MSG_SEND;
+        }
 
       // mapping = [self mapping];
       // [mapping unregisterURLWithID: [self objectId]];
@@ -1111,7 +1115,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
     [self logWithFormat: @"skipping submit of message with class '%@'",
           msgClass];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (void) save: (TALLOC_CTX *) memCtx
