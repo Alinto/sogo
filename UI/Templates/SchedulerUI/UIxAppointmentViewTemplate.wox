@@ -143,7 +143,7 @@
         <!-- participation status -->
         <md-list-item>
           <md-icon>insert_invitation</md-icon>
-          <md-input-container class="md-no-flex">
+          <md-input-container>
             <md-select ng-model="editor.component.reply">
               <var:foreach list="replyList" item="item">
                 <md-option var:value="item">
