@@ -50,6 +50,12 @@ md-chips {
 // Enlarge the default autocompletion menu
 .sg-chips-autocomplete {
   width: (3 * $contact-chip-name-width);
+  @media (max-width: $layout-breakpoint-xs) {
+    // Enlarge the autocompletion menu on small devices to fit the entire screen
+    left: 0;
+    right: 0;
+    width: auto;
+  }
 }
 
 // Adjust avatar size according to chips dimensions
