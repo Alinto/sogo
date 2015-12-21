@@ -17,6 +17,11 @@ md-card {
       &.sg-icon-button:last-of-type {
         margin: 0 $baseline-grid * .5;
       }
+      &:hover {
+        // When using ui-sref from ui-router, buttons become links and the background becomes grey
+        // when the cursor is over the button. We force the normal behaviour of buttons.
+        background-color: transparent;
+      }
     }
   }
 
