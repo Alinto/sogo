@@ -247,6 +247,17 @@
   };
 
   /**
+   * @function isSelectedCard
+   * @memberof AddressBook.prototype
+   * @desc Check if the specified card is selected.
+   * @param {string} CardId
+   * @returns true if the specified card is selected
+   */
+  AddressBook.prototype.isSelectedCard = function(cardId) {
+    return this.selectedCard == cardId;
+  };
+
+  /**
    * @function $selectedCount
    * @memberof AddressBook.prototype
    * @desc Return the number of cards selected by the user.

@@ -66,6 +66,7 @@ $detailView-width: grid-step(8) !global;
   // side of the list item and add some padding to the main button (.md-no-style).
   .md-with-secondary {
     .md-no-style {
+      min-height: $baseline-grid * 7; // 56px
       padding-left: 40 + $baseline-grid * 3;
     }
     .md-secondary-container {

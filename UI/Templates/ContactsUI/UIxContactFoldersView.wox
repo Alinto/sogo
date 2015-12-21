@@ -376,39 +376,37 @@
           </md-subheader>
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
-              <div md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56">
-                <md-list-item
-                    ng-class="{'sg-active': currentCard.id == addressbook.selectedFolder.selectedCard}"
-                    ng-click="addressbook.selectCard(currentCard)"
-                    ui-sref="app.addressbook.card.view({addressbookId: addressbook.selectedFolder.id, cardId: currentCard.id})"
-                    ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-list-item
+                  class="md-default-theme md-background md-hue-1"
+                  ng-class="{'md-bg': addressbook.selectedFolder.isSelectedCard(currentCard.id)}"
+                  md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56"
+                  ng-click="addressbook.selectCard(currentCard)">
+                <div class="md-secondary"
+                     ng-click="addressbook.toggleCardSelection($event, currentCard)">
                   <div class="md-avatar sg-avatar-selected"
-                       ng-if="currentCard.selected"
-                       ng-click="addressbook.toggleCardSelection($event, currentCard)">
+                       ng-if="currentCard.selected">
                     <!-- selected avatar -->
                   </div>
                   <sg-avatar-image class="md-avatar"
                                    ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
-                                   ng-click="addressbook.toggleCardSelection($event, currentCard)"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
                                    size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>
                   <div class="md-avatar sg-avatar-list"
-                       ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')"
-                       ng-click="currentCard.selected = !currentCard.selected">
+                       ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')">
                     <!-- list avatar -->
                   </div>
-                  <div class="sg-tile-content">
-                    <div class="sg-md-subhead">
-                      <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                    </div>
-                    <div class="sg-md-body">
-                      <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
-                    </div>
+                </div>
+                <div class="sg-tile-content">
+                  <div class="sg-md-subhead">
+                    <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
                   </div>
-                </md-list-item>
-              </div>
+                  <div class="sg-md-body">
+                    <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                  </div>
+                </div>
+              </md-list-item>
             </md-list>
           </md-virtual-repeat-container>
           <div class="sg-progress-circular-floating"
