@@ -107,11 +107,11 @@
   if ([roles containsObject: SOGoRole_ObjectCreator])
     rights |= RightsCreateItems;
   if ([roles containsObject: SOGoRole_ObjectEraser])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
   if ([roles containsObject: SOGoCalendarRole_PublicModifier]
       && [roles containsObject: SOGoCalendarRole_PrivateModifier]
       && [roles containsObject: SOGoCalendarRole_ConfidentialModifier])
-    rights |= RightsReadItems | RightsEditAll;
+    rights |= RightsReadItems | RightsEditAll | RightsEditOwn;
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])

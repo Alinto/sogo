@@ -321,9 +321,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   if ([roles containsObject: MAPIStoreRightDeleteOwn])
     rights |= RightsDeleteOwn;
   if ([roles containsObject: MAPIStoreRightEditAll])
-    rights |= RightsEditAll;
+    rights |= RightsEditAll | RightsEditOwn;
   if ([roles containsObject: MAPIStoreRightDeleteAll])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
   if ([roles containsObject: MAPIStoreRightCreateSubfolders])
     rights |= RightsCreateSubfolders;
   if ([roles containsObject: MAPIStoreRightFolderOwner])

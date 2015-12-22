@@ -96,9 +96,9 @@
   if ([roles containsObject: SOGoRole_ObjectCreator])
     rights |= RightsCreateItems;
   if ([roles containsObject: SOGoRole_ObjectEraser])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
   if ([roles containsObject: SOGoRole_ObjectEditor])
-    rights |= RightsEditAll;
+    rights |= RightsEditAll | RightsEditOwn;
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
   if (rights != 0)
