@@ -197,6 +197,7 @@ static Class MAPIStoreFolderK;
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
+  struct mapistore_connection_info *connInfo;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
@@ -204,8 +205,9 @@ static Class MAPIStoreFolderK;
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {
+      connInfo = [[self context] connectionInfo];
       *data = MAPILongLongValue (memCtx, ((obVersion << 16)
-                                          | 0x0001));
+                                          | connInfo->repl_id));
       rc = MAPISTORE_SUCCESS;
     }
 

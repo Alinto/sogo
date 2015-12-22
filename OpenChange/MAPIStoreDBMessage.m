@@ -109,18 +109,70 @@
   return self;
 }
 
+- (NSString *) description
+{
+  id key, value;
+  NSEnumerator *propEnumerator;
+  NSMutableString *description;
+
+  description = [NSMutableString stringWithFormat: @"%@ %@. Properties: {", NSStringFromClass ([self class]),
+                                 [self url]];
+
+  propEnumerator = [properties keyEnumerator];
+  while ((key = [propEnumerator nextObject]))
+    {
+      uint32_t proptag = 0;
+      if ([key isKindOfClass: [NSString class]] && [(NSString *)key intValue] > 0)
+        proptag = [(NSString *)key intValue];
+      else if ([key isKindOfClass: [NSNumber class]])
+        proptag = [key unsignedLongValue];
+
+      if (proptag > 0)
+        {
+          const char *propTagName = get_proptag_name ([key unsignedLongValue]);
+          NSString *propName;
+
+          if (propTagName)
+            propName = [NSString stringWithCString: propTagName
+                                          encoding: NSUTF8StringEncoding];
+          else
+            propName = [NSString stringWithFormat: @"0x%.4x", [key unsignedLongValue]];
+
+          [description appendFormat: @"'%@': ", propName];
+        }
+      else
+        [description appendFormat: @"'%@': ", key];
+
+      value = [properties objectForKey: key];
+      [description appendFormat: @"%@ (%@), ", value, NSStringFromClass ([value class])];
+    }
+
+  [description appendString: @"}\n"];
+
+  return description;
+}
+
 - (uint64_t) objectVersion
 {
-  NSNumber *versionNbr;
+  /* Return the global counter from CN structure.
+     See [MS-OXCFXICS] Section 2.2.2.1 */
+  NSNumber *versionNbr, *cn;
   uint64_t objectVersion;
 
   [(SOGoMAPIDBMessage *) sogoObject reloadIfNeeded];
-  versionNbr = [properties objectForKey: @"version"];
+  versionNbr = [properties objectForKey: @"version_number"];
   if (versionNbr)
-    objectVersion = (([versionNbr unsignedLongLongValue] >> 16)
-                     & 0x0000ffffffffffffLL);
+    objectVersion = exchange_globcnt ([versionNbr unsignedLongLongValue]);
   else
-    objectVersion = ULLONG_MAX;
+    {
+      /* Old version which stored the CN structure not useful for searching */
+      cn = [properties objectForKey: @"version"];
+      if (cn)
+        objectVersion = (([cn unsignedLongLongValue] >> 16)
+                          & 0x0000ffffffffffffLL);
+      else
+        objectVersion = ULLONG_MAX;
+    }
 
   return objectVersion;
 }
@@ -283,13 +335,19 @@
     [properties setObject: attachmentParts forKey: @"attachments"];
 
   newVersion = [[self context] getNewChangeNumber];
+  newVersion = exchange_globcnt ((newVersion >> 16) & 0x0000ffffffffffffLL);
+
   [properties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
-                 forKey: @"version"];
+                 forKey: @"version_number"];
+
+  /* Remove old version */
+  [properties removeObjectForKey: @"version"];
 
   /* Update PredecessorChangeList accordingly */
   [self _updatePredecessorChangeList];
 
-  [self logWithFormat: @"%d props in dict", [properties count]];
+  // [self logWithFormat: @"Saving %@", [self description]];
+  // [self logWithFormat: @"%d props in dict", [properties count]];
 
   [sogoObject save];
 }
