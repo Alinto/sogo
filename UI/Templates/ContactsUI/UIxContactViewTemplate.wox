@@ -90,7 +90,7 @@
                 <var:string label:value="Members"/>
               </label>
               <md-list>
-                <md-list-item class="md-3-line" ng-repeat="ref in editor.card.refs track by ref.reference">
+                <md-list-item class="md-2-line" ng-repeat="ref in editor.card.refs track by ref.reference">
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="ref.$preferredEmail()"
                                    size="48">
@@ -98,14 +98,10 @@
                   </sg-avatar-image>
                   <div class="md-list-item-text">
                     <h3>
-                      <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">
-                        {{ ref.$fullname() }}
-                      </a>
+                      <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">{{ ref.$fullname() }}</a>
                     </h3>
                     <h4 ng-show="ref.email">
-                      <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">
-                        {{ ref.email }}
-                      </a>
+                      <a ui-sref="mailto:{{ref.email}}" ng-class="ng-scope">{{ ref.email }}</a>
                     </h4>
                   </div>
                 </md-list-item>
