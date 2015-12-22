@@ -221,8 +221,8 @@
       vm.editMode = false;
       vm.showingAdvancedSearch = false;
       vm.service.$virtualMode = false;
-        // Close sidenav on small devices
-      if ($mdMedia('sm'))
+      // Close sidenav on small devices
+      if ($mdMedia('xs'))
         $mdSidenav('left').close();
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
     }
@@ -231,8 +231,6 @@
       folder.$rename()
         .then(function(data) {
           vm.editMode = false;
-        }, function(data, status) {
-          Dialog.alert(l('Warning'), data);
         });
     }
 
@@ -248,9 +246,11 @@
 
     function emptyTrashFolder(folder) {
       folder.$emptyTrash().then(function() {
-        // Success
-      }, function(error) {
-        Dialog.alert(l('Warning'), error);
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l('Trash emptied'))
+            .position('top right')
+            .hideDelay(3000));
       });
     }
 
@@ -312,8 +312,6 @@
     function setFolderAs(folder, type) {
       folder.$setFolderAs(type).then(function() {
         folder.$account.$getMailboxes({reload: true});
-      }, function(error) {
-        Dialog.alert(l('Warning'), error);
       });
     }
 
