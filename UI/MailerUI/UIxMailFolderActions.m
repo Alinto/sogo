@@ -95,16 +95,14 @@
           errorFormat = [self labelForKey: @"The folder with name \"%@\" could not be created." inContext: context];
           jsonResponse = [NSDictionary dictionaryWithObject: [NSString stringWithFormat: errorFormat, folderName]
                                                      forKey: @"error"];
-          response = [self responseWithStatus: 500
-                        andJSONRepresentation: jsonResponse];
+          response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
         }
     }
   else
     {
       jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."  inContext: context]
                                                  forKey: @"error"];
-      response = [self responseWithStatus: 500
-                    andJSONRepresentation: jsonResponse];
+      response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
     }
 
   return response;  
@@ -150,9 +148,8 @@
   if (!newFolderName || [newFolderName length] == 0)
     {
       message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing name parameter" inContext: context]
-                                            forKey: @"error"];
-      response = [self responseWithStatus: 500
-                                andString: [message jsonRepresentation]];
+                                            forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: message];
     }
   else
     {
@@ -161,9 +158,8 @@
       if (error)
         {
           message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to rename folder." inContext: context]
-                                                forKey: @"error"];
-          response = [self responseWithStatus: 500
-                                    andString: [message jsonRepresentation]];
+                                                forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: message];
         }
       else
         {
@@ -181,8 +177,7 @@
           newFolderPath = [[[co imap4URL] path] substringFromIndex: 1]; // remove slash at beginning of path
           message = [NSDictionary dictionaryWithObject: newFolderPath
                                                 forKey: @"path"];
-          response = [self responseWithStatus: 200
-                                    andString: [message jsonRepresentation]];
+          response = [self responseWithStatus: 200 andJSONRepresentation: message];
         }
     }
 
@@ -253,8 +248,7 @@
       {
         jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
                                                  forKey: @"error"];
-        response = [self responseWithStatus: 500
-                                  andString: [jsonResponse jsonRepresentation]];
+        response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
       }
     else
       {
@@ -284,9 +278,8 @@
   else
   {
     jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
-                                               forKey: @"error"];
-    response = [self responseWithStatus: 500
-                              andString: [jsonResponse jsonRepresentation]];
+                                               forKey: @"message"];
+    response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
   }
 
   return response;
@@ -351,9 +344,9 @@
     }
   else
     {
-      response = [self responseWithStatus: 500];
-      data = [NSDictionary dictionaryWithObject: @"Missing 'uids' parameter." forKey: @"error"];
-      [response appendContentString: [data jsonRepresentation]];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'uids' parameter." inContext: context]
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
 
   return response;
@@ -364,6 +357,7 @@
   SOGoMailFolder *co;
   WOResponse *response;
   NSArray *uids;
+  NSDictionary *jsonResponse;
   NSString *value;
 
   co = [self clientObject];
@@ -381,8 +375,9 @@
   }
   else
   {
-    response = [self responseWithStatus: 500];
-    [response appendContentString: @"Missing 'uid' parameter."];
+    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'uid' parameter." inContext: context]
+                                               forKey: @"message"];
+    response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
   }
 
   return response;
@@ -430,16 +425,15 @@
         {
           // We return the inbox quota
           account = [co mailAccountFolder];
-          data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-          response = [self responseWithStatus: 200
-                                    andString: [data jsonRepresentation]];
+          data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
+          response = [self responseWithStatus: 200 andJSONRepresentation: data];
         }
     }
   else
     {
-      data = [NSDictionary dictionaryWithObject: @"Error copying messages." forKey: @"error"];
-      response = [self responseWithStatus: 500
-                                andString: [data jsonRepresentation]];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Error copying messages." inContext: context]
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
 
   return response;
@@ -492,9 +486,9 @@
     }
   else
     {
-      data = [NSDictionary dictionaryWithObject: @"Error moving messages." forKey: @"error"];
-      response = [self responseWithStatus: 500
-                                andString: [data jsonRepresentation]];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Error moving messages." inContext: context]
+                                         forKey: @"error"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
 
   return response;
@@ -519,6 +513,7 @@
 {
   NSArray *accounts;
   int realIdx;
+  NSDictionary *jsonResponse;
   NSMutableDictionary *account, *mailboxes;
   WOResponse *response;
 
@@ -541,14 +536,18 @@
           response = [self responseWith204];
         }
       else
-        response
-          = [self responseWithStatus: 500
-                           andString: @"You reached an impossible end."];
+         {
+           jsonResponse = [NSDictionary dictionaryWithObject: @"You reached an impossible end."
+                                                      forKey: @"message"];
+           response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
+        }
     }
   else
-    response
-      = [self responseWithStatus: 500
-                       andString: @"You reached an impossible end."];
+    {
+      jsonResponse = [NSDictionary dictionaryWithObject: @"You reached an impossible end."
+                                                 forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
+    }
 
   return response;
 }
@@ -559,6 +558,7 @@
   WOResponse *response;
   SOGoUser *owner;
   SOGoUserDefaults *ud;
+  NSDictionary *jsonResponse;
   NSString *accountIdx, *traversal;
 
   co = [self clientObject];
@@ -583,17 +583,20 @@
                             inUserDefaults: ud
                                         to: traversal];
       else
-        response
-          = [self responseWithStatus: 500
-                           andString: @"You reached an impossible end."];
+        {
+          jsonResponse = [NSDictionary dictionaryWithObject: @"You reached an impossible end."
+                                                     forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
+        }
+
       if ([response status] == 204)
         [ud synchronize];
     }
   else
     {
-      response = [self responseWithStatus: 500];
-      [response
-	appendContentString: @"Unable to change the purpose of this folder."];
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to change the purpose of this folder." inContext: context]
+                                                 forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
     }
 
   return response;
@@ -627,8 +630,9 @@
   error = [co expunge];
   if (error)
     {
-      response = [self responseWithStatus: 500
-                    andJSONRepresentation: [NSDictionary dictionaryWithObject: @"Unable to expunge folder."  forKey: @"message"]];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to expunge folder." inContext: context]
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
   else
     {
@@ -636,9 +640,8 @@
 
       // We return the inbox quota
       account = [co mailAccountFolder];
-      data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-      response = [self responseWithStatus: 200
-				andString: [data jsonRepresentation]];
+      data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
+      response = [self responseWithStatus: 200 andJSONRepresentation: data];
     }
 
   return response;
@@ -675,16 +678,16 @@
     }
   if (error)
     {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Unable to empty the trash folder."];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to empty the trash folder." inContext: context]
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
   else
     {
       // We return the inbox quota
       account = [co mailAccountFolder];
-      data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-      response = [self responseWithStatus: 200
-				andString: [data jsonRepresentation]];
+      data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
+      response = [self responseWithStatus: 200 andJSONRepresentation: data];
     }
 
   return response;
@@ -767,7 +770,7 @@
   if ([[result valueForKey: @"result"] boolValue])
     response = [self responseWith204];
   else
-    response = [self responseWithStatus:500 andJSONRepresentation:result];
+    response = [self responseWithStatus: 500 andJSONRepresentation: result];
 
   return response;
 }
