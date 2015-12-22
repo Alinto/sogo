@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'Dialog', 'AddressBook', 'Preferences'];
-  function MessageEditorController($stateParams, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, Dialog, AddressBook, Preferences) {
-    var vm = this;
+  MessageEditorController.$inject = ['$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, Dialog, AddressBook, Card, Preferences) {
+    var vm = this, semicolon = 186;
 
     vm.addRecipient = addRecipient;
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
@@ -22,6 +22,7 @@
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
     vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
+    vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, semicolon];
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
@@ -137,20 +138,44 @@
     }
 
     function contactFilter($query) {
-      return AddressBook.$filterAll($query);
+      AddressBook.$filterAll($query);
+      return AddressBook.$cards;
     }
 
-    function addRecipient(user) {
-      var recipient = [];
+    function addRecipient(contact, field) {
+      var recipients, recipient, list;
 
-      if (angular.isString(user))
-        return user;
-      if (user.$$fullname)
-        recipient.push(user.$$fullname);
-      if (user.$$email)
-        recipient.push('<' + user.$$email + '>');
+      if (angular.isString(contact))
+        return contact;
 
-      return recipient.join(' ');
+      recipients = vm.message.editable[field];
+
+      if (contact.c_component == 'vlist') {
+        // If the list's members were already fetch, use them
+        if (angular.isDefined(contact.refs) && contact.refs.length) {
+          _.each(contact.refs, function(ref) {
+            if (ref.email.length)
+              recipients.push(ref.$shortFormat());
+          });
+        }
+        else {
+          list = Card.$find(contact.container, contact.c_name);
+          list.$id().then(function(listId) {
+            _.forEach(list.refs, function(ref) {
+              if (ref.email.length)
+                recipients.push(ref.$shortFormat());
+            });
+          });
+        }
+      }
+      else {
+        recipient = contact.$shortFormat();
+      }
+
+      if (recipient)
+        return recipient;
+      else
+        return null;
     }
 
     // Drafts autosaving
@@ -180,5 +205,6 @@
   angular
     .module('SOGo.MailerUI')
     .controller('SendMessageToastController', SendMessageToastController)
-    .controller('MessageEditorController', MessageEditorController);                                    
+    .controller('MessageEditorController', MessageEditorController);
+
 })();

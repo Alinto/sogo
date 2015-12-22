@@ -271,11 +271,11 @@
    * @returns the fullname along with a matching email address in parentheses
    */
   Card.prototype.$shortFormat = function(partial) {
-    var fullname = this.$fullname(),
+    var fullname = [this.$$fullname],
         email = this.$preferredEmail(partial);
-    if (email && email != fullname)
-      fullname += ' <' + email + '>';
-    return fullname;
+    if (email && email != this.$$fullname)
+      fullname.push(' <' + email + '>');
+    return fullname.join(' ');
   };
 
   /**
