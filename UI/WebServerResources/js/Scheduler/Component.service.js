@@ -31,12 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, Card, Gravatar, Resource) {
     angular.extend(Component, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $Preferences: Preferences,
+      $Card: Card,
       $gravatar: Gravatar,
       $$resource: new Resource(Settings.baseURL(), Settings.activeUser()),
       timeFormat: "%H:%M",
@@ -794,24 +795,53 @@
    * @param {Object} card - an Card object instance to be added to the attendees list
    */
   Component.prototype.addAttendee = function(card) {
-    var attendee, url, params;
+    var _this = this, attendee, list, url, params;
     if (card) {
-      attendee = {
-        name: card.c_cn,
-        email: card.$preferredEmail(),
-        role: 'req-participant',
-        status: 'needs-action',
-        uid: card.c_uid
-      };
-      if (!_.find(this.attendees, function(o) {
-        return o.email == attendee.email;
-      })) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
-        if (this.attendees)
-          this.attendees.push(attendee);
-        else
-          this.attendees = [attendee];
-        this.updateFreeBusyAttendee(attendee);
+      if (card.$isList() && card.isGroup !== 1) {
+        // Decompose list members
+        list = Component.$Card.$find(card.container, card.c_name);
+        list.$id().then(function(listId) {
+          _.forEach(list.refs, function(ref) {
+            attendee = {
+              name: ref.c_cn,
+              email: ref.$preferredEmail(),
+              role: 'req-participant',
+              status: 'needs-action',
+              uid: ref.c_uid
+            };
+            if (!_.find(_this.attendees, function(o) {
+              return o.email == attendee.email;
+            })) {
+              // Contact is not already an attendee, add it
+              attendee.image = Component.$gravatar(attendee.email, 32);
+              if (_this.attendees)
+                _this.attendees.push(attendee);
+              else
+                _this.attendees = [attendee];
+              _this.updateFreeBusyAttendee(attendee);
+            }
+          });
+        });
+      }
+      else {
+        // Single contact
+        attendee = {
+          name: card.c_cn,
+          email: card.$preferredEmail(),
+          role: 'req-participant',
+          status: 'needs-action',
+          uid: card.c_uid
+        };
+        if (!_.find(this.attendees, function(o) {
+          return o.email == attendee.email;
+        })) {
+          attendee.image = Component.$gravatar(attendee.email, 32);
+          if (this.attendees)
+            this.attendees.push(attendee);
+          else
+            this.attendees = [attendee];
+          this.updateFreeBusyAttendee(attendee);
+        }
       }
     }
   };
