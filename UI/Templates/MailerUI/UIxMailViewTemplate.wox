@@ -163,52 +163,52 @@
             </md-chips>
           </div>
 
-            <!-- S/MIME Signature -->
-            <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
-                           ng-show="::viewer.message.$smime.message">
-              <div layout="row" layout-align="start center">
-                <div class="md-tile-left">
-                  <md-icon ng-hide="::viewer.message.$smime.validSignature" class="md-warn">error</md-icon>
-                  <md-icon ng-show="::viewer.message.$smime.validSignature" class="md-accent">check</md-icon>
-                </div>
-                <p ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+          <!-- S/MIME Signature -->
+          <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
+                         ng-show="::viewer.message.$smime.message">
+            <div layout="row" layout-align="start center">
+              <div class="md-tile-left">
+                <md-icon ng-hide="::viewer.message.$smime.validSignature" class="md-warn">error</md-icon>
+                <md-icon ng-show="::viewer.message.$smime.validSignature" class="md-accent">check</md-icon>
               </div>
-            </md-whiteframe>
+              <p ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+            </div>
+          </md-whiteframe>
 
-            <!-- Load external images -->
-            <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
-                           ng-show="viewer.message.$hasUnsafeContent">
-              <div layout="row" layout-align="start center" class="layout-fill">
-                <div class="md-tile-left">
-                  <md-icon>collections</md-icon>
-                </div>
-                <p class="hide show-gt-md"><var:string label:value="This message contains external images."/></p>
-                <div class="md-flex"><!-- spacer --></div>
-                <md-button label:aria-label="Load Images"
-                           ng-click="viewer.message.loadUnsafeContent()">
-                  <var:string label:value="Load Images"/>
-                </md-button>
+          <!-- Load external images -->
+          <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
+                         ng-show="viewer.message.$hasUnsafeContent">
+            <div layout="row" layout-align="start center" class="layout-fill">
+              <div class="md-tile-left">
+                <md-icon>collections</md-icon>
               </div>
-            </md-whiteframe>
+              <p class="hide show-gt-md"><var:string label:value="This message contains external images."/></p>
+              <div class="md-flex"><!-- spacer --></div>
+              <md-button label:aria-label="Load Images"
+                         ng-click="viewer.message.loadUnsafeContent()">
+                <var:string label:value="Load Images"/>
+              </md-button>
+            </div>
+          </md-whiteframe>
 
-            <!-- Send MDN -->
-            <md-whiteframe class="md-whiteframe-z2" layout="column" layout-align="center start"
-                           ng-show="viewer.message.shouldAskReceipt == 1">
-              <div layout="row" layout-align="start center">
-                <div class="md-tile-left">
-                  <md-icon>message</md-icon>
-                </div>
-                <p class="sg-padded--right"><var:string label:value="The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?"/></p>
+          <!-- Return Receipt / Send MDN -->
+          <md-whiteframe class="md-whiteframe-z2" layout="column" layout-align="center start"
+                         ng-show="viewer.message.shouldAskReceipt == 1">
+            <div layout="row" layout-align="start center">
+              <div class="md-tile-left">
+                <md-icon>message</md-icon>
               </div>
-              <div class="layout-fill" layout="row" layout-align="end center">
-                <md-button label:aria-label="No"
-                           type="button"
-                           ng-click="viewer.message.shouldAskReceipt = 0"><var:string label:value="No"/></md-button>
-                <md-button label:aria-label="Yes"
-                           type="submit"
-                           ng-click="viewer.message.$sendMDN()"><var:string label:value="Yes"/></md-button>
-              </div>
-            </md-whiteframe>
+              <p class="sg-padded--right"><var:string label:value="The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?"/></p>
+            </div>
+            <div class="layout-fill" layout="row" layout-align="end center">
+              <md-button label:aria-label="No"
+                         type="button"
+                         ng-click="viewer.message.shouldAskReceipt = 0"><var:string label:value="No"/></md-button>
+              <md-button label:aria-label="Yes"
+                         type="submit"
+                         ng-click="viewer.message.$sendMDN()"><var:string label:value="Yes"/></md-button>
+            </div>
+          </md-whiteframe>
 
           <md-divider><!-- end of headers --></md-divider>
           <div>
