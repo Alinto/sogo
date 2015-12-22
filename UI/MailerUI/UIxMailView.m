@@ -268,11 +268,10 @@ static NSString *mailETag = nil;
 	  
           if (![co doesMailExist])
             {
-              data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"message got deleted", @"error",
-                                   nil];
+              data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Message got deleted"]
+                                                 forKey: @"message"];
               return [self responseWithStatus: 404 /* Not Found */
-                                    andString: [data jsonRepresentation]];
+                        andJSONRepresentation: data];
             }
           
           response = [self responseWithStatus: 304];
@@ -283,11 +282,10 @@ static NSString *mailETag = nil;
   
   if (![self message]) // TODO: redirect to proper error
     {
-      data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"did not find specified message!", @"error",
-                           nil];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Did not find specified message"]
+                                         forKey: @"message"];
       return [self responseWithStatus: 404 /* Not Found */
-                            andString: [data jsonRepresentation]];
+                            andJSONRepresentation: data];
     }
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -311,7 +309,7 @@ static NSString *mailETag = nil;
     [data setObject: addresses forKey: @"reply-to"];
 
   response = [self responseWithStatus: 200
-                            andString: [data jsonRepresentation]];
+                andJSONRepresentation: data];
 
   [response setHeader: mailETag forKey: @"etag"];
 
@@ -674,7 +672,7 @@ static NSString *mailETag = nil;
 - (WOResponse *) sendMDNAction
 {
   WOResponse *response;
-  NSDictionary *mailHeaders;
+  NSDictionary *mailHeaders, *jsonResponse;
   NSString *email, *action;
 
   mailHeaders = [[self clientObject] mailHeaders];
@@ -691,9 +689,11 @@ static NSString *mailETag = nil;
   if (email)
     {
       if ([self _userHasEMail: email])
-        response = [self responseWithStatus: 403
-                                  andString: (@"One cannot send an MDN to"
-                                              @" oneself.")];
+        {
+          jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"One cannot send an MDN to oneself."]
+                                                     forKey: @"message"];
+          response = [self responseWithStatus: 403 andJSONRepresentation: jsonResponse];
+        }
       else
         {
           action = [self _receiptAction];
@@ -703,16 +703,20 @@ static NSString *mailETag = nil;
               response = [self responseWithStatus: 204];
             }
           else
-            response = [self responseWithStatus: 403
-                                      andString: (@"No notification header found in"
-                                                  @" original message.")];
+            {
+              jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No notification header found in original message."]
+                                                         forKey: @"message"];
+              response = [self responseWithStatus: 403 andJSONRepresentation: jsonResponse];
+            }
         }
     }
   else
-    response = [self responseWithStatus: 403
-                              andString: (@"No notification header found in"
-                                          @" original message.")];
-  
+    {
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No notification header found in original message."]
+                                                 forKey: @"message"];
+      response = [self responseWithStatus: 403 andJSONRepresentation: jsonResponse];
+    }
+
   return response;
 }
 
