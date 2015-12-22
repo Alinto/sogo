@@ -103,6 +103,16 @@ String.prototype.asDate = function () {
     return newDate;
 };
 
+String.prototype.formatted = function() {
+  var newString = this;
+
+  for (var i = 0; i < arguments.length; i++) {
+    newString = newString.replace("%{" + i + "}", arguments[i], "g");
+  }
+
+  return newString;
+};
+
 String.prototype.formatTime = function(hours, minutes) {
     var newString = this;
 

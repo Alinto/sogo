@@ -53,19 +53,17 @@
   SOGoMailAccount *co;
   NSArray *folders;
   NSDictionary *data;
-  WOResponse *response;
 
   co = [self clientObject];
 
   folders = [co allFoldersMetadata];
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes", nil];
-  response = [self responseWithStatus: 200
-                            andString: [data jsonRepresentation]];
-  [response setHeader: @"application/json"
-               forKey: @"content-type"];
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         folders, @"mailboxes",
+                       [co getInboxQuota], @"quotas",
+                       nil];
 
-  return response;
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 /* compose */

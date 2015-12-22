@@ -250,6 +250,12 @@
               </md-button>
             </div>
           </md-subheader>
+          <div class="sg-quota" ng-if="account.$quota">
+            <md-progress-linear md-mode="determinate"
+                                ng-class="{ 'md-warn': account.$quota.percent > 70 }"
+                                value="{{account.$quota.percent}}"><!-- quota --></md-progress-linear>
+            <div class="sg-md-caption">{{ account.$quota.description }}</div>
+          </div>
           <md-virtual-repeat-container class="md-flex">
             <md-list>
               <md-list-item md-virtual-repeat="folder in account.$flattenMailboxes()" md-item-size="48"

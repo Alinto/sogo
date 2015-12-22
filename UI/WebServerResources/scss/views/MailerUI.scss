@@ -1,5 +1,11 @@
 /// MailerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
+// Container for the linear progress bar of the quota
+.sg-quota {
+  padding-bottom: $baseline-grid;
+  text-align: center;
+}
+
 // Message view header
 // Could be made into a more generic component
 // ----------------------------------------------------------------------------

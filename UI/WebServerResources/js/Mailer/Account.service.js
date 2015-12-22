@@ -241,6 +241,22 @@
   };
 
   /**
+   * @function updateQuota
+   * @memberof Account.prototype
+   * @param {Object} data - the inbox quota information returned by the server
+   * @desc Update the quota definition associated to the account
+   */
+  Account.prototype.updateQuota = function(data) {
+    var percent, format, description;
+
+    percent = (Math.round(data.usedSpace * 10000 / data.maxQuota) / 100);
+    format = l("quotasFormat");
+    description = format.formatted(percent, Math.round(data.maxQuota/10.24)/100);
+
+    this.$quota = { percent: percent, description: description };
+  };
+
+  /**
    * @function $newMessage
    * @memberof Account.prototype
    * @desc Prepare a new Message object associated to the appropriate mailbox.

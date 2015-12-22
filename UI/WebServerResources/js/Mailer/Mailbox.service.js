@@ -117,6 +117,9 @@
           createMailboxes(1, mailbox); // recursively create all sub-mailboxes
           collection.push(mailbox);
         });
+        // Update inbox quota
+        if (data.quotas)
+          account.updateQuota(data.quotas);
         return collection;
       });
     });
@@ -172,7 +175,7 @@
    * @function getLength
    * @memberof Mailbox.prototype
    * @desc Used by md-virtual-repeat / md-on-demand
-   * @returns the number of items in the mailbox
+   * @returns the number of messages in the mailbox
    */
   Mailbox.prototype.getLength = function() {
     return this.$messages.length;
@@ -182,7 +185,7 @@
    * @function getItemAtIndex
    * @memberof Mailbox.prototype
    * @desc Used by md-virtual-repeat / md-on-demand
-   * @returns the message as the specified index
+   * @returns the message at the specified index
    */
   Mailbox.prototype.getItemAtIndex = function(index) {
     var message;
@@ -233,7 +236,7 @@
     return this.selectedMessage == messageId;
   };
 
-    /**
+  /**
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox
@@ -429,7 +432,13 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$compact = function() {
-    return Mailbox.$$resource.post(this.id, 'expunge');
+    var _this = this;
+    return Mailbox.$$resource.post(this.id, 'expunge')
+      .then(function(data) {
+        // Update inbox quota
+        if (data.quotas)
+          _this.$account.updateQuota(data.quotas);
+      });
   };
 
   /**
@@ -451,7 +460,7 @@
   Mailbox.prototype.$emptyTrash = function() {
     var _this = this;
 
-    return Mailbox.$$resource.post(this.id, 'emptyTrash').then(function() {
+    return Mailbox.$$resource.post(this.id, 'emptyTrash').then(function(data) {
       // Remove all messages from the mailbox
       _this.$messages = [];
       _this.uidsMap = {};
@@ -460,6 +469,10 @@
       // If we had any submailboxes, lets do a refresh of the mailboxes list
       if (angular.isDefined(_this.children) && _this.children.length)
         _this.$account.$getMailboxes({reload: true});
+
+      // Update inbox quota
+      if (data.quotas)
+        _this.$account.updateQuota(data.quotas);
     });
   };
 
@@ -514,7 +527,7 @@
 
     uids = _.pluck(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
-      .then(function() {
+      .then(function(data) {
         var selectedMessages, selectedUIDs, unseen;
         // Decrement the unseenCount accordingly
         unseen = _.filter(messages, function(message, i) { return !message.isread; });
@@ -535,6 +548,9 @@
             _this.uidsMap[message.uid] -= uids.length;
           }
         });
+        // Update inbox quota
+        if (data.quotas)
+          _this.$account.updateQuota(data.quotas);
       });
   };
 
@@ -545,7 +561,12 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$copyMessages = function(uids, folder) {
-    return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder});
+    return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder})
+      .then(function(data) {
+        // Update inbox quota
+        if (data.quotas)
+          _this.$account.updateQuota(data.quotas);
+      });
   };
 
   /**
