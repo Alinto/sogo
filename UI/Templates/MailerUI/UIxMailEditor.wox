@@ -161,7 +161,7 @@
             </md-button>
             <md-menu-content width="4">
               <md-menu-item>
-                <md-button ng-href="#">
+                <md-button>
                   <md-checkbox ng-model="editor.message.editable.receipt">
                     <var:string label:value="Return Receipt"/>
                   </md-checkbox>

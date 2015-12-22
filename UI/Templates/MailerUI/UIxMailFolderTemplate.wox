@@ -29,7 +29,7 @@
           </md-button>
           <md-menu-content>
             <md-menu-item>
-              <md-button ng-href="#">
+              <md-button>
                 <md-checkbox ng-model="app.search.subfolders"
                              ng-true-value="1"
                              ng-false-value="0">
