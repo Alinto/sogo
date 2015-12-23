@@ -1711,10 +1711,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     rights |= RightsCreateItems;
   if ([roles containsObject: SOGoRole_ObjectEraser]
       && [roles containsObject: SOGoRole_FolderEraser])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
 
   if ([roles containsObject: SOGoRole_ObjectEditor])
-    rights |= RightsEditAll;
+    rights |= RightsEditAll | RightsEditOwn;
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
   if ([roles containsObject: SOGoRole_FolderCreator])
