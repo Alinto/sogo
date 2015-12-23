@@ -1032,7 +1032,9 @@
    * @desc Save the component to the server.
    */
   Component.prototype.$save = function() {
-    var _this = this, options, path = [this.pid, this.id];
+    var _this = this, options, path, component, date;
+
+    component = this.$omit();
 
     // Format dates and times
     component.startDate = component.start ? formatDate(component.start) : '';
@@ -1076,8 +1078,8 @@
       if (this.alarm.action && this.alarm.action == 'email' &&
           !(this.attendees && this.attendees.length > 0)) {
         // No attendees; email reminder must be sent to organizer only
-        this.alarm.attendees = 0;
-        this.alarm.organizer = 1;
+        component.alarm.attendees = 0;
+        component.alarm.organizer = 1;
       }
     }
     else {
@@ -1085,13 +1087,15 @@
     }
 
     // Build URL
+    path = [this.pid, this.id];
+
     if (this.isNew)
       options = { action: 'saveAs' + this.type.capitalize() };
 
     if (this.occurrenceId)
       path.push(this.occurrenceId);
 
-    return Component.$$resource.save(path.join('/'), this.$omit(), options)
+    return Component.$$resource.save(path.join('/'), component, options)
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit();
@@ -1169,7 +1173,7 @@
    * @return an object literal copy of the Component instance
    */
   Component.prototype.$omit = function() {
-    var component = {}, date;
+    var component = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
           key[0] != '$' &&
