@@ -41,7 +41,9 @@
         </div>
       </md-list-item>
       <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
-        <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">
+        <div class="hour"
+             ng-class="{'sg-no-freebusy': !currentAttendee.uid}"
+             ng-repeat="hour in ::editor.attendeesEditor.hours">
           <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 0)}">
             <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
           </div>

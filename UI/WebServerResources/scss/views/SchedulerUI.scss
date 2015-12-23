@@ -556,6 +556,15 @@ $block_radius: 3px;
     flex-grow: 0;
     flex-basis: 17px; // hour's width + hour's border
     align-items: stretch;
+    &.sg-no-freebusy {
+      background-color: sg-color($sogoPaper, 200);
+      background-image: repeating-linear-gradient(-45deg,
+                                                  rgb(255,255,255),
+                                                  rgb(255,255,255) 2px,
+                                                  transparent 2px,
+                                                  transparent 4px);
+      opacity: 0.5;
+    }
   }
   .quarter {
     min-width: 4px;
