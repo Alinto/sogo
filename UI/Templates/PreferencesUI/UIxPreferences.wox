@@ -122,8 +122,8 @@
               </md-autocomplete>
             </div>
 
-            <div layout="row">
-              <md-input-container class="md-block" flex="30">
+            <div layout="row" layout-wrap="layout-wrap">
+              <md-input-container class="md-block" flex="30" flex-xs="100">
                 <label><var:string label:value="Short Date Format"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoShortDateFormat">
                   <var:foreach list="shortDateFormatsList" item="item">
@@ -133,7 +133,7 @@
                   </var:foreach>
                 </md-select>
               </md-input-container>
-              <md-input-container class="md-block" flex="40">
+              <md-input-container class="md-block" flex="40" flex-xs="100">
                 <label><var:string label:value="Long Date Format"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoLongDateFormat">
                   <var:foreach list="longDateFormatsList" item="item">
@@ -143,7 +143,7 @@
                   </var:foreach>
                 </md-select>
               </md-input-container>
-              <md-input-container class="md-block" flex="30">
+              <md-input-container class="md-block" flex="30" flex-xs="100">
                 <label><var:string label:value="Time Format"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoTimeFormat">
                   <var:foreach list="timeFormatsList" item="item">
