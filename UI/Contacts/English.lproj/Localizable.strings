@@ -4,7 +4,6 @@
 "Address" = "Address";
 "Photos" = "Photos";
 "Other" = "Other";
-
 "Address Books" = "Address Books";
 "Addressbook" = "Addressbook";
 "Addresses" = "Addresses";
@@ -22,6 +21,7 @@
 "HomePhone" = "HomePhone";
 "Lastname" = "Lastname";
 "Location" = "Location";
+"Add a category" = "Add a category";
 "MobilePhone" = "MobilePhone";
 "Name" = "Name";
 "OfficePhone" = "OfficePhone";
@@ -38,29 +38,37 @@
 "invalidemailwarn" = "The specified email is invalid";
 "new" = "new";
 "Preferred Phone" = "Preferred Phone";
-
 "Move To" = "Move To";
 "Copy To" = "Copy To";
-"Add to:" = "Add to:";
-
+"Add to" = "Add to";
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+/* Number of selected contacts in list */
+"selected" = "selected";
+/* Empty right pane */
+"No contact selected" = "No contact selected";
 /* Tooltips */
-
 "Create a new address book card" = "Create a new address book card";
 "Create a new list" = "Create a new list";
 "Edit the selected card" = "Edit the selected card";
 "Send a mail message" = "Send a mail message";
 "Delete selected card or address book" = "Delete selected card or address book";
 "Reload all contacts" = "Reload all contacts";
-
 "htmlMailFormat_UNKNOWN" = "Unknown";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Name or Email";
 "Category" = "Category";
 "Personal Addressbook" = "Personal Addressbook";
 "Search in Addressbook" = "Search in Addressbook";
-
 "New Card" = "New Card";
 "New List" = "New List";
 "Edit" = "Edit";
@@ -71,68 +79,50 @@
 "Instant Message" = "Instant Message";
 "Add..." = "Add...";
 "Remove" = "Remove";
-
 "Please wait..." = "Please wait...";
 "No possible subscription" = "No possible subscription";
-
 "Preferred" = "Preferred";
 "Display" = "Display";
 "Display Name" = "Display Name";
-"Email:" = "Email:";
-"Additional Email:" = "Additional Email:";
-
+"Additional Email" = "Additional Email";
 "Phone Number" = "Phone Number";
-"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
-"Screen Name:" = "Screen Name:";
-"Categories:" = "Categories:";
-
-"First:" = "First:";
-"Last:" = "Last:";
+"Prefers to receive messages formatted as" = "Prefers to receive messages formatted as";
+"Categories" = "Categories";
+"First" = "First";
+"Last" = "Last";
 "Nickname" = "Nickname";
-
 "Telephone" = "Telephone";
-"Work:" = "Work:";
-"Home:" = "Home:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mobile:";
-"Pager:" = "Pager:";
-
+"Work" = "Work";
+"Mobile" = "Mobile";
+"Pager" = "Pager";
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
 "New category" = "New category";
-
 /* adresses */
 "Title" = "Title";
-"Service:" = "Service:";
-"Company:" = "Company:";
-"Department:" = "Department:";
-"Organization:" = "Organization:";
-"Address:" = "Address:";
+"Service" = "Service";
+"Company" = "Company";
+"Department" = "Department";
 "City" = "City ";
-"State_Province:" = "State/Province:";
-"ZIP_Postal Code:" = "ZIP/Postal Code:";
+"State_Province" = "State/Province";
+"ZIP_Postal Code" = "ZIP/Postal Code";
 "Country" = "Country";
-"Web Page:" = "Web Page:";
-
-"Work" = "Work";
+"Web Page" = "Web Page";
 "Other Infos" = "Other Infos";
-
 "Note" = "Note";
-"Timezone:" = "Timezone:";
+"Timezone" = "Timezone";
 "Birthday" = "Birthday";
 "Birthday (yyyy-mm-dd)" = "Birthday (yyyy-mm-dd)";
-"Freebusy URL:" = "Freebusy URL:";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Add as...";
 "Recipient" = "Recipient";
 "Carbon Copy" = "Carbon Copy";
 "Blind Carbon Copy" = "Blind Carbon Copy";
-
 "New Addressbook..." = "New Addressbook...";
 "Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
-
+"Subscribe to a shared folder" = "Subscribe to a shared folder";
+"Search User" = "Search User";
 "Name of the Address Book" = "Name of the Address Book";
 "Are you sure you want to delete the selected address book?"
 = "Are you sure you want to delete the selected address book?";
@@ -140,27 +130,19 @@
 = "You cannot remove nor unsubscribe from a public addressbook.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "You cannot remove nor unsubscribe from your personal addressbook.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Are you sure you want to delete the selected contacts?";
-
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "You cannot subscribe to a folder that you own.";
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder.";
-
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";
-
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";
-
 "This person can add cards to this addressbook."
 = "This person can add cards to this addressbook.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +153,14 @@
 = "This person can read the cards of this addressbook.";
 "This person can erase cards from this addressbook."
 = "This person can erase cards from this addressbook.";
-
 "The selected contact has no email address."
 = "The selected contact has no email address.";
-
 "Please select a contact." = "Please select a contact.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "You cannot write to this address book.";
 "Forbidden" = "You cannot write to this address book.";
 "Invalid Contact" = "The selected contact no longer exists.";
 "Unknown Destination Folder" = "The chosen destination address book no longer exists.";
-
 /* Lists */
 "List details" = "List details";
 "List name" = "List name";
@@ -204,12 +181,47 @@
 "An error occured while importing contacts." = "An error occured while importing contacts.";
 "No card was imported." = "No card was imported.";
 "A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
-
 "Reload" = "Reload";
-
 /* Properties window */
-"Address Book Name:" = "Address Book Name:";
+"Address Book Name" = "Address Book Name";
 "Links to this Address Book" = "Links to this Address Book";
 "Authenticated User Access" = "Authenticated User Access";
-"CardDAV URL: " = "CardDAV URL: ";
-
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Options";
+"Rename" = "Rename";
+"Subscriptions" = "Subscriptions";
+"Global Addressbooks" = "Global Addressbooks";
+"Search" = "Search";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Select All" = "Select All";
+"Copy contacts" = "Copy contacts";
+"More messages options" = "More messages options";
+"New Contact" = "New Contact";
+"Close" = "Close";
+"More contact options" = "More contact options";
+"Organization Unit" = "Organization Unit";
+"Add Organizational Unit" = "Add Organizational Unit";
+"Type" = "Type";
+"Email Address" = "Email Address";
+"New Email Address" = "New Email Address";
+"New Phone Number" = "New Phone Number";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "street";
+"Postoffice" = "Postoffice";
+"Region" = "Region";
+"Postal Code" = "Postal Code";
+"New Address" = "New Address";
+"Reset" = "Reset";
+"Description" = "Description";
+"Add Member" = "Add Member";
+"Subscribe" = "Subscribe";
+"Add Birthday" = "Add Birthday";
+"Import" = "Import";
+"More options" = "More options";
+"Role" = "Role";
+"Add Screen Name" = "Add Screen Name";
+"Synchronize" = "Synchronize";
+"Sucessfully subscribed to address book" = "Sucessfully subscribed to address book";

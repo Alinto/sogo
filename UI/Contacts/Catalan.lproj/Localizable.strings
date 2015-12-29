@@ -4,7 +4,6 @@
 "Address" = "Adreça";
 "Photos" = "Fotos";
 "Other" = "Altres dades";
-
 "Address Books" = "Llibretes d'adreces";
 "Addressbook" = "Llibreta d'adreces";
 "Addresses" = "Adreces";
@@ -22,6 +21,7 @@
 "HomePhone" = "Telèfon de casa";
 "Lastname" = "Cognoms";
 "Location" = "Adreça";
+"Add a category" = "Afegir una categoria";
 "MobilePhone" = "Telèfon mòbil";
 "Name" = "Nom";
 "OfficePhone" = "Telèfon oficina";
@@ -38,29 +38,37 @@
 "invalidemailwarn" = "Adreça de correu no vàlida.";
 "new" = "nou";
 "Preferred Phone" = "Telèfon preferit";
-
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
-"Add to:" = "Afegir a:";
-
+"Add to" = "Afegir a";
+/* Subheader of empty addressbook */
+"No contact" = "Sense contactes";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Començar una cerca per navegar per aquesta llibreta d'adreces";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contactes";
+/* No contact matching search criteria */
+"No matching contact" = "Cap contacte coincident";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contactes coincidents";
+/* Number of selected contacts in list */
+"selected" = "seleccionats";
+/* Empty right pane */
+"No contact selected" = "Sense contacte seleccionat";
 /* Tooltips */
-
 "Create a new address book card" = "Afegir un contacte nou";
 "Create a new list" = "Crear una llista nova";
 "Edit the selected card" = "Modificar el contacte seleccionat";
 "Send a mail message" = "Enviar un correu";
 "Delete selected card or address book" = "Esborrar contacte o llibreta d'adreces seleccionats";
 "Reload all contacts" = "Recarregar tots els contactes";
-
 "htmlMailFormat_UNKNOWN" = "Desconegut";
 "htmlMailFormat_FALSE" = "Text pla";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Nom o correu";
 "Category" = "Category";
 "Personal Addressbook" = "Llibre personal d'adreces";
 "Search in Addressbook" = "Buscar en la llibreta";
-
 "New Card" = "Afegir contacte";
 "New List" = "Crear llista";
 "Edit" = "Modificar";
@@ -71,68 +79,50 @@
 "Instant Message" = "Missatge instantani";
 "Add..." = "Afegir...";
 "Remove" = "Esborrar";
-
 "Please wait..." = "Si us plau, espereu-vos...";
 "No possible subscription" = "La subscripció no és possible";
-
 "Preferred" = "Preferit";
-"Display" = "Nom mostrat";
-"Display Name" = "Nom";
-"Email:" = "Correu electrònic:";
-"Additional Email:" = "Un altre correu electrònic:";
-
+"Display" = "Mostrar";
+"Display Name" = "Mostrar Nom";
+"Additional Email" = "Un altre correu electrònic";
 "Phone Number" = "Número de telèfon";
-"Prefers to receive messages formatted as:" = "Prefereix rebre missatges amb format:";
-"Screen Name:" = "Nom d'usuari:";
-"Categories:" = "Categories:";
-
-"First:" = "Nom:";
-"Last:" = "Cognoms:";
+"Prefers to receive messages formatted as" = "Prefereix rebre missatges amb format";
+"Categories" = "Categories";
+"First" = "Nom";
+"Last" = "Cognoms";
 "Nickname" = "Àlies";
-
 "Telephone" = "Telèfon";
-"Work:" = "Feina:";
-"Home:" = "Casa:";
-"Fax:" = "Fax:";
-"Mobile:" = "Mòbil:";
-"Pager:" = "Cercapersones:";
-
+"Work" = "Feina";
+"Mobile" = "Mòbil";
+"Pager" = "Cercapersones";
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
 "New category" = "New category";
-
 /* adresses */
 "Title" = "Títol";
-"Service:" = "Servei:";
-"Company:" = "Companyia:";
-"Department:" = "Departament:";
-"Organization:" = "Organització:";
-"Address:" = "Domicili:";
+"Service" = "Servei";
+"Company" = "Companyia";
+"Department" = "Departament";
 "City" = "Ciutat";
-"State_Province:" = "Estat/província/comarca:";
-"ZIP_Postal Code:" = "Codi postal:";
+"State_Province" = "Estat/província/comarca";
+"ZIP_Postal Code" = "Codi postal";
 "Country" = "País";
-"Web Page:" = "Web:";
-
-"Work" = "Treball";
+"Web Page" = "Web";
 "Other Infos" = "Altres dades";
-
 "Note" = "Nota";
-"Timezone:" = "Zona hor.:";
+"Timezone" = "Zona hor.";
 "Birthday" = "Data de naixement";
 "Birthday (yyyy-mm-dd)" = "Data naixement (yyyy-mm-dd)";
-"Freebusy URL:" = "URL disponibilitat:";
-
+"Freebusy URL" = "URL disponibilitat";
 "Add as..." = "Afegir com a...";
 "Recipient" = "Per a";
 "Carbon Copy" = "Còpia oculta";
 "Blind Carbon Copy" = "c/o";
-
 "New Addressbook..." = "Nova llibreta d'adreces";
 "Subscribe to an Addressbook..." = "Subscribiure's a una llibreta...";
 "Remove the selected Addressbook" = "Esborrar la llibreta seleccionada";
-
+"Subscribe to a shared folder" = "Subscriure's a una carpeta compartida";
+"Search User" = "Cerca usuari";
 "Name of the Address Book" = "Nom de la llibreta";
 "Are you sure you want to delete the selected address book?"
 = "Voleu esborrar la llibreta d'adreces seleccionada?";
@@ -140,27 +130,19 @@
 = "No és possible cancel·lar la subscripció o esborrar-se d'una llibreta pública.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "No és possible cancel·lar la subscripció o esborrar-se de la llibreta personal.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Voleu esborrar els contactes seleccionats?";
-
 "You cannot delete the card of \"%{0}\"."
 = "No podeu esborrar el contacte \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "No us podeu subscriure a una carpeta que és vostra.";
 "Unable to subscribe to that folder!"
 = "No us podeu subscriure a aquesta carpeta.";
-
 /* acls */
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
-
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";
-
 "This person can add cards to this addressbook."
 = "Aquesta persona pot afegir contactes nous a aquesta llibreta.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +153,14 @@
 = "Aquesta persona pot llegir els contactes d'aquesta llibreta.";
 "This person can erase cards from this addressbook."
 = "Aquesta persona pot esborrar els contactes d'aquesta llibreta.";
-
 "The selected contact has no email address."
 = "El contacte seleccionat no té adreça de correu electrònic.";
-
 "Please select a contact." = "Seleccioneu un contacte.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "No podeu escriure en aquesta llibreta.";
 "Forbidden" = "No podeu escriure en aquesta llibreta.";
 "Invalid Contact" = "El contacte seleccionat ja no existeix.";
 "Unknown Destination Folder" = "La llibreta de destinació seleccionada ja no existeix.";
-
 /* Lists */
 "List details" = "Detalls de la llista";
 "List name" = "Nom de la llista";
@@ -204,12 +181,46 @@
 "An error occured while importing contacts." = "Hi ha hagut un error en importar els contactes.";
 "No card was imported." = "No s'ha importat cap contacte.";
 "A total of %{0} cards were imported in the addressbook." = "S'han importat a la llibreta %{0} contactes.";
-
 "Reload" = "Actualitzar";
-
 /* Properties window */
-"Address Book Name:" = "Nom de la llibreta d'adreces";
+"Address Book Name" = "Nom de la llibreta";
 "Links to this Address Book" = "Enllaços a aquesta llibreta d'adreces";
 "Authenticated User Access" = "Accés autenticat";
-"CardDAV URL: " = "URL CardDAV:";
-
+"CardDAV URL" = "URL CardDAV";
+"Options" = "Opcions";
+"Rename" = "Canviar el nom";
+"Subscriptions" = "Subscripcions";
+"Global Addressbooks" = "Llibretes d'adreces global";
+"Search" = "Cercar";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordre descendent";
+"Back" = "Enrere";
+"Select All" = "Seleccionar tots";
+"Copy contacts" = "Copiar contactes";
+"More messages options" = "Més opcions de missatges";
+"New Contact" = "Nou Contacte";
+"Close" = "Tancar";
+"More contact options" = "Més opcions de contactes";
+"Organization Unit" = "Unitat Organitzativa";
+"Add Organizational Unit" = "Afegir Unitat Organitzativa";
+"Type" = "Tipus";
+"Email Address" = "Adreça de correu electrònic";
+"New Email Address" = "Nova adreça de correu electrònic";
+"New Phone Number" = "Número de telèfon nou";
+"URL" = "URL";
+"New URL" = "Nou URL";
+"street" = "carrer";
+"Postoffice" = "Oficina de correus";
+"Region" = "Regió";
+"Postal Code" = "Codi postal";
+"New Address" = "Nova adreça";
+"Reset" = "Restablir";
+"Description" = "Descripció";
+"Add Member" = "Afegeix membre";
+"Subscribe" = "Subscriure";
+"Add Birthday" = "Afegir aniversari";
+"Import" = "Importar";
+"More options" = "Més opcions";
+"Role" = "Rol";
+"Add Screen Name" = "Afegir àlies";
+"Synchronize" = "Sincronitzar";

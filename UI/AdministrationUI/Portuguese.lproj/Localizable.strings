@@ -2,14 +2,10 @@
 
 "Help" = "Ajuda";
 "Close" = "Fechar";
-
 "Modules" = "Módulos";
-
 /* Modules short names */
 "ACLs" = "ACLs";
-
 /* Modules titles */
 "ACLs_title" = "Gerenciamento de ACLs para Utilizadores";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>O módulo administrativo das Listas de Controlo de Acessos permitem alterar os ACLs de Calendário e Contactos de cada utilizador.</p><p>Para modificar as ACLs do utilizador, digite o nome no campo de pesquisa, no topo da janela e dê um duplo-click na opção desejada.</p>";

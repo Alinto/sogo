@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "Utwórz nowe wydarzenie";
 "Create a new task" = "Utwórz nowe zadanie";
 "Edit this event or task" = "Edytuj to wydarzenie lub zadanie";
@@ -12,46 +11,32 @@
 "Switch to week view" = "Przełącz na widok tygodnia";
 "Switch to month view" = "Przełącz na widok miesiąca";
 "Reload all calendars" = "Przeładuj wszystkie kalendarze";
-
 /* Tabs */
 "Date" = "Data";
 "Calendars" = "Kalendarze";
-
+"No events for selected criteria" = "Żadne wydarzenie nie spełnia wskazanego kryterium";
+"No tasks for selected criteria" = "Nie ma żadnych zadań dla wskazanego kryterium";
 /* Day */
-
 "DayOfTheMonth" = "Dzień miesiąca";
 "dayLabelFormat" = "%d.%m.%Y";
 "today" = "Dzisiaj";
-
 "Previous Day" = "Poprzedni dzień";
 "Next Day" = "Następny dzień";
-
 /* Week */
-
 "Week" = "Tydzień";
 "this week" = "ten tydzień";
-
 "Week %d" = "Tydzień %d";
-
 "Previous Week" = "Poprzedni tydzień";
 "Next Week" = "Następny tydzień";
-
 /* Month */
-
 "this month" = "ten miesiąc";
-
 "Previous Month" = "Poprzedni miesiąc";
 "Next Month" = "Następny miesiąc";
-
 /* Year */
-
 "this year" = "ten rok";
-
 /* Menu */
-
 "Calendar" = "Kalendarz";
 "Contacts" = "Kontakty";
-
 "New Calendar..." = "Nowy kalendarz";
 "Delete Calendar" = "Usuń kalendarz";
 "Unsubscribe Calendar" = "Wyłącz subskrypcję kalendarza";
@@ -69,54 +54,40 @@
 "An error occurred while importing calendar." = "Błąd w trakcie importu kalendarza.";
 "No event was imported." = "Nie zaimportowano żadnego wydarzenia.";
 "A total of %{0} events were imported in the calendar." = "Do kalendarza zaimportowano razem %{0} wydarzeń(nia).";
-
 "Compose E-Mail to All Attendees" = "Utwórz wiadomość e-mail do wszystkich uczestników";
 "Compose E-Mail to Undecided Attendees" = "Utwórz wiadomość e-mail do niezdecydowanych uczestników";
-
 /* Folders */
 "Personal calendar" = "Kalendarz osobisty";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Zabronione";
-
 /* acls */
-
 "Access rights to" = "Uprawnienia dla";
 "For user" = "Dla użytkownika";
-
 "Any Authenticated User" = "Każdy zalogowany użytkownik";
 "Public Access" = "Dostęp publiczny";
-
 "label_Public" = "Publiczne";
 "label_Private" = "Prywatne";
 "label_Confidential" = "Poufne";
-
 "label_Viewer" = "Pokaż wszystko";
 "label_DAndTViewer" = "Pokaż datę i czas";
 "label_Modifier" = "Zmień";
 "label_Responder" = "Odpowiedz na";
 "label_None" = "Brak";
-
 "View All" = "Pokaż wszystko";
 "View the Date & Time" = "Pokaż datę i czas";
 "Modify" = "Zmień";
 "Respond To" = "Odpowiedz na";
 "None" = "Brak";
-
 "This person can create objects in my calendar."
 = "Ta osoba może tworzyć obiekty w moim kalendarzu.";
 "This person can erase objects from my calendar."
 = "Ta osoba może usuwać obiekty z mojego kalendarza.";
-
 /* Button Titles */
-
 "Subscribe to a Calendar..." = "Subskrybuj kalendarz użytkownika";
 "Remove the selected Calendar" = "Usuń zaznaczony kalendarz";
-
+"New calendar" = "Nowy kalendarz";
 "Name of the Calendar" = "Nazwa kalendarza";
-
 "new" = "Nowy";
 "Print view" = "Widok wydruku";
 "edit" = "Edytuj";
@@ -128,12 +99,11 @@
 "Attach" = "Załącz";
 "Update" = "Zaktualizuj";
 "Cancel" = "Anuluj";
+"Reset" = "Wyczyść";
+"Save" = "Zapisz";
 "show_rejected_apts" = "Pokaż odrzucone spotkania";
 "hide_rejected_apts" = "Ukryj odrzucone spotkania";
-
-
 /* Schedule */
-
 "Schedule" = "Harmonogram";
 "No appointments found" = "Brak spotkań";
 "Meetings proposed by you" = "Spotkania zaproponowane przez ciebie";
@@ -145,9 +115,7 @@
 "more attendees" = "Więcej uczestników";
 "Hide already accepted and rejected appointments" = "Ukryj zaakceptowane i odrzucone spoktania";
 "Show already accepted and rejected appointments" = "Pokaż zaakceptowane i odrzucone spotkania";
-
 /* Print view */
-
 "LIST" = "Lista";
 "Print Settings" = "Ustawienia wydruku";
 "Title" = "Tytuł";
@@ -160,9 +128,7 @@
 "Display events and tasks colors" = "Pokazuj kolory wydarzeń i zadań";
 "Borders" = "Ramki";
 "Backgrounds" = "Tła";
-
 /* Appointments */
-
 "Appointment viewer" = "Przeglądarka spoktań";
 "Appointment editor" = "Edytor spotkań";
 "Appointment proposal" = "Propozycja spotkania";
@@ -170,13 +136,12 @@
 "Start" = "Początek";
 "End" = "Koniec";
 "Due Date" = "Termin";
-"Title" = "Tytuł";
-"Calendar" = "Kalendarz";
 "Name" = "Nazwa";
 "Email" = "E-mail";
 "Status" = "Status";
 "% complete" = "% wykonania";
 "Location" = "Miejsce";
+"Add a category" = "Dodaj kategorię";
 "Priority" = "Priorytet";
 "Privacy" = "Prywatność";
 "Cycle" = "Powtarzaj";
@@ -195,14 +160,11 @@
 "General" = "Ogólne";
 "Reply" = "Odpowiedź";
 "Created by" = "Stworzone przez";
-
-
-"Target:" = "Cel:";
-
+"You are invited to participate" = "Zostałeś zaproszony do udziału";
+"Target" = "Cel";
 "attributes" = "atrybuty";
 "attendees" = "uczestnicy";
 "delegated from" = "oddelegowane przez";
-
 /* checkbox title */
 "is private" = "jest prywatne";
 /* classification */
@@ -211,26 +173,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "Pusty tytuł";
 "private appointment" = "Spotkanie prywatne";
-
 "Change..." = "Zmień";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "Potwierdzę poźniej";
 "partStat_ACCEPTED" = "Wezmę udział";
 "partStat_DECLINED" = "Nie wezmę udziału";
 "partStat_TENTATIVE" = "Być może wezmę udział";
 "partStat_DELEGATED" = "Oddeleguję";
 "partStat_OTHER" = "Inne";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "Znaleziono konflikty!";
 "Invalid iCal data!" = "Niepoprawne dane iCal!";
 "Could not create iCal data!" = "Nie można było utworzyć danych iCal!";
-
 /* Searching */
-
 "view_all" = "Wszystko";
 "view_today" = "Dzisiaj";
 "view_next7" = "Następne 7 dni";
@@ -239,36 +194,26 @@
 "view_thismonth" = "Ten miesiąc";
 "view_future" = "wszystkie przyszłe wydarzenia";
 "view_selectedday" = "Zaznaczony dzień";
-
 "view_not_started" = "Zadania nie rozpoczęte";
 "view_overdue" = "Zadania zaległe";
 "view_incomplete" = "Zadania nieukończone";
-
 "View" = "Widok";
 "Title, category or location" = "Tytuł, kategoria lub położenie";
 "Entire content" = "Cała zawartość";
-
 "Search" = "Szukaj";
 "Search attendees" = "Szukaj uczestników";
 "Search resources" = "Szukaj zasobów";
 "Search appointments" = "Szukaj spotkania";
-
 "All day Event" = "Wydarzenie całodniowe";
 "check for conflicts" = "Sprawdź konflikty";
-
-"Browse URL" = "Przeglądaj URL";
-
+"URL" = "URL";
 "newAttendee" = "Dodaj uczestnika";
-
 /* calendar modes */
-
 "Overview" = "Przegląd";
 "Chart" = "Wykres";
 "List" = "Lista";
 "Columns" = "Kolumny";
-
 /* Priorities */
-
 "prio_0" = "Nieokreślony";
 "prio_1" = "Wysoki";
 "prio_2" = "Wysoki";
@@ -279,7 +224,6 @@
 "prio_7" = "Niski";
 "prio_8" = "Niski";
 "prio_9" = "Niski";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Wydarzenie publiczne";
 "CONFIDENTIAL_vevent" = "Wydarzenie poufne";
@@ -287,7 +231,6 @@
 "PUBLIC_vtodo" = "Zadanie publiczne";
 "CONFIDENTIAL_vtodo" = "Zadanie poufne";
 "PRIVATE_vtodo" = "Zadanie prywatne";
-
 /* status type */
 "status_" = "Nieokreślone";
 "status_NOT-SPECIFIED" = "Nieokreślone";
@@ -297,9 +240,7 @@
 "status_NEEDS-ACTION" = "Wymaga akcji";
 "status_IN-PROCESS" = "Trwa";
 "status_COMPLETED" = "Zakończone";
-
 /* Cycles */
-
 "cycle_once" = "powtórz raz";
 "cycle_daily" = "powtadzaj codziennie";
 "cycle_weekly" = "powtarzaj co tydzień";
@@ -308,15 +249,12 @@
 "cycle_monthly" = "powtarzaj co miesiąc";
 "cycle_weekday" = "powtarzaj w dni powszednie";
 "cycle_yearly" = "powtarzaj co rok";
-
 "cycle_end_never" = "powtarzaj bezterminowo";
 "cycle_end_until" = "powtarzaj do";
-
 "Recurrence pattern" = "Schemat powtórzeń";
 "Range of recurrence" = "Zakres powtórzeń";
-
-"Repeat" = "Powtórz";
 "Daily" = "Codziennie";
+"Multi-Columns" = "Wielokolumnowy";
 "Weekly" = "Co tydzień";
 "Monthly" = "Co miesiąc";
 "Yearly" = "Co rok";
@@ -325,27 +263,30 @@
 "Week(s)" = "Tygodni(e)";
 "On" = "w";
 "Month(s)" = "Miesiące(cy)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = " ";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = " ";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
 "appointment(s)" = "spotkanie(a)";
 "Repeat until" = "Powtarzaj do";
-
+"End Repeat" = "Zakończ powtarzanie";
+"Never" = "Nigdy";
+"After" = "Po";
+"On Date" = "W dniu";
+"times" = "razy";
 "First" = "Pierwszy";
 "Second" = "Drugi";
 "Third" = "Trzeci";
 "Fourth" = "Czwarty";
 "Fift" = "Piąty";
 "Last" = "Ostatni";
-
 /* Appointment categories */
-
 "category_none" = "Brak";
 "category_labels" = "Rocznica,Urodziny,Biznes,Telefony,Klienci,Konkurencja,Klient,Ulubione,Nawiązania,Podarunki,Święta,Idee,Spotkanie,Problemy,Różne,Osobiste,Projekty,Święta publiczne,Status,Dostawcy,Podróż,Wakacje";
-
 "repeat_NEVER" = "Bez powtórzeń";
 "repeat_DAILY" = "Codziennie";
 "repeat_WEEKLY" = "Co tydzień";
@@ -354,7 +295,6 @@
 "repeat_MONTHLY" = "Co miesiąc";
 "repeat_YEARLY" = "Co rok";
 "repeat_CUSTOM" = "Inaczej";
-
 "reminder_NONE" = "Bez przypomnienia";
 "reminder_5_MINUTES_BEFORE" = "5 minut przed";
 "reminder_10_MINUTES_BEFORE" = "10 minut przed";
@@ -369,51 +309,43 @@
 "reminder_2_DAYS_BEFORE" = "2 dni przed";
 "reminder_1_WEEK_BEFORE" = "1 tydzień przed";
 "reminder_CUSTOM" = "Inaczej";
-
 "reminder_MINUTES" = "minut(y)";
 "reminder_HOURS" = "godzin(y)";
 "reminder_DAYS" = "dni";
+"reminder_WEEKS" = "tygodni";
 "reminder_BEFORE" = "przed";
 "reminder_AFTER" = "po";
 "reminder_START" = "rozpoczęciem wydarzenia";
 "reminder_END" = "końcem wydarzenia";
 "Reminder Details" = "Szczegóły przypomnienia";
-
 "Choose a Reminder Action" = "Wybierz sposób przypomnienia";
 "Show an Alert" = "Pokaż ostrzeżenie";
 "Send an E-mail" = "Wyślij e-mail";
 "Email Organizer" = "E-mail do organizatora";
 "Email Attendees" = "E-mail do uczestników";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "Pokaż czas jako wolny";
-
 /* email notifications */
 "Send Appointment Notifications" = "Wyślij powiadomienia o spotkaniu";
-
+"From" = "Od";
+"To" = "Do";
 /* validation errors */
-
 validate_notitle           = "Nie podano tytułu, kontynuować?";
 validate_invalid_startdate = "Niepoprawna wartość w polu daty początkowej!";
 validate_invalid_enddate   = "Niepoprawna wartość w polu daty końcowej!";
 validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data początku.";
-
 "Events" = "Wydarzenia";
 "Tasks" = "Zadania";
 "Show completed tasks" = "Pokaż ukończone zadania";
-
 /* tabs */
 "Task" = "Zadanie";
 "Event" = "Wydarzenie";
 "Recurrence" = "Powtórzenia";
-
 /* toolbar */
 "New Event" = "Nowe wydarzenie";
 "New Task" = "Nowe zadanie";
@@ -424,9 +356,9 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Week View" = "Widok tygodnia";
 "Month View" = "Widok miesiąca";
 "Reload" = "Przeładuj";
-
+/* Number of selected components in events or tasks list */
+"selected" = "wybranych";
 "eventPartStatModificationError" = "Twój status uczestnictwa nie mógł być zmodyfikowany.";
-
 /* menu */
 "New Event..." = "Nowe wydarzenie";
 "New Task..." = "Nowe zadanie";
@@ -435,35 +367,29 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Select All" = "Zaznacz wszystkie";
 "Workweek days only" = "Tylko dni powszednie";
 "Tasks in View" = "Zadania w widoku";
-
 "eventDeleteConfirmation" = "Następujące wydarzenia zostaną usunięte:";
 "taskDeleteConfirmation" = "Następujące zadania zostaną usunięte:";
 "Would you like to continue?" = "Czy chcesz kontynuować?";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nie możesz usunąć ani zrezygnować z subskrypcji kalendarza osobistego.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Czy na pewno chcesz usunąć kalendarz \"%{0}\"?";
-
 /* Legend */
 "Participant" = "Uczestnik";
 "Optional Participant" = "Uczestnik opcjonalny";
 "Non Participant" = "Nie uczestniczy";
 "Chair" = "Prowadzący";
-
 "Needs action" = "Wymaga akcji";
 "Accepted" = "Zaakceptowane";
 "Declined" = "Odmówione";
 "Tentative" = "Niepewne";
-
 "Free" = "Wolny";
 "Busy" = "Zajęty";
 "Maybe busy" = "Być może zajęty";
 "No free-busy information" = "Brak informacji wolny-zajęty";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Proponuj przedział czasowy:";
-"Zoom:" = "Powiększenie:";
+"Suggest time slot" = "Proponuj przedział czasowy";
+"Zoom" = "Powiększenie";
 "Previous slot" = "Poprzedni przedział";
 "Next slot" = "Następny przedział";
 "Previous hour" = "Poprzednia godzina";
@@ -472,64 +398,49 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "The whole day" = "Cały dzień";
 "Between" = "Pomiędzy";
 "and" = "i";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Istnieje konflikt czasowy z jednym lub większą liczbą uczestników.\nCzy chcesz zachować obecne ustawienia mimo wszystko?";
-
-/* apt list */
-"Title" = "Tytuł";
-"Start" = "Początek";
-"End" = "Koniec";
-"Due Date" = "Termin";
-"Location" = "Miejsce";
-
+/* events list */
+"Due" = "Termin";
 "(Private Event)" = "(Wydarzenie prywatne)";
-
 vevent_class0 = "(Wydarzenie publiczne)";
 vevent_class1 = "(Wydarzenie prywatne)";
 vevent_class2 = "(Wydarzenie poufne)";
-
-"Priority" = "Priorytet";
-"Category" = "Kategoria";
-
+/* tasks list */
+"Descending Order" = "Kolejność malejąca";
 vtodo_class0 = "(Zadanie publiczne)";
 vtodo_class1 = "(Zadanie prywatne)";
 vtodo_class2 = "(Zadanie poufne)";
-
 "closeThisWindowMessage" = "Dziękuję! Możesz teraz zamknąć to okno lub wyświetlić twoje ";
 "Multicolumn Day View" = "Widok dnia wielokolumnowy";
-
 "Please select an event or a task." = "Zaznacz wydarzenie lub zadanie.";
-
 "editRepeatingItem" = "Element który edytujesz ma powtórzenia. Czy chcesz edytować wszystkie czy tylko pojedyncze wystąpienie?";
 "button_thisOccurrenceOnly" = "Tylko to wystąpienie";
-"button_allOccurrences" = "Wszystkie wystąpienia";
-
+"button_allOccurrences" = "Wszystkie wstąpienia";
+"Edit This Occurrence" = "Modyfikuj to wydarzenie";
+"Edit All Occurrences" = "Modyfikuj wszystkie wydarzenia";
+"Update This Occurrence" = "Aktualizuj to wydarzenie";
+"Update All Occurrences" = "Aktualizuj wszystkie wydarzenia";
 /* Properties dialog */
-"Name" = "Nazwa";
 "Color" = "Kolor";
-
 "Include in free-busy" = "Uwzględnij w wolny-zajęty";
-
 "Synchronization" = "Synchronizacja";
 "Synchronize" = "Synchronizuj";
-"Tag:" = "Znacznik:";
-
+"Tag" = "Znacznik";
 "Display" = "Pokaż";
 "Show alarms" = "Pokaż alarmy";
 "Show tasks" = "Pokaż zadania";
-
 "Notifications" = "Powiadomienia";
 "Receive a mail when I modify my calendar" = "Przyślij e-mail, gdy zmieniam swój kalendarz";
 "Receive a mail when someone else modifies my calendar" = "Przyślij e-mail, gdy ktoś zmienia mój kalendarz";
 "When I modify my calendar, send a mail to" = "Gdy zmieniam swój kalendarz, wyślij e-mail do";
-
+"Email Address" = "Adres e-mail";
+"Export" = "Eksportuj";
 "Links to this Calendar" = "Odnośniki do tego kalendarza";
 "Authenticated User Access" = "Dostęp dla zalogowanych użytkowników";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "W polu Dni wprowadź liczbę równą lub większą od 1.";
 "weekFieldInvalid" = "W polu Tygodnie wprowadź liczbę równą lub większą od 1.";
@@ -547,18 +458,46 @@ vtodo_class2 = "(Zadanie poufne)";
 "DestinationCalendarError" = "Chcesz kopiować do tego samego kalendarza. Musisz wybrać inny kalendarz.";
 "EventCopyError" = "Kopiowanie nie udało się. Wybierz inny kalendarz.";
 "Please select at least one calendar" = "Wybierz co najmniej jeden kalendarz";
-
-
 "Open Task..." = "Otwórz zadanie";
 "Mark Completed" = "Oznacz jako ukończone";
 "Delete Task" = "Usuń zadanie";
 "Delete Event" = "Usuń wydarzenie";
 "Copy event to my calendar" = "Kopiuj wydarzenie do mojego kalendarza";
 "View Raw Source" = "Obejrzyj źródło";
-
+"Subscriptions" = "Subskrybcje";
+"Subscribe to a shared folder" = "Subskrybuj współdzielony folder";
 "Subscribe to a web calendar..." = "Subskrybuj sieciowy kalendarz";
 "URL of the Calendar" = "URL do kalendarza";
 "Web Calendar" = "Kalendarz sieciowy";
+"Web Calendars" = "Kalendarze sieciowe";
 "Reload on login" = "Przeładuj przy logowaniu";
 "Invalid number." = "Błędna liczba.";
 "Please identify yourself to %{0}" = "Zaloguj się w %{0}";
+"quantity" = "ilość";
+"Current view" = "Bieżący widok";
+"Selected events and tasks" = "Wskazane zadania i wydarzenia";
+"Custom date range" = "Niestandardowy zakres dat";
+"Select starting date" = "Wybierz datę rozpoczęcia";
+"Select ending date" = "Wybierz datę zakończenia";
+"Delegated to" = "Delegowane do";
+"Keep sending me updates" = "Wysyłaj mi aktualizacje";
+"OK" = "OK";
+"Confidential" = "Poufne";
+"Enable" = "Włączony";
+"Filter" = "Filtr";
+"Sort" = "Sortuj";
+"Back" = "Wstecz";
+"Day" = "Dzień";
+"Month" = "Miesiąc";
+"New Appointment" = "Nowy termin";
+"filters" = "filtry";
+"Today" = "Dziś";
+"More options" = "Więcej opcji";
+"Delete This Occurrence" = "Usuń to wydarzenie";
+"Delete All Occurrences" = "Usuń wszystkie wydarzenia";
+"Add From" = "Dodaj od";
+"Add Due" = "Dodaj termin";
+"Import" = "Importuj";
+"Rename" = "Zmień nazwę";
+"Import Calendar" = "Importuj kalendarz";
+"Select an ICS file." = "Wybierz plik ICS.";

@@ -1,6 +1,7 @@
 /* toolbar */
 "Save and Close" = "Сними и затвори";
 "Close" = "Затвори";
+"Preferences saved" = "Поставките се снимени";
 
 /* tabs */
 "General" = "Општо";
@@ -17,10 +18,8 @@
 "Color" = "Боја";
 "Add" = "Додади";
 "Delete" = "Избриши";
-
 /* contacts categories */
 "contacts_category_labels" = "Колега, конкурент, клиент, пријател, фамилија, деловен партнер, провајдер, новинар, ВИП";
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Овозможи автоматски одговор поради одмор";
 "Auto reply message" = "Порака за автоматски одговор";
@@ -35,7 +34,6 @@
 "Your vacation message must not end with a single dot on a line." = "Вашата порака кога сте отсатен не смее да заврши со една точка во линијата.";
 "End date of your auto reply must be in the future."
 = "Крајниот датум на вашиот автоматски одговор мора да биде во иднина.";
-
 /* forward messages */
 "Forward incoming messages" = "Препрати ги пораките кои доаѓаат";
 "Keep a copy" = "Задржи копија";
@@ -43,37 +41,29 @@
 = "Определете ја електронската адреса на која сакате да ги препраќате пораките.";
 "You are not allowed to forward your messages to an external email address." = "Не ви е дозволено да ја проследите пораката кон надворешна електронска адреса.";
 "You are not allowed to forward your messages to an internal email address." = "Не ви е дозволено да ја проследите пораката кон интерна електронска адреса.";
-
-
 /* d & t */
 "Current Time Zone" = "Тековна временска зона";
 "Short Date Format" = "Краток формат за датум";
 "Long Date Format" = "Долг формат за даум";
 "Time Format" = "Формат за време";
-
 "default" = "Стандардно";
-
+"Default Module" = "Стандарден модул";
+"Save" = "Сними";
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%b-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
@@ -87,13 +77,11 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
-
 /* calendar */
 "Week begins on" = "Неделата запонува на";
 "Day start time" = "Почетен датум";
@@ -104,21 +92,17 @@
 "Enable reminders for Calendar items" = "Овозможи ги потсетниците за календарот";
 "Play a sound when a reminder comes due" = "Звучно потсети кога ќе дојде потсетникот";
 "Default reminder" = "Стандарден потсетник";
-
 "firstWeekOfYear_January1" = "Започнува на 1ви Јануари";
 "firstWeekOfYear_First4DayWeek" = "Првата 4-дневна недела";
 "firstWeekOfYear_FirstFullWeek" = "Првата цела недела";
-
 "Prevent from being invited to appointments" = "Избегни да бидеш повикан на состаноци";
 "White list for appointment invitations" = "Бела листа на покани за состанок";
 "Contacts Names" = "Имиња на контактите";
-
 /* Default Calendar */
 "Default calendar" = "Стандарден календар";
 "selectedCalendar" = "Одбери го календарот";
 "personalCalendar" = "Личен календар";
 "firstCalendar" = "Првиот активен календар";
-
 "reminder_NONE" = "Без потсетник";
 "reminder_5_MINUTES_BEFORE" = "5 минути пред";
 "reminder_10_MINUTES_BEFORE" = "10 минути пред";
@@ -132,18 +116,16 @@
 "reminder_1_DAY_BEFORE" = "1 ден пред";
 "reminder_2_DAYS_BEFORE" = "2 дена пред";
 "reminder_1_WEEK_BEFORE" = "1 недела пред";
-
 /* Mailer */
 "Labels" = "Лабели";
 "Label" = "Лабела";
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
 "When sending mail, add unknown recipients to my" = "Кога испраќаш порака, додади ги непознатите приматели во мојата";
-
+"Address Book" = "Адресар";
 "Forward messages" = "Препрати ги пораките";
 "messageforward_inline" = "Во текстот";
 "messageforward_attached" = "Како прилог";
-
 "When replying to a message" = "Кога одговарам на порака";
 "replyplacement_above" = "Започни гоодговорот над цитатот";
 "replyplacement_below" = "Започни го одговорот под цитатот";
@@ -156,63 +138,57 @@
 "Display remote inline images" = "Прикажи ги фотографиите кои треба да се преземат";
 "displayremoteinlineimages_never" = "Никогаш";
 "displayremoteinlineimages_always" = "Секогаш";
-
 "Auto save every" = "Автоматски сними секој(и)";
 "minutes" = "минути";
-
 /* Contact */
 "Personal Address Book" = "Лична адресна книга";
 "Collected Address Book" = "Собрана адресна книга";
-
 /* IMAP Accounts */
+"Mail Account" = "Сметка за електронска пошта";
 "New Mail Account" = "Нова сметка за електронска пошта";
-
 "Server Name" = "Име на серверот";
 "Port" = "Порт";
 "Encryption" = "Шифрирање";
 "None" = "Ниедна";
 "User Name" = "Корисничко име";
-"Password" = "Лозинка";
-
 "Full Name" = "Целосно име";
 "Email" = "Електронска пошта";
 "Reply To Email" = "Одговори на поракта";
 "Signature" = "Потпис";
 "(Click to create)" = "(Кликни да се креира)";
-
-"Signature" = "Потпис";
-"Please enter your signature below:" = "Внесете го долу вашиот потпис:";
-
+"Please enter your signature below" = "Внесете го долу вашиот потпис";
 "Please specify a valid sender address." = "Обезбедете валидна адреса на испраќачот.";
 "Please specify a valid reply-to address." = "Обезбедете валидна електронска адреса за “одговори на“.";
-
 /* Additional Parameters */
 "Additional Parameters" = "Дополнителни параметри";
-
 /* password */
 "New password" = "Нова лозинка";
 "Confirmation" = "Потврда";
 "Change" = "Промена";
-
 /* Event+task classifications */
 "Default events classification" = "Стандардна класификација на настани";
 "Default tasks classification" = "Стандардна класификација на задачи";
 "PUBLIC_item" = "Јавно";
 "CONFIDENTIAL_item" = "Доверливо";
 "PRIVATE_item" = "Приватно";
-
 /* Event+task categories */
+"Calendar Category" = "Категорија на календарот";
+"Add Calendar Category" = "Додади категорија во календарот";
+"Remove Calendar Category" = "Отстрани категорија од календарот";
+"Contact Category" = "Категорија на контакти";
+"Add Contact Category" = "Додади категорија на контакти";
+"Remove Contact Category" = "Отстрани категорија на контакти";
 "category_none" = "Ниту еден";
 "calendar_category_labels" = "Годишница,Роденден,Деловно,Повици,Clients,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
-
 /* Default module */
 "Calendar" = "Календар";
 "Contacts" = "Адресна книга";
 "Mail" = "Електронска пошта";
 "Last" = "Последно користено";
-"Default Module" = "Стандарден модул";
+"Default Module " = "Стандарден модул";
 "SOGo Version" = "Верзија на SOGo";
-
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Сними ги поставките и повторно вчитај ја страницата?";
 "Language" = "Јазик";
 "choose" = "Одбери ...";
 "Arabic" = "العربية";
@@ -229,12 +205,10 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
-"Portuguese" = "Português";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -243,7 +217,6 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
 "Refresh View" = "Освежи го погледот";
 "refreshview_manually" = "Рачно";
 "refreshview_every_minute" = "Секоја минута";
@@ -253,7 +226,6 @@
 "refreshview_every_20_minutes" = "Секои 20 минути";
 "refreshview_every_30_minutes" = "Секои 30 минути";
 "refreshview_once_per_hour" = "На секој час";
-
 /* Return receipts */
 "When I receive a request for a return receipt" = "Кога ќе добијам потврда за прием";
 "Never send a return receipt" = "Никогаш не испраќај потврда за прием";
@@ -261,11 +233,9 @@
 "If I'm not in the To or Cc of the message" = "Ако не сум во До или Копија на пораката";
 "If the sender is outside my domain" = "Ако испраќачот е надвор од мојот домејн";
 "In all other cases" = "Во сите други случаи";
-
 "Never send" = "Никогаш не испраќај";
 "Always send" = "Секогаш испрати";
 "Ask me" = "Прашај ме";
-
 /* Filters - UIxPreferences */
 "Filters" = "Филтри";
 "Active" = "Активен";
@@ -273,16 +243,14 @@
 "Move Down" = "Сини го долу";
 "Connection error" = "Грешка при поврзување";
 "Service temporarily unavailable" = "Услугата е привремено недостапна";
-
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Име на филтерот:";
+"Filter name" = "Име на филтерот";
 "For incoming messages that" = "За пораките кои пристигаат кои";
-"match all of the following rules:" = "одговараа на сите следни правила:";
-"match any of the following rules:" = "одговараат на некои од следните правила:";
+"match all of the following rules" = "одговараа на сите следни правила";
+"match any of the following rules" = "одговараат на некои од следните правила";
 "match all messages" = "одговараат сите пораки";
-"Perform these actions:" = "Изврши ги следните активности:";
+"Perform these actions" = "Изврши ги следните активности";
 "Untitled Filter" = "Неименуван филтер";
-
 "Subject" = "Тема";
 "From" = "Од";
 "To" = "До";
@@ -291,15 +259,14 @@
 "Size (Kb)" = "Големина (Kb)";
 "Header" = "Заглавје";
 "Body" = "Тело";
-"Flag the message with:" = "Означи ја пораката со:";
+"Flag the message with" = "Означи ја пораката со";
 "Discard the message" = "Отфрли ја поракта";
-"File the message in:" = "Смести ја пораката во:";
+"File the message in" = "Смести ја пораката во";
 "Keep the message" = "Зачувај ја пораката";
-"Forward the message to:" = "Препратија пораката до:";
-"Send a reject message:" = "Испрати порака за отфрлање:";
+"Forward the message to" = "Препратија пораката до";
+"Send a reject message" = "Испрати порака за отфрлање";
 "Send a vacation message" = "Испрати автоматска порака кога си на одмор";
 "Stop processing filter rules" = "Запри го процесирањето на правилата за филтрирање";
-
 "is under" = "е под";
 "is over" = "е над";
 "is" = "е";
@@ -310,14 +277,14 @@
 "does not match" = "не се совпаѓа";
 "matches regex" = "Се совпаѓа со регуларни изрази";
 "does not match regex" = "не се совпаѓа со регуларните изрази";
-
+/* Placeholder for the value field of a condition */
+"Value" = "Вредност";
 "Seen" = "Видена";
 "Deleted" = "Избришана";
 "Answered" = "Одговорена";
 "Flagged" = "Означена";
 "Junk" = "Ѓубре";
 "Not Junk" = "Не е ѓубре";
-
 /* Password policy */
 "The password was changed successfully." = "Лозинката е успешно сменета.";
 "Password must not be empty." = "Лозинката не може да е празна.";
@@ -332,3 +299,24 @@
 "Unhandled error response" = "Непозната грешка";
 "Password change is not supported." = "Промената на лозинката не е подржана.";
 "Unhandled HTTP error code: %{0}" = "Непозната HTTP грешка: %{0}";
+"Cancel" = "Откажи";
+"Invitations" = "Покани";
+"Edit Filter" = "Уреди филтер";
+"Delete Filter" = "Избриши филтер";
+"Create Filter" = "Креирај филтер";
+"Delete Label" = "Избриши лабела";
+"Create Label" = "Креирај лабела";
+"Accounts" = "Сметки";
+"Edit Account" = "Уреди сметка";
+"Delete Account" = "Избриши сметка";
+"Create Account" = "Креирај сметка";
+"Account Name" = "Име на сметката";
+"SSL" = "SSL";
+"TLS" = "TLS";
+/* Avatars */
+"Alternate Avatar" = "Алтернативен аватар";
+"none" =  "Ниту еден";
+"identicon" = "Икона за идентификација";
+"monsterid" = "Чудовиште";
+"wavatar" = "Wavatar";
+"retro" = "Ретро";

@@ -4,7 +4,6 @@
 "Address" = "Адреса";
 "Photos" = "Фотографија";
 "Other" = "Останато";
-
 "Address Books" = "Адресари";
 "Addressbook" = "Адресар";
 "Addresses" = "Адреси";
@@ -22,6 +21,7 @@
 "HomePhone" = "Домашен телефон";
 "Lastname" = "Презиме";
 "Location" = "Локација";
+"Add a category" = "Додади категорија";
 "MobilePhone" = "Мобилен телефон";
 "Name" = "Име";
 "OfficePhone" = "Службен телефон";
@@ -38,29 +38,37 @@
 "invalidemailwarn" = "Дотичната порака е невалидна";
 "new" = "нов";
 "Preferred Phone" = "Префериран телефонски број";
-
 "Move To" = "Префрли во ";
 "Copy To" = "Копирај во";
-"Add to:" = "Додади во:";
-
+"Add to" = "Додади во";
+/* Subheader of empty addressbook */
+"No contact" = "Нема контакт";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Започни пребарување на овој адресар";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "контакти";
+/* No contact matching search criteria */
+"No matching contact" = "Не е пронајден контакт кој се совпаѓа";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "Контакти кои се совпаѓаат";
+/* Number of selected contacts in list */
+"selected" = "одбрани";
+/* Empty right pane */
+"No contact selected" = "Не е одбран контакт";
 /* Tooltips */
-
 "Create a new address book card" = "Креирај нова адесна картичка";
 "Create a new list" = "Креирај нова листа";
 "Edit the selected card" = "Уреди ја одбраната картичка";
 "Send a mail message" = "Испрати електронска порака";
 "Delete selected card or address book" = "Избриши ја одбраната картичка или адресна книга";
 "Reload all contacts" = "Повторно вчитај ги сите контакти";
-
 "htmlMailFormat_UNKNOWN" = "Непознат";
 "htmlMailFormat_FALSE" = "Обичен текст";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Име или електронска адреса";
 "Category" = "Категорија";
 "Personal Addressbook" = "Личен адресар";
 "Search in Addressbook" = "Пребарај во адресарот";
-
 "New Card" = "Нова картичка";
 "New List" = "Нова листа";
 "Edit" = "Уреди";
@@ -71,68 +79,50 @@
 "Instant Message" = "Инстантна порака";
 "Add..." = "Додади...";
 "Remove" = "Избриши";
-
 "Please wait..." = "Ве молам почекајте...";
 "No possible subscription" = "Претплатата не е можна";
-
 "Preferred" = "Преферирана";
 "Display" = "Прикажи";
-"Display Name:" = "Прикажи име:";
-"Email:" = "Електронска адреса:";
-"Additional Email:" = "Дополнителна електронска адреса:";
-
-"Phone Number:" = "Телефонски број:";
-"Prefers to receive messages formatted as:" = "Претпочита да прима пораки форматирани како:";
-"Screen Name:" = "Прекар";
-"Categories:" = "Категории:";
-
-"First:" = "Прв:";
-"Last:" = "Последен:";
+"Display Name" = "Прикажи име";
+"Additional Email" = "Дополнителна електронска адреса";
+"Phone Number" = "Телефонски број";
+"Prefers to receive messages formatted as" = "Претпочита да прима пораки форматирани како";
+"Categories" = "Категории";
+"First" = "Прв";
+"Last" = "Последен";
 "Nickname" = "Прекар";
-
 "Telephone" = "Телефон:";
-"Work:" = "Работа:";
-"Home:" = "Дома:";
-"Fax:" = "Факс:";
-"Mobile:" = "Мобилен:";
-"Pager:" = "Пејџер:";
-
+"Work" = "Работа";
+"Mobile" = "Мобилен";
+"Pager" = "Пејџер";
 /* categories */
 "contacts_category_labels" = "Колега, конкурент, клиент, пријател, фамилија, деловен партнер, провајдер, новинар, ВИП";
-"Categories" = "Категории";
 "New category" = "Нова категорија";
-
 /* adresses */
-"Title:" = "Наслов:";
-"Service:" = "Сервис:";
-"Company:" = "Компанија:";
-"Department:" = "Сектор:";
-"Organization:" = "Организација:";
-"Address:" = "Адреса:";
+"Title" = "Наслов";
+"Service" = "Сервис";
+"Company" = "Компанија";
+"Department" = "Сектор";
 "City" = "Град";
-"State_Province:" = "Држава/провинција:";
-"ZIP_Postal Code:" = "Поштенски број:";
+"State_Province" = "Држава/провинција";
+"ZIP_Postal Code" = "Поштенски број";
 "Country" = "Земја";
-"Web Page:" = "Веб страница:";
-
-"Work" = "Работа";
+"Web Page" = "Веб страница";
 "Other Infos" = "Други информации";
-
 "Note" = "Забелешка";
-"Timezone:" = "Временска зона:";
+"Timezone" = "Временска зона";
 "Birthday" = "Роденден";
 "Birthday (yyyy-mm-dd)" = "Роденден (гггг-мм-дд)";
-"Freebusy URL:" = "Слободно-зафатено URL:";
-
+"Freebusy URL" = "Слободно-зафатено URL";
 "Add as..." = "Додади како:";
 "Recipient" = "Примач";
 "Carbon Copy" = "Копија";
 "Blind Carbon Copy" = "Скриена копија";
-
 "New Addressbook..." = "Нов адресар";
 "Subscribe to an Addressbook..." = "Прептлати се на адресарот...";
 "Remove the selected Addressbook" = "Избриши го избраниот адресар";
-
+"Subscribe to a shared folder" = "Претплати се на делената папка.";
+"Search User" = "Пребарај корисник";
 "Name of the Address Book" = "Име на адресарот";
 "Are you sure you want to delete the selected address book?"
 = "Дали сте сигурни дека сакате да го избришете адресарот?";
@@ -140,27 +130,19 @@
 = "Неможете да го отстраните или отпишете од јавниот адресар.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Не можете да се изземете или отпишете од вашиот личен адресар.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Дали сте сигурни дека сакате да ги избришете одбраните контакти?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Не можете да ја избришете картичката на \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Не можете да се претплатите на папката која е ваша.";
 "Unable to subscribe to that folder!"
 = "Не е можно да се претплатите на оваа папка.";
-
 /* acls */
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисникот";
-
 "Any Authenticated User" = "Било кој автентициран корисник";
 "Public Access" = "Јавен пристап";
-
 "This person can add cards to this addressbook."
 = "Корисникот може да додава картички во овој адресар.";
 "This person can edit the cards of this addressbook."
@@ -171,24 +153,19 @@
 = "Корисникот може да ги чита картичките во овој адресар.";
 "This person can erase cards from this addressbook."
 = "Корисникот може да брише картички во овој адресар.";
-
 "The selected contact has no email address."
 = "Одбраниот контакт нема електронска адреса.";
-
 "Please select a contact." = "Одберете контакт.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Не можете да запишувате во овој адресар.";
 "Forbidden" = "Не можете да запишувате во овој адресар.";
 "Invalid Contact" = "Одбраниот контакт повеќе не постои.";
 "Unknown Destination Folder" = "Одбраниот адресар повеќе не постои како одредница.";
-
 /* Lists */
 "List details" = "Детали за листата";
-"List name:" = "Име на листата:";
-"List nickname:" = "Листа на прекари:";
-"List description:" = "Листа на описи:";
+"List name" = "Име на листата";
+"List nickname" = "Листа на прекари";
+"List description" = "Листа на описи";
 "Members" = "Членови";
 "Contacts" = "Контакти";
 "Add" = "Додади";
@@ -204,12 +181,46 @@
 "An error occured while importing contacts." = "Настана грешка при увезувањето на контактите.";
 "No card was imported." = "Ниту една картичка не е увезена.";
 "A total of %{0} cards were imported in the addressbook." = "Во адресарот се увезени вкупно %{0} картички.";
-
 "Reload" = "Обнови";
-
 /* Properties window */
-"Address Book Name:" = "Име на адресарот";
+"Address Book Name" = "Име на адресарот";
 "Links to this Address Book" = "Линк кон оваа адресна книга";
 "Authenticated User Access" = "Авторизиран кориснички пристап";
-"CardDAV URL: " = "CalDAV URL:";
-
+"CardDAV URL" = "CalDAV URL";
+"Options" = "Опции";
+"Rename" = "Преименувај";
+"Subscriptions" = "Претплати";
+"Global Addressbooks" = "Глобални адресари";
+"Search" = "Барај";
+"Sort" = "Сортирај";
+"Descending Order" = "Опаѓачки редослед";
+"Back" = "Назад";
+"Select All" = "Одбери се";
+"Copy contacts" = "Копирај ги контактите";
+"More messages options" = "Повеќе опции за пораки";
+"New Contact" = "Нов контакт";
+"Close" = "Затвори";
+"More contact options" = "Повеќе опции за контакт";
+"Organization Unit" = "Организациона единица";
+"Add Organizational Unit" = "Додади организациона единица";
+"Type" = "Тип";
+"Email Address" = "Електронска пошта/адреса";
+"New Email Address" = "Нова електронска пошта/адреса";
+"New Phone Number" = "Нов телефонски број";
+"URL" = "URL";
+"New URL" = "Нов URL";
+"street" = "улица";
+"Postoffice" = "Пошта";
+"Region" = "Регион";
+"Postal Code" = "Поштенски број";
+"New Address" = "Нова адреса";
+"Reset" = "Поништи";
+"Description" = "Опис";
+"Add Member" = "Додади член";
+"Subscribe" = "Прептлати се";
+"Add Birthday" = "Додади роденден";
+"Import" = "Увези";
+"More options" = "Повеќе опции";
+"Role" = "Улога";
+"Add Screen Name" = "Додади прекар";
+"Synchronize" = "Синхронизирај";

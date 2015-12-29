@@ -4,7 +4,6 @@
 "Save" = "Tallenna";
 "Close" = "Sulje";
 "Edit User Rights" = "Muokkaa käyttäjän oikeuksia";
-
 "Home" = "Koti";
 "Calendar" = "Kalenteri";
 "Address Book"	= "Osoitekirja";
@@ -12,32 +11,24 @@
 "Preferences" = "Asetukset";
 "Administration" = "Hallinto";
 "Disconnect" = "Kirjaudu ulos";
+"Toggle Menu" = "Vaihda valikkoa";
 "Right Administration" = "Oikeuksien hallinta";
 "Log Console (dev.)" = "Lokikonsoli (laite)";
-
 "User" = "Käyttäjä";
 "Vacation message is enabled" = "Lomaviesti on aktivoitu";
-
 "Help" = "Apua";
-
 "noJavascriptError" = "SOGo vaatii Javascriptin toimiakseen. Ole hyvä ja varmista että tämä toiminne on käytettävissä ja otettu käyttöön selaimesi asetuksissa.";
 "noJavascriptRetry" = "Yritä uudelleen";
-
-"Owner:" = "Omistaja:";
+"Owner" = "Omistaja";
 "Publish the Free/Busy information" = "Julkaise Vapaa/Varattu tieto";
-
 "Add..." = "Lisää...";
 "Remove" = "Poista";
-
 "Subscribe User" = "Tilaa käyttäjä";
-
 "Any Authenticated User" = "Kuka tahansa kirjautunut käyttäjä";
 "Public Access" = "Julkinen pääsy";
 "Any user not listed above" = "Kuka tahansa yllä listaamaton käyttäjä";
 "Anybody accessing this resource from the public area" = "Kuka tahansa joka käyttää resurssia julkiselta alueelta";
-
 "Sorry, the user rights can not be configured for that object." = "Pahoittelen, kohteen käyttäjäoikeudet eivät ole muokattavissa.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Kenellä tahansa käyttäjällä, jolla on oikeudet tähän järjestelmään, on pääsyoikeus sähköpostiisi \"%{0}\". Luotatko varmasti heistä jokaiseen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Jokaisella Internet käyttäjällä on mahdollisuus käyttää osoitekirjaasi \"%{0}\" ilman tunnuksia tähän järjestelmään. Ovatko nämä tiedot sopivia julkiseen Internetiin? ";
 "Give Access" = "Salli pääsy";
 "Keep Private" = "Pidä yksityisenä";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Hakemistoon kirjautuminen ei onnistu!";
@@ -70,17 +60,14 @@
         = "Et voi luoda listaa jaettuun osoitekirjaan.";
 "Warning" = "Varoitus";
 "Can't contact server" = "Virhe palvelinyhteydessä. Yritä myöhemmin uudelleen.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Sinulla ei ole pääsyoikeuksia tähän moduliin tai järjestelmään. Ole hyvä ja ota yhteyttä järjestelmänvalvojaan. ";
 "You don't have the required privileges to perform the operation."
 = "Sinulla ei ole vaadittavia oikeuksia toiminnon suorittamiseksi.";
-
 "noEmailForDelegation" = "Sinun tarvitsee antaa osoite johon haluat lähettää valtuutuksen.";
 "delegate is organizer" = "Valtuutettu on järjestäjä. Ole hyvä ja valitse toinen valtuutettu.";
 "delegate is a participant" = "Valtuutettu on jo osallistuja.";
 "delegate is a group" = "Annettu osoite on ryhmäosoite. Voit valtuuttaa vain yksittäisiä henkilöitä.";
-
 "Snooze for " = "Torku";
 "5 minutes" = "5 minuuttia";
 "10 minutes" = "10 minuuttia";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 minuuttia";
 "1 hour" = "1 tunti";
 "1 day" = "1 päivä";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Peruuta";
 "Yes" = "Kyllä";
 "No" = "Ei";
-
 /* alarms */
-"Reminder:" = "Muistutus:";
-"Start:" = "Alkaa:";
-"Due Date:" = "Päättyy:";
-"Location:" = "Sijainti:";
-
+"Reminder" = "Muistutus";
+"Start" = "Alkaa";
+"Due Date" = "Päättyy";
+"Location" = "Sijainti";
 /* mail labels */
 "Important" = "Tärkeä";
 "Work" = "Työ";
 "Personal" = "Henkilökohtainen";
 "To Do" = "Tehtävä";
 "Later" = "Myöhemmin";
-
 "a2_Sunday" = "Su";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "To";
 "a2_Friday" = "Pe";
 "a2_Saturday" = "La";
+"Access Rights" = "Pääsyoikeudet";
+"Add User" = "Lisää käyttäjä";
+"Loading" = "Lataa";
+"No such user." = "Käyttäjää ei löydy.";
+"You cannot (un)subscribe to a folder that you own!" = "Et voi (ulos)kirjautua itse omistamaasi hakemistoon!";
+"SOGo" = "SOGo";
+"Modules" = "Modulit";

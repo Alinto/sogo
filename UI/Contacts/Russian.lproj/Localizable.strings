@@ -4,7 +4,6 @@
 "Address" = "Адрес";
 "Photos" = "Фото";
 "Other" = "Другое";
-
 "Address Books" = "Адресные книги";
 "Addressbook" = "Адресная книга";
 "Addresses" = "Адреса";
@@ -22,6 +21,7 @@
 "HomePhone" = "ДомашнийТелефон";
 "Lastname" = "Фамилия";
 "Location" = "Местоположение";
+"Add a category" = "Добавить категорию";
 "MobilePhone" = "МобильныйТелефон";
 "Name" = "ПолноеИмя";
 "OfficePhone" = "РабочийТелефон";
@@ -38,29 +38,37 @@
 "invalidemailwarn" = "The specified email is invalid";
 "new" = "новый";
 "Preferred Phone" = "Preferred Phone";
-
 "Move To" = "Переместить в";
 "Copy To" = "Копировать";
-"Add to:" = "Добавить в:";
-
+"Add to" = "Добавить в";
+/* Subheader of empty addressbook */
+"No contact" = "Нет контакта";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Запустить поиск для просмотра этой адресной книги";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "контакты";
+/* No contact matching search criteria */
+"No matching contact" = "нет соответствующего контакта";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "соответствующие контакты";
+/* Number of selected contacts in list */
+"selected" = "выбран";
+/* Empty right pane */
+"No contact selected" = "контакт не выбран";
 /* Tooltips */
-
 "Create a new address book card" = "Создать новую запись в адресной книге";
 "Create a new list" = "Cоздать новый список";
 "Edit the selected card" = "Редактировать выбранную карточку";
 "Send a mail message" = "Послать почтовое сообщение";
 "Delete selected card or address book" = "Удалить выбранную карточку или адресную книгу";
 "Reload all contacts" = "Перезагрузить все контакты";
-
 "htmlMailFormat_UNKNOWN" = "Unknown";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Имя или Email";
 "Category" = "Категория";
 "Personal Addressbook" = "Личная адресная книга";
 "Search in Addressbook" = "Поиск в адресной книге";
-
 "New Card" = "Новый контакт";
 "New List" = "Новый список";
 "Edit" = "Изменить";
@@ -71,68 +79,50 @@
 "Instant Message" = "Быстрое сообщение";
 "Add..." = "Добавить...";
 "Remove" = "Удалить";
-
 "Please wait..." = "Подождите пожалуйста...";
 "No possible subscription" = "Нет возможных подписок";
-
 "Preferred" = "Избранные";
 "Display" = "Показывать";
 "Display Name" = "Отображаемое имя";
-"Email:" = "E-mail:";
-"Additional Email:" = "Дополнительный E-mail:";
-
+"Additional Email" = "Дополнительный E-mail";
 "Phone Number" = "Номер телефона";
-"Prefers to receive messages formatted as:" = "Предпочитает принимать сообщения, отформатированные следующим образом:";
-"Screen Name:" = "Имя показа:";
-"Categories:" = "Категории:";
-
-"First:" = "Имя:";
-"Last:" = "Последнее:";
+"Prefers to receive messages formatted as" = "Предпочитает принимать сообщения, отформатированные следующим образом";
+"Categories" = "Категории";
+"First" = "Имя";
+"Last" = "Последнее";
 "Nickname" = "Ник";
-
 "Telephone" = "Телефон";
-"Work:" = "Рабочий телефон:";
-"Home:" = "Домашний телефон:";
-"Fax:" = "Факс:";
-"Mobile:" = "Мобильный телефон:";
-"Pager:" = "Пейджер:";
-
+"Work" = "Рабочий телефон";
+"Mobile" = "Мобильный телефон";
+"Pager" = "Пейджер";
 /* categories */
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Семья, Партнер по бизнесу, Поставщик, Пресса, VIP";
-"Categories" = "Категории";
 "New category" = "Новые категории";
-
 /* adresses */
 "Title" = "Звание";
-"Service:" = "Сервис:";
-"Company:" = "Компания:";
-"Department:" = "Отдел:";
-"Organization:" = "Организация:";
-"Address:" = "Адрес:";
+"Service" = "Сервис";
+"Company" = "Компания";
+"Department" = "Отдел";
 "City" = "Город";
-"State_Province:" = "Область/штат:";
-"ZIP_Postal Code:" = "ZIP/Postal Code:";
+"State_Province" = "Область/штат";
+"ZIP_Postal Code" = "ZIP/Postal Code";
 "Country" = "Страна";
-"Web Page:" = "Веб-страница:";
-
-"Work" = "Работа";
+"Web Page" = "Веб-страница";
 "Other Infos" = "Другая информация";
-
 "Note" = "Примечание";
-"Timezone:" = "Часовой пояс:";
+"Timezone" = "Часовой пояс";
 "Birthday" = "День рождения";
 "Birthday (yyyy-mm-dd)" = "День рождения (ГГГГ-ММ-ДД)";
-"Freebusy URL:" = "Freebusy URL:";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Добавить как...";
 "Recipient" = "Получатель";
 "Carbon Copy" = "Копия";
 "Blind Carbon Copy" = "Скрытая копия";
-
 "New Addressbook..." = "Новая адресная книга...";
 "Subscribe to an Addressbook..." = "Подписаться на адресную книгу...";
 "Remove the selected Addressbook" = "Удалить выбранную адресную книгу";
-
+"Subscribe to a shared folder" = "Подписаться на разделяемую папку.";
+"Search User" = "Поиск пользователей";
 "Name of the Address Book" = "Имя адресной книги";
 "Are you sure you want to delete the selected address book?"
 = "Вы уверены, что хотите удалить выбранную адресную книгу?";
@@ -140,27 +130,19 @@
 = "Вы не можете ни удалить, ни отписаться от выбранной адресной книги.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Вы не можете ни удалить, ни отписатся от личной адресной книги.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Вы уверены, что вы хотите удалить выбранные контакты?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Вы не можете удалить запись \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Вы не можете подписаться на папку, которой владеете.";
 "Unable to subscribe to that folder!"
 = "Невозможно подписаться на эту папку.";
-
 /* acls */
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
-
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "Public Access" = "Публичный доступ";
-
 "This person can add cards to this addressbook."
 = "Этот человек может добавлять записи в эту адресную книгу";
 "This person can edit the cards of this addressbook."
@@ -171,19 +153,14 @@
 = "Этот человек может читать записи в этой адресной книге";
 "This person can erase cards from this addressbook."
 = "Этот человек может удалять записи из этой адресной книги";
-
 "The selected contact has no email address."
 = "Выбранный контакт не имеет адреса электронной почты.";
-
 "Please select a contact." = "Пожалуйста, выберите контакт.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Вы не можете писать в эту адресную книгу.";
 "Forbidden" = "Вы не можете писать в эту адресную книгу.";
 "Invalid Contact" = "Выбранный контакт более не существует.";
 "Unknown Destination Folder" = "Выбранная адресная книга более не существует.";
-
 /* Lists */
 "List details" = "Подробности списка";
 "List name" = "Имя списка";
@@ -204,12 +181,46 @@
 "An error occured while importing contacts." = "Произошла ошибка при импорте контактов.";
 "No card was imported." = "Записи не были импортированы.";
 "A total of %{0} cards were imported in the addressbook." = "Всего %{0} записей было импортировано в адресную книгу.";
-
 "Reload" = "Перезагрузить";
-
 /* Properties window */
-"Address Book Name:" = "Название адресной книги:";
+"Address Book Name" = "Название адресной книги";
 "Links to this Address Book" = "Ссылки на эту адресную книгу";
 "Authenticated User Access" = "Доступ авторизированных пользователей";
-"CardDAV URL: " = "CardDAV URL: ";
-
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Опции";
+"Rename" = "Переименовать";
+"Subscriptions" = "Подписки";
+"Global Addressbooks" = "Глобальная адресная книга";
+"Search" = "Поиск";
+"Sort" = "Сортировка";
+"Descending Order" = "В убывающем порядке";
+"Back" = "Назад";
+"Select All" = "Выбрать все";
+"Copy contacts" = "Копировать контакты";
+"More messages options" = "Больше опций сообщений";
+"New Contact" = "Новый контакт";
+"Close" = "Закрыть";
+"More contact options" = "Больше опций контактов";
+"Organization Unit" = "Организационное подразделение";
+"Add Organizational Unit" = "Добавить организационное подразделение";
+"Type" = "Тип";
+"Email Address" = "Адрес электронной почты";
+"New Email Address" = "Новый адрес электронной почты";
+"New Phone Number" = "Новый номер телефона";
+"URL" = "URL";
+"New URL" = "Новый URL";
+"street" = "улица";
+"Postoffice" = "почтовое отделение";
+"Region" = "Область";
+"Postal Code" = "Почтовый индекс или код";
+"New Address" = "Новый адрес";
+"Reset" = "Сбросить";
+"Description" = "Описание";
+"Add Member" = "Добавить участника";
+"Subscribe" = "Подписать";
+"Add Birthday" = "Добавить день рождения";
+"Import" = "Импорт";
+"More options" = "Больше опций";
+"Role" = "Роль";
+"Add Screen Name" = "Добавить имя экрана";
+"Synchronize" = "Синхронизировать";

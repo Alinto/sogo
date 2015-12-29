@@ -514,31 +514,6 @@ convention:
       inLDIFRecord: ldifRecord];
 
   elements = [self childrenWithTag: @"adr"
-                   andAttribute: @"type" havingValue: @"work"];
-  if (elements && [elements count] > 0)
-    {
-      element = [elements objectAtIndex: 0];
-      [self _setValue: @"mozillaworkstreet2"
-                   to: [element flattenedValueAtIndex: 1 forKey: @""]
-          inLDIFRecord: ldifRecord];
-      [self _setValue: @"street"
-                   to: [element flattenedValueAtIndex: 2 forKey: @""]
-          inLDIFRecord: ldifRecord];
-      [self _setValue: @"l"
-                   to: [element flattenedValueAtIndex: 3 forKey: @""]
-          inLDIFRecord: ldifRecord];
-      [self _setValue: @"st"
-                   to: [element flattenedValueAtIndex: 4 forKey: @""]
-          inLDIFRecord: ldifRecord];
-      [self _setValue: @"postalcode"
-                   to: [element flattenedValueAtIndex: 5 forKey: @""]
-          inLDIFRecord: ldifRecord];
-      [self _setValue: @"c"
-                   to: [element flattenedValueAtIndex: 6 forKey: @""]
-          inLDIFRecord: ldifRecord];
-    }
-
-  elements = [self childrenWithTag: @"adr"
                    andAttribute: @"type" havingValue: @"home"];
   if (elements && [elements count] > 0)
     {
@@ -559,6 +534,35 @@ convention:
                    to: [element flattenedValueAtIndex: 5 forKey: @""]
           inLDIFRecord: ldifRecord];
       [self _setValue: @"mozillahomecountryname"
+                   to: [element flattenedValueAtIndex: 6 forKey: @""]
+          inLDIFRecord: ldifRecord];
+    }
+
+  elements = [self childrenWithTag: @"adr"
+                   andAttribute: @"type" havingValue: @"work"];
+
+  if (!elements || [elements count] == 0)
+    elements = [self childrenWithTag: @"adr"];
+
+  if (elements && [elements count] > 0)
+    {
+      element = [elements objectAtIndex: 0];
+      [self _setValue: @"mozillaworkstreet2"
+                   to: [element flattenedValueAtIndex: 1 forKey: @""]
+          inLDIFRecord: ldifRecord];
+      [self _setValue: @"street"
+                   to: [element flattenedValueAtIndex: 2 forKey: @""]
+          inLDIFRecord: ldifRecord];
+      [self _setValue: @"l"
+                   to: [element flattenedValueAtIndex: 3 forKey: @""]
+          inLDIFRecord: ldifRecord];
+      [self _setValue: @"st"
+                   to: [element flattenedValueAtIndex: 4 forKey: @""]
+          inLDIFRecord: ldifRecord];
+      [self _setValue: @"postalcode"
+                   to: [element flattenedValueAtIndex: 5 forKey: @""]
+          inLDIFRecord: ldifRecord];
+      [self _setValue: @"c"
                    to: [element flattenedValueAtIndex: 6 forKey: @""]
           inLDIFRecord: ldifRecord];
     }

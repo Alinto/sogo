@@ -4,7 +4,6 @@
 "Save" = "Salvar";
 "Close" = "Fechar";
 "Edit User Rights" = "Editar Direitos do Usuário";
-
 "Home" = "Início";
 "Calendar" = "Calendário";
 "Address Book"	= "Catálogo";
@@ -12,32 +11,24 @@
 "Preferences" = "Preferências";
 "Administration" = "Administração";
 "Disconnect" = "Desconectar";
+"Toggle Menu" = "Alternar Menu";
 "Right Administration" = "Administração de Direitos";
 "Log Console (dev.)" = "Log Console (dev.)";
-
 "User" = "Usuário";
 "Vacation message is enabled" = "Mensagem de ausência está ativa";
-
 "Help" = "Ajuda";
-
 "noJavascriptError" = "SOGo requer Javascript para rodar. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
 "noJavascriptRetry" = "Repetir";
-
-"Owner:" = "Dono:";
+"Owner" = "Dono";
 "Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
-
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
-
 "Subscribe User" = "Usuário Inscrito";
-
 "Any Authenticated User" = "Qualquer Usuário Autenticado";
 "Public Access" = "Acesso Público";
 "Any user not listed above" = "Qualquer usuário não listado abaixo";
 "Anybody accessing this resource from the public area" = "Ninguém acessando este recurso de uma área pública";
-
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Qualquer usuário com uma conta neste sistema será capaz de acessar sua caixa postal \"% {0}\". Tem a certeza que confia em todos?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Qualquer pessoa na Internet será capaz de acessar seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
 "Give Access" = "Conceder Acesso";
 "Keep Private" = "Manter Privado";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Não foi possível inscrever-se nesta pasta!";
@@ -70,17 +60,14 @@
         = "Você não pode criar uma lista em um catálogo público";
 "Warning" = "Aviso";
 "Can't contact server" = "Um erro ocorreu na conexão com o servidor. Por favor, tente mais tarde.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
 "You don't have the required privileges to perform the operation."
 = "Você não tem os privilégios requeridos para realizar esta operação.";
-
 "noEmailForDelegation" = "Você deve informar o endereço ao qual deseja delegar seu convite.";
 "delegate is organizer" = "O delegado é o organizador. Por favor, especifique um delegado diferente.";
 "delegate is a participant" = "O delegado já é um participante.";
 "delegate is a group" = "O endereço especificado corresponde a um grupo. Você só pode delegar a uma pessoa única.";
-
 "Snooze for " = "Uma pausa de";
 "5 minutes" = "5 minutos";
 "10 minutes" = "10 minutos";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 minutos";
 "1 hour" = "1 hora";
 "1 day" = "1 dia";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancelar";
 "Yes" = "Sim";
 "No" = "Não";
-
 /* alarms */
-"Reminder:" = "Lembrete:";
-"Start:" = "Inicio:";
-"Due Date:" = "Data:";
-"Location:" = "Localização:";
-
+"Reminder" = "Lembrete";
+"Start" = "Inicio";
+"Due Date" = "Data";
+"Location" = "Localização";
 /* mail labels */
 "Important" = "Importante";
 "Work" = "Trabalho";
 "Personal" = "Pessoal";
 "To Do" = "Tarefa";
 "Later" = "Adiar";
-
 "a2_Sunday" = "Dom";
 "a2_Monday" = "Seg";
 "a2_Tuesday" = "Ter";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "Qui";
 "a2_Friday" = "Sex";
 "a2_Saturday" = "Sab";
+"Access Rights" = "Permissões de Acesso";
+"Add User" = "Adicionar Usuário";
+"Loading" = "Carregando";
+"No such user." = "Usuário não existe.";
+"You cannot (un)subscribe to a folder that you own!" = "Você não pode (des)inscrever uma pasta que você é dono!";
+"SOGo" = "SOGo";
+"Modules" = "Módulos";

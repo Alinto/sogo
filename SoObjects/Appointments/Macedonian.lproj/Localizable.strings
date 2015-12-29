@@ -7,15 +7,13 @@ vevent_class2 = "(Доверлив настан)";
 vtodo_class0 = "(Јавна задача)";
 vtodo_class1 = "(Приватна задача)";
 vtodo_class2 = "(Доверлива задача)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Настанот \"%{Summary}\" беше креиран";
 "The event \"%{Summary}\" was deleted" = "Настанот \"%{Summary}\" беше избришан";
 "The event \"%{Summary}\" was updated" = "Настанот \"%{Summary}\" беше освежен";
-"The following attendees(s) were notified:" = "Следниот учесник(ци) се известени:";
-"The following attendees(s) were added:" = "Следните учесници беа додадени:";
-"The following attendees(s) were removed:" = "Следните учесници беа отстранети:";
-
+"The following attendees(s) were notified" = "Следните учесници беа известини";
+"The following attendees(s) were added" = "Следните учесници беа додадени";
+"The following attendees(s) were removed" = "Следните учесници беа отстранети";
 /* IMIP messages */
 "calendar_label" = "Календар:";
 "startDate_label" = "Почеток:";
@@ -24,20 +22,17 @@ vtodo_class2 = "(Доверлива задача)";
 "location_label" = "Локација:";
 "summary_label" = "Резиме:";
 "comment_label" = "Коментар:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Покана за настанот: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(испратено од %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ве покани на %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ве покани на %{Summary}.\n\nПочеток: %{StartDate} во %{StartTime}\nКрај: %{EndDate} во %{EndTime}\nОпис: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Настанот е откажан: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ја откажа поканата: %{Summary}.\n\nПочеток: %{StartDate}\nКрај: %{EndDate}\nОпис: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}го откажа настанот: %{Summary}.\n\nПочеток: %{StartDate} во %{StartTime}\nКрај: %{EndDate} во %{EndTime}\nОпис: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Состанокот  \"%{Summary}\" за %{OldStartDate} е променет";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Доверлива задача)";
 = "Следните параметри се променија во \"%{Summary}\" состанок:";
 "Please accept or decline those changes."
 = "Прифатете ги ли отфрлете ги измените.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Прифатена покана: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Одбиена покана: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Доверлива задача)";
 = "%{Attendee} %{SentByText}ја делегираше поканата на %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}уште нема одлучено по вашата покана.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Не можам да ги пристапам ресурсите: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Максималниот број на едновремени закажувања (%{NumberOfSimultaneousBookings}) е постигнат за ресурсот \"%{Cn} %{SystemEmail}\". Конфликтниот настан е \"%{EventTitle}\", и почнува на %{StartDate}.";

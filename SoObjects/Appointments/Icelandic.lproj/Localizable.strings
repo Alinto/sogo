@@ -6,24 +6,19 @@ vevent_class2 = "(Viðburður er trúnaðarmál)";
 vtodo_class0 = "(Almennt verkefni)";
 vtodo_class1 = "(Einkaverkefni)";
 vtodo_class2 = "(Verkefni er trúnaðarmál)";
-
 /* Receipts */
 "Title:" = "Titill:";
 "Start:" = "Byrjun:";
 "End:" = "Endir:";
-
 "Receipt: users invited to a meeting" = "Móttakandi: notendur boðnir á fund";
 "You have invited the following attendees(s):" = "Eftirfarandi þáttakanda/þáttakendum hefur verið boðið:";
 "... to attend the following event:" = "... að vera viðstaddir eftirfarandi viðburð:";
-
 "Receipt: invitation updated" = "Móttakandi: uppfærður boðsmiði";
 "The following attendees(s):" = "Eftirfarandi þáttakandi/Þáttakendur:";
 "... have been notified of the changes to the following event:" = "... hafa fengið upplýsingar um breytingarnar á eftirfarandi viðburði:";
-
 "Receipt: attendees removed from an event" = "Móttakandi: þáttakendur fjarlægðir af viðburði";
 "You have removed the following attendees(s):" = "Eftirfarandi þáttakandi/þáttakendur hafa verið fjarlægðir:";
 "... from the following event:" = "... af eftirfarandi viðburði:";
-
 /* IMIP messages */
 "startDate_label" = "Byrjun";
 "endDate_label" = "Endir";
@@ -31,17 +26,14 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "location_label" = "Staðsetning";
 "summary_label" = "Samantekt:";
 "comment_label" = "Athugasemd:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Boð á viðburð: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} sendi þetta) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}hefur boðið þér á þennan viðburð: %{Summary}.\n\nByrjun: %{StartDate} at %{StartTime}\nEndir: %{EndDate} at %{EndTime}\nLýsing: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Viðburði aflýst: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}hefur aflýst þessum viðburði: %{Summary}.\n\nByrjun: %{StartDate} kl. %{StartTime}\nEndir: %{EndDate} kl. %{EndTime}\nLýsing: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Tímapöntunin \"%{Summary}\" sem var þann %{OldStartDate} kl. %{OldStartTime} hefur breyst.";
@@ -49,7 +41,6 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 = "Eftirfarandi atriði hafa breyst varðandi fundinn: \"%{Summary}\"";
 "Please accept or decline those changes."
 = "Þessar breytingar þarf að samþykkja eða hafna.";
-
 /* Reply */
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}hefur samþykkt boð þitt á viðburð.";
@@ -59,6 +50,5 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 = "%{Attendee} %{SentByText}hefur skipað sem fulltrúa sinn %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}hefur ekki enn tekið ákvörðun varðandi boð þitt.";
-
 /* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Hámarksfjöldi samtímabókana (%{NumberOfSimultaneousBookings}) hefur verið náð varðandi aðfangið \"%{Cn} %{SystemEmail}\".";

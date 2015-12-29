@@ -2,14 +2,25 @@
 
 "Help" = "Ayuda";
 "Close" = "Cerrar";
-
 "Modules" = "Módulos";
-
 /* Modules short names */
 "ACLs" = "ACLs";
-
 /* Modules titles */
 "ACLs_title" = "Gestión de ALCs para carpetas de usuarios";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>El módulo administrativo de ACL (Listas de Control de Acceso por su siglas inglés) permite cambiar los ACLs de las Agendas y Libreta de Direcciones de cada usuario.</p><p>Para modificar los ACLs de las carpetas de un usuario, teclea el nombre de usuario en el campo de búsqueda arriba de la ventana y haz un doble-click sobre la carpeta deseada.</p>";
+"Name or Email" = "Nombre o Correo";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Iniciar una búsqueda para modificar los derechos";
+/* Rights module: Empty search result */
+"No matching user" = "No resultado encontrado";
+/* Rights module: no selection */
+"No resource selected" = "No recurso seleccionado";
+"Add User" = "Añadir usuario";
+"Subscribe User" = "Suscribir Usuario";
+"Rights" = "Derechos de accesos";
+"Search Users" = "Buscar usuarios";
+"users found" = "Usuarios encontrados";
+"No resource" = "No recursos";
+"Any Authenticated User" = "Cualquier Usuario Autenticado ";
+"Public Access" = "Acceso publico";

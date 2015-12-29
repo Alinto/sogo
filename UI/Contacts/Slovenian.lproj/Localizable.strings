@@ -4,7 +4,6 @@
 "Address" = "Naslov";
 "Photos" = "Slike";
 "Other" = "Ostalo";
-
 "Address Books" = "Adresar";
 "Addressbook" = "Adresar";
 "Addresses" = "Naslovi";
@@ -38,29 +37,23 @@
 "invalidemailwarn" = "Ta e-pošta ni pravilna";
 "new" = "novo";
 "Preferred Phone" = "Privzeti telefon";
-
 "Move To" = "Premakni v";
 "Copy To" = "Kopiraj v";
-"Add to:" = "Dodaj k:";
-
+"Add to" = "Dodaj k";
 /* Tooltips */
-
 "Create a new address book card" = "Ustvari novi kartico v adresarju";
 "Create a new list" = "Ustvari nov seznam";
 "Edit the selected card" = "Uredi izbrano kartico";
 "Send a mail message" = "Pošlji poštno sporočilo";
 "Delete selected card or address book" = "Briši izbrano kartico ali adresar";
 "Reload all contacts" = "Ponovno naloži vse stike";
-
 "htmlMailFormat_UNKNOWN" = "Neznano";
 "htmlMailFormat_FALSE" = "Golo besedilo";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Ime ali e-pošta";
 "Category" = "Kategorija";
 "Personal Addressbook" = "Osebni adresar";
 "Search in Addressbook" = "Išči v adresarju";
-
 "New Card" = "Nova kartica";
 "New List" = "Nov seznam";
 "Edit" = "Uredi";
@@ -71,68 +64,50 @@
 "Instant Message" = "Takojšnje sporočilo";
 "Add..." = "Dodaj...";
 "Remove" = "Odstrani";
-
 "Please wait..." = "Prosim počakaj...";
 "No possible subscription" = "Naročnina ni mogoča";
-
 "Preferred" = "Željeno";
 "Display" = "Prikaz";
 "Display Name" = "Prikazno ime";
-"Email:" = "E-pošta:";
-"Additional Email:" = "Dodatna e-pošta:";
-
+"Additional Email" = "Dodatna e-pošta";
 "Phone Number" = "Telefonska številka";
-"Prefers to receive messages formatted as:" = "Željen format za prejeta sporočila:";
-"Screen Name:" = "Ime na zaslonu:";
-"Categories:" = "Kategorije:";
-
-"First:" = "Prvo:";
-"Last:" = "Zadnje:";
+"Prefers to receive messages formatted as" = "Željen format za prejeta sporočila";
+"Screen Name" = "Ime na zaslonu";
+"Categories" = "Kategorije";
+"First" = "Prvo";
+"Last" = "Zadnje";
 "Nickname" = "Vzdevek";
-
 "Telephone" = "Telefon";
-"Work:" = "Služba:";
-"Home:" = "Doma:";
-"Fax:" = "Faks:";
-"Mobile:" = "Mobilni telefon:";
-"Pager:" = "Pozivnik:";
-
+"Work" = "Služba";
+"Mobile" = "Mobilni telefon";
+"Pager" = "Pozivnik";
 /* categories */
 "contacts_category_labels" = "Kolega, Tekmec, Stranka, Prijatelj, Družina, Poslovni partner, Dobavitelj, Novinar, VIP";
-"Categories" = "Kategorije";
 "New category" = "Nova kategorija";
-
 /* adresses */
 "Title" = "Naslov";
-"Service:" = "Storitev:";
-"Company:" = "Podjetje:";
-"Department:" = "Oddelek:";
-"Organization:" = "Organizacija:";
-"Address:" = "Naslov:";
+"Service" = "Storitev";
+"Company" = "Podjetje";
+"Department" = "Oddelek";
 "City" = "Mesto";
-"State_Province:" = "Država/Provinca:";
-"ZIP_Postal Code:" = "ZIP/Poštna številka:";
+"State_Province" = "Država/Provinca";
+"ZIP_Postal Code" = "ZIP/Poštna številka";
 "Country" = "Država";
-"Web Page:" = "Spletna stran:";
-
+"Web Page" = "Spletna stran";
 "Work" = "Delo";
 "Other Infos" = "Ostali podatki";
-
 "Note" = "Opomba";
-"Timezone:" = "Časovni pas:";
+"Timezone" = "Časovni pas";
 "Birthday" = "Rojstni dan";
 "Birthday (yyyy-mm-dd)" = "Rojstni dan (llll-mm-dd)";
-"Freebusy URL:" = "Freebusy URL:";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Dodaj kot...";
 "Recipient" = "Prejemnik";
 "Carbon Copy" = "Kopija";
 "Blind Carbon Copy" = "Slepa kopija";
-
 "New Addressbook..." = "Novi adresar...";
 "Subscribe to an Addressbook..." = "Naroči se na adresar...";
 "Remove the selected Addressbook" = "Odstrani izbrani adresar";
-
 "Name of the Address Book" = "Ime adresarja";
 "Are you sure you want to delete the selected address book?"
 = "Si prepirčan, da želiš brisati izbrani adresar?";
@@ -140,27 +115,19 @@
 = "Ne moreš se odstraniti ali odjaviti iz javnega adresarja.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ne moreš se odstraniti ali odjaviti iz osebnega adresarja.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Si prepričan, da želiš brisati izbrane stike?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Ne moreš dodeliti kartice od \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Ne moreš se naročiti na lastno mapo.";
 "Unable to subscribe to that folder!"
 = "Nemogoče se je naročiti na to mapo.";
-
 /* acls */
 "Access rights to" = "Pravice za dostop za";
 "For user" = "Za uporabnika";
-
 "Any Authenticated User" = "Katerikoli preverjeni uporabnik";
 "Public Access" = "Javni dostop";
-
 "This person can add cards to this addressbook."
 = "Ta oseba lahko dodaja kartice temu adresarju.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +138,14 @@
 = "Ta oseba lahko bere kartice tega adresarja.";
 "This person can erase cards from this addressbook."
 = "Ta oseba lahko briše kartice tega adresarja.";
-
 "The selected contact has no email address."
 = "Izbran stik nima e-poštnega naslova.";
-
 "Please select a contact." = "Prosim izberi stik.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Ne moreš pisati v ta adresar.";
 "Forbidden" = "Ne moreš pisati v ta adresar.";
 "Invalid Contact" = "Izbrani stik ne obstaja več.";
 "Unknown Destination Folder" = "Izbrani ciljni adresar ne obstaja več.";
-
 /* Lists */
 "List details" = "Podrobnosti seznama";
 "List name" = "Ime iz seznama";
@@ -204,12 +166,9 @@
 "An error occured while importing contacts." = "Prišlo je do napake pri uvozu stikov.";
 "No card was imported." = "Nobena kartica ni uvožena.";
 "A total of %{0} cards were imported in the addressbook." = "Skupaj %{0} kartic je bilo uvoženo v adresar.";
-
 "Reload" = "Ponovno naloži";
-
 /* Properties window */
-"Address Book Name:" = "Ime adresarja:";
+"Address Book Name" = "Ime adresarja";
 "Links to this Address Book" = "Povezave do tega adresarja";
 "Authenticated User Access" = "Preverjeni uporabniški dostop";
-"CardDAV URL: " = "CardDAV URL:";
-
+"CardDAV URL" = "CardDAV URL";

@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "Maak een nieuwe gebeurtenis";
 "Create a new task" = "Maak een nieuwe taak";
 "Edit this event or task" = "Bewerk deze gebeurtenis of taak";
@@ -12,46 +11,30 @@
 "Switch to week view" = "Overschakelen naar weekweergave";
 "Switch to month view" = "Overschakelen naar maandweergave";
 "Reload all calendars" = "Alle agenda's herladen";
-
 /* Tabs */
 "Date" = "Datum";
 "Calendars" = "Agenda's";
-
 /* Day */
-
 "DayOfTheMonth" = "Dag van de maand";
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "vandaag";
-
 "Previous Day" = "Vorige dag";
 "Next Day" = "Volgende dag";
-
 /* Week */
-
 "Week" = "Week";
 "this week" = "deze week";
-
 "Week %d" = "Week %d";
-
 "Previous Week" = "Vorige week";
 "Next Week" = "Volgende week";
-
 /* Month */
-
 "this month" = "deze maand";
-
 "Previous Month" = "Vorige maand";
 "Next Month" = "Volgende maand";
-
 /* Year */
-
 "this year" = "dit jaar";
-
 /* Menu */
-
 "Calendar" = "Agenda";
 "Contacts" = "Adresboek";
-
 "New Calendar..." = "Nieuwe agenda...";
 "Delete Calendar" = "Agenda verwijderen";
 "Unsubscribe Calendar" = "Afmelden van agenda";
@@ -69,54 +52,39 @@
 "An error occurred while importing calendar." = "Er is een fout opgetreden bij het importeren van de kalender.";
 "No event was imported." = "Geen enkele gebeurtenis werd geïmporteerd.";
 "A total of %{0} events were imported in the calendar." = "Een totaal van %{0} gebeurtenissen werd geïmporteerd in de kalender.";
-
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail aan deelnemers opstellen die nog niet hebben gereageerd";
-
 /* Folders */
 "Personal calendar" = "Persoonlijke agenda";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Toegang geweigerd";
-
 /* acls */
-
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
-
 "Any Authenticated User" = "Elke geauthenticeerde gebruiker";
 "Public Access" = "Publieke toegang";
-
 "label_Public" = "Publiek";
 "label_Private" = "Privaat";
 "label_Confidential" = "Vertrouwelijk";
-
 "label_Viewer" = "Alles inzien";
 "label_DAndTViewer" = "Alleen datum & tijd inzien";
 "label_Modifier" = "Aanpassen";
 "label_Responder" = "Reageren op";
 "label_None" = "Geen toegang";
-
 "View All" = "Alles inzien";
 "View the Date & Time" = "Alleen datum & tijd inzien";
 "Modify" = "Aanpassen";
 "Respond To" = "Reageren op";
 "None" = "Geen toegang";
-
 "This person can create objects in my calendar."
 = "Deze persoon mag afspraken in mijn agenda plaatsen.";
 "This person can erase objects from my calendar."
 = "Deze persoon mag afspraken verwijderen uit mijn agenda.";
-
 /* Button Titles */
-
 "Subscribe to a Calendar..." = "Abonneren op een agenda...";
 "Remove the selected Calendar" = "Agenda verwijderen";
-
 "Name of the Calendar" = "Naam van de agenda";
-
 "new" = "Nieuw";
 "Print view" = "Print weergave";
 "edit" = "Aanpassen";
@@ -130,10 +98,7 @@
 "Cancel" = "Annuleren";
 "show_rejected_apts" = "Geweigerde afspraken weergeven";
 "hide_rejected_apts" = "Geweigerde afspraken verbergen";
-
-
 /* Schedule */
-
 "Schedule" = "Planning";
 "No appointments found" = "Geen afspraken gevonden";
 "Meetings proposed by you" = "Door u voorgestelde vergaderingen";
@@ -145,9 +110,7 @@
 "more attendees" = "Andere deelnemers";
 "Hide already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken verbergen";
 "Show already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken weergeven";
-
 /* Print view */
-
 "LIST" = "Lijst";
 "Print Settings" = "Print instellingen";
 "Title" = "Titel";
@@ -160,9 +123,7 @@
 "Display events and tasks colors" = "Toon afspraak- en taakkleuren";
 "Borders" = "Randen";
 "Backgrounds" = "Achtergronden";
-
 /* Appointments */
-
 "Appointment viewer" = "Afspraak inzien";
 "Appointment editor" = "Afspraak aanpassen";
 "Appointment proposal" = "Afspraak voorstellen";
@@ -170,8 +131,6 @@
 "Start" = "Begin";
 "End" = "Einde";
 "Due Date" = "Verloopdatum";
-"Title" = "Titel";
-"Calendar" = "Agenda";
 "Name" = "Naam";
 "Email" = "E-mail";
 "Status" = "Status";
@@ -195,14 +154,10 @@
 "General" = "Algemeen";
 "Reply" = "Antwoord";
 "Created by" = "Aangemaakt door";
-
-
-"Target:" = "Bestemming:";
-
+"Target" = "Bestemming";
 "attributes" = "attributen";
 "attendees" = "deelnemers";
 "delegated from" = "gedelegeerd van";
-
 /* checkbox title */
 "is private" = "is privé";
 /* classification */
@@ -211,26 +166,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "geen titel";
 "private appointment" = "Privé-afspraak";
-
 "Change..." = "Aanpassen...";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "Actie vereist";
 "partStat_ACCEPTED" = "Ik zal aanwezig zijn";
 "partStat_DECLINED" = "Ik zal niet aanwezig zijn";
 "partStat_TENTATIVE" = "Ik zal later bevestigen";
 "partStat_DELEGATED" = "Ik delegeer";
 "partStat_OTHER" = "Anders";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "Er zijn een of meerdere conflicten gevonden.";
 "Invalid iCal data!" = "Ongeldige iCal data...";
 "Could not create iCal data!" = "Kon geen iCal data aanmaken...";
-
 /* Searching */
-
 "view_all" = "Alle afspraken";
 "view_today" = "Vandaag";
 "view_next7" = "Afspraken in de volgende 7 dagen";
@@ -239,36 +187,26 @@
 "view_thismonth" = "Afspraken in deze kalendermaand";
 "view_future" = "Alle toekomstige afspraken";
 "view_selectedday" = "Afspraken op de geselecteerde dag";
-
 "view_not_started" = "Niet begonnen taken";
 "view_overdue" = "Achterstallige taken";
 "view_incomplete" = "Onvolledige taken";
-
 "View" = "Bekijken";
 "Title, category or location" = "Titel, categorie of plaats";
 "Entire content" = "Volledige inhoud";
-
 "Search" = "Zoeken";
 "Search attendees" = "Deelnemers zoeken";
 "Search resources" = "Middelen zoeken";
 "Search appointments" = "Afspraken zoeken";
-
 "All day Event" = "Afspraak duurt de hele dag";
 "check for conflicts" = "Op conflicten controleren";
-
 "Browse URL" = "Naar URL gaan";
-
 "newAttendee" = "Voeg deelnemer toe";
-
 /* calendar modes */
-
 "Overview" = "Overzicht";
 "Chart" = "Tabel";
 "List" = "Lijst";
 "Columns" = "Kolommen";
-
 /* Priorities */
-
 "prio_0" = "Niet opgegeven";
 "prio_1" = "Zeer hoog";
 "prio_2" = "Hoog";
@@ -279,7 +217,6 @@
 "prio_7" = "Laag";
 "prio_8" = "Laag";
 "prio_9" = "Zeer laag";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Publieke afspraak";
 "CONFIDENTIAL_vevent" = "Vertrouwelijke afspraak";
@@ -287,7 +224,6 @@
 "PUBLIC_vtodo" = "Publieke taak";
 "CONFIDENTIAL_vtodo" = "Vertrouwelijke taak";
 "PRIVATE_vtodo" = "Privétaak";
-
 /* status type */
 "status_" = "Niet opgegeven";
 "status_NOT-SPECIFIED" = "Niet opgegeven";
@@ -297,9 +233,7 @@
 "status_NEEDS-ACTION" = "Actie vereist";
 "status_IN-PROCESS" = "In behandeling";
 "status_COMPLETED" = "Voltooid";
-
 /* Cycles */
-
 "cycle_once" = "herhaalt zich niet";
 "cycle_daily" = "dagelijks";
 "cycle_weekly" = "wekelijks";
@@ -308,14 +242,10 @@
 "cycle_monthly" = "maandelijks";
 "cycle_weekday" = "op werkdagen";
 "cycle_yearly" = "jaarlijks";
-
 "cycle_end_never" = "Herhaal oneindig vaak";
 "cycle_end_until" = "Herhalen tot:";
-
 "Recurrence pattern" = "Herhalingsschema";
 "Range of recurrence" = "Herhalingsbereik";
-
-"Repeat" = "Herhalen";
 "Daily" = "Dagelijks";
 "Weekly" = "Wekelijks";
 "Monthly" = "Maandelijks";
@@ -333,19 +263,15 @@
 "Create" = "Aanmaken";
 "appointment(s)" = "afspraken";
 "Repeat until" = "Herhalen tot";
-
 "First" = "Eerste";
 "Second" = "Tweede";
 "Third" = "Derde";
 "Fourth" = "Vierde";
 "Fift" = "Vijfde";
 "Last" = "Laatste";
-
 /* Appointment categories */
-
 "category_none" = "Geen categorie";
 "category_labels" = "Cliënten,Concurrentie,Diversen,Favorieten,Giften,Ideeën,Klant,Kwesties,Leveranciers,Nationale feestdag,Persoonlijk,Projecten,Meeting,Reizen,Status,Telefoongesprekken,Trouwdag,Vakantie,Verjaardag,Vervolggesprek,Vrije dagen,Zaken";
-
 "repeat_NEVER" = "herhaalt zich niet";
 "repeat_DAILY" = "dagelijks";
 "repeat_WEEKLY" = "wekelijks";
@@ -354,7 +280,6 @@
 "repeat_MONTHLY" = "maandelijks";
 "repeat_YEARLY" = "jaarlijks";
 "repeat_CUSTOM" = "aangepast...";
-
 "reminder_NONE" = "Geen herinnering";
 "reminder_5_MINUTES_BEFORE" = "5 minuten van tevoren";
 "reminder_10_MINUTES_BEFORE" = "10 minuten van tevoren";
@@ -369,7 +294,6 @@
 "reminder_2_DAYS_BEFORE" = "2 dagen van tevoren";
 "reminder_1_WEEK_BEFORE" = "1 week van tevoren";
 "reminder_CUSTOM" = "aangepast...";
-
 "reminder_MINUTES" = "minuten";
 "reminder_HOURS" = "uren";
 "reminder_DAYS" = "dagen";
@@ -378,42 +302,32 @@
 "reminder_START" = "De gebeurtenis start";
 "reminder_END" = "de gebeurtenis eindigt";
 "Reminder Details" = "Details van de herinnering";
-
 "Choose a Reminder Action" = "Kies een herinneringsactie";
 "Show an Alert" = "Toon een waarschuwing";
 "Send an E-mail" = "Stuur een E-mail";
 "Email Organizer" = "E-mail organisator";
 "Email Attendees" = "E-mail deelnemers";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "Toon tijd als vrij";
-
 /* email notifications */
 "Send Appointment Notifications" = "Stuur afspraakmeldingen";
-
 /* validation errors */
-
 validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
 validate_invalid_startdate = "Ongeldige begindatum!";
 validate_invalid_enddate   = "Ongeldige einddatum!";
 validate_endbeforestart    = "Het einde is voor de begindatum.";
-
 "Events" = "Afspraken";
 "Tasks" = "Taken";
 "Show completed tasks" = "Voltooide taken weergeven";
-
 /* tabs */
 "Task" = "Taak";
 "Event" = "Afspraak";
 "Recurrence" = "Herhaling";
-
 /* toolbar */
 "New Event" = "Nieuwe afspraak";
 "New Task" = "Nieuwe taak";
@@ -424,9 +338,7 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "Week View" = "Weekoverzicht";
 "Month View" = "Maandoverzicht";
 "Reload" = "Herlaad";
-
 "eventPartStatModificationError" = "Uw participatiestatus kon niet worden gewijzigd.";
-
 /* menu */
 "New Event..." = "Nieuwe afspraak...";
 "New Task..." = "Nieuwe taak...";
@@ -435,35 +347,29 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "Select All" = "Alles selecteren";
 "Workweek days only" = "Alleen werkdagen weergeven";
 "Tasks in View" = "Taken in binnen het zicht";
-
 "eventDeleteConfirmation" = "Weet u zeker dat u de volgende afspraken wilt verwijderen?";
 "taskDeleteConfirmation" = "Weet u zeker dat u de volgende taken wilt verwijderen?";
 "Would you like to continue?" = "Wilt u doorgaan?";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "U kunt niet uw persoonlijke agenda verwijderen of opzeggen.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Weet u zeker dat u de agenda \"%{0}\" wilt verwijderen?";
-
 /* Legend */
 "Participant" = "Deelnemer";
 "Optional Participant" = "Gewenste deelnemer";
 "Non Participant" = "Geen deelnemer";
 "Chair" = "Voorzitter";
-
 "Needs action" = "Actie vereist";
 "Accepted" = "Geaccepteerd";
 "Declined" = "Geweigerd";
 "Tentative" = "Onder voorbehoud";
-
 "Free" = "Beschikbaar";
 "Busy" = "Bezet";
 "Maybe busy" = "Waarschijnlijk bezet";
 "No free-busy information" = "Geen beschikbaarheidsinformatie";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Tijdvak voorstellen:";
-"Zoom:" = "Zoom:";
+"Suggest time slot" = "Tijdvak voorstellen";
+"Zoom" = "Zoom";
 "Previous slot" = "Vorige";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
@@ -472,64 +378,41 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "The whole day" = "De hele dag";
 "Between" = "Tussen";
 "and" = "en";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Een tijdsconflict bestaat met een of meer deelnemers.\nWilt u toch de huidige instellingen houden?";
-
 /* apt list */
-"Title" = "Titel";
-"Start" = "Begin";
 "End" = "Eind";
-"Due Date" = "Verloopdatum";
-"Location" = "Plaats";
-
 "(Private Event)" = "(Privé-afspraak)";
-
 vevent_class0 = "(Publieke afspraak)";
 vevent_class1 = "(Privé-afspraak)";
 vevent_class2 = "(Vertrouwelijke afspraak)";
-
-"Priority" = "Prioriteit";
-"Category" = "Categorie";
-
 vtodo_class0 = "(Publieke taak)";
 vtodo_class1 = "(Privétaak)";
 vtodo_class2 = "(Vertrouwelijke taak)";
-
 "closeThisWindowMessage" = "Hartelijk bedankt. U kunt dit venster nu sluiten.";
 "Multicolumn Day View" = "Meerkolommige dagweergave";
-
 "Please select an event or a task." = "Selecteer een afspraak of een taak.";
-
 "editRepeatingItem" = "Het item dat u bewerkt is een herhalend item. Wilt u alle items of enkel dit item bewerken?";
 "button_thisOccurrenceOnly" = "Enkel dit item";
 "button_allOccurrences" = "Alle herhalingen";
-
 /* Properties dialog */
-"Name" = "Naam";
 "Color" = "Kleur";
-
 "Include in free-busy" = "In de beschikbaarheid insluiten";
-
 "Synchronization" = "Synchronisatie";
 "Synchronize" = "Synchroniseren";
-"Tag:" = "Markering:";
-
+"Tag" = "Markering";
 "Display" = "Tonen";
 "Show alarms" = "Alarmen tonen";
 "Show tasks" = "Taken tonen";
-
 "Notifications" = "Notificaties";
 "Receive a mail when I modify my calendar" = "Ontvang een e-mail als ik mijn agenda verander";
 "Receive a mail when someone else modifies my calendar" = "Ontvang een e-mail als iemand anders mijn agenda verandert";
 "When I modify my calendar, send a mail to" = "Als ik mijn agenda verander, stuur een e-mail naar";
-
 "Links to this Calendar" = "Koppelingen naar deze agenda";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
 "CalDAV URL" = "CalDAV-URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "Vul een numerieke waarde in het veld Dagen in groter dan of gelijk aan 1.";
 "weekFieldInvalid" = "Vul een numerieke waarde in het Week/Weken veld groter of gelijk aan 1.";
@@ -547,15 +430,12 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "DestinationCalendarError" = "De bron en bestemming agenda's zijn hetzelfde. Probeer te kopiëren naar een andere agenda.";
 "EventCopyError" = "De kopie is mislukt. Probeer te kopiëren naar een verschil-agenda.";
 "Please select at least one calendar" = "Selecteer tenminste een agenda";
-
-
 "Open Task..." = "Taak openen...";
 "Mark Completed" = "Markeren als voltooid";
 "Delete Task" = "Taak verwijderen";
 "Delete Event" = "Afspraak verwijderen";
 "Copy event to my calendar" = "Kopieer gebeurtenis naar mijn agenda";
 "View Raw Source" = "Bekijk broncode";
-
 "Subscribe to a web calendar..." = "Abonneren op een web-agenda...";
 "URL of the Calendar" = "URL van de Agenda";
 "Web Calendar" = "Web Agenda";

@@ -29,16 +29,11 @@ Tentative = "Tentativa";
 "Delegated to" = "Delegado para";
 "Update status in calendar" = "Atualizar status no calendário";
 "delegated from" = "delegado de";
-
 reply_info_no_attendee = "Você recebeu uma resposta de um evento agendado, mas o remetente da resposta não é um participante.";
 reply_info = "Esta é uma resposta de um convite feito por você.";
-
 "to" = "para";
-
 "Untitled" = "Sem título";
-
 "Size" = "Tamanho";
-
 "Digital signature is not valid" = "Assinatura digital inválida";
 "Message is signed" = "A Mensagem é assinada";
 "Subject" = "Assunto";
@@ -46,3 +41,10 @@ reply_info = "Esta é uma resposta de um convite feito por você.";
 "Date" = "Data";
 "To" = "Para";
 "Issuer" = "Emissor";
+/* Tooltips */
+"View Attachment" = "Visualizar Anexo";
+"Save Attachment" = "Salvar Anexo";
+"CC" = "CC";
+"Cancel" = "Cancelar";
+"OK" = "OK";
+"Comment" = "Comentário:";

@@ -85,8 +85,8 @@ NSNumber *iCalDistantFutureNumber = nil;
 
 - (iCalPerson *) userAsAttendee: (SOGoUser *) user
 {
-  NSEnumerator *attendees;
   iCalPerson *currentAttendee, *userAttendee;
+  NSEnumerator *attendees;
 
   userAttendee = nil;
 
@@ -97,6 +97,34 @@ NSNumber *iCalDistantFutureNumber = nil;
       userAttendee = currentAttendee;
 
   return userAttendee;
+}
+
+- (iCalPerson *) participantForUser:  (SOGoUser *) theUser
+                           attendee: (iCalPerson *) theAttendee
+{
+  iCalPerson *currentAttendee;
+  NSEnumerator *attendees;
+  NSMutableArray *a;
+
+  a = [NSMutableArray array];
+
+  attendees = [[self attendees] objectEnumerator];
+  while ((currentAttendee = [attendees nextObject]))
+    if ([theUser hasEmail: [currentAttendee rfc822Email]])
+      {
+        // If the attendee is the same but the partStat is
+        // different, we prioritize this one.
+        if ([[currentAttendee rfc822Email] caseInsensitiveCompare: [theAttendee rfc822Email]] == NSOrderedSame &&
+            [[currentAttendee partStat] caseInsensitiveCompare: [theAttendee partStat]] != NSOrderedSame)
+          [a insertObject: currentAttendee  atIndex: 0];
+        else if ([[currentAttendee rfc822Email] caseInsensitiveCompare: [theAttendee rfc822Email]] != NSOrderedSame)
+          [a addObject: currentAttendee];
+      }
+
+  if ([a count] > 0)
+    return [a objectAtIndex: 0];
+
+  return theAttendee;
 }
 
 - (BOOL) userIsOrganizer: (SOGoUser *) user

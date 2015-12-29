@@ -29,16 +29,11 @@ Tentative = "Niepewny";
 "Delegated to" = "Przekazane do";
 "Update status in calendar" = "Zaktualizuj status w kalendarzu";
 "delegated from" = "przekazane z";
-
 reply_info_no_attendee = "Otrzymałeś odpowiedź do wydarzenia ale nadawca nie jest uczestnikiem.";
 reply_info = "To jest odpowiedź do utworzonego przez ciebie wydarzenia";
-
 "to" = "do";
-
 "Untitled" = "Bez tytułu";
-
 "Size" = "Rozmiar";
-
 "Digital signature is not valid" = "Podpis elektroniczny nie jest poprawny";
 "Message is signed" = "Wiadomość jest podpisana";
 "Subject" = "Temat";
@@ -46,3 +41,10 @@ reply_info = "To jest odpowiedź do utworzonego przez ciebie wydarzenia";
 "Date" = "Data";
 "To" = "Do";
 "Issuer" = "Wystawca";
+/* Tooltips */
+"View Attachment" = "Pokaż załącznik";
+"Save Attachment" = "Zapisz załącznik";
+"CC" = "Kopia";
+"Cancel" = "Anuluj";
+"OK" = "OK";
+"Comment" = "Komentarz";

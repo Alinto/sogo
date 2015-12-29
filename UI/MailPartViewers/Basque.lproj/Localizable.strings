@@ -29,16 +29,11 @@ Tentative = "Behin-behineko";
 "Delegated to" = "Beste honen esku utzia";
 "Update status in calendar" = "Egoera egunerartu egutegian";
 "delegated from" = "Beste honek zure esku utzia";
-
 reply_info_no_attendee = "Ekitaldi planifikazio bati erantzuna jaso duzu baina erantzunaren bidaltzailea ez da parte-hartzailea.";
 reply_info = "Zuk egindako gonbidapen bati erantzuna da hau.";
-
 "to" = "nori";
-
 "Untitled" = "Izenburu-gabea";
-
 "Size" = "Tamaina";
-
 "Digital signature is not valid" = "Sinadura digitala ez da baliozkoa";
 "Message is signed" = "Mezua sinatua dago";
 "Subject" = "Gaia";

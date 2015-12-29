@@ -4,7 +4,6 @@
 "Save" = "احفظ";
 "Close" = "أغلق";
 "Edit User Rights" = "حرِّر صلاحيات المستخدم";
-
 "Home" = "الصفحة الرئيسية";
 "Calendar" = "التقويم";
 "Address Book"	= "دفتر العناوين";
@@ -14,30 +13,21 @@
 "Disconnect" = "قطع الاتصال";
 "Right Administration" = "حق الإدارة";
 "Log Console (dev.)" = "سجل وحدة التحكم (برمجة)";
-
 "User" = "مستخدم";
 "Vacation message is enabled" = "فُعِّلت رسالة العُطْلة";
-
 "Help" = "المساعدة";
-
 "noJavascriptError" = "سوجو يتطلب جافا سكريبت للتشغيل. يرجى التأكد من هذا الخيار متاح ضمن تفضيلات المتصفح.";
 "noJavascriptRetry" = "إعادة المحاولة";
-
-"Owner:" = "المالك:";
+"Owner" = "المالك";
 "Publish the Free/Busy information" = "نشر معلومات متوفر / مشغول";
-
 "Add..." = "إضافة ...";
 "Remove" = "إزالة";
-
 "Subscribe User" = "اشتراك المستخدم";
-
 "Any Authenticated User" = "أي مستخدم مسجل";
 "Public Access" = "وصول الجمهور";
 "Any user not listed above" = "أي مستخدم غير مذكور أعلاه";
 "Anybody accessing this resource from the public area" = "أي شخص يدخل على هذه الموارد من منطقة عامة";
-
 "Sorry, the user rights can not be configured for that object." = "آسف، لا يمكن أن يتم تكوين حقوق المستخدم لذلك الكائن.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "إن أي مستخدم لديه حساب على هذا النظام سيكون قادرا على الوصول إلى صندوق البريد الخاص بك \"٪ {0}\". هل أنت متأكد من أنك تثق بهم؟";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "يحتمل أن يتمكن أي شخص على الإنترنت من الوصول إلى دفنرالعناوين الخاص بك \"٪ {0}\"، حتى لو لم يكن لديه حساب على هذا النظام. هل هذه المعلومات مناسبة لشبكة الانترنت العامة؟";
 "Give Access" = "منح حق الوصول";
 "Keep Private" = "إبقاءه مخفي";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "غير قادر على الاشتراك في هذا المجلد!";
@@ -69,17 +58,14 @@
 "You cannot create a list in a shared address book." 
         = "لا يمكنك إنشاء قائمة في دفتر العناوين المشترك.";
 "Warning" = "تحذير";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "لا يسمح لك بالوصول إلى هذه الوحدة أو هذا النظام. الرجاء الاتصال بمسؤول النظام.";
 "You don't have the required privileges to perform the operation."
 = "ليس لديك الصلاحيات المطلوبة لتنفيذ العملية.";
-
 "noEmailForDelegation" = "يجب تحديد العنوان الذي تريد تفويضه بدعوتك.";
 "delegate is organizer" = "المفوض هو المنظم. يرجى تحديد مفوض مختلف.";
 "delegate is a participant" = "المفوض هو بالفعل أحد المشاركين.";
 "delegate is a group" = "العنوان المحدد يناظر مجموعة من العناوين. يمكنك فقط أن تفوض شخص معين.";
-
 "Snooze for " = "تأجيل الى";
 "5 minutes" = "5 دقائق";
 "10 minutes" = "10 دقائق";
@@ -87,28 +73,22 @@
 "30 minutes" = "30 دقيقة";
 "45 minutes" = "45 دقيقة";
 "1 hour" = "1 ساعة";
-
-
 /* common buttons */
 "OK" = "موافق";
 "Cancel" = "إلغاء";
 "Yes" = "نعم";
 "No" = "لا";
-
 /* alarms */
-"Reminder:" = "تذكير:";
-"Start:" = "البداية:";
-"Due Date:" = "تاريخ الاستحقاق:";
-"Location:" = "الموقع:";
-
+"Reminder" = "تذكير";
+"Start" = "البداية";
+"Due Date" = "تاريخ الاستحقاق";
+"Location" = "الموقع";
 /* Mail labels */
 "Important" = "مهم";
-"Work" = "عمل";
 "Work" = "عمل";
 "Personal" = "شخصي";
 "To Do" = "تفعل";
 "Later" = "لاحقا";
-
 "a2_Sunday" = "ح";
 "a2_Monday" = "ن";
 "a2_Tuesday" = "ث";

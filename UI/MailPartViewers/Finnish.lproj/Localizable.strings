@@ -29,16 +29,11 @@ Tentative = "Alustava";
 "Delegated to" = "Valtuutettu";
 "Update status in calendar" = "Päivitä tila kalenterissa";
 "delegated from" = "valtuuttaja";
-
 reply_info_no_attendee = "Olet saanut vastauksen kalenteritapahtumaan, mutta vastaaja ei ole osallistuja.";
 reply_info = "Tämä on vastaus tapahtumakutsuusi.";
-
 "to" = " ";
-
 "Untitled" = "Nimetön";
-
 "Size" = "Koko";
-
 "Digital signature is not valid" = "Digitaalinen allekirjoitus ei kelpaa";
 "Message is signed" = "Viesti on allekirjoitettu";
 "Subject" = "Aihe";
@@ -46,3 +41,10 @@ reply_info = "Tämä on vastaus tapahtumakutsuusi.";
 "Date" = "Päiväys";
 "To" = "Vastaanottaja";
 "Issuer" = "Julkaisija";
+/* Tooltips */
+"View Attachment" = "Näytä liitetiedosto";
+"Save Attachment" = "Tallenna liitetiedosto";
+"CC" = "CC";
+"Cancel" = "Peruuta";
+"OK" = "OK";
+"Comment" = "Kommentti:";

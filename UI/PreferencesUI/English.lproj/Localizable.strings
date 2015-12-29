@@ -1,6 +1,7 @@
 /* toolbar */
 "Save and Close" = "Save and Close";
 "Close" = "Close";
+"Preferences saved" = "Preferences saved";
 
 /* tabs */
 "General" = "General";
@@ -23,10 +24,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Enable vacation auto reply";
-"Auto reply message" ="Auto reply message";
-"Email addresses (separated by commas)" ="Email addresses (separated by commas)";
+"Auto reply message" = "Auto reply message";
+"Email addresses (separated by commas)" = "Email addresses (separated by commas)";
 "Add default email addresses" = "Add default email addresses";
-"Days between responses" ="Days between responses";
+"Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Disable auto reply on" = "Disable auto reply on";
 "Always send vacation message response" = "Always send vacation message response";
@@ -44,36 +45,29 @@
 "You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
 "You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
 
-
 /* d & t */
-"Current Time Zone" ="Current Time Zone";
-"Short Date Format" ="Short Date Format";
-"Long Date Format" ="Long Date Format";
-"Time Format" ="Time Format";
-
+"Current Time Zone" = "Current Time Zone";
+"Short Date Format" = "Short Date Format";
+"Long Date Format" = "Long Date Format";
+"Time Format" = "Time Format";
 "default" = "Default";
-
+"Default Module" = "Default Module";
+"Save" = "Save";
 "shortDateFmt_0" = "%d-%b-%y";
-
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
 "shortDateFmt_3" = "%e/%m/%y";
-
 "shortDateFmt_4" = "%d-%m-%Y";
 "shortDateFmt_5" = "%d/%m/%Y";
-
 "shortDateFmt_6" = "%m-%d-%y";
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
-
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-
 "shortDateFmt_15" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
@@ -87,7 +81,6 @@
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
 "longDateFmt_10" = "";
-
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
@@ -95,30 +88,27 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on" ="Week begins on";
-"Day start time" ="Day start time";
-"Day end time" ="Day end time";
+"Week begins on" = "Week begins on";
+"Day start time" = "Day start time";
+"Day end time" = "Day end time";
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "Show time as busy outside working hours" = "Show time as busy outside working hours";
-"First week of year" ="First week of year";
+"First week of year" = "First week of year";
 "Enable reminders for Calendar items" = "Enable reminders for Calendar items";
 "Play a sound when a reminder comes due" = "Play a sound when a reminder comes due";
-"Default reminder" ="Default reminder";
-
+"Default reminder" = "Default reminder";
 "firstWeekOfYear_January1" = "Starts on january 1";
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "First full week";
-
 "Prevent from being invited to appointments" = "Prevent from being invited to appointments";
 "White list for appointment invitations" = "White list for appointment invitations";
 "Contacts Names" = "Contacts Names";
 
 /* Default Calendar */
-"Default calendar" ="Default calendar";
+"Default calendar" = "Default calendar";
 "selectedCalendar" = "Selected calendar";
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
-
 "reminder_NONE" = "No reminder";
 "reminder_5_MINUTES_BEFORE" = "5 minutes before";
 "reminder_10_MINUTES_BEFORE" = "10 minutes before";
@@ -139,11 +129,10 @@
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
-
+"Address Book" = "Address Book";
 "Forward messages" = "Forward messages";
 "messageforward_inline" = "Inline";
 "messageforward_attached" = "As Attachment";
-
 "When replying to a message" = "When replying to a message";
 "replyplacement_above" = "Start my reply above the quote";
 "replyplacement_below" = "Start my reply below the quote";
@@ -156,7 +145,6 @@
 "Display remote inline images" = "Display remote inline images";
 "displayremoteinlineimages_never" = "Never";
 "displayremoteinlineimages_always" = "Always";
-
 "Auto save every" = "Auto save every";
 "minutes" = "minutes";
 
@@ -165,24 +153,19 @@
 "Collected Address Book" = "Collected Address Book";
 
 /* IMAP Accounts */
+"Mail Account" = "Mail Account";
 "New Mail Account" = "New Mail Account";
-
 "Server Name" = "Server Name";
 "Port" = "Port";
 "Encryption" = "Encryption";
 "None" = "None";
 "User Name" = "User Name";
-"Password" = "Password";
-
 "Full Name" = "Full Name";
 "Email" = "Email";
 "Reply To Email" = "Reply To Email";
 "Signature" = "Signature";
 "(Click to create)" = "(Click to create)";
-
-"Signature" = "Signature";
-"Please enter your signature below:" = "Please enter your signature below:";
-
+"Please enter your signature below" = "Please enter your signature below";
 "Please specify a valid sender address." = "Please specify a valid sender address.";
 "Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
 
@@ -195,13 +178,19 @@
 "Change" = "Change";
 
 /* Event+task classifications */
-"Default events classification" ="Default events classification";
-"Default tasks classification" ="Default tasks classification";
+"Default events classification" = "Default events classification";
+"Default tasks classification" = "Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
 
 /* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
 "category_none" = "None";
 "calendar_category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
 
@@ -211,9 +200,11 @@
 "Mail" = "Mail";
 "Last" = "Last used";
 "Default Module " = "Default Module";
-"SOGo Version" ="SOGo Version";
+"SOGo Version" = "SOGo Version";
 
-"Language" ="Language";
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Save preferences and reload page now?";
+"Language" = "Language";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -229,12 +220,10 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"Polish" = "Polski";
-"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -243,8 +232,7 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
-"Refresh View" ="Refresh View";
+"Refresh View" = "Refresh View";
 "refreshview_manually" = "Manually";
 "refreshview_every_minute" = "Every minute";
 "refreshview_every_2_minutes" = "Every 2 minutes";
@@ -261,7 +249,6 @@
 "If I'm not in the To or Cc of the message" = "If I'm not in the To or Cc of the message";
 "If the sender is outside my domain" = "If the sender is outside my domain";
 "In all other cases" = "In all other cases";
-
 "Never send" = "Never send";
 "Always send" = "Always send";
 "Ask me" = "Ask me";
@@ -275,14 +262,17 @@
 "Service temporarily unavailable" = "Service temporarily unavailable";
 
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Filter name:";
+"Filter name" = "Filter name";
+/* Button label */
+"Add a condition" = "Add a condition";
+/* Button label */
+"Add an action" = "Add an action";
 "For incoming messages that" = "For incoming messages that";
-"match all of the following rules:" = "match all of the following rules:";
-"match any of the following rules:" = "match any of the following rules:";
+"match all of the following rules" = "match all of the following rules";
+"match any of the following rules" = "match any of the following rules";
 "match all messages" = "match all messages";
-"Perform these actions:" = "Perform these actions:";
+"Perform these actions" = "Perform these actions";
 "Untitled Filter" = "Untitled Filter";
-
 "Subject" = "Subject";
 "From" = "From";
 "To" = "To";
@@ -291,15 +281,14 @@
 "Size (Kb)" = "Size (Kb)";
 "Header" = "Header";
 "Body" = "Body";
-"Flag the message with:" = "Flag the message with:";
+"Flag the message with" = "Flag the message with";
 "Discard the message" = "Discard the message";
-"File the message in:" = "File the message in:";
+"File the message in" = "File the message in";
 "Keep the message" = "Keep the message";
-"Forward the message to:" = "Forward the message to:";
-"Send a reject message:" = "Send a reject message:";
+"Forward the message to" = "Forward the message to";
+"Send a reject message" = "Send a reject message";
 "Send a vacation message" = "Send a vacation message";
 "Stop processing filter rules" = "Stop processing filter rules";
-
 "is under" = "is under";
 "is over" = "is over";
 "is" = "is";
@@ -310,7 +299,8 @@
 "does not match" = "does not match";
 "matches regex" = "matches regex";
 "does not match regex" = "does not match regex";
-
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
 "Seen" = "Seen";
 "Deleted" = "Deleted";
 "Answered" = "Answered";
@@ -332,3 +322,25 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Password change is not supported.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Alternate Avatar" = "Alternate Avatar";
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

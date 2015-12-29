@@ -818,9 +818,8 @@ can be ignored for now. This feature is currently not supported.
 remove any data associated with the user from the SOGo server and
 recreate a Microsoft Outlook profile.
 To remove any data associated to a user, use
-the `openchange_user_cleanup` script distributed with SOGo. The script
-can be found in `/usr/share/doc/sogo/` (`/usr/share/sogo-VERSION/` on
-RHEL).
+the `openchange_user_cleanup` script distributed with OpenChange. The script
+can be found in `/usr/share/openchange/`.
 To reset a user, run the script as root:
 `openchange_user_cleanup username`. See the usage output for additional options.
 * The "Out of Office Assistant" will not currently work. This feature

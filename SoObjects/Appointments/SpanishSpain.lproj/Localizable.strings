@@ -7,7 +7,6 @@ vevent_class2 = "(Evento confidencial)";
 vtodo_class0 = "(Tarea pública)";
 vtodo_class1 = "(Tarea privada)";
 vtodo_class2 = "(Tarea confidencial)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "El evento \"%{Summary}\" ha sido creado";
 "The event \"%{Summary}\" was deleted" = "El evento \"%{Summary}\" ha sido borrado";
@@ -15,7 +14,6 @@ vtodo_class2 = "(Tarea confidencial)";
 "The following attendees(s) were notified" = "Los invitados siguientes han sido notificado";
 "The following attendees(s) were added" = "Los invitados siguientes han sido añadido";
 "The following attendees(s) were removed" = "Los invitados siguientes han sido quitado";
-
 /* IMIP messages */
 "calendar_label" = "Calendario";
 "startDate_label" = "Inicio";
@@ -24,20 +22,17 @@ vtodo_class2 = "(Tarea confidencial)";
 "location_label" = "Localización";
 "summary_label" = "Resumen:";
 "comment_label" = "Comentario:";
-
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitación al evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nFin: %{EndDate} a las %{EndTime}\nDescripción: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nFin:%{EndDate} a las {EndTime}\nDescripción: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "El evento \"%{Summary}\" del %{OldStartDate} ha cambiado";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Tarea confidencial)";
 = "Los siguientes parametros han cambiados enla cita \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Por favor, acepta o rechaza estos cambios.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Invitación aceptada: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Invitación rechazada: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Tarea confidencial)";
 = "%{Attendee} %{SentByText}has delegado la invitación para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}no ha tomado tadavia una decision sobre esta cita.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No se puede acceder al recurso: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Numero maximo de reserva simultánea (%{NumberOfSimultaneousBookings}) alcanzada para el recurso \"%{Cn} %{SystemEmail}\". El evento generando el conflicto es \"%{EventTitle}\", y empeza el %{StartDate}.";

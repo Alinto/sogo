@@ -4,7 +4,6 @@
 "Save" = "Desar";
 "Close" = "Tancar";
 "Edit User Rights" = "Modificar permisos";
-
 "Home" = "Inici";
 "Calendar" = "Calendari";
 "Address Book"	= "Llibreta d'adreces";
@@ -12,32 +11,24 @@
 "Preferences" = "Preferències";
 "Administration" = "Administració";
 "Disconnect" = "Tancar sessió";
+"Toggle Menu" = "Canviar menú";
 "Right Administration" = "Administració de permisos";
 "Log Console (dev.)" = "Registre d'activitat";
-
 "User" = "Usuari";
 "Vacation message is enabled" = "El missatge d'absència està activat";
-
 "Help" = "Ajuda";
-
 "noJavascriptError" = "SOGo requereix Javascript. Si us plau, activeu Javascript en el navegador.";
 "noJavascriptRetry" = "Torneu-ho a intentar";
-
-"Owner:" = "Propietari:";
+"Owner" = "Propietari";
 "Publish the Free/Busy information" = "Publicar informació de disponibilitat";
-
 "Add..." = "Afegir...";
 "Remove" = "Esborrar";
-
 "Subscribe User" = "Subscriure usuari";
-
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";
 "Any user not listed above" = "Qualsevol usuari no llistat més amunt";
 "Anybody accessing this resource from the public area" = "Qualsevol amb accés a aquest recurs des de l'àrea pública";
-
 "Sorry, the user rights can not be configured for that object." = "Els permisos d'accés no es poden configurar per a aquest objecte.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua bústia de correu \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua llibreta d'adreces \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Give Access" = "Donar accés";
 "Keep Private" = "Mantenir en privat";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "No us podeu subscriure a aquesta carpeta!";
@@ -70,17 +60,14 @@
         = "No podeu crear una llista en una agenda compartida.";
 "Warning" = "Atenció";
 "Can't contact server" = "Ha ocorregut un error en contactar amb el servidor. Per favor, intenti-ho més tarda.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "No teniu permís per a accedir a aquest mòdul o sistema. Contacteu amb l'administrador.";
 "You don't have the required privileges to perform the operation."
 = "No disposeu dels permisos necessaris per a fer aquesta operació.";
-
 "noEmailForDelegation" = "Especifiqueu l'adreça de correu a la qual voleu delegar la invitació.";
 "delegate is organizer" = "El delegat és l'organitzador. Si us plau, especifiqueu un altre delegat.";
 "delegate is a participant" = "El delegat ja és un participant.";
 "delegate is a group" = "L'adreça especificada correspon a un grup. Només podeu delegar en una persona.";
-
 "Snooze for " = "Posposar ";
 "5 minutes" = "5 minuts";
 "10 minutes" = "10 minuts";
@@ -88,27 +75,23 @@
 "30 minutes" = "30 minuts";
 "45 minutes" = "45 minuts";
 "1 hour" = "1 hora";
-
-
+"1 day" = "1 dia";
 /* common buttons */
 "OK" = "D'acord";
 "Cancel" = "Cancel·lar";
 "Yes" = "Sí";
 "No" = "No";
-
 /* alarms */
-"Reminder:" = "Recordatori:";
-"Start:" = "Inici:";
-"Due Date:" = "Data límit:";
-"Location:" = "Lloc:";
-
+"Reminder" = "Recordatori";
+"Start" = "Inici";
+"Due Date" = "Data de venciment";
+"Location" = "Lloc";
 /* mail labels */
 "Important" = "Important";
 "Work" = "Feina";
 "Personal" = "Personal";
 "To Do" = "Per fer";
 "Later" = "Més tard";
-
 "a2_Sunday" = "dg";
 "a2_Monday" = "dl";
 "a2_Tuesday" = "dm";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "dj";
 "a2_Friday" = "dv";
 "a2_Saturday" = "ds";
+"Access Rights" = "Drets d'accés";
+"Add User" = "Afegir usuari";
+"Loading" = "Carregant";
+"No such user." = "No existeix aquest usuari";
+"You cannot (un)subscribe to a folder that you own!" = "No es pot (des)subscriure a una carpeta pròpia!";
+"SOGo" = "SOGo";
+"Modules" = "Mòduls";

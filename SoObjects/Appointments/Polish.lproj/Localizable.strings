@@ -7,7 +7,6 @@ vevent_class2 = "(Wydarzenie poufne)";
 vtodo_class0 = "(Zadanie publiczne)";
 vtodo_class1 = "(Zadanie prywatne)";
 vtodo_class2 = "(Zadanie poufne)";
-
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Utworzono wydarzenie \"%{Summary}\"";
 "The event \"%{Summary}\" was deleted" = "Skasowano wydarzenie \"%{Summary}\"";
@@ -15,29 +14,25 @@ vtodo_class2 = "(Zadanie poufne)";
 "The following attendees(s) were notified" = "Następujący uczestnicy zostali powiadomieni";
 "The following attendees(s) were added" = "Następujący uczestnicy zostali dodani";
 "The following attendees(s) were removed" = "Następujący uczestnicy zostali usunięci";
-
 /* IMIP messages */
 "calendar_label" = "Kalendarz";
 "startDate_label" = "Początek";
 "endDate_label" = "Koniec";
-"due_label" = "Termin:";
+"due_label" = "Termin";
 "location_label" = "Miejsce";
-"summary_label" = "Podsumowanie:";
-"comment_label" = "Komentarz:";
-
+"summary_label" = "Podsumowanie";
+"comment_label" = "Komentarz";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Zaproszenie na wydarzenie: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(wysłane przez %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił Cię na %{Summary}.⏎ ⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił cię na %{Summary}.\n\nPoczątek: %{StartDate} o %{StartTime}\nKoniec: %{EndDate} o %{EndTime}\nOpis: %{Description}";
-
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Wydarzenie anulowane: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} anulował(a) to wydarzenie: %{Summary}.⏎⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}anulował(a) to wydarzenie: %{Summary}.\n\nPoczątek: %{StartDate} o %{StartTime}\nKoniec: %{EndDate} o %{EndTime}\nOpis: %{Description}";
-
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Wydarzenie \"%{Summary}\" z dnia %{OldStartDate} zmieniło się";
@@ -47,7 +42,6 @@ vtodo_class2 = "(Zadanie poufne)";
 = "Zmienione zostały poniższe parametry spotkania \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Zaakceptuj lub odrzuć te zmiany.";
-
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Zaakceptowano zaproszenie: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Odrzucono zaproszenie: \"%{Summary}\"";
@@ -61,7 +55,6 @@ vtodo_class2 = "(Zadanie poufne)";
 = "%{Attendee} %{SentByText}oddelegował(a) %{Delegate} na twoje wydarzenie.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}jeszcze nie zdecydował(a) o obecności na twoim wydarzeniu.";
-
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nie ma dostępu do: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Osiągnięto maksymalną liczbę równoległych rezerwacji (%{NumberOfSimultaneousBookings}) dla \"%{Cn} %{SystemEmail}\". Problem wywołuje wydarzenie \"%{EventTitle}\" zaczynające się w %{StartDate}.";

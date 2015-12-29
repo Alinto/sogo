@@ -2,14 +2,10 @@
 
 "Help" = "Pomoc";
 "Close" = "Zavrieť";
-
 "Modules" = "Moduly";
-
 /* Modules short names */
 "ACLs" = "ACL";
-
 /* Modules titles */
 "ACLs_title" = "Spravovanie ACL zložiek uzívateľov";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>Administrácia kontroly prístupových práv (ACL) dovoluje spravovať ACLs kalendárov a adresárov pre všetkých užívateľov.</p><p>Pre úpravu ACL zložky užívateľa, napíšte meno užívateľa v kolonke hľadaj hore v okne a dvojklikom potvrďte výber zložky.</p>";

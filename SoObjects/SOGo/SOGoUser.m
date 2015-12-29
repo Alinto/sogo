@@ -514,15 +514,26 @@
 
 - (unsigned int) weekNumberForDate: (NSCalendarDate *) date
 {
-  NSCalendarDate *firstWeek;
+  NSCalendarDate *firstWeek, *previousWeek;
   unsigned int weekNumber;
 
   firstWeek = [self firstWeekOfYearForDate: date];
   if ([firstWeek earlierDate: date] == firstWeek)
-    weekNumber = ([date timeIntervalSinceDate: firstWeek]
-		  / (86400 * 7) + 1);
+    {
+      weekNumber = ([date timeIntervalSinceDate: firstWeek] / (86400 * 7) + 1);
+    }
   else
-    weekNumber = 0;
+    {
+      // Date is within the last week of the previous year;
+      // Compute the previous week number to find the week number of the requested date.
+      // The number will either be 52 or 53.
+      previousWeek = [date dateByAddingYears: 0
+                                      months: 0
+                                        days: -7];
+      firstWeek = [self firstWeekOfYearForDate: previousWeek];
+      weekNumber = ([previousWeek timeIntervalSinceDate: firstWeek] / (86400 * 7) + 1);
+      weekNumber += 1;
+    }
 
   return weekNumber;
 }

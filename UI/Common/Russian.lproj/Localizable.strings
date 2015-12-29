@@ -4,7 +4,6 @@
 "Save" = "Сохранить";
 "Close" = "Закрыть";
 "Edit User Rights" = "Редактировать права пользователей";
-
 "Home" = "Начало";
 "Calendar" = "Календарь";
 "Address Book"	= "Адресная книга";
@@ -12,32 +11,24 @@
 "Preferences" = "Настройки";
 "Administration" = "Администрация";
 "Disconnect" = "Выход";
+"Toggle Menu" = "Переключить меню";
 "Right Administration" = "Управление доступом";
 "Log Console (dev.)" = "Вход Console (dev.)";
-
 "User" = "Пользователь";
 "Vacation message is enabled" = "Сообщение об отпуске включено";
-
 "Help" = "Помощь";
-
 "noJavascriptError" = "SOGo требует работы Javascript  Пожалуйста, включите его в опциях браузера.";
 "noJavascriptRetry" = "Повторить попытку";
-
-"Owner:" = "Владелец:";
+"Owner" = "Владелец";
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
-
 "Add..." = "Добавить...";
 "Remove" = "Удалить";
-
 "Subscribe User" = "Подписать пользователя";
-
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "Public Access" = "Публичный доступ";
 "Any user not listed above" = "Любой пользователь не указанный выше";
 "Anybody accessing this resource from the public area" = "Любой, использующий этот ресурс из публичного места";
-
 "Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Любой пользователь данной системы получит доступ к вашему почтовому ящику \"%{0}\". Вы уверены что доверяете им всем?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Потенциально любой пользователь интернета смодет прочитать вашу адресную книгу \"%{0}\", даже если они не зарегистрированы в данной системе. Информация в этой адресной книге может быть выставлена в публичную сеть?";
 "Give Access" = "Предоставить доступ";
 "Keep Private" = "Оставить в личном доступе";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Невозможно подписаться на эту папку!";
@@ -70,17 +60,14 @@
         = "Вы не можете создать список в разделяемой адресной книге.";
 "Warning" = "Предупреждение";
 "Can't contact server" = "Произошла ошибка при обращении к серверу. Пожалуйста, повторите попытку позже.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Вам не предоставлено право доступа к этому модулю/системе. Пожалуйста, свяжитесь с администратором.";
 "You don't have the required privileges to perform the operation."
 = "У Вас нет права производить эту операцию.";
-
 "noEmailForDelegation" = "Вы должны указать адрес e-mail, на который вы хотите делегировать приглашение.";
 "delegate is organizer" = "Это организатор. Выберите другого приглашаемого.";
 "delegate is a participant" = "Приглашаемый уже участник.";
 "delegate is a group" = "Указанный адрес - адрес группы. Вы можете делегировать приглашение лишь отдельным людям.";
-
 "Snooze for " = "Отложить на";
 "5 minutes" = "5 минут";
 "10 minutes" = "10 минут";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 минут";
 "1 hour" = "1 час";
 "1 day" = "1 день";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Отмена";
 "Yes" = "Да";
 "No" = "Нет";
-
 /* alarms */
-"Reminder:" = "Напоминание:";
-"Start:" = "Начало:";
-"Due Date:" = "Дата начала:";
-"Location:" = "Место:";
-
+"Reminder" = "Напоминание";
+"Start" = "Начало";
+"Due Date" = "Дата начала";
+"Location" = "Место";
 /* mail labels */
 "Important" = "Важно";
 "Work" = "Работа";
 "Personal" = "Личное";
 "To Do" = "К исполнению";
 "Later" = "Позже";
-
 "a2_Sunday" = "Вс";
 "a2_Monday" = "Пн";
 "a2_Tuesday" = "Вт";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "Чт";
 "a2_Friday" = "Пт";
 "a2_Saturday" = "Сб";
+"Access Rights" = "Права доступа";
+"Add User" = "Добавить пользователя";
+"Loading" = "Загружается";
+"No such user." = "Нет такого пользователя";
+"You cannot (un)subscribe to a folder that you own!" = "Вы не можете подписаться на или отписаться от папки, которой владеете.";
+"SOGo" = "SOGo";
+"Modules" = "Модули";

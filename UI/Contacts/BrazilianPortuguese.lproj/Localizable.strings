@@ -4,7 +4,6 @@
 "Address" = "Catálogo";
 "Photos" = "Fotos";
 "Other" = "Outros";
-
 "Address Books" = "Catálogo de Endereços";
 "Addressbook" = "Catálogo";
 "Addresses" = "Endereços";
@@ -22,6 +21,7 @@
 "HomePhone" = "Telefone Residencial";
 "Lastname" = "Último Nome";
 "Location" = "Localização";
+"Add a category" = "Adicionar uma categoria";
 "MobilePhone" = "Telefone Celular";
 "Name" = "Nome";
 "OfficePhone" = "Telefone Comercial";
@@ -38,29 +38,37 @@
 "invalidemailwarn" = "O email informado é inválido";
 "new" = "novo";
 "Preferred Phone" = "Telefone Preferencial";
-
 "Move To" = "Mover para";
 "Copy To" = "Copiar para";
-"Add to:" = "Adicionar em:";
-
+"Add to" = "Adicionar em";
+/* Subheader of empty addressbook */
+"No contact" = "Sem contato";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Inicie uma pesquisa para abrir este catálogo";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contatos";
+/* No contact matching search criteria */
+"No matching contact" = "Nenhum contato encontrado";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contatos encontrados";
+/* Number of selected contacts in list */
+"selected" = "selecionado";
+/* Empty right pane */
+"No contact selected" = "Nenhum contato selecionado";
 /* Tooltips */
-
 "Create a new address book card" = "Cria um novo contato";
 "Create a new list" = "Cria uma nova lista";
 "Edit the selected card" = "Edita o contato selecionado";
 "Send a mail message" = "Envia uma mensagem de email";
 "Delete selected card or address book" = "Apaga o contato ou catálogo selecionado";
 "Reload all contacts" = "Recarregar todos os contatos";
-
 "htmlMailFormat_UNKNOWN" = "Desconhecido";
 "htmlMailFormat_FALSE" = "Texto Puro";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Nome ou Email";
 "Category" = "Categoria";
 "Personal Addressbook" = "Catálogo Pessoal";
 "Search in Addressbook" = "Localizar no Catálogo";
-
 "New Card" = "Novo Contato";
 "New List" = "Nova Lista";
 "Edit" = "Editar";
@@ -71,68 +79,50 @@
 "Instant Message" = "Mensagem Instantânea";
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
-
 "Please wait..." = "Por favor, aguarde...";
 "No possible subscription" = "Sem possibilidades de inscrição";
-
 "Preferred" = "Preferido";
 "Display" = "Exibição";
 "Display Name" = "Exibir Nome";
-"Email:" = "Endereço de Email:";
-"Additional Email:" = "Email Adicional:";
-
+"Additional Email" = "Email Adicional";
 "Phone Number" = "Telefone";
-"Prefers to receive messages formatted as:" = "Prefere receber mensagens formatadas como:";
-"Screen Name:" = "Nome de Exibição:";
-"Categories:" = "Categorias:";
-
-"First:" = "Primeiro Nome:";
-"Last:" = "Último Nome:";
+"Prefers to receive messages formatted as" = "Prefere receber mensagens formatadas como";
+"Categories" = "Categorias";
+"First" = "Primeiro Nome";
+"Last" = "Último Nome";
 "Nickname" = "Apelido";
-
 "Telephone" = "Telefone";
-"Work:" = "Comercial:";
-"Home:" = "Residencial:";
-"Fax:" = "Fax:";
-"Mobile:" = "Celular:";
-"Pager:" = "Pager:";
-
+"Work" = "Comercial";
+"Mobile" = "Celular";
+"Pager" = "Pager";
 /* categories */
 "contacts_category_labels" = "Colega, Concorrente, Cliente, Amigo, Família, Parceiro de Negócios, Provedor, Press, VIP";
-"Categories" = "Categorias";
 "New category" = "Nova categoria";
-
 /* adresses */
 "Title" = "Título";
-"Service:" = "Serviço:";
-"Company:" = "Empresa:";
-"Department:" = "Departamento";
-"Organization:" = "Organização";
-"Address:" = "Endereço:";
+"Service" = "Serviço";
+"Company" = "Empresa";
+"Department" = "Departamento";
 "City" = "Cidade";
-"State_Province:" = "Estado:";
-"ZIP_Postal Code:" = "CEP:";
+"State_Province" = "Estado";
+"ZIP_Postal Code" = "CEP";
 "Country" = "País";
-"Web Page:" = "Página Web:";
-
-"Work" = "Comercial";
+"Web Page" = "Página Web";
 "Other Infos" = "Outras Informações";
-
 "Note" = "Notas";
-"Timezone:" = "Fuso Horário:";
+"Timezone" = "Fuso Horário";
 "Birthday" = "Aniversário";
 "Birthday (yyyy-mm-dd)" = "Aniversário (yyyy-mm-dd)";
-"Freebusy URL:" = "URL Livre/Ocupado:";
-
+"Freebusy URL" = "URL Livre/Ocupado";
 "Add as..." = "Adicionar como...";
 "Recipient" = "Destinatário";
 "Carbon Copy" = "Cópia Carbono";
 "Blind Carbon Copy" = "Cópia Carbono Oculta";
-
 "New Addressbook..." = "Novo Catálogo...";
 "Subscribe to an Addressbook..." = "Inscrever-se em um Catálogo...";
 "Remove the selected Addressbook" = "Remover o Catálogo selecionado";
-
+"Subscribe to a shared folder" = "Inscrever uma pasta compartilhada";
+"Search User" = "Pesquisar Usuário";
 "Name of the Address Book" = "Nome do Catálogo";
 "Are you sure you want to delete the selected address book?"
 = "Você tem certeza que quer apagar o catálogo selecionado?";
@@ -140,27 +130,19 @@
 = "Você não pode apagar nem retirar-se de uma catálogo público.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Você não pode apagar nem retirar-se de uma catálogo pessoal.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Você tem certeza que quer apagar os contatos selecionados?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Você não pode apagar o contato de \"%{0}\".";
-
-
-
 "You cannot subscribe to a folder that you own!"
 = "Você não pode inscrever-se em uma pasta que você é dono.";
 "Unable to subscribe to that folder!"
 = "Não foi possível inscrever-se a esta pasta.";
-
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
-
 "Any Authenticated User" = "Qualquer Usuário Autenticado";
 "Public Access" = "Acesso Público";
-
 "This person can add cards to this addressbook."
 = "Essa pessoa pode adicionar contatos ao meu catálogo.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +153,14 @@
 = "Essa pessoa pode ler os contatos deste catálogo.";
 "This person can erase cards from this addressbook."
 = "Essa pessoa pode apagar contatos deste catálogo.";
-
 "The selected contact has no email address."
 = "O contato selecionado não tem endereço de email.";
-
 "Please select a contact." = "Por favor, selecione um contato.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "Você não pode gravar neste catálogo.";
 "Forbidden" = "Você não pode gravar neste catálogo.";
 "Invalid Contact" = "O contato selecionado não existe.";
 "Unknown Destination Folder" = "O catálogo de destino selecionado não existe.";
-
 /* Lists */
 "List details" = "Detalhes da lista";
 "List name" = "Lista nome";
@@ -204,12 +181,46 @@
 "An error occured while importing contacts." = "Ocorreu um erro ao importar contatos.";
 "No card was imported." = "Nenhum cartão foi importado.";
 "A total of %{0} cards were imported in the addressbook." = "Um total de %{0} cartões foram importados no catálogo de endereços.";
-
 "Reload" = "Atualizar";
-
 /* Properties window */
-"Address Book Name:" = "Nome do Catálogo:";
+"Address Book Name" = "Nome do Catálogo";
 "Links to this Address Book" = "Link para este Catálogo";
 "Authenticated User Access" = "Acesso de Usuário Autenticado";
-"CardDAV URL: " = "CardDAV URL:";
-
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Opções";
+"Rename" = "Renomear";
+"Subscriptions" = "Assinaturas";
+"Global Addressbooks" = "Catálogo Global";
+"Search" = "Pesquisa";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordem Descendente";
+"Back" = "Voltar";
+"Select All" = "Selecionar Tudo";
+"Copy contacts" = "Copiar contatos";
+"More messages options" = "Mais opções de mensagens";
+"New Contact" = "Novo Contato";
+"Close" = "Fechar";
+"More contact options" = "Mais opções de contatos";
+"Organization Unit" = "Unidade Organizacional";
+"Add Organizational Unit" = "Adicionar Unidade Organizacional";
+"Type" = "Tipo";
+"Email Address" = "Endereço de Email";
+"New Email Address" = "Novo Endereço de Email";
+"New Phone Number" = "Novo Número de Telefone";
+"URL" = "URL";
+"New URL" = "Nova URL";
+"street" = "rua";
+"Postoffice" = "Caixa Postal";
+"Region" = "Região";
+"Postal Code" = "CEP";
+"New Address" = "Novo Endereço";
+"Reset" = "Limpar";
+"Description" = "Descrição";
+"Add Member" = "Adicionar Membro";
+"Subscribe" = "Inscrever";
+"Add Birthday" = "Adicionar Data de Aniversário";
+"Import" = "Importar";
+"More options" = "Mais opções";
+"Role" = "Papel";
+"Add Screen Name" = "Adicionar Nome de Apresentação";
+"Synchronize" = "Sincronizar";

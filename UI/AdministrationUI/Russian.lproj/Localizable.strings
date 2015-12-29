@@ -2,14 +2,25 @@
 
 "Help" = "Помощь";
 "Close" = "Закрыть";
-
 "Modules" = "Модули";
-
 /* Modules short names */
 "ACLs" = "Списки доступа (ACL)";
-
 /* Modules titles */
 "ACLs_title" = "Управление списками доступа к пользовательским папкам (ACL)";
-
 /* Modules descriptions */
 "ACLs_description" = "<p> Списки контроля доступа модуль администрирования позволяет изменять списки ACL календарей каждого пользователя и адрес книги. </p><p> Чтобы изменить списки ACL папки пользователя, введите имя пользователя в поле поиска в верхней части окна и дважды щелкнуть по нужной папке. </p>";
+"Name or Email" = "Имя или Email";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Начать поиск для редактирования прав";
+/* Rights module: Empty search result */
+"No matching user" = "Нет соотвествующего пользователя";
+/* Rights module: no selection */
+"No resource selected" = "Ресурс не выбран";
+"Add User" = "Добавить пользователя";
+"Subscribe User" = "Подписать пользователя";
+"Rights" = "Права";
+"Search Users" = "Поиск пользователей";
+"users found" = "пользователей найдено";
+"No resource" = "Нет ресурса";
+"Any Authenticated User" = "Любой авторизованный пользователь";
+"Public Access" = "Публичный доступ";

@@ -4,7 +4,6 @@
 "Save" = "Enregistrer";
 "Close" = "Fermer";
 "Edit User Rights" = "Édition des droits";
-
 "Home" = "Accueil";
 "Calendar" = "Agenda";
 "Address Book"	= "Carnet d'adresses";
@@ -14,30 +13,21 @@
 "Disconnect" = "Quitter";
 "Right Administration" = "Partage";
 "Log Console (dev.)" = "Journal (dév.)";
-
 "User" = "Utilisateur";
 "Vacation message is enabled" = "Votre message d'absence prolongée est activé";
-
 "Help" = "Aide";
-
 "noJavascriptError" = "SOGo requiert l'utilisation de Javascript. Veuillez vous assurer que cette option est disponible et activée dans votre fureteur.";
 "noJavascriptRetry" = "Réessayer";
-
-"Owner:" = "Propriétaire :";
+"Owner" = "Propriétaire";
 "Publish the Free/Busy information" = "Publier l'occupation du temps";
-
 "Add..." = "Ajouter...";
 "Remove" = "Enlever";
-
 "Subscribe User" = "Abonner l'utilisateur";
-
 "Any Authenticated User" = "Tout utilisateur identifié";
 "Public Access" = "Accès public";
 "Any user not listed above" = "Tout utilisateur du système non-listé ci-dessus";
 "Anybody accessing this resource from the public area" = "Quiconque accède à cette ressource via l'espace public";
-
 "Sorry, the user rights can not be configured for that object." = "Désolé, les droits d'accès ne peuvent être configurés pour cet objet.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Tout utilisateur ayant un compte sur ce système aura accès à votre boîte «%{0}». Voulez-vous vraiment faire confiance à tous ces utilisateurs?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "N'importe quel internaute aura potentiellement accès à votre carnet d'adresses «%{0}», même s'il n'a pas de compte sur ce système. Est-ce que le contenu de votre calendrier est adapté à une telle visibilité?";
 "Give Access" = "Appliquer les droits";
 "Keep Private" = "Garder privé";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Impossible de s'abonner à ce dossier.";
@@ -70,17 +59,14 @@
         = "Impossible de créer une liste dans un dossier partagé.";
 "Warning" = "Avertissement";
 "Can't contact server" = "Une erreur est survenue lors de la connexion au serveur. Veuillez réessayer plus tard.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Vous n'êtes pas autorisé à accéder à ce module ou ce système. Veuillez contacter votre administrateur système.";
 "You don't have the required privileges to perform the operation."
 = "Vous n'avez pas les privilèges requis pour effectuer cette opération.";
-
 "noEmailForDelegation" = "Vous devez spécifier l'adresse de la personne à qui vous voulez déléguez votre invitation.";
 "delegate is organizer" = "L'adresse spécifiée correspond à l'organisateur. Veuillez entrer un autre délégué.";
 "delegate is a participant" = "Le délégué est déjà un participant.";
 "delegate is a group" = "L'adresse spécifiée correspond à un groupe. Vous ne pouvez déléguer qu'à une personne.";
-
 "Snooze for " = "Rappel dans ";
 "5 minutes" = "5 minutes";
 "10 minutes" = "10 minutes";
@@ -89,26 +75,22 @@
 "45 minutes" = "45 minutes";
 "1 hour" = "1 heure";
 "1 day" = "1 jour";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annuler";
 "Yes" = "Oui";
 "No" = "Non";
-
 /* alarms */
-"Reminder:" = "Rappel :";
-"Start:" = "Début :";
-"Due Date:" = "Échéance :";
-"Location:" = "Lieu :";
-
+"Reminder" = "Rappel";
+"Start" = "Début";
+"Due Date" = "Échéance";
+"Location" = "Lieu";
 /* mail labels */
 "Important" = "Important";
 "Work" = "Travail";
 "Personal" = "Personnel";
 "To Do" = "À faire";
 "Later" = "Peut attendre";
-
 "a2_Sunday" = "Di";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";

@@ -1,7 +1,6 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-
 "Create a new event" = "Crear un esdeveniment nou en el calendari";
 "Create a new task" = "Crear una tasca nova";
 "Edit this event or task" = "Modificar aquest esdeveniment o tasca";
@@ -12,46 +11,32 @@
 "Switch to week view" = "Canviar a vista setmanal";
 "Switch to month view" = "Canviar a vista mensual";
 "Reload all calendars" = "Actualitzar tots els calendaris";
-
 /* Tabs */
 "Date" = "Data";
 "Calendars" = "Calendaris";
-
+"No events for selected criteria" = "No hi ha esdeveniments per els criteris seleccionats";
+"No tasks for selected criteria" = "Cap tasca per els criteris seleccionats";
 /* Day */
-
 "DayOfTheMonth" = "Dia del mes";
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Avui";
-
 "Previous Day" = "Dia anterior";
 "Next Day" = "Dia següent";
-
 /* Week */
-
 "Week" = "Setmana";
 "this week" = "Aquesta setmana";
-
 "Week %d" = "Setmana %d";
-
 "Previous Week" = "Setmana anterior";
 "Next Week" = "Setmana següent";
-
 /* Month */
-
 "this month" = "Aquest mes";
-
 "Previous Month" = "Mes anterior";
 "Next Month" = "Mes següent";
-
 /* Year */
-
 "this year" = "enguany";
-
 /* Menu */
-
 "Calendar" = "Calendari";
 "Contacts" = "Contactes";
-
 "New Calendar..." = "Calendari nou...";
 "Delete Calendar" = "Esborrar calendari";
 "Unsubscribe Calendar" = "Cancel·lar subscripció calendari";
@@ -69,54 +54,40 @@
 "An error occurred while importing calendar." = "Hi ha hagut un error en importar el calendari.";
 "No event was imported." = "No s'ha importat cap esdeveniment.";
 "A total of %{0} events were imported in the calendar." = "Han estat importats %{0} esdeveniments al calendari.";
-
 "Compose E-Mail to All Attendees" = "Crear correu per a tots els assistents";
 "Compose E-Mail to Undecided Attendees" = "Crear correu per a tots els assistents indecisos (sense confirmació)";
-
 /* Folders */
 "Personal calendar" = "Calendari personal";
-
 /* Misc */
-
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Prohibit";
-
 /* acls */
-
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
-
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";
-
 "label_Public" = "Públic";
 "label_Private" = "Privat";
 "label_Confidential" = "Confidencial";
-
 "label_Viewer" = "Veure-ho tot";
 "label_DAndTViewer" = "Veure data i hora";
 "label_Modifier" = "Modificar";
 "label_Responder" = "Respondre a";
 "label_None" = "Cap";
-
 "View All" = "Veure-ho tot";
 "View the Date & Time" = "Veure data i hora";
 "Modify" = "Modificar";
 "Respond To" = "Respondre a";
 "None" = "Cap";
-
 "This person can create objects in my calendar."
 = "Aquesta persona pot crear elements en el meu calendari.";
 "This person can erase objects from my calendar."
 = "Aquesta persona pot eliminar elements del meu calendari.";
-
 /* Button Titles */
-
 "Subscribe to a Calendar..." = "Subscriure a un calendari...";
 "Remove the selected Calendar" = "Esborrar calendari seleccionat";
-
+"New calendar" = "Nou calendari";
 "Name of the Calendar" = "Nom del calendari";
-
 "new" = "Nou";
 "Print view" = "Imprimeix la vista";
 "edit" = "Modificar";
@@ -128,12 +99,11 @@
 "Attach" = "Adjuntar";
 "Update" = "Actualitzar";
 "Cancel" = "Cancel·lar";
+"Reset" = "Restablir";
+"Save" = "Desar";
 "show_rejected_apts" = "Mostrar cites rebutjades";
 "hide_rejected_apts" = "Ocultar cites rebutjades";
-
-
 /* Schedule */
-
 "Schedule" = "Agenda d'esdeveniments";
 "No appointments found" = "No hi ha cites";
 "Meetings proposed by you" = "Reunions que heu proposat";
@@ -145,9 +115,7 @@
 "more attendees" = "Més assistents";
 "Hide already accepted and rejected appointments" = "Ocultar cites confirmades o rebutjades";
 "Show already accepted and rejected appointments" = "Mostrar cites confirmades o rebutjades";
-
 /* Print view */
-
 "LIST" = "Llista";
 "Print Settings" = "Configuració d'Impressió";
 "Title" = "Títol";
@@ -157,9 +125,10 @@
 "Tasks with no due date" = "Tasques sense data de finalització";
 "Display working hours only" = "Mostra només les hores de treball";
 "Completed tasks" = "Tasques Completades";
-
+"Display events and tasks colors" = "Mostrar els colors d'esdeveniments i tasques";
+"Borders" = "Bòrdes";
+"Backgrounds" = "Fons";
 /* Appointments */
-
 "Appointment viewer" = "Mostrar cita";
 "Appointment editor" = "Modificar cita";
 "Appointment proposal" = "Proposta de cita";
@@ -167,13 +136,12 @@
 "Start" = "Des de";
 "End" = "Fins a";
 "Due Date" = "Data límit";
-"Title" = "Títol";
-"Calendar" = "Calendari";
 "Name" = "Nom";
 "Email" = "Correu";
 "Status" = "Estat";
 "% complete" = "% complet";
 "Location" = "Lloc";
+"Add a category" = "Afegir una categoria";
 "Priority" = "Prioritat";
 "Privacy" = "Privacitat";
 "Cycle" = "Repetir";
@@ -192,14 +160,11 @@
 "General" = "General";
 "Reply" = "Respondre";
 "Created by" = "Creat per";
-
-
-"Target:" = "URL document:";
-
+"You are invited to participate" = "Us convidem a participar";
+"Target" = "URL document";
 "attributes" = "atributs";
 "attendees" = "assistents";
 "delegated from" = "delegat de";
-
 /* checkbox title */
 "is private" = "és privat";
 /* classification */
@@ -208,26 +173,19 @@
 /* text used in overviews and tooltips */
 "empty title" = "Sense títol";
 "private appointment" = "Cita privada";
-
 "Change..." = "Modificar...";
-
 /* Appointments (participation state) */
-
 "partStat_NEEDS-ACTION" = "Requereix acció";
 "partStat_ACCEPTED" = "Hi assistiré";
 "partStat_DECLINED" = "No hi assistiré";
 "partStat_TENTATIVE" = "Ho confirmaré més tard";
 "partStat_DELEGATED" = "Delegat";
 "partStat_OTHER" = "Altre";
-
 /* Appointments (error messages) */
-
 "Conflicts found!" = "Hi ha conflictes!";
 "Invalid iCal data!" = "Dades iCal no vàlides!";
 "Could not create iCal data!" = "No es poden crear dades en format iCal!";
-
 /* Searching */
-
 "view_all" = "Tots els esdeveniments";
 "view_today" = "Avui";
 "view_next7" = "Els pròxims 7 dies";
@@ -236,36 +194,26 @@
 "view_thismonth" = "Aquest mes";
 "view_future" = "Tots els esdeveniments futurs";
 "view_selectedday" = "Dia seleccionat";
-
 "view_not_started" = "Tasques no iniciades";
 "view_overdue" = "Tasques vençudes";
 "view_incomplete" = "Incomplete tasks";
-
 "View" = "Veure";
 "Title, category or location" = "Títol, categoria o ubicació";
 "Entire content" = "Tot el contingut";
-
 "Search" = "Cercar";
 "Search attendees" = "Cercar assistents";
 "Search resources" = "Cercar recursos";
 "Search appointments" = "Cercar cites";
-
 "All day Event" = "Tot el dia";
 "check for conflicts" = "Cercar conflictes";
-
-"Browse URL" = "Anar a URL";
-
+"URL" = "URL";
 "newAttendee" = "Afegir assistent";
-
 /* calendar modes */
-
 "Overview" = "Resum";
 "Chart" = "Taula";
 "List" = "Llista";
 "Columns" = "Columnes";
-
 /* Priorities */
-
 "prio_0" = "No especificada";
 "prio_1" = "Alta";
 "prio_2" = "Alta";
@@ -276,7 +224,6 @@
 "prio_7" = "Baixa";
 "prio_8" = "Baixa";
 "prio_9" = "Baixa";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Esdeveniment públic";
 "CONFIDENTIAL_vevent" = "Esdeveniment confidencial";
@@ -284,7 +231,6 @@
 "PUBLIC_vtodo" = "Tasca pública";
 "CONFIDENTIAL_vtodo" = "Tasca confidencial";
 "PRIVATE_vtodo" = "Tasca privada";
-
 /* status type */
 "status_" = "No especifat";
 "status_NOT-SPECIFIED" = "No especificat";
@@ -294,9 +240,7 @@
 "status_NEEDS-ACTION" = "Necessita intervenció";
 "status_IN-PROCESS" = "En procés";
 "status_COMPLETED" = "Completat";
-
 /* Cycles */
-
 "cycle_once" = "sense repetició";
 "cycle_daily" = "diàriament";
 "cycle_weekly" = "setmanalment";
@@ -305,15 +249,12 @@
 "cycle_monthly" = "mensualment";
 "cycle_weekday" = "cada dia laborable";
 "cycle_yearly" = "anualment";
-
 "cycle_end_never" = "per sempre";
 "cycle_end_until" = "fins a: ";
-
 "Recurrence pattern" = "Patró de repetició";
 "Range of recurrence" = "Rang de repetició";
-
-"Repeat" = "Repetir";
 "Daily" = "diàriament";
+"Multi-Columns" = "Multi-Columnes";
 "Weekly" = "setmanalment";
 "Monthly" = "mensualment";
 "Yearly" = "anualment";
@@ -322,27 +263,30 @@
 "Week(s)" = "setmana/es";
 "On" = "en";
 "Month(s)" = "mes/mesos";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "El";
 "Recur on day(s)" = "Repetir en dia/dies";
 "Year(s)" = "any/s";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "de";
 "No end date" = "Sense data final";
 "Create" = "Fins a crear";
 "appointment(s)" = "cita/es";
 "Repeat until" = "Fins a ";
-
+"End Repeat" = "Acabar repetició";
+"Never" = "Mai";
+"After" = "després";
+"On Date" = "En data";
+"times" = "vegades";
 "First" = "Primer";
 "Second" = "Segon";
 "Third" = "Tercer";
 "Fourth" = "Quart";
 "Fift" = "Cinquè";
 "Last" = "Últim";
-
 /* Appointment categories */
-
 "category_none" = "Cap";
 "category_labels" = "Aniversari,Natalici,Negocis,Telefonades,Clients,Competició,Feina,Favorits,Seguiment,Regals,Festes,Idees,Reunió,Assumptes,Altres,Personal,Projectes,Vacances públiques,Estat,Proveïdors,Viatges,Vacances";
-
 "repeat_NEVER" = "sense repetició";
 "repeat_DAILY" = "diàriament";
 "repeat_WEEKLY" = "setmanalment";
@@ -351,7 +295,6 @@
 "repeat_MONTHLY" = "mensualment";
 "repeat_YEARLY" = "anualment";
 "repeat_CUSTOM" = "personalitzar...";
-
 "reminder_NONE" = "Sense recordatori";
 "reminder_5_MINUTES_BEFORE" = "5 minuts abans";
 "reminder_10_MINUTES_BEFORE" = "10 minuts abans";
@@ -366,51 +309,43 @@
 "reminder_2_DAYS_BEFORE" = "2 dies abans";
 "reminder_1_WEEK_BEFORE" = "1 setmana abans";
 "reminder_CUSTOM" = "personalitzar...";
-
 "reminder_MINUTES" = "minuts";
 "reminder_HOURS" = "hores";
 "reminder_DAYS" = "dia";
+"reminder_WEEKS" = "setmanes";
 "reminder_BEFORE" = "abans";
 "reminder_AFTER" = "després";
 "reminder_START" = "l'esdeveniment comença";
 "reminder_END" = "l'esdeveniment acaba";
 "Reminder Details" = "Detalls del recordatori";
-
 "Choose a Reminder Action" = "Acció per al recordatori";
 "Show an Alert" = "Mostrar un avís";
 "Send an E-mail" = "Enviar un correu";
 "Email Organizer" = "Correu a l'organitzador/a";
 "Email Attendees" = "Correu als assistents";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
-
 "Show Time as Free" = "Mostrar temps com a lliure";
-
 /* email notifications */
 "Send Appointment Notifications" = "Envia notificacions de cites";
-
+"From" = "De";
+"To" = "Per a";
 /* validation errors */
-
 validate_notitle           = "Sense títol, continuar?";
 validate_invalid_startdate = "Data de començament incorrecta";
 validate_invalid_enddate   = "Data d'acabament incorrecta";
 validate_endbeforestart    = "La data/hora de començament és posterior a la d'acabament.";
-
 "Events" = "Esdeveniments";
 "Tasks" = "Tasques";
 "Show completed tasks" = "Mostrar tasques completades";
-
 /* tabs */
 "Task" = "Tasca";
 "Event" = "Esdeveniment";
 "Recurrence" = "Repetició";
-
 /* toolbar */
 "New Event" = "Esdeveniment nou";
 "New Task" = "Tasca nova";
@@ -421,9 +356,9 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "Week View" = "Vista setmanal";
 "Month View" = "Vista mensual";
 "Reload" = "Actualitzar";
-
+/* Number of selected components in events or tasks list */
+"selected" = "seleccionats";
 "eventPartStatModificationError" = "L'estat de participació no pot ser actualitzat.";
-
 /* menu */
 "New Event..." = "Esdeveniment nou...";
 "New Task..." = "Tasca nova...";
@@ -432,35 +367,29 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "Select All" = "Seleccionar tot";
 "Workweek days only" = "Només dies laborables";
 "Tasks in View" = "Mostrar tasques";
-
 "eventDeleteConfirmation" = "El següent esdeveniment (s) s'esborrarà:";
 "taskDeleteConfirmation" = "Aquesta tasca s'esborrarà definitivament.";
 "Would you like to continue?" = "Voleu continuar?";
-
 "You cannot remove nor unsubscribe from your personal calendar."
 = "No podeu cancel·lar la subscripció al calendari personal o esborrar-lo.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Voleu esborrar el calendari \"%{0}\"?";
-
 /* Legend */
 "Participant" = "Assistent";
 "Optional Participant" = "Assistent opcional";
 "Non Participant" = "No assistent";
 "Chair" = "President";
-
 "Needs action" = "Requereix intervenció";
 "Accepted" = "Confirmada";
 "Declined" = "Rebutjada";
 "Tentative" = "Provisional";
-
 "Free" = "Lliure";
 "Busy" = "Ocupat";
 "Maybe busy" = "Possiblement ocupat";
 "No free-busy information" = "Sense informació de disponibilitat.";
-
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Proposar interval temporal:";
-"Zoom:" = "Ampliació:";
+"Suggest time slot" = "Proposar interval temporal";
+"Zoom" = "Ampliació";
 "Previous slot" = "Interval anterior";
 "Next slot" = "Interval següent";
 "Previous hour" = "Hora anterior";
@@ -469,64 +398,49 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "The whole day" = "Tot el dia";
 "Between" = "Entre";
 "and" = "i";
-
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Hi ha un conflicte temporal amb un o més assistents.\nTot i així, voleu mantenir la cita?";
-
-/* apt list */
-"Title" = "Títol";
-"Start" = "Inici";
-"End" = "Final";
-"Due Date" = "Data límit";
-"Location" = "Lloc";
-
+/* events list */
+"Due" = "Deguda el";
 "(Private Event)" = "(Esdeveniment privat)";
-
 vevent_class0 = "(Esdeveniment públic)";
 vevent_class1 = "(Esdeveniment privat)";
 vevent_class2 = "(Esdeveniment confidencial)";
-
-"Priority" = "Prioritat";
-"Category" = "Categoria";
-
+/* tasks list */
+"Descending Order" = "Ordre descendent";
 vtodo_class0 = "(Tasca pública)";
 vtodo_class1 = "(Tasca privada)";
 vtodo_class2 = "(Tasca confidencial)";
-
 "closeThisWindowMessage" = "Gràcies! Ja podeu tancar la finestra.";
 "Multicolumn Day View" = "Vista diària multicolumna";
-
 "Please select an event or a task." = "Si us plau, seleccioneu un esdeveniment o una tasca";
-
 "editRepeatingItem" = "L'element que editeu és un element repetitiu. Voleu editar-ne totes les ocurrències o només la que heu assenyalat?";
 "button_thisOccurrenceOnly" = "Només aquesta ocurrència";
 "button_allOccurrences" = "Totes les ocurrències";
-
+"Edit This Occurrence" = "Modificar aquesta ocurrència";
+"Edit All Occurrences" = "Modificar totes les ocurrències";
+"Update This Occurrence" = "Actualitzar aquesta ocurrència";
+"Update All Occurrences" = "Actualitzar totes les ocurrències";
 /* Properties dialog */
-"Name" = "Nom";
 "Color" = "Color";
-
 "Include in free-busy" = "Inclòs en lliure-ocupat";
-
 "Synchronization" = "Sincronització";
 "Synchronize" = "Sincronitza";
-"Tag:" = "Redacció:";
-
+"Tag" = "Redacció";
 "Display" = "Mostra";
 "Show alarms" = "Mostra les alarmes";
 "Show tasks" = "Mostra les tasques";
-
 "Notifications" = "Notificacions";
 "Receive a mail when I modify my calendar" = "Rebre un correu de notificació quan modifique el meu calendari";
 "Receive a mail when someone else modifies my calendar" = "Rebre un correu de notificació quan altra persona modifique el meu calendari ";
 "When I modify my calendar, send a mail to" = "Quan modifique el meu calendari, enviar un correu a ";
-
+"Email Address" = "Adreça de correu electrònic";
+"Export" = "Exportar";
 "Links to this Calendar" = "Enllaços a aquest calendari";
 "Authenticated User Access" = "Accés autenticat";
 "CalDAV URL" = "URL CalDAV";
 "WebDAV ICS URL" = "url WebDAV ICS";
 "WebDAV XML URL" = "url WebDAV XML";
-
 /* Error messages */
 "dayFieldInvalid" = "Cal especificar un valor numèric per al camp Dies major o igual que 1.";
 "weekFieldInvalid" = "Cal especificar un valor numèric per al camp Setmana/es major o igual que 1.";
@@ -544,18 +458,46 @@ vtodo_class2 = "(Tasca confidencial)";
 "DestinationCalendarError" = "El calendari origen i destinació són el mateix. Intenteu copiar-lo en un calendari diferent.";
 "EventCopyError" = "Error de còpia. Intenteu-lo copiar en un calendari diferent.";
 "Please select at least one calendar" = "Per favor, seleccionar almenys un calendari";
-
-
 "Open Task..." = "Obrir tasca...";
 "Mark Completed" = "Marcar com a completada";
 "Delete Task" = "Esborrar tasca";
 "Delete Event" = "Esorrar esdeveniment";
 "Copy event to my calendar" = "Copiar l'esdeveniment al meu calendari";
 "View Raw Source" = "Veure l'original";
-
+"Subscriptions" = "Subscripcions";
+"Subscribe to a shared folder" = "Subscriure's a una carpeta compartida";
 "Subscribe to a web calendar..." = "Subscriure's a un calendari web...";
 "URL of the Calendar" = "URL del calendari";
 "Web Calendar" = "Calendari Web";
+"Web Calendars" = "Calendaris web";
 "Reload on login" = "Actualitzar en connectar-se";
 "Invalid number." = "Número incorrecte";
 "Please identify yourself to %{0}" = "Per favor, identifica't davant %{0}";
+"quantity" = "quantitat";
+"Current view" = "Vista actual";
+"Selected events and tasks" = "Esdeveniments i tasques seleccionats";
+"Custom date range" = "Interval de data personalitzat";
+"Select starting date" = "Seleccioni la data d'inici";
+"Select ending date" = "Seleccioneu la data de terminació";
+"Delegated to" = "Delegat a";
+"Keep sending me updates" = "Seguir enviant-me actualitzacions";
+"OK" = "D'acord";
+"Confidential" = "Confidencial";
+"Enable" = "Activar";
+"Filter" = "Filtre";
+"Sort" = "Ordenar";
+"Back" = "Enrere";
+"Day" = "Dia";
+"Month" = "Mes";
+"New Appointment" = "Nova cita";
+"filters" = "Filtres";
+"Today" = "Avui";
+"More options" = "Més opcions";
+"Delete This Occurrence" = "Suprimeix aquesta ocurrència";
+"Delete All Occurrences" = "Suprimeix totes les ocurrències";
+"Add From" = "Afegir des";
+"Add Due" = "Afegir Deguda el";
+"Import" = "Importar";
+"Rename" = "Canviar el nom";
+"Import Calendar" = "Importar calendari";
+"Select an ICS file." = "Seleccionar un fitxer iCalendar .ics";

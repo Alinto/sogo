@@ -1068,6 +1068,8 @@ freeBusyRequest.prototype = {
                                                         this.mEnd);
               this.mListener.onRequestComplete(this, true, entries);
           }
+      } else if (http.status == 404 && this.mPendingRequests == 0) {
+          this.mListener.onRequestComplete(this, false);
       }
   }
 };
@@ -1121,13 +1123,17 @@ editorConflictHandler.prototype = {
 
   onRequestComplete: function eCH_onRequestComplete(fbRequest, success,
                                                     entries) {
-      var periodEntries = entries.slice(this.mQuOffset, this.mQuOffsetMax);
-      if (periodEntries.indexOf("1") > -1) {
-          this.mListener.onRequestComplete(this, false);
-      }
-      else {
-          this.mCurrentUid++;
-          this._step();
+      if (success) {
+          var periodEntries = entries.slice(this.mQuOffset, this.mQuOffsetMax);
+          if (periodEntries.indexOf("1") > -1) {
+              this.mListener.onRequestComplete(this, false);
+          }
+          else {
+              this.mCurrentUid++;
+              this._step();
+          }
+      } else {
+          this.mListener.onRequestComplete(this, true);
       }
   }
 };

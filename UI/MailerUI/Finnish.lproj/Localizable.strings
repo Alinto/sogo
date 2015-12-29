@@ -14,7 +14,6 @@
 "Stop"        = "Lopeta";
 "Write"       = "Kirjoita";
 "Search"      = "Etsi";
-
 "Send" = "Lähetä";
 "Contacts" = "Yhteystiedot";
 "Attach" = "Liitä";
@@ -22,9 +21,7 @@
 "Options" = "Asetukset";
 "Close" = "Sulje";
 "Size" = "Koko";
-
 /* Tooltips */
-
 "Send this message now" = "Lähetä viesti nyt";
 "Select a recipient from an Address Book" = "Valitse vastaanottaja osoitekirjasta";
 "Include an attachment" = "Lisää liitetiedosto";
@@ -43,34 +40,26 @@
 "Unread" = "Lukematta";
 "Flagged" = "Merkitty";
 "Search multiple mailboxes" = "Etsi useista postilaatikoista";
-
 /* Main Frame  */
-
 "Home"                 = "Koti"; 
 "Calendar"             = "Kalenteri";
 "Addressbook"          = "Osoitekirja";
 "Mail"                 = "Sähköposti";
 "Right Administration" = "Oikeushallinta";
-
 "Help" = "Apua";
-
 /* Mail account main windows */
-
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Tervetuloa SOGo Sähköpostiin. Käytä vasemmanpuoleista hakupuuta sähköpostitiliesi selaamiseen.";
-
 "Read messages"       = "Luetut viestit";
 "Write a new message" = "Kirjoita uusi viesti";
-
-"Share: " = "Jaa:";
-"Account: " = "Tili:";
-"Shared Account: " = "Jaettu tili:";
-
+"Share" = "Jaa";
+"Account" = "Tili";
+"Shared Account" = "Jaettu tili";
+/* Empty right pane */
+"No message selected" = "Ei valittua viestiä";
 /* acls */
 "Access rights to" = "Käyttöoikeudet";
 "For user" = "Käyttäjälle";
-
 "Any Authenticated User" = "Kuka tahansa kirjautunut käyttäjä";
-
 "List and see this folder" = "Listaa ja näytä tämä kansio";
 "Read mails from this folder" = "Lue viestit tästä kansiosta";
 "Mark mails read and unread" = "Merkitse viestit luetuksi ja lukemattomaksi";
@@ -83,14 +72,10 @@
 "Expunge this folder" = "Poista tämä kansio";
 "Export This Folder" = "Vie tämä kansio";
 "Modify the acl of this folder" = "Muokkaa kansion käyttäjäoikeuksia";
-
 "Saved Messages.zip" = "TallennetutViestit.zip";
-
 "Update" = "Päivitä";
 "Cancel" = "Peruuta";
-
 /* Mail edition */
-
 "From"          = "Lähettäjä";
 "Subject"       = "Aihe";
 "To"            = "Vastaanottaja";
@@ -99,94 +84,73 @@
 "Reply-To"	    = "Vastausosoite";
 "Add address"   = "Lisää osoite";
 "Body"          = "Runko";
-
 "Open" = "Avaa.";
 "Select All" = "Valitse kaikki";
 "Attach Web Page..." = "Liitä Web-sivu...";
 "file" = "tiedosto";
 "files" = "tiedostot";
 "Save all" = "Tallenna kaikki";
-
 "to"            = "Vastaanottaja";
 "cc"            = "Kopio";
 "bcc"           = "Piilokopio";
-
+"Add a recipient" = "Lisää vastaanottaja";
 "Edit Draft..." = "Muokkaa luonnosta...";
 "Load Images" = "Lataa kuvat";
-
 "Return Receipt" = "Vastaanottokuittaus";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Viestin lähettäjä on pyytänyt lukukuittausta. Haluatko lähettää kuittauksen viestin lähettäjälle?";
 "Return Receipt (displayed) - %@"= "Vastaus kuittaus (näkyvä) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Tämä on vastaus kuittaus viestiin jonka lähetit %@lle.⏎ ⏎ Huom: Tämä kuittaus kertoo ainoastaan että viesti on näytetty vastaanottajan koneella. Viestin lukemisesta tai sen sisällön ymmärtämisestä ei ole takuuta.";
-
 "Priority" = "Prioriteetti";
 "highest" = "Korkein";
 "high" = "Korkea";
 "normal" = "Normaali";
 "low" = "Matala";
 "lowest" = "Matalin";
-
 "This mail is being sent from an unsecure network!" = "Tätä viestiä lähetetään turvattomasta verkosta!";
-
-"Address Book:" = "Osoitekirja:";
-"Search For:" = "Etsi:";
-
+"Address Book" = "Osoitekirja";
+"Search For" = "Etsi";
 /* Popup "show" */
-
 "all"     = "kaikki";
 "read"    = "luetut";
 "unread"  = "lukemattomat";
 "deleted" = "poistetut";
 "flagged" = "merkityt";
-
 /* MailListView */
-
 "Sender" = "Lähettäjä";
 "Subject or Sender" = "Aihe tai lähettäjä";
 "To or Cc" = "Vastaanottaja tai kopio";
 "Entire Message" = "Koko viesti";
-
 "Date"          = "Päiväys";
 "View"          = "Näytä";
 "All"           = "Kaikki";
 "No message"    = "Ei viestiä";
 "messages"      = "viestit";
-
+"Yesterday"     = "Eilen";
 "first"         = "Ensimmäinen";
 "previous"      = "Edellinen";
 "next"          = "Seuraava";
 "last"          = "Viimeinen";
-
 "msgnumber_to"  = " ";
 "msgnumber_of"  = " ";
-
 "Mark Unread" = "Merkitse lukemattomaksi";
 "Mark Read"   = "Merkitse luetuksi";
-
 "Untitled" = "Ei otsikkoa";
-
 /* Tree */
-
 "SentFolderName"   = "Lähetetyt";
 "TrashFolderName"  = "Roskakori";
 "InboxFolderName"  = "Saapuneet";
 "DraftsFolderName" = "Luonnokset";
 "SieveFolderName"  = "Suodattimet";
 "Folders"          = "Kansiot"; /* title line */
-
 /* MailMoveToPopUp */
-
 "MoveTo"        = "Siirrä &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Lisää osoitekirjaan...";
 "Compose Mail To" = "Lähetä viesti";
 "Create Filter From Message..." = "Muodosta viestistä suodatin...";
-
 /* Image Popup menu */
 "Save Image" = "Tallenna kuva";
 "Save Attachment" = "Tallenna liite";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Avaa uudessa viesti-ikkunassa";
 "Copy Folder Location" = "Kopioi kansion sijainti";
@@ -203,12 +167,10 @@
 "Get Messages for Account" = "Hae viestit tilille";
 "Properties..." = "Ominaisuudet...";
 "Delegation..." = "Valtuutus...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Lähetetyt viestit";
 "Drafts" = "Luonnokset";
 "Deleted Messages" = "Poistetut viestit";
-
 /* Message list popup menu */
 "Open Message In New Window" = "Avaa viesti uudessa ikkunassa";
 "Reply to Sender Only" = "Vastaa vain lähettäjälle";
@@ -224,12 +186,11 @@
 "Print..." = "Tulosta...";
 "Delete Message" = "Poista viesti";
 "Delete Selected Messages" = "Poista valitut viestit";
-
+/* Number of selected messages in list */
+"selected" = "valittu";
 "This Folder" = "Tämä kansio";
-
 /* Label popup menu */
 "None" = "Ei mitään";
-
 /* Mark popup menu */
 "As Read" = "Luetuksi";
 "Thread As Read" = "Ketju luetuksi";
@@ -239,7 +200,6 @@
 "As Junk" = "Roskaksi";
 "As Not Junk" = "Ei roskaksi";
 "Run Junk Mail Controls" = "Käynnistä roskapostien hallinta";
-
 "Search messages in" = "Etsi viestejä";
 "Search" = "Etsi";
 "Search subfolders" = "Etsi alihakemistoista";
@@ -251,23 +211,19 @@
 "results found" = "löytyneitä tuloksia";
 "result found" = "löytynyt tulos";
 "Please specify at least one filter" = "Ole hyvä ja määritä ainakin yksi suodatin";
-
 /* Folder operations */
-"Name :" = "Nimi:";
+"Name" = "Nimi";
 "Enter the new name of your folder"
- = "Syötä kansiosi uusi nimi";
+ ="Syötä kansiosi uusi nimi";
 "Do you really want to move this folder into the trash ?"
  = "Oletko varma että haluat siirtää tämän kansion roskakoriin?  ";
 "Operation failed" = "Toiminto epäonnistui";
-
 "Quota" = "Kokorajoitus:";
 "quotasFormat" = "%{0}% käytetty %{1} Mt:sta";
-
 "Please select a message." = "Ole hyvä ja valitse viesti.";
 "Please select a message to print." = "Ole hyvä ja valitse tulostettava viesti.";
 "Please select only one message to print." = "Ole hyvä ja valitse vain yksi viesti tulostettavaksi.";
 "The message you have selected doesn't exist anymore." = "Valitsemaasi viestiä ei ole enää olemassa.";
-
 "The folder with name \"%{0}\" could not be created."
 = "Kansiota \"%{0}\" ei voitu luoda.";
 "This folder could not be renamed to \"%{0}\"."
@@ -278,31 +234,52 @@
 = "Roskakorin tyhjennys epäonnistui.";
 "The folder functionality could not be changed."
 = "Kansion toiminnallisuutta ei voitu muuttaa.";
-
 "You need to choose a non-virtual folder!" = "Sinun on valittava ei-virtuaalinen kansio!";
-
 "Moving a message into its own folder is impossible!"
 = "Viestin siirtäminen omaan kansioonsa on mahdotonta!";
 "Copying a message into its own folder is impossible!"
 = "Viestin kopioiminen omaan kansioonsa on mahdotonta!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Viestejä ei voitu siirtää roskakoriin. Haluatko poistaa ne välittömästi?";
-
 /* Message editing */
 "error_missingsubject" = "Viestillä ei ole otsikkoa. Haluatko varrmasti lähettää sen?";
 "error_missingrecipients" = "Ole hyvä ja syötä ainakin yksi vastaanottaja.";
 "Send Anyway" = "Lähetä silti";
-"Error while saving the draft:" = "Virhe luonnoksen tallennuksessa:";
+"Error while saving the draft" = "Virhe luonnoksen tallennuksessa";
 "Error while uploading the file \"%{0}\":" = "Virhe tiedoston \"%{0}\" latauksessa: ";
 "There is an active file upload. Closing the window will interrupt it." = "Tiedoston lataus on käynnissä. Ikkunan sulkeminen pysäyttää latauksen.";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";
-"cannot send message (smtp) - recipients discarded:" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä:";
+"cannot send message (smtp) - recipients discarded" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
-
 /* Contacts list in mail editor */
 "Email" = "Sähköposti";
-"Name" = "Nimi";
+"More mail options" = "Lisää sähköpostiasetuksia";
+"Delegation" = "Valtuutus";
+"Add User" = "Lisää käyttäjä";
+"Add a tag" = "Lisää merkintä";
+"reply" = "vastaus";
+"Edit" = "Muokkaa";
+"Yes" = "Kyllä";
+"No" = "Ei";
+"Location" = "Sijainti";
+"Rename" = "Nimeä uudelleen";
+"Compact" = "Tiivistä";
+"Export" = "Vie";
+"Set as Drafts" = "Merkitse luonnoksiksi";
+"Set as Sent" = "Merkitse lähetetyksi";
+"Set as Trash" = "Merkitse roskaksi";
+"Sort" = "Järjestä";
+"Descending Order" = "Laskeva järjestys";
+"Back" = "Takaisin";
+"Copy messages" = "Kopioi viestit";
+"More messages options" = "Lisää viestiasetuksia";
+"Mark as Unread" = "Merkitse lukemattomaksi";
+"Closing Window ..." = "Ikkuna sulkeutuu...";
+"Tried to send too many mails. Please wait." = "Yritetty lähettää liian monta viestiä. Ole hyvä ja odota.";
+"View Mail" = "Näytä viesti";
+"This message contains external images." = "Tämä viesti sisältää ulkoisia kuvia.";
+"Expanded" = "Laajennettu";
+"Add a Criteria" = "Lisää kriteeri";
+"More search options" = "Lisää hakuvaihtoehtoja";

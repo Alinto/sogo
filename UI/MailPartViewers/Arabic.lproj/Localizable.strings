@@ -27,16 +27,11 @@ Tentative = "مؤقت";
 "Delegated to" = "تفويض إلى ...";
 "Update status in calendar" = "تحديث الحالة فى التقويم";
 "delegated from" = "مفوض من ";
-
 reply_info_no_attendee = "تلقيت ردا على الحدث المسجل لكن الراسل ليس مشاركا.";
 reply_info = "هذا هو الرد على دعوة الحدث التي قمت بها.";
-
 "to" = "إلى :";
-
 "Untitled" = "بدون عنوان";
-
 "Size" = "الحجم";
-
 "Digital signature is not valid" = "التوقيع الرقمي غير صالح";
 "Message is signed" = "الرسالة موقعة";
 "Subject" = "العنوان";

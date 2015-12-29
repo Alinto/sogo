@@ -4,40 +4,31 @@
 "Save" = "Сними";
 "Close" = "Затвори";
 "Edit User Rights" = "Уреди ги корисничките права";
-
 "Home" = "Дома";
 "Calendar" = "Календар";
 "Address Book"	= "Адресна книга";
 "Mail" = "Електронска пошта";
 "Preferences" = "Подесувања";
 "Administration" = "Администрација";
-"Disconnect" = "Откачи";
+"Disconnect" = "Излези";
+"Toggle Menu" = "Промени го менито";
 "Right Administration" = "Администрација на права";
 "Log Console (dev.)" = "Конзола на логови (развој)";
-
 "User" = "Корисник";
 "Vacation message is enabled" = "Пораката за отсатност е активна";
-
 "Help" = "Помош";
-
 "noJavascriptError" = "SOGo бара Javascript за да работи. Бидете сигурни дека оваа поција е овозможена и активирана во вашиот прелистувач.";
 "noJavascriptRetry" = "Обиди се повторно";
-
-"Owner:" = "Сопственик:";
+"Owner" = "Сопственик";
 "Publish the Free/Busy information" = "Публикувај ја информацијата за слободното/зафатено време";
-
 "Add..." = "Додади...";
 "Remove" = "Отстрани";
-
 "Subscribe User" = "Запиши го корисникот";
-
 "Any Authenticated User" = "Било кој автентициран корисник";
 "Public Access" = "јавен достап";
 "Any user not listed above" = "Било кој корисник кој не долу излистан";
 "Anybody accessing this resource from the public area" = "Било кој може да го пристапи ресурсот од јавната мрежа";
-
 "Sorry, the user rights can not be configured for that object." = "Жалам, корисничките привилегии не можат да се конфигурираат за овој објект.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Секој корисник со сметка на овој систем ќе биде во можност да пристапува на вашето сандаче за пошта \"%{0}\". Дали сте сигурни дека можете да им верувате на сите?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Потенцијално било кој  на интеернет ќе може да го достапи адресарот \"%{0}\", дури и ако нема сметка на системот. Дали оваа информација е погодна за јавен интернет?";
 "Give Access" = "Дади пристап";
 "Keep Private" = "Сочувај го приватно";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Не е можно да се претплатите на оваа папка!";
@@ -70,17 +60,14 @@
         = "Не можете да креирате листа во споделен адресар.";
 "Warning" = "Предупредување";
 "Can't contact server" = "Настана грешка при контактирање на серверот. Подоцна обидете се повторно.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Вам не вие дозволено да го пристапите овој модул или овој систем. Контактирајте го вашиот систем администратор.";
 "You don't have the required privileges to perform the operation."
 = "Ги немате потребните привилегии за да ја извршите операцијата.";
-
 "noEmailForDelegation" = "Морате да ја специфицирате адресата на која сакате да ги делегирате вашите покани.";
 "delegate is organizer" = "Делегираниот е и организатор. Ве молиме одберете друг делегат.";
 "delegate is a participant" = "Овој делегат е веќе учесник.";
 "delegate is a group" = "Адресата не коренспондира со групата. Можете да делегирате на единствена личност.";
-
 "Snooze for " = "Паузирај го за";
 "5 minutes" = "5 минути";
 "10 minutes" = "10 минути";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 минути";
 "1 hour" = "1 час";
 "1 day" = "1 ден";
-
 /* common buttons */
 "OK" = "Во ред";
 "Cancel" = "Откажи";
 "Yes" = "Да";
 "No" = "Не";
-
 /* alarms */
-"Reminder:" = "Потсетник:";
-"Start:" = "Почеток:";
-"Due Date:" = "Краен датум:";
-"Location:" = "Локација:";
-
+"Reminder" = "Потсетник";
+"Start" = "Почеток";
+"Due Date" = "Краен датум";
+"Location" = "Локација";
 /* mail labels */
 "Important" = "Важно";
 "Work" = "Работа";
 "Personal" = "Лично";
 "To Do" = "Да се направи";
 "Later" = "Подоцна";
-
 "a2_Sunday" = "Нед";
 "a2_Monday" = "Пон";
 "a2_Tuesday" = "Вто";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "Чет";
 "a2_Friday" = "Пет";
 "a2_Saturday" = "Саб";
+"Access Rights" = "Пристапни права";
+"Add User" = "Додади корисник";
+"Loading" = "Вчитувам";
+"No such user." = "Нема таков корисник.";
+"You cannot (un)subscribe to a folder that you own!" = "Не е можно да се запишете/отпишете од папката која е ваша!";
+"SOGo" = "SOGo";
+"Modules" = "Модули";

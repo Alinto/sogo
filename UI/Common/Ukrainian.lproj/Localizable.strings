@@ -4,7 +4,6 @@
 "Save" = "Зберегти";
 "Close" = "Закрити";
 "Edit User Rights" = "Редагувати права користувачів";
-
 "Home" = "Початок";
 "Calendar" = "Календар";
 "Address Book"	= "Адресна книга";
@@ -14,29 +13,20 @@
 "Disconnect" = "Вихід";
 "Right Administration" = "Керування доступом";
 "Log Console (dev.)" = "Консоль протоколів (dev.)";
-
 "User" = "Користувач";
-
 "Help" = "Допомога";
-
 "noJavascriptError" = "Для коректної роботи SOGo потрібно активувати Javascript. Будь ласка, перевірте, чи увімкнена така опція у вашому переглядачі Інтернету.";
 "noJavascriptRetry" = "Спробувати знову";
-
-"Owner:" = "Власник:";
+"Owner" = "Власник";
 "Publish the Free/Busy information" = "Розміщувати інформацію про зайнятий/вільний час";
-
 "Add..." = "Додати...";
 "Remove" = "Вилучити";
-
 "Subscribe User" = "Підписати користувача";
-
 "Any Authenticated User" = "Будь-який авторизований користувач";
 "Public Access" = "Публічний доступ";
 "Any user not listed above" = "Будь-який користувач, крім зазначених вище";
 "Anybody accessing this resource from the public area" = "Будь-який користувач, що бажає отримати доступ з публічного простору";
-
 "Sorry, the user rights can not be configured for that object." = "Вибачте, для цього об’єкту неможливо налаштувати права доступу.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Будь-який користувач з обліковим записом у цій системі зможе отримати доступ до Вашої скриньки \"%{0}\". Чи Ви бажаєте надати такий доступ?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -49,7 +39,6 @@
      = "Ймовірно будь-хто з користувачів Інтернет зможе отримати доступ до Вашої адресної книги \"%{0}\", навіть якщо не має облікового запису у цій системі. Чи Ви бажаєте надати такий доступ?";
 "Give Access" = "Дати доступ";
 "Keep Private" = "Залишити у приватному доступі";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Неможливо підписатись на цю теку!";
@@ -68,17 +57,14 @@
 "You cannot create a list in a shared address book." 
         = "Ви не можете створювати перелік у спільній адресній книзі.";
 "Warning" = "Увага";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "У Вас відсутні права доступу до цього модуля/системи. Будь ласка, зв’яжіться з адміністратором.";
 "You don't have the required privileges to perform the operation."
 = "У Вас відсутні права на виконання такої операції.";
-
 "noEmailForDelegation" = "Будь ласка, зазначте адресу, на яку буде відправлено запрошення.";
 "delegate is organizer" = "Запрошений учасник є організатором. Будь ласка, зазначте іншу запрошену особу.";
 "delegate is a participant" = "Цього учасника вже запрошено.";
 "delegate is a group" = "Зазначена адреса є групою. Ви можете запросити лише окрему особу.";
-
 "Snooze for " = "Відкласти на";
 "5 minutes" = "5 хвилин";
 "10 minutes" = "10 хвилин";
@@ -86,28 +72,22 @@
 "30 minutes" = "30 хвилин";
 "45 minutes" = "45 хвилин";
 "1 hour" = "1 годину";
-
-
 /* common buttons */
 "OK" = "Добре";
 "Cancel" = "Скасувати";
 "Yes" = "Так";
 "No" = "Ні";
-
 /* alarms */
-"Reminder:" = "Нагадування:";
-"Start:" = "Початок:";
-"Due Date:" = "Дата початку:";
-"Location:" = "Місце:";
-
+"Reminder" = "Нагадування";
+"Start" = "Початок";
+"Due Date" = "Дата початку";
+"Location" = "Місце";
 /* Mail labels */
 "Important" = "Важливе";
-"Work" = "Робоче";
 "Work" = "Робоче";
 "Personal" = "Особисте";
 "To Do" = "До виконання";
 "Later" = "Відсунуте";
-
 "a2_Sunday" = "Нд";
 "a2_Monday" = "Пн";
 "a2_Tuesday" = "Вт";

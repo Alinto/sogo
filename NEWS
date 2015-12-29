@@ -1,15 +1,25 @@
-2.3.4 (YYYY-MM-DD)
+2.3.5 (2016-MM-DD)
+------------------
+
+Bug fixes
+ - properly compute the last week number for the year (#1010)
+
+2.3.4 (2015-12-15)
 ------------------
 
 New features
- - 
+ - initial support for EAS calendar exceptions
 
 Enhancements
- - limit the maximum width of toolbar buttons
- 
+ - limit the maximum width of toolbar buttons (#3381)
 
 Bug fixes
  - JavaScript exception when printing events from calendars with no assigned color (#3203)
+ - EAS fix for wrong charset being used (#3392)
+ - EAS fix on qp-encoded subjects (#3390)
+ - correctly handle all-day event exceptions when the master event changes
+ - prevent characters in calendar component UID causing issues during import process
+ - avoid duplicating attendees when accepting event using a different identity over CalDAV
 
 2.3.3a (2015-11-18)
 -------------------
@@ -54,7 +64,6 @@ Bug fixes
  - fixed wrong comparison of meta vs. META tag in HTML mails
  - fixed popup menu position when moved to the left (#3381)
  - fixed dialog position when at the bottom of the window (#2646, #3378)
- - fixed addressbrook-only source entires having a c_uid set
 
 2.3.2 (2015-09-16)
 ------------------

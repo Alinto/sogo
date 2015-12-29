@@ -37,8 +37,8 @@
         @"<johndown@test.com>",  // email between brackets
         @"\"<johndown@test.com>\" <johndown@test.com>", // doubled
 //        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
-        @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla?= <wolfgang@test.com>", // accented full name
-        @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla_Bla_Bl=C3=A9?= <wolfgang@test.com>", // accented and multiword
+        @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla?= <johndown@test.com>", // accented full name
+        @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla_Bla_Bl=C3=A9?= <johndown@test.com>", // accented and multiword
         @"John Down \"Bla Bla\" <johndown@test.com>", // partly quoted
         @"John Down <johndown@test.com>", // full name + email
         @"John, Down <johndown@test.com>", // full name with comma + email

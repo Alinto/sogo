@@ -4,7 +4,6 @@
 "Save" = "Gorde";
 "Close" = "Itxi";
 "Edit User Rights" = "Erabiltzailearen baimenak aldatu";
-
 "Home" = "Hasiera";
 "Calendar" = "Egutegia";
 "Address Book"	= "Helbide liburua";
@@ -14,30 +13,21 @@
 "Disconnect" = "Deskonektatu";
 "Right Administration" = "Baimenen kudeaketa";
 "Log Console (dev.)" = "Erregistro kontsola (garap.)";
-
 "User" = "Erabiltzailea";
 "Vacation message is enabled" = "\"Oporretan nago\" mezua gaituta dago";
-
 "Help" = "Laguntza";
-
 "noJavascriptError" = "SOGo-k javascript beharrezkoa du. Mesedez ziurtatu zure nabigatzailearen aukeratan aktibatua dagoela.";
 "noJavascriptRetry" = "Berriz saiatu";
-
-"Owner:" = "Jabea:";
+"Owner" = "Jabea";
 "Publish the Free/Busy information" = "Argitaratu Libre/Lanpetu informazioa";
-
 "Add..." = "Gehitu...";
 "Remove" = "Ezabatu";
-
 "Subscribe User" = "Erabiltzailea harpidetu";
-
 "Any Authenticated User" = "Autentifikatutako edozein erabiltzaile";
 "Public Access" = "Atzipen publikoa";
 "Any user not listed above" = "Goian zerrendatu gabeko edozein erabiltzaile";
 "Anybody accessing this resource from the public area" = "Eremu publikotik baliabidea atzitzen duen edonork";
-
 "Sorry, the user rights can not be configured for that object." = "Barkatu, erabiltzailearen baimenak ezin dira objetu horretarako konfiguratu.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Sistema honetan kontua daukan edonor zure \"%{0}\" postontzia atzitzeko gai izango da. Ziur zaude hori nahi duzula? ";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +40,6 @@
      = "Internet-eko edonor zure \"%{0}\" helbide liburua atzitzeko gai izango da, naiz eta sistema honetan konturik ez eduki. Informazio hau egokia da internet publikorako?";
 "Give Access" = "Baimendu atzipena";
 "Keep Private" = "Pribatua mantendu";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Ezin da karpeta hori harpidetu!";
@@ -70,17 +59,14 @@
         = "Ezin duzu zerrenda bat sortu partekatutako helbide liburu batean";
 "Warning" = "Oharra";
 "Can't contact server" = "Errore gertatu da zerbitzariarekin konektatzerakoan. Mesedez saiatu beranduago.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Ez daukazu modulu edo sistema honetarako atzipen baimenik. Mesedez, jarri harremanetan sistemaren administratzailearekin.";
 "You don't have the required privileges to perform the operation."
 = "Ez daukazu eragiketa egiteko beharrezko baimenik.";
-
 "noEmailForDelegation" = "Zure gonbidapena delegatu nahi duzun email helbidea zehaztu behar duzu.";
 "delegate is organizer" = "Delegatua antolatzailea da. Mesedez, aukeratu beste delegatu bat.";
 "delegate is a participant" = "DElegatua parte-hartzailea da jada.";
 "delegate is a group" = "Zehaztutako helbidea talde bati dagokio. Pertsona baten gain bakarrik delega dezakezu.";
-
 "Snooze for " = "Errepikatu ";
 "5 minutes" = "5 minutu";
 "10 minutes" = "10 minutu";
@@ -89,26 +75,22 @@
 "45 minutes" = "45 minutu";
 "1 hour" = "1 ordu";
 "1 day" = "1 egun";
-
 /* common buttons */
 "OK" = "Onartu";
 "Cancel" = "Ezeztatu";
 "Yes" = "Bai";
 "No" = "Ez";
-
 /* alarms */
-"Reminder:" = "Ohartarazpena:";
-"Start:" = "Hasi:";
-"Due Date:" = "Epemuga:";
+"Reminder" = "Ohartarazpena";
+"Start" = "Hasi";
+"Due Date" = "Epemuga";
 "Location:" = "Kokapen";
-
 /* mail labels */
 "Important" = "Garrantzitsua";
 "Work" = "Lana";
 "Personal" = "Pertsonala";
 "To Do" = "Egitekoa";
 "Later" = "Beranduago";
-
 "a2_Sunday" = "Ig";
 "a2_Monday" = "Al";
 "a2_Tuesday" = "As";

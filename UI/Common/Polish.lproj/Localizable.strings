@@ -4,7 +4,6 @@
 "Save" = "Zapisz";
 "Close" = "Zamknij";
 "Edit User Rights" = "Edytuj uprawnienia użytkownika";
-
 "Home" = "Strona domowa";
 "Calendar" = "Kalendarz";
 "Address Book"	= "Książka adresowa";
@@ -12,32 +11,24 @@
 "Preferences" = "Ustawienia";
 "Administration" = "Administracja";
 "Disconnect" = "Wyloguj";
+"Toggle Menu" = "Przełącz menu";
 "Right Administration" = "Administracja uprawnień";
 "Log Console (dev.)" = "Konsola błędów (dev.)";
-
 "User" = "Użytkownik";
 "Vacation message is enabled" = "Autoodpowiedź włączona";
-
 "Help" = "Pomoc";
-
 "noJavascriptError" = "Do pracy z SOGo wymagane jest włączenie obsługi Javascript. Upewnij się, że ta funkcja jest dostępna i włączona w ustawieniach twojej przeglądarki WWW.";
 "noJavascriptRetry" = "Ponów";
-
-"Owner:" = "Właściciel:";
+"Owner" = "Właściciel";
 "Publish the Free/Busy information" = "Opublikuj informację wolny/zajęty";
-
 "Add..." = "Dodaj";
 "Remove" = "Usuń";
-
 "Subscribe User" = "Subskrybuj użytkownika";
-
 "Any Authenticated User" = "Każdy zalogowany użytkownik";
 "Public Access" = "Dostęp publiczny";
 "Any user not listed above" = "Każdy użytkownik spoza powyższej listy";
 "Anybody accessing this resource from the public area" = "Każdy korzystający z tego zasobu z obszaru publicznego";
-
 "Sorry, the user rights can not be configured for that object." = "Uprawnienia użytkownika na tym obiekcie nie mogą być konfigurowane.";
-
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Dowolny użytkownik systemu będzie miał dostęp do Twojej skrzynki \"%{0}\". Naprawdę ufasz im wszystkim?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
@@ -50,7 +41,6 @@
      = "Twoja książka adresowa \"%{0}\" będzie dostępna dla każdego w Internecie. Na pewno chcesz ją tak upublicznić?";
 "Give Access" = "Udostępnij";
 "Keep Private" = "Nie udostępniaj";
-
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Nie można subskrybować tego folderu!";
@@ -70,17 +60,14 @@
         = "Nie możesz tworzyć list w udostępnionej książce adresowej.";
 "Warning" = "Uwaga";
 "Can't contact server" = "Wystąpił błąd w trakcie komunikacji z serwerem. Spróbuj później.";
-
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nie masz pozwolenia na dostęp do tego modułu lub tego systemu. Skontaktuj się ze swoim administratorem.";
 "You don't have the required privileges to perform the operation."
 = "Nie masz potrzebnych uprawnień do wykonania tej operacji.";
-
 "noEmailForDelegation" = "Musisz podać adres, na który chcesz delegować twoje zaproszenie.";
 "delegate is organizer" = "Wskazany delegat jest organizatorem. Wskaż innego delegata.";
 "delegate is a participant" = "Delegat jest już uczestnikiem.";
 "delegate is a group" = "Wskazany adres jest grupą. Możesz oddelegować tylko pojedynczną osobę.";
-
 "Snooze for " = "Drzemka przez ";
 "5 minutes" = "5 minut";
 "10 minutes" = "10 minut";
@@ -89,26 +76,22 @@
 "45 minutes" = "45 minut";
 "1 hour" = "1 godzinę";
 "1 day" = "1 dzień";
-
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Anuluj";
 "Yes" = "Tak";
 "No" = "Nie";
-
 /* alarms */
-"Reminder:" = "Przypomnienie:";
-"Start:" = "Początek:";
-"Due Date:" = "Termin:";
-"Location:" = "Miejsce:";
-
+"Reminder" = "Przypomnienie";
+"Start" = "Początek";
+"Due Date" = "Termin";
+"Location" = "Miejsce";
 /* mail labels */
 "Important" = "Ważne";
 "Work" = "Praca";
 "Personal" = "Osobiste";
 "To Do" = "Do zrobienia";
 "Later" = "Później";
-
 "a2_Sunday" = "Ni";
 "a2_Monday" = "Pn";
 "a2_Tuesday" = "Wt";
@@ -116,3 +99,10 @@
 "a2_Thursday" = "Cz";
 "a2_Friday" = "Pi";
 "a2_Saturday" = "So";
+"Access Rights" = "Uprawnienia";
+"Add User" = "Dodaj użytkownika";
+"Loading" = "Ładowanie";
+"No such user." = "Nie ma takiego użytkownika.";
+"You cannot (un)subscribe to a folder that you own!" = "Nie możesz (od)subskrybować folderu, który jest twoją własnością!";
+"SOGo" = "SOGo";
+"Modules" = "Moduły";

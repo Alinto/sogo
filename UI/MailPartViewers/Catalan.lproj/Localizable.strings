@@ -29,16 +29,11 @@ Tentative = "Provisional";
 "Delegated to" = "Delegat a";
 "Update status in calendar" = "Actualitzar l'estat en el calendari";
 "delegated from" = "delegat per";
-
 reply_info_no_attendee = "Heu rebut una resposta a una invitació d'esdeveniment, però el remitent no hi figura com a participant.";
 reply_info = "Aquesta és la resposta a una invitació d'esdeveniment que heu fet.";
-
 "to" = "per a";
-
 "Untitled" = "Sense títol";
-
 "Size" = "Mida";
-
 "Digital signature is not valid" = "La signatura digital no és vàlida";
 "Message is signed" = "El missatge està signat";
 "Subject" = "Assumpte";
@@ -46,3 +41,10 @@ reply_info = "Aquesta és la resposta a una invitació d'esdeveniment que heu fe
 "Date" = "Data";
 "To" = "Per a";
 "Issuer" = "Emissor";
+/* Tooltips */
+"View Attachment" = "Veure fitxer adjunt";
+"Save Attachment" = "Guardar l'adjunt";
+"CC" = "CC";
+"Cancel" = "Cancel·lar";
+"OK" = "D'acord";
+"Comment" = "Comentari:";

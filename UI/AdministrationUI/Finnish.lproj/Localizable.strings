@@ -2,14 +2,25 @@
 
 "Help" = "Apua";
 "Close" = "Sulje";
-
 "Modules" = "Modulit";
-
 /* Modules short names */
 "ACLs" = "ACL:t";
-
 /* Modules titles */
 "ACLs_title" = "Käyttäjähakemistojen oikeuksien hallinta ACL";
-
 /* Modules descriptions */
 "ACLs_description" = "<p>Access Control Lists hallintamoduli mahdollistaa käyttäjien kalentereiden ja osoitekirjojen muuttamisen.</p><p>Muokataksesi käyttäjähakemiston oikeuksia, kirjoita käyttäjän nimi sivun ylälaidan hakukenttään ja kaksoisnapsauta haluamaasi hakemistoa.</p>";
+"Name or Email" = "Nimi tai sähköposti";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Aloita haku oikeuksien muuttamiseksi";
+/* Rights module: Empty search result */
+"No matching user" = "Ei vastaavaa käyttäjää";
+/* Rights module: no selection */
+"No resource selected" = "Ei valittua resurssia";
+"Add User" = "Lisää käyttäjä";
+"Subscribe User" = "Tilaa käyttäjä";
+"Rights" = "Oikeudet";
+"Search Users" = "Etsi käyttäjiä";
+"users found" = "käyttäjää löytynyt";
+"No resource" = "Ei resurssia";
+"Any Authenticated User" = "Kuka tahansa kirjautunut käyttäjä";
+"Public Access" = "Julkinen pääsy";

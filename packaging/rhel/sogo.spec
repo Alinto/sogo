@@ -175,9 +175,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # small tweak to the python script for RHEL5
 # if hex(sys.hexversion) < 0x02060000
-%if %{python_sys_pyver} < 33947648
-  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
-%endif
+#%if %{python_sys_pyver} < 33947648
+#  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
+#%endif
 
 
 # ****************************** build ********************************
@@ -244,7 +244,7 @@ install -d ${RPM_BUILD_ROOT}/var/run/sogo
 install -d ${RPM_BUILD_ROOT}/var/spool/sogo
 install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
 install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
-install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
+#install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
@@ -304,7 +304,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/spool/sogo
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
-%{_sbindir}/openchange_user_cleanup
+#%{_sbindir}/openchange_user_cleanup
 %{_libdir}/sogo/libSOGo.so*
 %{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo

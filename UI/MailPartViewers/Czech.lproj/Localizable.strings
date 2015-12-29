@@ -29,16 +29,11 @@ Tentative = "Nezávazně";
 "Delegated to" = "Delegovat na";
 "Update status in calendar" = "Aktualizovat status v kalendáři";
 "delegated from" = "delegováno od";
-
 reply_info_no_attendee = "Obdrželi jste odpověď k plánované události, ale odesílatel se události neúčastní.";
 reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili vy.";
-
 "to" = "komu";
-
 "Untitled" = "Bez názvu";
-
 "Size" = "Velikost";
-
 "Digital signature is not valid" = "Elektronický podpis není validní";
 "Message is signed" = "Zpráva je podepsána";
 "Subject" = "Předmět";

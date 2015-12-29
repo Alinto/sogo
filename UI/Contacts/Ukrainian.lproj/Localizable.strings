@@ -4,7 +4,6 @@
 "Address" = "Адреси";
 "Photos" = "Світлини";
 "Other" = "Інше";
-
 "Address Books" = "Адресні книги";
 "Addressbook" = "Адресна книга";
 "Addresses" = "Адреси";
@@ -39,29 +38,23 @@
 "invaliddatewarn" = "Зазначена дата неправильна.";
 "new" = "новий";
 "Preferred Phone" = "Основний телефон";
-
 "Move To" = "Пересунути до";
 "Copy To" = "Скопіювати до";
-"Add to:" = "Додати до:";
-
+"Add to" = "Додати до";
 /* Tooltips */
-
 "Create a new address book card" = "Створення нової картки адресної книги";
 "Create a new list" = "Створення нового листа розсилки";
 "Edit the selected card" = "Зміна вибраної картки";
 "Send a mail message" = "Створення повідомлення";
 "Delete selected card or address book" = "Вилучення вибраної картки або адресної книги";
 "Reload all contacts" = "Перезавантажити усі контакти";
-
 "htmlMailFormat_UNKNOWN" = "Невідомо";
 "htmlMailFormat_FALSE" = "Звичайний текст";
 "htmlMailFormat_TRUE" = "HTML";
-
 "Name or Email" = "Ім’я або адреса електронної пошти";
 "Category" = "Категорія";
 "Personal Addressbook" = "Особиста адресна книга";
 "Search in Addressbook" = "Шукати в адресній книзі";
-
 "New Card" = "Додати картку";
 "New List" = "Створити список";
 "Properties" = "Властивості";
@@ -71,68 +64,51 @@
 "Instant Message" = "Миттєве повідомлення";
 "Add..." = "Додати...";
 "Remove" = "Вилучити";
-
 "Please wait..." = "Зачекайте, будь ласка...";
 "No possible subscription" = "Відсутні підписки";
-
 "Preferred" = "Найзручніше";
 "Display" = "Відображати як";
 "Display Name" = "Ім’я, що відображається";
-"Email:" = "Електронна пошта:";
-"Additional Email:" = "Дод. електронна адреса:";
-
+"Additional Email" = "Дод. електронна адреса";
 "Phone Number" = "Номер телефону";
-"Prefers to receive messages formatted as:" = "Вважає за краще отримувати пошту у форматі:";
-"Screen Name:" = "Інтернет-пейджер:";
-"Categories:" = "Категорії:";
-
-"First:" = "Ім’я:";
-"Last:" = "Прізвище:";
+"Prefers to receive messages formatted as" = "Вважає за краще отримувати пошту у форматі";
+"Categories" = "Категорії";
+"First" = "Ім’я";
+"Last" = "Прізвище";
 "Nickname" = "Псевдонім";
-
 "Telephone" = "Телефон";
-"Work:" = "Робочий:";
-"Home:" = "Домашній:";
-"Fax:" = "Факс:";
-"Mobile:" = "Мобільний:";
-"Pager:" = "Пейджер:";
-
+"Work" = "Робочий";
+"Home" = "Домашній";
+"Mobile" = "Мобільний";
+"Pager" = "Пейджер";
 /* categories */
 "contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
-"Categories" = "Категорії";
 "New category" = "Нова категорія";
-
 /* adresses */
 "Title" = "Посада";
-"Service:" = "Служба:";
-"Company:" = "Організація:";
-"Department:" = "Відділ:";
-"Organization:" = "Організація:";
-"Address:" = "Адреса:";
+"Service" = "Служба";
+"Company" = "Організація";
+"Department" = "Відділ";
+"Address" = "Адреса";
 "City" = "Місто";
-"State_Province:" = "Область, регіон:";
-"ZIP_Postal Code:" = "Поштовий індекс:";
+"State_Province" = "Область, регіон";
+"ZIP_Postal Code" = "Поштовий індекс";
 "Country" = "Країна";
-"Web Page:" = "Веб-сторінка:";
-
+"Web Page" = "Веб-сторінка";
 "Work" = "Робоча";
 "Other Infos" = "Інша інформація";
-
 "Note" = "Примітки";
-"Timezone:" = "Часова зона:";
+"Timezone" = "Часова зона";
 "Birthday" = "День народження";
 "Birthday (yyyy-mm-dd)" = "Дата народження (рррр-мм-дд)";
-"Freebusy URL:" = "Freebusy URL:";
-
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Додати як...";
 "Recipient" = "Отримувач";
 "Carbon Copy" = "Копія";
 "Blind Carbon Copy" = "Прихована копія";
-
 "New Addressbook..." = "Нова адресна книга...";
 "Subscribe to an Addressbook..." = "Підписатись на адресну книгу...";
 "Remove the selected Addressbook" = "Вилучити вибрану адресну книгу";
-
 "Name of the Address Book" = "Назва адресної книги";
 "Are you sure you want to delete the selected address book?"
 = "Ви точно бажаєте вилучити вибрану адресну книгу?";
@@ -140,27 +116,20 @@
 = "Ви не можете вилучити або відписатись від спільної адресної книги.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ви не можете вилучити або відписатись від персональної адресної книги.";
-
 "Are you sure you want to delete the selected contacts?"
 = "Ви точно бажаєте вилучити вибрані контакти?";
-
 "You cannot delete the card of \"%{0}\"."
 = "Ви не можете вилучити картку \"%{0}\".";
-
 "Address Book Name" = "Назва адресної книги";
-
 "You cannot subscribe to a folder that you own!"
 = "Ви не можете підписатись на теку, що вже є Вашою.";
 "Unable to subscribe to that folder!"
 = "Неможливо підписатись на цю теку.";
-
 /* acls */
 "Access rights to" = "Права доступу до";
 "For user" = "Для користувача";
-
 "Any Authenticated User" = "Будь-який авторизований користувач";
 "Public Access" = "Публічний доступ";
-
 "This person can add cards to this addressbook."
 = "Ця особа може додавати картки до цієї адресної книги.";
 "This person can edit the cards of this addressbook."
@@ -171,19 +140,14 @@
 = "Ця особа може переглядати картки цієї адресної книги.";
 "This person can erase cards from this addressbook."
 = "Ця особа може вилучати картки цієї адресної книги.";
-
 "The selected contact has no email address."
 = "Вибраний контакт не має адреси електронної пошти.";
-
 "Please select a contact." = "Будь ласка, виберіть контакт.";
-
 /* Error messages for move and copy */
-
 "SoAccessDeniedException" = "У Вас немає прав на запис у цю адресну книгу.";
 "Forbidden" = "Ви не можете записувати в цю адресну книгу.";
 "Invalid Contact" = "Вибраний контакт більше не існує.";
 "Unknown Destination Folder" = "Вибране призначення адресної книги більше не існує.";
-
 /* Lists */
 "List details" = "Деталі списку";
 "List name" = "Назва списку";
@@ -202,5 +166,4 @@
 "An error occured while importing contacts." = "Трапилась помилка під час імпортування контактів.";
 "No card was imported." = "Жодна картка імпортована.";
 "A total of %{0} cards were imported in the addressbook." = "Разом %{0} карток було імпортовано до адресної книги.";
-
 "Reload" = "Перевантажити";
