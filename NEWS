@@ -1,3 +1,9 @@
+2.3.5 (2016-MM-DD)
+------------------
+
+Bug fixes
+ - properly compute the last week number for the year (#1010)
+
 2.3.4 (2015-12-15)
 ------------------
 
