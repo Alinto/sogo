@@ -37,6 +37,8 @@
 
 - (BOOL) isNever; /* occurs on 4500-12-31 */
 
++ (NSCalendarDate *) dateFromSystemTime: (struct SYSTEMTIME) date
+                            andRuleYear: (uint16_t) rYear;
 @end
 
 NSComparisonResult NSDateCompare (id date1, id date2, void *);

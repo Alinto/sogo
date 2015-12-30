@@ -37,7 +37,9 @@
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
@@ -80,7 +82,6 @@ static NSCharacterSet *hexCharacterSet = nil;
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
-                 inTimeZone: (NSTimeZone *) newTimeZone
          withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   MAPIStoreAppointmentWrapper *wrapper;
@@ -88,7 +89,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   wrapper = [[self alloc] initWithICalEvent: newEvent
                                     andUser: newUser
                              andSenderEmail: newSenderEmail
-                                 inTimeZone: newTimeZone
                          withConnectionInfo: newConnInfo];
   [wrapper autorelease];
 
@@ -182,10 +182,10 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
-              inTimeZone: (NSTimeZone *) newTimeZone
       withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   NSArray *events;
+  iCalTimeZone *tz;
 
   if ((self = [self init]))
     {
@@ -194,9 +194,20 @@ static NSCharacterSet *hexCharacterSet = nil;
       event = newEvent;
       events = [calendar events];
       firstEvent = [events objectAtIndex: 0];
-      ASSIGN (timeZone, newTimeZone);
       ASSIGN (user, newUser);
       ASSIGN (senderEmail, newSenderEmail);
+      /* If newEvent comes from the client, we set its time zone in
+         updateFromMAPIProperties. If it is not present, we use the
+         time zone of the user */
+      tz = (iCalTimeZone *) [calendar firstChildWithTag: @"vtimezone"];
+      if (!tz)
+        {
+          tz = [iCalTimeZone timeZoneForName: [[[user userDefaults] timeZone] name]];
+          if (!tz)
+            [self logWithFormat: @"no time zone could be set"];
+	}
+      ASSIGN (timeZone, tz);
+
       [self _setupITIPContext];
     }
 
@@ -266,7 +277,7 @@ static NSCharacterSet *hexCharacterSet = nil;
             {
               username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+              entryId = MAPIStoreInternalEntryId (connInfo, username);
             }
           else
             {
@@ -367,7 +378,7 @@ static NSCharacterSet *hexCharacterSet = nil;
           {
             username = [contactInfos objectForKey: @"sAMAccountName"];
             recipient->username = [username asUnicodeInMemCtx: msgData];
-            entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+            entryId = MAPIStoreInternalEntryId (connInfo, username);
           }
         else
           {
@@ -721,22 +732,15 @@ static NSCharacterSet *hexCharacterSet = nil;
                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
-  NSInteger offset;
 
   // if ([event isRecurrent])
   //   dateValue = [event firstRecurrenceStartDate];
   // else
   dateValue = [event startDate];
   if ([event isAllDay])
-    {
-      offset = -[timeZone secondsFromGMTForDate: dateValue];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: offset];
-    }
-  [dateValue setTimeZone: utcTZ];
+    dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -749,22 +753,14 @@ static NSCharacterSet *hexCharacterSet = nil;
      exceptions, where it is the normal start date for the day of the
      exception. */
   NSCalendarDate *dateValue;
-  NSInteger offset;
 
   dateValue = [event recurrenceId];
   if (!dateValue)
     dateValue = [event startDate];
-  [dateValue setTimeZone: timeZone];
   if ([event isAllDay])
-    {
-      offset = -[timeZone secondsFromGMTForDate: dateValue];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: offset];
-    }
-  [dateValue setTimeZone: utcTZ];
+    dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -772,19 +768,12 @@ static NSCharacterSet *hexCharacterSet = nil;
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
-  NSInteger offset;
 
   dateValue = [firstEvent startDate];
   if ([firstEvent isAllDay])
-    {
-      offset = -[timeZone secondsFromGMTForDate: dateValue];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: offset];
-    }
-  [dateValue setTimeZone: utcTZ];
+    dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -804,8 +793,8 @@ static NSCharacterSet *hexCharacterSet = nil;
                                          month: [start monthOfYear]
                                            day: [start dayOfMonth]
                                           hour: 0 minute: 0 second: 0
-                                      timeZone: timeZone];
-      [dateValue setTimeZone: utcTZ];
+                                      timeZone: utcTZ];
+      dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
@@ -829,7 +818,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   dateValue = [event startDate];
   offset = [event durationAsTimeInterval];
   if ([event isAllDay])
-    offset -= [timeZone secondsFromGMTForDate: dateValue];
+    offset -= [[timeZone periodForDate: dateValue] secondsOffsetFromGMT];
   dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
                                      hours: 0 minutes: 0
                                    seconds: offset];
@@ -847,15 +836,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   dateValue = [event recurrenceId];
   if (!dateValue)
     dateValue = [event startDate];
-  [dateValue setTimeZone: timeZone];
   offset = [firstEvent durationAsTimeInterval];
   if ([firstEvent isAllDay])
-    offset -= [timeZone secondsFromGMTForDate: dateValue];
+    offset -= [[timeZone periodForDate: dateValue] secondsOffsetFromGMT];
   dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
                                      hours: 0 minutes: 0
                                    seconds: offset];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
-  
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -871,7 +859,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   dateValue = [firstEvent startDate];
   offset = [firstEvent durationAsTimeInterval];
   if ([event isAllDay])
-    offset -= [timeZone secondsFromGMTForDate: dateValue];
+    offset -= [[timeZone periodForDate: dateValue] secondsOffsetFromGMT];
   dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
                                      hours: 0 minutes: 0
                                    seconds: offset];
@@ -885,23 +873,14 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
-  NSInteger offset;
   iCalRecurrenceRule *rrule;
 
   if ([event isRecurrent])
     {
       rrule = [[event recurrenceRules] objectAtIndex: 0];
       dateValue = [rrule untilDate];
-      if (dateValue)
-        {
-          if ([event isAllDay])
-            offset = -[timeZone secondsFromGMTForDate: dateValue];
-          else
-            offset = 0;
-          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                             hours: 0 minutes: 0
-                                           seconds: offset];
-        }
+      if (dateValue && [event isAllDay])
+        dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
       else
         dateValue = [NSCalendarDate dateWithYear: 4500 month: 8 day: 31
                                             hour: 23 minute: 59 second: 00
@@ -932,7 +911,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   if (contactInfos)
     {
       username = [contactInfos objectForKey: @"sAMAccountName"];
-      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
+      entryId = MAPIStoreInternalEntryId (connInfo, username);
     }
   else
     entryId = MAPIStoreExternalEntryId (cn, email);
@@ -1338,21 +1317,14 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
-  NSInteger offset;
 
   dateValue = [event recurrenceId];
   if (dateValue)
     {
       rc = MAPISTORE_SUCCESS;
-      
+
       if ([event isAllDay])
-        {
-          offset = -[timeZone secondsFromGMTForDate: dateValue];
-          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                             hours: 0 minutes: 0
-                                           seconds: offset];
-        }
-      [dateValue setTimeZone: utcTZ];
+        dateValue = [timeZone shiftedCalendarDateForDate: dateValue];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
     }
   else
@@ -1377,7 +1349,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   iCalEventChanges *changes;
   NSArray *changedProperties;
   NSCalendarDate *dateValue;
-  NSInteger offset;
 
   changes = [iCalEventChanges changesFromEvent: event toEvent: exceptionEvent];
 
@@ -1385,28 +1356,17 @@ static NSCharacterSet *hexCharacterSet = nil;
   memset (extendedException, 0, sizeof (struct ExtendedException));
   extendedException->ChangeHighlight.Size = sizeof (uint32_t);
 
-  dateValue = [exceptionEvent startDate];
-  offset = [timeZone secondsFromGMTForDate: dateValue];
-  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: offset];
+  dateValue = [timeZone computedDateForDate: [exceptionEvent startDate]];
   exceptionInfo->StartDateTime = [dateValue asMinutesSince1601];
   extendedException->ChangeHighlight.Value = BIT_CH_START;
   extendedException->StartDateTime = exceptionInfo->StartDateTime;
 
-  dateValue = [exceptionEvent endDate];
-  offset = [timeZone secondsFromGMTForDate: dateValue];
-  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: offset];
+  dateValue = [timeZone computedDateForDate: [exceptionEvent endDate]];
   exceptionInfo->EndDateTime = [dateValue asMinutesSince1601];
   extendedException->ChangeHighlight.Value |= BIT_CH_END;
   extendedException->EndDateTime = exceptionInfo->EndDateTime;
 
-  dateValue = [[exceptionEvent recurrenceId]
-                dateByAddingYears: 0 months: 0 days: 0
-                hours: 0 minutes: 0
-                seconds: offset];
+  dateValue = [timeZone computedDateForDate: [exceptionEvent recurrenceId]];
   exceptionInfo->OriginalStartDate = [dateValue asMinutesSince1601];
   extendedException->OriginalStartDate = exceptionInfo->OriginalStartDate;
 
@@ -1464,7 +1424,6 @@ static NSCharacterSet *hexCharacterSet = nil;
       arp = talloc_zero (NULL, struct AppointmentRecurrencePattern);
       [rule fillRecurrencePattern: &arp->RecurrencePattern
                         withEvent: event
-                       inTimeZone: timeZone
                          inMemCtx: arp];
       arp->ReaderVersion2 = 0x00003006;
       arp->WriterVersion2 = 0x00003008; /* 0x3008 for compatibility with
@@ -1475,7 +1434,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 	 fields are relative to midnight of those days ([MS-OXOCAL] 2.2.1.44.5),
 	 so no time zone adjustment is needed */
       if (![event isAllDay])
-        [firstStartDate setTimeZone: timeZone];
+        firstStartDate = [timeZone computedDateForDate: firstStartDate];
       startMinutes = ([firstStartDate hourOfDay] * 60
                       + [firstStartDate minuteOfHour]);
       arp->StartTimeOffset = startMinutes;
@@ -1701,15 +1660,16 @@ ReservedBlockEE2Size: 00 00 00 00
                  fromDate: (NSCalendarDate *) instanceDate;
 {
   uint16_t year;
+  NSCalendarDate *dateValue;
 
   if (instanceDate)
     {
-      [instanceDate setTimeZone: timeZone];
-      year = [instanceDate yearOfCommonEra];
+      dateValue = [timeZone computedDateForDate: instanceDate];
+      year = [dateValue yearOfCommonEra];
       newGlobalId->YH = year >> 8;
       newGlobalId->YL = year & 0xff;
-      newGlobalId->Month = [instanceDate monthOfYear];
-      newGlobalId->D = [instanceDate dayOfMonth];
+      newGlobalId->Month = [dateValue monthOfYear];
+      newGlobalId->D = [dateValue dayOfMonth];
     }
 }
 
@@ -1974,7 +1934,6 @@ ReservedBlockEE2Size: 00 00 00 00
   if (alarm)
     {
       alarmDate = [alarm nextAlarmDate];
-      [alarmDate setTimeZone: utcTZ];
       *data = [alarmDate asFileTimeInMemCtx: memCtx];
     }
   else
@@ -2036,8 +1995,7 @@ ReservedBlockEE2Size: 00 00 00 00
   enum mapistore_error rc;
   NSString *tzid;
 
-  tzid = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"]
-           value: 0 ofAttribute: @"tzid"];
+  tzid = [timeZone tzId];
   if ([tzid length] > 0)
     {
       *data = [tzid asUnicodeInMemCtx: memCtx];
@@ -2053,16 +2011,9 @@ ReservedBlockEE2Size: 00 00 00 00
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  iCalTimeZone *icalTZ;
 
-  icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
-  if (icalTZ)
-    {
-      *data = [icalTZ asTimeZoneStructInMemCtx: memCtx];
-      rc = MAPISTORE_SUCCESS;
-    }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+  *data = [timeZone asTimeZoneStructInMemCtx: memCtx];
+  rc = MAPISTORE_SUCCESS;
 
   return rc;
 }
@@ -2071,24 +2022,16 @@ ReservedBlockEE2Size: 00 00 00 00
                                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  iCalTimeZone *icalTZ;
 
   /* [MS-OXOCAL] 3.1.5.5.1: This property is used in floating (all-day) events,
      specified in floating time, to convert the start date from UTC to the user's
      time zone */
-  if ([event isAllDay])
-    icalTZ = [iCalTimeZone timeZoneForName: [timeZone timeZoneName]];
-  else if ([event isRecurrent])
-    icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
-  else
-    icalTZ = nil;
-
-  if (icalTZ)
+  if ([event isAllDay] | [event isRecurrent])
     {
       /* [MS-OXOCAL] 2.2.1.42: This property can only have the E flag set in the
          TimeZoneDefinition struct */
-      *data = [icalTZ asZoneTimeDefinitionWithFlags: TZRULE_FLAG_EFFECTIVE_TZREG
-                                           inMemCtx: memCtx];
+      *data = [timeZone asZoneTimeDefinitionWithFlags: TZRULE_FLAG_EFFECTIVE_TZREG
+                                             inMemCtx: memCtx];
       rc = MAPISTORE_SUCCESS;
     }
   else

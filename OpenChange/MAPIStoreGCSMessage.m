@@ -140,9 +140,16 @@
           [parentFolder synchroniseCache];
           changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
         }
-      if (!changeKey)
-        abort ();
-      *data = [changeKey asBinaryInMemCtx: memCtx];
+      if (changeKey)
+        *data = [changeKey asBinaryInMemCtx: memCtx];
+      else
+        {
+          [self warnWithFormat: @"No change key for %@ in folder %@",
+                nameInContainer,
+                [parentFolder url]
+           ];
+          rc = MAPISTORE_ERR_NOT_FOUND;
+        }
     }
 
   return rc;

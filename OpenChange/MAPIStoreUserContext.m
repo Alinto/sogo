@@ -73,6 +73,8 @@ static NSMapTable *contextsTable = nil;
       [userContext autorelease];
       [contextsTable setObject: userContext forKey: username];
     }
+  else
+    [userContext activate];
 
   return userContext;
 }

@@ -338,12 +338,9 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSData *entryId;
   NSDictionary *allRecipients, *dict, *contactInfos;
   SOGoUserManager *mgr;
-  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
   enum ulRecipClass type;
-
-  samCtx = [[self context] connectionInfo]->sam_ctx;
 
   // [super getMessageData: &msgData inMemCtx: memCtx];
 
@@ -389,7 +386,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
             {
               username = [contactInfos objectForKey: @"sAMAccountName"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (samCtx, username);
+              entryId = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
             }
           else
             {
@@ -682,6 +679,14 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
   if (!fromResolved)
     {
+      TALLOC_CTX *local_mem_ctx;
+      local_mem_ctx = talloc_new(NULL);
+      if (!local_mem_ctx)
+        {
+          NSLog (@"%s: Out of memory", __PRETTY_FUNCTION__);
+          return;
+        }
+
       NSLog (@"Message without an orig from, try to guess it from PidTagSenderEntryId");
       senderEntryId = [mailProperties objectForKey: MAPIPropertyKey (PR_SENDER_ENTRYID)];
       if (senderEntryId)
@@ -695,12 +700,12 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
           bin32.cb = [senderEntryId length];
           bin32.lpb = (uint8_t *) [senderEntryId bytes];
-          addrBookEntryId = get_AddressBookEntryId (connInfo->sam_ctx, &bin32);
+          addrBookEntryId = get_AddressBookEntryId (local_mem_ctx, &bin32);
           if (addrBookEntryId && [[NSString stringWithGUID: &addrBookEntryId->ProviderUID]
                                    hasSuffix: @"08002b2fe182"])
             {
               /* TODO: better way to distinguish local and other ones */
-              username = MAPIStoreSamDBUserAttribute (connInfo->sam_ctx, @"legacyExchangeDN",
+              username = MAPIStoreSamDBUserAttribute (connInfo, @"legacyExchangeDN",
                                                       [NSString stringWithUTF8String: addrBookEntryId->X500DN], @"sAMAccountName");
               if (username)
                 {
@@ -721,7 +726,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
               /* Try with One-Off EntryId */
               struct OneOffEntryId *oneOffEntryId;
 
-              oneOffEntryId = get_OneOffEntryId (connInfo->sam_ctx, &bin32);
+              oneOffEntryId = get_OneOffEntryId (local_mem_ctx, &bin32);
               if (oneOffEntryId && [[NSString stringWithGUID: &oneOffEntryId->ProviderUID]
                                      hasSuffix: @"00dd010f5402"])
                 {
@@ -730,9 +735,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
                   [fromRecipient setObject: [NSString stringWithUTF8String: oneOffEntryId->EmailAddress.lpszW]
                                     forKey: @"email"];
                 }
-              talloc_free (oneOffEntryId);
             }
-          talloc_free (addrBookEntryId);
 
           if ([[fromRecipient allKeys] count] > 0)
             {
@@ -742,6 +745,8 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
             }
 
         }
+      /* Free entryId */
+      talloc_free(local_mem_ctx);
     }
 
   if (!recipients)
@@ -1008,7 +1013,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
 - (NGMimeMessage *) _generateMessageWithBcc: (BOOL) withBcc
 {
   NSString *contentType;
-  NGMimeMessage *message;  
+  NGMimeMessage *message;
   NGMutableHashMap *headers;
   id messageBody;
 
@@ -1048,6 +1053,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
 
 - (int) submitWithFlags: (enum SubmitFlags) flags
 {
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSDictionary *recipients;
   NSData *messageData;
   NSMutableArray *recipientEmails;
@@ -1094,7 +1100,10 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
                   withAuthenticator: authenticator
                           inContext: woContext];
       if (error)
-        [self logWithFormat: @"an error occurred: '%@'", error];
+        {
+          [self errorWithFormat: @"an error occurred: '%@'", error];
+          rc = MAPISTORE_ERR_MSG_SEND;
+        }
 
       // mapping = [self mapping];
       // [mapping unregisterURLWithID: [self objectId]];
@@ -1106,7 +1115,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
     [self logWithFormat: @"skipping submit of message with class '%@'",
           msgClass];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (void) save: (TALLOC_CTX *) memCtx

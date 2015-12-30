@@ -102,7 +102,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
     {
       value = get_SPropValue_SRow (aRow, PidTagDisplayName_string8);
       if (value)
-        folderName = [NSString stringWithUTF8String: value->value.lpszA];
+        folderName = [NSString stringWithUTF8String: (const char *) value->value.lpszA];
       else
         folderName = nil;
     }
@@ -321,9 +321,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   if ([roles containsObject: MAPIStoreRightDeleteOwn])
     rights |= RightsDeleteOwn;
   if ([roles containsObject: MAPIStoreRightEditAll])
-    rights |= RightsEditAll;
+    rights |= RightsEditAll | RightsEditOwn;
   if ([roles containsObject: MAPIStoreRightDeleteAll])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
   if ([roles containsObject: MAPIStoreRightCreateSubfolders])
     rights |= RightsCreateSubfolders;
   if ([roles containsObject: MAPIStoreRightFolderOwner])

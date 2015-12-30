@@ -165,9 +165,10 @@
       ldifEntry = [childRecords objectForKey: objectName];
       if (!ldifEntry)
         {
-          ldifEntry = [source lookupContactEntry: objectName];
-	  if (ldifEntry)
-	    [childRecords setObject: ldifEntry forKey: objectName];
+          ldifEntry = [source lookupContactEntry: objectName
+                                        inDomain: [[context activeUser] domain]];
+          if (ldifEntry)
+            [childRecords setObject: ldifEntry forKey: objectName];
           else if ([self isValidContentName: objectName])
             {
               url = [[[lookupContext request] uri] urlWithoutParameters];
@@ -332,10 +333,14 @@
   NSDictionary *record;
 
   if (aName && [aName length] > 0)
-    record = [self _flattenedRecord: [source lookupContactEntry: aName]];
+    {
+      record = [source lookupContactEntry: aName
+                                 inDomain: [[context activeUser] domain]];
+      record = [self _flattenedRecord: record];
+    }
   else
     record = nil;
-  
+
   return record;
 }
 
@@ -570,7 +575,7 @@
                          toResponse: (WOResponse *) response
 {
   NSObject <DOMElement> *element;
-  NSString *url, *baseURL, *cname;
+  NSString *url, *baseURL, *cname, *domain;
   NSString **propertiesArray;
   NSMutableString *buffer;
   NSDictionary *object;
@@ -587,13 +592,13 @@
 
   max = [refs length];
   buffer = [NSMutableString stringWithCapacity: max*512];
-
+  domain = [[context activeUser] domain];
   for (count = 0; count < max; count++)
     {
       element = [refs objectAtIndex: count];
       url = [[[element firstChild] nodeValue] stringByUnescapingURL];
       cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
-      object = [source lookupContactEntry: cname];
+      object = [source lookupContactEntry: cname inDomain: domain];
       if (object)
         [self appendObject: object
                 properties: propertiesArray

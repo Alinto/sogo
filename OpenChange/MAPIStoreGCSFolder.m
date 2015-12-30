@@ -681,12 +681,12 @@ static Class NSNumberK;
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSString *) changeNumber
 {
   NSDictionary *mapping;
-  NSNumber *modseq;
+  NSNumber *lastModified;
 
   mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
-  modseq = [mapping objectForKey: changeNumber];
+  lastModified = [mapping objectForKey: changeNumber];
 
-  return modseq;
+  return lastModified;
 }
 
 - (NSString *) changeNumberForMessageWithKey: (NSString *) messageKey

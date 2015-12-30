@@ -1,8 +1,8 @@
 /* dbmsgreader.m - this file is part of SOGo
  *
  * Copyright (C) 2011-2012 Inverse inc
+ *               2015 Enrique J. Hernandez
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,21 +33,58 @@
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
+#import <libmapi/libmapi.h>
+
 #import "MAPIStoreUserContext.h"
 #import <SOGo/SOGoCacheGCSObject.h>
 
 #import <SOGo/BSONCodec.h>
 #import "NSObject+PropertyList.h"
 
-Class MAPIStoreUserContextK, SOGoCacheGCSObjectK;
+
+Class MAPIStoreUserContextK, SOGoCacheGCSObjectK, NSStringK;
 
 static void
 DumpBSONData(NSData *data)
 {
+  id key, value;
+  NSEnumerator *dictEnum;
   NSDictionary *dvalue;
+  NSMutableString *outStr;
+  NSUInteger max;
+
   dvalue = [data BSONValue];
-  [dvalue displayWithIndentation:0];
-  printf("\n");
+  max = [dvalue count];
+  dictEnum = [dvalue keyEnumerator];
+  NSStringK = [NSString class];
+  outStr = [NSMutableString stringWithFormat: @"{ %d items\n", max];
+  while ((key = [dictEnum nextObject]))
+    {
+      uint32_t proptag = 0;
+      if ([key isKindOfClass: NSStringK] && [(NSString *)key intValue] > 0)
+        proptag = [(NSString *)key intValue];
+
+      if (proptag > 0)
+        {
+          const char *propTagName = get_proptag_name (proptag);
+          NSString *propName;
+
+          if (propTagName)
+            propName = [NSString stringWithCString: propTagName
+                                          encoding: NSUTF8StringEncoding];
+          else
+            propName = [NSString stringWithFormat: @"0x%.4x", [key unsignedLongValue]];
+
+          [outStr appendFormat: @"  %@ = ", propName];
+        }
+      else
+        [outStr appendFormat: @"  %@ = ", key];
+
+      value = [dvalue objectForKey: key];
+      [outStr appendFormat: @"(%@) %@,\n", NSStringFromClass ([value class]), value];
+    }
+  [outStr appendFormat: @"}\n"];
+  printf ("%s\n", [outStr UTF8String]);
 }
 
 static void
@@ -67,7 +104,7 @@ DbDumpObject (NSString *username, NSString *path)
     {
       printf("record found: %p\n", record);
       content = [[record objectForKey: @"c_content"] dataByDecodingBase64];
-      DumpBSONData(content);
+      DumpBSONData (content);
     }
   else
     NSLog (@"record not found");

@@ -30,14 +30,13 @@
 {
   NSDictionary *parameters;
   NSString *filename;
-  
-  filename = [[self objectForKey: @"parameterList"]
-	       objectForKey: @"name"];
-  
-  if (!filename)
+
+  filename = nil;
+  parameters = [[self objectForKey: @"disposition"]
+                    objectForKey: @"parameterList"];
+
+  if (parameters)
     {
-      parameters = [[self objectForKey: @"disposition"]
-		     objectForKey: @"parameterList"];
       filename = [parameters objectForKey: @"filename"];
 
 
@@ -45,28 +44,32 @@
       // See RFC2231 for details. If it was folded before, it will
       // be unfolded when we get here.
       if (!filename)
-	{
-	  filename = [parameters objectForKey: @"filename*"];
-	  
-	  if (filename)
-	    {
-	      NSRange r;
-	      
-	      filename = [filename stringByUnescapingURL];
-	      
-	      // We skip up to the language
-	      r = [filename rangeOfString: @"'"];
-	      
-	      if (r.length)
-		{
-		  r = [filename rangeOfString: @"'"  options: 0  range: NSMakeRange(r.location+1, [filename length]-r.location-1)];
-		  
-		  if (r.length)
-		    filename = [filename substringFromIndex: r.location+1];
-		}
-	    }
-	}
+        {
+          filename = [parameters objectForKey: @"filename*"];
+          
+          if (filename)
+            {
+              NSRange r;
+              
+              filename = [filename stringByUnescapingURL];
+              
+              // We skip up to the language
+              r = [filename rangeOfString: @"'"];
+              
+              if (r.length)
+                {
+                  r = [filename rangeOfString: @"'"  options: 0  range: NSMakeRange(r.location+1, [filename length]-r.location-1)];
+                  
+                  if (r.length)
+                    filename = [filename substringFromIndex: r.location+1];
+                }
+            }
+        }
     }
+
+  if (!filename)
+    filename = [[self objectForKey: @"parameterList"]
+                 objectForKey: @"name"];
 
   return filename;
 }

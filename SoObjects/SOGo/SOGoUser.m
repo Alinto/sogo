@@ -165,7 +165,7 @@
               // The domain is probably appended to the username;
               // make sure it is defined as a domain in the configuration.
               domain = [newLogin substringFromIndex: (r.location + r.length)];
-              if ([[sd domainIds] containsObject: domain] &&
+              if ([[SOGoUserManager sharedUserManager] isDomainDefined: domain] &&
                   ![sd enableDomainBasedUID])
                 newLogin = [newLogin substringToIndex: r.location];
 
