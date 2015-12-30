@@ -145,7 +145,8 @@ $(DBMSGREADER_TOOL)_LIB_DIRS += \
 	-L../SoObjects/SOGo/SOGo.framework/sogo -lSOGo \
 	-L../SOPE/GDLContentStore/obj/ -lGDLContentStore \
 	-L../SOPE/NGCards/obj/ -lNGCards \
-	-lNGObjWeb
+	-lNGObjWeb \
+	$(LIBMAPI_LIBS)
 
 TEST_TOOL_NAME += $(PLREADER_TOOL) $(DBMSGREADER_TOOL)
 

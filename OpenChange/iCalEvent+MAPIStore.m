@@ -36,6 +36,7 @@
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/iCalTrigger.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -70,11 +71,12 @@
 #include <mapistore/mapistore_nameid.h>
 
 #import "iCalEvent+MAPIStore.h"
+#import "iCalTimeZone+MAPIStore.h"
 
 @implementation iCalEvent (MAPIStoreProperties)
 
 - (void) _setupEventRecurrence: (NSData *) mapiRecurrenceData
-                    inTimeZone: (NSTimeZone *) tz
+                    inTimeZone: (iCalTimeZone *) tz
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct Binary_r *blob;
@@ -250,10 +252,8 @@
   BOOL isAllDay;
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
-  NSTimeZone *userTimeZone;
-  NSString *priority, *class = nil;
+  NSString *priority, *class = nil, *tzDescription = nil;
   NSUInteger responseStatus = 0;
-  NSInteger tzOffset;
   SOGoUser *ownerUser;
   id value;
 
@@ -274,7 +274,31 @@
 	[self setAccessClass: @"PUBLIC"];
     }
 
-  userTimeZone = [userContext timeZone];
+  /* Time zone = PidLidAppointmentTimeZoneDefinitionRecur
+     or PidLidAppointmentTimeZoneDefinition[Start|End]Display */
+  value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentTimeZoneDefinitionStartDisplay)];
+  if (!value)
+    {
+      value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentTimeZoneDefinitionEndDisplay)];
+      if (!value)
+        {
+          /* If PidLidtimeZoneStruct, TZID SHOULD come from PidLidTimeZoneDescription,
+            if PidLidAppointmentTimeZoneDefinition[Start|End]Display it MUST be derived from KeyName
+            (MS-OXCICAL] 2.1.3.1.1.19.1) */
+          value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentTimeZoneDefinitionRecur)];
+          tzDescription = [properties objectForKey: MAPIPropertyKey (PidLidTimeZoneDescription)];
+        }
+    }
+  if (value)
+    {
+      tz = [[iCalTimeZone alloc] iCalTimeZoneFromDefinition: value
+                                            withDescription: tzDescription
+                                                   inMemCtx: memCtx];
+    }
+  else
+    /* The client is more likely to have the webmail's time zone than any other */
+    tz = [iCalTimeZone timeZoneForName: [[userContext timeZone] name]];
+  [(iCalCalendar *) parent addTimeZone: tz];
 
   /* CREATED */
   value = [properties objectForKey: MAPIPropertyKey (PidTagCreationTime)];
@@ -306,20 +330,13 @@
                 objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)];
   if (value)
     isAllDay = [value boolValue];
-  if (!isAllDay)
-    {
-      tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
-      [(iCalCalendar *) parent addTimeZone: tz];
-    }
-  else
-    tz = nil;
 
   // recurrence-id
   value
     = [properties objectForKey: MAPIPropertyKey (PidLidExceptionReplaceTime)];
   if (value)
     [self setRecurrenceId: value];
- 
+
   // start
   value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
   if (!value)
@@ -330,15 +347,7 @@
       [start setTimeZone: tz];
       if (isAllDay)
         {
-          /* when user TZ is positive (East) all-day events were not
-             shown properly in SOGo UI. This day delay fixes it */
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          if (tzOffset > 0)
-            {
-              value = [value dateByAddingYears: 0 months: 0 days: 1
-                                         hours: 0 minutes: 0
-                                       seconds: 0];
-            }
+          /* All-day events are set in floating time ([MS-OXCICAL] 2.1.3.1.1.20.8) */
           [start setDate: value];
           [start setTimeZone: nil];
         }
@@ -356,15 +365,7 @@
       [end setTimeZone: tz];
       if (isAllDay)
         {
-          /* when user TZ is positive (East) all-day events were not
-             shown properly in SOGo UI. This day delay fixes it */
-          tzOffset = [userTimeZone secondsFromGMTForDate: value];
-          if (tzOffset > 0)
-            {
-              value = [value dateByAddingYears: 0 months: 0 days: 1
-                                         hours: 0 minutes: 0
-                                       seconds: 0];
-            }
+          /* All-day events are set in floating time ([MS-OXCICAL] 2.1.3.1.1.20.8) */
           [end setDate: value];
           [end setTimeZone: nil];
         }
@@ -467,7 +468,7 @@
   value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
   if (value)
-    [self _setupEventRecurrence: value inTimeZone: userTimeZone inMemCtx: memCtx];
+    [self _setupEventRecurrence: value inTimeZone: tz inMemCtx: memCtx];
 
   /* alarm */
   [self _setupEventAlarmFromProperties: properties];

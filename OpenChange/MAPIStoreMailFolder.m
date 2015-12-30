@@ -74,6 +74,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 #include <util/attr.h>
 #include <libmapi/libmapi.h>
 #include <libmapiproxy.h>
+#include <limits.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
@@ -181,7 +182,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME_UNICODE)
         folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszW];
       else if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME)
-        folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszA];
+        folderName = [NSString stringWithUTF8String: (const char *) aRow->lpProps[i].value.lpszA];
     }
 
   if (folderName)
@@ -257,6 +258,67 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+- (EOQualifier *) simplifyQualifier: (EOQualifier *) qualifier
+{
+  /* Hack: Reduce the number of MODSEQ constraints to a single one as
+     we assume the difference among MODSEQs will be small enough to
+     return a small number of UIDs.
+
+     This is the only case we do simplify:
+     MODSEQ >= x | MODSEQ >= y | MODSEQ >= z => MODSEQ >= min(x,y,z)
+  */
+  if (qualifier && [qualifier isKindOfClass: [EOOrQualifier class]])
+    {
+      EOQualifier *simplifiedQualifier;
+      NSArray  *quals;
+      NSNumber *minModseq;
+      NSUInteger i, count;
+
+      quals = [(EOOrQualifier *)qualifier qualifiers];
+      count = [quals count];
+      if (count < 2)
+        return qualifier;
+
+      minModseq = [NSNumber numberWithUnsignedLongLong: ULLONG_MAX];
+
+      for (i = 0; i < count; i++)
+        {
+          EOQualifier *subQualifier;
+
+          subQualifier = [quals objectAtIndex: i];
+          if ([subQualifier isKindOfClass: [EOAndQualifier class]]
+              && [[(EOAndQualifier *)subQualifier qualifiers] count] == 1)
+            subQualifier = [[(EOAndQualifier *)subQualifier qualifiers] objectAtIndex: 0];
+
+          if ([subQualifier isKindOfClass: [EOKeyValueQualifier class]]
+              && [[(EOKeyValueQualifier *)subQualifier key] isEqualToString: @"MODSEQ"])
+            {
+              NSNumber *value;
+
+              value = (NSNumber *)[(EOKeyValueQualifier *)subQualifier value];
+              if ([minModseq compare: value] == NSOrderedDescending
+                  && [value unsignedLongLongValue] > 0)
+                minModseq = (NSNumber *)[(EOKeyValueQualifier *)subQualifier value];
+
+            }
+          else
+            return qualifier;
+        }
+
+      if ([minModseq unsignedLongLongValue] > 0 && [minModseq unsignedLongLongValue] < ULLONG_MAX)
+        {
+          simplifiedQualifier = [[EOKeyValueQualifier alloc]
+                                       initWithKey: @"MODSEQ"
+                                  operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                             value: minModseq];
+          [simplifiedQualifier autorelease];
+          return simplifiedQualifier;
+        }
+    }
+
+  return qualifier;
+}
+
 - (EOQualifier *) nonDeletedQualifier
 {
   static EOQualifier *nonDeletedQualifier = nil;
@@ -281,7 +343,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
                           andSortOrderings: (NSArray *) sortOrderings
 {
   NSArray *uidKeys;
-  EOQualifier *fetchQualifier;
+  EOQualifier *fetchQualifier, *simplifiedQualifier;
 
   if ([self ensureFolderExists])
     {
@@ -290,9 +352,10 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
       if (qualifier)
         {
+          simplifiedQualifier = [self simplifyQualifier: qualifier];
           fetchQualifier
             = [[EOAndQualifier alloc] initWithQualifiers:
-                                        [self nonDeletedQualifier], qualifier,
+                                        [self nonDeletedQualifier], simplifiedQualifier,
                                       nil];
           [fetchQualifier autorelease];
         }
@@ -599,7 +662,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   uint64_t lastModseqNbr;
   EOQualifier *searchQualifier;
   NSArray *uids, *changeNumbers;
-  NSUInteger count, max;
+  NSUInteger count, max, nFetched;
   NSArray *fetchResults;
   NSDictionary *result;
   NSData *changeKey;
@@ -677,6 +740,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults
         = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                          context: NULL];
+
+      nFetched = [fetchResults count];
+      if (nFetched != max) {
+        [self errorWithFormat: @"Error fetching UIDs. Asked: %d Received: %d."
+              @"Check the IMAP conversation for details", max, nFetched];
+        return NO;
+      }
 
       for (count = 0; count < max; count++)
         {
@@ -1641,10 +1711,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     rights |= RightsCreateItems;
   if ([roles containsObject: SOGoRole_ObjectEraser]
       && [roles containsObject: SOGoRole_FolderEraser])
-    rights |= RightsDeleteAll;
+    rights |= RightsDeleteAll | RightsDeleteOwn;
 
   if ([roles containsObject: SOGoRole_ObjectEditor])
-    rights |= RightsEditAll;
+    rights |= RightsEditAll | RightsEditOwn;
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
   if ([roles containsObject: SOGoRole_FolderCreator])

@@ -32,6 +32,12 @@ SOGo_HEADER_FILES = \
 	SOGoGCSFolder.h			\
 	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
+	SOGoSource.h			\
+	SOGoSystemDefaults.h		\
+	SOGoDomainDefaults.h		\
+	SOGoLDAPDefaults.h		\
+	SOGoDefaultsSource.h		\
+	SOGoUserDefaults.h		\
 	\
 	SOGoSieveManager.h		\
 	\

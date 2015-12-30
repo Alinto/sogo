@@ -56,7 +56,8 @@
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr;
 
-- (NSDictionary *) lookupContactEntry: (NSString *) theID;
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
+                             inDomain: (NSString *) domain;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID
                                            inDomain: (NSString *) domain;
 

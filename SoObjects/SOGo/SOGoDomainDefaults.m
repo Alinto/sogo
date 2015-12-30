@@ -50,6 +50,9 @@
                                         andParentSource: systemDefaults];
     }
 
+  if (!domainDefaults)
+    domainDefaults = [SOGoSystemDefaults sharedSystemDefaults];
+
   return domainDefaults;
 }
 

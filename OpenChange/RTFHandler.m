@@ -25,11 +25,13 @@
 //
 // Useful macros
 //
-#define ADVANCE _bytes++; _current_pos++;
-#define ADVANCE_N(N) _bytes += (N); _current_pos += (N);
-#define REWIND _bytes--; _current_pos--;
+#define ADVANCE self->_bytes++; self->_current_pos++;
+#define ADVANCE_N(N) self->_bytes += (N); self->_current_pos += (N);
+#define REWIND self->_bytes--; self->_current_pos--;
 
-
+#define DEFAULT_CHARSET 1
+#define FONTNAME_LEN_MAX 100
+#define UTF8_FIRST_BYTE_LAST_CODEPOINT 0x7F
 //
 // Charset definitions. See http://msdn.microsoft.com/en-us/goglobal/bb964654 for all details.
 //
@@ -229,7 +231,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(a);
+  [a release];
   [super dealloc];
 }
 
@@ -244,7 +246,7 @@ const unsigned short ansicpg874[256] = {
   
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
       [a removeLastObject];
     }
   
@@ -257,7 +259,7 @@ const unsigned short ansicpg874[256] = {
 
   if ([a count])
     {
-      o = AUTORELEASE([[a lastObject] retain]);
+      o = [[[a lastObject] retain] autorelease];
     }
 
   return o;
@@ -282,15 +284,26 @@ const unsigned short ansicpg874[256] = {
     {
       
     }
+
+  charset = DEFAULT_CHARSET;
   return self;
 }
 
 - (void) dealloc
 {
-  RELEASE(family);
-  RELEASE(charset);
-  RELEASE(name);
+  [family release];
+  [name release];
   [super dealloc];
+}
+
+- (NSString *) description
+{
+  NSString *description;
+  description = [NSString stringWithFormat:
+                          @"%u name=%@ family=%@ charset=%u pitch=%u",                
+                          index, name, family, charset, pitch
+                 ];
+  return description;
 }
 
 @end
@@ -332,6 +345,23 @@ const unsigned short ansicpg874[256] = {
   return NSMapGet(fontInfos, key);
 }
 
+- (NSString *) description
+{
+  NSMutableString *description;
+  NSEnumerator *enumerator;
+  RTFFontInfo *fontInfo;
+
+  description = [NSMutableString stringWithFormat: @"Number of fonts: %u\n", [fontInfos count]];
+  enumerator = [fontInfos objectEnumerator];
+  while ((fontInfo = [enumerator nextObject]))
+    {
+      [description appendString: [fontInfo description]];
+      [description appendString: @"\n"];
+    }
+
+  return description;
+}
+
 @end
 
 //
@@ -357,7 +387,7 @@ const unsigned short ansicpg874[256] = {
 
 - (void) dealloc
 {
-  RELEASE(colorDefs);
+  [colorDefs release];
   [super dealloc];
 }
 
@@ -378,6 +408,135 @@ const unsigned short ansicpg874[256] = {
 //
 @implementation RTFHandler
 
+static NSMapTable *_charsets = nil; 
+static NSMapTable *_cws = nil;
+typedef enum {
+  CW_UNKNOWN = 0,
+  CW_ANSICPG,
+  CW_B,
+  CW_CF,
+  CW_COLORTBL,
+  CW_F,
+  CW_FONTTBL,
+  CW_I,
+  CW_PAR,
+  CW_PICT,
+  CW_SOFTLINE,
+  CW_STRIKE,
+  CW_STYLESHEET,
+  CW_TAB,
+  CW_U,
+  CW_UL,
+  CW_ULNONE
+} commandWordId;
+
+static NSMapTable *_fontCws = nil;
+typedef enum {
+  FONTCW_UNKNOWN = 0,
+  FONTCW_F,
+  FONTCW_FBIDI,
+  FONTCW_FCHARSET,
+  FONTCW_FDECOR,
+  FONTCW_FMODERN,
+  FONTCW_FNIL,
+  FONTCW_FPRQ,
+  FONTCW_FROMAN,
+  FONTCW_FSCRIPT,
+  FONTCW_FSWISS,
+  FONTCW_FTECH
+} fontCommandWordId;
+
+static void _init_charsets_table()
+{
+      _charsets = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 23);
+      // 238 — Eastern European - cpg1250
+      NSMapInsert(_charsets, @"ansicpg1250", ansicpg1250);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 238], ansicpg1250);
+      // 204 — Russian - cpg1251
+      NSMapInsert(_charsets, @"ansicpg1251", ansicpg1251);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 204], ansicpg1251);
+      //  0 - Latin 1 - cpg1252 - also know as ANSI
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 0], ansicpg1252);
+      NSMapInsert(_charsets, @"ansicpg1252", ansicpg1252);
+      // 161 - Greek  cpg1253
+      NSMapInsert(_charsets, @"ansicpg1253", ansicpg1253);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 161], ansicpg1253);
+      // 162 — Turkish - cpg1254
+      NSMapInsert(_charsets, @"ansicpg1254", ansicpg1254);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 162], ansicpg1254);
+      // 177 — Hebrew Traditional - cpg1255
+      // also 181 - Hebrew user
+      NSMapInsert(_charsets, @"ansicpg1255", ansicpg1255);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 177], ansicpg1255);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 181], ansicpg1255);
+      // 178 — Arabic  - cpg1256
+      // also 179 - Arabic traditional
+      // also 180 - Arabic User
+      NSMapInsert(_charsets, @"ansicpg1256", ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 178], ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 179], ansicpg1256);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 180], ansicpg1256);
+      // 186 — Baltic - pg 1257
+      NSMapInsert(_charsets, @"ansicpg1257", ansicpg1257);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 186], ansicpg1257);
+      // 163 — Vietnamese - pg1259
+      NSMapInsert(_charsets, @"ansicpg1258", ansicpg1258);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 163], ansicpg1258);
+      // 222 — Thai - cpg874
+      NSMapInsert(_charsets, @"ansicpg874", ansicpg874);
+      NSMapInsert(_charsets, [NSNumber numberWithUnsignedChar: 222], ansicpg874);
+
+      // TODO: check differences between traditional/user/no-qualified for Arabic and Hebrew
+      // TODO: missing codepage for the following codes:
+      // 2 — Symbol
+      // 3 — Invalid
+      // 77 — Mac
+      // 128 — Shift Jis
+      // 129 — Hangul
+      // 130 — Johab
+      // 134 — GB2312
+      // 136 — Big5
+      // 254 — PC 437
+      // 255 — OEM 
+}
+
+static void _init_cws_table()
+{
+  _cws = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 16);
+  NSMapInsert(_cws, @"ansicpg", (void *) CW_ANSICPG);
+  NSMapInsert(_cws, @"b", (void *) CW_B);
+  NSMapInsert(_cws, @"cf", (void *) CW_CF);
+  NSMapInsert(_cws, @"colortbl", (void *) CW_COLORTBL);
+  NSMapInsert(_cws, @"f", (void *) CW_F);
+  NSMapInsert(_cws, @"fonttbl", (void *) CW_FONTTBL);
+  NSMapInsert(_cws, @"i", (void *) CW_I);
+  NSMapInsert(_cws, @"par", (void *) CW_PAR);
+  NSMapInsert(_cws, @"pict", (void *) CW_PICT);
+  NSMapInsert(_cws, @"softline", (void *) CW_SOFTLINE);
+  NSMapInsert(_cws, @"strike", (void *) CW_STRIKE);
+  NSMapInsert(_cws, @"stylesheet", (void *) CW_STYLESHEET);
+  NSMapInsert(_cws, @"tab", (void *) CW_TAB);
+  NSMapInsert(_cws, @"u", (void *) CW_U);
+  NSMapInsert(_cws, @"ul", (void *) CW_UL);
+  NSMapInsert(_cws, @"ulnone", (void *) CW_ULNONE);
+}
+
+static void _init_fontCws_table()
+{
+  _fontCws = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 23);
+  NSMapInsert(_fontCws, @"f", (void *) FONTCW_F);
+  NSMapInsert(_fontCws, @"fbidi", (void *) FONTCW_FBIDI);
+  NSMapInsert(_fontCws, @"fcharset", (void *) FONTCW_FCHARSET);
+  NSMapInsert(_fontCws, @"fdecor", (void *) FONTCW_FDECOR);
+  NSMapInsert(_fontCws, @"fmodern", (void *) FONTCW_FMODERN);
+  NSMapInsert(_fontCws, @"fnil", (void *) FONTCW_FNIL);
+  NSMapInsert(_fontCws, @"fprq", (void *) FONTCW_FPRQ);
+  NSMapInsert(_fontCws, @"froman", (void *) FONTCW_FROMAN);
+  NSMapInsert(_fontCws, @"fscript", (void *) FONTCW_FSCRIPT);
+  NSMapInsert(_fontCws, @"fswiss", (void *) FONTCW_FSWISS);
+  NSMapInsert(_fontCws, @"ftech", (void *) FONTCW_FTECH);
+}
+
 - (id) initWithData: (NSData *) theData
 {
   if ((self = [super init]))
@@ -386,18 +545,12 @@ const unsigned short ansicpg874[256] = {
       _bytes = (char *)[_data bytes];
       _len = [_data length];
       _current_pos = 0;
-      
-      _charsets = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 10);
-      NSMapInsert(_charsets, @"ansicpg1250", ansicpg1250);
-      NSMapInsert(_charsets, @"ansicpg1251", ansicpg1251);
-      NSMapInsert(_charsets, @"ansicpg1252", ansicpg1252);
-      NSMapInsert(_charsets, @"ansicpg1253", ansicpg1253);
-      NSMapInsert(_charsets, @"ansicpg1254", ansicpg1254);
-      NSMapInsert(_charsets, @"ansicpg1255", ansicpg1255);
-      NSMapInsert(_charsets, @"ansicpg1256", ansicpg1256);
-      NSMapInsert(_charsets, @"ansicpg1257", ansicpg1257);
-      NSMapInsert(_charsets, @"ansicpg1258", ansicpg1258);
-      NSMapInsert(_charsets, @"ansicpg874", ansicpg874);
+      if (_charsets == nil)
+          _init_charsets_table();
+      if (_cws == nil)
+        _init_cws_table();
+      if (_fontCws == nil)
+        _init_fontCws_table();
     }
 
   return self;
@@ -406,7 +559,7 @@ const unsigned short ansicpg874[256] = {
 - (void) dealloc
 {
   NSFreeMapTable(_charsets);
-  RELEASE(_data);
+  [_data release];
   [super dealloc];
 }
 
@@ -454,6 +607,85 @@ const unsigned short ansicpg874[256] = {
   *len = end-start-1;
 
   return start+1;
+}
+                    
+- (const char *) parseControlWordAndSetLenIn: (unsigned int *) len
+                         setHasIntArgumentIn: (BOOL *) hasArg
+                            setIntArgumentIn: (int *) arg
+{
+  const char *start;
+  const char *end = NULL;
+  const char *startArg = NULL;
+  const char *endArg = NULL;
+
+  ADVANCE;
+  start = _bytes;
+
+  /*
+    A control word is defined by:
+
+    \<ASCII Letter Sequence><Delimiter>
+  */
+  while (isalpha(*_bytes))
+    {
+      end = _bytes;
+      ADVANCE;
+    }
+
+  if (end == NULL)
+    {
+      return NULL;
+    }
+
+  /*
+    The <Delimiter> can be one of the following:
+
+     - A space. This serves only to delimit a control word and is
+       ignored in subsequent processing.
+
+     - A numeric digit or an ASCII minus sign (-), which indicates
+       that a numeric parameter is associated with the control word.
+       Only this case requires to include it in the control word.
+
+     - Any character other than a letter or a digit
+  */
+
+  if (*_bytes == '-' || isdigit(*_bytes))
+    {
+      startArg = _bytes;
+      endArg = _bytes;
+      ADVANCE;
+      while (isdigit(*_bytes))
+        {
+          endArg = _bytes;
+          ADVANCE;
+        }
+    }
+
+  *hasArg = NO;
+  *arg = 0;
+  if (startArg) 
+    {
+      NSString *s;
+      unsigned int argLength = endArg - startArg + 1;
+      // the next guard is to protect against a single '-'
+      if (argLength > 1 || (*startArg != '-'))
+        {
+          s = [[NSString alloc] initWithBytesNoCopy: (void *) startArg
+                                             length: argLength
+                                           encoding: NSASCIIStringEncoding
+                                       freeWhenDone: NO];
+          [s autorelease];
+          *hasArg = YES;
+          *arg = [s intValue]; // Warning: it does not detect conversion errors
+        }
+    }
+
+
+  /* In other cases, the delimiting character terminates the control
+     word and is not part of the control word. */
+  *len = end - start + 1;
+  return start;
 }
 
 //
@@ -531,107 +763,140 @@ const unsigned short ansicpg874[256] = {
 //
 - (RTFFontTable *) parseFontTable
 {
-  NSMutableString *fontName;
   RTFFontTable *fontTable;
   RTFFontInfo *fontInfo;
 
-  unsigned int count;
+  unsigned int level;
 
   fontTable = [[[RTFFontTable alloc] init] autorelease];
-  fontName = nil;
   fontInfo = nil;
-  count = 0;
+  level = 0;
  
   do
     {
       if (*_bytes == '{')
         {
-          if (fontTable)
+          if (fontTable && level == 1)
             {
               fontInfo = [[[RTFFontInfo alloc] init] autorelease];
-              fontName = [[[NSMutableString alloc] init] autorelease];
             }
           ADVANCE;
-          count++;
+          level++;
         }
       else if (*_bytes == '}')
         {
-          if (fontTable) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
+          if (fontTable && level == 2) //&& ![NSAllMapTableValues(fontTable->fontInfos) containsObject: fontInfo])
             {
-              ASSIGN(fontInfo->name, fontName);
               [fontTable addFontInfo: fontInfo  atIndex: fontInfo->index];
             }
           ADVANCE;
-          count--;
+          level--;
         }
       else if (*_bytes == '\\')
         {
           const char *cw;
           unsigned int len;
-          NSString *s;
+          BOOL hasArg;
+          int arg;
+          NSString *cwKey;
+          fontCommandWordId cwId;
           
-          cw = [self parseControlWord: &len];
-          
-          // Skip our control word
-          if (strncmp((const char*)cw, "fonttbl", len) == 0)
+          cw = [self parseControlWordAndSetLenIn: &len
+                             setHasIntArgumentIn: &hasArg
+                                setIntArgumentIn: &arg];
+          if (level != 2)
+            continue;
+          else if (cw == NULL)
             continue;
 
-          // We must at least parse <fontnum><fontfamily><fcharset>
-          s = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                             length: len-1
-                                           encoding: NSASCIIStringEncoding
-                                       freeWhenDone: NO];
-          [s autorelease];
+          cwKey= [[NSString alloc] initWithBytesNoCopy: (void *)cw
+                                                 length: len
+                                               encoding: NSASCIIStringEncoding
+                                           freeWhenDone: NO];
+          [cwKey autorelease];
 
-          // If we got a fontnum, let's parse all three fields at once)
-          if (isdigit(*(cw+1)))
+          cwId = (fontCommandWordId) NSMapGet(_fontCws, cwKey);
+          switch (cwId)
             {
-              fontInfo->index = [s intValue];
-              
-              // We now parse <fontfamily><fcharset>
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->family = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                length: len-1
-                                                              encoding: NSASCIIStringEncoding
-                                                          freeWhenDone: NO];
-
-              cw = [self parseControlWord: &len];
-              if (len == 0)  // Possibly parsing a space
-                cw = [self parseControlWord: &len];
-
-              fontInfo->charset = [[NSString alloc] initWithBytesNoCopy: (void *)cw+1
-                                                                 length: len-1
-                                                               encoding: NSASCIIStringEncoding
-                                                           freeWhenDone: NO];
-
-              // We now skip everything until we find our final group closer ('}')
-              int cc = 1;
-              
-              do
-                {
-                  if (*_bytes == '{')
-                    cc++;
-                  if (*_bytes == '}')
-                    cc--;
-                  
-                  ADVANCE;
-                }
-              while (cc != 0);
-
-              // move back our buffer;
-              REWIND;
+            case FONTCW_F: 
+              if (hasArg)
+                fontInfo->index = arg;
+              break;
+            case FONTCW_FBIDI:
+              fontInfo->family = @"bidi";
+              break;
+            case FONTCW_FCHARSET: 
+              if (hasArg) 
+                fontInfo->charset = arg;
+              break;
+            case FONTCW_FDECOR:
+              fontInfo->family = @"decor";
+              break;
+            case FONTCW_FMODERN:
+              fontInfo->family = @"modern";
+              break;
+            case FONTCW_FNIL: 
+              fontInfo->family = @"nil"; 
+              break;
+            case FONTCW_FPRQ:
+              if (hasArg)
+                fontInfo->pitch = arg;
+              break;
+            case FONTCW_FROMAN:
+              fontInfo->family = @"roman"; 
+              break;
+            case FONTCW_FSCRIPT:
+              fontInfo->family = @"script";
+              break;
+            case FONTCW_FSWISS:
+              fontInfo->family = @"swiss";
+              break;
+            case FONTCW_FTECH:
+              fontInfo->family = @"tech";
+              break;
+            case FONTCW_UNKNOWN:
+            default:
+              // do nothing
+              break;
             }
         }
-      else
+      else // no char
         {
-          if (isalnum(*_bytes))
-            [fontName appendFormat: @"%c", *_bytes]; 
+          if (level == 2 && isalnum(*_bytes))
+            {
+              // we assume this is the fontname
+              unsigned int fontnameLen;
+              const char *delim = strpbrk(_bytes, ";{}\\");
+              if (delim == NULL)
+                {
+                  // no delimiter found, we skip to next characters
+                  ADVANCE;
+                  continue;
+                }
+              fontnameLen = delim - _bytes;
+              // only valid if the delimiter is a correct ';'
+              if (*delim == ';')
+                {
+                  // there is no explicit limit length but we took 100
+                  // as protection
+                  if (delim && fontnameLen <= FONTNAME_LEN_MAX)
+                    {
+                      fontInfo->name = [[NSString alloc] initWithBytesNoCopy: (char *) _bytes
+                                                                      length: fontnameLen
+                                                                    encoding: NSASCIIStringEncoding
+                                                                freeWhenDone: NO];
+                      ADVANCE_N(fontnameLen);
+                    }
+                }
+              else {
+                // advance just before the special character
+                ADVANCE_N(fontnameLen - 1);
+              }
+            }
           ADVANCE;
-       }
-    } while (count != 0);
+        }
+
+    } while (level > 0);
 
   return fontTable;
 }
@@ -700,9 +965,238 @@ const unsigned short ansicpg874[256] = {
   [self parseIgnoringEverything];
 }
 
-//
-//
-//
+
+// todo:  This keyword is only valid in the RTF header section right after the \ansi, \mac, \pc or \pca keyword.
+inline static void parseAnsicpg (BOOL hasArg, int arg, const unsigned short **out_default_char)
+{
+  NSString *key;
+  const unsigned short *res;
+
+  if (!hasArg)
+    return;
+  key = [NSString stringWithFormat: @"anscicpg%i", arg];
+  res =  NSMapGet(_charsets, key);
+  if (res)
+    *out_default_char = res;
+}
+
+inline static void parseB(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions)
+{
+  if (!formattingOptions)
+    return;
+  if (hasArg && arg == 0)
+    {
+      [self->_html appendBytes: "</b>"  length: 4];
+      formattingOptions->bold = NO;
+    }
+  else 
+    {
+      [self->_html appendBytes: "<b>"  length: 3];
+      formattingOptions->bold = YES;      
+    }
+}
+
+inline static void parseCf(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions, RTFColorTable *colorTable)
+{
+  RTFColorDef *colorDef;
+  char *v;
+
+  if (!hasArg)
+    return;
+  if (!formattingOptions) 
+    return;
+
+  colorDef = [colorTable colorDefAtIndex: arg];
+  if (!colorDef)
+    return;
+
+  if (formattingOptions->color_index >= 0)
+    {
+      [self->_html appendBytes: "</font>"  length: 7];
+    }
+
+  formattingOptions->color_index = arg;
+
+  v = calloc(23, sizeof(char));
+  sprintf(v, "<font color=\"#%02x%02x%02x\">", colorDef->red, colorDef->green, colorDef->blue);
+  [self->_html appendBytes: v  length: strlen(v)];
+  free(v);
+}
+
+
+inline static void parseColorTableWrapper(RTFHandler *self, RTFColorTable **colorTable)
+{
+  *colorTable = [self parseColorTable];
+}
+
+inline static void parseF(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions, RTFFontTable *fontTable)
+{
+  RTFFontInfo *fontInfo;
+
+  if (!hasArg)
+    return;
+  if (!formattingOptions)
+    return;
+
+  if (formattingOptions->font_index >= 0 && arg != formattingOptions->font_index)
+    {
+      [self->_html appendBytes: "</font>"  length: 7];
+    }
+
+  formattingOptions->font_index = arg;
+
+  fontInfo = [fontTable fontInfoAtIndex: arg];
+  char *v = NULL;
+  if (fontInfo && fontInfo->name)
+    {
+      if ([fontInfo->name length] < 128)
+        {
+          int tag_size = 15 + [fontInfo->name length];
+          v = calloc(tag_size, sizeof(char));
+          snprintf(v, tag_size, "<font face=\"%s\">", [fontInfo->name UTF8String]);
+        }
+      else
+        {
+          NSLog(@"RTFHandler: Font %u has %d chars length, parse error? "
+                "Ignored", arg, [fontInfo->name length]);
+          v = calloc(7, sizeof(char));
+          sprintf(v, "<font>");
+        }
+    }
+  else
+    {
+      // RTF badformed? We don't know about that font (arg index not found).
+      // Anyhow, we still open the html tag because in the future
+      // we will close it (e.g. when new font is used).
+      v = calloc(7, sizeof(char));
+      sprintf(v, "<font>");
+    }
+
+  if (fontInfo && fontInfo->charset)
+    {
+      if (fontInfo->charset == DEFAULT_CHARSET)
+        /* charset 1 is default charset */
+        formattingOptions->charset = NULL;
+      else {
+        NSNumber *key = [NSNumber numberWithUnsignedChar: fontInfo->charset];
+        formattingOptions->charset =  NSMapGet(_charsets, key);
+      }
+    }
+
+  [self->_html appendBytes: v  length: strlen(v)];
+  free(v);
+}
+
+inline static void parseFontTableWrapper(RTFHandler *self, const char * cw, RTFFontTable **fontTable)
+{
+  // We rewind our buffer so we start at the beginning of {\fonttbl...
+  self->_bytes = cw-2;
+  self->_current_pos -= 9;  // Length: {\fonttbl
+  *fontTable = [self parseFontTable];
+              
+  // We go back 1 byte in order to end our section properly ('}' character)
+  REWIND;
+}
+ 
+inline static void parseI(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions)
+{
+  if (!formattingOptions)
+    return;
+  if (hasArg && arg == 0)
+    {
+      [self->_html appendBytes: "</i>"  length: 4];
+      formattingOptions->italic = NO;
+    }
+  else
+    {
+      [self->_html appendBytes: "<i>"  length: 3];
+      formattingOptions->italic = YES;      
+    }
+}
+
+inline static void parsePar(RTFHandler *self)
+{
+  [self->_html appendBytes: "<br>"  length: 4];
+}
+
+inline static void parsePictureWrapper(RTFHandler *self, const char * cw)
+{
+  self->_bytes = cw-2;
+  self->_current_pos -= 6;  // Length: {\pict
+  [self parsePicture];
+  REWIND;
+}
+
+// same implementation that /par
+inline static void parseSoftline(RTFHandler *self)
+{
+  [self->_html appendBytes: "<br>"  length: 4];
+}
+
+inline static void parseStrike(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions)
+{
+  if (!formattingOptions)
+    return;
+  if (hasArg && arg == 0) 
+    {
+      [self->_html appendBytes: "</strike>"  length: 9];
+      formattingOptions->strikethrough = NO;
+    }
+  else 
+    {
+      [self->_html appendBytes: "<strike>"  length: 8];
+      formattingOptions->strikethrough = YES;      
+    }
+}
+
+inline static void parseStyleSheetWrapper(RTFHandler *self, const char * cw)
+{
+  self->_bytes = cw-2;
+  self->_current_pos -= 12;  // Length: {\stylesheet
+  [self parseStyleSheet];
+  REWIND;
+}
+
+inline static void parseTab(RTFHandler *self)
+{
+  [self->_html appendBytes: "&nbsp;&nbsp;"  length: 12];
+}
+
+inline static void parseU(RTFHandler *self, BOOL hasArg, int arg)
+{
+  unichar uch;
+  NSString *s;
+  NSData *d;
+
+  if (!hasArg)
+    return;
+  if (arg < 0) 
+    // a negative value means a value greater than 32767
+    arg = 32767 - arg;
+
+  uch = (unichar) arg;
+  s = [NSString stringWithCharacters: &uch length: 1];
+  d = [s dataUsingEncoding: NSUTF8StringEncoding];
+  [self->_html appendData: d];  
+}
+
+inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormattingOptions *formattingOptions)
+{
+  if (!formattingOptions)
+    return;
+  if (hasArg && arg ==0) 
+    {
+      [self->_html appendBytes: "</u>"  length: 4];
+      formattingOptions->underline = NO;
+    }
+  else
+    {
+      [self->_html appendBytes: "<u>"  length: 3];
+      formattingOptions->underline = YES;
+    }
+}
+
+
 - (NSMutableData *) parse
 {
   RTFFormattingOptions *formattingOptions;
@@ -710,23 +1204,28 @@ const unsigned short ansicpg874[256] = {
   RTFFontTable *fontTable;
   RTFStack *stack;
   
-  unsigned short *charset;
-  char c;
-  
+  const unsigned short *defaultCharset;
+
+  // convenience variables for parsing
+  unsigned char c;
+  NSData *d;
+  NSString *s;
+  unichar uch;
+
   stack = [[RTFStack alloc] init];
   fontTable = nil;
   colorTable = nil;
-  charset = NULL;
+  defaultCharset = ansicpg1252;
   formattingOptions = nil;
 
   _html = [[NSMutableData alloc] init];
   [_html appendBytes: "<html><meta charset='utf-8'><body>"  length: 34];
-
   
 
   // Check if we got RTF data
+  // this does not allow \s\n before '}' neither newline before control command
   if (_len > 4 && strncmp((const char*)_bytes, "{\\rtf", 4) != 0)
-    return NO;
+    return nil;
 
   while (_current_pos < _len)
     {
@@ -737,16 +1236,25 @@ const unsigned short ansicpg874[256] = {
         {
           unsigned int len;
           const char *cw;
-          NSString *s;
+          BOOL hasArg;
+          int arg;
+          NSString *cwKey;
+          commandWordId cwId;
+          char nextByte = *(_bytes+1);
 
-          if (*(_bytes+1) == '\'' && charset)
+          if (nextByte == '\'')
             {
               // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
-              NSString *s;
-              NSData *d;
-              
               const char *b1, *b2;
               unsigned short index;
+
+              const unsigned short * active_charset;
+
+              if (formattingOptions && formattingOptions->charset)
+                active_charset = formattingOptions->charset;
+              else
+                active_charset = defaultCharset;
+
               
               ADVANCE;
               ADVANCE;
@@ -757,211 +1265,108 @@ const unsigned short ansicpg874[256] = {
               index = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55) * 16;
               index += (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
               
-              s = [NSString stringWithCharacters: &(charset[index])  length: 1];
+              s = [NSString stringWithCharacters: &(active_charset[index])  length: 1];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
               [_html appendData: d];
               continue;
             }
-          else if (*(_bytes+1) == '*')
+          else if (nextByte == '*')
             {
               [self parseIgnoringEverything];
               continue;
             }
-
-          cw = [self parseControlWord: &len];
-
-          s = [[NSString alloc] initWithBytesNoCopy: (void *)cw
-                                             length: len
-                                           encoding: NSASCIIStringEncoding
-                                       freeWhenDone: NO];
-          [s autorelease];
-
-          if (strncmp(cw, "ansicpg", 7) == 0)
+          else if (!isalpha(nextByte)) 
             {
-              charset = NSMapGet(_charsets, s);
-            }
-          else if (strncmp(cw, "fonttbl", 7) == 0)
-            {
-              // We rewind our buffer so we start at the beginning of {\fonttbl...
-              _bytes = cw-2;
-              _current_pos -= 9;  // Length: {\fonttbl
-              fontTable = [self parseFontTable];
-              
-              // We go back 1 byte in order to end our section properly ('}' character)
-              REWIND;
-            }
-          else if (strncmp(cw, "stylesheet", 10) == 0)
-  	     {
-               _bytes = cw-2;
-               _current_pos -= 12;  // Length: {\stylesheet
-               [self parseStyleSheet];
-               REWIND;
-             } 
-           else if (strncmp(cw, "colortbl", 8) == 0)
-             {
-               colorTable = [self parseColorTable];
-             }
-           else if (strncmp(cw, "pict", 4) == 0)
-             {
-               _bytes = cw-2;
-               _current_pos -= 6;  // Length: {\pict
-               [self parsePicture];
-               REWIND;
-             }
-           else if ([s isEqualToString: @"b"] && formattingOptions)
-             {
-               [_html appendBytes: "<b>"  length: 3];
-              formattingOptions->bold = YES;
-            }
-          else if ([s isEqualToString: @"b0"] && formattingOptions)
-            {
-              [_html appendBytes: "</b>"  length: 4];
-              formattingOptions->bold = NO;
-            }
-          else if ([s hasPrefix: @"cf"] && [s length] > 2)
-            {
-              RTFColorDef *colorDef;
-              int color_index;
-              char *v;
-
-              if (!formattingOptions) continue;
-
-              color_index = [[s substringFromIndex: 2] intValue];
-              colorDef = [colorTable colorDefAtIndex: color_index];
-              if (!colorDef) continue;
-
-              if (formattingOptions->color_index >= 0)
-                {
-                  [_html appendBytes: "</font>"  length: 7];
-                }
-
-              formattingOptions->color_index = color_index;
-
-              v = malloc(23*sizeof(char));
-              memset(v, 0, 23);
-              sprintf(v, "<font color=\"#%02x%02x%02x\">", colorDef->red, colorDef->green, colorDef->blue);
-              [_html appendBytes: v  length: strlen(v)];
-              free(v);
-            }
-          else if ([s hasPrefix: @"fcs"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fs"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fbidis"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"fromhtml"])
-            {
-              // ignore
-            }
-         else if ([s hasPrefix: @"fromtext"])
-            {
-              // ignore
-            }
-          else if ([s hasPrefix: @"f"] && [s length] > 1)
-            {
-              RTFFontInfo *fontInfo;
-              int font_index;
-
-              font_index = [[s substringFromIndex: 1] intValue];
-
-              if (!formattingOptions)
+              // escape + character
+              ADVANCE_N(2);
+              // check for special escapes for the no-implemented features
+              // for control of word breaking
+              if (nextByte == '~')
+                // no breaking space
+                nextByte = ' ';
+              else if (nextByte == '-')
+                // optional hyphen; we skip it
                 continue;
+              else if  (nextByte == '_')
+                // no breaking hyphen, treat it as a normal hyphen
+                nextByte = '-';
 
-              if (formattingOptions->font_index >= 0 &&
-                  font_index != formattingOptions->font_index)
-                {
-                  [_html appendBytes: "</font>"  length: 7];
-                }
+              [_html appendBytes: &nextByte length: 1];
+              continue;
+            }
 
-              formattingOptions->font_index = font_index;
 
-              fontInfo = [fontTable fontInfoAtIndex: font_index];
-              char *v = NULL;
-              if (fontInfo && fontInfo->name)
-                {
-                  if ([fontInfo->name length] < 128)
-                    {
-                      int tag_size = 15 + [fontInfo->name length];
-                      v = calloc(tag_size, sizeof(char));
-                      snprintf(v, tag_size, "<font face=\"%s\">", [fontInfo->name UTF8String]);
-                    }
-                  else
-                    {
-                      NSLog(@"RTFHandler: Font %u has %d chars length, parse error? "
-                            "Ignored", font_index, [fontInfo->name length]);
-                      v = calloc(7, sizeof(char));
-                      sprintf(v, "<font>");
-                    }
-                }
-              else
-                {
-                  // RTF badformed? We don't know about that font (font_index).
-                  // Anyhow, we still open the html tag because in the future
-                  // we will close it (e.g. when new font is used).
-                  v = calloc(7, sizeof(char));
-                  sprintf(v, "<font>");
-                }
-              [_html appendBytes: v  length: strlen(v)];
-              free(v);
-            }
-          else if ([s isEqualToString: @"i"] && formattingOptions)
-            {
-              [_html appendBytes: "<i>"  length: 3];
-              formattingOptions->italic = YES;
-            }
-          else if ([s isEqualToString: @"i0"] && formattingOptions)
-            {
-              [_html appendBytes: "</i>"  length: 4];
-              formattingOptions->italic = NO;
-            }
-          else if ([s isEqualToString: @"tab"])
-            {
-              [_html appendBytes: "&nbsp;&nbsp;"  length: 12];
-            }
-          else if ([s isEqualToString: @"softline"] || [s isEqualToString: @"par"])
-            {
-              [_html appendBytes: "<br>"  length: 4];
-            }
-         else if ([s isEqualToString: @"strike"] && formattingOptions)
-            {
-              [_html appendBytes: "<strike>"  length: 8];
-              formattingOptions->strikethrough = YES;
-            }
-          else if ([s isEqualToString: @"strike0"] && formattingOptions)
-            {
-              [_html appendBytes: "</strike>"  length: 9];
-              formattingOptions->strikethrough = NO;
-            }
-          else if ([s hasPrefix: @"u"] && [s length] > 1 && isdigit([s characterAtIndex: 1]))
-            {
-              NSData *d;
-              unichar ch;
+          cw = [self parseControlWordAndSetLenIn: &len
+                             setHasIntArgumentIn: &hasArg
+                                setIntArgumentIn: &arg];
+          if (cw == NULL)
+            continue;
+          
+          cwKey= [[NSString alloc] initWithBytesNoCopy: (void *)cw
+                                                 length: len
+                                               encoding: NSASCIIStringEncoding
+                                           freeWhenDone: NO];
+          [cwKey autorelease];
 
-              ch = (unichar)[[s substringFromIndex: 1] intValue];
-              s = [NSString stringWithCharacters: &ch length: 1];
-              d = [s dataUsingEncoding: NSUTF8StringEncoding];
-              [_html appendData: d];
-            }
-          else if ([s isEqualToString: @"ul"] && formattingOptions)
+          cwId = (commandWordId) NSMapGet(_cws, cwKey);
+          switch (cwId)
             {
-              [_html appendBytes: "<u>"  length: 3];
-              formattingOptions->underline = YES;
-            }
-          else if (([s isEqualToString: @"ul0"] || [s isEqualToString: @"ulnone"]) 
-                   && formattingOptions)
-            {
-              [_html appendBytes: "</u>"  length: 4];
-              formattingOptions->underline = NO;
+            case CW_ANSICPG: 
+              parseAnsicpg(hasArg, arg, &defaultCharset);
+              break;
+            case CW_B: 
+              parseB(self, hasArg, arg, formattingOptions);
+              break;
+            case CW_CF: 
+              parseCf(self, hasArg, arg, formattingOptions, colorTable);
+              break;
+            case CW_COLORTBL: 
+              parseColorTableWrapper(self, &colorTable);
+              break;
+            case CW_F:
+              parseF(self, hasArg, arg, formattingOptions, fontTable);
+              break;
+            case CW_FONTTBL:
+              parseFontTableWrapper(self, cw, &fontTable);
+              break;
+            case CW_I: 
+              parseI(self, hasArg, arg, formattingOptions);
+              break;
+            case CW_PAR: 
+              parsePar(self); 
+              break;
+            case CW_PICT: 
+              parsePictureWrapper(self, cw); 
+              break;
+            case CW_SOFTLINE: 
+              parseSoftline(self); 
+              break;
+            case CW_STRIKE: 
+              parseStrike(self, hasArg, arg, formattingOptions); 
+              break;
+            case CW_STYLESHEET: 
+              parseStyleSheetWrapper(self, cw); 
+              break;
+            case CW_TAB: 
+              parseTab(self); 
+              break;
+            case CW_U: 
+              parseU(self, hasArg, arg); 
+              break;
+            case CW_UL: 
+              parseUl(self, hasArg, arg, formattingOptions); 
+              break;
+            case CW_ULNONE: 
+              parseUl(self, YES, 0, formattingOptions); 
+              break;
+            case CW_UNKNOWN:
+            default:
+              // do nothing
+              break;       
             }
 
           // If a space delimits the control word, the space does not appear in the document.
-          // Any characters following the delimiter, including spaces, will appear in the document.
+          // Any characters following the delimiter, including spaces, will appear in the document. (except newline!)
           if (*_bytes == ' ')
             {
               ADVANCE;
@@ -978,6 +1383,7 @@ const unsigned short ansicpg874[256] = {
           formattingOptions->font_index = -1;
           formattingOptions->color_index = -1;
           formattingOptions->start_pos = [_html length];
+          formattingOptions->charset = defaultCharset;
           [stack push: formattingOptions];
           ADVANCE;
         }
@@ -1024,17 +1430,31 @@ const unsigned short ansicpg874[256] = {
         }
       else
         {
-          // We avoid appending NULL bytes
-          if (*_bytes)
-            [_html appendBytes: _bytes  length: 1];
+          c = *_bytes;
+          // We avoid appending NULL bytes or endlines
+          if (c && (c != '\n')) 
+            {
+              if (c <= UTF8_FIRST_BYTE_LAST_CODEPOINT) 
+                {
+                  // in this case utf8 and ascii encoding are the same
+                  [_html appendBytes: &c  length: 1];
+                }
+              else 
+                {
+                  uch = c;
+                  s = [NSString stringWithCharacters: &uch length: 1];
+                  d = [s dataUsingEncoding: NSUTF8StringEncoding];
+                  [_html appendData: d];
+                }
+            }
           ADVANCE;
         }
     }
   
   [_html appendBytes: "</body></html>"  length: 14];
   
-  RELEASE(stack);
-  return AUTORELEASE(_html);
+  [stack release];
+  return [_html autorelease];
 }
 
 @end

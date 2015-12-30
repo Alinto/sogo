@@ -620,8 +620,9 @@
 
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
+                             inDomain: (NSString *) domain
 {
-  return [self _lookupContactEntry: theID  considerEmail: NO inDomain: nil];
+  return [self _lookupContactEntry: theID  considerEmail: NO inDomain: domain];
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID
