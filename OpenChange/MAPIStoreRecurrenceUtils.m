@@ -24,7 +24,6 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -35,6 +34,7 @@
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 
 #import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
@@ -51,7 +51,7 @@
                    fromRecurrencePattern: (struct RecurrencePattern *) rp
                           withExceptions: (struct ExceptionInfo *) exInfos
                        andExceptionCount: (uint16_t) exInfoCount
-                              inTimeZone: (NSTimeZone *) tz
+                              inTimeZone: (iCalTimeZone *) tz
 
 {
   NSCalendarDate *startDate, *olEndDate, *untilDate, *exDate;
@@ -63,7 +63,7 @@
   iCalWeekOccurrence weekOccurrence;
   iCalWeekOccurrences dayMaskDays;
   NSUInteger count, max;
-  NSInteger bySetPos;
+  NSInteger bySetPos, tzOffset;
   unsigned char maskValue;
 
   [entity removeAllRecurrenceRules];
@@ -242,9 +242,10 @@
           {
             /* The OriginalStartDate is in local time */
             exDate = [NSDate dateFromMinutesSince1601: exInfos[count].OriginalStartDate];
+            tzOffset = -[[tz periodForDate: exDate] secondsOffsetFromGMT];
             exDate = [exDate dateByAddingYears: 0 months: 0 days: 0
                                          hours: 0 minutes: 0
-                                       seconds: - [tz secondsFromGMT]];
+                                       seconds: tzOffset];
             [exceptionDates removeObject: exDate];
           }
       }
@@ -263,7 +264,6 @@
 
 - (void) fillRecurrencePattern: (struct RecurrencePattern *) rp
                      withEvent: (iCalEvent *) event
-                    inTimeZone: (NSTimeZone *) timeZone
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalRecurrenceFrequency freq;
@@ -279,10 +279,8 @@
   NSMutableArray *deletedDates, *modifiedDates;
 
   startDate = [event firstRecurrenceStartDate];
-  [startDate setTimeZone: timeZone];
   endDate = [event lastPossibleRecurrenceStartDate];
-  [endDate setTimeZone: timeZone];
-  
+
   rp->ReaderVersion = 0x3004;
   rp->WriterVersion = 0x3004;
 

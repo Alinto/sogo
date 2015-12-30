@@ -58,6 +58,7 @@
 - (NSArray *) sourceIDsInDomain: (NSString *) domain;
 - (NSArray *) authenticationSourceIDsInDomain: (NSString *) domain;
 - (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain;
+- (BOOL) isDomainDefined: (NSString *) domain;
 
 - (NSObject <SOGoSource> *) sourceWithID: (NSString *) sourceID;
 - (NSDictionary *) metadataForSourceID: (NSString *) sourceID;

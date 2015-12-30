@@ -24,13 +24,18 @@
 #import <Foundation/NSString.h>
 #include <talloc.h>
 #include <ldb.h>
+#include <libmapiproxy.h>
+#include <samba/version.h>
 
 #import "NSData+MAPIStore.h"
 
 #import "MAPIStoreSamDBUtils.h"
 
+
+
+
 NSString *
-MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
+MAPIStoreSamDBUserAttribute (struct mapistore_connection_info *connInfo,
                              NSString *userKey,
                              NSString *value,
                              NSString *attributeName)
@@ -48,10 +53,20 @@ MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
   attrs[0] = [attributeName UTF8String];
   searchFormat
     = [NSString stringWithFormat: @"(&(objectClass=user)(%@=%%s))", userKey];
-  ret = ldb_search (samCtx, memCtx, &res, ldb_get_default_basedn(samCtx),
+#if SAMBA_VERSION_MAJOR <= 4 && SAMBA_VERSION_MINOR < 3
+  ret = ldb_search (connInfo->sam_ctx, memCtx, &res,
+                    ldb_get_default_basedn(connInfo->sam_ctx),
                     LDB_SCOPE_SUBTREE, attrs,
                     [searchFormat UTF8String],
                     [value UTF8String]);
+#else
+  ret = safe_ldb_search (&connInfo->sam_ctx, memCtx, &res,
+                         ldb_get_default_basedn(connInfo->sam_ctx),
+                         LDB_SCOPE_SUBTREE, attrs,
+                         [searchFormat UTF8String],
+                         [value UTF8String]);
+#endif
+
   if (ret == LDB_SUCCESS && res->count == 1)
     {
       result = ldb_msg_find_attr_as_string (res->msgs[0], attrs[0], NULL);
@@ -65,7 +80,7 @@ MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
 }
 
 NSData *
-MAPIStoreInternalEntryId (struct ldb_context *samCtx, NSString *username)
+MAPIStoreInternalEntryId (struct mapistore_connection_info *connInfo, NSString *username)
 {
   static const uint8_t const providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
                                                0xc0, 0x42, 0x10, 0x1a,
@@ -82,7 +97,7 @@ MAPIStoreInternalEntryId (struct ldb_context *samCtx, NSString *username)
      type: 32
      X500DN: variable */
 
-  legacyDN = MAPIStoreSamDBUserAttribute (samCtx, @"sAMAccountName", username,
+  legacyDN = MAPIStoreSamDBUserAttribute (connInfo, @"sAMAccountName", username,
                                           @"legacyExchangeDN");
   if (legacyDN)
     {

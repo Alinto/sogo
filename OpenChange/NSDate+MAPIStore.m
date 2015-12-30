@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 
 #undef DEBUG
@@ -48,7 +49,7 @@ _setupRefDate ()
   refDate = [[NSCalendarDate alloc]
               initWithYear: 1601 month: 1 day: 1
                       hour: 0 minute: 0 second: 0
-                  timeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+                  timeZone: utcTZ];
 }
 
 + (NSCalendarDate *) dateFromMinutesSince1601: (uint32_t) minutes
@@ -126,6 +127,64 @@ _setupRefDate ()
                                 [self timeIntervalSince1970]];
 
   return [calDate yearOfCommonEra] == 4500;
+}
+
++ (NSCalendarDate *) dateFromSystemTime: (struct SYSTEMTIME) date
+                            andRuleYear: (uint16_t) rYear
+{
+  NSCalendarDate *result;
+  NSInteger daysToDate;
+  NSUInteger firstDayOfWeek, year;
+
+  /* ([MS-OXOCAL] 2.2.1.41.1) When we're provided an absolute date (i.e., it
+     happens once), the SYSTEMTIME structure is enough to fill the date.
+     When we're parsing a SYSTEMTIME field from a time zone rule, however, a
+     relative date can be provided for the peroidicity of its periods. In this
+     scenario, the wYear field is empty and we have to use the wYear field in
+     the parent rule */
+  if (date.wYear != 0)
+    year = date.wYear;
+  else
+    year = rYear;
+
+  /* The wDay field indicates the occurrence of the wDayOfWeek within the month.
+     The 5th occurrence means the last one, even if it is the 4th. */
+  if (date.wDay < 5)
+    {
+      result = [[NSCalendarDate alloc] initWithYear: year month: date.wMonth day: 1
+                                               hour: date.wHour minute: date.wMinute second: date.wSecond
+                                           timeZone: utcTZ];
+      [result autorelease];
+
+      firstDayOfWeek = [result dayOfWeek];
+
+      daysToDate = 7 * (date.wDay - 1) + date.wDayOfWeek - firstDayOfWeek;
+      if (date.wDayOfWeek < firstDayOfWeek)
+        daysToDate += 7;
+
+      result = [result dateByAddingYears: 0 months: 0 days: daysToDate
+                                   hours: 0 minutes: 0
+                                 seconds: 0];
+    }
+  else
+    {
+      result = [[NSCalendarDate alloc] initWithYear: year month: date.wMonth + 1 day: 1
+                                               hour: date.wHour minute: date.wMinute second: date.wSecond
+                                           timeZone: utcTZ];
+      [result autorelease];
+
+      firstDayOfWeek = [result dayOfWeek];
+
+      daysToDate = date.wDayOfWeek - firstDayOfWeek;
+      if (date.wDayOfWeek >= firstDayOfWeek)
+        daysToDate -= 7;
+
+      result = [result dateByAddingYears: 0 months: 0 days: daysToDate
+                                   hours: 0 minutes: 0
+                                 seconds: 0];
+    }
+
+  return result;
 }
 
 @end

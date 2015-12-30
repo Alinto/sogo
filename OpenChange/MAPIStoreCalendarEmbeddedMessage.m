@@ -58,7 +58,6 @@
                 wrapperWithICalEvent: [newContainer event]
                              andUser: [userContext sogoUser]
                       andSenderEmail: nil
-                          inTimeZone: [userContext timeZone]
                   withConnectionInfo: [context connectionInfo]];
       [self addProxy: appointmentWrapper];
     }

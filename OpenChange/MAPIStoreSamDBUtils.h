@@ -25,13 +25,13 @@
 
 @class NSString;
 
-struct ldb_context;
+#include <mapistore/mapistore.h>
 
-NSString *MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
+NSString *MAPIStoreSamDBUserAttribute (struct mapistore_connection_info *connInfo,
                                        NSString *userKey,
                                        NSString *value,
                                        NSString *attributeName);
-NSData *MAPIStoreInternalEntryId (struct ldb_context *, NSString *username);
+NSData *MAPIStoreInternalEntryId (struct mapistore_connection_info *connInfo, NSString *username);
 NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
 
 #endif /* MAPISTORESAMDBUTILS_H */

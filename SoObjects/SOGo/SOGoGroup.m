@@ -113,7 +113,7 @@
   uid = [theID hasPrefix: @"@"] ? [theID substringFromIndex: 1] : theID;
 
   return [SOGoGroup groupWithValue: uid
-                 andSourceSelector: @selector (lookupGroupEntryByUID:)
+                 andSourceSelector: @selector (lookupGroupEntryByUID:inDomain:)
                           inDomain: domain];
 }
 
@@ -121,7 +121,7 @@
              inDomain: (NSString *) domain
 {
   return [SOGoGroup groupWithValue: theEmail
-                 andSourceSelector: @selector (lookupGroupEntryByEmail:)
+                 andSourceSelector: @selector (lookupGroupEntryByEmail:inDomain:)
                           inDomain: domain];
 }
 
@@ -158,9 +158,9 @@
 
       // Our different sources might not all implements groups support
       if ([source respondsToSelector: theSelector])
-	entry = [source performSelector: theSelector
-			withObject: theValue];
-      
+        entry = [source performSelector: theSelector
+                             withObject: theValue
+                             withObject: domain];
       if (entry)
 	break;
 

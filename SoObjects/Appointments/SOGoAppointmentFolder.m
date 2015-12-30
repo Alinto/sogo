@@ -605,8 +605,16 @@ static Class iCalEventK = nil;
   NSNumber *classNumber;
   unsigned int grantedCount;
   iCalAccessClass currentClass;
+  WOContext *localContext;
 
-  [self initializeQuickTablesAclsInContext: context];
+  /* FIXME: The stored context from initialisation may have changed
+     by setContext by other operations in OpenChange library,
+     so we keep tighly to use the current session one. Without
+     this, the login is set to nil and a NSException is raised
+     at [SOGoAppointmentFolder:roleForComponentsWithAccessClass:forUser]
+     inside [SOGoAppointmentFolder:initializeQuickTablesAclsInContext]. */
+  localContext = [[WOApplication application] context];
+  [self initializeQuickTablesAclsInContext: localContext];
   grantedClasses = [NSMutableArray arrayWithCapacity: 3];
   deniedClasses = [NSMutableArray arrayWithCapacity: 3];
   for (currentClass = 0;

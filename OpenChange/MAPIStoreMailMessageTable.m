@@ -181,8 +181,8 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
         else
           {
             /* Ignore other operations as IMAP only support MODSEQ >= X */
-            [self warnWithFormat: @"Ignoring %@ as only supported operators are > and >=",
-                  [self operatorFromRestrictionOperator: res->relop]];
+            [self warnWithFormat: @"Ignoring '%@' as only supported operators are > and >=",
+                  NSStringFromSelector ([self operatorFromRestrictionOperator: res->relop])];
             rc = MAPIRestrictionStateAlwaysTrue;
           }
       }

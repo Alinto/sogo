@@ -198,7 +198,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       break;
     case PT_STRING8:
       result = (value->value.lpszA
-                ? [NSString stringWithUTF8String: value->value.lpszA]
+                ? [NSString stringWithUTF8String: (const char *) value->value.lpszA]
                 : (id) @"");
       break;
     case PT_SYSTIME:

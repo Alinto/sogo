@@ -41,6 +41,7 @@
 #include <unistd.h>
 
 #import "SOGoSystemDefaults.h"
+#import "SOGoUserManager.h"
 
 @implementation SOGoSession
 
@@ -262,7 +263,7 @@
           // The domain is probably appended to the username;
           // make sure it is defined as a domain in the configuration.
           *theDomain = [*theLogin substringFromIndex: (r.location + r.length)];
-          if (![[sd domainIds] containsObject: *theDomain])
+          if (![[SOGoUserManager sharedUserManager] isDomainDefined: *theDomain])
             *theDomain = nil;
         }
     }

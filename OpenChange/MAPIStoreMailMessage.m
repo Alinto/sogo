@@ -340,7 +340,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                                  wrapperWithICalEvent: event
                                               andUser: [context activeUser]
                                        andSenderEmail: senderEmail
-                                           inTimeZone: [[self userContext] timeZone]
                                    withConnectionInfo: [context connectionInfo]];
           [appointmentWrapper retain];
         }
@@ -522,6 +521,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSUInteger colIdx;
   NSString *stringValue;
 
+  /* As specified in [MS-OXCMAIL] 2.2.3.2.6.1, if there are three
+     or less characters followed by a colon at the beginning of
+     the subject, we can assume that's the subject prefix */
   subject = [self subject];
   colIdx = [subject rangeOfString: @":"].location;
   if (colIdx != NSNotFound && colIdx < 4)
@@ -537,17 +539,45 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagNormalizedSubject: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *subject;
-  NSUInteger colIdx;
-  NSString *stringValue;
+  NSString *stringValue, *subject;
+  NSUInteger quoteStartIdx, quoteEndIdx, colIdx;
+  NSRange quoteRange;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
 
   subject = [self subject];
-  colIdx = [subject rangeOfString: @":"].location;
-  if (colIdx != NSNotFound && colIdx < 4)
-    stringValue = [[subject substringFromIndex: colIdx + 1]
-                    stringByTrimmingLeadSpaces];
+  if (mailIsMeetingRequest)
+    {
+
+      /* SOGo "spices up" the invitation/update mail's subject, but
+         the client uses it to name the attendee's event, so we keep
+         only what's inside the quotes */
+      quoteStartIdx = [subject rangeOfString: @"\""].location;
+      quoteEndIdx = [subject rangeOfString: @"\""
+                                   options: NSBackwardsSearch].location;
+      if (quoteStartIdx != NSNotFound
+          && quoteEndIdx != NSNotFound
+          && quoteStartIdx != quoteEndIdx)
+        {
+            quoteRange = NSMakeRange(quoteStartIdx + 1, quoteEndIdx - quoteStartIdx - 1);
+            stringValue = [subject substringWithRange: quoteRange];
+        }
+      else stringValue = subject;
+    }
   else
-    stringValue = subject;
+    {
+
+      /* As specified in [MS-OXCMAIL] 2.2.3.2.6.1, if there are three
+         or less characters followed by a colon at the beginning of
+         the subject, we can assume that's the subject prefix */
+      colIdx = [subject rangeOfString: @":"].location;
+      if (colIdx != NSNotFound && colIdx < 4)
+        stringValue = [[subject substringFromIndex: colIdx + 1]
+                       stringByTrimmingLeadSpaces];
+      else
+        stringValue = subject;
+    }
   if (!stringValue)
     stringValue = @"";
   *data = [stringValue asUnicodeInMemCtx: memCtx];
@@ -780,7 +810,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *contactInfos;
   NGMailAddress *ngAddress;
   NSData *entryId;
-  struct ldb_context *samCtx;
   int rc;
 
   if (fullMail)
@@ -803,8 +832,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if (contactInfos)
         {
           username = [contactInfos objectForKey: @"sAMAccountName"];
-          samCtx = [[self context] connectionInfo]->sam_ctx;
-          entryId = MAPIStoreInternalEntryId (samCtx, username);
+          entryId = MAPIStoreInternalEntryId([[self context] connectionInfo], username);
         }
       else
         entryId = MAPIStoreExternalEntryId (cn, email);
@@ -1447,11 +1475,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSData *entryId;
   NSDictionary *contactInfos;
   SOGoUserManager *mgr;
-  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
 
-  samCtx = [[self context] connectionInfo]->sam_ctx;
   [super getMessageData: &msgData inMemCtx: memCtx];
 
   if (!headerSetup)
@@ -1505,7 +1531,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                     {
                       username = [contactInfos objectForKey: @"sAMAccountName"];
                       recipient->username = [username asUnicodeInMemCtx: msgData];
-                      entryId = MAPIStoreInternalEntryId (samCtx, username);
+                      entryId = MAPIStoreInternalEntryId ([[self context] connectionInfo], username);
                     }
                   else
                     {
