@@ -1,8 +1,26 @@
-2.3.5 (2016-MM-DD)
+2.3.5 (2016-01-DD)
 ------------------
+
+Enhancements
+ - return an error to openchange if mail message delivery fails
+ - return the requested elements on complex requests from Outlook when downloading changes
+ - user sources can be loaded dynamically
+ - unify user sources API
 
 Bug fixes
  - properly compute the last week number for the year (#1010)
+ - share calendar, tasks and contacts folders in Outlook 2013 with editor permissions
+ - priorize filename in Content-Disposition against name in Content-Type to get the filename of an attachment in mail
+ - request all contacts when there is no filter in Contacts menu in Webmail
+ - personal contacts working properly on Outlook
+ - fixes on RTF parsing used by event/contact description and mail as RTF to read non-ASCII characters:
+   better parsing of font table, when using a font, switch to its character set, correct parsing of
+   escaped characters and Unicode character command word support for unicode characters greater than 32767
+ - no crash resolving recipients after reconnecting LDAP connection
+ - avoid creation of phantom contacts in SOGo from distribution list synced from Outlook.
+ - accepted & updated event names are now shown correctly in Outlook
+ - provide safe guards in mail and calendar to avoid exceptions while syncing
+
 
 2.3.4 (2015-12-15)
 ------------------
